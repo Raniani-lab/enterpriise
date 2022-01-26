@@ -613,7 +613,7 @@ const SMSSignerDialog = Dialog.extend({
       title: _t("Error"),
     });
   },
-  _onValidateSMS() {
+  async _onValidateSMS() {
     const validateButton = this.$footer[0].querySelector(
       ".o_sign_validate_sms"
     );
@@ -627,38 +627,10 @@ const SMSSignerDialog = Dialog.extend({
         .classList.toggle("is-invalid");
       return false;
     }
-    const route =
-      "/sign/sign/" +
-      this.requestID +
-      "/" +
-      this.requestToken +
-      "/" +
-      validationCodeInput.value;
-    const params = {
-      signature: this.signature,
-      new_sign_items: this.newSignItems,
-    };
     validateButton.disabled = true;
-    session.rpc(route, params).then((response) => {
-      if (!response.success) {
-        const errorMessage = _t(
-          "Your signature was not submitted. Ensure that all required field of the documents are completed and that the SMS validation code is correct."
-        );
-        this.handleSMSError(validateButton, errorMessage);
-      } else {
-        new (this.get_thankyoudialog_class())(
-          this,
-          this.RedirectURL,
-          this.RedirectURLText,
-          this.requestID,
-          { nextSign: (this.name_list || []).length }
-        ).open();
-        this.do_hide();
-      }
-    });
-  },
-  get_thankyoudialog_class: function () {
-    return ThankYouDialog;
+    this.getParent().signInfo.smsToken = validationCodeInput.value;
+    await this.getParent()._signDocument(validationCodeInput.value);
+    validateButton.removeAttribute("disabled");
   },
   init: function (
     parent,
@@ -1555,8 +1527,7 @@ const SignableDocument = Document.extend({
       });
     },
 
-    "click .o_sign_validate_banner button": "signItemDocument",
-    "click .o_sign_sign_document_button": "signDocument",
+    "click .o_sign_validate_banner button": "signDocument",
     "click .o_sign_refuse_document_button": "refuseDocument",
   },
 
@@ -1582,38 +1553,107 @@ const SignableDocument = Document.extend({
   get_nextdirectsigndialog_class: function () {
     return NextDirectSignDialog;
   },
-  signItemDocument: function (e) {
-    if (!(
-      this.iframeWidget &&
-      this.iframeWidget.configuration &&
-      Object.keys(this.iframeWidget.configuration[1]).length > 0
-    )) {
-      return this.signDocument();
-    }
-    const $btn = this.$(".o_sign_validate_banner button");
-    const init_btn_text = $btn.text();
-    $btn.prepend('<i class="fa fa-spin fa-circle-o-notch" />');
-    $btn.attr("disabled", true);
-    let mail = "";
-    this.iframeWidget.$(".o_sign_sign_item").each(function (i, el) {
+  signDocument: async function (e) {
+    this.$validateButton.attr("disabled", true);
+    this.signInfo = {name: "", mail: ""};
+    this.isSigningRPC = false;
+    this.iframeWidget.$(".o_sign_sign_item").each((i, el) => {
       const value = $(el).val();
       if (value && value.indexOf("@") >= 0) {
-        mail = value;
+        this.signInfo.mail = value;
       }
     });
-
-    const [signatureValues, newSignItems] = this.getSignatureValuesFromConfiguration();
-    if (!signatureValues) {
+    [this.signInfo.signatureValues, this.signInfo.newSignItems] = this.getSignatureValuesFromConfiguration();
+    if (!this.signInfo.signatureValues) {
       this.iframeWidget.checkSignItemsCompletion();
       Dialog.alert(this, _t("Some fields have still to be completed !"), {
         title: _t("Warning"),
       });
-      $btn.removeAttr("disabled", true);
+      this.$validateButton.text(this.validateButtonText).removeAttr("disabled", true);
       return;
     }
-    const callback = (response) => {
-      $btn.text(init_btn_text);
-      $btn.removeAttr("disabled", true);
+    this.signInfo.hasNoSignature =
+      Object.keys(this.signInfo.signatureValues).length == 0 &&
+      !(this.iframeWidget &&
+        this.iframeWidget.signatureItems &&
+        Object.keys(this.iframeWidget.signatureItems).length > 0)
+
+    this._signDocument();
+  },
+
+  _signDocument: async function (e) {
+    this.$validateButton.text(this.validateButtonText).prepend('<i class="fa fa-spin fa-circle-o-notch" />');
+    this.$validateButton.attr("disabled", true);
+    if (this.signInfo.hasNoSignature) {
+      const nameAndSignatureOptions = {
+        fontColor: "DarkBlue",
+        defaultName: this.signerName,
+      };
+      const options = { nameAndSignatureOptions: nameAndSignatureOptions };
+      const signDialog = new SignatureDialog(
+        this,
+        options,
+        this.requestID,
+        this.accessToken
+      );
+
+      signDialog.open().onConfirm(() => {
+        if (!signDialog.validateSignature()) {
+          return false;
+        }
+
+        this.signInfo.name = signDialog.getName();
+        this.signInfo.signatureValues = signDialog.getSignatureImage()[1];
+        this.signInfo.hasNoSignature = false;
+
+        signDialog.close();
+        this._signDocument();
+      });
+    } else if (this.isUnknownPublicUser) {
+      new PublicSignerDialog(
+        this,
+        this.requestID,
+        this.requestToken,
+        this.RedirectURL,
+        { nextSign: this.name_list.length }
+      )
+        .open(this.signInfo.name, this.signInfo.mail)
+        .sent.then(() => {
+          this.isUnknownPublicUser = false;
+          this._signDocument()
+      });
+    } else if (this.smsRequired && !this.signInfo.smsToken) {
+      new SMSSignerDialog(
+        this,
+        this.requestID,
+        this.accessToken,
+        this.signInfo.signatureValues,
+        this.signInfo.newSignItems,
+        this.signerPhone,
+        this.RedirectURL,
+        {nextSign: this.name_list.length}
+      ).open();
+    } else {
+      await this._sign();
+      return;
+    }
+    setTimeout(() => {
+      if (!this.isSigningRPC) {
+        this.$validateButton.text(this.validateButtonText).removeAttr("disabled", true);
+      }
+    }, 2000);
+  },
+
+  _sign: async function () {
+    this.isSigningRPC = true;
+    const route = "/sign/sign/" + this.requestID + "/" + this.accessToken + "/" + this.signInfo.smsToken;
+    const params = {
+      signature: this.signInfo.signatureValues,
+      new_sign_items: this.signInfo.newSignItems,
+    };
+    return session.rpc(route, params).then((response) => {
+      this.isSigningRPC = false;
+      this.$validateButton.text(this.validateButtonText).removeAttr("disabled", true);
       if (response.success) {
         if (response.url) {
           document.location.pathname = response.url;
@@ -1632,38 +1672,21 @@ const SignableDocument = Document.extend({
         }
       } else {
         if (response.sms) {
-          new SMSSignerDialog(
+          Dialog.alert(
             this,
-            this.requestID,
-            this.accessToken,
-            signatureValues,
-            newSignItems,
-            this.signerPhone,
-            this.RedirectURL,
-            {nextSign: this.name_list.length}
-          ).open();
+            _t("Your signature was not submitted. Ensure the SMS validation code is correct."),
+            {title: _t("Error")}
+          );
         } else {
           this.openErrorDialog(
             _t(
-              "Unable to send the SMS, please contact the sender of the document."
+              "Sorry, an error occurred, please try to fill the document again."
             ),
             () => { window.location.reload(); }
           );
         }
-      }
-    };
-    if (this.$("#o_sign_is_public_user").length > 0) {
-      new PublicSignerDialog(
-        this,
-        this.requestID,
-        this.requestToken,
-        this.RedirectURL
-      )
-        .open(this.signerName, mail)
-        .sent.then(() => this._sign(signatureValues, callback, newSignItems));
-    } else {
-      this._sign(signatureValues, callback, newSignItems);
-    }
+      };
+    });
   },
 
   /**
@@ -1728,66 +1751,6 @@ const SignableDocument = Document.extend({
     return [signatureValues, newSignItems];
   },
 
-  signDocument: function (e) {
-    if (
-      this.iframeWidget &&
-      this.iframeWidget.signatureItems &&
-      Object.keys(this.iframeWidget.signatureItems).length > 0
-    ) {
-      return this.signItemDocument();
-    }
-    const nameAndSignatureOptions = {
-      fontColor: "DarkBlue",
-      defaultName: this.signerName,
-    };
-    const options = { nameAndSignatureOptions: nameAndSignatureOptions };
-    const signDialog = new SignatureDialog(
-      this,
-      options,
-      this.requestID,
-      this.accessToken
-    );
-
-    signDialog.open().onConfirm(() => {
-      if (!signDialog.validateSignature()) {
-        return false;
-      }
-
-      const name = signDialog.getName();
-      const signature = signDialog.getSignatureImage()[1];
-
-      signDialog.$(".modal-footer .btn-primary").prop("disabled", true);
-      signDialog.close();
-
-      const callback = (response) => {
-        if (response.success) {
-          this.openThankYouDialog(this.name_list.length);
-        } else {
-          this.openErrorDialog(
-            _t(
-              "Sorry, an error occurred, please try to fill the document again."
-            ),
-            () => { window.location.reload(); }
-          );
-        }
-      };
-
-      if (this.$("#o_sign_is_public_user").length > 0) {
-        new PublicSignerDialog(
-          this,
-          this.requestID,
-          this.requestToken,
-          this.RedirectURL,
-          { nextSign: this.name_list.length }
-        )
-          .open(name, "")
-          .sent.then(() => this._sign(signature, callback));
-      } else {
-        this._sign(signature, callback);
-      }
-    });
-  },
-
   openThankYouDialog(nextSign) {
     new (this.get_thankyoudialog_class())(
       this,
@@ -1807,15 +1770,6 @@ const SignableDocument = Document.extend({
       title: _t("Error"),
       confirm_callback: confirmCallback,
     });
-  },
-
-  _sign: function (signature, callback, newSignItems = false) {
-    const route = "/sign/sign/" + this.requestID + "/" + this.accessToken;
-    const params = {
-      signature: signature,
-      new_sign_items: newSignItems,
-    };
-    return session.rpc(route, params).then(callback);
   },
 
   refuseDocument: function (e) {

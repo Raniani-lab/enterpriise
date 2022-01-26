@@ -93,6 +93,7 @@ export const PDFIframe = Widget.extend(
       this.templateItemsInProgress = parent.templateItemsInProgress;
       this.templateName = parent.templateName;
       this.templateEditable = parent.templateEditable;
+      this.smsRequired = parent.smsRequired;
       // sets datas values to this
       Object.keys(datas).forEach((dataName) => {
         this._set_data(dataName, datas[dataName]);

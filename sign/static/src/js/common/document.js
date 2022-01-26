@@ -18,6 +18,7 @@ export const Document = Widget.extend({
     this.requestState = this.$("#o_sign_input_sign_request_state").val();
     this.accessToken = this.$("#o_sign_input_access_token").val();
     this.templateEditable = this.$("#o_sign_input_template_editable").val();
+    this.smsRequired = this.$("#o_sign_input_sms_required").val();
     this.signerName = this.$("#o_sign_signer_name_input_info").val();
     this.signerPhone = this.$("#o_sign_signer_phone_input_info").val();
     this.RedirectURL = this.$("#o_sign_input_optional_redirect_url").val();
@@ -28,6 +29,9 @@ export const Document = Widget.extend({
     this.items = this.$(".o_sign_item_input_info");
     this.select_options = this.$(".o_sign_select_options_input_info");
     this.$validateBanner = this.$(".o_sign_validate_banner").first();
+    this.$validateButton = this.$(".o_sign_validate_banner button").first();
+    this.validateButtonText = this.$validateButton.text();
+    this.isUnknownPublicUser = this.$("#o_sign_is_public_user").length > 0;
 
     return Promise.all([
       this._super.apply(this, arguments),

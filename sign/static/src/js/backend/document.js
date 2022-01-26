@@ -6,8 +6,6 @@ import core from "web.core";
 import { Document } from "@sign/js/common/document";
 import framework from "web.framework";
 
-const { _t } = core;
-
 export const DocumentBackend = AbstractAction.extend({
   hasControlPanel: true,
 

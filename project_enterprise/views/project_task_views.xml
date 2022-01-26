@@ -157,12 +157,12 @@
 
     <record id="project.action_view_all_task" model="ir.actions.act_window">
         <field name="res_model">project.task</field>
-        <field name="view_mode">kanban,tree,form,calendar,gantt,map,pivot,graph,activity</field>
+        <field name="view_mode">kanban,tree,form,gantt,calendar,map,pivot,graph,activity</field>
     </record>
 
     <!-- Set map view and gantt view -->
     <record id="project_all_task_gantt_action_view" model="ir.actions.act_window.view">
-        <field name="sequence" eval="50"/>
+        <field name="sequence" eval="30"/>
         <field name="view_mode">gantt</field>
         <field name="act_window_id" ref="project.act_project_project_2_project_task_all"/>
         <field name="view_id" ref="project_enterprise.project_task_dependency_view_gantt"/>

@@ -9,7 +9,7 @@ import {
 } from "@documents_spreadsheet_bundle/list/list_helpers";
 
 function stringArg(value) {
-    return { type: "STRING", value: `"${value}"` };
+    return { type: "STRING", value: `${value}` };
 }
 
 QUnit.module("documents_spreadsheet > pivot_helpers", {}, () => {

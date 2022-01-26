@@ -108,17 +108,10 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
     getListIdFromPosition(sheetId, col, row) {
         const cell = this.getters.getCell(sheetId, col, row);
         if (cell && cell.isFormula()) {
-            const listFunction = getFirstListFunction(cell.normalizedText);
+            const listFunction = getFirstListFunction(cell.content);
             if (listFunction) {
-                const dependencies = {
-                    ...cell.dependencies,
-                    references: cell.dependencies.references.map((range) =>
-                        this.getters.getRangeString(range, range.sheetId)
-                    ),
-                };
-                const content = astToFormula(listFunction.args[0], dependencies);
-                const formula = this.getters.buildFormulaContent(sheetId, content, cell.dependencies);
-                return this.getters.evaluateFormula(formula).toString();
+                const content = astToFormula(listFunction.args[0]);
+                return this.getters.evaluateFormula(content).toString();
             }
         }
         return undefined;

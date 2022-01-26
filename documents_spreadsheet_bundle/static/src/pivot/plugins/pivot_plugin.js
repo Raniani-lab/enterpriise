@@ -129,17 +129,10 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     getPivotIdFromPosition(sheetId, col, row) {
         const cell = this.getters.getCell(sheetId, col, row);
         if (cell && cell.isFormula()) {
-            const pivotFunction = getFirstPivotFunction(cell.normalizedText);
+            const pivotFunction = getFirstPivotFunction(cell.content);
             if (pivotFunction) {
-                const dependencies = {
-                    ...cell.dependencies,
-                    references: cell.dependencies.references.map((range) =>
-                        this.getters.getRangeString(range, range.sheetId)
-                    ),
-                };
-                const content = astToFormula(pivotFunction.args[0], dependencies);
-                const formula = this.getters.buildFormulaContent(sheetId, content, cell.dependencies);
-                return this.getters.evaluateFormula(formula).toString();
+                const content = astToFormula(pivotFunction.args[0]);
+                return this.getters.evaluateFormula(content).toString();
             }
         }
         return undefined;

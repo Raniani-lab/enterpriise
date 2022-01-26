@@ -10,13 +10,6 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
      * @typedef {Object} Range
      */
 
-    /**
-     * @typedef {Object} CellDependencies
-     * @property {Array<string>} strings
-     * @property {Array<Range>} references
-     * @property {Array<number>} numbers
-     */
-
     class PivotTemplatePlugin extends spreadsheet.UIPlugin {
         constructor(getters, history, dispatch, config) {
             super(getters, history, dispatch, config);
@@ -78,24 +71,9 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
             cells.forEach((cell) => {
                 if (cell.isFormula()) {
                     const { col, row, sheetId } = this.getters.getCellPosition(cell.id);
-                    const ast = convertFunction(
-                        parse(cell.normalizedText),
-                        cell.dependencies,
-                        ...args
-                    );
+                    const ast = convertFunction(parse(cell.content), ...args);
                     if (ast) {
-                        const dependencies = {
-                            ...cell.dependencies,
-                            references: cell.dependencies.references.map((range) =>
-                                this.getters.getRangeString(range, range.sheetId)
-                            ),
-                        };
-                        // astToFormula expects references as XCs but buildFormulaContent expects ranges
-                        const content = this.getters.buildFormulaContent(
-                            sheetId,
-                            `=${astToFormula(ast, dependencies)}`,
-                            cell.dependencies
-                        );
+                        const content = `=${astToFormula(ast)}`;
                         this.dispatch("UPDATE_CELL", {
                             content,
                             sheetId,
@@ -145,30 +123,29 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *      `PIVOT("1","probability","product_id","37","bar","110")`
          *
          * @param {Object} ast
-         * @param {CellDependency} dependencies
          * @returns {Object}
          */
-        _relativeToAbsolute(ast, dependencies) {
+        _relativeToAbsolute(ast) {
             switch (ast.type) {
                 case "FUNCALL":
                     switch (ast.value) {
                         case "PIVOT.POSITION":
-                            return this._pivotPositionToAbsolute(ast, dependencies);
+                            return this._pivotPositionToAbsolute(ast);
                         default:
                             return Object.assign({}, ast, {
                                 args: ast.args.map((child) =>
-                                    this._relativeToAbsolute(child, dependencies)
+                                    this._relativeToAbsolute(child)
                                 ),
                             });
                     }
                 case "UNARY_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._relativeToAbsolute(ast.right, dependencies),
+                        right: this._relativeToAbsolute(ast.right),
                     });
                 case "BIN_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._relativeToAbsolute(ast.right, dependencies),
-                        left: this._relativeToAbsolute(ast.left, dependencies),
+                        right: this._relativeToAbsolute(ast.right),
+                        left: this._relativeToAbsolute(ast.left),
                     });
             }
             return ast;
@@ -187,48 +164,34 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *      `PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",0),"bar","110")`
          *
          * @param {Object} ast
-         * @param CellDependencies dependencies
          * @returns {Object}
          */
-        _absoluteToRelative(ast, dependencies) {
+        _absoluteToRelative(ast) {
             switch (ast.type) {
                 case "FUNCALL":
                     switch (ast.value) {
                         case "PIVOT":
-                            return this._pivot_absoluteToRelative(ast, dependencies);
+                            return this._pivot_absoluteToRelative(ast);
                         case "PIVOT.HEADER":
-                            return this._pivotHeader_absoluteToRelative(ast, dependencies);
+                            return this._pivotHeader_absoluteToRelative(ast);
                         default:
                             return Object.assign({}, ast, {
                                 args: ast.args.map((child) =>
-                                    this._absoluteToRelative(child, dependencies)
+                                    this._absoluteToRelative(child)
                                 ),
                             });
                     }
                 case "UNARY_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._absoluteToRelative(ast.right, dependencies),
+                        right: this._absoluteToRelative(ast.right),
                     });
                 case "BIN_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._absoluteToRelative(ast.right, dependencies),
-                        left: this._absoluteToRelative(ast.left, dependencies),
+                        right: this._absoluteToRelative(ast.right),
+                        left: this._absoluteToRelative(ast.left),
                     });
             }
             return ast;
-        }
-
-        fetchValueOfAst(ast, dependencies) {
-            switch (ast.type) {
-                case "NORMALIZED_NUMBER":
-                    return dependencies.numbers[ast.value];
-                case "NORMALIZED_STRING":
-                    return dependencies.strings[ast.value];
-                case "NORMALIZED_REFERENCE":
-                    return dependencies.references[ast.value];
-                default:
-                    return ast.value;
-            }
         }
 
         /**
@@ -236,18 +199,17 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *
          * @see _relativeToAbsolute
          * @param {Object} ast
-         * @param {CellDependencies} dependencies
          * @returns {Object}
          */
-        _pivotPositionToAbsolute(ast, dependencies) {
+        _pivotPositionToAbsolute(ast) {
             const [pivotIdAst, fieldAst, positionAst] = ast.args;
-            const pivotId = this.fetchValueOfAst(pivotIdAst, dependencies);
-            const fieldName = this.fetchValueOfAst(fieldAst, dependencies);
-            const position = this.fetchValueOfAst(positionAst, dependencies);
+            const pivotId = pivotIdAst.value;
+            const fieldName = fieldAst.value;
+            const position = positionAst.value;
             const values = this.getters.getPivotFieldValues(pivotId, fieldName);
             const id = values[position - 1];
             return {
-                value: id ? `"${id}"` : `"#IDNOTFOUND"`,
+                value: id ? `${id}` : `"#IDNOTFOUND"`,
                 type: id ? "STRING" : "UNKNOWN",
             };
         }
@@ -256,17 +218,13 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *
          * @see _absoluteToRelative
          * @param {Object} ast
-         * @param {CellDependencies} dependencies
          * @returns {Object}
          */
-        _pivotHeader_absoluteToRelative(ast, dependencies) {
+         _pivotHeader_absoluteToRelative(ast) {
             ast = Object.assign({}, ast);
             const [pivotIdAst, ...domainAsts] = ast.args;
-            if (pivotIdAst.type !== "NORMALIZED_STRING") return ast;
-            ast.args = [
-                pivotIdAst,
-                ...this._domainToRelative(pivotIdAst, domainAsts, dependencies),
-            ];
+            if (pivotIdAst.type !== "STRING") return ast;
+            ast.args = [pivotIdAst, ...this._domainToRelative(pivotIdAst, domainAsts)];
             return ast;
         }
         /**
@@ -274,18 +232,13 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *
          * @see _absoluteToRelative
          * @param {Object} ast
-         * @param {CellDependencies} dependencies
          * @returns {Object}
          */
-        _pivot_absoluteToRelative(ast, dependencies) {
+         _pivot_absoluteToRelative(ast) {
             ast = Object.assign({}, ast);
             const [pivotIdAst, measureAst, ...domainAsts] = ast.args;
-            if (pivotIdAst.type !== "NORMALIZED_STRING") return ast;
-            ast.args = [
-                pivotIdAst,
-                measureAst,
-                ...this._domainToRelative(pivotIdAst, domainAsts, dependencies),
-            ];
+            if (pivotIdAst.type !== "STRING") return ast;
+            ast.args = [pivotIdAst, measureAst, ...this._domainToRelative(pivotIdAst, domainAsts)];
             return ast;
         }
 
@@ -302,22 +255,21 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          *
          * @param {Object} pivotIdAst
          * @param {Object} domainAsts
-         * @param {CellDependencies} dependencies
          * @returns {Array<Object>}
          */
-        _domainToRelative(pivotIdAst, domainAsts, dependencies) {
+        _domainToRelative(pivotIdAst, domainAsts) {
             let relativeDomain = [];
             for (let i = 0; i <= domainAsts.length - 1; i += 2) {
                 const fieldAst = domainAsts[i];
                 const valueAst = domainAsts[i + 1];
-                const pivotId = this.fetchValueOfAst(pivotIdAst, dependencies);
-                const fieldName = this.fetchValueOfAst(fieldAst, dependencies);
+                const pivotId = pivotIdAst.value;
+                const fieldName = fieldAst.value;
                 if (
-                    fieldAst.type === "NORMALIZED_STRING" &&
-                    ["NORMALIZED_STRING", "NORMALIZED_NUMBER"].includes(valueAst.type) &&
-                    this._isAbsolute(pivotId, fieldName)
+                    this._isAbsolute(pivotId, fieldName) &&
+                    fieldAst.type === "STRING" &&
+                    ["STRING", "NUMBER"].includes(valueAst.type)
                 ) {
-                    const id = this.fetchValueOfAst(valueAst, dependencies);
+                    const id = valueAst.value;
                     const values = this.getters.getPivotFieldValues(pivotId, fieldName);
                     const index = values.indexOf(id.toString());
                     relativeDomain = relativeDomain.concat([

@@ -69,6 +69,7 @@
     const CELL_BORDER_COLOR = "#E2E3E3";
     const BACKGROUND_CHART_COLOR = "#FFFFFF";
     const MENU_ITEM_DISABLED_COLOR = "#CACACA";
+    const DEFAULT_COLOR_SCALE_MIDPOINT_COLOR = 0xb6d7a8;
     // Dimensions
     const MIN_ROW_HEIGHT = 10;
     const MIN_COL_WIDTH = 5;
@@ -2572,7 +2573,7 @@
      * Regex that detect cell reference and a range reference (without the sheetName)
      */
     const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
-    const rangeReference = new RegExp(/^\s*(.*!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}\s*(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7}\s*)?$/, "i");
+    const rangeReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7})?/, "i");
 
     //------------------------------------------------------------------------------
     /**
@@ -2693,6 +2694,19 @@
      */
     function stringify(obj) {
         return JSON.stringify(obj, Object.keys(obj).sort());
+    }
+    /**
+     * Remove quotes from a quoted string
+     * ```js
+     * removeStringQuotes('"Hello"')
+     * > 'Hello'
+     * ```
+     */
+    function removeStringQuotes(str) {
+        if (str[0] === '"' && str[str.length - 1] === '"') {
+            return str.slice(1).slice(0, str.length - 2);
+        }
+        return str;
     }
     /**
      * Deep copy arrays, plain objects and primitive values.
@@ -6949,7 +6963,6 @@
      * is useful for the composer, which needs to be able to work with incomplete
      * formulas.
      */
-    const dependencyIdentifierRegex = /^[S|N]?\d+/;
     const functions$3 = functionRegistry.content;
     const OPERATORS = "+,-,*,/,:,=,<>,>=,>,<=,<,%,^,&".split(",");
     function tokenize(str) {
@@ -6966,7 +6979,6 @@
                 tokenizeOperator(chars) ||
                 tokenizeString(chars) ||
                 tokenizeDebugger(chars) ||
-                tokenizeNormalizedReferences(chars) ||
                 tokenizeInvalidRange(chars) ||
                 tokenizeNumber(chars) ||
                 tokenizeSymbol(chars);
@@ -6976,31 +6988,6 @@
             result.push(token);
         }
         return result;
-    }
-    function tokenizeNormalizedReferences(chars) {
-        if (chars[0] === FORMULA_REF_IDENTIFIER) {
-            chars.shift(); // consume the | even if it is incorrect
-            const match = chars.join("").match(dependencyIdentifierRegex);
-            if (match) {
-                chars.splice(0, match[0].length);
-            }
-            else {
-                return null;
-            }
-            if (chars[0] === FORMULA_REF_IDENTIFIER) {
-                chars.shift();
-            }
-            const value = match[0];
-            switch (value[0]) {
-                case "S":
-                    return { type: "NORMALIZED_STRING", value: value.substring(1) };
-                case "N":
-                    return { type: "NORMALIZED_NUMBER", value: value.substring(1) };
-                default:
-                    return { type: "REFERENCE", value };
-            }
-        }
-        return null;
     }
     function tokenizeDebugger(chars) {
         if (chars[0] === "?") {
@@ -7040,7 +7027,7 @@
         return null;
     }
     function tokenizeNumber(chars) {
-        const match = chars.join("").match(formulaNumberRegexp);
+        const match = concat(chars).match(formulaNumberRegexp);
         if (match) {
             chars.splice(0, match[0].length);
             return { type: "NUMBER", value: match[0] };
@@ -7050,16 +7037,16 @@
     function tokenizeString(chars) {
         if (chars[0] === '"') {
             const startChar = chars.shift();
-            const letters = [startChar];
+            let letters = startChar;
             while (chars[0] && (chars[0] !== startChar || letters[letters.length - 1] === "\\")) {
-                letters.push(chars.shift());
+                letters += chars.shift();
             }
             if (chars[0] === '"') {
-                letters.push(chars.shift());
+                letters += chars.shift();
             }
             return {
                 type: "STRING",
-                value: letters.join(""),
+                value: letters,
             };
         }
         return null;
@@ -7078,19 +7065,19 @@
      * are examples of symbols
      */
     function tokenizeSymbol(chars) {
-        const result = [];
+        let result = "";
         // there are two main cases to manage: either something which starts with
         // a ', like 'Sheet 2'A2, or a word-like element.
         if (chars[0] === "'") {
             let lastChar = chars.shift();
-            result.push(lastChar);
+            result += lastChar;
             while (chars[0]) {
                 lastChar = chars.shift();
-                result.push(lastChar);
+                result += lastChar;
                 if (lastChar === "'") {
                     if (chars[0] && chars[0] === "'") {
                         lastChar = chars.shift();
-                        result.push(lastChar);
+                        result += lastChar;
                     }
                     else {
                         break;
@@ -7100,18 +7087,26 @@
             if (lastChar !== "'") {
                 return {
                     type: "UNKNOWN",
-                    value: result.join(""),
+                    value: result,
                 };
             }
         }
         while (chars[0] && chars[0].match(separatorRegexp)) {
-            result.push(chars.shift());
+            result += chars.shift();
         }
         if (result.length) {
-            const value = result.join("");
+            const value = result;
             const isFunction = value.toUpperCase() in functions$3;
-            const type = isFunction ? "FUNCTION" : "SYMBOL";
-            return { type, value };
+            if (isFunction) {
+                return { type: "FUNCTION", value };
+            }
+            const isReference = value.match(rangeReference);
+            if (isReference) {
+                return { type: "REFERENCE", value };
+            }
+            else {
+                return { type: "SYMBOL", value };
+            }
         }
         return null;
     }
@@ -7133,6 +7128,17 @@
             return { type: "INVALID_REFERENCE", value: INCORRECT_RANGE_STRING };
         }
         return null;
+    }
+    /**
+     * Concatenate an array of strings.
+     */
+    function concat(chars) {
+        // ~40% faster than chars.join("")
+        let output = "";
+        for (let i = 0, len = chars.length; i < len; i++) {
+            output += chars[i];
+        }
+        return output;
     }
 
     const UNARY_OPERATORS = ["-", "+"];
@@ -7156,6 +7162,7 @@
         switch (token.type) {
             case "NUMBER":
             case "SYMBOL":
+            case "REFERENCE":
                 return 0;
             case "COMMA":
                 return 3;
@@ -7169,6 +7176,7 @@
         throw new Error(_lt("Unknown token: %s", token.value));
     }
     function parsePrefix(current, tokens) {
+        var _a, _b;
         switch (current.type) {
             case "DEBUGGER":
                 const next = parseExpression(tokens, 1000);
@@ -7176,12 +7184,8 @@
                 return next;
             case "NUMBER":
                 return { type: "NUMBER", value: parseNumber(current.value) };
-            case "NORMALIZED_NUMBER":
-                return { type: "NORMALIZED_NUMBER", value: parseInt(current.value, 10) };
             case "STRING":
-                return { type: "STRING", value: current.value };
-            case "NORMALIZED_STRING":
-                return { type: "NORMALIZED_STRING", value: parseInt(current.value, 10) };
+                return { type: "STRING", value: removeStringQuotes(current.value) };
             case "FUNCTION":
                 if (tokens.shift().type !== "LEFT_PAREN") {
                     throw new Error(_lt("Wrong function call"));
@@ -7214,30 +7218,30 @@
                     }
                     return { type: "FUNCALL", value: current.value, args };
                 }
-            case "REFERENCE":
-                return {
-                    type: "NORMALIZED_REFERENCE",
-                    value: parseInt(current.value, 10),
-                };
             case "INVALID_REFERENCE":
                 throw new Error(_lt("Invalid reference"));
-            case "SYMBOL":
-                if (cellReference.test(current.value)) {
+            case "REFERENCE":
+                if (((_a = tokens[0]) === null || _a === void 0 ? void 0 : _a.value) === ":" && ((_b = tokens[1]) === null || _b === void 0 ? void 0 : _b.type) === "REFERENCE") {
+                    tokens.shift();
+                    const rightReference = tokens.shift();
                     return {
                         type: "REFERENCE",
-                        value: current.value,
+                        value: `${current.value}:${rightReference === null || rightReference === void 0 ? void 0 : rightReference.value}`,
                     };
                 }
+                return {
+                    type: "REFERENCE",
+                    value: current.value,
+                };
+            case "SYMBOL":
+                if (["TRUE", "FALSE"].includes(current.value.toUpperCase())) {
+                    return { type: "BOOLEAN", value: current.value.toUpperCase() === "TRUE" };
+                }
                 else {
-                    if (["TRUE", "FALSE"].includes(current.value.toUpperCase())) {
-                        return { type: "BOOLEAN", value: current.value.toUpperCase() === "TRUE" };
+                    if (current.value) {
+                        throw new Error(_lt("Invalid formula"));
                     }
-                    else {
-                        if (current.value) {
-                            throw new Error(_lt("Invalid formula"));
-                        }
-                        return { type: "STRING", value: current.value };
-                    }
+                    return { type: "STRING", value: current.value };
                 }
             case "LEFT_PAREN":
                 const result = parseExpression(tokens, 5);
@@ -7285,7 +7289,10 @@
      * Parse an expression (as a string) into an AST.
      */
     function parse(str) {
-        const tokens = tokenize(str).filter((x) => x.type !== "SPACE");
+        return parseTokens(tokenize(str));
+    }
+    function parseTokens(tokens) {
+        tokens = tokens.filter((x) => x.type !== "SPACE");
         if (tokens[0].type === "OPERATOR" && tokens[0].value === "=") {
             tokens.splice(0, 1);
         }
@@ -7338,30 +7345,23 @@
     /**
      * Converts an ast formula to the corresponding string
      */
-    function astToFormula(ast, dependencies = { references: [], numbers: [], strings: [] }) {
+    function astToFormula(ast) {
         switch (ast.type) {
             case "FUNCALL":
-                const args = ast.args.map((arg) => astToFormula(arg, dependencies));
+                const args = ast.args.map((arg) => astToFormula(arg));
                 return `${ast.value}(${args.join(",")})`;
             case "NUMBER":
                 return ast.value.toString();
-            case "NORMALIZED_STRING":
-                return `"${dependencies.strings[ast.value]}"`;
-            case "NORMALIZED_NUMBER":
-                return dependencies.numbers[ast.value].toString();
-            case "NORMALIZED_REFERENCE":
-                return dependencies.references[ast.value].toString();
             case "REFERENCE":
-            case "STRING":
                 return ast.value;
+            case "STRING":
+                return `"${ast.value}"`;
             case "BOOLEAN":
                 return ast.value ? "TRUE" : "FALSE";
             case "UNARY_OPERATION":
-                return ast.value + rightOperandToFormula(ast, dependencies);
+                return ast.value + rightOperandToFormula(ast);
             case "BIN_OPERATION":
-                return (leftOperandToFormula(ast, dependencies) +
-                    ast.value +
-                    rightOperandToFormula(ast, dependencies));
+                return leftOperandToFormula(ast) + ast.value + rightOperandToFormula(ast);
             default:
                 return ast.value;
         }
@@ -7370,20 +7370,18 @@
      * Convert the left operand of a binary operation to the corresponding string
      * and enclose the result inside parenthesis if necessary.
      */
-    function leftOperandToFormula(binaryOperationAST, dependencies) {
+    function leftOperandToFormula(binaryOperationAST) {
         const mainOperator = binaryOperationAST.value;
         const leftOperation = binaryOperationAST.left;
         const leftOperator = leftOperation.value;
         const needParenthesis = leftOperation.type === "BIN_OPERATION" && OP_PRIORITY[leftOperator] < OP_PRIORITY[mainOperator];
-        return needParenthesis
-            ? `(${astToFormula(leftOperation, dependencies)})`
-            : astToFormula(leftOperation, dependencies);
+        return needParenthesis ? `(${astToFormula(leftOperation)})` : astToFormula(leftOperation);
     }
     /**
      * Convert the right operand of a binary or unary operation to the corresponding string
      * and enclose the result inside parenthesis if necessary.
      */
-    function rightOperandToFormula(binaryOperationAST, dependencies) {
+    function rightOperandToFormula(binaryOperationAST) {
         const mainOperator = binaryOperationAST.value;
         const rightOperation = binaryOperationAST.right;
         const rightPriority = OP_PRIORITY[rightOperation.value];
@@ -7398,9 +7396,108 @@
         else if (rightPriority === mainPriority && !ASSOCIATIVE_OPERATORS.includes(mainOperator)) {
             needParenthesis = true;
         }
-        return needParenthesis
-            ? `(${astToFormula(rightOperation, dependencies)})`
-            : astToFormula(rightOperation, dependencies);
+        return needParenthesis ? `(${astToFormula(rightOperation)})` : astToFormula(rightOperation);
+    }
+
+    /**
+     * finds a sequence of token that represent a range and replace them with a single token
+     * The range can be
+     *  ?spaces symbol ?spaces operator: ?spaces symbol ?spaces
+     */
+    function mergeSymbolsIntoRanges(result, removeSpace = false) {
+        let operator = undefined;
+        let refStart = undefined;
+        let refEnd = undefined;
+        let startIncludingSpaces = undefined;
+        const reset = () => {
+            startIncludingSpaces = undefined;
+            refStart = undefined;
+            operator = undefined;
+            refEnd = undefined;
+        };
+        for (let i = 0; i < result.length; i++) {
+            const token = result[i];
+            if (startIncludingSpaces) {
+                if (refStart) {
+                    if (token.type === "SPACE") {
+                        continue;
+                    }
+                    else if (token.type === "OPERATOR" && token.value === ":") {
+                        operator = i;
+                    }
+                    else if (operator && token.type === "REFERENCE") {
+                        refEnd = i;
+                    }
+                    else {
+                        if (startIncludingSpaces && refStart && operator && refEnd) {
+                            const newToken = {
+                                type: "REFERENCE",
+                                value: result
+                                    .slice(startIncludingSpaces, i)
+                                    .filter((x) => !removeSpace || x.type !== "SPACE")
+                                    .map((x) => x.value)
+                                    .join(""),
+                            };
+                            result.splice(startIncludingSpaces, i - startIncludingSpaces, newToken);
+                            i = startIncludingSpaces + 1;
+                            reset();
+                        }
+                        else {
+                            if (token.type === "REFERENCE") {
+                                startIncludingSpaces = i;
+                                refStart = i;
+                                operator = undefined;
+                            }
+                            else {
+                                reset();
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (token.type === "REFERENCE") {
+                        refStart = i;
+                        operator = refEnd = undefined;
+                    }
+                    else {
+                        reset();
+                    }
+                }
+            }
+            else {
+                if (["SPACE", "REFERENCE"].includes(token.type)) {
+                    startIncludingSpaces = i;
+                    refStart = token.type === "REFERENCE" ? i : undefined;
+                    operator = refEnd = undefined;
+                }
+                else {
+                    reset();
+                }
+            }
+        }
+        const i = result.length - 1;
+        if (startIncludingSpaces && refStart && operator && refEnd) {
+            const newToken = {
+                type: "REFERENCE",
+                value: result
+                    .slice(startIncludingSpaces, i + 1)
+                    .filter((x) => !removeSpace || x.type !== "SPACE")
+                    .map((x) => x.value)
+                    .join(""),
+            };
+            result.splice(startIncludingSpaces, i - startIncludingSpaces + 1, newToken);
+        }
+        return result;
+    }
+    /**
+     * Take the result of the tokenizer and transform it to be usable in the
+     * manipulations of range
+     *
+     * @param formula
+     */
+    function rangeTokenize(formula) {
+        const tokens = tokenize(formula);
+        return mergeSymbolsIntoRanges(tokens, true);
     }
 
     const functions$2 = functionRegistry.content;
@@ -7428,8 +7525,8 @@
      */
     function splitCodeLines(codeBlocks) {
         return codeBlocks
-            .map((code) => code.split("\n"))
-            .flat()
+            .join("\n")
+            .split("\n")
             .filter((line) => line.trim() !== "");
     }
     // this cache contains all compiled function code, grouped by "structure". For
@@ -7441,8 +7538,11 @@
     // COMPILER
     // -----------------------------------------------------------------------------
     function compile(formula) {
-        if (!functionCache[formula.text]) {
-            const ast = parse(formula.text);
+        const tokens = rangeTokenize(formula);
+        const { dependencies, constantValues } = formulaArguments(tokens);
+        const cacheKey = compilationCacheKey(tokens, dependencies, constantValues);
+        if (!functionCache[cacheKey]) {
+            const ast = parseTokens([...tokens]);
             let nextId = 1;
             if (ast.type === "BIN_OPERATION" && ast.value === ":") {
                 throw new Error(_lt("Invalid formula"));
@@ -7452,7 +7552,7 @@
             }
             const compiledAST = compileAST(ast);
             const code = splitCodeLines([
-                `// ${formula.text}`,
+                `// ${cacheKey}`,
                 compiledAST.code,
                 `return ${compiledAST.id};`,
             ]).join("\n");
@@ -7461,9 +7561,11 @@
             "ref", // a function to access a certain dependency at a given index
             "range", // same as above, but guarantee that the result is in the form of a range
             "ctx", code);
-            //@ts-ignore
-            functionCache[formula.text] = baseFunction;
-            functionCache[formula.text].dependenciesFormat = formatAST(ast);
+            functionCache[cacheKey] = {
+                // @ts-ignore
+                execute: baseFunction,
+                dependenciesFormat: formatAST(ast),
+            };
             /**
              * This function compile the function arguments. It is mostly straightforward,
              * except that there is a non trivial transformation in one situation:
@@ -7513,8 +7615,8 @@
                             t === "RANGE<NUMBER>" ||
                             t === "RANGE<STRING>");
                         if (isRangeOnly) {
-                            if (currentArg.type !== "NORMALIZED_REFERENCE") {
-                                throw new Error(_lt("Function %s expects the parameter %s to be reference to a cell or range, not a %s.", ast.value.toUpperCase(), (i + 1).toString(), currentArg.type.toLowerCase().replace("normalized_", "")));
+                            if (currentArg.type !== "REFERENCE") {
+                                throw new Error(_lt("Function %s expects the parameter %s to be reference to a cell or range, not a %s.", ast.value.toUpperCase(), (i + 1).toString(), currentArg.type.toLowerCase()));
                             }
                         }
                         const compiledAST = compileAST(currentArg, isLazy, isMeta, hasRange, {
@@ -7547,8 +7649,7 @@
             function compileAST(ast, isLazy = false, isMeta = false, hasRange = false, referenceVerification = {}) {
                 const codeBlocks = [];
                 let id, fnName, statement;
-                if (ast.type !== "NORMALIZED_REFERENCE" &&
-                    !(ast.type === "BIN_OPERATION" && ast.value === ":")) {
+                if (ast.type !== "REFERENCE" && !(ast.type === "BIN_OPERATION" && ast.value === ":")) {
                     if (isMeta) {
                         throw new Error(_lt(`Argument must be a reference to a cell or range.`));
                     }
@@ -7558,43 +7659,34 @@
                 }
                 switch (ast.type) {
                     case "BOOLEAN":
-                    case "NUMBER": // probably dead case
-                    case "STRING": // probably dead case
                         if (!isLazy) {
-                            return { id: ast.value, code: "" };
+                            return { id: `${ast.value}`, code: "" };
                         }
                         id = nextId++;
                         statement = `${ast.value}`;
                         break;
-                    case "NORMALIZED_NUMBER":
+                    case "NUMBER":
                         id = nextId++;
-                        statement = `deps.numbers[${ast.value}]`;
+                        statement = `this.constantValues.numbers[${constantValues.numbers.indexOf(ast.value)}]`;
                         break;
-                    case "NORMALIZED_STRING":
+                    case "STRING":
                         id = nextId++;
-                        statement = `deps.strings[${ast.value}]`;
+                        statement = `this.constantValues.strings[${constantValues.strings.indexOf(ast.value)}]`;
                         break;
                     case "REFERENCE":
-                        throw new Error(`Only normalized references can be compiled: ${ast.value}`);
-                    case "NORMALIZED_REFERENCE":
-                        const referenceIndex = formula.dependencies.references[ast.value];
-                        if (!referenceIndex) {
-                            id = nextId++;
-                            statement = `null`;
-                            break;
-                        }
+                        const referenceIndex = dependencies.indexOf(ast.value);
                         id = nextId++;
                         if (hasRange) {
-                            statement = `range(${ast.value}, deps.references, sheetId)`;
+                            statement = `range(${referenceIndex}, deps, sheetId)`;
                         }
                         else {
-                            statement = `ref(${ast.value}, deps.references, sheetId, ${isMeta ? "true" : "false"}, "${referenceVerification.functionName || OPERATOR_MAP["="]}",  ${referenceVerification.paramIndex})`;
+                            statement = `ref(${referenceIndex}, deps, sheetId, ${isMeta ? "true" : "false"}, "${referenceVerification.functionName || OPERATOR_MAP["="]}",  ${referenceVerification.paramIndex})`;
                         }
                         break;
                     case "FUNCALL":
                         id = nextId++;
                         const args = compileFunctionArgs(ast);
-                        codeBlocks.push(splitCodeLines(args.map((arg) => arg.code)).join("\n"));
+                        codeBlocks.push(args.map((arg) => arg.code).join("\n"));
                         fnName = ast.value.toUpperCase();
                         codeBlocks.push(`ctx.__lastFnCalled = '${fnName}';`);
                         statement = `ctx['${fnName}'](${args.map((arg) => arg.id)})`;
@@ -7642,7 +7734,7 @@
                 }
                 else {
                     codeBlocks.push(`let _${id} = ${statement};`);
-                    return { id: `_${id}`, code: splitCodeLines(codeBlocks).join("\n") };
+                    return { id: `_${id}`, code: codeBlocks.join("\n") };
                 }
             }
             /** Return a stack of formats corresponding to the priorities in which
@@ -7657,12 +7749,8 @@
             function formatAST(ast) {
                 let fnDef;
                 switch (ast.type) {
-                    case "NORMALIZED_REFERENCE":
-                        const referenceIndex = formula.dependencies.references[ast.value];
-                        if (referenceIndex) {
-                            return [ast.value];
-                        }
-                        break;
+                    case "REFERENCE":
+                        return [dependencies.indexOf(ast.value)];
                     case "FUNCALL":
                         fnDef = functions$2[ast.value.toUpperCase()];
                         if (fnDef.returnFormat) {
@@ -7707,108 +7795,73 @@
                 return [];
             }
         }
-        return functionCache[formula.text];
-    }
-
-    /**
-     * finds a sequence of token that represent a range and replace them with a single token
-     * The range can be
-     *  ?spaces symbol ?spaces operator: ?spaces symbol ?spaces
-     */
-    function mergeSymbolsIntoRanges(result, removeSpace = false) {
-        let operator = undefined;
-        let refStart = undefined;
-        let refEnd = undefined;
-        let startIncludingSpaces = undefined;
-        const reset = () => {
-            startIncludingSpaces = undefined;
-            refStart = undefined;
-            operator = undefined;
-            refEnd = undefined;
+        const compiledFormula = {
+            dependenciesFormat: functionCache[cacheKey].dependenciesFormat,
+            execute: functionCache[cacheKey].execute,
+            dependencies,
+            constantValues,
+            tokens,
         };
-        for (let i = 0; i < result.length; i++) {
-            const token = result[i];
-            if (startIncludingSpaces) {
-                if (refStart) {
-                    if (token.type === "SPACE") {
-                        continue;
-                    }
-                    else if (token.type === "OPERATOR" && token.value === ":") {
-                        operator = i;
-                    }
-                    else if (operator && token.type === "SYMBOL") {
-                        refEnd = i;
-                    }
-                    else {
-                        if (startIncludingSpaces && refStart && operator && refEnd) {
-                            const newToken = {
-                                type: "SYMBOL",
-                                value: result
-                                    .slice(startIncludingSpaces, i)
-                                    .filter((x) => !removeSpace || x.type !== "SPACE")
-                                    .map((x) => x.value)
-                                    .join(""),
-                            };
-                            result.splice(startIncludingSpaces, i - startIncludingSpaces, newToken);
-                            i = startIncludingSpaces + 1;
-                            reset();
-                        }
-                        else {
-                            if (token.type === "SYMBOL") {
-                                startIncludingSpaces = i;
-                                refStart = i;
-                                operator = undefined;
-                            }
-                            else {
-                                reset();
-                            }
-                        }
-                    }
-                }
-                else {
-                    if (token.type === "SYMBOL") {
-                        refStart = i;
-                        operator = refEnd = undefined;
-                    }
-                    else {
-                        reset();
-                    }
-                }
-            }
-            else {
-                if (["SPACE", "SYMBOL"].includes(token.type)) {
-                    startIncludingSpaces = i;
-                    refStart = token.type === "SYMBOL" ? i : undefined;
-                    operator = refEnd = undefined;
-                }
-                else {
-                    reset();
-                }
-            }
-        }
-        const i = result.length - 1;
-        if (startIncludingSpaces && refStart && operator && refEnd) {
-            const newToken = {
-                type: "SYMBOL",
-                value: result
-                    .slice(startIncludingSpaces, i + 1)
-                    .filter((x) => !removeSpace || x.type !== "SPACE")
-                    .map((x) => x.value)
-                    .join(""),
-            };
-            result.splice(startIncludingSpaces, i - startIncludingSpaces + 1, newToken);
-        }
-        return result;
+        return compiledFormula;
     }
     /**
-     * Take the result of the tokenizer and transform it to be usable in the
-     * manipulations of range
+     * Compute a cache key for the formula.
+     * References, numbers and strings are replaced with placeholders because
+     * the compiled formula does not depend on their actual value.
+     * Both `=A1+1+"2"` and `=A2+2+"3"` are compiled to the exact same function.
      *
-     * @param formula
+     * A formula `=A1+A2+SUM(2, 2, "2")` have the cache key `=|0|+|1|+SUM(|N0|, |N0|, |S0|)`
      */
-    function rangeTokenize(formula) {
-        const tokens = tokenize(formula);
-        return mergeSymbolsIntoRanges(tokens, true);
+    function compilationCacheKey(tokens, dependencies, constantValues) {
+        return tokens
+            .map((token) => {
+            switch (token.type) {
+                case "STRING":
+                    const value = removeStringQuotes(token.value);
+                    return `|S${constantValues.strings.indexOf(value)}|`;
+                case "NUMBER":
+                    return `|N${constantValues.numbers.indexOf(parseNumber(token.value))}|`;
+                case "REFERENCE":
+                    return `|${dependencies.indexOf(token.value)}|`;
+                default:
+                    return token.value;
+            }
+        })
+            .join("");
+    }
+    /**
+     * Return formula arguments which are references, strings and numbers.
+     */
+    function formulaArguments(tokens) {
+        const constantValues = {
+            numbers: [],
+            strings: [],
+        };
+        const dependencies = [];
+        for (const token of tokens) {
+            switch (token.type) {
+                case "REFERENCE":
+                    dependencies.push(token.value);
+                    break;
+                case "STRING":
+                    const value = removeStringQuotes(token.value);
+                    if (!constantValues.strings.includes(value)) {
+                        constantValues.strings.push(value);
+                    }
+                    break;
+                case "NUMBER": {
+                    const value = parseNumber(token.value);
+                    if (!constantValues.numbers.includes(value)) {
+                        constantValues.numbers.push(value);
+                    }
+                    break;
+                }
+            }
+        }
+        return {
+            dependencies,
+            constantValues,
+        };
     }
 
     /**
@@ -7901,66 +7954,6 @@
     function composerTokenize(formula) {
         const tokens = tokenize(formula);
         return mapParentFunction(mapParenthesis(enrichTokens(mergeSymbolsIntoRanges(tokens))));
-    }
-
-    /**
-     * parses a formula (as a string) into the same formula,
-     * but with the references to other cells as well as strings and numbers extracted
-     *
-     * =sum(a3:b1) + c3 --> =sum(|0|) + |1|
-     *
-     * = sum(a3, 5) --> =sum(|0|, |N1|)
-     *
-     * =CONCAT(CONCAT(1, "beta"), A1) --> =CONCAT(CONCAT(|N0|, |S1|), |2|)
-     *
-     * Strings and Numbers are marked with a prefix of their type (S and N) to be detected
-     * as their normalized form by the parser as they won't be processed like the references by the compiler.
-     *
-     * @param formula
-     */
-    function normalize(formula) {
-        const tokens = rangeTokenize(formula);
-        let dependencies = {
-            numbers: [],
-            strings: [],
-            references: [],
-        };
-        let noRefFormula = "".concat(...tokens.map((token) => {
-            if (token.type === "SYMBOL" && cellReference.test(token.value)) {
-                const value = token.value.trim();
-                if (!dependencies.references.includes(value)) {
-                    dependencies.references.push(value);
-                }
-                const index = dependencies.references.indexOf(value).toString();
-                return formatIndex(index);
-            }
-            else if ("STRING" === token.type) {
-                const value = token.value.slice(1).slice(0, token.value.length - 2);
-                if (!dependencies.strings.includes(value)) {
-                    dependencies.strings.push(value);
-                }
-                const index = dependencies.strings.indexOf(value);
-                return formatIndex(`${token.type[0]}${index}`);
-            }
-            else if (token.type === "NUMBER") {
-                const value = parseNumber(token.value);
-                if (!dependencies.numbers.includes(value)) {
-                    dependencies.numbers.push(value);
-                }
-                const index = dependencies.numbers.indexOf(value);
-                return formatIndex(`${token.type[0]}${index}`);
-            }
-            else {
-                return token.value;
-            }
-        }));
-        return { text: noRefFormula, dependencies };
-    }
-    /**
-     * Enclose an index between normalization identifiers
-     */
-    function formatIndex(index) {
-        return `${FORMULA_REF_IDENTIFIER}${index}${FORMULA_REF_IDENTIFIER}`;
     }
 
     /**
@@ -8188,7 +8181,7 @@
             this.dependencies = dependencies;
         }
         get content() {
-            return this.buildFormulaString(this.normalizedText, this.dependencies);
+            return this.buildFormulaString(this);
         }
         isFormula() {
             return true;
@@ -8263,12 +8256,10 @@
         sequence: 10,
         match: (content) => content.startsWith("="),
         createCell: (id, content, properties, sheetId, getters) => {
-            const formula = normalize(content);
-            const normalizedText = formula.text;
-            const compiledFormula = compile(formula);
-            const ranges = formula.dependencies.references.map((xc) => getters.getRangeFromSheetXC(sheetId, xc));
-            const format = properties.format || getters.inferFormulaFormat(compiledFormula, ranges);
-            return new FormulaCell((normalizedText, dependencies) => getters.buildFormulaContent(sheetId, normalizedText, dependencies), id, normalizedText, compiledFormula, { ...formula.dependencies, references: ranges }, {
+            const compiledFormula = compile(content);
+            const dependencies = compiledFormula.dependencies.map((xc) => getters.getRangeFromSheetXC(sheetId, xc));
+            const format = properties.format || getters.inferFormulaFormat(compiledFormula, dependencies);
+            return new FormulaCell((cell) => getters.buildFormulaContent(sheetId, cell), id, content, compiledFormula, dependencies, {
                 ...properties,
                 format,
             });
@@ -8961,11 +8952,11 @@
             for (const sheet of Object.keys(this.cells)) {
                 for (const cell of Object.values(this.cells[sheet] || {})) {
                     if (cell.isFormula()) {
-                        for (const range of cell.dependencies.references) {
+                        for (const range of cell.dependencies) {
                             if (!sheetId || range.sheetId === sheetId) {
                                 const change = applyChange(range);
                                 if (change.changeType !== "NONE") {
-                                    this.history.update("cells", sheet, cell.id, "dependencies", "references", cell.dependencies.references.indexOf(range), change.range);
+                                    this.history.update("cells", sheet, cell.id, "dependencies", cell.dependencies.indexOf(range), change.range);
                                 }
                             }
                         }
@@ -9320,7 +9311,6 @@
                                 return cellRef.format;
                             }
                         }
-                        break;
                 }
             }
             return NULL_FORMAT;
@@ -9328,25 +9318,20 @@
         /*
          * Reconstructs the original formula string based on a normalized form and its dependencies
          */
-        buildFormulaContent(sheetId, formula, dependencies) {
-            let newContent = formula;
-            for (let [index, range] of Object.entries(dependencies.references)) {
-                const xc = this.getters.getRangeString(range, sheetId);
-                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}${index}\\${FORMULA_REF_IDENTIFIER}`;
-                newContent = newContent.replace(new RegExp(stringPosition, "g"), xc);
-            }
-            for (let [index, d] of Object.entries(dependencies.strings)) {
-                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}S${index}\\${FORMULA_REF_IDENTIFIER}`;
-                newContent = newContent.replace(new RegExp(stringPosition, "g"), `"${d}"`);
-            }
-            for (let [index, d] of Object.entries(dependencies.numbers)) {
-                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}N${index}\\${FORMULA_REF_IDENTIFIER}`;
-                newContent = newContent.replace(new RegExp(stringPosition, "g"), d.toString());
-            }
-            return newContent;
+        buildFormulaContent(sheetId, cell, dependencies) {
+            const ranges = dependencies || [...cell.dependencies];
+            return cell.compiledFormula.tokens
+                .map((token) => {
+                if (token.type === "REFERENCE") {
+                    const range = ranges.shift();
+                    return this.getters.getRangeString(range, sheetId);
+                }
+                return token.value;
+            })
+                .join("");
         }
         getFormulaCellContent(sheetId, cell) {
-            return this.buildFormulaContent(sheetId, cell.normalizedText, cell.dependencies);
+            return this.buildFormulaContent(sheetId, cell);
         }
         getCellStyle(cell) {
             return (cell && cell.style) || {};
@@ -10155,7 +10140,7 @@
             if (threshold.type !== "formula")
                 return 0 /* Success */;
             try {
-                compile(normalize(threshold.value || ""));
+                compile(threshold.value || "");
             }
             catch (error) {
                 switch (thresholdName) {
@@ -10366,20 +10351,11 @@
                 case "DUPLICATE_SHEET":
                     const merges = this.merges[cmd.sheetId];
                     if (!merges)
-                        return;
-                    const mergesCopy = {};
+                        break;
+                    const sheet = this.getters.getSheet(cmd.sheetIdTo);
                     for (const range of Object.values(merges).filter(isDefined)) {
-                        mergesCopy[this.nextId++] = {
-                            sheetId: cmd.sheetIdTo,
-                            zone: { ...range.zone },
-                            parts: [...range.parts],
-                            prefixSheet: range.prefixSheet,
-                            invalidSheetName: range.invalidSheetName,
-                            invalidXc: range.invalidXc,
-                        };
+                        this.addMerge(sheet, range.zone);
                     }
-                    this.history.update("merges", cmd.sheetIdTo, mergesCopy);
-                    this.history.update("mergeCellMap", cmd.sheetIdTo, Object.assign({}, this.mergeCellMap[cmd.sheetId]));
                     break;
                 case "ADD_MERGE":
                     for (const zone of cmd.target) {
@@ -11719,11 +11695,8 @@
                 return { cellData: {} };
             }
             const sheetId = data.sheetId;
-            const ranges = getters.createAdaptedRanges(data.cell.dependencies.references, x, y, sheetId);
-            const content = getters.buildFormulaContent(sheetId, data.cell.normalizedText, {
-                ...data.cell.dependencies,
-                references: ranges,
-            });
+            const ranges = getters.createAdaptedRanges(data.cell.dependencies, x, y, sheetId);
+            const content = getters.buildFormulaContent(sheetId, data.cell, ranges);
             return {
                 cellData: {
                     border: data.border,
@@ -13366,8 +13339,8 @@
     }
     const otRegistry = new OTRegistry();
 
-    const { Component: Component$r } = owl__namespace;
-    const { css: css$s, xml: xml$u } = owl__namespace.tags;
+    const { Component: Component$o } = owl__namespace;
+    const { css: css$p, xml: xml$u } = owl__namespace.tags;
     const COLORS = [
         [
             "#000000",
@@ -13475,7 +13448,7 @@
     const ITEMS_PER_LINE = Math.max(...COLORS.map((line) => line.length));
     const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
         2 * LINE_HORIZONTAL_PADDING;
-    class ColorPicker extends Component$r {
+    class ColorPicker extends Component$o {
         constructor() {
             super(...arguments);
             this.COLORS = COLORS;
@@ -13483,7 +13456,7 @@
         onColorClick(ev) {
             const color = ev.target.dataset.color;
             if (color) {
-                this.trigger("color-picked", { color });
+                this.props.onColorPicked(color);
             }
         }
     }
@@ -13497,7 +13470,7 @@
       </t>
     </div>
   </div>`;
-    ColorPicker.style = css$s /* scss */ `
+    ColorPicker.style = css$p /* scss */ `
     .o-color-picker {
       position: absolute;
       top: calc(100% + 5px);
@@ -13650,11 +13623,11 @@
         },
     };
 
-    const { Component: Component$q, useState: useState$l } = owl__namespace;
-    const { xml: xml$t, css: css$r } = owl__namespace.tags;
+    const { Component: Component$n, useState: useState$i } = owl__namespace;
+    const { xml: xml$t, css: css$o } = owl__namespace.tags;
     const { onMounted: onMounted$b, onWillUnmount: onWillUnmount$5, onPatched: onPatched$5 } = owl__namespace.hooks;
     const uuidGenerator$1 = new UuidGenerator();
-    const TEMPLATE$q = xml$t /* xml */ `
+    const TEMPLATE$n = xml$t /* xml */ `
   <div class="o-selection">
     <div t-foreach="ranges" t-as="range" t-key="range.id" class="o-selection-input">
       <input
@@ -13688,7 +13661,7 @@
     </div>
 
   </div>`;
-    const CSS$n = css$r /* scss */ `
+    const CSS$k = css$o /* scss */ `
   .o-selection {
     .o-selection-input {
       display: flex;
@@ -13742,7 +13715,7 @@
      * A `selection-changed` event is triggered every time the input value
      * changes.
      */
-    class SelectionInput extends Component$q {
+    class SelectionInput extends Component$n {
         constructor() {
             super(...arguments);
             this.id = uuidGenerator$1.uuidv4();
@@ -13750,7 +13723,7 @@
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.originSheet = this.env.getters.getActiveSheetId();
-            this.state = useState$l({
+            this.state = useState$i({
                 isMissing: false,
             });
         }
@@ -13851,8 +13824,8 @@
             this.trigger("selection-confirmed");
         }
     }
-    SelectionInput.template = TEMPLATE$q;
-    SelectionInput.style = CSS$n;
+    SelectionInput.template = TEMPLATE$n;
+    SelectionInput.style = CSS$k;
 
     const conditionalFormattingTerms = {
         CF_TITLE: _lt("Format rules"),
@@ -13986,8 +13959,8 @@
         And: _lt("and"),
     };
 
-    const { Component: Component$p, useState: useState$k } = owl__namespace;
-    const { xml: xml$s, css: css$q } = owl__namespace.tags;
+    const { Component: Component$m, useState: useState$h } = owl__namespace;
+    const { xml: xml$s, css: css$n } = owl__namespace.tags;
     const { onWillUpdateProps: onWillUpdateProps$6 } = owl__namespace.hooks;
     const CONFIGURATION_TEMPLATE = xml$s /* xml */ `
 <div>
@@ -14039,7 +14012,7 @@
       <t t-esc="env._t('${chartTerms.SelectColor}')"/>
       <span t-attf-style="border-color:{{state.chart.background}}"
             t-on-click.stop="toggleColorPicker">${FILL_COLOR_ICON}</span>
-      <ColorPicker t-if="state.fillColorTool" t-on-color-picked="setColor" t-key="backgroundColor"/>
+      <ColorPicker t-if="state.fillColorTool" onColorPicked="(color) => this.setColor(color)" t-key="backgroundColor"/>
     </div>
   </div>
   <div class="o-section o-chart-title">
@@ -14064,7 +14037,7 @@
   </div>
 </div>
 `;
-    const TEMPLATE$p = xml$s /* xml */ `
+    const TEMPLATE$m = xml$s /* xml */ `
   <div class="o-chart">
     <div class="o-panel">
       <div class="o-panel-element"
@@ -14087,7 +14060,7 @@
     </t>
   </div>
 `;
-    const STYLE = css$q /* scss */ `
+    const STYLE = css$n /* scss */ `
   .o-chart {
     .o-panel {
       display: flex;
@@ -14118,16 +14091,16 @@
     }
   }
 `;
-    class ChartPanel extends Component$p {
+    class ChartPanel extends Component$m {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.state = useState$k(this.initialState(this.props.figure));
+            this.state = useState$h(this.initialState(this.props.figure));
         }
         setup() {
             onWillUpdateProps$6((nextProps) => {
                 if (!this.getters.getChartDefinition(nextProps.figure.id)) {
-                    this.trigger("close-side-panel");
+                    this.props.onCloseSidePanel();
                     return;
                 }
                 if (nextProps.figure.id !== this.props.figure.id) {
@@ -14196,8 +14169,8 @@
         toggleColorPicker() {
             this.state.fillColorTool = !this.state.fillColorTool;
         }
-        setColor(ev) {
-            this.state.chart.background = ev.detail.color;
+        setColor(color) {
+            this.state.chart.background = color;
             this.state.fillColorTool = false;
             this.updateChart({ background: this.state.chart.background });
         }
@@ -14212,7 +14185,7 @@
             };
         }
     }
-    ChartPanel.template = TEMPLATE$p;
+    ChartPanel.template = TEMPLATE$m;
     ChartPanel.style = STYLE;
     ChartPanel.components = { SelectionInput, ColorPicker };
 
@@ -14230,384 +14203,9 @@
         return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
     }
 
-    const { Component: Component$o, useState: useState$j, hooks: hooks$4 } = owl__namespace;
-    const { useExternalListener: useExternalListener$5 } = hooks$4;
-    const { xml: xml$r, css: css$p } = owl__namespace.tags;
-    const PREVIEW_TEMPLATE$2 = xml$r /* xml */ `
-    <div class="o-cf-preview-line"
-         t-attf-style="font-weight:{{currentStyle.bold ?'bold':'normal'}};
-                       text-decoration:{{getTextDecoration(currentStyle)}};
-                       font-style:{{currentStyle.italic?'italic':'normal'}};
-                       color:{{currentStyle.textColor}};
-                       border-radius: 4px;
-                       background-color:{{currentStyle.fillColor}};"
-         t-esc="previewText || env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')" />
-`;
-    const TEMPLATE$o = xml$r /* xml */ `
-<div>
-    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.IS_RULE}')"></div>
-    <select t-model="state.condition.operator" class="o-input o-cell-is-operator">
-        <t t-foreach="Object.keys(cellIsOperators)" t-as="op" t-key="op_index">
-            <option t-att-value="op" t-esc="cellIsOperators[op]"/>
-        </t>
-    </select>
-    <t t-if="state.condition.operator !== 'IsEmpty' and state.condition.operator !== 'IsNotEmpty'">
-      <input type="text"
-             placeholder="Value"
-             t-model="state.condition.value1"
-             t-att-class="{ 'o-invalid': isValue1Invalid }"
-             class="o-input o-cell-is-value o-required"/>
-      <t t-if="state.condition.operator === 'Between' || state.condition.operator === 'NotBetween'">
-          <input type="text"
-                 placeholder="and value"
-                 t-model="state.condition.value2"
-                 t-att-class="{ 'o-invalid': isValue2Invalid }"
-                 class="o-input o-cell-is-value o-required"/>
-      </t>
-    </t>
-    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.FORMATTING_STYLE}')"></div>
-
-    <t t-call="${PREVIEW_TEMPLATE$2}">
-        <t t-set="currentStyle" t-value="state.style"/>
-    </t>
-    <div class="o-tools">
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.BOLD}')" t-att-class="{active:state.style.bold}" t-on-click="toggleTool('bold')">
-            ${BOLD_ICON}
-        </div>
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.ITALIC}')" t-att-class="{active:state.style.italic}" t-on-click="toggleTool('italic')">
-            ${ITALIC_ICON}
-        </div>
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.UNDERLINE}')" t-att-class="{active:state.style.underline}"
-             t-on-click="toggleTool('underline')">${UNDERLINE_ICON}
-        </div>
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.STRIKE_THROUGH}')" t-att-class="{active:state.style.strikethrough}"
-             t-on-click="toggleTool('strikethrough')">${STRIKE_ICON}
-        </div>
-        <div class="o-tool o-dropdown o-with-color">
-              <span t-att-title="env._t('${conditionalFormattingTerms.TEXT_COLOR}')" t-attf-style="border-color:{{state.style.textColor}}"
-                    t-on-click.stop="toggleMenu('textColorTool')">
-                    ${TEXT_COLOR_ICON}
-              </span>
-              <ColorPicker t-if="state.textColorTool" dropdownDirection="'center'" t-on-color-picked="setColor('textColor')" t-key="textColor"/>
-        </div>
-        <div class="o-divider"/>
-        <div class="o-tool o-dropdown o-with-color">
-          <span t-att-title="env._t('${conditionalFormattingTerms.FILL_COLOR}')" t-attf-style="border-color:{{state.style.fillColor}}"
-                t-on-click.stop="toggleMenu('fillColorTool')">
-                ${FILL_COLOR_ICON}
-          </span>
-          <ColorPicker t-if="state.fillColorTool" dropdownDirection="'center'" t-on-color-picked="setColor('fillColor')" t-key="fillColor"/>
-        </div>
-    </div>
-</div>
-`;
-    const CSS$m = css$p /* scss */ `
-  .o-cf-preview-line {
-    border: 1px solid darkgrey;
-    padding: 10px;
-  }
-  .o-cell-is-operator {
-    margin-bottom: 5px;
-    width: 96%;
-  }
-  .o-cell-is-value {
-    margin-bottom: 5px;
-    width: 96%;
-  }
-  .o-color-picker {
-    pointer-events: all;
-  }
-`;
-    class CellIsRuleEditor extends Component$o {
-        constructor() {
-            super(...arguments);
-            // @ts-ignore used in XML template
-            this.cellIsOperators = cellIsOperators;
-            // @ts-ignore used in XML template
-            this.getTextDecoration = getTextDecoration;
-            this.state = useState$j({
-                condition: {
-                    operator: this.props.rule && this.props.rule.operator ? this.props.rule.operator : "IsNotEmpty",
-                    value1: this.props.rule && this.props.rule.values.length > 0 ? this.props.rule.values[0] : "",
-                    value2: this.props.rule.values.length > 1 ? this.props.rule.values[1] : "",
-                },
-                textColorTool: false,
-                fillColorTool: false,
-                style: {
-                    fillColor: this.props.rule.style.fillColor,
-                    textColor: this.props.rule.style.textColor,
-                    bold: this.props.rule.style.bold,
-                    italic: this.props.rule.style.italic,
-                    strikethrough: this.props.rule.style.strikethrough,
-                    underline: this.props.rule.style.underline,
-                },
-            });
-        }
-        setup() {
-            useExternalListener$5(window, "click", this.closeMenus);
-        }
-        get isValue1Invalid() {
-            var _a;
-            return !!((_a = this.props.errors) === null || _a === void 0 ? void 0 : _a.includes(34 /* FirstArgMissing */));
-        }
-        get isValue2Invalid() {
-            var _a;
-            return !!((_a = this.props.errors) === null || _a === void 0 ? void 0 : _a.includes(35 /* SecondArgMissing */));
-        }
-        getRule() {
-            const newStyle = {};
-            const style = this.state.style;
-            if (style.bold !== undefined) {
-                newStyle.bold = style.bold;
-            }
-            if (style.italic !== undefined) {
-                newStyle.italic = style.italic;
-            }
-            if (style.strikethrough !== undefined) {
-                newStyle.strikethrough = style.strikethrough;
-            }
-            if (style.underline !== undefined) {
-                newStyle.underline = style.underline;
-            }
-            if (style.fillColor) {
-                newStyle.fillColor = style.fillColor;
-            }
-            if (style.textColor) {
-                newStyle.textColor = style.textColor;
-            }
-            return {
-                type: "CellIsRule",
-                operator: this.state.condition.operator,
-                values: [this.state.condition.value1, this.state.condition.value2],
-                style: newStyle,
-            };
-        }
-        toggleMenu(tool) {
-            const current = this.state[tool];
-            this.closeMenus();
-            this.state[tool] = !current;
-        }
-        toggleTool(tool) {
-            this.state.style[tool] = !this.state.style[tool];
-            this.closeMenus();
-        }
-        setColor(target, ev) {
-            const color = ev.detail.color;
-            this.state.style[target] = color;
-            this.closeMenus();
-        }
-        closeMenus() {
-            this.state.textColorTool = false;
-            this.state.fillColorTool = false;
-        }
-        /**
-         * Get a default rule for "CellIsRule"
-         */
-        static getDefaultRule() {
-            return {
-                type: "CellIsRule",
-                operator: "IsNotEmpty",
-                values: [],
-                style: { fillColor: "#b6d7a8" },
-            };
-        }
-    }
-    CellIsRuleEditor.template = TEMPLATE$o;
-    CellIsRuleEditor.style = CSS$m;
-    CellIsRuleEditor.components = { ColorPicker };
-    CellIsRuleEditor.defaultProps = {
-        errors: [],
-    };
-
-    const { Component: Component$n, useState: useState$i, hooks: hooks$3 } = owl__namespace;
-    const { useExternalListener: useExternalListener$4 } = hooks$3;
-    const { xml: xml$q, css: css$o } = owl__namespace.tags;
-    const PREVIEW_TEMPLATE$1 = xml$q /* xml */ `
-  <div class="o-cf-preview-gradient" t-attf-style="{{getPreviewGradient()}}">
-    <t t-esc="env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')"/>
-  </div>
-`;
-    const THRESHOLD_TEMPLATE = xml$q /* xml */ `
-  <div t-attf-class="o-threshold o-threshold-{{thresholdType}}">
-      <select class="o-input" name="valueType" t-model="threshold.type" t-on-click="closeMenus">
-        <option value="value" t-if="thresholdType!=='midpoint'">
-          <t t-esc="env._t('${colorScale.CellValues}')"/>
-        </option>
-        <option value="none" t-if="thresholdType==='midpoint'">
-          <t t-esc="env._t('${colorScale.None}')"/>
-        </option>
-        <option value="number">
-          <t t-esc="env._t('${conditionalFormattingTerms.FixedNumber}')"/>
-        </option>
-        <option value="percentage">
-          <t t-esc="env._t('${conditionalFormattingTerms.Percentage}')"/>
-        </option>
-        <option value="percentile">
-          <t t-esc="env._t('${conditionalFormattingTerms.Percentile}')"/>
-        </option>
-        <option value="formula">
-          <t t-esc="env._t('${conditionalFormattingTerms.Formula}')"/>
-        </option>
-      </select>
-      <input type="text" class="o-input o-threshold-value o-required"
-        t-model="stateColorScale[thresholdType].value"
-        t-att-class="{ 'o-invalid': isValueInvalid(thresholdType) }"
-        t-if="['number', 'percentage', 'percentile', 'formula'].includes(threshold.type)"
-      />
-      <input type="text" class="o-input o-threshold-value"
-        t-else="" disabled="1"
-      />
-      <div class="o-tools">
-        <div class="o-tool  o-dropdown o-with-color">
-          <span title="Fill Color"  t-attf-style="border-color:#{{colorNumberString(threshold.color)}}"
-                t-on-click.stop="toggleMenu(thresholdType+'ColorTool')">${FILL_COLOR_ICON}</span>
-          <ColorPicker t-if="stateColorScale[thresholdType+'ColorTool']" dropdownDirection="'left'" t-on-color-picked="setColor(thresholdType)"/>
-        </div>
-      </div>
-  </div>`;
-    const TEMPLATE$n = xml$q /* xml */ `
-  <div>
-      <div class="o-cf-title-text">
-        <t t-esc="env._t('${colorScale.Preview}')"/>
-      </div>
-      <t t-call="${PREVIEW_TEMPLATE$1}"/>
-      <div class="o-cf-title-text">
-        <t t-esc="env._t('${colorScale.Minpoint}')"/>
-      </div>
-      <t t-call="${THRESHOLD_TEMPLATE}">
-          <t t-set="threshold" t-value="stateColorScale.minimum" ></t>
-          <t t-set="thresholdType" t-value="'minimum'" ></t>
-      </t>
-      <div class="o-cf-title-text">
-        <t t-esc="env._t('${colorScale.MidPoint}')"/>
-      </div>
-      <t t-call="${THRESHOLD_TEMPLATE}">
-          <t t-set="threshold" t-value="stateColorScale.midpoint" ></t>
-          <t t-set="thresholdType" t-value="'midpoint'" ></t>
-      </t>
-      <div class="o-cf-title-text">
-        <t t-esc="env._t('${colorScale.MaxPoint}')"/>
-      </div>
-      <t t-call="${THRESHOLD_TEMPLATE}">
-          <t t-set="threshold" t-value="stateColorScale.maximum" ></t>
-          <t t-set="thresholdType" t-value="'maximum'" ></t>
-      </t>
-  </div>`;
-    const CSS$l = css$o /* scss */ `
-  .o-threshold {
-    display: flex;
-    flex-direction: horizontal;
-    select {
-      width: 100%;
-    }
-    .o-threshold-value {
-      margin-left: 2%;
-      width: 20%;
-      min-width: 0px; // input overflows in Firefox otherwise
-    }
-    .o-threshold-value:disabled {
-      background-color: #edebed;
-    }
-  }
-  .o-cf-preview-gradient {
-    border: 1px solid darkgrey;
-    padding: 10px;
-    border-radius: 4px;
-  }
-`;
-    class ColorScaleRuleEditor extends Component$n {
-        constructor() {
-            super(...arguments);
-            this.colorNumberString = colorNumberString;
-            this.stateColorScale = useState$i({
-                minimum: this.props.rule.minimum,
-                maximum: this.props.rule.maximum,
-                midpoint: this.props.rule.midpoint
-                    ? this.props.rule.midpoint
-                    : { color: 0xb6d7a8, type: "none" },
-                maximumColorTool: false,
-                minimumColorTool: false,
-                midpointColorTool: false,
-            });
-        }
-        setup() {
-            useExternalListener$4(window, "click", this.closeMenus);
-        }
-        getRule() {
-            const minimum = { ...this.stateColorScale.minimum };
-            const midpoint = { ...this.stateColorScale.midpoint };
-            const maximum = { ...this.stateColorScale.maximum };
-            return {
-                type: "ColorScaleRule",
-                minimum,
-                maximum,
-                midpoint: midpoint.type === "none" ? undefined : midpoint,
-            };
-        }
-        toggleMenu(tool) {
-            const current = this.stateColorScale[tool];
-            this.closeMenus();
-            this.stateColorScale[tool] = !current;
-        }
-        setColor(target, ev) {
-            const color = ev.detail.color;
-            this.stateColorScale[target].color = Number.parseInt(color.substr(1), 16);
-            this.closeMenus();
-        }
-        getPreviewGradient() {
-            const minColor = colorNumberString(this.stateColorScale.minimum.color);
-            const midColor = colorNumberString(this.stateColorScale.midpoint.color);
-            const maxColor = colorNumberString(this.stateColorScale.maximum.color);
-            const baseString = "background-image: linear-gradient(to right, #";
-            return this.stateColorScale.midpoint.type === "none"
-                ? baseString + minColor + ", #" + maxColor + ")"
-                : baseString + minColor + ", #" + midColor + ", #" + maxColor + ")";
-        }
-        isValueInvalid(threshold) {
-            switch (threshold) {
-                case "minimum":
-                    return (this.props.errors.includes(41 /* MinInvalidFormula */) ||
-                        this.props.errors.includes(33 /* MinBiggerThanMid */) ||
-                        this.props.errors.includes(30 /* MinBiggerThanMax */) ||
-                        this.props.errors.includes(36 /* MinNaN */));
-                case "midpoint":
-                    return (this.props.errors.includes(42 /* MidInvalidFormula */) ||
-                        this.props.errors.includes(37 /* MidNaN */) ||
-                        this.props.errors.includes(32 /* MidBiggerThanMax */));
-                case "maximum":
-                    return (this.props.errors.includes(43 /* MaxInvalidFormula */) ||
-                        this.props.errors.includes(38 /* MaxNaN */));
-                default:
-                    return false;
-            }
-        }
-        closeMenus() {
-            this.stateColorScale.minimumColorTool = false;
-            this.stateColorScale.midpointColorTool = false;
-            this.stateColorScale.maximumColorTool = false;
-        }
-        /**
-         * Get a default rule for "ColorScaleRule"
-         */
-        static getDefaultRule() {
-            return {
-                type: "ColorScaleRule",
-                minimum: { type: "value", color: 0xffffff },
-                midpoint: undefined,
-                maximum: { type: "value", color: 0x6aa84f },
-            };
-        }
-    }
-    ColorScaleRuleEditor.template = TEMPLATE$n;
-    ColorScaleRuleEditor.style = CSS$l;
-    ColorScaleRuleEditor.components = { ColorPicker };
-    ColorScaleRuleEditor.defaultProps = {
-        errors: [],
-    };
-
-    const { Component: Component$m } = owl__namespace;
-    const { css: css$n, xml: xml$p } = owl__namespace.tags;
-    class IconPicker extends Component$m {
+    const { Component: Component$l } = owl__namespace;
+    const { css: css$m, xml: xml$r } = owl__namespace.tags;
+    class IconPicker extends Component$l {
         constructor() {
             super(...arguments);
             this.icons = ICONS;
@@ -14615,11 +14213,11 @@
         }
         onIconClick(icon) {
             if (icon) {
-                this.trigger("icon-picked", { icon });
+                this.props.onIconPicked(icon);
             }
         }
     }
-    IconPicker.template = xml$p /* xml */ `
+    IconPicker.template = xml$r /* xml */ `
   <div class="o-icon-picker" >
     <t t-foreach="iconSets" t-as="iconSet" t-key="iconset">
       <div class="o-cf-icon-line">
@@ -14635,7 +14233,7 @@
       </div>
     </t>
   </div>`;
-    IconPicker.style = css$n /* scss */ `
+    IconPicker.style = css$m /* scss */ `
     .o-icon-picker {
       position: absolute;
       z-index: 10;
@@ -14656,9 +14254,149 @@
     }
   `;
 
-    const { Component: Component$l, useState: useState$h, hooks: hooks$2 } = owl__namespace;
-    const { useExternalListener: useExternalListener$3 } = hooks$2;
-    const { xml: xml$o, css: css$m } = owl__namespace.tags;
+    const { xml: xml$q } = owl__namespace.tags;
+    const PREVIEW_TEMPLATE$2 = xml$q /* xml */ `
+    <div class="o-cf-preview-line"
+         t-attf-style="font-weight:{{currentStyle.bold ?'bold':'normal'}};
+                       text-decoration:{{getTextDecoration(currentStyle)}};
+                       font-style:{{currentStyle.italic?'italic':'normal'}};
+                       color:{{currentStyle.textColor}};
+                       border-radius: 4px;
+                       background-color:{{currentStyle.fillColor}};"
+         t-esc="previewText || env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')" />
+`;
+    const TEMPLATE_CELL_IS_RULE_EDITOR = xml$q /* xml */ `
+<div class="o-cf-cell-is-rule">
+    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.IS_RULE}')"></div>
+    <select t-model="rule.operator" class="o-input o-cell-is-operator">
+        <t t-foreach="Object.keys(cellIsOperators)" t-as="op" t-key="op_index">
+            <option t-att-value="op" t-esc="cellIsOperators[op]"/>
+        </t>
+    </select>
+    <t t-if="rule.operator !== 'IsEmpty' and rule.operator !== 'IsNotEmpty'">
+      <input type="text"
+             placeholder="Value"
+             t-model="rule.values[0]"
+             t-att-class="{ 'o-invalid': isValue1Invalid }"
+             class="o-input o-cell-is-value o-required"/>
+      <t t-if="rule.operator === 'Between' || rule.operator === 'NotBetween'">
+          <input type="text"
+                 placeholder="and value"
+                 t-model="rule.values[1]"
+                 t-att-class="{ 'o-invalid': isValue2Invalid }"
+                 class="o-input o-cell-is-value o-required"/>
+      </t>
+    </t>
+    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.FORMATTING_STYLE}')"></div>
+
+    <t t-call="${PREVIEW_TEMPLATE$2}">
+        <t t-set="currentStyle" t-value="rule.style"/>
+    </t>
+    <div class="o-tools">
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.BOLD}')" t-att-class="{active:rule.style.bold}" t-on-click="toggleStyle('bold')">
+            ${BOLD_ICON}
+        </div>
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.ITALIC}')" t-att-class="{active:rule.style.italic}" t-on-click="toggleStyle('italic')">
+            ${ITALIC_ICON}
+        </div>
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.UNDERLINE}')" t-att-class="{active:rule.style.underline}"
+             t-on-click="toggleStyle('underline')">${UNDERLINE_ICON}
+        </div>
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.STRIKE_THROUGH}')" t-att-class="{active:rule.style.strikethrough}"
+             t-on-click="toggleStyle('strikethrough')">${STRIKE_ICON}
+        </div>
+        <div class="o-tool o-dropdown o-with-color">
+              <span t-att-title="env._t('${conditionalFormattingTerms.TEXT_COLOR}')" t-attf-style="border-color:{{rule.style.textColor}}"
+                    t-on-click.stop="toggleMenu('cellIsRule-textColor')">
+                    ${TEXT_COLOR_ICON}
+              </span>
+              <ColorPicker t-if="state.openedMenu === 'cellIsRule-textColor'" dropdownDirection="'center'" onColorPicked="(color) => this.setColor('textColor', color)" t-key="textColor"/>
+        </div>
+        <div class="o-divider"/>
+        <div class="o-tool o-dropdown o-with-color">
+          <span t-att-title="env._t('${conditionalFormattingTerms.FILL_COLOR}')" t-attf-style="border-color:{{rule.style.fillColor}}"
+                t-on-click.stop="toggleMenu('cellIsRule-fillColor')">
+                ${FILL_COLOR_ICON}
+          </span>
+          <ColorPicker t-if="state.openedMenu === 'cellIsRule-fillColor'" dropdownDirection="'center'" onColorPicked="(color) => this.setColor('fillColor', color)" t-key="fillColor"/>
+        </div>
+    </div>
+</div>
+`;
+
+    const { xml: xml$p } = owl__namespace.tags;
+    const PREVIEW_TEMPLATE$1 = xml$p /* xml */ `
+  <div class="o-cf-preview-gradient" t-attf-style="{{getPreviewGradient()}}">
+    <t t-esc="env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')"/>
+  </div>
+`;
+    const THRESHOLD_TEMPLATE = xml$p /* xml */ `
+  <div t-attf-class="o-threshold o-threshold-{{thresholdType}}">
+      <t t-if="thresholdType === 'midpoint'">
+        <t t-set="type" t-value="threshold and threshold.type"/>
+        <select class="o-input" name="valueType" t-on-change="onMidpointChange" t-on-click="closeMenus">
+          <option value="none" t-esc="env._t('${colorScale.None}')" t-att-selected="threshold === undefined"/>
+          <option value="number" t-esc="env._t('${conditionalFormattingTerms.FixedNumber}')" t-att-selected="type === 'number'"/>
+          <option value="percentage" t-esc="env._t('${conditionalFormattingTerms.Percentage}')" t-att-selected="type === 'percentage'"/>
+          <option value="percentile" t-esc="env._t('${conditionalFormattingTerms.Percentile}')" t-att-selected="type === 'percentile'"/>
+          <option value="formula" t-esc="env._t('${conditionalFormattingTerms.Formula}')" t-att-selected="type === 'formula'"/>
+        </select>
+      </t>
+      <t t-else="">
+        <select class="o-input" name="valueType" t-model="threshold.type" t-on-click="closeMenus">
+          <option value="value" t-esc="env._t('${colorScale.CellValues}')"/>
+          <option value="number" t-esc="env._t('${conditionalFormattingTerms.FixedNumber}')"/>
+          <option value="percentage" t-esc="env._t('${conditionalFormattingTerms.Percentage}')"/>
+          <option value="percentile" t-esc="env._t('${conditionalFormattingTerms.Percentile}')"/>
+          <option value="formula" t-esc="env._t('${conditionalFormattingTerms.Formula}')"/>
+        </select>
+      </t>
+      <input type="text" class="o-input o-threshold-value o-required"
+        t-model="rule[thresholdType].value"
+        t-att-class="{ 'o-invalid': isValueInvalid(thresholdType) }"
+        t-if="threshold !== undefined and threshold.type !== 'value'"
+      />
+      <input type="text" class="o-input o-threshold-value"
+        t-else="" disabled="1"
+      />
+      <div class="o-tools">
+        <div class="o-tool  o-dropdown o-with-color" t-att-disabled="threshold === undefined" >
+          <span title="Fill Color"  t-attf-style="border-color:#{{getThresholdColor(threshold)}}"
+                t-on-click.stop="toggleMenu('colorScale-'+thresholdType+'Color')">${FILL_COLOR_ICON}</span>
+          <ColorPicker t-if="state.openedMenu === 'colorScale-'+thresholdType+'Color'" dropdownDirection="'left'" onColorPicked="(color) => this.setColorScaleColor(thresholdType, color)"/>
+        </div>
+      </div>
+  </div>`;
+    const TEMPLATE_COLOR_SCALE_EDITOR = xml$p /* xml */ `
+  <div class="o-cf-color-scale-editor">
+      <div class="o-cf-title-text">
+        <t t-esc="env._t('${colorScale.Preview}')"/>
+      </div>
+      <t t-call="${PREVIEW_TEMPLATE$1}"/>
+      <div class="o-cf-title-text">
+        <t t-esc="env._t('${colorScale.Minpoint}')"/>
+      </div>
+      <t t-call="${THRESHOLD_TEMPLATE}">
+          <t t-set="threshold" t-value="rule.minimum" ></t>
+          <t t-set="thresholdType" t-value="'minimum'" ></t>
+      </t>
+      <div class="o-cf-title-text">
+        <t t-esc="env._t('${colorScale.MidPoint}')"/>
+      </div>
+      <t t-call="${THRESHOLD_TEMPLATE}">
+          <t t-set="threshold" t-value="rule.midpoint" ></t>
+          <t t-set="thresholdType" t-value="'midpoint'" ></t>
+      </t>
+      <div class="o-cf-title-text">
+        <t t-esc="env._t('${colorScale.MaxPoint}')"/>
+      </div>
+      <t t-call="${THRESHOLD_TEMPLATE}">
+          <t t-set="threshold" t-value="rule.maximum" ></t>
+          <t t-set="thresholdType" t-value="'maximum'" ></t>
+      </t>
+  </div>`;
+
+    const { xml: xml$o } = owl__namespace.tags;
     const ICON_SETS_TEMPLATE = xml$o /* xml */ `
   <div>
   <div class="o-cf-title-text">
@@ -14682,12 +14420,12 @@
     const INFLECTION_POINTS_TEMPLATE_ROW = xml$o /* xml */ `
   <tr>
     <td>
-      <div t-on-click.stop="toggleMenu(icon+'IconTool')">
+      <div t-on-click.stop="toggleMenu('iconSet-'+icon+'Icon')">
         <div class="o-cf-icon-button">
           <t t-raw="icons[iconValue].svg"/>
         </div>
       </div>
-      <IconPicker t-if="stateIconSetCF[icon+'IconTool']" t-on-icon-picked="setIcon(icon)"/>
+      <IconPicker t-if="state.openedMenu === 'iconSet-'+icon+'Icon'" onIconPicked="(i) => this.setIcon(icon, i)"/>
     </td>
     <td>
       <t t-esc="env._t('${iconSetRule.WhenValueIs}')"/>
@@ -14705,7 +14443,7 @@
     <td>
       <input type="text" class="o-input"
         t-att-class="{ 'o-invalid': isInflectionPointInvalid(inflectionPoint) }"
-        t-model="stateIconSetCF[inflectionPoint].value"
+        t-model="rule[inflectionPoint].value"
       />
     </td>
     <td>
@@ -14741,25 +14479,25 @@
       </th>
     </tr>
     <t t-call="${INFLECTION_POINTS_TEMPLATE_ROW}">
-      <t t-set="iconValue" t-value="stateIconSetCF.upperIcon" ></t>
+      <t t-set="iconValue" t-value="rule.icons.upper" ></t>
       <t t-set="icon" t-value="'upper'" ></t>
-      <t t-set="inflectionPointValue" t-value="stateIconSetCF.upperInflectionPoint" ></t>
+      <t t-set="inflectionPointValue" t-value="rule.upperInflectionPoint" ></t>
       <t t-set="inflectionPoint" t-value="'upperInflectionPoint'" ></t>
     </t>
     <t t-call="${INFLECTION_POINTS_TEMPLATE_ROW}">
-      <t t-set="iconValue" t-value="stateIconSetCF.middleIcon" ></t>
+      <t t-set="iconValue" t-value="rule.icons.middle" ></t>
       <t t-set="icon" t-value="'middle'" ></t>
-      <t t-set="inflectionPointValue" t-value="stateIconSetCF.lowerInflectionPoint" ></t>
+      <t t-set="inflectionPointValue" t-value="rule.lowerInflectionPoint" ></t>
       <t t-set="inflectionPoint" t-value="'lowerInflectionPoint'" ></t>
     </t>
     <tr>
       <td>
-        <div t-on-click.stop="toggleMenu('lowerIconTool')">
+        <div t-on-click.stop="toggleMenu('iconSet-lowerIcon')">
           <div class="o-cf-icon-button" >
-            <t t-raw="icons[stateIconSetCF.lowerIcon].svg"/>
+            <t t-raw="icons[rule.icons.lower].svg"/>
           </div>
         </div>
-        <IconPicker t-if="stateIconSetCF['lowerIconTool']" t-on-icon-picked="setIcon('lower')"/>
+        <IconPicker t-if="state.openedMenu === 'iconSet-lowerIcon'" onIconPicked="(icon) => setIcon('lower', icon)"/>
       </td>
       <td><t t-esc="env._t('${iconSetRule.Else}')"/></td>
       <td></td>
@@ -14768,7 +14506,7 @@
     </tr>
   </table>
   </div>`;
-    const TEMPLATE$m = xml$o /* xml */ `
+    const TEMPLATE_ICON_SET_EDITOR = xml$o /* xml */ `
   <div class="o-cf-iconset-rule">
       <t t-call="${ICON_SETS_TEMPLATE}"/>
       <t t-call="${INFLECTION_POINTS_TEMPLATE}"/>
@@ -14779,189 +14517,10 @@
         <t t-esc="env._t('${iconSetRule.ReverseIcons}')"/>
       </div>
   </div>`;
-    const CSS$k = css$m /* scss */ `
-  .o-cf-iconset-rule {
-    font-size: 12;
-    .o-cf-iconsets {
-      display: flex;
-      justify-content: space-between;
-      .o-cf-iconset {
-        border: 1px solid #dadce0;
-        border-radius: 4px;
-        display: inline-flex;
-        padding: 5px 8px;
-        width: 25%;
-        cursor: pointer;
-        justify-content: space-between;
-        .o-cf-icon {
-          display: inline;
-          margin-left: 1%;
-          margin-right: 1%;
-        }
-        svg {
-          vertical-align: baseline;
-        }
-      }
-      .o-cf-iconset:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-    }
-    .o-inflection {
-      .o-cf-icon-button {
-        display: inline-block;
-        border: 1px solid #dadce0;
-        border-radius: 4px;
-        cursor: pointer;
-        padding: 1px 2px;
-      }
-      .o-cf-icon-button:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-      table {
-        table-layout: fixed;
-        margin-top: 2%;
-        display: table;
-        text-align: left;
-        font-size: 12px;
-        line-height: 18px;
-        width: 100%;
-      }
-      th.o-cf-iconset-icons {
-        width: 8%;
-      }
-      th.o-cf-iconset-text {
-        width: 28%;
-      }
-      th.o-cf-iconset-operator {
-        width: 14%;
-      }
-      th.o-cf-iconset-type {
-        width: 28%;
-      }
-      th.o-cf-iconset-value {
-        width: 26%;
-      }
-      input,
-      select {
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-      }
-    }
-    .o-cf-iconset-reverse {
-      margin-bottom: 2%;
-      margin-top: 2%;
-      .o-cf-label {
-        display: inline-block;
-        vertical-align: bottom;
-        margin-bottom: 2px;
-      }
-    }
-  }
-`;
-    class IconSetRuleEditor extends Component$l {
-        constructor() {
-            super(...arguments);
-            this.icons = ICONS;
-            this.iconSets = ICON_SETS;
-            this.reverseIcon = REFRESH;
-            this.stateIconSetCF = useState$h({
-                reversed: false,
-                upperInflectionPoint: this.props.rule.upperInflectionPoint,
-                lowerInflectionPoint: this.props.rule.lowerInflectionPoint,
-                upperIcon: this.props.rule.icons.upper,
-                middleIcon: this.props.rule.icons.middle,
-                lowerIcon: this.props.rule.icons.lower,
-                upperIconTool: false,
-                middleIconTool: false,
-                lowerIconTool: false,
-            });
-        }
-        setup() {
-            useExternalListener$3(window, "click", this.closeMenus);
-        }
-        isInflectionPointInvalid(inflectionPoint) {
-            switch (inflectionPoint) {
-                case "lowerInflectionPoint":
-                    return (this.props.errors.includes(40 /* ValueLowerInflectionNaN */) ||
-                        this.props.errors.includes(45 /* ValueLowerInvalidFormula */) ||
-                        this.props.errors.includes(31 /* LowerBiggerThanUpper */));
-                case "upperInflectionPoint":
-                    return (this.props.errors.includes(39 /* ValueUpperInflectionNaN */) ||
-                        this.props.errors.includes(44 /* ValueUpperInvalidFormula */) ||
-                        this.props.errors.includes(31 /* LowerBiggerThanUpper */));
-                default:
-                    return true;
-            }
-        }
-        toggleMenu(tool) {
-            const current = this.stateIconSetCF[tool];
-            this.closeMenus();
-            this.stateIconSetCF[tool] = !current;
-        }
-        closeMenus() {
-            this.stateIconSetCF.upperIconTool = false;
-            this.stateIconSetCF.middleIconTool = false;
-            this.stateIconSetCF.lowerIconTool = false;
-        }
-        setIconSet(iconSet) {
-            this.stateIconSetCF.upperIcon = this.iconSets[iconSet].good;
-            this.stateIconSetCF.middleIcon = this.iconSets[iconSet].neutral;
-            this.stateIconSetCF.lowerIcon = this.iconSets[iconSet].bad;
-        }
-        setIcon(target, ev) {
-            this.stateIconSetCF[target + "Icon"] = ev.detail.icon;
-        }
-        getRule() {
-            const upperInflectionPoint = { ...this.stateIconSetCF.upperInflectionPoint };
-            const lowerInflectionPoint = { ...this.stateIconSetCF.lowerInflectionPoint };
-            return {
-                type: "IconSetRule",
-                lowerInflectionPoint,
-                upperInflectionPoint,
-                icons: {
-                    upper: this.stateIconSetCF.upperIcon,
-                    middle: this.stateIconSetCF.middleIcon,
-                    lower: this.stateIconSetCF.lowerIcon,
-                },
-            };
-        }
-        getIconsSelction() {
-            return Object.keys(this.icons);
-        }
-        reverseIcons() {
-            const upperIcon = this.stateIconSetCF.upperIcon;
-            this.stateIconSetCF.upperIcon = this.stateIconSetCF.lowerIcon;
-            this.stateIconSetCF.lowerIcon = upperIcon;
-        }
-        static getDefaultRule() {
-            return {
-                type: "IconSetRule",
-                icons: {
-                    upper: "arrowGood",
-                    middle: "arrowNeutral",
-                    lower: "arrowBad",
-                },
-                upperInflectionPoint: {
-                    type: "percentage",
-                    value: "66",
-                    operator: "gt",
-                },
-                lowerInflectionPoint: {
-                    type: "percentage",
-                    value: "33",
-                    operator: "gt",
-                },
-            };
-        }
-    }
-    IconSetRuleEditor.template = TEMPLATE$m;
-    IconSetRuleEditor.style = CSS$k;
-    IconSetRuleEditor.components = { IconPicker };
 
     const { Component: Component$k, useState: useState$g } = owl__namespace;
     const { xml: xml$n, css: css$l } = owl__namespace.tags;
-    const { useRef: useRef$7, onWillUpdateProps: onWillUpdateProps$5 } = owl__namespace.hooks;
+    const { onWillUpdateProps: onWillUpdateProps$5, useExternalListener: useExternalListener$4 } = owl__namespace.hooks;
     // TODO vsc: add ordering of rules
     const PREVIEW_TEMPLATE = xml$n /* xml */ `
 <div class="o-cf-preview">
@@ -15047,11 +14606,18 @@
               </div>
             </div>
             <div class="o-section o-cf-editor">
-              <t t-component="editors[state.currentCFType]"
-                 t-ref="editorRef"
-                 errors="state.errors"
-                 t-key="state.currentCF.id + state.currentCFType"
-                 rule="state.rules[state.currentCFType]"/>
+              <t t-if="state.currentCFType === 'CellIsRule'"
+                 t-call="${TEMPLATE_CELL_IS_RULE_EDITOR}">
+                <t t-set="rule" t-value="state.rules.cellIs"/>
+              </t>
+              <t t-if="state.currentCFType === 'ColorScaleRule'"
+                 t-call="${TEMPLATE_COLOR_SCALE_EDITOR}">
+                <t t-set="rule" t-value="state.rules.colorScale"/>
+              </t>
+              <t t-if="state.currentCFType === 'IconSetRule'"
+                 t-call="${TEMPLATE_ICON_SET_EDITOR}">
+                <t t-set="rule" t-value="state.rules.iconSet"/>
+              </t>
               <div class="o-sidePanelButtons">
                 <button t-on-click="switchToList" class="o-sidePanelButton o-cf-cancel" t-esc="env._t('${conditionalFormattingTerms.CANCEL}')"></button>
                 <button t-on-click="saveConditionalFormat" class="o-sidePanelButton o-cf-save" t-esc="env._t('${conditionalFormattingTerms.SAVE}')"></button>
@@ -15257,26 +14823,142 @@
       margin-top: 10px;
     }
   }
+  .o-cf-cell-is-rule {
+    .o-cf-preview-line {
+      border: 1px solid darkgrey;
+      padding: 10px;
+    }
+    .o-cell-is-operator {
+      margin-bottom: 5px;
+      width: 96%;
+    }
+    .o-cell-is-value {
+      margin-bottom: 5px;
+      width: 96%;
+    }
+    .o-color-picker {
+      pointer-events: all;
+    }
+  }
+  .o-cf-color-scale-editor {
+    .o-threshold {
+      display: flex;
+      flex-direction: horizontal;
+      select {
+        width: 100%;
+      }
+      .o-threshold-value {
+        margin-left: 2%;
+        width: 20%;
+        min-width: 0px; // input overflows in Firefox otherwise
+      }
+      .o-threshold-value:disabled {
+        background-color: #edebed;
+      }
+    }
+    .o-cf-preview-gradient {
+      border: 1px solid darkgrey;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  }
+  .o-cf-iconset-rule {
+    font-size: 12;
+    .o-cf-iconsets {
+      display: flex;
+      justify-content: space-between;
+      .o-cf-iconset {
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        display: inline-flex;
+        padding: 5px 8px;
+        width: 25%;
+        cursor: pointer;
+        justify-content: space-between;
+        .o-cf-icon {
+          display: inline;
+          margin-left: 1%;
+          margin-right: 1%;
+        }
+        svg {
+          vertical-align: baseline;
+        }
+      }
+      .o-cf-iconset:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+    }
+    .o-inflection {
+      .o-cf-icon-button {
+        display: inline-block;
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 1px 2px;
+      }
+      .o-cf-icon-button:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      table {
+        table-layout: fixed;
+        margin-top: 2%;
+        display: table;
+        text-align: left;
+        font-size: 12px;
+        line-height: 18px;
+        width: 100%;
+      }
+      th.o-cf-iconset-icons {
+        width: 8%;
+      }
+      th.o-cf-iconset-text {
+        width: 28%;
+      }
+      th.o-cf-iconset-operator {
+        width: 14%;
+      }
+      th.o-cf-iconset-type {
+        width: 28%;
+      }
+      th.o-cf-iconset-value {
+        width: 26%;
+      }
+      input,
+      select {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+    }
+    .o-cf-iconset-reverse {
+      margin-bottom: 2%;
+      margin-top: 2%;
+      .o-cf-label {
+        display: inline-block;
+        vertical-align: bottom;
+        margin-bottom: 2px;
+      }
+    }
+  }
 `;
     class ConditionalFormattingPanel extends Component$k {
         constructor(parent, props) {
             super(parent, props);
             this.icons = ICONS;
+            this.iconSets = ICON_SETS;
+            this.reverseIcon = REFRESH;
             this.trashIcon = TRASH;
             //@ts-ignore --> used in XML template
             this.cellIsOperators = cellIsOperators;
-            this.editor = useRef$7("editorRef");
+            // @ts-ignore used in XML template
+            this.getTextDecoration = getTextDecoration;
+            this.colorNumberString = colorNumberString;
             this.getters = this.env.getters;
             this.state = useState$g({
                 mode: "list",
-                rules: {},
                 errors: [],
+                rules: this.getDefaultRules(),
             });
-            this.editors = {
-                CellIsRule: CellIsRuleEditor,
-                ColorScaleRule: ColorScaleRuleEditor,
-                IconSetRule: IconSetRuleEditor,
-            };
             const sheetId = this.getters.getActiveSheetId();
             const rules = this.getters.getRulesSelection(sheetId, props.selection || []);
             if (rules.length === 1) {
@@ -15302,6 +14984,7 @@
                     }
                 }
             });
+            useExternalListener$4(window, "click", this.closeMenus);
         }
         get conditionalFormats() {
             return this.getters.getConditionalFormats(this.getters.getActiveSheetId());
@@ -15320,7 +15003,6 @@
             this.state.currentCF = undefined;
             this.state.currentCFType = undefined;
             this.state.errors = [];
-            this.state.rules = {};
         }
         getStyle(rule) {
             if (rule.type === "CellIsRule") {
@@ -15385,7 +15067,49 @@
          * Get the rule currently edited with the editor
          */
         getEditorRule() {
-            return this.editor.comp.getRule();
+            switch (this.state.currentCFType) {
+                case "CellIsRule":
+                    return this.state.rules.cellIs;
+                case "ColorScaleRule":
+                    return this.state.rules.colorScale;
+                case "IconSetRule":
+                    return this.state.rules.iconSet;
+            }
+            throw new Error(`Invalid cf type: ${this.state.currentCFType}`);
+        }
+        getDefaultRules() {
+            return {
+                cellIs: {
+                    type: "CellIsRule",
+                    operator: "IsNotEmpty",
+                    values: [],
+                    style: { fillColor: "#b6d7a8" },
+                },
+                colorScale: {
+                    type: "ColorScaleRule",
+                    minimum: { type: "value", color: 0xffffff },
+                    midpoint: undefined,
+                    maximum: { type: "value", color: 0x6aa84f },
+                },
+                iconSet: {
+                    type: "IconSetRule",
+                    icons: {
+                        upper: "arrowGood",
+                        middle: "arrowNeutral",
+                        lower: "arrowBad",
+                    },
+                    upperInflectionPoint: {
+                        type: "percentage",
+                        value: "66",
+                        operator: "gt",
+                    },
+                    lowerInflectionPoint: {
+                        type: "percentage",
+                        value: "33",
+                        operator: "gt",
+                    },
+                },
+            };
         }
         /**
          * Create a new CF, a CellIsRule by default
@@ -15393,7 +15117,6 @@
         addConditionalFormat() {
             this.state.mode = "add";
             this.state.currentCFType = "CellIsRule";
-            this.state.rules["CellIsRule"] = CellIsRuleEditor.getDefaultRule();
             this.state.currentCF = {
                 id: this.env.uuidGenerator.uuidv4(),
                 ranges: this.getters
@@ -15416,46 +15139,159 @@
         editConditionalFormat(cf) {
             this.state.mode = "edit";
             this.state.currentCF = cf;
-            this.state.currentCFType =
-                cf.rule.type === "CellIsRule"
-                    ? "CellIsRule"
-                    : cf.rule.type === "ColorScaleRule"
-                        ? "ColorScaleRule"
-                        : "IconSetRule";
-            this.state.rules[cf.rule.type] = cf.rule;
+            this.state.currentCFType = cf.rule.type;
+            switch (cf.rule.type) {
+                case "CellIsRule":
+                    this.state.rules.cellIs = cf.rule;
+                    break;
+                case "ColorScaleRule":
+                    this.state.rules.colorScale = cf.rule;
+                    break;
+                case "IconSetRule":
+                    this.state.rules.iconSet = cf.rule;
+                    break;
+            }
         }
         changeRuleType(ruleType) {
-            if (this.state.currentCFType === ruleType) {
+            if (this.state.currentCFType === ruleType || !this.state.rules) {
                 return;
-            }
-            if (this.state.currentCFType) {
-                this.state.rules[this.state.currentCFType] = this.getEditorRule();
             }
             this.state.errors = [];
             this.state.currentCFType = ruleType;
-            if (!(ruleType in this.state.rules)) {
-                switch (ruleType) {
-                    case "CellIsRule":
-                        this.state.rules["CellIsRule"] = CellIsRuleEditor.getDefaultRule();
-                        break;
-                    case "ColorScaleRule":
-                        this.state.rules["ColorScaleRule"] = ColorScaleRuleEditor.getDefaultRule();
-                        break;
-                    case "IconSetRule":
-                        this.state.rules["IconSetRule"] = IconSetRuleEditor.getDefaultRule();
-                        break;
-                }
-            }
         }
         onRangesChanged({ detail }) {
             if (this.state.currentCF) {
                 this.state.currentCF.ranges = detail.ranges;
             }
         }
+        /*****************************************************************************
+         * Common
+         ****************************************************************************/
+        toggleMenu(menu) {
+            const isSelected = this.state.openedMenu === menu;
+            this.closeMenus();
+            if (!isSelected) {
+                this.state.openedMenu = menu;
+            }
+        }
+        closeMenus() {
+            this.state.openedMenu = undefined;
+        }
+        /*****************************************************************************
+         * Cell Is Rule
+         ****************************************************************************/
+        get isValue1Invalid() {
+            var _a;
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(34 /* FirstArgMissing */));
+        }
+        get isValue2Invalid() {
+            var _a;
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(35 /* SecondArgMissing */));
+        }
+        toggleStyle(tool) {
+            const style = this.state.rules.cellIs.style;
+            style[tool] = !style[tool];
+            this.closeMenus();
+        }
+        setColor(target, color) {
+            this.state.rules.cellIs.style[target] = color;
+            this.closeMenus();
+        }
+        /*****************************************************************************
+         * Color Scale Rule
+         ****************************************************************************/
+        isValueInvalid(threshold) {
+            switch (threshold) {
+                case "minimum":
+                    return (this.state.errors.includes(41 /* MinInvalidFormula */) ||
+                        this.state.errors.includes(33 /* MinBiggerThanMid */) ||
+                        this.state.errors.includes(30 /* MinBiggerThanMax */) ||
+                        this.state.errors.includes(36 /* MinNaN */));
+                case "midpoint":
+                    return (this.state.errors.includes(42 /* MidInvalidFormula */) ||
+                        this.state.errors.includes(37 /* MidNaN */) ||
+                        this.state.errors.includes(32 /* MidBiggerThanMax */));
+                case "maximum":
+                    return (this.state.errors.includes(43 /* MaxInvalidFormula */) ||
+                        this.state.errors.includes(38 /* MaxNaN */));
+                default:
+                    return false;
+            }
+        }
+        setColorScaleColor(target, color) {
+            const point = this.state.rules.colorScale[target];
+            if (point) {
+                point.color = Number.parseInt(color.substr(1), 16);
+            }
+            this.closeMenus();
+        }
+        getPreviewGradient() {
+            var _a;
+            const rule = this.state.rules.colorScale;
+            const minColor = colorNumberString(rule.minimum.color);
+            const midColor = colorNumberString(((_a = rule.midpoint) === null || _a === void 0 ? void 0 : _a.color) || DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
+            const maxColor = colorNumberString(rule.maximum.color);
+            const baseString = "background-image: linear-gradient(to right, #";
+            return rule.midpoint === undefined
+                ? baseString + minColor + ", #" + maxColor + ")"
+                : baseString + minColor + ", #" + midColor + ", #" + maxColor + ")";
+        }
+        getThresholdColor(threshold) {
+            return threshold
+                ? colorNumberString(threshold.color)
+                : colorNumberString(DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
+        }
+        onMidpointChange(ev) {
+            const type = ev.target.value;
+            const rule = this.state.rules.colorScale;
+            if (type === "none") {
+                rule.midpoint = undefined;
+            }
+            else {
+                rule.midpoint = {
+                    color: DEFAULT_COLOR_SCALE_MIDPOINT_COLOR,
+                    value: "",
+                    ...rule.midpoint,
+                    type,
+                };
+            }
+        }
+        /*****************************************************************************
+         * Icon Set
+         ****************************************************************************/
+        isInflectionPointInvalid(inflectionPoint) {
+            switch (inflectionPoint) {
+                case "lowerInflectionPoint":
+                    return (this.state.errors.includes(40 /* ValueLowerInflectionNaN */) ||
+                        this.state.errors.includes(45 /* ValueLowerInvalidFormula */) ||
+                        this.state.errors.includes(31 /* LowerBiggerThanUpper */));
+                case "upperInflectionPoint":
+                    return (this.state.errors.includes(39 /* ValueUpperInflectionNaN */) ||
+                        this.state.errors.includes(44 /* ValueUpperInvalidFormula */) ||
+                        this.state.errors.includes(31 /* LowerBiggerThanUpper */));
+                default:
+                    return true;
+            }
+        }
+        reverseIcons() {
+            const icons = this.state.rules.iconSet.icons;
+            const upper = icons.upper;
+            icons.upper = icons.lower;
+            icons.lower = upper;
+        }
+        setIconSet(iconSet) {
+            const icons = this.state.rules.iconSet.icons;
+            icons.upper = this.iconSets[iconSet].good;
+            icons.middle = this.iconSets[iconSet].neutral;
+            icons.lower = this.iconSets[iconSet].bad;
+        }
+        setIcon(target, icon) {
+            this.state.rules.iconSet.icons[target] = icon;
+        }
     }
     ConditionalFormattingPanel.template = TEMPLATE$l;
     ConditionalFormattingPanel.style = CSS$j;
-    ConditionalFormattingPanel.components = { CellIsRuleEditor, ColorScaleRuleEditor, IconSetRuleEditor, SelectionInput };
+    ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
 
     const { Component: Component$j, useState: useState$f } = owl__namespace;
     const { xml: xml$m, css: css$k } = owl__namespace.tags;
@@ -16854,7 +16690,7 @@
         getUpdatedContent(sheetId, cell, offsetX, offsetY, zones, operation) {
             if (operation === "CUT") {
                 const ranges = [];
-                for (const range of cell.dependencies.references) {
+                for (const range of cell.dependencies) {
                     if (this.isZoneOverlapClippedZone(zones, range.zone)) {
                         ranges.push(...this.getters.createAdaptedRanges([range], offsetX, offsetY, sheetId));
                     }
@@ -16862,12 +16698,10 @@
                         ranges.push(range);
                     }
                 }
-                const dependencies = { ...cell.dependencies, references: ranges };
-                return this.getters.buildFormulaContent(sheetId, cell.normalizedText, dependencies);
+                return this.getters.buildFormulaContent(sheetId, cell, ranges);
             }
-            const ranges = this.getters.createAdaptedRanges(cell.dependencies.references, offsetX, offsetY, sheetId);
-            const dependencies = { ...cell.dependencies, references: ranges };
-            return this.getters.buildFormulaContent(sheetId, cell.normalizedText, dependencies);
+            const ranges = this.getters.createAdaptedRanges(cell.dependencies, offsetX, offsetY, sheetId);
+            return this.getters.buildFormulaContent(sheetId, cell, ranges);
         }
         /**
          * Check if the given zone and at least one of the clipped zones overlap
@@ -17898,7 +17732,7 @@
                 case "START_CHANGE_HIGHLIGHT":
                     this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
                     const previousRefToken = this.currentTokens
-                        .filter((token) => token.type === "SYMBOL")
+                        .filter((token) => token.type === "REFERENCE")
                         .find((token) => {
                         let value = token.value;
                         const [xc, sheet] = value.split("!").reverse();
@@ -18207,7 +18041,7 @@
             }
             const ranges = [];
             const colorIndexByRange = {};
-            for (let token of this.currentTokens.filter((token) => token.type === "SYMBOL")) {
+            for (let token of this.currentTokens.filter((token) => token.type === "REFERENCE")) {
                 let value = token.value;
                 const [xc, sheet] = value.split("!").reverse();
                 if (rangeReference.test(xc)) {
@@ -18339,15 +18173,13 @@
         // Getters
         // ---------------------------------------------------------------------------
         evaluateFormula(formulaString, sheetId = this.getters.getActiveSheetId()) {
-            let formula = normalize(formulaString);
-            const compiledFormula = compile(formula);
+            const compiledFormula = compile(formulaString);
             const params = this.getFormulaParameters(() => { });
             const ranges = [];
-            for (let xc of formula.dependencies.references) {
+            for (let xc of compiledFormula.dependencies) {
                 ranges.push(this.getters.getRangeFromSheetXC(sheetId, xc));
             }
-            const dependencies = { ...formula.dependencies, references: ranges };
-            return compiledFormula(dependencies, sheetId, ...params);
+            return compiledFormula.execute(ranges, sheetId, ...params);
         }
         /**
          * Return the value of each cell in the range as they are displayed in the grid.
@@ -18411,7 +18243,7 @@
                 visited[sheetId][xc] = null;
                 try {
                     params[2].__originCellXC = xc;
-                    cell.assignValue(cell.compiledFormula(cell.dependencies, sheetId, ...params));
+                    cell.assignValue(cell.compiledFormula.execute(cell.dependencies, sheetId, ...params));
                     if (Array.isArray(cell.evaluated.value)) {
                         // if a value returns an array (like =A1:A3)
                         throw new Error(_lt("This formula depends on invalid values"));
@@ -21130,11 +20962,8 @@
                             const position = this.getters.getCellPosition(cell.id);
                             const offsetY = newRow - position.row;
                             // we only have a vertical offset
-                            const ranges = this.getters.createAdaptedRanges(cell.dependencies.references, 0, offsetY, sheetId);
-                            content = this.getters.buildFormulaContent(sheetId, cell.normalizedText, {
-                                ...cell.dependencies,
-                                references: ranges,
-                            });
+                            const ranges = this.getters.createAdaptedRanges(cell.dependencies, 0, offsetY, sheetId);
+                            content = this.getters.buildFormulaContent(sheetId, cell, ranges);
                         }
                         newCellValues.style = cell.style;
                         newCellValues.content = content;
@@ -22946,7 +22775,7 @@
         const tokens = rangeTokenize(formula);
         let dependencies = [];
         let noRefFormula = "".concat(...tokens.map((token) => {
-            if (token.type === "SYMBOL" && cellReference.test(token.value)) {
+            if (token.type === "REFERENCE" && cellReference.test(token.value)) {
                 const value = token.value.trim();
                 if (!dependencies.includes(value)) {
                     dependencies.push(value);
@@ -24554,7 +24383,7 @@
             }
             return {
                 ...ast,
-                value: `"${formatDateTime({ value: internalDate.value, format: format.join(" ") })}"`,
+                value: formatDateTime({ value: internalDate.value, format: format.join(" ") }),
             };
         }
         else {
@@ -24718,7 +24547,7 @@
             let val = threshold.value;
             if (type === "formula") {
                 try {
-                    checkRelativeReferences(threshold.value);
+                    // Relative references are not supported in formula
                     val = adaptFormulaToExcel(threshold.value);
                 }
                 catch (error) {
@@ -24747,15 +24576,6 @@
                 return "percent";
             default:
                 return type;
-        }
-    }
-    /**
-     * Relative references are not supported in formula
-     */
-    function checkRelativeReferences(formula) {
-        const { dependencies } = normalize(formula);
-        if (dependencies.references.length) {
-            console.warn("Relative references might not work in conditional format formula thresholds in Excel.");
         }
     }
 
@@ -25673,7 +25493,7 @@
         }
     }
 
-    const { useComponent, useState: useState$e, onPatched: onPatched$4, useRef: useRef$6, onMounted: onMounted$9 } = owl.hooks;
+    const { useComponent, useState: useState$e, onPatched: onPatched$4, useRef: useRef$5, onMounted: onMounted$9 } = owl.hooks;
     /**
      * Return the o-spreadsheet element position relative
      * to the browser viewport.
@@ -25788,7 +25608,7 @@
     };
 
     const { xml: xml$k, css: css$j } = owl.tags;
-    const { useExternalListener: useExternalListener$2, useRef: useRef$5, onWillUpdateProps: onWillUpdateProps$4 } = owl.hooks;
+    const { useExternalListener: useExternalListener$3, useRef: useRef$4, onWillUpdateProps: onWillUpdateProps$4 } = owl.hooks;
     //------------------------------------------------------------------------------
     // Context Menu Component
     //------------------------------------------------------------------------------
@@ -25831,7 +25651,8 @@
         position="subMenuPosition"
         menuItems="subMenu.menuItems"
         depth="props.depth + 1"
-        t-on-close="subMenu.isOpen=false"/>
+        onMenuClicked="props.onMenuClicked"
+        onClose="() => this.close()"/>
     </Popover>`;
     const CSS$h = css$j /* scss */ `
   .o-menu {
@@ -25891,11 +25712,11 @@
                 scrollOffset: 0,
                 menuItems: [],
             });
-            this.position = useAbsolutePosition(useRef$5("menu"));
+            this.position = useAbsolutePosition(useRef$4("menu"));
         }
         setup() {
-            useExternalListener$2(window, "click", this.onClick);
-            useExternalListener$2(window, "contextmenu", this.onContextMenu);
+            useExternalListener$3(window, "click", this.onClick);
+            useExternalListener$3(window, "contextmenu", this.onContextMenu);
             onWillUpdateProps$4((nextProps) => {
                 if (nextProps.menuItems !== this.props.menuItems) {
                     this.subMenu.isOpen = false;
@@ -25923,13 +25744,14 @@
             };
         }
         async activateMenu(menu) {
+            var _a, _b;
             const result = await menu.action(this.env);
             this.close();
-            this.trigger(`menu-clicked`, result);
+            (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
         }
         close() {
             this.subMenu.isOpen = false;
-            this.trigger("close");
+            this.props.onClose();
         }
         /**
          * Return the number of pixels between the top of the menu
@@ -26028,7 +25850,7 @@
     // SpreadSheet
     // -----------------------------------------------------------------------------
     const TEMPLATE$h = xml$j /* xml */ `
-  <div class="o-spreadsheet-bottom-bar">
+  <div class="o-spreadsheet-bottom-bar" t-on-click="props.onClick()">
     <div class="o-sheet-item o-add-sheet" t-att-class="{'disabled': getters.isReadonly()}" t-on-click="addSheet">${PLUS}</div>
     <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
     <div class="o-all-sheets">
@@ -26053,7 +25875,7 @@
     <Menu t-if="menuState.isOpen"
           position="menuState.position"
           menuItems="menuState.menuItems"
-          t-on-close="menuState.isOpen=false"/>
+          onClose="() => this.menuState.isOpen=false"/>
   </div>`;
     const CSS$g = css$i /* scss */ `
   .o-spreadsheet-bottom-bar {
@@ -26551,6 +26373,11 @@
         setup() {
             onMounted$7(() => this.filter(this.props.search));
             onWillUpdateProps$3((nextProps) => this.checkUpdateProps(nextProps));
+            this.props.exposeAPI({
+                getValueToFill: () => this.getValueToFill(),
+                moveDown: () => this.moveDown(),
+                moveUp: () => this.moveUp(),
+            });
         }
         checkUpdateProps(nextProps) {
             if (nextProps.search !== this.props.search) {
@@ -26573,7 +26400,7 @@
         }
         fillValue(index) {
             this.state.selectedIndex = index;
-            this.trigger("completed", { text: this.getValueToFill() });
+            this.props.onCompleted(this.getValueToFill());
         }
         moveDown() {
             this.state.selectedIndex = (this.state.selectedIndex + 1) % this.state.values.length;
@@ -26588,6 +26415,7 @@
             if (this.state.values.length) {
                 return this.state.values[this.state.selectedIndex].text;
             }
+            return undefined;
         }
     }
     TextValueProvider.template = TEMPLATE$e;
@@ -26881,7 +26709,7 @@
     FunctionDescriptionProvider.style = CSS$c;
 
     const { Component: Component$c } = owl__namespace;
-    const { useRef: useRef$4, useState: useState$9, onMounted: onMounted$6, onPatched: onPatched$2, onWillUnmount: onWillUnmount$2 } = owl__namespace.hooks;
+    const { useRef: useRef$3, useState: useState$9, onMounted: onMounted$6, onPatched: onPatched$2, onWillUnmount: onWillUnmount$2 } = owl__namespace.hooks;
     const { xml: xml$e, css: css$d } = owl__namespace.tags;
     const functions = functionRegistry.content;
     const ASSISTANT_WIDTH = 300;
@@ -26924,15 +26752,14 @@
     class="o-composer-assistant" t-att-style="assistantStyle">
     <TextValueProvider
         t-if="autoCompleteState.showProvider"
-        t-ref="o_autocomplete_provider"
+        exposeAPI="(api) => this.autocompleteAPI = api"
         search="autoCompleteState.search"
         provider="autoCompleteState.provider"
-        t-on-completed="onCompleted"
+        onCompleted="(text) => this.onCompleted(text)"
         borderStyle="borderStyle"
     />
     <FunctionDescriptionProvider
         t-if="functionDescriptionState.showDescription"
-        t-ref="o_function_description_provider"
         functionName = "functionDescriptionState.functionName"
         functionDescription = "functionDescriptionState.functionDescription"
         argToFocus = "functionDescriptionState.argToFocus"
@@ -26983,8 +26810,7 @@
     class Composer extends Component$c {
         constructor() {
             super(...arguments);
-            this.composerRef = useRef$4("o_composer");
-            this.autoCompleteRef = useRef$4("o_autocomplete_provider");
+            this.composerRef = useRef$3("o_composer");
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.composerState = useState$9({
@@ -27048,8 +26874,9 @@
                 this.processContent();
             });
             onWillUnmount$2(() => {
+                var _a, _b;
                 delete DEBUG.composer;
-                this.trigger("composer-unmounted");
+                (_b = (_a = this.props).onComposerUnmounted) === null || _b === void 0 ? void 0 : _b.call(_a);
             });
             onPatched$2(() => {
                 if (!this.isKeyStillDown) {
@@ -27069,25 +26896,23 @@
                 return;
             }
             ev.stopPropagation();
-            const autoCompleteComp = this.autoCompleteRef.comp;
             if (["ArrowUp", "ArrowDown"].includes(ev.key) &&
                 this.autoCompleteState.showProvider &&
-                autoCompleteComp) {
+                this.autocompleteAPI) {
                 ev.preventDefault();
                 if (ev.key === "ArrowUp") {
-                    autoCompleteComp.moveUp();
+                    this.autocompleteAPI.moveUp();
                 }
                 else {
-                    autoCompleteComp.moveDown();
+                    this.autocompleteAPI.moveDown();
                 }
             }
         }
         processTabKey(ev) {
             ev.preventDefault();
             ev.stopPropagation();
-            const autoCompleteComp = this.autoCompleteRef.comp;
-            if (this.autoCompleteState.showProvider && autoCompleteComp) {
-                const autoCompleteValue = autoCompleteComp.getValueToFill();
+            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
+                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
                 if (autoCompleteValue) {
                     this.autoComplete(autoCompleteValue);
                     return;
@@ -27106,9 +26931,8 @@
             ev.preventDefault();
             ev.stopPropagation();
             this.isKeyStillDown = false;
-            const autoCompleteComp = this.autoCompleteRef.comp;
-            if (this.autoCompleteState.showProvider && autoCompleteComp) {
-                const autoCompleteValue = autoCompleteComp.getValueToFill();
+            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
+                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
                 if (autoCompleteValue) {
                     this.autoComplete(autoCompleteValue);
                     return;
@@ -27124,17 +26948,23 @@
             this.dispatch("STOP_EDITION", { cancel: true });
         }
         onKeydown(ev) {
+            var _a, _b;
             let handler = this.keyMapping[ev.key];
+            let isStopped = false;
             if (handler) {
                 handler.call(this, ev);
             }
             else {
+                isStopped = true;
                 ev.stopPropagation();
             }
             const { start, end } = this.contentHelper.getCurrentSelection();
             if (!this.getters.isSelectingForComposer()) {
                 this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", { start, end });
                 this.isKeyStillDown = true;
+            }
+            if (!isStopped) {
+                (_b = (_a = this.props).onKeyDown) === null || _b === void 0 ? void 0 : _b.call(_a, ev);
             }
         }
         /*
@@ -27194,9 +27024,7 @@
             const newSelection = this.contentHelper.getCurrentSelection();
             this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
             if (this.props.focus === "inactive") {
-                this.trigger("composer-content-focused", {
-                    selection: newSelection,
-                });
+                this.props.onComposerContentFocused(newSelection);
             }
             this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", newSelection);
             this.processTokenAtCursor();
@@ -27204,8 +27032,8 @@
         onBlur() {
             this.isKeyStillDown = false;
         }
-        onCompleted(ev) {
-            this.autoComplete(ev.detail.text);
+        onCompleted(text) {
+            text && this.autoComplete(text);
         }
         // ---------------------------------------------------------------------------
         // Private
@@ -27255,13 +27083,13 @@
                     case "STRING":
                         result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
                         break;
+                    case "REFERENCE":
+                        const [xc, sheet] = token.value.split("!").reverse();
+                        result.push({ value: token.value, color: this.rangeColor(xc, sheet) || "#000" });
+                        break;
                     case "SYMBOL":
                         let value = token.value;
-                        const [xc, sheet] = value.split("!").reverse();
-                        if (rangeReference.test(xc)) {
-                            result.push({ value: token.value, color: this.rangeColor(xc, sheet) || "#000" });
-                        }
-                        else if (["TRUE", "FALSE"].includes(value.toUpperCase())) {
+                        if (["TRUE", "FALSE"].includes(value.toUpperCase())) {
                             result.push({ value: token.value, color: NumberColor });
                         }
                         else {
@@ -27343,6 +27171,7 @@
                 if (tokenAtCursor) {
                     let start = tokenAtCursor.end;
                     let end = tokenAtCursor.end;
+                    // shouldn't it be REFERENCE ?
                     if (["SYMBOL", "FUNCTION"].includes(tokenAtCursor.type)) {
                         start = tokenAtCursor.start;
                     }
@@ -27389,7 +27218,8 @@
       inputStyle = "composerStyle"
       rect = "composerState.rect"
       delimitation = "composerState.delimitation"
-      t-on-keydown = "onKeydown"
+      onComposerUnmounted="props.onComposerUnmounted"
+      onKeyDown="(ev) => this.onKeyDown(ev)"
     />
   </div>
 `;
@@ -27480,7 +27310,7 @@
       overflow: hidden;
     `;
         }
-        onKeydown(ev) {
+        onKeyDown(ev) {
             // In selecting mode, arrows should not move the cursor but it should
             // select adjacent cells on the grid.
             if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
@@ -27514,7 +27344,7 @@
 
     const { useState: useState$7 } = owl__namespace;
     const { xml: xml$b, css: css$a } = owl.tags;
-    const { useRef: useRef$3, onMounted: onMounted$4, onPatched: onPatched$1 } = owl.hooks;
+    const { useRef: useRef$2, onMounted: onMounted$4, onPatched: onPatched$1 } = owl.hooks;
     const TEMPLATE$9 = xml$b /* xml */ `
 <div class="o-chart-container">
   <div class="o-chart-menu" t-on-click="showMenu">${LIST}</div>
@@ -27522,7 +27352,7 @@
   <Menu t-if="menuState.isOpen"
     position="menuState.position"
     menuItems="menuState.menuItems"
-    t-on-close="menuState.isOpen=false"/>
+    onClose="() => this.menuState.isOpen=false"/>
 </div>`;
     // -----------------------------------------------------------------------------
     // STYLE
@@ -27553,7 +27383,7 @@
         constructor() {
             super(...arguments);
             this.menuState = useState$7({ isOpen: false, position: null, menuItems: [] });
-            this.canvas = useRef$3("graphContainer");
+            this.canvas = useRef$2("graphContainer");
             this.state = { background: BACKGROUND_CHART_COLOR };
             this.position = useAbsolutePosition();
         }
@@ -27630,7 +27460,7 @@
                     if (this.props.sidePanelIsOpen) {
                         this.env.toggleSidePanel("ChartPanel", { figure: this.props.figure });
                     }
-                    this.trigger("figure-deleted");
+                    this.props.onFigureDeleted();
                 },
             });
             registry.add("refresh", {
@@ -27676,6 +27506,7 @@
                 <t t-component="figureRegistry.get(info.figure.tag).Component"
                    t-key="info.id"
                    sidePanelIsOpen="props.sidePanelIsOpen"
+                   onFigureDeleted="props.onFigureDeleted"
                    figure="info.figure"/>
                 <t t-if="info.isSelected">
                     <div class="o-anchor o-top" t-on-mousedown.stop="resize(info.figure, 0,-1)"/>
@@ -27909,7 +27740,7 @@
             switch (ev.key) {
                 case "Delete":
                     this.dispatch("DELETE_FIGURE", { sheetId: this.getters.getActiveSheetId(), id: figure.id });
-                    this.trigger("figure-deleted");
+                    this.props.onFigureDeleted();
                     break;
                 case "ArrowDown":
                 case "ArrowLeft":
@@ -27991,7 +27822,7 @@
     `;
         }
         onMouseDown(ev) {
-            this.trigger("move-highlight", { clientX: ev.clientX, clientY: ev.clientY });
+            this.props.onMoveHighlight(ev.clientX, ev.clientY);
         }
     }
     Border.template = TEMPLATE$7;
@@ -28055,7 +27886,7 @@
     `;
         }
         onMouseDown(ev) {
-            this.trigger("resize-highlight", { isLeft: this.isLeft, isTop: this.isTop });
+            this.props.onResizeHighlight(this.isLeft, this.isTop);
         }
     }
     Corner.template = TEMPLATE$6;
@@ -28067,7 +27898,7 @@
   <div class="o-highlight">
     <t t-foreach="['nw', 'ne', 'sw', 'se']" t-as="orientation" t-key="orientation">
       <Corner
-        t-on-resize-highlight="onResizeHighlight"
+        onResizeHighlight="(isLeft, isTop) => this.onResizeHighlight(isLeft, isTop)"
         isResizing='highlightState.shiftingMode === "isResizing"'
         orientation="orientation"
         zone="props.zone"
@@ -28076,7 +27907,7 @@
     </t>
     <t t-foreach="['n', 's', 'w', 'e']" t-as="orientation" t-key="orientation">
       <Border
-        t-on-move-highlight="onMoveHighlight"
+        onMoveHighlight="(x, y) => this.onMoveHighlight(x,y)"
         isMoving='highlightState.shiftingMode === "isMoving"'
         orientation="orientation"
         zone="props.zone"
@@ -28091,13 +27922,13 @@
                 shiftingMode: "none",
             });
         }
-        onResizeHighlight(ev) {
+        onResizeHighlight(isLeft, isTop) {
             this.highlightState.shiftingMode = "isResizing";
             const z = this.props.zone;
-            const pivotCol = ev.detail.isLeft ? z.right : z.left;
-            const pivotRow = ev.detail.isTop ? z.bottom : z.top;
-            let lastCol = ev.detail.isLeft ? z.left : z.right;
-            let lastRow = ev.detail.isTop ? z.top : z.bottom;
+            const pivotCol = isLeft ? z.right : z.left;
+            const pivotRow = isTop ? z.bottom : z.top;
+            let lastCol = isLeft ? z.left : z.right;
+            let lastRow = isTop ? z.top : z.bottom;
             let currentZone = z;
             this.env.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
             const mouseMove = (col, row) => {
@@ -28127,15 +27958,15 @@
             };
             dragAndDropBeyondTheViewport(this.el.parentElement, this.env, mouseMove, mouseUp);
         }
-        onMoveHighlight(ev) {
+        onMoveHighlight(clientX, clientY) {
             this.highlightState.shiftingMode = "isMoving";
             const z = this.props.zone;
             const parent = this.el.parentElement;
             const position = parent.getBoundingClientRect();
             const activeSheet = this.env.getters.getActiveSheet();
             const { top: viewportTop, left: viewportLeft } = this.env.getters.getActiveSnappedViewport();
-            const initCol = this.env.getters.getColIndex(ev.detail.clientX - position.left, viewportLeft);
-            const initRow = this.env.getters.getRowIndex(ev.detail.clientY - position.top, viewportTop);
+            const initCol = this.env.getters.getColIndex(clientX - position.left, viewportLeft);
+            const initRow = this.env.getters.getRowIndex(clientY - position.top, viewportTop);
             const deltaColMin = -z.left;
             const deltaColMax = activeSheet.cols.length - z.right - 1;
             const deltaRowMin = -z.top;
@@ -28281,7 +28112,7 @@
 
     const { Component: Component$5, tags, hooks: hooks$1, useState: useState$5 } = owl__namespace;
     const { xml: xml$5, css: css$5 } = tags;
-    const { useRef: useRef$2, onMounted: onMounted$2 } = hooks$1;
+    const { useRef: useRef$1, onMounted: onMounted$2 } = hooks$1;
     const MENU_OFFSET_X = 320;
     const MENU_OFFSET_Y = 100;
     const PADDING = 12;
@@ -28309,8 +28140,8 @@
         t-if="menu.isOpen"
         position="menuPosition"
         menuItems="menuItems"
-        t-on-menu-clicked="onSpecialLink"
-        t-on-close.stop="menu.isOpen=false"/>
+        onMenuClicked="(ev) => this.onSpecialLink(ev)"
+        onClose="() => this.menu.isOpen=false"/>
       <div class="o-buttons">
         <button t-on-click="cancel" class="o-button o-cancel" t-esc="env._t('${LinkEditorTerms.Cancel}')"></button>
         <button t-on-click="save" class="o-button o-save" t-esc="env._t('${LinkEditorTerms.Confirm}')" t-att-disabled="!state.link.url" ></button>
@@ -28397,7 +28228,7 @@
                 isOpen: false,
             });
             this.position = useAbsolutePosition();
-            this.urlInput = useRef$2("urlInput");
+            this.urlInput = useRef$1("urlInput");
         }
         setup() {
             onMounted$2(() => { var _a; return (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus(); });
@@ -28449,10 +28280,10 @@
                 sheetId: this.getters.getActiveSheetId(),
                 content: markdownLink(label, this.state.link.url),
             });
-            this.trigger("link-editor-closed");
+            this.props.onLinkEditorClosed();
         }
         cancel() {
-            this.trigger("link-editor-closed");
+            this.props.onLinkEditorClosed();
         }
         onKeyDown(ev) {
             switch (ev.key) {
@@ -28709,7 +28540,8 @@
             }
             const type = this._getType();
             const { x, y } = this._getXY(ev);
-            this.trigger("open-contextmenu", { type, x, y });
+            // todo: define props
+            this.props.onOpenContextMenu(type, x, y);
         }
     }
     class ColResizer extends AbstractResizer {
@@ -29134,8 +28966,8 @@
     }
     Overlay.template = xml$4 /* xml */ `
     <div class="o-overlay">
-      <ColResizer />
-      <RowResizer />
+      <ColResizer onOpenContextMenu="props.onOpenContextMenu" />
+      <RowResizer onOpenContextMenu="props.onOpenContextMenu" />
       <div class="all" t-on-mousedown.self="selectAll"/>
     </div>`;
     Overlay.style = css$4 /* scss */ `
@@ -29182,7 +29014,7 @@
      */
     const { Component: Component$3, useState: useState$3 } = owl__namespace;
     const { xml: xml$3, css: css$3 } = owl__namespace.tags;
-    const { useRef: useRef$1, onMounted: onMounted$1, onWillUnmount: onWillUnmount$1, onPatched } = owl__namespace.hooks;
+    const { useRef, onMounted: onMounted$1, onWillUnmount: onWillUnmount$1, onPatched, useExternalListener: useExternalListener$2 } = owl__namespace.hooks;
     const registries$1 = {
         ROW: rowMenuRegistry,
         COL: colMenuRegistry,
@@ -29200,7 +29032,7 @@
         const hoveredPosition = useState$3({});
         const { browser, getters } = env;
         const { Date, setInterval, clearInterval } = browser;
-        const canvasRef = useRef$1("canvas");
+        const canvasRef = useRef("canvas");
         let x = 0;
         let y = 0;
         let lastMoved = 0;
@@ -29242,7 +29074,7 @@
         return hoveredPosition;
     }
     function useTouchMove(handler, canMoveUp) {
-        const canvasRef = useRef$1("canvas");
+        const canvasRef = useRef("canvas");
         let x = null;
         let y = null;
         function onTouchStart(ev) {
@@ -29289,7 +29121,7 @@
   <div class="o-grid" t-on-click="focus" t-on-keydown="onKeydown" t-on-wheel="onMouseWheel">
     <t t-if="getters.getEditionMode() !== 'inactive'">
       <GridComposer
-        t-on-composer-unmounted="focus"
+        onComposerUnmounted="() => this.focus()"
         focus="props.focusComposer"
         />
     </t>
@@ -29330,7 +29162,7 @@
       flipVerticalOffset="-popoverPosition.cellHeight"
       childWidth="${LINK_EDITOR_WIDTH}"
       childHeight="${LINK_EDITOR_HEIGHT}">
-      <LinkEditor cellPosition="activeCellPosition"/>
+      <LinkEditor cellPosition="activeCellPosition" onLinkEditorClosed="props.onLinkEditorClosed"/>
     </Popover>
     <t t-if="getters.getEditionMode() === 'inactive'">
       <Autofill position="getAutofillPosition()"/>
@@ -29342,13 +29174,13 @@
         </t>
       </t>
     </t>
-    <Overlay t-on-open-contextmenu="onOverlayContextMenu" />
+    <Overlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)" />
     <Menu t-if="menuState.isOpen"
       menuItems="menuState.menuItems"
       position="menuState.position"
-      t-on-close.stop="menuState.isOpen=false"/>
+      onClose="() => this.menuState.isOpen=false"/>
     <t t-set="gridSize" t-value="getters.getMaxViewportSize(getters.getActiveSheet())"/>
-    <FiguresContainer model="props.model" sidePanelIsOpen="props.sidePanelIsOpen" t-on-figure-deleted="focus" />
+    <FiguresContainer model="props.model" sidePanelIsOpen="props.sidePanelIsOpen" onFigureDeleted="() => this.focus()" />
     <div class="o-scrollbar vertical" t-on-scroll="onScroll" t-ref="vscrollbar">
       <div t-attf-style="width:1px;height:{{gridSize.height}}px"/>
     </div>
@@ -29405,14 +29237,18 @@
                 position: null,
                 menuItems: [],
             });
-            this.vScrollbarRef = useRef$1("vscrollbar");
-            this.hScrollbarRef = useRef$1("hscrollbar");
-            this.canvas = useRef$1("canvas");
+            this.vScrollbarRef = useRef("vscrollbar");
+            this.hScrollbarRef = useRef("hscrollbar");
+            this.canvas = useRef("canvas");
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.currentSheet = this.getters.getActiveSheetId();
             this.clickedCol = 0;
             this.clickedRow = 0;
+            // last string that was cut or copied. It is necessary so we can make the
+            // difference between a paste coming from the sheet itself, or from the
+            // os clipboard
+            this.clipBoardString = "";
             this.hoveredCell = useCellHovered(this.env, () => this.getters.getActiveSnappedViewport());
             // this map will handle most of the actions that should happen on key down. The arrow keys are managed in the key
             // down itself
@@ -29420,16 +29256,16 @@
                 ENTER: () => {
                     const cell = this.getters.getActiveCell();
                     !cell || cell.isEmpty()
-                        ? this.trigger("composer-cell-focused")
-                        : this.trigger("composer-content-focused");
+                        ? this.props.onGridComposerCellFocused()
+                        : this.props.onComposerContentFocused();
                 },
                 TAB: () => this.dispatch("MOVE_POSITION", { deltaX: 1, deltaY: 0 }),
                 "SHIFT+TAB": () => this.dispatch("MOVE_POSITION", { deltaX: -1, deltaY: 0 }),
                 F2: () => {
                     const cell = this.getters.getActiveCell();
                     !cell || cell.isEmpty()
-                        ? this.trigger("composer-cell-focused")
-                        : this.trigger("composer-content-focused");
+                        ? this.props.onGridComposerCellFocused()
+                        : this.props.onComposerContentFocused();
                 },
                 DELETE: () => {
                     this.dispatch("DELETE_CONTENT", {
@@ -29468,10 +29304,7 @@
                         const zone = (_a = sums[0]) === null || _a === void 0 ? void 0 : _a.zone;
                         const zoneXc = zone ? this.getters.zoneToXC(sheetId, sums[0].zone) : "";
                         const formula = `=SUM(${zoneXc})`;
-                        this.trigger("composer-cell-focused", {
-                            content: formula,
-                            selection: { start: 5, end: 5 + zoneXc.length },
-                        });
+                        this.props.onGridComposerCellFocused(formula, { start: 5, end: 5 + zoneXc.length });
                     }
                     else {
                         this.dispatch("SUM_SELECTION");
@@ -29522,12 +29355,16 @@
             this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
         }
         setup() {
+            useExternalListener$2(document.body, "cut", this.copy.bind(this, true));
+            useExternalListener$2(document.body, "copy", this.copy.bind(this, false));
+            useExternalListener$2(document.body, "paste", this.paste);
             useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0);
             onMounted$1(() => this.initGrid());
             onPatched(() => {
                 this.drawGrid();
                 this.resizeGrid();
             });
+            this.props.exposeFocus(() => this.focus());
         }
         initGrid() {
             this.vScrollbar.el = this.vScrollbarRef.el;
@@ -29792,12 +29629,12 @@
             if (this.clickedCol === col && this.clickedRow === row) {
                 const cell = this.getters.getActiveCell();
                 !cell || cell.isEmpty()
-                    ? this.trigger("composer-cell-focused")
-                    : this.trigger("composer-content-focused");
+                    ? this.props.onGridComposerCellFocused()
+                    : this.props.onComposerContentFocused();
             }
         }
         closeLinkEditor() {
-            this.trigger("link-editor-closed");
+            this.props.onLinkEditorClosed();
         }
         // ---------------------------------------------------------------------------
         // Keyboard interactions
@@ -29869,7 +29706,7 @@
                     // character
                     ev.preventDefault();
                     ev.stopPropagation();
-                    this.trigger("composer-cell-focused", { content: ev.key });
+                    this.props.onGridComposerCellFocused(ev.key);
                 }
             }
         }
@@ -29899,12 +29736,6 @@
             }
             this.toggleContextMenu(type, ev.offsetX, ev.offsetY);
         }
-        onOverlayContextMenu(ev) {
-            const type = ev.detail.type;
-            const x = ev.detail.x;
-            const y = ev.detail.y;
-            this.toggleContextMenu(type, x, y);
-        }
         toggleContextMenu(type, x, y) {
             this.closeLinkEditor();
             this.menuState.isOpen = true;
@@ -29912,6 +29743,42 @@
             this.menuState.menuItems = registries$1[type]
                 .getAll()
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
+        }
+        copy(cut, ev) {
+            if (!this.el.contains(document.activeElement)) {
+                return;
+            }
+            /* If we are currently editing a cell, let the default behavior */
+            if (this.getters.getEditionMode() !== "inactive") {
+                return;
+            }
+            const type = cut ? "CUT" : "COPY";
+            const target = this.getters.getSelectedZones();
+            this.dispatch(type, { target });
+            const content = this.getters.getClipboardContent();
+            this.clipBoardString = content;
+            ev.clipboardData.setData("text/plain", content);
+            ev.preventDefault();
+        }
+        paste(ev) {
+            if (!this.el.contains(document.activeElement)) {
+                return;
+            }
+            const clipboardData = ev.clipboardData;
+            if (clipboardData.types.indexOf("text/plain") > -1) {
+                const content = clipboardData.getData("text/plain");
+                const target = this.getters.getSelectedZones();
+                if (this.clipBoardString === content) {
+                    // the paste actually comes from o-spreadsheet itself
+                    interactivePaste(this.env, target);
+                }
+                else {
+                    this.dispatch("PASTE_FROM_OS_CLIPBOARD", {
+                        target,
+                        text: content,
+                    });
+                }
+            }
         }
     }
     Grid.template = TEMPLATE$2;
@@ -29937,10 +29804,10 @@
   <div class="o-sidePanel" >
     <div class="o-sidePanelHeader">
         <div class="o-sidePanelTitle" t-esc="getTitle()"/>
-        <div class="o-sidePanelClose" t-on-click="trigger('close-side-panel')">×</div>
+        <div class="o-sidePanelClose" t-on-click="props.onCloseSidePanel()">×</div>
     </div>
     <div class="o-sidePanelBody">
-      <t t-component="state.panel.Body" t-props="props.panelProps" t-key="'Body_' + props.component"/>
+      <t t-component="state.panel.Body" t-props="props.panelProps" onCloseSidePanel="props.onCloseSidePanel" t-key="'Body_' + props.component"/>
     </div>
     <div class="o-sidePanelFooter" t-if="state.panel.Footer">
       <t t-component="state.panel.Footer" t-props="props.panelProps" t-key="'Footer_' + props.component"/>
@@ -30220,8 +30087,8 @@
                 }
             }
         }
-        setColor(target, ev) {
-            setStyle(this.env, { [target]: ev.detail.color });
+        setColor(target, color) {
+            setStyle(this.env, { [target]: color });
         }
         setBorder(command) {
             this.dispatch("SET_FORMATTING", {
@@ -30270,7 +30137,7 @@
         }
     }
     TopBar.template = xml$1 /* xml */ `
-    <div class="o-spreadsheet-topbar">
+    <div class="o-spreadsheet-topbar" t-on-click="props.onClick">
       <div class="o-topbar-top">
         <!-- Menus -->
         <div class="o-topbar-topleft">
@@ -30286,7 +30153,7 @@
           <Menu t-if="state.menuState.isOpen"
                 position="state.menuState.position"
                 menuItems="state.menuState.menuItems"
-                t-on-close="state.menuState.isOpen=false"/>
+                onClose="() => this.state.menuState.isOpen=false"/>
         </div>
         <div class="o-topbar-topright">
           <div t-foreach="topbarComponents" t-as="comp" t-key="comp_index">
@@ -30335,12 +30202,12 @@
           <div class="o-tool" title="Strikethrough"  t-att-class="{active:style.strikethrough}" t-on-click="toogleStyle('strikethrough')">${STRIKE_ICON}</div>
           <div class="o-tool o-dropdown o-with-color">
             <span t-attf-style="border-color:{{textColor}}" title="Text Color" t-on-click="toggleDropdownTool('textColorTool')">${TEXT_COLOR_ICON}</span>
-            <ColorPicker t-if="state.activeTool === 'textColorTool'" t-on-color-picked="setColor('textColor')" t-key="textColor"/>
+            <ColorPicker t-if="state.activeTool === 'textColorTool'" onColorPicked="(color) => this.setColor('textColor', color)" t-key="textColor"/>
           </div>
           <div class="o-divider"/>
           <div class="o-tool  o-dropdown o-with-color">
             <span t-attf-style="border-color:{{fillColor}}" title="Fill Color" t-on-click="toggleDropdownTool('fillColorTool')">${FILL_COLOR_ICON}</span>
-            <ColorPicker t-if="state.activeTool === 'fillColorTool'" t-on-color-picked="setColor('fillColor')" t-key="fillColor"/>
+            <ColorPicker t-if="state.activeTool === 'fillColorTool'" onColorPicked="(color) => this.setColor('fillColor', color)" t-key="fillColor"/>
           </div>
           <div class="o-tool o-dropdown">
             <span title="Borders" t-on-click="toggleDropdownTool('borderTool')">${BORDERS_ICON}</span>
@@ -30379,7 +30246,7 @@
           <!-- <div class="o-tool" title="Vertical align"><span>${ALIGN_MIDDLE_ICON}</span> ${TRIANGLE_DOWN_ICON}</div> -->
           <!-- <div class="o-tool" title="Text Wrapping">${TEXT_WRAPPING_ICON}</div> -->
         </div>
-        <Composer inputStyle="composerStyle" focus="props.focusComposer"/>
+        <Composer inputStyle="composerStyle" focus="props.focusComposer" onComposerContentFocused="props.onComposerContentFocused"/>
 
       </div>
     </div>`;
@@ -30572,34 +30439,31 @@
     TopBar.components = { ColorPicker, Menu, Composer };
 
     const { Component, useState } = owl__namespace;
-    const { useRef, useExternalListener } = owl__namespace.hooks;
+    const { useExternalListener } = owl__namespace.hooks;
     const { xml, css } = owl__namespace.tags;
     const { useSubEnv, onMounted, onWillUnmount, onWillUpdateProps } = owl__namespace.hooks;
-    // -----------------------------------------------------------------------------
-    // SpreadSheet
-    // -----------------------------------------------------------------------------
     const TEMPLATE = xml /* xml */ `
   <div class="o-spreadsheet" t-on-save-requested="save" t-on-keydown="onKeydown">
-  <TopBar
-  t-on-click="focusGrid"
-  t-on-composer-content-focused="onTopBarComposerFocused"
-  focusComposer="focusTopBarComposer"
-  class="o-two-columns"/>
+    <TopBar
+    onClick="() => focusGrid()"
+    onComposerContentFocused="(selection) => this.onTopBarComposerFocused(selection)"
+    focusComposer="focusTopBarComposer"
+    class="o-two-columns"/>
     <Grid
       model="model"
       sidePanelIsOpen="sidePanel.isOpen"
       linkEditorIsOpen="linkEditor.isOpen"
-      t-on-link-editor-closed="closeLinkEditor"
-      t-ref="grid"
+      onLinkEditorClosed="() => this.closeLinkEditor()"
       focusComposer="focusGridComposer"
-      t-on-composer-content-focused="onGridComposerContentFocused"
-      t-on-composer-cell-focused="onGridComposerCellFocused"
+      exposeFocus="(focus) => this._focusGrid = focus"
+      onComposerContentFocused="() => this.onGridComposerContentFocused()"
+      onGridComposerCellFocused="(content, selection) => this.onGridComposerCellFocused(content, selection)"
       t-att-class="{'o-two-columns': !sidePanel.isOpen}"/>
     <SidePanel t-if="sidePanel.isOpen"
-           t-on-close-side-panel="sidePanel.isOpen = false"
+           onCloseSidePanel="() => this.sidePanel.isOpen = false"
            component="sidePanel.component"
            panelProps="sidePanel.panelProps"/>
-    <BottomBar t-on-click="focusGrid" class="o-two-columns"/>
+    <BottomBar onClick="() => this.focusGrid()" class="o-two-columns"/>
   </div>`;
     const CSS = css /* scss */ `
   .o-spreadsheet {
@@ -30646,17 +30510,12 @@
                 isReadonly: this.props.isReadonly,
                 snapshotRequested: this.props.snapshotRequested,
             }, this.props.stateUpdateMessages);
-            this.grid = useRef("grid");
             this.sidePanel = useState({ isOpen: false, panelProps: {} });
             this.linkEditor = useState({ isOpen: false });
             this.composer = useState({
                 topBarFocus: "inactive",
                 gridFocusMode: "inactive",
             });
-            // last string that was cut or copied. It is necessary so we can make the
-            // difference between a paste coming from the sheet itself, or from the
-            // os clipboard
-            this.clipBoardString = "";
             this.keyDownMapping = {
                 "CTRL+H": () => this.toggleSidePanel("FindAndReplace", {}),
                 "CTRL+F": () => this.toggleSidePanel("FindAndReplace", {}),
@@ -30678,9 +30537,6 @@
         }
         setup() {
             useExternalListener(window, "resize", this.render);
-            useExternalListener(document.body, "cut", this.copy.bind(this, true));
-            useExternalListener(document.body, "copy", this.copy.bind(this, false));
-            useExternalListener(document.body, "paste", this.paste);
             useExternalListener(document.body, "keyup", this.onKeyup.bind(this));
             useExternalListener(window, "beforeunload", this.leaveCollaborativeSession.bind(this));
             onMounted(() => this.initiateModelEvents());
@@ -30754,43 +30610,10 @@
             }
         }
         focusGrid() {
-            this.grid.comp.focus();
-        }
-        copy(cut, ev) {
-            if (!this.grid.el.contains(document.activeElement)) {
-                return;
+            if (!this._focusGrid) {
+                throw new Error("_focusGrid should be exposed by the grid component");
             }
-            /* If we are currently editing a cell, let the default behavior */
-            if (this.model.getters.getEditionMode() !== "inactive") {
-                return;
-            }
-            const type = cut ? "CUT" : "COPY";
-            const target = this.model.getters.getSelectedZones();
-            this.model.dispatch(type, { target });
-            const content = this.model.getters.getClipboardContent();
-            this.clipBoardString = content;
-            ev.clipboardData.setData("text/plain", content);
-            ev.preventDefault();
-        }
-        paste(ev) {
-            if (!this.grid.el.contains(document.activeElement)) {
-                return;
-            }
-            const clipboardData = ev.clipboardData;
-            if (clipboardData.types.indexOf("text/plain") > -1) {
-                const content = clipboardData.getData("text/plain");
-                const target = this.model.getters.getSelectedZones();
-                if (this.clipBoardString === content) {
-                    // the paste actually comes from o-spreadsheet itself
-                    interactivePaste(this.env, target);
-                }
-                else {
-                    this.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
-                        target,
-                        text: content,
-                    });
-                }
-            }
+            this._focusGrid();
         }
         save() {
             this.trigger("save-content", {
@@ -30821,31 +30644,31 @@
                 return;
             }
         }
-        onTopBarComposerFocused(ev) {
+        onTopBarComposerFocused(selection) {
             if (this.model.getters.isReadonly()) {
                 return;
             }
             this.composer.topBarFocus = "contentFocus";
             this.composer.gridFocusMode = "inactive";
-            this.setComposerContent(ev.detail || {});
+            this.setComposerContent({ selection } || {});
             this.env.dispatch("UNFOCUS_SELECTION_INPUT");
         }
-        onGridComposerContentFocused(ev) {
+        onGridComposerContentFocused() {
             if (this.model.getters.isReadonly()) {
                 return;
             }
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "contentFocus";
-            this.setComposerContent(ev.detail || {});
+            this.setComposerContent({});
             this.env.dispatch("UNFOCUS_SELECTION_INPUT");
         }
-        onGridComposerCellFocused(ev) {
+        onGridComposerCellFocused(content, selection) {
             if (this.model.getters.isReadonly()) {
                 return;
             }
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "cellFocus";
-            this.setComposerContent(ev.detail || {});
+            this.setComposerContent({ content, selection } || {});
             this.env.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         /**
@@ -30936,12 +30759,12 @@
     exports.__info__ = __info__;
     exports.astToFormula = astToFormula;
     exports.cellTypes = cellTypes;
+    exports.compile = compile;
     exports.convertAstNodes = convertAstNodes;
     exports.coreTypes = coreTypes;
     exports.functionCache = functionCache;
     exports.helpers = helpers;
     exports.invalidateEvaluationCommands = invalidateEvaluationCommands;
-    exports.normalize = normalize;
     exports.parse = parse;
     exports.readonlyAllowedCommands = readonlyAllowedCommands;
     exports.registries = registries;
@@ -30950,8 +30773,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-01-20T17:24:45.505Z';
-    exports.__info__.hash = '434b21e';
+    exports.__info__.date = '2022-01-26T13:37:11.874Z';
+    exports.__info__.hash = 'd66ed79';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

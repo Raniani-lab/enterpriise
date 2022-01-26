@@ -171,7 +171,7 @@ export default class SpreadsheetComponent extends Component {
 
   getThumbnail() {
     const dimensions = spreadsheet.SPREADSHEET_DIMENSIONS;
-    const canvas = this.spreadsheet.comp.grid.comp.canvas.el;
+    const canvas = this.spreadsheet.el.querySelector("canvas");
     const canvasResizer = document.createElement("canvas");
     const size = this.props.thumbnailSize;
     canvasResizer.width = size;

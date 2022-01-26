@@ -62,8 +62,7 @@ class CarvajalRequest():
         self.co_id_company = company.l10n_co_edi_company or ''
         self.account = company.l10n_co_edi_account or ''
         self.test_mode = company.l10n_co_edi_test_mode
-
-        self.wsdl = company.env['ir.config_parameter'].get_param('l10n_edi_carvajal_wsdl')
+        self.wsdl = company.env['ir.config_parameter'].sudo().get_param('l10n_edi_carvajal_wsdl')
         if self.wsdl:
             self.wsdl = self.wsdl % ('-stage' if company.l10n_co_edi_test_mode else '')
         else:  # for old users, keep using the old URL

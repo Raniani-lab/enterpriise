@@ -259,8 +259,8 @@
                 <filter string="Human" name="human" domain="[('resource_type','=', 'user')]"/>
                 <filter string="Material" name="material" domain="[('resource_type','=', 'material')]"/>
                 <separator/>
-                <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
                 <filter name="unpublished_shifts" string="Draft" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
+                <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
                 <filter name="publication_warning" string="To Resend" domain="[('publication_warning', '=', True), ('overlap_slot_count', '=', 0)]" groups="planning.group_planning_manager"/>
                 <separator groups="planning.group_planning_manager"/>
                 <filter name="future" string="Future" domain="[('start_datetime', '>=', time.strftime('%Y-%m-%d 00:00:00'))]" />

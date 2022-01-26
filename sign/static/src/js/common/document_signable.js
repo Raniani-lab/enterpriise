@@ -1622,8 +1622,8 @@ const SignableDocument = Document.extend({
       }
     });
 
-    const signatureValues = this.getSignatureValuesFromConfiguration();
-    if (signatureValues.length === 0) {
+    const [signatureValues, newSignItems] = this.getSignatureValuesFromConfiguration();
+    if (!signatureValues) {
       this.iframeWidget.checkSignItemsCompletion();
       Dialog.alert(this, _t("Some fields have still to be completed !"), {
         title: _t("Warning"),
@@ -1631,7 +1631,6 @@ const SignableDocument = Document.extend({
       $btn.removeAttr("disabled", true);
       return;
     }
-    const [signature, newSignItems] = signatureValues;
     const callback = (response) => {
       $btn.text(init_btn_text);
       if (!response) {
@@ -1688,9 +1687,9 @@ const SignableDocument = Document.extend({
         this.RedirectURL
       )
         .open(this.signerName, mail)
-        .sent.then(() => this._sign(signature, callback, newSignItems));
+        .sent.then(() => this._sign(signatureValues, callback, newSignItems));
     } else {
-      this._sign(signature, callback, newSignItems);
+      this._sign(signatureValues, callback, newSignItems);
     }
   },
 

@@ -38,7 +38,7 @@ class AccountDisallowedExpensesCategory(models.Model):
             return []
         result = []
         for record in self:
-            rate = self.current_rate or _('No Rate')
+            rate = record.current_rate or _('No Rate')
             name = '%s - %s (%s)' % (record.code, record.name, rate)
             result.append((record.id, name))
         return result

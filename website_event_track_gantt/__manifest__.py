@@ -14,5 +14,11 @@ For that purpose it adds a gantt view on event tracks.""",
         'views/event_event_views.xml',
         'views/event_track_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'website_event_track_gantt/static/src/js/event_track_gantt_controller.js',
+            'website_event_track_gantt/static/src/js/event_track_gantt_view.js',
+        ],
+    },
     'license': 'OEEL-1',
 }

@@ -509,15 +509,17 @@ class HrContractSalary(http.Controller):
             partner = request.env['res.partner'].sudo().with_context(lang=None).create(address_home_vals)
 
         # Update personal info on the employee
-        bank_account_vals['partner_id'] = partner.id
-        existing_bank_account = request.env['res.partner.bank'].sudo().search([
-            ('acc_number', '=', bank_account_vals['acc_number'])], limit=1)
-        if existing_bank_account:
-            bank_account = existing_bank_account
-        else:
-            bank_account = request.env['res.partner.bank'].sudo().create(bank_account_vals)
+        if bank_account_vals:
+            bank_account_vals['partner_id'] = partner.id
+            existing_bank_account = request.env['res.partner.bank'].sudo().search([
+                ('acc_number', '=', bank_account_vals['acc_number'])], limit=1)
+            if existing_bank_account:
+                bank_account = existing_bank_account
+            else:
+                bank_account = request.env['res.partner.bank'].sudo().create(bank_account_vals)
 
-        employee_vals['bank_account_id'] = bank_account.id
+            employee_vals['bank_account_id'] = bank_account.id
+
         employee_vals['address_home_id'] = partner.id
 
         if partner.type != 'private':

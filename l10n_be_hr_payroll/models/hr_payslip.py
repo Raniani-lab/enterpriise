@@ -390,7 +390,7 @@ class Payslip(models.Model):
         # If any day in the month is not covered by the contract dates coverage
         # the entire month is not taken into account for the proratization
         contracts = self.employee_id.contract_ids.filtered(lambda c: c.state not in ['draft', 'cancel'] and c.structure_type_id == self.struct_id.type_id)
-        first_contract_date = self.contract_id.first_contract_date
+        first_contract_date = self.contract_id.employee_id._get_first_contract_date(no_gap=False)
         if not contracts or not first_contract_date:
             return 0.0
         # Only employee with at least 6 months of XP can benefit from the 13th month bonus
@@ -401,7 +401,7 @@ class Payslip(models.Model):
                 or (first_contract_date.month > 7)):
             return 0.0
 
-        date_from = self.contract_id.first_contract_date
+        date_from = first_contract_date
         date_to = self.date_to + relativedelta(day=31)
 
         basic = self.contract_id._get_contract_wage()
@@ -415,6 +415,10 @@ class Payslip(models.Model):
             n_months = min(12, self._compute_number_complete_months_of_work(date_from, date_to, contracts))
             # 2. Deduct absences
             presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
+
+        # Could happen for contracts with gaps
+        if n_months < 6:
+            return 0.0
 
         fixed_salary = basic * n_months / 12 * presence_prorata
 

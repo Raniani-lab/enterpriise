@@ -184,7 +184,7 @@
                 display: flex;
                 .o_graph_canvas_container {
                     flex: 1 1 auto;
-                    height: 250px;
+                    min-height: 250px;
                     > label {
                         position: absolute;
                         @extend %o-dashboard-label-design;

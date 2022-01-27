@@ -52,7 +52,7 @@ class HrEmployee(models.Model):
         # Also makes sure that the views starts on the hr_holder
         action['context'] = {
             'default_partner_id': self.address_home_id.id,
-            'searchpanel_default_folder_id': hr_folder.id,
+            'searchpanel_default_folder_id': hr_folder and hr_folder.id,
         }
         action['domain'] = self._get_employee_document_domain()
         return action

@@ -167,8 +167,7 @@ var StatementModel = BasicModel.extend({
 
         return Promise.all([
             this._computeLine(line),
-            this._performMoveLine(handle, 'match_rp', line.mode == 'match_rp'? 1 : 0),
-            this._performMoveLine(handle, 'match_other', line.mode == 'match_other'? 1 : 0)
+            this._performMoveLine(handle, line.mode, 1)
         ]);
     },
     /**
@@ -1194,16 +1193,15 @@ var StatementModel = BasicModel.extend({
 
         this._formatLineProposition(line, mv_lines);
 
-        if ((line.mode == 'match_other' || line.mode == "match_rp") && !line['mv_lines_'+mode].length && !line['filter_'+mode].length) {
+        if (line.mode !== 'create') {
             line.mode = self._getDefaultMode(handle);
             if (line.mode !== 'match_rp' && line.mode !== 'match_other' && line.mode !== 'inactive') {
                 return this._computeLine(line).then(function () {
                     return self.createProposition(handle);
                 });
             }
-        } else {
-            return this._computeLine(line);
         }
+        return this._computeLine(line);
     },
     /**
      * Compare two amounts.
@@ -1239,6 +1237,9 @@ var StatementModel = BasicModel.extend({
             && (!line.st_line.mv_lines_match_rp || line.st_line.mv_lines_match_rp.length === 0)
             && (!line.st_line.mv_lines_match_other || line.st_line.mv_lines_match_other.length === 0)) {
             return 'inactive';
+        }
+        if (line['mv_lines_'+line.mode] && line['mv_lines_'+line.mode].length) {
+            return line.mode;
         }
         if (line.mv_lines_match_rp && line.mv_lines_match_rp.length) {
             return 'match_rp';

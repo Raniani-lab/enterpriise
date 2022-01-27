@@ -33,8 +33,8 @@ class ReportBomStructure(models.AbstractModel):
         self._add_version_and_ecos(components)
         return components, total
 
-    def _get_pdf_line(self, bom_id, product_id=False, qty=1, child_bom_ids=[], unfolded=False):
-        data = super(ReportBomStructure, self)._get_pdf_line(bom_id, product_id, qty, child_bom_ids, unfolded)
+    def _get_pdf_line(self, bom_id, product_id=False, qty=1, unfolded_ids=None, unfolded=False):
+        data = super(ReportBomStructure, self)._get_pdf_line(bom_id, product_id, qty, unfolded_ids, unfolded)
         self._add_version_and_ecos(data['lines'])
         return data
 

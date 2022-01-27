@@ -5457,7 +5457,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('blockUI not removed just after rename', async function (assert) {
-        assert.expect(16);
+        assert.expect(15);
         // renaming is only available in debug mode
         var initialDebugMode = odoo.debug;
         odoo.debug = true;
@@ -5477,7 +5477,9 @@ QUnit.module('ViewEditorManager', {
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
             mockRPC: function(route, args) {
-                assert.step(route);
+                if (!['/mail/init_messaging', '/mail/load_message_failures'].includes(route)) {
+                    assert.step(route);
+                }
                 if (route === '/web_studio/edit_view') {
                     var fieldName = args.operations[0].node.field_description.name;
                     fieldsView.arch = `<tree><field name='${fieldName}'/><field name='display_name'/></tree>`;
@@ -5508,7 +5510,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar input[name="name"]'), 'new', ['change']);
 
         assert.verifySteps([
-            '/mail/init_messaging',
             '/web/dataset/search_read',
             'block UI',
             '/web_studio/edit_view',

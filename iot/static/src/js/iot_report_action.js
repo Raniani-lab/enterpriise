@@ -27,6 +27,7 @@ async function iotReportActionHandler(action, options, env) {
     if (action.device_id) {
         // Call new route that sends you report to send to printer
         const orm = env.services.orm;
+        action.data = action.data || {};
         action.data["device_id"] = action.device_id;
         const args = [action.id, action.context.active_ids, action.data];
         const [ip, identifier, document] = await orm.call("ir.actions.report", "iot_render", args);

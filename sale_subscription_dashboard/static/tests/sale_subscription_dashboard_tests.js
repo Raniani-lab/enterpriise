@@ -466,7 +466,6 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                             "companies",
                             "filters",
                             "currency_id",
-                            "push_main_state",
                             "sales_team",
                             "dashboard_options"
                         ]);

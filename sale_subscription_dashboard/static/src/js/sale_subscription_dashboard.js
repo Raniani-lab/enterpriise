@@ -110,7 +110,7 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
         // options to make the doAction should be at the root of that object
         // the info for the action itself should be in props of that object.
         // For now, put those keys everywhere....
-        const doActionOptions = Object.assign({}, options, { props: options });
+        const doActionOptions = Object.assign({}, options, { props : _.omit(options, ['additional_context', 'push_main_state']) });
         doActionOptions.on_reverse_breadcrumb = this.on_reverse_breadcrumb;
         if (options.push_main_state && self.main_dashboard_action_id) {
             // Reset the pushState prevents a traceback when the back button is used from a detailed dashboard.

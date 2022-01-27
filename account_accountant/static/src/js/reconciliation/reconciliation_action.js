@@ -167,15 +167,16 @@ var StatementAction = AbstractAction.extend({
                     $buttons: $(),
                     $pager: $(),
                 };
-            }else{
-                // Create a notification if some lines have been reconciled automatically.
-                if(initialState.valuenow > 0)
-                    self.renderer._renderNotifications(self.model.statement.notifications);
-                self._openFirstLine();
-                self.renderer.$('[data-toggle="tooltip"]').tooltip();
-                self.do_show();
             }
-        });
+            // Create a notification if some lines have been reconciled automatically.
+            if(initialState.valuenow > 0) {
+                self.renderer._renderNotifications(self.model.statement.notifications);
+            }
+            self._openFirstLine();
+            self.renderer.$('[data-toggle="tooltip"]').tooltip();
+            self.do_show();
+            }
+        );
     },
 
     /**

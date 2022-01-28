@@ -142,7 +142,7 @@ class CohortView extends Component {
 }
 CohortView.type = "cohort";
 CohortView.display_name = "Cohort";
-CohortView.icon = "fa-signal";
+CohortView.icon = "oi-chart--cohort";
 CohortView.multiRecord = true;
 CohortView.template = "web_cohort.CohortView";
 CohortView.buttonTemplate = "web_cohort.CohortView.Buttons";

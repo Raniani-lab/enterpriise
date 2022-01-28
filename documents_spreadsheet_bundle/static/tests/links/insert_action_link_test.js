@@ -241,7 +241,7 @@ QUnit.module(
         QUnit.test("graph view with custom chart type and order", async function (assert) {
             assert.expect(3);
             const webClient = await openView("graph");
-            await click(webClient.el, ".fa-pie-chart");
+            await click(webClient.el, ".oi-chart--pie");
             // count measure
             await toggleMenu(webClient, "Measures");
             await toggleMenuItem(webClient, "Count");
@@ -253,7 +253,7 @@ QUnit.module(
                 "__count",
                 "It should have the custom measures"
             );
-            assert.containsOnce(webClient.el, ".fa-pie-chart.active");
+            assert.containsOnce(webClient.el, ".oi-chart--pie.active");
         });
 
         QUnit.test("calendar view", async function (assert) {
@@ -319,7 +319,7 @@ QUnit.module(
 
                 patchWithCleanup(browser, { setTimeout: (fn) => fn() });
                 const webClient = await openView("dashboard");
-                await click(webClient.el, ".fa-pie-chart");
+                await click(webClient.el, ".oi-chart--pie");
 
                 // custom group by
                 await toggleGroupByMenu(webClient);
@@ -333,7 +333,7 @@ QUnit.module(
 
                 await insertInSpreadsheetAndClickLink(webClient);
                 const action = getCurrentAction(webClient);
-                assert.containsOnce(webClient.el, ".fa-pie-chart.active");
+                assert.containsOnce(webClient.el, ".oi-chart--pie.active");
                 assert.deepEqual(
                     action.context.graph.graph_mode,
                     "pie",

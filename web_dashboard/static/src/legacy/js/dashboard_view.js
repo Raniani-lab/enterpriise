@@ -26,7 +26,7 @@ var DashboardView = BasicView.extend({
     }),
     display_name: _lt('Dashboard'),
     searchMenuTypes: ['filter', 'comparison', 'favorite'],
-    icon: 'fa-tachometer',
+    icon: 'oi-dashboard',
     viewType: 'dashboard',
 
     /**

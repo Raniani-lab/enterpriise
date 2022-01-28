@@ -49,6 +49,7 @@ class SignContract(Sign):
                 contract.applicant_id.emp_id = contract.employee_id
             self._create_activity_advantage(contract, 'running')
             contract.wage_on_signature = contract.wage_with_holidays
+
         # Both applicant/employee and HR responsible have signed
         if request_item.sign_request_id.nb_closed == 2:
             if contract.employee_id:
@@ -243,7 +244,10 @@ class HrContractSalary(http.Controller):
         for field_name, value in kw.items():
             values.update(self._apply_url_value(contract, field_name, value))
         new_gross = contract.sudo()._get_gross_from_employer_costs(values['final_yearly_costs'])
-        contract.wage = new_gross
+        contract.write({
+            'wage': new_gross,
+            'final_yearly_costs': values['final_yearly_costs'],
+        })
         values.update({
             'need_personal_information': not values['redirect_to_job'],
             'submit': not values['redirect_to_job'],
@@ -411,6 +415,7 @@ class HrContractSalary(http.Controller):
             'employee_id': employee.id,
             'structure_type_id': contract.structure_type_id.id,
             'wage': advantages['wage'],
+            'final_yearly_costs': advantages['final_yearly_costs'],
             'resource_calendar_id': contract.resource_calendar_id.id,
             'default_contract_id': contract.default_contract_id.id,
             'hr_responsible_id': contract.hr_responsible_id.id,
@@ -578,8 +583,12 @@ class HrContractSalary(http.Controller):
         contract = self._check_access_rights(contract_id)
 
         new_contract = self.create_new_contract(contract, advantages)
-        new_gross = new_contract._get_gross_from_employer_costs(float(advantages['contract']['final_yearly_costs'] or 0.0))
-        new_contract.wage = new_gross
+        final_yearly_costs = float(advantages['contract']['final_yearly_costs'] or 0.0)
+        new_gross = new_contract._get_gross_from_employer_costs(final_yearly_costs)
+        new_contract.write({
+            'wage': new_gross,
+            'final_yearly_costs': final_yearly_costs,
+        })
 
         result['new_gross'] = round(new_gross, 2)
         result.update(self._get_compute_results(new_contract))
@@ -738,6 +747,7 @@ class HrContractSalary(http.Controller):
                 kw['employee'] = contract.employee_id
         kw['package_submit'] = True
         new_contract = self.create_new_contract(contract, advantages, no_write=True, **kw)
+
         if isinstance(new_contract, dict) and new_contract.get('error'):
             return new_contract
 

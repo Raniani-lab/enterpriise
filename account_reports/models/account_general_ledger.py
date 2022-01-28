@@ -842,3 +842,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 lines.append(tax_line)
 
         return lines
+
+    def action_dropdown_audit_default_tax_report(self, options, data):
+        return self.env['account.generic.tax.report'].action_dropdown_audit_default_tax_report(options, data)

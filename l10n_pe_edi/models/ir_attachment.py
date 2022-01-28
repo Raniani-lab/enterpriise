@@ -82,7 +82,7 @@ class IrAttachment(models.Model):
         }
         xsd_fname = validation_types[validation_type]
         try:
-            xml_utils._check_with_xsd(xml_to_validate, xsd_fname, self.env)
+            xml_utils._check_with_xsd(xml_to_validate, xsd_fname, self.sudo().env)
             return ''
         except FileNotFoundError:
             _logger.info('The XSD validation files from Sunat has not been found, please run the cron manually. ')

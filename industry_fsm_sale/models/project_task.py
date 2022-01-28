@@ -265,7 +265,8 @@ class Task(models.Model):
                 if not task.sale_order_id and not timesheet_count:  # Prevent creating/confirming a SO if there are no products and timesheets
                     continue
                 task._fsm_ensure_sale_order()
-                task._fsm_create_sale_order_line()
+                if task.allow_timesheets:
+                    task._fsm_create_sale_order_line()
                 if task.sudo().sale_order_id.state in ['draft', 'sent']:
                     task.sudo().sale_order_id.action_confirm()
             billable_tasks._prepare_materials_delivery()

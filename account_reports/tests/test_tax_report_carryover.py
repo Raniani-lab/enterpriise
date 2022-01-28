@@ -139,7 +139,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
         self.env['account.tax.unit'].create({
             'name': 'Test tax unit',
             'country_id': self.company_1.account_fiscal_country_id.id,
-            'vat': 'vat_number',
+            'vat': 'DW1234567890',
             'company_ids': [Command.set([self.company_1.id, self.company_2.id])],
             'main_company_id': self.company_1.id,
         })

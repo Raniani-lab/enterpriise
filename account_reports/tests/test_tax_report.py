@@ -1714,7 +1714,7 @@ class TestTaxReport(TestAccountReportsCommon):
         tax_unit = self.env['account.tax.unit'].create({
             'name': "One unit to rule them all",
             'country_id': self.fiscal_country.id,
-            'vat': "toto",
+            'vat': "DW1234567890",
             'company_ids': [Command.set(unit_companies.ids)],
             'main_company_id': company_1.id,
         })
@@ -1828,6 +1828,85 @@ class TestTaxReport(TestAccountReportsCommon):
                 {'debit':  0,       'credit': 84,       'account_id': tax_group_2.tax_payable_account_id.id},
             ],
         })
+
+    def test_tax_unit_auto_fiscal_position(self):
+        # setup companies
+        company_1 = self.company_data['company']
+        company_2 = self.company_data_2['company']
+        company_2.currency_id = company_1.currency_id
+        company_data_3 = self.setup_company_data("Company 3", chart_template=company_1.chart_template)
+        company_3 = company_data_3['company']
+        company_data_4 = self.setup_company_data("Company 4", chart_template=company_1.chart_template)
+        company_4 = company_data_4['company']
+        unit_companies = company_1 + company_2 + company_3
+        all_companies = unit_companies + company_4
+
+        # create a tax unit containing 3 companies
+        tax_unit = self.env['account.tax.unit'].create({
+            'name': "One unit to rule them all",
+            'country_id': self.fiscal_country.id,
+            'vat': "DW1234567890",
+            'company_ids': [Command.set(unit_companies.ids)],
+            'main_company_id': company_1.id,
+        })
+        self.assertFalse(tax_unit.fpos_synced)
+        tax_unit.action_sync_unit_fiscal_positions()
+        for current_company in unit_companies:
+            # verify that partners for other companies in the unit have a fiscal position that removes taxes
+            created_fp = tax_unit._get_tax_unit_fiscal_positions(companies=current_company)
+            self.assertTrue(created_fp)
+            self.assertEqual(
+                (unit_companies - current_company).partner_id.with_company(current_company).property_account_position_id,
+                created_fp
+            )
+            self.assertTrue(created_fp.tax_ids.tax_src_id)
+            self.assertFalse(created_fp.tax_ids.tax_dest_id)
+            self.assertFalse(current_company.partner_id.with_company(current_company).property_account_position_id)
+        tax_unit._compute_fiscal_position_completion()
+        self.assertTrue(tax_unit.fpos_synced)
+
+        # remove company 3 from the unit and verify that the fiscal positions are removed from the relevant companies
+        tax_unit.write({
+            'company_ids': [Command.unlink(company_3.id)]
+        })
+        self.assertFalse(tax_unit.fpos_synced)
+        tax_unit.action_sync_unit_fiscal_positions()
+        self.assertFalse(company_3.partner_id.with_company(company_1).property_account_position_id)
+        self.assertFalse(company_1.partner_id.with_company(company_3).property_account_position_id)
+        company_1_fp = tax_unit._get_tax_unit_fiscal_positions(companies=company_1)
+        self.assertEqual(company_2.partner_id.with_company(company_1).property_account_position_id, company_1_fp)
+        self.assertTrue(tax_unit.fpos_synced)
+
+        # add company 3, remove company 2
+        tax_unit.write({
+            'company_ids': [Command.link(company_3.id), Command.unlink(company_2.id)]
+        })
+        self.assertFalse(tax_unit.fpos_synced)
+        tax_unit.action_sync_unit_fiscal_positions()
+        company_1_fp = tax_unit._get_tax_unit_fiscal_positions(companies=company_1)
+        self.assertEqual(company_3.partner_id.with_company(company_1).property_account_position_id, company_1_fp)
+        self.assertFalse(company_2.partner_id.with_company(company_1).property_account_position_id)
+        self.assertTrue(company_1.partner_id.with_company(company_3).property_account_position_id)
+
+        # remove the fiscal position from the partner of company 1
+        company_1.partner_id.with_company(company_3).property_account_position_id = False
+        self.assertFalse(tax_unit.fpos_synced)
+        tax_unit.action_sync_unit_fiscal_positions()
+        self.assertTrue(tax_unit.fpos_synced)
+
+        #replace all companies
+        tax_unit.write({
+            'company_ids': [Command.set([company_2.id, company_4.id])],
+            'main_company_id': company_2.id,
+        })
+        self.assertFalse(tax_unit.fpos_synced)
+        tax_unit.action_sync_unit_fiscal_positions()
+        self.assertTrue(tax_unit.fpos_synced)
+
+        # no fiscal positions should exist after deleting the unit
+        tax_unit.unlink()
+        for company in all_companies:
+            self.assertFalse(all_companies.partner_id.with_company(company).property_account_position_id)
 
     def test_vat_unit_with_foreign_vat_fpos(self):
         # Company 1 has the test country as domestic country, and a foreign VAT fpos in a different province

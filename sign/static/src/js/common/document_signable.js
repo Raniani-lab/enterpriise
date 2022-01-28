@@ -1636,7 +1636,7 @@ const SignableDocument = Document.extend({
       if (!response) {
         this.openErrorDialog(
           _t("Sorry, an error occurred, please try to fill the document again."),
-          window.location.reload
+          () => { window.location.reload(); }
         );
       }
       if (response === true) {
@@ -1671,7 +1671,7 @@ const SignableDocument = Document.extend({
             _t(
               "Unable to send the SMS, please contact the sender of the document."
             ),
-            window.location.reload
+            () => { window.location.reload(); }
           );
         }
         if (response.url) {
@@ -1792,7 +1792,7 @@ const SignableDocument = Document.extend({
             _t(
               "Sorry, an error occurred, please try to fill the document again."
             ),
-            window.location.reload
+            () => { window.location.reload(); }
           );
         } else {
           this.openThankYouDialog(this.name_list.length);
@@ -1885,10 +1885,10 @@ const SignableDocument = Document.extend({
     };
     session.rpc(route, params).then(response => {
       if (!response) {
-        this.openErrorDialog (
+        return this.openErrorDialog (
           _t("Sorry, you cannot refuse this document"),
-          window.location.reload
-        )
+          () => { window.location.reload(); }
+        );
       }
       this.iframeWidget.disableItems();
       (new (this.get_thankyoudialog_class())(this, this.RedirectURL, this.RedirectURLText, this.requestID, {

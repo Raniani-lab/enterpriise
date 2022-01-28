@@ -16,7 +16,7 @@ class CalendarAppointmentSlot(models.Model):
         'res.company',
         'calendar.appointment.type',
     ]
-    _populate_sizes = {'small': 75, 'medium': 200, 'large': 2500}
+    _populate_sizes = {'small': 120, 'medium': 320, 'large': 4000}
 
     def _populate_factories(self):
         def compute_hours_and_duration(iterator, *args):
@@ -52,14 +52,11 @@ class CalendarAppointmentSlot(models.Model):
                         }
 
         def _compute_slot_type_and_datetimes(iterator, *kwargs):
-            """
-            Yields one or two slots with specified start and end datetime
-            attributes for `category="custom"` appointment types with the
-            required "unique" slot_type, or a single "recurring" slot_type slot
-            """
+            # Yield one or two slots with specified start and end datetime attributes for
+            # `category="custom"` appointment types with the required "unique" slot_type, or a
+            # single "recurring" slot_type slot
             for values in iterator:
-                app_type = self.env["calendar.appointment.type"].browse(
-                    values["appointment_type_id"])
+                app_type = self.env["calendar.appointment.type"].browse(values["appointment_type_id"])
 
                 if app_type.category != 'custom':
                     yield {**values, "slot_type": "recurring"}
@@ -90,12 +87,15 @@ class CalendarAppointmentSlot(models.Model):
                             hours=2 * app_type["appointment_duration"])
                         yield {**values, **new_values}
 
+        appointment_type_ids = self.env['calendar.appointment.type'].browse(
+            self.env.registry.populated_models['calendar.appointment.type']).filtered_domain([
+                '|', ('category', '=', 'website'), ('category', '=', 'custom')]).ids
+
         # We need values for 5-6 days for each appointment_type_id.
         # We populate 7 days then later randomly drop one or more
         slots = [
             populate.chain_factories([
-                ('appointment_type_id', populate.iterate(
-                    self.env.registry.populated_models['calendar.appointment.type'])),
+                ('appointment_type_id', populate.iterate(appointment_type_ids)),
                 ('weekday', populate.iterate([weekday])),
                 ('_hours_duration', compute_hours_and_duration)
             ], self._name)

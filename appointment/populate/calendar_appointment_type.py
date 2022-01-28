@@ -19,18 +19,21 @@ class CalendarAppointmentType(models.Model):
 
     def _populate_factories(self):
         staff_user_ids = self.env.registry.populated_models['res.users']
-        company_ids = self.env.registry.populated_models['res.company']
         reminder_ids = self.env.registry.populated_models['calendar.alarm']
         country_ids = self.env["res.country"].search([]).ids
 
+        company_ids = self.env['res.company'].browse(self.env.registry.populated_models['res.company'])
+        admin_ids = self.env.ref('base.user_admin')
+        company_users = {company_id: (company_id.user_ids - admin_ids).ids
+                         for company_id in company_ids if len(company_id.user_ids - admin_ids) > 0}
+
         def get_k_staff_users(random, **kwargs):
-            # To sometimes have several users from the same company
-            return self.env['res.users'].browse(
-                random.sample(staff_user_ids, random.randint(2, len(company_ids))))
+            staff_users = company_users[random.choice(list(company_users.keys()))]
+            return random.sample(staff_users, random.randint(1, len(staff_users)))
 
         def get_tz(values, random, **kwargs):
             """Sets a timezone that matches at least one of the users'"""
-            return random.choice(self.env["res.users"].browse(values['staff_user_ids'].ids)).tz
+            return random.choice(self.env["res.users"].browse(values['staff_user_ids'])).tz
 
         def get_up_to_two_reminders(random, **kwargs):
             reminders = self.env['calendar.alarm'].browse(random.sample(reminder_ids, 2))

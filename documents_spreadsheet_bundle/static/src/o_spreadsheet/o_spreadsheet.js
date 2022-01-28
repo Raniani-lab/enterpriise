@@ -1209,6 +1209,9 @@
     function isTargetDependent(cmd) {
         return "target" in cmd;
     }
+    function isZoneDependent(cmd) {
+        return "zone" in cmd;
+    }
     function isPositionDependent(cmd) {
         return "col" in cmd && "row" in cmd;
     }
@@ -1287,6 +1290,8 @@
         /** CHART */
         "CREATE_CHART",
         "UPDATE_CHART",
+        /** SORT */
+        "SORT_CELLS",
     ]);
     function isCoreCommand(cmd) {
         return coreTypes.has(cmd.type);
@@ -9497,6 +9502,7 @@
         constructor() {
             super(...arguments);
             this.chartFigures = {};
+            this.nextId = 1;
         }
         adaptRanges(applyChange) {
             for (let [chartId, chart] of Object.entries(this.chartFigures)) {
@@ -9593,7 +9599,8 @@
                     const sheetFiguresFrom = this.getters.getFigures(cmd.sheetId);
                     for (const fig of sheetFiguresFrom) {
                         if (fig.tag === "chart") {
-                            const id = this.uuidGenerator.uuidv4();
+                            const id = this.nextId.toString();
+                            this.history.update("nextId", this.nextId + 1);
                             const chartDefinition = { ...deepCopy(this.chartFigures[fig.id]), id };
                             chartDefinition.sheetId = cmd.sheetIdTo;
                             chartDefinition.dataSets.forEach((dataset) => {
@@ -9769,7 +9776,7 @@
         updateChartDefinition(id, definition) {
             const chart = this.chartFigures[id];
             if (!chart) {
-                throw new Error(`There is no chart with the given id: ${id}`);
+                return;
             }
             if (definition.title !== undefined) {
                 this.history.update("chartFigures", id, "title", definition.title);
@@ -9956,7 +9963,10 @@
                     this.cfRules[cmd.sheetId] = [];
                     break;
                 case "DUPLICATE_SHEET":
-                    this.history.update("cfRules", cmd.sheetIdTo, this.cfRules[cmd.sheetId].slice());
+                    this.history.update("cfRules", cmd.sheetIdTo, []);
+                    for (const cf of this.getConditionalFormats(cmd.sheetId)) {
+                        this.addConditionalFormatting(cf, cmd.sheetIdTo);
+                    }
                     break;
                 case "DELETE_SHEET":
                     const cfRules = Object.assign({}, this.cfRules);
@@ -11318,7 +11328,7 @@
                         const cellId = row.cells[i];
                         if (cellId) {
                             if (dimension === "rows" || colIndex >= addedElement) {
-                                commands.unshift({
+                                commands.push({
                                     type: "UPDATE_CELL_POSITION",
                                     sheetId: sheet.id,
                                     cellId: cellId,
@@ -11330,7 +11340,7 @@
                     }
                 }
             }
-            for (let cmd of commands) {
+            for (let cmd of commands.reverse()) {
                 this.dispatch(cmd.type, cmd);
             }
         }
@@ -11629,6 +11639,397 @@
         "getGridLinesVisibility",
         "isEmpty",
     ];
+
+    const SORT_TYPES = [
+        CellValueType.number,
+        CellValueType.error,
+        CellValueType.text,
+        CellValueType.boolean,
+    ];
+    function convertCell(cell, index) {
+        return {
+            index,
+            type: cell ? cell.evaluated.type : CellValueType.empty,
+            value: cell ? cell.evaluated.value : "",
+        };
+    }
+    function sortCells(cells, sortDirection) {
+        const cellsWithIndex = cells.map(convertCell);
+        const emptyCells = cellsWithIndex.filter((x) => x.type === CellValueType.empty);
+        const nonEmptyCells = cellsWithIndex.filter((x) => x.type !== CellValueType.empty);
+        const inverse = sortDirection === "descending" ? -1 : 1;
+        return nonEmptyCells
+            .sort((left, right) => {
+            let typeOrder = SORT_TYPES.indexOf(left.type) - SORT_TYPES.indexOf(right.type);
+            if (typeOrder === 0) {
+                if (left.type === CellValueType.text || left.type === CellValueType.error) {
+                    typeOrder = left.value.localeCompare(right.value);
+                }
+                else
+                    typeOrder = left.value - right.value;
+            }
+            return inverse * typeOrder;
+        })
+            .concat(emptyCells);
+    }
+    function interactiveSortSelection(env, sheetId, anchor, zone, sortDirection) {
+        let result = DispatchResult.Success;
+        //several columns => bypass the contiguity check
+        let multiColumns = zone.right > zone.left;
+        if (env.getters.doesIntersectMerge(sheetId, zone)) {
+            multiColumns = false;
+            let table;
+            for (let r = zone.top; r <= zone.bottom; r++) {
+                table = [];
+                for (let c = zone.left; c <= zone.right; c++) {
+                    let merge = env.getters.getMerge(sheetId, c, r);
+                    if (merge && !table.includes(merge.id.toString())) {
+                        table.push(merge.id.toString());
+                    }
+                }
+                if (table.length >= 2) {
+                    multiColumns = true;
+                    break;
+                }
+            }
+        }
+        const [col, row] = anchor;
+        if (multiColumns) {
+            result = env.dispatch("SORT_CELLS", { sheetId, col, row, zone, sortDirection });
+        }
+        else {
+            // check contiguity
+            const contiguousZone = env.getters.getContiguousZone(sheetId, zone);
+            if (isEqual(contiguousZone, zone)) {
+                // merge as it is
+                result = env.dispatch("SORT_CELLS", {
+                    sheetId,
+                    col,
+                    row,
+                    zone,
+                    sortDirection,
+                });
+            }
+            else {
+                env.askConfirmation(_lt("We found data next to your selection. Since this data was not selected, it will not be sorted. Do you want to extend your selection?"), () => {
+                    zone = contiguousZone;
+                    result = env.dispatch("SORT_CELLS", {
+                        sheetId,
+                        col,
+                        row,
+                        zone,
+                        sortDirection,
+                    });
+                }, () => {
+                    result = env.dispatch("SORT_CELLS", {
+                        sheetId,
+                        col,
+                        row,
+                        zone,
+                        sortDirection,
+                    });
+                });
+            }
+        }
+        if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
+            env.dispatch("SET_SELECTION", {
+                anchor: anchor,
+                zones: [zone],
+                anchorZone: zone,
+            });
+            env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
+        }
+    }
+
+    class SortPlugin extends CorePlugin {
+        allowDispatch(cmd) {
+            switch (cmd.type) {
+                case "SORT_CELLS":
+                    if (!isInside(cmd.col, cmd.row, cmd.zone)) {
+                        throw new Error(_lt("The anchor must be part of the provided zone"));
+                    }
+                    return this.checkValidations(cmd, this.checkMerge, this.checkMergeSizes);
+            }
+            return 0 /* Success */;
+        }
+        handle(cmd) {
+            switch (cmd.type) {
+                case "SORT_CELLS":
+                    this.sortZone(cmd.sheetId, cmd, cmd.zone, cmd.sortDirection);
+                    break;
+            }
+        }
+        checkMerge({ sheetId, zone }) {
+            if (!this.getters.doesIntersectMerge(sheetId, zone)) {
+                return 0 /* Success */;
+            }
+            /*Test the presence of single cells*/
+            for (let row = zone.top; row <= zone.bottom; row++) {
+                for (let col = zone.left; col <= zone.right; col++) {
+                    if (!this.getters.isInMerge(sheetId, col, row)) {
+                        return 46 /* InvalidSortZone */;
+                    }
+                }
+            }
+            return 0 /* Success */;
+        }
+        checkMergeSizes({ sheetId, zone }) {
+            if (!this.getters.doesIntersectMerge(sheetId, zone)) {
+                return 0 /* Success */;
+            }
+            const merges = this.getters.getMerges(sheetId).filter((merge) => overlap(merge, zone));
+            /*Test the presence of merges of different sizes*/
+            const mergeDimension = zoneToDimension(merges[0]);
+            let [widthFirst, heightFirst] = [mergeDimension.width, mergeDimension.height];
+            if (!merges.every((merge) => {
+                let [widthCurrent, heightCurrent] = [
+                    merge.right - merge.left + 1,
+                    merge.bottom - merge.top + 1,
+                ];
+                return widthCurrent === widthFirst && heightCurrent === heightFirst;
+            })) {
+                return 46 /* InvalidSortZone */;
+            }
+            return 0 /* Success */;
+        }
+        // getContiguousZone helpers
+        /**
+         * safe-version of expandZone to make sure we don't get out of the grid
+         */
+        expand(sheet, z) {
+            const { left, right, top, bottom } = this.getters.expandZone(sheet.id, z);
+            return {
+                left: Math.max(0, left),
+                right: Math.min(sheet.cols.length - 1, right),
+                top: Math.max(0, top),
+                bottom: Math.min(sheet.rows.length - 1, bottom),
+            };
+        }
+        /**
+         * verifies the presence of at least one non-empty cell in the given zone
+         */
+        checkExpandedValues(sheet, z) {
+            const expandedZone = this.expand(sheet, z);
+            const sheetId = sheet.id;
+            let line = [];
+            let cell;
+            if (this.getters.doesIntersectMerge(sheetId, expandedZone)) {
+                const { left, right, top, bottom } = expandedZone;
+                for (let c = left; c <= right; c++) {
+                    for (let r = top; r <= bottom; r++) {
+                        const [mainCellCol, mainCellRow] = this.getters.getMainCell(sheetId, c, r);
+                        cell = this.getters.getCell(sheetId, mainCellCol, mainCellRow);
+                        line.push((cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "");
+                    }
+                }
+            }
+            else {
+                line = this.getters
+                    .getCellsInZone(sheetId, expandedZone)
+                    .map((cell) => (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "");
+            }
+            return line.some((item) => item !== "");
+        }
+        /**
+         * This function will expand the provided zone in directions (top, bottom, left, right) for which there
+         * are non-null cells on the external boundary of the zone in the given direction.
+         *
+         * Example:
+         *          A     B     C     D     E
+         *         ___   ___   ___   ___   ___
+         *    1  |     |  D  |     |     |     |
+         *         ___   ___   ___   ___   ___
+         *    2  |  5  |     |  1  |  D  |     |
+         *         ___   ___   ___   ___   ___
+         *    3  |     |     |  A  |  X  |     |
+         *         ___   ___   ___   ___   ___
+         *    4  |     |     |     |     |     |
+         *         ___   ___   ___   ___   ___
+         *
+         *  Let's consider a provided zone corresponding to (C2:D3) - (left:2, right: 3, top:1, bottom:2)
+         *  - the top external boundary is (B1:E1)
+         *    Since we have B1='D' != "", we expand to the top: => (C1:D3)
+         *    The top boundary having reached the top of the grid, we cannot expand in that direction anymore
+         *
+         *  - the left boundary is (B1:B4)
+         *    since we have B1 again, we expand to the left  => (B1:D3)
+         *
+         *  - the right and bottom boundaries are a dead end for now as (E1:E4) and (A4:E4) are empty.
+         *
+         *  - the left boundary is now (A1:A4)
+         *    Since we have A2=5 != "", we can therefore expand to the left => (A1:D3)
+         *
+         *  This will be the final zone as left and top have reached the boundaries of the grid and
+         *  the other boundaries (E1:E4) and (A4:E4) are empty.
+         *
+         * @param sheetId UID of concerned sheet
+         * @param zone Zone
+         *
+         */
+        getContiguousZone(sheetId, zone) {
+            let { top, bottom, left, right } = zone;
+            let canExpand;
+            const sheet = this.getters.getSheet(sheetId);
+            let stop = false;
+            while (!stop) {
+                stop = true;
+                /** top row external boundary */
+                if (top > 0) {
+                    canExpand = this.checkExpandedValues(sheet, {
+                        left: left - 1,
+                        right: right + 1,
+                        top: top - 1,
+                        bottom: top - 1,
+                    });
+                    if (canExpand) {
+                        stop = false;
+                        top--;
+                    }
+                }
+                /** left column external boundary */
+                if (left > 0) {
+                    canExpand = this.checkExpandedValues(sheet, {
+                        left: left - 1,
+                        right: left - 1,
+                        top: top - 1,
+                        bottom: bottom + 1,
+                    });
+                    if (canExpand) {
+                        stop = false;
+                        left--;
+                    }
+                }
+                /** right column external boundary */
+                if (right < sheet.cols.length - 1) {
+                    canExpand = this.checkExpandedValues(sheet, {
+                        left: right + 1,
+                        right: right + 1,
+                        top: top - 1,
+                        bottom: bottom + 1,
+                    });
+                    if (canExpand) {
+                        stop = false;
+                        right++;
+                    }
+                }
+                /** bottom row external boundary */
+                if (bottom < sheet.rows.length - 1) {
+                    canExpand = this.checkExpandedValues(sheet, {
+                        left: left - 1,
+                        right: right + 1,
+                        top: bottom + 1,
+                        bottom: bottom + 1,
+                    });
+                    if (canExpand) {
+                        stop = false;
+                        bottom++;
+                    }
+                }
+            }
+            return { left, right, top, bottom };
+        }
+        /**
+         * This function evaluates if the top row of a provided zone can be considered as a `header`
+         * by checking the following criteria:
+         * * If the left-most column top row value (topLeft) is empty, we ignore it while evaluating the criteria.
+         * 1 - Apart from the left-most column, every element of the top row must be non-empty, i.e. a cell should be present in the sheet.
+         * 2 - There should be at least one column in which the type (CellValueType) of the rop row cell differs from the type of the cell below.
+         *  For the second criteria, we ignore columns on which the cell below is empty.
+         *
+         */
+        hasHeader(items) {
+            if (items[0].length === 1)
+                return false;
+            let cells = items.map((col) => col.map((cell) => (cell === null || cell === void 0 ? void 0 : cell.evaluated.type) || CellValueType.empty));
+            // ignore left-most column when topLeft cell is empty
+            const topLeft = cells[0][0];
+            if (topLeft === CellValueType.empty) {
+                cells = cells.slice(1);
+            }
+            if (cells.some((item) => item[0] === CellValueType.empty)) {
+                return false;
+            }
+            else if (cells.some((item) => item[1] !== CellValueType.empty && item[0] !== item[1])) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        sortZone(sheetId, anchor, zone, sortDirection) {
+            const [stepX, stepY] = this.mainCellsSteps(sheetId, zone);
+            let sortingCol = this.getters.getMainCell(sheetId, anchor.col, anchor.row)[0]; // fetch anchor
+            let sortZone = Object.assign({}, zone);
+            // Update in case of merges in the zone
+            let cells = this.mainCells(sheetId, zone);
+            if (this.hasHeader(cells)) {
+                sortZone.top += stepY;
+            }
+            cells = this.mainCells(sheetId, sortZone);
+            const sortingCells = cells[sortingCol - sortZone.left];
+            const sortedIndexOfSortTypeCells = sortCells(sortingCells, sortDirection);
+            const sortedIndex = sortedIndexOfSortTypeCells.map((x) => x.index);
+            const [width, height] = [cells.length, cells[0].length];
+            for (let c = 0; c < width; c++) {
+                for (let r = 0; r < height; r++) {
+                    let cell = cells[c][sortedIndex[r]];
+                    let newCol = sortZone.left + c * stepX;
+                    let newRow = sortZone.top + r * stepY;
+                    let newCellValues = {
+                        sheetId: sheetId,
+                        col: newCol,
+                        row: newRow,
+                        content: "",
+                        value: "",
+                    };
+                    if (cell) {
+                        let content = cell.content;
+                        if (cell.isFormula()) {
+                            const position = this.getters.getCellPosition(cell.id);
+                            const offsetY = newRow - position.row;
+                            // we only have a vertical offset
+                            const ranges = this.getters.createAdaptedRanges(cell.dependencies, 0, offsetY, sheetId);
+                            content = this.getters.buildFormulaContent(sheetId, cell, ranges);
+                        }
+                        newCellValues.style = cell.style;
+                        newCellValues.content = content;
+                        newCellValues.format = cell.format;
+                        newCellValues.value = cell.evaluated.value;
+                    }
+                    this.dispatch("UPDATE_CELL", newCellValues);
+                }
+            }
+        }
+        /**
+         * Return the distances between main merge cells in the zone.
+         * (1 if there are no merges).
+         * Note: it is assumed all merges are the same in the zone.
+         */
+        mainCellsSteps(sheetId, zone) {
+            const merge = this.getters.getMerge(sheetId, zone.left, zone.top);
+            const stepX = merge ? merge.right - merge.left + 1 : 1;
+            const stepY = merge ? merge.bottom - merge.top + 1 : 1;
+            return [stepX, stepY];
+        }
+        /**
+         * Return a 2D array of cells in the zone (main merge cells if there are merges)
+         */
+        mainCells(sheetId, zone) {
+            const [stepX, stepY] = this.mainCellsSteps(sheetId, zone);
+            const cells = [];
+            const cols = range(zone.left, zone.right + 1, stepX);
+            const rows = range(zone.top, zone.bottom + 1, stepY);
+            for (const col of cols) {
+                const colCells = [];
+                cells.push(colCells);
+                for (const row of rows) {
+                    colCells.push(this.getters.getCell(sheetId, col, row));
+                }
+            }
+            return cells;
+        }
+    }
+    SortPlugin.getters = ["getContiguousZone"];
 
     /**
      * An AutofillModifierImplementation is used to describe how to handle a
@@ -11964,103 +12365,6 @@
          */
         getAll() {
             return super.getAll().sort((a, b) => a.sequence - b.sequence);
-        }
-    }
-
-    const SORT_TYPES = [
-        CellValueType.number,
-        CellValueType.error,
-        CellValueType.text,
-        CellValueType.boolean,
-    ];
-    function convertCell(cell, index) {
-        return {
-            index,
-            type: cell ? cell.evaluated.type : CellValueType.empty,
-            value: cell ? cell.evaluated.value : "",
-        };
-    }
-    function sortCells(cells, sortDirection) {
-        const cellsWithIndex = cells.map(convertCell);
-        const emptyCells = cellsWithIndex.filter((x) => x.type === CellValueType.empty);
-        const nonEmptyCells = cellsWithIndex.filter((x) => x.type !== CellValueType.empty);
-        const inverse = sortDirection === "descending" ? -1 : 1;
-        return nonEmptyCells
-            .sort((left, right) => {
-            let typeOrder = SORT_TYPES.indexOf(left.type) - SORT_TYPES.indexOf(right.type);
-            if (typeOrder === 0) {
-                if (left.type === CellValueType.text || left.type === CellValueType.error) {
-                    typeOrder = left.value.localeCompare(right.value);
-                }
-                else
-                    typeOrder = left.value - right.value;
-            }
-            return inverse * typeOrder;
-        })
-            .concat(emptyCells);
-    }
-    function interactiveSortSelection(env, sheetId, anchor, zone, sortDirection) {
-        let result = DispatchResult.Success;
-        //several columns => bypass the contiguity check
-        let multiColumns = zone.right > zone.left;
-        if (env.getters.doesIntersectMerge(sheetId, zone)) {
-            multiColumns = false;
-            let table;
-            for (let r = zone.top; r <= zone.bottom; r++) {
-                table = [];
-                for (let c = zone.left; c <= zone.right; c++) {
-                    let merge = env.getters.getMerge(sheetId, c, r);
-                    if (merge && !table.includes(merge.id.toString())) {
-                        table.push(merge.id.toString());
-                    }
-                }
-                if (table.length >= 2) {
-                    multiColumns = true;
-                    break;
-                }
-            }
-        }
-        if (multiColumns) {
-            result = env.dispatch("SORT_CELLS", { sheetId, anchor, zone, sortDirection });
-        }
-        else {
-            // check contiguity
-            const contiguousZone = env.getters.getContiguousZone(sheetId, zone);
-            if (isEqual(contiguousZone, zone)) {
-                // merge as it is
-                result = env.dispatch("SORT_CELLS", {
-                    sheetId,
-                    anchor,
-                    zone,
-                    sortDirection,
-                });
-            }
-            else {
-                env.askConfirmation(_lt("We found data next to your selection. Since this data was not selected, it will not be sorted. Do you want to extend your selection?"), () => {
-                    zone = contiguousZone;
-                    result = env.dispatch("SORT_CELLS", {
-                        sheetId,
-                        anchor,
-                        zone,
-                        sortDirection,
-                    });
-                }, () => {
-                    result = env.dispatch("SORT_CELLS", {
-                        sheetId,
-                        anchor,
-                        zone,
-                        sortDirection,
-                    });
-                });
-            }
-        }
-        if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
-            env.dispatch("SET_SELECTION", {
-                anchor: anchor,
-                zones: [zone],
-                anchorZone: zone,
-            });
-            env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
         }
     }
 
@@ -14156,7 +14460,6 @@
         updateChart(definition) {
             return this.env.dispatch("UPDATE_CHART", {
                 id: this.props.figure.id,
-                sheetId: this.getters.getActiveSheetId(),
                 definition,
             });
         }
@@ -14959,8 +15262,8 @@
                 errors: [],
                 rules: this.getDefaultRules(),
             });
-            const sheetId = this.getters.getActiveSheetId();
-            const rules = this.getters.getRulesSelection(sheetId, props.selection || []);
+            this.activeSheetId = this.getters.getActiveSheetId();
+            const rules = this.getters.getRulesSelection(this.activeSheetId, props.selection || []);
             if (rules.length === 1) {
                 const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
                 if (cf) {
@@ -14970,7 +15273,12 @@
         }
         setup() {
             onWillUpdateProps$5((nextProps) => {
-                if (nextProps.selection !== this.props.selection) {
+                const newActiveSheetId = this.getters.getActiveSheetId();
+                if (newActiveSheetId !== this.activeSheetId) {
+                    this.activeSheetId = newActiveSheetId;
+                    this.switchToList();
+                }
+                else if (nextProps.selection !== this.props.selection) {
                     const sheetId = this.getters.getActiveSheetId();
                     const rules = this.getters.getRulesSelection(sheetId, nextProps.selection || []);
                     if (rules.length === 1) {
@@ -18425,7 +18733,9 @@
                 case "UPDATE_CHART":
                 case "CREATE_CHART":
                     const chartDefinition = this.getters.getChartDefinition(cmd.id);
-                    this.chartRuntime[cmd.id] = this.mapDefinitionToRuntime(chartDefinition);
+                    if (chartDefinition) {
+                        this.chartRuntime[cmd.id] = this.mapDefinitionToRuntime(chartDefinition);
+                    }
                     break;
                 case "DELETE_FIGURE":
                     delete this.chartRuntime[cmd.id];
@@ -19833,7 +20143,7 @@
             }
             const { align } = this.getters.getCellStyle(cell);
             if (isOverflowing && cell.evaluated.type === CellValueType.number) {
-                return align === "right" ? "left" : align;
+                return align !== "center" ? "left" : align;
             }
             return align || cell.defaultAlign;
         }
@@ -20715,296 +21025,6 @@
     SelectionMultiUserPlugin.layers = [5 /* Selection */];
     SelectionMultiUserPlugin.modes = ["normal"];
 
-    class SortPlugin extends UIPlugin {
-        allowDispatch(cmd) {
-            switch (cmd.type) {
-                case "SORT_CELLS":
-                    if (!isInside(cmd.anchor[0], cmd.anchor[1], cmd.zone)) {
-                        throw new Error(_lt("The anchor must be part of the provided zone"));
-                    }
-                    return this.checkValidations(cmd, this.checkMerge, this.checkMergeSizes);
-            }
-            return 0 /* Success */;
-        }
-        handle(cmd) {
-            switch (cmd.type) {
-                case "SORT_CELLS":
-                    this.sortZone(cmd.sheetId, cmd.anchor, cmd.zone, cmd.sortDirection);
-                    break;
-            }
-        }
-        checkMerge({ sheetId, zone }) {
-            if (!this.getters.doesIntersectMerge(sheetId, zone)) {
-                return 0 /* Success */;
-            }
-            /*Test the presence of single cells*/
-            for (let row = zone.top; row <= zone.bottom; row++) {
-                for (let col = zone.left; col <= zone.right; col++) {
-                    if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 46 /* InvalidSortZone */;
-                    }
-                }
-            }
-            return 0 /* Success */;
-        }
-        checkMergeSizes({ sheetId, zone }) {
-            if (!this.getters.doesIntersectMerge(sheetId, zone)) {
-                return 0 /* Success */;
-            }
-            const merges = this.getters.getMerges(sheetId).filter((merge) => overlap(merge, zone));
-            /*Test the presence of merges of different sizes*/
-            const mergeDimension = zoneToDimension(merges[0]);
-            let [widthFirst, heightFirst] = [mergeDimension.width, mergeDimension.height];
-            if (!merges.every((merge) => {
-                let [widthCurrent, heightCurrent] = [
-                    merge.right - merge.left + 1,
-                    merge.bottom - merge.top + 1,
-                ];
-                return widthCurrent === widthFirst && heightCurrent === heightFirst;
-            })) {
-                return 46 /* InvalidSortZone */;
-            }
-            return 0 /* Success */;
-        }
-        // getContiguousZone helpers
-        /**
-         * safe-version of expandZone to make sure we don't get out of the grid
-         */
-        expand(sheet, z) {
-            const { left, right, top, bottom } = this.getters.expandZone(sheet.id, z);
-            return {
-                left: Math.max(0, left),
-                right: Math.min(sheet.cols.length - 1, right),
-                top: Math.max(0, top),
-                bottom: Math.min(sheet.rows.length - 1, bottom),
-            };
-        }
-        /**
-         * verifies the presence of at least one non-empty cell in the given zone
-         */
-        checkExpandedValues(sheet, z) {
-            const expandedZone = this.expand(sheet, z);
-            const sheetId = sheet.id;
-            let line = [];
-            let cell;
-            if (this.getters.doesIntersectMerge(sheetId, expandedZone)) {
-                const { left, right, top, bottom } = expandedZone;
-                for (let c = left; c <= right; c++) {
-                    for (let r = top; r <= bottom; r++) {
-                        const [mainCellCol, mainCellRow] = this.getters.getMainCell(sheetId, c, r);
-                        cell = this.getters.getCell(sheetId, mainCellCol, mainCellRow);
-                        line.push((cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "");
-                    }
-                }
-            }
-            else {
-                line = this.getters
-                    .getCellsInZone(sheetId, expandedZone)
-                    .map((cell) => (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "");
-            }
-            return line.some((item) => item !== "");
-        }
-        /**
-         * This function will expand the provided zone in directions (top, bottom, left, right) for which there
-         * are non-null cells on the external boundary of the zone in the given direction.
-         *
-         * Example:
-         *          A     B     C     D     E
-         *         ___   ___   ___   ___   ___
-         *    1  |     |  D  |     |     |     |
-         *         ___   ___   ___   ___   ___
-         *    2  |  5  |     |  1  |  D  |     |
-         *         ___   ___   ___   ___   ___
-         *    3  |     |     |  A  |  X  |     |
-         *         ___   ___   ___   ___   ___
-         *    4  |     |     |     |     |     |
-         *         ___   ___   ___   ___   ___
-         *
-         *  Let's consider a provided zone corresponding to (C2:D3) - (left:2, right: 3, top:1, bottom:2)
-         *  - the top external boundary is (B1:E1)
-         *    Since we have B1='D' != "", we expand to the top: => (C1:D3)
-         *    The top boundary having reached the top of the grid, we cannot expand in that direction anymore
-         *
-         *  - the left boundary is (B1:B4)
-         *    since we have B1 again, we expand to the left  => (B1:D3)
-         *
-         *  - the right and bottom boundaries are a dead end for now as (E1:E4) and (A4:E4) are empty.
-         *
-         *  - the left boundary is now (A1:A4)
-         *    Since we have A2=5 != "", we can therefore expand to the left => (A1:D3)
-         *
-         *  This will be the final zone as left and top have reached the boundaries of the grid and
-         *  the other boundaries (E1:E4) and (A4:E4) are empty.
-         *
-         * @param sheetId UID of concerned sheet
-         * @param zone Zone
-         *
-         */
-        getContiguousZone(sheetId, zone) {
-            let { top, bottom, left, right } = zone;
-            let canExpand;
-            const sheet = this.getters.getSheet(sheetId);
-            let stop = false;
-            while (!stop) {
-                stop = true;
-                /** top row external boundary */
-                if (top > 0) {
-                    canExpand = this.checkExpandedValues(sheet, {
-                        left: left - 1,
-                        right: right + 1,
-                        top: top - 1,
-                        bottom: top - 1,
-                    });
-                    if (canExpand) {
-                        stop = false;
-                        top--;
-                    }
-                }
-                /** left column external boundary */
-                if (left > 0) {
-                    canExpand = this.checkExpandedValues(sheet, {
-                        left: left - 1,
-                        right: left - 1,
-                        top: top - 1,
-                        bottom: bottom + 1,
-                    });
-                    if (canExpand) {
-                        stop = false;
-                        left--;
-                    }
-                }
-                /** right column external boundary */
-                if (right < sheet.cols.length - 1) {
-                    canExpand = this.checkExpandedValues(sheet, {
-                        left: right + 1,
-                        right: right + 1,
-                        top: top - 1,
-                        bottom: bottom + 1,
-                    });
-                    if (canExpand) {
-                        stop = false;
-                        right++;
-                    }
-                }
-                /** bottom row external boundary */
-                if (bottom < sheet.rows.length - 1) {
-                    canExpand = this.checkExpandedValues(sheet, {
-                        left: left - 1,
-                        right: right + 1,
-                        top: bottom + 1,
-                        bottom: bottom + 1,
-                    });
-                    if (canExpand) {
-                        stop = false;
-                        bottom++;
-                    }
-                }
-            }
-            return { left, right, top, bottom };
-        }
-        /**
-         * This function evaluates if the top row of a provided zone can be considered as a `header`
-         * by checking the following criteria:
-         * * If the left-most column top row value (topLeft) is empty, we ignore it while evaluating the criteria.
-         * 1 - Apart from the left-most column, every element of the top row must be non-empty, i.e. a cell should be present in the sheet.
-         * 2 - There should be at least one column in which the type (CellValueType) of the rop row cell differs from the type of the cell below.
-         *  For the second criteria, we ignore columns on which the cell below is empty.
-         *
-         */
-        hasHeader(items) {
-            if (items[0].length === 1)
-                return false;
-            let cells = items.map((col) => col.map((cell) => (cell === null || cell === void 0 ? void 0 : cell.evaluated.type) || CellValueType.empty));
-            // ignore left-most column when topLeft cell is empty
-            const topLeft = cells[0][0];
-            if (topLeft === CellValueType.empty) {
-                cells = cells.slice(1);
-            }
-            if (cells.some((item) => item[0] === CellValueType.empty)) {
-                return false;
-            }
-            else if (cells.some((item) => item[1] !== CellValueType.empty && item[0] !== item[1])) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        sortZone(sheetId, anchor, zone, sortDirection) {
-            const [stepX, stepY] = this.mainCellsSteps(sheetId, zone);
-            let sortingCol = this.getters.getMainCell(sheetId, ...anchor)[0]; // fetch anchor
-            let sortZone = Object.assign({}, zone);
-            // Update in case of merges in the zone
-            let cells = this.mainCells(sheetId, zone);
-            if (this.hasHeader(cells)) {
-                sortZone.top += stepY;
-            }
-            cells = this.mainCells(sheetId, sortZone);
-            const sortingCells = cells[sortingCol - sortZone.left];
-            const sortedIndexOfSortTypeCells = sortCells(sortingCells, sortDirection);
-            const sortedIndex = sortedIndexOfSortTypeCells.map((x) => x.index);
-            const [width, height] = [cells.length, cells[0].length];
-            for (let c = 0; c < width; c++) {
-                for (let r = 0; r < height; r++) {
-                    let cell = cells[c][sortedIndex[r]];
-                    let newCol = sortZone.left + c * stepX;
-                    let newRow = sortZone.top + r * stepY;
-                    let newCellValues = {
-                        sheetId: sheetId,
-                        col: newCol,
-                        row: newRow,
-                        content: "",
-                        value: "",
-                    };
-                    if (cell) {
-                        let content = cell.content;
-                        if (cell.isFormula()) {
-                            const position = this.getters.getCellPosition(cell.id);
-                            const offsetY = newRow - position.row;
-                            // we only have a vertical offset
-                            const ranges = this.getters.createAdaptedRanges(cell.dependencies, 0, offsetY, sheetId);
-                            content = this.getters.buildFormulaContent(sheetId, cell, ranges);
-                        }
-                        newCellValues.style = cell.style;
-                        newCellValues.content = content;
-                        newCellValues.format = cell.format;
-                        newCellValues.value = cell.evaluated.value;
-                    }
-                    this.dispatch("UPDATE_CELL", newCellValues);
-                }
-            }
-        }
-        /**
-         * Return the distances between main merge cells in the zone.
-         * (1 if there are no merges).
-         * Note: it is assumed all merges are the same in the zone.
-         */
-        mainCellsSteps(sheetId, zone) {
-            const merge = this.getters.getMerge(sheetId, zone.left, zone.top);
-            const stepX = merge ? merge.right - merge.left + 1 : 1;
-            const stepY = merge ? merge.bottom - merge.top + 1 : 1;
-            return [stepX, stepY];
-        }
-        /**
-         * Return a 2D array of cells in the zone (main merge cells if there are merges)
-         */
-        mainCells(sheetId, zone) {
-            const [stepX, stepY] = this.mainCellsSteps(sheetId, zone);
-            const cells = [];
-            const cols = range(zone.left, zone.right + 1, stepX);
-            const rows = range(zone.top, zone.bottom + 1, stepY);
-            for (const col of cols) {
-                const colCells = [];
-                cells.push(colCells);
-                for (const row of rows) {
-                    colCells.push(this.getters.getCell(sheetId, col, row));
-                }
-            }
-            return cells;
-        }
-    }
-    SortPlugin.getters = ["getContiguousZone"];
-
     class UIOptionsPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
@@ -21521,6 +21541,7 @@
         .add("borders", BordersPlugin)
         .add("conditional formatting", ConditionalFormatPlugin)
         .add("figures", FigurePlugin)
+        .add("sort", SortPlugin)
         .add("chart", ChartPlugin);
     const uiPluginRegistry = new Registry()
         .add("selection", SelectionPlugin)
@@ -21537,7 +21558,6 @@
         .add("grid renderer", RendererPlugin)
         .add("autofill", AutofillPlugin)
         .add("find_and_replace", FindAndReplacePlugin)
-        .add("sort", SortPlugin)
         .add("automatic_sum", AutomaticSumPlugin)
         .add("selection_multiuser", SelectionMultiUserPlugin);
 
@@ -21695,6 +21715,8 @@
     otRegistry.addTransformation("REMOVE_COLUMNS_ROWS", ["CREATE_CHART", "UPDATE_CHART"], updateChartRangesTransformation);
     otRegistry.addTransformation("DELETE_FIGURE", ["UPDATE_FIGURE", "UPDATE_CHART"], updateChartFigure);
     otRegistry.addTransformation("ADD_MERGE", ["ADD_MERGE", "REMOVE_MERGE"], mergeTransformation);
+    otRegistry.addTransformation("ADD_MERGE", ["SORT_CELLS"], sortMergedTransformation);
+    otRegistry.addTransformation("REMOVE_MERGE", ["SORT_CELLS"], sortUnMergedTransformation);
     function updateChartFigure(toTransform, executed) {
         if (toTransform.id === executed.id) {
             return undefined;
@@ -21725,9 +21747,6 @@
         };
     }
     function mergeTransformation(cmd, executed) {
-        if (cmd.sheetId !== executed.sheetId) {
-            return cmd;
-        }
         const target = [];
         for (const zone1 of cmd.target) {
             for (const zone2 of executed.target) {
@@ -21741,10 +21760,53 @@
         }
         return undefined;
     }
+    /**
+     * Transforming a sort command with respect to an executed merge command
+     * makes no sense. The sorting cannot work! (See the conditions to apply
+     * a sort command in the sort plugin)
+     * The "canonical" transformation would be to drop the sort command.
+     * However, from a functional point of view, we consider the sorting
+     * to have more importance than the merge. The transformation is therefore
+     * to drop (inverse) the conflicting merged zones.
+     */
+    function sortMergedTransformation(cmd, executed) {
+        const overlappingZones = executed.target.filter((mergedZone) => overlap(mergedZone, cmd.zone));
+        if (overlappingZones.length) {
+            const removeMergeCommand = {
+                type: "REMOVE_MERGE",
+                target: overlappingZones,
+                sheetId: cmd.sheetId,
+            };
+            return [removeMergeCommand, cmd];
+        }
+        return cmd;
+    }
+    /**
+     * Transforming a sort command with respect to an executed merge removed command
+     * makes no sense. The sorting cannot work! (See the conditions to apply
+     * a sort command in the sort plugin)
+     * The "canonical" transformation would be to drop the sort command.
+     * However, from a functional point of view, we consider the sorting
+     * to have more importance than the merge. The transformation is therefore
+     * to drop (inverse) the removed merged zones.
+     */
+    function sortUnMergedTransformation(cmd, executed) {
+        const overlappingZones = executed.target.filter((mergedZone) => overlap(mergedZone, cmd.zone));
+        if (overlappingZones.length) {
+            const addMergeCommand = {
+                type: "ADD_MERGE",
+                target: overlappingZones,
+                sheetId: cmd.sheetId,
+            };
+            return [addMergeCommand, cmd];
+        }
+        return cmd;
+    }
 
     const transformations = [
         { match: isSheetDependent, fn: transformSheetId },
         { match: isTargetDependent, fn: transformTarget },
+        { match: isZoneDependent, fn: transformZoneDependentCommand },
         { match: isPositionDependent, fn: transformPosition },
         { match: isGridDependent, fn: transformDimension },
     ];
@@ -21764,9 +21826,18 @@
      */
     function transform(toTransform, executed) {
         const specificTransform = otRegistry.getTransformation(toTransform.type, executed.type);
-        return specificTransform
-            ? specificTransform(toTransform, executed)
-            : genericTransform(toTransform, executed);
+        const result = genericTransform(toTransform, executed);
+        switch (result) {
+            case "IGNORE_COMMAND":
+                return undefined;
+            case "TRANSFORMATION_NOT_NEEDED":
+                return toTransform;
+            default:
+                if (result && specificTransform) {
+                    return specificTransform(result, executed);
+                }
+                return result;
+        }
     }
     /**
      * Get the result of applying the operation transformations on all the given
@@ -21777,24 +21848,26 @@
         for (const executedCommand of executed) {
             transformedCommands = transformedCommands
                 .map((cmd) => transform(cmd, executedCommand))
-                .filter(isDefined);
+                .filter(isDefined)
+                .flat();
         }
         return transformedCommands;
     }
     /**
-     * Apply a generic transformation based on the characteristic of the given commands.
+     * Apply all generic transformations based on the characteristic of the given commands.
      */
     function genericTransform(cmd, executed) {
         for (const { match, fn } of transformations) {
             if (match(cmd)) {
                 const result = fn(cmd, executed);
-                if (result === "SKIP_TRANSFORMATION") {
-                    continue;
+                switch (result) {
+                    case "IGNORE_COMMAND":
+                    case "TRANSFORMATION_NOT_NEEDED":
+                        return result;
+                    default:
+                        cmd = result;
+                        break;
                 }
-                if (result === "IGNORE_COMMAND") {
-                    return undefined;
-                }
-                return result;
             }
         }
         return cmd;
@@ -21804,10 +21877,10 @@
         if (cmd.sheetId === deleteSheet) {
             return "IGNORE_COMMAND";
         }
-        if (cmd.sheetId !== executed.sheetId) {
-            return cmd;
+        if ("sheetId" in executed && cmd.sheetId !== executed.sheetId) {
+            return "TRANSFORMATION_NOT_NEEDED";
         }
-        return "SKIP_TRANSFORMATION";
+        return cmd;
     }
     function transformTarget(cmd, executed) {
         const target = [];
@@ -21821,6 +21894,13 @@
             return "IGNORE_COMMAND";
         }
         return { ...cmd, target };
+    }
+    function transformZoneDependentCommand(cmd, executed) {
+        const newZone = transformZone(cmd.zone, executed);
+        if (newZone) {
+            return { ...cmd, zone: newZone };
+        }
+        return "IGNORE_COMMAND";
     }
     function transformDimension(cmd, executed) {
         if (executed.type === "ADD_COLUMNS_ROWS" || executed.type === "REMOVE_COLUMNS_ROWS") {
@@ -21855,7 +21935,7 @@
             }
             return "IGNORE_COMMAND";
         }
-        return "SKIP_TRANSFORMATION";
+        return cmd;
     }
     /**
      * Transform a PositionDependentCommand. It could be impacted by a grid command
@@ -21868,7 +21948,7 @@
         if (executed.type === "ADD_MERGE") {
             return transformPositionWithMerge(cmd, executed);
         }
-        return "SKIP_TRANSFORMATION";
+        return cmd;
     }
     /**
      * Transform a PositionDependentCommand after a grid shape modification. This
@@ -30773,8 +30853,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-01-26T13:37:11.874Z';
-    exports.__info__.hash = 'd66ed79';
+    exports.__info__.date = '2022-01-28T14:59:34.181Z';
+    exports.__info__.hash = 'ea8bcf4';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

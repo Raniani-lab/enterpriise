@@ -31,6 +31,9 @@
                         <field name="dhl_dutiable"/>
                         <field name="dhl_duty_payment" string='Duties paid by' attrs="{'required': [('delivery_type', '=', 'dhl')], 'invisible': [('dhl_dutiable', '=', False)]}"/>
                     </group>
+                    <group string="Custom Data" name="dhl_customs" groups="base.group_no_one">
+                        <field name="dhl_custom_data_request" nolabel="1" placeholder="'rate': {}, 'ship': {}, 'return': {}"/>
+                    </group>
                 </group>
             </page>
         </xpath>

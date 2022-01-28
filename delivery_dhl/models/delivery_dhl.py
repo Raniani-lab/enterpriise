@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from .dhl_request import DHLProvider
+from zeep.helpers import serialize_object
 
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 from odoo.tools import float_repr
+from odoo.tools.safe_eval import const_eval
+
 
 class Providerdhl(models.Model):
     _inherit = 'delivery.carrier'
@@ -89,6 +92,12 @@ class Providerdhl(models.Model):
         ('6X4_PDF', '6X4_PDF'),
         ('8X4_PDF', '8X4_PDF')
     ], string="Label Template", default='8X4_A4_PDF')
+    dhl_custom_data_request = fields.Text(
+        'Custom data for DHL requests,',
+        help="""The custom data in DHL is organized like the inside of a json file.
+        There are 3 possible keys: 'rate', 'ship', 'return', to which you can add your custom data.
+        More info on https://xmlportal.dhl.com/"""
+    )
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_commercial_invoice_sequence(self):
@@ -146,6 +155,7 @@ class Providerdhl(models.Model):
         real_rating_request = {}
         real_rating_request['GetQuote'] = rating_request
         real_rating_request['schemaVersion'] = 2.0
+        self._dhl_add_custom_data_to_request(rating_request, 'rate')
         response = srm._process_rating(real_rating_request)
 
         available_product_code = []
@@ -231,6 +241,7 @@ class Providerdhl(models.Model):
             shipment_request['Label'] = srm._set_label(self.dhl_label_template)
             shipment_request['schemaVersion'] = 10.0
             shipment_request['LanguageCode'] = 'en'
+            self._dhl_add_custom_data_to_request(shipment_request, 'ship')
             dhl_response = srm._process_shipment(shipment_request)
             traking_number = dhl_response.AirwayBillNumber
             logmessage = (_("Shipment created into DHL <br/> <b>Tracking Number : </b>%s") % (traking_number))
@@ -281,6 +292,7 @@ class Providerdhl(models.Model):
         shipment_request['SpecialService'].append(srm._set_return())
         shipment_request['schemaVersion'] = 10.0
         shipment_request['LanguageCode'] = 'en'
+        self._dhl_add_custom_data_to_request(shipment_request, 'return')
         dhl_response = srm._process_shipment(shipment_request)
         traking_number = dhl_response.AirwayBillNumber
         logmessage = (_("Shipment created into DHL <br/> <b>Tracking Number : </b>%s") % (traking_number))
@@ -313,3 +325,32 @@ class Providerdhl(models.Model):
         else:
             weight = weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_kgm'), round=False)
         return float_repr(weight, 3)
+
+    def _dhl_add_custom_data_to_request(self, request, request_type):
+        """Adds the custom data to the request.
+        When there are multiple items in a list, they will all be affected by
+        the change.
+        for example, with
+        {"ShipmentDetails": {"Pieces": {"Piece": {"AdditionalInformation": "custom info"}}}}
+        the AdditionalInformation of each piece will be updated.
+        """
+        if not self.dhl_custom_data_request:
+            return
+        try:
+            custom_data = const_eval('{%s}' % self.dhl_custom_data_request).get(request_type, {})
+        except SyntaxError:
+            raise UserError(_('Invalid syntax for DHL custom data.'))
+
+        def extra_data_to_request(request, custom_data):
+            """recursive function that adds custom data to the current request."""
+            for key, new_value in custom_data.items():
+                request[key] = current_value = serialize_object(request.get(key, {})) or None
+                if isinstance(current_value, list):
+                    for item in current_value:
+                        extra_data_to_request(item, new_value)
+                elif isinstance(new_value, dict) and isinstance(current_value, dict):
+                    extra_data_to_request(current_value, new_value)
+                else:
+                    request[key] = new_value
+
+        extra_data_to_request(request, custom_data)

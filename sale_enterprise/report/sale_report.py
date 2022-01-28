@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import logging, re
+import re
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.osv.expression import expression
 
-_logger = logging.getLogger(__name__)
 
 class SaleReport(models.Model):
     _inherit = 'sale.report'
@@ -23,12 +22,16 @@ class SaleReport(models.Model):
         ('no', 'Nothing to Invoice')
         ], string="Invoice Status", readonly=True)
 
-    def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
-        fields['invoice_status'] = ', s.invoice_status as invoice_status'
+    def _select_additional_fields(self):
+        res = super()._select_additional_fields()
+        res['invoice_status'] = "s.invoice_status"
+        return res
 
-        groupby += ', s.invoice_status'
-
-        return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
+    def _group_by_sale(self):
+        res = super()._group_by_sale()
+        res += """,
+            s.invoice_status"""
+        return res
 
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):

@@ -9,7 +9,7 @@ This module adds a new dashboard view in the Website application.
 This new type of view contains some basic statistics, a graph, and a pivot subview that allow you to get a quick overview of your online sales.
 It also provides new tools to analyse your data.
     """,
-    'depends': ['website_sale', 'web_dashboard'],
+    'depends': ['website_sale', 'web_dashboard', 'sale_enterprise'],
     'data': [
         'views/dashboard_view.xml',
         'views/res_config_settings_views.xml'

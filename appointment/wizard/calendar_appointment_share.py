@@ -20,7 +20,7 @@ class CalendarAppointmentShare(models.TransientModel):
         help="Get the users linked to the appointment type selected to apply a domain on the users that can be selected")
     staff_user_ids = fields.Many2many(
         'res.users', string='Users',
-        compute='_compute_staff_user_id', store=True, readonly=False,
+        compute='_compute_staff_user_ids', store=True, readonly=False,
         help="The users that will be displayed/filtered for the user to make its appointment")
     share_link = fields.Char('Link', compute='_compute_share_link')
 
@@ -36,7 +36,7 @@ class CalendarAppointmentShare(models.TransientModel):
             if len(staff_users) == 1:
                 appointment_link.staff_user_ids = staff_users
             else:
-                appointment_link.staff_user_ids = self.env.user.id if self.env.user.id in staff_users else False
+                appointment_link.staff_user_ids = self.env.user if self.env.user in staff_users else False
 
     @api.depends('appointment_type_ids', 'staff_user_ids')
     def _compute_share_link(self):

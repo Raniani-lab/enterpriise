@@ -54,8 +54,25 @@ class ProductTemplate(models.Model):
         res_names = super(ProductTemplate, self).name_get()
         if not self._context.get('rental_products'):
             return res_names
-        result = []
-        rental_product_ids = self.filtered(lambda p: p.rent_ok).ids
-        for res in res_names:
-            result.append((res[0], res[0] in rental_product_ids and "%s %s" % (res[1], _("(Rental)")) or res[1]))
-        return result
+        return [
+            (res[0], self.browse(res[0]).rent_ok and _("%s (Rental)", res[1]) or res[1])
+            for res in res_names
+        ]
+
+    def _get_contextual_price(self, product=None):
+        self.ensure_one()
+        if not (product or self).rent_ok:
+            return super()._get_contextual_price(product=product)
+
+        pricelist = self._get_contextual_pricelist()
+        if not pricelist:
+            return 0.0
+
+        quantity = self.env.context.get('quantity', 1.0)
+        uom = self.env['uom.uom'].browse(self.env.context.get('uom'))
+        date = self.env.context.get('date')
+        start_date = self.env.context.get('start_date')
+        end_date = self.env.context.get('end_date')
+        return pricelist._get_product_price(
+            product or self, quantity, uom=uom, date=date, start_date=start_date, end_date=end_date
+        )

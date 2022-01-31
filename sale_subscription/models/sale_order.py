@@ -332,8 +332,6 @@ class SaleOrder(models.Model):
         template = self.sale_order_template_id
         if template.tag_ids.ids:
             self.account_tag_ids = [Command.link(tag_id) for tag_id in template.tag_ids.ids]
-        if self.is_subscription and template.is_subscription:
-            self.order_line._update_temporal_prices()
 
     def _create_mrr_log(self, template_value, initial_values):
         alive_renewals = self.filtered(lambda sub: sub.subscription_id and sub.subscription_management == 'renew' and sub.stage_category == 'progress')

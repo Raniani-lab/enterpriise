@@ -295,3 +295,15 @@ class RentalOrderLine(models.Model):
         values = super()._get_clean_up_values()
         values.update({'return_date': False})
         return values
+
+    #=== PRICE COMPUTING HOOKS ===#
+
+    def _get_price_computing_kwargs(self):
+        """ Override to add the pricing duration or the start and end date of temporal line """
+        price_computing_kwargs = super()._get_price_computing_kwargs()
+        if self.temporal_type != 'rental':
+            return price_computing_kwargs
+        if self.start_date and self.return_date:
+            price_computing_kwargs['start_date'] = self.start_date
+            price_computing_kwargs['end_date'] = self.return_date
+        return price_computing_kwargs

@@ -12,11 +12,10 @@ class ProductProduct(models.Model):
         res_names = super(ProductProduct, self).name_get()
         if not self._context.get('rental_products'):
             return res_names
-        result = []
-        rental_product_ids = self.filtered(lambda p: p.rent_ok).ids
-        for res in res_names:
-            result.append((res[0], res[0] in rental_product_ids and "%s %s" % (res[1], _("(Rental)")) or res[1]))
-        return result
+        return [
+            (res[0], self.browse(res[0]).rent_ok and _("%s (Rental)", res[1]) or res[1])
+            for res in res_names
+        ]
 
     def _get_qty_in_rent_domain(self):
         return [

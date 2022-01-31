@@ -184,25 +184,31 @@ class AccountGenericTaxReport(models.AbstractModel):
         else:
             additional_base_line_domain = []
 
+        if tax.amount_type == 'group':
+            tax_affecting_base_domain = [
+                ('tax_ids', 'in', tax.children_tax_ids.ids),
+                ('tax_repartition_line_id', '!=', False),
+            ]
+        else:
+            tax_affecting_base_domain = [
+                ('tax_ids', '=', tax.id),
+                ('tax_ids.type_tax_use', '=', type_tax_use),
+                ('tax_repartition_line_id', '!=', False),
+            ]
+
         domain = self._get_options_domain(options) + expression.OR((
             # Base lines
             [
                 ('tax_ids', 'in', tax.ids),
                 ('tax_ids.type_tax_use', '=', type_tax_use),
                 ('tax_repartition_line_id', '=', False),
-                *additional_base_line_domain,
-            ],
+            ] + additional_base_line_domain,
             # Tax lines
             [
                 ('group_tax_id', '=', tax.id) if tax.amount_type == 'group' else ('tax_line_id', '=', tax.id),
             ],
             # Tax lines acting as base lines
-            [
-                ('tax_ids', 'in', (tax.children_tax_ids if tax.amount_type == 'group' else tax).ids),
-                ('tax_ids.type_tax_use', '=', type_tax_use),
-                ('tax_repartition_line_id', '!=', False),
-                *additional_base_line_domain,
-            ],
+            tax_affecting_base_domain + additional_base_line_domain,
         ))
 
         return {
@@ -234,8 +240,32 @@ class AccountGenericTaxReport(models.AbstractModel):
             tax_amount      The tax amount expressed in company's currency.
             children:       The children nodes following the same pattern as the current dictionary.
         """
-        select_clause_str = ','.join('%s.%s AS %s_%s' % (alias, field, alias, field) for alias, field in groupby_fields)
-        groupby_query_str = ','.join('%s.%s' % (alias, field) for alias, field in groupby_fields)
+        fetch_group_of_taxes = False
+
+        select_clause_list = []
+        groupby_query_list = []
+        for alias, field in groupby_fields:
+            select_clause_list.append('%s.%s AS %s_%s' % (alias, field, alias, field))
+            groupby_query_list.append('%s.%s' % (alias, field))
+
+            # Fetch both info from the originator tax and the child tax to manage the group of taxes.
+            if alias == 'src_tax':
+                select_clause_list.append('%s.%s AS %s_%s' % ('tax', field, 'tax', field))
+                groupby_query_list.append('%s.%s' % ('tax', field))
+                fetch_group_of_taxes = True
+
+        select_clause_str = ','.join(select_clause_list)
+        groupby_query_str = ','.join(groupby_query_list)
+
+        # Fetch the group of taxes.
+        # If all children taxes are 'none', all amounts are aggregated and only the group will appear on the report.
+        # If some children taxes are not 'none', the children are displayed.
+        group_of_taxes_to_expand = set()
+        if fetch_group_of_taxes:
+            group_of_taxes = self.env['account.tax'].with_context(active_test=False).search([('amount_type', '=', 'group')])
+            for group in group_of_taxes:
+                if set(group.children_tax_ids.mapped('type_tax_use')) != {'none'}:
+                    group_of_taxes_to_expand.add(group.id)
 
         res = {}
         for i, options in enumerate(options_list):
@@ -249,7 +279,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             self._cr.execute(f'''
                 SELECT
                     {select_clause_str},
-                    trl.refund_tax_id AS is_refund,
+                    trl.refund_tax_id IS NOT NULL AS is_refund,
                     SUM(tdr.base_amount) AS base_amount,
                     SUM(tdr.tax_amount) AS tax_amount
                 FROM ({tax_details_query}) AS tdr
@@ -260,16 +290,30 @@ class AccountGenericTaxReport(models.AbstractModel):
                     AND src_tax.type_tax_use IN ('sale', 'purchase')
                 JOIN account_account account ON account.id = tdr.base_account_id
                 WHERE tdr.tax_exigible
-                GROUP BY tax.sequence, tax.id, tdr.tax_repartition_line_id, trl.refund_tax_id, {groupby_query_str}
+                GROUP BY tdr.tax_repartition_line_id, trl.refund_tax_id, {groupby_query_str}
                 ORDER BY src_tax.sequence, src_tax.id, tax.sequence, tax.id
             ''', tax_details_params)
 
             for row in self._cr.dictfetchall():
                 node = res
 
+                # tuple of values used to prevent adding multiple times the same base amount.
                 cumulated_row_key = [row['is_refund']]
+
                 for alias, field in groupby_fields:
-                    grouping_key = '%s_%s' % (alias, field)
+                    grouping_key = f'{alias}_{field}'
+
+                    # Manage group of taxes.
+                    # In case the group of taxes is mixing multiple taxes having a type_tax_use != 'none', consider
+                    # them instead of the group.
+                    if grouping_key == 'src_tax_id' and row['src_tax_id'] in group_of_taxes_to_expand:
+                        # Add the originator group to the grouping key, to make sure that its base amount is not
+                        # treated twice, for hybrid cases where a tax is both used in a group and independently.
+                        cumulated_row_key.append(row[grouping_key])
+
+                        # Ensure the child tax is used instead of the group.
+                        grouping_key = 'tax_id'
+
                     row_key = row[grouping_key]
                     cumulated_row_key.append(row_key)
                     cumulated_row_key_tuple = tuple(cumulated_row_key)

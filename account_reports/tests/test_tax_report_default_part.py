@@ -119,16 +119,19 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
             'name': "tax_10",
             'amount_type': 'percent',
             'amount': 10.0,
+            'type_tax_use': 'none',
         })
         tax_20 = self.env['account.tax'].create({
             'name': "tax_20",
             'amount_type': 'percent',
             'amount': 20.0,
+            'type_tax_use': 'none',
         })
         tax_30 = self.env['account.tax'].create({
             'name': "tax_30",
             'amount_type': 'percent',
             'amount': 30.0,
+            'type_tax_use': 'none',
         })
         tax_group_10_20 = self.env['account.tax'].create({
             'name': "tax_group_10_20",
@@ -208,6 +211,38 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         expected_amls = invoice.line_ids.filtered(lambda x: x.group_tax_id == tax_group_10_30 or tax_group_10_30 in x.tax_ids)
         self.checkAmlsRedirection(report, options, tax_group_10_30, expected_amls)
 
+        # Same with tax_10 as a sale tax.
+        options['tax_report'] = 'generic'
+        tax_10.type_tax_use = 'sale'
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    NET         TAX
+            [   0,                                      1,          2],
+            [
+                ('Sales',                               '',         1100.0),
+                ("tax_10 (10.0%)" ,                     3000.0,     300.0),
+                ("tax_20 (20.0%)" ,                     1000.0,     200.0),
+                ("tax_30 (30.0%)" ,                     2000.0,     600),
+            ],
+        )
+
+        # Same with tax_20 as a sale tax.
+        tax_10.type_tax_use = 'none'
+        tax_20.type_tax_use = 'sale'
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    NET         TAX
+            [   0,                                      1,          2],
+            [
+                ('Sales',                               '',         1100.0),
+                ("tax_10 (10.0%)" ,                     1000.0,     100.0),
+                ("tax_20 (20.0%)" ,                     1000.0,     200.0),
+                ('tax_group_10_30',                     2000.0,     800.0),
+            ],
+        )
+
     def test_tax_group_of_taxes_affected_by_other(self):
         report = self.env['account.generic.tax.report']
         options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
@@ -223,11 +258,13 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
             'amount_type': 'percent',
             'amount': 20.0,
             'include_base_amount': True,
+            'type_tax_use': 'none',
         })
         tax_10 = self.env['account.tax'].create({
             'name': "tax_10",
             'amount_type': 'percent',
             'amount': 10.0,
+            'type_tax_use': 'none',
         })
         tax_group = self.env['account.tax'].create({
             'name': "tax_group",

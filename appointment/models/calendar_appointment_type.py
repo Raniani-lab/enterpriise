@@ -276,7 +276,8 @@ class CalendarAppointmentType(models.Model):
         slots = self._slots_generate(first_day.astimezone(appt_tz), last_day.astimezone(appt_tz), timezone)
         if not staff_user or staff_user in self.staff_user_ids:
             self._slots_available(slots, first_day.astimezone(pytz.UTC), last_day.astimezone(pytz.UTC), staff_user)
-
+        total_nb_slots = len(slots)
+        nb_slots_previous_months = 0
         # Compute calendar rendering and inject available slots
         today = requested_tz.fromutc(datetime.utcnow())
         start = today
@@ -284,6 +285,7 @@ class CalendarAppointmentType(models.Model):
         month_dates_calendar = cal.Calendar(locale.first_week_day).monthdatescalendar
         months = []
         while (start.year, start.month) <= (last_day.year, last_day.month):
+            nb_slots_next_months = len(slots)
             has_availabilities = False
             dates = month_dates_calendar(start.year, start.month)
             for week_index, week in enumerate(dates):
@@ -318,6 +320,7 @@ class CalendarAppointmentType(models.Model):
                                     })
                                 today_slots.append(slot)
                             slots.pop(0)
+                            nb_slots_next_months -= 1
                     today_slots = sorted(today_slots, key=lambda d: d['datetime'])
                     dates[week_index][day_index] = {
                         'day': day,
@@ -333,7 +336,10 @@ class CalendarAppointmentType(models.Model):
                 'id': len(months),
                 'month': format_datetime(start, 'MMMM Y', locale=get_lang(self.env).code),
                 'weeks': dates,
-                'has_availabilities': has_availabilities
+                'has_availabilities': has_availabilities,
+                'nb_slots_previous_months': nb_slots_previous_months,
+                'nb_slots_next_months': nb_slots_next_months,
             })
+            nb_slots_previous_months = total_nb_slots - nb_slots_next_months
             start = start + relativedelta(months=1)
         return months

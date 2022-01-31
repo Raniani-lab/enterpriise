@@ -152,9 +152,17 @@
                     <div id="calendarHeader" class="d-inline-flex align-items-baseline container-fluid">
                         <button t-if="month['id'] > 0" type="button" id="prevCal" t-attf-class="btn btn-primary o_js_calendar_navigate"><i class="fa fa-arrow-left"/></button>
                         <div t-else="" class="btn disabled fa fa-arrow-left mr-1 text-white"/>
+                        <span t-if="month['nb_slots_previous_months'] and appointment_type.category == 'custom'"
+                            class="badge bg-o-color-2 rounded-circle align-self-start mt-n1 ml-n2"
+                            t-out="month['nb_slots_previous_months']"/>
                         <h3 t-out="month['month']" class="col text-center"/>
-                        <button t-if="len(slots) > month['id'] + 1" type="button" id="nextCal" t-attf-class="btn btn-primary o_js_calendar_navigate ml-1"><i class="fa fa-arrow-right"/></button>
+                        <button t-if="len(slots) > month['id'] + 1" type="button" id="nextCal" t-attf-class="btn btn-primary o_js_calendar_navigate ml-1">
+                            <i class="fa fa-arrow-right"/>
+                        </button>
                         <div t-else="" class="btn disabled fa fa-arrow-right ml-1 text-white"/>
+                        <span t-if="month['nb_slots_next_months'] and appointment_type.category == 'custom'"
+                            class="badge bg-o-color-2 rounded-circle align-self-start mt-n1 ml-n2"
+                            t-out="month['nb_slots_next_months']"/>
                     </div>
                     <table class="table mt-1">
                         <tr class="active">

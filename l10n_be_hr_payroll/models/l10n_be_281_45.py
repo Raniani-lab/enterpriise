@@ -2,9 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
-import io
 import logging
-import zipfile
+import re
 
 from datetime import date
 from collections import defaultdict
@@ -21,7 +20,7 @@ _logger = logging.getLogger(__name__)
 # - "Avis aux débiteurs" https://finances.belgium.be/fr/entreprises/personnel_et_remuneration/avis_aux_debiteurs#q2
 
 COUNTRY_CODES = {
-    'BE': '00000',
+    'BE': '00150',
     'ES': '00109',
     'FR': '00111',
     'GR': '00112',
@@ -32,7 +31,7 @@ COUNTRY_CODES = {
     'NL': '00129',
     'TR': '00262',
     'US': '00402',
-    'MA': 'O0354',
+    'MA': '00354',
 }
 
 
@@ -98,7 +97,7 @@ class L10nBe28145(models.Model):
         xsd_schema_file_path = get_resource_path(
             'l10n_be_hr_payroll',
             'data',
-            '161-xsd-2021-20211223.xsd',
+            '161-xsd-2021-20220120.xsd',
         )
         xsd_root = etree.parse(xsd_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
@@ -158,40 +157,24 @@ class L10nBe28145(models.Model):
         return COUNTRY_CODES[country.code]
 
     @api.model
-    def _get_marital_code(self, marital):
-        codes = {
-            'single': '1',
-            'married': '2',
-            'cohabitant': '2',
-            'widower': '3',
-            'divorced': '4',
-        }
-        return codes.get(marital, '0')
-
-    @api.model
-    def _get_fiscal_status(self, employee):
-        if employee.marital in ['married', 'cohabitant']:
-            if employee.spouse_fiscal_status in ['high_income', 'high_pension']:
-                return '1'
-            if employee.spouse_fiscal_status == 'without_income':
-                return '2'
-            if employee.spouse_fiscal_status in ['low_pension', 'low_income']:
-                return '3'
-        return '0'  # single, widow, ...
-
-    @api.model
-    def _get_dependent_people(self, employee):
-        if not employee.other_dependent_people:
-            return 0
-        return employee.other_senior_dependent + employee.other_disabled_senior_dependent + self.other_juniors_dependent + self.other_disabled_juniors_dependent
-
-    @api.model
     def _get_other_family_charges(self, employee):
         if employee.dependent_children and employee.marital in ['single', 'widower']:
             return 'X'
         return ''
 
     def _get_rendering_data(self, employees):
+        # Round to eurocent for XML file, not PDF
+        no_round = self.env.context.get('no_round_281_45')
+
+        def _to_eurocent(amount):
+            return amount if no_round else int(amount * 100)
+
+        bce_number = self.company_id.vat.replace('BE', '')
+
+        phone = self.company_id.phone.strip().replace(' ', '')
+        if len(phone) > 12:
+            raise UserError(_("The company phone number shouldn't exceed 12 characters"))
+
         main_data = {
             'v0002_inkomstenjaar': self.reference_year,
             'v0010_bestandtype': 'BELCOTST' if self.is_test else 'BELCOTAX',
@@ -200,18 +183,20 @@ class L10nBe28145(models.Model):
             'v0015_adres': self.company_id.street,
             'v0016_postcode': self.company_id.zip,
             'v0017_gemeente': self.company_id.city,
-            'v0018_telefoonnummer': self.company_id.phone,
+            'v0018_telefoonnummer': phone,
             'v0021_contactpersoon': self.env.user.name,
             'v0022_taalcode': self._get_lang_code(self.env.user.employee_id.address_home_id.lang),
             'v0023_emailadres': self.env.user.email,
-            'v0024_nationaalnr': self.company_id.vat.replace('BE', ''),
+            'v0024_nationaalnr': bce_number,
             'v0025_typeenvoi': self.type_sending,
 
             'a1002_inkomstenjaar': self.reference_year,
-            'a1005_registratienummer': self.company_id.vat.replace('BE', ''),
+            'a1005_registratienummer': bce_number,
             'a1011_naamnl1': self.company_id.name,
             'a1013_adresnl': self.company_id.street,
-            'a1015_gemeente': self.company_id.zip,
+            'a1014_postcodebelgisch': self.company_id.zip.strip(),
+            'a1015_gemeente': self.company_id.city,
+            'a1016_landwoonplaats': self._get_country_code(self.company_id.country_id),
             'a1020_taalcode': 1,
         }
 
@@ -247,56 +232,68 @@ class L10nBe28145(models.Model):
                 code: sum(all_line_values[code][p.id]['total'] for p in payslips)
                 for code in line_codes}
 
+            postcode = employee.address_home_id.zip.strip() if is_belgium else '0'
+            if len(postcode) > 4 or not postcode.isdecimal():
+                raise UserError(_("The belgian postcode length shouldn't exceed 4 characters and should contain only numbers for employee %s", employee.name))
+
+            names = re.sub(r"\([^()]*\)", "", employee.name).strip().split()
+            first_name = names[-1]
+            last_name = ' '.join(names[:-1])
+            if len(first_name) > 30:
+                raise UserError(_("The employee first name shouldn't exceed 30 characters for employee %s", employee.name))
+
             sheet_values = {
                 'employee': employee,
                 'employee_id': employee.id,
                 'f2002_inkomstenjaar': self.reference_year,
-                'f2005_registratienummer': self.company_id.vat.replace('BE', ''),
+                'f2005_registratienummer': bce_number,
                 'f2008_typefiche': '28110',
                 'f2009_volgnummer': sequence,
                 'f2011_nationaalnr': employee.niss,
-                'f2013_naam': employee.name,
+                'f2013_naam': last_name,
                 'f2015_adres': employee.address_home_id.street,
-                'f2016_postcodebelgisch': employee.address_home_id.zip if is_belgium else '0',
+                'f2016_postcodebelgisch': postcode,
                 'employee_city': employee.address_home_id.city,
-                'f2018_landwoonplaats': '0' if is_belgium else self._get_country_code(employee.address_home_id.country_id),
-                'f2019_burgerlijkstand': self._get_marital_code(employee.marital),
-                'f2020_echtgenote': self._get_fiscal_status(employee),
-                'f2021_aantalkinderen': employee.children + employee.disabled_children_number,
-                'f2022_anderentlaste': self._get_dependent_people(employee),
-                'f2023_diverse': self._get_other_family_charges(employee),
-                'f2024_echtgehandicapt': 'H' if employee.disabled_spouse_bool else '',
-                'f2026_verkrghandicap': 'H' if employee.disabled else '',
+                'f2018_landwoonplaats': '150' if is_belgium else self._get_country_code(employee.address_home_id.country_id),
                 'f2027_taalcode': self._get_lang_code(employee.address_home_id.lang),
                 'f2028_typetraitement': self.type_treatment,
                 'f2029_enkelopgave325': 0,
                 'f2112_buitenlandspostnummer': employee.address_home_id.zip if not is_belgium else '0',
-                'f2114_voornamen': employee.name,
+                'f2114_voornamen': first_name,
                 'f45_2030_aardpersoon': 1,
                 'f45_2031_verantwoordingsstukken': 0,
-                'f45_2060_brutoinkomsten': round(mapped_total['IP'], 2),
-                'f45_2061_forfaitairekosten': round(mapped_total['IP'] / 2.0, 2),
+                'f45_2060_brutoinkomsten': _to_eurocent(round(mapped_total['IP'], 2)),
+                'f45_2061_forfaitairekosten': _to_eurocent(round(mapped_total['IP'] / 2.0, 2)),
                 'f45_2062_werkelijkekosten': 0,
-                'f45_2063_roerendevoorheffing': round(-mapped_total['IP.DED'], 2),
+                'f45_2063_roerendevoorheffing': _to_eurocent(round(-mapped_total['IP.DED'], 2)),
                 'f45_2099_comment': '',
-                'f45_2109_fiscaalidentificat': employee.identification_id if employee.country_id != belgium else '',
+                'f45_2109_fiscaalidentificat': '', # Use NISS instead
                 'f45_2110_kbonbr': 0, # ?
             }
+
+            # Le code postal belge (2016) et le code postal étranger (2112) ne peuvent être
+            # ni remplis, ni vides tous les deux.
+            if is_belgium:
+                sheet_values.pop('f2112_buitenlandspostnummer')
+            else:
+                sheet_values.pop('f2016_postcodebelgisch')
+
             employees_data.append(sheet_values)
 
         sheets_count = len(employees_data)
-        sum_2009 = round(sum(sheet_values['f2009_volgnummer'] for sheet_values in employees_data), 2)
+        sum_2009 = sum(sheet_values['f2009_volgnummer'] for sheet_values in employees_data)
         sum_2059 = 0
-        sum_2063 = round(sum(sheet_values['f45_2063_roerendevoorheffing'] for sheet_values in employees_data), 2)
+        sum_2063 = sum(sheet_values['f45_2063_roerendevoorheffing'] for sheet_values in employees_data)
         total_data = {
             'r8002_inkomstenjaar': self.reference_year,
-            'r8010_aantalrecords': sheets_count,
+            'r8005_registratienummer': bce_number,
+            'r8010_aantalrecords': sheets_count + 2,
             'r8011_controletotaal': sum_2009,
             'r8012_controletotaal': sum_2059,
             'r8013_totaalvoorheffingen': sum_2063,
             'r9002_inkomstenjaar': self.reference_year,
-            'r9010_aantallogbestanden': sheets_count,
-            'r9011_totaalaantalrecords': sheets_count,
+            'r9010_aantallogbestanden': 3,
+            'r9011_totaalaantalrecords': sheets_count + 4,
             'r9012_controletotaal': sum_2009,
             'r9013_controletotaal': sum_2063,
             'r9014_controletotaal': sum_2059,
@@ -342,7 +339,7 @@ class L10nBe28145Line(models.Model):
     def _generate_pdf(self):
         for sheet in self.sheet_id:
             lines = self.filtered(lambda l: l.sheet_id == sheet)
-            rendering_data = sheet._get_rendering_data(lines.employee_id)
+            rendering_data = sheet.with_context(no_round_281_45=True)._get_rendering_data(lines.employee_id)
             for sheet_values in rendering_data['employees_data']:
                 for key, value in sheet_values.items():
                     if not value:

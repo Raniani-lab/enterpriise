@@ -3,6 +3,7 @@
 
 import base64
 import logging
+import re
 
 from collections import defaultdict
 from datetime import date
@@ -18,7 +19,7 @@ _logger = logging.getLogger(__name__)
 # - "Avis aux débiteurs" https://finances.belgium.be/fr/entreprises/personnel_et_remuneration/avis_aux_debiteurs#q2
 
 COUNTRY_CODES = {
-    'BE': '00000',
+    'BE': '00150',
     'ES': '00109',
     'FR': '00111',
     'GR': '00112',
@@ -29,7 +30,7 @@ COUNTRY_CODES = {
     'NL': '00129',
     'TR': '00262',
     'US': '00402',
-    'MA': 'O0354',
+    'MA': '00354',
 }
 
 
@@ -79,7 +80,7 @@ class L10nBe28110(models.Model):
         xsd_schema_file_path = get_resource_path(
             'l10n_be_hr_payroll',
             'data',
-            '161-xsd-2021-20211223.xsd',
+            '161-xsd-2021-20220120.xsd',
         )
         xsd_root = etree.parse(xsd_schema_file_path)
         schema = etree.XMLSchema(xsd_root)
@@ -142,7 +143,7 @@ class L10nBe28110(models.Model):
     @api.model
     def _get_atn_nature(self, payslips):
         result = ''
-        if any(payslip.vehicle_id for payslip in payslips):
+        if any(payslip.vehicle_id or payslip.contract_id.car_id for payslip in payslips):
             result += 'F'
         if any(payslip.contract_id.has_laptop for payslip in payslips):
             result += 'H'
@@ -169,6 +170,18 @@ class L10nBe28110(models.Model):
             })
 
     def _get_rendering_data(self, employees):
+        # Round to eurocent for XML file, not PDF
+        no_round = self.env.context.get('no_round_281_10')
+
+        def _to_eurocent(amount):
+            return amount if no_round else int(amount * 100)
+
+        bce_number = self.company_id.vat.replace('BE', '')
+
+        phone = self.company_id.phone.strip().replace(' ', '')
+        if len(phone) > 12:
+            raise UserError(_("The company phone number shouldn't exceed 12 characters"))
+
         main_data = {
             'v0002_inkomstenjaar': self.reference_year,
             'v0010_bestandtype': 'BELCOTST' if self.is_test else 'BELCOTAX',
@@ -177,18 +190,19 @@ class L10nBe28110(models.Model):
             'v0015_adres': self.company_id.street,
             'v0016_postcode': self.company_id.zip,
             'v0017_gemeente': self.company_id.city,
-            'v0018_telefoonnummer': self.company_id.phone,
+            'v0018_telefoonnummer': phone,
             'v0021_contactpersoon': self.env.user.name,
             'v0022_taalcode': self._get_lang_code(self.env.user.employee_id.address_home_id.lang),
             'v0023_emailadres': self.env.user.email,
-            'v0024_nationaalnr': self.company_id.vat.replace('BE', ''),
+            'v0024_nationaalnr': bce_number,
             'v0025_typeenvoi': self.type_sending,
-
             'a1002_inkomstenjaar': self.reference_year,
-            'a1005_registratienummer': self.company_id.vat.replace('BE', ''),
+            'a1005_registratienummer': bce_number,
             'a1011_naamnl1': self.company_id.name,
             'a1013_adresnl': self.company_id.street,
-            'a1015_gemeente': self.company_id.zip,
+            'a1014_postcodebelgisch': self.company_id.zip.strip(),
+            'a1015_gemeente': self.company_id.city,
+            'a1016_landwoonplaats': self._get_country_code(self.company_id.country_id),
             'a1020_taalcode': 1,
         }
 
@@ -234,24 +248,34 @@ class L10nBe28110(models.Model):
             holiday_gross = sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id in holiday_n_structure + holiday_n1_structure)
             common_gross = total_gross - warrant_gross - holiday_gross
 
+            postcode = employee.address_home_id.zip.strip() if is_belgium else '0'
+            if len(postcode) > 4 or not postcode.isdecimal():
+                raise UserError(_("The belgian postcode length shouldn't exceed 4 characters and should contain only numbers for employee %s", employee.name))
+
+            names = re.sub(r"\([^()]*\)", "", employee.name).strip().split()
+            first_name = names[-1]
+            last_name = ' '.join(names[:-1])
+            if len(first_name) > 30:
+                raise UserError(_("The employee first name shouldn't exceed 30 characters for employee %s", employee.name))
+
             sheet_values = {
                 'employee': employee,
                 'employee_id': employee.id,
                 'f2002_inkomstenjaar': self.reference_year,
-                'f2005_registratienummer': self.company_id.vat.replace('BE', ''),
+                'f2005_registratienummer': bce_number,
                 'f2008_typefiche': '28110',
                 'f2009_volgnummer': sequence,
                 'f2011_nationaalnr': employee.niss,
-                'f2013_naam': employee.name,
+                'f2013_naam': last_name,
                 'f2015_adres': employee.address_home_id.street,
-                'f2016_postcodebelgisch': employee.address_home_id.zip if is_belgium else '0',
+                'f2016_postcodebelgisch': postcode,
                 'employee_city': employee.address_home_id.city,
-                'f2018_landwoonplaats': '0' if is_belgium else self._get_country_code(employee.address_home_id.country_id),
+                'f2018_landwoonplaats': '150' if is_belgium else self._get_country_code(employee.address_home_id.country_id),
                 'f2027_taalcode': self._get_lang_code(employee.address_home_id.lang),
                 'f2028_typetraitement': self.type_treatment,
                 'f2029_enkelopgave325': 0,
                 'f2112_buitenlandspostnummer': employee.address_home_id.zip if not is_belgium else '0',
-                'f2114_voornamen': employee.name,
+                'f2114_voornamen': first_name,
                 # YTI From 2023, should be distinguished from volatile representation fees
                 # 'f10_2031_compensationwithstandards': round(mapped_total['REP.FEES'], 2),
                 'f10_2031_compensationwithstandards': 0,
@@ -267,14 +291,14 @@ class L10nBe28110(models.Model):
                 'f10_2042_sailorcode': 0,
                 'f10_2045_code': 0,
                 # 'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d/%m/%Y') if employee.first_contract_date.year == self.reference_year else '',
-                'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d/%m/%Y') if employee.first_contract_date else '',
-                'f10_2056_datumvanvertrek': employee.end_notice_period.strftime('%d/%m/%Y') if employee.end_notice_period else '',
-                'f10_2058_km': employee.has_bicycle and employee.km_home_work or 0.0,
+                'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d-%m-%Y') if employee.first_contract_date else '',
+                'f10_2056_datumvanvertrek': employee.end_notice_period.strftime('%d-%m-%Y') if employee.end_notice_period else '',
+                'f10_2058_km': employee.has_bicycle and employee.km_home_work or 0,
                 # f10_2059_totaalcontrole
-                'f10_2060_gewonebezoldiginge': round(common_gross, 2),
+                'f10_2060_gewonebezoldiginge': _to_eurocent(round(common_gross, 2)),
                 'f10_2061_bedragoveruren300horeca': 0,
                 # f10_2062_totaal
-                'f10_2063_vervroegdvakantieg': round(holiday_gross, 2),
+                'f10_2063_vervroegdvakantieg': _to_eurocent(round(holiday_gross, 2)),
                 'f10_2064_afzbelachterstall': 0,
                 'f10_2065_opzeggingsreclasseringsverg': 0,
                 'f10_2066_impulsfund': 0,
@@ -285,20 +309,20 @@ class L10nBe28110(models.Model):
                 'f10_2071_totalevergoeding': 0,
                 'f10_2072_pensioentoezetting':  0,
                 'f10_2073_tipamount': 0,
-                'f10_2074_bedrijfsvoorheffing': round(mapped_total['PPTOTAL'], 2),  # 2.074 = 2.131 + 2.133. YTI Is it ok to include PROF_TAX / should include Double holidays?
-                'f10_2075_bijzonderbijdrage': round(-mapped_total['M.ONSS'], 2),
-                'f10_2076_voordelenaardbedrag': round(sum(mapped_total[code] for code in ['ATN.INT', 'ATN.MOB', 'ATN.LAP', 'ATN.CAR']), 2),
+                'f10_2074_bedrijfsvoorheffing': _to_eurocent(round(mapped_total['PPTOTAL'], 2)),  # 2.074 = 2.131 + 2.133. YTI Is it ok to include PROF_TAX / should include Double holidays?
+                'f10_2075_bijzonderbijdrage': _to_eurocent(round(-mapped_total['M.ONSS'], 2)),
+                'f10_2076_voordelenaardbedrag': _to_eurocent(round(sum(mapped_total[code] for code in ['ATN.INT', 'ATN.MOB', 'ATN.LAP', 'ATN.CAR']), 2)),
                 # f10_2077_totaal
                 # YTI From 2023, should be distinguished from REP.FEES
                 # 'f10_2078_compensationamountwithoutstandards': round(mapped_total['REP.FEES.VOLATILE'], 2),
-                'f10_2078_compensationamountwithoutstandards': round(mapped_total['REP.FEES'], 2),
+                'f10_2078_compensationamountwithoutstandards': _to_eurocent(round(mapped_total['REP.FEES'], 2)),
                 'f10_2080_detacheringsvergoed': 0,
                 'f10_2081_gewonebijdragenenpremies': 0,
-                'f10_2082_bedrag': round(warrant_gross, 2),
+                'f10_2082_bedrag': _to_eurocent(round(warrant_gross, 2)),
                 'f10_2083_bedrag': 0,
                 'f10_2084_mobiliteitsvergoedi': 0,
                 'f10_2085_forfbezoldiging': 0,
-                'f10_2086_openbaargemeenschap': round(mapped_total['PUB.TRANS'], 2),
+                'f10_2086_openbaargemeenschap': _to_eurocent(round(mapped_total['PUB.TRANS'], 2)),
                 'f10_2087_bedrag': 0,
                 'f10_2088_andervervoermiddel': 0,
                 'f10_2090_outborderdays': 0,
@@ -312,11 +336,11 @@ class L10nBe28110(models.Model):
                 'f10_2102_kas': 0,
                 'f10_2103_kasvrijaanvullendpensioen': 0,
                 'f10_2106_percentages': '', # Note: No percentages for warrants
-                'f10_2109_fiscaalidentificat': employee.identification_id if employee.country_id != belgium else '',
+                'f10_2109_fiscaalidentificat': '', # Use NISS instead
                 'f10_2110_aantaloveruren360': 0,
                 'f10_2111_achterstalloveruren300horeca': 0,
                 'f10_2113_forfaitrsz': 0,
-                'f10_2115_bonus': round(mapped_total['EmpBonus.1'], 2),
+                'f10_2115_bonus': _to_eurocent(round(mapped_total['EmpBonus.1'], 2)),
                 'f10_2116_badweatherstamps': 0,
                 'f10_2117_nonrecurrentadvantages': 0,
                 'f10_2118_amountovertime180secondsemester': 0,
@@ -331,7 +355,7 @@ class L10nBe28110(models.Model):
                 'f10_2127_nonrecurrentadvantagesoutdated': 0,
                 'f10_2128_vrijaanvullendpensioenwerknemers': 0,
                 'f10_2130_privatepc': 0,
-                'f10_2131_bedrijfsvoorheffingvanwerkgever': round(mapped_total['PPTOTAL'], 2),
+                'f10_2131_bedrijfsvoorheffingvanwerkgever': _to_eurocent(round(mapped_total['PPTOTAL'], 2)),
                 'f10_2132_amountovertime180firstsemester': 0,
                 'f10_2133_bedrijfsvoorheffingbuitenlvenverbondenwerkgever': 0,
                 'f10_2134_totaalbedragmobiliteitsbudget': 0,
@@ -368,25 +392,33 @@ class L10nBe28110(models.Model):
                 'f10_2196_covidovertimeremuneration2020': 0,
                 'f10_2198_coronabonus': 0,
             }
+            # Le code postal belge (2016) et le code postal étranger (2112) ne peuvent être
+            # ni remplis, ni vides tous les deux.
+            if is_belgium:
+                sheet_values.pop('f2112_buitenlandspostnummer')
+            else:
+                sheet_values.pop('f2016_postcodebelgisch')
+
             # Somme de 2.060 + 2.076 + 2069 + 2.082 + 2.083
-            sheet_values['f10_2062_totaal'] = round(sum(sheet_values[code] for code in [
+            sheet_values['f10_2062_totaal'] = sum(sheet_values[code] for code in [
                 'f10_2060_gewonebezoldiginge',
                 'f10_2076_voordelenaardbedrag',
                 'f10_2069_fidelitystamps',
                 'f10_2082_bedrag',
-                'f10_2083_bedrag']), 2)
+                'f10_2083_bedrag'])
 
             # Somme de 2.086 + 2.087 + 2.088
-            sheet_values['f10_2077_totaal'] = round(sum(sheet_values[code] for code in [
+            sheet_values['f10_2077_totaal'] = sum(sheet_values[code] for code in [
                 'f10_2086_openbaargemeenschap',
                 'f10_2087_bedrag',
-                'f10_2088_andervervoermiddel']), 2)
+                'f10_2088_andervervoermiddel'])
 
             # Somme de 2060 à 2088, f10_2062_totaal et f10_2077_totaal inclus
-            sheet_values['f10_2059_totaalcontrole'] = round(sum(sheet_values[code] for code in [
+            sheet_values['f10_2059_totaalcontrole'] = sum(sheet_values[code] for code in [
                 'f10_2060_gewonebezoldiginge',
                 'f10_2061_bedragoveruren300horeca',
                 'f10_2062_totaal',
+                'f10_2063_vervroegdvakantieg',
                 'f10_2064_afzbelachterstall',
                 'f10_2065_opzeggingsreclasseringsverg',
                 'f10_2066_impulsfund',
@@ -396,10 +428,12 @@ class L10nBe28110(models.Model):
                 'f10_2070_decemberremuneration',
                 'f10_2071_totalevergoeding',
                 'f10_2072_pensioentoezetting',
+                'f10_2073_tipamount',
                 'f10_2074_bedrijfsvoorheffing',
                 'f10_2075_bijzonderbijdrage',
                 'f10_2076_voordelenaardbedrag',
                 'f10_2077_totaal',
+                'f10_2078_compensationamountwithoutstandards',
                 'f10_2080_detacheringsvergoed',
                 'f10_2081_gewonebijdragenenpremies',
                 'f10_2082_bedrag',
@@ -408,23 +442,34 @@ class L10nBe28110(models.Model):
                 'f10_2085_forfbezoldiging',
                 'f10_2086_openbaargemeenschap',
                 'f10_2087_bedrag',
-                'f10_2088_andervervoermiddel']), 2)
+                'f10_2088_andervervoermiddel'])
 
             employees_data.append(sheet_values)
 
         sheets_count = len(employees_data)
-        sum_2009 = round(sum(sheet_values['f2009_volgnummer'] for sheet_values in employees_data), 2)
-        sum_2059 = round(sum(sheet_values['f10_2059_totaalcontrole'] for sheet_values in employees_data), 2)
-        sum_2074 = round(sum(sheet_values['f10_2074_bedrijfsvoorheffing'] for sheet_values in employees_data), 2)
+
+
+        sum_2009 = sum(sheet_values['f2009_volgnummer'] for sheet_values in employees_data)
+        sum_2059 = sum(sheet_values['f10_2059_totaalcontrole'] for sheet_values in employees_data)
+        sum_2074 = sum(sheet_values['f10_2074_bedrijfsvoorheffing'] for sheet_values in employees_data)
         total_data = {
             'r8002_inkomstenjaar': self.reference_year,
-            'r8010_aantalrecords': sheets_count,
+            'r8005_registratienummer': bce_number,
+            # Le champ "Nombre total d'enregistrements" (8010) doit être égal au nombre
+            # d'enregistrements  contenus dans cette déclaration (total des enregistrements
+            # de type 2 (fiches) + enregistrement 1 et 8)
+            'r8010_aantalrecords': sheets_count + 2,
             'r8011_controletotaal': sum_2009,
             'r8012_controletotaal': sum_2059,
             'r8013_totaalvoorheffingen': sum_2074,
             'r9002_inkomstenjaar': self.reference_year,
-            'r9010_aantallogbestanden': sheets_count,
-            'r9011_totaalaantalrecords': sheets_count,
+            # Le champ "Nombre de déclarations" doit être égal au nombre de déclarations
+            # contenues dans l'envoi + 2.
+            'r9010_aantallogbestanden': 3,
+            # Le champ "Nombre de fiches" doit être égal au nombre d'enregistrements contenus
+            # dans cet envoi  (total des enregistrements de type 2 (fiches) + total des
+            # enregistrements 1 et 8 (début et fin débiteurs) + enregistrements 0 et 9 (début et fin d'envoi)).
+            'r9011_totaalaantalrecords': sheets_count + 4,
             'r9012_controletotaal': sum_2009,
             'r9013_controletotaal': sum_2059,
             'r9014_controletotaal': sum_2074,
@@ -471,7 +516,7 @@ class L10nBe28110Line(models.Model):
     def _generate_pdf(self):
         for sheet in self.sheet_id:
             lines = self.filtered(lambda l: l.sheet_id == sheet)
-            rendering_data = sheet._get_rendering_data(lines.employee_id)
+            rendering_data = sheet.with_context(no_round_281_10=True)._get_rendering_data(lines.employee_id)
             for sheet_values in rendering_data['employees_data']:
                 for key, value in sheet_values.items():
                     if not value:

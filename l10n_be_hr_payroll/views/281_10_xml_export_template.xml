@@ -168,16 +168,17 @@
                             <!-- X 32 AN rue et numéro du débiteur des revenus NL -->
                             <a1013_adresnl t-esc="data['a1013_adresnl']"/>
 
+                            <!--  4 N numéro postal belge du débiteur des
+                            revenus (uniquement si 1.016 = 0
+                            (= Belgique), sinon utiliser 1.026) -->
+                            <a1014_postcodebelgisch t-esc="data['a1014_postcodebelgisch']"/>
+
                             <!-- X 27 AN commune du débiteur des revenus NL -->
                             <a1015_gemeente t-esc="data['a1015_gemeente']"/>
 
-                            <!-- <a1014_postcodebelgisch /> 4 N numéro postal belge du débiteur des
-                            revenus (uniquement si 1.016 = 0
-                            (= Belgique), sinon utiliser 1.026) -->
-
-
-                            <!-- <a1016_landwoonplaats /> 5 N code pays du domicile du débiteur des
+                            <!-- 5 N code pays du domicile du débiteur des
                             revenus ; zéro si Belgique -->
+                            <a1016_landwoonplaats t-esc="data['a1016_landwoonplaats']"/>
 
                             <!-- <a1017_telefoonnummer /> 12 AN numéro de téléphone du débiteur des
                             revenus -->
@@ -325,7 +326,9 @@
                                             <!-- X <f2016_postcodebelgisch /> 4 N code postal belge du
                                             bénéficiaire(uniquement si 2018 = 0
                                             =>Belgique; sinon utiliser 2112) -->
-                                            <f2016_postcodebelgisch t-esc="employee_data['f2016_postcodebelgisch']"/>
+                                            <t t-if="'f2016_postcodebelgisch' in employee_data">
+                                                <f2016_postcodebelgisch t-esc="employee_data['f2016_postcodebelgisch']"/>
+                                            </t>
 
                                             <!-- <f2017_gemeente /> 27 AN commune du bénéficiaire -->
 
@@ -363,7 +366,9 @@
                                             bénéficiaire (uniquement si 2018 est
                                             différent de zéro ou 150; sinon utiliser
                                             2016) -->
-                                            <f2112_buitenlandspostnummer t-esc="employee_data['f2112_buitenlandspostnummer']"/>
+                                            <t t-if="'f2112_buitenlandspostnummer' in employee_data">
+                                                <f2112_buitenlandspostnummer t-esc="employee_data['f2112_buitenlandspostnummer']"/>
+                                            </t>
 
                                             <!-- <f2114_voornamen /> 15 AN Prénom du bénéficiaire des revenus -->
                                             <f2114_voornamen t-esc="employee_data['f2114_voornamen']"/>
@@ -664,12 +669,16 @@
                                             <f10_2090_outborderdays t-esc="employee_data['f10_2090_outborderdays']"/>
 
                                             <!-- 28. Rémunérations et autres avantages reçus d’une société étrangère liée  -->
-                                            <f10_2092_othercode1 t-esc="employee_data['f10_2092_othercode1']"/>
+                                            <t t-if="employee_data['f10_2092_othercode1']">
+                                                <f10_2092_othercode1 t-esc="employee_data['f10_2092_othercode1']"/>
+                                            </t>
 
                                             <!-- <f10_2093_datevooropzeg t-esc="employee_data['f10_2093_datevooropzeg']"/> -->
 
                                             <!-- 28. Rémunérations et autres avantages reçus d’une société étrangère liée  -->
-                                            <f10_2094_othercode2 t-esc="employee_data['f10_2094_othercode2']"/>
+                                            <t t-if="employee_data['f10_2094_othercode2']">
+                                                <f10_2094_othercode2 t-esc="employee_data['f10_2094_othercode2']"/>
+                                            </t>
 
                                             <!-- 21. Heures supplémentaires qui donnent droit à un sursalaire :
                                             a) Nombre total d’heures supplémentaires effectivement prestées
@@ -692,7 +701,9 @@
                                             <f10_2095_aantaluren t-esc="employee_data['f10_2095_aantaluren']"/>
 
                                             <!-- 28. Rémunérations et autres avantages reçus d’une société étrangère liée  -->
-                                            <f10_2096_othercode3 t-esc="employee_data['f10_2096_othercode3']"/>
+                                            <t t-if="employee_data['f10_2096_othercode3']">
+                                                <f10_2096_othercode3 t-esc="employee_data['f10_2096_othercode3']"/>
+                                            </t>
 
                                             <!-- 21. Heures supplémentaires qui donnent droit à un sursalaire :
                                             a) Nombre total d’heures supplémentaires effectivement prestées
@@ -715,7 +726,10 @@
                                             <f10_2097_aantaluren t-esc="employee_data['f10_2097_aantaluren']"/>
 
                                             <!-- 28. Rémunérations et autres avantages reçus d’une société étrangère liée  -->
-                                            <f10_2098_othercode4 t-esc="employee_data['f10_2098_othercode4']"/>
+
+                                            <t t-if="employee_data['f10_2098_othercode4']">
+                                                <f10_2098_othercode4 t-esc="employee_data['f10_2098_othercode4']"/>
+                                            </t>
 
                                             <!-- Avantages de toute nature :
                                             * montant......................................................................................... 2.076
@@ -1032,10 +1046,11 @@
                             <!-- <r8004_ontvangkantoor /> 2 N numéro du bureau de recette du
                             débiteur des revenus (obsolète) -->
 
-                            <!-- <r8005_registratienummer /> 10 N numéro d’entreprise (BCE) = numéro
+                            <!--10 N numéro d’entreprise (BCE) = numéro
                             d'enregistrement sous lequel le
                             débiteur des revenus est connu par le
                             SPF Finances. -->
+                            <r8005_registratienummer t-esc="r8005_registratienummer"/>
 
                             <!-- <r8007_division /> 4 N numéro de division -->
 

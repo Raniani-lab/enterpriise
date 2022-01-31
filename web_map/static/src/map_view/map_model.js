@@ -330,10 +330,17 @@ export class MapModel extends Model {
             if (["date", "datetime"].includes(fieldType)) {
                 const date = fieldType === "date" ? parseDate(value) : parseDateTime(value);
                 id = name = date.toFormat(DATE_GROUP_FORMATS[subGroup]);
+            } else if (fieldType === 'boolean') {
+                id = name = value ? this.env._t('Yes') : this.env._t('No');
             } else {
                 id = Array.isArray(value) ? value[0] : value;
                 name = Array.isArray(value) ? value[1] : value;
             }
+
+            if (id === false && name === false) {
+                id = name = this.env._t('None');
+            }
+
             if (!groups[id]) {
                 groups[id] = {
                     name,

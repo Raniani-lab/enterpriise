@@ -31,6 +31,11 @@
                             <field name="get_return_label_from_portal" attrs="{'invisible': [('return_label_on_delivery', '=', False)]}"/>
                             <field name="fedex_duty_payment" string="Duties paid by" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                         </group>
+                        <group string="Extra Data" name="fedex_extra_data" groups="base.group_no_one">
+                            <field name="fedex_extra_data_rate_request"/>
+                            <field name="fedex_extra_data_ship_request"/>
+                            <field name="fedex_extra_data_return_request"/>
+                        </group>
                     </group>
                     <group string='Fedex Tutorial' attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}">
                         <ul>

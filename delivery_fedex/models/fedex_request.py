@@ -213,18 +213,14 @@ class FedexRequest():
         self.VersionId.Intermediate = '0'
         self.VersionId.Minor = '0'
 
-    def rate(self):
+    def rate(self, request):
         formatted_response = {'price': {}}
-        del self.ClientDetail['Region']
-        if self.hasCommodities:
-            self.RequestedShipment.CustomsClearanceDetail.Commodities = self.listCommodities
-
         try:
-            self.response = self.client.service.getRates(WebAuthenticationDetail=self.WebAuthenticationDetail,
-                                                         ClientDetail=self.ClientDetail,
-                                                         TransactionDetail=self.TransactionDetail,
-                                                         Version=self.VersionId,
-                                                         RequestedShipment=self.RequestedShipment)
+            self.response = self.client.service.getRates(WebAuthenticationDetail=request['WebAuthenticationDetail'],
+                                                         ClientDetail=request['ClientDetail'],
+                                                         TransactionDetail=request['TransactionDetail'],
+                                                         Version=request['VersionId'],
+                                                         RequestedShipment=request['RequestedShipment'])
 
             if (self.response.HighestSeverity != 'ERROR' and self.response.HighestSeverity != 'FAILURE'):
                 if not getattr(self.response, "RateReplyDetails", False):
@@ -306,6 +302,8 @@ class FedexRequest():
             self.RequestedShipment.CustomsClearanceDetail.DutiesPayment.Payor = Payor
 
     def customs_value(self, customs_value_currency, customs_value_amount, document_content):
+        if self.hasCommodities:
+            self.RequestedShipment.CustomsClearanceDetail.Commodities = self.listCommodities
         self.RequestedShipment.CustomsClearanceDetail = self.factory.CustomsClearanceDetail()
         self.RequestedShipment.CustomsClearanceDetail.CustomsValue = self.factory.Money()
         self.RequestedShipment.CustomsClearanceDetail.CustomsValue.Currency = customs_value_currency
@@ -363,20 +361,17 @@ class FedexRequest():
             bla.Type = "FAULTY_ITEM"
             self.RequestedShipment.CustomsClearanceDetail.CustomsOptions = bla
 
-    def process_shipment(self):
-        if self.hasCommodities:
-            self.RequestedShipment.CustomsClearanceDetail.Commodities = self.listCommodities
+    def process_shipment(self, request):
         formatted_response = {'tracking_number': 0.0,
                               'price': {},
                               'master_tracking_id': None,
                               'date': None}
-
         try:
-            self.response = self.client.service.processShipment(WebAuthenticationDetail=self.WebAuthenticationDetail,
-                                                                ClientDetail=self.ClientDetail,
-                                                                TransactionDetail=self.TransactionDetail,
-                                                                Version=self.VersionId,
-                                                                RequestedShipment=self.RequestedShipment)
+            self.response = self.client.service.processShipment(WebAuthenticationDetail=request['WebAuthenticationDetail'],
+                                                                ClientDetail=request['ClientDetail'],
+                                                                TransactionDetail=request['TransactionDetail'],
+                                                                Version=request['VersionId'],
+                                                                RequestedShipment=request['RequestedShipment'])
 
             if (self.response.HighestSeverity != 'ERROR' and self.response.HighestSeverity != 'FAILURE'):
                 formatted_response['tracking_number'] = self.response.CompletedShipmentDetail.CompletedPackageDetails[0].TrackingIds[0].TrackingNumber
@@ -436,16 +431,16 @@ class FedexRequest():
 
         self.DeletionControl = self.factory.DeletionControlType('DELETE_ALL_PACKAGES')
 
-    def delete_shipment(self):
+    def delete_shipment(self, request):
         formatted_response = {'delete_success': False}
         try:
             # Here, we send the Order 66
-            self.response = self.client.service.deleteShipment(WebAuthenticationDetail=self.WebAuthenticationDetail,
-                                                               ClientDetail=self.ClientDetail,
-                                                               TransactionDetail=self.TransactionDetail,
-                                                               Version=self.VersionId,
-                                                               TrackingId=self.TrackingId,
-                                                               DeletionControl=self.DeletionControl)
+            self.response = self.client.service.deleteShipment(WebAuthenticationDetail=request['WebAuthenticationDetail'],
+                                                               ClientDetail=request['ClientDetail'],
+                                                               TransactionDetail=request['TransactionDetail'],
+                                                               Version=request['VersionId'],
+                                                               TrackingId=request['TrackingId'],
+                                                               DeletionControl=request['DeletionControl'])
 
             if (self.response.HighestSeverity != 'ERROR' and self.response.HighestSeverity != 'FAILURE'):
                 formatted_response['delete_success'] = True

@@ -3,9 +3,12 @@
 import logging
 import time
 
+from zeep.helpers import serialize_object
+
 from odoo import api, models, fields, _, tools
 from odoo.exceptions import UserError
 from odoo.tools import pdf, float_repr
+from odoo.tools.safe_eval import const_eval
 
 from .fedex_request import FedexRequest
 
@@ -53,6 +56,16 @@ FEDEX_STOCK_TYPE = [
     ('STOCK_4X9_LEADING_DOC_TAB', 'STOCK_4X9_LEADING_DOC_TAB'),
     ('STOCK_4X9_TRAILING_DOC_TAB', 'STOCK_4X9_TRAILING_DOC_TAB')
 ]
+
+HELP_EXTRA_DATA = """The extra data in FedEx is organized like the inside of a json file.
+This functionality is advanced/technical and should only be used if you know what you are doing.
+
+Example of valid value: ```
+"ShipmentDetails": {"Pieces": {"Piece": {"AdditionalInformation": "extra info"}}}
+```
+
+With the above example, the AdditionalInformation of each piece will be updated.
+More info on https://www.fedex.com/en-us/developer/web-services/process.html#documentation"""
 
 
 class ProviderFedex(models.Model):
@@ -110,6 +123,9 @@ class ProviderFedex(models.Model):
     fedex_saturday_delivery = fields.Boolean(string="FedEx Saturday Delivery", help="""Special service:Saturday Delivery, can be requested on following days.
                                                                                  Thursday:\n1.FEDEX_2_DAY.\nFriday:\n1.PRIORITY_OVERNIGHT.\n2.FIRST_OVERNIGHT.
                                                                                  3.INTERNATIONAL_PRIORITY.\n(To Select Countries)""")
+    fedex_extra_data_rate_request = fields.Text('Extra data for rate', help=HELP_EXTRA_DATA)
+    fedex_extra_data_ship_request = fields.Text('Extra data for ship', help=HELP_EXTRA_DATA)
+    fedex_extra_data_return_request = fields.Text('Extra data for return', help=HELP_EXTRA_DATA)
 
     def _compute_can_generate_return(self):
         super(ProviderFedex, self)._compute_can_generate_return()
@@ -179,19 +195,27 @@ class ProviderFedex(models.Model):
             srm.customs_value(_convert_curr_iso_fdx(order_currency.name), total_commodities_amount, "NON_DOCUMENTS")
             srm.duties_payment(order.warehouse_id.partner_id, superself.fedex_account_number, superself.fedex_duty_payment)
 
-        request = srm.rate()
+        # Prepare the request
+        del srm.ClientDetail['Region']
+        request = serialize_object(dict(WebAuthenticationDetail=srm.WebAuthenticationDetail,
+                                        ClientDetail=srm.ClientDetail,
+                                        TransactionDetail=srm.TransactionDetail,
+                                        VersionId=srm.VersionId,
+                                        RequestedShipment=srm.RequestedShipment))
+        self._fedex_add_extra_data_to_request(request, 'rate')
+        response = srm.rate(request)
 
-        warnings = request.get('warnings_message')
+        warnings = response.get('warnings_message')
         if warnings:
             _logger.info(warnings)
 
-        if request.get('errors_message'):
+        if response.get('errors_message'):
             return {'success': False,
                     'price': 0.0,
-                    'error_message': _('Error:\n%s', request['errors_message']),
+                    'error_message': _('Error:\n%s', response['errors_message']),
                     'warning_message': False}
 
-        price = self._get_request_price(request['price'], order, order_currency)
+        price = self._get_request_price(response['price'], order, order_currency)
         return {'success': True,
                 'price': price,
                 'error_message': False,
@@ -276,27 +300,35 @@ class ProviderFedex(models.Model):
                     reference=picking.display_name,
                 )
                 srm.set_master_package(net_weight, len(packages), master_tracking_id=master_tracking_id)
-                request = srm.process_shipment()
 
-                warnings = request.get('warnings_message')
+                # Prepare the request
+                request = serialize_object(dict(WebAuthenticationDetail=srm.WebAuthenticationDetail,
+                                                ClientDetail=srm.ClientDetail,
+                                                TransactionDetail=srm.TransactionDetail,
+                                                VersionId=srm.VersionId,
+                                                RequestedShipment=srm.RequestedShipment))
+                self._fedex_add_extra_data_to_request(request, 'ship')
+                response = srm.process_shipment(request)
+
+                warnings = response.get('warnings_message')
                 if warnings:
                     _logger.info(warnings)
 
-                if request.get('errors_message'):
-                    raise UserError(request['errors_message'])
+                if response.get('errors_message'):
+                    raise UserError(response['errors_message'])
 
                 package_name = package.name or 'package-' + str(sequence)
                 package_labels.append((package_name, srm.get_label()))
-                carrier_tracking_refs.append(request['tracking_number'])
+                carrier_tracking_refs.append(response['tracking_number'])
 
                 # First package
                 if sequence == 1:
-                    master_tracking_id = request['master_tracking_id']
+                    master_tracking_id = response['master_tracking_id']
 
                 # Last package
                 if sequence == package_count:
 
-                    carrier_price = self._get_request_price(request['price'], order, order_currency)
+                    carrier_price = self._get_request_price(response['price'], order, order_currency)
 
                     logmessage = _("Shipment created into Fedex<br/>"
                                    "<b>Tracking Numbers:</b> %s<br/>"
@@ -313,7 +345,7 @@ class ProviderFedex(models.Model):
             # TODO RIM handle if a package is not accepted (others should be deleted)
 
             if self.return_label_on_delivery:
-                self.get_return_label(picking, tracking_number=request['tracking_number'], origin_date=request['date'])
+                self.get_return_label(picking, tracking_number=response['tracking_number'], origin_date=response['date'])
             commercial_invoice = srm.get_document()
             if commercial_invoice:
                 fedex_documents = [('DocumentFedex.pdf', commercial_invoice)]
@@ -364,6 +396,14 @@ class ProviderFedex(models.Model):
             # We consider that returns are always paid by the company creating the label
             srm.duties_payment(picking.picking_type_id.warehouse_id.partner_id, superself.fedex_account_number, 'SENDER')
         srm.return_label(tracking_number, origin_date)
+
+        # Prepare the request
+        request = serialize_object(dict(WebAuthenticationDetail=srm.WebAuthenticationDetail,
+                                        ClientDetail=srm.ClientDetail,
+                                        TransactionDetail=srm.TransactionDetail,
+                                        VersionId=srm.VersionId,
+                                        RequestedShipment=srm.RequestedShipment))
+        self._fedex_add_extra_data_to_request(request, 'return')
         response = srm.process_shipment()
         if not response.get('errors_message'):
             fedex_labels = [('%s-%s-%s.%s' % (self.get_return_label_prefix(), response['tracking_number'], index, self.fedex_label_file_type), label)
@@ -384,7 +424,13 @@ class ProviderFedex(models.Model):
 
         master_tracking_id = picking.carrier_tracking_ref.split(',')[0]
         request.set_deletion_details(master_tracking_id)
-        result = request.delete_shipment()
+        serialized_request = serialize_object(dict(WebAuthenticationDetail=request.WebAuthenticationDetail,
+                                                   ClientDetail=request.ClientDetail,
+                                                   TransactionDetail=request.TransactionDetail,
+                                                   VersionId=request.VersionId,
+                                                   TrackingId=request.TrackingId,
+                                                   DeletionControl=request.DeletionControl))
+        result = request.delete_shipment(serialized_request)
 
         warnings = result.get('warnings_message')
         if warnings:
@@ -426,6 +472,38 @@ class ProviderFedex(models.Model):
                     req_price[fdx_currency], order_currency, order.company_id, order.date_order or fields.Date.today())
         _logger.info("No known currency has not been found in FedEx response")
         return 0.0
+
+    def _fedex_add_extra_data_to_request(self, request, request_type):
+        """Adds the extra data to the request.
+        When there are multiple items in a list, they will all be affected by
+        the change.
+        for example, with
+        {"ShipmentDetails": {"Pieces": {"Piece": {"AdditionalInformation": "extra info"}}}}
+        the AdditionalInformation of each piece will be updated.
+        """
+        extra_data_input = {
+            'rate': self.fedex_extra_data_rate_request,
+            'ship': self.fedex_extra_data_ship_request,
+            'return': self.fedex_extra_data_return_request,
+        }.get(request_type, '')
+        try:
+            extra_data = const_eval('{' + extra_data_input + '}')
+        except SyntaxError:
+            raise UserError(_('Invalid syntax for FedEx extra data.'))
+
+        def extra_data_to_request(request, extra_data):
+            """recursive function that adds extra data to the current request."""
+            for key, new_value in extra_data.items():
+                request[key] = current_value = request.get(key)
+                if isinstance(current_value, list):
+                    for item in current_value:
+                        extra_data_to_request(item, new_value)
+                elif isinstance(new_value, dict) and isinstance(current_value, dict):
+                    extra_data_to_request(current_value, new_value)
+                else:
+                    request[key] = new_value
+
+        extra_data_to_request(request, extra_data)
 
     def _fedex_get_default_custom_package_code(self):
         return 'YOUR_PACKAGING'

@@ -87,7 +87,9 @@ class AccountMove(models.Model):
     def button_draft(self):
         for move in self:
             if any(asset_id.state != 'draft' for asset_id in move.asset_ids):
-                raise UserError(_('You cannot reset to draft an entry having a posted deferred revenue/expense'))
+                raise UserError(_('You cannot reset to draft an entry related to a posted asset'))
+            # Remove any draft asset that could be linked to the account move being reset to draft
+            move.asset_ids.filtered(lambda x: x.state == 'draft').unlink()
         return super(AccountMove, self).button_draft()
 
     def _log_depreciation_asset(self):

@@ -599,7 +599,8 @@ class AccountAsset(models.Model):
                 asset.compute_depreciation_board()
             asset._check_depreciations()
             asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted')._post()
-            asset._post_non_deductible_tax_value()
+            if asset.account_asset_id.create_asset == 'no':
+                asset._post_non_deductible_tax_value()
 
     def _post_non_deductible_tax_value(self):
         # If the asset has a non-deductible tax, the value is posted in the chatter to explain why

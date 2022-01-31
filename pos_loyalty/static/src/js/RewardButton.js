@@ -19,7 +19,6 @@ odoo.define('pos_loyalty.RewardButton', function(require) {
             let order = this.env.pos.get_order();
             let partner = order.get_partner();
             if (!partner) {
-                this.trigger('close-popup');
                 // IMPROVEMENT: This code snippet is similar to selectPartner of PaymentScreen.
                 const {
                     confirmed,

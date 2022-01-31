@@ -115,7 +115,7 @@ class TestActivityPerformance(BaseMailPerformance):
         enabled. No computed fields are involved. """
         record = self.env['mail.test.activity.bl.sms.voip'].browse(self.test_record_voip.ids)
 
-        with self.assertQueryCount(employee=43):  # TME only: 42
+        with self.assertQueryCount(employee=42):
             activity = record.activity_schedule(
                 'mail.mail_activity_data_upload_document',
                 summary='Upload Activity')

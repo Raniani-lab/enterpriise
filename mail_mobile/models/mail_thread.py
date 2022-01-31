@@ -21,25 +21,40 @@ BLACK_LIST_PARAM = {
 class MailThread(models.AbstractModel):
     _inherit = 'mail.thread'
 
-    # Push Notification
+    def _notify_thread(self, message, msg_vals=False, **kwargs):
+        recipients_data = super(MailThread, self)._notify_thread(message, msg_vals=msg_vals, **kwargs)
+        self._notify_thread_by_ocn(message, recipients_data, msg_vals, **kwargs)
+        return recipients_data
 
-    def _notify_thread(self, message, msg_vals=False, notify_by_email=True, **kwargs):
-        rdata = super(MailThread, self)._notify_thread(message, msg_vals, notify_by_email, **kwargs)
-        self._notify_record_by_ocn(message, rdata, msg_vals, **kwargs)
-        return rdata
-
-    def _notify_record_by_ocn(self, message, rdata, msg_vals=False, **kwargs):
-        """ We want to send a Cloud notification for every mentions of a partner
+    def _notify_thread_by_ocn(self, message, recipients_data, msg_vals=False, **kwargs):
+        """ Method to send cloud notifications for every mentions of a partner
         and every direct message. We have to take into account the risk of
         duplicated notifications in case of a mention in a channel of `chat` type.
+
+        :param message: ``mail.message`` record to notify;
+        :param recipients_data: list of recipients information (based on res.partner
+          records), formatted like
+            [{'active': partner.active;
+              'id': id of the res.partner being recipient to notify;
+              'groups': res.group IDs if linked to a user;
+              'notif': 'inbox', 'email', 'sms' (SMS App);
+              'share': partner.partner_share;
+              'type': 'customer', 'portal', 'user;'
+             }, {...}].
+          See ``MailThread._notify_get_recipients``;
+        :param msg_vals: dictionary of values used to create the message. If given it
+          may be used to access values related to ``message`` without accessing it
+          directly. It lessens query count in some optimized use cases by avoiding
+          access message content in db;
+
         """
         icp_sudo = self.env['ir.config_parameter'].sudo()
         # Avoid to send notification if this feature is disabled or if no user use the mobile app.
         if not icp_sudo.get_param('odoo_ocn.project_id') or not icp_sudo.get_param('mail_mobile.enable_ocn'):
             return
 
-        notif_pids = [r['id'] for r in rdata if r['active']]
-        no_inbox_pids = [r['id'] for r in rdata if r['active'] and r['notif'] != 'inbox']
+        notif_pids = [r['id'] for r in recipients_data if r['active']]
+        no_inbox_pids = [r['id'] for r in recipients_data if r['active'] and r['notif'] != 'inbox']
 
         if not notif_pids:
             return
@@ -62,7 +77,7 @@ class MailThread(models.AbstractModel):
         Send the notification to a list of partners
         :param message: current mail.message record
         :param partner_ids: list of partner IDs
-        :param msg_vals: dict values for current notification
+        :param msg_vals: see ``_notify_thread_by_ocn()``;
         """
         if not partner_ids:
             return
@@ -72,7 +87,7 @@ class MailThread(models.AbstractModel):
         ])
         if receiver_ids:
             endpoint = self.env['res.config.settings']._get_endpoint()
-            payload = self._notify_by_ocn_send_prepare_payload(message, receiver_ids, msg_vals=msg_vals)
+            payload = self._notify_by_ocn_prepare_payload(message, receiver_ids, msg_vals=msg_vals)
 
             # prepare chunks
             chunks = []
@@ -107,7 +122,7 @@ class MailThread(models.AbstractModel):
                 except Exception as e:
                     _logger.error('An error occurred while contacting the ocn server: %s', e)
 
-    def _notify_by_ocn_send_prepare_payload(self, message, receiver_ids, msg_vals=False):
+    def _notify_by_ocn_prepare_payload(self, message, receiver_ids, msg_vals=False):
         """Returns dictionary containing message information for mobile device.
         This info will be delivered to mobile device via Google Firebase Cloud
         Messaging (FCM). And it is having limit of 4000 bytes (4kb)
@@ -152,7 +167,9 @@ class MailThread(models.AbstractModel):
     def _extract_model_and_id(self, msg_vals):
         """
         Return the model and the id when is present in a link (HTML)
-        :param msg_vals: the string where the regex will be applied
+
+        :param msg_vals: see ``_notify_thread_by_ocn()``;
+
         :return: a dict empty if no matches and a dict with these keys if match : model and res_id
         """
         regex = r"<a.+model=(?P<model>[\w.]+).+res_id=(?P<id>\d+).+>[\s\w\/\\.]+<\/a>"

@@ -37,6 +37,10 @@ Allow clients to Schedule Appointments through your Website
         'web.assets_tests': [
             'website_appointment/static/tests/tours/*',
         ],
+        'web.assets_frontend': [
+            'website_appointment/static/src/scss/website_appointment.scss',
+            'website_appointment/static/src/js/appointment_select_appointment_slot.js',
+        ],
         'web.assets_qweb': [
             'website_appointment/static/src/xml/**/*',
         ],

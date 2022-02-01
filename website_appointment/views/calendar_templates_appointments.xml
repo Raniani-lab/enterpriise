@@ -25,6 +25,21 @@
                 </div>
             </nav>
         </xpath>
+        <xpath expr="//div[hasclass('o_calendar_intro')]" position="before">
+            <t t-set="no_users" t-value="not appointment_type.staff_user_ids"/>
+            <t t-set="no_slots" t-value="not appointment_type.slot_ids"/>
+            <div t-if="no_users or no_slots" class="alert alert-info rounded-0 mb-0 o_not_editable" groups="appointment.group_calendar_manager">
+                This appointment type has no availabilities because it
+                <t t-if="no_users"> has no staff assigned</t>
+                <t t-if="no_users and no_slots"> and</t>
+                <t t-if="no_slots">
+                    does not have any opening hours configured
+                </t>
+                <a t-attf-href="/web#model=#{main_object._name}&amp;id=#{main_object.id}&amp;menu_id=#{backend_menu_id}" class="d-block">
+                    <i class="fa fa-arrow-right mr-2"/><em>Configure <t t-out="appointment_type.name"/></em>
+                </a>
+            </div>
+        </xpath>
     </template>
 
     <!-- Pages -->

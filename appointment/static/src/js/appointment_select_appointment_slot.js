@@ -7,12 +7,61 @@ var qweb = core.qweb;
 
 publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     selector: '.o_appointment',
-    xmlDependencies: ['/appointment/static/src/xml/calendar_appointment_slots.xml'],
+    xmlDependencies: [
+        '/appointment/static/src/xml/calendar_appointment_slots.xml',
+        '/appointment/static/src/xml/appointment_no_slot.xml',
+    ],
     events: {
         'change select[name="timezone"]': '_onRefresh',
         'change select[id="selectStaffUser"]': '_onRefresh',
         'click .o_js_calendar_navigate': '_onCalendarNavigate',
         'click .o_day': '_onClickDaySlot',
+    },
+
+    /**
+     * @override
+     */
+    start: function () {
+        return this._super(...arguments).then(async () => {
+            this.initSlots();
+        });
+    },
+
+    /**
+     * Initializes variables and design
+     * - $slotsList: the block containing the availabilities
+     * - $first: the first day containing a slot
+     */
+    initSlots: async function () {
+        this.$slotsList = this.$('#slotsList');
+        this.$first = this.$('.o_day').first();
+        await this._updateSlotAvailability();
+    },
+
+    /**
+     * Finds the first day with an available slot, replaces the currently shown month and
+     * click on the first date where a slot is available.
+     */
+    selectFirstAvailableMonth: function () {
+        const $firstMonth = this.$first.closest('.o_appointment_month');
+        const $currentMonth = this.$('.o_appointment_month:not(.d-none)');
+        $currentMonth.addClass('d-none');
+        $firstMonth.removeClass('d-none');
+        this.$slotsList.empty();
+        this.$first.click();
+    },
+
+    /**
+     * Checks whether any slot is available in the calendar.
+     * If there isn't, adds an explicative message in the slot list.
+     *
+     */
+     _updateSlotAvailability: function () {
+        if (!this.$first.length) { // No slot available
+            if (!this.$slotsList.hasClass('o_no_slot')) {
+                this.$('#slots_availabilities').empty().append(qweb.render('Appointment.appointment_info_no_slot'));
+            }
+        }
     },
 
     /**
@@ -23,9 +72,21 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         let monthID = parseInt(parent.attr('id').split('-')[1]);
         monthID += ((this.$(ev.currentTarget).attr('id') === 'nextCal') ? 1 : -1);
         parent.addClass('d-none');
-        this.$(`div#month-${monthID}`).removeClass('d-none');
+        const $month = $(`div#month-${monthID}`).removeClass('d-none');
         this.$('.o_slot_selected').removeClass('o_slot_selected');
-        this.$('#slotsList').empty()
+        this.$slotsList.empty();
+
+        if (!!this.$first.length) {
+            // If there is at least one slot available, check if it is in the current month.
+            this.$slotsList.removeClass('o_no_slot');
+            if (!$month.find('.o_day').length) {
+                const slotDate = this.$first.children().first().attr('id');
+                this.$slotsList.append(qweb.render('Appointment.appointment_info_no_slot_month', {
+                    date_first_availability: moment(slotDate).format('dddd D MMMM YYYY'),
+                }));
+                $('#next_available_slot').on('click', () => this.selectFirstAvailableMonth());
+            }
+        }
     },
 
     /**
@@ -40,7 +101,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const slotDate = this.$(ev.currentTarget.firstElementChild).attr('id');
         const slots = JSON.parse(this.$(ev.currentTarget).find('div')[0].dataset['availableSlots']);
 
-        this.$('#slotsList').empty().append(qweb.render('appointment.slots_list', {
+        this.$slotsList.empty().append(qweb.render('appointment.slots_list', {
             slotDate: moment(slotDate).format("dddd D MMMM"),
             slots: slots,
             appointment_type_id: appointmentTypeID,
@@ -53,7 +114,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
      */
     _onRefresh: function (ev) {
         if (this.$("#slots_availabilities")[0]) {
-            var self = this;
+            const self = this;
             const appointmentTypeID = this.$("input[name='appointment_type_id']").val();
             const staffUserID = this.$("#slots_form select[name='staff_user_id']").val();
             const timezone = this.$("select[name='timezone']").val();
@@ -66,6 +127,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             }).then(function (data) {
                 if (data) {
                     self.$("#slots_availabilities").replaceWith(data);
+                    self.initSlots();
                 }
             });
         }

@@ -93,9 +93,14 @@
     }
 }
 
+// Class used to adapt the color of the svg picture to the chosen theme's color
+.o_fill_color_1 {
+    fill: o-color("o-color-1");
+}
+
 .o_appointment {
     .o_appointment_availabilities {
-        min-height: 31em;
+        min-height: 26em;
         .o_slots_list {
             a:hover {
                 color: white!important;

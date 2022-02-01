@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from odoo.tools.misc import format_duration
 
 
 class CalendarAppointmentSlot(models.Model):
@@ -68,7 +69,8 @@ class CalendarAppointmentSlot(models.Model):
             ))
         if any(self.filtered(lambda slot: slot.start_hour + slot.appointment_type_id.appointment_duration > slot.end_hour and slot.slot_type != 'unique')):
             raise ValidationError(_(
-                "At least one slot duration is not enough to create a slot with the duration set in the appointment type"
+                "At least one slot duration is shorter than the meeting duration (%s hours)",
+                format_duration(self.appointment_type_id.appointment_duration)
             ))
 
     @api.constrains('slot_type', 'start_datetime', 'end_datetime')

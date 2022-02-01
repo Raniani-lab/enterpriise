@@ -28,7 +28,7 @@
         <field name="inherit_id" ref="hr_holidays.hr_leave_view_form_manager"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='holiday_status_id']" position="after">
-                <field name="payslip_state" widget="state_selection" class="ml-auto"/>
+                <field name="payslip_state" widget="state_selection" class="ml-auto mb-2"/>
             </xpath>
             <button name="action_refuse" position="before">
                 <button

@@ -10,7 +10,7 @@ class CreateTask(models.TransientModel):
     allow_worksheets = fields.Boolean(related='project_id.allow_worksheets')
     worksheet_template_id = fields.Many2one(
         'worksheet.template', string='Worksheet Template',
-        compute='_compute_worksheet_template_id', readonly=False, store=True)
+        compute='_compute_worksheet_template_id', readonly=False, store=True, domain="[('res_model', '=', 'project.task')]")
 
     @api.model
     def default_get(self, fields_list):

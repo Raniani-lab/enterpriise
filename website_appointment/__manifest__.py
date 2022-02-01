@@ -37,5 +37,8 @@ Allow clients to Schedule Appointments through your Website
         'web.assets_tests': [
             'website_appointment/static/tests/tours/*',
         ],
+        'web.assets_qweb': [
+            'website_appointment/static/src/xml/**/*',
+        ],
     }
 }

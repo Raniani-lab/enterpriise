@@ -121,7 +121,7 @@ class AccountMove(models.Model):
                     'purchase_order': matching_po,
                     'line': line,
                     'amount_to_invoice': (1 - line.qty_invoiced / line.product_qty) * line.price_total,
-                } for matching_po in matching_pos for line in matching_po.mapped('order_line')]
+                } for matching_po in matching_pos for line in matching_po.mapped('order_line') if line.product_qty]
                 if total_ocr - TOLERANCE < sum(line['amount_to_invoice'] for line in matching_pos_invoice_lines) < total_ocr + TOLERANCE:
                     self._set_purchase_orders(matching_pos, invoice_id_ocr)
                 else:

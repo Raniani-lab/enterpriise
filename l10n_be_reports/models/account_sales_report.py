@@ -82,16 +82,13 @@ class ECSalesReport(models.AbstractModel):
                 if row['same_country'] or row['partner_country_code'] not in ec_country_to_check:
                     options['unexpected_intrastat_tax_warning'] = True
 
-                for option_code in options['ec_sale_code']:
-                    if row['tax_report_line_id'] in option_code['tax_report_line_ids']:
-                        name = option_code['name']
-                        code = option_code['code']
-
                 vat = row['vat'].replace(' ', '').upper()
 
                 if get_file_data:
+                    code = self._get_ec_sale_code_options_data(options)[row['tax_code']]['code']
                     columns = [vat.replace(' ', '').upper(), code, amt]
                 else:
+                    name = self._get_ec_sale_code_options_data(options)[row['tax_code']]['name']
                     columns = [vat[:2], vat[2:], name, amt]
 
                 if not self.env.context.get('no_format', False):

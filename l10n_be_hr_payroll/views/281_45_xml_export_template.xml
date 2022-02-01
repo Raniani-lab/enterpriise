@@ -384,7 +384,7 @@
                                             1 : d’application -->
                                             <f45_2031_verantwoordingsstukken t-esc="employee_data['f45_2031_verantwoordingsstukken']"/>
 
-                                            <!-- <f45_2059_totaalcontrole t-esc="employee_data['f45_2059_totaalcontrole']"/> -->
+                                            <f45_2059_totaalcontrole t-esc="employee_data['f45_2059_totaalcontrole']"/>
 
                                             <!-- Montant brut des revenus -->
                                             <f45_2060_brutoinkomsten t-esc="employee_data['f45_2060_brutoinkomsten']"/>
@@ -403,7 +403,7 @@
 
                                             <f45_2109_fiscaalidentificat t-esc="employee_data['f45_2109_fiscaalidentificat']"/>
 
-                                            <f45_2110_kbonbr t-esc="employee_data['f45_2110_kbonbr']"/>
+                                            <f45_2110_kbonbr t-if="employee_data['f45_2110_kbonbr']" t-esc="employee_data['f45_2110_kbonbr']"/>
                                         </Fiche28145>
                                     </t>
                                 </Opgave32545>
@@ -422,7 +422,7 @@
                             d'enregistrement sous lequel le
                             débiteur des revenus est connu par le
                             SPF Finances. -->
-                            <r8005_registratienummer t-esc="r8005_registratienummer"/>
+                            <r8005_registratienummer t-esc="total_data['r8005_registratienummer']"/>
 
                             <!-- <r8007_division /> 4 N numéro de division -->
 

@@ -1050,7 +1050,7 @@
                             d'enregistrement sous lequel le
                             débiteur des revenus est connu par le
                             SPF Finances. -->
-                            <r8005_registratienummer t-esc="r8005_registratienummer"/>
+                            <r8005_registratienummer t-esc="total_data['r8005_registratienummer']"/>
 
                             <!-- <r8007_division /> 4 N numéro de division -->
 

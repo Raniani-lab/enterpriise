@@ -226,11 +226,15 @@ class L10nBe28145(models.Model):
         for employee in employee_payslips:
             is_belgium = employee.address_home_id.country_id == belgium
             payslips = employee_payslips[employee]
-            sequence += 1
 
             mapped_total = {
                 code: sum(all_line_values[code][p.id]['total'] for p in payslips)
                 for code in line_codes}
+
+            # Skip XML declaration if no IP to declare
+            if not no_round and not round(mapped_total['IP'], 2):
+                continue
+            sequence += 1
 
             postcode = employee.address_home_id.zip.strip() if is_belgium else '0'
             if len(postcode) > 4 or not postcode.isdecimal():
@@ -247,7 +251,7 @@ class L10nBe28145(models.Model):
                 'employee_id': employee.id,
                 'f2002_inkomstenjaar': self.reference_year,
                 'f2005_registratienummer': bce_number,
-                'f2008_typefiche': '28110',
+                'f2008_typefiche': '28145',
                 'f2009_volgnummer': sequence,
                 'f2011_nationaalnr': employee.niss,
                 'f2013_naam': last_name,
@@ -262,13 +266,14 @@ class L10nBe28145(models.Model):
                 'f2114_voornamen': first_name,
                 'f45_2030_aardpersoon': 1,
                 'f45_2031_verantwoordingsstukken': 0,
+                # Note: 2060 > 2063
                 'f45_2060_brutoinkomsten': _to_eurocent(round(mapped_total['IP'], 2)),
                 'f45_2061_forfaitairekosten': _to_eurocent(round(mapped_total['IP'] / 2.0, 2)),
                 'f45_2062_werkelijkekosten': 0,
                 'f45_2063_roerendevoorheffing': _to_eurocent(round(-mapped_total['IP.DED'], 2)),
                 'f45_2099_comment': '',
                 'f45_2109_fiscaalidentificat': '', # Use NISS instead
-                'f45_2110_kbonbr': 0, # ?
+                'f45_2110_kbonbr': 0, # N° BCE d’une personne physique (facultatif)
             }
 
             # Le code postal belge (2016) et le code postal étranger (2112) ne peuvent être
@@ -280,9 +285,16 @@ class L10nBe28145(models.Model):
 
             employees_data.append(sheet_values)
 
+            # Somme de 2060 à 2088, f10_2062_totaal et f10_2077_totaal inclus
+            sheet_values['f45_2059_totaalcontrole'] = sum(sheet_values[code] for code in [
+                'f45_2060_brutoinkomsten',
+                'f45_2061_forfaitairekosten',
+                'f45_2062_werkelijkekosten',
+                'f45_2063_roerendevoorheffing'])
+
         sheets_count = len(employees_data)
         sum_2009 = sum(sheet_values['f2009_volgnummer'] for sheet_values in employees_data)
-        sum_2059 = 0
+        sum_2059 = sum(sheet_values['f45_2059_totaalcontrole'] for sheet_values in employees_data)
         sum_2063 = sum(sheet_values['f45_2063_roerendevoorheffing'] for sheet_values in employees_data)
         total_data = {
             'r8002_inkomstenjaar': self.reference_year,
@@ -295,8 +307,8 @@ class L10nBe28145(models.Model):
             'r9010_aantallogbestanden': 3,
             'r9011_totaalaantalrecords': sheets_count + 4,
             'r9012_controletotaal': sum_2009,
-            'r9013_controletotaal': sum_2063,
-            'r9014_controletotaal': sum_2059,
+            'r9013_controletotaal': sum_2059,
+            'r9014_controletotaal': sum_2063,
         }
         return {'data': main_data, 'employees_data': employees_data, 'total_data': total_data}
 

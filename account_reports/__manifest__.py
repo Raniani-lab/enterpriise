@@ -30,7 +30,6 @@ Accounting Reports
         'views/account_activity.xml',
         'views/account_sales_report_view.xml',
         'views/account_account_views.xml',
-        'views/res_company_views.xml',
         'views/account_tax_views.xml',
     ],
     'auto_install': True,

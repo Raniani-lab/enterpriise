@@ -18,7 +18,9 @@
     'data': [
         'security/hr_contract_salary_security.xml',
         'security/ir.model.access.csv',
+
         'wizard/generate_simulation_link_views.xml',
+
         'views/hr_applicant_views.xml',
         'views/hr_contract_salary_templates.xml',
         'views/hr_contract_views.xml',
@@ -27,13 +29,14 @@
         'views/hr_contract_salary_advantage_views.xml',
         'views/hr_contract_salary_personal_info_views.xml',
         'views/hr_contract_salary_resume_views.xml',
+
         'data/ir_cron_data.xml',
         'data/mail_template_data.xml',
         'data/mail_templates.xml',
         'data/hr_contract_salary_advantages_data.xml',
         'data/hr_contract_salary_personal_info_data.xml',
         'data/hr_contract_salary_resume_data.xml',
-        'security/ir.model.access.csv',
+
         'report/hr_contract_employee_report_views.xml',
         'report/hr_contract_history_report_views.xml',
     ],

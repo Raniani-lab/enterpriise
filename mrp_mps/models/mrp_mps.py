@@ -806,6 +806,8 @@ class MrpProductionSchedule(models.Model):
 
     def _get_moves_domain(self, date_start, date_stop, type):
         """ Return domain for incoming or outgoing moves """
+        if not self:
+            return [('id', '=', False)]
         location = type == 'incoming' and 'location_dest_id' or 'location_id'
         location_dest = type == 'incoming' and 'location_id' or 'location_dest_id'
         domain = []
@@ -899,6 +901,8 @@ class MrpProductionSchedule(models.Model):
         :param date_start: start date of the forecast domain
         :param date_stop: end date of the forecast domain
         """
+        if not self:
+            return [('id', '=', False)]
         domain = []
         common_domain = [
             ('state', 'in', ('draft', 'sent', 'to approve')),

@@ -66,7 +66,7 @@ class SignTemplate(models.Model):
     def _compute_num_pages(self):
         for record in self:
             try:
-                record.num_pages = self.get_pdf_number_of_pages(base64.b64decode(record.attachment_id.datas))
+                record.num_pages = self._get_pdf_number_of_pages(base64.b64decode(record.attachment_id.datas))
             except Exception:
                 record.num_pages = 0
 
@@ -100,7 +100,7 @@ class SignTemplate(models.Model):
     def create(self, vals_list):
         attachments = self.env['ir.attachment'].browse([vals.get('attachment_id') for vals in vals_list])
         for attachment in attachments:
-            self.check_pdf_data_validity(attachment.datas)
+            self._check_pdf_data_validity(attachment.datas)
         # copy the attachment if it has been attached to a record
         for vals, attachment in zip(vals_list, attachments):
             if attachment.res_model or attachment.res_id:
@@ -127,7 +127,7 @@ class SignTemplate(models.Model):
         return self.create({'attachment_id': attachment.id, 'active': active}).id
 
     @api.model
-    def get_pdf_number_of_pages(self, pdf_data):
+    def _get_pdf_number_of_pages(self, pdf_data):
         file_pdf = PdfFileReader(io.BytesIO(pdf_data), strict=False, overwriteWarnings=False)
         return file_pdf.getNumPages()
 
@@ -143,7 +143,7 @@ class SignTemplate(models.Model):
             },
         }
 
-    def check_send_ready(self):
+    def _check_send_ready(self):
         if any(item.type_id.item_type == 'selection' and not item.option_ids for item in self.sign_item_ids):
             raise UserError(_("One or more selection items have no associated options"))
 
@@ -159,9 +159,9 @@ class SignTemplate(models.Model):
                 "exist but you can archive it instead."))
 
     @api.model
-    def check_pdf_data_validity(self, datas):
+    def _check_pdf_data_validity(self, datas):
         try:
-            self.get_pdf_number_of_pages(base64.b64decode(datas))
+            self._get_pdf_number_of_pages(base64.b64decode(datas))
         except Exception as e:
             raise UserError(_("One uploaded file cannot be read. Is it a valid PDF?"))
 
@@ -242,7 +242,8 @@ class SignTemplate(models.Model):
             "context": {'search_default_signed': True}
         }
 
-    def copy_sign_items_to(self, new_template):
+    def _copy_sign_items_to(self, new_template):
+        """ copy all sign items of the self template to the new_template """
         self.ensure_one()
         if len(new_template.sign_request_ids) > 0:
             raise UserError(_("Somebody is already filling a document which uses this template"))
@@ -252,7 +253,7 @@ class SignTemplate(models.Model):
             item_id_map[str(sign_item.id)] = str(new_sign_item.id)
         return item_id_map
 
-    def get_sign_items_by_page(self):
+    def _get_sign_items_by_page(self):
         self.ensure_one()
         items = defaultdict(list)
         for item in self.sign_item_ids:

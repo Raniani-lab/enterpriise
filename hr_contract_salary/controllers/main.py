@@ -829,7 +829,7 @@ class HrContractSalary(http.Controller):
             responsible2signature[responsible] = signature
         for sign_request_item in sign_request_sudo.request_item_ids:
             if sign_request_item.role_id in responsible2signature:
-                sign_request_item.fill(responsible2signature[sign_request_item.role_id])
+                sign_request_item._fill(responsible2signature[sign_request_item.role_id])
 
         access_token = request.env['sign.request.item'].sudo().search([
             ('sign_request_id', '=', sign_request_sudo.id),

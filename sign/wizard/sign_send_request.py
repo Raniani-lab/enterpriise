@@ -16,7 +16,7 @@ class SignSendRequest(models.TransientModel):
             return res
         template = self.env['sign.template'].browse(res['template_id'])
         res['has_default_template'] = bool(template)
-        template.check_send_ready()
+        template._check_send_ready()
         if 'filename' in fields:
             res['filename'] = template.display_name
         if 'subject' in fields:

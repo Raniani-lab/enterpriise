@@ -150,13 +150,13 @@ class SignRequest(models.Model):
             for sign_request, old_cc_partner_ids in sign_request2cc_partner_ids:
                 new_cc_partner_ids = set(sign_request.cc_partner_ids.ids) - old_cc_partner_ids
                 if new_cc_partner_ids:
-                    sign_request.send_completed_document(partner_ids=new_cc_partner_ids)
+                    sign_request._send_completed_document(partner_ids=new_cc_partner_ids)
         return res
 
     @api.model_create_multi
     def create(self, vals_list):
         sign_requests = super().create(vals_list)
-        sign_requests.template_id.check_send_ready()
+        sign_requests.template_id._check_send_ready()
         sign_requests.cc_partner_ids = [Command.link(self.env.user.partner_id.id)]
         for sign_request in sign_requests:
             if not sign_request.request_item_ids:
@@ -242,7 +242,7 @@ class SignRequest(models.Model):
     def get_completed_document(self):
         self.ensure_one()
         if not self.completed_document:
-            self.generate_completed_document()
+            self._generate_completed_document()
 
         return {
             'name': 'Signed Document',
@@ -273,6 +273,10 @@ class SignRequest(models.Model):
         self.write({'favorited_ids': [(3 if self.env.user in self.favorited_ids else 4, self.env.user.id)]})
 
     def _refuse(self, refuser, refusal_reason):
+        """ Refuse a SignRequest. It can only be used in SignRequestItem._refuse
+        :param res.partner refuser: the refuser who refuse to sign
+        :param str refusal_reason: the refusal reason provided by the refuser
+        """
         self.ensure_one()
         if self.state != 'sent' or not self.refusal_allowed:
             raise UserError(_("This sign request cannot be refused"))
@@ -334,17 +338,18 @@ class SignRequest(models.Model):
                 sign_request.message_post(body=body, attachment_ids=sign_request.attachment_ids.ids)
 
     def _sign(self):
+        """ Sign a SignRequest. It can only be used in the SignRequestItem._sign """
         self.ensure_one()
         if self.state != 'sent' or any(sri.state != 'completed' for sri in self.request_item_ids):
             raise UserError(_("This sign request cannot be signed"))
         self.write({'state': 'signed'})
         if not bool(config['test_enable'] or config['test_file']):
             self.env.cr.commit()
-        if not self.check_is_encrypted():
+        if not self._check_is_encrypted():
             # if the file is encrypted, we must wait that the document is decrypted
-            self.send_completed_document()
+            self._send_completed_document()
 
-    def check_is_encrypted(self):
+    def _check_is_encrypted(self):
         self.ensure_one()
         if not self.template_id.sign_item_ids:
             return False
@@ -363,14 +368,19 @@ class SignRequest(models.Model):
 
         self.env['sign.log'].sudo().create([{'sign_request_id': sign_request.id, 'action': 'cancel'} for sign_request in self])
 
-    def send_completed_document(self, partner_ids=None):
+    def _send_completed_document(self, partner_ids=None):
+        """ Send the completed document to specified partners.
+        Only partners who are also in the cc_partner_ids can receive message_cc
+        :param list(int) partner_ids: recipient partners.
+            If not specified, all  signers and cc_partner_ids will become the recipient partners
+        """
         self.ensure_one()
         if self.state != 'signed':
             raise UserError(_('The sign request has not been fully signed'))
         self._check_senders_validity()
 
         if not self.completed_document:
-            self.generate_completed_document()
+            self._generate_completed_document()
 
         signers = [{'name': signer.partner_id.name, 'email': signer.signer_email, 'id': signer.partner_id.id} for signer in self.request_item_ids]
         request_edited = any(log.action == "update" for log in self.sign_log_ids)
@@ -430,7 +440,7 @@ class SignRequest(models.Model):
     def _get_normal_font_size(self):
         return 0.015
 
-    def generate_completed_document(self, password=""):
+    def _generate_completed_document(self, password=""):
         self.ensure_one()
         if self.state != 'signed':
             raise UserError(_("The completed document cannot be created because the sign request is not fully signed"))
@@ -453,7 +463,7 @@ class SignRequest(models.Model):
 
             packet = io.BytesIO()
             can = canvas.Canvas(packet)
-            itemsByPage = self.template_id.get_sign_items_by_page()
+            itemsByPage = self.template_id._get_sign_items_by_page()
             SignItemValue = self.env['sign.request.item.value']
             for p in range(0, old_pdf.getNumPages()):
                 page = old_pdf.getPage(p)
@@ -713,6 +723,9 @@ class SignRequestItem(models.Model):
         return res
 
     def _cancel(self, no_access=True):
+        """ Cancel a SignRequestItem. It can only be used in the SignRequest.cancel or SignRequest._refuse
+        :param bool no_access: Whether the sign request item cannot be accessed by the previous link in the email
+        """
         for request_item in self:
             request_item.write({
                 'access_token': self._default_access_token() if no_access else request_item.access_token,
@@ -721,7 +734,7 @@ class SignRequestItem(models.Model):
                 'is_mail_sent': False if no_access else request_item.is_mail_sent,
             })
 
-    def refuse(self, refusal_reason):
+    def _refuse(self, refusal_reason):
         self.ensure_one()
         if not self.env.su:
             raise UserError(_("This function can only be called with sudo."))
@@ -767,7 +780,7 @@ class SignRequestItem(models.Model):
             )
             signer.is_mail_sent = True
 
-    def edit_and_sign(self, signature, new_sign_items=None):
+    def _edit_and_sign(self, signature, new_sign_items=None):
         """ Sign sign request items at once.
         :param signature: dictionary containing signature values and corresponding ids
         :param dict new_sign_items: {id (str): values (dict)}
@@ -796,7 +809,7 @@ class SignRequestItem(models.Model):
                 'active': False,
                 'sign_item_ids': []
             }).sudo(False)
-            existing_item_id_map = old_template.copy_sign_items_to(new_template)
+            existing_item_id_map = old_template._copy_sign_items_to(new_template)
 
             # edit the new template(add new sign items)
             new_item_id_map = new_template.update_from_pdfviewer(new_sign_items)
@@ -814,9 +827,9 @@ class SignRequestItem(models.Model):
             body = _("The signature request has been edited by: %s.", self.partner_id.name)
             sign_request.message_post(body=body)
 
-        self.sign(signature)
+        self._sign(signature)
 
-    def sign(self, signature):
+    def _sign(self, signature):
         """ Stores the sign request item values.
         :param signature: dictionary containing signature values and corresponding ids / signature image
         """
@@ -832,7 +845,7 @@ class SignRequestItem(models.Model):
         if not (required_ids <= signature_ids):  # Security check
             raise UserError(_("Some required items are not filled"))
 
-        self.fill(signature)
+        self._fill(signature)
 
         self.env['sign.log'].create({'sign_request_item_id': self.id, 'action': 'sign'})
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'completed'})
@@ -845,8 +858,10 @@ class SignRequestItem(models.Model):
         if all(sri.state == 'completed' for sri in sign_request.request_item_ids):
             sign_request._sign()
 
-    def fill(self, signature):
-        """ Stores the sign request item values. (Can be used to pre-fill the document as a hack) """
+    def _fill(self, signature):
+        """ Stores the sign request item values. (Can be used to pre-fill the document as a hack)
+        :param signature: dictionary containing signature values and corresponding ids / signature image
+        """
         self.ensure_one()
         if not self.env.su:
             raise UserError(_("This function can only be called with sudo."))

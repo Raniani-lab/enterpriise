@@ -16,7 +16,7 @@ class SignTemplateShare(models.TransientModel):
         res = super(SignTemplateShare, self).default_get(fields)
         if 'url' in fields:
             template = self.env['sign.template'].browse(res.get('template_id'))
-            template.check_send_ready()
+            template._check_send_ready()
             if template.responsible_count > 1:
                 res['url'] = False
             else:

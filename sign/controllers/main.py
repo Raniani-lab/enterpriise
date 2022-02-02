@@ -123,9 +123,9 @@ class Sign(http.Controller):
         elif download_type == "completed":
             document = sign_request.completed_document
             if not document:
-                if sign_request.check_is_encrypted():# if the document is completed but the document is encrypted
+                if sign_request._check_is_encrypted():# if the document is completed but the document is encrypted
                     return request.redirect('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})
-                sign_request.generate_completed_document()
+                sign_request._generate_completed_document()
                 document = sign_request.completed_document
 
         if not document:
@@ -183,8 +183,8 @@ class Sign(http.Controller):
             values['error'] = _("Wrong password")
             return http.request.render('sign.encrypted_ask_password', values)
 
-        request_item.sign_request_id.generate_completed_document(password)
-        request_item.sign_request_id.send_completed_document()
+        request_item.sign_request_id._generate_completed_document(password)
+        request_item.sign_request_id._send_completed_document()
         return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request_id, 'access_token': token})
 
     # -------------
@@ -283,7 +283,7 @@ class Sign(http.Controller):
             # sign as a known user
             request_item = request_item.with_user(sign_user).sudo()
 
-        request_item.edit_and_sign(signature, new_sign_items)
+        request_item._edit_and_sign(signature, new_sign_items)
         return {'success': True}
 
     @http.route(['/sign/refuse/<int:sign_request_id>/<token>'], type='json', auth='public')
@@ -304,7 +304,7 @@ class Sign(http.Controller):
         if refuse_user:
             # refuse as a known user
             request_item = request_item.with_user(refuse_user).sudo()
-        request_item.refuse(refusal_reason)
+        request_item._refuse(refusal_reason)
         return True
 
     @http.route(['/sign/password/<int:sign_request_id>'], type='json', auth='public')
@@ -321,8 +321,8 @@ class Sign(http.Controller):
             return False
 
         # if the password is correct, we generate document and send it
-        request_item.sign_request_id.generate_completed_document(password)
-        request_item.sign_request_id.send_completed_document()
+        request_item.sign_request_id._generate_completed_document(password)
+        request_item.sign_request_id._send_completed_document()
         return True
 
     @http.route(['/sign/encrypted/<int:sign_request_id>'], type='json', auth='public')

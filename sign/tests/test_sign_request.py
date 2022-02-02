@@ -83,8 +83,8 @@ class TestSignRequest(SignRequestCommon):
 
         # sign
         with self.assertRaises(UserError, msg='A sign.request.item can only sign its sign.items'):
-            sign_request_item.edit_and_sign(self.customer_sign_values)
-        sign_request_item.edit_and_sign(self.signature_fake)
+            sign_request_item._edit_and_sign(self.customer_sign_values)
+        sign_request_item._edit_and_sign(self.signature_fake)
         self.assertEqual(sign_request_item.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_no_item.state, 'signed', 'The sign request should be signed')
         self.assertEqual(len(sign_request_no_item.completed_document_attachment_ids), 2, 'The completed document and the certificate should be created')
@@ -93,7 +93,7 @@ class TestSignRequest(SignRequestCommon):
             1, 'A log with action="sign" should be created')
         self.assertEqual(len(sign_request_no_item.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 0, 'The activity should be removed after signing')
         with self.assertRaises(UserError, msg='A document cannot be signed twice'):
-            sign_request_item.edit_and_sign(self.signature_fake)
+            sign_request_item._edit_and_sign(self.signature_fake)
 
         # cancel
         sign_request_item_token = sign_request_item.access_token
@@ -128,8 +128,8 @@ class TestSignRequest(SignRequestCommon):
 
         # sign
         with self.assertRaises(UserError, msg='A sign.request.item can only sign its sign.items'):
-            sign_request_item_employee.edit_and_sign(self.customer_sign_values)
-        sign_request_item_customer.edit_and_sign(self.customer_sign_values)
+            sign_request_item_employee._edit_and_sign(self.customer_sign_values)
+        sign_request_item_customer._edit_and_sign(self.customer_sign_values)
         self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_item_employee.state, 'sent', 'The sign.request.item should be sent')
         self.assertEqual(sign_request_item_company.state, 'sent', 'The sign.request.item should be sent')
@@ -141,7 +141,7 @@ class TestSignRequest(SignRequestCommon):
         self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_2.id)), 1, 'The activity should not be removed for unsigned signer')
         self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_3.id)), 1, 'The activity should not be removed for unsigned signer')
         with self.assertRaises(UserError, msg='A document cannot be signed twice'):
-            sign_request_item_customer.edit_and_sign(self.customer_sign_values)
+            sign_request_item_customer._edit_and_sign(self.customer_sign_values)
 
         # cancel
         sign_request_item_customer_token = sign_request_item_customer.access_token
@@ -170,20 +170,20 @@ class TestSignRequest(SignRequestCommon):
         sign_request_item_company = role2sign_request_item[self.role_company]
 
         # sign (test has been done in test_sign_request_3_roles_create_sign_cancel)
-        sign_request_item_customer.edit_and_sign(self.customer_sign_values)
+        sign_request_item_customer._edit_and_sign(self.customer_sign_values)
 
         # refuse
         self.assertFalse(sign_request_3_roles.refusal_allowed, 'The default value for refusal_allowed should be False')
         with self.assertRaises(UserError, msg='Refuse should not be allowed'):
-            sign_request_item_employee.refuse("bad document")
+            sign_request_item_employee._refuse("bad document")
         sign_request_3_roles.refusal_allowed = True
         with self.assertRaises(UserError, msg='A signed sign.request.item cannot be refused'):
-            sign_request_item_customer.refuse("bad document")
+            sign_request_item_customer._refuse("bad document")
         sign_request_item_customer_token = sign_request_item_customer.access_token
         sign_request_item_employee_token = sign_request_item_employee.access_token
         sign_request_item_company_token = sign_request_item_company.access_token
         sign_request_3_roles_token = sign_request_3_roles.access_token
-        sign_request_item_employee.refuse('bad document')
+        sign_request_item_employee._refuse('bad document')
         self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_item_employee.state, 'refused', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_item_company.state, 'canceled', 'The sign.request.item should be canceled')
@@ -199,7 +199,7 @@ class TestSignRequest(SignRequestCommon):
         self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_3.id)), 0, 'The activity should be removed for remaining signers')
 
         with self.assertRaises(UserError, msg='A canceled sign.request.item cannot be signed'):
-            sign_request_item_company.edit_and_sign(self.company_sign_values)
+            sign_request_item_company._edit_and_sign(self.company_sign_values)
 
         # cancel
         sign_request_3_roles.cancel()
@@ -241,7 +241,7 @@ class TestSignRequest(SignRequestCommon):
         self.assertEqual(len(sign_request.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 1, 'The number of activities should still be 1')
 
         # sign the document
-        request_item.edit_and_sign(self.signature_fake)
+        request_item._edit_and_sign(self.signature_fake)
         self.assertEqual(request_item.signer_email, "laurie.poiret.b@example.com", 'email address should be laurie.poiret.b@example.com')
 
         # change the email address of the signer (laurie.poiret.c@example.com)
@@ -282,7 +282,7 @@ class TestSignRequest(SignRequestCommon):
         self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_5.id)), 0, 'No activity should be created for user without permission to access Sign')
 
         # sign
-        sign_request_item_customer.edit_and_sign(self.customer_sign_values)
+        sign_request_item_customer._edit_and_sign(self.customer_sign_values)
 
         # reassign
         token_employee = sign_request_item_customer.access_token
@@ -301,7 +301,7 @@ class TestSignRequest(SignRequestCommon):
 
         # refuse
         sign_request_3_roles.refusal_allowed = True
-        sign_request_item_employee.refuse('bad request')
+        sign_request_item_employee._refuse('bad request')
 
         # reassign
         with self.assertRaises(UserError, msg='A refused sign request item cannot be reassigned'):
@@ -320,8 +320,8 @@ class TestSignRequest(SignRequestCommon):
         value = 'edit and sign'
         new_sign_item_config = self.get_sign_item_config(sign_request_item.role_id.id)
         with self.assertRaises(UserError, msg='The key for new sign item should always < 0'):
-            sign_request_item.edit_and_sign({'1': value}, {'1': new_sign_item_config})
-        sign_request_item.edit_and_sign({'-1': value}, {'-1': new_sign_item_config})
+            sign_request_item._edit_and_sign({'1': value}, {'1': new_sign_item_config})
+        sign_request_item._edit_and_sign({'-1': value}, {'-1': new_sign_item_config})
         self.assertEqual(sign_request_item.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_no_item.state, 'signed', 'The sign request should be signed')
         self.assertEqual(len(sign_request_no_item.completed_document_attachment_ids), 2, 'The completed document and the certificate should be created')
@@ -347,8 +347,8 @@ class TestSignRequest(SignRequestCommon):
         value = 'edit and sign'
         new_sign_item_config = self.get_sign_item_config(sign_request_item_customer.role_id.id)
         with self.assertRaises(UserError, msg='The key for new sign item should always < 0'):
-            sign_request_item_customer.edit_and_sign(dict(self.customer_sign_values, **{'1': value}), {'1': new_sign_item_config})
-        sign_request_item_customer.edit_and_sign(dict(self.customer_sign_values, **{'-1': value}), {'-1': new_sign_item_config})
+            sign_request_item_customer._edit_and_sign(dict(self.customer_sign_values, **{'1': value}), {'1': new_sign_item_config})
+        sign_request_item_customer._edit_and_sign(dict(self.customer_sign_values, **{'-1': value}), {'-1': new_sign_item_config})
         self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_3_roles.state, 'sent', 'The sign request should be signed')
         self.assertNotEqual(sign_request_3_roles.template_id, template, 'An edited sign request should use a different template')
@@ -361,10 +361,10 @@ class TestSignRequest(SignRequestCommon):
 
         # sign
         with self.assertRaises(UserError, msg='Only the first signer can edit while signing'):
-            sign_request_item_employee.edit_and_sign(
+            sign_request_item_employee._edit_and_sign(
                 dict(self.create_sign_values(sign_request_3_roles.template_id.sign_item_ids, sign_request_item_employee.role_id.id), **{'1': value}),
                 {'-1': new_sign_item_config})
-        sign_request_item_employee.edit_and_sign(
+        sign_request_item_employee._edit_and_sign(
             self.create_sign_values(sign_request_3_roles.template_id.sign_item_ids, sign_request_item_employee.role_id.id))
         self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_item_employee.state, 'completed', 'The sign.request.item should be completed')
@@ -375,7 +375,7 @@ class TestSignRequest(SignRequestCommon):
             1, 'A log with action="sign" should be created')
 
         # sign
-        sign_request_item_company.edit_and_sign(
+        sign_request_item_company._edit_and_sign(
             self.create_sign_values(sign_request_3_roles.template_id.sign_item_ids, sign_request_item_company.role_id.id))
         self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_item_employee.state, 'completed', 'The sign.request.item should be completed')

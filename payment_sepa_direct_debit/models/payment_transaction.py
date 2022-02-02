@@ -40,7 +40,7 @@ class PaymentTransaction(models.Model):
             raise UserError("SEPA: " + _("The mandate is invalid."))
 
         # Since there is no provider to send a payment request to, the processing of the
-        # `_handle_feedback_data` method is reproduced here.
+        # `_handle_notification_data` method is reproduced here.
         if self.operation == 'validation':
             self._set_done()
             self._execute_callback()

@@ -19,7 +19,8 @@ class AccountMoveLine(models.Model):
         txs = self.env['payment.transaction'].browse(tx_ids)
         txs._set_done()
         # Since the payment confirmation does not come from a provider notification, we reproduce
-        # the processing of the `_handle_feedback_data` method here and trigger the post-processing.
+        # the processing of the `_handle_notification_data` method here and trigger the
+        # post-processing.
         txs._execute_callback()
         txs._finalize_post_processing()
 

@@ -10,7 +10,7 @@ from zeep.exceptions import Fault
 from zeep.wsdl.utils import etree_to_string
 
 from odoo.modules.module import get_resource_path
-from odoo.tools import remove_accents
+from odoo.tools import remove_accents, float_repr
 
 
 _logger = logging.getLogger(__name__)
@@ -155,7 +155,7 @@ class FedexRequest():
             self.RequestedShipment.MasterTrackingId.TrackingNumber = master_tracking_id
 
     # weight_value, package_code=False, package_height=0, package_width=0, package_length=0,
-    def add_package(self, carrier, delivery_package, sequence_number=False, mode='shipping', po_number=False, dept_number=False, reference=False):
+    def add_package(self, carrier, delivery_package, fdx_company_currency, sequence_number=False, mode='shipping', po_number=False, dept_number=False, reference=False):
         package = self.factory.RequestedPackageLineItem()
         package_weight = self.factory.Weight()
         package_weight.Value = carrier._fedex_convert_weight(delivery_package.weight, carrier.fedex_weight_unit)
@@ -184,6 +184,11 @@ class FedexRequest():
             customer_reference.CustomerReferenceType = 'CUSTOMER_REFERENCE'
             customer_reference.Value = reference
             package.CustomerReferences.append(customer_reference)
+
+        if carrier.shipping_insurance:
+            package.InsuredValue = self.factory.Money()
+            package.InsuredValue.Currency = fdx_company_currency
+            package.InsuredValue.Amount = float_repr(delivery_package.total_cost * carrier.shipping_insurance / 100, 2)
 
         package.Weight = package_weight
         if mode == 'rating':

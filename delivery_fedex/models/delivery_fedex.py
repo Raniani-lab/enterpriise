@@ -118,6 +118,13 @@ class ProviderFedex(models.Model):
                 if carrier.delivery_type == 'fedex':
                     carrier.can_generate_return = True
 
+    def _compute_supports_shipping_insurance(self):
+        res = super(ProviderFedex, self)._compute_supports_shipping_insurance()
+        for carrier in self:
+            if carrier.delivery_type == 'fedex':
+                carrier.supports_shipping_insurance = True
+        return res
+
     @api.onchange('fedex_service_type')
     def on_change_fedex_service_type(self):
         self.fedex_saturday_delivery = False
@@ -153,6 +160,7 @@ class ProviderFedex(models.Model):
             srm.add_package(
                 self,
                 package,
+                _convert_curr_iso_fdx(package.company_id.currency_id.name),
                 sequence_number=sequence,
                 mode='rating'
             )
@@ -261,6 +269,7 @@ class ProviderFedex(models.Model):
                 srm.add_package(
                     self,
                     package,
+                    _convert_curr_iso_fdx(package.company_id.currency_id.name),
                     sequence_number=sequence,
                     po_number=po_number,
                     dept_number=dept_number,
@@ -338,7 +347,7 @@ class ProviderFedex(models.Model):
         dept_number = False
         packages = self._get_packages_from_picking(picking, self.fedex_default_package_type_id)
         for pkg in packages:
-            srm.add_package(self, pkg, reference=picking.display_name, po_number=po_number, dept_number=dept_number)
+            srm.add_package(self, pkg, _convert_curr_iso_fdx(pkg.company_id.currency_id.name), reference=picking.display_name, po_number=po_number, dept_number=dept_number)
         srm.set_master_package(net_weight, 1)
         if 'INTERNATIONAL' in self.fedex_service_type  or (picking.partner_id.country_id.code == 'IN' and picking.picking_type_id.warehouse_id.partner_id.country_id.code == 'IN'):
 

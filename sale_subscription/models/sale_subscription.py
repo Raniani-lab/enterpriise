@@ -11,7 +11,7 @@ from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 from uuid import uuid4
 
-from odoo import api, fields, models, Command, _
+from odoo import api, fields, models, Command, _, SUPERUSER_ID
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
 from odoo.tools import format_date, is_html_empty, config
@@ -1183,6 +1183,13 @@ class SaleSubscription(models.Model):
         })
         _logger.debug("Sending Payment Confirmation Mail to %s for subscription %s", self.partner_id.email, self.id)
         template = self.env.ref('sale_subscription.email_payment_success')
+
+        # This function can be called by the public user via the callback_method set in
+        # /my/subscription/transaction/. The email template contains the invoice PDF in
+        # attachment, so to render it successfully sudo() is not enough.
+        if self.env.su:
+            template = template.with_user(SUPERUSER_ID)
+
         return template.with_context(email_context).send_mail(invoice.id)
 
     def validate_and_send_invoice(self, invoice):

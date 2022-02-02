@@ -2,7 +2,8 @@
 /* global moment */
 
 import { _t } from "web.core";
-
+import Domain from "web.Domain";
+import pyUtils from "web.py_utils";
 import { BasicDataSource } from "../o_spreadsheet/basic_data_source";
 import { formats } from "../o_spreadsheet/constants";
 
@@ -208,7 +209,7 @@ export default class PivotDataSource extends BasicDataSource {
      * @param {Object} groupBys
      * @returns {Promise<Object>}
      */
-    async _getOrderedValues({ model, context }, groupBys) {
+    async _getOrderedValues({ model, context, domain }, groupBys) {
         return Object.fromEntries(
             await Promise.all(
                 Object.entries(groupBys).map(async ([groupBy, measures]) => {
@@ -221,7 +222,7 @@ export default class PivotDataSource extends BasicDataSource {
                               values.filter((value) => value !== "false"),
                               aggregationFunction
                           )
-                        : await this._orderValues(values, fieldName, field, model, context);
+                        : await this._orderValues(values, fieldName, field, model, domain, context);
                     if (hasUndefined && field.type !== "boolean") {
                         values.push("false");
                     }
@@ -253,17 +254,23 @@ export default class PivotDataSource extends BasicDataSource {
      * @param {string} fieldName
      * @param {Field} field
      * @param {string} model
+     * @param {Array} domain
      * @param {Object} context
      * @returns {Promise<Array>}
      */
-    async _orderValues(values, fieldName, field, model, context) {
+    async _orderValues(values, fieldName, field, model, baseDomain, context) {
         const requestField = field.relation ? "id" : fieldName;
         values = ["boolean", "many2one", "many2many", "integer", "float"].includes(field.type)
             ? values.map((value) => JSON.parse(value))
             : values;
+        const domainString = pyUtils.assembleDomains([
+            field.relation ? "[]" : Domain.prototype.arrayToString(baseDomain),
+            Domain.prototype.arrayToString([[requestField, "in", values]]),
+            ], "AND");
+        const domain = pyUtils.eval("domain", domainString, {});
         const records = await this.rpc({
             model: field.relation ? field.relation : model,
-            domain: [[requestField, "in", values]],
+            domain,
             context: Object.assign({}, context, { active_test: false }),
             method: "search_read",
             fields: [requestField],

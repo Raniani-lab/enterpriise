@@ -16,7 +16,7 @@ export class StudioClientAction extends Component {
     setup() {
         this.studio = useService("studio");
         useBus(this.studio.bus, "UPDATE", () => {
-            this.render();
+            this.render(true);
             cleanDomFromBootstrap();
         });
 
@@ -29,7 +29,7 @@ export class StudioClientAction extends Component {
             this.homeMenuProps = {
                 apps: computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps,
             };
-            this.render();
+            this.render(true);
         });
 
         this.AppCreatorWrapper = AppCreatorWrapper; // to remove

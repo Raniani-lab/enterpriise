@@ -40,10 +40,11 @@ odoo.define('timesheet_grid.TimerGridController', function (require) {
             const description = event.data.description;
             this.model._changeTimerDescription(timesheetId, description);
         },
-        _onAddTimeTimer(event) {
+        async _onAddTimeTimer(event) {
             const timesheetId = event.data.timesheetId;
             const time = event.data.time;
-            this.model._addTimeTimer(timesheetId, time);
+            await this.model._addTimeTimer(timesheetId, time);
+            await this.reload();
         },
         async _onStopTimer(event) {
             const timesheetId = event.data.timesheetId;

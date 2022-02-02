@@ -13,7 +13,7 @@ import ViewsWidget from '@stock_barcode/widgets/views_widget';
 import ViewsWidgetAdapter from '@stock_barcode/components/views_widget_adapter';
 import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
 
-const { Component, onMounted, onWillStart, onWillUnmount, useState, useSubEnv } = owl;
+const { Component, onMounted, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
 
 /**
  * Main Component
@@ -30,11 +30,14 @@ class MainComponent extends Component {
         this.rpc = useService('rpc');
         this.orm = useService('orm');
         this.notification = useService('notification');
-        this.state = useState({
-            displayDestinationSelection: false,
-            displaySourceSelection: false,
-            productPageOpened: false,
-        });
+        this.state = reactive(
+            {
+                displayDestinationSelection: false,
+                displaySourceSelection: false,
+                productPageOpened: false,
+            },
+            () => this.render(true)
+        );
         this.ViewsWidget = ViewsWidget;
         this.props.model = this.props.action.res_model;
         this.props.id = this.props.action.context.active_id;
@@ -55,7 +58,7 @@ class MainComponent extends Component {
             this.env.model.on('process-action', this, this._onDoAction);
             this.env.model.on('notification', this, this._onNotification);
             this.env.model.on('refresh', this, this._onRefreshState);
-            this.env.model.on('update', this, this.render);
+            this.env.model.on('update', this, () => this.render(true));
             this.env.model.on('do-action', this, args => this.trigger('do-action', args));
             this.env.model.on('history-back', this, () => this.env.config.historyBack());
         });

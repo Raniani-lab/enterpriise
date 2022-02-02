@@ -30902,6 +30902,9 @@
             if (config.snapshotRequested) {
                 this.session.snapshot(this.exportData());
             }
+            // mark all models as "raw", so they will not be turned into reactive objects
+            // by owl, since we do not rely on reactivity
+            owl.markRaw(this);
         }
         get handlers() {
             return [this.range, ...this.corePlugins, ...this.uiPlugins, this.history];

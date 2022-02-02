@@ -10,7 +10,7 @@ class StudioSystray extends Component {
         this.studio = useService("studio");
         this.env.bus.on("ACTION_MANAGER:UI-UPDATED", this, (mode) => {
             if (mode !== "new") {
-                this.render();
+                this.render(true);
             }
         });
     }

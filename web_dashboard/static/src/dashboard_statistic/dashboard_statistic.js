@@ -5,7 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 import { session } from "@web/session";
 import { Field } from "@web/fields/fields";
 
-const { Component } = owl;
+const { Component, toRaw } = owl;
 
 export class DashboardStatistic extends Component {
     setup() {
@@ -100,8 +100,8 @@ export class DashboardStatistic extends Component {
         }
         const allFields = Object.assign(
             {},
-            this.props.model.metaData.fields,
-            this.props.model.metaData.statistics
+            toRaw(this.props.model.metaData.fields),
+            toRaw(this.props.model.metaData.statistics || {})
         );
         for (const field of Object.values(allFields)) {
             field.type = field.fieldType;

@@ -190,7 +190,7 @@ class ReportEditorAdapter extends ComponentAdapter {
             context: this.user.context,
         });
         this.report = result[0];
-        this.render();
+        this.render(true);
     }
 }
 

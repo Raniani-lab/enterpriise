@@ -23,7 +23,7 @@ export class EditorMenu extends Component {
         this.nextCrumbId = 1;
 
         useBus(this.studio.bus, "UPDATE", async () => {
-            await this.render();
+            await this.render(true);
             this.state.snackbar = "off";
         });
 

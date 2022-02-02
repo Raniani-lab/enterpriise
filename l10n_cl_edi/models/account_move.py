@@ -7,6 +7,7 @@ import re
 from datetime import datetime
 from html import unescape
 from io import BytesIO
+from psycopg2 import OperationalError
 
 from lxml import etree
 
@@ -216,8 +217,20 @@ class AccountMove(models.Model):
 
     def l10n_cl_send_dte_to_sii(self, retry_send=True):
         """
-        Send the DTE to the SII. It will be
+        Send the DTE to the SII.
         """
+        try:
+            with self.env.cr.savepoint(flush=False):
+                self.env.cr.execute('SELECT * FROM account_move WHERE id IN %s FOR UPDATE NOWAIT', [tuple(self.ids)])
+        except OperationalError as e:
+            if e.pgcode == '55P03':
+                if not self.env.context.get('cron_skip_connection_errs'):
+                    raise UserError(_('This invoice is being processed already.'))
+                return
+            raise e
+        # To avoid double send on double-click
+        if self.l10n_cl_dte_status != "not_sent":
+            return None
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         response = self._send_xml_to_sii(
             self.company_id.l10n_cl_dte_service_provider,

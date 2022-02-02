@@ -2014,6 +2014,12 @@ msgid "This feature is not available in certification/test mode"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid "This invoice is being processed already."
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_certificate__subject_serial_number
 msgid ""
 "This is the document of the owner of this certificate.Some certificates does"

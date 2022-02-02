@@ -1468,4 +1468,8 @@ export default class BarcodeModel extends EventBus {
         };
         this.currentState = JSON.parse(JSON.stringify(this.initialState)); // Deep copy
     }
+
+    _getPrintOptions() {
+        return {};
+    }
 }

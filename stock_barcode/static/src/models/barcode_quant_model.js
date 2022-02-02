@@ -526,4 +526,14 @@ export default class BarcodeQuantModel extends BarcodeModel {
     _defaultDestLocationId() {
         return undefined;
     }
+
+    _getPrintOptions() {
+        const options = super._getPrintOptions();
+        const quantsToPrint = this.pageLines.filter(quant => quant.inventory_quantity_set);
+        if (quantsToPrint.length === 0) {
+            return { warning: _t("There is nothing to print in this page.") };
+        }
+        options.additional_context = { active_ids: quantsToPrint.map(quant => quant.id) };
+        return options;
+    }
 }

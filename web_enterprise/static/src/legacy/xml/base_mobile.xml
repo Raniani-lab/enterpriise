@@ -16,7 +16,7 @@
         <t t-if="status" t-esc="status.display_name"/>
     </button>
     <div class="dropdown-menu" role="menu">
-        <t t-foreach="selection" t-as="i">
+        <t t-foreach="selection" t-as="i" t-key="i_index">
             <t t-call="FieldStatus.content.button">
                 <t t-set="is_dropdown" t-value="true"/>
             </t>
@@ -27,10 +27,10 @@
 <t t-name="Menu.sections.mobile">
     <t t-set="mobile" t-value="true"/>
     <t t-set="inNavbar" t-value="true"/>
-    <t t-foreach="menu_data.children" t-as="primary_menu">
+    <t t-foreach="menu_data.children" t-as="primary_menu" t-key="primary_menu_index">
         <section t-att-class="primary_menu.id">
             <t t-if="primary_menu.children.length">
-                <t t-foreach="primary_menu.children" t-as="submenu">
+                <t t-foreach="primary_menu.children" t-as="submenu" t-key="submenu_index">
                     <t t-set="menu" t-value="submenu"/>
                     <t t-call="Menu.link"/>
                 </t>

@@ -6,13 +6,14 @@ odoo.define('web_grid.GridRenderer', function (require) {
     const utils = require('web.utils');
 
     const gridComponentRegistry = require('web_grid.component_registry');
-    const { useListener } = require('web.custom_hooks');
+    const { useListener } = require("@web/core/utils/hooks");
 
-    const { useRef, useState } = owl;
+    const { onPatched, onWillUpdateProps, useRef, useState } = owl;
 
     class GridRenderer extends AbstractRenderer {
-        constructor(parent, props) {
-            super(parent, props);
+        setup() {
+            super.setup();
+            
             this.state = useState({
                 editMode: false,
                 currentPath: "",
@@ -21,16 +22,19 @@ odoo.define('web_grid.GridRenderer', function (require) {
             this.currentInput = useRef("currentInput");
             useListener('mouseover', 'td:not(:first-child), th:not(:first-child)', this._onMouseEnter);
             useListener('mouseout', 'td:not(:first-child), th:not(:first-child)', this._onMouseLeave);
+
+            onWillUpdateProps(this.onWillUpdateProps);
+            onPatched(this.onPatched);
         }
 
-        willUpdateProps(nextProps) {
+        onWillUpdateProps(nextProps) {
             if (nextProps.data[0].next.grid_anchor !== this.props.data[0].next.grid_anchor) {
                 //if we change the range of dates we are looking at,
                 //the cells should not be in error state anymore
                 this.state.errors = {};
             }
         }
-        patched() {
+        onPatched() {
             if (this.currentInput.el) {
                 this.currentInput.el.select();
             }
@@ -249,9 +253,8 @@ odoo.define('web_grid.GridRenderer', function (require) {
 
         /**
          * @private
-         * @param {OwlEvent} ev
          */
-        _onClickCreateInline(ev) {
+        _onClickCreateInline() {
             this.trigger('create-inline');
         }
         /**
@@ -361,16 +364,28 @@ odoo.define('web_grid.GridRenderer', function (require) {
             type: String,
             optional: true
         },
-        cellComponentOptions: Object,
+        cellComponentOptions: {
+            type: Object,
+            optional: true,
+        },
         cellField: String,
         colField: String,
         createInline: Boolean,
         displayEmpty: Boolean,
         fields: Object,
         groupBy: Array,
-        hasBarChartTotal: Boolean,
-        hideColumnTotal: Boolean,
-        hideLineTotal: Boolean,
+        hasBarChartTotal: {
+            type: Boolean,
+            optional: true,
+        },
+        hideColumnTotal: {
+            type: Boolean,
+            optional: true,
+        },
+        hideLineTotal: {
+            type: Boolean,
+            optional: true,
+        },
         measureLabel: {
             type: String,
             optional: true

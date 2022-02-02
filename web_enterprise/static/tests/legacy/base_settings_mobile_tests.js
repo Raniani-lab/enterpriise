@@ -8,6 +8,7 @@ var view_registry = require('web.view_registry');
 
 var BaseSettingsView = view_registry.get('base_settings');
 var createView = testUtils.createView;
+const { triggerEvent } = require("@web/../tests/helpers/utils");
 
 // prevent the renderer from doing RPCs to fetch app icons
 BaseSetting.Renderer.include({
@@ -31,16 +32,8 @@ QUnit.module('mobile_base_settings_tests', {
 
     QUnit.module('BaseSettings Mobile');
 
-    QUnit.test('swipe settings in mobile', async function (assert) {
+    QUnit.test('swipe settings in mobile [REQUIRE TOUCHEVENT]', async function (assert) {
         assert.expect(2);
-
-        // mimic touchSwipe library's swipe method
-        var oldSwipe = $.fn.swipe;
-        var swipeLeft, swipeRight;
-        $.fn.swipe = function (params) {
-            swipeLeft = params.swipeLeft;
-            swipeRight = params.swipeRight;
-        };
 
         var form = await createView({
             View: BaseSettingsView,
@@ -85,13 +78,56 @@ QUnit.module('mobile_base_settings_tests', {
                 '</form>',
         });
 
-        swipeLeft();
-        assert.strictEqual(form.$('.settings .current').data('key'), 'project', 'current setting should be project');
+        const touchTarget = form.el.querySelector(".settings");
+        //swipeLeft
+        await triggerEvent(form.el, ".settings", "touchstart", {
+            touches: [
+                {
+                    identifier: 0,
+                    clientX: 0,
+                    clientY: 0,
+                    target: touchTarget,
+                },
+            ],
+        });
+        await triggerEvent(form.el, ".settings", "touchmove", {
+            touches: [
+                {
+                    identifier: 0,
+                    clientX: -touchTarget.clientWidth,
+                    clientY: 0,
+                    target: touchTarget,
+                },
+            ],
+        });
+        await triggerEvent(form.el, ".settings", "touchend", {});
 
-        swipeRight();
+        assert.strictEqual(form.$('.settings .current').data('key'), 'project', 'current setting should be project');
+        //swipeRight
+        await triggerEvent(form.el, ".settings", "touchstart", {
+            touches: [
+                {
+                    identifier: 0,
+                    clientX: 0,
+                    clientY: 0,
+                    target: touchTarget,
+                },
+            ],
+        });
+        await triggerEvent(form.el, ".settings", "touchmove", {
+            touches: [
+                {
+                    identifier: 0,
+                    clientX: touchTarget.clientWidth,
+                    clientY: 0,
+                    target: touchTarget,
+                },
+            ],
+        });
+        await triggerEvent(form.el, ".settings", "touchend", {});
+
         assert.strictEqual(form.$('.settings .current').data('key'), 'crm', 'current setting should be crm');
 
-        $.fn.swipe = oldSwipe;
         form.destroy();
     });
 });

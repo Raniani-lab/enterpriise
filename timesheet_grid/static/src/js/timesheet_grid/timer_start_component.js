@@ -53,7 +53,11 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
             type: Number,
             optional: true
         },
-        addTimeMode: Boolean
+        addTimeMode: Boolean,
+        onTimerStartedFromLine: {
+            type: Function,
+            optional: true
+        },
     };
 
     return TimerStartComponent;

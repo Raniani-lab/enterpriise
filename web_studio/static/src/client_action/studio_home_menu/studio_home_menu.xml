@@ -11,8 +11,8 @@
     </xpath>
     <!-- Edit icons -->
     <xpath expr="//div[@class='o_apps']/a[@class='o_app o_menuitem']" position="inside">
-        <a t-if="!app.isNewAppButton" class="o_web_studio_edit_icon" t-on-click.stop.prevent="onEditIconClick(app)">
-            <i class="fa fa-pencil-square"/>
+        <a t-if="!app.isNewAppButton" class="o_web_studio_edit_icon" t-on-click.stop.prevent="() => this.onEditIconClick(app)">
+            <i class="fa fa-pencil-square" />
         </a>
     </xpath>
 </t>

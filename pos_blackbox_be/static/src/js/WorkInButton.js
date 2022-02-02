@@ -3,19 +3,20 @@ odoo.define('pos_blackbox_be.WorkInButton', function(require) {
 
     const PosComponent = require('point_of_sale.PosComponent');
     const ProductScreen = require('point_of_sale.ProductScreen');
-    const { useListener } = require('web.custom_hooks');
+    const { useListener } = require("@web/core/utils/hooks");
     const Registries = require('point_of_sale.Registries');
 
-    const { useState } = owl;
+    const { onWillStart, useState } = owl;
 
     class WorkInButton extends PosComponent {
         // TODO: add the clock in/out ticket and push it to the blackbox.
-        constructor() {
-            super(...arguments);
+        setup() {
+            super.setup();
             useListener('click', this.onClick);
             this.state = useState({ status: 0 });
+            onWillStart(this.onWillStart);
         }
-        async willStart() {
+        async onWillStart() {
             this.state.status = await this.get_user_session_status(this.env.pos.pos_session.id, this.env.pos.pos_session.user_id[0]);
         }
         async onClick() {

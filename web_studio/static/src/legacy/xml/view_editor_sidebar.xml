@@ -59,7 +59,7 @@
                     <label for="sort_field">Sort By</label>
                     <select id="sort_field" name="sort_field">
                         <option></option>
-                        <t t-foreach="widget.fields_in_view" t-as="field">
+                        <t t-foreach="widget.fields_in_view" t-as="field" t-key="field_index">
                             <t t-set="fieldInfo" t-value="widget.fieldsInfo[field]"/>
                             <t t-if="fieldInfo.optional !== 'hide' and fieldInfo.invisible !== true and field_value.store === true">
                                 <option t-att-value='field' t-att-selected="widget.defaultOrder and field ===  widget.defaultOrder[0] ? widget.defaultOrder[0] : undefined">
@@ -91,7 +91,7 @@
                     <label for="default_group_by">Default Group by</label>
                     <select id="default_group_by" name="default_group_by">
                         <option t-att-selected="widget.state.attrs.default_group_by ? undefined : 'selected'"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and _.contains(widget.GROUPABLE_TYPES, field.type)" t-att-selected="widget.state.attrs.default_group_by ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and _.contains(widget.GROUPABLE_TYPES, field.type)" t-att-selected="widget.state.attrs.default_group_by ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -106,7 +106,7 @@
                         <option t-if="widget.model_name === 'res.partner'" t-att-selected="widget.state.attrs.res_partner ===  'id' ? 'selected' : undefined" value="id">
                             ID <span t-if="widget.debug">(id)</span>
                         </option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.type === 'many2one' and field.relation === 'res.partner'" t-att-selected="widget.state.attrs.res_partner ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.type === 'many2one' and field.relation === 'res.partner'" t-att-selected="widget.state.attrs.res_partner ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string" /> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -140,7 +140,7 @@
                     <label for="default_order">Sort by</label>
                     <select id="default_order" name="default_order">
                         <option></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and !_.contains(['one2many', 'many2many', 'binary'], field.type)" t-att-selected="widget.state.attrs.default_order ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and !_.contains(['one2many', 'many2many', 'binary'], field.type)" t-att-selected="widget.state.attrs.default_order ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string" /> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -162,7 +162,7 @@
                     >
                     <label for="create_name_field">Quick Create Field</label>
                     <select id="create_name_field" name="create_name_field">
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store &amp;&amp; field.type === 'char'" t-att-selected="widget.state.attrs.create_name_field ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store &amp;&amp; field.type === 'char'" t-att-selected="widget.state.attrs.create_name_field ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span>(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -171,7 +171,7 @@
                 <div class="o_web_studio_sidebar_select">
                     <label for="date_start">Start Date Field</label>
                     <select id="date_start" name="date_start">
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_start ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_start ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -180,7 +180,7 @@
                     <label for="date_stop">Stop Date Field</label>
                     <select id="date_stop" name="date_stop">
                         <option t-att-selected="widget.state.attrs.date_stop ? undefined : 'selected'"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_stop ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_stop ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -189,7 +189,7 @@
                     <label for="date_delay">Delay Field</label>
                     <select id="date_delay" name="date_delay">
                         <option t-att-selected="widget.state.attrs.date_delay ? undefined : 'selected'"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="_.contains(['float', 'integer'], field.type)" t-att-selected="widget.state.attrs.date_delay ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="_.contains(['float', 'integer'], field.type)" t-att-selected="widget.state.attrs.date_delay ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -198,7 +198,7 @@
                     <label for="color">Color</label>
                     <select id="color" name="color">
                         <option t-att-selected="widget.state.attrs.color ? undefined : 'selected'"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="_.contains(['many2one', 'selection'], field.type)" t-att-selected="widget.state.attrs.color ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="_.contains(['many2one', 'selection'], field.type)" t-att-selected="widget.state.attrs.color ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -208,7 +208,7 @@
                     <select id="all_day" name="all_day">
                         <option t-att-selected="widget.state.attrs.all_day ? undefined : 'selected'"></option>
                         <!-- all_day needs to be a boolean field -->
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.type === 'boolean'" t-att-selected="widget.state.attrs.all_day ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.type === 'boolean'" t-att-selected="widget.state.attrs.all_day ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -250,7 +250,7 @@
                 <div class="o_web_studio_sidebar_select">
                     <label for="date_start">Start Date Field</label>
                     <select id="date_start" name="date_start">
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_start ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_start ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -259,7 +259,7 @@
                     <label for="date_stop">Stop Date Field</label>
                     <select id="date_stop" name="date_stop">
                         <option t-att-selected="widget.state.attrs.date_stop ? undefined : 'selected'"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_stop ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_stop ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -273,7 +273,7 @@
                     <label for="default_group_by">Default Group by</label>
                     <select id="default_group_by" name="default_group_by">
                         <option t-att-selected="widget.state.attrs.default_group_by ? undefined : 'selected'"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and _.contains(widget.GROUPABLE_TYPES, field.type)" t-att-selected="widget.state.attrs.default_group_by ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and _.contains(widget.GROUPABLE_TYPES, field.type)" t-att-selected="widget.state.attrs.default_group_by ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -292,7 +292,7 @@
                     <label for="color">Color</label>
                     <select id="color" name="color">
                         <option t-att-selected="widget.state.attrs.color ? undefined : 'selected'"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="_.contains(['integer', 'many2one'], field.type)" t-att-selected="widget.state.attrs.color ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="_.contains(['integer', 'many2one'], field.type)" t-att-selected="widget.state.attrs.color ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -329,7 +329,7 @@
                 <div class="o_web_studio_sidebar_select">
                     <label for="date_start">Start Date Field</label>
                     <select id="date_start" name="date_start">
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_start ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_start ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string" /> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -337,7 +337,7 @@
                 <div class="o_web_studio_sidebar_select">
                     <label for="date_stop">Stop Date Field</label>
                     <select id="date_stop" name="date_stop">
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_stop ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and _.contains(['date', 'datetime'], field.type)" t-att-selected="widget.state.attrs.date_stop ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string" /> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -346,7 +346,7 @@
                     <label for="measure">Measure Field</label>
                     <select id="measure" name="measure">
                         <option></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.name !== 'id' and field.store and _.contains(['integer', 'float', 'monetary'], field.type)" t-att-selected="widget.state.attrs.measure ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.name !== 'id' and field.store and _.contains(['integer', 'float', 'monetary'], field.type)" t-att-selected="widget.state.attrs.measure ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string" /> <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
                     </select>
@@ -411,7 +411,7 @@
                     <label for="first_groupby">First dimension</label>
                     <select id="first_groupby" name="first_groupby" type="col">
                         <option></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and field.name != widget.state.attrs.groupBys[1]" t-att-selected="widget.state.attrs.groupBys[0] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and field.name != widget.state.attrs.groupBys[1]" t-att-selected="widget.state.attrs.groupBys[0] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/>
                             <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
@@ -421,7 +421,7 @@
                     <label for="second_groupby">Second dimension</label>
                     <select id="second_groupby" name="second_groupby" type="col">
                         <option></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and field.name != widget.state.attrs.groupBys[0]" t-att-selected="widget.state.attrs.groupBys[1] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and field.name != widget.state.attrs.groupBys[0]" t-att-selected="widget.state.attrs.groupBys[1] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/>
                             <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
@@ -431,7 +431,7 @@
                     <label for="measure">Measure</label>
                     <select id="measure" name="measure" type="measure">
                         <option></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.name !== 'id' and field.store and ['integer', 'float', 'monetary'].includes(field.type)" t-att-selected="widget.state.attrs.measure ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.name !== 'id' and field.store and ['integer', 'float', 'monetary'].includes(field.type)" t-att-selected="widget.state.attrs.measure ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string" />
                             <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
@@ -454,7 +454,7 @@
                     <label for="column_groupby">Column grouping</label>
                     <select id="column_groupby" name="column_groupby" type="col">
                         <option t-att-selected="widget.state.attrs.colGroupBys[0] ? undefined : 'selected'" type="col"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and ![widget.state.attrs.rowGroupBys[0],widget.state.attrs.rowGroupBys[1]].includes(field.name)" type="col" t-att-selected="widget.state.attrs.colGroupBys[0] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and ![widget.state.attrs.rowGroupBys[0],widget.state.attrs.rowGroupBys[1]].includes(field.name)" type="col" t-att-selected="widget.state.attrs.colGroupBys[0] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/>
                             <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
@@ -464,7 +464,7 @@
                     <label for="first_row_groupby">Row grouping - First level</label>
                     <select id="first_row_groupby" name="first_row_groupby" type="row">
                         <option t-att-selected="widget.state.attrs.rowGroupBys[0] ? undefined : 'selected'" type="row"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and ![widget.state.attrs.colGroupBys[0],widget.state.attrs.rowGroupBys[1]].includes(field.name)" type="row" t-att-selected="widget.state.attrs.rowGroupBys[0] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and ![widget.state.attrs.colGroupBys[0],widget.state.attrs.rowGroupBys[1]].includes(field.name)" type="row" t-att-selected="widget.state.attrs.rowGroupBys[0] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/>
                             <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
@@ -474,7 +474,7 @@
                     <label for="second_row_groupby">Row grouping - Second level</label>
                     <select id="second_row_groupby" name="second_row_groupby" type="row">
                         <option t-att-selected="widget.state.attrs.rowGroupBys[1] ? undefined : 'selected'" type="row"></option>
-                        <option t-foreach="widget.orderered_fields" t-as="field" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and ![widget.state.attrs.colGroupBys[0],widget.state.attrs.rowGroupBys[0]].includes(field.name)" type="row" t-att-selected="widget.state.attrs.rowGroupBys[1] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
+                        <option t-foreach="widget.orderered_fields" t-as="field" t-key="field_index" t-if="field.store and (widget.GROUPABLE_TYPES).includes(field.type) and ![widget.state.attrs.colGroupBys[0],widget.state.attrs.rowGroupBys[0]].includes(field.name)" type="row" t-att-selected="widget.state.attrs.rowGroupBys[1] ===  field.name ? 'selected' : undefined" t-att-value="field.name">
                             <t t-esc="field.string"/>
                             <span t-if="widget.debug">(<t t-esc="field.name"/>)</span>
                         </option>
@@ -658,7 +658,7 @@
             <div class="o_web_studio_sidebar_select">
                 <label for="widget">Widget</label>
                 <select id="widget" name="widget" data-type="attributes">
-                    <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.widgetKey ===  w[0] ? 'selected' : undefined" t-att-value="w[0]">
+                    <option t-foreach="widget.state.field.field_widgets" t-as="w" t-key="w_index" t-att-selected="widget.widgetKey ===  w[0] ? 'selected' : undefined" t-att-value="w[0]">
                         <t
                             t-set="desc"
                             t-value="widget.getFieldInfo(w[1], 'description')"/>
@@ -675,7 +675,7 @@
                 </select>
             </div>
             <t t-if="widget.OPTIONS_BY_WIDGET[widget.widgetKey]">
-                <t t-foreach="widget.OPTIONS_BY_WIDGET[widget.widgetKey]" t-as="option">
+                <t t-foreach="widget.OPTIONS_BY_WIDGET[widget.widgetKey]" t-as="option" t-key="option_index">
                     <div t-if="option.type === 'boolean'" class="o_web_studio_sidebar_checkbox">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" data-type="options" t-attf-id="option_#{option.name}" t-att-name="option.name" class="custom-control-input"
@@ -691,7 +691,7 @@
                     <div t-if="option.type === 'selection'" class="o_web_studio_sidebar_select">
                         <label t-attf-for="option_#{option}" t-esc="option.string"/>
                         <select data-type="options" t-attf-id="option_#{option.name}" t-att-name="option.name" >
-                            <option t-foreach="option.selection" t-as="value" t-att-value="!_.isString(value[0]) ? JSON.stringify(value[0]) : value[0]"
+                            <option t-foreach="option.selection" t-as="value" t-key="value_index" t-att-value="!_.isString(value[0]) ? JSON.stringify(value[0]) : value[0]"
                                 t-att-selected="_.isEqual(widget.state.attrs.options[option.name], value[0]) ? 'selected' : undefined" t-esc="value[1]"/>
                         </select>
                     </div>
@@ -714,7 +714,7 @@
             <t t-if="widget.state.field.type === 'selection'">
                 <select id="default_value" name="default_value" data-type="default_value">
                     <option t-att-selected="widget.state.default_value ? undefined : 'selected'"></option>
-                    <option t-foreach="widget.state.field.selection" t-as="item"
+                    <option t-foreach="widget.state.field.selection" t-as="item" t-key="item_index"
                         t-att-value="item[0]"
                         t-att-selected="widget.state.default_value ===  item[0] ? 'selected' : undefined">
                         <t t-esc="item[1]"/>
@@ -859,7 +859,7 @@
     <t t-if="studio_approval">
         <t t-set="has_approval_rules" t-value="!!widget.state.approvalData.rules"/>
         <t t-if="has_approval_rules">
-            <t t-foreach="widget.state.approvalData.rules" t-as="rule">
+            <t t-foreach="widget.state.approvalData.rules" t-as="rule" t-key="rule_index">
                 <t t-call="web_studio.ViewEditorSidebar.ApprovalRule"/>
             </t>
         </t>

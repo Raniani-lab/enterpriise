@@ -12,7 +12,7 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 const { Component } = owl;
 
 export class EditorAdapter extends ComponentAdapter {
-    constructor(parent, props) {
+    constructor(props) {
         // force dummy Component not to crash
         props.Component = Component;
         super(...arguments);

@@ -4,10 +4,13 @@ odoo.define('web_studio.ReportEditorAction_tests', function (require) {
     const { controlPanel } = require('web.test_utils');
     const { getPagerValue, pagerNext } = controlPanel;
 
-    const { doActionAndOpenStudio, registerStudioDependencies,getReportServerData } = require("@web_studio/../tests/helpers");
+    const { getFixture } = require("@web/../tests/helpers/utils");
+    const { doAction } = require("@web/../tests/webclient/helpers");
+    const { openStudio, registerStudioDependencies,getReportServerData } = require("@web_studio/../tests/helpers");
     const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
 
     let serverData;
+    let target;
     QUnit.module('Studio', {
         beforeEach: function () {
             this.data = {
@@ -42,6 +45,7 @@ odoo.define('web_studio.ReportEditorAction_tests', function (require) {
             serverData = {actions, models: this.data, views};
             Object.assign(serverData.models, reportServerData.models);
             registerStudioDependencies();
+            target = getFixture();
         },
     }, function () {
         QUnit.module('ReportEditorAction');
@@ -72,11 +76,12 @@ odoo.define('web_studio.ReportEditorAction_tests', function (require) {
             };
 
             const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
-            await doActionAndOpenStudio(webClient, 1, undefined, {report: 11});
+            await doAction(webClient, 1);
+            await openStudio(target, {report: 11});
 
-            assert.strictEqual(getPagerValue(webClient), "1");
-            await pagerNext(webClient);
-            assert.strictEqual(getPagerValue(webClient), "2");
+            assert.strictEqual(getPagerValue(target), "1");
+            await pagerNext(target);
+            assert.strictEqual(getPagerValue(target), "2");
         });
     });
 });

@@ -68,8 +68,6 @@ QUnit.module('documents_pdf_manager_tests.js', {
 
         assert.containsN(pdfManager, '.o_pdf_group_name_wrapper', 2,
             "There should be 2 name plates");
-
-        pdfManager.destroy();
     });
 
     QUnit.test('Pdf Manager: page interactions', async function (assert) {
@@ -98,8 +96,6 @@ QUnit.module('documents_pdf_manager_tests.js', {
         assert.containsN(pdfManager, '.o_pdf_page_selected', 12, "There should be 5 selected pages");
         await testUtils.dom.click($(pdfManager.el).find('.o_documents_pdf_page_selector:nth(3)'));
         assert.containsN(pdfManager, '.o_pdf_page_selected', 11, "There should be 5 selected pages");
-
-        pdfManager.destroy();
     });
 
     QUnit.test('Pdf Manager: drag & drop', async function (assert) {
@@ -135,8 +131,6 @@ QUnit.module('documents_pdf_manager_tests.js', {
             "There should be 4 active separator");
         assert.containsNone($(pdfManager.el).find('.o_documents_pdf_page_frame:nth(2)'), '.o_pdf_name_display',
             "The third page shouldn't have a name plate");
-
-        pdfManager.destroy();
     });
 });
 });

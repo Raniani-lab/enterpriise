@@ -49,10 +49,10 @@
                 <t t-foreach="props.recordGroups" t-as="groupId" t-key="groupId">
                     <div class="o_pin_list_group">
                         <t t-set="group" t-value="props.recordGroups[groupId]"/>
-                        <div class="o_pin_list_group_header" t-on-click="_toggleGroup(groupId)">
+                        <div class="o_pin_list_group_header" t-on-click="() => this._toggleGroup(groupId)">
                             <i t-attf-class="fa fa-caret-{{ state.closedGroupIds.includes(groupId) ? 'right' : 'down' }}"/>
                             <span t-att-style="'color:' + _getGroupColor(groupId)"
-                            t-raw="props.numbering ? _pinNoCircleSVG : _pinCircleSVG"/>
+                            t-out="props.numbering ? _pinNoCircleSVG : _pinCircleSVG"/>
                             <t t-if="group.name" t-esc="group.name"/>
                             <t t-else="">Undefined</t>
                         </div>
@@ -90,7 +90,7 @@
                 t-att-title="(!latitude or !longitude) and 'Could not locate' or record.display_name"
             >
                 <div t-if="latitude and longitude" class="d-flex">
-                    <a href="" class="o_pin_display_name" t-on-click.prevent="_centerAndOpenPin(record)">
+                    <a href="" class="o_pin_display_name" t-on-click.prevent="() => this._centerAndOpenPin(record)">
                         <t t-if="props.numbering">
                             <t t-if="props.numbering" t-esc="record_index+1"/>.
                         </t>
@@ -116,7 +116,7 @@
         <div class="alert alert-warning alert-dismissible col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert"
              role="status">
             <strong>Unsuccessful routing request: </strong>
-            <t t-raw="props.routingError"/>
+            <t t-esc="props.routingError"/>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span>×</span>
             </button>
@@ -125,7 +125,7 @@
 
     <t t-name="web_map.legacy.marker" owl="1">
         <div t-att-style="color and ('color:' + color)">
-            <t t-raw="pinSVG"/>
+            <t t-out="pinSVG"/>
             <t t-if="numbering" t-call="web_map.legacy.markerNumber"/>
             <t t-elif="isMulti" t-call="web_map.legacy.markerBadge"/>
         </div>
@@ -157,7 +157,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr t-foreach="fields" t-as="field">
+                    <tr t-foreach="fields" t-as="field" t-key="field.id">
                         <td class="contentName">
                             <t t-esc="field.string"/>
                         </td>

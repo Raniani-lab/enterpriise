@@ -12,7 +12,7 @@ import { ExpirationPanel } from "@web_enterprise/webclient/home_menu/expiration_
 import { makeFakeEnterpriseService } from "../mocks";
 import { uiService } from "@web/core/ui/ui_service";
 
-const { mount } = owl;
+const { App } = owl;
 const patchDate = testUtils.mock.patchDate;
 const serviceRegistry = registry.category("services");
 
@@ -53,16 +53,22 @@ async function createExpirationPanel(params = {}) {
     }
 
     const target = getFixture();
-    return mount(ExpirationPanel, { env, target });
+    const app = new App(ExpirationPanel, {
+        env,
+        templates: window.__OWL_TEMPLATES__,
+        test: true,
+    });
+    const panel = await app.mount(target);
+    registerCleanup(() => app.destroy());
+    return panel;
 }
 
 QUnit.module("web_enterprise", {}, function () {
     QUnit.module("Expiration Panel");
 
     QUnit.test("Expiration Panel one app installed", async function (assert) {
-        assert.expect(3);
-
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+        registerCleanup(unpatchDate);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -84,16 +90,14 @@ QUnit.module("web_enterprise", {}, function () {
         // Close the expiration panel
         await testUtils.dom.click(panel.el.querySelector(".oe_instance_hide_panel"));
 
-        assert.strictEqual(panel.el.innerHTML, "");
-
-        panel.destroy();
-        unpatchDate();
+        assert.containsNone(panel, ".database_expiration_panel");
     });
 
     QUnit.test("Expiration Panel one app installed, buy subscription", async function (assert) {
         assert.expect(6);
 
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+        registerCleanup(unpatchDate);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -134,9 +138,6 @@ QUnit.module("web_enterprise", {}, function () {
             browser.location,
             "https://www.odoo.com/odoo-enterprise/upgrade?num_users=7"
         );
-
-        panel.destroy();
-        unpatchDate();
     });
 
     QUnit.test(
@@ -145,6 +146,7 @@ QUnit.module("web_enterprise", {}, function () {
             assert.expect(47);
 
             const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+            registerCleanup(unpatchDate);
 
             let callToGetParamCount = 0;
 
@@ -329,9 +331,6 @@ QUnit.module("web_enterprise", {}, function () {
                 "update_notification",
                 "get_param",
             ]);
-
-            panel.destroy();
-            unpatchDate();
         }
     );
 
@@ -341,6 +340,7 @@ QUnit.module("web_enterprise", {}, function () {
             assert.expect(13);
 
             const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+            registerCleanup(unpatchDate);
             // There are some line breaks mismatches between local and runbot test instances.
             // Since they don't affect the layout and we're only interested in the text itself,
             // we normalize whitespaces and line breaks from both the expected and end result
@@ -456,9 +456,6 @@ QUnit.module("web_enterprise", {}, function () {
                 "get_param",
                 "get_param",
             ]);
-
-            panel.destroy();
-            unpatchDate();
         }
     );
 
@@ -466,6 +463,7 @@ QUnit.module("web_enterprise", {}, function () {
         assert.expect(13);
 
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+        registerCleanup(unpatchDate);
 
         let callToGetParamCount = 0;
 
@@ -537,15 +535,13 @@ QUnit.module("web_enterprise", {}, function () {
         );
 
         assert.verifySteps(["blockUI", "setCookie", "unblockUI"]);
-
-        panel.destroy();
-        unpatchDate();
     });
 
     QUnit.test("One app installed, renew with success", async function (assert) {
         assert.expect(14);
 
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+        registerCleanup(unpatchDate);
 
         let callToGetParamCount = 0;
 
@@ -620,15 +616,13 @@ QUnit.module("web_enterprise", {}, function () {
             "get_param",
             "get_param",
         ]);
-
-        panel.destroy();
-        unpatchDate();
     });
 
     QUnit.test("One app installed, check status and get success", async function (assert) {
         assert.expect(8);
 
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+        registerCleanup(unpatchDate);
 
         let callToGetParamCount = 0;
 
@@ -676,15 +670,13 @@ QUnit.module("web_enterprise", {}, function () {
         );
 
         assert.verifySteps(["get_param", "update_notification", "get_param"]);
-
-        panel.destroy();
-        unpatchDate();
     });
 
     QUnit.test("One app installed, check status and get page reload", async function (assert) {
         assert.expect(5);
 
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+        registerCleanup(unpatchDate);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -722,15 +714,13 @@ QUnit.module("web_enterprise", {}, function () {
         await testUtils.dom.click(panel.el.querySelector("a.check_enterprise_status"));
 
         assert.verifySteps(["get_param", "update_notification", "get_param", "reloadPage"]);
-
-        panel.destroy();
-        unpatchDate();
     });
 
     QUnit.test("One app installed, upgrade database", async function (assert) {
         assert.expect(6);
 
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+        registerCleanup(unpatchDate);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -780,15 +770,13 @@ QUnit.module("web_enterprise", {}, function () {
             browser.location,
             "https://www.odoo.com/odoo-enterprise/upsell?num_users=13&contract=ABC"
         );
-
-        panel.destroy();
-        unpatchDate();
     });
 
     QUnit.test("One app installed, message for non admin user", async function (assert) {
         assert.expect(2);
 
         const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+        registerCleanup(unpatchDate);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -805,8 +793,5 @@ QUnit.module("web_enterprise", {}, function () {
         );
 
         assert.hasClass(panel.el, "alert-info", "Color should be grey");
-
-        panel.destroy();
-        unpatchDate();
     });
 });

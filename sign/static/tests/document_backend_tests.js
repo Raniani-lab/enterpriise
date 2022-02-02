@@ -8,11 +8,13 @@ import testUtils from 'web.test_utils';
 
 const { createView } = testUtils;
 
+import { getFixture } from "@web/../tests/helpers/utils";
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
-let serverData;
 
 import { DocumentBackend } from '@sign/js/backend/document';
 
+let serverData;
+let target;
 QUnit.module('document_backend_tests', {
     beforeEach: function () {
         this.data = {
@@ -37,6 +39,7 @@ QUnit.module('document_backend_tests', {
             },
         };
         serverData = {models: this.data};
+        target = getFixture();
     }
 }, function () {
     QUnit.test('simple rendering', async function (assert) {
@@ -78,7 +81,7 @@ QUnit.module('document_backend_tests', {
 
         assert.verifySteps(['blockUI', 'unblockUI']);
 
-        assert.strictEqual($(webClient.el).find('.o_sign_document').text().trim(), 'def',
+        assert.strictEqual(target.querySelector('.o_sign_document').innerText.trim(), 'def',
             'should display text from server');
 
         testUtils.mock.unpatch(framework);

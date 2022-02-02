@@ -11,8 +11,8 @@ odoo.define('timesheet_grid.GridView', function (require) {
     const { onMounted, onPatched } = owl;
 
     class TimesheetGridRenderer extends GridRenderer {
-        constructor() {
-            super(...arguments);
+        setup() {
+            super.setup();
             onMounted(() => this._bindPlayStoreIcon());
             onPatched(() => this._bindPlayStoreIcon());
         }

@@ -12,7 +12,7 @@ const { registry } = require("@web/core/registry");
 var testUtils = require('web.test_utils');
 var Widget = require('web.Widget');
 var widgetRegistry = require('web.widget_registry');
-const { legacyExtraNextTick, click, patchWithCleanup } = require("@web/../tests/helpers/utils");
+const { getFixture, legacyExtraNextTick, click, patchWithCleanup } = require("@web/../tests/helpers/utils");
 const { browser } = require('@web/core/browser/browser');
 const CohortView = require('web_cohort.CohortView');
 
@@ -26,6 +26,8 @@ const {
 } = require("@web/../tests/search/helpers");
 
 const viewRegistry = registry.category("views");
+
+const { markup } = owl;
 
 const { createView, nextTick, controlPanel: cpHelpers } = testUtils;
 var patchDate = testUtils.mock.patchDate;
@@ -1487,6 +1489,8 @@ QUnit.module('Views', {
         viewRegistry.remove("graph");
         legacyViewRegistry.add("graph", GraphView); // We want to test the legacy view that was not added to viewRegistry!
 
+        const target = getFixture();
+
         const webClient = await createWebClient({ serverData });
 
         await doAction(webClient, {
@@ -1500,14 +1504,14 @@ QUnit.module('Views', {
             "'Dashboard' should be displayed in the breadcrumbs");
 
         // open graph in fullscreen
-        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .o_button_switch'));
+        await testUtils.dom.click(target.querySelector('.o_graph_buttons .o_button_switch'));
         await nextTick();
 
-        assert.strictEqual($(webClient.el).find('.o_control_panel .breadcrumb-item:nth(1)').text(), 'Graph Analysis',
+        assert.strictEqual(target.querySelectorAll('.o_control_panel .breadcrumb-item')[1].innerText, 'Graph Analysis',
             "'Graph Analysis' should have been stacked in the breadcrumbs");
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
+        await testUtils.dom.click(target.querySelector('.o_control_panel .breadcrumb a'));
         await nextTick();
         await nextTick();
 
@@ -1540,6 +1544,8 @@ QUnit.module('Views', {
         viewRegistry.remove("cohort");
         legacyViewRegistry.add("cohort", CohortView); // We want to test the legacy view that was not added to viewRegistry!
 
+        const target = getFixture();
+
         const webClient = await createWebClient({
             serverData,
             legacyParams: { withLegacyMockServer: true },
@@ -1553,20 +1559,20 @@ QUnit.module('Views', {
         });
 
 
-        assert.strictEqual($(webClient.el).find('.o_control_panel .breadcrumb li').text(), 'Dashboard',
+        assert.strictEqual(target.querySelector('.o_control_panel .breadcrumb li').innerText, 'Dashboard',
             "'Dashboard' should be displayed in the breadcrumbs");
 
         // open cohort in fullscreen
-        await testUtils.dom.click($(webClient.el).find('.o_cohort_buttons .o_button_switch'));
+        await testUtils.dom.click(target.querySelector('.o_cohort_buttons .o_button_switch'));
         await nextTick();
         assert.strictEqual($('.o_control_panel .breadcrumb li:nth(1)').text(), 'Cohort Analysis',
             "'Cohort Analysis' should have been stacked in the breadcrumbs");
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
+        await testUtils.dom.click(target.querySelector('.o_control_panel .breadcrumb a'));
         await nextTick();
 
-        assert.strictEqual($(webClient.el).find('.o_control_panel .breadcrumb li').text(), 'Dashboard',
+        assert.strictEqual(target.querySelector('.o_control_panel .breadcrumb li').innerText, 'Dashboard',
         "'Dashboard' should be displayed in the breadcrumbs");
     });
 
@@ -1792,6 +1798,8 @@ QUnit.module('Views', {
         viewRegistry.remove("pivot");
         legacyViewRegistry.add("pivot", PivotView); // We want to test the legacy view that was not added to viewRegistry!
 
+        const target = getFixture();
+
         const webClient = await createWebClient({
             serverData,
             mockRPC: function (route, args) {
@@ -1813,19 +1821,19 @@ QUnit.module('Views', {
         await testUtils.owlCompatibilityExtraNextTick(); // buttons (measure and group by menu) are not ready yet
 
         // select 'untaxed' as measure in graph view
-        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons button:contains(Measures)'));
-        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .dropdown-item:contains(Untaxed)'));
+        await testUtils.dom.click($(target).find('.o_graph_buttons button:contains(Measures)'));
+        await testUtils.dom.click($(target).find('.o_graph_buttons .dropdown-item:contains(Untaxed)'));
 
         // select 'untaxed' as additional measure in pivot view
-        await testUtils.dom.click($(webClient.el).find('.o_pivot_buttons button:contains(Measures)'));
-        await testUtils.dom.click($(webClient.el).find('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'));
+        await testUtils.dom.click($(target).find('.o_pivot_buttons button:contains(Measures)'));
+        await testUtils.dom.click(target.querySelector('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'));
 
         // open graph in fullscreen
-        await testUtils.dom.click($(webClient.el).find('.o_pivot_buttons .o_button_switch'));
+        await testUtils.dom.click(target.querySelector('.o_pivot_buttons .o_button_switch'));
         await nextTick();
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
+        await testUtils.dom.click(target.querySelector('.o_control_panel .breadcrumb a'));
         await nextTick();
 
         assert.verifySteps([
@@ -1871,6 +1879,8 @@ QUnit.module('Views', {
         viewRegistry.remove("graph");
         legacyViewRegistry.add("graph", GraphView); // We want to test the legacy view that was not added to viewRegistry!
 
+        const target = getFixture();
+
         const webClient = await createWebClient({
             serverData,
             mockRPC: function (route, args) {
@@ -1889,23 +1899,23 @@ QUnit.module('Views', {
 
 
         // open graph in fullscreen
-        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .o_button_switch'));
+        await testUtils.dom.click(target.querySelector('.o_graph_buttons .o_button_switch'));
         await nextTick();
 
         // filter on bar
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 0);
-        assert.deepEqual(getFacetTexts(webClient), ['Sold']);
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, 0);
+        assert.deepEqual(getFacetTexts(target), ['Sold']);
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
+        await testUtils.dom.click(target.querySelector('.o_control_panel .breadcrumb a'));
         await testUtils.owlCompatibilityExtraNextTick();
         await legacyExtraNextTick();
 
-        assert.deepEqual(getFacetTexts(webClient), []);
+        assert.deepEqual(getFacetTexts(target), []);
 
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 1);
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, 1);
 
         assert.verifySteps([
             ' ', // graph in dashboard
@@ -1936,6 +1946,8 @@ QUnit.module('Views', {
         viewRegistry.remove("graph");
         legacyViewRegistry.add("graph", GraphView); // We want to test the legacy view that was not added to viewRegistry!
 
+        const target = getFixture();
+
         const webClient = await createWebClient({
             serverData,
             mockRPC: function (route, args) {
@@ -1954,11 +1966,11 @@ QUnit.module('Views', {
         });
 
         // open graph in fullscreen
-        await testUtils.dom.click($(webClient.el).find('.o_graph_buttons .o_button_switch'));
+        await testUtils.dom.click(target.querySelector('.o_graph_buttons .o_button_switch'));
         await nextTick();
 
         // go back using the breadcrumbs
-        await testUtils.dom.click($(webClient.el).find('.o_control_panel .breadcrumb a'));
+        await testUtils.dom.click(target.querySelector('.o_control_panel .breadcrumb a'));
         await nextTick();
 
         assert.verifySteps([
@@ -2971,7 +2983,7 @@ QUnit.module('Views', {
             domain: [['id', '<', 0]],
             viewOptions: {
                 action: {
-                    help: '<p class="abc">click to add a foo</p>'
+                    help: markup('<p class="abc">click to add a foo</p>'),
                 }
             },
         });
@@ -3009,7 +3021,7 @@ QUnit.module('Views', {
             domain: [['id', '<', 0]],
             viewOptions: {
                 action: {
-                    help: '<p class="abc">click to add a foo</p>'
+                    help: markup('<p class="abc">click to add a foo</p>'),
                 }
             },
         });
@@ -3048,7 +3060,7 @@ QUnit.module('Views', {
             },
             viewOptions: {
                 action: {
-                    help: '<p class="abc">click to add a foo</p>'
+                    help: markup('<p class="abc">click to add a foo</p>'),
                 }
             },
         });
@@ -3103,16 +3115,18 @@ QUnit.module('Views', {
             }
         }
 
+        const target = getFixture();
+
         const webClient = await createWebClient({ serverData, mockRPC });
 
         await doAction(webClient, 213);
 
-        assert.containsOnce(webClient, ".o_legacy_dashboard_view");
+        assert.containsOnce(target, ".o_legacy_dashboard_view");
 
         testActive = true;
-        await click(webClient.el.querySelector(".o_button_switch"));
-        assert.containsNone(webClient, ".o_legacy_dashboard_view");
-        assert.containsOnce(webClient, ".o_graph_view");
+        await click(target.querySelector(".o_button_switch"));
+        assert.containsNone(target, ".o_legacy_dashboard_view");
+        assert.containsOnce(target, ".o_graph_view");
     });
 });
 });

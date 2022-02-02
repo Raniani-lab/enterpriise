@@ -4,6 +4,7 @@ odoo.define('web_studio.AbstractViewEditor', function (require) {
 var ajax = require('web.ajax');
 var AbstractView = require('web.AbstractView');
 const RendererWrapper = require('web.RendererWrapper');
+const { ComponentWrapper } = require("web.OwlCompatibility");
 const utils = require('web.utils');
 
 AbstractView.include({
@@ -86,7 +87,7 @@ AbstractView.include({
                     noContentHelp: undefined,
                 });
                 let editor;
-                if (utils.isComponent(Renderer)) {
+                if (Renderer.prototype instanceof ComponentWrapper) {
                     state = Object.assign({}, state, params);
                     const Component = state.Component;
                     const props = filterUnwantedProps(Component, state);

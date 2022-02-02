@@ -5,6 +5,7 @@ odoo.define('web_studio.form_tests', function (require) {
     const testUtils = require('web.test_utils');
     require('web_studio.FormRenderer');
     require('web_studio.FormController');
+    const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 
     const createView = testUtils.createView;
 
@@ -96,6 +97,8 @@ odoo.define('web_studio.form_tests', function (require) {
                     },
                     session: { uid: 42 },
                 });
+
+                await legacyExtraNextTick(); // wait for the approval button (owl) to render
 
                 // check that the widget was inserted on visible buttons only
                 assert.containsOnce(form, 'button[name="someMethod"] .o_web_studio_approval');
@@ -250,6 +253,8 @@ odoo.define('web_studio.form_tests', function (require) {
                     },
                     session: { uid: 42 },
                 });
+
+                await legacyExtraNextTick(); // wait for the approval button (owl) to render
 
                 // display popover and validate a rule, then cancel, then reject
                 await testUtils.dom.click('button[name="someMethod"] .o_web_studio_approval');

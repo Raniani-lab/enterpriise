@@ -9,7 +9,7 @@ import { EditorMenu } from "./editor_menu/editor_menu";
 
 import { mapDoActionOptionAPI } from "@web/legacy/backend_utils";
 
-const { Component, EventBus, useSubEnv } = owl;
+const { Component, EventBus, onWillStart, useSubEnv } = owl;
 
 const editorTabRegistry = registry.category("web_studio.editor_tabs");
 
@@ -34,18 +34,20 @@ const actionServiceStudio = {
 
 export class Editor extends Component {
     setup() {
-        this.studio = useService("studio");
+        const services = Object.create(this.env.services);
 
         useSubEnv({
             bus: new EventBus(),
+            services,
         });
-        this.env.services = Object.assign({}, this.env.services);
-        this.env.services.router = {
+        // Assuming synchronousness
+        services.router = {
             current: { hash: {} },
             pushState() {},
         };
-        // Assuming synchronousness
-        this.env.services.action = actionServiceStudio.start(this.env);
+        services.action = actionServiceStudio.start(this.env);
+
+        this.studio = useService("studio");
         this.actionService = useService("action");
 
         useBus(this.studio.bus, "UPDATE", async () => {
@@ -54,9 +56,11 @@ export class Editor extends Component {
                 clearBreadcrumbs: true,
             });
         });
+
+        onWillStart(this.onWillStart);
     }
 
-    async willStart() {
+    async onWillStart() {
         this.initialAction = await this.getStudioAction();
     }
 

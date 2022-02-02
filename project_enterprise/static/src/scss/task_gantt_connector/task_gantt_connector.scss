@@ -140,6 +140,62 @@
         }
     }
 }
+.o_connector_container {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.o_connector {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    &.o_connector_hovered {
+        z-index: 2;
+    }
+    .o_connector_stroke_button {
+        > rect {
+            cursor: pointer;
+            stroke: #091124;
+            stroke-width: 24px;
+            fill: white;
+        }
+        &.o_connector_stroke_reschedule_button {
+            line {
+                stroke: #00a09d;
+            }
+            &:hover{
+                > rect {
+                    fill: #00a09d;
+                }
+                line {
+                    stroke: white;
+                }
+            }
+        }
+        &.o_connector_stroke_remove_button {
+            g {
+                rect {
+                    fill: #dd3c4f;
+                }
+            }
+            &:hover{
+                > rect {
+                    fill: #dd3c4f;
+                }
+                g {
+                    rect {
+                        fill: white;
+                    }
+                }
+            }
+        }
+    }
+}
 .o_connector_creator_wrapper {
     z-index: 3;
     position: absolute;

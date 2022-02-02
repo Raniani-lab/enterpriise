@@ -16,7 +16,7 @@
                     t-att-data-menu-xmlid="app.xmlid"
                     t-att-href="app.href || ('#menu_id='+app.id+'&amp;action_id='+app.actionID)"
                     t-key="app.id"
-                    t-on-click.prevent="_onAppClick(app)"
+                    t-on-click.prevent="() => this._onAppClick(app)"
                     >
                     <div t-if="app.webIconData" class="o_app_icon"
                         t-attf-style="background-image: url('{{app.webIconData}}');"

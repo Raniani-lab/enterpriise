@@ -17,14 +17,16 @@ var studioTestUtils = require('web_studio.testUtils');
 
 const { patchWithCleanup } = require("@web/../tests/helpers/utils");
 
-const { doActionAndOpenStudio, registerStudioDependencies } = require("@web_studio/../tests/helpers");
-const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const { openStudio, registerStudioDependencies } = require("@web_studio/../tests/helpers");
+const { getFixture, legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const { doAction } = require("@web/../tests/webclient/helpers");
 const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
 const { MockServer } = require("@web/../tests/helpers/mock_server");
 
 const { xml } = owl;
 
 let serverData;
+let target;
 
 QUnit.module('web_studio', {}, function () {
 QUnit.module('ViewEditorManager', {
@@ -190,6 +192,8 @@ QUnit.module('ViewEditorManager', {
 
         serverData.views["coucou,false,list"] = `<tree></tree>`;
         serverData.views["coucou,false,search"] = `<search></search>`;
+
+        target = getFixture();
     },
     afterEach() {
         afterEach(this);
@@ -799,17 +803,18 @@ QUnit.module('ViewEditorManager', {
             }
         };
 
-        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
         // open list view
-        await testUtils.dom.click($(webClient.el).find('.o_field_one2many'));
-        await testUtils.dom.click($(webClient.el).find('button.o_web_studio_editX2Many[data-type="list"]'));
+        await testUtils.dom.click($(target).find('.o_field_one2many'));
+        await testUtils.dom.click($(target).find('button.o_web_studio_editX2Many[data-type="list"]'));
         await legacyExtraNextTick();
 
         // add value to "toughness" selection field
-        await testUtils.dom.click($(webClient.el).find('th[data-node-id]'));
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_edit_selection_values'));
+        await testUtils.dom.click($(target).find('th[data-node-id]'));
+        await testUtils.dom.click($(target).find('.o_web_studio_edit_selection_values'));
         $('.modal .o_web_studio_selection_new_value input').val('Hardest');
         await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button.o_web_studio_add_selection_value'));
         await testUtils.dom.click($('.modal.o_web_studio_field_modal footer .btn-primary'));
@@ -1086,120 +1091,6 @@ QUnit.module('ViewEditorManager', {
             "the label in sidebar should be Display Name");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
             "the widget in sidebar should be set by default");
-
-        vem.destroy();
-    });
-    QUnit.test('kanban editor remove "Set Cover Image" from dropdown menu', async function (assert) {
-        assert.expect(1);
-        var arch = "<kanban>" +
-                    "<templates>" +
-                        "<t t-name='kanban-box'>" +
-                            "<div class='o_kanban_record'>" +
-                                '<div class="o_dropdown_kanban dropdown">' +
-                                    '<a>' +
-                                        '<span class="fa fa-ellipsis-v"/>' +
-                                    '</a>' +
-                                    '<div class="dropdown-menu" role="menu">' +
-                                        '<a data-type="set_cover">Set Cover Image</a>' +
-                                    "</div>" +
-                                "</div>" +
-                                "<field name='displayed_image_id' widget='attachment_image'/>" +
-                            "</div>" +
-                        "</t>" +
-                    "</templates>" +
-                "</kanban>";
-        var fieldsView;
-
-        var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: 'partner',
-            arch: arch,
-            mockRPC: function (route, args) {
-                if (route === '/web_studio/edit_view' && args.operations[0].type === "remove") {
-                    assert.deepEqual(args.operations[0], {
-                        target: {
-                            attrs: {name: 'displayed_image_id'},
-                            tag: "field",
-                            extra_nodes: [{
-                                tag: "a",
-                                attrs: {
-                                    type: 'set_cover',
-                                },
-                            }],
-                        },
-                        type: 'remove',
-                    }, "Proper field name and operation type should be passed");
-                    fieldsView.arch = arch;
-                    return Promise.resolve({
-                        fields: fieldsView.fields,
-                        fields_views: {
-                            kanban: fieldsView,
-                        }
-                    });
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
-
-        // used to generate fields view in mockRPC
-        fieldsView = $.extend(true, {}, vem.fields_view);
-        await testUtils.dom.click(vem.$(".o_kanban_record .o_dropdown_kanban"));
-        await testUtils.dom.click(vem.$(".o_display_div .o_web_studio_sidebar_checkbox input"));
-        vem.destroy();
-    });
-
-    QUnit.test('kanban editor add "Set Cover Image" option in dropdown menu', async function (assert) {
-        assert.expect(3);
-        var arch = "<kanban>" +
-                    "<templates>" +
-                        "<t t-name='kanban-box'>" +
-                            "<div class='o_kanban_record'>" +
-                                '<div class="o_dropdown_kanban dropdown">' +
-                                    '<a>' +
-                                        '<span class="fa fa-ellipsis-v"/>' +
-                                    '</a>' +
-                                    '<div class="dropdown-menu" role="menu">' +
-                                    "</div>" +
-                                "</div>" +
-                            "</div>" +
-                        "</t>" +
-                    "</templates>" +
-                "</kanban>";
-        var fieldsView;
-        var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: 'partner',
-            arch: arch,
-            mockRPC: function (route, args) {
-                if (route === '/web_studio/edit_view') {
-                    assert.deepEqual(args.operations[0], {field: 'displayed_image_id', type: 'kanban_set_cover'},
-                        "Proper field name and operation type should be passed");
-                    fieldsView.arch = arch;
-                    return Promise.resolve({
-                        fields: fieldsView.fields,
-                        fields_views: {
-                            kanban: fieldsView,
-                        }
-                    });
-                }
-                return this._super.apply(this, arguments);
-            },
-        });
-
-        // used to generate the new fields view in mockRPC
-        fieldsView = $.extend(true, {}, vem.fields_view);
-
-        await testUtils.dom.click(vem.$(".o_kanban_record .o_dropdown_kanban"));
-        assert.hasAttrValue(vem.$('.o_web_studio_sidebar input[name="set_cover"]'), 'checked', undefined,
-            "Option to set cover should not be enabled");
-        await testUtils.dom.click(vem.$('.o_web_studio_sidebar input[name="set_cover"]'));
-
-        assert.strictEqual($('.modal .modal-body select option[value="displayed_image_id"]').length, 1,
-            "there should be option having compatible field (displayed_image_id) Field selection drop-down ");
-        // Select the field for cover image
-        $('.modal .modal-body select option[value="displayed_image_id"]').prop('selected', true);
-        // Click the confirm button
-        await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
 
         vem.destroy();
     });
@@ -3273,6 +3164,121 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('kanban editor remove "Set Cover Image" from dropdown menu', async function (assert) {
+        assert.expect(1);
+        var arch = "<kanban>" +
+                    "<templates>" +
+                        "<t t-name='kanban-box'>" +
+                            "<div class='o_kanban_record'>" +
+                                '<div class="o_dropdown_kanban dropdown">' +
+                                    '<a>' +
+                                        '<span class="fa fa-ellipsis-v"/>' +
+                                    '</a>' +
+                                    '<div class="dropdown-menu" role="menu">' +
+                                        '<a data-type="set_cover">Set Cover Image</a>' +
+                                    "</div>" +
+                                "</div>" +
+                                "<field name='displayed_image_id' widget='attachment_image'/>" +
+                            "</div>" +
+                        "</t>" +
+                    "</templates>" +
+                "</kanban>";
+        var fieldsView;
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'partner',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view' && args.operations[0].type === "remove") {
+                    assert.deepEqual(args.operations[0], {
+                        target: {
+                            attrs: {name: 'displayed_image_id'},
+                            tag: "field",
+                            extra_nodes: [{
+                                tag: "a",
+                                attrs: {
+                                    type: 'set_cover',
+                                },
+                            }],
+                        },
+                        type: 'remove',
+                    }, "Proper field name and operation type should be passed");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            kanban: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+        await testUtils.dom.click(vem.$(".o_kanban_record .o_dropdown_kanban"));
+        await testUtils.dom.click(vem.$(".o_display_div .o_web_studio_sidebar_checkbox input"));
+        vem.destroy();
+    });
+
+    QUnit.test('kanban editor add "Set Cover Image" option in dropdown menu', async function (assert) {
+        assert.expect(3);
+        var arch = "<kanban>" +
+                    "<templates>" +
+                        "<t t-name='kanban-box'>" +
+                            "<div class='o_kanban_record'>" +
+                                '<div class="o_dropdown_kanban dropdown">' +
+                                    '<a>' +
+                                        '<span class="fa fa-ellipsis-v"/>' +
+                                    '</a>' +
+                                    '<div class="dropdown-menu" role="menu">' +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>" +
+                        "</t>" +
+                    "</templates>" +
+                "</kanban>";
+        var fieldsView;
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'partner',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.deepEqual(args.operations[0], {field: 'displayed_image_id', type: 'kanban_set_cover'},
+                        "Proper field name and operation type should be passed");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            kanban: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        await testUtils.dom.click(vem.$(".o_kanban_record .o_dropdown_kanban"));
+        assert.hasAttrValue(vem.$('.o_web_studio_sidebar input[name="set_cover"]'), 'checked', undefined,
+            "Option to set cover should not be enabled");
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar input[name="set_cover"]'));
+
+        assert.strictEqual($('.modal .modal-body select option[value="displayed_image_id"]').length, 1,
+            "there should be option having compatible field (displayed_image_id) Field selection drop-down ");
+        // Select the field for cover image
+        $('.modal .modal-body select option[value="displayed_image_id"]').prop('selected', true);
+        // Click the confirm button
+        await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
+
+        vem.destroy();
+    });
+
     QUnit.module('Search');
 
     QUnit.test('empty search editor', async function (assert) {
@@ -4070,7 +4076,7 @@ QUnit.module('ViewEditorManager', {
             'view type should be map');
         assert.strictEqual(vem.editor.props.records.length, 1,
             'There should be one records');
-        assert.containsOnce(vem.editor, 'div.leaflet-marker-icon',
+        assert.containsOnce(vem.editor.el, 'div.leaflet-marker-icon',
             'There should be one marker on the map');
 
         // Marker popup have correct field
@@ -4091,7 +4097,7 @@ QUnit.module('ViewEditorManager', {
             'Should have only one selected fields in marker popup fields');
 
         await testUtils.dom.click($(vem.editor.el).find('div.leaflet-marker-icon'));
-        assert.containsOnce(vem.editor, '.o_map_popup_table tbody tr',
+        assert.containsOnce(vem.editor.el, '.o_map_popup_table tbody tr',
             'Marker popup have should have only Description field');
 
         vem.destroy();
@@ -5866,15 +5872,16 @@ QUnit.module('ViewEditorManager', {
         serverData.views["ir.ui.view,false,form"] = /*xml */ `<form><field name="model" /></form>`;
         serverData.views["ir.ui.view,false,search"] = /*xml */ `<search />`;
 
-        const webClient = await createEnterpriseWebClient({serverData, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
-        await testUtils.dom.click(webClient.el.querySelector(".o_web_studio_view"));
+        const webClient = await createEnterpriseWebClient({ serverData, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
+        await testUtils.dom.click(target.querySelector(".o_web_studio_view"));
 
-        assert.containsOnce(webClient, '.o_web_studio_sidebar .o_web_studio_parameters',
+        assert.containsOnce(target, '.o_web_studio_sidebar .o_web_studio_parameters',
             "there should be the button to go to the ir.ui.view form");
-        await testUtils.dom.click(webClient.el.querySelector('.o_web_studio_sidebar .o_web_studio_parameters'));
+        await testUtils.dom.click(target.querySelector('.o_web_studio_sidebar .o_web_studio_parameters'));
         await legacyExtraNextTick();
-        assert.containsOnce(webClient, ".o_studio .o_action_manager .o_form_view");
+        assert.containsOnce(target, ".o_studio .o_action_manager .o_form_view");
     });
 
     QUnit.module('X2Many');
@@ -5923,15 +5930,16 @@ QUnit.module('ViewEditorManager', {
             }
         });
 
-        const webClient = await createEnterpriseWebClient({serverData, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
         // edit the x2m form view
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many'));
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
+        await testUtils.dom.click($(target).find('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click($(target).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
         await legacyExtraNextTick();
-        await testUtils.dom.click($(webClient.el).find('.o_field_many2manytags'));
-        await testUtils.dom.click($(webClient.el).find('#option_no_create'));
+        await testUtils.dom.click($(target).find('.o_field_many2manytags'));
+        await testUtils.dom.click($(target).find('#option_no_create'));
     });
 
     QUnit.test('disable creation(no_create options) in many2many_tags widget', async function (assert) {
@@ -5958,16 +5966,17 @@ QUnit.module('ViewEditorManager', {
             }
         }
 
-        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_many2manytags'));
-        assert.containsOnce(webClient, '.o_web_studio_sidebar #option_no_create',
+        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer .o_field_many2manytags'));
+        assert.containsOnce(target, '.o_web_studio_sidebar #option_no_create',
             "should have no_create option for m2m field");
-        assert.notOk($(webClient.el).find('.o_web_studio_sidebar #option_no_create').is(':checked'),
+        assert.notOk($(target).find('.o_web_studio_sidebar #option_no_create').is(':checked'),
             'by default the no_create option should be false');
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar #option_no_create'));
+        await testUtils.dom.click($(target).find('.o_web_studio_sidebar #option_no_create'));
     });
 
     QUnit.test('disable creation(no_create options) in many2many_tags_avatar widget', async function (assert) {
@@ -6041,17 +6050,18 @@ QUnit.module('ViewEditorManager', {
             }
         }
 
-        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
         // check many2many_avatar_user
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_users"]'));
-        assert.containsOnce(webClient, '.o_web_studio_sidebar #option_no_create',
+        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer .o_field_many2manytags[name="m2m_users"]'));
+        assert.containsOnce(target, '.o_web_studio_sidebar #option_no_create',
             "should have no_create option for many2many_avatar_user");
-        assert.notOk($(webClient.el).find('.o_web_studio_sidebar #option_no_create').is(':checked'),
+        assert.notOk($(target).find('.o_web_studio_sidebar #option_no_create').is(':checked'),
             'by default the no_create option should be false');
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar #option_no_create'));
+        await testUtils.dom.click($(target).find('.o_web_studio_sidebar #option_no_create'));
     });
 
     QUnit.test('display one2many without inline views', async function (assert) {
@@ -6091,16 +6101,17 @@ QUnit.module('ViewEditorManager', {
             }
         };
 
-        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
-        var $one2many = $(webClient.el).find('.o_field_one2many.o_field_widget');
+        var $one2many = $(target).find('.o_field_one2many.o_field_widget');
         assert.strictEqual($one2many.children().length, 2,
             "The one2many widget should be displayed");
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
+        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer .o_field_one2many'));
         await testUtils.dom.click(
-            $(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="list"]'));
+            $(target).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="list"]'));
         await legacyExtraNextTick();
     });
 
@@ -6208,35 +6219,36 @@ QUnit.module('ViewEditorManager', {
             }
         };
 
-        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
-        const blockOverlayZindex = webClient.el.querySelector('.o_web_studio_view_renderer .o_field_one2many .blockOverlay').style['z-index'];
+        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer .o_field_one2many'));
+        const blockOverlayZindex = target.querySelector('.o_web_studio_view_renderer .o_field_one2many .blockOverlay').style['z-index'];
         assert.strictEqual(blockOverlayZindex, '1000',
             "z-index of blockOverlay should be 1000");
         assert.verifySteps(['coucou']);
 
-        await testUtils.dom.click($($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
+        await testUtils.dom.click($($(target).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
         await legacyExtraNextTick();
-        assert.containsOnce(webClient, '.o_web_studio_view_renderer thead tr [data-node-id]',
+        assert.containsOnce(target, '.o_web_studio_view_renderer thead tr [data-node-id]',
             "there should be 1 nodes in the x2m editor.");
 
-        await testUtils.dom.dragAndDrop($(webClient.el).find('.o_web_studio_existing_fields .o_web_studio_field_many2one')[0], $('.o_web_studio_hook'));
+        await testUtils.dom.dragAndDrop($(target).find('.o_web_studio_existing_fields .o_web_studio_field_many2one')[0], $('.o_web_studio_hook'));
         await testUtils.nextTick();
 
-        assert.containsN(webClient, '.o_web_studio_view_renderer thead tr [data-node-id]', 2,
+        assert.containsN(target, '.o_web_studio_view_renderer thead tr [data-node-id]', 2,
             "there should be 2 nodes after the drag and drop.");
 
         // click on a field in the x2m list view
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer [data-node-id]:first'));
+        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer [data-node-id]:first'));
         await legacyExtraNextTick();
         assert.verifySteps(['product'], "the model should be the x2m relation");
 
         // edit field properties
-        assert.containsOnce(webClient, '.o_web_studio_sidebar .o_web_studio_parameters',
+        assert.containsOnce(target, '.o_web_studio_sidebar .o_web_studio_parameters',
             "there should be button to edit the field properties");
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar .o_web_studio_parameters'));
+        await testUtils.dom.click($(target).find('.o_web_studio_sidebar .o_web_studio_parameters'));
     });
 
     QUnit.test('edit one2many list view with tree_view_ref context key', async function (assert) {
@@ -6280,11 +6292,12 @@ QUnit.module('ViewEditorManager', {
             }
         };
 
-        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
-        await testUtils.dom.click($($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
+        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer .o_field_one2many'));
+        await testUtils.dom.click($($(target).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
         await legacyExtraNextTick();
     });
 
@@ -6386,38 +6399,39 @@ QUnit.module('ViewEditorManager', {
         const { widget: webClient } = await start({
             hasWebClient: true,
             serverData,
-            mockRPC
+            mockRPC,
         });
 
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
         await testUtils.nextTick();
 
-        assert.containsOnce(webClient, '.o_web_studio_add_chatter',
+        assert.containsOnce(target, '.o_web_studio_add_chatter',
             "should be possible to add a chatter");
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
+        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer .o_field_one2many'));
         await legacyExtraNextTick();
         await testUtils.dom.click(
-            $(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
+            $(target).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
         await legacyExtraNextTick();
-        assert.containsNone(webClient, '.o_web_studio_add_chatter',
+        assert.containsNone(target, '.o_web_studio_add_chatter',
             "should not be possible to add a chatter");
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many'));
+        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer .o_field_one2many'));
         await testUtils.dom.click(
-            $(webClient.el).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
+            $(target).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
         );
         await testUtils.nextTick();
         await legacyExtraNextTick();
-        assert.strictEqual($(webClient.el).find('.o_field_char').eq(0).text(), 'jean',
+        assert.strictEqual($(target).find('.o_field_char').eq(0).text(), 'jean',
             "the partner view form should be displayed.");
         await testUtils.dom.dragAndDrop(
-            $(webClient.el).find('.o_web_studio_new_fields .o_web_studio_field_char'),
-            $(webClient.el).find('.o_group .o_web_studio_hook:first')
+            $(target).find('.o_web_studio_new_fields .o_web_studio_field_char'),
+            $(target).find('.o_group .o_web_studio_hook:first')
         );
 
         // add a new button
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_web_studio_button_hook'));
+        await testUtils.dom.click($(target).find('.o_web_studio_form_view_editor .o_web_studio_button_hook'));
         assert.strictEqual($('.modal .o_web_studio_new_button_dialog').length, 1,
             "there should be an opened modal to add a button");
         await testUtils.dom.click($('.modal .o_web_studio_new_button_dialog .js_many2one_field input'));
@@ -6460,20 +6474,21 @@ QUnit.module('ViewEditorManager', {
         serverData.views["coucou,false,search"] = `<search></search>`;
 
         const webClient = await createEnterpriseWebClient({ serverData, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
         // edit the x2m form view
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many'));
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
+        await testUtils.dom.click($(target).find('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click($(target).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
         await legacyExtraNextTick();
-        assert.strictEqual($(webClient.el).find('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]').text(), "jacques",
+        assert.strictEqual($(target).find('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]').text(), "jacques",
             "the x2m form view should be correctly rendered");
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]'));
+        await testUtils.dom.click($(target).find('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]'));
 
         // open the domain editor
         assert.strictEqual($('.modal .o_domain_selector').length, 0,
             "the domain selector should not be opened");
-        $(webClient.el).find('.o_web_studio_sidebar_content input[name="domain"]').trigger('focus');
+        $(target).find('.o_web_studio_sidebar_content input[name="domain"]').trigger('focus');
         await testUtils.nextTick();
         assert.strictEqual($('.modal .o_domain_selector').length, 1,
             "the domain selector should be correctly opened");
@@ -6565,20 +6580,21 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        const webClient = await createEnterpriseWebClient({serverData, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
         // edit the x2m form view
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many'));
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="list"]'));
+        await testUtils.dom.click($(target).find('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click($(target).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="list"]'));
         await legacyExtraNextTick();
 
-        assert.strictEqual($(webClient.el).find('.o_web_studio_list_view_editor th').text(), "M2Ocoucou",
+        assert.strictEqual($(target).find('.o_web_studio_list_view_editor th').text(), "M2Ocoucou",
             "the columns should be in the correct order");
 
         // move coucou at index 0
-        await testUtils.dom.dragAndDrop($(webClient.el).find('.o_web_studio_list_view_editor th:contains(coucou)'),
-            $(webClient.el).find('th.o_web_studio_hook:first'));
+        await testUtils.dom.dragAndDrop($(target).find('.o_web_studio_list_view_editor th:contains(coucou)'),
+            $(target).find('th.o_web_studio_hook:first'));
     });
 
     QUnit.test('notebook and group drag and drop after a group', async function (assert) {
@@ -6679,21 +6695,22 @@ QUnit.module('ViewEditorManager', {
             }
         };
 
-        const webClient = await createEnterpriseWebClient({serverData, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
         // Enter edit mode of the O2M
-        await testUtils.dom.click($(webClient.el).find('.o_field_x2many_list[name=product_ids]'));
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_editX2Many[data-type="list"]'));
+        await testUtils.dom.click($(target).find('.o_field_x2many_list[name=product_ids]'));
+        await testUtils.dom.click($(target).find('.o_web_studio_editX2Many[data-type="list"]'));
         await legacyExtraNextTick();
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar').find('.o_web_studio_view'));
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar').find('input#show_invisible'));
+        await testUtils.dom.click($(target).find('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        await testUtils.dom.click($(target).find('.o_web_studio_sidebar').find('input#show_invisible'));
 
         // select the first column
-        await testUtils.dom.click($(webClient.el).find('thead th[data-node-id=1]'));
+        await testUtils.dom.click($(target).find('thead th[data-node-id=1]'));
         // enable readonly
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_sidebar').find('input#readonly'));
+        await testUtils.dom.click($(target).find('.o_web_studio_sidebar').find('input#readonly'));
     });
 
     QUnit.test('One2Many form datapoint doesn\'t contain the parent datapoint', async function (assert) {
@@ -6735,12 +6752,13 @@ QUnit.module('ViewEditorManager', {
             }
         };
 
-        const webClient = await createEnterpriseWebClient({serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
-        await doActionAndOpenStudio(webClient, "studio.coucou_action");
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
 
-        await testUtils.dom.click($(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many'));
+        await testUtils.dom.click($(target).find('.o_web_studio_form_view_editor .o_field_one2many'));
         await testUtils.dom.click(
-            $(webClient.el).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
+            $(target).find('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
         );
         await legacyExtraNextTick();
     });

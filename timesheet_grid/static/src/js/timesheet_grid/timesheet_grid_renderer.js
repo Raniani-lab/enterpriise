@@ -24,8 +24,8 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
     }
 
     class TimesheetGridRenderer extends GridRenderer {
-        constructor(parent, props) {
-            super(...arguments);
+        setup() {
+            super.setup();
             this.widgetComponents = {
                 TimesheetM2OAvatarEmployee: TimesheetM2OAvatarEmployee
             };

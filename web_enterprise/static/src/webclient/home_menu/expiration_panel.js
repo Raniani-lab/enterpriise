@@ -1,8 +1,9 @@
 /** @odoo-module **/
 import { browser } from "@web/core/browser/browser";
 import { useService } from "@web/core/utils/hooks";
+import { Transition } from "@web/core/transition";
 
-const { Component, useRef, useState } = owl;
+const { Component, useState, useRef, onMounted } = owl;
 const { DateTime } = luxon;
 
 /**
@@ -14,8 +15,7 @@ const { DateTime } = luxon;
  * @extends Component
  */
 export class ExpirationPanel extends Component {
-    constructor() {
-        super(...arguments);
+    setup() {
         this.enterprise = useService("enterprise");
 
         if (!this.enterprise.warning) {
@@ -48,6 +48,7 @@ export class ExpirationPanel extends Component {
 
         this.state = useState({
             display: (diffDays <= 30 && !hideCookie) || diffDays <= 0,
+            displayRegisterForm: false,
             alertType,
             buttonText: "Register",
             diffDays,
@@ -65,17 +66,13 @@ export class ExpirationPanel extends Component {
 
         // Type of logged-in accounts addressed by message
         this.warning = this.enterprise.warning;
-    }
 
-    mounted() {
-        if (this.state.diffDays <= 0) {
-            this.isUIBlocked = true;
-            this.ui.block({
-                message: this.el,
-                css: { cursor: "auto" },
-                overlayCSS: { cursor: "auto" },
-            });
-        }
+        onMounted(() => {
+            if (this.state.diffDays <= 0) {
+                this.isUIBlocked = true;
+                this.ui.block();
+            }
+        });
     }
 
     //--------------------------------------------------------------------------
@@ -309,3 +306,4 @@ export class ExpirationPanel extends Component {
 }
 
 ExpirationPanel.template = "DatabaseExpirationPanel";
+ExpirationPanel.components = { Transition };

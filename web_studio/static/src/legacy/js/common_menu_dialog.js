@@ -2,7 +2,7 @@ odoo.define('web_studio.CommonMenuDialog', function (require) {
 "use strict";
 
 const Dialog = require('web.Dialog');
-const { ModelConfiguratorDialog } = require('web_studio.ModelConfigurator');
+const { ModelConfiguratorDialog } = require('@web_studio/client_action/model_configurator/model_configurator');
 const StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 
 
@@ -108,7 +108,7 @@ const CommonMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      * @param {String} menuName
      */
     _doSave(menuName) {
-        
+
     },
 });
 

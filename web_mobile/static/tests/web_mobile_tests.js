@@ -21,7 +21,12 @@ odoo.define("web_mobile.tests", function (require) {
     const { base64ToBlob } = require("web_mobile.testUtils");
 
     const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
-
+    const { makeTestEnv } = require("@web/../tests/helpers/mock_env");
+    const {
+        mount,
+        getFixture,
+        destroy,
+    } = require("@web/../tests/helpers/utils");
     const { Component, useState, xml } = owl;
 
     const { createParent, createView, mock } = testUtils;
@@ -275,8 +280,7 @@ odoo.define("web_mobile.tests", function (require) {
                 });
 
                 class DummyComponent extends Component {
-                    constructor() {
-                        super();
+                    setup() {
                         this._backButtonHandler = useBackButton(this._onBackButton);
                     }
 
@@ -285,25 +289,21 @@ odoo.define("web_mobile.tests", function (require) {
                     }
                 }
                 DummyComponent.template = xml`<div/>`;
+                
+                const target = getFixture();
+                const env = makeTestEnv();
 
-                const dummy = new DummyComponent();
+                const dummy = await mount(DummyComponent, target, { env });
 
-                await dummy.mount(document.createDocumentFragment());
                 // simulate 'backbutton' event triggered by the app
                 await testUtils.dom.triggerEvent(document, "backbutton");
-                assert.verifySteps([], "shouldn't have register handle before attached to the DOM");
-                dummy.unmount();
-
-                await dummy.mount(document.getElementById("qunit-fixture"));
-                // simulate 'backbutton' event triggered by the app
-                await testUtils.dom.triggerEvent(document, "backbutton");
-                dummy.unmount();
                 assert.verifySteps(
-                    ["overrideBackButton: true", "backbutton event", "overrideBackButton: false"],
+                    ["overrideBackButton: true", "backbutton event"],
                     "should have enabled/disabled the back-button override"
                 );
 
-                dummy.destroy();
+                destroy(dummy);
+                assert.verifySteps(["overrideBackButton: false"]);
                 mock.unpatch(mobile.methods);
             });
 
@@ -319,28 +319,30 @@ odoo.define("web_mobile.tests", function (require) {
                     });
 
                     class DummyComponent extends Component {
-                        constructor() {
-                            super(...arguments);
+                        setup() {
                             this._backButtonHandler = useBackButton(this._onBackButton);
                         }
 
                         _onBackButton(ev) {
                             assert.step(`${this.props.name}: ${ev.type} event`);
-                            this.unmount();
+                            // unmounting is not supported anymore
+                            // A real business case equivalent to this is to have a Parent component
+                            // doing a foreach on some reactive object which contains the list of dummy components
+                            // and calling a callback props.onBackButton right here that removes the element from the list
+                            destroy(this);
                         }
                     }
                     DummyComponent.template = xml`<div/>`;
 
-                    const fixture = document.getElementById("qunit-fixture");
+                    const props1 = { name: "dummy1" };
+                    const props2 = { name: "dummy2" };
+                    const props3 = { name: "dummy3" };
+                    const target = getFixture();
+                    const env = makeTestEnv();
 
-                    const dummy1 = new DummyComponent(null, { name: "dummy1" });
-                    await dummy1.mount(fixture);
-
-                    const dummy2 = new DummyComponent(null, { name: "dummy2" });
-                    await dummy2.mount(fixture);
-
-                    const dummy3 = new DummyComponent(null, { name: "dummy3" });
-                    await dummy3.mount(fixture);
+                    const dummy1 = await mount(DummyComponent, target, { props: props1, env });
+                    const dummy2 = await mount(DummyComponent, target, { props: props2, env });
+                    const dummy3 = await mount(DummyComponent, target, { props: props3, env });
 
                     // simulate 'backbutton' events triggered by the app
                     await testUtils.dom.triggerEvent(document, "backbutton");
@@ -355,9 +357,6 @@ odoo.define("web_mobile.tests", function (require) {
                         "overrideBackButton: false",
                     ]);
 
-                    dummy1.destroy();
-                    dummy2.destroy();
-                    dummy3.destroy();
                     mock.unpatch(mobile.methods);
                 }
             );
@@ -374,14 +373,13 @@ odoo.define("web_mobile.tests", function (require) {
                     });
 
                     class DummyComponent extends Component {
-                        constructor() {
-                            super();
+                        setup() {
                             this._backButtonHandler = useBackButton(
                                 this._onBackButton,
                                 this.shouldActivateBackButton.bind(this)
                             );
                             this.state = useState({
-                                show: false,
+                                show: this.props.show,
                             });
                         }
 
@@ -399,9 +397,11 @@ odoo.define("web_mobile.tests", function (require) {
                     }
                     DummyComponent.template = xml`<button t-esc="state.show" t-on-click="toggle"/>`;
 
-                    const dummy = new DummyComponent();
+                    const target = getFixture();
+                    const env = makeTestEnv();
 
-                    await dummy.mount(document.getElementById("qunit-fixture"));
+                    const dummy = await mount(DummyComponent, target, { props: { show: false }, env });
+
                     assert.verifySteps([], "shouldn't have enabled backbutton mount");
                     await testUtils.dom.click(dummy.el);
                     // simulate 'backbutton' event triggered by the app
@@ -415,25 +415,23 @@ odoo.define("web_mobile.tests", function (require) {
                         ],
                         "should have enabled/disabled the back-button override"
                     );
-                    dummy.unmount();
+                    destroy(dummy);
 
                     // enabled at mount
-                    dummy.state.show = true;
-                    await dummy.mount(document.getElementById("qunit-fixture"));
+                    const dummy2 = await mount(DummyComponent, target, { props: { show: true }, env });
                     assert.verifySteps(
                         ["overrideBackButton: true"],
                         "shouldn have enabled backbutton at mount"
                     );
                     // simulate 'backbutton' event triggered by the app
                     await testUtils.dom.triggerEvent(document, "backbutton");
-                    // unmounting without disabling first
-                    dummy.unmount();
+                    destroy(dummy2);
+
                     assert.verifySteps(
                         ["backbutton event", "overrideBackButton: false"],
                         "should have disabled the back-button override during unmount"
                     );
 
-                    dummy.destroy();
                     mock.unpatch(mobile.methods);
                 }
             );
@@ -508,8 +506,7 @@ odoo.define("web_mobile.tests", function (require) {
                 });
 
                 class Parent extends Component {
-                    constructor() {
-                        super(...arguments);
+                    setup() {
                         this.state = useState({ display: true });
                     }
                     _onDialogClosed() {
@@ -519,18 +516,19 @@ odoo.define("web_mobile.tests", function (require) {
                 }
 
                 Parent.components = { OwlDialog };
-                Parent.env = makeTestEnvironment();
                 Parent.template = xml`
             <div>
                 <OwlDialog
                     t-if="state.display"
-                    t-on-dialog-closed="_onDialogClosed">
+                    onClosed="() => this._onDialogClosed()">
                     Some content
                 </OwlDialog>
             </div>`;
 
-                const parent = new Parent();
-                await parent.mount(testUtils.prepareTarget());
+                const target = getFixture();
+                const env = await makeTestEnvironment();
+
+                await mount(Parent, target, { env });
 
                 assert.containsOnce(document.body, ".o_dialog");
                 assert.verifySteps(["overrideBackButton: true"]);
@@ -539,7 +537,6 @@ odoo.define("web_mobile.tests", function (require) {
                 assert.verifySteps(["dialog_closed", "overrideBackButton: false"]);
                 assert.containsNone(document.body, ".o_dialog", "should have been closed");
 
-                parent.destroy();
                 mock.unpatch(mobile.methods);
             });
 
@@ -557,7 +554,6 @@ odoo.define("web_mobile.tests", function (require) {
                 class Parent extends Component {}
 
                 Parent.components = { Popover };
-                Parent.env = makeTestEnvironment();
                 Parent.template = xml`
             <div>
                 <Popover>
@@ -570,8 +566,10 @@ odoo.define("web_mobile.tests", function (require) {
                 </Popover>
             </div>`;
 
-                const parent = new Parent();
-                await parent.mount(testUtils.prepareTarget());
+                const target = getFixture();
+                const env = makeTestEnv();
+
+                await mount(Parent, target, { env });
 
                 assert.containsNone(document.body, ".o_popover");
                 await testUtils.dom.click(document.querySelector("#target"));
@@ -582,7 +580,6 @@ odoo.define("web_mobile.tests", function (require) {
                 assert.verifySteps(["overrideBackButton: false"]);
                 assert.containsNone(document.body, ".o_popover", "should have been closed");
 
-                parent.destroy();
                 mock.unpatch(mobile.methods);
             });
 
@@ -591,6 +588,7 @@ odoo.define("web_mobile.tests", function (require) {
             QUnit.test("mobile search: close with backbutton event", async function (assert) {
                 assert.expect(7);
 
+                const target = getFixture();
                 mock.patch(mobile.methods, {
                     overrideBackButton({ enabled }) {
                         assert.step(`overrideBackButton: ${enabled}`);
@@ -631,23 +629,24 @@ odoo.define("web_mobile.tests", function (require) {
 
                 await doAction(webClient, 1);
 
+                // the mobile search is portaled in body, not in the fixture
                 assert.containsNone(document.body, ".o_mobile_search");
 
                 // open the search view
                 await testUtils.dom.click(
-                    webClient.el.querySelector("button.o_enable_searchview")
+                    target.querySelector("button.o_enable_searchview")
                 );
                 // open it in full screen
                 await testUtils.dom.click(
-                    webClient.el.querySelector(".o_toggle_searchview_full")
+                    target.querySelector(".o_toggle_searchview_full")
                 );
 
                 assert.containsOnce(document.body, ".o_mobile_search");
                 assert.verifySteps(["overrideBackButton: true"]);
 
                 // simulate 'backbutton' event triggered by the app
-                await testUtils.dom.triggerEvent(document, "backbutton");
-                assert.containsNone(document.body, ".o_mobile_search");
+                await testUtils.dom.triggerEvent(target, "backbutton");
+                assert.containsNone(target, ".o_mobile_search");
                 assert.verifySteps(["overrideBackButton: false"]);
 
                 mock.unpatch(mobile.methods);

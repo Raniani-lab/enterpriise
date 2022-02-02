@@ -9,10 +9,6 @@ odoo.define('pos_l10n_se.ReprintReceiptButton', function(require) {
 
     const PosSwedenReprintReceiptButton = ReprintReceiptButton =>
         class extends ReprintReceiptButton {
-            constructor() {
-                super(...arguments);
-            }
-
             async _onClick() {
                 if(this.env.pos.useBlackBoxSweden()) {
                     let order = this.props.order;

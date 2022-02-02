@@ -20,7 +20,7 @@
 <t t-name="web_studio.SelectionValues">
     <h5>Specify all possible values</h5>
     <ul class="o_web_studio_selection_editor list-unstyled mb0" t-if="widget.selection.length">
-        <li t-foreach="widget.selection" t-as="selectionValue" t-att-data-value="selectionValue[0]">
+        <li t-foreach="widget.selection" t-as="selectionValue" t-key="selectionValue_index" t-att-data-value="selectionValue[0]">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text fa fa-bars" role="img" aria-label="Value of list" title="Value of list"/>

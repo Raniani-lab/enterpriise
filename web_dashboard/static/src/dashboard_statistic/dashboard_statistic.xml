@@ -2,7 +2,7 @@
 <templates>
 
 <t t-name="web_dashboard.DashboardStatistic" owl="1">
-    <div t-att-name="props.name" t-att-class="getAttClass()" t-on-click="onClicked" t-att="getNodeAttributes()">
+    <div t-att-name="props.name" t-att-class="getAttClass()" t-on-click="props.onStatisticChange" t-att="getNodeAttributes()">
         <label t-esc="props.displayName"/>
 
         <div t-if="!hasComparison" class="o_value">

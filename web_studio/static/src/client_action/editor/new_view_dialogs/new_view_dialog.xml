@@ -15,7 +15,7 @@
     <div class="o_web_studio_select">
       <label for="date_start">Start Date Field</label>
       <select name="date_start" class="o_input" t-model="fieldsChoice.date_start">
-        <option t-foreach="dateFields" t-as="field" t-att-value="field.name">
+        <option t-foreach="dateFields" t-as="field" t-att-value="field.name" t-key="field.name">
           <t t-esc="field.string"/><span t-if="env.debug"> (<t t-esc="field.name"/>)</span>
         </option>
       </select>
@@ -25,7 +25,7 @@
       <label for="date_stop">Stop Date Field</label>
       <select name="date_stop" class="o_input" t-model="fieldsChoice.date_stop">
         <option t-if="!mandatoryStopDate" />
-        <option t-foreach="dateFields" t-as="field" t-att-value="field.name">
+        <option t-foreach="dateFields" t-as="field" t-att-value="field.name" t-key="field.name">
           <t t-esc="field.string"/><span t-if="env.debug"> (<t t-esc="field.name"/>)</span>
         </option>
       </select>

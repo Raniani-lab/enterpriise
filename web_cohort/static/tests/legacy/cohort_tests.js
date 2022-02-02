@@ -20,7 +20,9 @@ var patchDate = testUtils.mock.patchDate;
 
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 let serverData;
-const { nextTick, patchWithCleanup } = require('@web/../tests/helpers/utils');
+const { getFixture, nextTick, patchWithCleanup } = require('@web/../tests/helpers/utils');
+
+const { markup } = owl;
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -322,6 +324,8 @@ QUnit.module('Views', {
         };
         Object.assign(serverData, {views});
 
+        const target = getFixture();
+
         const webClient = await createWebClient({
             serverData,
             legacyParams: { withLegacyMockServer: true },
@@ -340,30 +344,30 @@ QUnit.module('Views', {
         });
 
         // Going to the list view, while clicking Period / Count cell
-        await testUtils.dom.click($(webClient.el).find('td.o_cohort_value:first'));
+        await testUtils.dom.click($(target).find('td.o_cohort_value:first'));
         await nextTick();
 
-        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(1)').text(), 'Start',
+        assert.strictEqual($(target).find('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(target).find('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
         // Going back to cohort view
-        await testUtils.dom.click($(webClient.el).find('.o_back_button'));
+        await testUtils.dom.click($(target).find('.o_back_button'));
         await nextTick();
         // Going to the list view
-        await testUtils.dom.click($(webClient.el).find('td div.o_cohort_value:first'));
+        await testUtils.dom.click($(target).find('td div.o_cohort_value:first'));
         await nextTick();
-        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(1)').text(), 'Start',
+        assert.strictEqual($(target).find('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(target).find('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
         // Going to the form view
-        await testUtils.dom.click($(webClient.el).find('.o_list_view .o_data_row'));
+        await testUtils.dom.click($(target).find('.o_list_view .o_data_row'));
         await nextTick();
 
-        assert.hasAttrValue($(webClient.el).find('.o_form_view span:first'), 'name', 'start',
+        assert.hasAttrValue($(target).find('.o_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
-        assert.hasAttrValue($(webClient.el).find('.o_form_view span:nth(1)'), 'name', 'stop',
+        assert.hasAttrValue($(target).find('.o_form_view span:nth(1)'), 'name', 'stop',
                 "Second field in the form view should be stop");
 
     });
@@ -436,6 +440,9 @@ QUnit.module('Views', {
             'subscription,false,search': '<search></search>',
         };
         Object.assign(serverData, {views});
+
+        const target = getFixture();
+
         const webClient = await createWebClient({
             serverData,
             legacyParams: { withLegacyMockServer: true },
@@ -454,11 +461,11 @@ QUnit.module('Views', {
         });
 
         // Going to the list view, while clicking Period / Count cell
-        await testUtils.dom.click($(webClient.el).find('td.o_cohort_value:first'));
+        await testUtils.dom.click($(target).find('td.o_cohort_value:first'));
         await nextTick();
-        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(1)').text(), 'Start',
+        assert.strictEqual($(target).find('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(target).find('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going back to cohort view
@@ -466,19 +473,19 @@ QUnit.module('Views', {
         await nextTick();
 
         // Going to the list view
-        await testUtils.dom.click($(webClient.el).find('td div.o_cohort_value:first'));
+        await testUtils.dom.click($(target).find('td div.o_cohort_value:first'));
         await nextTick();
-        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(1)').text(), 'Start',
+        assert.strictEqual($(target).find('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual($(webClient.el).find('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(target).find('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going to the form view
-        await testUtils.dom.click($(webClient.el).find('.o_list_view .o_data_row'));
+        await testUtils.dom.click($(target).find('.o_list_view .o_data_row'));
         await nextTick();
-        assert.hasAttrValue($(webClient.el).find('.o_form_view span:first'), 'name', 'start',
+        assert.hasAttrValue($(target).find('.o_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
-        assert.hasAttrValue($(webClient.el).find('.o_form_view span:nth(1)'), 'name', 'stop',
+        assert.hasAttrValue($(target).find('.o_form_view span:nth(1)'), 'name', 'stop',
                 "Second field in the form view should be stop");
 
     });
@@ -498,6 +505,9 @@ QUnit.module('Views', {
             `,
         };
         Object.assign(serverData, {views});
+
+        const target = getFixture();
+
         const webClient = await createWebClient({
             serverData,
             legacyParams: { withLegacyMockServer: true },
@@ -515,7 +525,7 @@ QUnit.module('Views', {
         });
 
         function verifyContents(results) {
-            var $tables = $(webClient.el).find('table');
+            var $tables = $(target).find('table');
             assert.strictEqual($tables.length, results.length, 'There should be ' + results.length + ' tables');
             var result;
             $tables.each(function () {
@@ -534,51 +544,51 @@ QUnit.module('Views', {
 
         // with no comparison, with data (no filter)
         verifyContents([3]);
-        assert.containsNone(webClient, '.o_cohort_no_data');
-        assert.containsNone(webClient, 'div.o_view_nocontent');
+        assert.containsNone(target, '.o_cohort_no_data');
+        assert.containsNone(target, 'div.o_view_nocontent');
 
         // with no comparison with no data (filter on 'last_year')
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 'Date');
-        await toggleMenuItemOption(webClient, 'Date', '2016');
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, 'Date');
+        await toggleMenuItemOption(target, 'Date', '2016');
 
         verifyContents([]);
-        assert.containsNone(webClient, '.o_cohort_no_data');
-        assert.containsOnce(webClient, 'div.o_view_nocontent');
+        assert.containsNone(target, '.o_cohort_no_data');
+        assert.containsOnce(target, 'div.o_view_nocontent');
 
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
-        await toggleMenuItemOption(webClient, 'Date', '2016');
-        await toggleMenuItemOption(webClient, 'Date', 'August');
-        await toggleComparisonMenu(webClient);
-        await toggleMenuItem(webClient, 'Date: Previous period');
+        await toggleMenuItemOption(target, 'Date', '2016');
+        await toggleMenuItemOption(target, 'Date', 'August');
+        await toggleComparisonMenu(target);
+        await toggleMenuItem(target, 'Date: Previous period');
 
         verifyContents(['August 2017', 2, 'July 2017', 1]);
-        assert.containsNone(webClient, '.o_cohort_no_data');
-        assert.containsNone(webClient, 'div.o_view_nocontent');
+        assert.containsNone(target, '.o_cohort_no_data');
+        assert.containsNone(target, 'div.o_view_nocontent');
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 'Date');
-        await toggleMenuItemOption(webClient, 'Date', 'August');
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, 'Date');
+        await toggleMenuItemOption(target, 'Date', 'August');
 
         verifyContents(['2017', 3, '2016']);
-        assert.containsOnce(webClient, '.o_cohort_no_data');
-        assert.containsNone(webClient, 'div.o_view_nocontent');
+        assert.containsOnce(target, '.o_cohort_no_data');
+        assert.containsNone(target, 'div.o_view_nocontent');
 
         // with comparison active, no data, comparisonData (filter on 'Q4' + 'previous_period')
-        await toggleMenuItemOption(webClient, 'Date', 'Q4');
+        await toggleMenuItemOption(target, 'Date', 'Q4');
 
         verifyContents(['Q4 2017', 'Q3 2017', 3]);
-        assert.containsOnce(webClient, '.o_cohort_no_data');
-        assert.containsNone(webClient, 'div.o_view_nocontent');
+        assert.containsOnce(target, '.o_cohort_no_data');
+        assert.containsNone(target, 'div.o_view_nocontent');
 
         // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
-        await toggleMenuItemOption(webClient, 'Date', '2016');
-        await toggleMenuItemOption(webClient, 'Date', '2017');
+        await toggleMenuItemOption(target, 'Date', '2016');
+        await toggleMenuItemOption(target, 'Date', '2017');
 
         verifyContents([]);
-        assert.containsNone(webClient, '.o_cohort_no_data');
-        assert.containsOnce(webClient, 'div.o_view_nocontent');
+        assert.containsNone(target, '.o_cohort_no_data');
+        assert.containsOnce(target, 'div.o_view_nocontent');
 
         unpatchDate();
     });
@@ -614,7 +624,7 @@ QUnit.module('Views', {
             viewOptions: {
                 action: {
                     context: {},
-                    help: '<p class="abc">click to add a foo</p>'
+                    help: markup('<p class="abc">click to add a foo</p>'),
                 }
             },
         });
@@ -642,7 +652,7 @@ QUnit.module('Views', {
             viewOptions: {
                 action: {
                     context: {},
-                    help: '<p class="abc">click to add a foo</p>'
+                    help: markup('<p class="abc">click to add a foo</p>'),
                 }
             },
         });
@@ -672,7 +682,7 @@ QUnit.module('Views', {
             viewOptions: {
                 action: {
                     context: {},
-                    help: '<p class="abc">click to add a foo</p>'
+                    help: markup('<p class="abc">click to add a foo</p>'),
                 }
             },
         });

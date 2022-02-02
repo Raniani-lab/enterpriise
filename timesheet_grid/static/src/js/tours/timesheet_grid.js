@@ -6,10 +6,11 @@ const {Markup} = require('web.utils');
 var tour = require('web_tour.tour');
 
 var _t = core._t;
+const { markup } = owl;
 
 tour.register('timesheet_tour', {
     sequence: 100,
-    rainbowManMessage: _t("Congratulations, you are now a master of Timesheets.</b> <i>Psst: try the  [a] - [Enter] - [b] - [Enter] - shift + [A]  sequence on your keyboard and see what happens next!</i>"),
+    rainbowManMessage: markup(_t("Congratulations, you are now a master of Timesheets.</b> <i>Psst: try the  [a] - [Enter] - [b] - [Enter] - shift + [A]  sequence on your keyboard and see what happens next!</i>")),
     url: "/web",
 }, [tour.stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="hr_timesheet.timesheet_menu_root"]',

@@ -6,10 +6,11 @@ const {Markup} = require('web.utils');
 var tour = require('web_tour.tour');
 
 var _t = core._t;
+const { markup } = owl;
 
 tour.register('social_tour', {
         url: "/web",
-        rainbowManMessage: `<strong> ${_t('Congrats! Come back in a few minutes to check your statistics.')} </strong>`,
+        rainbowManMessage: markup(_t(`<strong>Congrats! Come back in a few minutes to check your statistics.</strong>`)),
         sequence: 190,
     },
     [

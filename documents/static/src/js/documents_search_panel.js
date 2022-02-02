@@ -62,7 +62,7 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
          * @param {HTMLElement} [newDragFocus]
          */
         _updateDragOverClass(newDragFocus) {
-            const allSelected = this.el.querySelectorAll(":scope .o_drag_over_selector");
+            const allSelected = this.legacySearchPanelRef.el.querySelectorAll(":scope .o_drag_over_selector");
             for (const selected of allSelected) {
                 selected.classList.remove("o_drag_over_selector");
             }
@@ -155,7 +155,7 @@ odoo.define("documents.DocumentsSearchPanel", function (require) {
         { uploadingFolderIds: [] }
     );
     DocumentsSearchPanel.props = Object.assign({}, SearchPanel.props, {
-        uploadingFolderIds: Array,
+        uploadingFolderIds: { type: Array, optional: true },
     });
     if (!device.isMobile) {
         DocumentsSearchPanel.template = "documents.SearchPanel";

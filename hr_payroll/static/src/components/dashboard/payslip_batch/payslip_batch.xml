@@ -4,21 +4,21 @@
         <div class="o_hr_payroll_dashboard_block p-2 pl-4">
             <div class="row">
                 <div class="col">
-                    <h2 class="btn btn-link p-0 border-0" t-on-click="_onClickTitle">
+                    <h2 class="btn btn-link p-0 border-0" t-on-click="onClickTitle">
                         Batches
                     </h2>
                 </div>
             </div>
-            <t t-foreach="data" t-as="batch" t-key="batch['id']">
+            <t t-foreach="props.batches" t-as="batch" t-key="batch.id">
                 <div class="row">
                     <div class="col">
-                        <t t-esc="batch['date_start']"/>
+                        <t t-esc="batch.date_start"/>
                     </div>
-                    <div class="col btn btn-link p-0 border-0 text-left" t-on-click="_onClickLine(batch['id'], batch['name'])">
-                        <t t-esc="batch['name']"/>
+                    <div class="col btn btn-link p-0 border-0 text-left" t-on-click="() => this.onClickLine(batch.id, batch.name)">
+                        <t t-esc="batch.name"/>
                     </div>
                     <div class="col text-right">
-                        <span class="badge badge-pill badge-primary"><t t-esc="batch['state']"/></span>
+                        <span class="badge badge-pill badge-primary"><t t-esc="batch.state"/></span>
                     </div>
                 </div>
             </t>

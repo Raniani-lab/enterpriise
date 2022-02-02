@@ -9,7 +9,7 @@
     <div>
         <label>Icon</label>
         <div>
-            <t t-foreach="widget.ICONS" t-as="icon">
+            <t t-foreach="widget.ICONS" t-as="icon" t-key="icon_index">
                 <div class="o_web_studio_icon_selector" t-att-data-value="icon"><i t-att-class="icon"/></div>
             </t>
         </div>

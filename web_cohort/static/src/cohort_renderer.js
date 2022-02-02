@@ -23,4 +23,4 @@ export class CohortRenderer extends Component {
 }
 
 CohortRenderer.template = "web_cohort.CohortRenderer";
-CohortRenderer.props = ["model", "onRowClicked"];
+CohortRenderer.props = ["class", "model", "onRowClicked"];

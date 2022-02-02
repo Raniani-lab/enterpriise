@@ -1,5 +1,7 @@
 /* @odoo-module */
 
+import { Dropdown } from "@web/core/dropdown/dropdown";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { download } from "@web/core/network/download";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -146,7 +148,7 @@ CohortView.icon = "oi-chart--cohort";
 CohortView.multiRecord = true;
 CohortView.template = "web_cohort.CohortView";
 CohortView.buttonTemplate = "web_cohort.CohortView.Buttons";
-CohortView.components = { Layout, Renderer: CohortRenderer };
+CohortView.components = { Dropdown, DropdownItem, Layout, Renderer: CohortRenderer };
 CohortView.props = {
     ...standardViewProps,
     additionalMeasures: { type: Array, elements: String, optional: 1 },

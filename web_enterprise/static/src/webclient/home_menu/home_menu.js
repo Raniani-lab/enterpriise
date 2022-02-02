@@ -5,7 +5,7 @@ import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { useService } from "@web/core/utils/hooks";
 import { ExpirationPanel } from "./expiration_panel";
 
-const { Component, onPatched, onWillUpdateProps, useExternalListener, useRef, useState, xml } = owl;
+const { Component, onPatched, onWillUpdateProps, useExternalListener, useState, useRef, xml } = owl;
 
 class FooterComponent extends Component {
     setup() {
@@ -39,7 +39,6 @@ export class HomeMenu extends Component {
      * @param {string} props.apps[].xmlid
      */
     setup() {
-        super.setup();
         this.command = useService("command");
         this.menus = useService("menu");
         this.homeMenuService = useService("home_menu");

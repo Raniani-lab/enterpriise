@@ -6,7 +6,7 @@ import { sprintf } from "@web/core/utils/strings";
 import { localization } from "@web/core/l10n/localization";
 import { registry } from "@web/core/registry";
 
-const { Component } = owl;
+const { Component, useState } = owl;
 const editorTabRegistry = registry.category("web_studio.editor_tabs");
 
 export class EditorMenu extends Component {
@@ -14,56 +14,35 @@ export class EditorMenu extends Component {
         this.l10n = localization;
         this.studio = useService("studio");
         this.rpc = useService("rpc");
+        this.state = useState({
+            redo_available: false,
+            undo_available: false,
+            snackbar: undefined,
+        });
+
+        this.nextCrumbId = 1;
 
         useBus(this.studio.bus, "UPDATE", async () => {
             await this.render();
-            toggleSnackBar("off");
+            this.state.snackbar = "off";
         });
 
-        const toggleUndo = (display) => {
-            const el = this.el.querySelector(".o_web_studio_undo");
-            if (el) {
-                el.classList.toggle("o_web_studio_active", display);
-            }
-        };
-        const toggleRedo = (display) => {
-            const el = this.el.querySelector(".o_web_studio_redo");
-            if (el) {
-                el.classList.toggle("o_web_studio_active", display);
-            }
-        };
+        useBus(this.studio.bus, "undo_available", () => {
+            this.state.undo_available = true;
+        });
+        useBus(this.studio.bus, "undo_not_available", () => {
+            this.state.undo_available = false;
+        });
+        useBus(this.studio.bus, "redo_available", () => {
+            this.state.redo_available = true;
+        });
+        useBus(this.studio.bus, "redo_not_available", () => {
+            this.state.redo_available = false;
+        });
 
-        useBus(this.studio.bus, "undo_available", () => toggleUndo(true));
-        useBus(this.studio.bus, "undo_not_available", () => toggleUndo(false));
-        useBus(this.studio.bus, "redo_available", () => toggleRedo(true));
-        useBus(this.studio.bus, "redo_not_available", () => toggleRedo(false));
-
-        const toggleSnackBar = (type) => {
-            const snackBarIcon = this.el.querySelector(".o_web_studio_snackbar_icon");
-            const snackBarText = this.el.querySelector(".o_web_studio_snackbar_text");
-            switch (type) {
-                case "saved":
-                    snackBarIcon.classList.remove("fa-circle-o-notch", "fa-spin");
-                    snackBarIcon.classList.add("show", "fa", "fa-check");
-                    snackBarText.textContent = this.env._t("Saved");
-                    break;
-                case "saving":
-                    snackBarIcon.classList.add("show", "fa", "fa-circle-o-notch", "fa-spin");
-                    snackBarText.textContent = this.env._t("Saving");
-                    break;
-                case "off":
-                    snackBarIcon.classList.remove(
-                        "fa-circle-o-notch",
-                        "fa-spin",
-                        "show",
-                        "fa-check"
-                    );
-                    snackBarText.textContent = "";
-                    break;
-            }
-        };
-
-        useBus(this.studio.bus, "toggle_snack_bar", toggleSnackBar);
+        useBus(this.studio.bus, "toggle_snack_bar", (e) => {
+            this.state.snackbar = e.detail;
+        });
     }
 
     get breadcrumbs() {
@@ -108,12 +87,15 @@ export class EditorMenu extends Component {
                 handler: () => this.studio.setParams({}),
             });
         }
+        for (const crumb of crumbs) {
+            crumb.id = this.nextCrumbId++;
+        }
         return crumbs;
     }
 
     get activeViews() {
         const action = this.studio.editedAction;
-        const viewTypes = (action._views || action.views).map(([id, type]) => type);
+        const viewTypes = (action._views || action.views).map(([, type]) => type);
         return this.constructor.viewTypes.filter((vt) => viewTypes.includes(vt.type));
     }
 

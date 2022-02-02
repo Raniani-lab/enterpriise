@@ -17,8 +17,7 @@ odoo.define('pos_iot.LastTransactionStatus', function(require) {
      * Worldline payment terminal and opens a popup to display the result.
      */
     class LastTransactionStatusButton extends PosComponent {
-        constructor() {
-            super(...arguments);
+        setup() {
             this.state = useState({ pending: false });
         }
 

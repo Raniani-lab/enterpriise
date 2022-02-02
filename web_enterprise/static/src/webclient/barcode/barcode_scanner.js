@@ -5,9 +5,8 @@ import Dialog from "web.OwlDialog";
 import { delay } from "web.concurrency";
 import { loadAssets } from "@web/core/assets";
 
+const { App, Component, EventBus, onMounted, onWillStart, onWillUnmount, useRef, mount } = owl;
 import { _t } from "web.core";
-
-const { Component, EventBus, mount, useRef } = owl;
 const bus = new EventBus();
 const busOk = "BarcodeDialog-Ok";
 const busError = "BarcodeDialog-Error";
@@ -133,61 +132,60 @@ class BarcodeDialog extends Component {
     /**
      * @override
      */
-    constructor() {
-        super(...arguments);
+    setup() {
         this.videoPreviewRef = useRef("videoPreview");
         this.interval = null;
         this.stream = null;
         this.detector = null;
-    }
 
-    async willStart() {
-        let DetectorClass;
-        // Use Barcode Detection API if available.
-        // As support is still bleeding edge (mainly Chrome on Android),
-        // also provides a fallback using ZXing library.
-        if ("BarcodeDetector" in window) {
-            DetectorClass = BarcodeDetector;
-        } else {
-            await loadAssets({
-                jsLibs: ["/web/static/lib/zxing-library/zxing-library.js"],
-            });
-            DetectorClass = buildZXingBarcodeDetector(window.ZXing);
-        }
-        const formats = await DetectorClass.getSupportedFormats();
-        this.detector = new DetectorClass({ formats });
-    }
+        onWillStart(async () => {
+            let DetectorClass;
+            // Use Barcode Detection API if available.
+            // As support is still bleeding edge (mainly Chrome on Android),
+            // also provides a fallback using ZXing library.
+            if ("BarcodeDetector" in window) {
+                DetectorClass = BarcodeDetector;
+            } else {
+                await loadAssets({
+                    jsLibs: ["/web/static/lib/zxing-library/zxing-library.js"],
+                });
+                DetectorClass = buildZXingBarcodeDetector(window.ZXing);
+            }
+            const formats = await DetectorClass.getSupportedFormats();
+            this.detector = new DetectorClass({ formats });
+        });
 
-    async mounted() {
-        const constraints = {
-            video: { facingMode: "environment" },
-            audio: false,
-        };
-
-        try {
-            this.stream = await navigator.mediaDevices.getUserMedia(constraints);
-        } catch (err) {
-            const errors = {
-                NotFoundError: _t("No device can be found."),
-                NotAllowedError: _t("Odoo needs your authorization first."),
+        onMounted(async () => {
+            const constraints = {
+                video: { facingMode: "environment" },
+                audio: false,
             };
-            const errorMessage =
-                _t("Could not start scanning. ") + (errors[err.name] || err.message);
-            this.onError(new Error(errorMessage));
-            return;
-        }
-        this.videoPreviewRef.el.srcObject = this.stream;
-        await this.isVideoReady();
-        this.interval = setInterval(this.detectCode.bind(this), 100);
-    }
 
-    willUnmount() {
-        clearInterval(this.interval);
-        this.interval = null;
-        if (this.stream) {
-            this.stream.getTracks().forEach((track) => track.stop());
-            this.stream = null;
-        }
+            try {
+                this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+            } catch (err) {
+                const errors = {
+                    NotFoundError: _t("No device can be found."),
+                    NotAllowedError: _t("Odoo needs your authorization first."),
+                };
+                const errorMessage =
+                    _t("Could not start scanning. ") + (errors[err.name] || err.message);
+                this.onError(new Error(errorMessage));
+                return;
+            }
+            this.videoPreviewRef.el.srcObject = this.stream;
+            await this.isVideoReady();
+            this.interval = setInterval(this.detectCode.bind(this), 100);
+        });
+
+        onWillUnmount(() => {
+            clearInterval(this.interval);
+            this.interval = null;
+            if (this.stream) {
+                this.stream.getTracks().forEach((track) => track.stop());
+                this.stream = null;
+            }
+        });
     }
 
     /**
@@ -211,7 +209,7 @@ class BarcodeDialog extends Component {
      * @param {string} result found code
      */
     onResult(result) {
-        this.closeDialog();
+        this.props.onClose();
         bus.trigger(busOk, result);
     }
 
@@ -221,15 +219,8 @@ class BarcodeDialog extends Component {
      * @param {Error} error
      */
     onError(error) {
-        this.closeDialog();
+        this.props.onClose();
         bus.trigger(busError, { error });
-    }
-
-    /**
-     * Close the dialog.
-     */
-    closeDialog() {
-        this.destroy();
     }
 
     /**
@@ -273,6 +264,16 @@ export async function scanBarcode() {
         bus.on(busOk, null, resolve);
         bus.on(busError, null, reject);
     });
-    await mount(BarcodeDialog, { target: document.body });
+    const appForBarcodeDialog = new App(BarcodeDialog, {
+        env: owl.Component.env,
+        dev: owl.Component.env.isDebug(),
+        templates: window.__OWL_TEMPLATES__,
+        translatableAttributes: ["data-tooltip"],
+        translateFn: _t,
+        props: {
+            onClose: () => appForBarcodeDialog.destroy(),
+        },
+    });
+    await appForBarcodeDialog.mount(document.body);
     return promise;
 }

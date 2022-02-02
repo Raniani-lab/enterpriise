@@ -3,7 +3,7 @@
 import testUtils from "web.test_utils";
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { click, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView } from "@web/../tests/views/helpers";
 import { removeFacet, setupControlPanelServiceRegistry } from "@web/../tests/search/helpers";
 import { dialogService } from "@web/core/dialog/dialog_service";
@@ -21,6 +21,7 @@ import { browser } from "@web/core/browser/browser";
 const serviceRegistry = registry.category("services");
 
 let serverData;
+let target;
 
 QUnit.module("Views", (hooks) => {
     hooks.beforeEach(() => {
@@ -100,6 +101,8 @@ QUnit.module("Views", (hooks) => {
         };
         setupControlPanelServiceRegistry();
         serviceRegistry.add("dialog", dialogService);
+
+        target = getFixture();
     });
     QUnit.module("CohortView");
 
@@ -111,6 +114,7 @@ QUnit.module("Views", (hooks) => {
             arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />',
         });
 
+        assert.hasClass(cohort.el, "o_action o_view_controller");
         assert.containsOnce(cohort, ".table", "should have a table");
         assert.containsOnce(
             cohort,
@@ -387,9 +391,7 @@ QUnit.module("Views", (hooks) => {
                 "subscription,false,search": `<search></search>`,
             };
 
-            const webClient = await createWebClient({
-                serverData,
-            });
+            const webClient = await createWebClient({ serverData });
 
             await doAction(webClient, {
                 name: "Subscriptions",
@@ -403,10 +405,10 @@ QUnit.module("Views", (hooks) => {
             });
 
             // Going to the list view, while clicking Period / Count cell
-            await click(webClient.el.querySelector("td.o_cohort_value"));
+            await click(target.querySelector("td.o_cohort_value"));
             await nextTick();
 
-            let listColumnsHeads = webClient.el.querySelectorAll(".o_list_view th");
+            let listColumnsHeads = target.querySelectorAll(".o_list_view th");
             assert.strictEqual(
                 listColumnsHeads[1].textContent,
                 "Start",
@@ -418,12 +420,12 @@ QUnit.module("Views", (hooks) => {
                 "First field in the list view should be start"
             );
             // Going back to cohort view
-            await click(webClient.el.querySelector(".o_back_button"));
+            await click(target.querySelector(".o_back_button"));
             await nextTick();
             // Going to the list view
-            await click(webClient.el.querySelector("td div.o_cohort_value"));
+            await click(target.querySelector("td div.o_cohort_value"));
             await nextTick();
-            listColumnsHeads = webClient.el.querySelectorAll(".o_list_view th");
+            listColumnsHeads = target.querySelectorAll(".o_list_view th");
             assert.strictEqual(
                 listColumnsHeads[1].textContent,
                 "Start",
@@ -435,10 +437,10 @@ QUnit.module("Views", (hooks) => {
                 "First field in the list view should be start"
             );
             // Going to the form view
-            await click(webClient.el.querySelector(".o_list_view .o_data_row"));
+            await click(target.querySelector(".o_list_view .o_data_row"));
             await nextTick();
 
-            const formSpanLabel = webClient.el.querySelectorAll(".o_form_view span");
+            const formSpanLabel = target.querySelectorAll(".o_form_view span");
             assert.hasAttrValue(
                 formSpanLabel[0],
                 "name",
@@ -536,9 +538,7 @@ QUnit.module("Views", (hooks) => {
                 "subscription,false,search": `<search></search>`,
             };
 
-            const webClient = await createWebClient({
-                serverData,
-            });
+            const webClient = await createWebClient({ serverData });
 
             await doAction(webClient, {
                 name: "Subscriptions",
@@ -549,10 +549,10 @@ QUnit.module("Views", (hooks) => {
             });
 
             // Going to the list view, while clicking Period / Count cell
-            await click(webClient.el.querySelector("td.o_cohort_value"));
+            await click(target.querySelector("td.o_cohort_value"));
             await nextTick();
 
-            let listColumnsHeads = webClient.el.querySelectorAll(".o_list_view th");
+            let listColumnsHeads = target.querySelectorAll(".o_list_view th");
             assert.strictEqual(
                 listColumnsHeads[1].textContent,
                 "Start",
@@ -564,12 +564,12 @@ QUnit.module("Views", (hooks) => {
                 "First field in the list view should be start"
             );
             // Going back to cohort view
-            await click(webClient.el.querySelector(".o_back_button"));
+            await click(target.querySelector(".o_back_button"));
             await nextTick();
             // Going to the list view
-            await click(webClient.el.querySelector("td div.o_cohort_value"));
+            await click(target.querySelector("td div.o_cohort_value"));
             await nextTick();
-            listColumnsHeads = webClient.el.querySelectorAll(".o_list_view th");
+            listColumnsHeads = target.querySelectorAll(".o_list_view th");
             assert.strictEqual(
                 listColumnsHeads[1].textContent,
                 "Start",
@@ -581,10 +581,10 @@ QUnit.module("Views", (hooks) => {
                 "First field in the list view should be start"
             );
             // Going to the form view
-            await click(webClient.el.querySelector(".o_list_view .o_data_row"));
+            await click(target.querySelector(".o_list_view .o_data_row"));
             await nextTick();
 
-            const formSpanLabel = webClient.el.querySelectorAll(".o_form_view span");
+            const formSpanLabel = target.querySelectorAll(".o_form_view span");
             assert.hasAttrValue(
                 formSpanLabel[0],
                 "name",
@@ -615,9 +615,7 @@ QUnit.module("Views", (hooks) => {
             `,
         };
         patchWithCleanup(browser, { setTimeout: (fn) => fn() });
-        const webClient = await createWebClient({
-            serverData,
-        });
+        const webClient = await createWebClient({ serverData });
 
         await doAction(webClient, {
             name: "Subscriptions",
@@ -627,7 +625,7 @@ QUnit.module("Views", (hooks) => {
         });
 
         function verifyContents(results, label) {
-            const tables = webClient.el.querySelectorAll("table");
+            const tables = target.querySelectorAll("table");
             assert.strictEqual(
                 tables.length,
                 results.length,
@@ -651,63 +649,63 @@ QUnit.module("Views", (hooks) => {
 
         // with no comparison, with data (no filter)
         verifyContents([3], "with no comparison, with data (no filter)");
-        assert.containsNone(webClient, ".o_cohort_no_data");
-        assert.containsNone(webClient, "div.o_view_nocontent");
+        assert.containsNone(target, ".o_cohort_no_data");
+        assert.containsNone(target, "div.o_view_nocontent");
 
         // with no comparison with no data (filter on 'last_year')
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, "Date");
-        await toggleMenuItemOption(webClient, "Date", "2016");
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "Date");
+        await toggleMenuItemOption(target, "Date", "2016");
 
         verifyContents([], "with no comparison with no data (filter on 'last_year'");
-        assert.containsNone(webClient, ".o_cohort_no_data");
-        assert.containsOnce(webClient, "div.o_view_nocontent");
+        assert.containsNone(target, ".o_cohort_no_data");
+        assert.containsOnce(target, "div.o_view_nocontent");
 
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
-        await toggleMenuItemOption(webClient, "Date", "2016");
-        await toggleMenuItemOption(webClient, "Date", "August");
-        await toggleComparisonMenu(webClient);
-        await toggleMenuItem(webClient, "Date: Previous period");
+        await toggleMenuItemOption(target, "Date", "2016");
+        await toggleMenuItemOption(target, "Date", "August");
+        await toggleComparisonMenu(target);
+        await toggleMenuItem(target, "Date: Previous period");
 
         verifyContents(
             ["August 2017", 2, "July 2017", 1],
             "with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')"
         );
-        assert.containsNone(webClient, ".o_cohort_no_data");
-        assert.containsNone(webClient, "div.o_view_nocontent");
+        assert.containsNone(target, ".o_cohort_no_data");
+        assert.containsNone(target, "div.o_view_nocontent");
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, "Date");
-        await toggleMenuItemOption(webClient, "Date", "August");
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "Date");
+        await toggleMenuItemOption(target, "Date", "August");
 
         verifyContents(
             ["2017", 3, "2016"],
             "with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')"
         );
-        assert.containsOnce(webClient, ".o_cohort_no_data");
-        assert.containsNone(webClient, "div.o_view_nocontent");
+        assert.containsOnce(target, ".o_cohort_no_data");
+        assert.containsNone(target, "div.o_view_nocontent");
 
         // with comparison active, no data, comparisonData (filter on 'Q4' + 'previous_period')
-        await toggleMenuItemOption(webClient, "Date", "Q4");
+        await toggleMenuItemOption(target, "Date", "Q4");
 
         verifyContents(
             ["Q4 2017", "Q3 2017", 3],
             "with comparison active, no data, comparisonData (filter on 'Q4' + 'previous_period')"
         );
-        assert.containsOnce(webClient, ".o_cohort_no_data");
-        assert.containsNone(webClient, "div.o_view_nocontent");
+        assert.containsOnce(target, ".o_cohort_no_data");
+        assert.containsNone(target, "div.o_view_nocontent");
 
         // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
-        await toggleMenuItemOption(webClient, "Date", "2016");
-        await toggleMenuItemOption(webClient, "Date", "2017");
+        await toggleMenuItemOption(target, "Date", "2016");
+        await toggleMenuItemOption(target, "Date", "2017");
 
         verifyContents(
             [],
             "with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')"
         );
-        assert.containsNone(webClient, ".o_cohort_no_data");
-        assert.containsOnce(webClient, "div.o_view_nocontent");
+        assert.containsNone(target, ".o_cohort_no_data");
+        assert.containsOnce(target, "div.o_view_nocontent");
     });
 
     QUnit.test("verify context", async function (assert) {
@@ -740,7 +738,7 @@ QUnit.module("Views", (hooks) => {
             resModel: "subscription",
             serverData,
             context: { search_default_small_than_0: true },
-            noContentHelp: '<p class="abc">click to add a foo</p>',
+            noContentHelp: owl.markup('<p class="abc">click to add a foo</p>'),
             config: {
                 views: [[false, "search"]],
             },
@@ -770,7 +768,7 @@ QUnit.module("Views", (hooks) => {
             resModel: "subscription",
             serverData,
             context: { search_default_small_than_0: true },
-            noContentHelp: '<p class="abc">click to add a foo</p>',
+            noContentHelp: owl.markup('<p class="abc">click to add a foo</p>'),
             config: {
                 views: [[false, "search"]],
             },
@@ -803,7 +801,7 @@ QUnit.module("Views", (hooks) => {
             type: "cohort",
             resModel: "subscription",
             serverData,
-            noContentHelp: '<p class="abc">click to add a foo</p>',
+            noContentHelp: owl.markup('<p class="abc">click to add a foo</p>'),
             config: {
                 views: [[false, "search"]],
             },

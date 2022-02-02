@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="web_map.MapView" owl="1">
-        <Layout viewType="'map'">
+        <Layout viewType="'map'" className="props.className">
             <t t-set-slot="control-panel-bottom-left">
                 <t t-call="{{ constructor.buttonTemplate }}"/>
             </t>

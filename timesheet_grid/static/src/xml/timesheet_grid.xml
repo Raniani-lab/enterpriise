@@ -23,17 +23,20 @@
                 timer="stateTimer.startSeconds" description="stateTimer.description"
                 timerRunning="stateTimer.timerRunning" timerReadOnly="stateTimer.readOnly"
                 projectName="stateTimer.projectName" taskName="stateTimer.taskName"
-                t-on-timer-started="_onTimerStarted" t-on-timer-stopped="_stop_timer"
-                t-on-timer-unlink="_onTimerUnlink" t-on-timer-edit-project="_onSetProject"
-                t-on-timer-edit-task="_onSetTask" t-on-new-timer-value="_onNewTimerValue"
-                t-on-new-description="_onNewDescription" t-ref="timerHeader"/>
+                onTimerStarted.bind="_onTimerStarted" onTimerStopped.bind="_stop_timer"
+                onTimerUnlink.bind="_onTimerUnlink" onTimerEditProject.bind="_onSetProject"
+                onTimerEditTask.bind="_onSetTask" onNewTimerValue.bind="_onNewTimerValue"
+                onNewDescription.bind="_onNewDescription" bus="_bus"/>
             </t>
         </xpath>
     </t>
 
-    <div t-name="timesheet_grid.timer_header" class="row px-5 align-items-center timesheet-timer py-2" owl="1">
+    <div t-name="timesheet_grid.timer_header" class="row px-5 align-items-center timesheet-timer py-2" owl="1" t-on-timer-started="props.onTimerStarted" t-on-timer-stopped="props.onTimerStopped"
+                t-on-timer-unlink="props.onTimerUnlink" t-on-timer-edit-project="props.onTimerEditProject"
+                t-on-timer-edit-task="props.onTimerEditTask" t-on-new-timer-value="props.onNewTimerValue"
+                t-on-new-description="props.onNewDescription">
         <t t-if="_timerIsRunning">
-            <button class="my-2 mr-2 btn btn-primary btn_stop_timer" t-on-click="_onClickStopTimer()" t-ref="stopButton" data-hotkey="z">
+            <button class="my-2 mr-2 btn btn-primary btn_stop_timer" t-on-click="_onClickStopTimer" t-ref="stopButton" data-hotkey="z">
                 Stop
             </button>
             <div class="p-2 input_timer">
@@ -67,7 +70,7 @@
         <t t-else="">
             <div class="d-flex col-sm-12 align-items-center">
                 <div class="my-2 pr-2" id="start">
-                    <button class="btn btn_start_timer" t-on-click="_onClickStartTimer()" t-ref="startButton"><i class="fa fa-play"></i> Start</button>
+                    <button class="btn btn_start_timer" t-on-click="_onClickStartTimer" t-ref="startButton"><i class="fa fa-play"></i> Start</button>
                 </div>
                 <div class="p-2">
                     <span t-if="timerMode"><span class="text-muted">use a hot key to</span> add <t t-esc="props.stepTimer"/> min</span>
@@ -99,7 +102,7 @@
                 <t t-set="timesheet" t-value="grid.rows[rowlabel_index].timesheet" />
                 <t t-set="pathrow" t-value="path.concat([rowlabel_index]).join('.')"/>
                 <TimerStartComponent path="pathrow" index="rowlabel_index" runningIndex="stateTimer.indexRunning"
-                    addTimeMode="stateTimer.addTimeMode" t-on-timer-started-from-line="_onClickStartTimerFromLine"/>
+                    addTimeMode="stateTimer.addTimeMode" onTimerStartedFromLine.bind="_onClickStartTimerFromLine"/>
             </th>
         </xpath>
         <xpath expr="//div[@t-att-title='label']/t[@t-if='label']" position="replace">
@@ -120,8 +123,8 @@
         </xpath>
     </t>
 
-    <span t-name="timesheet_grid.start_timer" class="d-inline-flex" owl="1">
-        <button type="button" t-on-click="_onClickTimer()" class="btn_timer_line" t-att-class="iconClass">
+    <span t-name="timesheet_grid.start_timer" class="d-inline-flex" owl="1" t-on-timer-started-from-line="props.onTimerStartedFromLine">
+        <button type="button" t-on-click="_onClickTimer" class="btn_timer_line" t-att-class="iconClass">
             <span t-esc="letter"/>
         </button>
     </span>
@@ -138,7 +141,7 @@
                 <t t-set="cellReadOnly" t-value="!props.editableCells || cell.readonly"/>
                 <div t-att-class="_getCellClassMap(cell)" t-attf-data-path="cellPath">
                     <t t-if="cell.size or !cellReadOnly">
-                        <i class="fa fa-search-plus o_grid_cell_information" t-on-click="_onClickCellInformation(cellPath)"
+                        <i class="fa fa-search-plus o_grid_cell_information" t-on-click="() => this._onClickCellInformation(cellPath)"
                             title="See all the records aggregated in this cell">
                         </i >
                     </t>

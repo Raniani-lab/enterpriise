@@ -13,7 +13,7 @@ import ViewsWidget from '@stock_barcode/widgets/views_widget';
 import ViewsWidgetAdapter from '@stock_barcode/components/views_widget_adapter';
 import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
 
-const { Component, useState, useSubEnv } = owl;
+const { Component, onMounted, onWillStart, onWillUnmount, useState, useSubEnv } = owl;
 
 /**
  * Main Component
@@ -29,6 +29,7 @@ class MainComponent extends Component {
     setup() {
         this.rpc = useService('rpc');
         this.orm = useService('orm');
+        this.notification = useService('notification');
         this.state = useState({
             displayDestinationSelection: false,
             displaySourceSelection: false,
@@ -40,36 +41,36 @@ class MainComponent extends Component {
         const model = this._getModel(this.props);
         useSubEnv({model});
         this._scrollBehavior = 'smooth';
-    }
 
-    async willStart() {
-        const barcodeData = await this.rpc(
-            '/stock_barcode/get_barcode_data',
-            {
-                model: this.props.model,
-                res_id: this.props.id || false,
-            }
-        );
-        this.groups = barcodeData.groups;
-        this.env.model.setData(barcodeData);
-        this.env.model.on('process-action', this, this._onDoAction);
-        this.env.model.on('notification', this, this._onNotification);
-        this.env.model.on('refresh', this, this._onRefreshState);
-        this.env.model.on('update', this, this.render);
-        this.env.model.on('do-action', this, args => this.trigger('do-action', args));
-        this.env.model.on('history-back', this, () => this.env.config.historyBack());
-    }
+        onWillStart(async () => {
+            const barcodeData = await this.rpc(
+                '/stock_barcode/get_barcode_data',
+                {
+                    model: this.props.model,
+                    res_id: this.props.id || false,
+                }
+            );
+            this.groups = barcodeData.groups;
+            this.env.model.setData(barcodeData);
+            this.env.model.on('process-action', this, this._onDoAction);
+            this.env.model.on('notification', this, this._onNotification);
+            this.env.model.on('refresh', this, this._onRefreshState);
+            this.env.model.on('update', this, this.render);
+            this.env.model.on('do-action', this, args => this.trigger('do-action', args));
+            this.env.model.on('history-back', this, () => this.env.config.historyBack());
+        });
 
-    mounted() {
-        core.bus.on('barcode_scanned', this, this._onBarcodeScanned);
-        this.el.addEventListener('edit-line', this._onEditLine.bind(this));
-        this.el.addEventListener('exit', this.exit.bind(this));
-        this.el.addEventListener('open-package', this._onOpenPackage.bind(this));
-        this.el.addEventListener('refresh', this._onRefreshState.bind(this));
-    }
+        onMounted(() => {
+            core.bus.on('barcode_scanned', this, this._onBarcodeScanned);
+            this.el.addEventListener('edit-line', this._onEditLine.bind(this));
+            this.el.addEventListener('exit', this.exit.bind(this));
+            this.el.addEventListener('open-package', this._onOpenPackage.bind(this));
+            this.el.addEventListener('refresh', this._onRefreshState.bind(this));
+        });
 
-    willUnmount() {
-        core.bus.off('barcode_scanned', this, this._onBarcodeScanned);
+        onWillUnmount(() => {
+            core.bus.off('barcode_scanned', this, this._onBarcodeScanned);
+        });
     }
 
     //--------------------------------------------------------------------------
@@ -251,10 +252,11 @@ class MainComponent extends Component {
     //--------------------------------------------------------------------------
 
     _getModel(params) {
+        const { rpc, orm, notification } = this;
         if (params.model === 'stock.picking') {
-            return new BarcodePickingModel(params);
+            return new BarcodePickingModel(params, { rpc, orm, notification });
         } else if (params.model === 'stock.quant') {
-            return new BarcodeQuantModel(params);
+            return new BarcodeQuantModel(params, { rpc, orm, notification });
         } else {
             throw new Error('No JS model define');
         }

@@ -347,7 +347,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
             _.each(self.fieldSelector, function (fieldType, directiveKey) {
                 var directiveTarget = self.fieldSelector[directiveKey];
                 var target = e.target;
-                if (directiveTarget instanceof Component) {
+                if (directiveTarget instanceof FieldWrapper) {
                     directiveTarget = directiveTarget.componentRef.comp;
                     target = e.data.__originalComponent
                 }
@@ -1413,7 +1413,7 @@ var TOptions = AbstractEditComponent.extend( {
         var defs = _.map(this.widget.options, function (option) {
             var $option = $options.find('.o_web_studio_toption_option_' + self.widget.key + '_' + option.key);
             var field = self.fieldSelector[self.widget.key + ':' + option.key];
-            if (field instanceof Component) {
+            if (field instanceof FieldWrapper) {
                 mountedComponents.push(field);
                 if (option.type === "boolean") {
                     return field.mount($option.find('label')[0], {position: 'first-child'});

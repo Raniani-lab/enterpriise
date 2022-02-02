@@ -1,48 +1,35 @@
 /** @odoo-module **/
 
-import core from 'web.core';
+import { useService } from "@web/core/utils/hooks";
 
 const { Component } = owl;
 
-const _t = core._t;
-
 export class PayrollDashboardPayslipBatch extends Component {
-
-    /**
-     * @returns {object} Complete data provided as props
-     */
-    get data() {
-        return this.props['data'];
+    setup() {
+        this.actionService = useService("action");
     }
 
     /**
      * Handles clicking on the title
-     *
-     * @private
-     * @param {MouseEvent} ev
      */
-    _onClickTitle(ev) {
-        this.trigger('do-action', {
-            action: 'hr_payroll.action_hr_payslip_run_tree',
-        });
+    onClickTitle() {
+        this.actionService.doAction('hr_payroll.action_hr_payslip_run_tree');
     }
 
     /**
      * Handles clicking on the line
      *
-     * @private
-     * @param {number} BatchID
+     * @param {number} batchID
+     * @param {string} batchNames
      */
-    _onClickLine(BatchID, BatchName) {
-        this.trigger('do-action', {
-            action: {
-                name: BatchName,
-                type: 'ir.actions.act_window',
-                name: _t('Employee Payslips'),
-                res_model: 'hr.payslip.run',
-                res_id: BatchID,
-                views: [[false, 'form']],
-            }
+    onClickLine(batchID, batchName) {
+        this.actionService.doAction({
+            name: batchName,
+            type: 'ir.actions.act_window',
+            name: this.env._t('Employee Payslips'),
+            res_model: 'hr.payslip.run',
+            res_id: batchID,
+            views: [[false, 'form']],
         });
     }
 }

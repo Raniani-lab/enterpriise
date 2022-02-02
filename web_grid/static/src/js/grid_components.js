@@ -3,26 +3,29 @@ odoo.define('web_grid.components', function (require) {
 
     const fieldUtils = require('web.field_utils');
     const utils = require('web.utils');
+    const { debounce } = require("@web/core/utils/timing");
 
-    const { Component, debounce, useRef, useState } = owl;
+    const { Component, onPatched, onWillUpdateProps, useRef, useState } = owl;
 
 
     class BaseGridComponent extends Component {
-        constructor() {
-            super(...arguments);
+        setup() {
             this.currentInput = useRef("currentInput");
             this.state = useState({
                 error: false,
             });
+
+            onWillUpdateProps(this.onWillUpdateProps);
+            onPatched(this.onPatched);
         }
-        willUpdateProps(nextProps) {
+        onWillUpdateProps(nextProps) {
             if (nextProps.date !== this.props.date) {
                 // if we change the range of dates we are looking at, the
                 // component must remove it's error state
                 this.state.error = false;
             }
         }
-        patched() {
+        onPatched() {
             if (this.currentInput.el) {
                 this.currentInput.el.select();
             }
@@ -126,14 +129,23 @@ odoo.define('web_grid.components', function (require) {
             optional: true
         },
         fieldInfo: Object,
-        hasBarChartTotal: Boolean,
+        hasBarChartTotal: {
+            type: Boolean,
+            optional: true,
+        },
         isInput: Boolean,
-        nodeOptions: Object,
+        nodeOptions: {
+            type: Object,
+            optional: true,
+        },
         path: {
             type: String,
             optional: true
         },
-        readonly: Boolean,
+        readonly: {
+            type: Boolean,
+            optional: true,
+        },
         isTotal: {
             type: Boolean,
             optional: true
@@ -161,15 +173,15 @@ odoo.define('web_grid.components', function (require) {
 
 
     class FloatToggleComponent extends BaseGridComponent {
-        constructor() {
-            super(...arguments);
+        setup() {
+            super.setup();
             this.state = useState({
                 disabled: false,
                 value: this.initialValue,
             });
             this._onClickButton = debounce(this._onClickButton, 200, true);
         }
-        willUpdateProps(nextProps) {
+        onWillUpdateProps(nextProps) {
             if (nextProps.cellValue !== this.initialValue) {
                 this.state.value = nextProps.cellValue;
             }

@@ -2,59 +2,7 @@
 
 import { deepMerge } from "./connector_utils";
 
-const { Component, css } = owl;
-
-
-const STYLE = css`
-        .o_connector {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            &.o_connector_hovered {
-                z-index: 2;
-            }
-            .o_connector_stroke_button {
-                > rect {
-                    cursor: pointer;
-                    stroke: #091124;
-                    stroke-width: 24px;
-                    fill: white;
-                }
-                &.o_connector_stroke_reschedule_button {
-                    line {
-                        stroke: #00a09d;
-                    }
-                    &:hover{
-                        > rect {
-                            fill: #00a09d;
-                        }
-                        line {
-                            stroke: white;
-                        }
-                    }
-                }
-                &.o_connector_stroke_remove_button {
-                    g {
-                        rect {
-                            fill: #dd3c4f;
-                        }
-                    }
-                    &:hover{
-                        > rect {
-                            fill: #dd3c4f;
-                        }
-                        g {
-                            rect {
-                                fill: white;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-`;
+const { Component, onWillUpdateProps } = owl;
 
 class Connector extends Component {
 
@@ -67,6 +15,8 @@ class Connector extends Component {
      */
     setup() {
         this._refreshPropertiesFromProps(this.props);
+
+        onWillUpdateProps(this.onWillUpdateProps);
     }
 
     /**
@@ -75,7 +25,7 @@ class Connector extends Component {
      * @param nextProps
      * @returns {Promise<void>}
      */
-    async willUpdateProps(nextProps) {
+    async onWillUpdateProps(nextProps) {
         this._refreshPropertiesFromProps(nextProps);
     }
 
@@ -248,7 +198,7 @@ class Connector extends Component {
             data: deepMerge(this.props.data),
             id: this.props.id,
         };
-        this.trigger('remove-button-click', payload);
+        this.props.onRemoveButtonClick(payload);
     }
     /**
      * Handler for connector_stroke_buttons reschedule sooner click event.
@@ -260,7 +210,7 @@ class Connector extends Component {
             data: deepMerge(this.props.data),
             id: this.props.id,
         };
-        this.trigger('reschedule-sooner-click', payload);
+        this.props.onRescheduleSoonerButtonClick(payload);
     }
     /**
      * Handler for connector_stroke_buttons reschedule later click event.
@@ -272,7 +222,7 @@ class Connector extends Component {
             data: deepMerge(this.props.data),
             id: this.props.id,
         };
-        this.trigger('reschedule-later-click', payload);
+        this.props.onRescheduleLaterButtonClick(payload);
     }
 
 }
@@ -345,8 +295,15 @@ Object.assign(Connector, {
             type: Object,
         },
         target: endProps,
+        onRemoveButtonClick: { type: Function, optional: true },
+        onRescheduleSoonerButtonClick: { type: Function, optional: true },
+        onRescheduleLaterButtonClick: { type: Function, optional: true },
     },
-    style: STYLE,
+    defaultProps: {
+        onRemoveButtonClick: () => {},
+        onRescheduleSoonerButtonClick: () => {},
+        onRescheduleLaterButtonClick: () => {},
+    },
     template: 'connector',
 
     // -----------------------------------------------------------------------------

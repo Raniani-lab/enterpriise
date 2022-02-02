@@ -6,15 +6,15 @@
             <t t-call="web.ControlPanel" />
         </t>
         <t t-else="">
-            <div class="o_control_panel">
+            <div t-ref="mobile_control_panel" class="o_control_panel">
                 <t t-if="state.showMobileSearch">
-                    <Portal target="'body'">
+                    <t t-portal="'body'">
                         <div class="o_searchview o_mobile_search">
                             <div class="o_mobile_search_header">
                                 <button
                                     type="button"
                                     class="o_mobile_search_button btn"
-                                    t-on-click="state.showMobileSearch = false"
+                                    t-on-click="() => state.showMobileSearch = false"
                                 >
                                     <i class="fa fa-arrow-left"/>
                                     <strong class="ml8">FILTER</strong>
@@ -22,7 +22,7 @@
                                 <button
                                     type="button"
                                     class="o_mobile_search_button btn"
-                                    t-on-click="env.searchModel.clearQuery()"
+                                    t-on-click="() => env.searchModel.clearQuery()"
                                 >
                                     CLEAR
                                 </button>
@@ -46,12 +46,12 @@
                             <button
                                 type="button"
                                 class="btn btn-primary o_mobile_search_footer"
-                                t-on-click="state.showMobileSearch = false"
+                                t-on-click="() => state.showMobileSearch = false"
                             >
                                 SEE RESULT
                             </button>
                         </div>
-                    </Portal>
+                    </t>
                 </t>
                 <t t-else="">
                     <div t-if="display['top']" class="o_cp_top">
@@ -63,7 +63,7 @@
                         <t t-if="display['top-right']">
                             <button type="button" class="o_enable_searchview btn btn-link oi oi-large"
                                 t-att-class="state.showSearchBar ? 'oi-arrow--left' : 'oi-search'"
-                                t-on-click="state.showSearchBar = !state.showSearchBar"
+                                t-on-click="() => state.showSearchBar = !state.showSearchBar"
                             />
                             <t t-if="state.showSearchBar">
                                 <t t-slot="control-panel-top-right">
@@ -71,7 +71,7 @@
                                     <button
                                         type="button"
                                         class="o_toggle_searchview_full btn fa fa-filter"
-                                        t-on-click="state.showMobileSearch = !state.showMobileSearch"
+                                        t-on-click="() => state.showMobileSearch = !state.showMobileSearch"
                                     />
                                 </t>
                             </t>
@@ -103,7 +103,7 @@
                                             <button class="btn btn-light oi oi-large o_switch_view"
                                                 t-attf-class="o_{{view.type}} {{view.icon}} {{view.active ? 'active' : ''}}"
                                                 t-att-data-tooltip="view.name"
-                                                t-on-click="onViewClicked(view.type)"
+                                                t-on-click="() => this.onViewClicked(view.type)"
                                             />
                                         </t>
                                     </Dropdown>
@@ -122,7 +122,7 @@
             <t t-if="breadcrumbs.length > 1">
                 <t t-set="breadcrumb" t-value="breadcrumbs[breadcrumbs.length - 2]" />
                 <li class="breadcrumb-item o_back_button btn btn-secondary"
-                    t-on-click.prevent="onBreadcrumbClicked(breadcrumb.jsId)"
+                    t-on-click.prevent="() => this.onBreadcrumbClicked(breadcrumb.jsId)"
                 />
             </t>
             <li t-if="breadcrumbs.length > 0" class="breadcrumb-item active">

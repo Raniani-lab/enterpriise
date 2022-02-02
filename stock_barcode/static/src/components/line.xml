@@ -69,15 +69,15 @@
                         t-attf-class="{{qtyDone == qtyDemand ? 'fa-check' : 'fa-times'}}"/>
                 </button>
                 <span t-attf-class="{{env.model.incrementButtonsDisplayStyle}}">
-                    <button t-if="env.model.getDisplayDecrementBtn(line)" name="decrementButton" t-on-click="addQuantity(-1)"
+                    <button t-if="env.model.getDisplayDecrementBtn(line)" name="decrementButton" t-on-click="(ev) => this.addQuantity(-1, ev)"
                         class="o_line_button o_remove_unit btn btn-primary ml-2 ml-sm-4"
                         t-attf-disabled="{{qtyDone &lt;= 0 || qtyDone == '?'}}">-1</button>
                     <button t-if="env.model.getDisplayIncrementBtn(line)" name="incrementButton"
-                        t-on-click="addQuantity(incrementQty)" t-esc="'+' + incrementQty"
+                        t-on-click="(ev) => this.addQuantity(incrementQty, ev)" t-esc="'+' + incrementQty"
                         class="o_line_button o_add_quantity btn btn-primary ml-2 ml-sm-4"/>
                 </span>
                 <button t-if="isSelected and env.model.getDisplayIncrementPackagingBtn(line)" name="incrementPackagingButton"
-                    t-on-click="addQuantity(line.product_packaging_uom_qty)"
+                    t-on-click="(ev) => this.addQuantity(line.product_packaging_uom_qty, ev)"
                     class="o_line_button w-100 btn btn-primary my-3 d-block">
                     <div class="text-capitalize">
                         + <t t-esc="line.product_packaging_id.name"/>

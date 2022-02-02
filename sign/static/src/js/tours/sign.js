@@ -6,9 +6,11 @@ import { _t } from "web.core";
 import { Markup } from "web.utils";
 import tour from "web_tour.tour";
 
+const { markup } = owl;
+
 tour.register('sign_tour', {
     url: "/web",
-    rainbowManMessage: "<b>Congratulations</b>, your first document is fully signed!",
+    rainbowManMessage: markup(_t("<b>Congratulations</b>, your first document is fully signed!")),
     sequence: 150,
 },  [tour.stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sign.menu_document"]',
@@ -74,7 +76,7 @@ tour.register('sign_tour', {
 
 tour.register('sign_tour_with_multiple_signatures', {
     url: "/web",
-    rainbowManMessage: "<b>Congratulations</b>, your first document is fully signed!",
+    rainbowManMessage: markup(_t("<b>Congratulations</b>, your first document is fully signed!")),
     sequence: 150,
 },  [tour.stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sign.menu_document"]',

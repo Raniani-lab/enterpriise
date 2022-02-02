@@ -6,6 +6,7 @@ odoo.define('account_accountant.tour', function (require) {
     const tour = require('web_tour.tour');
 
     const _t = core._t;
+    const { markup } = owl;
 
     // Update the invoicing tour as the menu items have changed, but we want the test to still work
     tour.tours.account_tour.steps.splice(0, 3,
@@ -27,7 +28,7 @@ odoo.define('account_accountant.tour', function (require) {
                 if (!tour._isTourConsumed('account_tour')) {
                     message += _t('<br>See how to manage your customer invoices in the <b>Customers/Invoices</b> menu');
                 }
-                return message;
+                return markup(message);
             },
             url: "/web",
             sequence: 50,

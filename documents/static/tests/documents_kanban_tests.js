@@ -6,6 +6,7 @@ const DocumentsKanbanController = require('documents.DocumentsKanbanController')
 const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const DocumentsListView = require('documents.DocumentsListView');
 const { createDocumentsView } = require('documents.test_utils');
+const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 
 const {
     afterEach,
@@ -2530,6 +2531,7 @@ QUnit.module('documents_kanban_tests.js', {
         // reload with a domain
         await toggleFilterMenu(kanban.el);
         await toggleMenuItem(kanban.el, "OwO");
+        await legacyExtraNextTick();
 
         assert.containsOnce(kanban, '.o_record_selected',
             "record should still be selected");

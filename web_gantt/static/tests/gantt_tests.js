@@ -6,8 +6,11 @@ var GanttView = require('web_gantt.GanttView');
 var GanttRenderer = require('web_gantt.GanttRenderer');
 var GanttRow = require('web_gantt.GanttRow');
 const SampleServer = require('web.SampleServer');
+const session = require("web.session");
 var testUtils = require('web.test_utils');
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+const { registerCleanup } = require("@web/../tests/helpers/cleanup");
+const { getFixture, patchWithCleanup } = require('@web/../tests/helpers/utils');
 
 const patchDate = testUtils.mock.patchDate;
 const nextTick = testUtils.nextTick;
@@ -18,6 +21,8 @@ var initialDate = new Date(2018, 11, 20, 8, 0, 0);
 initialDate = new Date(initialDate.getTime() - initialDate.getTimezoneOffset() * 60 * 1000);
 
 const { toggleFilterMenu, toggleMenuItem } = require("@web/../tests/search/helpers");
+
+const { markup } = owl;
 
 const FORMAT = "YYYY-MM-DD HH:mm:ss";
 // This function is used to be sure that the unavailabilities will be displayed
@@ -877,9 +882,8 @@ QUnit.module('Views', {
         };
         const serverData = {models: this.data, views};
 
-        const webClient = await createWebClient({
-          serverData,
-        });
+        const target = getFixture();
+        const webClient = await createWebClient({ serverData });
 
         await doAction(webClient, {
             name: 'Gantt',
@@ -889,26 +893,26 @@ QUnit.module('Views', {
         });
 
         // the gantt view should be in sample mode
-        assert.hasClass($(webClient.el).find('.o_view_controller'), 'o_view_sample_data');
-        assert.ok($(webClient.el).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
-        const content = $(webClient.el).find('.o_view_controller').text();
+        assert.hasClass($(target).find('.o_view_controller'), 'o_view_sample_data');
+        assert.ok($(target).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        const content = $(target).find('.o_view_controller').text();
 
         // switch to list view
-        await testUtils.dom.click($(webClient.el).find('.o_cp_bottom_right .o_switch_view.o_list'));
+        await testUtils.dom.click($(target).find('.o_cp_bottom_right .o_switch_view.o_list'));
         await nextTick();
 
-        assert.containsOnce(webClient, '.o_list_view');
+        assert.containsOnce(target, '.o_list_view');
 
         // go back to gantt view
-        await testUtils.dom.click($(webClient.el).find('.o_cp_bottom_right .o_switch_view.o_gantt'));
+        await testUtils.dom.click($(target).find('.o_cp_bottom_right .o_switch_view.o_gantt'));
         await nextTick();
 
-        assert.containsOnce(webClient, '.o_gantt_view');
+        assert.containsOnce(target, '.o_gantt_view');
 
         // the gantt view should be still in sample mode
-        assert.hasClass($(webClient.el).find('.o_view_controller'), 'o_view_sample_data');
-        assert.ok($(webClient.el).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
-        assert.strictEqual($(webClient.el).find('.o_view_controller').text(), content);
+        assert.hasClass($(target).find('.o_view_controller'), 'o_view_sample_data');
+        assert.ok($(target).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
+        assert.strictEqual($(target).find('.o_view_controller').text(), content);
     });
 
     QUnit.test('empty gantt with sample="1"', async function (assert) {
@@ -1236,7 +1240,7 @@ QUnit.module('Views', {
             viewOptions: {
                 initialDate: new Date(2018, 10, 15, 8, 0, 0),
                 action: {
-                    help: '<p class="hello">click to add a partner</p>'
+                    help: markup('<p class="hello">click to add a partner</p>'),
                 }
             },
         });
@@ -4578,7 +4582,16 @@ document.createElement("a").classList.contains
     QUnit.test("plan dialog initial domain has the action domain as its only base",
         async function (assert) {
             assert.expect(14);
+
             const unpatchDate = patchDate(2018, 11, 20, 8, 0, 0);
+            registerCleanup(unpatchDate);
+
+            patchWithCleanup(session, {
+                getTZOffset() {
+                    return 0;
+                },
+            });
+
             const views = {
                 "tasks,false,gantt": `<gantt date_start="start" date_stop="stop"/>`,
                 "tasks,false,list": `<tree><field name="name"/></tree>`,
@@ -4592,6 +4605,7 @@ document.createElement("a").classList.contains
                 models: this.data,
                 views,
             };
+            const target = getFixture();
             const webClient = await createWebClient({
                 serverData,
                 mockRPC: function (route, args) {
@@ -4612,7 +4626,7 @@ document.createElement("a").classList.contains
             await doAction(webClient, ganttAction);
             assert.verifySteps(["start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
 
-            await testUtils.dom.triggerMouseEvent($(webClient.el).find(".o_gantt_cell_plan:first"), "click");
+            await testUtils.dom.triggerMouseEvent($(target).find(".o_gantt_cell_plan:first"), "click");
             await nextTick();
             assert.verifySteps(["|,start,=,false,stop,=,false"]);
 
@@ -4623,7 +4637,7 @@ document.createElement("a").classList.contains
             });
             assert.verifySteps(["project_id,=,1,start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
 
-            await testUtils.dom.triggerMouseEvent($(webClient.el).find(".o_gantt_cell_plan:first"), "click");
+            await testUtils.dom.triggerMouseEvent($(target).find(".o_gantt_cell_plan:first"), "click");
             await nextTick();
             assert.verifySteps(["&,project_id,=,1,|,start,=,false,stop,=,false"]);
 
@@ -4631,18 +4645,15 @@ document.createElement("a").classList.contains
             await doAction(webClient, ganttAction);
             assert.verifySteps(["start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
 
-            await toggleFilterMenu(webClient);
+            await toggleFilterMenu(target);
             await nextTick();
-            await toggleMenuItem(webClient, "Project 1");
+            await toggleMenuItem(target, "Project 1");
             await nextTick();
             assert.verifySteps(["project_id,=,1,start,<=,2018-12-31 23:59:59,stop,>=,2018-12-01 00:00:00"]);
 
-            await testUtils.dom.triggerMouseEvent($(webClient.el).find(".o_gantt_cell_plan:first"), "click");
+            await testUtils.dom.triggerMouseEvent($(target).find(".o_gantt_cell_plan:first"), "click");
             await nextTick();
             assert.verifySteps(["|,start,=,false,stop,=,false"]);
-
-            webClient.destroy();
-            unpatchDate();
         }
     );
 

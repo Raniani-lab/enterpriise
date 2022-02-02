@@ -8,8 +8,7 @@ class PdfGroupName extends Component {
     /**
      * @override
      */
-    constructor() {
-        super(...arguments);
+    setup() {
         this.state = useState({
             edit: false,
         });
@@ -59,6 +58,10 @@ class PdfGroupName extends Component {
 PdfGroupName.props = {
     groupId: String,
     name: String,
+    onEditName: {
+        type: Function,
+        optional: true,
+    }
 };
 
 PdfGroupName.template = 'documents.component.PdfGroupName';

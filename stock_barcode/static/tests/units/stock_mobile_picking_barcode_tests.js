@@ -4,6 +4,7 @@ odoo.define('stock_mobile_barcode.stock_picking_barcode_tests', function (requir
 const { mock } = require('web.test_utils');
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 const BarcodeScanner = require('@web_enterprise/webclient/barcode/barcode_scanner');
+const { destroy, getFixture } = require("@web/../tests/helpers/utils");
 
 QUnit.module('stock_mobile_barcode', {}, function () {
 
@@ -63,12 +64,14 @@ QUnit.test('scan barcode button in mobile device', async function (assert) {
         scanBarcode: async () => {},
     });
 
+    const target = getFixture();
+
     const webClient = await createWebClient({
         mockRPC: this.mockRPC,
     });
     await doAction(webClient, this.clientData.action);
-    assert.containsOnce(webClient, '.o_stock_mobile_barcode');
-    webClient.destroy();
+    assert.containsOnce(target, '.o_stock_mobile_barcode');
+    destroy(webClient);
     mock.unpatch(BarcodeScanner);
 });
 

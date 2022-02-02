@@ -4,8 +4,9 @@ odoo.define('web_map.MapRenderer', function (require) {
     "use strict";
 
     const AbstractRendererOwl = require('web.AbstractRendererOwl');
+    const { renderToString } = require('@web/core/utils/render');
 
-    const { useRef, useState } = owl;
+    const { useRef, useState, onWillStart, onMounted, onPatched, onWillUpdateProps, onWillUnmount } = owl;
 
     const apiTilesRouteWithToken =
         'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
@@ -37,8 +38,8 @@ odoo.define('web_map.MapRenderer', function (require) {
         /**
          * @constructor
          */
-        constructor() {
-            super(...arguments);
+        setup() {
+            super.setup();
             this.leafletMap = null;
             this.markers = [];
             this.polylines = [];
@@ -46,26 +47,34 @@ odoo.define('web_map.MapRenderer', function (require) {
             this.state = useState({
                 closedGroupIds: [],
             });
+            this.nextId = 1;
+
+            onWillStart(this.onWillStart);
+            // Initialize and mount map.
+            onMounted(this.onMounted);
+            // Update position in the map, markers and routes.
+            onPatched(this.onPatched);
+            // Update group opened/closed state.
+            onWillUpdateProps(this.onWillUpdateProps);
+            // Remove map and the listeners on its markers and routes.
+            onWillUnmount(this.onWillUnmount);
         }
-        /**
-         * Load marker icons.
-         *
-         * @override
-         */
-        async willStart() {
+
+        async onWillStart() {
             const p = { method: 'GET' };
-            [this._pinCircleSVG, this._pinNoCircleSVG] = await Promise.all([
+            const [pinCircleSVG, pinNoCircleSVG] = await Promise.all([
                 this.env.services.httpRequest('web_map/static/img/pin-circle.svg', p, 'text'),
                 this.env.services.httpRequest('web_map/static/img/pin-no-circle.svg', p, 'text'),
             ]);
-            return super.willStart(...arguments);
+            [this._pinCircleSVG, this._pinNoCircleSVG] = [
+                owl.markup(pinCircleSVG),
+                owl.markup(pinNoCircleSVG),
+            ];
         }
         /**
          * Initialize and mount map.
-         *
-         * @override
          */
-        mounted() {
+        onMounted() {
             this.leafletMap = L.map(this.mapContainerRef.el, {
                 maxBounds: [L.latLng(180, -180), L.latLng(-180, 180)],
             });
@@ -79,34 +88,26 @@ odoo.define('web_map.MapRenderer', function (require) {
                 accessToken: this.props.mapBoxToken,
             }).addTo(this.leafletMap);
             this._updateMap();
-            super.mounted(...arguments);
         }
         /**
          * Update position in the map, markers and routes.
-         *
-         * @override
          */
-        patched() {
+        onPatched() {
             this._updateMap();
-            super.patched(...arguments);
         }
         /**
          * Update group opened/closed state.
-         *
-         * @override
+         * @param {Object} nextProps
          */
-        willUpdateProps(nextProps) {
+        onWillUpdateProps(nextProps) {
             if (this.props.groupBy !== nextProps.groupBy) {
                 this.state.closedGroupIds = [];
             }
-            return super.willUpdateProps(...arguments);
         }
         /**
          * Remove map and the listeners on its markers and routes.
-         *
-         * @override
          */
-        willUnmount() {
+        onWillUnmount() {
             for (const marker of this.markers) {
                 marker.off('click');
             }
@@ -114,7 +115,6 @@ odoo.define('web_map.MapRenderer', function (require) {
                 polyline.off('click');
             }
             this.leafletMap.remove();
-            super.willUnmount(...arguments);
         }
 
         //----------------------------------------------------------------------
@@ -183,7 +183,7 @@ odoo.define('web_map.MapRenderer', function (require) {
                 // Icon creation
                 const iconInfo = {
                     className: 'o_map_marker',
-                    html: this.env.qweb.renderToString('web_map.legacy.marker', params),
+                    html: renderToString('web_map.legacy.marker', params),
                 };
 
                 // Attach marker with icon and popup
@@ -244,7 +244,7 @@ odoo.define('web_map.MapRenderer', function (require) {
         _createMarkerPopup(markerInfo) {
             const popupFields = this._getMarkerPopupFields(markerInfo);
             const partner = markerInfo.record.partner;
-            const popupHtml = this.env.qweb.renderToString('web_map.legacy.markerPopup', {
+            const popupHtml = renderToString('web_map.legacy.markerPopup', {
                 fields: popupFields,
                 hasFormView: this.props.hasFormView,
                 url: `https://www.google.com/maps/dir/?api=1&destination=${partner.partner_latitude},${partner.partner_longitude}`,
@@ -307,6 +307,7 @@ odoo.define('web_map.MapRenderer', function (require) {
             if (markerInfo.ids.length > 1) {
                 if (!this.props.hideAddress) {
                     fieldsView.push({
+                        id: this.nextId++,
                         value: record.partner.contact_address_complete,
                         string: this.env._t("Address"),
                     });
@@ -315,12 +316,14 @@ odoo.define('web_map.MapRenderer', function (require) {
             }
             if (!this.props.hideName) {
                 fieldsView.push({
+                    id: this.nextId++,
                     value: record.display_name,
                     string: this.env._t("Name"),
                 });
             }
             if (!this.props.hideAddress) {
                 fieldsView.push({
+                    id: this.nextId++,
                     value: record.partner.contact_address_complete,
                     string: this.env._t("Address"),
                 });
@@ -331,6 +334,7 @@ odoo.define('web_map.MapRenderer', function (require) {
                         record[field.fieldName][1] :
                         record[field.fieldName];
                     fieldsView.push({
+                        id: this.nextId++,
                         value: fieldName,
                         string: field.string,
                     });

@@ -3,8 +3,6 @@
 import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { patch } from "@web/core/utils/patch";
 
-const { Portal } = owl;
-
 //-------------------------------------------------------------------------
 // Helpers
 //-------------------------------------------------------------------------
@@ -85,8 +83,4 @@ patch(SearchPanel.prototype, "web_enterprise.SearchPanel", {
 
 patch(SearchPanel, "web_enterprise.SearchPanel", {
     template: "web_enterprise.SearchPanel",
-    components: {
-        ...SearchPanel.components,
-        Portal,
-    },
 });

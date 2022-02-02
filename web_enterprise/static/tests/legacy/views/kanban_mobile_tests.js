@@ -5,7 +5,7 @@ const KanbanView = require('web.KanbanView');
 const { createView, dom} = require('web.test_utils');
 const {_t} = require('web.core');
 
-const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const { legacyExtraNextTick, getFixture } = require("@web/../tests/helpers/utils");
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 
 let serverData;
@@ -417,6 +417,7 @@ QUnit.module('Views', {
     QUnit.test('mobile kanban view: preserve active column on grouped kanban view', async function (assert) {
         assert.expect(9);
 
+        const target = getFixture();
         const views = {
             'partner,false,kanban': '<kanban default_group_by="int_field">' +
                 '<templates><t t-name="kanban-box">' +
@@ -438,45 +439,45 @@ QUnit.module('Views', {
         });
 
         // basic rendering tests
-        assert.containsN(webClient, '.o_kanban_group', 5, "should have 5 columns");
-        assert.hasClass($(webClient.el).find('.o_kanban_mobile_tab:first'), 'o_current',
+        assert.containsN(target, '.o_kanban_group', 5, "should have 5 columns");
+        assert.hasClass($(target).find('.o_kanban_mobile_tab:first'), 'o_current',
             "by default, first tab should be active");
-        assert.hasClass($(webClient.el).find('.o_kanban_group:first'), 'o_current',
+        assert.hasClass($(target).find('.o_kanban_group:first'), 'o_current',
             "by default, first column should be active");
 
         // move to second column
-        await dom.click($(webClient.el).find('.o_kanban_mobile_tab:nth(1)'));
-        assert.hasClass($(webClient.el).find('.o_kanban_mobile_tab:nth(1)'), 'o_current',
+        await dom.click($(target).find('.o_kanban_mobile_tab:nth(1)'));
+        assert.hasClass($(target).find('.o_kanban_mobile_tab:nth(1)'), 'o_current',
             "second tab should be active");
-        assert.hasClass($(webClient.el).find('.o_kanban_group:nth(1)'), 'o_current',
+        assert.hasClass($(target).find('.o_kanban_group:nth(1)'), 'o_current',
             "second column should be active");
 
         // open a form view of the first record from active tab
-        await dom.click($(webClient.el).find('.o_kanban_group.o_current > .o_kanban_record:first'));
+        await dom.click($(target).find('.o_kanban_group.o_current > .o_kanban_record:first'));
         await legacyExtraNextTick();
 
         // go back to the kanban view with 'back' arrow button
-        await dom.click($(webClient.el).find('.o_back_button'));
+        await dom.click($(target).find('.o_back_button'));
         await legacyExtraNextTick();
 
         // check that second column is still active
-        assert.hasClass($(webClient.el).find('.o_kanban_mobile_tab:nth(1)'), 'o_current',
+        assert.hasClass($(target).find('.o_kanban_mobile_tab:nth(1)'), 'o_current',
             "second tab should still be active");
-        assert.hasClass($(webClient.el).find('.o_kanban_group:nth(1)'), 'o_current',
+        assert.hasClass($(target).find('.o_kanban_group:nth(1)'), 'o_current',
             "second column should still be active");
 
         // change the group by on view
-        await dom.click($(webClient.el).find('.o_enable_searchview')); // click search icon
-        await dom.click($(webClient.el).find('.o_toggle_searchview_full')); // open full screen search view
+        await dom.click($(target).find('.o_enable_searchview')); // click search icon
+        await dom.click($(target).find('.o_toggle_searchview_full')); // open full screen search view
         await dom.click($('.o_group_by_menu > .dropdown-toggle')); // open 'group by' drop-down
         await dom.click($('.o_group_by_menu .o_menu_item.dropdown-item')); // select first drop-down item
         await dom.click($('button.o_mobile_search_footer')); // click 'See Result' button
 
         // after the group by is changed, check that preserved active column should be cleared and
         // first available column should be set to active instead
-        assert.hasClass($(webClient.el).find('.o_kanban_mobile_tab:first'), 'o_current',
+        assert.hasClass($(target).find('.o_kanban_mobile_tab:first'), 'o_current',
             "first available tab should be active");
-        assert.hasClass($(webClient.el).find('.o_kanban_group:first'), 'o_current',
+        assert.hasClass($(target).find('.o_kanban_group:first'), 'o_current',
             "first available column should be active");
     });
 

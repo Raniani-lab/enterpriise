@@ -10,14 +10,20 @@ import {
 } from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
 import { dialogService } from "@web/core/dialog/dialog_service";
-import { click, makeDeferred, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    click,
+    makeDeferred,
+    nextTick,
+    patchWithCleanup,
+    destroy,
+    findChildren,
+} from "@web/../tests/helpers/utils";
 import { session } from "@web/session";
 import { browser } from "@web/core/browser/browser";
 import {
     makeFakeHTTPService,
     makeFakeLocalizationService,
 } from "@web/../tests/helpers/mock_services";
-import { Layout } from "@web/views/layout";
 import { MapRenderer } from "@web_map/map_view/map_renderer";
 
 const serviceRegistry = registry.category("services");
@@ -26,8 +32,7 @@ let serverData;
 const MAP_BOX_TOKEN = "token";
 
 function findMapRenderer(map) {
-    const layout = Object.values(map.__owl__.children).find((c) => c instanceof Layout);
-    return Object.values(layout.__owl__.children).find((c) => c instanceof MapRenderer);
+    return findChildren(map, (c) => c.component instanceof MapRenderer).component;
 }
 
 QUnit.module("Views", (hooks) => {
@@ -67,7 +72,7 @@ QUnit.module("Views", (hooks) => {
                         { id: 1, display_name: "FooProject", sequence: 1, partner_id: [1] },
                         { id: 2, display_name: "BarProject", sequence: 2, partner_id: [2] },
                         {
-                            id: 1,
+                            id: 3,
                             display_name: "FooBarProject",
                             sequence: 3,
                             partner_id: [1],
@@ -1137,7 +1142,7 @@ QUnit.module("Views", (hooks) => {
         });
         assert.notOk(map.model.metaData.resPartnerField, "the resPartnerField should not be set");
 
-        assert.hasClass(map.el, "o_map_view", 'should have the class "o_map_view"');
+        assert.hasClass(map.el, "o_action o_view_controller o_map_view");
         assert.containsOnce(map.el, ".leaflet-map-pane", "If the map exists this div should exist");
         assert.ok(
             map.el.querySelector(".leaflet-pane .leaflet-tile-pane").children.length,
@@ -2341,7 +2346,7 @@ QUnit.module("Views", (hooks) => {
             arch: `<map res_partner="partner_id" routing="1"/>`,
         });
 
-        map.destroy();
+        destroy(map);
 
         def.resolve();
         await nextTick();
@@ -2375,7 +2380,7 @@ QUnit.module("Views", (hooks) => {
             arch: `<map res_partner="partner_id" routing="1"/>`,
         });
 
-        map.destroy();
+        destroy(map);
 
         def.resolve();
         await nextTick();

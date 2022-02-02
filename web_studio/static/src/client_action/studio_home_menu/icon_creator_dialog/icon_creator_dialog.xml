@@ -2,7 +2,7 @@
 <templates>
 
 <t t-name="web_studio.IconCreatorDialogBody" owl="1">
-    <IconCreator editable="true" t-props="props.editedAppData" t-on-icon-changed.stop="onIconChanged"/>
+    <IconCreator editable="true" t-props="props.editedAppData" onIconChange.bind="onIconChanged"/>
 </t>
 
 <t t-name="web_studio.IconCreatorDialogFooter" owl="1">

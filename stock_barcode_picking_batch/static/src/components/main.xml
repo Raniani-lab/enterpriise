@@ -14,13 +14,13 @@
         <xpath expr="//div[hasclass('o_barcode_lines')]" position="before">
             <t t-if="displayBarcodeLines">
                 <t t-if="env.model.needPickingType">
-                    <t t-foreach="env.model.pickingTypes" t-as="line">
-                        <OptionLine t-key="line.id" line="line" additionalClass="'o_barcode_picking_type'"/>
+                    <t t-foreach="env.model.pickingTypes" t-as="line" t-key="line.id">
+                        <OptionLine line="line" additionalClass="'o_barcode_picking_type'"/>
                     </t>
                 </t>
                 <t t-elif="env.model.needPickings">
-                    <t t-foreach="env.model.allowedPickings" t-as="line">
-                        <OptionLine t-key="line.id" line="line" responsible="line.user_id.name || '-'"/>
+                    <t t-foreach="env.model.allowedPickings" t-as="line" t-key="line.id">
+                        <OptionLine line="line" responsible="line.user_id.name || '-'"/>
                     </t>
                 </t>
             </t>

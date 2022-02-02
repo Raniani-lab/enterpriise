@@ -5,13 +5,15 @@ import { makeWithSearch, setupControlPanelServiceRegistry } from "@web/../tests/
 import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
+import { getFixture } from "@web/../tests/helpers/utils";
 
 let serverData;
+let target;
 
 QUnit.module("Search", (hooks) => {
     hooks.beforeEach(async () => {
         setupControlPanelServiceRegistry();
-
+        target = getFixture();
         registry.category("services").add("ui", uiService);
 
         serverData = {
@@ -37,7 +39,7 @@ QUnit.module("Search", (hooks) => {
     QUnit.module("Control Panel (mobile)");
 
     QUnit.test("Display control panel mobile", async (assert) => {
-        const controlPanel = await makeWithSearch({
+        await makeWithSearch({
             serverData,
             resModel: "foo",
             Component: ControlPanel,
@@ -45,21 +47,20 @@ QUnit.module("Search", (hooks) => {
             searchViewId: false,
         });
 
-        assert.containsOnce(controlPanel.el, ".breadcrumb");
-        assert.containsOnce(controlPanel.el, ".o_enable_searchview");
-        assert.containsNone(controlPanel.el, ".o_searchview");
-        assert.containsNone(controlPanel.el, ".o_toggle_searchview_full");
+        assert.containsOnce(target, ".breadcrumb");
+        assert.containsOnce(target, ".o_enable_searchview");
+        assert.containsNone(target, ".o_searchview");
+        assert.containsNone(target, ".o_toggle_searchview_full");
 
-        await click(controlPanel.el, ".o_enable_searchview");
+        await click(target, ".o_enable_searchview");
 
-        assert.containsNone(controlPanel.el, ".breadcrumb");
-        assert.containsOnce(controlPanel.el, ".o_enable_searchview");
-        assert.containsOnce(controlPanel.el, ".o_searchview");
-        assert.containsOnce(controlPanel.el, ".o_toggle_searchview_full");
+        assert.containsNone(target, ".breadcrumb");
+        assert.containsOnce(target, ".o_enable_searchview");
+        assert.containsOnce(target, ".o_searchview");
+        assert.containsOnce(target, ".o_toggle_searchview_full");
 
-        await click(controlPanel.el, ".o_toggle_searchview_full");
+        await click(target, ".o_toggle_searchview_full");
 
-        assert.containsOnce(controlPanel.el, "portal");
         assert.containsOnce(document.body, ".o_searchview.o_mobile_search");
         assert.containsN(document.body, ".o_mobile_search .o_mobile_search_button", 2);
         assert.strictEqual(
@@ -71,16 +72,16 @@ QUnit.module("Search", (hooks) => {
 
         await click(document.body.querySelector(".o_mobile_search_button"));
 
-        assert.containsNone(controlPanel.el, ".breadcrumb");
-        assert.containsOnce(controlPanel.el, ".o_enable_searchview");
-        assert.containsOnce(controlPanel.el, ".o_searchview");
-        assert.containsOnce(controlPanel.el, ".o_toggle_searchview_full");
+        assert.containsNone(target, ".breadcrumb");
+        assert.containsOnce(target, ".o_enable_searchview");
+        assert.containsOnce(target, ".o_searchview");
+        assert.containsOnce(target, ".o_toggle_searchview_full");
 
-        await click(controlPanel.el, ".o_enable_searchview");
+        await click(target, ".o_enable_searchview");
 
-        assert.containsOnce(controlPanel.el, ".breadcrumb");
-        assert.containsOnce(controlPanel.el, ".o_enable_searchview");
-        assert.containsNone(controlPanel.el, ".o_searchview");
-        assert.containsNone(controlPanel.el, ".o_toggle_searchview_full");
+        assert.containsOnce(target, ".breadcrumb");
+        assert.containsOnce(target, ".o_enable_searchview");
+        assert.containsNone(target, ".o_searchview");
+        assert.containsNone(target, ".o_toggle_searchview_full");
     });
 });

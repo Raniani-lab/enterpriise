@@ -6,8 +6,8 @@ odoo.define('web_cohort.CohortRenderer', function (require) {
 
     class CohortRenderer extends OwlAbstractRenderer {
 
-        constructor() {
-            super(...arguments);
+        setup() {
+            super.setup();
             this.sampleDataTargets = ['table'];
         }
 

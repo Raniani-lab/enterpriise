@@ -11,7 +11,6 @@ odoo.define("web.SearchPanelMobile", function (require) {
         return;
     }
 
-
     //-------------------------------------------------------------------------
     // Helpers
     //-------------------------------------------------------------------------
@@ -103,9 +102,5 @@ odoo.define("web.SearchPanelMobile", function (require) {
 
     patch(SearchPanel, "web_enterprise.SearchPanel.Mobile", {
         template: "web_enterprise.Legacy.SearchPanel.Mobile",
-        components: {
-            ...SearchPanel.components,
-            Portal,
-        },
     });
 });

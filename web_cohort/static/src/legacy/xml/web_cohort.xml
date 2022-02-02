@@ -104,7 +104,7 @@
                     </th>
                 </tr>
                 <tr>
-                    <th t-foreach="_range(col_length)" t-as="intervalNumber">
+                    <th t-foreach="_range(col_length)" t-as="intervalNumber" t-key="intervalNumber">
                         <t t-if="props.timeline === 'backward'">
                             <t t-esc="intervalNumber - (col_length - 1)"/>
                         </t>
@@ -123,16 +123,14 @@
                         <t t-esc="_formatFloat(row.value)" />
                     </td>
                     <td t-foreach="row.columns" t-as="col" t-key="col.period">
-                        <t t-if="col.percentage !== ''">
-                            <t t-set="count" t-value="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)"/>
-                            <t t-set="measure" t-value="props.measures[props.measure]"/>
-                            <div class="o_cohort_highlight"
-                                t-attf-title="Periode: {{col.period}}&#10;{{measure}}: {{count}}"
-                                t-attf-style="background-color: rgba(0, 160, 157, {{col.percentage/100.0}}); color: {{col.percentage gt 50 and '#FFFFFF' or 'inherit'}}"
-                                t-att-class="{o_cohort_value: col.value !== '-'}">
-                                <t t-esc="_formatPercentage(col.percentage / 100.0)"/>
-                            </div>
-                        </t>
+                        <t t-set="count" t-value="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)"/>
+                        <t t-set="measure" t-value="props.measures[props.measure]"/>
+                        <div class="o_cohort_highlight"
+                            t-attf-title="Periode: {{col.period}}&#10;{{measure}}: {{count}}"
+                            t-attf-style="background-color: rgba(0, 160, 157, {{col.percentage/100.0}}); color: {{col.percentage gt 50 and '#FFFFFF' or 'inherit'}}"
+                            t-att-class="{o_cohort_value: col.value !== '-'}">
+                            <t t-esc="_formatPercentage(col.percentage / 100.0)"/>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -144,7 +142,7 @@
                     <td>
                         <t t-esc="_formatFloat(report_avg.avg_value)"/>
                     </td>
-                    <td t-foreach="report_avg.columns_avg" t-as="col">
+                    <td t-foreach="report_avg.columns_avg" t-as="col" t-key="col">
                         <t t-if="report_avg.columns_avg[col]['count']">
                             <t t-esc="_formatPercentage(report_avg.columns_avg[col]['percentage'] / (report_avg.columns_avg[col]['count'] * 100.0))" />
                         </t>

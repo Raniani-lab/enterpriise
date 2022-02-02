@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="web_cohort.CohortRenderer" owl="1">
-        <div class="o_cohort_renderer">
+        <div class="o_cohort_renderer" t-att-class="props.class">
             <t t-foreach="model.data" t-as="data" t-key="data_index">
                 <div t-if="data.title" class="table-responsive">
                     <table class="table text-center mb0">
@@ -43,7 +43,7 @@
                         <tbody>
                             <tr t-foreach="data.rows" t-as="row" t-key="row.date"
                                 class="o_cohort_row_clickable"
-                                t-on-click.stop="props.onRowClicked(row)"
+                                t-on-click.stop="() => props.onRowClicked(row)"
                             >
                                 <td class="o_cohort_value">
                                     <t t-esc="row.date" />
@@ -52,17 +52,15 @@
                                     <t t-esc="formatFloat(row.value)" />
                                 </td>
                                 <td t-foreach="row.columns" t-as="col" t-key="col.period">
-                                    <t t-if="col.percentage !== ''">
-                                        <t t-set="count" t-value="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)" />
-                                        <t t-set="measure" t-value="model.metaData.measures[model.metaData.measure].string" />
-                                        <div class="o_cohort_highlight"
-                                            t-attf-title="Periode: {{col.period}}&#10;{{measure}}: {{count}}"
-                                            t-attf-style="background-color: rgba(0, 160, 157, {{col.percentage/100.0}}); color: {{col.percentage gt 50 and '#FFFFFF' or 'inherit'}}"
-                                            t-att-class="{o_cohort_value: col.value !== '-'}"
-                                        >
-                                            <t t-esc="formatPercentage(col.percentage / 100.0)"/>
-                                        </div>
-                                    </t>
+                                    <t t-set="count" t-value="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)" />
+                                    <t t-set="measure" t-value="model.metaData.measures[model.metaData.measure].string" />
+                                    <div class="o_cohort_highlight"
+                                        t-attf-title="Periode: {{col.period}}&#10;{{measure}}: {{count}}"
+                                        t-attf-style="background-color: rgba(0, 160, 157, {{col.percentage/100.0}}); color: {{col.percentage gt 50 and '#FFFFFF' or 'inherit'}}"
+                                        t-att-class="{o_cohort_value: col.value !== '-'}"
+                                    >
+                                        <t t-esc="formatPercentage(col.percentage / 100.0)"/>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -72,7 +70,7 @@
                                 <td>
                                     <t t-esc="formatFloat(data.avg.avg_value)"/>
                                 </td>
-                                <td t-foreach="data.avg.columns_avg" t-as="col" t-key="col.period">
+                                <td t-foreach="data.avg.columns_avg" t-as="col" t-key="col_index">
                                     <t t-if="data.avg.columns_avg[col]['count']">
                                         <t t-esc="formatPercentage(data.avg.columns_avg[col]['percentage'] / (data.avg.columns_avg[col]['count'] * 100.0))" />
                                     </t>

@@ -1,15 +1,17 @@
 /** @odoo-module **/
 
 import { createWebClient, doAction, getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
-import { click, legacyExtraNextTick } from "@web/../tests/helpers/utils";
+import { click, getFixture, legacyExtraNextTick } from "@web/../tests/helpers/utils";
 
-const { loadJS } = owl;
+import { loadJS } from "@web/core/assets";
 
 let serverData;
+let target;
 
 QUnit.module('ActionManager', {
     beforeEach() {
         serverData = getActionManagerServerData();
+        target = getFixture();
         Object.assign(serverData, {
             actions: {
                 1: {
@@ -62,25 +64,21 @@ QUnit.module('ActionManager', {
 });
 
 QUnit.test('uses a mobile-friendly view by default (if possible)', async function (assert) {
-    assert.expect(4);
-
     const webClient = await createWebClient({ serverData });
     // should default on a mobile-friendly view (kanban) for action 1
     await doAction(webClient, 1);
 
-    assert.containsNone(webClient, '.o_list_view');
-    assert.containsOnce(webClient, '.o_kanban_view');
+    assert.containsNone(target, '.o_list_view');
+    assert.containsOnce(target, '.o_kanban_view');
 
     // there is no mobile-friendly view for action 2, should use the first one (list)
     await doAction(webClient, 2);
 
-    assert.containsOnce(webClient, '.o_list_view');
-    assert.containsNone(webClient, '.o_kanban_view');
+    assert.containsOnce(target, '.o_list_view');
+    assert.containsNone(target, '.o_kanban_view');
 });
 
 QUnit.test('lazy load mobile-friendly view', async function (assert) {
-    assert.expect(12);
-
     const mockRPC = (route, args) => {
         assert.step(args.method || route);
     };
@@ -92,19 +90,19 @@ QUnit.test('lazy load mobile-friendly view', async function (assert) {
         view_type: 'form',
     });
 
-    assert.containsNone(webClient, '.o_list_view');
-    assert.containsNone(webClient, '.o_kanban_view');
-    assert.containsOnce(webClient, '.o_form_view');
+    assert.containsNone(target, '.o_list_view');
+    assert.containsNone(target, '.o_kanban_view');
+    assert.containsOnce(target, '.o_form_view');
 
     // this lib is normally lazy loaded in the kanban view initialization.
     await loadJS("/web/static/lib/jquery.touchSwipe/jquery.touchSwipe.js");
 
     // go back to lazy loaded view
-    await click(webClient.el, '.o_control_panel .breadcrumb .o_back_button');
+    await click(target, '.o_control_panel .breadcrumb .o_back_button');
     await legacyExtraNextTick();
-    assert.containsNone(webClient, '.o_form_view');
-    assert.containsNone(webClient, '.o_list_view');
-    assert.containsOnce(webClient, '.o_kanban_view');
+    assert.containsNone(target, '.o_form_view');
+    assert.containsNone(target, '.o_list_view');
+    assert.containsOnce(target, '.o_kanban_view');
 
     assert.verifySteps([
         '/web/webclient/load_menus',
@@ -116,20 +114,18 @@ QUnit.test('lazy load mobile-friendly view', async function (assert) {
 });
 
 QUnit.test('view switcher button should be displayed in dropdown on mobile screens', async function (assert) {
-    assert.expect(7);
-
     const webClient = await createWebClient({ serverData });
 
     await doAction(webClient, 1);
 
-    assert.containsOnce(webClient.el.querySelector('.o_control_panel'), '.o_cp_switch_buttons > button');
-    assert.containsNone(webClient.el.querySelector('.o_control_panel'), '.o_cp_switch_buttons .o_switch_view.o_kanban');
-    assert.containsNone(webClient.el.querySelector('.o_control_panel'), '.o_cp_switch_buttons button.o_switch_view');
+    assert.containsOnce(target.querySelector('.o_control_panel'), '.o_cp_switch_buttons > button');
+    assert.containsNone(target.querySelector('.o_control_panel'), '.o_cp_switch_buttons .o_switch_view.o_kanban');
+    assert.containsNone(target.querySelector('.o_control_panel'), '.o_cp_switch_buttons button.o_switch_view');
 
-    assert.hasClass(webClient.el.querySelector('.o_control_panel .o_cp_switch_buttons > button > span'), 'oi-align--vertical-top');
-    await click(webClient.el, '.o_control_panel .o_cp_switch_buttons > button');
+    assert.hasClass(target.querySelector('.o_control_panel .o_cp_switch_buttons > button > span'), 'oi-align--vertical-top');
+    await click(target, '.o_control_panel .o_cp_switch_buttons > button');
 
-    assert.hasClass(webClient.el.querySelector('.o_cp_switch_buttons button.o_switch_view.o_kanban'), 'active');
-    assert.doesNotHaveClass(webClient.el.querySelector('.o_cp_switch_buttons button.o_switch_view.o_list'), 'active');
-    assert.hasClass(webClient.el.querySelector('.o_cp_switch_buttons button.o_switch_view.o_kanban'), 'oi-align--vertical-top');
+    assert.hasClass(target.querySelector('.o_cp_switch_buttons button.o_switch_view.o_kanban'), 'active');
+    assert.doesNotHaveClass(target.querySelector('.o_cp_switch_buttons button.o_switch_view.o_list'), 'active');
+    assert.hasClass(target.querySelector('.o_cp_switch_buttons button.o_switch_view.o_kanban'), 'oi-align--vertical-top');
 });

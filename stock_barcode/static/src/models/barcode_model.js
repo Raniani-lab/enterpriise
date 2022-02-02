@@ -4,20 +4,22 @@ import BarcodeParser from 'barcodes.BarcodeParser';
 import { Mutex } from "@web/core/utils/concurrency";
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 import { _t } from 'web.core';
-import { useService } from "@web/core/utils/hooks";
 import { sprintf } from '@web/core/utils/strings';
 
 const { EventBus } = owl;
 
 export default class BarcodeModel extends EventBus {
-    constructor(params) {
+    constructor(params, services) {
         super();
+        this.orm = services.orm;
+        this.rpc = services.rpc;
+        this.notification = services.notification;
         this.params = params;
         this.unfoldLineKey = false;
     }
 
     setData(data) {
-        this.cache = new LazyBarcodeCache(data.data.records);
+        this.cache = new LazyBarcodeCache(data.data.records, { rpc: this.rpc });
         const nomenclature = this.cache.getRecord('barcode.nomenclature', data.data.nomenclature_id);
         nomenclature.rules = [];
         for (const ruleId of nomenclature.rule_ids) {
@@ -26,9 +28,6 @@ export default class BarcodeModel extends EventBus {
         this.parser = new BarcodeParser({nomenclature: nomenclature});
         this.scannedLinesVirtualId = [];
 
-        this.notification = useService('notification');
-        this.orm = useService('orm');
-        this.rpc = useService('rpc');
         this.actionMutex = new Mutex();
         this.groups = data.groups;
 

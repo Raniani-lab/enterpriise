@@ -3,19 +3,7 @@
 import Connector from "./connector";
 import { deepMerge } from "./connector_utils";
 
-const { Component, css } = owl;
-
-
-const STYLE = css`
-        .o_connector_container {
-            pointer-events: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-`;
+const { Component, onMounted, onWillUnmount, onWillUpdateProps } = owl;
 
 class ConnectorContainer extends Component {
 
@@ -46,12 +34,16 @@ class ConnectorContainer extends Component {
             this.newConnector = deepMerge(this.newConnector, { style: this.props.newConnectorStyle });
         }
         this._refreshPropertiesFromProps(this.props);
+
+        onMounted(this.onMounted);
+        onWillUnmount(this.onWillUnmount);
+        onWillUpdateProps(this.onWillUpdateProps);
     }
 
     /**
      * @override
      */
-    mounted() {
+    onMounted() {
         if (this.parentElement && this.parentElement !== this.el.parentElement) {
             this._removeParentListeners();
         }
@@ -62,7 +54,7 @@ class ConnectorContainer extends Component {
     /**
      * @override
      */
-    willUnmount() {
+    onWillUnmount() {
         this._removeParentListeners();
     }
 
@@ -72,7 +64,7 @@ class ConnectorContainer extends Component {
      * @param nextProps
      * @returns {Promise<void>}
      */
-    async willUpdateProps(nextProps) {
+    async onWillUpdateProps(nextProps) {
         this._refreshPropertiesFromProps(nextProps);
     }
 
@@ -227,27 +219,6 @@ class ConnectorContainer extends Component {
     // -----------------------------------------------------------------------------
 
     /**
-     * Handler for the connector remove-button-click event.
-     *
-     * @param {OwlEvent} ev
-     * @private
-     */
-    _onConnectorRemoveButtonClick(ev) {
-        ev.stopPropagation();
-        this.trigger('connector-remove-button-click', ev.detail);
-    }
-
-    _onConnectorRescheduleLaterButtonClick(ev) {
-        ev.stopPropagation();
-        this.trigger('connector-reschedule-later-button-click', ev.detail);
-    }
-
-    _onConnectorRescheduleSoonerButtonClick(ev) {
-        ev.stopPropagation();
-        this.trigger('connector-reschedule-sooner-button-click', ev.detail);
-    }
-
-    /**
      * Handler for the ConnectorContainer's parent mousedown event. This handle is responsible of managing the start of a possible
      * connector creation (depending on whether the event target matches the sourceQuerySelector).
      *
@@ -277,7 +248,7 @@ class ConnectorContainer extends Component {
                         left: anchors.right.left + ev.offsetX,
                     },
                 });
-            this.trigger('connector-creation-start', deepMerge({ }, this.newConnector));
+            this.props.onCreationStart(deepMerge({ }, this.newConnector));
             this.render();
         }
     }
@@ -327,9 +298,9 @@ class ConnectorContainer extends Component {
                             targetElement: connector_target,
                         },
                     });
-                this.trigger('connector-creation-done', deepMerge({ }, this.newConnector));
+                this.props.onCreationDone(deepMerge({ }, this.newConnector));
             } else {
-                this.trigger('connector-creation-abort', deepMerge({ }, this.newConnector));
+                this.props.onCreationAbort(deepMerge({ }, this.newConnector));
             }
             this.mouseEventsInfo.isParentDragging = false;
             delete this.newConnector.source;
@@ -363,7 +334,7 @@ class ConnectorContainer extends Component {
             relatedTarget = relatedTarget.parentElement;
         }
         this._updateConnectorHoverState(this.mouseEventsInfo.hoveredConnector.dataset.id, false);
-        this.trigger('connector-mouseout', this.connectors[this.mouseEventsInfo.hoveredConnector.dataset.id]);
+        this.props.onMouseOut(this.connectors[this.mouseEventsInfo.hoveredConnector.dataset.id]);
         delete this.mouseEventsInfo.hoveredConnector;
     }
 
@@ -393,7 +364,7 @@ class ConnectorContainer extends Component {
         }
         this.mouseEventsInfo.hoveredConnector = target;
         this._updateConnectorHoverState(target.dataset.id, true);
-        this.trigger('connector-mouseover', this.connectors[target.dataset.id]);
+        this.props.onMouseOver(this.connectors[target.dataset.id]);
     }
 
 }
@@ -417,8 +388,25 @@ Object.assign(ConnectorContainer, {
             optional: true,
             type: String,
         },
+        onRemoveButtonClick: { type: Function, optional: true },
+        onRescheduleSoonerButtonClick: { type: Function, optional: true },
+        onRescheduleLaterButtonClick: { type: Function, optional: true },
+        onCreationAbort: { type: Function, optional: true },
+        onCreationDone: { type: Function, optional: true },
+        onCreationStart: { type: Function, optional: true },
+        onMouseOut: { type: Function, optional: true },
+        onMouseOver: { type: Function, optional: true },
     },
-    style: STYLE,
+    defaultProps: {
+        onRemoveButtonClick: () => {},
+        onRescheduleSoonerButtonClick: () => {},
+        onRescheduleLaterButtonClick: () => {},
+        onCreationAbort: () => {},
+        onCreationDone: () => {},
+        onCreationStart: () => {},
+        onMouseOut: () => {},
+        onMouseOver: () => {},
+    },
     template: 'connector_container',
 });
 

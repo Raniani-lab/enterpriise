@@ -17,18 +17,13 @@ export function registerStudioDependencies() {
     serviceRegistry.add("studio", studioService);
 }
 
-export async function doActionAndOpenStudio(webClient, action, options, params) {
-    await doAction(webClient, action, options);
-    return openStudio(webClient, params);
-}
-
-export async function openStudio(webClient, params = {}) {
-    await click(webClient.el.querySelector(".o_main_navbar .o_web_studio_navbar_item a"));
+export async function openStudio(target, params = {}) {
+    await click(target.querySelector(".o_main_navbar .o_web_studio_navbar_item a"));
     await legacyExtraNextTick();
     if (params.noEdit) {
-        const studioTabViews = webClient.el.querySelector(".o_web_studio_menu_item a");
+        const studioTabViews = target.querySelector(".o_web_studio_menu_item a");
         await click(studioTabViews);
-        const controlElm = webClient.el.querySelector(
+        const controlElm = target.querySelector(
             ".o_action_manager .o_web_studio_editor .o_web_studio_views"
         );
         if (!controlElm) {
@@ -36,10 +31,10 @@ export async function openStudio(webClient, params = {}) {
         }
     }
     if (params.report) {
-        const studioTabReport = webClient.el.querySelectorAll(".o_web_studio_menu_item a")[1];
+        const studioTabReport = target.querySelectorAll(".o_web_studio_menu_item a")[1];
         await click(studioTabReport);
         await legacyExtraNextTick();
-        let controlElm = webClient.el.querySelector(
+        let controlElm = target.querySelector(
             ".o_action_manager .o_web_studio_editor .o_web_studio_report_kanban"
         );
         if (!controlElm) {
@@ -47,7 +42,7 @@ export async function openStudio(webClient, params = {}) {
         }
         await click(controlElm.querySelector(`.o_kanban_record[data-id="${params.report}"`));
         await legacyExtraNextTick();
-        controlElm = webClient.el.querySelector(
+        controlElm = target.querySelector(
             ".o_action_manager .o_web_studio_editor .o_web_studio_report_editor_manager"
         );
         if (!controlElm) {
@@ -56,8 +51,8 @@ export async function openStudio(webClient, params = {}) {
     }
 }
 
-export async function leaveStudio(webClient) {
-    await click(webClient.el.querySelector(".o_studio_navbar .o_web_studio_leave a"));
+export async function leaveStudio(target) {
+    await click(target.querySelector(".o_studio_navbar .o_web_studio_leave a"));
     return legacyExtraNextTick();
 }
 

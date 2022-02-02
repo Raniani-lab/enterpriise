@@ -1,4 +1,5 @@
 /** @odoo-module **/
+
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
@@ -12,7 +13,7 @@ import { HomeMenu } from "@web_enterprise/webclient/home_menu/home_menu";
 import testUtils from "web.test_utils";
 import { makeFakeEnterpriseService } from "../mocks";
 
-const { Component, EventBus, mount, useRef, xml } = owl;
+const { App, EventBus } = owl;
 const patchDate = testUtils.mock.patchDate;
 const serviceRegistry = registry.category("services");
 
@@ -21,21 +22,17 @@ const serviceRegistry = registry.category("services");
 // -----------------------------------------------------------------------------
 
 async function createHomeMenu(homeMenuProps) {
-    class Parent extends Component {
-        constructor() {
-            super();
-            this.homeMenuRef = useRef("home-menu");
-            this.homeMenuProps = homeMenuProps;
-        }
-    }
-    Parent.components = { HomeMenu };
-    Parent.template = xml`<HomeMenu t-ref="home-menu" t-props="homeMenuProps"/>`;
     const env = await makeTestEnv();
     const target = getFixture();
-    const parent = await mount(Parent, { env, target });
-    registerCleanup(() => parent.destroy());
-
-    return parent.homeMenuRef.comp;
+    const app = new App(HomeMenu, {
+        env,
+        props: homeMenuProps,
+        templates: window.__OWL_TEMPLATES__,
+        test: true,
+    });
+    const homeMenu = await app.mount(target);
+    registerCleanup(() => app.destroy());
+    return homeMenu;
 }
 
 async function walkOn(assert, homeMenu, path) {
@@ -130,8 +127,6 @@ QUnit.module(
         QUnit.module("HomeMenu");
 
         QUnit.test("ESC Support", async function (assert) {
-            assert.expect(2);
-
             bus.on("toggle", null, (show) => {
                 assert.step(`toggle ${show}`);
             });
@@ -141,8 +136,6 @@ QUnit.module(
         });
 
         QUnit.test("Click on an app", async function (assert) {
-            assert.expect(2);
-
             bus.on("selectMenu", null, (menuId) => {
                 assert.step(`selectMenu ${menuId}`);
             });
@@ -153,9 +146,8 @@ QUnit.module(
         });
 
         QUnit.test("Display Expiration Panel (no module installed)", async function (assert) {
-            assert.expect(3);
-
             const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
+            registerCleanup(unpatchDate);
 
             const mockedEnterpriseService = {
                 name: "enterprise",
@@ -204,7 +196,6 @@ QUnit.module(
                 homeMenu.el.querySelector(".database_expiration_panel .oe_instance_hide_panel")
             );
             assert.containsNone(homeMenu.el, ".database_expiration_panel");
-            unpatchDate();
         });
 
         QUnit.test("Navigation (only apps, only one line)", async function (assert) {

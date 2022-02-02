@@ -2,9 +2,8 @@
 import { browser } from "@web/core/browser/browser";
 import { localization } from "@web/core/l10n/localization";
 import { clamp } from "@web/core/utils/numbers";
-import { useEffect } from "@web/core/utils/hooks";
 
-const { Component, onMounted, onWillUnmount, useRef, useState } = owl;
+const { Component, onMounted, onWillUnmount, useEffect, useRef, useState } = owl;
 
 const isScrollSwipable = (scrollables) => {
     return {
@@ -180,5 +179,6 @@ ActionSwiper.props = {
         },
         optional: true,
     },
+    slots: Object,
 };
 ActionSwiper.template = "web_enterprise.ActionSwiper";

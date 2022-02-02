@@ -10,7 +10,6 @@ const MapController = AbstractController.extend({
         'pin_clicked': '_onPinClick',
         'get_itinerary_clicked': '_onGetItineraryClicked',
         'open_clicked': '_onOpenClicked',
-        'pager_changed': '_onPagerChanged',
         'coordinate_fetched': '_onCoordinateFetched',
     }),
 
@@ -81,6 +80,7 @@ const MapController = AbstractController.extend({
             currentMinimum: state.offset + 1,
             limit: state.limit,
             size: state.count,
+            onPagerChanged: this._onPagerChanged.bind(this),
         };
     },
 
@@ -133,8 +133,7 @@ const MapController = AbstractController.extend({
      * @private
      * @param {OdooEvent} ev
      */
-    async _onPagerChanged(ev) {
-        const { currentMinimum, limit } = ev.data;
+    async _onPagerChanged({ currentMinimum, limit }) {
         await this.reload({ limit, offset: currentMinimum - 1 });
     },
 });

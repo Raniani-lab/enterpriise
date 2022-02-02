@@ -3,7 +3,7 @@ odoo.define('l10n_de_pos_cert.Chrome', function(require) {
 
     const Chrome = require('point_of_sale.Chrome');
     const Registries = require('point_of_sale.Registries');
-    const { useListener } = require('web.custom_hooks');
+    const { useListener } = require("@web/core/utils/hooks");
 
     const PoSDeChrome = Chrome => class extends Chrome {
         // @Override

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { useEffect, useService } from "@web/core/utils/hooks";
+import { useService } from "@web/core/utils/hooks";
 import { capitalize, sprintf } from "@web/core/utils/strings";
 import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
@@ -16,7 +16,7 @@ import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
 import { ViewWidget } from "./view_widget";
 import { ViewWrapper } from "./view_wrapper/view_wrapper";
 
-const { Component } = owl;
+const { Component, onWillStart, onWillUpdateProps, useEffect } = owl;
 
 const viewRegistry = registry.category("views");
 
@@ -90,9 +90,12 @@ export class DashboardView extends Component {
         useEffect(() => {
             this.subViewsRenderKey++;
         });
+
+        onWillStart(this.onWillStart);
+        onWillUpdateProps(this.onWillUpdateProps);
     }
 
-    async willStart() {
+    async onWillStart() {
         let loadViewProms = [];
         let additionalMeasures = this.aggregates
             .filter((a) => {
@@ -164,7 +167,7 @@ export class DashboardView extends Component {
         await Promise.all(loadViewProms);
     }
 
-    async willUpdateProps(nextProps) {
+    async onWillUpdateProps(nextProps) {
         if (this.currentMeasure) {
             const states = this.callRecordedCallbacks("__getLocalState__");
             Object.entries(this.subViews).forEach(([viewType, subView]) => {

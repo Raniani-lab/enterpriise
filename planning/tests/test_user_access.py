@@ -251,3 +251,33 @@ class TestUserAccess(TransactionCase):
                 '2019-07-01 00:00:00',
                 [['start_datetime', '<=', '2019-06-30 21:59:59'], ['end_datetime', '>=', '2019-06-22 23:00:00']]
             )
+    def test_multicompany_access_slots(self):
+        """
+        A user shall NOT be able to access other companies' slots when sending plannings.
+        """
+        in_user = self.planning_mgr
+        out_user = self.planning_user
+        out_user.groups_id = [(6, 0, [self.env.ref('planning.group_planning_manager').id])]
+        other_company = self.env['res.company'].create({
+            'name': 'Other Co',
+        })
+        out_user.write({
+            'company_ids': other_company.ids,
+            'company_id': other_company.id,
+        })
+        out_user.employee_id.company_id = other_company
+
+        slot = self.env['planning.slot'].with_user(out_user).create({
+            'start_datetime': datetime(2019, 7, 28, 8, 0, 0),
+            'end_datetime': datetime(2019, 7, 28, 17, 0, 0),
+            'employee_id': out_user.employee_id.id,
+            'repeat': False,
+        })
+        send = self.env['planning.send'].with_user(in_user).create({
+            'start_datetime': datetime(2019, 7, 28, 8, 0, 0),
+            'end_datetime': datetime(2019, 7, 28, 17, 0, 0),
+        })
+        # Trigger _compute_slots_data
+        send.start_datetime = datetime(2019, 7, 25, 8, 0, 0)
+
+        self.assertNotIn(slot, send.slot_ids, "User should not be able to send planning to users from other companies")

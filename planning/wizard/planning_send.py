@@ -34,14 +34,14 @@ class PlanningSend(models.TransientModel):
         slot_domain = self._get_slot_domain()
         for wiz in self:
             domain = expression.AND([[('start_datetime', '>=', wiz.start_datetime), ('end_datetime', '<=', wiz.end_datetime)], slot_domain])
-            wiz.slot_ids = self.env['planning.slot'].search(domain)
+            wiz.slot_ids = self.env['planning.slot'].with_user(self.env.user).search(domain)
             wiz.employee_ids = wiz.slot_ids.filtered(lambda s: s.resource_type == 'user').mapped('employee_id')
 
     def _inverse_employee_ids(self):
         slot_domain = self._get_slot_domain()
         for wiz in self:
             domain = expression.AND([[('start_datetime', '>=', wiz.start_datetime), ('end_datetime', '<=', wiz.end_datetime)], slot_domain])
-            wiz.slot_ids = self.env['planning.slot'].search(domain)
+            wiz.slot_ids = self.env['planning.slot'].with_user(self.env.user).search(domain)
 
     def get_employees_without_work_email(self):
         self.ensure_one()

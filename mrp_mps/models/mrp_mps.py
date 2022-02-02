@@ -664,6 +664,11 @@ class MrpProductionSchedule(models.Model):
         rfq_lines_date_planned = sorted(rfq_lines_date_planned, key=lambda i: i[1])
         index = 0
         for (line, date_planned) in rfq_lines_date_planned:
+            # There are cases when we want to consider rfq_lines where their date_planned occurs before the after_date
+            # if lead times make their stock arrive at a relevant time. Therefore we need to ignore the lines that have
+            # date_planned + lead time < after_date
+            if date_planned < after_date:
+                continue
             # Skip to the next time range if the planned date is not in the
             # current time interval.
 
@@ -882,6 +887,11 @@ class MrpProductionSchedule(models.Model):
         stock_moves_by_date = sorted(stock_moves_by_date, key=lambda m: m[1])
         index = 0
         for (move, date) in stock_moves_by_date:
+            # There are cases when we want to consider moves where their (scheduled) date occurs before the after_date
+            # if lead times make their stock delivery at a relevant time. Therefore we need to ignore the lines that have
+            # date + lead time < after_date
+            if date < after_date:
+                continue
             # Skip to the next time range if the planned date is not in the
             # current time interval.
             while not (date_range[index][0] <= date and date_range[index][1] >= date):

@@ -7,7 +7,7 @@ import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants"
 import { getDataFromTemplate } from "../o_spreadsheet/helpers";
 import { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
 
-const { Component, useState } = owl;
+const { Component, onMounted, onWillStart, useState } = owl;
 
 export class AbstractSpreadsheetAction extends Component {
     setup() {
@@ -37,9 +37,12 @@ export class AbstractSpreadsheetAction extends Component {
         this.state = useState({
             spreadsheetName: UNTITLED_SPREADSHEET_NAME,
         });
+
+        onWillStart(() => this.onWillStart());
+        onMounted(() => this.onMounted());
     }
 
-    async willStart() {
+    async onWillStart() {
         const chartLibPromise = loadAssets({
             jsLibs: ["/web/static/lib/Chart/Chart.js"],
         });
@@ -74,21 +77,21 @@ export class AbstractSpreadsheetAction extends Component {
         return resId;
     }
 
-    mounted() {
+    onMounted() {
         this.router.pushState({ spreadsheet_id: this.resId });
         this.env.config.setDisplayName(this.state.spreadsheetName)
     }
 
-    async _onMakeCopy(ev) {
+    async _onMakeCopy() {
         throw new Error("not implemented by children");
     }
-    async _onNewSpreadsheet(ev) {
+    async _onNewSpreadsheet() {
         throw new Error("not implemented by children");
     }
-    async _onSpreadsheetSaved(ev) {
+    async _onSpreadsheetSaved() {
         throw new Error("not implemented by children");
     }
-    async _onSpreadSheetNameChanged(ev) {
+    async _onSpreadSheetNameChanged() {
         throw new Error("not implemented by children");
     }
     async _fetchData() {

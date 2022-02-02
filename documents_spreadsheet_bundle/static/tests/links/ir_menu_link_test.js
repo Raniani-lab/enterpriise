@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 import { menuService } from "@web/webclient/menus/menu_service";
 import { session } from "@web/session";
 import { actionService } from "@web/webclient/actions/action_service";
-import { click, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
@@ -17,12 +17,14 @@ import { setCellContent } from "../utils/commands_helpers";
 const { registries, Model } = spreadsheet;
 const { cellMenuRegistry } = registries;
 
-function labelInput(webClient) {
-    return webClient.el.querySelectorAll(".o-link-editor input")[0];
+let target;
+
+function labelInput() {
+    return target.querySelectorAll(".o-link-editor input")[0];
 }
 
-function urlInput(webClient) {
-    return webClient.el.querySelectorAll(".o-link-editor input")[1];
+function urlInput() {
+    return target.querySelectorAll(".o-link-editor input")[1];
 }
 
 /**
@@ -30,14 +32,12 @@ function urlInput(webClient) {
  * insert a menu link in A1.
  */
 async function openMenuSelector(serverData) {
-    const { webClient, env, model } = await createSpreadsheet({
-        serverData,
-    });
+    const { webClient, env, model } = await createSpreadsheet({ serverData });
     const insertLinkMenu = cellMenuRegistry.getAll().find((item) => item.id === "insert_link");
     await insertLinkMenu.action(env);
     await nextTick();
-    await click(webClient.el, ".o-special-link");
-    await click(webClient.el, ".o-menu-item[data-name='odooMenu']");
+    await click(target, ".o-special-link");
+    await click(target, ".o-menu-item[data-name='odooMenu']");
     return { webClient, env, model };
 }
 
@@ -45,6 +45,7 @@ QUnit.module(
     "documents_spreadsheet > ir.ui.menu links",
     {
         beforeEach: function () {
+            target = getFixture();
             this.serverData = {};
             this.serverData.menus = {
                 root: { id: "root", children: [1, 2], name: "root", appID: "root" },
@@ -161,23 +162,23 @@ QUnit.module(
 
         QUnit.test("insert a new ir menu link", async function (assert) {
             assert.expect(6);
-            const { webClient, model } = await openMenuSelector(this.serverData);
-            await click(webClient.el, ".o_field_many2one input");
-            assert.ok(webClient.el.querySelector("button.o-confirm").disabled);
+            const { model } = await openMenuSelector(this.serverData);
+            await click(target, ".o_field_many2one input");
+            assert.ok(target.querySelector("button.o-confirm").disabled);
             await click(document.querySelectorAll(".ui-menu-item")[0]);
-            await click(webClient.el, "button.o-confirm");
+            await click(document, "button.o-confirm");
             assert.equal(
-                labelInput(webClient).value,
+                labelInput().value,
                 "menu with xmlid",
                 "The label should be the menu name"
             );
             assert.equal(
-                urlInput(webClient).value,
+                urlInput().value,
                 "menu with xmlid",
                 "The url displayed should be the menu name"
             );
-            assert.ok(urlInput(webClient).disabled, "The url input should be disabled");
-            await click(webClient.el, "button.o-save");
+            assert.ok(urlInput().disabled, "The url input should be disabled");
+            await click(target, "button.o-save");
             const cell = getCell(model, "A1");
             assert.equal(
                 cell.content,
@@ -185,7 +186,7 @@ QUnit.module(
                 "The content should be the complete markdown link"
             );
             assert.equal(
-                webClient.el.querySelector(".o-link-tool a").text,
+                target.querySelector(".o-link-tool a").text,
                 "menu with xmlid",
                 "The link tooltip should display the menu name"
             );
@@ -195,26 +196,26 @@ QUnit.module(
             "insert a new ir menu link when the menu does not have an xml id",
             async function (assert) {
                 assert.expect(6);
-                const { webClient, model } = await openMenuSelector(this.serverData);
-                await click(webClient.el, ".o_field_many2one input");
-                assert.ok(webClient.el.querySelector("button.o-confirm").disabled);
+                const { model } = await openMenuSelector(this.serverData);
+                await click(target, ".o_field_many2one input");
+                assert.ok(target.querySelector("button.o-confirm").disabled);
                 const item = document.querySelectorAll(".ui-menu-item")[1];
                 // don't ask why it's needed and why it only works with a jquery event >:(
                 $(item).trigger("mouseenter");
                 await click(item);
-                await click(webClient.el, "button.o-confirm");
+                await click(target, "button.o-confirm");
                 assert.equal(
-                    labelInput(webClient).value,
+                    labelInput().value,
                     "menu without xmlid",
                     "The label should be the menu name"
                 );
                 assert.equal(
-                    urlInput(webClient).value,
+                    urlInput().value,
                     "menu without xmlid",
                     "The url displayed should be the menu name"
                 );
-                assert.ok(urlInput(webClient).disabled, "The url input should be disabled");
-                await click(webClient.el, "button.o-save");
+                assert.ok(urlInput().disabled, "The url input should be disabled");
+                await click(target, "button.o-save");
                 const cell = getCell(model, "A1");
                 assert.equal(
                     cell.content,
@@ -222,7 +223,7 @@ QUnit.module(
                     "The content should be the complete markdown link"
                 );
                 assert.equal(
-                    webClient.el.querySelector(".o-link-tool a").text,
+                    target.querySelector(".o-link-tool a").text,
                     "menu without xmlid",
                     "The link tooltip should display the menu name"
                 );
@@ -231,26 +232,22 @@ QUnit.module(
 
         QUnit.test("cancel ir.menu selection", async function (assert) {
             assert.expect(4);
-            const { webClient } = await openMenuSelector(this.serverData);
-            await click(webClient.el, ".o_field_many2one input");
+            await openMenuSelector(this.serverData);
+            await click(target, ".o_field_many2one input");
             await click(document.querySelectorAll(".ui-menu-item")[0]);
-            assert.containsOnce(webClient, ".o-ir-menu-selector");
-            await click(webClient.el, ".modal-footer button.o-cancel");
-            assert.containsNone(webClient, ".o-ir-menu-selector");
-            assert.equal(labelInput(webClient).value, "", "The label should be empty");
-            assert.equal(
-                urlInput(webClient).value,
-                "",
-                "The url displayed should be the menu name"
-            );
+            assert.containsOnce(target, ".o-ir-menu-selector");
+            await click(target, ".modal-footer button.o-cancel");
+            assert.containsNone(target, ".o-ir-menu-selector");
+            assert.equal(labelInput().value, "", "The label should be empty");
+            assert.equal(urlInput().value, "", "The url displayed should be the menu name");
         });
 
         QUnit.test("menu many2one field input is focused", async function (assert) {
             assert.expect(1);
-            const { webClient } = await openMenuSelector(this.serverData);
+            await openMenuSelector(this.serverData);
             assert.equal(
                 document.activeElement,
-                webClient.el.querySelector(".o_field_many2one input"),
+                target.querySelector(".o_field_many2one input"),
                 "the input should be focused"
             );
         });

@@ -4,16 +4,17 @@
     <div t-name="documents_spreadsheet.SpreadsheetComponent" class="o_spreadsheet_container" owl="1">
         <Spreadsheet client="client"
                      data="data"
+                     exposeSpreadsheet.bind="exposeSpreadsheet"
                      stateUpdateMessages="stateUpdateMessages"
                      transportService="props.transportService"
                      snapshotRequested="props.snapshotRequested"
                      isReadonly="isReadonly"
-                     t-ref="spreadsheet"
+                     onUnexpectedRevisionId="props.onUnexpectedRevisionId"
         />
         <Dialog t-if="state.dialog.isDisplayed"
             title="state.dialog.title || 'Odoo Spreadsheet'"
             size="'medium'"
-            t-on-dialog-closed.stop="closeDialog"
+            onClosed.bind="closeDialog"
             >
             <div t-if="dialogContent" t-esc="dialogContent"/>
             <input t-if="state.dialog.isEditText" type="text" class="form-control" t-model="state.inputContent"/>

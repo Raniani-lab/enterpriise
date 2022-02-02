@@ -8,8 +8,7 @@ import DomainComponentAdapter from "../../legacy/domain_component_adapter";
 const { Component } = owl;
 
 export default class PivotDetailsSidePanel extends Component {
-    constructor() {
-        super(...arguments);
+    setup() {
         this.getters = this.env.getters;
         this.DomainSelector = DomainSelector;
     }

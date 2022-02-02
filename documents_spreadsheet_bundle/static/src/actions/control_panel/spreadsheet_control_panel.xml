@@ -30,10 +30,10 @@
 <div t-name="documents_spreadsheet.Breadcrumbs" t-inherit="web.Breadcrumbs" t-inherit-mode="primary" owl="1">
     <xpath expr="//ol[hasclass('breadcrumb')]//li[hasclass('active')]" position="replace">
         <li t-else="" class="breadcrumb-item active"> <!-- copying the condition present on web.Breadcrumbs -->
-            <SpreadsheetName name="props.spreadsheetName" isReadonly="props.isReadonly"/>
+            <SpreadsheetName name="props.spreadsheetName" isReadonly="props.isReadonly" onSpreadsheetNameChanged="props.onSpreadsheetNameChanged" />
             <a
                 title="Toggle favorite"
-                t-on-click="_toggleFavorited"
+                t-on-click="props.onFavoriteToggled"
                 t-attf-class="o_spreadsheet_favorite fa fa-lg fa-star{{!props.isFavorited ? '-o' : ' favorite_button_enabled'}}"/>
         </li>
     </xpath>

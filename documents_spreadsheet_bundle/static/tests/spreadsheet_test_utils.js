@@ -6,7 +6,7 @@ import { patchWithCleanup } from "@web/../tests/helpers/utils";
 import { SpreadsheetAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_action";
 import { SpreadsheetTemplateAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_template/spreadsheet_template_action";
 import { UNTITLED_SPREADSHEET_NAME } from "@documents_spreadsheet_bundle/o_spreadsheet/constants";
-import { click, nextTick } from "@web/../tests/helpers/utils";
+import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import {
     getSpreadsheetActionEnv,
     getSpreadsheetActionModel,
@@ -141,9 +141,11 @@ export async function createSpreadsheetWithPivotAndList() {
         views: [[false, "list"]],
     });
 
+    const target = getFixture();
+
     /** Put the current list in a new spreadsheet */
-    await click(webClient.el.querySelector(".o_favorite_menu button"));
-    await click(webClient.el.querySelector(".o_insert_list_spreadsheet_menu"));
+    await click(target.querySelector(".o_favorite_menu button"));
+    await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     await nextTick();
 
@@ -156,7 +158,7 @@ export async function createSpreadsheetWithPivotAndList() {
     });
 
     /** Put the pivot in the newly created spreadsheet */
-    await click(webClient.el.querySelector(".o_pivot_add_spreadsheet"));
+    await click(target.querySelector(".o_pivot_add_spreadsheet"));
     await click(document.querySelector(".modal-content select"));
     document.body
         .querySelector(`.modal-content option[value='${spreadsheetAction.resId}']`)

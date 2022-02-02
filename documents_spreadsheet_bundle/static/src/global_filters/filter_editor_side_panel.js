@@ -21,7 +21,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     } = require("documents_spreadsheet.tag_selector_widget");
     const { useService } = require("@web/core/utils/hooks");
     const _t = core._t;
-    const { Component, useState } = owl;
+    const { Component, onMounted, onWillStart, useState } = owl;
     const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
     /**
@@ -36,8 +36,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
         /**
          * @constructor
          */
-        constructor(parent, props) {
-            super(...arguments);
+        setup() {
             this.id = undefined;
             this.state = useState({
                 saved: false,
@@ -63,13 +62,16 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             this.getters = this.env.getters;
             this.pivotIds = this.getters.getPivotIds();
             this.listIds = this.getters.getListIds();
-            this.loadValues(props);
+            this.loadValues();
             // Widgets
             this.FieldSelectorWidget = FieldSelectorWidget;
             this.StandaloneMany2OneField = StandaloneMany2OneField;
             this.TagSelectorWidget = TagSelectorWidget;
             this.orm = useService("orm");
             this.notification = useService("notification");
+
+            onWillStart(this.onWillStart);
+            onMounted(this.onMounted);
         }
 
         /**
@@ -121,11 +123,11 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             ];
         }
 
-        loadValues(props) {
-            this.id = props.id;
+        loadValues() {
+            this.id = this.props.id;
             const globalFilter = this.id && this.getters.getGlobalFilter(this.id);
             this.state.label = globalFilter && globalFilter.label;
-            this.state.type = globalFilter ? globalFilter.type : props.type;
+            this.state.type = globalFilter ? globalFilter.type : this.props.type;
             this.state.pivotFields = globalFilter ? globalFilter.pivotFields : {};
             this.state.listFields = globalFilter ? globalFilter.listFields : {};
             this.state.date.type =
@@ -138,7 +140,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             }
         }
 
-        async willStart() {
+        async onWillStart() {
             const proms = [];
             proms.push(this.fetchModelFromName());
             for (const pivotId of this.getters.getPivotIds()) {
@@ -147,7 +149,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             await Promise.all(proms);
         }
 
-        mounted() {
+        onMounted() {
             this.el.querySelector(".o_global_filter_label").focus();
         }
 
@@ -166,11 +168,11 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 ) || [];
         }
 
-        async onModelSelected(ev) {
-            if (this.state.relation.relatedModelID !== ev.detail.value) {
+        async onModelSelected(value) {
+            if (this.state.relation.relatedModelID !== value) {
                 this.state.relation.defaultValue = [];
             }
-            this.state.relation.relatedModelID = ev.detail.value;
+            this.state.relation.relatedModelID = value;
             await this.fetchModelFromId();
             for (const pivotId of this.pivotIds) {
                 const [field, fieldDesc] = this._findRelation(this.getters.getPivotFields(pivotId));
@@ -217,8 +219,8 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             }
         }
 
-        onSelectedPivotField(id, ev) {
-            const fieldName = ev.detail.chain[0];
+        onSelectedPivotField(id, chain) {
+            const fieldName = chain[0];
             const field = this.getters.getPivotField(id, fieldName);
             if (field) {
                 this.state.pivotFields[id] = {
@@ -228,8 +230,8 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             }
         }
 
-        onSelectedListField(listId, ev) {
-            const fieldName = ev.detail.chain[0];
+        onSelectedListField(listId, chain) {
+            const fieldName = chain[0];
             const field = this.getters.getListField(listId, fieldName);
             if (field) {
                 this.state.listFields[listId] = {
@@ -279,13 +281,13 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             this.env.openSidePanel("GLOBAL_FILTERS_SIDE_PANEL", {});
         }
 
-        onValuesSelected(ev) {
-            this.state.relation.defaultValue = ev.detail.value.map((record) => record.id);
-            this.state.relation.displayNames = ev.detail.value.map((record) => record.display_name);
+        onValuesSelected(value) {
+            this.state.relation.defaultValue = value.map((record) => record.id);
+            this.state.relation.displayNames = value.map((record) => record.display_name);
         }
 
-        onTimeRangeChanged(ev) {
-            this.state.date.defaultValue = ev.detail;
+        onTimeRangeChanged(defaultValue) {
+            this.state.date.defaultValue = defaultValue;
         }
 
         onDelete() {

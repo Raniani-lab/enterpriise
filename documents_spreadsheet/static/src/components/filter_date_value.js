@@ -65,7 +65,7 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
 
         onPeriodChanged(ev) {
             const value = ev.target.value;
-            this.trigger("time-range-changed", {
+            this.props.onTimeRangeChanged({
                 /** We need to ensure that a year is set when the period
                  * is selected since the user can bypass the year selection.
                  * If we don't, we might end up with a date filter with year===undefined
@@ -79,7 +79,7 @@ odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
 
         onYearChanged(ev) {
             const value = ev.target.value;
-            this.trigger("time-range-changed", {
+            this.props.onTimeRangeChanged({
                 year: value !== "empty" ? value : undefined,
                 period: this.props.period,
             });

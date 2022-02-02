@@ -8,9 +8,7 @@ const { Component } = owl;
 
 export class SpreadsheetControlPanel extends Component {
 
-
-    constructor() {
-        super(...arguments);
+    setup() {
         this.controlPanelDisplay = {
             "bottom-left": false,
             "bottom-right": false,
@@ -25,11 +23,6 @@ export class SpreadsheetControlPanel extends Component {
      */
     onBreadcrumbClicked(jsId) {
         this.actionService.restore(jsId);
-    }
-
-
-    _toggleFavorited() {
-        this.trigger("favorite-toggled");
     }
 }
 
@@ -56,4 +49,12 @@ SpreadsheetControlPanel.props = {
         type: Boolean,
         optional: true
     },
+    onFavoriteToggled: {
+        type: Function,
+        optional: true,
+    },
+    onSpreadsheetNameChanged: {
+        type: Function,
+        optional: true,
+    }
 };

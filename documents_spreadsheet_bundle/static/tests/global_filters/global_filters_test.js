@@ -2,7 +2,7 @@
 /* global $ moment */
 
 import testUtils from "web.test_utils";
-import { click, nextTick } from "@web/../tests/helpers/utils";
+import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import CommandResult from "@documents_spreadsheet_bundle/o_spreadsheet/cancelled_reason";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
 import { createSpreadsheetWithPivotAndList } from "../spreadsheet_test_utils";
@@ -44,7 +44,15 @@ const THIS_YEAR_FILTER = {
     },
 };
 
-module("documents_spreadsheet > global_filters", {}, () => {
+let target;
+
+module("documents_spreadsheet > global_filters",
+    {
+        beforeEach: function () {
+            target = getFixture();
+        }
+    },
+    () => {
     test("Can add a global filter", async function (assert) {
         assert.expect(4);
 
@@ -91,7 +99,7 @@ module("documents_spreadsheet > global_filters", {}, () => {
     test("Create a new date filter", async function (assert) {
         assert.expect(14);
 
-        const { webClient, model } = await createSpreadsheetFromPivot({
+        const { model } = await createSpreadsheetFromPivot({
             serverData: {
                 models: getBasicData(),
                 views: {
@@ -106,22 +114,22 @@ module("documents_spreadsheet > global_filters", {}, () => {
             },
         });
         await nextTick();
-        await click(webClient.el.querySelector(".o_topbar_filter_icon"));
-        await click(webClient.el.querySelector(".o_global_filter_new_time"));
-        assert.equal(webClient.el.querySelectorAll(".o-sidePanel").length, 1);
+        await click(target.querySelector(".o_topbar_filter_icon"));
+        await click(target.querySelector(".o_global_filter_new_time"));
+        assert.equal(target.querySelectorAll(".o-sidePanel").length, 1);
 
-        const label = $(webClient.el).find(".o_global_filter_label")[0];
+        const label = $(target).find(".o_global_filter_label")[0];
         await testUtils.fields.editInput(label, "My Label");
 
-        const range = $(webClient.el).find(".o_input:nth-child(2)")[0];
+        const range = $(target).find(".o_input:nth-child(2)")[0];
         await testUtils.fields.editAndTrigger(range, "month", ["change"]);
 
-        await click(webClient.el.querySelector(".date_filter_values .o_input"));
+        await click(target.querySelector(".date_filter_values .o_input"));
 
-        assert.equal(webClient.el.querySelectorAll(".date_filter_values .o_input").length, 2);
-        const month = webClient.el.querySelector(".date_filter_values .o_input:nth-child(1)");
+        assert.equal(target.querySelectorAll(".date_filter_values .o_input").length, 2);
+        const month = target.querySelector(".date_filter_values .o_input:nth-child(1)");
         assert.equal(month.length, 13);
-        const year = webClient.el.querySelector(".date_filter_values .o_input:nth-child(2)");
+        const year = target.querySelector(".date_filter_values .o_input:nth-child(2)");
         assert.equal(year.length, 4);
 
         await testUtils.fields.editAndTrigger(month, "october", ["change"]);
@@ -129,18 +137,13 @@ module("documents_spreadsheet > global_filters", {}, () => {
 
         await testUtils.fields.editAndTrigger(year, "this_year", ["change"]);
 
-        $($(webClient.el).find(".o_field_selector_value")[0]).focusin();
-        await click(webClient.el.querySelector(".o_field_selector_select_button"));
+        $($(target).find(".o_field_selector_value")[0]).focusin();
+        await click(target.querySelector(".o_field_selector_select_button"));
 
         await click(
-            webClient.el.querySelector(
-                ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-            )
+            target.querySelector(".o_spreadsheet_filter_editor_side_panel .o_global_filter_save")
         );
-        assert.equal(
-            webClient.el.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length,
-            1
-        );
+        assert.equal(target.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length, 1);
 
         const globalFilter = model.getters.getGlobalFilters()[0];
         assert.equal(globalFilter.label, "My Label");
@@ -157,7 +160,7 @@ module("documents_spreadsheet > global_filters", {}, () => {
 
     test("Create a new date filter without specifying the year", async function (assert) {
         assert.expect(9);
-        const { webClient, model } = await createSpreadsheetFromPivot({
+        const { model } = await createSpreadsheetFromPivot({
             serverData: {
                 models: getBasicData(),
                 views: {
@@ -172,34 +175,34 @@ module("documents_spreadsheet > global_filters", {}, () => {
             },
         });
         await nextTick();
-        const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+        const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
         await testUtils.dom.click(searchIcon);
-        const newDate = $(webClient.el).find(".o_global_filter_new_time")[0];
+        const newDate = $(target).find(".o_global_filter_new_time")[0];
         await testUtils.dom.click(newDate);
-        assert.equal($(webClient.el).find(".o-sidePanel").length, 1);
+        assert.equal($(target).find(".o-sidePanel").length, 1);
 
-        const label = $(webClient.el).find(".o_global_filter_label")[0];
+        const label = $(target).find(".o_global_filter_label")[0];
         await testUtils.fields.editInput(label, "My Label");
 
-        const range = $(webClient.el).find(".o_input:nth-child(2)")[0];
+        const range = $(target).find(".o_input:nth-child(2)")[0];
         await testUtils.fields.editAndTrigger(range, "month", ["change"]);
 
-        const filterValues = $(webClient.el).find(".date_filter_values .o_input")[0];
+        const filterValues = $(target).find(".date_filter_values .o_input")[0];
         await testUtils.dom.click(filterValues);
 
-        assert.equal($(webClient.el).find(".date_filter_values .o_input").length, 2);
-        const month = $(webClient.el).find(".date_filter_values .o_input:nth-child(1)")[0];
+        assert.equal($(target).find(".date_filter_values .o_input").length, 2);
+        const month = $(target).find(".date_filter_values .o_input:nth-child(1)")[0];
         assert.equal(month.length, 13);
-        const year = $(webClient.el).find(".date_filter_values .o_input:nth-child(2)")[0];
+        const year = $(target).find(".date_filter_values .o_input:nth-child(2)")[0];
         assert.equal(year.length, 4);
 
         await testUtils.fields.editAndTrigger(month, "november", ["change"]);
         // intentionally skip the year input
 
-        $($(webClient.el).find(".o_field_selector_value")[0]).focusin();
-        await testUtils.dom.click($(webClient.el).find(".o_field_selector_select_button")[0]);
+        $($(target).find(".o_field_selector_value")[0]).focusin();
+        await testUtils.dom.click($(target).find(".o_field_selector_select_button")[0]);
 
-        const save = $(webClient.el).find(
+        const save = $(target).find(
             ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
         )[0];
         await testUtils.dom.click(save);
@@ -214,7 +217,7 @@ module("documents_spreadsheet > global_filters", {}, () => {
 
     test("Readonly user can update text filter values", async function (assert) {
         assert.expect(5);
-        const { webClient, model } = await createSpreadsheetFromPivot({
+        const { model } = await createSpreadsheetFromPivot({
             serverData: {
                 models: getBasicData(),
                 views: {
@@ -241,12 +244,12 @@ module("documents_spreadsheet > global_filters", {}, () => {
         model.updateReadOnly(true);
         await nextTick();
 
-        const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");
+        const searchIcon = target.querySelector(".o_topbar_filter_icon");
         await testUtils.dom.click(searchIcon);
 
-        const pivots = webClient.el.querySelectorAll(".pivot_filter_section");
-        assert.containsOnce(webClient, ".pivot_filter_section");
-        assert.containsNone(webClient, "i.o_side_panel_filter_icon");
+        const pivots = target.querySelectorAll(".pivot_filter_section");
+        assert.containsOnce(target, ".pivot_filter_section");
+        assert.containsNone(target, "i.o_side_panel_filter_icon");
         assert.equal(
             pivots[0].querySelector(".o_side_panel_filter_label").textContent,
             "Text Filter"
@@ -262,7 +265,7 @@ module("documents_spreadsheet > global_filters", {}, () => {
 
     test("Readonly user can update date filter values", async function (assert) {
         assert.expect(9);
-        const { webClient, model } = await createSpreadsheetFromPivot({
+        const { model } = await createSpreadsheetFromPivot({
             arch: `
                     <pivot string="Partners">
                         <field name="name" type="col"/>
@@ -285,13 +288,13 @@ module("documents_spreadsheet > global_filters", {}, () => {
         model.updateReadOnly(true);
         await nextTick();
 
-        const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");
+        const searchIcon = target.querySelector(".o_topbar_filter_icon");
         await testUtils.dom.click(searchIcon);
         await nextTick();
 
-        const pivots = webClient.el.querySelectorAll(".pivot_filter_section");
-        assert.containsOnce(webClient, ".pivot_filter_section");
-        assert.containsNone(webClient, "i.o_side_panel_filter_icon");
+        const pivots = target.querySelectorAll(".pivot_filter_section");
+        assert.containsOnce(target, ".pivot_filter_section");
+        assert.containsNone(target, "i.o_side_panel_filter_icon");
         assert.equal(
             pivots[0].querySelector(".o_side_panel_filter_label").textContent,
             "Date Filter"
@@ -321,7 +324,7 @@ module("documents_spreadsheet > global_filters", {}, () => {
     test("Readonly user can update relation filter values", async function (assert) {
         assert.expect(8);
         const tagSelector = ".o_field_many2manytags .badge";
-        const { webClient, model } = await createSpreadsheetFromPivot({
+        const { model } = await createSpreadsheetFromPivot({
             arch: `
                     <pivot string="Partners">
                         <field name="name" type="col"/>
@@ -345,12 +348,12 @@ module("documents_spreadsheet > global_filters", {}, () => {
         model.updateReadOnly(true);
         await nextTick();
 
-        const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");
+        const searchIcon = target.querySelector(".o_topbar_filter_icon");
         await testUtils.dom.click(searchIcon);
 
-        const pivot = webClient.el.querySelector(".pivot_filter_section");
-        assert.containsOnce(webClient, ".pivot_filter_section");
-        assert.containsNone(webClient, "i.o_side_panel_filter_icon");
+        const pivot = target.querySelector(".pivot_filter_section");
+        assert.containsOnce(target, ".pivot_filter_section");
+        assert.containsNone(target, "i.o_side_panel_filter_icon");
         assert.equal(
             pivot.querySelector(".o_side_panel_filter_label").textContent,
             "Relation Filter"
@@ -921,7 +924,7 @@ module("documents_spreadsheet > global_filters", {}, () => {
     test("Changing the range of a date global filter reset the default value", async function (assert) {
         assert.expect(1);
 
-        const { webClient, model } = await createSpreadsheetFromPivot();
+        const { model } = await createSpreadsheetFromPivot();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -936,17 +939,17 @@ module("documents_spreadsheet > global_filters", {}, () => {
                 },
             },
         });
-        const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+        const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
         await testUtils.dom.click(searchIcon);
-        const editFilter = $(webClient.el).find(".o_side_panel_filter_icon");
+        const editFilter = $(target).find(".o_side_panel_filter_icon");
         await testUtils.dom.click(editFilter);
-        const options = $(webClient.el).find(
+        const options = $(target).find(
             ".o_spreadsheet_filter_editor_side_panel .o_side_panel_section"
         )[1];
         options.querySelector("select option[value='year']").setAttribute("selected", "selected");
         await testUtils.dom.triggerEvent(options.querySelector("select"), "change");
         await nextTick();
-        await testUtils.dom.click($(webClient.el).find(".o_global_filter_save")[0]);
+        await testUtils.dom.click($(target).find(".o_global_filter_save")[0]);
         await nextTick();
         assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue, {});
     });

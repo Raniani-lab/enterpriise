@@ -1,7 +1,6 @@
 odoo.define("documents_spreadsheet.global_filters_side_panel", function (require) {
     "use strict";
 
-    const core = require("web.core");
     const DateFilterValue = require("documents_spreadsheet.DateFilterValue");
     const {
         TagSelectorWidget,
@@ -10,18 +9,13 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
     const { getPeriodOptions } = require("web.searchUtils");
 
     const { Component } = owl;
-    const _t = core._t;
 
     /**
      * This is the side panel to define/edit a global filter.
      * It can be of 3 different type: text, date and relation.
      */
     class GlobalFiltersSidePanel extends Component {
-        /**
-         * @constructor
-         */
-        constructor() {
-            super(...arguments);
+        setup() {
             this.TagSelectorWidget = TagSelectorWidget;
             this.periodOptions = getPeriodOptions(moment());
             this.getters = this.env.getters;
@@ -51,18 +45,15 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
             this.env.openSidePanel("FILTERS_SIDE_PANEL", { id });
         }
 
-        onDateInput(id, event) {
-            const value = event.detail;
+        onDateInput(id, value) {
             this.env.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
         }
 
-        onTextInput(id, event) {
-            const value = event.target.value;
+        onTextInput(id, value) {
             this.env.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
         }
 
-        onTagSelected(id, event) {
-            const values = event.detail.value;
+        onTagSelected(id, values) {
             this.env.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id,
                 value: values.map((record) => record.id),

@@ -3,7 +3,7 @@
 
 import ListView from "web.ListView";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
-import { nextTick, createView } from "web.test_utils";
+import { createView } from "web.test_utils";
 import { getBasicData, getBasicListArch } from "../utils/spreadsheet_test_data";
 import { insertList } from "../../src/list/list_init_callback";
 import {
@@ -15,6 +15,7 @@ import {
 } from "../utils/getters_helpers";
 import { selectCell, setCellContent } from "../utils/commands_helpers";
 import { createSpreadsheetFromList } from "../utils/list_helpers";
+import { nextTick, getFixture } from "@web/../tests/helpers/utils";
 
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 
@@ -108,17 +109,18 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
     QUnit.test("Open list properties properties", async function (assert) {
         assert.expect(10);
 
-        const { webClient, model, env } = await createSpreadsheetFromList();
+        const { model, env } = await createSpreadsheetFromList();
 
         const dataRoot = topbarMenuRegistry.getAll().find((item) => item.id === "data");
         const children = topbarMenuRegistry.getChildren(dataRoot, env);
         const openProperties = children.find((item) => item.id === "item_list_1");
         openProperties.action(env);
         await nextTick();
-        let title = $(webClient.el).find(".o-sidePanelTitle")[0].innerText;
+        const target = getFixture();
+        let title = $(target).find(".o-sidePanelTitle")[0].innerText;
         assert.equal(title, "List properties");
 
-        const sections = $(webClient.el).find(".o_side_panel_section");
+        const sections = $(target).find(".o_side_panel_section");
         assert.equal(sections.length, 4, "it should have 4 sections");
         const [pivotName, pivotModel, domain] = sections;
 
@@ -137,10 +139,10 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
             listId: undefined,
         });
         await nextTick();
-        title = $(webClient.el).find(".o-sidePanelTitle")[0].innerText;
+        title = $(target).find(".o-sidePanelTitle")[0].innerText;
         assert.equal(title, "List properties");
 
-        assert.containsOnce(webClient, ".o_side_panel_select");
+        assert.containsOnce(target, ".o_side_panel_select");
     });
 
     QUnit.test("Add list in an existing spreadsheet", async (assert) => {

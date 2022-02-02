@@ -3,8 +3,6 @@
 import { registry } from "@web/core/registry";
 import SpreadsheetCollaborativeChannel from "./spreadsheet_collaborative_channel";
 
-const { Component } = owl;
-
 class SpreadsheetCollaborativeService {
     /**
      * Get a new collaborative channel for the given spreadsheet id

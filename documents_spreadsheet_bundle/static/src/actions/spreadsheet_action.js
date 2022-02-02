@@ -11,14 +11,13 @@ import { SpreadsheetName } from "./control_panel/spreadsheet_name";
 
 import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants";
 
-const { Component, useRef, useState } = owl;
+const { Component, useState } = owl;
 
 export class SpreadsheetAction extends AbstractSpreadsheetAction {
   setup() {
     super.setup();
     this.orm = useService("orm");
     this.actionService = useService("action");
-    this.spreadsheetRef = useRef("spreadsheet");
     this.notificationMessage = this.env._t(
       "New spreadsheet created in Documents"
     );
@@ -29,11 +28,17 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
       isFavorited: false,
       spreadsheetName: UNTITLED_SPREADSHEET_NAME,
     });
+
+    this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
   }
 
-  async willStart() {
-    await super.willStart();
-    this.transportService = useService("spreadsheet_collaborative").getCollaborativeChannel(Component.env, this.resId);
+  exposeSpreadsheet(spreadsheet) {
+    this.spreadsheet = spreadsheet;
+  }
+
+  async onWillStart() {
+    await super.onWillStart();
+    this.transportService = this.spreadsheetCollaborative.getCollaborativeChannel(Component.env, this.resId);
   }
 
   async _fetchData() {
@@ -59,14 +64,14 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
 
   /**
    * @private
-   * @param {OdooEvent} ev
+   * @param {Object}
    */
-  async _onDownload(ev) {
+  async _onDownload({ name, files }) {
     await download({
       url: "/documents/xlsx",
       data: {
-        zip_name: `${ev.detail.name}.xlsx`,
-        files: JSON.stringify(ev.detail.files),
+        zip_name: `${name}.xlsx`,
+        files: JSON.stringify(files),
       },
     });
   }
@@ -85,11 +90,11 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
   /**
    * Updates the control panel with the sync status of spreadsheet
    *
-   * @param {OdooEvent} ev
+   * @param {Object}
    */
-  _onSpreadsheetSyncStatus(ev) {
-    this.state.isSynced = ev.detail.synced;
-    this.state.numberOfConnectedUsers = ev.detail.numberOfConnectedUsers;
+  _onSpreadsheetSyncStatus({ synced, numberOfConnectedUsers }) {
+    this.state.isSynced = synced;
+    this.state.numberOfConnectedUsers = numberOfConnectedUsers;
   }
 
   /**
@@ -102,8 +107,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
   /**
    * Create a copy of the given spreadsheet and display it
    */
-  async _onMakeCopy(ev) {
-    const { data, thumbnail } = ev.detail;
+  async _onMakeCopy({ data, thumbnail }) {
     const defaultValues = {
       mimetype: "application/o-spreadsheet",
       raw: JSON.stringify(data),
@@ -130,9 +134,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     this._openSpreadsheet(id);
   }
 
-  async _onSpreadsheetSaved(ev) {
-    const { data, thumbnail } = ev.detail;
-
+  async _onSpreadsheetSaved({ data, thumbnail }) {
     await this.orm.write("documents.document", [this.resId], {
       thumbnail,
       raw: JSON.stringify(data),
@@ -142,11 +144,11 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
 
   /**
    * Saves the spreadsheet name change.
-   * @param {OdooEvent} ev
+   * @param {Object} detail
    * @returns {Promise}
    */
-  async _onSpreadSheetNameChanged(ev) {
-    const { name } = ev.detail;
+  async _onSpreadSheetNameChanged(detail) {
+    const { name } = detail;
     this.state.spreadsheetName = name;
     this.env.config.setDisplayName(this.state.spreadsheetName);
     return await this.orm.write("documents.document", [this.resId], { name });

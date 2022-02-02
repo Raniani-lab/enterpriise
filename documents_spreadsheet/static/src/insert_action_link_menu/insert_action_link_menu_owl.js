@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
@@ -81,6 +82,7 @@ export class InsertViewSpreadsheet extends Component {
 
 InsertViewSpreadsheet.props = {};
 InsertViewSpreadsheet.template = "documents_spreadsheet.InsertActionSpreadsheet";
+InsertViewSpreadsheet.components = { DropdownItem };
 
 favoriteMenuRegistry.add(
     "insert-action-link-in-spreadsheet",

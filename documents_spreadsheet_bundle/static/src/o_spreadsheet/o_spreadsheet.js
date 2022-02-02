@@ -1,26 +1,6 @@
 (function (exports, owl) {
     'use strict';
 
-    function _interopNamespace(e) {
-        if (e && e.__esModule) return e;
-        var n = Object.create(null);
-        if (e) {
-            Object.keys(e).forEach(function (k) {
-                if (k !== 'default') {
-                    var d = Object.getOwnPropertyDescriptor(e, k);
-                    Object.defineProperty(n, k, d.get ? d : {
-                        enumerable: true,
-                        get: function () { return e[k]; }
-                    });
-                }
-            });
-        }
-        n["default"] = e;
-        return Object.freeze(n);
-    }
-
-    var owl__namespace = /*#__PURE__*/_interopNamespace(owl);
-
     /*
      * usage: every string should be translated either with _lt if they are registered with a registry at
      *  the load of the app or with Spreadsheet._t in the templates. Spreadsheet._t is exposed in the
@@ -2927,6 +2907,35 @@
         itemsDic[maxId + 1] = item;
         return maxId + 1;
     }
+    /**
+     * This method comes from owl 1 as it was removed in owl 2
+     *
+     * Returns a function, that, as long as it continues to be invoked, will not
+     * be triggered. The function will be called after it stops being called for
+     * N milliseconds. If `immediate` is passed, trigger the function on the
+     * leading edge, instead of the trailing.
+     *
+     * Inspired by https://davidwalsh.name/javascript-debounce-function
+     */
+    function debounce(func, wait, immediate) {
+        let timeout;
+        return function () {
+            const context = this;
+            const args = arguments;
+            function later() {
+                timeout = null;
+                if (!immediate) {
+                    func.apply(context, args);
+                }
+            }
+            const callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) {
+                func.apply(context, args);
+            }
+        };
+    }
 
     function createDefaultCols(colNumber) {
         const cols = [];
@@ -3139,12 +3148,13 @@
      * the correct order.
      */
     function isZoneValid(zone) {
+        const { bottom, top, left, right } = zone;
         // Typescript *should* prevent this kind of errors but
         // it's better to be on the safe side at runtime as well.
-        if (isNaN(zone.bottom) || isNaN(zone.top) || isNaN(zone.left) || isNaN(zone.right)) {
+        if (isNaN(bottom) || isNaN(top) || isNaN(left) || isNaN(right)) {
             return false;
         }
-        return zone.bottom >= zone.top && zone.right >= zone.left;
+        return bottom >= top && right >= left && bottom >= 0 && top >= 0 && right >= 0 && left >= 0;
     }
     /**
      * Convert from zone to a cartesian reference
@@ -6952,6 +6962,12 @@
         }
     }
 
+    class InvalidReferenceError extends Error {
+        constructor() {
+            super(_lt("Invalid reference"));
+        }
+    }
+
     /**
      * Tokenizer
      *
@@ -7224,7 +7240,7 @@
                     return { type: "FUNCALL", value: current.value, args };
                 }
             case "INVALID_REFERENCE":
-                throw new Error(_lt("Invalid reference"));
+                throw new InvalidReferenceError();
             case "REFERENCE":
                 if (((_a = tokens[0]) === null || _a === void 0 ? void 0 : _a.value) === ":" && ((_b = tokens[1]) === null || _b === void 0 ? void 0 : _b.type) === "REFERENCE") {
                     tokens.shift();
@@ -7827,6 +7843,7 @@
                 case "NUMBER":
                     return `|N${constantValues.numbers.indexOf(parseNumber(token.value))}|`;
                 case "REFERENCE":
+                case "INVALID_REFERENCE":
                     return `|${dependencies.indexOf(token.value)}|`;
                 default:
                     return token.value;
@@ -7845,6 +7862,7 @@
         const dependencies = [];
         for (const token of tokens) {
             switch (token.type) {
+                case "INVALID_REFERENCE":
                 case "REFERENCE":
                     dependencies.push(token.value);
                     break;
@@ -10813,10 +10831,10 @@
                     break;
                 case "REMOVE_COLUMNS_ROWS":
                     if (cmd.dimension === "COL") {
-                        this.removeColumns(this.sheets[cmd.sheetId], cmd.elements);
+                        this.removeColumns(this.sheets[cmd.sheetId], [...cmd.elements]);
                     }
                     else {
-                        this.removeRows(this.sheets[cmd.sheetId], cmd.elements);
+                        this.removeRows(this.sheets[cmd.sheetId], [...cmd.elements]);
                     }
                     break;
                 case "ADD_COLUMNS_ROWS":
@@ -13643,8 +13661,87 @@
     }
     const otRegistry = new OTRegistry();
 
-    const { Component: Component$o } = owl__namespace;
-    const { css: css$p, xml: xml$u } = owl__namespace.tags;
+    /**
+     * This file is largely inspired by owl 1.
+     * `css` tag has been removed from owl 2 without workaround to manage css.
+     * So, the solution was to import the behavior of owl 1 directly in our
+     * codebase, with one difference: the css is added to the sheet as soon as the
+     * css tag is executed. In owl 1, the css was added as soon as a Component was
+     * created for the first time.
+     */
+    const STYLESHEETS = {};
+    let nextId = 0;
+    /**
+     * CSS tag helper for defining inline stylesheets.  With this, one can simply define
+     * an inline stylesheet with just the following code:
+     * ```js
+     *     css`.component-a { color: red; }`;
+     * ```
+     */
+    function css(strings, ...args) {
+        const name = `__sheet__${nextId++}`;
+        const value = String.raw(strings, ...args);
+        registerSheet(name, value);
+        activateSheet(name);
+        return name;
+    }
+    function processSheet(str) {
+        const tokens = str.split(/(\{|\}|;)/).map((s) => s.trim());
+        const selectorStack = [];
+        const parts = [];
+        let rules = [];
+        function generateSelector(stackIndex, parentSelector) {
+            const parts = [];
+            for (const selector of selectorStack[stackIndex]) {
+                let part = (parentSelector && parentSelector + " " + selector) || selector;
+                if (part.includes("&")) {
+                    part = selector.replace(/&/g, parentSelector || "");
+                }
+                if (stackIndex < selectorStack.length - 1) {
+                    part = generateSelector(stackIndex + 1, part);
+                }
+                parts.push(part);
+            }
+            return parts.join(", ");
+        }
+        function generateRules() {
+            if (rules.length) {
+                parts.push(generateSelector(0) + " {");
+                parts.push(...rules);
+                parts.push("}");
+                rules = [];
+            }
+        }
+        while (tokens.length) {
+            let token = tokens.shift();
+            if (token === "}") {
+                generateRules();
+                selectorStack.pop();
+            }
+            else {
+                if (tokens[0] === "{") {
+                    generateRules();
+                    selectorStack.push(token.split(/\s*,\s*/));
+                    tokens.shift();
+                }
+                if (tokens[0] === ";") {
+                    rules.push("  " + token + ";");
+                }
+            }
+        }
+        return parts.join("\n");
+    }
+    function registerSheet(id, css) {
+        const sheet = document.createElement("style");
+        sheet.textContent = processSheet(css);
+        STYLESHEETS[id] = sheet;
+    }
+    function activateSheet(id) {
+        const sheet = STYLESHEETS[id];
+        sheet.setAttribute("component", id);
+        document.head.appendChild(sheet);
+    }
+
     const COLORS = [
         [
             "#000000",
@@ -13752,7 +13849,7 @@
     const ITEMS_PER_LINE = Math.max(...COLORS.map((line) => line.length));
     const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
         2 * LINE_HORIZONTAL_PADDING;
-    class ColorPicker extends Component$o {
+    class ColorPicker extends owl.Component {
         constructor() {
             super(...arguments);
             this.COLORS = COLORS;
@@ -13764,7 +13861,7 @@
             }
         }
     }
-    ColorPicker.template = xml$u /* xml */ `
+    ColorPicker.template = owl.xml /* xml */ `
   <div class="o-color-picker"
     t-att-class="props.dropdownDirection || 'right'"
     t-on-click="onColorClick">
@@ -13774,7 +13871,7 @@
       </t>
     </div>
   </div>`;
-    ColorPicker.style = css$p /* scss */ `
+    ColorPicker.style = css /* scss */ `
     .o-color-picker {
       position: absolute;
       top: calc(100% + 5px);
@@ -13874,39 +13971,39 @@
     const ICONS = {
         arrowGood: {
             img: loadIconImage(ARROW_UP),
-            svg: ARROW_UP,
+            svg: owl.markup(ARROW_UP),
         },
         arrowNeutral: {
             img: loadIconImage(ARROW_RIGHT),
-            svg: ARROW_RIGHT,
+            svg: owl.markup(ARROW_RIGHT),
         },
         arrowBad: {
             img: loadIconImage(ARROW_DOWN),
-            svg: ARROW_DOWN,
+            svg: owl.markup(ARROW_DOWN),
         },
         smileyGood: {
             img: loadIconImage(SMILE),
-            svg: SMILE,
+            svg: owl.markup(SMILE),
         },
         smileyNeutral: {
             img: loadIconImage(MEH),
-            svg: MEH,
+            svg: owl.markup(MEH),
         },
         smileyBad: {
             img: loadIconImage(FROWN),
-            svg: FROWN,
+            svg: owl.markup(FROWN),
         },
         dotGood: {
             img: loadIconImage(GREEN_DOT),
-            svg: GREEN_DOT,
+            svg: owl.markup(GREEN_DOT),
         },
         dotNeutral: {
             img: loadIconImage(YELLOW_DOT),
-            svg: YELLOW_DOT,
+            svg: owl.markup(YELLOW_DOT),
         },
         dotBad: {
             img: loadIconImage(RED_DOT),
-            svg: RED_DOT,
+            svg: owl.markup(RED_DOT),
         },
     };
     const ICON_SETS = {
@@ -13927,18 +14024,15 @@
         },
     };
 
-    const { Component: Component$n, useState: useState$i } = owl__namespace;
-    const { xml: xml$t, css: css$o } = owl__namespace.tags;
-    const { onMounted: onMounted$b, onWillUnmount: onWillUnmount$5, onPatched: onPatched$5 } = owl__namespace.hooks;
     const uuidGenerator$1 = new UuidGenerator();
-    const TEMPLATE$n = xml$t /* xml */ `
+    const TEMPLATE$n = owl.xml /* xml */ `
   <div class="o-selection">
-    <div t-foreach="ranges" t-as="range" t-key="range.id" class="o-selection-input">
+    <div t-foreach="ranges" t-as="range" t-key="range.id" class="o-selection-input" t-att-class="props.class">
       <input
         type="text"
         spellcheck="false"
-        t-on-change="onInputChanged(range.id)"
-        t-on-focus="focus(range.id)"
+        t-on-change="(ev) => this.onInputChanged(range.id, ev)"
+        t-on-focus="() => this.focus(range.id)"
         t-att-value="range.xc"
         t-att-style="getColor(range)"
         t-att-class="{
@@ -13950,7 +14044,7 @@
       <button
         class="o-btn o-remove-selection"
         t-if="ranges.length > 1"
-        t-on-click="removeInput(range.id)">✖</button>
+        t-on-click="() => this.removeInput(range.id)">✖</button>
     </div>
 
     <div class="o-selection-input">
@@ -13965,7 +14059,7 @@
     </div>
 
   </div>`;
-    const CSS$k = css$o /* scss */ `
+    const CSS$k = css /* scss */ `
   .o-selection {
     .o-selection-input {
       display: flex;
@@ -14016,10 +14110,10 @@
      * ranges. He can either input the ranges with the regular DOM `<input/>`
      * displayed or by selecting zones on the grid.
      *
-     * A `selection-changed` event is triggered every time the input value
+     * onSelectionChanged is called every time the input value
      * changes.
      */
-    class SelectionInput extends Component$n {
+    class SelectionInput extends owl.Component {
         constructor() {
             super(...arguments);
             this.id = uuidGenerator$1.uuidv4();
@@ -14027,7 +14121,7 @@
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
             this.originSheet = this.env.getters.getActiveSheetId();
-            this.state = useState$i({
+            this.state = owl.useState({
                 isMissing: false,
             });
         }
@@ -14057,9 +14151,9 @@
             return this.props.isInvalid || this.state.isMissing;
         }
         setup() {
-            onMounted$b(() => this.enableNewSelectionInput());
-            onWillUnmount$5(async () => this.disableNewSelectionInput());
-            onPatched$5(() => this.checkChange());
+            owl.onMounted(() => this.enableNewSelectionInput());
+            owl.onWillUnmount(async () => this.disableNewSelectionInput());
+            owl.onPatched(() => this.checkChange());
         }
         enableNewSelectionInput() {
             this.dispatch("ENABLE_NEW_SELECTION_INPUT", {
@@ -14082,8 +14176,9 @@
             return "color: " + color + ";";
         }
         triggerChange() {
+            var _a, _b;
             const ranges = this.getters.getSelectionInputValue(this.id);
-            this.trigger("selection-changed", { ranges });
+            (_b = (_a = this.props).onSelectionChanged) === null || _b === void 0 ? void 0 : _b.call(_a, ranges);
             this.previousRanges = ranges;
         }
         focus(rangeId) {
@@ -14098,9 +14193,10 @@
             this.dispatch("ADD_EMPTY_RANGE", { id: this.id });
         }
         removeInput(rangeId) {
+            var _a, _b;
             this.dispatch("REMOVE_RANGE", { id: this.id, rangeId });
             this.triggerChange();
-            this.trigger("selection-confirmed");
+            (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
         }
         onInputChanged(rangeId, ev) {
             const target = ev.target;
@@ -14113,6 +14209,7 @@
             this.triggerChange();
         }
         disable() {
+            var _a, _b;
             this.dispatch("UNFOCUS_SELECTION_INPUT");
             const ranges = this.getters.getSelectionInputValue(this.id);
             if (this.props.required && ranges.length === 0) {
@@ -14125,7 +14222,7 @@
                     sheetIdTo: this.originSheet,
                 });
             }
-            this.trigger("selection-confirmed");
+            (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
         }
     }
     SelectionInput.template = TEMPLATE$n;
@@ -14263,14 +14360,11 @@
         And: _lt("and"),
     };
 
-    const { Component: Component$m, useState: useState$h } = owl__namespace;
-    const { xml: xml$s, css: css$n } = owl__namespace.tags;
-    const { onWillUpdateProps: onWillUpdateProps$6 } = owl__namespace.hooks;
-    const CONFIGURATION_TEMPLATE = xml$s /* xml */ `
+    const CONFIGURATION_TEMPLATE = owl.xml /* xml */ `
 <div>
   <div class="o-section">
     <div class="o-section-title" t-esc="env._t('${chartTerms.ChartType}')"/>
-    <select t-model="state.chart.type" class="o-input o-type-selector" t-on-change="updateSelect('type')">
+    <select t-model="state.chart.type" class="o-input o-type-selector" t-on-change="(ev) => this.updateSelect('type', ev)">
       <option value="bar" t-esc="env._t('${chartTerms.Bar}')"/>
       <option value="line" t-esc="env._t('${chartTerms.Line}')"/>
       <option value="pie" t-esc="env._t('${chartTerms.Pie}')"/>
@@ -14288,9 +14382,9 @@
                     ranges="state.chart.dataSets"
                     isInvalid="isDatasetInvalid"
                     required="true"
-                    t-on-selection-changed="onSeriesChanged"
-                    t-on-selection-confirmed="updateDataSet" />
-    <input type="checkbox" t-model="state.chart.dataSetsHaveTitle" t-on-change="updateDataSet"/><t t-esc="env._t('${chartTerms.MyDataHasTitle}')"/>
+                    onSelectionChanged="(ranges) => this.onSeriesChanged(ranges)"
+                    onSelectionConfirmed="() => this.updateDataSet()" />
+    <input type="checkbox" t-model="state.chart.dataSetsHaveTitle" t-on-change="() => this.updateDataSet()"/><t t-esc="env._t('${chartTerms.MyDataHasTitle}')"/>
   </div>
   <div class="o-section o-data-labels">
     <div class="o-section-title" t-esc="env._t('${chartTerms.DataCategories}')"/>
@@ -14298,17 +14392,17 @@
                     ranges="[state.chart.labelRange || '']"
                     isInvalid="isLabelInvalid"
                     hasSingleRange="true"
-                    t-on-selection-changed="onLabelRangeChanged"
-                    t-on-selection-confirmed="updateLabelRange" />
+                    onSelectionChanged="(ranges) => this.onLabelRangeChanged(ranges)"
+                    onSelectionConfirmed="() => this.updateLabelRange()" />
   </div>
   <div class="o-section o-sidepanel-error" t-if="errorMessages">
-    <div t-foreach="errorMessages" t-as="error">
+    <div t-foreach="errorMessages" t-as="error" t-key="error">
       <t t-esc="error"/>
     </div>
   </div>
 </div>
 `;
-    const DESIGN_TEMPLATE = xml$s /* xml */ `
+    const DESIGN_TEMPLATE = owl.xml /* xml */ `
 <div>
   <div class="o-section o-chart-title">
     <div class="o-section-title" t-esc="env._t('${chartTerms.BackgroundColor}')"/>
@@ -14325,14 +14419,14 @@
   </div>
   <div class="o-section">
     <div class="o-section-title"><t t-esc="env._t('${chartTerms.VerticalAxisPosition}')"/></div>
-    <select t-model="state.chart.verticalAxisPosition" class="o-input o-type-selector" t-on-change="updateSelect('verticalAxisPosition')">
+    <select t-model="state.chart.verticalAxisPosition" class="o-input o-type-selector" t-on-change="(ev) => this.updateSelect('verticalAxisPosition', ev)">
       <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
       <option value="right" t-esc="env._t('${chartTerms.Right}')"/>
     </select>
   </div>
   <div class="o-section">
     <div class="o-section-title"><t t-esc="env._t('${chartTerms.LegendPosition}')"/></div>
-    <select t-model="state.chart.legendPosition" class="o-input o-type-selector" t-on-change="updateSelect('legendPosition')">
+    <select t-model="state.chart.legendPosition" class="o-input o-type-selector" t-on-change="(ev) => this.updateSelect('legendPosition', ev)">
       <option value="top" t-esc="env._t('${chartTerms.Top}')"/>
       <option value="bottom" t-esc="env._t('${chartTerms.Bottom}')"/>
       <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
@@ -14341,17 +14435,17 @@
   </div>
 </div>
 `;
-    const TEMPLATE$m = xml$s /* xml */ `
+    const TEMPLATE$m = owl.xml /* xml */ `
   <div class="o-chart">
     <div class="o-panel">
       <div class="o-panel-element"
           t-att-class="state.panel !== 'configuration' ? 'inactive' : ''"
-          t-on-click="activate('configuration')">
+          t-on-click="() => this.activate('configuration')">
         <i class="fa fa-sliders"/>Configuration
       </div>
       <div class="o-panel-element"
           t-att-class="state.panel !== 'design' ? 'inactive' : ''"
-          t-on-click="activate('design')">
+          t-on-click="() => this.activate('design')">
         <i class="fa fa-paint-brush"/>Design
       </div>
     </div>
@@ -14364,7 +14458,7 @@
     </t>
   </div>
 `;
-    const STYLE = css$n /* scss */ `
+    const STYLE = css /* scss */ `
   .o-chart {
     .o-panel {
       display: flex;
@@ -14395,14 +14489,14 @@
     }
   }
 `;
-    class ChartPanel extends Component$m {
+    class ChartPanel extends owl.Component {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.state = useState$h(this.initialState(this.props.figure));
+            this.state = owl.useState(this.initialState(this.props.figure));
         }
         setup() {
-            onWillUpdateProps$6((nextProps) => {
+            owl.onWillUpdateProps((nextProps) => {
                 if (!this.getters.getChartDefinition(nextProps.figure.id)) {
                     this.props.onCloseSidePanel();
                     return;
@@ -14433,8 +14527,8 @@
             var _a;
             return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(27 /* InvalidLabelRange */));
         }
-        onSeriesChanged(ev) {
-            this.state.chart.dataSets = ev.detail.ranges;
+        onSeriesChanged(ranges) {
+            this.state.chart.dataSets = ranges;
         }
         updateDataSet() {
             this.state.datasetDispatchResult = this.updateChart({
@@ -14463,8 +14557,8 @@
                 definition,
             });
         }
-        onLabelRangeChanged(ev) {
-            this.state.chart.labelRange = ev.detail.ranges[0];
+        onLabelRangeChanged(ranges) {
+            this.state.chart.labelRange = ranges[0];
         }
         getKey(label) {
             return label + this.props.figure.id;
@@ -14506,9 +14600,7 @@
         return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
     }
 
-    const { Component: Component$l } = owl__namespace;
-    const { css: css$m, xml: xml$r } = owl__namespace.tags;
-    class IconPicker extends Component$l {
+    class IconPicker extends owl.Component {
         constructor() {
             super(...arguments);
             this.icons = ICONS;
@@ -14520,23 +14612,23 @@
             }
         }
     }
-    IconPicker.template = xml$r /* xml */ `
+    IconPicker.template = owl.xml /* xml */ `
   <div class="o-icon-picker" >
-    <t t-foreach="iconSets" t-as="iconSet" t-key="iconset">
+    <t t-foreach="iconSets" t-as="iconSet" t-key="iconSet">
       <div class="o-cf-icon-line">
-        <div class="o-icon-picker-item" t-on-click="onIconClick(iconSets[iconSet].good)">
-          <t t-raw="icons[iconSets[iconSet].good].svg"/>
+        <div class="o-icon-picker-item" t-on-click="() => this.onIconClick(iconSets[iconSet].good)">
+          <t t-out="icons[iconSets[iconSet].good].svg"/>
         </div>
-        <div class="o-icon-picker-item" t-on-click="onIconClick(iconSets[iconSet].neutral)">
-          <t t-raw="icons[iconSets[iconSet].neutral].svg"/>
+        <div class="o-icon-picker-item" t-on-click="() => this.onIconClick(iconSets[iconSet].neutral)">
+          <t t-out="icons[iconSets[iconSet].neutral].svg"/>
         </div>
-        <div class="o-icon-picker-item" t-on-click="onIconClick(iconSets[iconSet].bad)">
-          <t t-raw="icons[iconSets[iconSet].bad].svg"/>
+        <div class="o-icon-picker-item" t-on-click="() => this.onIconClick(iconSets[iconSet].bad)">
+          <t t-out="icons[iconSets[iconSet].bad].svg"/>
         </div>
       </div>
     </t>
   </div>`;
-    IconPicker.style = css$m /* scss */ `
+    IconPicker.style = css /* scss */ `
     .o-icon-picker {
       position: absolute;
       z-index: 10;
@@ -14557,8 +14649,7 @@
     }
   `;
 
-    const { xml: xml$q } = owl__namespace.tags;
-    const PREVIEW_TEMPLATE$2 = xml$q /* xml */ `
+    const PREVIEW_TEMPLATE$2 = owl.xml /* xml */ `
     <div class="o-cf-preview-line"
          t-attf-style="font-weight:{{currentStyle.bold ?'bold':'normal'}};
                        text-decoration:{{getTextDecoration(currentStyle)}};
@@ -14568,7 +14659,7 @@
                        background-color:{{currentStyle.fillColor}};"
          t-esc="previewText || env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')" />
 `;
-    const TEMPLATE_CELL_IS_RULE_EDITOR = xml$q /* xml */ `
+    const TEMPLATE_CELL_IS_RULE_EDITOR = owl.xml /* xml */ `
 <div class="o-cf-cell-is-rule">
     <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.IS_RULE}')"></div>
     <select t-model="rule.operator" class="o-input o-cell-is-operator">
@@ -14596,21 +14687,21 @@
         <t t-set="currentStyle" t-value="rule.style"/>
     </t>
     <div class="o-tools">
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.BOLD}')" t-att-class="{active:rule.style.bold}" t-on-click="toggleStyle('bold')">
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.BOLD}')" t-att-class="{active:rule.style.bold}" t-on-click="() => this.toggleStyle('bold')">
             ${BOLD_ICON}
         </div>
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.ITALIC}')" t-att-class="{active:rule.style.italic}" t-on-click="toggleStyle('italic')">
+        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.ITALIC}')" t-att-class="{active:rule.style.italic}" t-on-click="() => this.toggleStyle('italic')">
             ${ITALIC_ICON}
         </div>
         <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.UNDERLINE}')" t-att-class="{active:rule.style.underline}"
-             t-on-click="toggleStyle('underline')">${UNDERLINE_ICON}
+             t-on-click="(ev) => this.toggleStyle('underline', ev)">${UNDERLINE_ICON}
         </div>
         <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.STRIKE_THROUGH}')" t-att-class="{active:rule.style.strikethrough}"
-             t-on-click="toggleStyle('strikethrough')">${STRIKE_ICON}
+             t-on-click="(ev) => this.toggleStyle('strikethrough', ev)">${STRIKE_ICON}
         </div>
         <div class="o-tool o-dropdown o-with-color">
               <span t-att-title="env._t('${conditionalFormattingTerms.TEXT_COLOR}')" t-attf-style="border-color:{{rule.style.textColor}}"
-                    t-on-click.stop="toggleMenu('cellIsRule-textColor')">
+                    t-on-click.stop="(ev) => this.toggleMenu('cellIsRule-textColor', ev)">
                     ${TEXT_COLOR_ICON}
               </span>
               <ColorPicker t-if="state.openedMenu === 'cellIsRule-textColor'" dropdownDirection="'center'" onColorPicked="(color) => this.setColor('textColor', color)" t-key="textColor"/>
@@ -14618,7 +14709,7 @@
         <div class="o-divider"/>
         <div class="o-tool o-dropdown o-with-color">
           <span t-att-title="env._t('${conditionalFormattingTerms.FILL_COLOR}')" t-attf-style="border-color:{{rule.style.fillColor}}"
-                t-on-click.stop="toggleMenu('cellIsRule-fillColor')">
+                t-on-click.stop="(ev) => this.toggleMenu('cellIsRule-fillColor', ev)">
                 ${FILL_COLOR_ICON}
           </span>
           <ColorPicker t-if="state.openedMenu === 'cellIsRule-fillColor'" dropdownDirection="'center'" onColorPicked="(color) => this.setColor('fillColor', color)" t-key="fillColor"/>
@@ -14627,13 +14718,12 @@
 </div>
 `;
 
-    const { xml: xml$p } = owl__namespace.tags;
-    const PREVIEW_TEMPLATE$1 = xml$p /* xml */ `
+    const PREVIEW_TEMPLATE$1 = owl.xml /* xml */ `
   <div class="o-cf-preview-gradient" t-attf-style="{{getPreviewGradient()}}">
     <t t-esc="env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')"/>
   </div>
 `;
-    const THRESHOLD_TEMPLATE = xml$p /* xml */ `
+    const THRESHOLD_TEMPLATE = owl.xml /* xml */ `
   <div t-attf-class="o-threshold o-threshold-{{thresholdType}}">
       <t t-if="thresholdType === 'midpoint'">
         <t t-set="type" t-value="threshold and threshold.type"/>
@@ -14665,12 +14755,12 @@
       <div class="o-tools">
         <div class="o-tool  o-dropdown o-with-color" t-att-disabled="threshold === undefined" >
           <span title="Fill Color"  t-attf-style="border-color:#{{getThresholdColor(threshold)}}"
-                t-on-click.stop="toggleMenu('colorScale-'+thresholdType+'Color')">${FILL_COLOR_ICON}</span>
+                t-on-click.stop="(ev) => this.toggleMenu('colorScale-'+thresholdType+'Color', ev)">${FILL_COLOR_ICON}</span>
           <ColorPicker t-if="state.openedMenu === 'colorScale-'+thresholdType+'Color'" dropdownDirection="'left'" onColorPicked="(color) => this.setColorScaleColor(thresholdType, color)"/>
         </div>
       </div>
   </div>`;
-    const TEMPLATE_COLOR_SCALE_EDITOR = xml$p /* xml */ `
+    const TEMPLATE_COLOR_SCALE_EDITOR = owl.xml /* xml */ `
   <div class="o-cf-color-scale-editor">
       <div class="o-cf-title-text">
         <t t-esc="env._t('${colorScale.Preview}')"/>
@@ -14699,33 +14789,32 @@
       </t>
   </div>`;
 
-    const { xml: xml$o } = owl__namespace.tags;
-    const ICON_SETS_TEMPLATE = xml$o /* xml */ `
+    const ICON_SETS_TEMPLATE = owl.xml /* xml */ `
   <div>
   <div class="o-cf-title-text">
     <t t-esc="env._t('${iconSetRule.Icons}')"/>
   </div>
     <div class="o-cf-iconsets">
-      <div class="o-cf-iconset" t-foreach="['arrows', 'smiley', 'dots']" t-as="iconSet" t-on-click="setIconSet(iconSet)">
+      <div class="o-cf-iconset" t-foreach="['arrows', 'smiley', 'dots']" t-as="iconSet" t-key="iconSet" t-on-click="(ev) => this.setIconSet(iconSet, ev)">
         <div class="o-cf-icon">
-          <t t-raw="icons[iconSets[iconSet].good].svg"/>
+          <t t-out="icons[iconSets[iconSet].good].svg"/>
         </div>
         <div class="o-cf-icon">
-          <t t-raw="icons[iconSets[iconSet].neutral].svg"/>
+          <t t-out="icons[iconSets[iconSet].neutral].svg"/>
         </div>
         <div class="o-cf-icon">
-          <t t-raw="icons[iconSets[iconSet].bad].svg"/>
+          <t t-out="icons[iconSets[iconSet].bad].svg"/>
         </div>
       </div>
     </div>
   </div>
 `;
-    const INFLECTION_POINTS_TEMPLATE_ROW = xml$o /* xml */ `
+    const INFLECTION_POINTS_TEMPLATE_ROW = owl.xml /* xml */ `
   <tr>
     <td>
-      <div t-on-click.stop="toggleMenu('iconSet-'+icon+'Icon')">
+      <div t-on-click.stop="(ev) => this.toggleMenu('iconSet-'+icon+'Icon', ev)">
         <div class="o-cf-icon-button">
-          <t t-raw="icons[iconValue].svg"/>
+          <t t-out="icons[iconValue].svg"/>
         </div>
       </div>
       <IconPicker t-if="state.openedMenu === 'iconSet-'+icon+'Icon'" onIconPicked="(i) => this.setIcon(icon, i)"/>
@@ -14767,7 +14856,7 @@
     </td>
   </tr>
 `;
-    const INFLECTION_POINTS_TEMPLATE = xml$o /* xml */ `
+    const INFLECTION_POINTS_TEMPLATE = owl.xml /* xml */ `
   <div class="o-inflection">
     <table>
     <tr>
@@ -14795,9 +14884,9 @@
     </t>
     <tr>
       <td>
-        <div t-on-click.stop="toggleMenu('iconSet-lowerIcon')">
+        <div t-on-click.stop="(ev) => this.toggleMenu('iconSet-lowerIcon', ev)">
           <div class="o-cf-icon-button" >
-            <t t-raw="icons[rule.icons.lower].svg"/>
+            <t t-out="icons[rule.icons.lower].svg"/>
           </div>
         </div>
         <IconPicker t-if="state.openedMenu === 'iconSet-lowerIcon'" onIconPicked="(icon) => setIcon('lower', icon)"/>
@@ -14809,29 +14898,26 @@
     </tr>
   </table>
   </div>`;
-    const TEMPLATE_ICON_SET_EDITOR = xml$o /* xml */ `
+    const TEMPLATE_ICON_SET_EDITOR = owl.xml /* xml */ `
   <div class="o-cf-iconset-rule">
       <t t-call="${ICON_SETS_TEMPLATE}"/>
       <t t-call="${INFLECTION_POINTS_TEMPLATE}"/>
       <div class="btn btn-link o_refresh_measures o-cf-iconset-reverse" t-on-click="reverseIcons">
         <div class="mr-1 d-inline-block">
-          <t t-raw="reverseIcon"/>
+          <t t-out="reverseIcon"/>
         </div>
         <t t-esc="env._t('${iconSetRule.ReverseIcons}')"/>
       </div>
   </div>`;
 
-    const { Component: Component$k, useState: useState$g } = owl__namespace;
-    const { xml: xml$n, css: css$l } = owl__namespace.tags;
-    const { onWillUpdateProps: onWillUpdateProps$5, useExternalListener: useExternalListener$4 } = owl__namespace.hooks;
     // TODO vsc: add ordering of rules
-    const PREVIEW_TEMPLATE = xml$n /* xml */ `
+    const PREVIEW_TEMPLATE = owl.xml /* xml */ `
 <div class="o-cf-preview">
   <t t-if="cf.rule.type==='IconSetRule'">
     <div class="o-cf-preview-icon">
-      <t t-raw="icons[cf.rule.icons.upper].svg"/>
-      <t t-raw="icons[cf.rule.icons.middle].svg"/>
-      <t t-raw="icons[cf.rule.icons.lower].svg"/>
+      <t t-out="icons[cf.rule.icons.upper].svg"/>
+      <t t-out="icons[cf.rule.icons.middle].svg"/>
+      <t t-out="icons[cf.rule.icons.lower].svg"/>
     </div>
   </t>
   <t t-else="">
@@ -14856,16 +14942,16 @@
     <div class="o-cf-preview-range" t-esc="cf.ranges"/>
   </div>
   <div class="o-cf-delete">
-    <div class="o-cf-delete-button" t-on-click.stop="deleteConditionalFormat(cf)" aria-label="Remove rule">
-    <t t-raw="trashIcon"/>
+    <div class="o-cf-delete-button" t-on-click.stop="(ev) => this.deleteConditionalFormat(cf, ev)" aria-label="Remove rule">
+    <t t-out="trashIcon"/>
     </div>
   </div>
 </div>`;
-    const TEMPLATE$l = xml$n /* xml */ `
+    const TEMPLATE$l = owl.xml /* xml */ `
   <div class="o-cf">
     <t t-if="state.mode === 'list'">
       <div class="o-cf-preview-list" >
-        <div t-on-click="editConditionalFormat(cf)" t-foreach="conditionalFormats" t-as="cf" t-key="cf.id">
+        <div t-on-click="(ev) => this.editConditionalFormat(cf, ev)" t-foreach="conditionalFormats" t-as="cf" t-key="cf.id">
             <t t-call="${PREVIEW_TEMPLATE}"/>
         </div>
       </div>
@@ -14880,27 +14966,27 @@
               <div class="o-selection-cf">
                 <SelectionInput
                   ranges="state.currentCF.ranges"
-                  class="o-range"
+                  class="'o-range'"
                   isInvalid="isRangeValid"
-                  t-on-selection-changed="onRangesChanged"
+                  onSelectionChanged="(ranges) => this.onRangesChanged(ranges)"
                   required="true"/>
               </div>
               <div class="o-section-title" t-esc="env._t('${conditionalFormattingTerms.CF_TITLE}')"></div>
               <div class="o_field_radio o_horizontal o_field_widget o-cf-type-selector">
-                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="changeRuleType('CellIsRule')">
+                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="() => this.changeRuleType('CellIsRule')">
                   <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'CellIsRule'}}" type="radio" id="cellIsRule" name="ruleType" value="CellIsRule"/>
                   <label for="cellIsRule" class="custom-control-label o_form_label">
                     <t t-esc="env._t('${conditionalFormattingTerms.SingleColor}')"/>
                   </label>
                 </div>
-                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="changeRuleType('ColorScaleRule')">
+                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="() => this.changeRuleType('ColorScaleRule')">
                   <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'ColorScaleRule'}}" type="radio" id="colorScaleRule" name="ruleType" value="ColorScaleRule"/>
                   <label for="colorScaleRule" class="custom-control-label o_form_label">
                   <t t-esc="env._t('${conditionalFormattingTerms.ColorScale}')"/>
                   </label>
                 </div>
 
-                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="changeRuleType('IconSetRule')">
+                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="() => this.changeRuleType('IconSetRule')">
                   <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'IconSetRule'}}" type="radio" id="iconSetRule" name="ruleType" value="IconSetRule"/>
                   <label for="iconSetRule" class="custom-control-label o_form_label">
                   <t t-esc="env._t('${conditionalFormattingTerms.IconSet}')"/>
@@ -14927,14 +15013,14 @@
               </div>
             </div>
             <div class="o-section">
-              <div class="o-cf-error" t-foreach="state.errors || []" t-as="error">
+              <div class="o-cf-error" t-foreach="state.errors || []" t-as="error" t-key="error_index">
                 <t t-esc="errorMessage(error)"/>
               </div>
             </div>
         </div>
     </t>
   </div>`;
-    const CSS$j = css$l /* scss */ `
+    const CSS$j = css /* scss */ `
   label {
     vertical-align: middle;
   }
@@ -15244,35 +15330,34 @@
     }
   }
 `;
-    class ConditionalFormattingPanel extends Component$k {
-        constructor(parent, props) {
-            super(parent, props);
+    class ConditionalFormattingPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
             this.icons = ICONS;
             this.iconSets = ICON_SETS;
-            this.reverseIcon = REFRESH;
-            this.trashIcon = TRASH;
-            //@ts-ignore --> used in XML template
+            this.reverseIcon = owl.markup(REFRESH);
+            this.trashIcon = owl.markup(TRASH);
             this.cellIsOperators = cellIsOperators;
-            // @ts-ignore used in XML template
             this.getTextDecoration = getTextDecoration;
             this.colorNumberString = colorNumberString;
+        }
+        setup() {
             this.getters = this.env.getters;
-            this.state = useState$g({
+            this.activeSheetId = this.getters.getActiveSheetId();
+            this.state = owl.useState({
                 mode: "list",
                 errors: [],
                 rules: this.getDefaultRules(),
             });
-            this.activeSheetId = this.getters.getActiveSheetId();
-            const rules = this.getters.getRulesSelection(this.activeSheetId, props.selection || []);
+            const sheetId = this.getters.getActiveSheetId();
+            const rules = this.getters.getRulesSelection(sheetId, this.props.selection || []);
             if (rules.length === 1) {
                 const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
                 if (cf) {
                     this.editConditionalFormat(cf);
                 }
             }
-        }
-        setup() {
-            onWillUpdateProps$5((nextProps) => {
+            owl.onWillUpdateProps((nextProps) => {
                 const newActiveSheetId = this.getters.getActiveSheetId();
                 if (newActiveSheetId !== this.activeSheetId) {
                     this.activeSheetId = newActiveSheetId;
@@ -15292,7 +15377,7 @@
                     }
                 }
             });
-            useExternalListener$4(window, "click", this.closeMenus);
+            owl.useExternalListener(window, "click", this.closeMenus);
         }
         get conditionalFormats() {
             return this.getters.getConditionalFormats(this.getters.getActiveSheetId());
@@ -15467,9 +15552,9 @@
             this.state.errors = [];
             this.state.currentCFType = ruleType;
         }
-        onRangesChanged({ detail }) {
+        onRangesChanged(ranges) {
             if (this.state.currentCF) {
-                this.state.currentCF.ranges = detail.ranges;
+                this.state.currentCF.ranges = ranges;
             }
         }
         /*****************************************************************************
@@ -15601,11 +15686,8 @@
     ConditionalFormattingPanel.style = CSS$j;
     ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
 
-    const { Component: Component$j, useState: useState$f } = owl__namespace;
-    const { xml: xml$m, css: css$k } = owl__namespace.tags;
-    const { onMounted: onMounted$a, onWillUnmount: onWillUnmount$4 } = owl__namespace.hooks;
-    const TEMPLATE$k = xml$m /* xml */ `
-<div class="o-find-and-replace" tabindex="0" t-on-focusin="onFocusSidePanel">
+    const TEMPLATE$k = owl.xml /* xml */ `
+<div class="o-find-and-replace" tabindex="0" t-on-focusin="onFocusSidePanel" t-ref="findAndReplace">
   <div class="o-section">
     <div class="o-section-title" t-esc="env._t('${FindAndReplaceTerms.Search}')"/>
     <div class="o-input-search-container">
@@ -15619,13 +15701,13 @@
     <div>
       <div class="o-far-item">
         <label class="o-far-checkbox">
-          <input t-model="state.searchOptions.matchCase" t-on-change="updateSearch()" class="o-far-input" type="checkbox"/>
+          <input t-model="state.searchOptions.matchCase" t-on-change="updateSearch" class="o-far-input" type="checkbox"/>
           <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.MatchCase}')"/></span>
         </label>
       </div>
       <div class="o-far-item">
         <label class="o-far-checkbox">
-          <input t-model="state.searchOptions.exactMatch" t-on-change="updateSearch()" class="o-far-input" type="checkbox"/>
+          <input t-model="state.searchOptions.exactMatch" t-on-change="updateSearch" class="o-far-input" type="checkbox"/>
           <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.ExactMatch}')"/></span>
         </label>
       </div>
@@ -15671,7 +15753,7 @@
 
 </div>
 `;
-    const CSS$i = css$k /* scss */ `
+    const CSS$i = css /* scss */ `
   .o-find-and-replace {
     .o-far-item {
       display: block;
@@ -15705,18 +15787,19 @@
     }
   }
 `;
-    class FindAndReplacePanel extends Component$j {
+    class FindAndReplacePanel extends owl.Component {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
-            this.state = useState$f(this.initialState());
+            this.state = owl.useState(this.initialState());
+            this.findAndReplaceRef = owl.useRef("findAndReplace");
         }
         get hasSearchResult() {
             return this.env.getters.getCurrentSelectedMatchIndex() !== null;
         }
         setup() {
-            onMounted$a(() => this.focusInput());
-            onWillUnmount$4(() => this.env.dispatch("CLEAR_SEARCH"));
+            owl.onMounted(() => this.focusInput());
+            owl.onWillUnmount(() => this.env.dispatch("CLEAR_SEARCH"));
         }
         onInput(ev) {
             this.state.toSearch = ev.target.value;
@@ -15780,7 +15863,8 @@
         // Private
         // ---------------------------------------------------------------------------
         focusInput() {
-            const input = this.el.querySelector(`input`);
+            const el = this.findAndReplaceRef.el;
+            const input = el.querySelector(`input`);
             if (input) {
                 input.focus();
             }
@@ -17747,12 +17831,12 @@
             };
         }
         onColumnsRemoved(cmd) {
-            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "left", cmd.elements);
+            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "left", [...cmd.elements]);
             this.setSelection([zone.left, zone.top], [zone], zone, true);
             this.ensureSelectionValidity();
         }
         onRowsRemoved(cmd) {
-            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "top", cmd.elements);
+            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "top", [...cmd.elements]);
             this.setSelection([zone.left, zone.top], [zone], zone, true);
             this.ensureSelectionValidity();
         }
@@ -18063,8 +18147,12 @@
                     this.selectionEnd = this.currentContent.length;
                     break;
                 case "DELETE_SHEET":
-                    if (cmd.sheetId === this.sheet && this.mode !== "inactive") {
-                        this.dispatch("STOP_EDITION", { cancel: true });
+                case "UNDO":
+                case "REDO":
+                    const sheetIdExists = !!this.getters.tryGetSheet(this.sheet);
+                    if (!sheetIdExists && this.mode !== "inactive") {
+                        this.cancelEdition();
+                        this.resetContent();
                         this.ui.notifyUI({
                             type: "NOTIFICATION",
                             text: CELL_DELETED_MESSAGE,
@@ -18133,7 +18221,7 @@
                 });
                 return;
             }
-            const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "left", cmd.elements);
+            const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "left", [...cmd.elements]);
             this.col = left;
             this.row = top;
         }
@@ -18146,7 +18234,7 @@
                 });
                 return;
             }
-            const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "top", cmd.elements);
+            const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "top", [...cmd.elements]);
             this.col = left;
             this.row = top;
         }
@@ -18192,7 +18280,8 @@
             if (this.mode !== "inactive") {
                 this.cancelEdition();
                 const sheetId = this.getters.getActiveSheetId();
-                const [col, row] = this.getters.getMainCell(sheetId, this.col, this.row);
+                const mergeSheetId = this.getters.getSheets().find((sheet) => sheet.id === this.sheet).id;
+                const [col, row] = this.getters.getMainCell(mergeSheetId, this.col, this.row);
                 let content = this.currentContent;
                 const didChange = this.initialContent !== content;
                 if (!didChange) {
@@ -18433,11 +18522,6 @@
     ];
     EditionPlugin.modes = ["normal"];
 
-    function* makeObjectIterator(obj) {
-        for (let i in obj) {
-            yield obj[i];
-        }
-    }
     const functionMap = functionRegistry.mapping;
     class EvaluationPlugin extends UIPlugin {
         constructor(getters, state, dispatch, config) {
@@ -18516,12 +18600,12 @@
             const cells = this.getters.getCells(sheetId);
             const params = this.getFormulaParameters(computeValue);
             const visited = {};
-            for (let cell of makeObjectIterator(cells)) {
+            for (let cell of Object.values(cells)) {
                 if (cell.isFormula()) {
                     cell.startEvaluation();
                 }
             }
-            for (let cell of makeObjectIterator(cells)) {
+            for (let cell of Object.values(cells)) {
                 computeValue(cell, sheetId);
             }
             function handleError(e, cell) {
@@ -18529,10 +18613,10 @@
                     e = new Error(e);
                 }
                 if (cell.evaluated.type !== CellValueType.error) {
-                    cell.assignValue("#ERROR");
+                    const msg = e instanceof InvalidReferenceError ? INCORRECT_RANGE_STRING : "#ERROR";
                     // apply function name
                     const __lastFnCalled = params[2].__lastFnCalled || "";
-                    cell.assignError("#ERROR", e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled));
+                    cell.assignError(msg, e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled));
                 }
             }
             function computeValue(cell, sheetId) {
@@ -18605,7 +18689,7 @@
             function _range(range$1) {
                 const sheetId = range$1.sheetId;
                 if (!isZoneValid(range$1.zone)) {
-                    throw new Error(_lt("Invalid reference"));
+                    throw new InvalidReferenceError();
                 }
                 const zone = range$1.zone;
                 return range(zone.left, zone.right + 1).map((col) => getters
@@ -18629,7 +18713,7 @@
                     return evalContext.getters.getRangeString(range, sheetId);
                 }
                 if (!isZoneValid(range.zone)) {
-                    throw new Error(_lt("Invalid reference"));
+                    throw new InvalidReferenceError();
                 }
                 // if the formula definition could have accepted a range, we would pass through the _range function and not here
                 if (range.zone.bottom !== range.zone.top || range.zone.left !== range.zone.right) {
@@ -20578,19 +20662,55 @@
      */
     class EventBus {
         constructor() {
-            this.bus = new owl__namespace.core.EventBus();
+            this.subscriptions = {};
         }
+        /**
+         * Add a listener for the 'eventType' events.
+         *
+         * Note that the 'owner' of this event can be anything, but will more likely
+         * be a component or a class. The idea is that the callback will be called with
+         * the proper owner bound.
+         *
+         * Also, the owner should be kind of unique. This will be used to remove the
+         * listener.
+         */
         on(type, owner, callback) {
-            this.bus.on(type, owner, callback);
+            if (!callback) {
+                throw new Error("Missing callback");
+            }
+            if (!this.subscriptions[type]) {
+                this.subscriptions[type] = [];
+            }
+            this.subscriptions[type].push({
+                owner,
+                callback,
+            });
         }
+        /**
+         * Emit an event of type 'eventType'.  Any extra arguments will be passed to
+         * the listeners callback.
+         */
         trigger(type, payload) {
-            this.bus.trigger(type, payload);
+            const subs = this.subscriptions[type] || [];
+            for (let i = 0, iLen = subs.length; i < iLen; i++) {
+                const sub = subs[i];
+                sub.callback.call(sub.owner, payload);
+            }
         }
+        /**
+         * Remove a listener
+         */
         off(eventType, owner) {
-            this.bus.off(eventType, owner);
+            const subs = this.subscriptions[eventType];
+            if (subs) {
+                this.subscriptions[eventType] = subs.filter((s) => s.owner !== owner);
+            }
         }
+        /**
+         * Remove all subscriptions.
+         */
         clear() {
-            this.bus.clear();
+            this.subscriptions = {};
         }
     }
 
@@ -20653,7 +20773,7 @@
             this.waitingAck = false;
             this.processedRevisions = new Set();
             this.uuidGenerator = new UuidGenerator();
-            this.debouncedMove = owl__namespace.utils.debounce(this._move.bind(this), DEBOUNCE_TIME);
+            this.debouncedMove = debounce(this._move.bind(this), DEBOUNCE_TIME);
         }
         /**
          * Add a new revision to the collaborative session.
@@ -21552,8 +21672,8 @@
         .add("evaluation_chart", EvaluationChartPlugin)
         .add("clipboard", ClipboardPlugin)
         .add("edition", EditionPlugin)
-        .add("highlight", HighlightPlugin)
         .add("selectionInput", SelectionInputPlugin)
+        .add("highlight", HighlightPlugin)
         .add("viewport", ViewportPlugin)
         .add("grid renderer", RendererPlugin)
         .add("autofill", AutofillPlugin)
@@ -21583,7 +21703,7 @@
      * It's role is to ensure that an evaluation is triggered when a data source is
      * ready, and to provide a way to wait for the loading of all the data sources
      */
-    class DataSourceRegistry extends owl__namespace.core.EventBus {
+    class DataSourceRegistry extends EventBus {
         constructor() {
             super(...arguments);
             this.registry = new Registry();
@@ -21595,6 +21715,8 @@
          */
         add(key, value) {
             this.registry.add(key, value);
+            // const debouncedLoaded: Function = debounce(() => this.trigger("data-loaded", { id: key }), 0);
+            // value.on("data-loaded", this, () => debouncedLoaded());
             value.on("data-loaded", this, () => this.trigger("data-loaded", { id: key }));
             value.loadMetadata();
             return this;
@@ -21647,7 +21769,7 @@
      * * specific method: Subclass can implement concrete method to have access to a
      * particular data.
      */
-    class DataSource extends owl__namespace.core.EventBus {
+    class DataSource extends EventBus {
         /**
          * Load the metadata
          */
@@ -22748,7 +22870,7 @@
      * It maintains the local undo and redo stack to allow to undo/redo only local
      * changes
      */
-    class LocalHistory extends owl__namespace.core.EventBus {
+    class LocalHistory extends owl.EventBus {
         constructor(dispatch, session) {
             super();
             this.dispatch = dispatch;
@@ -23186,8 +23308,9 @@
                     let start = cmd.dimension === "COL" ? "left" : "top";
                     let end = cmd.dimension === "COL" ? "right" : "bottom";
                     let dimension = cmd.dimension === "COL" ? "columns" : "rows";
-                    cmd.elements.sort((a, b) => b - a);
-                    const groups = groupConsecutive(cmd.elements);
+                    const elements = [...cmd.elements];
+                    elements.sort((a, b) => b - a);
+                    const groups = groupConsecutive(elements);
                     this.executeOnAllRanges((range) => {
                         if (range.sheetId !== cmd.sheetId) {
                             return { changeType: "NONE" };
@@ -25247,7 +25370,7 @@
         Status[Status["RunningCore"] = 2] = "RunningCore";
         Status[Status["Finalizing"] = 3] = "Finalizing";
     })(Status || (Status = {}));
-    class Model extends owl__namespace.core.EventBus {
+    class Model extends EventBus {
         constructor(data = {}, config = {}, stateUpdateMessages = [], uuidGenerator = new UuidGenerator()) {
             super();
             this.corePlugins = [];
@@ -25573,13 +25696,12 @@
         }
     }
 
-    const { useComponent, useState: useState$e, onPatched: onPatched$4, useRef: useRef$5, onMounted: onMounted$9 } = owl.hooks;
     /**
      * Return the o-spreadsheet element position relative
      * to the browser viewport.
      */
     function useSpreadsheetPosition() {
-        const position = useState$e({ x: 0, y: 0 });
+        const position = owl.useState({ x: 0, y: 0 });
         let spreadsheetElement = document.querySelector(".o-spreadsheet");
         function updatePosition() {
             if (!spreadsheetElement) {
@@ -25591,8 +25713,8 @@
                 position.y = top;
             }
         }
-        onMounted$9(updatePosition);
-        onPatched$4(updatePosition);
+        owl.onMounted(updatePosition);
+        owl.onPatched(updatePosition);
         return position;
     }
     /**
@@ -25603,11 +25725,10 @@
      * return the portal position, not the teleported position.
      */
     function useAbsolutePosition(ref) {
-        const position = useState$e({ x: 0, y: 0 });
-        const component = useComponent();
+        const position = owl.useState({ x: 0, y: 0 });
         const spreadsheet = useSpreadsheetPosition();
         function updateElPosition() {
-            const el = (ref === null || ref === void 0 ? void 0 : ref.el) || component.el;
+            const el = ref.el;
             const { top, left } = el.getBoundingClientRect();
             const x = left - spreadsheet.x;
             const y = top - spreadsheet.y;
@@ -25616,22 +25737,19 @@
                 position.y = y;
             }
         }
-        onMounted$9(updateElPosition);
-        onPatched$4(updateElPosition);
+        owl.onMounted(updateElPosition);
+        owl.onPatched(updateElPosition);
         return position;
     }
 
-    const { Component: Component$i, tags: tags$3 } = owl__namespace;
-    const { Portal } = owl__namespace.misc;
-    const { xml: xml$l } = tags$3;
-    const TEMPLATE$j = xml$l /* xml */ `
-  <Portal target="'.o-spreadsheet'">
+    const TEMPLATE$j = owl.xml /* xml */ `
+  <t t-portal="'.o-spreadsheet'">
     <div t-att-style="style">
       <t t-slot="default"/>
     </div>
-  </Portal>
+  </t>
 `;
-    class Popover extends Component$i {
+    class Popover extends owl.Component {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
@@ -25679,7 +25797,6 @@
         }
     }
     Popover.template = TEMPLATE$j;
-    Popover.components = { Portal };
     Popover.defaultProps = {
         flipHorizontalOffset: 0,
         flipVerticalOffset: 0,
@@ -25687,12 +25804,10 @@
         marginTop: 0,
     };
 
-    const { xml: xml$k, css: css$j } = owl.tags;
-    const { useExternalListener: useExternalListener$3, useRef: useRef$4, onWillUpdateProps: onWillUpdateProps$4 } = owl.hooks;
     //------------------------------------------------------------------------------
     // Context Menu Component
     //------------------------------------------------------------------------------
-    const TEMPLATE$i = xml$k /* xml */ `
+    const TEMPLATE$i = owl.xml /* xml */ `
     <Popover
       position="props.position"
       childWidth="${MENU_WIDTH}"
@@ -25708,8 +25823,8 @@
           <div
             t-att-title="getName(menuItem)"
             t-att-data-name="menuItem.id"
-            t-on-click="onClickMenu(menuItem, menuItem_index)"
-            t-on-mouseover="onMouseOver(menuItem, menuItem_index)"
+            t-on-click="() => this.onClickMenu(menuItem, menuItem_index)"
+            t-on-mouseover="() => this.onMouseOver(menuItem, menuItem_index)"
             class="o-menu-item"
             t-att-class="{
               'o-menu-root': isMenuRoot,
@@ -25734,7 +25849,7 @@
         onMenuClicked="props.onMenuClicked"
         onClose="() => this.close()"/>
     </Popover>`;
-    const CSS$h = css$j /* scss */ `
+    const CSS$h = css /* scss */ `
   .o-menu {
     background-color: white;
     padding: 8px 0px;
@@ -25792,12 +25907,13 @@
                 scrollOffset: 0,
                 menuItems: [],
             });
-            this.position = useAbsolutePosition(useRef$4("menu"));
+            this.menuRef = owl.useRef("menu");
+            this.position = useAbsolutePosition(this.menuRef);
         }
         setup() {
-            useExternalListener$3(window, "click", this.onClick);
-            useExternalListener$3(window, "contextmenu", this.onContextMenu);
-            onWillUpdateProps$4((nextProps) => {
+            owl.useExternalListener(window, "click", this.onClick);
+            owl.useExternalListener(window, "contextmenu", this.onContextMenu);
+            owl.onWillUpdateProps((nextProps) => {
                 if (nextProps.menuItems !== this.props.menuItems) {
                     this.subMenu.isOpen = false;
                 }
@@ -25843,14 +25959,16 @@
         }
         onClick(ev) {
             // Don't close a root menu when clicked to open the submenus.
-            if (this.el && isChildEvent(this.el, ev)) {
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
                 return;
             }
             this.close();
         }
         onContextMenu(ev) {
             // Don't close a root menu when clicked to open the submenus.
-            if (this.el && isChildEvent(this.el, ev)) {
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
                 return;
             }
             this.subMenu.isOpen = false;
@@ -25923,25 +26041,22 @@
         depth: 1,
     };
 
-    const { Component: Component$h } = owl__namespace;
-    const { xml: xml$j, css: css$i } = owl__namespace.tags;
-    const { useState: useState$d, onMounted: onMounted$8, onPatched: onPatched$3 } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // SpreadSheet
     // -----------------------------------------------------------------------------
-    const TEMPLATE$h = xml$j /* xml */ `
-  <div class="o-spreadsheet-bottom-bar" t-on-click="props.onClick()">
+    const TEMPLATE$h = owl.xml /* xml */ `
+  <div class="o-spreadsheet-bottom-bar o-two-columns" t-on-click="props.onClick" t-ref="bottomBar">
     <div class="o-sheet-item o-add-sheet" t-att-class="{'disabled': getters.isReadonly()}" t-on-click="addSheet">${PLUS}</div>
     <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
     <div class="o-all-sheets">
       <t t-foreach="getters.getSheets()" t-as="sheet" t-key="sheet.id">
-        <div class="o-sheet-item o-sheet" t-on-click="activateSheet(sheet.id)"
-             t-on-contextmenu.prevent="onContextMenu(sheet.id)"
+        <div class="o-sheet-item o-sheet" t-on-click="(ev) => this.activateSheet(sheet.id, ev)"
+             t-on-contextmenu.prevent="(ev) => this.onContextMenu(sheet.id, ev)"
              t-att-title="sheet.name"
              t-att-data-id="sheet.id"
              t-att-class="{active: sheet.id === getters.getActiveSheetId()}">
-          <span class="o-sheet-name" t-esc="sheet.name" t-on-dblclick="onDblClick(sheet.id)"/>
-          <span class="o-sheet-icon" t-on-click.stop="onIconClick(sheet.id)">${TRIANGLE_DOWN_ICON}</span>
+          <span class="o-sheet-name" t-esc="sheet.name" t-on-dblclick="(ev) => this.onDblClick(sheet.id, ev)"/>
+          <span class="o-sheet-icon" t-on-click.stop="(ev) => this.onIconClick(sheet.id, ev)">${TRIANGLE_DOWN_ICON}</span>
         </div>
       </t>
     </div>
@@ -25957,7 +26072,7 @@
           menuItems="menuState.menuItems"
           onClose="() => this.menuState.isOpen=false"/>
   </div>`;
-    const CSS$g = css$i /* scss */ `
+    const CSS$g = css /* scss */ `
   .o-spreadsheet-bottom-bar {
     background-color: ${BACKGROUND_GRAY_COLOR};
     padding-left: ${HEADER_WIDTH}px;
@@ -26047,19 +26162,20 @@
     }
   }
 `;
-    class BottomBar extends Component$h {
+    class BottomBar extends owl.Component {
         constructor() {
             super(...arguments);
+            this.bottomBarRef = owl.useRef("bottomBar");
             this.getters = this.env.getters;
-            this.menuState = useState$d({ isOpen: false, position: null, menuItems: [] });
+            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
             this.selectedStatisticFn = "";
         }
         setup() {
-            onMounted$8(() => this.focusSheet());
-            onPatched$3(() => this.focusSheet());
+            owl.onMounted(() => this.focusSheet());
+            owl.onPatched(() => this.focusSheet());
         }
         focusSheet() {
-            const div = this.el.querySelector(`[data-id="${this.getters.getActiveSheetId()}"]`);
+            const div = this.bottomBarRef.el.querySelector(`[data-id="${this.getters.getActiveSheetId()}"]`);
             if (div && div.scrollIntoView) {
                 div.scrollIntoView();
             }
@@ -26238,13 +26354,10 @@
         startDnd(onMouseMove, onMouseUp);
     }
 
-    const { Component: Component$g } = owl__namespace;
-    const { xml: xml$i, css: css$h } = owl__namespace.tags;
-    const { useState: useState$c } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // Autofill
     // -----------------------------------------------------------------------------
-    const TEMPLATE$g = xml$i /* xml */ `
+    const TEMPLATE$g = owl.xml /* xml */ `
   <div class="o-autofill" t-on-mousedown="onMouseDown" t-att-style="style" t-on-dblclick="onDblClick">
     <div class="o-autofill-handler" t-att-style="styleHandler"/>
     <t t-set="tooltip" t-value="getTooltip()"/>
@@ -26253,7 +26366,7 @@
     </div>
   </div>
 `;
-    const CSS$f = css$h /* scss */ `
+    const CSS$f = css /* scss */ `
   .o-autofill {
     height: 6px;
     width: 6px;
@@ -26282,10 +26395,10 @@
     }
   }
 `;
-    class Autofill extends Component$g {
+    class Autofill extends owl.Component {
         constructor() {
             super(...arguments);
-            this.state = useState$c({
+            this.state = owl.useState({
                 position: { left: 0, top: 0 },
                 handler: false,
             });
@@ -26324,8 +26437,7 @@
                 this.env.dispatch("AUTOFILL");
             };
             const onMouseMove = (ev) => {
-                const parent = this.el.parentElement;
-                const position = parent.getBoundingClientRect();
+                const position = this.props.getGridBoundingClientRect();
                 const { top: viewportTop, left: viewportLeft, offsetY, offsetX, } = this.env.getters.getActiveSnappedViewport();
                 this.state.position = {
                     left: ev.clientX - start.left + offsetX,
@@ -26350,15 +26462,13 @@
     }
     Autofill.template = TEMPLATE$g;
     Autofill.style = CSS$f;
-    class TooltipComponent extends Component$g {
+    class TooltipComponent extends owl.Component {
     }
-    TooltipComponent.template = xml$i /* xml */ `
+    TooltipComponent.template = owl.xml /* xml */ `
     <div t-esc="props.content"/>
   `;
 
-    const { Component: Component$f } = owl__namespace;
-    const { css: css$g, xml: xml$h } = owl__namespace.tags;
-    const TEMPLATE$f = xml$h /* xml */ `
+    const TEMPLATE$f = owl.xml /* xml */ `
   <div>
     <div
       class="o-client-tag"
@@ -26367,7 +26477,7 @@
     />
   </div>
 `;
-    const CSS$e = css$g /* scss */ `
+    const CSS$e = css /* scss */ `
   .o-client-tag {
     position: absolute;
     border-top-left-radius: 4px;
@@ -26378,7 +26488,7 @@
     pointer-events: none;
   }
 `;
-    class ClientTag extends Component$f {
+    class ClientTag extends owl.Component {
         get tagStyle() {
             const { col, row, color } = this.props;
             const viewport = this.env.getters.getActiveSnappedViewport();
@@ -26390,9 +26500,6 @@
     ClientTag.template = TEMPLATE$f;
     ClientTag.style = CSS$e;
 
-    const { Component: Component$e, useState: useState$b } = owl__namespace;
-    const { xml: xml$g, css: css$f } = owl__namespace.tags;
-    const { onMounted: onMounted$7, onWillUpdateProps: onWillUpdateProps$3 } = owl__namespace.hooks;
     const functions$1 = functionRegistry.content;
     const providerRegistry = new Registry();
     providerRegistry.add("functions", () => {
@@ -26406,18 +26513,18 @@
     // -----------------------------------------------------------------------------
     // Autocomplete DropDown component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$e = xml$g /* xml */ `
+    const TEMPLATE$e = owl.xml /* xml */ `
   <div t-att-class="{'o-autocomplete-dropdown':state.values.length}"
        t-att-style="state.values.length > 0 ? props.borderStyle : null"
     >
     <t t-foreach="state.values" t-as="v" t-key="v.text">
-        <div t-att-class="{'o-autocomplete-value-focus': state.selectedIndex === v_index}" t-on-click.stop.prevent="fillValue(v_index)">
+        <div t-att-class="{'o-autocomplete-value-focus': state.selectedIndex === v_index}" t-on-click.stop.prevent="() => this.fillValue(v_index)">
              <div class="o-autocomplete-value" t-esc="v.text"/>
              <div class="o-autocomplete-description" t-esc="v.description" t-if="state.selectedIndex === v_index"/>
         </div>
     </t>
   </div>`;
-    const CSS$d = css$f /* scss */ `
+    const CSS$d = css /* scss */ `
   .o-autocomplete-dropdown {
     pointer-events: auto;
     background-color: #fff;
@@ -26442,17 +26549,17 @@
     }
   }
 `;
-    class TextValueProvider extends Component$e {
+    class TextValueProvider extends owl.Component {
         constructor() {
             super(...arguments);
-            this.state = useState$b({
+            this.state = owl.useState({
                 values: [],
                 selectedIndex: 0,
             });
         }
         setup() {
-            onMounted$7(() => this.filter(this.props.search));
-            onWillUpdateProps$3((nextProps) => this.checkUpdateProps(nextProps));
+            owl.onMounted(() => this.filter(this.props.search));
+            owl.onWillUpdateProps((nextProps) => this.checkUpdateProps(nextProps));
             this.props.exposeAPI({
                 getValueToFill: () => this.getValueToFill(),
                 moveDown: () => this.moveDown(),
@@ -26650,13 +26757,10 @@
         REPEATABLE: _lt("repeatable"),
     };
 
-    const { Component: Component$d } = owl__namespace;
-    const { xml: xml$f, css: css$e } = owl__namespace.tags;
-    const { useState: useState$a, onWillUnmount: onWillUnmount$3 } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // Formula Assistant component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$d = xml$f /* xml */ `
+    const TEMPLATE$d = owl.xml /* xml */ `
   <div class="o-formula-assistant-container"
        t-att-style="props.borderStyle"
        t-att-class="{
@@ -26709,7 +26813,7 @@
     </div>
   </div>
 `;
-    const CSS$c = css$e /* scss */ `
+    const CSS$c = css /* scss */ `
   .o-formula-assistant {
     white-space: normal;
     background-color: #fff;
@@ -26757,16 +26861,16 @@
     opacity: 0.3;
   }
 `;
-    class FunctionDescriptionProvider extends Component$d {
+    class FunctionDescriptionProvider extends owl.Component {
         constructor() {
             super(...arguments);
-            this.assistantState = useState$a({
+            this.assistantState = owl.useState({
                 allowCellSelectionBehind: false,
             });
             this.timeOutId = 0;
         }
         setup() {
-            onWillUnmount$3(() => {
+            owl.onWillUnmount(() => {
                 if (this.timeOutId) {
                     clearTimeout(this.timeOutId);
                 }
@@ -26788,9 +26892,6 @@
     FunctionDescriptionProvider.template = TEMPLATE$d;
     FunctionDescriptionProvider.style = CSS$c;
 
-    const { Component: Component$c } = owl__namespace;
-    const { useRef: useRef$3, useState: useState$9, onMounted: onMounted$6, onPatched: onPatched$2, onWillUnmount: onWillUnmount$2 } = owl__namespace.hooks;
-    const { xml: xml$e, css: css$d } = owl__namespace.tags;
     const functions = functionRegistry.content;
     const ASSISTANT_WIDTH = 300;
     const FunctionColor = "#4a4e4d";
@@ -26810,7 +26911,7 @@
         RIGHT_PAREN: FunctionColor,
         COMMA: FunctionColor,
     };
-    const TEMPLATE$c = xml$e /* xml */ `
+    const TEMPLATE$c = owl.xml /* xml */ `
 <div class="o-composer-container">
   <div
     t-att-class="{ 'o-composer': true, 'text-muted': getters.isReadonly(), 'unfocusable': getters.isReadonly() }"
@@ -26848,7 +26949,7 @@
   </div>
 </div>
   `;
-    const CSS$b = css$d /* scss */ `
+    const CSS$b = css /* scss */ `
   .o-composer-container {
     padding: 0;
     margin: 0;
@@ -26887,22 +26988,23 @@
     border: 1px solid ${SELECTION_BORDER_COLOR};
   }
 `;
-    class Composer extends Component$c {
+    class Composer extends owl.Component {
         constructor() {
             super(...arguments);
-            this.composerRef = useRef$3("o_composer");
+            this.composerRef = owl.useRef("o_composer");
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
-            this.composerState = useState$9({
+            this.contentHelper = new ContentEditableHelper(this.composerRef.el);
+            this.composerState = owl.useState({
                 positionStart: 0,
                 positionEnd: 0,
             });
-            this.autoCompleteState = useState$9({
+            this.autoCompleteState = owl.useState({
                 showProvider: false,
                 provider: "functions",
                 search: "",
             });
-            this.functionDescriptionState = useState$9({
+            this.functionDescriptionState = owl.useState({
                 showDescription: false,
                 functionName: "",
                 functionDescription: {},
@@ -26924,7 +27026,6 @@
                 F4: () => console.warn("Not implemented"),
                 Tab: (ev) => this.processTabKey(ev),
             };
-            this.contentHelper = new ContentEditableHelper(this.composerRef.el);
         }
         get assistantStyle() {
             if (this.props.delimitation && this.props.rect) {
@@ -26947,18 +27048,18 @@
             return `width:${ASSISTANT_WIDTH}px;`;
         }
         setup() {
-            onMounted$6(() => {
+            owl.onMounted(() => {
                 DEBUG.composer = this;
                 const el = this.composerRef.el;
                 this.contentHelper.updateEl(el);
                 this.processContent();
             });
-            onWillUnmount$2(() => {
+            owl.onWillUnmount(() => {
                 var _a, _b;
                 delete DEBUG.composer;
                 (_b = (_a = this.props).onComposerUnmounted) === null || _b === void 0 ? void 0 : _b.call(_a);
             });
-            onPatched$2(() => {
+            owl.onPatched(() => {
                 if (!this.isKeyStillDown) {
                     this.processContent();
                 }
@@ -27286,13 +27387,10 @@
         focus: "inactive",
     };
 
-    const { Component: Component$b } = owl__namespace;
-    const { useState: useState$8, onMounted: onMounted$5 } = owl__namespace.hooks;
-    const { xml: xml$d, css: css$c } = owl__namespace.tags;
     const SCROLLBAR_WIDTH = 14;
     const SCROLLBAR_HIGHT = 15;
-    const TEMPLATE$b = xml$d /* xml */ `
-  <div class="o-grid-composer" t-att-style="containerStyle">
+    const TEMPLATE$b = owl.xml /* xml */ `
+  <div class="o-grid-composer" t-att-style="containerStyle" t-ref="gridComposer">
     <Composer
       focus = "props.focus"
       inputStyle = "composerStyle"
@@ -27304,7 +27402,7 @@
   </div>
 `;
     const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
-    const CSS$a = css$c /* scss */ `
+    const CSS$a = css /* scss */ `
   .o-grid-composer {
     z-index: 5;
     box-sizing: border-box;
@@ -27316,11 +27414,11 @@
      * This component is a composer which positions itself on the grid at the anchor cell.
      * It also applies the style of the cell to the composer input.
      */
-    class GridComposer extends Component$b {
-        constructor() {
-            super(...arguments);
+    class GridComposer extends owl.Component {
+        setup() {
+            this.gridComposerRef = owl.useRef("gridComposer");
             this.getters = this.env.getters;
-            this.composerState = useState$8({
+            this.composerState = owl.useState({
                 rect: null,
                 delimitation: null,
             });
@@ -27332,10 +27430,9 @@
                 bottom: row,
             });
             this.rect = this.getters.getRect(this.zone, this.getters.getActiveSnappedViewport());
-        }
-        setup() {
-            onMounted$5(() => {
-                const el = this.el;
+            owl.onMounted(() => {
+                const el = this.gridComposerRef.el;
+                //TODO Should be more correct to have a props that give the parent's clientHeight and clientWidth
                 const maxHeight = el.parentElement.clientHeight - this.rect[1] - SCROLLBAR_HIGHT;
                 el.style.maxHeight = (maxHeight + "px");
                 const maxWidth = el.parentElement.clientWidth - this.rect[0] - SCROLLBAR_WIDTH;
@@ -27402,14 +27499,12 @@
     GridComposer.style = CSS$a;
     GridComposer.components = { Composer };
 
-    const { Component: Component$a, tags: tags$2 } = owl__namespace;
-    const { xml: xml$c, css: css$b } = tags$2;
-    const TEMPLATE$a = xml$c /* xml */ `
+    const TEMPLATE$a = owl.xml /* xml */ `
     <div class="o-error-tooltip"> 
       <t t-esc="props.text"/>
     </div>
 `;
-    const CSS$9 = css$b /* scss */ `
+    const CSS$9 = css /* scss */ `
   .o-error-tooltip {
     font-size: 13px;
     background-color: white;
@@ -27417,16 +27512,13 @@
     padding: 10px;
   }
 `;
-    class ErrorToolTip extends Component$a {
+    class ErrorToolTip extends owl.Component {
     }
     ErrorToolTip.template = TEMPLATE$a;
     ErrorToolTip.style = CSS$9;
 
-    const { useState: useState$7 } = owl__namespace;
-    const { xml: xml$b, css: css$a } = owl.tags;
-    const { useRef: useRef$2, onMounted: onMounted$4, onPatched: onPatched$1 } = owl.hooks;
-    const TEMPLATE$9 = xml$b /* xml */ `
-<div class="o-chart-container">
+    const TEMPLATE$9 = owl.xml /* xml */ `
+<div class="o-chart-container" t-ref="chartContainer">
   <div class="o-chart-menu" t-on-click="showMenu">${LIST}</div>
   <canvas t-att-style="canvasStyle" t-ref="graphContainer"/>
   <Menu t-if="menuState.isOpen"
@@ -27437,7 +27529,7 @@
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
-    const CSS$8 = css$a /* scss */ `
+    const CSS$8 = css /* scss */ `
   .o-chart-container {
     width: 100%;
     height: 100%;
@@ -27462,23 +27554,24 @@
     class ChartFigure extends owl.Component {
         constructor() {
             super(...arguments);
-            this.menuState = useState$7({ isOpen: false, position: null, menuItems: [] });
-            this.canvas = useRef$2("graphContainer");
+            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
+            this.canvas = owl.useRef("graphContainer");
+            this.chartContainerRef = owl.useRef("chartContainer");
             this.state = { background: BACKGROUND_CHART_COLOR };
-            this.position = useAbsolutePosition();
+            this.position = useAbsolutePosition(this.chartContainerRef);
         }
         get canvasStyle() {
             return `background-color: ${this.state.background}`;
         }
         setup() {
-            onMounted$4(() => {
+            owl.onMounted(() => {
                 const figure = this.props.figure;
                 const chartData = this.env.getters.getChartRuntime(figure.id);
                 if (chartData) {
                     this.createChart(chartData);
                 }
             });
-            onPatched$1(() => {
+            owl.onPatched(() => {
                 var _a, _b, _c;
                 const figure = this.props.figure;
                 const chartData = this.env.getters.getChartRuntime(figure.id);
@@ -27569,34 +27662,31 @@
     ChartFigure.style = CSS$8;
     ChartFigure.components = { Menu };
 
-    const { xml: xml$a, css: css$9 } = owl__namespace.tags;
-    const { onMounted: onMounted$3 } = owl__namespace.hooks;
-    const { useState: useState$6 } = owl__namespace;
-    const TEMPLATE$8 = xml$a /* xml */ `<div>
+    const TEMPLATE$8 = owl.xml /* xml */ `<div>
     <t t-foreach="getVisibleFigures()" t-as="info" t-key="info.id">
         <div class="o-figure-wrapper"
              t-att-style="getStyle(info)"
-             t-on-mousedown="onMouseDown(info.figure)"
+             t-on-mousedown="(ev) => this.onMouseDown(info.figure, ev)"
              >
             <div class="o-figure"
                  t-att-class="{active: info.isSelected, 'o-dragging': info.id === dnd.figureId}"
                  t-att-style="getDims(info)"
                  tabindex="0"
-                 t-on-keydown.stop="onKeyDown(info.figure)">
+                 t-on-keydown.stop="(ev) => this.onKeyDown(info.figure, ev)">
                 <t t-component="figureRegistry.get(info.figure.tag).Component"
                    t-key="info.id"
                    sidePanelIsOpen="props.sidePanelIsOpen"
                    onFigureDeleted="props.onFigureDeleted"
                    figure="info.figure"/>
                 <t t-if="info.isSelected">
-                    <div class="o-anchor o-top" t-on-mousedown.stop="resize(info.figure, 0,-1)"/>
-                    <div class="o-anchor o-topRight" t-on-mousedown.stop="resize(info.figure, 1,-1)"/>
-                    <div class="o-anchor o-right" t-on-mousedown.stop="resize(info.figure, 1,0)"/>
-                    <div class="o-anchor o-bottomRight" t-on-mousedown.stop="resize(info.figure, 1,1)"/>
-                    <div class="o-anchor o-bottom" t-on-mousedown.stop="resize(info.figure, 0,1)"/>
-                    <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="resize(info.figure, -1,1)"/>
-                    <div class="o-anchor o-left" t-on-mousedown.stop="resize(info.figure, -1,0)"/>
-                    <div class="o-anchor o-topLeft" t-on-mousedown.stop="resize(info.figure, -1,-1)"/>
+                    <div class="o-anchor o-top" t-on-mousedown.stop="(ev) => resize(info.figure, 0,-1, ev)"/>
+                    <div class="o-anchor o-topRight" t-on-mousedown.stop="(ev) => resize(info.figure, 1,-1, ev)"/>
+                    <div class="o-anchor o-right" t-on-mousedown.stop="(ev) => resize(info.figure, 1,0, ev)"/>
+                    <div class="o-anchor o-bottomRight" t-on-mousedown.stop="(ev) => resize(info.figure, 1,1, ev)"/>
+                    <div class="o-anchor o-bottom" t-on-mousedown.stop="(ev) => resize(info.figure, 0,1, ev)"/>
+                    <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="(ev) => resize(info.figure, -1,1, ev)"/>
+                    <div class="o-anchor o-left" t-on-mousedown.stop="(ev) => resize(info.figure, -1,0, ev)"/>
+                    <div class="o-anchor o-topLeft" t-on-mousedown.stop="(ev) => resize(info.figure, -1,-1, ev)"/>
                 </t>
             </div>
         </div>
@@ -27610,7 +27700,7 @@
     const BORDER_WIDTH = 1;
     const ACTIVE_BORDER_WIDTH = 2;
     const MIN_FIG_SIZE = 80;
-    const CSS$7 = css$9 /*SCSS*/ `
+    const CSS$7 = css /*SCSS*/ `
   .o-figure-wrapper {
     overflow: hidden;
   }
@@ -27688,7 +27778,7 @@
         constructor() {
             super(...arguments);
             this.figureRegistry = figureRegistry;
-            this.dnd = useState$6({
+            this.dnd = owl.useState({
                 figureId: "",
                 x: 0,
                 y: 0,
@@ -27732,7 +27822,7 @@
             return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px`;
         }
         setup() {
-            onMounted$3(() => {
+            owl.onMounted(() => {
                 // horrible, but necessary
                 // the following line ensures that we render the figures with the correct
                 // viewport.  The reason is that whenever we initialize the grid
@@ -27847,9 +27937,7 @@
     FiguresContainer.components = {};
     figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
 
-    const { Component: Component$9 } = owl__namespace;
-    const { xml: xml$9, css: css$8 } = owl__namespace.tags;
-    const TEMPLATE$7 = xml$9 /* xml */ `
+    const TEMPLATE$7 = owl.xml /* xml */ `
     <div class="o-border"
         t-on-mousedown="onMouseDown"
         t-att-style="style"
@@ -27863,19 +27951,18 @@
         >
     </div>
 `;
-    const CSS$6 = css$8 /* scss */ `
+    const CSS$6 = css /* scss */ `
   .o-border {
     position: absolute;
     &:hover {
       cursor: grab;
     }
   }
-  }
   .o-moving {
     cursor: grabbing;
   }
 `;
-    class Border extends Component$9 {
+    class Border extends owl.Component {
         get style() {
             const isTop = ["n", "w", "e"].includes(this.props.orientation);
             const isLeft = ["n", "w", "s"].includes(this.props.orientation);
@@ -27908,9 +27995,7 @@
     Border.template = TEMPLATE$7;
     Border.style = CSS$6;
 
-    const { Component: Component$8 } = owl__namespace;
-    const { xml: xml$8, css: css$7 } = owl__namespace.tags;
-    const TEMPLATE$6 = xml$8 /* xml */ `
+    const TEMPLATE$6 = owl.xml /* xml */ `
     <div class="o-corner"
         t-on-mousedown="onMouseDown"
         t-att-style="style"
@@ -27924,7 +28009,7 @@
         >
     </div>
 `;
-    const CSS$5 = css$7 /* scss */ `
+    const CSS$5 = css /* scss */ `
   .o-corner {
     position: absolute;
     height: 6px;
@@ -27947,7 +28032,7 @@
     cursor: grabbing;
   }
 `;
-    class Corner extends Component$8 {
+    class Corner extends owl.Component {
         constructor() {
             super(...arguments);
             this.isTop = this.props.orientation[0] === "n";
@@ -27972,10 +28057,8 @@
     Corner.template = TEMPLATE$6;
     Corner.style = CSS$5;
 
-    const { Component: Component$7 } = owl__namespace;
-    const { xml: xml$7 } = owl__namespace.tags;
-    const TEMPLATE$5 = xml$7 /* xml */ `
-  <div class="o-highlight">
+    const TEMPLATE$5 = owl.xml /* xml */ `
+  <div class="o-highlight" t-ref="highlight">
     <t t-foreach="['nw', 'ne', 'sw', 'se']" t-as="orientation" t-key="orientation">
       <Corner
         onResizeHighlight="(isLeft, isTop) => this.onResizeHighlight(isLeft, isTop)"
@@ -27995,9 +28078,10 @@
     </t>
   </div>
 `;
-    class Highlight extends Component$7 {
+    class Highlight extends owl.Component {
         constructor() {
             super(...arguments);
+            this.highlightRef = owl.useRef("highlight");
             this.highlightState = owl.useState({
                 shiftingMode: "none",
             });
@@ -28036,12 +28120,12 @@
                 // to be changed when refactoring the 'edition' plugin
                 this.env.dispatch("STOP_COMPOSER_RANGE_SELECTION");
             };
-            dragAndDropBeyondTheViewport(this.el.parentElement, this.env, mouseMove, mouseUp);
+            dragAndDropBeyondTheViewport(this.highlightRef.el.parentElement, this.env, mouseMove, mouseUp);
         }
         onMoveHighlight(clientX, clientY) {
             this.highlightState.shiftingMode = "isMoving";
             const z = this.props.zone;
-            const parent = this.el.parentElement;
+            const parent = this.highlightRef.el.parentElement;
             const position = parent.getBoundingClientRect();
             const activeSheet = this.env.getters.getActiveSheet();
             const { top: viewportTop, left: viewportLeft } = this.env.getters.getActiveSnappedViewport();
@@ -28090,9 +28174,7 @@
         Border,
     };
 
-    const { Component: Component$6, tags: tags$1 } = owl__namespace;
-    const { xml: xml$6, css: css$6 } = tags$1;
-    const TEMPLATE$4 = xml$6 /* xml */ `
+    const TEMPLATE$4 = owl.xml /* xml */ `
   <div class="o-link-tool">
     <t t-set="link" t-value="cell.link"/>
     <a t-if="link.isExternal"
@@ -28113,7 +28195,7 @@
     <span class="o-link-icon o-edit-link" t-on-click="edit" title="${LinkEditorTerms.Edit}">${EDIT}</span>
   </div>
 `;
-    const CSS$4 = css$6 /* scss */ `
+    const CSS$4 = css /* scss */ `
   .o-link-tool {
     font-size: 13px;
     background-color: white;
@@ -28151,7 +28233,7 @@
     color: #000;
   }
 `;
-    class LinkDisplay extends Component$6 {
+    class LinkDisplay extends owl.Component {
         constructor() {
             super(...arguments);
             this.getters = this.env.getters;
@@ -28190,14 +28272,11 @@
     LinkDisplay.components = { Menu };
     LinkDisplay.style = CSS$4;
 
-    const { Component: Component$5, tags, hooks: hooks$1, useState: useState$5 } = owl__namespace;
-    const { xml: xml$5, css: css$5 } = tags;
-    const { useRef: useRef$1, onMounted: onMounted$2 } = hooks$1;
     const MENU_OFFSET_X = 320;
     const MENU_OFFSET_Y = 100;
     const PADDING = 12;
-    const TEMPLATE$3 = xml$5 /* xml */ `
-    <div class="o-link-editor" t-on-click.stop="menu.isOpen=false" t-on-keydown.stop="onKeyDown">
+    const TEMPLATE$3 = owl.xml /* xml */ `
+    <div class="o-link-editor" t-on-click.stop="() => this.menu.isOpen=false" t-on-keydown.stop="onKeyDown" t-ref="linkEditor">
       <div class="o-section">
         <div t-esc="env._t('${LinkEditorTerms.Text}')" class="o-section-title"/>
         <div class="d-flex">
@@ -28227,7 +28306,7 @@
         <button t-on-click="save" class="o-button o-save" t-esc="env._t('${LinkEditorTerms.Confirm}')" t-att-disabled="!state.link.url" ></button>
       </div>
     </div>`;
-    const CSS$3 = css$5 /* scss */ `
+    const CSS$3 = css /* scss */ `
   .o-link-editor {
     font-size: 13px;
     background-color: white;
@@ -28298,20 +28377,21 @@
     }
   }
 `;
-    class LinkEditor extends Component$5 {
+    class LinkEditor extends owl.Component {
         constructor() {
             super(...arguments);
             this.menuItems = linkMenuRegistry.getAll();
             this.getters = this.env.getters;
-            this.state = useState$5(this.defaultState);
-            this.menu = useState$5({
+            this.state = owl.useState(this.defaultState);
+            this.menu = owl.useState({
                 isOpen: false,
             });
-            this.position = useAbsolutePosition();
-            this.urlInput = useRef$1("urlInput");
+            this.linkEditorRef = owl.useRef("linkEditor");
+            this.position = useAbsolutePosition(this.linkEditorRef);
+            this.urlInput = owl.useRef("urlInput");
         }
         setup() {
-            onMounted$2(() => { var _a; return (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus(); });
+            owl.onMounted(() => { var _a; return (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus(); });
         }
         get defaultState() {
             const { col, row } = this.props.cellPosition;
@@ -28382,13 +28462,10 @@
     LinkEditor.components = { Menu };
     LinkEditor.style = CSS$3;
 
-    const { Component: Component$4 } = owl__namespace;
-    const { xml: xml$4, css: css$4 } = owl__namespace.tags;
-    const { useState: useState$4 } = owl__namespace.hooks;
     // -----------------------------------------------------------------------------
     // Resizer component
     // -----------------------------------------------------------------------------
-    class AbstractResizer extends Component$4 {
+    class AbstractResizer extends owl.Component {
         constructor() {
             super(...arguments);
             this.PADDING = 0;
@@ -28397,7 +28474,7 @@
             this.lastSelectedElementIndex = null;
             this.getters = this.env.getters;
             this.dispatch = this.env.dispatch;
-            this.state = useState$4({
+            this.state = owl.useState({
                 resizerIsActive: false,
                 isResizing: false,
                 isMoving: false,
@@ -28625,8 +28702,9 @@
         }
     }
     class ColResizer extends AbstractResizer {
-        constructor() {
-            super(...arguments);
+        setup() {
+            super.setup();
+            this.colResizerRef = owl.useRef("colResizer");
             this.PADDING = 15;
             this.MAX_SIZE_MARGIN = 90;
             this.MIN_ELEMENT_SIZE = MIN_COL_WIDTH;
@@ -28669,7 +28747,7 @@
             return HEADER_WIDTH;
         }
         _getMaxSize() {
-            return this.el.clientWidth;
+            return this.colResizerRef.el.clientWidth;
         }
         _updateSize() {
             const index = this.state.activeElement;
@@ -28748,8 +28826,8 @@
             return col.start - offset - this._getHeaderSize();
         }
     }
-    ColResizer.template = xml$4 /* xml */ `
-    <div class="o-col-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
+    ColResizer.template = owl.xml /* xml */ `
+    <div class="o-col-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select" t-ref="colResizer"
       t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving, }">
       <div t-if="state.isMoving" class="dragging-col-line" t-attf-style="left:{{state.draggerLinePosition}}px;"/>
       <div t-if="state.isMoving" class="dragging-col-shadow" t-attf-style="left:{{state.draggerShadowPosition}}px; width:{{state.draggerShadowThickness}}px"/>
@@ -28761,18 +28839,18 @@
       </t>
       <t t-foreach="getters.getHiddenColsGroups(getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
         <t t-if="!hiddenItem.includes(0)">
-          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) - 17}}px; margin-right:6px;" t-on-click="unhide(hiddenItem)">
+          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) - 17}}px; margin-right:6px;" t-on-click="() => this.unhide(hiddenItem)">
           ${TRIANGLE_LEFT_ICON}
           </div>
         </t>
         <t t-if="!hiddenItem.includes(getters.getActiveSheet().cols.length-1)">
-          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="unhide(hiddenItem)">
+          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="() => this.unhide(hiddenItem)">
           ${TRIANGLE_RIGHT_ICON}
           </div>
         </t>
       </t>
     </div>`;
-    ColResizer.style = css$4 /* scss */ `
+    ColResizer.style = css /* scss */ `
     .o-col-resizer {
       position: absolute;
       top: 0;
@@ -28833,8 +28911,9 @@
     }
   `;
     class RowResizer extends AbstractResizer {
-        constructor() {
-            super(...arguments);
+        setup() {
+            super.setup();
+            this.rowResizerRef = owl.useRef("rowResizer");
             this.PADDING = 5;
             this.MAX_SIZE_MARGIN = 60;
             this.MIN_ELEMENT_SIZE = MIN_ROW_HEIGHT;
@@ -28874,7 +28953,7 @@
             return HEADER_HEIGHT;
         }
         _getMaxSize() {
-            return this.el.clientHeight;
+            return this.rowResizerRef.el.clientHeight;
         }
         _updateSize() {
             const index = this.state.activeElement;
@@ -28953,8 +29032,8 @@
             return row.start - offset - this._getHeaderSize();
         }
     }
-    RowResizer.template = xml$4 /* xml */ `
-    <div class="o-row-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select"
+    RowResizer.template = owl.xml /* xml */ `
+    <div class="o-row-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select" t-ref="rowResizer"
     t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving}">
       <div t-if="state.isMoving" class="dragging-row-line" t-attf-style="top:{{state.draggerLinePosition}}px;"/>
       <div t-if="state.isMoving" class="dragging-row-shadow" t-attf-style="top:{{state.draggerShadowPosition}}px; height:{{state.draggerShadowThickness}}px;"/>
@@ -28966,18 +29045,18 @@
       </t>
       <t t-foreach="getters.getHiddenRowsGroups(getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
         <t t-if="!hiddenItem.includes(0)">
-          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) - 17}}px;" t-on-click="unhide(hiddenItem)">
+          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) - 17}}px;" t-on-click="() => this.unhide(hiddenItem)">
           ${TRIANGLE_UP_ICON}
           </div>
         </t>
         <t t-if="!hiddenItem.includes(getters.getActiveSheet().rows.length-1)">
-         <div class="o-unhide" t-att-data-index="hiddenItem_index"  t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="unhide(hiddenItem)">
+         <div class="o-unhide" t-att-data-index="hiddenItem_index"  t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="() => this.unhide(hiddenItem)">
          ${TRIANGLE_DOWN_ICON}
          </div>
         </t>
       </t>
     </div>`;
-    RowResizer.style = css$4 /* scss */ `
+    RowResizer.style = css /* scss */ `
     .o-row-resizer {
       position: absolute;
       top: ${HEADER_HEIGHT}px;
@@ -29039,18 +29118,18 @@
       }
     }
   `;
-    class Overlay extends Component$4 {
+    class Overlay extends owl.Component {
         selectAll() {
             this.env.dispatch("SELECT_ALL");
         }
     }
-    Overlay.template = xml$4 /* xml */ `
+    Overlay.template = owl.xml /* xml */ `
     <div class="o-overlay">
       <ColResizer onOpenContextMenu="props.onOpenContextMenu" />
       <RowResizer onOpenContextMenu="props.onOpenContextMenu" />
       <div class="all" t-on-mousedown.self="selectAll"/>
     </div>`;
-    Overlay.style = css$4 /* scss */ `
+    Overlay.style = css /* scss */ `
     .o-overlay {
       .all {
         position: absolute;
@@ -29082,19 +29161,6 @@
         }
     }
 
-    /**
-     * The Grid component is the main part of the spreadsheet UI. It is responsible
-     * for displaying the actual grid, rendering it, managing events, ...
-     *
-     * The grid is rendered on a canvas. 3 sub components are (sometimes) displayed
-     * on top of the canvas:
-     * - a composer (to edit the cell content)
-     * - a horizontal resizer (to resize columns)
-     * - a vertical resizer (same, for rows)
-     */
-    const { Component: Component$3, useState: useState$3 } = owl__namespace;
-    const { xml: xml$3, css: css$3 } = owl__namespace.tags;
-    const { useRef, onMounted: onMounted$1, onWillUnmount: onWillUnmount$1, onPatched, useExternalListener: useExternalListener$2 } = owl__namespace.hooks;
     const registries$1 = {
         ROW: rowMenuRegistry,
         COL: colMenuRegistry,
@@ -29109,10 +29175,10 @@
     // and also should not result in typing the character C or V in the composer
     const keyDownMappingIgnore = ["CTRL+C", "CTRL+V"];
     function useCellHovered(env, getViewPort) {
-        const hoveredPosition = useState$3({});
-        const { browser, getters } = env;
-        const { Date, setInterval, clearInterval } = browser;
-        const canvasRef = useRef("canvas");
+        const hoveredPosition = owl.useState({});
+        const { getters } = env;
+        const { Date, setInterval, clearInterval } = window;
+        const canvasRef = owl.useRef("canvas");
         let x = 0;
         let y = 0;
         let lastMoved = 0;
@@ -29143,18 +29209,18 @@
             y = e.offsetY;
             lastMoved = Date.now();
         }
-        onMounted$1(() => {
+        owl.onMounted(() => {
             canvasRef.el.addEventListener("mousemove", updateMousePosition);
             interval = setInterval(checkTiming, 200);
         });
-        onWillUnmount$1(() => {
+        owl.onWillUnmount(() => {
             canvasRef.el.removeEventListener("mousemove", updateMousePosition);
             clearInterval(interval);
         });
         return hoveredPosition;
     }
     function useTouchMove(handler, canMoveUp) {
-        const canvasRef = useRef("canvas");
+        const canvasRef = owl.useRef("canvas");
         let x = null;
         let y = null;
         function onTouchStart(ev) {
@@ -29183,12 +29249,12 @@
             x = currentX;
             y = currentY;
         }
-        onMounted$1(() => {
+        owl.onMounted(() => {
             canvasRef.el.addEventListener("touchstart", onTouchStart);
             canvasRef.el.addEventListener("touchend", onTouchEnd);
             canvasRef.el.addEventListener("touchmove", onTouchMove);
         });
-        onWillUnmount$1(() => {
+        owl.onWillUnmount(() => {
             canvasRef.el.removeEventListener("touchstart", onTouchStart);
             canvasRef.el.removeEventListener("touchend", onTouchEnd);
             canvasRef.el.removeEventListener("touchmove", onTouchMove);
@@ -29197,9 +29263,9 @@
     // -----------------------------------------------------------------------------
     // TEMPLATE
     // -----------------------------------------------------------------------------
-    const TEMPLATE$2 = xml$3 /* xml */ `
-  <div class="o-grid" t-on-click="focus" t-on-keydown="onKeydown" t-on-wheel="onMouseWheel">
-    <t t-if="getters.getEditionMode() !== 'inactive'">
+    const TEMPLATE$2 = owl.xml /* xml */ `
+  <div class="o-grid" t-att-class="{'o-two-columns': !props.sidePanelIsOpen}" t-on-click="focus" t-on-keydown="onKeydown" t-on-wheel="onMouseWheel" t-ref="grid">
+    <t t-if="env.getters.getEditionMode() !== 'inactive'">
       <GridComposer
         onComposerUnmounted="() => this.focus()"
         focus="props.focusComposer"
@@ -29211,7 +29277,7 @@
       tabindex="-1"
       t-on-contextmenu="onCanvasContextMenu"
        />
-    <t t-foreach="getters.getClientsToDisplay()" t-as="client" t-key="getClientPositionKey(client)">
+    <t t-foreach="env.getters.getClientsToDisplay()" t-as="client" t-key="getClientPositionKey(client)">
       <ClientTag name="client.name"
                  color="client.color"
                  col="client.position.col"
@@ -29244,12 +29310,12 @@
       childHeight="${LINK_EDITOR_HEIGHT}">
       <LinkEditor cellPosition="activeCellPosition" onLinkEditorClosed="props.onLinkEditorClosed"/>
     </Popover>
-    <t t-if="getters.getEditionMode() === 'inactive'">
-      <Autofill position="getAutofillPosition()"/>
+    <t t-if="env.getters.getEditionMode() === 'inactive'">
+      <Autofill position="getAutofillPosition()" getGridBoundingClientRect="() => this.getGridBoundingClientRect()"/>
     </t>
-    <t t-if="getters.getEditionMode() !== 'inactive'">
-      <t t-foreach="getters.getHighlights()" t-as="highlight">
-        <t t-if="highlight.sheet === getters.getActiveSheetId()">
+    <t t-if="env.getters.getEditionMode() !== 'inactive'">
+      <t t-foreach="env.getters.getHighlights()" t-as="highlight" t-key="highlight_index">
+        <t t-if="highlight.sheet === env.getters.getActiveSheetId()">
           <Highlight zone="highlight.zone" color="highlight.color"/>
         </t>
       </t>
@@ -29259,7 +29325,7 @@
       menuItems="menuState.menuItems"
       position="menuState.position"
       onClose="() => this.menuState.isOpen=false"/>
-    <t t-set="gridSize" t-value="getters.getMaxViewportSize(getters.getActiveSheet())"/>
+    <t t-set="gridSize" t-value="env.getters.getMaxViewportSize(env.getters.getActiveSheet())"/>
     <FiguresContainer model="props.model" sidePanelIsOpen="props.sidePanelIsOpen" onFigureDeleted="() => this.focus()" />
     <div class="o-scrollbar vertical" t-on-scroll="onScroll" t-ref="vscrollbar">
       <div t-attf-style="width:1px;height:{{gridSize.height}}px"/>
@@ -29271,7 +29337,7 @@
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
-    const CSS$2 = css$3 /* scss */ `
+    const CSS$2 = css /* scss */ `
   .o-grid {
     position: relative;
     overflow: hidden;
@@ -29309,138 +29375,135 @@
     // -----------------------------------------------------------------------------
     // JS
     // -----------------------------------------------------------------------------
-    class Grid extends Component$3 {
+    class Grid extends owl.Component {
         constructor() {
             super(...arguments);
-            this.menuState = useState$3({
-                isOpen: false,
-                position: null,
-                menuItems: [],
-            });
-            this.vScrollbarRef = useRef("vscrollbar");
-            this.hScrollbarRef = useRef("hscrollbar");
-            this.canvas = useRef("canvas");
-            this.getters = this.env.getters;
-            this.dispatch = this.env.dispatch;
-            this.currentSheet = this.getters.getActiveSheetId();
-            this.clickedCol = 0;
-            this.clickedRow = 0;
-            // last string that was cut or copied. It is necessary so we can make the
-            // difference between a paste coming from the sheet itself, or from the
-            // os clipboard
-            this.clipBoardString = "";
-            this.hoveredCell = useCellHovered(this.env, () => this.getters.getActiveSnappedViewport());
             // this map will handle most of the actions that should happen on key down. The arrow keys are managed in the key
             // down itself
             this.keyDownMapping = {
                 ENTER: () => {
-                    const cell = this.getters.getActiveCell();
+                    const cell = this.env.getters.getActiveCell();
                     !cell || cell.isEmpty()
                         ? this.props.onGridComposerCellFocused()
                         : this.props.onComposerContentFocused();
                 },
-                TAB: () => this.dispatch("MOVE_POSITION", { deltaX: 1, deltaY: 0 }),
-                "SHIFT+TAB": () => this.dispatch("MOVE_POSITION", { deltaX: -1, deltaY: 0 }),
+                TAB: () => this.env.dispatch("MOVE_POSITION", { deltaX: 1, deltaY: 0 }),
+                "SHIFT+TAB": () => this.env.dispatch("MOVE_POSITION", { deltaX: -1, deltaY: 0 }),
                 F2: () => {
-                    const cell = this.getters.getActiveCell();
+                    const cell = this.env.getters.getActiveCell();
                     !cell || cell.isEmpty()
                         ? this.props.onGridComposerCellFocused()
                         : this.props.onComposerContentFocused();
                 },
                 DELETE: () => {
-                    this.dispatch("DELETE_CONTENT", {
-                        sheetId: this.getters.getActiveSheetId(),
-                        target: this.getters.getSelectedZones(),
+                    this.env.dispatch("DELETE_CONTENT", {
+                        sheetId: this.env.getters.getActiveSheetId(),
+                        target: this.env.getters.getSelectedZones(),
                     });
                 },
-                "CTRL+A": () => this.dispatch("SELECT_ALL"),
+                "CTRL+A": () => this.env.dispatch("SELECT_ALL"),
                 "CTRL+S": () => {
-                    this.trigger("save-requested");
+                    var _a, _b;
+                    (_b = (_a = this.props).onSaveRequested) === null || _b === void 0 ? void 0 : _b.call(_a);
                 },
-                "CTRL+Z": () => this.dispatch("REQUEST_UNDO"),
-                "CTRL+Y": () => this.dispatch("REQUEST_REDO"),
-                "CTRL+B": () => this.dispatch("SET_FORMATTING", {
-                    sheetId: this.getters.getActiveSheetId(),
-                    target: this.getters.getSelectedZones(),
-                    style: { bold: !this.getters.getCurrentStyle().bold },
+                "CTRL+Z": () => this.env.dispatch("REQUEST_UNDO"),
+                "CTRL+Y": () => this.env.dispatch("REQUEST_REDO"),
+                "CTRL+B": () => this.env.dispatch("SET_FORMATTING", {
+                    sheetId: this.env.getters.getActiveSheetId(),
+                    target: this.env.getters.getSelectedZones(),
+                    style: { bold: !this.env.getters.getCurrentStyle().bold },
                 }),
-                "CTRL+I": () => this.dispatch("SET_FORMATTING", {
-                    sheetId: this.getters.getActiveSheetId(),
-                    target: this.getters.getSelectedZones(),
-                    style: { italic: !this.getters.getCurrentStyle().italic },
+                "CTRL+I": () => this.env.dispatch("SET_FORMATTING", {
+                    sheetId: this.env.getters.getActiveSheetId(),
+                    target: this.env.getters.getSelectedZones(),
+                    style: { italic: !this.env.getters.getCurrentStyle().italic },
                 }),
-                "CTRL+U": () => this.dispatch("SET_FORMATTING", {
-                    sheetId: this.getters.getActiveSheetId(),
-                    target: this.getters.getSelectedZones(),
-                    style: { underline: !this.getters.getCurrentStyle().underline },
+                "CTRL+U": () => this.env.dispatch("SET_FORMATTING", {
+                    sheetId: this.env.getters.getActiveSheetId(),
+                    target: this.env.getters.getSelectedZones(),
+                    style: { underline: !this.env.getters.getCurrentStyle().underline },
                 }),
                 "ALT+=": () => {
                     var _a;
-                    const sheetId = this.getters.getActiveSheetId();
-                    const mainSelectedZone = this.getters.getSelectedZone();
-                    const sums = this.getters.getAutomaticSums(sheetId, mainSelectedZone, this.getters.getPosition());
-                    if (this.getters.isSingleCellOrMerge(sheetId, mainSelectedZone) ||
-                        (this.getters.isEmpty(sheetId, mainSelectedZone) && sums.length <= 1)) {
+                    const sheetId = this.env.getters.getActiveSheetId();
+                    const mainSelectedZone = this.env.getters.getSelectedZone();
+                    const sums = this.env.getters.getAutomaticSums(sheetId, mainSelectedZone, this.env.getters.getPosition());
+                    if (this.env.getters.isSingleCellOrMerge(sheetId, mainSelectedZone) ||
+                        (this.env.getters.isEmpty(sheetId, mainSelectedZone) && sums.length <= 1)) {
                         const zone = (_a = sums[0]) === null || _a === void 0 ? void 0 : _a.zone;
-                        const zoneXc = zone ? this.getters.zoneToXC(sheetId, sums[0].zone) : "";
+                        const zoneXc = zone ? this.env.getters.zoneToXC(sheetId, sums[0].zone) : "";
                         const formula = `=SUM(${zoneXc})`;
                         this.props.onGridComposerCellFocused(formula, { start: 5, end: 5 + zoneXc.length });
                     }
                     else {
-                        this.dispatch("SUM_SELECTION");
+                        this.env.dispatch("SUM_SELECTION");
                     }
                 },
                 "CTRL+HOME": () => {
-                    const sheet = this.getters.getActiveSheet();
+                    const sheet = this.env.getters.getActiveSheet();
                     const [col, row] = getNextVisibleCellCoords(sheet, 0, 0);
-                    this.dispatch("SELECT_CELL", { col, row });
+                    this.env.dispatch("SELECT_CELL", { col, row });
                 },
                 "CTRL+END": () => {
-                    const sheet = this.getters.getActiveSheet();
+                    const sheet = this.env.getters.getActiveSheet();
                     const col = findVisibleHeader(sheet, "cols", range(0, sheet.cols.length).reverse());
                     const row = findVisibleHeader(sheet, "rows", range(0, sheet.rows.length).reverse());
-                    this.dispatch("SELECT_CELL", { col, row });
+                    this.env.dispatch("SELECT_CELL", { col, row });
                 },
                 "SHIFT+ ": () => {
-                    const { cols } = this.getters.getActiveSheet();
-                    const newZone = { ...this.getters.getSelectedZone(), left: 0, right: cols.length - 1 };
-                    this.dispatch("SET_SELECTION", {
-                        anchor: this.getters.getPosition(),
+                    const { cols } = this.env.getters.getActiveSheet();
+                    const newZone = { ...this.env.getters.getSelectedZone(), left: 0, right: cols.length - 1 };
+                    this.env.dispatch("SET_SELECTION", {
+                        anchor: this.env.getters.getPosition(),
                         zones: [newZone],
                         anchorZone: newZone,
                     });
                 },
                 "CTRL+ ": () => {
-                    const { rows } = this.getters.getActiveSheet();
-                    const newZone = { ...this.getters.getSelectedZone(), top: 0, bottom: rows.length - 1 };
-                    this.dispatch("SET_SELECTION", {
-                        anchor: this.getters.getPosition(),
+                    const { rows } = this.env.getters.getActiveSheet();
+                    const newZone = { ...this.env.getters.getSelectedZone(), top: 0, bottom: rows.length - 1 };
+                    this.env.dispatch("SET_SELECTION", {
+                        anchor: this.env.getters.getPosition(),
                         zones: [newZone],
                         anchorZone: newZone,
                     });
                 },
                 "CTRL+SHIFT+ ": () => {
-                    this.dispatch("SELECT_ALL");
+                    this.env.dispatch("SELECT_ALL");
                 },
                 "SHIFT+PAGEDOWN": () => {
-                    this.dispatch("ACTIVATE_NEXT_SHEET");
+                    this.env.dispatch("ACTIVATE_NEXT_SHEET");
                 },
                 "SHIFT+PAGEUP": () => {
-                    this.dispatch("ACTIVATE_PREVIOUS_SHEET");
+                    this.env.dispatch("ACTIVATE_PREVIOUS_SHEET");
                 },
-                PAGEDOWN: () => this.dispatch("SHIFT_VIEWPORT_DOWN"),
-                PAGEUP: () => this.dispatch("SHIFT_VIEWPORT_UP"),
+                PAGEDOWN: () => this.env.dispatch("SHIFT_VIEWPORT_DOWN"),
+                PAGEUP: () => this.env.dispatch("SHIFT_VIEWPORT_UP"),
             };
-            this.vScrollbar = new ScrollBar(this.vScrollbarRef.el, "vertical");
-            this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
         }
         setup() {
-            useExternalListener$2(document.body, "cut", this.copy.bind(this, true));
-            useExternalListener$2(document.body, "copy", this.copy.bind(this, false));
-            useExternalListener$2(document.body, "paste", this.paste);
+            this.menuState = owl.useState({
+                isOpen: false,
+                position: null,
+                menuItems: [],
+            });
+            this.vScrollbarRef = owl.useRef("vscrollbar");
+            this.hScrollbarRef = owl.useRef("hscrollbar");
+            this.gridRef = owl.useRef("grid");
+            this.canvas = owl.useRef("canvas");
+            this.vScrollbar = new ScrollBar(this.vScrollbarRef.el, "vertical");
+            this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
+            this.currentSheet = this.env.getters.getActiveSheetId();
+            this.clickedCol = 0;
+            this.clickedRow = 0;
+            this.clipBoardString = "";
+            this.hoveredCell = useCellHovered(this.env, () => this.env.getters.getActiveSnappedViewport());
+            owl.useExternalListener(document.body, "cut", this.copy.bind(this, true));
+            owl.useExternalListener(document.body, "copy", this.copy.bind(this, false));
+            owl.useExternalListener(document.body, "paste", this.paste);
             useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0);
-            onMounted$1(() => this.initGrid());
-            onPatched(() => {
+            owl.onMounted(() => this.initGrid());
+            owl.onPatched(() => {
                 this.drawGrid();
                 this.resizeGrid();
             });
@@ -29458,12 +29521,12 @@
             if (col === undefined || row === undefined) {
                 return { isOpen: false };
             }
-            const sheetId = this.getters.getActiveSheetId();
-            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
-            const cell = this.getters.getCell(sheetId, mainCol, mainRow);
+            const sheetId = this.env.getters.getActiveSheetId();
+            const [mainCol, mainRow] = this.env.getters.getMainCell(sheetId, col, row);
+            const cell = this.env.getters.getCell(sheetId, mainCol, mainRow);
             if (cell && cell.evaluated.type === CellValueType.error) {
-                const viewport = this.getters.getActiveSnappedViewport();
-                const [x, y, width] = this.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
+                const viewport = this.env.getters.getActiveSnappedViewport();
+                const [x, y, width] = this.env.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
                 return {
                     isOpen: true,
                     position: { x: x + width, y: y + TOPBAR_HEIGHT },
@@ -29473,15 +29536,15 @@
             return { isOpen: false };
         }
         get activeCellPosition() {
-            const [col, row] = this.getters.getMainCell(this.getters.getActiveSheetId(), ...this.getters.getPosition());
+            const [col, row] = this.env.getters.getMainCell(this.env.getters.getActiveSheetId(), ...this.env.getters.getPosition());
             return { col, row };
         }
         get shouldDisplayLink() {
-            const sheetId = this.getters.getActiveSheetId();
+            const sheetId = this.env.getters.getActiveSheetId();
             const { col, row } = this.activeCellPosition;
-            const viewport = this.getters.getActiveSnappedViewport();
-            const cell = this.getters.getCell(sheetId, col, row);
-            return (this.getters.isVisibleInViewport(col, row, viewport) &&
+            const viewport = this.env.getters.getActiveSnappedViewport();
+            const cell = this.env.getters.getCell(sheetId, col, row);
+            return (this.env.getters.isVisibleInViewport(col, row, viewport) &&
                 !!cell &&
                 cell.isLink() &&
                 !this.menuState.isOpen &&
@@ -29493,9 +29556,9 @@
          * Used by link popover components.
          */
         get popoverPosition() {
-            const [col, row] = this.getters.getBottomLeftCell(this.getters.getActiveSheetId(), ...this.getters.getPosition());
-            const viewport = this.getters.getActiveSnappedViewport();
-            const [x, y, width, height] = this.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
+            const [col, row] = this.env.getters.getBottomLeftCell(this.env.getters.getActiveSheetId(), ...this.env.getters.getPosition());
+            const viewport = this.env.getters.getActiveSnappedViewport();
+            const [x, y, width, height] = this.env.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
             return {
                 position: { x, y: y + height + TOPBAR_HEIGHT },
                 cellWidth: width,
@@ -29503,42 +29566,51 @@
             };
         }
         focus() {
-            if (!this.getters.isSelectingForComposer() && !this.getters.getSelectedFigureId()) {
+            if (!this.env.getters.isSelectingForComposer() && !this.env.getters.getSelectedFigureId()) {
                 this.canvas.el.focus();
             }
         }
+        get gridEl() {
+            if (!this.gridRef.el) {
+                throw new Error("Grid el is not defined.");
+            }
+            return this.gridRef.el;
+        }
+        getGridBoundingClientRect() {
+            return this.gridEl.getBoundingClientRect();
+        }
         resizeGrid() {
-            const currentHeight = this.el.clientHeight - SCROLLBAR_WIDTH$1;
-            const currentWidth = this.el.clientWidth - SCROLLBAR_WIDTH$1;
-            const { height: viewportHeight, width: viewportWidth } = this.getters.getViewportDimensionWithHeaders();
+            const currentHeight = this.gridEl.clientHeight - SCROLLBAR_WIDTH$1;
+            const currentWidth = this.gridEl.clientWidth - SCROLLBAR_WIDTH$1;
+            const { height: viewportHeight, width: viewportWidth } = this.env.getters.getViewportDimensionWithHeaders();
             if (currentHeight != viewportHeight || currentWidth !== viewportWidth) {
-                this.dispatch("RESIZE_VIEWPORT", {
+                this.env.dispatch("RESIZE_VIEWPORT", {
                     height: currentHeight - HEADER_HEIGHT,
                     width: currentWidth - HEADER_WIDTH,
                 });
             }
         }
         onScroll() {
-            const { offsetX, offsetY } = this.getters.getActiveViewport();
+            const { offsetX, offsetY } = this.env.getters.getActiveViewport();
             if (offsetX !== this.hScrollbar.scroll || offsetY !== this.vScrollbar.scroll) {
-                const { maxOffsetX, maxOffsetY } = this.getters.getMaximumViewportOffset(this.getters.getActiveSheet());
-                this.dispatch("SET_VIEWPORT_OFFSET", {
+                const { maxOffsetX, maxOffsetY } = this.env.getters.getMaximumViewportOffset(this.env.getters.getActiveSheet());
+                this.env.dispatch("SET_VIEWPORT_OFFSET", {
                     offsetX: Math.min(this.hScrollbar.scroll, maxOffsetX),
                     offsetY: Math.min(this.vScrollbar.scroll, maxOffsetY),
                 });
             }
         }
         checkSheetChanges() {
-            const currentSheet = this.getters.getActiveSheetId();
+            const currentSheet = this.env.getters.getActiveSheetId();
             if (currentSheet !== this.currentSheet) {
                 this.focus();
                 this.currentSheet = currentSheet;
             }
         }
         getAutofillPosition() {
-            const zone = this.getters.getSelectedZone();
-            const sheet = this.getters.getActiveSheet();
-            const { offsetX, offsetY } = this.getters.getActiveSnappedViewport();
+            const zone = this.env.getters.getSelectedZone();
+            const sheet = this.env.getters.getActiveSheet();
+            const { offsetX, offsetY } = this.env.getters.getActiveSnappedViewport();
             return {
                 left: sheet.cols[zone.right].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
                 top: sheet.rows[zone.bottom].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
@@ -29546,7 +29618,7 @@
         }
         drawGrid() {
             //reposition scrollbar
-            const { offsetX, offsetY } = this.getters.getActiveViewport();
+            const { offsetX, offsetY } = this.env.getters.getActiveViewport();
             this.hScrollbar.scroll = offsetX;
             this.vScrollbar.scroll = offsetY;
             // check for position changes
@@ -29558,11 +29630,11 @@
             const thinLineWidth = 0.4 * dpr;
             const renderingContext = {
                 ctx,
-                viewport: this.getters.getActiveViewport(),
+                viewport: this.env.getters.getActiveViewport(),
                 dpr,
                 thinLineWidth,
             };
-            const { width, height } = this.getters.getViewportDimensionWithHeaders();
+            const { width, height } = this.env.getters.getViewportDimensionWithHeaders();
             canvas.style.width = `${width}px`;
             canvas.style.height = `${height}px`;
             canvas.width = width * dpr;
@@ -29575,7 +29647,7 @@
         moveCanvas(deltaX, deltaY) {
             this.vScrollbar.scroll = this.vScrollbar.scroll + deltaY;
             this.hScrollbar.scroll = this.hScrollbar.scroll + deltaX;
-            this.dispatch("SET_VIEWPORT_OFFSET", {
+            this.env.dispatch("SET_VIEWPORT_OFFSET", {
                 offsetX: this.hScrollbar.scroll,
                 offsetY: this.vScrollbar.scroll,
             });
@@ -29605,16 +29677,16 @@
          * Get the coordinates in pixels, with 0,0 being the top left of the grid itself
          */
         getCoordinates(ev) {
-            const rect = this.el.getBoundingClientRect();
+            const rect = this.gridEl.getBoundingClientRect();
             const x = ev.pageX - rect.left;
             const y = ev.pageY - rect.top;
             return [x, y];
         }
         getCartesianCoordinates(ev) {
             const [x, y] = this.getCoordinates(ev);
-            const { left, top } = this.getters.getActiveSnappedViewport();
-            const colIndex = this.getters.getColIndex(x, left);
-            const rowIndex = this.getters.getRowIndex(y, top);
+            const { left, top } = this.env.getters.getActiveSnappedViewport();
+            const colIndex = this.env.getters.getColIndex(x, left);
+            const rowIndex = this.env.getters.getRowIndex(y, top);
             return [colIndex, rowIndex];
         }
         onMouseDown(ev) {
@@ -29628,18 +29700,18 @@
             }
             this.clickedCol = col;
             this.clickedRow = row;
-            const sheetId = this.getters.getActiveSheetId();
-            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
-            const cell = this.getters.getCell(sheetId, mainCol, mainRow);
+            const sheetId = this.env.getters.getActiveSheetId();
+            const [mainCol, mainRow] = this.env.getters.getMainCell(sheetId, col, row);
+            const cell = this.env.getters.getCell(sheetId, mainCol, mainRow);
             if (!(cell === null || cell === void 0 ? void 0 : cell.isLink())) {
                 this.closeLinkEditor();
             }
-            this.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
+            this.env.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
             if (ev.shiftKey) {
-                this.dispatch("ALTER_SELECTION", { cell: [col, row] });
+                this.env.dispatch("ALTER_SELECTION", { cell: [col, row] });
             }
             else {
-                this.dispatch("SELECT_CELL", { col, row });
+                this.env.dispatch("SELECT_CELL", { col, row });
                 this.checkSheetChanges();
             }
             let prevCol = col;
@@ -29648,7 +29720,7 @@
             let timeOutId = null;
             let timeoutDelay = 0;
             let currentEv;
-            const sheet = this.getters.getActiveSheet();
+            const sheet = this.env.getters.getActiveSheet();
             const onMouseMove = (ev) => {
                 currentEv = ev;
                 if (timeOutId) {
@@ -29657,22 +29729,22 @@
                 const [x, y] = this.getCoordinates(currentEv);
                 isEdgeScrolling = false;
                 timeoutDelay = 0;
-                const colEdgeScroll = this.getters.getEdgeScrollCol(x);
-                const rowEdgeScroll = this.getters.getEdgeScrollRow(y);
-                const { left, right, top, bottom } = this.getters.getActiveSnappedViewport();
+                const colEdgeScroll = this.env.getters.getEdgeScrollCol(x);
+                const rowEdgeScroll = this.env.getters.getEdgeScrollRow(y);
+                const { left, right, top, bottom } = this.env.getters.getActiveSnappedViewport();
                 let col, row;
                 if (colEdgeScroll.canEdgeScroll) {
                     col = colEdgeScroll.direction > 0 ? right : left - 1;
                 }
                 else {
-                    col = this.getters.getColIndex(x, left);
+                    col = this.env.getters.getColIndex(x, left);
                     col = col === -1 ? prevCol : col;
                 }
                 if (rowEdgeScroll.canEdgeScroll) {
                     row = rowEdgeScroll.direction > 0 ? bottom : top - 1;
                 }
                 else {
-                    row = this.getters.getRowIndex(y, top);
+                    row = this.env.getters.getRowIndex(y, top);
                     row = row === -1 ? prevRow : row;
                 }
                 isEdgeScrolling = colEdgeScroll.canEdgeScroll || rowEdgeScroll.canEdgeScroll;
@@ -29680,12 +29752,12 @@
                 if (col !== prevCol || row !== prevRow) {
                     prevCol = col;
                     prevRow = row;
-                    this.dispatch("ALTER_SELECTION", { cell: [col, row] });
+                    this.env.dispatch("ALTER_SELECTION", { cell: [col, row] });
                 }
                 if (isEdgeScrolling) {
                     const offsetX = sheet.cols[left + colEdgeScroll.direction].start;
                     const offsetY = sheet.rows[top + rowEdgeScroll.direction].start;
-                    this.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+                    this.env.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
                     timeOutId = setTimeout(() => {
                         timeOutId = null;
                         onMouseMove(currentEv);
@@ -29694,11 +29766,11 @@
             };
             const onMouseUp = (ev) => {
                 clearTimeout(timeOutId);
-                this.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
+                this.env.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
                 this.canvas.el.removeEventListener("mousemove", onMouseMove);
-                if (this.getters.isPaintingFormat()) {
-                    this.dispatch("PASTE", {
-                        target: this.getters.getSelectedZones(),
+                if (this.env.getters.isPaintingFormat()) {
+                    this.env.dispatch("PASTE", {
+                        target: this.env.getters.getSelectedZones(),
                     });
                 }
             };
@@ -29707,7 +29779,7 @@
         onDoubleClick(ev) {
             const [col, row] = this.getCartesianCoordinates(ev);
             if (this.clickedCol === col && this.clickedRow === row) {
-                const cell = this.getters.getActiveCell();
+                const cell = this.env.getters.getActiveCell();
                 !cell || cell.isEmpty()
                     ? this.props.onGridComposerCellFocused()
                     : this.props.onComposerContentFocused();
@@ -29722,7 +29794,7 @@
         processTabKey(ev) {
             ev.preventDefault();
             const deltaX = ev.shiftKey ? -1 : 1;
-            this.dispatch("MOVE_POSITION", { deltaX, deltaY: 0 });
+            this.env.dispatch("MOVE_POSITION", { deltaX, deltaY: 0 });
         }
         processArrows(ev) {
             ev.preventDefault();
@@ -29736,25 +29808,25 @@
             };
             const delta = deltaMap[ev.key];
             if (ev.shiftKey) {
-                const oldZone = this.getters.getSelectedZone();
-                this.dispatch("ALTER_SELECTION", { delta });
-                const newZone = this.getters.getSelectedZone();
-                const viewport = this.getters.getActiveSnappedViewport();
-                const sheet = this.getters.getActiveSheet();
+                const oldZone = this.env.getters.getSelectedZone();
+                this.env.dispatch("ALTER_SELECTION", { delta });
+                const newZone = this.env.getters.getSelectedZone();
+                const viewport = this.env.getters.getActiveSnappedViewport();
+                const sheet = this.env.getters.getActiveSheet();
                 const [col, row] = findCellInNewZone(oldZone, newZone, viewport);
                 const { left, right, top, bottom, offsetX, offsetY } = viewport;
                 const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
                 const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
                 if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
-                    this.dispatch("SET_VIEWPORT_OFFSET", { offsetX: newOffsetX, offsetY: newOffsetY });
+                    this.env.dispatch("SET_VIEWPORT_OFFSET", { offsetX: newOffsetX, offsetY: newOffsetY });
                 }
             }
             else {
-                this.dispatch("MOVE_POSITION", { deltaX: delta[0], deltaY: delta[1] });
+                this.env.dispatch("MOVE_POSITION", { deltaX: delta[0], deltaY: delta[1] });
             }
-            if (this.getters.isPaintingFormat()) {
-                this.dispatch("PASTE", {
-                    target: this.getters.getSelectedZones(),
+            if (this.env.getters.isPaintingFormat()) {
+                this.env.dispatch("PASTE", {
+                    target: this.env.getters.getSelectedZones(),
                 });
             }
         }
@@ -29799,18 +29871,18 @@
             if (col < 0 || row < 0) {
                 return;
             }
-            const zones = this.getters.getSelectedZones();
+            const zones = this.env.getters.getSelectedZones();
             const lastZone = zones[zones.length - 1];
             let type = "CELL";
             if (!isInside(col, row, lastZone)) {
-                this.dispatch("STOP_EDITION");
-                this.dispatch("SELECT_CELL", { col, row });
+                this.env.dispatch("STOP_EDITION");
+                this.env.dispatch("SELECT_CELL", { col, row });
             }
             else {
-                if (this.getters.getActiveCols().has(col)) {
+                if (this.env.getters.getActiveCols().has(col)) {
                     type = "COL";
                 }
-                else if (this.getters.getActiveRows().has(row)) {
+                else if (this.env.getters.getActiveRows().has(row)) {
                     type = "ROW";
                 }
             }
@@ -29825,35 +29897,35 @@
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
         }
         copy(cut, ev) {
-            if (!this.el.contains(document.activeElement)) {
+            if (!this.gridEl.contains(document.activeElement)) {
                 return;
             }
             /* If we are currently editing a cell, let the default behavior */
-            if (this.getters.getEditionMode() !== "inactive") {
+            if (this.env.getters.getEditionMode() !== "inactive") {
                 return;
             }
             const type = cut ? "CUT" : "COPY";
-            const target = this.getters.getSelectedZones();
-            this.dispatch(type, { target });
-            const content = this.getters.getClipboardContent();
+            const target = this.env.getters.getSelectedZones();
+            this.env.dispatch(type, { target });
+            const content = this.env.getters.getClipboardContent();
             this.clipBoardString = content;
             ev.clipboardData.setData("text/plain", content);
             ev.preventDefault();
         }
         paste(ev) {
-            if (!this.el.contains(document.activeElement)) {
+            if (!this.gridEl.contains(document.activeElement)) {
                 return;
             }
             const clipboardData = ev.clipboardData;
             if (clipboardData.types.indexOf("text/plain") > -1) {
                 const content = clipboardData.getData("text/plain");
-                const target = this.getters.getSelectedZones();
+                const target = this.env.getters.getSelectedZones();
                 if (this.clipBoardString === content) {
                     // the paste actually comes from o-spreadsheet itself
                     interactivePaste(this.env, target);
                 }
                 else {
-                    this.dispatch("PASTE_FROM_OS_CLIPBOARD", {
+                    this.env.dispatch("PASTE_FROM_OS_CLIPBOARD", {
                         target,
                         text: content,
                     });
@@ -29877,14 +29949,11 @@
         Popover,
     };
 
-    const { Component: Component$2 } = owl__namespace;
-    const { xml: xml$2, css: css$2 } = owl__namespace.tags;
-    const { useState: useState$2, onWillUpdateProps: onWillUpdateProps$2 } = owl__namespace.hooks;
-    const TEMPLATE$1 = xml$2 /* xml */ `
+    const TEMPLATE$1 = owl.xml /* xml */ `
   <div class="o-sidePanel" >
     <div class="o-sidePanelHeader">
         <div class="o-sidePanelTitle" t-esc="getTitle()"/>
-        <div class="o-sidePanelClose" t-on-click="props.onCloseSidePanel()">×</div>
+        <div class="o-sidePanelClose" t-on-click="() => this.props.onCloseSidePanel()">×</div>
     </div>
     <div class="o-sidePanelBody">
       <t t-component="state.panel.Body" t-props="props.panelProps" onCloseSidePanel="props.onCloseSidePanel" t-key="'Body_' + props.component"/>
@@ -29893,7 +29962,7 @@
       <t t-component="state.panel.Footer" t-props="props.panelProps" t-key="'Footer_' + props.component"/>
     </div>
   </div>`;
-    const CSS$1 = css$2 /* scss */ `
+    const CSS$1 = css /* scss */ `
   .o-sidePanel {
     display: flex;
     flex-direction: column;
@@ -29993,15 +30062,12 @@
     }
   }
 `;
-    class SidePanel extends Component$2 {
-        constructor() {
-            super(...arguments);
-            this.state = useState$2({
+    class SidePanel extends owl.Component {
+        setup() {
+            this.state = owl.useState({
                 panel: sidePanelRegistry.get(this.props.component),
             });
-        }
-        setup() {
-            onWillUpdateProps$2((nextProps) => (this.state.panel = sidePanelRegistry.get(nextProps.component)));
+            owl.onWillUpdateProps((nextProps) => (this.state.panel = sidePanelRegistry.get(nextProps.component)));
         }
         getTitle() {
             return typeof this.state.panel.title === "function"
@@ -30012,9 +30078,6 @@
     SidePanel.template = TEMPLATE$1;
     SidePanel.style = CSS$1;
 
-    const { Component: Component$1, useState: useState$1, hooks } = owl__namespace;
-    const { xml: xml$1, css: css$1 } = owl__namespace.tags;
-    const { useExternalListener: useExternalListener$1, onWillUpdateProps: onWillUpdateProps$1, onWillStart } = hooks;
     const FORMATS = [
         { name: "general", text: "General (no specific format)" },
         { name: "number", text: "Number (1,000.12)", value: "#,##0.00" },
@@ -30027,7 +30090,7 @@
     // -----------------------------------------------------------------------------
     // TopBar
     // -----------------------------------------------------------------------------
-    class TopBar extends Component$1 {
+    class TopBar extends owl.Component {
         constructor() {
             super(...arguments);
             this.formats = FORMATS;
@@ -30036,7 +30099,7 @@
             this.dispatch = this.env.dispatch;
             this.getters = this.env.getters;
             this.style = {};
-            this.state = useState$1({
+            this.state = owl.useState({
                 menuState: { isOpen: false, position: null, menuItems: [] },
                 activeTool: "",
             });
@@ -30058,9 +30121,9 @@
   `;
         }
         setup() {
-            useExternalListener$1(window, "click", this.onClick);
-            onWillStart(() => this.updateCellState());
-            onWillUpdateProps$1(() => this.updateCellState());
+            owl.useExternalListener(window, "click", this.onClick);
+            owl.onWillStart(() => this.updateCellState());
+            owl.onWillUpdateProps(() => this.updateCellState());
         }
         get topbarComponents() {
             return topbarComponentRegistry
@@ -30216,16 +30279,16 @@
             this.dispatch("REQUEST_REDO");
         }
     }
-    TopBar.template = xml$1 /* xml */ `
-    <div class="o-spreadsheet-topbar" t-on-click="props.onClick">
+    TopBar.template = owl.xml /* xml */ `
+    <div class="o-spreadsheet-topbar o-two-columns" t-on-click="props.onClick">
       <div class="o-topbar-top">
         <!-- Menus -->
         <div class="o-topbar-topleft">
           <t t-foreach="menus" t-as="menu" t-key="menu_index">
             <div t-if="menu.children.length !== 0"
               class="o-topbar-menu"
-              t-on-click="toggleContextMenu(menu)"
-              t-on-mouseover="onMenuMouseOver(menu)"
+              t-on-click="(ev) => this.toggleContextMenu(menu, ev)"
+              t-on-mouseover="(ev) => this.onMenuMouseOver(menu, ev)"
               t-att-data-id="menu.id">
             <t t-esc="getMenuName(menu)"/>
           </div>
@@ -30253,12 +30316,12 @@
           <div class="o-tool" title="Undo" t-att-class="{'o-disabled': !undoTool}" t-on-click="undo" >${UNDO_ICON}</div>
           <div class="o-tool" t-att-class="{'o-disabled': !redoTool}" title="Redo"  t-on-click="redo">${REDO_ICON}</div>
           <div class="o-tool" title="Paint Format" t-att-class="{active:paintFormatTool}" t-on-click="paintFormat">${PAINT_FORMAT_ICON}</div>
-          <div class="o-tool" title="Clear Format" t-on-click="clearFormatting()">${CLEAR_FORMAT_ICON}</div>
+          <div class="o-tool" title="Clear Format" t-on-click="clearFormatting">${CLEAR_FORMAT_ICON}</div>
           <div class="o-divider"/>
-          <div class="o-tool" title="Format as percent" t-on-click="toogleFormat('percent')">%</div>
-          <div class="o-tool" title="Decrease decimal places" t-on-click="setDecimal(-1)">.0</div>
-          <div class="o-tool" title="Increase decimal places" t-on-click="setDecimal(+1)">.00</div>
-          <div class="o-tool o-dropdown" title="More formats" t-on-click="toggleDropdownTool('formatTool')">
+          <div class="o-tool" title="Format as percent" t-on-click="(ev) => this.toogleFormat('percent', ev)">%</div>
+          <div class="o-tool" title="Decrease decimal places" t-on-click="(ev) => this.setDecimal(-1, ev)">.0</div>
+          <div class="o-tool" title="Increase decimal places" t-on-click="(ev) => this.setDecimal(+1, ev)">.00</div>
+          <div class="o-tool o-dropdown" title="More formats" t-on-click="(ev) => this.toggleDropdownTool('formatTool', ev)">
             <div class="o-text-icon">123${TRIANGLE_DOWN_ICON}</div>
             <div class="o-dropdown-content o-text-options  o-format-tool "  t-if="state.activeTool === 'formatTool'" t-on-click="setFormat">
               <t t-foreach="formats" t-as="format" t-key="format.name">
@@ -30268,7 +30331,7 @@
           </div>
           <div class="o-divider"/>
           <!-- <div class="o-tool" title="Font"><span>Roboto</span> ${TRIANGLE_DOWN_ICON}</div> -->
-          <div class="o-tool o-dropdown" title="Font Size" t-on-click="toggleDropdownTool('fontSizeTool')">
+          <div class="o-tool o-dropdown" title="Font Size" t-on-click="(ev) => this.toggleDropdownTool('fontSizeTool', ev)">
             <div class="o-text-icon"><t t-esc="style.fontSize || ${DEFAULT_FONT_SIZE}"/> ${TRIANGLE_DOWN_ICON}</div>
             <div class="o-dropdown-content o-text-options "  t-if="state.activeTool === 'fontSizeTool'" t-on-click="setSize">
               <t t-foreach="fontSizes" t-as="font" t-key="font_index">
@@ -30277,40 +30340,40 @@
             </div>
           </div>
           <div class="o-divider"/>
-          <div class="o-tool" title="Bold" t-att-class="{active:style.bold}" t-on-click="toogleStyle('bold')">${BOLD_ICON}</div>
-          <div class="o-tool" title="Italic" t-att-class="{active:style.italic}" t-on-click="toogleStyle('italic')">${ITALIC_ICON}</div>
-          <div class="o-tool" title="Strikethrough"  t-att-class="{active:style.strikethrough}" t-on-click="toogleStyle('strikethrough')">${STRIKE_ICON}</div>
+          <div class="o-tool" title="Bold" t-att-class="{active:style.bold}" t-on-click="(ev) => this.toogleStyle('bold', ev)">${BOLD_ICON}</div>
+          <div class="o-tool" title="Italic" t-att-class="{active:style.italic}" t-on-click="(ev) => this.toogleStyle('italic', ev)">${ITALIC_ICON}</div>
+          <div class="o-tool" title="Strikethrough"  t-att-class="{active:style.strikethrough}" t-on-click="(ev) => this.toogleStyle('strikethrough', ev)">${STRIKE_ICON}</div>
           <div class="o-tool o-dropdown o-with-color">
-            <span t-attf-style="border-color:{{textColor}}" title="Text Color" t-on-click="toggleDropdownTool('textColorTool')">${TEXT_COLOR_ICON}</span>
+            <span t-attf-style="border-color:{{textColor}}" title="Text Color" t-on-click="(ev) => this.toggleDropdownTool('textColorTool', ev)">${TEXT_COLOR_ICON}</span>
             <ColorPicker t-if="state.activeTool === 'textColorTool'" onColorPicked="(color) => this.setColor('textColor', color)" t-key="textColor"/>
           </div>
           <div class="o-divider"/>
           <div class="o-tool  o-dropdown o-with-color">
-            <span t-attf-style="border-color:{{fillColor}}" title="Fill Color" t-on-click="toggleDropdownTool('fillColorTool')">${FILL_COLOR_ICON}</span>
+            <span t-attf-style="border-color:{{fillColor}}" title="Fill Color" t-on-click="(ev) => this.toggleDropdownTool('fillColorTool', ev)">${FILL_COLOR_ICON}</span>
             <ColorPicker t-if="state.activeTool === 'fillColorTool'" onColorPicked="(color) => this.setColor('fillColor', color)" t-key="fillColor"/>
           </div>
           <div class="o-tool o-dropdown">
-            <span title="Borders" t-on-click="toggleDropdownTool('borderTool')">${BORDERS_ICON}</span>
+            <span title="Borders" t-on-click="(ev) => this.toggleDropdownTool('borderTool', ev)">${BORDERS_ICON}</span>
             <div class="o-dropdown-content o-border" t-if="state.activeTool === 'borderTool'">
               <div class="o-dropdown-line">
-                <span class="o-line-item" t-on-click="setBorder('all')">${BORDERS_ICON}</span>
-                <span class="o-line-item" t-on-click="setBorder('hv')">${BORDER_HV}</span>
-                <span class="o-line-item" t-on-click="setBorder('h')">${BORDER_H}</span>
-                <span class="o-line-item" t-on-click="setBorder('v')">${BORDER_V}</span>
-                <span class="o-line-item" t-on-click="setBorder('external')">${BORDER_EXTERNAL}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('all', ev)">${BORDERS_ICON}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('hv', ev)">${BORDER_HV}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('h', ev)">${BORDER_H}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('v', ev)">${BORDER_V}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('external', ev)">${BORDER_EXTERNAL}</span>
               </div>
               <div class="o-dropdown-line">
-                <span class="o-line-item" t-on-click="setBorder('left')">${BORDER_LEFT}</span>
-                <span class="o-line-item" t-on-click="setBorder('top')">${BORDER_TOP}</span>
-                <span class="o-line-item" t-on-click="setBorder('right')">${BORDER_RIGHT}</span>
-                <span class="o-line-item" t-on-click="setBorder('bottom')">${BORDER_BOTTOM}</span>
-                <span class="o-line-item" t-on-click="setBorder('clear')">${BORDER_CLEAR}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('left', ev)">${BORDER_LEFT}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('top', ev)">${BORDER_TOP}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('right', ev)">${BORDER_RIGHT}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('bottom', ev)">${BORDER_BOTTOM}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('clear', ev)">${BORDER_CLEAR}</span>
               </div>
             </div>
           </div>
           <div class="o-tool o-merge-tool" title="Merge Cells"  t-att-class="{active:inMerge, 'o-disabled': cannotMerge}" t-on-click="toggleMerge">${MERGE_CELL_ICON}</div>
           <div class="o-divider"/>
-          <div class="o-tool o-dropdown" title="Horizontal align" t-on-click="toggleDropdownTool('alignTool')">
+          <div class="o-tool o-dropdown" title="Horizontal align" t-on-click="(ev) => this.toggleDropdownTool('alignTool', ev)">
             <span>
               <t t-if="style.align === 'right'">${ALIGN_RIGHT_ICON}</t>
               <t t-elif="style.align === 'center'">${ALIGN_CENTER_ICON}</t>
@@ -30318,9 +30381,9 @@
               ${TRIANGLE_DOWN_ICON}
             </span>
             <div t-if="state.activeTool === 'alignTool'" class="o-dropdown-content">
-              <div class="o-dropdown-item" t-on-click="toggleAlign('left')">${ALIGN_LEFT_ICON}</div>
-              <div class="o-dropdown-item" t-on-click="toggleAlign('center')">${ALIGN_CENTER_ICON}</div>
-              <div class="o-dropdown-item" t-on-click="toggleAlign('right')">${ALIGN_RIGHT_ICON}</div>
+              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('left', ev)">${ALIGN_LEFT_ICON}</div>
+              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('center', ev)">${ALIGN_CENTER_ICON}</div>
+              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('right', ev)">${ALIGN_RIGHT_ICON}</div>
             </div>
           </div>
           <!-- <div class="o-tool" title="Vertical align"><span>${ALIGN_MIDDLE_ICON}</span> ${TRIANGLE_DOWN_ICON}</div> -->
@@ -30330,7 +30393,7 @@
 
       </div>
     </div>`;
-    TopBar.style = css$1 /* scss */ `
+    TopBar.style = css /* scss */ `
     .o-spreadsheet-topbar {
       background-color: white;
       line-height: 1.2;
@@ -30486,11 +30549,10 @@
               }
 
               &.o-format-tool {
-                width: 180px;
                 padding: 7px 0;
                 > div {
                   padding-left: 25px;
-
+                  white-space: nowrap;
                   &.active:before {
                     content: "✓";
                     font-weight: bold;
@@ -30518,32 +30580,27 @@
   `;
     TopBar.components = { ColorPicker, Menu, Composer };
 
-    const { Component, useState } = owl__namespace;
-    const { useExternalListener } = owl__namespace.hooks;
-    const { xml, css } = owl__namespace.tags;
-    const { useSubEnv, onMounted, onWillUnmount, onWillUpdateProps } = owl__namespace.hooks;
-    const TEMPLATE = xml /* xml */ `
-  <div class="o-spreadsheet" t-on-save-requested="save" t-on-keydown="onKeydown">
+    const TEMPLATE = owl.xml /* xml */ `
+  <div class="o-spreadsheet"  t-on-keydown="onKeydown">
     <TopBar
-    onClick="() => focusGrid()"
-    onComposerContentFocused="(selection) => this.onTopBarComposerFocused(selection)"
-    focusComposer="focusTopBarComposer"
-    class="o-two-columns"/>
+      onClick="() => this.focusGrid()"
+      onComposerContentFocused="(selection) => this.onTopBarComposerFocused(selection)"
+      focusComposer="focusTopBarComposer"/>
     <Grid
       model="model"
       sidePanelIsOpen="sidePanel.isOpen"
       linkEditorIsOpen="linkEditor.isOpen"
       onLinkEditorClosed="() => this.closeLinkEditor()"
+      onSaveRequested="() => this.save()"
       focusComposer="focusGridComposer"
       exposeFocus="(focus) => this._focusGrid = focus"
       onComposerContentFocused="() => this.onGridComposerContentFocused()"
-      onGridComposerCellFocused="(content, selection) => this.onGridComposerCellFocused(content, selection)"
-      t-att-class="{'o-two-columns': !sidePanel.isOpen}"/>
+      onGridComposerCellFocused="(content, selection) => this.onGridComposerCellFocused(content, selection)"/>
     <SidePanel t-if="sidePanel.isOpen"
            onCloseSidePanel="() => this.sidePanel.isOpen = false"
            component="sidePanel.component"
            panelProps="sidePanel.panelProps"/>
-    <BottomBar onClick="() => this.focusGrid()" class="o-two-columns"/>
+    <BottomBar onClick="() => this.focusGrid()"/>
   </div>`;
     const CSS = css /* scss */ `
   .o-spreadsheet {
@@ -30580,9 +30637,8 @@
   }
 `;
     const t = (s) => s;
-    class Spreadsheet extends Component {
-        constructor(parent, props = {}) {
-            super(parent, props);
+    class Spreadsheet extends owl.Component {
+        setup() {
             this.model = new Model(this.props.data, {
                 evalContext: { env: this.env },
                 transportService: this.props.transportService,
@@ -30590,9 +30646,15 @@
                 isReadonly: this.props.isReadonly,
                 snapshotRequested: this.props.snapshotRequested,
             }, this.props.stateUpdateMessages);
-            this.sidePanel = useState({ isOpen: false, panelProps: {} });
-            this.linkEditor = useState({ isOpen: false });
-            this.composer = useState({
+            if (this.props.exposeModel) {
+                this.props.exposeModel(this.model);
+            }
+            if (this.props.exposeSpreadsheet) {
+                this.props.exposeSpreadsheet(this);
+            }
+            this.sidePanel = owl.useState({ isOpen: false, panelProps: {} });
+            this.linkEditor = owl.useState({ isOpen: false });
+            this.composer = owl.useState({
                 topBarFocus: "inactive",
                 gridFocusMode: "inactive",
             });
@@ -30600,7 +30662,7 @@
                 "CTRL+H": () => this.toggleSidePanel("FindAndReplace", {}),
                 "CTRL+F": () => this.toggleSidePanel("FindAndReplace", {}),
             };
-            useSubEnv({
+            owl.useSubEnv({
                 openSidePanel: (panel, panelProps = {}) => this.openSidePanel(panel, panelProps),
                 toggleSidePanel: (panel, panelProps = {}) => this.toggleSidePanel(panel, panelProps),
                 dispatch: this.model.dispatch,
@@ -30614,14 +30676,13 @@
                 openLinkEditor: () => this.openLinkEditor(),
             });
             this.activateFirstSheet();
-        }
-        setup() {
-            useExternalListener(window, "resize", this.render);
-            useExternalListener(document.body, "keyup", this.onKeyup.bind(this));
-            useExternalListener(window, "beforeunload", this.leaveCollaborativeSession.bind(this));
-            onMounted(() => this.initiateModelEvents());
-            onWillUnmount(() => this.leaveCollaborativeSession());
-            onWillUpdateProps((nextProps) => this.checkReadonly(nextProps));
+            owl.useExternalListener(window, "resize", this.render);
+            owl.useExternalListener(document.body, "keyup", this.onKeyup.bind(this));
+            owl.useExternalListener(window, "beforeunload", this.leaveCollaborativeSession.bind(this));
+            owl.onMounted(() => this.initiateModelEvents());
+            owl.onWillUnmount(() => this.leaveCollaborativeSession());
+            owl.onWillUpdateProps((nextProps) => this.checkReadonly(nextProps));
+            owl.onWillDestroy(() => this.model.destroy());
         }
         get focusTopBarComposer() {
             return this.model.getters.getEditionMode() === "inactive"
@@ -30636,7 +30697,7 @@
         initiateModelEvents() {
             this.model.on("update", this, this.render);
             this.model.on("notify-ui", this, this.onNotifyUI);
-            this.model.on("unexpected-revision-id", this, () => this.trigger("unexpected-revision-id"));
+            this.model.on("unexpected-revision-id", this, () => { var _a, _b; return (_b = (_a = this.props).onUnexpectedRevisionId) === null || _b === void 0 ? void 0 : _b.call(_a); });
             if (this.props.client) {
                 this.model.joinSession(this.props.client);
             }
@@ -30663,10 +30724,6 @@
             if (firstSheet.id !== sheetId) {
                 this.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: sheetId, sheetIdTo: firstSheet.id });
             }
-        }
-        destroy() {
-            this.model.destroy();
-            super.destroy();
         }
         openSidePanel(panel, panelProps) {
             this.sidePanel.component = panel;
@@ -30696,9 +30753,8 @@
             this._focusGrid();
         }
         save() {
-            this.trigger("save-content", {
-                data: this.model.exportData(),
-            });
+            var _a, _b;
+            (_b = (_a = this.props).onContentSaved) === null || _b === void 0 ? void 0 : _b.call(_a, this.model.exportData());
         }
         onKeyup(ev) {
             if (ev.key === "Control" && this.model.getters.getSelectionMode() !== SelectionMode.expanding) {
@@ -30731,7 +30787,7 @@
             this.composer.topBarFocus = "contentFocus";
             this.composer.gridFocusMode = "inactive";
             this.setComposerContent({ selection } || {});
-            this.env.dispatch("UNFOCUS_SELECTION_INPUT");
+            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         onGridComposerContentFocused() {
             if (this.model.getters.isReadonly()) {
@@ -30740,7 +30796,7 @@
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "contentFocus";
             this.setComposerContent({});
-            this.env.dispatch("UNFOCUS_SELECTION_INPUT");
+            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         onGridComposerCellFocused(content, selection) {
             if (this.model.getters.isReadonly()) {
@@ -30749,7 +30805,7 @@
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "cellFocus";
             this.setComposerContent({ content, selection } || {});
-            this.env.dispatch("UNFOCUS_SELECTION_INPUT");
+            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         /**
          * Start the edition or update the content if it's already started.
@@ -30853,8 +30909,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-01-28T14:59:34.181Z';
-    exports.__info__.hash = 'ea8bcf4';
+    exports.__info__.date = '2022-02-09T11:38:10.133Z';
+    exports.__info__.hash = '629b7fe';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

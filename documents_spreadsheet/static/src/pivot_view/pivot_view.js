@@ -8,7 +8,6 @@ import { sprintf } from "@web/core/utils/strings";
 
 const { onWillStart } = owl;
 
-
 patch(PivotView.prototype, "pivot_spreadsheet", {
     setup() {
         this._super.apply(this, arguments);
@@ -46,12 +45,12 @@ patch(PivotView.prototype, "pivot_spreadsheet", {
     /**
      * Open a new spreadsheet or an existing one and insert the pivot in it.
      *
-     * @param {object} spreadsheet details of the selected document 
+     * @param {object} spreadsheet details of the selected document
      *                                  in which the pivot should be inserted. undefined if
      *                                  it's a new sheet
      * @param {number} spreadsheet.id the id of the selected spreadsheet
      * @param {string} spreadsheet.name the name of the selected spreadsheet
-     * 
+     *
      */
     async insertInSpreadsheet({ id: spreadsheet }) {
         let notificationMessage;
@@ -81,5 +80,3 @@ patch(PivotView.prototype, "pivot_spreadsheet", {
 });
 
 PivotView.buttonTemplate = "documents_spreadsheet.PivotView.buttons";
-
-// viewRegistry.add("pivot", PivotSpreadsheetView, { force: true });

@@ -9,7 +9,7 @@
             </div>
         </t>
         <t t-else="1">
-            <div t-on-click="selectPivot(pivotId)" t-foreach="getters.getPivotIds()" t-as="pivotId" t-key="pivotId">
+            <div t-on-click="() => this.selectPivot(pivotId)" t-foreach="getters.getPivotIds()" t-as="pivotId" t-key="pivotId">
                 <div class="o_side_panel_select">
                     <span t-esc="getters.getPivotDisplayName(pivotId)"/>
                 </div>

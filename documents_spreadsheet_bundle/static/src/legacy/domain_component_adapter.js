@@ -9,6 +9,7 @@ const { Component } = owl;
  */
 export default class DomainComponentAdapter extends ComponentAdapter {
     setup() {
+        super.setup();
         this.env = Component.env;
     }
     get widgetArgs() {

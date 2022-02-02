@@ -6,8 +6,8 @@ import * as LegacyFavoriteMenu from "web.FavoriteMenu";
 import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/components/insert_list_spreadsheet_menu";
 import { spreadsheetCollaborativeService } from "../../src/o_spreadsheet/collaborative/spreadsheet_collaborative_service";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
+import { loadJS } from "@web/core/assets";
 
-const { loadJS } = owl;
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 const serviceRegistry = registry.category("services");
 
@@ -44,7 +44,7 @@ export function makeFakeSpreadsheetService() {
  * @returns {Component}
  */
 export function getSpreadsheetComponent(actionManager) {
-    return actionManager.spreadsheetRef.comp;
+    return actionManager.spreadsheet;
 }
 
 /**
@@ -53,7 +53,7 @@ export function getSpreadsheetComponent(actionManager) {
  * @returns {Component}
  */
 export function getOSpreadsheetComponent(actionManager) {
-    return getSpreadsheetComponent(actionManager).spreadsheet.comp;
+    return getSpreadsheetComponent(actionManager).spreadsheet;
 }
 
 /**

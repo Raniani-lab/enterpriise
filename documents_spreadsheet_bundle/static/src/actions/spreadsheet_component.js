@@ -11,7 +11,7 @@ import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import CachedRPC from "../o_spreadsheet/cached_rpc";
 import { legacyRPC, jsonToBase64 } from "../o_spreadsheet/helpers";
 
-const { Component, useExternalListener, useRef, useState, useSubEnv } = owl;
+const { Component, onMounted, onWillUnmount, useExternalListener, useState, useSubEnv } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Spreadsheet, Model } = spreadsheet;
@@ -23,6 +23,7 @@ export default class SpreadsheetComponent extends Component {
     this.cacheRPC = new CachedRPC(rpc);
     const user = useService("user");
     this.ui = useService("ui");
+    this.props.exposeSpreadsheet(this);
     useSubEnv({
       newSpreadsheet: this.newSpreadsheet.bind(this),
       saveAsTemplate: this._saveAsTemplate.bind(this),
@@ -47,7 +48,6 @@ export default class SpreadsheetComponent extends Component {
         inputIntegerContent: undefined,
       },
     });
-    this.spreadsheet = useRef("spreadsheet");
     this.dialogContent = undefined;
     this.pivot = undefined;
     this.confirmDialog = () => true;
@@ -61,29 +61,35 @@ export default class SpreadsheetComponent extends Component {
     };
     this.isReadonly = this.props.isReadonly;
     useExternalListener(window, "beforeunload", this._onLeave.bind(this));
+
+    onMounted(() => {
+      this.model.on("update", this, () => {
+        if (this.props.spreadsheetSyncStatus) {
+          this.props.spreadsheetSyncStatus({
+            synced: this.model.getters.isFullySynchronized(),
+            numberOfConnectedUsers: this.getConnectedUsers(),
+          });
+        }
+      });
+      if (this.props.showFormulas) {
+        this.model.dispatch("SET_FORMULA_VISIBILITY", { show: true });
+      }
+      if (this.props.initCallback) {
+        this.props.initCallback(this.model);
+      }
+      if (this.props.download) {
+        this._download();
+      }
+    });
+
+    onWillUnmount(() => this._onLeave());
   }
 
-  get model() {
-    return this.spreadsheet.comp.model;
+  exposeSpreadsheet(spreadsheet) {
+    this.spreadsheet = spreadsheet;
+    this.model = this.spreadsheet.model;
   }
 
-  mounted() {
-    this.model.on("update", this, () =>
-      this.trigger("spreadsheet-sync-status", {
-        synced: this.model.getters.isFullySynchronized(),
-        numberOfConnectedUsers: this.getConnectedUsers(),
-      })
-    );
-    if (this.props.showFormulas) {
-      this.model.dispatch("SET_FORMULA_VISIBILITY", { show: true });
-    }
-    if (this.props.initCallback) {
-      this.props.initCallback(this.model);
-    }
-    if (this.props.download) {
-      this._download();
-    }
-  }
   /**
    * Return the number of connected users. If one user has more than
    * one open tab, it's only counted once.
@@ -97,9 +103,6 @@ export default class SpreadsheetComponent extends Component {
     ).size;
   }
 
-  willUnmount() {
-    this._onLeave();
-  }
   /**
    * Open a dialog to ask a confirmation to the user.
    *
@@ -154,14 +157,14 @@ export default class SpreadsheetComponent extends Component {
     this.state.dialog.isDisplayed = false;
     this.state.dialog.isEditText = false;
     this.state.dialog.isEditInteger = false;
-    this.spreadsheet.comp.focusGrid();
+    this.spreadsheet.focusGrid();
   }
   /**
    * Retrieve the spreadsheet_data and the thumbnail associated to the
    * current spreadsheet
    */
   getSaveData() {
-    const data = this.spreadsheet.comp.model.exportData();
+    const data = this.model.exportData();
     return {
       data,
       revisionId: data.revisionId,
@@ -201,16 +204,13 @@ export default class SpreadsheetComponent extends Component {
    */
   makeCopy() {
     const { data, thumbnail } = this.getSaveData();
-    this.trigger("make-copy", {
-      data,
-      thumbnail,
-    });
+    this.props.onMakeCopy({ data, thumbnail });
   }
   /**
    * Create a new spreadsheet
    */
   newSpreadsheet() {
-    this.trigger("new-spreadsheet");
+    this.props.onNewSpreadsheet();
   }
 
   /**
@@ -219,8 +219,8 @@ export default class SpreadsheetComponent extends Component {
   async _download() {
     this.ui.block();
     try {
-      const { files } = await this.spreadsheet.comp.env.exportXLSX();
-      this.trigger("download", {
+      const { files } = await this.spreadsheet.env.exportXLSX();
+      this.props.onDownload({
         name: this.props.name,
         files,
       });
@@ -234,7 +234,7 @@ export default class SpreadsheetComponent extends Component {
    * @returns {Promise}
    */
   async _saveAsTemplate() {
-    const model = new Model(this.spreadsheet.comp.model.exportData(), {
+    const model = new Model(this.model.exportData(), {
       mode: "headless",
       evalContext: { env: this.env },
     });
@@ -269,9 +269,9 @@ export default class SpreadsheetComponent extends Component {
       return;
     }
     this.alreadyLeft = true;
-    this.spreadsheet.comp.model.off("update", this);
+    this.model.off("update", this);
     if (!this.isReadonly) {
-      this.trigger("spreadsheet-saved", this.getSaveData());
+      this.props.onSpreadsheetSaved(this.getSaveData());
     }
   }
 }
@@ -283,11 +283,11 @@ SpreadsheetComponent.props = {
     name: String,
     data: Object,
     thumbnailSize: Number,
-    isReadonly: Boolean,
-    snapshotRequested: Boolean,
-    showFormulas: Boolean,
-    download: Boolean,
-    stateUpdateMessages: Array,
+    isReadonly: { type: Boolean, optional: true },
+    snapshotRequested: { type: Boolean, optional: true },
+    showFormulas: { type: Boolean, optional: true },
+    download: { type: Boolean, optional: true },
+    stateUpdateMessages: { type: Array, optional: true },
     initCallback: {
         optional: true,
         type: Function,
@@ -295,6 +295,31 @@ SpreadsheetComponent.props = {
     transportService: {
         optional: true,
         type: Object
+    },
+    spreadsheetSyncStatus: {
+        optional: true,
+        type: Function,
+    },
+    onDownload: {
+      optional: true,
+      type: Function,
+    },
+    onUnexpectedRevisionId: {
+      optional: true,
+      type: Function,
+    },
+    onMakeCopy: {
+      type: Function,
+    },
+    onSpreadsheetSaved: {
+      type: Function,
+    },
+    onNewSpreadsheet: {
+      type: Function,
+    },
+    exposeSpreadsheet: {
+      type: Function,
+      optional: true,
     }
 }
 SpreadsheetComponent.defaultProps = {
@@ -303,4 +328,6 @@ SpreadsheetComponent.defaultProps = {
     snapshotRequested: false,
     showFormulas: false,
     stateUpdateMessages: [],
+    exposeSpreadsheet: () => {},
+    onDownload: () => {},
 }

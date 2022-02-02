@@ -8,11 +8,10 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
 
     const { DropPrevious } = require("web.concurrency");
 
-    const { Component, useState, useSubEnv } = owl;
+    const { Component, useState, useChildSubEnv, onWillStart } = owl;
 
     class TemplateDialog extends Component {
-        constructor() {
-            super(...arguments);
+        setup() {
             this.dialogTitle = this.env._t("New Spreadsheet");
             this.limit = 9;
             this.state = useState({
@@ -39,20 +38,17 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
             };
             this.model = new ActionModel(extensions, searchModelConfig);
             this.model.on("search", this, this._fetchTemplates);
-            useSubEnv({
+            useChildSubEnv({
                 searchModel: this.model,
             });
             this.dp = new DropPrevious();
-        }
 
-        /**
-         * @override
-         */
-        async willStart() {
-            await this._fetchTemplates({
-                domain: [],
-                context: this.props.context,
-            });
+            onWillStart(async () => {
+                await this._fetchTemplates({
+                    domain: [],
+                    context: this.props.context,
+                });
+            })
         }
 
         /**
@@ -154,9 +150,7 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
          * @param {CustomEvent} ev
          * @returns {Promise<void>}
          */
-        _onPagerChanged(ev) {
-            ev.stopPropagation();
-            const { currentMinimum } = ev.detail;
+        _onPagerChanged({ currentMinimum }) {
             this.state.currentMinimum = currentMinimum;
             return this._fetchTemplates(this.model.get("query"), this.state.currentMinimum - 1);
         }

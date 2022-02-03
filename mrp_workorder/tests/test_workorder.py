@@ -533,7 +533,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         production.workorder_ids[0].button_start()
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.qty_producing, 1, "Wrong quantity to produce")
+        self.assertEqual(wo_form.qty_producing, 0, "Wrong quantity to produce")
         wo_form.qty_producing = 1
         self.assertEqual(wo_form.component_id, self.elon_musk, "The component should be changed")
         self.assertEqual(wo_form.lot_id, self.elon1, "The component should be changed")
@@ -742,7 +742,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         sorted_workorder_ids[0].button_start()
         wo_form = Form(sorted_workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        self.assertEqual(wo_form.qty_producing, 2, "Wrong quantity to produce")
+        self.assertEqual(wo_form.qty_producing, 0, "Wrong quantity to produce")
         wo_form.lot_id = self.mc1
         wo_form.qty_producing = 1
         self.assertEqual(wo_form.qty_done, 2, "Wrong quantity to consume")

@@ -120,7 +120,7 @@ class AccountEdiFormat(models.Model):
                         "RUC and the type of document is RUC."),
             '3206': _lt("The type of operation is not valid for the type of document you are trying to create. The "
                         "document must return to Draft state and change the type of operation."),
-            '2022': _lt("The name of the Partner must be changed to at least 2 characters to meet the proper standard."),
+            '2022': _lt("The name of the Partner must contain at least 2 characters and must not contain special characters."),
             '151': _lt("The name of the file depends on the sequence in the journal, please go to the journal and "
                        "configure the shortcode as LLL- (three (3) letters plus a dash and the 3 letters must be UPPERCASE.)"),
             '156': _lt("The zip file is corrupted, check again if the file trying to access is not damaged."),

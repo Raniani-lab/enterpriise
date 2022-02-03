@@ -1358,8 +1358,8 @@ msgstr ""
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
 msgid ""
-"The name of the Partner must be changed to at least 2 characters to meet the"
-" proper standard."
+"The name of the Partner must contain at least 2 characters and must not contain "
+"special characters."
 msgstr ""
 
 #. module: l10n_pe_edi

@@ -193,6 +193,7 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         self.env.company.timesheet_encode_uom_id = current_timesheet_uom
 
     def test_add_time_from_wizard(self):
+        self.env.user.employee_id = self.env['hr.employee'].create({'user_id': self.env.uid})
         config = self.env["res.config.settings"].create({
                 "timesheet_min_duration": 60,
                 "timesheet_rounding": 15,
@@ -206,8 +207,8 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
                 'time_spent': 1.15,
                 'task_id': self.task1.id,
             })
-        self.assertEqual(wizard_min.save_timesheet().unit_amount, 1, "The timesheet's duration should be 1h (Minimum Duration = 60').")
-        self.assertEqual(wizard_round.save_timesheet().unit_amount, 1.25, "The timesheet's duration should be 1h15 (Rounding = 15').")
+        self.assertEqual(wizard_min.with_user(self.env.user).save_timesheet().unit_amount, 1, "The timesheet's duration should be 1h (Minimum Duration = 60').")
+        self.assertEqual(wizard_round.with_user(self.env.user).save_timesheet().unit_amount, 1.25, "The timesheet's duration should be 1h15 (Rounding = 15').")
 
     def test_action_add_time_to_timer_multi_company(self):
         company = self.env['res.company'].create({'name': 'My_Company'})
@@ -349,6 +350,7 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
     def test_adjust_grid(self):
         today_date = fields.Date.today()
         company = self.env['res.company'].create({'name': 'My_Company'})
+        self.user_manager.company_ids = self.env.companies
         employee = self.env['hr.employee'].with_company(company).create({
             'name': 'coucou',
             'timesheet_manager_id': self.user_manager.id,

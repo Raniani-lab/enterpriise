@@ -110,6 +110,7 @@ class TestMultiCompany(TestSaleCommonBase):
             'name': 'test timesheet',
             'user_id': cls.default_user_employee.id,
             'unit_amount': 0.25,
+            'employee_id': cls.env['hr.employee'].create({'user_id': cls.env.uid}).id,
         }
         cls.env['account.analytic.line'].create(values)
 

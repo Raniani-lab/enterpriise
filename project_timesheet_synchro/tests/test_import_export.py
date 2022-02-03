@@ -79,6 +79,7 @@ class TestImportExport(common.TransactionCase):
             'project_id': project.id,
             'user_id': 1,
             'name': 'activity description',
+            'employee_id': self.env['hr.employee'].create({'user_id': self.env.uid}).id,
         })
 
         # This test can be removed when the format of `export_data_for_ui` will change. Indeed, sheet

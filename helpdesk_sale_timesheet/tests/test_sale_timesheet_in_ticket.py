@@ -62,6 +62,7 @@ class TestSaleTimesheetInTicket(TestCommonSaleTimesheet):
             'project_id': self.project_task_rate,
             'helpdesk_ticket_id': ticket.id,
             'unit_amount': 2,
+            'employee_id': self.employee_user.id,
         })
         self.assertEqual(timesheet.so_line, ticket.sale_line_id, "The SOL in the timesheet should be the one in the ticket.")
 
@@ -109,6 +110,7 @@ class TestSaleTimesheetInTicket(TestCommonSaleTimesheet):
             'helpdesk_ticket_id': helpdesk_ticket.id,
             'project_id': self.helpdesk_team.project_id.id,
             'unit_amount': 3,
+            'employee_id': self.employee_user.id,
         })
         helpdesk_ticket.write({
             'sale_line_id': so_line_order_no_task.id,
@@ -124,6 +126,7 @@ class TestSaleTimesheetInTicket(TestCommonSaleTimesheet):
             'helpdesk_ticket_id': helpdesk_ticket.id,
             'project_id': self.helpdesk_team.project_id.id,
             'unit_amount': 2,
+            'employee_id': self.employee_user.id,
         })
 
         helpdesk_ticket.write({'partner_id': self.partner_a.id})

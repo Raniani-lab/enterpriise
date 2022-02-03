@@ -67,6 +67,7 @@ class TestFsmFlowSale(TestFsmFlowSaleCommon):
             'name': 'test timesheet',
             'user_id': self.env.uid,
             'unit_amount': 0.25,
+            'employee_id': self.env['hr.employee'].create({'user_id': self.env.uid}).id,
         }
         self.env['account.analytic.line'].create(values)
         self.assertEqual(self.task.material_line_product_count, expected_product_count, "Timesheet should not appear in material")

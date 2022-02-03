@@ -40,6 +40,7 @@ class TestTimesheet(TestHelpdeskTimesheetCommon):
                 'project_id': self.project.id,
                 'helpdesk_ticket_id': ticket.id,
                 'task_id': task.id,
+                'employee_id': self.env['hr.employee'].create({'user_id': self.env.uid}).id,
             })
 
     def test_compute_timesheet_partner_from_ticket_customer(self):
@@ -56,6 +57,7 @@ class TestTimesheet(TestHelpdeskTimesheetCommon):
             'name': 'the only timesheet. So lonely...',
             'helpdesk_ticket_id': helpdesk_ticket.id,
             'project_id': self.helpdesk_team.project_id.id,
+            'employee_id': self.env['hr.employee'].create({'user_id': self.env.uid}).id,
         })
 
         self.assertEqual(timesheet_entry.partner_id, self.partner, "The timesheet entry's partner should be equal to the ticket's partner/customer")
@@ -99,6 +101,7 @@ class TestTimesheet(TestHelpdeskTimesheetCommon):
             'helpdesk_ticket_id': helpdesk_ticket.id,
             'name': 'my timesheet',
             'unit_amount': 4,
+            'employee_id': self.env['hr.employee'].create({'user_id': self.env.uid}).id,
         })
 
         self.assertEqual(timesheet.tag_ids, helpdesk_ticket.analytic_tag_ids)

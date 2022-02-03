@@ -60,9 +60,12 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
      * @override
      */
     __reload(handle, params) {
-        if ("context" in params && params.context.planning_groupby_role && !params.groupBy.length) {
-            params.groupBy.unshift('resource_id');
-            params.groupBy.unshift('role_id');
+        if ("context" in params) {
+            params.context.show_job_title = true;
+            if (params.context.planning_groupby_role && !params.groupBy.length) {
+                params.groupBy.unshift('resource_id');
+                params.groupBy.unshift('role_id');
+            }
         }
         return this._super(handle, params);
     },

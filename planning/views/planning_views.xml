@@ -541,7 +541,7 @@
         <record id="planning_action_schedule_by_resource_view_gantt" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">gantt</field>
-            <field name="view_id" ref="planning_view_gantt_no_sample"/>
+            <field name="view_id" ref="planning_view_gantt"/>
             <field name="act_window_id" ref="planning_action_schedule_by_resource"/>
         </record>
 

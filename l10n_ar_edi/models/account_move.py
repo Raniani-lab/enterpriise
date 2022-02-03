@@ -101,7 +101,7 @@ class AccountMove(models.Model):
                     commercial_partner_id.country_id.l10n_ar_legal_entity_vat
                     if commercial_partner_id.is_company else commercial_partner_id.country_id.l10n_ar_natural_vat)
             else:
-                nro_doc_rec = commercial_partner_id._get_id_number_sanitize() if commercial_partner_id.vat else False
+                nro_doc_rec = commercial_partner_id._get_id_number_sanitize() or False
 
             if nro_doc_rec:
                 data.update({'nroDocRec': nro_doc_rec})
@@ -209,7 +209,7 @@ class AccountMove(models.Model):
             issuer_vat = issuer.ensure_vat()
 
             receptor_identification_code = receptor.l10n_latam_identification_type_id.l10n_ar_afip_code or '99'
-            receptor_id_number = (receptor_identification_code and receptor.vat or "0")
+            receptor_id_number = (receptor_identification_code and str(receptor._get_id_number_sanitize()))
 
             if inv.l10n_latam_document_type_id.l10n_ar_letter in ['A', 'M'] and receptor_identification_code != '80' or not receptor_id_number:
                 raise UserError(_('For type A and M documents the receiver identification is mandatory and should be VAT'))
@@ -468,7 +468,7 @@ class AccountMove(models.Model):
 
         # WSFE_10151 send cuit of the issuer if type mipyme refund
         if self._is_mipyme_fce_refund() or afip_ws == 'wsfex':
-            res.update({wskey[afip_ws]['cuit']: int(related_inv.company_id.vat)})
+            res.update({wskey[afip_ws]['cuit']: related_inv.company_id.partner_id._get_id_number_sanitize()})
 
         # WSFE_10158 send orignal invoice date on an mipyme document
         if afip_ws == 'wsfe' and (self._is_mipyme_fce() or self._is_mipyme_fce_refund()):
@@ -588,7 +588,7 @@ class AccountMove(models.Model):
             if 'BaseImp' in item and 'Importe' in item:
                 item['BaseImp'] = float_repr(item['BaseImp'], precision_digits=2)
                 item['Importe'] = float_repr(item['Importe'], precision_digits=2)
-        vat = partner_id_code and self.commercial_partner_id.vat and re.sub(r'\D+', '', self.commercial_partner_id.vat)
+        vat = partner_id_code and self.commercial_partner_id._get_id_number_sanitize()
 
         tributes = self._get_tributes()
         optionals = self._get_optionals_data()
@@ -698,7 +698,7 @@ class AccountMove(models.Model):
         partner_id_code = self._get_partner_code_id(self.commercial_partner_id)
         amounts = self._l10n_ar_get_amounts()
         ArrayOfItem = client.get_type('ns0:ArrayOfItem')
-        vat = partner_id_code and self.commercial_partner_id.vat and re.sub(r'\D+', '', self.commercial_partner_id.vat)
+        vat = partner_id_code and self.commercial_partner_id._get_id_number_sanitize()
         res = {'Id': last_id,
                'Tipo_doc': int(partner_id_code) or 0,
                'Nro_doc': vat and int(vat) or 0,

@@ -13,6 +13,7 @@
                         </span>
                         <field mode="tree" nolabel="1" name="skill_ids"
                                 widget="hr_skills_justification"
+                                context="{'appraisal_state': state}"
                                 attrs="{'readonly': &quot;['|', ('state','!=','pending'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}"
                                 class="o_appraisal_skill">
                             <tree editable="bottom">

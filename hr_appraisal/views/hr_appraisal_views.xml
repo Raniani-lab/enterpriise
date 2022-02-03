@@ -190,7 +190,8 @@
                         </group>
                     </page>
                     <page string="Private Note" attrs="{'invisible': &quot;[('employee_user_id', '=', uid)]&quot;}">
-                        <field name="note" attrs="{'readonly': &quot;['|', ('state', '=', 'done'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}"/>
+                        <field name="note" attrs="{'readonly': &quot;['|', ('state', '=', 'done'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}"
+                                placeholder="Private note (only accessible to people set as managers)"/>
                     </page>
                 </notebook>
                 <field name="active" invisible="1"/>

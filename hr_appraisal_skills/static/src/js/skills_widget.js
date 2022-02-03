@@ -31,7 +31,7 @@ var ListRendererGrouped = ListRenderer.extend({
         var $body = $('<tbody>');
 
         if (this.state.data.length === 0 && this.sampleData) {
-            let sampleData = [{
+            const sampleData = [{
                 'skill': '80px',
                 'level': '25px',
                 'progress': '120px',
@@ -59,13 +59,14 @@ var ListRendererGrouped = ListRenderer.extend({
                 return record.data[self.groupBy].res_id;
             });
 
+            const appraisalState = this.state.getContext().appraisal_state;
             for (var key in grouped_by) {
                 var group = grouped_by[key];
                 var title, groupId;
                 if (key !== 'undefined') {
                     title = group[0].data[this.groupBy].data.display_name;
                     groupId = group[0].data[this.groupBy].data.id;
-                    $body.append(this._renderTitleCell(title, groupId));
+                    $body.append(this._renderTitleCell(title, groupId, appraisalState));
                 }
 
                 group.forEach(function(record) {
@@ -83,10 +84,12 @@ var ListRendererGrouped = ListRenderer.extend({
         return $body;
     },
 
-    _renderTitleCell: function(name, groupId) {
+    _renderTitleCell: function(name, groupId, state) {
+        const isEditable = ['new', 'pending'].includes(state);
         return QWeb.render('hr_appraisal_skills_row_title', {
             name: name,
             context: !!groupId?JSON.stringify({ 'default_skill_type_id': groupId}):'{}',
+            isEditable: isEditable,
         });
     },
 

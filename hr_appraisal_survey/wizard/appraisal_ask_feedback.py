@@ -4,7 +4,7 @@
 import logging
 
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models, tools, _
+from odoo import api, fields, models, Command, _
 from odoo.exceptions import UserError
 from odoo.tools import html_sanitize, is_html_empty
 
@@ -45,7 +45,7 @@ class AppraisalAskFeedback(models.TransientModel):
     )
     survey_template_id = fields.Many2one('survey.survey', required=True, domain=[('is_appraisal', '=', True)])
     employee_ids = fields.Many2many(
-        'hr.employee', string="Recipients", domain=[('user_id', '!=', False)], required=True)
+        'hr.employee', string="Recipients", required=True)
     deadline = fields.Date(string="Answer Deadline", required=True, compute='_compute_deadline', store=True, readonly=False)
 
     # Overrides of mail.composer.mixin
@@ -65,28 +65,57 @@ class AppraisalAskFeedback(models.TransientModel):
         for wizard in self:
             wizard.deadline = min(date_in_month, wizard.appraisal_id.date_close + relativedelta(days=-1))
 
-    def _prepare_survey_anwers(self, partners):
+    @api.onchange('employee_ids')
+    def _onchange_employee_ids(self):
+        emailless_employees = self.employee_ids.filtered(lambda e: not (e.work_email or e.user_id.partner_id))
+        if emailless_employees:
+            emailless_employees_all = self.env['hr.employee'].search(['|', ('work_email', '=', False), ('user_id.partner_id', '=', False)])
+            warning = {
+                'title': _('Missing email'),
+                'message': _('This employee doesn\'t have any mail address registered and will not receive any email. \nThe following employees do not have any email : \n%s',
+                        ', '.join(emailless_employees_all.mapped('name'))),
+                'type': 'notification',
+            }
+            self.employee_ids = self.employee_ids - emailless_employees
+            return {'warning': warning}
+
+    def _prepare_survey_anwers(self, employees):
         answers = self.env['survey.user_input']
+        employees_info = employees.mapped(lambda employee: {
+            'id': employee.id,
+            'email': employee.work_email or employee.user_id.partner_id.email,
+            'partner_id': employee.user_id.partner_id or employee.address_home_id
+        })
+        emails = [e['email'] for e in employees_info]
+        partner_ids = [e['partner_id']['id'] for e in employees_info]
+
         existing_answers = self.env['survey.user_input'].search([
             '&', '&',
             ('survey_id', '=', self.survey_template_id.id),
             ('appraisal_id', '=', self.appraisal_id.id),
-            ('partner_id', 'in', partners.ids),
+            '|',
+            '&', ('partner_id', 'in', partner_ids), ('partner_id', '!=', False),
+            '&', ('email', 'in', emails), ('email', '!=', False),
         ])
-        partners_done = self.env['res.partner']
+        employees_done = []
         if existing_answers:
-            partners_done = existing_answers.mapped('partner_id')
-            # only add the last answer for each partner_id
-            # to have only one mail sent per user
-            for partner_done in partners_done:
-                answers |= next(
-                    existing_answer for existing_answer in
-                    existing_answers.sorted(lambda answer: answer.create_date, reverse=True)
-                    if existing_answer.partner_id == partner_done)
+            existing_answer_emails = existing_answers.filtered('email').mapped('email')
+            existing_answer_partners_id = existing_answers.filtered('partner_id').mapped('partner_id')
+            employees_done = employees_info.filtered(lambda employee:
+                employee.email in existing_answer_emails
+                or employee.partner_id in existing_answer_partners_id
+            )
+            existing_answers = existing_answers.sorted(lambda answer: answer.create_date, reverse=True)
+            for employee_done in employees_done:
+                answer |= existing_answers\
+                    .filtered(lambda a:
+                        (a.partner_id and a.partner_id == employee_done.partner_id)
+                        or (a.email and a.email == employee_done.email)
+                    )[:1]
 
-        for new_partner in partners - partners_done:
+        for new_employee in filter(lambda e: e['id'] not in [e['id'] for e in employees_done], employees_info):
             answers |= self.survey_template_id.sudo()._create_answer(
-                partner=new_partner, check_attempts=False, deadline=self.deadline)
+                partner=new_employee['partner_id'], email=new_employee['email'], check_attempts=False, deadline=self.deadline)
         return answers
 
     def _send_mail(self, answer):
@@ -108,7 +137,7 @@ class AppraisalAskFeedback(models.TransientModel):
             'auto_delete': True,
         }
         if answer.partner_id:
-            mail_values['recipient_ids'] = [(4, answer.partner_id.id)]
+            mail_values['recipient_ids'] = [Command.link(answer.partner_id.id)]
         else:
             mail_values['email_to'] = answer.email
 
@@ -129,21 +158,21 @@ class AppraisalAskFeedback(models.TransientModel):
 
     def action_send(self):
         self.ensure_one()
-        partners = self.employee_ids.mapped('user_id.partner_id')
 
-        answers = self._prepare_survey_anwers(partners)
+        answers = self._prepare_survey_anwers(self.employee_ids)
         answers.sudo().write({'appraisal_id': self.appraisal_id.id})
         for answer in answers:
             self._send_mail(answer)
 
         for employee in self.employee_ids.filtered(lambda e: e.user_id.has_group('hr_appraisal.group_hr_appraisal_user')):
-            answer = answers.filtered(lambda l: l.partner_id == employee.user_id.partner_id)
-            self.appraisal_id.with_context(mail_activity_quick_update=True).activity_schedule(
-                'mail.mail_activity_data_todo', self.deadline,
-                summary=_('Fill the feedback form on survey'),
-                note=_('An appraisal feedback was requested. Please take time to fill the <a href="%s" target="_blank">survey</a>') %
-                    answer.get_start_url(),
-                user_id=employee.user_id.id)
+            answer = answers.filtered(lambda l: l.partner_id and l.partner_id == employee.user_id.partner_id)
+            if answer:
+                self.appraisal_id.with_context(mail_activity_quick_update=True).activity_schedule(
+                    'mail.mail_activity_data_todo', self.deadline,
+                    summary=_('Fill the feedback form on survey'),
+                    note=_('An appraisal feedback was requested. Please take time to fill the <a href="%s" target="_blank">survey</a>') %
+                        answer.get_start_url(),
+                    user_id=employee.user_id.id)
 
         self.appraisal_id.employee_feedback_ids |= self.employee_ids
         self.appraisal_id.survey_ids |= self.survey_template_id

@@ -24,6 +24,13 @@
                 height: 1em;
             }
         }
+        .o_group_name>.o_field_x2many_list_row_add {
+            float: right;
+            @include media-breakpoint-down(lg) {
+                float: none;
+                margin-left: 16px;
+            }
+        }
     }
 }
 

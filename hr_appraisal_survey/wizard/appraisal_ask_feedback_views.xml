@@ -10,8 +10,9 @@
                     <group col="1">
                         <group col="2">
                             <field name="render_model" invisible="1"/>
-                            <field name="survey_template_id"/>
+                            <field name="survey_template_id" options="{'no_create':1,'no_quick_create':1}"/>
                             <field name="employee_ids"
+                                options="{'no_create':1,'no_quick_create':1}"
                                 widget="many2many_tags"
                                 placeholder="Add employees..."
                                 context="{'force_email':True, 'show_email':True, 'no_create_edit': True}"/>

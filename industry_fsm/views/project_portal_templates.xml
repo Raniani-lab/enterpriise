@@ -1,92 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="portal_my_worksheet" name="My Worksheets" inherit_id="portal.portal_sidebar" primary="True">
 
-        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="attributes">
-            <attribute name="id">o_fsm_worksheet_portal</attribute>
-        </xpath>
-        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
-            <t t-set="o_portal_fullwidth_alert" groups="project.group_project_user">
-                <t t-call="portal.portal_back_in_edit_mode">
-                    <t t-set="source_action_id" t-value="task.env.ref('industry_fsm.project_task_action_fsm').id if source == 'fsm' else task.env.ref('project.action_view_task').id"/>
-                    <t t-set="backend_url" t-value="'/web#model=project.task&amp;id=%s&amp;action=%s&amp;view_type=form' % (task.id, source_action_id)"/>
-                </t>
-            </t>
-            <div class="row mt-2">
-                <!-- sidebar -->
-                <t t-call="portal.portal_record_sidebar">
-                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
-                    <t t-set="entries">
-                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
-                            <li class="list-group-item flex-grow-1">
-                                <a t-if="task.has_to_be_signed()" role="button" class="btn btn-primary btn-block mb8" data-toggle="modal" data-target="#modalaccept" href="#">
-                                    <i class="fa fa-check mr-1"/>Sign
-                                </a>
-                                <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
-                                    <div class="btn-group flex-grow-1 mr-1 mb-1">
-                                        <a class="btn btn-secondary btn-block o_download_btn" t-att-href="task.get_portal_url(suffix='/worksheet', report_type='pdf', download=True)" title="Download"><i class="fa fa-download"/> Download</a>
-                                    </div>
-                                    <div class="btn-group flex-grow-1 mb-1">
-                                        <a class="btn btn-secondary btn-block o_print_btn o_portal_invoice_print" t-att-href="task.get_portal_url(suffix='/worksheet', report_type='pdf')" title="Print" target="_blank"><i class="fa fa-print"/> Print</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </t>
-                </t>
-                <div class="col-12 col-lg justify-content-end">
-                    <!-- modal relative to the sign action -->
-                    <div role="dialog" class="modal fade" id="modalaccept">
-                        <div class="modal-dialog" t-if="task.has_to_be_signed()">
-                            <form id="accept" method="POST" t-att-data-task-id="task.id" t-att-data-token="task.access_token" class="js_accept_json modal-content js_website_submit_form">
-                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                <header class="modal-header">
-                                    <h4 class="modal-title">Sign Task</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-                                </header>
-                                <main class="modal-body" id="sign-dialog">
-                                    <t t-call="portal.signature_form">
-                                        <t t-set="call_url" t-value="task.get_portal_url(suffix='/worksheet/sign/%s' % source)"/>
-                                        <t t-set="default_name" t-value="task.partner_id.name"/>
-                                        <t t-set="font_color" t-value="'black'"/>
-                                        <t t-set="send_label">Sign</t>
-                                    </t>
-                                </main>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- worksheet content -->
-                    <div t-attf-class="card p-3" name="Content" id="worksheet_content">
-                        <h1>Task Report: <t t-out="task.name"/></h1>
-                        <hr/>
-                        <t t-set="doc" t-value="task"/>
-                        <div t-call="industry_fsm.worksheet_custom_page"/>
-                    </div>
-                    <!-- bottom actions -->
-                    <div class="row justify-content-center text-center d-print-none pt-1 pb-4">
-                        <a t-if="task.has_to_be_signed()" role="button" class="btn btn-primary m-3" data-toggle="modal" data-target="#modalaccept" href="#">
-                            <i class="fa fa-check mr-2"/>Sign
-                        </a>
-                    </div>
-                </div>
+    <template id="portal_task_sign_button" name="Sign Button With Dialog">
+        <a t-if="task.has_to_be_signed()" role="button" class="btn btn-primary btn-block mb8" data-toggle="modal" data-target="#modalaccept" href="#">
+            <i class="fa fa-check mr-1"/>Sign
+        </a>
+        <!-- modal relative to the sign action -->
+        <div role="dialog" class="modal fade" id="modalaccept">
+            <div class="modal-dialog" t-if="task.has_to_be_signed()">
+                <form id="accept" method="POST" t-att-data-task-id="task.id" t-att-data-token="task.access_token" class="js_accept_json modal-content js_website_submit_form">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <header class="modal-header">
+                        <h4 class="modal-title">Sign Task</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                    </header>
+                    <main class="modal-body" id="sign-dialog">
+                        <t t-call="portal.signature_form">
+                            <t t-set="call_url" t-value="task.get_portal_url(suffix='/worksheet/sign/%s' % source)"/>
+                            <t t-set="default_name" t-value="task.partner_id.name"/>
+                            <t t-set="font_color" t-value="'black'"/>
+                            <t t-set="send_label">Sign</t>
+                        </t>
+                    </main>
+                </form>
             </div>
-        </xpath>
+        </div>
     </template>
 
     <template id="portal_my_task" inherit_id="project.portal_my_task">
+        <xpath expr="//t[@t-set='backend_url']" position="after">
+            <t t-set="source_action_id" t-value="task.env.ref('industry_fsm.project_task_action_fsm').id if source == 'fsm' else task.env.ref('project.action_view_all_task').id"/>
+            <t t-set="backend_url" t-value="'/web#model=project.task&amp;id=%s&amp;action=%s&amp;view_type=form' % (task.id, source_action_id)"/>
+        </xpath>
+        <xpath expr="//div/a[@t-if='task.partner_id.email']" position="after">
+            <div t-if="task.is_fsm" t-field="task.partner_id" t-options='{"widget": "contact", "fields": ["address"]}'/>
+        </xpath>
         <xpath expr="//li[@id='nav-report']" position="attributes">
             <attribute name="t-if">(not task.is_fsm and timesheets and allow_timesheets) or (task.is_fsm and task.allow_worksheets and task.comment)</attribute>
         </xpath>
         <xpath expr="//div[hasclass('o_download_pdf')]" position="before">
-            <a t-if="task.is_fsm and task.allow_worksheets and task.comment" role="button" class="btn btn-primary btn-block" t-attf-href="#{task.get_portal_url(suffix='/worksheet')}">
-                <i class="fa fa-check mr-1"/>View Worksheet
-            </a>
+            <t t-call="industry_fsm.portal_task_sign_button"/>
         </xpath>
-        <xpath expr="//div[hasclass('o_download_pdf')]" position="attributes">
-            <attribute name="t-if">(not task.is_fsm and timesheets and allow_timesheets)</attribute>
+        <xpath expr="//a[@t-field='task.project_id']" position="after">
+            <div t-if="task.planned_date_begin">
+                <strong>Planned Date:</strong>
+                <span t-field="task.planned_date_begin" t-options='{"widget": "datetime"}'/>
+                <i class="fa fa-long-arrow-right"/>
+                <span t-field="task.planned_date_end" t-options='{"widget": "datetime"}'/>
+            </div>
         </xpath>
-        <xpath expr="//t[@t-set='backend_url']" position="after">
-            <t t-if="task.is_fsm" t-set="backend_url" t-value="'/web#model=project.task&amp;id=%s&amp;action=%s&amp;view_type=form' % (task.id, task.env.ref('industry_fsm.project_task_action_fsm').id)"/>
+        <xpath expr="//li[@t-if='timesheets and allow_timesheets']" position="after">
+            <li t-if="task.comment and task.allow_worksheets" class="nav-item">
+                <a class="nav-link pl-3" href="#task_worksheet">Worksheet</a>
+            </li>
+        </xpath>
+        <xpath expr="//div[@id='card_body']" position="inside">
+            <div class="container" t-if="task.comment and task.allow_worksheets">
+                <hr class="mt-4 mb-1"/>
+                <h5 id="task_worksheet" class="mt-2 mb-2" data-anchor="true">Worksheet</h5>
+                <t t-out="task.comment"/>
+            </div>
+            <div t-if="task.worksheet_signature" t-attf-class="#{'col-12 col-lg-3' if report_type != 'html' else 'col-sm-7 col-md-4'} ml-auto text-right" style="page-break-inside: avoid">
+                <h5>Signature</h5>
+                <img t-att-src="image_data_uri(task.worksheet_signature)" style="max-height: 6rem; max-width: 100%; color:black;"/><br/>
+                <span t-field="task.worksheet_signed_by"/>
+            </div>
         </xpath>
     </template>
 </odoo>

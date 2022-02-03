@@ -3,6 +3,7 @@
 
 from werkzeug.exceptions import NotFound
 
+from odoo import _
 from odoo.http import request, route
 
 from odoo.addons.sale.controllers.portal import CustomerPortal as SaleCustomerPortal
@@ -11,6 +12,23 @@ from odoo.addons.portal.controllers.portal import pager as portal_pager
 
 
 class CustomerPortal(SaleCustomerPortal, AccountCustomerPortal):
+
+    def _task_get_page_view_values(self, task, access_token, **kwargs):
+        values = super()._task_get_page_view_values(task, access_token, **kwargs)
+        uid = request.env.uid
+        quotations = request.env['sale.order'].search([('task_id', '=', task.id)])
+        if quotations and task.project_id.with_user(uid)._check_project_sharing_access():
+            if len(quotations) == 1:
+                values['task_link_section'].append({
+                    'access_url': quotations.get_portal_url(),
+                    'title': _('Quotation'),
+                })
+            else:
+                values['task_link_section'].append({
+                    'access_url': f'/my/projects/{task.project_id.id}/task/{task.id}/quotes',
+                    'title': _('Quotations'),
+                })
+        return values
 
     @route([
         '/my/projects/<int:project_id>/task/<int:task_id>/quotes',

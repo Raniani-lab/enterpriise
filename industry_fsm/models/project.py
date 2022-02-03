@@ -450,7 +450,7 @@ class Task(models.Model):
         return {
             'type': 'ir.actions.act_url',
             'target': 'self',
-            'url': self.get_portal_url(suffix='/worksheet/%s' % source)
+            'url': self.get_portal_url(query_string=f'&source={source}')
         }
 
     def action_send_report(self):

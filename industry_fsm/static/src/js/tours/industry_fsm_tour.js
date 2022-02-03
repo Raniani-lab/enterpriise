@@ -70,22 +70,22 @@ tour.register('industry_fsm_tour', {
     position: 'bottom',
 }, {
     trigger: 'a[data-target="#modalaccept"]',
-    extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
+    extra_trigger: '.o_project_portal_sidebar',
     content: _t('Invite your customer to <b>validate and sign your task report</b>.'),
     position: 'right',
 }, {
     trigger: '.o_web_sign_auto_button',
-    extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
+    extra_trigger: '.o_project_portal_sidebar',
     content: _t('Save time by automatically generating a <b>signature</b>.'),
     position: 'right',
 }, {
     trigger: '.o_portal_sign_submit:enabled',
-    extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
+    extra_trigger: '.o_project_portal_sidebar',
     content: _t('Validate the <b>signature</b>.'),
     position: 'left',
 }, {
     trigger: 'a:contains(Back to edit mode)',
-    extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
+    extra_trigger: '.o_project_portal_sidebar',
     content: _t('Go back to your Field Service <b>task</b>.'),
     position: 'right',
 }, {

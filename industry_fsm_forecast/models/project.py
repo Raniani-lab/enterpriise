@@ -9,6 +9,13 @@ class Project(models.Model):
 
     allow_forecast = fields.Boolean(compute='_compute_allow_forecast', store=True, readonly=False)
 
+    @api.model
+    def default_get(self, fields_list):
+        defaults = super().default_get(fields_list)
+        if 'allow_forecast' in fields_list and defaults.get('is_fsm', False):
+            defaults['allow_forecast'] = False
+        return defaults
+
     @api.depends('is_fsm')
     def _compute_allow_forecast(self):
         for project in self:

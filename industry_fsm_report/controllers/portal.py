@@ -2,14 +2,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.http import request
-from odoo.addons.portal.controllers import portal
-from odoo.addons.project.controllers.portal import ProjectCustomerPortal
+from odoo.addons.industry_fsm.controllers.portal import CustomerPortal
 
 
-class CustomerPortal(portal.CustomerPortal):
+class CustomerFsmPortal(CustomerPortal):
 
     def _get_worksheet_data(self, task_sudo):
-        data = super(CustomerPortal, self)._get_worksheet_data(task_sudo)
+        data = super()._get_worksheet_data(task_sudo)
         worksheet_map = {}
         if task_sudo.worksheet_template_id:
             x_model = task_sudo.worksheet_template_id.model_id.model
@@ -18,10 +17,8 @@ class CustomerPortal(portal.CustomerPortal):
         data.update({'worksheet_map': worksheet_map})
         return data
 
-class TimesheetProjectCustomerPortal(ProjectCustomerPortal):
-
-    def _show_task_report(self, task_sudo, report_type, download):
-        if not task_sudo.is_fsm:
-            return super()._show_task_report(task_sudo, report_type, download)
-        return self._show_report(model=task_sudo,
-            report_type=report_type, report_ref='industry_fsm_report.task_custom_report', download=download)
+    def _task_get_page_view_values(self, task, access_token, **kwargs):
+        data = super()._task_get_page_view_values(task, access_token, **kwargs)
+        worksheet_map = self._get_worksheet_data(task)
+        data.update(worksheet_map)
+        return data

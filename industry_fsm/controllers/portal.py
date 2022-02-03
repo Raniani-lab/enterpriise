@@ -21,23 +21,6 @@ class CustomerPortal(portal.CustomerPortal):
     def portal_worksheet_outdated(self, **kwargs):
         return request.redirect(request.httprequest.path.replace('/my/task/', '/my/tasks/'))
 
-    @http.route(['/my/tasks/<int:task_id>/worksheet',
-                 '/my/tasks/<int:task_id>/worksheet/<string:source>'], type='http', auth="public", website=True)
-    def portal_my_worksheet(self, task_id, access_token=None, source=False, report_type=None, download=False, message=False, **kw):
-
-        try:
-            task_sudo = self._document_check_access('project.task', task_id, access_token)
-        except (AccessError, MissingError):
-            return request.redirect('/my')
-
-        if report_type in ('html', 'pdf', 'text'):
-            return self._show_report(model=task_sudo, report_type=report_type, report_ref='industry_fsm.task_custom_report', download=download)
-        data = self._get_worksheet_data(task_sudo)
-        data.update({'task': task_sudo, 'message': message, 'source': source})
-
-        return request.render("industry_fsm.portal_my_worksheet", data)
-
-
     @http.route(['/my/tasks/<int:task_id>/worksheet/sign/<string:source>'], type='json', auth="public", website=True)
     def portal_worksheet_sign(self, task_id, access_token=None, source=False, name=None, signature=None):
         # get from query string if not on json param
@@ -62,8 +45,18 @@ class CustomerPortal(portal.CustomerPortal):
 
         pdf = request.env.ref('industry_fsm.task_custom_report').with_user(SUPERUSER_ID)._render_qweb_pdf([task_sudo.id])[0]
         task_sudo.message_post(body=_('The worksheet has been signed'), attachments=[('%s.pdf' % task_sudo.name, pdf)])
-        query_string = '&message=sign_ok'
         return {
             'force_refresh': True,
-            'redirect_url': task_sudo.get_portal_url(suffix='/worksheet/%s' % source, query_string=query_string),
+            'redirect_url': task_sudo.get_portal_url(query_string=f'&source={source}'),
         }
+
+    def _task_get_page_view_values(self, task, access_token, **kwargs):
+        values = super()._task_get_page_view_values(task, access_token, **kwargs)
+        values['source'] = kwargs.get('source')
+        return values
+
+    def _show_task_report(self, task_sudo, report_type, download):
+        if not task_sudo.is_fsm:
+            return super()._show_task_report(task_sudo, report_type, download)
+        return self._show_report(model=task_sudo,
+            report_type=report_type, report_ref='industry_fsm.task_custom_report', download=download)

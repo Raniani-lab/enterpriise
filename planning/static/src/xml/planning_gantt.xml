@@ -28,4 +28,20 @@
             </div>
         </t>
     </t>
+
+    <t t-name="planning.Many2OneResourceAvatar">
+        <t t-if="widget.record.data.resource_type !== 'material'">
+            <t t-call="web.Many2OneAvatar"/>
+        </t>
+        <t t-else="">
+            <div class="o_m2o_avatar">
+                <span t-if="value" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource" t-att-title="value">
+                    <i class="fa fa-wrench"/>
+                </span>
+                <span t-elif="widget.mode === 'edit'" class="o_m2o_avatar_empty"></span>
+                <span t-if="widget.mode === 'readonly' and !widget.nodeOptions.hide_label" t-esc="value"/>
+            </div>
+        </t>
+    </t>
+
 </templates>

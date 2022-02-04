@@ -14,10 +14,14 @@
             }
         }
     }
-    .o_gantt_row_title > .o_material_resource {
+}
+
+.o_gantt_row_title, .o_m2o_avatar {
+    >.o_material_resource {
         width: 19px;
         height: 19px;
         margin-right: 4px;
         background-color: #eee;
+        cursor: default;
     }
 }

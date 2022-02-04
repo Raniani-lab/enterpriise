@@ -8,7 +8,7 @@
     'summary': 'This module adds an expiry feature to transaction account intrastat codes.',
     'depends': ['account_intrastat'],
     'data': [
-        'data/code_transaction_data.xml',
+        'data/account.intrastat.code.csv',
         'views/account_intrastat_code_view.xml',
         'views/account_invoice_view.xml',
     ],

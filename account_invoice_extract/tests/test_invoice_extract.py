@@ -101,8 +101,6 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             self.assertEqual(invoice.payment_reference, "+++123/1234/12345+++")
             if move_type == 'in_invoice':
                 self.assertEqual(invoice.ref, 'INV0001')
-            else:
-                self.assertEqual(invoice.name, 'INV0001')
 
             self.assertEqual(len(invoice.invoice_line_ids), 3)
             for i, invoice_line in enumerate(invoice.invoice_line_ids):

@@ -92,6 +92,11 @@ file_filter = account_intrastat/i18n/<lang>.po
 source_file = account_intrastat/i18n/account_intrastat.pot
 source_lang = en
 
+[odoo-master.account_intrastat_expiry]
+file_filter = account_intrastat_expiry/i18n/<lang>.po
+source_file = account_intrastat_expiry/i18n/account_intrastat_expiry.pot
+source_lang = en
+
 [odoo-master.account_invoice_extract]
 file_filter = account_invoice_extract/i18n/<lang>.po
 source_file = account_invoice_extract/i18n/account_invoice_extract.pot

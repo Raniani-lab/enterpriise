@@ -367,6 +367,15 @@ class AccountEdiFormat(models.Model):
 
     def _l10n_pe_edi_sign_invoices_iap(self, invoice, edi_filename, edi_str):
         self.ensure_one()
+
+        service_iap = self._l10n_pe_edi_sign_service_iap(
+            invoice.company_id, edi_filename, edi_str, invoice.l10n_latam_document_type_id.code,
+            invoice._l10n_pe_edi_get_serie_folio())
+        if service_iap.get('extra_msg'):
+            invoice.message_post(body=service_iap['extra_msg'])
+        return service_iap
+
+    def _l10n_pe_edi_sign_service_iap(self, company, edi_filename, edi_str, latam_document_type, serie_folio):
         edi_tree = objectify.fromstring(edi_str)
 
         # Dummy Signature to allow check the XSD, this will be replaced on IAP.
@@ -376,15 +385,15 @@ class AccountEdiFormat(models.Model):
         signature_str = self.env['ir.qweb']._render('l10n_pe_edi.pe_ubl_2_1_signature', {'digest_value': ''})
         signature_element.getparent().replace(signature_element, objectify.fromstring(signature_str))
 
-        error = self.env['ir.attachment']._l10n_pe_edi_check_with_xsd(edi_tree_copy, invoice.l10n_latam_document_type_id.code)
+        error = self.env['ir.attachment']._l10n_pe_edi_check_with_xsd(edi_tree_copy, latam_document_type)
         if error:
             return {'error': "<b>%s</b><br/>%s" % (_('XSD validation failed:'), html_escape(error)), 'blocking_level': 'error'}
 
-        dbuuid, iap_server_url, iap_token = self._l10n_pe_edi_get_iap_params(invoice.company_id)
+        dbuuid, iap_server_url, iap_token = self._l10n_pe_edi_get_iap_params(company)
 
         rpc_params = {
-            'vat': invoice.company_id.vat,
-            'doc_type': invoice.l10n_latam_document_type_id.code,
+            'vat': company.vat,
+            'doc_type': latam_document_type,
             'dbuuid': dbuuid,
             'fname': edi_filename,
             'xml': base64.b64encode(edi_str).decode(),
@@ -402,7 +411,7 @@ class AccountEdiFormat(models.Model):
 
         if result.get('message'):
             if result['message'] == 'no-credit':
-                error_message = self._l10n_pe_edi_get_iap_buy_credits_message(invoice.company_id)
+                error_message = self._l10n_pe_edi_get_iap_buy_credits_message(company)
             else:
                 error_message = result['message']
             return {'error': error_message, 'blocking_level': 'error'}
@@ -411,17 +420,18 @@ class AccountEdiFormat(models.Model):
         soap_response_decoded = self._l10n_pe_edi_decode_soap_response(soap_response) if soap_response else {}
 
         cdr = None
+        extra_msg = ''
         if soap_response_decoded.get('error'):
             # Error code 1033 means that the invoice was already registered with the OSE.
             if soap_response_decoded.get('code') == '1033':
-                status_cdr_response = self._l10n_pe_edi_get_status_cdr_iap(invoice)
+                status_cdr_response = self._l10n_pe_edi_get_status_cdr_iap_service(company, serie_folio, latam_document_type)
                 if status_cdr_response.get('error'):
                     error_msg = '%s<br/>%s<br/>%s' % (soap_response_decoded['error'], _('Error requesting CDR status:'),
                                                       status_cdr_response['error'])
                     return {'error': error_msg, 'blocking_level': 'error'}
                 # Status code 0004 means the CDR already exists.
                 elif status_cdr_response.get('code') == '0004':
-                    invoice.message_post(body=_('The invoice already exists on SUNAT. CDR successfully retrieved.'))
+                    extra_msg = _('The invoice already exists on SUNAT. CDR successfully retrieved.')
                     cdr = status_cdr_response['cdr']
                 else:
                     error_msg = '%s<br/>%s<br/>%s' % (soap_response_decoded['error'], _('CDR status:'), status_cdr_response['status'])
@@ -442,17 +452,19 @@ class AccountEdiFormat(models.Model):
             return {'error': error_message, 'blocking_level': 'error'}
 
         xml_document = result.get('signed') and self._l10n_pe_edi_unzip_edi_document(base64.b64decode(result['signed']))
-        return {'success': True, 'xml_document': xml_document, 'cdr': cdr}
+        return {'success': True, 'xml_document': xml_document, 'cdr': cdr, 'extra_msg': extra_msg}
 
     def _l10n_pe_edi_get_status_cdr_iap(self, invoice):
         self.ensure_one()
-        serie_folio = invoice._l10n_pe_edi_get_serie_folio()
+        return self._l10n_pe_edi_get_status_cdr_iap_service(
+            invoice.company_id, invoice._l10n_pe_edi_get_serie_folio(), invoice.l10n_latam_document_type_id.code)
 
-        dbuuid, iap_server_url, iap_token = self._l10n_pe_edi_get_iap_params(invoice.company_id)
+    def _l10n_pe_edi_get_status_cdr_iap_service(self, company, serie_folio, latam_document_type):
+        dbuuid, iap_server_url, iap_token = self._l10n_pe_edi_get_iap_params(company)
 
         rpc_params = {
-            'vat': invoice.company_id.vat,
-            'doc_type': invoice.l10n_latam_document_type_id.code,
+            'vat': company.vat,
+            'doc_type': latam_document_type,
             'dbuuid': dbuuid,
             'serie': serie_folio['serie'],
             'folio': serie_folio['folio'],
@@ -470,7 +482,7 @@ class AccountEdiFormat(models.Model):
 
         if result.get('message'):
             if result['message'] == 'no-credit':
-                error_message = self._l10n_pe_edi_get_iap_buy_credits_message(invoice.company_id)
+                error_message = self._l10n_pe_edi_get_iap_buy_credits_message(company)
             else:
                 error_message = result['message']
             return {'error': error_message, 'blocking_level': 'error'}
@@ -641,15 +653,17 @@ class AccountEdiFormat(models.Model):
         return res
 
     def _l10n_pe_edi_sign_invoices_sunat_digiflow_common(self, invoice, edi_filename, edi_str, credentials):
-        self.ensure_one()
+        return self._l10n_pe_edi_sign_service_sunat_digiflow_common(
+            invoice.company_id, edi_filename, edi_str, credentials, invoice.l10n_latam_document_type_id.code)
 
-        if not invoice.company_id.l10n_pe_edi_certificate_id:
-            return {'error': _("No valid certificate found for %s company.", invoice.company_id.display_name)}
+    def _l10n_pe_edi_sign_service_sunat_digiflow_common(self, company, edi_filename, edi_str, credentials, latam_document_type):
+        if not company.l10n_pe_edi_certificate_id:
+            return {'error': _("No valid certificate found for %s company.", company.display_name)}
 
         # Sign the document.
         edi_tree = objectify.fromstring(edi_str)
-        edi_tree = invoice.company_id.l10n_pe_edi_certificate_id.sudo()._sign(edi_tree)
-        error = self.env['ir.attachment']._l10n_pe_edi_check_with_xsd(edi_tree, invoice.l10n_latam_document_type_id.code)
+        edi_tree = company.l10n_pe_edi_certificate_id.sudo()._sign(edi_tree)
+        error = self.env['ir.attachment']._l10n_pe_edi_check_with_xsd(edi_tree, latam_document_type)
         if error:
             return {'error': _('XSD validation failed: %s', error), 'blocking_level': 'error'}
         edi_str = etree.tostring(edi_tree, xml_declaration=True, encoding='ISO-8859-1')
@@ -693,12 +707,22 @@ class AccountEdiFormat(models.Model):
         return {'success': True, 'xml_document': edi_str, 'cdr': cdr}
 
     def _l10n_pe_edi_sign_invoices_sunat(self, invoice, edi_filename, edi_str):
-        credentials = self._l10n_pe_edi_get_sunat_credentials(invoice.company_id)
-        return self._l10n_pe_edi_sign_invoices_sunat_digiflow_common(invoice, edi_filename, edi_str, credentials)
+        """This method calls _l10n_pe_edi_sign_service_sunat() to allow inherit this second from other models"""
+        return self._l10n_pe_edi_sign_service_sunat(invoice.company_id, edi_filename, edi_str, invoice.l10n_latam_document_type_id.code)
+
+    def _l10n_pe_edi_sign_service_sunat(self, company, edi_filename, edi_str, latam_document_type, serie=False):
+        credentials = self._l10n_pe_edi_get_sunat_credentials(company)
+        return self._l10n_pe_edi_sign_service_sunat_digiflow_common(
+            company, edi_filename, edi_str, credentials, latam_document_type)
 
     def _l10n_pe_edi_sign_invoices_digiflow(self, invoice, edi_filename, edi_str):
-        credentials = self._l10n_pe_edi_get_digiflow_credentials(invoice.company_id)
-        return self._l10n_pe_edi_sign_invoices_sunat_digiflow_common(invoice, edi_filename, edi_str, credentials)
+        # TODO: To be refactored in master
+        return self._l10n_pe_edi_sign_service_digiflow(invoice.company_id, edi_filename, edi_str, invoice.l10n_latam_document_type_id.code)
+
+    def _l10n_pe_edi_sign_service_digiflow(self, company, edi_filename, edi_str, latam_document_type, serie=False):
+        credentials = self._l10n_pe_edi_get_digiflow_credentials(company)
+        return self._l10n_pe_edi_sign_service_sunat_digiflow_common(
+            company, edi_filename, edi_str, credentials, latam_document_type)
 
     def _l10n_pe_edi_cancel_invoices_step_1_sunat_digiflow_common(self, company, invoices, void_filename, void_str, credentials):
         self.ensure_one()

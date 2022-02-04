@@ -212,6 +212,7 @@ class AppointmentTest(common.HttpCase):
         result = request.get('result', False)
         self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
         appointment_type = self.env['calendar.appointment.type'].browse(result['id'])
+        self.assertEqual(appointment_type.name, "Mitchell Admin - Let's meet")
         self.assertEqual(appointment_type.category, 'custom')
         self.assertEqual(len(appointment_type.slot_ids), 2, "Two slots have been created")
         self.assertTrue(all(slot.slot_type == 'unique' for slot in appointment_type.slot_ids), "All slots are 'unique'")

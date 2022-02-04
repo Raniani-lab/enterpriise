@@ -28,7 +28,7 @@ class CalendarAppointmentType(models.Model):
         result = super().default_get(default_fields)
         if 'category' not in default_fields or result.get('category') == 'custom':
             if not result.get('name'):
-                result['name'] = _("Meeting with %s", self.env.user.name)
+                result['name'] = _("%s - Let's meet", self.env.user.name)
             if not result.get('staff_user_ids'):
                 result['staff_user_ids'] = [Command.set(self.env.user.ids)]
         return result

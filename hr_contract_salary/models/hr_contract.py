@@ -97,7 +97,7 @@ class HrContract(models.Model):
     def _inverse_wage_with_holidays(self):
         for contract in self:
             if contract._is_salary_sacrifice():
-                if contract.final_yearly_costs - contract._get_yearly_cost(inverse=True) <= 0.10:
+                if abs(contract.final_yearly_costs - contract._get_yearly_cost(inverse=True)) <= 0.10:
                     # Small convertion errors issuing when setting the final_yearly_costs
                     # The wage (Monetary) is rounded and could lead to a small amount diff
                     # when setting the wage with holidays, that will re-trigger the final_yearly_costs

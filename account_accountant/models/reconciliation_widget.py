@@ -706,7 +706,7 @@ class AccountReconciliation(models.AbstractModel):
             amount_str = formatLang(self.env, abs(balance), currency_obj=line.company_currency_id)
             amount_currency_str = ''
             total_amount_currency_str = ''
-            total_amount_str = formatLang(self.env, abs(rec_vals['debit'] - rec_vals['credit']), currency_obj=line.company_currency_id)
+            total_amount_str = formatLang(self.env, abs(rec_vals['debit'] - rec_vals['credit']), currency_obj=line.currency_id)
 
         js_vals = {
             'id': line.id,

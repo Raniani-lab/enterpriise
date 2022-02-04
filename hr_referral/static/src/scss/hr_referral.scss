@@ -224,14 +224,15 @@ $font-family-sans-serif;
         }
     }
     .user_image {
-        width: 130px;
-        height: 130px;
         display: flex;
         justify-content: center;
         align-items: center;
         >img {
             z-index: 1;
             background: white;
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
         }
     }
     .user_info {

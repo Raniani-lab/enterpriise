@@ -40,7 +40,7 @@
                 <separator string="Time Off Allocation"/>
                 <group>
                     <group>
-                        <field name="leave_type_id" options="{'no_create' : True}"/>
+                        <field name="leave_type_id" options="{'no_create' : True}" context="{'employee_id': employee_id}"/>
                     </group>
                     <group>
                         <label for="full_time_off_allocation"/>

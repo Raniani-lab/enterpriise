@@ -83,19 +83,19 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
                           OR (inv.move_type = 'out_refund' AND inv.state = 'posted'))
                         GROUP BY l.partner_id, p.name, p.vat) AS refund_vat_sub
                     ON turnover_sub.partner_id = refund_vat_sub.partner_id
-            LEFT JOIN (SELECT l2.partner_id, SUM(l2.credit - l2.debit) as vat_amount, SUM(l2.debit) AS refund_vat_amount
+            LEFT JOIN (SELECT COALESCE(l2.partner_id, inv.partner_id) as partner_id, SUM(l2.credit - l2.debit) as vat_amount, SUM(l2.debit) AS refund_vat_amount
                   FROM account_move_line l2
                   JOIN account_account_tag_account_move_line_rel aml_tag2 ON l2.id = aml_tag2.account_move_line_id
                   JOIN account_tax_report_line_tags_rel tag_rep_ln_2 ON tag_rep_ln_2.account_account_tag_id = aml_tag2.account_account_tag_id
                   LEFT JOIN account_move inv ON l2.move_id = inv.id
                   WHERE tag_rep_ln_2.account_tax_report_line_id IN %(tags2)s
-                  AND l2.partner_id IN %(partner_ids)s
+                  AND COALESCE(l2.partner_id, inv.partner_id) IN %(partner_ids)s
                   AND l2.date >= %(date_from)s
                   AND l2.date <= %(date_to)s
                   AND l2.company_id IN %(company_ids)s
                   AND ((l2.move_id IS NULL AND l2.credit > 0)
                    OR (inv.move_type IN ('out_refund', 'out_invoice') AND inv.state = 'posted'))
-                GROUP BY l2.partner_id) AS refund_base_sub
+                GROUP BY COALESCE(l2.partner_id, inv.partner_id)) AS refund_base_sub
               ON turnover_sub.partner_id = refund_base_sub.partner_id
            WHERE turnover > 250 OR refund_base > 0 OR refund_vat_amount > 0
            ORDER BY turnover_sub.vat, turnover_sub.turnover DESC

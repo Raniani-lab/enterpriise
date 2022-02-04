@@ -280,11 +280,11 @@ class AppointmentTest(AppointmentCommon):
         with freeze_time(test_reference_now):
             slots = appointment._slots_generate(first_day, last_day, 'UTC')
 
-        # self.assertEqual(len(slots), 18, '2 mondays of 12 slots but 6 would be before reference date')
-        # for slot in slots:
-            # self.assertTrue(
-            #     test_reference_now.astimezone(pytz.UTC) < slot['UTC'][0].astimezone(pytz.UTC),
-            #     "A slot shouldn't be generated before the first_day datetime")
+        self.assertEqual(len(slots), 18, '2 mondays of 12 slots but 6 would be before reference date')
+        for slot in slots:
+            self.assertTrue(
+                test_reference_now.astimezone(pytz.UTC) < slot['UTC'][0].astimezone(pytz.UTC),
+                "A slot shouldn't be generated before the first_day datetime")
 
     @users('staff_user_aust')
     def test_timezone_delta(self):

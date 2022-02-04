@@ -145,16 +145,48 @@ class CalendarAppointmentType(models.Model):
         """ Generate all appointment slots (in naive UTC, appointment timezone, and given (visitors) timezone)
             between first_day and last_day (datetimes in appointment timezone)
 
-            :return: [ {'slot': slot_record, <timezone>: (date_start, date_end), ...},
-                      ... ]
+        :param datetime first_day: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime last_day: end of appointment check boundary. Timezoned to UTC;
+        :param str timezone: requested timezone string e.g.: 'Europe/Brussels' or 'Etc/GMT+1'
+        :param datetime reference_date: starting datetime to fetch slots. If not
+          given now (in UTC) is used instead. Note that minimum schedule hours
+          defined on appointment type is added to the beginning of slots;
+
+        :return: [ {'slot': slot_record, <timezone>: (date_start, date_end), ...},
+                  ... ]
         """
         if not reference_date:
             reference_date = datetime.utcnow()
+        appt_tz = pytz.timezone(self.appointment_tz)
+        requested_tz = pytz.timezone(timezone)
+        ref_tz_apt_type = reference_date.astimezone(appt_tz)
+        slots = []
 
         def append_slot(day, slot):
-            local_start = appt_tz.localize(datetime.combine(day, time(hour=int(slot.start_hour), minute=int(round((slot.start_hour % 1) * 60)))))
-            local_end = appt_tz.localize(
-                datetime.combine(day, time(hour=int(slot.start_hour), minute=int(round((slot.start_hour % 1) * 60)))) + relativedelta(hours=self.appointment_duration))
+            """ Appends and generates all recurring slots. In case day is the
+            reference date we adapt local_start to not append slots in the past.
+            e.g. With a slot duration of 1 hour if we have slots from 8:00 to
+            17:00 and we are now 9:30 for today. The first slot that we append
+            should be 11:00 and not 8:00. This is necessary since we no longer
+            always check based on working hours that were ignoring these past
+            slots.
+
+            :param date day: day for which we generate slots;
+            :param record slot: a <calendar.appointment.slot> record
+            """
+            local_start = appt_tz.localize(
+                datetime.combine(day,
+                                 time(hour=int(slot.start_hour),
+                                      minute=int(round((slot.start_hour % 1) * 60))
+                                     )
+                                )
+            )
+            # Adapt local start to not append slot in the past for today
+            if local_start.date() == ref_tz_apt_type.date():
+                while local_start < ref_tz_apt_type + relativedelta(hours=self.min_schedule_hours):
+                    local_start += relativedelta(hours=self.appointment_duration)
+            local_end = local_start + relativedelta(hours=self.appointment_duration)
+
             while (local_start.hour + local_start.minute / 60) <= slot.end_hour - self.appointment_duration:
                 slots.append({
                     self.appointment_tz: (
@@ -173,10 +205,7 @@ class CalendarAppointmentType(models.Model):
                 })
                 local_start = local_end
                 local_end += relativedelta(hours=self.appointment_duration)
-        appt_tz = pytz.timezone(self.appointment_tz)
-        requested_tz = pytz.timezone(timezone)
 
-        slots = []
         # We use only the recurring slot if it's not a custom appointment type.
         if self.category != 'custom':
             # Regular recurring slots (not a custom appointment), generate necessary slots using configuration rules

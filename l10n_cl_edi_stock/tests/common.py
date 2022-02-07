@@ -27,7 +27,7 @@ class TestL10nClEdiStockCommon(TestStockCommon):
             'l10n_cl_dte_email': 'info@bmya.cl',
             'l10n_cl_sii_regional_office': 'ur_SaC',
             'l10n_cl_company_activity_ids': [(6, 0, [cls.env.ref('l10n_cl_edi.eco_new_acti_620200').id])],
-            'extract_show_ocr_option_selection': 'no_send',
+            'extract_in_invoice_digitalization_mode': 'no_send',
         })
         cls.company.partner_id.write({
             'l10n_cl_sii_taxpayer_type': '1',

@@ -408,7 +408,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_automatic_sending_vendor_bill_message_post(self):
         # test that a vendor bill is automatically sent to the OCR server when a message with attachment is posted and the option is enabled
-        self.env.company.extract_show_ocr_option_selection = 'auto_send'
+        self.env.company.extract_in_invoice_digitalization_mode = 'auto_send'
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
         test_attachment = self.env['ir.attachment'].create({
             'name': "an attachment",
@@ -422,6 +422,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_automatic_sending_vendor_bill_main_attachment(self):
         # test that a vendor bill is automatically sent to the OCR server when a main attachment is registered and the option is enabled
+        self.env.company.extract_in_invoice_digitalization_mode = 'auto_send'
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'no_extract_requested'})
         test_attachment = self.env['ir.attachment'].create({
             'name': "an attachment",
@@ -437,7 +438,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_automatic_sending_customer_invoice_upload(self):
         # test that a customer invoice is automatically sent to the OCR server when uploaded and the option is enabled
-        self.env.company.extract_show_ocr_option_selection = 'auto_send'
+        self.env.company.extract_out_invoice_digitalization_mode = 'auto_send'
         test_attachment = self.env['ir.attachment'].create({
             'name': "an attachment",
             'datas': base64.b64encode(b'My attachment'),
@@ -449,6 +450,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_automatic_sending_customer_invoice_email_alias(self):
         # test that a customer invoice is automatically sent to the OCR server when sent via email alias and the option is enabled
+        self.env.company.extract_out_invoice_digitalization_mode = 'auto_send'
         journal = self.env['account.journal'].search([('company_id', '=', self.env.user.company_id.id), ('type', '=', 'sale')], limit=1)
         journal_alias = self.env['mail.alias'].create({
             'alias_name': 'test-bill',
@@ -486,6 +488,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_no_automatic_sending_customer_invoice_message_post(self):
         # test that a customer invoice isn't automatically sent to the OCR server when a message with attachment is posted and the option is enabled
+        self.env.company.extract_out_invoice_digitalization_mode = 'auto_send'
         invoice = self.env['account.move'].create({'move_type': 'out_invoice', 'extract_state': 'no_extract_requested'})
         test_attachment = self.env['ir.attachment'].create({
             'name': "an attachment",
@@ -499,6 +502,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_no_automatic_sending_customer_invoice_main_attachment(self):
         # test that a customer invoice isn't automatically sent to the OCR server when a main attachment is registered and the option is enabled
+        self.env.company.extract_out_invoice_digitalization_mode = 'auto_send'
         invoice = self.env['account.move'].create({'move_type': 'out_invoice', 'extract_state': 'no_extract_requested'})
         test_attachment = self.env['ir.attachment'].create({
             'name': "an attachment",
@@ -514,7 +518,8 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_no_automatic_sending_option_disabled(self):
         # test that an invoice isn't automatically sent to the OCR server when the option is disabled
-        self.env.company.extract_show_ocr_option_selection = 'manual_send'
+        self.env.company.extract_in_invoice_digitalization_mode = 'manual_send'
+        self.env.company.extract_out_invoice_digitalization_mode = 'manual_send'
         for move_type in ('in_invoice', 'out_invoice'):
             # test with message_post()
             invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'no_extract_requested'})

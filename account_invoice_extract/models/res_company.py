@@ -7,9 +7,16 @@ from odoo import fields, models
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    extract_show_ocr_option_selection = fields.Selection([
-        ('no_send', 'Do not digitalize bills'),
-        ('manual_send', "Digitalize bills on demand only"),
-        ('auto_send', 'Digitalize all bills automatically')], string="Send mode on invoices attachments",
-        required=False, default='auto_send')
-    extract_single_line_per_tax = fields.Boolean(string="OCR Single Invoice Line Per Tax", default=True)
+    extract_in_invoice_digitalization_mode = fields.Selection([
+        ('no_send', "Do not digitalize"),
+        ('manual_send', "Digitalize on demand only"),
+        ('auto_send', "Digitalize automatically")],
+        string="Digitalization mode on vendor bills",
+        default='auto_send')
+    extract_out_invoice_digitalization_mode = fields.Selection([
+        ('no_send', "Do not digitalize"),
+        ('manual_send', "Digitalize on demand only"),
+        ('auto_send', "Digitalize automatically")],
+        string="Digitalization mode on customer invoices",
+        default='manual_send')
+    extract_single_line_per_tax = fields.Boolean(string="Single Invoice Line Per Tax", default=True)

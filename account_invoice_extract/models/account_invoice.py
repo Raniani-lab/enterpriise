@@ -104,16 +104,11 @@ class AccountMove(models.Model):
 
     def _compute_can_show_send_resend(self):
         self.ensure_one()
-        can_show = True
-        if not self.company_id.extract_show_ocr_option_selection or self.company_id.extract_show_ocr_option_selection == 'no_send':
-            can_show = False
-        if self.state != 'draft':
-            can_show = False
-        if not self.is_invoice():
-            can_show = False
-        if self.message_main_attachment_id is None or len(self.message_main_attachment_id) == 0:
-            can_show = False
-        return can_show
+        return (
+            self.state == 'draft'
+            and self.message_main_attachment_id
+            and not self._check_digitalization_mode(self.company_id, self.move_type, 'no_send')
+        )
 
     @api.depends('state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_resend_button(self):
@@ -159,14 +154,26 @@ class AccountMove(models.Model):
     def message_new(self, msg_dict, custom_values=None):
         return super(AccountMove, self.with_context(from_alias=True)).message_new(msg_dict, custom_values=custom_values)
 
+    def _check_digitalization_mode(self, company, document_type, mode):
+        if document_type in self.get_purchase_types():
+            return company.extract_in_invoice_digitalization_mode == mode
+        elif document_type in self.get_sale_types():
+            return company.extract_out_invoice_digitalization_mode == mode
+
     def _needs_auto_extract(self):
         """ Returns `True` if the document should be automatically sent to the extraction server"""
         return (
             self.extract_state == "no_extract_requested"
-            and self.company_id.extract_show_ocr_option_selection == 'auto_send'
-            and (
-                self.is_purchase_document()
-                or (self.is_sale_document() and self._context.get('from_alias'))
+            and
+            (
+                self._check_digitalization_mode(self.company_id, self.move_type, 'auto_send')
+                and
+                (
+                    self.is_purchase_document()
+                    # In the case of OUT invoices, it is only automatically sent for extraction if it comes from
+                    # the email alias. This is indicated by the presence of the key 'from_alias' in the context
+                    or self._context.get('from_alias')
+                )
             )
         )
 
@@ -183,7 +190,7 @@ class AccountMove(models.Model):
     def _get_create_invoice_from_attachment_decoders(self):
         # OVERRIDE
         res = super()._get_create_invoice_from_attachment_decoders()
-        if self.env.company.extract_show_ocr_option_selection == 'auto_send':
+        if self._check_digitalization_mode(self.env.company, self._context.get('default_move_type'), 'auto_send'):
             res.append((20, self._ocr_create_invoice_from_attachment))
         return res
 
@@ -201,15 +208,15 @@ class AccountMove(models.Model):
             'user_company_country_code': self.company_id.country_id.code,
             'user_lang': self.env.user.lang,
             'user_email': self.env.user.email,
-            'perspective': 'supplier' if self.move_type in {'out_invoice', 'out_refund'} else 'client',
+            'perspective': 'supplier' if self.is_sale_document() else 'client',
         }
         return user_infos
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
         self.ensure_one()
-        if not self.company_id.extract_show_ocr_option_selection or self.company_id.extract_show_ocr_option_selection == 'no_send':
-            return False
+        if self._check_digitalization_mode(self.company_id, self.move_type, 'no_send'):
+            return
         attachments = self.message_main_attachment_id
         if attachments and attachments.exists() and self.is_invoice() and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             account_token = self.env['iap.account'].get('invoice_ocr')
@@ -316,7 +323,7 @@ class AccountMove(models.Model):
         elif field == "due_date":
             text_to_send["content"] = str(self.invoice_date_due)
         elif field == "invoice_id":
-            if self.move_type in {'in_invoice', 'in_refund'}:
+            if self.is_purchase_document():
                 text_to_send["content"] = self.ref
             else:
                 text_to_send["content"] = self.name
@@ -572,7 +579,7 @@ class AccountMove(models.Model):
         Find taxes records to use from the taxes detected for an invoice line.
         """
         taxes_found = self.env['account.tax']
-        type_tax_use = 'purchase' if self.move_type in {'in_invoice', 'in_refund'} else 'sale'
+        type_tax_use = 'purchase' if self.is_purchase_document() else 'sale'
         for (taxes, taxes_type) in zip(taxes_ocr, taxes_type_ocr):
             if taxes != 0.0:
                 related_documents = self.env['account.move'].search([
@@ -772,14 +779,14 @@ class AccountMove(models.Model):
                         move_form.partner_id = partner_vat
 
                 if not move_form.partner_id:
-                    partner_id = self.find_partner_id_with_name(client_ocr if self.move_type in {'out_invoice', 'out_refund'} else supplier_ocr)
+                    partner_id = self.find_partner_id_with_name(client_ocr if self.is_sale_document() else supplier_ocr)
                     if partner_id != 0:
                         move_form.partner_id = self.env["res.partner"].browse(partner_id)
                 if not move_form.partner_id and vat_number_ocr:
                     created_supplier = self._create_supplier_from_vat(vat_number_ocr)
                     if created_supplier:
                         move_form.partner_id = created_supplier
-                        if iban_ocr and not move_form.partner_bank_id and self.move_type in {'in_invoice', 'in_refund'}:
+                        if iban_ocr and not move_form.partner_bank_id and self.is_purchase_document():
                             bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr)])
                             if bank_account.exists():
                                 if bank_account.partner_id == move_form.partner_id.id:
@@ -812,7 +819,7 @@ class AccountMove(models.Model):
                     move_form.invoice_payment_term_id = move_form.partner_id.property_supplier_payment_term_id
                 else:
                     move_form.invoice_date_due = due_date_ocr
-            if self.move_type in {'in_invoice', 'in_refund'} and not move_form.ref and not no_ref:
+            if self.is_purchase_document() and not move_form.ref and not no_ref:
                 move_form.ref = invoice_id_ocr
 
             if self.move_type in {'out_invoice', 'out_refund'}:

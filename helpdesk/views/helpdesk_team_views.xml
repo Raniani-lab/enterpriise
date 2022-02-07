@@ -475,7 +475,7 @@
                                         <div class="mb4">
                                             <a name="action_view_closed_ticket" type="object" title="Number of tickets closed in the past 7 days." class="w-100">
                                                 <span>Tickets Closed</span>
-                                                <span class="pull-right">
+                                                <span class="float-end">
                                                     <field name="ticket_closed"/>
                                                 </span>
                                             </a>
@@ -483,7 +483,7 @@
                                         <div class="mb4" groups="helpdesk.group_use_sla" attrs="{'invisible': [('use_sla', '=', False)]}">
                                             <a name="action_view_success_rate" type="object" title="Ratio of tickets whose SLA has successfully been reached on time compared to the total number of tickets closed in the past 7 days." class="w-100">
                                                 <span>Success Rate</span>
-                                                <span class="pull-right">
+                                                <span class="float-end">
                                                     <field name="success_rate"/> %
                                                 </span>
                                             </a>
@@ -491,7 +491,7 @@
                                         <div class="mb4" t-if="record.use_rating.raw_value and record.rating_count.raw_value &gt; 0" groups="helpdesk.group_use_rating">
                                             <a name="action_view_customer_satisfaction" type="object" title="Average rating for the last 7 days" class="w-100">
                                                 <span>Average Rating</span>
-                                                <span class="pull-right">
+                                                <span class="float-end">
                                                     <b>
                                                         <span style="font-weight:bold;" class="fa fa-fw mt4 fa-smile-o text-success" t-if="record.rating_avg.raw_value &gt;= 3.66" title="Average Rating: Satisfied" role="img" aria-label="Happy face"/>
                                                         <span style="font-weight:bold;" class="fa fa-fw mt4 fa-meh-o text-warning" t-elif="record.rating_avg.raw_value &gt;= 2.33" title="Average Rating: Okay" role="img" aria-label="Neutral face"/>

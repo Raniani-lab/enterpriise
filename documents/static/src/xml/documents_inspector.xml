@@ -159,7 +159,7 @@
     <div class="o_inspector_tag o_inspector_trigger_hover_target" t-att-data-id="id">
         <span class="o_tag_prefix" t-att-title="group_name" t-esc="group_name"/> &gt;
         <span class= "o_documents_tag_name" t-att-title="name" t-esc="display_name"/>
-        <span class="o_inspector_tag_remove pull-right o_inspector_trigger_hover fa-fw">&#215;</span>
+        <span class="o_inspector_tag_remove float-end o_inspector_trigger_hover fa-fw">&#215;</span>
     </div>
 </t>
 
@@ -188,10 +188,10 @@
             </t>
         </div>
 
-        <button t-if="widget.records[0].data.active" class="o_active btn fa fa-archive o_inspector_button o_inspector_archive pull-right" title="Archive"/>
+        <button t-if="widget.records[0].data.active" class="o_active btn fa fa-archive o_inspector_button o_inspector_archive float-end" title="Archive"/>
         <t t-else="">
-            <button class="btn pull-right o_inspector_button o_inspector_delete" title="Delete"><i class="fa fa-trash"/></button>
-            <button class="btn pull-right o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"><i class="fa fa-upload"/></button>
+            <button class="btn float-end o_inspector_button o_inspector_delete" title="Delete"><i class="fa fa-trash"/></button>
+            <button class="btn float-end o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"><i class="fa fa-upload"/></button>
         </t>
     </div>
 </t>
@@ -213,9 +213,9 @@
                 </span>
             </div>
             <div class="o_inspector_history_buttons">
-                <button aria-label="delete" title="delete" class="o_inspector_history_button btn fa fa-trash text-white fa-pull-right o_inspector_history_item_delete" t-att-data-id="id"/>
-                <button aria-label="download" title="download" class="o_inspector_history_button btn fa fa-download text-white fa-pull-right o_inspector_history_item_download" t-att-data-id="id"/>
-                <button aria-label="restore" title="restore" class="o_inspector_history_button btn fa fa-retweet text-white fa-pull-right o_inspector_history_item_restore" t-att-data-id="id"/>
+                <button aria-label="delete" title="delete" class="o_inspector_history_button btn fa fa-trash text-white ms-1 float-end o_inspector_history_item_delete" t-att-data-id="id"/>
+                <button aria-label="download" title="download" class="o_inspector_history_button btn fa fa-download text-white ms-1 float-end o_inspector_history_item_download" t-att-data-id="id"/>
+                <button aria-label="restore" title="restore" class="o_inspector_history_button btn fa fa-retweet text-white ms-1 float-end o_inspector_history_item_restore" t-att-data-id="id"/>
             </div>
         </div>
     </t>

@@ -173,7 +173,7 @@
                 <div class="container">
                     <div class="alert alert-success text-center" role="alert">
                         <p class="d-inline">You have been successfully unassigned from this shift</p>
-                        <i class="fa fa-2x fa-check-circle pull-right" style="margin-top:-3px"/>
+                        <i class="fa fa-2x fa-check-circle float-end" style="margin-top:-3px"/>
                     </div>
                 </div>
             </body>

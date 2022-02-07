@@ -29,7 +29,7 @@
                     <button string="Buy credits"
                             type="object"
                             name="action_buy_sms_credits"
-                            class="btn btn-sm btn-primary pull-right mb0"/>
+                            class="btn btn-sm btn-primary float-end mb0"/>
                 </div>
             </field>
         </field>

@@ -641,7 +641,9 @@
                     </div>
                     <div class="col-lg-4 o_mail_no_resize" style="text-align:right;">
                         <div class="o_mail_header_social">
-                            <span style="font-weight: bolder;">View online</span>&amp;nbsp;<span class="fa fa-external-link" contenteditable="false"/>
+                            <a href="/view">
+                                <span style="font-weight: bolder;">View online</span>&amp;nbsp;<span class="fa fa-external-link" contenteditable="false"/>
+                            </a>
                         </div>
                     </div>
                 </div>

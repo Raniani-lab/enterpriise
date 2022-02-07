@@ -219,7 +219,8 @@ class RentalOrderLine(models.Model):
         return res
 
     def _get_rental_order_line_description(self):
-        if self.pickup_date.date() == self.return_date.date():
+        if self.pickup_date.replace(tzinfo=UTC).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None).date()\
+             == self.return_date.replace(tzinfo=UTC).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None).date():
             # If return day is the same as pickup day, don't display return_date Y/M/D in description.
             return_date = self.return_date
             if return_date:

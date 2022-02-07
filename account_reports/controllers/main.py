@@ -81,6 +81,16 @@ class FinancialReportController(http.Controller):
                         ('Content-Length', len(content))
                     ]
                 )
+            if output_format == 'kvr':
+                content = report_obj._get_kvr(options)
+                response = request.make_response(
+                    content,
+                    headers=[
+                        ('Content-Type', account_report_model.get_export_mime_type('txt')),
+                        ('Content-Disposition', content_disposition(report_name + '.kvr')),
+                        ('Content-Length', len(content))
+                    ]
+                )
             if output_format == 'zip':
                 content = report_obj._get_zip(options)
                 response = request.make_response(

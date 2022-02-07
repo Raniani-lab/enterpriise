@@ -132,3 +132,11 @@ class TimesheetForecastReport(models.Model):
         if view_type in ['pivot', 'graph'] and self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day'):
             arch = self.env['account.analytic.line']._apply_time_label(arch, related_model=self._name)
         return arch, view
+
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        if not orderby and groupby:
+            orderby_list = [groupby] if isinstance(groupby, str) else groupby
+            orderby_list = [field.split(':')[0] for field in orderby_list]
+            orderby = ','.join([f"{field} desc" if field == 'entry_date' else field for field in orderby_list])
+        return super().read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)

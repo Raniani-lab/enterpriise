@@ -104,6 +104,9 @@
                 <cbc:ID t-esc="record.name.replace(' ', '')"/>
                 <cbc:IssueDate t-esc="certificate_date"/>
                 <cbc:DocumentCurrencyCode t-esc="record.currency_id.name"/>
+                <cac:OrderReference t-if="record.ref and record.l10n_latam_document_type_id.internal_type == 'invoice'">
+                      <cbc:ID t-esc="record.ref[:20]"/>
+                </cac:OrderReference>
                 <cac:Signature>
                     <cbc:ID>IDSignKG</cbc:ID>
                     <cac:SignatoryParty>

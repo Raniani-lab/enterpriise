@@ -13,7 +13,7 @@ class DataCleaningRecord(models.Model):
     name = fields.Char('Record Name', compute='_compute_values', compute_sudo=True)
     rule_ids = fields.Many2many('data_cleaning.rule', string='Rule', required=True, ondelete='cascade')
     field_id = fields.Many2one('ir.model.fields', string='Field')
-    cleaning_model_id = fields.Many2one('data_cleaning.model', string='Cleaning Model')
+    cleaning_model_id = fields.Many2one('data_cleaning.model', string='Cleaning Model', ondelete='cascade')
     field_name = fields.Char(related='field_id.name')
     action = fields.Char('Actions', compute='_compute_values', compute_sudo=True)
 

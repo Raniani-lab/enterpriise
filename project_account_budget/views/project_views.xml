@@ -7,7 +7,7 @@
         <field name="priority">40</field>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_analytic_account_entries']" position="before">
-                <button class="oe_stat_button" type="object" name="action_view_budget_lines" icon="fa-usd" attrs="{'invisible': [('analytic_account_id', '=', False)]}">
+                <button class="oe_stat_button" type="object" name="action_view_budget_lines" icon="fa-usd" attrs="{'invisible': ['|', ('total_planned_amount', '=', 0), ('analytic_account_id', '=', False)]}">
                     <div class="o_form_field o_stat_info">
                         <span class="o_stat_value">
                             <field name="total_planned_amount" widget='monetary'/>

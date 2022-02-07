@@ -46,18 +46,15 @@ class Project(models.Model):
             for project in self:
                 project.allow_quotations = project.is_fsm
 
-    @api.depends('is_fsm')
+    @api.depends('is_fsm', 'allow_material')
     def _compute_allow_billable(self):
-        fsm_projects = self.filtered('is_fsm')
-        fsm_projects.allow_billable = True
+        for project in self:
+            project.allow_billable = project.allow_billable or project.is_fsm or project.allow_material
 
     @api.depends('allow_billable', 'is_fsm')
     def _compute_allow_material(self):
         for project in self:
-            if not project._origin:
-                project.allow_material = project.is_fsm and project.allow_billable
-            else:
-                project.allow_material = project.allow_billable
+            project.allow_material = project.allow_billable and project.is_fsm
 
     def flush_model(self, fnames=None):
         if fnames is not None:

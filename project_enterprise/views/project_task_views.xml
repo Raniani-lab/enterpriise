@@ -121,7 +121,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_search_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='late']" position="after">
+            <xpath expr="//filter[@name='late']" position="before">
                 <filter name="conflict_task" string="Tasks in Conflict" domain="[('planning_overlap', '&gt;', 0)]"/>
             </xpath>
         </field>

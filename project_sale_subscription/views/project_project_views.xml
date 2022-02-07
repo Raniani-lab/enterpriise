@@ -8,7 +8,7 @@
         <field name="priority">60</field>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_analytic_account_entries']" position="after">
-                <button name="action_open_project_subscriptions" type="object" class="oe_stat_button" icon="fa-refresh" attrs="{'invisible': [('subscriptions_count', '=', 0)]}" groups="sale_subscription.group_sale_subscription_view">
+                <button name="action_open_project_subscriptions" type="object" class="oe_stat_button" icon="fa-refresh" groups="sale_subscription.group_sale_subscription_view">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value">
                             <field name="subscriptions_count" nolabel="1"/>

@@ -24,7 +24,7 @@
             </xpath>
             <xpath expr="//div[@id='allow_billable_container']" position="after">
                 <field name="is_fsm" invisible="1"/>
-                <div class="col-lg-6 o_setting_box" attrs="{'invisible': [('allow_billable', '=', False)]}">
+                <div class="col-lg-6 o_setting_box">
                     <div class="o_setting_left_pane">
                         <field name="allow_material"/>
                     </div>

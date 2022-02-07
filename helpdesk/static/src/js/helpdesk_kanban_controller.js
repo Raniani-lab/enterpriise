@@ -25,11 +25,19 @@ export const HelpdeskKanbanController = KanbanController.extend({
         // create a div inside o_content that will be used to wrap the helpdesk
         // banner and renderer (this is required to get the desired
         // layout with the searchPanel to the left)
-        const elementDiv = document.createElement('div');
-        elementDiv.classList.add('o_helpdesk_content');
-        this.el.querySelector('.o_content').appendChild(elementDiv);
+        const wrapContentDiv = document.createElement('div');
+        wrapContentDiv.classList.add('o_helpdesk_content', 'flex-column', 'd-flex', 'h-100', 'mw-100');
+        this.el.querySelector('.o_content').appendChild(wrapContentDiv);
+
+        // Create a div after o_helpdesk_banner that will be used to wrap the
+        // o_helpdesk_kanban div. This is required to fix a layout issue when the
+        // height of the viewport is to small.
+        const wrapKanbanDiv = document.createElement('div');
+        wrapKanbanDiv.classList.add('o_helpdesk_wrap_kanban_view', 'flex-grow-1');
+        this.el.querySelector('.o_helpdesk_content').appendChild(wrapKanbanDiv);
+
         await this._super(...arguments);
-        this.el.querySelector('.o_helpdesk_content').appendChild(this.el.querySelector('.o_helpdesk_view'));
+        this.el.querySelector('.o_helpdesk_wrap_kanban_view').appendChild(this.el.querySelector('.o_helpdesk_view'));
     },
 
     //--------------------------------------------------------------------------

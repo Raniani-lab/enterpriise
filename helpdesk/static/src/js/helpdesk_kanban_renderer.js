@@ -11,7 +11,7 @@ export const HelpdeskKanbanRenderer = KanbanRenderer.extend({
      * @override
      */
     async start() {
-        this.el.classList.add('o_helpdesk_view', 'o_helpdesk_kanban_view', 'position-relative', 'align-content-start', 'flex-grow-1', 'flex-shrink-1');
+        this.el.classList.add('o_helpdesk_view', 'position-relative', 'align-content-start', 'flex-grow-1', 'flex-shrink-1');
         await this._super(...arguments);
     },
 

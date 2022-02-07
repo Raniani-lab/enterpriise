@@ -109,7 +109,7 @@ export const HelpdeskDashboardWidget = Widget.extend({
         const input = document.createElement('input');
         input.type = 'text';
         input.name = targetName;
-        input.className = 'text-center';
+        input.className = 'h-100 text-center align-middle';
         input.style.padding = '0px';
 
         if (targetValue) {

@@ -1,166 +1,45 @@
 @include media-breakpoint-up(md) {
-    .o_kanban_view.o_helpdesk_kanban {
-        padding-top: 1rem;
-        $helpdesk-record-width: 420px;
-
-        .o_kanban_group:not(.o_column_folded) {
-            width: $helpdesk-record-width + 2*$o-kanban-group-padding;
-        }
-        .o_kanban_group.o_column_folded {
-            height: $helpdesk-record-width;
-        }
-        .o_kanban_record {
-            width: $helpdesk-record-width;
-            min-height: 250px;
-        }
+    .o_helpdesk_view .o_kanban_record {
+        min-width: map-get($grid-breakpoints, 'xl') * 0.35;
     }
 }
 
+.o_helpdesk_wrap_kanban_view {
+    flex-basis: 100%;
+    min-height: auto;
+    overflow-y: auto;
+}
+
 .o_helpdesk_content {
-    display: flex;
-    flex-direction: column; // display helpdesk overview widget above kanban renderer
-    flex: 1 1 100%; // displayed to the right of the searchPanel
-    min-width: 0; // prevent grouped kanban from horizontally overflowing
-    max-width: 100%;
-    height: 100%;
-
-    .o_kanban_view {
-        flex: 1 1 100%;
-        min-height: auto;
-        overflow-y: auto;
+    .o_kanban_group:not(.o_column_folded) {
+        width: inherit;
     }
 
-    .o_helpdesk_banner {
-        flex: 0 0 auto;
-        min-height: 90px;
-        border-bottom: 1px solid #CED4DA;
-        background-color: white;
-        $sale-table-spacing: 10px;
-        overflow-y: auto;
-
-        .o_dashboard_action {
-            cursor: pointer;
-        }
-
-        .ribbon {
-            &::before, &::after {
-                display: none;
-            }
-
-            span {
-                background-color: $o-brand-odoo;
-                padding: 5px;
-                font-size: medium;
-                z-index: unset;
-                height:auto;
-            }
-        }
+    .o_helpdesk_banner .ribbon::before, .o_helpdesk_banner .ribbon::after {
+        display: none;
+    }
     
-        .ribbon-top-right {
-            margin-top: -$o-kanban-dashboard-vpadding;
+    .o_helpdesk_banner_table {
+        border-spacing: map-get($spacers, 1);
+        border-collapse: separate;
+        table-layout: fixed;
+    }
 
-            span {
-                left: 0px;
-                right: 30px;
-            }
-        }
+    .o_target_to_set:hover .fa {
+        opacity: 1;
+    }
 
-        > .o_demo {
-            opacity: 0.07;
-        }
-
-        > div {
-            display: inline-block;
-            vertical-align: top;
-            width: 100%;
-            @include media-breakpoint-up(md) {
-                width: 50%;
-            }
-            @include media-breakpoint-up(lg) {
-                display: inline-block;
-                float: none;
-            }
-
-            table {
-                margin-bottom: 0;
-                border-spacing: $sale-table-spacing 0px;
-                border-collapse: separate;
-                white-space: initial;
-                > tbody > tr > td {
-                    vertical-align: middle;
-                    text-align: center;
-                    border-top: 1px solid $o-view-background-color;
-                    width: 25%;
-                    height: 33px;
-
-                    span {
-                        display: inline;
-                    }
-
-                    a:hover {
-                        text-decoration: none;
-                    }
-
-                    &.o_main {
-                        background-color: $o-brand-primary;
-                        &:hover {
-                            background-color: darken($o-brand-primary, 10%);
-                        }
-                        a {
-                            color: white;
-                        }
-                        &.o_demo{
-                            &:hover {
-                                background-color: $o-brand-primary;
-                            }
-                        }
-                    }
-                    &.o_warning {
-                        background-color: lighten($warning, 20%);
-                        &:hover {
-                            background-color: darken($warning, 10%);
-                        }
-                        a {
-                            color: black;
-                        }
-                        &.o_demo{
-                            &:hover {
-                                background-color: lighten($warning, 20%);
-                            }
-                        }
-                    }
-                    &.o_secondary {
-                        background-color: $o-brand-lightsecondary;
-                        &:hover {
-                            background-color: darken($o-brand-lightsecondary, 10%);
-                            i {
-                                visibility: visible;
-                            }
-                        }
-                        i {
-                            visibility: hidden;
-                        }
-                        a {
-                            color: black;
-                        }
-                        &.o_demo{
-                            &:hover {
-                                background-color: $o-brand-lightsecondary;
-                            }
-                        }
-                    }
-                    &.o_highlight, .o_highlight {
-                        font-size: 20px;
-                        @include media-breakpoint-down(sm) {
-                            font-size: 13px;
-                            font-weight: bold;
-                        }
-                    }
-                    &.o_text {
-                        text-align: left;
-                    }
-                }
-            }
+    .o_highlight {
+        @include media-breakpoint-down(sm) {
+            font-size: 1em;
         }
     }
+
+    .o_star {
+        color: $o-main-favorite-color;
+    }
+}
+
+.o_helpdesk_activity_box_title {
+    min-width: 0;
 }

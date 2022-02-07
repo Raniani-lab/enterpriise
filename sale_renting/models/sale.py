@@ -222,10 +222,7 @@ class RentalOrderLine(models.Model):
         if self.pickup_date.replace(tzinfo=UTC).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None).date()\
              == self.return_date.replace(tzinfo=UTC).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None).date():
             # If return day is the same as pickup day, don't display return_date Y/M/D in description.
-            return_date = self.return_date
-            if return_date:
-                return_date = return_date.replace(tzinfo=UTC).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None)
-            return_date_part = format_time(self.with_context(use_babel=True).env, return_date, tz=self.env.user.tz, time_format=False)
+            return_date_part = format_time(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, time_format=False)
         else:
             return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format=False)
 

@@ -5,6 +5,6 @@
         id="website_appointment_type_menu"
         parent="website.menu_website_global_configuration"
         action="appointment.appointment_type_action"
-        sequence="200"/>
+        sequence="20"/>
 
 </odoo>

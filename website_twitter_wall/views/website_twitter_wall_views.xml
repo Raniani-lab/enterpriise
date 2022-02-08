@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Twitter Wall" id="menu_website_twitter_wall_root" sequence="32" parent="website.menu_website_configuration"/>
+    <menuitem name="Twitter Wall" id="menu_website_twitter_wall_root" sequence="32" parent="website.menu_website_configuration" active="0"/>
 
     <record id="website_twitter_wall_view_tree" model="ir.ui.view">
         <field name="name">website.twitter.wall.tree</field>
@@ -74,7 +74,7 @@
             </search>
         </field>
     </record>
-    
+
     <record id="website_twitter_wall_action" model="ir.actions.act_window">
         <field name="name">Walls</field>
         <field name="res_model">website.twitter.wall</field>

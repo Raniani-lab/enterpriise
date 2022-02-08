@@ -17,17 +17,17 @@ odoo.define('pos_loyalty.RewardButton', function(require) {
         }
         async onClick() {
             let order = this.env.pos.get_order();
-            let client = order.get_client();
-            if (!client) {
+            let partner = order.get_partner();
+            if (!partner) {
                 this.trigger('close-popup');
-                // IMPROVEMENT: This code snippet is similar to selectClient of PaymentScreen.
+                // IMPROVEMENT: This code snippet is similar to selectPartner of PaymentScreen.
                 const {
                     confirmed,
-                    payload: newClient,
-                } = await this.showTempScreen('ClientListScreen', { client });
+                    payload: newPartner,
+                } = await this.showTempScreen('PartnerListScreen', { partner });
                 if (confirmed) {
-                    order.set_client(newClient);
-                    order.updatePricelist(newClient);
+                    order.set_partner(newPartner);
+                    order.updatePricelist(newPartner);
                 }
                 return;
             }

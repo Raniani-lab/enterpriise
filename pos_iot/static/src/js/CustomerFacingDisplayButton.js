@@ -1,14 +1,14 @@
-odoo.define('pos_restaurant.ClientScreenButton', function(require) {
+odoo.define('pos_restaurant.CustomerFacingDisplayButton', function(require) {
     'use strict';
 
-    const ClientScreenButton = require('point_of_sale.ClientScreenButton');
+    const CustomerFacingDisplayButton = require('point_of_sale.CustomerFacingDisplayButton');
     const Registries = require('point_of_sale.Registries');
 
-    const PosIotClientScreenButton = ClientScreenButton =>
-        class extends ClientScreenButton {
+    const PosIotCustomerFacingDisplayButton = CustomerFacingDisplayButton =>
+        class extends CustomerFacingDisplayButton {
             async onClickProxy() {
                 const renderedHtml = await this.env.pos.render_html_for_customer_facing_display();
-                this.env.proxy.take_ownership_over_client_screen(renderedHtml);
+                this.env.proxy.take_ownership_over_customer_screen(renderedHtml);
             }
             _start() {
                 if (this.env.proxy.iot_device_proxies.display) {
@@ -31,7 +31,7 @@ odoo.define('pos_restaurant.ClientScreenButton', function(require) {
             }
         };
 
-    Registries.Component.extend(ClientScreenButton, PosIotClientScreenButton);
+    Registries.Component.extend(CustomerFacingDisplayButton, PosIotCustomerFacingDisplayButton);
 
-    return ClientScreenButton;
+    return CustomerFacingDisplayButton;
 });

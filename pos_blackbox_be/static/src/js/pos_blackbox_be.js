@@ -419,59 +419,6 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
             return prom;
         },
 
-//        push_order: function (order, opts) {
-//            if (this.config.blackbox_pos_production_id && order) {
-//                var self = this;
-//                opts = opts || {};
-//                order.blackbox_pro_forma = opts.pro_forma || false;
-//
-//                // split discount lines
-//                this._split_discount_lines();
-//                return this.push_order_to_blackbox(order).then(function () {
-//                    order.get_orderlines().forEach(function (current, index, array) {
-//                        delete current.blackbox_pro_forma_finalized;
-//                    });
-//
-//                    res = posmodel_super.push_order.apply(self, [order, opts]);
-//
-//                    order.get_orderlines().forEach(function (current, index, array) {
-//                        current.blackbox_pro_forma_finalized = true;
-//                        current.trigger('change', current); // force export
-//                    });
-//                     return res;
-//                }, function () {
-//                    return Promise.reject();
-//                });
-//            } else {
-//                return posmodel_super.push_order.apply(this, arguments);
-//            }
-//        },
-//
-//        push_and_invoice_order: async function (order) {
-//            if(this.config.blackbox_pos_production_id) {
-//                var self = this;
-//
-//                // these will never be sent as pro_forma
-//                order.blackbox_pro_forma = false;
-//
-//                // this is a duplicate test from _super(), it is necessary
-//                // because we do not want to send orders to the blackbox
-//                // which will not be sent to the backend
-//                if(! order.get_client()) {
-//                    return Promise.reject({code:400, message:'Missing Customer', data:{}});
-//                }
-//                try {
-//                    await self.push_order_to_blackbox(order);
-//                    return await posmodel_super.push_and_invoice_order.apply(self, [order]);
-//                } catch(err) {
-//                    return err;
-//                }
-//            } else {
-//                return posmodel_super.push_and_invoice_order.apply(this, [order]);
-//            }
-//        },
-//
-//
         _push_pro_forma: function () {
             var old_order = this.get_order();
 

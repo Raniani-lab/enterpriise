@@ -10,7 +10,7 @@
                         <br/>
                         <div t-esc='receipt.loyalty.name' class="pos-receipt-title"/>
                         <br />
-                        <div><t t-esc='receipt.loyalty.client' /></div>
+                        <div><t t-esc='receipt.loyalty.partner' /></div>
                         <br/>
                     </span>
                     <t t-if='receipt.loyalty.points_won'>

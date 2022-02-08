@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-     <t t-name="ClientLine" t-inherit="point_of_sale.ClientLine" t-inherit-mode="extension" owl="1">
-        <xpath expr="//td[hasclass('client-line-last-column-placeholder')]" position="before">
-            <td class="customer-due pos-right-align cursor-pointer" t-on-click="settleCustomerDue">
+     <t t-name="PartnerLine" t-inherit="point_of_sale.PartnerLine" t-inherit-mode="extension" owl="1">
+        <xpath expr="//td[hasclass('partner-line-last-column-placeholder')]" position="before">
+            <td class="partner-due pos-right-align cursor-pointer" t-on-click="settlePartnerDue">
                 <t t-esc="env.pos.format_currency(props.partner.total_due) or ''" />
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             </td>
-            <td class="client-line-open-link" t-att-class="highlight">
+            <td class="partner-line-open-link" t-att-class="highlight">
                 <a t-att-href="getPartnerLink()" target="_blank" t-on-click.stop=""><i class="fa fa-external-link" aria-hidden="true"></i></a>
             </td>
         </xpath>
     </t>
 
-    <t t-name="ClientListScreen" t-inherit="point_of_sale.ClientListScreen" t-inherit-mode="extension" owl="1">
-        <xpath expr="//th[hasclass('client-line-last-column-placeholder')]" position="before">
-            <th class="customer-due pos-right-align">Amount Due <i class="fa fa-refresh cursor-pointer" t-on-click="refreshTotalDue"></i></th>
-            <th class="client-line-open-link"></th>
+    <t t-name="PartnerListScreen" t-inherit="point_of_sale.PartnerListScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//th[hasclass('partner-line-last-column-placeholder')]" position="before">
+            <th class="partner-due pos-right-align">Amount Due <i class="fa fa-refresh cursor-pointer" t-on-click="refreshTotalDue"></i></th>
+            <th class="partner-line-open-link"></th>
         </xpath>
     </t>
 

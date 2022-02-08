@@ -1,12 +1,12 @@
-odoo.define('pos_settle_due.ClientListScreen', function (require) {
+odoo.define('pos_settle_due.PartnerListScreen', function (require) {
     'use strict';
 
-    const ClientListScreen = require('point_of_sale.ClientListScreen');
+    const PartnerListScreen = require('point_of_sale.PartnerListScreen');
     const Registries = require('point_of_sale.Registries');
     const { useListener } = require("@web/core/utils/hooks");
 
-    const POSSettleDueClientListScreen = (ClientListScreen) =>
-        class extends ClientListScreen {
+    const POSSettleDuePartnerListScreen = (PartnerListScreen) =>
+        class extends PartnerListScreen {
             setup() {
                 super.setup();
                 // trigger to close this screen (from being shown as tempScreen)
@@ -23,7 +23,7 @@ odoo.define('pos_settle_due.ClientListScreen', function (require) {
             }
         };
 
-    Registries.Component.extend(ClientListScreen, POSSettleDueClientListScreen);
+    Registries.Component.extend(PartnerListScreen, POSSettleDuePartnerListScreen);
 
-    return ClientListScreen;
+    return PartnerListScreen;
 });

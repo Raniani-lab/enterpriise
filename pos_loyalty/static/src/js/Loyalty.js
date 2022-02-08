@@ -42,7 +42,7 @@ const PosLoyaltyOrder = (Order) => class PosLoyaltyOrder extends Order {
 
     /* The total of points won, excluding the points spent on rewards */
     get_won_points(){
-        if (!this.pos.loyalty || !this.get_client()) {
+        if (!this.pos.loyalty || !this.get_partner()) {
             return 0;
         }
         var total_points = 0;
@@ -70,7 +70,7 @@ const PosLoyaltyOrder = (Order) => class PosLoyaltyOrder extends Order {
 
     /* The total number of points spent on rewards */
     get_spent_points() {
-        if (!this.pos.loyalty || !this.get_client()) {
+        if (!this.pos.loyalty || !this.get_partner()) {
             return 0;
         } else {
             var points   = 0;
@@ -87,45 +87,45 @@ const PosLoyaltyOrder = (Order) => class PosLoyaltyOrder extends Order {
 
     /* The total number of points lost or won after the order is validated */
     get_new_points() {
-        if (!this.pos.loyalty || !this.get_client()) {
+        if (!this.pos.loyalty || !this.get_partner()) {
             return 0;
         } else {
             return round_pr(this.get_won_points() - this.get_spent_points(), 1);
         }
     }
 
-    /* The total number of points that the customer will have after this order is validated */
+    /* The total number of points that the partner will have after this order is validated */
     get_new_total_points() {
-        if (!this.pos.loyalty || !this.get_client()) {
+        if (!this.pos.loyalty || !this.get_partner()) {
             return 0;
         } else {
             if(this.state != 'paid'){
-                return round_pr(this.get_client().loyalty_points + this.get_new_points(), 1);
+                return round_pr(this.get_partner().loyalty_points + this.get_new_points(), 1);
             }
             else{
-                return round_pr(this.get_client().loyalty_points, 1);
+                return round_pr(this.get_partner().loyalty_points, 1);
             }
         }
     }
 
-    /* The number of loyalty points currently owned by the customer */
+    /* The number of loyalty points currently owned by the partner */
     get_current_points(){
-        return this.get_client() ? this.get_client().loyalty_points : 0;
+        return this.get_partner() ? this.get_partner().loyalty_points : 0;
     }
 
     /* The total number of points spendable on rewards */
     get_spendable_points(){
-        if (!this.pos.loyalty || !this.get_client()) {
+        if (!this.pos.loyalty || !this.get_partner()) {
             return 0;
         } else {
-            return round_pr(this.get_client().loyalty_points - this.get_spent_points(), 1);
+            return round_pr(this.get_partner().loyalty_points - this.get_spent_points(), 1);
         }
     }
 
-    /* The list of rewards that the current customer can get */
+    /* The list of rewards that the current partner can get */
     get_available_rewards(){
-        var client = this.get_client();
-        if (!client) {
+        let partner = this.get_partner();
+        if (!partner) {
             return [];
         }
 
@@ -155,11 +155,11 @@ const PosLoyaltyOrder = (Order) => class PosLoyaltyOrder extends Order {
     }
 
     apply_reward(reward){
-        var client = this.get_client();
+        let partner = this.get_partner();
         var product, product_price, order_total, spendable;
         var crounding;
 
-        if (!client) {
+        if (!partner) {
             return;
         } else if (reward.reward_type === 'gift') {
             product = this.pos.db.get_product_by_id(reward.gift_product_id[0]);
@@ -248,19 +248,19 @@ const PosLoyaltyOrder = (Order) => class PosLoyaltyOrder extends Order {
     }
 
     finalize(){
-        var client = this.get_client();
-        if ( client ) {
-            client.loyalty_points = this.get_new_total_points();
+        let partner = this.get_partner();
+        if (partner) {
+            partner.loyalty_points = this.get_new_total_points();
         }
         super.finalize(...arguments);
     }
 
     export_for_printing(){
         var json = super.export_for_printing(...arguments);
-        if (this.pos.loyalty && this.get_client()) {
+        if (this.pos.loyalty && this.get_partner()) {
             json.loyalty = {
                 name:         this.pos.loyalty.name,
-                client:       this.get_client().name,
+                partner:      this.get_partner().name,
                 points_won  : this.get_won_points(),
                 points_spent: this.get_spent_points(),
                 points_total: this.get_new_total_points(),

@@ -1,16 +1,16 @@
-odoo.define('pos_settle_due.ClientLine', function (require) {
+odoo.define('pos_settle_due.PartnerLine', function (require) {
     'use strict';
 
-    const ClientLine = require('point_of_sale.ClientLine');
+    const PartnerLine = require('point_of_sale.PartnerLine');
     const Registries = require('point_of_sale.Registries');
 
-    const POSSettleDueClientLine = (ClientLine) =>
-        class extends ClientLine {
+    const POSSettleDuePartnerLine = (PartnerLine) =>
+        class extends PartnerLine {
             getPartnerLink() {
                 return `/web#model=res.partner&id=${this.props.partner.id}`;
             }
-            async settleCustomerDue(event) {
-                if (this.props.selectedClient == this.props.partner) {
+            async settlePartnerDue(event) {
+                if (this.props.selectedPartner == this.props.partner) {
                     event.stopPropagation();
                 }
                 const totalDue = this.props.partner.total_due;
@@ -27,16 +27,16 @@ odoo.define('pos_settle_due.ClientLine', function (require) {
                     list: selectionList,
                 });
                 if (!confirmed) return;
-                this.trigger('discard'); // make sure the ClientListScreen resolves and properly closed.
+                this.trigger('discard'); // make sure the PartnerListScreen resolves and properly closed.
                 const newOrder = this.env.pos.add_new_order();
                 const payment = newOrder.add_paymentline(selectedPaymentMethod);
                 payment.set_amount(totalDue);
-                newOrder.set_client(this.props.partner);
+                newOrder.set_partner(this.props.partner);
                 this.showScreen('PaymentScreen');
             }
         };
 
-    Registries.Component.extend(ClientLine, POSSettleDueClientLine);
+    Registries.Component.extend(PartnerLine, POSSettleDuePartnerLine);
 
-    return ClientLine;
+    return PartnerLine;
 });

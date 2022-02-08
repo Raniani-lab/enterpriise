@@ -7,7 +7,7 @@
     'version': '1.0',
     'category': 'Point of Sale',
     'sequence': 6,
-    'summary': "Settle custumer's due in the POS UI.",
+    'summary': "Settle partner's due in the POS UI.",
     'description': """""",
     'depends': ['point_of_sale', 'account_followup'],
     'data': [],

@@ -23,14 +23,14 @@ odoo.define('pos_settle_due.PaymentScreen', function (require) {
                     paylaterPaymentMethod &&
                     !existingPayLaterPayment
                 ) {
-                    const client = order.get_client();
-                    if (client) {
+                    const partner = order.get_partner();
+                    if (partner) {
                         const { confirmed } = await this.showPopup('ConfirmPopup', {
                             title: this.env._t('The order is empty'),
                             body: _.str.sprintf(
                                 this.env._t('Do you want to deposit %s to %s?'),
                                 this.env.pos.format_currency(change),
-                                order.get_client().name
+                                order.get_partner().name
                             ),
                             confirmText: this.env._t('Yes'),
                         });
@@ -51,11 +51,11 @@ odoo.define('pos_settle_due.PaymentScreen', function (require) {
                             confirmText: this.env._t('Yes'),
                         });
                         if (confirmed) {
-                            const { confirmed: confirmedClient, payload: newClient } = await this.showTempScreen(
-                                'ClientListScreen'
+                            const { confirmed: confirmedPartner, payload: newPartner } = await this.showTempScreen(
+                                'PartnerListScreen'
                             );
-                            if (confirmedClient) {
-                                order.set_client(newClient);
+                            if (confirmedPartner) {
+                                order.set_partner(newPartner);
                             }
                             const paylaterPayment = order.add_paymentline(paylaterPaymentMethod);
                             paylaterPayment.set_amount(-change);

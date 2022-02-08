@@ -13,7 +13,7 @@ ProxyDevice.include({
         }
     },
 
-    take_ownership_over_client_screen: function(html) {
+    take_ownership_over_customer_screen: function(html) {
         return this.env.proxy.iot_device_proxies.display.action({
             action: "take_control",
             html: html,

@@ -3,23 +3,23 @@
 }
 
 /* So that the displayed amount doesn't show in multiple line */
-.pos .client-line td.customer-due,
-.pos .client-list thead th.customer-due {
+.pos .partner-line td.partner-due,
+.pos .partner-list thead th.partner-due {
     white-space:nowrap;
 }
 
-.pos .client-line td.customer-due i.fa {
+.pos .partner-line td.partner-due i.fa {
     padding-left: 5px;
 }
 
-.pos .client-line.highlight td.customer-due {
+.pos .partner-line.highlight td.partner-due {
     text-decoration: underline;
 }
 
-.client-line-open-link a {
+.partner-line-open-link a {
     padding: 0px 10px;
 }
 
-.client-line-open-link.highlight a {
+.partner-line-open-link.highlight a {
     color: white;
 }

@@ -23,20 +23,7 @@ Supported devices include payment terminals, receipt printers, scales and custom
     'license': 'OEEL-1',
     'assets': {
         'point_of_sale.assets': [
-            'pos_iot/static/src/js/barcode_reader.js',
-            'pos_iot/static/src/js/Chrome.js',
-            'pos_iot/static/src/js/ClientScreenButton.js',
-            'pos_iot/static/src/js/customer_display.js',
-            'pos_iot/static/src/js/DebugWidget.js',
-            'pos_iot/static/src/js/devices.js',
-            'pos_iot/static/src/js/iot_longpolling.js',
-            'pos_iot/static/src/js/IoTErrorPopup.js',
-            'pos_iot/static/src/js/LastTransactionStatus.js',
-            'pos_iot/static/src/js/models.js',
-            'pos_iot/static/src/js/payment.js',
-            'pos_iot/static/src/js/printers.js',
-            'pos_iot/static/src/js/ProductScreen.js',
-            'pos_iot/static/src/js/ScaleScreen.js',
+            'pos_iot/static/src/js/**/*.js',
             'pos_iot/static/src/css/pos.css',
         ],
         'web.assets_tests': [

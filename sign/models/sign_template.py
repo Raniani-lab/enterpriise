@@ -16,13 +16,12 @@ from odoo.tools import pdf
 class SignTemplate(models.Model):
     _name = "sign.template"
     _description = "Signature Template"
-    _rec_name = "attachment_id"
 
     def _default_favorited_ids(self):
         return [(4, self.env.user.id)]
 
     attachment_id = fields.Many2one('ir.attachment', string="Attachment", required=True, ondelete='cascade')
-    name = fields.Char(related='attachment_id.name', readonly=False)
+    name = fields.Char(related='attachment_id.name', readonly=False, store=True)
     num_pages = fields.Integer('Number of pages', compute="_compute_num_pages", readonly=True, store=True)
     datas = fields.Binary(related='attachment_id.datas', readonly=False)
     sign_item_ids = fields.One2many('sign.item', 'template_id', string="Signature Items", copy=True)

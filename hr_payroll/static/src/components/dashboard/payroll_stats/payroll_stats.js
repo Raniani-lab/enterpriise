@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { loadAssets } from '@web/core/assets';
-import { useTooltip } from '@web/core/tooltip/tooltip_hook';
 
 const { Component } = owl;
 const { useRef, useState } = owl.hooks;
@@ -14,7 +13,6 @@ export class PayrollDashboardStats extends Component {
      * @override
      */
     setup() {
-        useTooltip();
         this.canvasRef = useRef('canvas');
         this.state = useState(this._defaultState());
     }

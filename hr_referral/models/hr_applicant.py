@@ -6,7 +6,7 @@ from werkzeug.urls import url_encode
 
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError
-from odoo.osv import expression
+from odoo.tools.misc import str2bool
 
 
 class Applicant(models.Model):
@@ -218,8 +218,14 @@ class Applicant(models.Model):
         } for friend in self.env['hr.referral.friend'].search([])]
 
     @api.model
+    def retrieve_referral_data(self):
+        return {
+            'show_grass': str2bool(self.env["ir.config_parameter"].sudo().get_param('hr_referral.show_grass')),
+        }
+
+    @api.model
     def retrieve_referral_welcome_screen(self):
-        result = {}
+        result = self.retrieve_referral_data()
         user_id = self.env.user
 
         result['id'] = user_id.id

@@ -5,6 +5,7 @@ var config = require('web.config');
 var AbstractAction = require('web.AbstractAction');
 var core = require('web.core');
 var _t = core._t;
+var session = require('web.session');
 
 
 var MyReferral = AbstractAction.extend({
@@ -29,9 +30,11 @@ var MyReferral = AbstractAction.extend({
         var def = this._rpc({
                 model: 'hr.applicant',
                 method: 'retrieve_referral_welcome_screen',
+                context: session.user_context,
             })
             .then(function (res) {
                 self.dashboardData = res;
+                self.dashboardData['company_id'] = session.user_context.allowed_company_ids[0];
                 self.onboardingLength = res.onboarding && res.onboarding.length;
                 self.applicantId = res.new_friend_id;
                 self.debug = config.isDebug();

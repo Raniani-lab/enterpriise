@@ -33,14 +33,15 @@ export class PayrollDashboardPayslipBatch extends Component {
      * @private
      * @param {number} BatchID
      */
-    _onClickLine(BatchID) {
+    _onClickLine(BatchID, BatchName) {
         this.trigger('do-action', {
             action: {
+                name: BatchName,
                 type: 'ir.actions.act_window',
                 name: _t('Employee Payslips'),
-                res_model: 'hr.payslip',
-                domain: [['payslip_run_id', '=', BatchID]],
-                views: [[false, 'list'], [false, 'form']],
+                res_model: 'hr.payslip.run',
+                res_id: BatchID,
+                views: [[false, 'form']],
             }
         });
     }

@@ -14,7 +14,7 @@
                     <div class="col">
                         <t t-esc="batch['date_start']"/>
                     </div>
-                    <div class="col btn btn-link p-0 border-0" t-on-click="_onClickLine(batch['id'])">
+                    <div class="col btn btn-link p-0 border-0 text-left" t-on-click="_onClickLine(batch['id'], batch['name'])">
                         <t t-esc="batch['name']"/>
                     </div>
                     <div class="col text-right">

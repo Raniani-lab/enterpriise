@@ -126,10 +126,10 @@ QUnit.test('view switcher button should be displayed in dropdown on mobile scree
     assert.containsNone(webClient.el.querySelector('.o_control_panel'), '.o_cp_switch_buttons .o_switch_view.o_kanban');
     assert.containsNone(webClient.el.querySelector('.o_control_panel'), '.o_cp_switch_buttons button.o_switch_view');
 
-    assert.hasClass(webClient.el.querySelector('.o_control_panel .o_cp_switch_buttons > button > span'), 'fa-th-large');
+    assert.hasClass(webClient.el.querySelector('.o_control_panel .o_cp_switch_buttons > button > span'), 'oi-align--vertical-top');
     await click(webClient.el, '.o_control_panel .o_cp_switch_buttons > button');
 
     assert.hasClass(webClient.el.querySelector('.o_cp_switch_buttons button.o_switch_view.o_kanban'), 'active');
     assert.doesNotHaveClass(webClient.el.querySelector('.o_cp_switch_buttons button.o_switch_view.o_list'), 'active');
-    assert.hasClass(webClient.el.querySelector('.o_cp_switch_buttons button.o_switch_view.o_kanban'), 'fa-th-large');
+    assert.hasClass(webClient.el.querySelector('.o_cp_switch_buttons button.o_switch_view.o_kanban'), 'oi-align--vertical-top');
 });

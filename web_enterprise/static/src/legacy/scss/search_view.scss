@@ -27,10 +27,6 @@
             background-color: $o-brand-odoo;
         }
 
-        .o_searchview_facet_label, .o_facet_remove {
-            font-size: $small-font-size;
-        }
-
         .o_facet_remove {
             @include o-hover-text-color($text-muted, $o-brand-odoo);
         }

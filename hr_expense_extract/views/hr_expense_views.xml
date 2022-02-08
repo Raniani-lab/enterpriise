@@ -24,8 +24,8 @@
                      attrs="{'invisible':['|',
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
-                    <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary pull-right mb0"/>
-                    <button name="retry_ocr" class="btn btn-sm btn-primary pull-right mb0 mr-1" string="Resend For Digitalization" type="object"
+                    <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary float-end mb0"/>
+                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 mr-1" string="Resend For Digitalization" type="object"
                         attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}" data-hotkey="q"/>
                     You don't have enough credit to extract data from your expense.
                     <div class="clearfix"/>
@@ -34,7 +34,7 @@
                      attrs="{'invisible':['|',
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['waiting_extraction'])]}">
-                    <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
+                    <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary float-end mb0"/>
                     The file has been sent and is being processed. It usually takes between 5 and 60 seconds.
                     <div class="clearfix"/>
                 </div>
@@ -43,7 +43,7 @@
                      attrs="{'invisible':['|',
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['extract_not_ready'])]}">
-                    <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
+                    <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary float-end mb0"/>
                     The data extraction is not finished yet. The extraction usually takes between 5 and 60 seconds.
                     <div class="clearfix"/>
                 </div>

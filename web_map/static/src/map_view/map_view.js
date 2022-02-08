@@ -154,7 +154,7 @@ MapView.props = {
 MapView.type = "map"; // refer to python view type
 
 MapView.display_name = _lt("Map");
-MapView.icon = "fa-map-marker";
+MapView.icon = "oi-map";
 MapView.multiRecord = true;
 
 MapView.ArchParser = MapArchParser;

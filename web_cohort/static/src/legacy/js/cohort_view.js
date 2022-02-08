@@ -21,7 +21,7 @@ var intervals = {
 
 var CohortView = AbstractView.extend({
     display_name: _lt('Cohort'),
-    icon: 'fa-signal',
+    icon: 'oi-chart--cohort',
     config: _.extend({}, AbstractView.prototype.config, {
         Model: CohortModel,
         Controller: CohortController,

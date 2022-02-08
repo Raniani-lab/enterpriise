@@ -7079,7 +7079,7 @@ icon-material-blue-grey {
   padding-right: 16px;
   width: auto;
 }
-.modal-content .modal-footer button.pull-left {
+.modal-content .modal-footer button.float-start {
   padding-left: 5px;
   padding-right: 5px;
   position: relative;

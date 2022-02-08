@@ -5,7 +5,7 @@
       <t t-if="widget.activeAttachment">
         <t t-set="activeAttachment" t-value="widget.activeAttachment"/>
         <t t-if="activeAttachment.type != 'pdf'">
-            <h3 class="mt0 mb8 pl-2 text-muted pull-right"> <t t-esc="activeAttachment.filename"/> </h3>
+            <h3 class="mt0 mb8 pl-2 text-muted float-end"> <t t-esc="activeAttachment.filename"/> </h3>
         </t>
         <div t-if="activeAttachment.type == 'image'" class="o_attachment_preview_img">
             <img id="attachment_img" class="img img-fluid d-block" t-attf-src="/web/image/#{activeAttachment.id}?unique=1"/>

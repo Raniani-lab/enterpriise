@@ -43,4 +43,10 @@
     <record id="holiday_type_european" model="hr.leave.type">
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
+
+    <data noupdate="1">
+        <function model="res.company"
+            name="_create_dashboard_notes"
+            eval="[ref('l10n_be_hr_payroll.res_company_be')]"/>
+    </data>
 </odoo>

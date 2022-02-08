@@ -24,6 +24,7 @@
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="base.group_no_one"
                                 help="The Payroll Dashboard tag is required for the note to be displayed on the dashboard."/>
                             <field name="color" widget="color_picker" string="Color"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                     </group>
                 </sheet>

@@ -138,6 +138,7 @@ export class PayrollDashboardTodo extends Component {
         const options = {
             additional_context: {
                 default_tag_ids: [[4, this.payrollTagId]],
+                default_company_id: owl.Component.env.session.user_context.allowed_company_ids[0],
             },
             on_close: () => {
                 self.trigger('reload-memo');

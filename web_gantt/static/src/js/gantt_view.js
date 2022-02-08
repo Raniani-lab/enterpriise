@@ -14,7 +14,7 @@ var _lt = core._lt;
 
 var GanttView = AbstractView.extend({
     display_name: _lt('Gantt'),
-    icon: 'fa-tasks',
+    icon: 'oi-chart--bullet',
     config: _.extend({}, AbstractView.prototype.config, {
         Model: GanttModel,
         Controller: GanttController,

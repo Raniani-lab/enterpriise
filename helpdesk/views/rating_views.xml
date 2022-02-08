@@ -121,9 +121,10 @@
                 <filter name="rating_text" position="move"/>
             </xpath>
             <xpath expr="/search" position="inside">
+                <!-- TODO remove me in master -->
                 <filter string="Last 30 Days" name="rating_last_30_days" domain="[
                     ('create_date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))
-                ]" />
+                ]"  invisible="1"/>
             </xpath>
         </field>
     </record>

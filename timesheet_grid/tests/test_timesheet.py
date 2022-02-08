@@ -212,3 +212,17 @@ class TestTimesheetValidation(TestCommonTimesheet):
         self.user_manager.write({'company_ids': [Command.link(company.id)]})
         timesheet = self.env['account.analytic.line'].with_user(self.user_manager).create({'name': 'coucou', 'project_id': self.project_customer.id})
         timesheet.with_user(self.user_manager).action_add_time_to_timer(1)
+
+    def test_working_hours_for_employees(self):
+        company = self.env['res.company'].create({'name': 'My_Company'})
+        employee = self.env['hr.employee'].with_company(company).create({
+            'name': 'Juste Leblanc',
+            'user_id': self.user_manager.id,
+        })
+        employees_grid_data = [{
+            'employee_id': employee.id,
+            'employee_display_name': employee.name,
+            'grid_row_index': 0}]
+
+        working_hours = employee.get_timesheet_and_working_hours_for_employees(employees_grid_data, '2021-12-01', '2021-12-31')
+        self.assertEqual(working_hours[employee.id]['units_to_work'], 184.0, "Number of hours should be 23d * 8h/d = 184h")

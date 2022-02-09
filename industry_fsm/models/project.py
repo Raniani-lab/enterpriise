@@ -419,8 +419,6 @@ class Task(models.Model):
         return result
 
     def action_fsm_navigate(self):
-        if not self.partner_id.partner_latitude and not self.partner_id.partner_longitude:
-            self.partner_id.geo_localize()
         # YTI TODO: The url should be set with single method everywhere in the codebase
         url = "https://www.google.com/maps/dir/?api=1&destination=%s,%s" % (self.partner_id.partner_latitude, self.partner_id.partner_longitude)
         return {

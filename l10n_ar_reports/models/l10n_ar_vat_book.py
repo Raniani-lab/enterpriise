@@ -188,7 +188,7 @@ class L10nARVatBook(models.AbstractModel):
         vouchers_data = '\r\n'.join(self._get_REGINFO_CV_CBTE(options, aliquots)).encode('ISO-8859-1')
         return vouchers_data, aliquots_data
 
-    def get_zip(self, options):
+    def _get_zip(self, options):
         txt_types = ['purchases', 'goods_import', 'used_goods'] if options.get('journal_type') == 'purchase' else ['sale']
         filenames = {
             'purchases': 'Compras',

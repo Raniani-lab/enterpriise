@@ -154,11 +154,6 @@ class POSTestTaxReport(TestAccountReportsCommon):
         pos_make_payment.with_context(context_payment).check()
 
     def test_pos_tax_report(self):
-        self.pos_config.module_account = False
-        self._check_tax_report_content()
-
-    def test_pos_tax_report_invoice(self):
-        self.pos_config.module_account = True
         self._check_tax_report_content()
 
     @freeze_time("2020-01-01")

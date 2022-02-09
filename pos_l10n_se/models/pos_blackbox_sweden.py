@@ -120,12 +120,6 @@ class PosConfig(models.Model):
         if self.iface_sweden_fiscal_data_module and self.iface_splitbill:
             raise ValidationError(_("You cannot use the sweden blackbox with the bill splitting setting."))
 
-    @api.onchange('iface_sweden_fiscal_data_module', 'is_posbox')
-    def _check_iot_and_sweden_status(self):
-        for config in self:
-            if config.iface_sweden_fiscal_data_module and not config.is_posbox:
-                config.iface_sweden_fiscal_data_module = False
-
     def get_order_sequence_number(self):
         return self.sequence_id.number_next_actual
 

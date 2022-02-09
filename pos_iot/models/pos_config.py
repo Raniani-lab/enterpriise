@@ -17,6 +17,7 @@ class PosConfig(models.Model):
     iface_electronic_scale = fields.Boolean(compute="_compute_electronic_scale")
     iface_scale_id = fields.Many2one('iot.device', domain="[('type', '=', 'scale'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     iot_device_ids = fields.Many2many('iot.device', compute="_compute_iot_device_ids")
+    # TODO: Remove this field, it's not being used.
     payment_terminal_device_ids = fields.Many2many('iot.device', compute="_compute_payment_terminal_device_ids")
 
     @api.depends('iface_printer_id')

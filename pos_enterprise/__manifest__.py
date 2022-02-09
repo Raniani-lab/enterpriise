@@ -10,7 +10,7 @@ Advanced features for the PoS like better views
 for IoT Box config.   
 """,
     'data': [
-        'views/pos_config_view.xml',
+        'views/res_config_settings_views.xml',
     ],
     'depends': ['web_enterprise', 'point_of_sale'],
     'auto_install': True,

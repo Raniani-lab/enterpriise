@@ -6,6 +6,8 @@
         <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('pos_iot_config')]" position="replace">
+                <!-- The domain declared for iface_scale_id uses `company_id`. -->
+                <field name="company_id" invisible="1" />
                 <div class="content-group pos_iot_config" attrs="{'invisible' : [('is_posbox', '=', False)]}">
                     <div class="row">
                         <label string="Receipt Printer" for="iface_printer_id" class="col-lg-4 o_light_label"/>

@@ -14,6 +14,7 @@
         'views/pos_daily_reports.xml',
         'security/ir.model.access.csv',
         'views/pos_config.xml',
+        'views/res_config_settings_views.xml',
         'views/order.xml',
     ],
     'assets': {

@@ -72,8 +72,9 @@ odoo.define('web_grid.GridRenderer', function (require) {
          * @returns {Array}
          */
         get emptyRows() {
+            const rowLength = this.props.isGrouped ? this.props.data.reduce((count, d) => count + d.rows.length + 1, 0) : this.props.data[0].rows.length;
             return Array.from({
-                length: Math.max(5 - this.props.data[0].rows.length, 0)
+                length: Math.max(5 - rowLength, 0)
             }, (_, i) => i);
         }
         /**

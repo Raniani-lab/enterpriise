@@ -177,6 +177,9 @@
                 </t>
             </tbody>
         </t>
+        <tbody>
+            <t t-call="web_grid.GridEmptyRows"/>
+        </tbody>
         <tbody t-if="props.canCreate and props.createInline" class="o_grid_section">
             <t t-call="web_grid.AddLineRow"></t>
         </tbody>
@@ -190,19 +193,23 @@
                 <t t-set="grid" t-value="props.data[0]"/>
                 <t t-set="path" t-value="[0,'grid']"/>
             </t>
-            <t t-foreach="emptyRows" t-as="row" t-key="row_index">
-                <tr class="o_grid_padding">
-                    <th>\u00A0</th>
-                    <t t-foreach="props.data[0].cols" t-as="col" t-key="col_index">
-                        <td t-att-class="{o_grid_current: col.is_current, o_grid_unavailable: col.is_unavailable}"></td>
-                    </t>
-                    <t t-if="props.range !== 'day' and !props.hideLineTotal">
-                        <td class="o_grid_total"/>
-                    </t>
-                </tr>
-            </t>
+            <t t-call="web_grid.GridEmptyRows"/>
             <t t-if="props.canCreate and props.createInline" t-call="web_grid.AddLineRow"/>
         </tbody>
+    </t>
+
+    <t t-name="web_grid.GridEmptyRows" owl="1">
+        <t t-foreach="emptyRows" t-as="row" t-key="row_index">
+            <tr class="o_grid_padding">
+                <th>\u00A0</th>
+                <t t-foreach="props.data[0].cols" t-as="col" t-key="col_index">
+                    <td t-att-class="{o_grid_current: col.is_current, o_grid_unavailable: col.is_unavailable}"></td>
+                </t>
+                <t t-if="props.range !== 'day' and !props.hideLineTotal">
+                    <td class="o_grid_total"/>
+                </t>
+            </tr>
+        </t>
     </t>
 
     <t t-name="web_grid.GridRows" owl="1">

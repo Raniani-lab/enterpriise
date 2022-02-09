@@ -89,7 +89,7 @@
         </xpath>
     </t>
 
-    <t t-name="timesheet_grid.UnGroupedGridBody" t-inherit="web_grid.UnGroupedGridBody" t-inherit-mode="extension" owl="1">
+    <t t-name="timesheet_grid.UnGroupedGridBody" t-inherit="web_grid.GridEmptyRows" t-inherit-mode="extension" owl="1">
         <xpath expr="//th" position="before">
             <th t-if="showTimerButton" class="o_grid_timer_header"/>
         </xpath>

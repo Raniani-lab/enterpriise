@@ -242,7 +242,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('grouped grid view with no data', async function (assert) {
-        assert.expect(4);
+        assert.expect(5);
 
         this.data['analytic.line'].records = [];
 
@@ -268,6 +268,7 @@ QUnit.module('Views', {
         assert.isVisible(grid.$('.o_control_panel .grid_arrow_next'));
         assert.containsOnce(grid, '.o_view_grid .o_grid_section');
         assert.containsN(grid, '.o_view_grid thead th', 9); // title + 7 days + total
+        assert.strictEqual(grid.el.querySelectorAll('.o_grid_padding').length, 4, 'should have 4 empty rows in table');
 
         grid.destroy();
     });
@@ -1958,7 +1959,7 @@ QUnit.module('Views', {
             arch: this.arch,
             currentDate: "2020-06-22",
         });
-        assert.containsN(grid, '.o_grid_unavailable', 4, "should have 4 unavailable elements");
+        assert.containsN(grid, '.o_grid_unavailable', 7, "should have 7 unavailable elements");
         grid.destroy();
     });
 

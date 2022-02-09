@@ -3,7 +3,7 @@
 
     <menuitem id="menu_helpdesk_root" name="Helpdesk"
         sequence="90"
-        web_icon="helpdesk,static/description/icon.png"
+        web_icon="helpdesk,static/description/icon.svg"
         groups="helpdesk.group_helpdesk_user"/>
 
     <menuitem id="helpdesk_menu_config" name="Configuration"

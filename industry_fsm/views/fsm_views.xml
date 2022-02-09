@@ -592,7 +592,7 @@
     <menuitem id="fsm_menu_root"
         name="Field Service"
         sequence="80"
-        web_icon="industry_fsm,static/description/icon.png"
+        web_icon="industry_fsm,static/description/icon.svg"
         groups="industry_fsm.group_fsm_user"/>
 
     <menuitem id="fsm_tasks_menu"

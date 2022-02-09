@@ -902,7 +902,7 @@
     <menuitem
         id="menu_quality_root"
         name="Quality"
-        web_icon="quality_control,static/description/icon.png"
+        web_icon="quality_control,static/description/icon.svg"
         sequence="150"
         groups="quality.group_quality_user"/>
 

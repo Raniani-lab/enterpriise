@@ -880,7 +880,7 @@
     </record>
 
     <!-- Menuitems -->
-    <menuitem id="menu_sale_subscription_root" name="Subscriptions" sequence="40" web_icon="sale_subscription,static/description/icon.png" groups="sale_subscription.group_sale_subscription_view"/>
+    <menuitem id="menu_sale_subscription_root" name="Subscriptions" sequence="40" web_icon="sale_subscription,static/description/icon.svg" groups="sale_subscription.group_sale_subscription_view"/>
 
     <menuitem id="menu_sale_subscription" name="Subscriptions" parent="menu_sale_subscription_root" sequence="5"/>
     <menuitem action="sale_subscription_action" id="menu_sale_subscription_action" sequence="1" parent="menu_sale_subscription"/>

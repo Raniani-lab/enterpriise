@@ -289,7 +289,7 @@
     <menuitem
         id="approvals_menu_root"
         name="Approvals"
-        web_icon="approvals,static/description/icon.png"
+        web_icon="approvals,static/description/icon.svg"
         action="approval_category_action_new_request"
         sequence="255"/>
 

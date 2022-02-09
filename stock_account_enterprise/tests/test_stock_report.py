@@ -13,8 +13,12 @@ class TestStockReport(common.TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        products = cls.env['product.product'].search([('product_tmpl_id.type', '=', 'product')])
-        moves = cls.env['stock.move'].search([('company_id', '=', cls.env.company.id)])
+        # using active_test=False to also get archived product.product/stock.valuation.layer
+        Product = cls.env['product.product'].with_context(active_test=False)
+        Move = cls.env['stock.move'].with_context(active_test=False)
+
+        products = Product.search([('product_tmpl_id.type', '=', 'product')])
+        moves = Move.search([('company_id', '=', cls.env.company.id)])
         for move in moves:
             if move._is_in():
                 move._create_in_svl()
@@ -23,7 +27,7 @@ class TestStockReport(common.TransactionCase):
 
         cls.inventory_valuation = sum(product.value_svl for product in products)
         cls.total_move_valuation = sum(moves.mapped('stock_valuation_layer_ids.value'))
-        incoming_moves = cls.env['stock.move'].search([('picking_id.picking_type_id.code', '=', 'incoming')])
+        incoming_moves = Move.search([('picking_id.picking_type_id.code', '=', 'incoming')])
         cls.incoming_move_valuation = sum(incoming_moves.mapped('stock_valuation_layer_ids.value'))
 
     def test_valuation(self):

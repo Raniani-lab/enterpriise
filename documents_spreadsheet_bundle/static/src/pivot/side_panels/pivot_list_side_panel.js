@@ -6,15 +6,15 @@ const { Component } = owl;
 
 export default class PivotSidePanel extends Component {
     setup() {
-        this.getters = this.env.getters;
+        this.getters = this.env.model.getters;
     }
 
     selectPivot(pivotId) {
-        this.env.dispatch("SELECT_PIVOT", { pivotId });
+        this.env.model.dispatch("SELECT_PIVOT", { pivotId });
     }
 
     resetSelectedPivot() {
-        this.env.dispatch("SELECT_PIVOT");
+        this.env.model.dispatch("SELECT_PIVOT");
     }
 }
 PivotSidePanel.template = "documents_spreadsheet.PivotSidePanel";

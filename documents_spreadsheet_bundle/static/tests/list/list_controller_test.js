@@ -16,6 +16,7 @@ import {
 import { selectCell, setCellContent } from "../utils/commands_helpers";
 import { createSpreadsheetFromList } from "../utils/list_helpers";
 import { nextTick, getFixture } from "@web/../tests/helpers/utils";
+import { waitForEvaluation } from "../spreadsheet_test_utils";
 
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 
@@ -190,7 +191,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         const { model } = await createSpreadsheetFromList();
         assert.strictEqual(getCell(model, "A2").format, "#,##0.00");
         assert.strictEqual(getCell(model, "B2").format, undefined);
-        await model.waitForIdle();
+        await waitForEvaluation(model);
         model.dispatch("REBUILD_ODOO_LIST", {
             listId: "1",
             anchor: [0, 10],

@@ -11,7 +11,7 @@ const { Component } = owl;
 export class ListingDetailsSidePanel extends Component {
     constructor() {
         super(...arguments);
-        this.getters = this.env.getters;
+        this.getters = this.env.model.getters;
         this.DomainSelector = DomainSelector;
     }
 
@@ -40,8 +40,8 @@ export class ListingDetailsSidePanel extends Component {
     }
 
     async refresh() {
-        this.env.dispatch("REFRESH_ODOO_LIST", { listId: this.props.listId });
-        this.env.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
+        this.env.model.dispatch("REFRESH_ODOO_LIST", { listId: this.props.listId });
+        this.env.model.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
     }
 }
 ListingDetailsSidePanel.template = "documents_spreadsheet.ListingDetailsSidePanel";

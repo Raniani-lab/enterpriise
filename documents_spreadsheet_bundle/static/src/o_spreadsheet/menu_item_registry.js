@@ -38,29 +38,29 @@ topbarMenuRegistry.add("data", {
     name: _lt("Data"),
     sequence: 60,
     children: function (env) {
-        const pivots = env.getters.getPivotIds();
+        const pivots = env.model.getters.getPivotIds();
         const children = pivots.map((pivotId, index) =>
             createFullMenuItem(`item_pivot_${pivotId}`, {
-                name: env.getters.getPivotDisplayName(pivotId),
+                name: env.model.getters.getPivotDisplayName(pivotId),
                 sequence: index,
                 action: (env) => {
-                    env.dispatch("SELECT_PIVOT", { pivotId: pivotId });
+                    env.model.dispatch("SELECT_PIVOT", { pivotId: pivotId });
                     env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
                 },
                 icon: "fa fa-table",
-                separator: index === env.getters.getPivotIds().length - 1,
+                separator: index === env.model.getters.getPivotIds().length - 1,
             })
         );
-        const lists = env.getters.getListIds().map((listId, index) => {
+        const lists = env.model.getters.getListIds().map((listId, index) => {
             return createFullMenuItem(`item_list_${listId}`, {
-                name: env.getters.getListDisplayName(listId),
+                name: env.model.getters.getListDisplayName(listId),
                 sequence: index + pivots.length,
                 action: (env) => {
-                    env.dispatch("SELECT_ODOO_LIST", { listId: listId });
+                    env.model.dispatch("SELECT_ODOO_LIST", { listId: listId });
                     env.openSidePanel("LIST_PROPERTIES_PANEL", {});
                 },
                 icon: "fa fa-list",
-                separator: index === env.getters.getListIds().length - 1,
+                separator: index === env.model.getters.getListIds().length - 1,
             });
         });
         return children.concat(lists).concat([
@@ -68,7 +68,7 @@ topbarMenuRegistry.add("data", {
                 name: _t("Refresh all data"),
                 sequence: 1000,
                 action: (env) => {
-                    env.dispatch("REFRESH_ALL_DATA_SOURCES");
+                    env.model.dispatch("REFRESH_ALL_DATA_SOURCES");
                 },
                 separator: true,
             }),
@@ -76,23 +76,23 @@ topbarMenuRegistry.add("data", {
                 name: _t("Re-insert pivot"),
                 sequence: 1010,
                 children: REINSERT_PIVOT_CHILDREN,
-                isVisible: (env) => env.getters.getPivotIds().length,
+                isVisible: (env) => env.model.getters.getPivotIds().length,
             }),
             createFullMenuItem(`insert_pivot_cell`, {
                 name: _t("Insert pivot cell"),
                 sequence: 1020,
                 children: INSERT_PIVOT_CELL_CHILDREN,
-                isVisible: (env) => env.getters.getPivotIds().length,
+                isVisible: (env) => env.model.getters.getPivotIds().length,
                 separator: true,
             }),
             createFullMenuItem(`reinsert_list`, {
                 name: _t("Re-insert list"),
                 sequence: 1021,
                 children: REINSERT_LIST_CHILDREN,
-                isVisible: (env) => env.getters.getListIds().length,
+                isVisible: (env) => env.model.getters.getListIds().length,
             }),
         ]);
     },
-    isVisible: (env) => env.getters.getPivotIds().length || env.getters.getListIds().length,
+    isVisible: (env) => env.model.getters.getPivotIds().length || env.model.getters.getListIds().length,
 });
 

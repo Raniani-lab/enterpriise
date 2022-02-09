@@ -59,7 +59,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                     relatedModelName: undefined,
                 },
             });
-            this.getters = this.env.getters;
+            this.getters = this.env.model.getters;
             this.pivotIds = this.getters.getPivotIds();
             this.listIds = this.getters.getListIds();
             this.loadValues();
@@ -266,7 +266,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 pivotFields: this.state.pivotFields,
                 listFields: this.state.listFields,
             };
-            const result = this.env.dispatch(cmd, { id, filter });
+            const result = this.env.model.dispatch(cmd, { id, filter });
             if (result.isCancelledBecause(CommandResult.DuplicatedFilterLabel)) {
                 this.notification.add(this.env._t("Duplicated Label"), {
                     type: "danger",
@@ -292,7 +292,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
 
         onDelete() {
             if (this.id) {
-                this.env.dispatch("REMOVE_GLOBAL_FILTER", { id: this.id });
+                this.env.model.dispatch("REMOVE_GLOBAL_FILTER", { id: this.id });
             }
             this.env.openSidePanel("GLOBAL_FILTERS_SIDE_PANEL", {});
         }

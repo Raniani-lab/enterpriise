@@ -111,9 +111,9 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
         for (let col = anchor[0]; col < anchor[0] + list.columns.length; col++) {
             cols.push(col);
         }
-        this.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
         const dataSource = this._getDataSource(list.id);
         dataSource.on("data-loaded", this, () => {
+            this.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
             this.dispatch("AUTORESIZE_COLUMNS", {
                 sheetId,
                 cols,

@@ -12,7 +12,7 @@ import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadshe
 import { getFixture, mockDownload } from "@web/../tests/helpers/utils";
 import * as AbstractStorageService from "web.AbstractStorageService";
 import { fields, nextTick, dom } from "web.test_utils";
-import { createSpreadsheet } from "./spreadsheet_test_utils";
+import { createSpreadsheet, waitForEvaluation } from "./spreadsheet_test_utils";
 import MockSpreadsheetCollaborativeChannel from "./utils/mock_spreadsheet_collaborative_channel";
 import { getBasicData, getBasicServerData } from "./utils/spreadsheet_test_data";
 import { getCell, getCellFormula, getCellValue } from "./utils/getters_helpers";
@@ -819,7 +819,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             documentId: spreadsheetAction.resId,
         });
 
-        selectCell(env, "L1"); //target empty cell
+        selectCell(model, "L1"); //target empty cell
         const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_properties");
         root.action(env);
         assert.notOk(model.getters.getSelectedPivotId(), "No pivot should be selected");
@@ -1421,7 +1421,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             id: "42",
             value: [17],
         });
-        await model.waitForIdle();
+        await waitForEvaluation(model);
         await nextTick();
 
         // But it only fetches names once

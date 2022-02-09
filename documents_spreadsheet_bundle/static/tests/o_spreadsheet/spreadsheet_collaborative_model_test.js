@@ -12,6 +12,7 @@ import {
     setGlobalFilterValue,
 } from "../utils/commands_helpers";
 import { setupCollaborativeEnv } from "../utils/collaborative_helpers";
+import { waitForEvaluation } from "../spreadsheet_test_utils";
 
 async function getPivot(rpc, id) {
     const pivot = {
@@ -139,9 +140,9 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
         (user) => getCellFormula(user, "B26"),
         `=PIVOT.HEADER("2","foo","1")`
     );
-    await alice.waitForIdle();
-    await bob.waitForIdle();
-    await charlie.waitForIdle();
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
 
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     assert.spreadsheetIsSynchronized(
@@ -175,10 +176,14 @@ QUnit.test("Add a filter with a default value", async (assert) => {
         modelName: undefined,
         rangeType: undefined,
     };
-    await nextTick();
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "D4"), 10);
     await addGlobalFilter(alice, { filter });
-    await nextTick();
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => user.getters.getGlobalFilterValue(filter.id),
@@ -209,6 +214,9 @@ QUnit.test("Setting a filter value is only applied locally", async (assert) => {
         id: filter.id,
         value: [1],
     });
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
     assert.equal(alice.getters.getActiveFilterCount(), 0);
     assert.equal(bob.getters.getActiveFilterCount(), 1);
     assert.equal(charlie.getters.getActiveFilterCount(), 0);
@@ -234,16 +242,22 @@ QUnit.test("Edit a filter", async (assert) => {
         modelName: undefined,
         rangeType: undefined,
     };
-    await nextTick();
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     await addGlobalFilter(alice, { filter });
-    await nextTick();
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     await editGlobalFilter(alice, {
         id: "41",
         filter: { ...filter, defaultValue: [37] },
     });
-    await nextTick();
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), "");
 });
 
@@ -260,6 +274,9 @@ QUnit.test("Edit a filter and remove it concurrently", async (assert) => {
         rangeType: undefined,
     };
     await addGlobalFilter(alice, { filter });
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
     await network.concurrent(() => {
         charlie.dispatch("EDIT_GLOBAL_FILTER", {
             id: "41",
@@ -287,6 +304,9 @@ QUnit.test("Remove a filter and edit it concurrently", async (assert) => {
         rangeType: undefined,
     };
     await addGlobalFilter(alice, { filter });
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
     await network.concurrent(() => {
         bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
         charlie.dispatch("EDIT_GLOBAL_FILTER", {
@@ -325,6 +345,9 @@ QUnit.test("Remove a filter and edit another concurrently", async (assert) => {
     };
     await addGlobalFilter(alice, { filter: filter1 });
     await addGlobalFilter(alice, { filter: filter2 });
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
     await network.concurrent(() => {
         bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
         charlie.dispatch("EDIT_GLOBAL_FILTER", {
@@ -403,9 +426,9 @@ QUnit.test("Add two lists concurrently", async (assert) => {
         (user) => getCellFormula(user, "A26"),
         `=LIST.HEADER("2","foo")`
     );
-    await alice.waitForIdle();
-    await bob.waitForIdle();
-    await charlie.waitForIdle();
+    await waitForEvaluation(alice);
+    await waitForEvaluation(bob);
+    await waitForEvaluation(charlie);
 
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "A4"), 17);
     assert.spreadsheetIsSynchronized(

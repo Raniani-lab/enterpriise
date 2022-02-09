@@ -8186,8 +8186,8 @@
             this.isUrlEditable = false;
         }
         action(env) {
-            env.dispatch("ACTIVATE_SHEET", {
-                sheetIdFrom: env.getters.getActiveSheetId(),
+            env.model.dispatch("ACTIVATE_SHEET", {
+                sheetIdFrom: env.model.getters.getActiveSheetId(),
                 sheetIdTo: this.sheetId,
             });
         }
@@ -11694,13 +11694,13 @@
         let result = DispatchResult.Success;
         //several columns => bypass the contiguity check
         let multiColumns = zone.right > zone.left;
-        if (env.getters.doesIntersectMerge(sheetId, zone)) {
+        if (env.model.getters.doesIntersectMerge(sheetId, zone)) {
             multiColumns = false;
             let table;
             for (let r = zone.top; r <= zone.bottom; r++) {
                 table = [];
                 for (let c = zone.left; c <= zone.right; c++) {
-                    let merge = env.getters.getMerge(sheetId, c, r);
+                    let merge = env.model.getters.getMerge(sheetId, c, r);
                     if (merge && !table.includes(merge.id.toString())) {
                         table.push(merge.id.toString());
                     }
@@ -11713,14 +11713,14 @@
         }
         const [col, row] = anchor;
         if (multiColumns) {
-            result = env.dispatch("SORT_CELLS", { sheetId, col, row, zone, sortDirection });
+            result = env.model.dispatch("SORT_CELLS", { sheetId, col, row, zone, sortDirection });
         }
         else {
             // check contiguity
-            const contiguousZone = env.getters.getContiguousZone(sheetId, zone);
+            const contiguousZone = env.model.getters.getContiguousZone(sheetId, zone);
             if (isEqual(contiguousZone, zone)) {
                 // merge as it is
-                result = env.dispatch("SORT_CELLS", {
+                result = env.model.dispatch("SORT_CELLS", {
                     sheetId,
                     col,
                     row,
@@ -11731,7 +11731,7 @@
             else {
                 env.askConfirmation(_lt("We found data next to your selection. Since this data was not selected, it will not be sorted. Do you want to extend your selection?"), () => {
                     zone = contiguousZone;
-                    result = env.dispatch("SORT_CELLS", {
+                    result = env.model.dispatch("SORT_CELLS", {
                         sheetId,
                         col,
                         row,
@@ -11739,7 +11739,7 @@
                         sortDirection,
                     });
                 }, () => {
-                    result = env.dispatch("SORT_CELLS", {
+                    result = env.model.dispatch("SORT_CELLS", {
                         sheetId,
                         col,
                         row,
@@ -11750,7 +11750,7 @@
             }
         }
         if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
-            env.dispatch("SET_SELECTION", {
+            env.model.dispatch("SET_SELECTION", {
                 anchor: anchor,
                 zones: [zone],
                 anchorZone: zone,
@@ -12397,7 +12397,7 @@
         }
     }
     function interactivePaste(env, target, pasteOption) {
-        const result = env.dispatch("PASTE", { target, pasteOption });
+        const result = env.model.dispatch("PASTE", { target, pasteOption });
         handlePasteResult(env, result);
     }
 
@@ -12405,54 +12405,54 @@
     // Helpers
     //------------------------------------------------------------------------------
     function getColumnsNumber(env) {
-        const activeCols = env.getters.getActiveCols();
+        const activeCols = env.model.getters.getActiveCols();
         if (activeCols.size) {
             return activeCols.size;
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             return zone.right - zone.left + 1;
         }
     }
     function getRowsNumber(env) {
-        const activeRows = env.getters.getActiveRows();
+        const activeRows = env.model.getters.getActiveRows();
         if (activeRows.size) {
             return activeRows.size;
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             return zone.bottom - zone.top + 1;
         }
     }
     function setFormatter(env, format) {
-        env.dispatch("SET_FORMATTING", {
-            sheetId: env.getters.getActiveSheetId(),
-            target: env.getters.getSelectedZones(),
+        env.model.dispatch("SET_FORMATTING", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            target: env.model.getters.getSelectedZones(),
             format,
         });
     }
     function setStyle(env, style) {
-        env.dispatch("SET_FORMATTING", {
-            sheetId: env.getters.getActiveSheetId(),
-            target: env.getters.getSelectedZones(),
+        env.model.dispatch("SET_FORMATTING", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            target: env.model.getters.getSelectedZones(),
             style,
         });
     }
     //------------------------------------------------------------------------------
     // Simple actions
     //------------------------------------------------------------------------------
-    const UNDO_ACTION = (env) => env.dispatch("REQUEST_UNDO");
-    const REDO_ACTION = (env) => env.dispatch("REQUEST_REDO");
+    const UNDO_ACTION = (env) => env.model.dispatch("REQUEST_UNDO");
+    const REDO_ACTION = (env) => env.model.dispatch("REQUEST_REDO");
     const COPY_ACTION = async (env) => {
-        env.dispatch("COPY", { target: env.getters.getSelectedZones() });
-        await env.clipboard.writeText(env.getters.getClipboardContent());
+        env.model.dispatch("COPY", { target: env.model.getters.getSelectedZones() });
+        await env.clipboard.writeText(env.model.getters.getClipboardContent());
     };
     const CUT_ACTION = async (env) => {
-        env.dispatch("CUT", { target: env.getters.getSelectedZones() });
-        await env.clipboard.writeText(env.getters.getClipboardContent());
+        env.model.dispatch("CUT", { target: env.model.getters.getSelectedZones() });
+        await env.clipboard.writeText(env.model.getters.getClipboardContent());
     };
     const PASTE_ACTION = async (env) => {
-        const spreadsheetClipboard = env.getters.getClipboardContent();
+        const spreadsheetClipboard = env.model.getters.getClipboardContent();
         let osClipboard;
         try {
             osClipboard = await env.clipboard.readText();
@@ -12462,9 +12462,9 @@
             console.warn("The OS clipboard could not be read.");
             console.error(e);
         }
-        const target = env.getters.getSelectedZones();
+        const target = env.model.getters.getSelectedZones();
         if (osClipboard && osClipboard !== spreadsheetClipboard) {
-            env.dispatch("PASTE_FROM_OS_CLIPBOARD", {
+            env.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
                 target,
                 text: osClipboard,
             });
@@ -12473,18 +12473,24 @@
             interactivePaste(env, target);
         }
     };
-    const PASTE_VALUE_ACTION = (env) => env.dispatch("PASTE", { target: env.getters.getSelectedZones(), pasteOption: "onlyValue" });
-    const PASTE_FORMAT_ACTION = (env) => env.dispatch("PASTE", { target: env.getters.getSelectedZones(), pasteOption: "onlyFormat" });
-    const DELETE_CONTENT_ACTION = (env) => env.dispatch("DELETE_CONTENT", {
-        sheetId: env.getters.getActiveSheetId(),
-        target: env.getters.getSelectedZones(),
+    const PASTE_VALUE_ACTION = (env) => env.model.dispatch("PASTE", {
+        target: env.model.getters.getSelectedZones(),
+        pasteOption: "onlyValue",
     });
-    const SET_FORMULA_VISIBILITY_ACTION = (env) => env.dispatch("SET_FORMULA_VISIBILITY", { show: !env.getters.shouldShowFormulas() });
+    const PASTE_FORMAT_ACTION = (env) => env.model.dispatch("PASTE", {
+        target: env.model.getters.getSelectedZones(),
+        pasteOption: "onlyFormat",
+    });
+    const DELETE_CONTENT_ACTION = (env) => env.model.dispatch("DELETE_CONTENT", {
+        sheetId: env.model.getters.getActiveSheetId(),
+        target: env.model.getters.getSelectedZones(),
+    });
+    const SET_FORMULA_VISIBILITY_ACTION = (env) => env.model.dispatch("SET_FORMULA_VISIBILITY", { show: !env.model.getters.shouldShowFormulas() });
     const SET_GRID_LINES_VISIBILITY_ACTION = (env) => {
-        const sheetId = env.getters.getActiveSheetId();
-        env.dispatch("SET_GRID_LINES_VISIBILITY", {
+        const sheetId = env.model.getters.getActiveSheetId();
+        env.model.dispatch("SET_GRID_LINES_VISIBILITY", {
             sheetId,
-            areGridLinesVisible: !env.getters.getGridLinesVisibility(sheetId),
+            areGridLinesVisible: !env.model.getters.getGridLinesVisibility(sheetId),
         });
     };
     //------------------------------------------------------------------------------
@@ -12493,13 +12499,13 @@
     const DELETE_CONTENT_ROWS_NAME = (env) => {
         let first;
         let last;
-        const activesRows = env.getters.getActiveRows();
+        const activesRows = env.model.getters.getActiveRows();
         if (activesRows.size !== 0) {
             first = Math.min(...activesRows);
             last = Math.max(...activesRows);
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             first = zone.top;
             last = zone.bottom;
         }
@@ -12509,23 +12515,23 @@
         return _lt("Clear rows %s - %s", (first + 1).toString(), (last + 1).toString());
     };
     const DELETE_CONTENT_ROWS_ACTION = (env) => {
-        const sheetId = env.getters.getActiveSheetId();
-        const target = [...env.getters.getActiveRows()].map((index) => env.getters.getRowsZone(sheetId, index, index));
-        env.dispatch("DELETE_CONTENT", {
+        const sheetId = env.model.getters.getActiveSheetId();
+        const target = [...env.model.getters.getActiveRows()].map((index) => env.model.getters.getRowsZone(sheetId, index, index));
+        env.model.dispatch("DELETE_CONTENT", {
             target,
-            sheetId: env.getters.getActiveSheetId(),
+            sheetId: env.model.getters.getActiveSheetId(),
         });
     };
     const DELETE_CONTENT_COLUMNS_NAME = (env) => {
         let first;
         let last;
-        const activeCols = env.getters.getActiveCols();
+        const activeCols = env.model.getters.getActiveCols();
         if (activeCols.size !== 0) {
             first = Math.min(...activeCols);
             last = Math.max(...activeCols);
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             first = zone.left;
             last = zone.right;
         }
@@ -12535,23 +12541,23 @@
         return _lt("Clear columns %s - %s", numberToLetters(first), numberToLetters(last));
     };
     const DELETE_CONTENT_COLUMNS_ACTION = (env) => {
-        const sheetId = env.getters.getActiveSheetId();
-        const target = [...env.getters.getActiveCols()].map((index) => env.getters.getColsZone(sheetId, index, index));
-        env.dispatch("DELETE_CONTENT", {
+        const sheetId = env.model.getters.getActiveSheetId();
+        const target = [...env.model.getters.getActiveCols()].map((index) => env.model.getters.getColsZone(sheetId, index, index));
+        env.model.dispatch("DELETE_CONTENT", {
             target,
-            sheetId: env.getters.getActiveSheetId(),
+            sheetId: env.model.getters.getActiveSheetId(),
         });
     };
     const REMOVE_ROWS_NAME = (env) => {
         let first;
         let last;
-        const activesRows = env.getters.getActiveRows();
+        const activesRows = env.model.getters.getActiveRows();
         if (activesRows.size !== 0) {
             first = Math.min(...activesRows);
             last = Math.max(...activesRows);
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             first = zone.top;
             last = zone.bottom;
         }
@@ -12561,15 +12567,15 @@
         return _lt("Delete rows %s - %s", (first + 1).toString(), (last + 1).toString());
     };
     const REMOVE_ROWS_ACTION = (env) => {
-        let rows = [...env.getters.getActiveRows()];
+        let rows = [...env.model.getters.getActiveRows()];
         if (!rows.length) {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             for (let i = zone.top; i <= zone.bottom; i++) {
                 rows.push(i);
             }
         }
-        env.dispatch("REMOVE_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        env.model.dispatch("REMOVE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             dimension: "ROW",
             elements: rows,
         });
@@ -12577,13 +12583,13 @@
     const REMOVE_COLUMNS_NAME = (env) => {
         let first;
         let last;
-        const activeCols = env.getters.getActiveCols();
+        const activeCols = env.model.getters.getActiveCols();
         if (activeCols.size !== 0) {
             first = Math.min(...activeCols);
             last = Math.max(...activeCols);
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             first = zone.left;
             last = zone.right;
         }
@@ -12593,37 +12599,37 @@
         return _lt("Delete columns %s - %s", numberToLetters(first), numberToLetters(last));
     };
     const REMOVE_COLUMNS_ACTION = (env) => {
-        let columns = [...env.getters.getActiveCols()];
+        let columns = [...env.model.getters.getActiveCols()];
         if (!columns.length) {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             for (let i = zone.left; i <= zone.right; i++) {
                 columns.push(i);
             }
         }
-        env.dispatch("REMOVE_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        env.model.dispatch("REMOVE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             dimension: "COL",
             elements: columns,
         });
     };
     const INSERT_CELL_SHIFT_DOWN = (env) => {
-        const zone = env.getters.getSelectedZone();
-        const result = env.dispatch("INSERT_CELL", { zone, shiftDimension: "ROW" });
+        const zone = env.model.getters.getSelectedZone();
+        const result = env.model.dispatch("INSERT_CELL", { zone, shiftDimension: "ROW" });
         handlePasteResult(env, result);
     };
     const INSERT_CELL_SHIFT_RIGHT = (env) => {
-        const zone = env.getters.getSelectedZone();
-        const result = env.dispatch("INSERT_CELL", { zone, shiftDimension: "COL" });
+        const zone = env.model.getters.getSelectedZone();
+        const result = env.model.dispatch("INSERT_CELL", { zone, shiftDimension: "COL" });
         handlePasteResult(env, result);
     };
     const DELETE_CELL_SHIFT_UP = (env) => {
-        const zone = env.getters.getSelectedZone();
-        const result = env.dispatch("DELETE_CELL", { zone, shiftDimension: "ROW" });
+        const zone = env.model.getters.getSelectedZone();
+        const result = env.model.dispatch("DELETE_CELL", { zone, shiftDimension: "ROW" });
         handlePasteResult(env, result);
     };
     const DELETE_CELL_SHIFT_LEFT = (env) => {
-        const zone = env.getters.getSelectedZone();
-        const result = env.dispatch("DELETE_CELL", { zone, shiftDimension: "COL" });
+        const zone = env.model.getters.getSelectedZone();
+        const result = env.model.dispatch("DELETE_CELL", { zone, shiftDimension: "COL" });
         handlePasteResult(env, result);
     };
     const MENU_INSERT_ROWS_BEFORE_NAME = (env) => {
@@ -12645,7 +12651,7 @@
         return _lt("Insert %s rows", number.toString());
     };
     const INSERT_ROWS_BEFORE_ACTION = (env) => {
-        const activeRows = env.getters.getActiveRows();
+        const activeRows = env.model.getters.getActiveRows();
         let row;
         let quantity;
         if (activeRows.size) {
@@ -12653,12 +12659,12 @@
             quantity = activeRows.size;
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             row = zone.top;
             quantity = zone.bottom - zone.top + 1;
         }
-        env.dispatch("ADD_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        env.model.dispatch("ADD_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             position: "before",
             base: row,
             quantity,
@@ -12677,7 +12683,7 @@
         return number === 1 ? _lt("Insert row below") : _lt("Insert %s rows below", number.toString());
     };
     const INSERT_ROWS_AFTER_ACTION = (env) => {
-        const activeRows = env.getters.getActiveRows();
+        const activeRows = env.model.getters.getActiveRows();
         let row;
         let quantity;
         if (activeRows.size) {
@@ -12685,12 +12691,12 @@
             quantity = activeRows.size;
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             row = zone.bottom;
             quantity = zone.bottom - zone.top + 1;
         }
-        env.dispatch("ADD_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        env.model.dispatch("ADD_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             position: "after",
             base: row,
             quantity,
@@ -12718,7 +12724,7 @@
         return _lt("Insert %s columns", number.toString());
     };
     const INSERT_COLUMNS_BEFORE_ACTION = (env) => {
-        const activeCols = env.getters.getActiveCols();
+        const activeCols = env.model.getters.getActiveCols();
         let column;
         let quantity;
         if (activeCols.size) {
@@ -12726,12 +12732,12 @@
             quantity = activeCols.size;
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             column = zone.left;
             quantity = zone.right - zone.left + 1;
         }
-        env.dispatch("ADD_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        env.model.dispatch("ADD_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             position: "before",
             dimension: "COL",
             base: column,
@@ -12752,7 +12758,7 @@
             : _lt("Insert %s columns right", number.toString());
     };
     const INSERT_COLUMNS_AFTER_ACTION = (env) => {
-        const activeCols = env.getters.getActiveCols();
+        const activeCols = env.model.getters.getActiveCols();
         let column;
         let quantity;
         if (activeCols.size) {
@@ -12760,12 +12766,12 @@
             quantity = activeCols.size;
         }
         else {
-            const zone = env.getters.getSelectedZones()[0];
+            const zone = env.model.getters.getSelectedZones()[0];
             column = zone.right;
             quantity = zone.right - zone.left + 1;
         }
-        env.dispatch("ADD_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        env.model.dispatch("ADD_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             position: "after",
             dimension: "COL",
             base: column,
@@ -12773,7 +12779,7 @@
         });
     };
     const HIDE_COLUMNS_NAME = (env) => {
-        const cols = env.getters.getElementsFromSelection("COL");
+        const cols = env.model.getters.getElementsFromSelection("COL");
         let first = cols[0];
         let last = cols[cols.length - 1];
         if (cols.length === 1) {
@@ -12787,31 +12793,31 @@
         }
     };
     const HIDE_COLUMNS_ACTION = (env) => {
-        const columns = env.getters.getElementsFromSelection("COL");
-        env.dispatch("HIDE_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        const columns = env.model.getters.getElementsFromSelection("COL");
+        env.model.dispatch("HIDE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             dimension: "COL",
             elements: columns,
         });
     };
     const UNHIDE_ALL_COLUMNS_ACTION = (env) => {
-        const sheet = env.getters.getActiveSheet();
-        env.dispatch("UNHIDE_COLUMNS_ROWS", {
+        const sheet = env.model.getters.getActiveSheet();
+        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
             sheetId: sheet.id,
             dimension: "COL",
             elements: Array.from(Array(sheet.cols.length).keys()),
         });
     };
     const UNHIDE_COLUMNS_ACTION = (env) => {
-        const columns = env.getters.getElementsFromSelection("COL");
-        env.dispatch("UNHIDE_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        const columns = env.model.getters.getElementsFromSelection("COL");
+        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             dimension: "COL",
             elements: columns,
         });
     };
     const HIDE_ROWS_NAME = (env) => {
-        const rows = env.getters.getElementsFromSelection("ROW");
+        const rows = env.model.getters.getElementsFromSelection("ROW");
         let first = rows[0];
         let last = rows[rows.length - 1];
         if (rows.length === 1) {
@@ -12825,25 +12831,25 @@
         }
     };
     const HIDE_ROWS_ACTION = (env) => {
-        const rows = env.getters.getElementsFromSelection("ROW");
-        env.dispatch("HIDE_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        const rows = env.model.getters.getElementsFromSelection("ROW");
+        env.model.dispatch("HIDE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             dimension: "ROW",
             elements: rows,
         });
     };
     const UNHIDE_ALL_ROWS_ACTION = (env) => {
-        const sheet = env.getters.getActiveSheet();
-        env.dispatch("UNHIDE_COLUMNS_ROWS", {
+        const sheet = env.model.getters.getActiveSheet();
+        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
             sheetId: sheet.id,
             dimension: "ROW",
             elements: Array.from(Array(sheet.rows.length).keys()),
         });
     };
     const UNHIDE_ROWS_ACTION = (env) => {
-        const columns = env.getters.getElementsFromSelection("ROW");
-        env.dispatch("UNHIDE_COLUMNS_ROWS", {
-            sheetId: env.getters.getActiveSheetId(),
+        const columns = env.model.getters.getElementsFromSelection("ROW");
+        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
             dimension: "ROW",
             elements: columns,
         });
@@ -12852,39 +12858,39 @@
     // Sheets
     //------------------------------------------------------------------------------
     const CREATE_SHEET_ACTION = (env) => {
-        const activeSheetId = env.getters.getActiveSheetId();
-        const position = env.getters.getVisibleSheets().findIndex((sheetId) => sheetId === activeSheetId) + 1;
-        const sheetId = env.uuidGenerator.uuidv4();
-        env.dispatch("CREATE_SHEET", { sheetId, position });
-        env.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
+        const activeSheetId = env.model.getters.getActiveSheetId();
+        const position = env.model.getters.getVisibleSheets().findIndex((sheetId) => sheetId === activeSheetId) + 1;
+        const sheetId = env.model.uuidGenerator.uuidv4();
+        env.model.dispatch("CREATE_SHEET", { sheetId, position });
+        env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
     };
     //------------------------------------------------------------------------------
     // Charts
     //------------------------------------------------------------------------------
     const CREATE_CHART = (env) => {
         var _a, _b;
-        const zone = env.getters.getSelectedZone();
+        const zone = env.model.getters.getSelectedZone();
         let dataSetZone = zone;
-        const id = env.uuidGenerator.uuidv4();
+        const id = env.model.uuidGenerator.uuidv4();
         let labelRange;
         if (zone.left !== zone.right) {
             labelRange = zoneToXc({ ...zone, right: zone.left, top: zone.top + 1 });
             dataSetZone = { ...zone, left: zone.left + 1 };
         }
         const dataSets = [zoneToXc(dataSetZone)];
-        const sheetId = env.getters.getActiveSheetId();
+        const sheetId = env.model.getters.getActiveSheetId();
         const position = {
-            x: ((_a = env.getters.tryGetCol(sheetId, zone.right + 1)) === null || _a === void 0 ? void 0 : _a.start) || 0,
-            y: ((_b = env.getters.tryGetRow(sheetId, zone.top)) === null || _b === void 0 ? void 0 : _b.start) || 0,
+            x: ((_a = env.model.getters.tryGetCol(sheetId, zone.right + 1)) === null || _a === void 0 ? void 0 : _a.start) || 0,
+            y: ((_b = env.model.getters.tryGetRow(sheetId, zone.top)) === null || _b === void 0 ? void 0 : _b.start) || 0,
         };
         let dataSetsHaveTitle = false;
         for (let x = dataSetZone.left; x <= dataSetZone.right; x++) {
-            const cell = env.getters.getCell(sheetId, x, zone.top);
+            const cell = env.model.getters.getCell(sheetId, x, zone.top);
             if (cell && cell.evaluated.type !== CellValueType.number) {
                 dataSetsHaveTitle = true;
             }
         }
-        env.dispatch("CREATE_CHART", {
+        env.model.dispatch("CREATE_CHART", {
             sheetId,
             id,
             position,
@@ -12900,7 +12906,7 @@
                 legendPosition: "top",
             },
         });
-        const figure = env.getters.getFigure(sheetId, id);
+        const figure = env.model.getters.getFigure(sheetId, id);
         env.openSidePanel("ChartPanel", { figure });
     };
     //------------------------------------------------------------------------------
@@ -12913,15 +12919,15 @@
     const FORMAT_TIME_ACTION = (env) => setFormatter(env, "hh:mm:ss a");
     const FORMAT_DATE_TIME_ACTION = (env) => setFormatter(env, "m/d/yyyy hh:mm:ss");
     const FORMAT_DURATION_ACTION = (env) => setFormatter(env, "hhhh:mm:ss");
-    const FORMAT_BOLD_ACTION = (env) => setStyle(env, { bold: !env.getters.getCurrentStyle().bold });
-    const FORMAT_ITALIC_ACTION = (env) => setStyle(env, { italic: !env.getters.getCurrentStyle().italic });
-    const FORMAT_STRIKETHROUGH_ACTION = (env) => setStyle(env, { strikethrough: !env.getters.getCurrentStyle().strikethrough });
-    const FORMAT_UNDERLINE_ACTION = (env) => setStyle(env, { underline: !env.getters.getCurrentStyle().underline });
+    const FORMAT_BOLD_ACTION = (env) => setStyle(env, { bold: !env.model.getters.getCurrentStyle().bold });
+    const FORMAT_ITALIC_ACTION = (env) => setStyle(env, { italic: !env.model.getters.getCurrentStyle().italic });
+    const FORMAT_STRIKETHROUGH_ACTION = (env) => setStyle(env, { strikethrough: !env.model.getters.getCurrentStyle().strikethrough });
+    const FORMAT_UNDERLINE_ACTION = (env) => setStyle(env, { underline: !env.model.getters.getCurrentStyle().underline });
     //------------------------------------------------------------------------------
     // Side panel
     //------------------------------------------------------------------------------
     const OPEN_CF_SIDEPANEL_ACTION = (env) => {
-        env.openSidePanel("ConditionalFormatting", { selection: env.getters.getSelectedZones() });
+        env.openSidePanel("ConditionalFormatting", { selection: env.model.getters.getSelectedZones() });
     };
     const OPEN_FAR_SIDEPANEL_ACTION = (env) => {
         env.openSidePanel("FindAndReplace", {});
@@ -12933,17 +12939,17 @@
     // Sorting action
     //------------------------------------------------------------------------------
     const SORT_CELLS_ASCENDING = (env) => {
-        const { anchor, zones } = env.getters.getSelection();
-        const sheetId = env.getters.getActiveSheetId();
+        const { anchor, zones } = env.model.getters.getSelection();
+        const sheetId = env.model.getters.getActiveSheetId();
         interactiveSortSelection(env, sheetId, anchor, zones[0], "ascending");
     };
     const SORT_CELLS_DESCENDING = (env) => {
-        const { anchor, zones } = env.getters.getSelection();
-        const sheetId = env.getters.getActiveSheetId();
+        const { anchor, zones } = env.model.getters.getSelection();
+        const sheetId = env.model.getters.getActiveSheetId();
         interactiveSortSelection(env, sheetId, anchor, zones[0], "descending");
     };
     const IS_ONLY_ONE_RANGE = (env) => {
-        return env.getters.getSelectedZones().length === 1;
+        return env.model.getters.getSelectedZones().length === 1;
     };
 
     //------------------------------------------------------------------------------
@@ -13063,7 +13069,7 @@
         sequence: 140,
         action: DELETE_CONTENT_ACTION,
         isEnabled: (env) => {
-            const cell = env.getters.getActiveCell();
+            const cell = env.model.getters.getActiveCell();
             return Boolean(cell);
         },
         separator: true,
@@ -13118,7 +13124,7 @@
         action: PASTE_FORMAT_ACTION,
     })
         .add("sort_columns", {
-        name: (env) => env.getters.getActiveCols().size > 1 ? _lt("Sort columns") : _lt("Sort column"),
+        name: (env) => env.model.getters.getActiveCols().size > 1 ? _lt("Sort columns") : _lt("Sort column"),
         sequence: 50,
         isVisible: IS_ONLY_ONE_RANGE,
         separator: true,
@@ -13158,9 +13164,10 @@
         sequence: 85,
         action: HIDE_COLUMNS_ACTION,
         isVisible: (env) => {
-            const sheet = env.getters.getActiveSheet();
-            const hiddenCols = env.getters.getHiddenColsGroups(sheet.id).flat();
-            return (sheet.cols.length > hiddenCols.length + env.getters.getElementsFromSelection("COL").length);
+            const sheet = env.model.getters.getActiveSheet();
+            const hiddenCols = env.model.getters.getHiddenColsGroups(sheet.id).flat();
+            return (sheet.cols.length >
+                hiddenCols.length + env.model.getters.getElementsFromSelection("COL").length);
         },
         separator: true,
     })
@@ -13169,8 +13176,10 @@
         sequence: 86,
         action: UNHIDE_COLUMNS_ACTION,
         isVisible: (env) => {
-            const hiddenCols = env.getters.getHiddenColsGroups(env.getters.getActiveSheetId()).flat();
-            const currentCols = env.getters.getElementsFromSelection("COL");
+            const hiddenCols = env.model.getters
+                .getHiddenColsGroups(env.model.getters.getActiveSheetId())
+                .flat();
+            const currentCols = env.model.getters.getElementsFromSelection("COL");
             return currentCols.some((col) => hiddenCols.includes(col));
         },
         separator: true,
@@ -13189,7 +13198,7 @@
         name: _lt("Link sheet"),
         sequence: 10,
         children: (env) => {
-            const sheets = env.getters.getSheets();
+            const sheets = env.model.getters.getSheets();
             return sheets.map((sheet, i) => createFullMenuItem(sheet.id, {
                 name: sheet.name,
                 sequence: i,
@@ -13263,9 +13272,10 @@
         sequence: 85,
         action: HIDE_ROWS_ACTION,
         isVisible: (env) => {
-            const sheet = env.getters.getActiveSheet();
-            const hiddenRows = env.getters.getHiddenRowsGroups(sheet.id).flat();
-            return (sheet.rows.length > hiddenRows.length + env.getters.getElementsFromSelection("ROW").length);
+            const sheet = env.model.getters.getActiveSheet();
+            const hiddenRows = env.model.getters.getHiddenRowsGroups(sheet.id).flat();
+            return (sheet.rows.length >
+                hiddenRows.length + env.model.getters.getElementsFromSelection("ROW").length);
         },
         separator: true,
     })
@@ -13274,8 +13284,10 @@
         sequence: 86,
         action: UNHIDE_ROWS_ACTION,
         isVisible: (env) => {
-            const hiddenRows = env.getters.getHiddenRowsGroups(env.getters.getActiveSheetId()).flat();
-            const currentRows = env.getters.getElementsFromSelection("ROW");
+            const hiddenRows = env.model.getters
+                .getHiddenRowsGroups(env.model.getters.getActiveSheetId())
+                .flat();
+            const currentRows = env.model.getters.getElementsFromSelection("ROW");
             return currentRows.some((col) => hiddenRows.includes(col));
         },
         separator: true,
@@ -13287,7 +13299,7 @@
     });
 
     function interactiveRenameSheet(env, sheetId, message) {
-        const placeholder = env.getters.getSheetName(sheetId);
+        const placeholder = env.model.getters.getSheetName(sheetId);
         //TODO We should update editText to take a message in addition to the title
         const t = _lt("Rename Sheet") + (message ? " - " + message : "");
         env.editText(t, placeholder, (name) => {
@@ -13297,7 +13309,7 @@
             if (name === "") {
                 interactiveRenameSheet(env, sheetId, _lt("The sheet name cannot be empty."));
             }
-            const result = env.dispatch("RENAME_SHEET", { sheetId, name });
+            const result = env.model.dispatch("RENAME_SHEET", { sheetId, name });
             if (!result.isSuccessful) {
                 if (result.reasons.includes(10 /* DuplicatedSheetName */)) {
                     interactiveRenameSheet(env, sheetId, _lt("A sheet with the name %s already exists. Please select another name.", name));
@@ -13315,48 +13327,54 @@
         name: _lt("Delete"),
         sequence: 10,
         isVisible: (env) => {
-            return env.getters.getSheets().length > 1;
+            return env.model.getters.getSheets().length > 1;
         },
         action: (env) => env.askConfirmation(_lt("Are you sure you want to delete this sheet ?"), () => {
-            env.dispatch("DELETE_SHEET", { sheetId: env.getters.getActiveSheetId() });
+            env.model.dispatch("DELETE_SHEET", { sheetId: env.model.getters.getActiveSheetId() });
         }),
     })
         .add("duplicate", {
         name: _lt("Duplicate"),
         sequence: 20,
         action: (env) => {
-            const sheetIdFrom = env.getters.getActiveSheetId();
-            const sheetIdTo = env.uuidGenerator.uuidv4();
-            env.dispatch("DUPLICATE_SHEET", {
+            const sheetIdFrom = env.model.getters.getActiveSheetId();
+            const sheetIdTo = env.model.uuidGenerator.uuidv4();
+            env.model.dispatch("DUPLICATE_SHEET", {
                 sheetId: sheetIdFrom,
                 sheetIdTo,
             });
-            env.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo });
+            env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo });
         },
     })
         .add("rename", {
         name: _lt("Rename"),
         sequence: 30,
-        action: (env) => interactiveRenameSheet(env, env.getters.getActiveSheetId()),
+        action: (env) => interactiveRenameSheet(env, env.model.getters.getActiveSheetId()),
     })
         .add("move_right", {
         name: _lt("Move right"),
         sequence: 40,
         isVisible: (env) => {
-            const sheet = env.getters.getActiveSheetId();
-            const sheets = env.getters.getSheets();
+            const sheet = env.model.getters.getActiveSheetId();
+            const sheets = env.model.getters.getSheets();
             return sheets.findIndex((s) => s.id === sheet) !== sheets.length - 1;
         },
-        action: (env) => env.dispatch("MOVE_SHEET", { sheetId: env.getters.getActiveSheetId(), direction: "right" }),
+        action: (env) => env.model.dispatch("MOVE_SHEET", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            direction: "right",
+        }),
     })
         .add("move_left", {
         name: _lt("Move left"),
         sequence: 50,
         isVisible: (env) => {
-            const sheet = env.getters.getActiveSheetId();
-            return env.getters.getSheets().findIndex((s) => s.id === sheet) !== 0;
+            const sheet = env.model.getters.getActiveSheetId();
+            return env.model.getters.getSheets().findIndex((s) => s.id === sheet) !== 0;
         },
-        action: (env) => env.dispatch("MOVE_SHEET", { sheetId: env.getters.getActiveSheetId(), direction: "left" }),
+        action: (env) => env.model.dispatch("MOVE_SHEET", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            direction: "left",
+        }),
     });
 
     const topbarMenuRegistry = new MenuItemRegistry();
@@ -13473,38 +13491,38 @@
         name: _lt("Unhide all columns"),
         sequence: 100,
         action: UNHIDE_ALL_COLUMNS_ACTION,
-        isVisible: (env) => env.getters.getHiddenColsGroups(env.getters.getActiveSheetId()).length > 0,
+        isVisible: (env) => env.model.getters.getHiddenColsGroups(env.model.getters.getActiveSheetId()).length > 0,
     })
         .addChild("edit_unhide_rows", ["edit"], {
         name: _lt("Unhide all rows"),
         sequence: 100,
         action: UNHIDE_ALL_ROWS_ACTION,
-        isVisible: (env) => env.getters.getHiddenRowsGroups(env.getters.getActiveSheetId()).length > 0,
+        isVisible: (env) => env.model.getters.getHiddenRowsGroups(env.model.getters.getActiveSheetId()).length > 0,
     })
         .addChild("insert_row_before", ["insert"], {
         name: MENU_INSERT_ROWS_BEFORE_NAME,
         sequence: 10,
         action: INSERT_ROWS_BEFORE_ACTION,
-        isVisible: (env) => env.getters.getActiveCols().size === 0,
+        isVisible: (env) => env.model.getters.getActiveCols().size === 0,
     })
         .addChild("insert_row_after", ["insert"], {
         name: MENU_INSERT_ROWS_AFTER_NAME,
         sequence: 20,
         action: INSERT_ROWS_AFTER_ACTION,
-        isVisible: (env) => env.getters.getActiveCols().size === 0,
+        isVisible: (env) => env.model.getters.getActiveCols().size === 0,
         separator: true,
     })
         .addChild("insert_column_before", ["insert"], {
         name: MENU_INSERT_COLUMNS_BEFORE_NAME,
         sequence: 30,
         action: INSERT_COLUMNS_BEFORE_ACTION,
-        isVisible: (env) => env.getters.getActiveRows().size === 0,
+        isVisible: (env) => env.model.getters.getActiveRows().size === 0,
     })
         .addChild("insert_column_after", ["insert"], {
         name: MENU_INSERT_COLUMNS_AFTER_NAME,
         sequence: 40,
         action: INSERT_COLUMNS_AFTER_ACTION,
-        isVisible: (env) => env.getters.getActiveRows().size === 0,
+        isVisible: (env) => env.model.getters.getActiveRows().size === 0,
         separator: true,
     })
         .addChild("insert_insert_cell_shift_down", ["insert"], {
@@ -13536,7 +13554,7 @@
         separator: true,
     })
         .addChild("view_gridlines", ["view"], {
-        name: (env) => env.getters.getGridLinesVisibility(env.getters.getActiveSheetId())
+        name: (env) => env.model.getters.getGridLinesVisibility(env.model.getters.getActiveSheetId())
             ? _lt("Hide gridlines")
             : _lt("Show gridlines"),
         action: SET_GRID_LINES_VISIBILITY_ACTION,
@@ -13544,7 +13562,7 @@
         separator: true,
     })
         .addChild("view_formulas", ["view"], {
-        name: (env) => env.getters.shouldShowFormulas() ? _lt("Hide formulas") : _lt("Show formulas"),
+        name: (env) => env.model.getters.shouldShowFormulas() ? _lt("Hide formulas") : _lt("Show formulas"),
         action: SET_FORMULA_VISIBILITY_ACTION,
         isReadonlyAllowed: true,
         sequence: 10,
@@ -13849,6 +13867,44 @@
     const ITEMS_PER_LINE = Math.max(...COLORS.map((line) => line.length));
     const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
         2 * LINE_HORIZONTAL_PADDING;
+    css /* scss */ `
+  .o-color-picker {
+    position: absolute;
+    top: calc(100% + 5px);
+    z-index: 10;
+    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+    background-color: white;
+    padding: ${PICKER_VERTICAL_PADDING}px 0px;
+
+    .o-color-picker-line {
+      display: flex;
+      padding: ${LINE_VERTICAL_PADDING}px ${LINE_HORIZONTAL_PADDING}px;
+      .o-color-picker-line-item {
+        width: ${ITEM_EDGE_LENGTH}px;
+        height: ${ITEM_EDGE_LENGTH}px;
+        margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
+        border-radius: 50px;
+        border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
+        &:hover {
+          cursor: pointer;
+          background-color: rgba(0, 0, 0, 0.08);
+          outline: 1px solid gray;
+        }
+      }
+    }
+
+    &.right {
+      left: 0;
+    }
+
+    &.left {
+      right: 0;
+    }
+    &.center {
+      left: calc(50% - ${PICKER_WIDTH / 2}px);
+    }
+  }
+`;
     class ColorPicker extends owl.Component {
         constructor() {
             super(...arguments);
@@ -13871,44 +13927,6 @@
       </t>
     </div>
   </div>`;
-    ColorPicker.style = css /* scss */ `
-    .o-color-picker {
-      position: absolute;
-      top: calc(100% + 5px);
-      z-index: 10;
-      box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-      background-color: white;
-      padding: ${PICKER_VERTICAL_PADDING}px 0px;
-
-      .o-color-picker-line {
-        display: flex;
-        padding: ${LINE_VERTICAL_PADDING}px ${LINE_HORIZONTAL_PADDING}px;
-        .o-color-picker-line-item {
-          width: ${ITEM_EDGE_LENGTH}px;
-          height: ${ITEM_EDGE_LENGTH}px;
-          margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
-          border-radius: 50px;
-          border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
-          &:hover {
-            cursor: pointer;
-            background-color: rgba(0, 0, 0, 0.08);
-            outline: 1px solid gray;
-          }
-        }
-      }
-
-      &.right {
-        left: 0;
-      }
-
-      &.left {
-        right: 0;
-      }
-      &.center {
-        left: calc(50% - ${PICKER_WIDTH / 2}px);
-      }
-    }
-  `;
 
     // -----------------------------------------------------------------------------
     // -----------------------------------------------------------------------------
@@ -14059,7 +14077,7 @@
     </div>
 
   </div>`;
-    const CSS$k = css /* scss */ `
+    css /* scss */ `
   .o-selection {
     .o-selection-input {
       display: flex;
@@ -14118,15 +14136,13 @@
             super(...arguments);
             this.id = uuidGenerator$1.uuidv4();
             this.previousRanges = this.props.ranges || [];
-            this.getters = this.env.getters;
-            this.dispatch = this.env.dispatch;
-            this.originSheet = this.env.getters.getActiveSheetId();
+            this.originSheet = this.env.model.getters.getActiveSheetId();
             this.state = owl.useState({
                 isMissing: false,
             });
         }
         get ranges() {
-            const existingSelectionRange = this.getters.getSelectionInput(this.id);
+            const existingSelectionRange = this.env.model.getters.getSelectionInput(this.id);
             const ranges = existingSelectionRange.length
                 ? existingSelectionRange
                 : this.props.ranges
@@ -14138,7 +14154,7 @@
                     : [];
             return ranges.map((range) => ({
                 ...range,
-                isValidRange: range.xc === "" || this.getters.isRangeValid(range.xc),
+                isValidRange: range.xc === "" || this.env.model.getters.isRangeValid(range.xc),
             }));
         }
         get hasFocus() {
@@ -14156,17 +14172,17 @@
             owl.onPatched(() => this.checkChange());
         }
         enableNewSelectionInput() {
-            this.dispatch("ENABLE_NEW_SELECTION_INPUT", {
+            this.env.model.dispatch("ENABLE_NEW_SELECTION_INPUT", {
                 id: this.id,
                 initialRanges: this.props.ranges,
                 hasSingleRange: this.props.hasSingleRange,
             });
         }
         disableNewSelectionInput() {
-            this.dispatch("DISABLE_SELECTION_INPUT", { id: this.id });
+            this.env.model.dispatch("DISABLE_SELECTION_INPUT", { id: this.id });
         }
         checkChange() {
-            const value = this.getters.getSelectionInputValue(this.id);
+            const value = this.env.model.getters.getSelectionInputValue(this.id);
             if (this.previousRanges.join() !== value.join()) {
                 this.triggerChange();
             }
@@ -14177,30 +14193,30 @@
         }
         triggerChange() {
             var _a, _b;
-            const ranges = this.getters.getSelectionInputValue(this.id);
+            const ranges = this.env.model.getters.getSelectionInputValue(this.id);
             (_b = (_a = this.props).onSelectionChanged) === null || _b === void 0 ? void 0 : _b.call(_a, ranges);
             this.previousRanges = ranges;
         }
         focus(rangeId) {
             this.state.isMissing = false;
-            this.dispatch("STOP_EDITION", { cancel: true });
-            this.dispatch("FOCUS_RANGE", {
+            this.env.model.dispatch("STOP_EDITION", { cancel: true });
+            this.env.model.dispatch("FOCUS_RANGE", {
                 id: this.id,
                 rangeId,
             });
         }
         addEmptyInput() {
-            this.dispatch("ADD_EMPTY_RANGE", { id: this.id });
+            this.env.model.dispatch("ADD_EMPTY_RANGE", { id: this.id });
         }
         removeInput(rangeId) {
             var _a, _b;
-            this.dispatch("REMOVE_RANGE", { id: this.id, rangeId });
+            this.env.model.dispatch("REMOVE_RANGE", { id: this.id, rangeId });
             this.triggerChange();
             (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
         }
         onInputChanged(rangeId, ev) {
             const target = ev.target;
-            this.dispatch("CHANGE_RANGE", {
+            this.env.model.dispatch("CHANGE_RANGE", {
                 id: this.id,
                 rangeId,
                 value: target.value,
@@ -14210,14 +14226,14 @@
         }
         disable() {
             var _a, _b;
-            this.dispatch("UNFOCUS_SELECTION_INPUT");
-            const ranges = this.getters.getSelectionInputValue(this.id);
+            this.env.model.dispatch("UNFOCUS_SELECTION_INPUT");
+            const ranges = this.env.model.getters.getSelectionInputValue(this.id);
             if (this.props.required && ranges.length === 0) {
                 this.state.isMissing = true;
             }
-            const activeSheetId = this.getters.getActiveSheetId();
+            const activeSheetId = this.env.model.getters.getActiveSheetId();
             if (this.originSheet !== activeSheetId) {
-                this.dispatch("ACTIVATE_SHEET", {
+                this.env.model.dispatch("ACTIVATE_SHEET", {
                     sheetIdFrom: activeSheetId,
                     sheetIdTo: this.originSheet,
                 });
@@ -14226,7 +14242,6 @@
         }
     }
     SelectionInput.template = TEMPLATE$n;
-    SelectionInput.style = CSS$k;
 
     const conditionalFormattingTerms = {
         CF_TITLE: _lt("Format rules"),
@@ -14458,7 +14473,7 @@
     </t>
   </div>
 `;
-    const STYLE = css /* scss */ `
+    css /* scss */ `
   .o-chart {
     .o-panel {
       display: flex;
@@ -14492,12 +14507,11 @@
     class ChartPanel extends owl.Component {
         constructor() {
             super(...arguments);
-            this.getters = this.env.getters;
             this.state = owl.useState(this.initialState(this.props.figure));
         }
         setup() {
             owl.onWillUpdateProps((nextProps) => {
-                if (!this.getters.getChartDefinition(nextProps.figure.id)) {
+                if (!this.env.model.getters.getChartDefinition(nextProps.figure.id)) {
                     this.props.onCloseSidePanel();
                     return;
                 }
@@ -14506,7 +14520,7 @@
                     this.state.fillColorTool = false;
                     this.state.datasetDispatchResult = undefined;
                     this.state.labelsDispatchResult = undefined;
-                    this.state.chart = this.env.getters.getChartDefinitionUI(this.env.getters.getActiveSheetId(), nextProps.figure.id);
+                    this.state.chart = this.env.model.getters.getChartDefinitionUI(this.env.model.getters.getActiveSheetId(), nextProps.figure.id);
                 }
             });
         }
@@ -14552,7 +14566,7 @@
             });
         }
         updateChart(definition) {
-            return this.env.dispatch("UPDATE_CHART", {
+            return this.env.model.dispatch("UPDATE_CHART", {
                 id: this.props.figure.id,
                 definition,
             });
@@ -14576,14 +14590,13 @@
         }
         initialState(figure) {
             return {
-                chart: this.env.getters.getChartDefinitionUI(this.env.getters.getActiveSheetId(), figure.id),
+                chart: this.env.model.getters.getChartDefinitionUI(this.env.model.getters.getActiveSheetId(), figure.id),
                 panel: "configuration",
                 fillColorTool: false,
             };
         }
     }
     ChartPanel.template = TEMPLATE$m;
-    ChartPanel.style = STYLE;
     ChartPanel.components = { SelectionInput, ColorPicker };
 
     /**
@@ -14600,6 +14613,26 @@
         return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
     }
 
+    css /* scss */ `
+  .o-icon-picker {
+    position: absolute;
+    z-index: 10;
+    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+    background-color: white;
+    padding: 2px 1px;
+  }
+  .o-cf-icon-line {
+    display: flex;
+    padding: 3px 6px;
+  }
+  .o-icon-picker-item {
+    margin: 0px 2px;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+      outline: 1px solid gray;
+    }
+  }
+`;
     class IconPicker extends owl.Component {
         constructor() {
             super(...arguments);
@@ -14628,26 +14661,6 @@
       </div>
     </t>
   </div>`;
-    IconPicker.style = css /* scss */ `
-    .o-icon-picker {
-      position: absolute;
-      z-index: 10;
-      box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-      background-color: white;
-      padding: 2px 1px;
-    }
-    .o-cf-icon-line {
-      display: flex;
-      padding: 3px 6px;
-    }
-    .o-icon-picker-item {
-      margin: 0px 2px;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-        outline: 1px solid gray;
-      }
-    }
-  `;
 
     const PREVIEW_TEMPLATE$2 = owl.xml /* xml */ `
     <div class="o-cf-preview-line"
@@ -15020,7 +15033,7 @@
         </div>
     </t>
   </div>`;
-    const CSS$j = css /* scss */ `
+    css /* scss */ `
   label {
     vertical-align: middle;
   }
@@ -15342,15 +15355,14 @@
             this.colorNumberString = colorNumberString;
         }
         setup() {
-            this.getters = this.env.getters;
-            this.activeSheetId = this.getters.getActiveSheetId();
+            this.activeSheetId = this.env.model.getters.getActiveSheetId();
             this.state = owl.useState({
                 mode: "list",
                 errors: [],
                 rules: this.getDefaultRules(),
             });
-            const sheetId = this.getters.getActiveSheetId();
-            const rules = this.getters.getRulesSelection(sheetId, this.props.selection || []);
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const rules = this.env.model.getters.getRulesSelection(sheetId, this.props.selection || []);
             if (rules.length === 1) {
                 const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
                 if (cf) {
@@ -15358,14 +15370,14 @@
                 }
             }
             owl.onWillUpdateProps((nextProps) => {
-                const newActiveSheetId = this.getters.getActiveSheetId();
+                const newActiveSheetId = this.env.model.getters.getActiveSheetId();
                 if (newActiveSheetId !== this.activeSheetId) {
                     this.activeSheetId = newActiveSheetId;
                     this.switchToList();
                 }
                 else if (nextProps.selection !== this.props.selection) {
-                    const sheetId = this.getters.getActiveSheetId();
-                    const rules = this.getters.getRulesSelection(sheetId, nextProps.selection || []);
+                    const sheetId = this.env.model.getters.getActiveSheetId();
+                    const rules = this.env.model.getters.getRulesSelection(sheetId, nextProps.selection || []);
                     if (rules.length === 1) {
                         const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
                         if (cf) {
@@ -15380,7 +15392,7 @@
             owl.useExternalListener(window, "click", this.closeMenus);
         }
         get conditionalFormats() {
-            return this.getters.getConditionalFormats(this.getters.getActiveSheetId());
+            return this.env.model.getters.getConditionalFormats(this.env.model.getters.getActiveSheetId());
         }
         get isRangeValid() {
             return this.state.errors.includes(19 /* EmptyRange */);
@@ -15440,13 +15452,15 @@
                     this.state.errors = [20 /* InvalidRange */];
                     return;
                 }
-                const result = this.env.dispatch("ADD_CONDITIONAL_FORMAT", {
+                const result = this.env.model.dispatch("ADD_CONDITIONAL_FORMAT", {
                     cf: {
                         rule: this.getEditorRule(),
-                        id: this.state.mode === "edit" ? this.state.currentCF.id : this.env.uuidGenerator.uuidv4(),
+                        id: this.state.mode === "edit"
+                            ? this.state.currentCF.id
+                            : this.env.model.uuidGenerator.uuidv4(),
                     },
                     target: this.state.currentCF.ranges.map(toZone),
-                    sheetId: this.getters.getActiveSheetId(),
+                    sheetId: this.env.model.getters.getActiveSheetId(),
                 });
                 if (!result.isSuccessful) {
                     this.state.errors = result.reasons;
@@ -15511,19 +15525,19 @@
             this.state.mode = "add";
             this.state.currentCFType = "CellIsRule";
             this.state.currentCF = {
-                id: this.env.uuidGenerator.uuidv4(),
-                ranges: this.getters
+                id: this.env.model.uuidGenerator.uuidv4(),
+                ranges: this.env.model.getters
                     .getSelectedZones()
-                    .map((zone) => this.getters.zoneToXC(this.getters.getActiveSheetId(), zone)),
+                    .map((zone) => this.env.model.getters.zoneToXC(this.env.model.getters.getActiveSheetId(), zone)),
             };
         }
         /**
          * Delete a CF
          */
         deleteConditionalFormat(cf) {
-            this.env.dispatch("REMOVE_CONDITIONAL_FORMAT", {
+            this.env.model.dispatch("REMOVE_CONDITIONAL_FORMAT", {
                 id: cf.id,
-                sheetId: this.getters.getActiveSheetId(),
+                sheetId: this.env.model.getters.getActiveSheetId(),
             });
         }
         /**
@@ -15683,7 +15697,6 @@
         }
     }
     ConditionalFormattingPanel.template = TEMPLATE$l;
-    ConditionalFormattingPanel.style = CSS$j;
     ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
 
     const TEMPLATE$k = owl.xml /* xml */ `
@@ -15693,9 +15706,9 @@
     <div class="o-input-search-container">
       <input type="text" class="o-input o-input-with-count" t-on-input="onInput" t-on-keydown="onKeydownSearch"/>
       <div class="o-input-count" t-if="hasSearchResult">
-        <t t-esc="env.getters.getCurrentSelectedMatchIndex()+1"/>
+        <t t-esc="env.model.getters.getCurrentSelectedMatchIndex()+1"/>
         /
-        <t t-esc="env.getters.getSearchMatches().length"/>
+        <t t-esc="env.model.getters.getSearchMatches().length"/>
       </div>
     </div>
     <div>
@@ -15729,7 +15742,7 @@
             class="o-sidePanelButton"
             t-esc="env._t('${FindAndReplaceTerms.Next}')"/>
   </div>
-  <div class="o-section" t-if="!getters.isReadonly()">
+  <div class="o-section" t-if="!env.model.getters.isReadonly()">
     <div t-esc="env._t('${FindAndReplaceTerms.Replace}')" class="o-section-title"/>
     <div class="o-input-search-container">
       <input type="text" class="o-input o-input-without-count" t-model="state.replaceWith" t-on-keydown="onKeydownReplace"/>
@@ -15744,16 +15757,16 @@
     </div>
   </div>
 
-  <div class="o-sidePanelButtons" t-if="!getters.isReadonly()">
-    <button t-att-disabled="env.getters.getCurrentSelectedMatchIndex() === null" t-on-click="replace"
+  <div class="o-sidePanelButtons" t-if="!env.model.getters.isReadonly()">
+    <button t-att-disabled="env.model.getters.getCurrentSelectedMatchIndex() === null" t-on-click="replace"
             class="o-sidePanelButton" t-esc="env._t('${FindAndReplaceTerms.Replace}')"/>
-    <button t-att-disabled="env.getters.getCurrentSelectedMatchIndex() === null" t-on-click="replaceAll"
+    <button t-att-disabled="env.model.getters.getCurrentSelectedMatchIndex() === null" t-on-click="replaceAll"
             class="o-sidePanelButton" t-esc="env._t('${FindAndReplaceTerms.ReplaceAll}')"/>
   </div>
 
 </div>
 `;
-    const CSS$i = css /* scss */ `
+    css /* scss */ `
   .o-find-and-replace {
     .o-far-item {
       display: block;
@@ -15790,16 +15803,15 @@
     class FindAndReplacePanel extends owl.Component {
         constructor() {
             super(...arguments);
-            this.getters = this.env.getters;
             this.state = owl.useState(this.initialState());
             this.findAndReplaceRef = owl.useRef("findAndReplace");
         }
         get hasSearchResult() {
-            return this.env.getters.getCurrentSelectedMatchIndex() !== null;
+            return this.env.model.getters.getCurrentSelectedMatchIndex() !== null;
         }
         setup() {
             owl.onMounted(() => this.focusInput());
-            owl.onWillUnmount(() => this.env.dispatch("CLEAR_SEARCH"));
+            owl.onWillUnmount(() => this.env.model.dispatch("CLEAR_SEARCH"));
         }
         onInput(ev) {
             this.state.toSearch = ev.target.value;
@@ -15818,26 +15830,28 @@
             }
         }
         onFocusSidePanel() {
-            this.state.searchOptions.searchFormulas = this.getters.shouldShowFormulas();
+            this.state.searchOptions.searchFormulas = this.env.model.getters.shouldShowFormulas();
             this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas
                 ? this.state.searchOptions.searchFormulas
                 : this.state.replaceOptions.modifyFormulas;
-            this.env.dispatch("REFRESH_SEARCH");
+            this.env.model.dispatch("REFRESH_SEARCH");
         }
         searchFormulas() {
-            this.env.dispatch("SET_FORMULA_VISIBILITY", { show: this.state.searchOptions.searchFormulas });
+            this.env.model.dispatch("SET_FORMULA_VISIBILITY", {
+                show: this.state.searchOptions.searchFormulas,
+            });
             this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas;
             this.updateSearch();
         }
         onSelectPreviousCell() {
-            this.env.dispatch("SELECT_SEARCH_PREVIOUS_MATCH");
+            this.env.model.dispatch("SELECT_SEARCH_PREVIOUS_MATCH");
         }
         onSelectNextCell() {
-            this.env.dispatch("SELECT_SEARCH_NEXT_MATCH");
+            this.env.model.dispatch("SELECT_SEARCH_NEXT_MATCH");
         }
         updateSearch() {
             if (this.state.toSearch) {
-                this.env.dispatch("UPDATE_SEARCH", {
+                this.env.model.dispatch("UPDATE_SEARCH", {
                     toSearch: this.state.toSearch,
                     searchOptions: this.state.searchOptions,
                 });
@@ -15848,13 +15862,13 @@
             this.inDebounce = setTimeout(() => this.updateSearch.call(this), 400);
         }
         replace() {
-            this.env.dispatch("REPLACE_SEARCH", {
+            this.env.model.dispatch("REPLACE_SEARCH", {
                 replaceWith: this.state.replaceWith,
                 replaceOptions: this.state.replaceOptions,
             });
         }
         replaceAll() {
-            this.env.dispatch("REPLACE_ALL_SEARCH", {
+            this.env.model.dispatch("REPLACE_ALL_SEARCH", {
                 replaceWith: this.state.replaceWith,
                 replaceOptions: this.state.replaceOptions,
             });
@@ -15885,7 +15899,6 @@
         }
     }
     FindAndReplacePanel.template = TEMPLATE$k;
-    FindAndReplacePanel.style = CSS$i;
 
     const sidePanelRegistry = new Registry();
     sidePanelRegistry.add("ConditionalFormatting", {
@@ -21681,22 +21694,5079 @@
         .add("automatic_sum", AutomaticSumPlugin)
         .add("selection_multiuser", SelectionMultiUserPlugin);
 
-    class LocalTransportService {
-        constructor() {
-            this.listeners = [];
-        }
-        sendMessage(message) {
-            for (const { callback } of this.listeners) {
-                callback(message);
+    /**
+     * Return the o-spreadsheet element position relative
+     * to the browser viewport.
+     */
+    function useSpreadsheetPosition() {
+        const position = owl.useState({ x: 0, y: 0 });
+        let spreadsheetElement = document.querySelector(".o-spreadsheet");
+        function updatePosition() {
+            if (!spreadsheetElement) {
+                spreadsheetElement = document.querySelector(".o-spreadsheet");
+            }
+            if (spreadsheetElement) {
+                const { top, left } = spreadsheetElement.getBoundingClientRect();
+                position.x = left;
+                position.y = top;
             }
         }
-        onNewMessage(id, callback) {
-            this.listeners.push({ id, callback });
+        owl.onMounted(updatePosition);
+        owl.onPatched(updatePosition);
+        return position;
+    }
+    /**
+     * Return the component (or ref's component) top left position (in pixels) relative
+     * to the upper left corner of the spreadsheet.
+     *
+     * Note: when used with a <Portal/> component, it will
+     * return the portal position, not the teleported position.
+     */
+    function useAbsolutePosition(ref) {
+        const position = owl.useState({ x: 0, y: 0 });
+        const spreadsheet = useSpreadsheetPosition();
+        function updateElPosition() {
+            const el = ref.el;
+            const { top, left } = el.getBoundingClientRect();
+            const x = left - spreadsheet.x;
+            const y = top - spreadsheet.y;
+            if (x !== position.x || y !== position.y) {
+                position.x = x;
+                position.y = y;
+            }
         }
-        leave(id) {
-            this.listeners = this.listeners.filter((listener) => listener.id !== id);
+        owl.onMounted(updateElPosition);
+        owl.onPatched(updateElPosition);
+        return position;
+    }
+
+    const TEMPLATE$j = owl.xml /* xml */ `
+  <t t-portal="'.o-spreadsheet'">
+    <div t-att-style="style">
+      <t t-slot="default"/>
+    </div>
+  </t>
+`;
+    class Popover extends owl.Component {
+        get style() {
+            const horizontalPosition = `left:${this.horizontalPosition()}`;
+            const verticalPosition = `top:${this.verticalPosition()}`;
+            const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
+            return `
+      position: absolute;
+      z-index: 5;
+      ${verticalPosition}px;
+      ${horizontalPosition}px;
+      ${height}px;
+      width:${this.props.childWidth}px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
+    `;
+        }
+        get viewportDimension() {
+            return this.env.model.getters.getViewportDimensionWithHeaders();
+        }
+        get shouldRenderRight() {
+            const { x } = this.props.position;
+            return x + this.props.childWidth < this.viewportDimension.width;
+        }
+        get shouldRenderBottom() {
+            const { y } = this.props.position;
+            return y + this.props.childHeight < this.viewportDimension.height + TOPBAR_HEIGHT;
+        }
+        horizontalPosition() {
+            const { x } = this.props.position;
+            if (this.shouldRenderRight) {
+                return x;
+            }
+            return x - this.props.childWidth - this.props.flipHorizontalOffset;
+        }
+        verticalPosition() {
+            const { y } = this.props.position;
+            if (this.shouldRenderBottom) {
+                return y;
+            }
+            return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
         }
     }
+    Popover.template = TEMPLATE$j;
+    Popover.defaultProps = {
+        flipHorizontalOffset: 0,
+        flipVerticalOffset: 0,
+        verticalOffset: 0,
+        marginTop: 0,
+    };
+
+    //------------------------------------------------------------------------------
+    // Context Menu Component
+    //------------------------------------------------------------------------------
+    const TEMPLATE$i = owl.xml /* xml */ `
+    <Popover
+      position="props.position"
+      childWidth="${MENU_WIDTH}"
+      childHeight="menuHeight"
+      flipHorizontalOffset="popover.flipHorizontalOffset"
+      flipVerticalOffset="popover.flipVerticalOffset"
+      marginTop="popover.marginTop"
+      >
+      <div t-ref="menu" class="o-menu" t-on-scroll="onScroll" t-on-wheel.stop="" t-on-click.stop="">
+        <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
+          <t t-set="isMenuRoot" t-value="isRoot(menuItem)"/>
+          <t t-set="isMenuEnabled" t-value="isEnabled(menuItem)"/>
+          <div
+            t-att-title="getName(menuItem)"
+            t-att-data-name="menuItem.id"
+            t-on-click="() => this.onClickMenu(menuItem, menuItem_index)"
+            t-on-mouseover="() => this.onMouseOver(menuItem, menuItem_index)"
+            class="o-menu-item"
+            t-att-class="{
+              'o-menu-root': isMenuRoot,
+              'disabled': !isMenuEnabled,
+            }">
+            <t t-esc="getName(menuItem)"/>
+            <span class="o-menu-item-shortcut" t-esc="getShortCut(menuItem)"/>
+            <t t-if="isMenuRoot">
+              ${TRIANGLE_RIGHT_ICON}
+            </t>
+            <t t-elif="menuItem.icon">
+              <i t-att-class="menuItem.icon" class="o-menu-item-icon"/>
+            </t>
+          </div>
+          <div t-if="menuItem.separator and !menuItem_last" class="o-separator"/>
+        </t>
+      </div>
+      <Menu t-if="subMenu.isOpen"
+        position="subMenuPosition"
+        menuItems="subMenu.menuItems"
+        depth="props.depth + 1"
+        onMenuClicked="props.onMenuClicked"
+        onClose="() => this.close()"/>
+    </Popover>`;
+    css /* scss */ `
+  .o-menu {
+    background-color: white;
+    padding: 8px 0px;
+    .o-menu-item {
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+      height: ${MENU_ITEM_HEIGHT}px;
+      padding: 4px 16px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      user-select: none;
+
+      &.o-menu-root {
+        display: flex;
+        justify-content: space-between;
+      }
+      .o-menu-item-icon {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+      .o-icon {
+        width: 10px;
+      }
+
+      &:not(.disabled) {
+        &:hover {
+          background-color: #ebebeb;
+        }
+        .o-menu-item-shortcut {
+          color: grey;
+        }
+      }
+      &.disabled {
+        color: ${MENU_ITEM_DISABLED_COLOR};
+        cursor: not-allowed;
+      }
+    }
+
+    .o-separator {
+      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
+      margin-top: ${MENU_SEPARATOR_PADDING}px;
+      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
+    }
+  }
+`;
+    class Menu extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.subMenu = owl.useState({
+                isOpen: false,
+                position: null,
+                scrollOffset: 0,
+                menuItems: [],
+            });
+            this.menuRef = owl.useRef("menu");
+            this.position = useAbsolutePosition(this.menuRef);
+        }
+        setup() {
+            owl.useExternalListener(window, "click", this.onClick);
+            owl.useExternalListener(window, "contextmenu", this.onContextMenu);
+            owl.onWillUpdateProps((nextProps) => {
+                if (nextProps.menuItems !== this.props.menuItems) {
+                    this.subMenu.isOpen = false;
+                }
+            });
+        }
+        get subMenuPosition() {
+            const position = Object.assign({}, this.subMenu.position);
+            position.y -= this.subMenu.scrollOffset || 0;
+            return position;
+        }
+        get menuHeight() {
+            return this.menuComponentHeight(this.props.menuItems);
+        }
+        get subMenuHeight() {
+            return this.menuComponentHeight(this.subMenu.menuItems);
+        }
+        get popover() {
+            const isRoot = this.props.depth === 1;
+            return {
+                // some margin between the header and the component
+                marginTop: HEADER_HEIGHT + 6 + TOPBAR_HEIGHT,
+                flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
+                flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
+            };
+        }
+        async activateMenu(menu) {
+            var _a, _b;
+            const result = await menu.action(this.env);
+            this.close();
+            (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
+        }
+        close() {
+            this.subMenu.isOpen = false;
+            this.props.onClose();
+        }
+        /**
+         * Return the number of pixels between the top of the menu
+         * and the menu item at a given index.
+         */
+        subMenuVerticalPosition(position) {
+            const menusAbove = this.props.menuItems.slice(0, position);
+            return this.menuComponentHeight(menusAbove) + this.position.y;
+        }
+        onClick(ev) {
+            // Don't close a root menu when clicked to open the submenus.
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
+                return;
+            }
+            this.close();
+        }
+        onContextMenu(ev) {
+            // Don't close a root menu when clicked to open the submenus.
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
+                return;
+            }
+            this.subMenu.isOpen = false;
+        }
+        /**
+         * Return the total height (in pixels) needed for some
+         * menu items
+         */
+        menuComponentHeight(menuItems) {
+            const separators = menuItems.filter((m) => m.separator);
+            const others = menuItems;
+            return MENU_ITEM_HEIGHT * others.length + separators.length * MENU_SEPARATOR_HEIGHT;
+        }
+        getName(menu) {
+            return cellMenuRegistry.getName(menu, this.env);
+        }
+        getShortCut(menu) {
+            return cellMenuRegistry.getShortCut(menu);
+        }
+        isRoot(menu) {
+            return !menu.action;
+        }
+        isEnabled(menu) {
+            if (menu.isEnabled(this.env)) {
+                return this.env.model.getters.isReadonly() ? menu.isReadonlyAllowed : true;
+            }
+            return false;
+        }
+        onScroll(ev) {
+            this.subMenu.scrollOffset = ev.target.scrollTop;
+        }
+        /**
+         * If the given menu is not disabled, open it's submenu at the
+         * correct position according to available surrounding space.
+         */
+        openSubMenu(menu, position) {
+            const y = this.subMenuVerticalPosition(position);
+            this.subMenu.position = {
+                x: this.position.x + MENU_WIDTH,
+                y: y - (this.subMenu.scrollOffset || 0),
+            };
+            this.subMenu.menuItems = cellMenuRegistry.getChildren(menu, this.env);
+            this.subMenu.isOpen = true;
+        }
+        onClickMenu(menu, position) {
+            if (this.isEnabled(menu)) {
+                if (this.isRoot(menu)) {
+                    this.openSubMenu(menu, position);
+                }
+                else {
+                    this.activateMenu(menu);
+                }
+            }
+        }
+        onMouseOver(menu, position) {
+            if (menu.isEnabled(this.env)) {
+                if (this.isRoot(menu)) {
+                    this.openSubMenu(menu, position);
+                }
+                else {
+                    this.subMenu.isOpen = false;
+                }
+            }
+        }
+    }
+    Menu.template = TEMPLATE$i;
+    Menu.components = { Menu, Popover };
+    Menu.defaultProps = {
+        depth: 1,
+    };
+
+    // -----------------------------------------------------------------------------
+    // SpreadSheet
+    // -----------------------------------------------------------------------------
+    const TEMPLATE$h = owl.xml /* xml */ `
+  <div class="o-spreadsheet-bottom-bar o-two-columns" t-on-click="props.onClick" t-ref="bottomBar">
+    <div class="o-sheet-item o-add-sheet" t-att-class="{'disabled': env.model.getters.isReadonly()}" t-on-click="addSheet">${PLUS}</div>
+    <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
+    <div class="o-all-sheets">
+      <t t-foreach="env.model.getters.getSheets()" t-as="sheet" t-key="sheet.id">
+        <div class="o-sheet-item o-sheet" t-on-click="(ev) => this.activateSheet(sheet.id, ev)"
+             t-on-contextmenu.prevent="(ev) => this.onContextMenu(sheet.id, ev)"
+             t-att-title="sheet.name"
+             t-att-data-id="sheet.id"
+             t-att-class="{active: sheet.id === env.model.getters.getActiveSheetId()}">
+          <span class="o-sheet-name" t-esc="sheet.name" t-on-dblclick="(ev) => this.onDblClick(sheet.id, ev)"/>
+          <span class="o-sheet-icon" t-on-click.stop="(ev) => this.onIconClick(sheet.id, ev)">${TRIANGLE_DOWN_ICON}</span>
+        </div>
+      </t>
+    </div>
+
+    <t t-set="selectedStatistic" t-value="getSelectedStatistic()"/>
+    <div t-if="selectedStatistic !== undefined" class="o-selection-statistic" t-on-click="listSelectionStatistics">
+      <t t-esc="selectedStatistic"/>
+      <span>${TRIANGLE_DOWN_ICON}</span>
+    </div>
+
+    <Menu t-if="menuState.isOpen"
+          position="menuState.position"
+          menuItems="menuState.menuItems"
+          onClose="() => this.menuState.isOpen=false"/>
+  </div>`;
+    css /* scss */ `
+  .o-spreadsheet-bottom-bar {
+    background-color: ${BACKGROUND_GRAY_COLOR};
+    padding-left: ${HEADER_WIDTH}px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    border-top: 1px solid lightgrey;
+    overflow: hidden;
+
+    .o-add-sheet,
+    .o-list-sheets {
+      margin-right: 5px;
+    }
+
+    .o-add-sheet.disabled {
+      cursor: not-allowed;
+    }
+
+    .o-sheet-item {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+    }
+
+    .o-all-sheets {
+      display: flex;
+      align-items: center;
+      max-width: 80%;
+      overflow: hidden;
+    }
+
+    .o-sheet {
+      color: #666;
+      padding: 0 15px;
+      padding-right: 10px;
+      height: ${BOTTOMBAR_HEIGHT}px;
+      line-height: ${BOTTOMBAR_HEIGHT}px;
+      user-select: none;
+      white-space: nowrap;
+      border-left: 1px solid #c1c1c1;
+
+      &:last-child {
+        border-right: 1px solid #c1c1c1;
+      }
+
+      &.active {
+        color: #484;
+        background-color: white;
+        box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+      }
+
+      .o-sheet-icon {
+        margin-left: 5px;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
+    }
+
+    .o-selection-statistic {
+      background-color: white;
+      margin-left: auto;
+      font-size: 14px;
+      margin-right: 20px;
+      padding: 4px 8px;
+      color: #333;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+      user-select: none;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+    }
+
+    .fade-enter-active {
+      transition: opacity 0.5s;
+    }
+
+    .fade-enter {
+      opacity: 0;
+    }
+  }
+`;
+    class BottomBar extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.bottomBarRef = owl.useRef("bottomBar");
+            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
+            this.selectedStatisticFn = "";
+        }
+        setup() {
+            owl.onMounted(() => this.focusSheet());
+            owl.onPatched(() => this.focusSheet());
+        }
+        focusSheet() {
+            const div = this.bottomBarRef.el.querySelector(`[data-id="${this.env.model.getters.getActiveSheetId()}"]`);
+            if (div && div.scrollIntoView) {
+                div.scrollIntoView();
+            }
+        }
+        addSheet() {
+            const activeSheetId = this.env.model.getters.getActiveSheetId();
+            const position = this.env.model.getters.getVisibleSheets().findIndex((sheetId) => sheetId === activeSheetId) +
+                1;
+            const sheetId = this.env.model.uuidGenerator.uuidv4();
+            this.env.model.dispatch("CREATE_SHEET", { sheetId, position });
+            this.env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
+        }
+        listSheets(ev) {
+            const registry = new MenuItemRegistry();
+            const from = this.env.model.getters.getActiveSheetId();
+            let i = 0;
+            for (let sheet of this.env.model.getters.getSheets()) {
+                registry.add(sheet.id, {
+                    name: sheet.name,
+                    sequence: i,
+                    isReadonlyAllowed: true,
+                    action: (env) => env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: from, sheetIdTo: sheet.id }),
+                });
+                i++;
+            }
+            const target = ev.currentTarget;
+            this.openContextMenu(target.offsetLeft, target.offsetTop, registry);
+        }
+        activateSheet(name) {
+            this.env.model.dispatch("ACTIVATE_SHEET", {
+                sheetIdFrom: this.env.model.getters.getActiveSheetId(),
+                sheetIdTo: name,
+            });
+        }
+        onDblClick(sheetId) {
+            interactiveRenameSheet(this.env, sheetId);
+        }
+        openContextMenu(x, y, registry) {
+            this.menuState.isOpen = true;
+            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
+            this.menuState.position = { x, y };
+        }
+        onIconClick(sheet, ev) {
+            if (this.env.model.getters.getActiveSheetId() !== sheet) {
+                this.activateSheet(sheet);
+            }
+            if (this.menuState.isOpen) {
+                this.menuState.isOpen = false;
+            }
+            else {
+                const target = ev.currentTarget.parentElement;
+                this.openContextMenu(target.offsetLeft, target.offsetTop, sheetMenuRegistry);
+            }
+        }
+        onContextMenu(sheet, ev) {
+            if (this.env.model.getters.getActiveSheetId() !== sheet) {
+                this.activateSheet(sheet);
+            }
+            const target = ev.currentTarget;
+            this.openContextMenu(target.offsetLeft, target.offsetTop, sheetMenuRegistry);
+        }
+        getSelectedStatistic() {
+            const statisticFnResults = this.env.model.getters.getStatisticFnResults();
+            // don't display button if no function has a result
+            if (Object.values(statisticFnResults).every((result) => result === undefined)) {
+                return undefined;
+            }
+            if (this.selectedStatisticFn === "") {
+                this.selectedStatisticFn = Object.keys(statisticFnResults)[0];
+            }
+            return this.getComposedFnName(this.selectedStatisticFn, statisticFnResults[this.selectedStatisticFn]);
+        }
+        listSelectionStatistics(ev) {
+            const registry = new MenuItemRegistry();
+            let i = 0;
+            for (let [fnName, fnValue] of Object.entries(this.env.model.getters.getStatisticFnResults())) {
+                registry.add(fnName, {
+                    name: this.getComposedFnName(fnName, fnValue),
+                    sequence: i,
+                    isReadonlyAllowed: true,
+                    action: () => {
+                        this.selectedStatisticFn = fnName;
+                    },
+                });
+                i++;
+            }
+            const target = ev.currentTarget;
+            this.openContextMenu(target.offsetLeft + target.offsetWidth, target.offsetTop, registry);
+        }
+        getComposedFnName(fnName, fnValue) {
+            return fnName + ": " + (fnValue !== undefined ? formatStandardNumber(fnValue) : "__");
+        }
+    }
+    BottomBar.template = TEMPLATE$h;
+    BottomBar.components = { Menu };
+
+    function startDnd(onMouseMove, onMouseUp) {
+        const _onMouseUp = (ev) => {
+            onMouseUp(ev);
+            window.removeEventListener("mouseup", _onMouseUp);
+            window.removeEventListener("dragstart", _onDragStart);
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("wheel", onMouseMove);
+        };
+        function _onDragStart(ev) {
+            ev.preventDefault();
+        }
+        window.addEventListener("mouseup", _onMouseUp);
+        window.addEventListener("dragstart", _onDragStart);
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("wheel", onMouseMove);
+    }
+    /**
+     * Function to be used during a mousedown event, this function allows to
+     * perform actions related to the mousemove and mouseup events and adjusts the viewport
+     * when the new position related to the mousemove event is outside of it.
+     * Among inputs are two callback functions. First intended for actions performed during
+     * the mousemove event, it receives as parameters the current position of the mousemove
+     * (occurrence of the current column and the current row). Second intended for actions
+     * performed during the mouseup event.
+     */
+    function dragAndDropBeyondTheViewport(element, env, cbMouseMove, cbMouseUp) {
+        const position = element.getBoundingClientRect();
+        let timeOutId = null;
+        let currentEv;
+        const onMouseMove = (ev) => {
+            currentEv = ev;
+            if (timeOutId) {
+                return;
+            }
+            const offsetX = currentEv.clientX - position.left;
+            const offsetY = currentEv.clientY - position.top;
+            const edgeScrollInfoX = env.model.getters.getEdgeScrollCol(offsetX);
+            const edgeScrollInfoY = env.model.getters.getEdgeScrollRow(offsetY);
+            const { top, left, bottom, right } = env.model.getters.getActiveSnappedViewport();
+            let colIndex;
+            if (edgeScrollInfoX.canEdgeScroll) {
+                colIndex = edgeScrollInfoX.direction > 0 ? right : left - 1;
+            }
+            else {
+                colIndex = env.model.getters.getColIndex(offsetX, left);
+            }
+            let rowIndex;
+            if (edgeScrollInfoY.canEdgeScroll) {
+                rowIndex = edgeScrollInfoY.direction > 0 ? bottom : top - 1;
+            }
+            else {
+                rowIndex = env.model.getters.getRowIndex(offsetY, top);
+            }
+            cbMouseMove(colIndex, rowIndex);
+            if (edgeScrollInfoX.canEdgeScroll) {
+                const { left, offsetY } = env.model.getters.getActiveSnappedViewport();
+                const { cols } = env.model.getters.getActiveSheet();
+                const offsetX = cols[left + edgeScrollInfoX.direction].start;
+                env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+                timeOutId = setTimeout(() => {
+                    timeOutId = null;
+                    onMouseMove(currentEv);
+                }, Math.round(edgeScrollInfoX.delay));
+            }
+            if (edgeScrollInfoY.canEdgeScroll) {
+                const { top, offsetX } = env.model.getters.getActiveSnappedViewport();
+                const { rows } = env.model.getters.getActiveSheet();
+                const offsetY = rows[top + edgeScrollInfoY.direction].start;
+                env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+                timeOutId = setTimeout(() => {
+                    timeOutId = null;
+                    onMouseMove(currentEv);
+                }, Math.round(edgeScrollInfoX.delay));
+            }
+        };
+        const onMouseUp = () => {
+            clearTimeout(timeOutId);
+            cbMouseUp();
+        };
+        startDnd(onMouseMove, onMouseUp);
+    }
+
+    // -----------------------------------------------------------------------------
+    // Autofill
+    // -----------------------------------------------------------------------------
+    const TEMPLATE$g = owl.xml /* xml */ `
+  <div class="o-autofill" t-on-mousedown="onMouseDown" t-att-style="style" t-on-dblclick="onDblClick">
+    <div class="o-autofill-handler" t-att-style="styleHandler"/>
+    <t t-set="tooltip" t-value="getTooltip()"/>
+    <div t-if="tooltip" class="o-autofill-nextvalue" t-att-style="styleNextvalue">
+      <t t-component="tooltip.component" t-props="tooltip.props"/>
+    </div>
+  </div>
+`;
+    css /* scss */ `
+  .o-autofill {
+    height: 6px;
+    width: 6px;
+    border: 1px solid white;
+    position: absolute;
+    background-color: #1a73e8;
+
+    .o-autofill-handler {
+      position: absolute;
+      height: ${AUTOFILL_EDGE_LENGTH}px;
+      width: ${AUTOFILL_EDGE_LENGTH}px;
+
+      &:hover {
+        cursor: crosshair;
+      }
+    }
+
+    .o-autofill-nextvalue {
+      position: absolute;
+      background-color: white;
+      border: 1px solid black;
+      padding: 5px;
+      font-size: 12px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+  }
+`;
+    class Autofill extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                position: { left: 0, top: 0 },
+                handler: false,
+            });
+        }
+        get style() {
+            const { left, top } = this.props.position;
+            return `top:${top}px;left:${left}px`;
+        }
+        get styleHandler() {
+            let position = this.state.handler ? this.state.position : { left: 0, top: 0 };
+            return `top:${position.top}px;left:${position.left}px;`;
+        }
+        get styleNextvalue() {
+            let position = this.state.handler ? this.state.position : { left: 0, top: 0 };
+            return `top:${position.top + 5}px;left:${position.left + 15}px;`;
+        }
+        getTooltip() {
+            const tooltip = this.env.model.getters.getAutofillTooltip();
+            if (tooltip && !tooltip.component) {
+                tooltip.component = TooltipComponent;
+            }
+            return tooltip;
+        }
+        onMouseDown(ev) {
+            this.state.handler = true;
+            this.state.position = { left: 0, top: 0 };
+            const { offsetY, offsetX } = this.env.model.getters.getActiveSnappedViewport();
+            const start = {
+                left: ev.clientX + offsetX,
+                top: ev.clientY + offsetY,
+            };
+            let lastCol;
+            let lastRow;
+            const onMouseUp = () => {
+                this.state.handler = false;
+                this.env.model.dispatch("AUTOFILL");
+            };
+            const onMouseMove = (ev) => {
+                const position = this.props.getGridBoundingClientRect();
+                const { top: viewportTop, left: viewportLeft, offsetY, offsetX, } = this.env.model.getters.getActiveSnappedViewport();
+                this.state.position = {
+                    left: ev.clientX - start.left + offsetX,
+                    top: ev.clientY - start.top + offsetY,
+                };
+                const col = this.env.model.getters.getColIndex(ev.clientX - position.left, viewportLeft);
+                const row = this.env.model.getters.getRowIndex(ev.clientY - position.top, viewportTop);
+                if (lastCol !== col || lastRow !== row) {
+                    const activeSheet = this.env.model.getters.getActiveSheet();
+                    lastCol = col === -1 ? lastCol : clip(col, 0, activeSheet.cols.length);
+                    lastRow = row === -1 ? lastRow : clip(row, 0, activeSheet.rows.length);
+                    if (lastCol !== undefined && lastRow !== undefined) {
+                        this.env.model.dispatch("AUTOFILL_SELECT", { col: lastCol, row: lastRow });
+                    }
+                }
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onDblClick() {
+            this.env.model.dispatch("AUTOFILL_AUTO");
+        }
+    }
+    Autofill.template = TEMPLATE$g;
+    class TooltipComponent extends owl.Component {
+    }
+    TooltipComponent.template = owl.xml /* xml */ `
+    <div t-esc="props.content"/>
+  `;
+
+    const TEMPLATE$f = owl.xml /* xml */ `
+  <div>
+    <div
+      class="o-client-tag"
+      t-att-style="tagStyle"
+      t-esc="props.name"
+    />
+  </div>
+`;
+    css /* scss */ `
+  .o-client-tag {
+    position: absolute;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    font-size: ${DEFAULT_FONT_SIZE};
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+  }
+`;
+    class ClientTag extends owl.Component {
+        get tagStyle() {
+            const { col, row, color } = this.props;
+            const viewport = this.env.model.getters.getActiveSnappedViewport();
+            const { height } = this.env.model.getters.getViewportDimensionWithHeaders();
+            const [x, y, ,] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
+            return `bottom: ${height - y + 15}px;left: ${x - 1}px;border: 1px solid ${color};background-color: ${color};${this.props.active ? "opacity:1 !important" : ""}`;
+        }
+    }
+    ClientTag.template = TEMPLATE$f;
+
+    const functions$1 = functionRegistry.content;
+    const providerRegistry = new Registry();
+    providerRegistry.add("functions", () => {
+        return Object.keys(functions$1).map((key) => {
+            return {
+                text: key,
+                description: functions$1[key].description,
+            };
+        });
+    });
+    // -----------------------------------------------------------------------------
+    // Autocomplete DropDown component
+    // -----------------------------------------------------------------------------
+    const TEMPLATE$e = owl.xml /* xml */ `
+  <div t-att-class="{'o-autocomplete-dropdown':state.values.length}"
+       t-att-style="state.values.length > 0 ? props.borderStyle : null"
+    >
+    <t t-foreach="state.values" t-as="v" t-key="v.text">
+        <div t-att-class="{'o-autocomplete-value-focus': state.selectedIndex === v_index}" t-on-click.stop.prevent="() => this.fillValue(v_index)">
+             <div class="o-autocomplete-value" t-esc="v.text"/>
+             <div class="o-autocomplete-description" t-esc="v.description" t-if="state.selectedIndex === v_index"/>
+        </div>
+    </t>
+  </div>`;
+    css /* scss */ `
+  .o-autocomplete-dropdown {
+    pointer-events: auto;
+    background-color: #fff;
+    & > div:hover {
+      background-color: #f2f2f2;
+    }
+    .o-autocomplete-value-focus {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      padding: 1px 0 5px 5px;
+      .o-autocomplete-description {
+        padding: 0 0 0 5px;
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+`;
+    class TextValueProvider extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                values: [],
+                selectedIndex: 0,
+            });
+        }
+        setup() {
+            owl.onMounted(() => this.filter(this.props.search));
+            owl.onWillUpdateProps((nextProps) => this.checkUpdateProps(nextProps));
+            this.props.exposeAPI({
+                getValueToFill: () => this.getValueToFill(),
+                moveDown: () => this.moveDown(),
+                moveUp: () => this.moveUp(),
+            });
+        }
+        checkUpdateProps(nextProps) {
+            if (nextProps.search !== this.props.search) {
+                this.filter(nextProps.search);
+            }
+        }
+        async filter(searchTerm) {
+            const provider = providerRegistry.get(this.props.provider);
+            let values = provider();
+            if (this.props.filter) {
+                values = this.props.filter(searchTerm, values);
+            }
+            else {
+                values = values
+                    .filter((t) => t.text.toUpperCase().startsWith(searchTerm.toUpperCase()))
+                    .sort((l, r) => (l.text < r.text ? -1 : l.text > r.text ? 1 : 0));
+            }
+            this.state.values = values.slice(0, 10);
+            this.state.selectedIndex = 0;
+        }
+        fillValue(index) {
+            this.state.selectedIndex = index;
+            this.props.onCompleted(this.getValueToFill());
+        }
+        moveDown() {
+            this.state.selectedIndex = (this.state.selectedIndex + 1) % this.state.values.length;
+        }
+        moveUp() {
+            this.state.selectedIndex--;
+            if (this.state.selectedIndex < 0) {
+                this.state.selectedIndex = this.state.values.length - 1;
+            }
+        }
+        getValueToFill() {
+            if (this.state.values.length) {
+                return this.state.values[this.state.selectedIndex].text;
+            }
+            return undefined;
+        }
+    }
+    TextValueProvider.template = TEMPLATE$e;
+
+    class ContentEditableHelper {
+        constructor(el) {
+            this.el = el;
+        }
+        updateEl(el) {
+            this.el = el;
+        }
+        /**
+         * select the text at position start to end, no matter the children
+         */
+        selectRange(start, end) {
+            let selection = window.getSelection();
+            this.removeSelection();
+            let range = document.createRange();
+            if (start == end && start === 0) {
+                range.setStart(this.el, 0);
+                range.setEnd(this.el, 0);
+                selection.addRange(range);
+            }
+            else {
+                if (start < 0 || end > this.el.textContent.length) {
+                    console.warn(`wrong selection asked start ${start}, end ${end}, text content length ${this.el.textContent.length}`);
+                    if (start < 0)
+                        start = 0;
+                    if (end > this.el.textContent.length)
+                        end = this.el.textContent.length;
+                }
+                let startNode = this.findChildAtCharacterIndex(start);
+                let endNode = this.findChildAtCharacterIndex(end);
+                range.setStart(startNode.node, startNode.offset);
+                selection.addRange(range);
+                selection.extend(endNode.node, endNode.offset);
+            }
+        }
+        /**
+         * finds the dom element that contains the character at `offset`
+         */
+        findChildAtCharacterIndex(offset) {
+            let it = this.iterateChildren(this.el);
+            let current, previous;
+            let usedCharacters = offset;
+            do {
+                current = it.next();
+                if (!current.done && !current.value.hasChildNodes()) {
+                    if (current.value.textContent && current.value.textContent.length < usedCharacters) {
+                        usedCharacters -= current.value.textContent.length;
+                    }
+                    else {
+                        it.return(current.value);
+                    }
+                    previous = current.value;
+                }
+            } while (!current.done);
+            if (current.value) {
+                return { node: current.value, offset: usedCharacters };
+            }
+            return { node: previous, offset: usedCharacters };
+        }
+        /**
+         * Iterate over the dom tree starting at `el` and over all the children depth first.
+         * */
+        *iterateChildren(el) {
+            yield el;
+            if (el.hasChildNodes()) {
+                for (let child of el.childNodes) {
+                    yield* this.iterateChildren(child);
+                }
+            }
+        }
+        /**
+         * Sets (or Replaces all) the text inside the root element in the form of distinctive
+         * span for each element provided in `contents`.
+         *
+         * Each span will have its own fontcolor and specific class if provided in the HtmlContent object.
+         */
+        setText(contents) {
+            if (contents.length === 0) {
+                return;
+            }
+            for (const content of contents) {
+                const span = document.createElement("span");
+                span.innerText = content.value;
+                if (content.color) {
+                    span.style.color = content.color;
+                }
+                if (content.class) {
+                    span.classList.add(content.class);
+                }
+                this.el.appendChild(span);
+            }
+        }
+        /**
+         * remove the current selection of the user
+         * */
+        removeSelection() {
+            let selection = window.getSelection();
+            selection.removeAllRanges();
+        }
+        removeAll() {
+            if (this.el) {
+                while (this.el.firstChild) {
+                    this.el.removeChild(this.el.firstChild);
+                }
+            }
+        }
+        /**
+         * finds the indexes of the current selection.
+         * */
+        getCurrentSelection() {
+            let { startElement, endElement, startSelectionOffset, endSelectionOffset } = this.getStartAndEndSelection();
+            let startSizeBefore = this.findSizeBeforeElement(startElement);
+            let endSizeBefore = this.findSizeBeforeElement(endElement);
+            return {
+                start: startSizeBefore + startSelectionOffset,
+                end: endSizeBefore + endSelectionOffset,
+            };
+        }
+        findSizeBeforeElement(nodeToFind) {
+            let it = this.iterateChildren(this.el);
+            let usedCharacters = 0;
+            let current = it.next();
+            while (!current.done && current.value !== nodeToFind) {
+                if (!current.value.hasChildNodes()) {
+                    if (current.value.textContent) {
+                        usedCharacters += current.value.textContent.length;
+                    }
+                }
+                current = it.next();
+            }
+            return usedCharacters;
+        }
+        getStartAndEndSelection() {
+            const selection = document.getSelection();
+            return {
+                startElement: selection.anchorNode || this.el,
+                startSelectionOffset: selection.anchorOffset,
+                endElement: selection.focusNode || this.el,
+                endSelectionOffset: selection.focusOffset,
+            };
+        }
+    }
+
+    const formulaAssistantTerms = {
+        ABOUT: _lt("ABOUT"),
+        OPTIONAL: _lt("optional"),
+        BY_DEFAULT: _lt("by default"),
+        REPEATABLE: _lt("repeatable"),
+    };
+
+    // -----------------------------------------------------------------------------
+    // Formula Assistant component
+    // -----------------------------------------------------------------------------
+    const TEMPLATE$d = owl.xml /* xml */ `
+  <div class="o-formula-assistant-container"
+       t-att-style="props.borderStyle"
+       t-att-class="{
+         'o-formula-assistant-event-none': assistantState.allowCellSelectionBehind,
+         'o-formula-assistant-event-auto': !assistantState.allowCellSelectionBehind
+         }">
+    <t t-set="context" t-value="getContext()"/>
+    <div class="o-formula-assistant" t-if="context.functionName" t-on-mousemove="onMouseMove"
+         t-att-class="{'o-formula-assistant-transparency': assistantState.allowCellSelectionBehind}">
+
+      <div class="o-formula-assistant-head">
+        <span t-esc="context.functionName"/> (
+        <t t-foreach="context.functionDescription.args" t-as="arg" t-key="arg.name" >
+          <span t-if="arg_index > '0'" >, </span>
+          <span t-att-class="{ 'o-formula-assistant-focus': context.argToFocus === arg_index }" >
+            <span>
+              <span t-if="arg.optional || arg.repeating || arg.default">[</span>
+              <span t-esc="arg.name" />
+              <span t-if="arg.repeating">, ...</span>
+              <span t-if="arg.optional || arg.repeating || arg.default">]</span>
+            </span>
+          </span>
+        </t> )
+      </div>
+
+      <div class="o-formula-assistant-core">
+        <div class="o-formula-assistant-gray" t-esc="env._t('${formulaAssistantTerms.ABOUT}')"/>
+        <div t-esc="context.functionDescription.description"/>
+      </div>
+
+      <t t-foreach="context.functionDescription.args" t-as="arg" t-key="arg.name">
+        <div class="o-formula-assistant-arg"
+            t-att-class="{
+              'o-formula-assistant-gray': context.argToFocus >= '0',
+              'o-formula-assistant-focus': context.argToFocus === arg_index,
+            }" >
+          <div>
+            <span t-esc="arg.name" />
+            <span t-if="arg.optional || arg.repeating || arg.default "> - [<t t-esc="env._t('${formulaAssistantTerms.OPTIONAL}')"/>] </span>
+            <span t-if="arg.default">
+              <t t-esc="arg.defaultValue" />
+              <t t-esc="env._t(' ${formulaAssistantTerms.BY_DEFAULT}')"/>
+            </span>
+            <span t-if="arg.repeating" t-esc="env._t('${formulaAssistantTerms.REPEATABLE}')"/>
+          </div>
+          <div class="o-formula-assistant-arg-description" t-esc="arg.description"/>
+        </div>
+      </t>
+
+    </div>
+  </div>
+`;
+    css /* scss */ `
+  .o-formula-assistant {
+    white-space: normal;
+    background-color: #fff;
+    .o-formula-assistant-head {
+      background-color: #f2f2f2;
+      padding: 10px;
+    }
+    .o-formula-assistant-core {
+      padding: 0px 0px 10px 0px;
+      margin: 10px;
+      border-bottom: 1px solid gray;
+    }
+    .o-formula-assistant-arg {
+      padding: 0px 10px 10px 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .o-formula-assistant-arg-description {
+      font-size: 85%;
+    }
+    .o-formula-assistant-focus {
+      div:first-child,
+      span {
+        color: purple;
+        text-shadow: 0px 0px 1px purple;
+      }
+      div:last-child {
+        color: black;
+      }
+    }
+    .o-formula-assistant-gray {
+      color: gray;
+    }
+  }
+  .o-formula-assistant-container {
+    user-select: none;
+  }
+  .o-formula-assistant-event-none {
+    pointer-events: none;
+  }
+  .o-formula-assistant-event-auto {
+    pointer-events: auto;
+  }
+  .o-formula-assistant-transparency {
+    opacity: 0.3;
+  }
+`;
+    class FunctionDescriptionProvider extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.assistantState = owl.useState({
+                allowCellSelectionBehind: false,
+            });
+            this.timeOutId = 0;
+        }
+        setup() {
+            owl.onWillUnmount(() => {
+                if (this.timeOutId) {
+                    clearTimeout(this.timeOutId);
+                }
+            });
+        }
+        getContext() {
+            return this.props;
+        }
+        onMouseMove() {
+            this.assistantState.allowCellSelectionBehind = true;
+            if (this.timeOutId) {
+                clearTimeout(this.timeOutId);
+            }
+            this.timeOutId = setTimeout(() => {
+                this.assistantState.allowCellSelectionBehind = false;
+            }, 2000);
+        }
+    }
+    FunctionDescriptionProvider.template = TEMPLATE$d;
+
+    const functions = functionRegistry.content;
+    const ASSISTANT_WIDTH = 300;
+    const FunctionColor = "#4a4e4d";
+    const OperatorColor = "#3da4ab";
+    const StringColor = "#f6cd61";
+    const SelectionIndicatorColor = "darkgrey";
+    const NumberColor = "#02c39a";
+    const MatchingParenColor = "pink";
+    const SelectionIndicatorClass = "selector-flag";
+    const tokenColor = {
+        OPERATOR: OperatorColor,
+        NUMBER: NumberColor,
+        STRING: StringColor,
+        FUNCTION: FunctionColor,
+        DEBUGGER: OperatorColor,
+        LEFT_PAREN: FunctionColor,
+        RIGHT_PAREN: FunctionColor,
+        COMMA: FunctionColor,
+    };
+    const TEMPLATE$c = owl.xml /* xml */ `
+<div class="o-composer-container">
+  <div
+    t-att-class="{ 'o-composer': true, 'text-muted': env.model.getters.isReadonly(), 'unfocusable': env.model.getters.isReadonly() }"
+    t-att-style="props.inputStyle"
+    t-ref="o_composer"
+    tabindex="1"
+    t-att-contenteditable="env.model.getters.isReadonly() ? 'false' : 'true'"
+    spellcheck="false"
+
+    t-on-keydown="onKeydown"
+    t-on-mousedown="onMousedown"
+    t-on-input="onInput"
+    t-on-keyup="onKeyup"
+    t-on-click.stop="onClick"
+    t-on-blur="onBlur"
+  />
+
+  <div t-if="props.focus !== 'inactive' and (autoCompleteState.showProvider or functionDescriptionState.showDescription)"
+    class="o-composer-assistant" t-att-style="assistantStyle">
+    <TextValueProvider
+        t-if="autoCompleteState.showProvider"
+        exposeAPI="(api) => this.autocompleteAPI = api"
+        search="autoCompleteState.search"
+        provider="autoCompleteState.provider"
+        onCompleted="(text) => this.onCompleted(text)"
+        borderStyle="borderStyle"
+    />
+    <FunctionDescriptionProvider
+        t-if="functionDescriptionState.showDescription"
+        functionName = "functionDescriptionState.functionName"
+        functionDescription = "functionDescriptionState.functionDescription"
+        argToFocus = "functionDescriptionState.argToFocus"
+        borderStyle="borderStyle"
+    />
+  </div>
+</div>
+  `;
+    css /* scss */ `
+  .o-composer-container {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    z-index: 5;
+    flex-grow: 1;
+    max-height: inherit;
+    .o-composer {
+      caret-color: black;
+      padding-left: 3px;
+      padding-right: 3px;
+      word-break: break-all;
+      &:focus {
+        outline: none;
+      }
+      &.unfocusable {
+        pointer-events: none;
+      }
+      span {
+        white-space: pre;
+        &.${SelectionIndicatorClass}:after {
+          content: "${SelectionIndicator}";
+          color: ${SelectionIndicatorColor};
+        }
+      }
+    }
+    .o-composer-assistant {
+      position: absolute;
+      margin: 4px;
+      pointer-events: none;
+    }
+  }
+
+  /* Custom css to highlight topbar composer on focus */
+  .o-topbar-toolbar .o-composer-container:focus-within {
+    border: 1px solid ${SELECTION_BORDER_COLOR};
+  }
+`;
+    class Composer extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.composerRef = owl.useRef("o_composer");
+            this.contentHelper = new ContentEditableHelper(this.composerRef.el);
+            this.composerState = owl.useState({
+                positionStart: 0,
+                positionEnd: 0,
+            });
+            this.autoCompleteState = owl.useState({
+                showProvider: false,
+                provider: "functions",
+                search: "",
+            });
+            this.functionDescriptionState = owl.useState({
+                showDescription: false,
+                functionName: "",
+                functionDescription: {},
+                argToFocus: 0,
+            });
+            this.isKeyStillDown = false;
+            this.borderStyle = `box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);`;
+            // we can't allow input events to be triggered while we remove and add back the content of the composer in processContent
+            this.shouldProcessInputEvents = false;
+            this.tokens = [];
+            this.keyMapping = {
+                ArrowUp: this.processArrowKeys,
+                ArrowDown: this.processArrowKeys,
+                ArrowLeft: this.processArrowKeys,
+                ArrowRight: this.processArrowKeys,
+                Enter: this.processEnterKey,
+                Escape: this.processEscapeKey,
+                F2: () => console.warn("Not implemented"),
+                F4: () => console.warn("Not implemented"),
+                Tab: (ev) => this.processTabKey(ev),
+            };
+        }
+        get assistantStyle() {
+            if (this.props.delimitation && this.props.rect) {
+                const [cellX, cellY, , cellHeight] = this.props.rect;
+                const remainingHeight = this.props.delimitation.height - (cellY + cellHeight);
+                let assistantStyle = "";
+                if (cellY > remainingHeight) {
+                    // render top
+                    assistantStyle += `
+          top: -8px;
+          transform: translate(0, -100%);
+        `;
+                }
+                if (cellX + ASSISTANT_WIDTH > this.props.delimitation.width) {
+                    // render left
+                    assistantStyle += `right:0px;`;
+                }
+                return (assistantStyle += `width:${ASSISTANT_WIDTH}px;`);
+            }
+            return `width:${ASSISTANT_WIDTH}px;`;
+        }
+        setup() {
+            owl.onMounted(() => {
+                DEBUG.composer = this;
+                const el = this.composerRef.el;
+                this.contentHelper.updateEl(el);
+                this.processContent();
+            });
+            owl.onWillUnmount(() => {
+                var _a, _b;
+                delete DEBUG.composer;
+                (_b = (_a = this.props).onComposerUnmounted) === null || _b === void 0 ? void 0 : _b.call(_a);
+            });
+            owl.onPatched(() => {
+                if (!this.isKeyStillDown) {
+                    this.processContent();
+                }
+            });
+        }
+        // ---------------------------------------------------------------------------
+        // Handlers
+        // ---------------------------------------------------------------------------
+        processArrowKeys(ev) {
+            if (this.env.model.getters.isSelectingForComposer()) {
+                this.functionDescriptionState.showDescription = false;
+                return;
+            }
+            if (this.props.focus === "cellFocus" && !this.autoCompleteState.showProvider) {
+                return;
+            }
+            ev.stopPropagation();
+            if (["ArrowUp", "ArrowDown"].includes(ev.key) &&
+                this.autoCompleteState.showProvider &&
+                this.autocompleteAPI) {
+                ev.preventDefault();
+                if (ev.key === "ArrowUp") {
+                    this.autocompleteAPI.moveUp();
+                }
+                else {
+                    this.autocompleteAPI.moveDown();
+                }
+            }
+        }
+        processTabKey(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
+                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
+                if (autoCompleteValue) {
+                    this.autoComplete(autoCompleteValue);
+                    return;
+                }
+            }
+            else {
+                // when completing with tab, if there is no value to complete, the active cell will be moved to the right.
+                // we can't let the model think that it is for a ref selection.
+                // todo: check if this can be removed someday
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            }
+            const deltaX = ev.shiftKey ? -1 : 1;
+            this.env.model.dispatch("MOVE_POSITION", { deltaX, deltaY: 0 });
+        }
+        processEnterKey(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            this.isKeyStillDown = false;
+            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
+                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
+                if (autoCompleteValue) {
+                    this.autoComplete(autoCompleteValue);
+                    return;
+                }
+            }
+            this.env.model.dispatch("STOP_EDITION");
+            this.env.model.dispatch("MOVE_POSITION", {
+                deltaX: 0,
+                deltaY: ev.shiftKey ? -1 : 1,
+            });
+        }
+        processEscapeKey() {
+            this.env.model.dispatch("STOP_EDITION", { cancel: true });
+        }
+        onKeydown(ev) {
+            var _a, _b;
+            let handler = this.keyMapping[ev.key];
+            let isStopped = false;
+            if (handler) {
+                handler.call(this, ev);
+            }
+            else {
+                isStopped = true;
+                ev.stopPropagation();
+            }
+            const { start, end } = this.contentHelper.getCurrentSelection();
+            if (!this.env.model.getters.isSelectingForComposer()) {
+                this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", { start, end });
+                this.isKeyStillDown = true;
+            }
+            if (!isStopped) {
+                (_b = (_a = this.props).onKeyDown) === null || _b === void 0 ? void 0 : _b.call(_a, ev);
+            }
+        }
+        /*
+         * Triggered automatically by the content-editable between the keydown and key up
+         * */
+        onInput() {
+            if (this.props.focus === "inactive" || !this.shouldProcessInputEvents) {
+                return;
+            }
+            this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            const el = this.composerRef.el;
+            this.env.model.dispatch("SET_CURRENT_CONTENT", {
+                content: el.childNodes.length ? el.textContent : "",
+                selection: this.contentHelper.getCurrentSelection(),
+            });
+        }
+        onKeyup(ev) {
+            this.isKeyStillDown = false;
+            if (this.props.focus === "inactive" || ["Control", "Shift", "Tab", "Enter"].includes(ev.key)) {
+                return;
+            }
+            if (this.autoCompleteState.showProvider && ["ArrowUp", "ArrowDown"].includes(ev.key)) {
+                return; // already processed in keydown
+            }
+            if (this.env.model.getters.isSelectingForComposer() &&
+                ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
+                return; // already processed in keydown
+            }
+            ev.preventDefault();
+            ev.stopPropagation();
+            this.autoCompleteState.showProvider = false;
+            if (ev.ctrlKey && ev.key === " ") {
+                this.autoCompleteState.search = "";
+                this.autoCompleteState.showProvider = true;
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+                return;
+            }
+            const { start: oldStart, end: oldEnd } = this.env.model.getters.getComposerSelection();
+            const { start, end } = this.contentHelper.getCurrentSelection();
+            if (start !== oldStart || end !== oldEnd) {
+                this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", this.contentHelper.getCurrentSelection());
+            }
+            this.processTokenAtCursor();
+            this.processContent();
+        }
+        onMousedown(ev) {
+            if (ev.button > 0) {
+                // not main button, probably a context menu
+                return;
+            }
+            this.contentHelper.removeSelection();
+        }
+        onClick() {
+            if (this.env.model.getters.isReadonly()) {
+                return;
+            }
+            const newSelection = this.contentHelper.getCurrentSelection();
+            this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            if (this.props.focus === "inactive") {
+                this.props.onComposerContentFocused(newSelection);
+            }
+            this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", newSelection);
+            this.processTokenAtCursor();
+        }
+        onBlur() {
+            this.isKeyStillDown = false;
+        }
+        onCompleted(text) {
+            text && this.autoComplete(text);
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        processContent() {
+            this.contentHelper.removeAll(); // removes the content of the composer, to be added just after
+            this.shouldProcessInputEvents = false;
+            if (this.props.focus !== "inactive") {
+                this.contentHelper.selectRange(0, 0); // move the cursor inside the composer at 0 0.
+            }
+            const content = this.getContent();
+            if (content.length !== 0) {
+                this.contentHelper.setText(content);
+                const { start, end } = this.env.model.getters.getComposerSelection();
+                if (this.props.focus !== "inactive") {
+                    // Put the cursor back where it was before the rendering
+                    this.contentHelper.selectRange(start, end);
+                }
+            }
+            this.shouldProcessInputEvents = true;
+        }
+        getContent() {
+            let content;
+            let value = this.env.model.getters.getCurrentContent();
+            if (value === "") {
+                content = [];
+            }
+            else if (value.startsWith("=") && this.env.model.getters.getEditionMode() !== "inactive") {
+                content = this.getColoredTokens();
+            }
+            else {
+                content = [{ value }];
+            }
+            return content;
+        }
+        getColoredTokens() {
+            const tokens = this.env.model.getters.getCurrentTokens();
+            const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
+            const result = [];
+            const { end } = this.env.model.getters.getComposerSelection();
+            for (let token of tokens) {
+                switch (token.type) {
+                    case "OPERATOR":
+                    case "NUMBER":
+                    case "FUNCTION":
+                    case "COMMA":
+                    case "STRING":
+                        result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
+                        break;
+                    case "REFERENCE":
+                        const [xc, sheet] = token.value.split("!").reverse();
+                        result.push({ value: token.value, color: this.rangeColor(xc, sheet) || "#000" });
+                        break;
+                    case "SYMBOL":
+                        let value = token.value;
+                        if (["TRUE", "FALSE"].includes(value.toUpperCase())) {
+                            result.push({ value: token.value, color: NumberColor });
+                        }
+                        else {
+                            result.push({ value: token.value, color: "#000" });
+                        }
+                        break;
+                    case "LEFT_PAREN":
+                    case "RIGHT_PAREN":
+                        // Compute the matching parenthesis
+                        if (tokenAtCursor &&
+                            ["LEFT_PAREN", "RIGHT_PAREN"].includes(tokenAtCursor.type) &&
+                            tokenAtCursor.parenIndex &&
+                            tokenAtCursor.parenIndex === token.parenIndex) {
+                            result.push({ value: token.value, color: MatchingParenColor  });
+                        }
+                        else {
+                            result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
+                        }
+                        break;
+                    default:
+                        result.push({ value: token.value, color: "#000" });
+                        break;
+                }
+                // Note: mode === waitingForRangeSelection implies end === start
+                if (this.env.model.getters.getEditionMode() === "waitingForRangeSelection" &&
+                    end === token.end) {
+                    result[result.length - 1].class = SelectionIndicatorClass;
+                }
+            }
+            return result;
+        }
+        rangeColor(xc, sheetName) {
+            if (this.env.model.getters.getEditionMode() === "inactive") {
+                return undefined;
+            }
+            const highlights = this.env.model.getters.getHighlights();
+            const refSheet = sheetName
+                ? this.env.model.getters.getSheetIdByName(sheetName)
+                : this.env.model.getters.getEditionSheet();
+            const highlight = highlights.find((highlight) => highlight.sheet === refSheet &&
+                isEqual(this.env.model.getters.expandZone(refSheet, toZone(xc)), highlight.zone));
+            return highlight && highlight.color ? highlight.color : undefined;
+        }
+        /**
+         * Compute the state of the composer from the tokenAtCursor.
+         * If the token is a function or symbol (that isn't a cell/range reference) we have to initialize
+         * the autocomplete engine otherwise we initialize the formula assistant.
+         */
+        processTokenAtCursor() {
+            let content = this.env.model.getters.getCurrentContent();
+            this.autoCompleteState.showProvider = false;
+            this.functionDescriptionState.showDescription = false;
+            if (content.startsWith("=")) {
+                const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
+                if (tokenAtCursor) {
+                    const [xc] = tokenAtCursor.value.split("!").reverse();
+                    if (tokenAtCursor.type === "FUNCTION" ||
+                        (tokenAtCursor.type === "SYMBOL" && !rangeReference.test(xc))) {
+                        // initialize Autocomplete Dropdown
+                        this.autoCompleteState.search = tokenAtCursor.value;
+                        this.autoCompleteState.showProvider = true;
+                    }
+                    else if (tokenAtCursor.functionContext && tokenAtCursor.type !== "UNKNOWN") {
+                        // initialize Formula Assistant
+                        const tokenContext = tokenAtCursor.functionContext;
+                        const parentFunction = tokenContext.parent.toUpperCase();
+                        const description = functions[parentFunction];
+                        const argPosition = tokenContext.argPosition;
+                        this.functionDescriptionState.functionName = parentFunction;
+                        this.functionDescriptionState.functionDescription = description;
+                        this.functionDescriptionState.argToFocus = description.getArgToFocus(argPosition + 1) - 1;
+                        this.functionDescriptionState.showDescription = true;
+                    }
+                }
+            }
+        }
+        autoComplete(value) {
+            if (value) {
+                const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
+                if (tokenAtCursor) {
+                    let start = tokenAtCursor.end;
+                    let end = tokenAtCursor.end;
+                    // shouldn't it be REFERENCE ?
+                    if (["SYMBOL", "FUNCTION"].includes(tokenAtCursor.type)) {
+                        start = tokenAtCursor.start;
+                    }
+                    const tokens = this.env.model.getters.getCurrentTokens();
+                    if (this.autoCompleteState.provider && tokens.length) {
+                        value += "(";
+                        const currentTokenIndex = tokens.map((token) => token.start).indexOf(tokenAtCursor.start);
+                        if (currentTokenIndex + 1 < tokens.length) {
+                            const nextToken = tokens[currentTokenIndex + 1];
+                            if (nextToken.type === "LEFT_PAREN") {
+                                end++;
+                            }
+                        }
+                    }
+                    this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", {
+                        start,
+                        end,
+                    });
+                }
+                this.env.model.dispatch("REPLACE_COMPOSER_CURSOR_SELECTION", {
+                    text: value,
+                });
+            }
+            this.processTokenAtCursor();
+        }
+    }
+    Composer.template = TEMPLATE$c;
+    Composer.components = { TextValueProvider, FunctionDescriptionProvider };
+    Composer.defaultProps = {
+        inputStyle: "",
+        focus: "inactive",
+    };
+
+    const SCROLLBAR_WIDTH = 14;
+    const SCROLLBAR_HIGHT = 15;
+    const TEMPLATE$b = owl.xml /* xml */ `
+  <div class="o-grid-composer" t-att-style="containerStyle" t-ref="gridComposer">
+    <Composer
+      focus = "props.focus"
+      inputStyle = "composerStyle"
+      rect = "composerState.rect"
+      delimitation = "composerState.delimitation"
+      onComposerUnmounted="props.onComposerUnmounted"
+      onKeyDown="(ev) => this.onKeyDown(ev)"
+    />
+  </div>
+`;
+    const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
+    css /* scss */ `
+  .o-grid-composer {
+    z-index: 5;
+    box-sizing: border-box;
+    position: absolute;
+    border: ${COMPOSER_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
+  }
+`;
+    /**
+     * This component is a composer which positions itself on the grid at the anchor cell.
+     * It also applies the style of the cell to the composer input.
+     */
+    class GridComposer extends owl.Component {
+        setup() {
+            this.gridComposerRef = owl.useRef("gridComposer");
+            this.composerState = owl.useState({
+                rect: null,
+                delimitation: null,
+            });
+            const [col, row] = this.env.model.getters.getPosition();
+            this.zone = this.env.model.getters.expandZone(this.env.model.getters.getActiveSheetId(), {
+                left: col,
+                right: col,
+                top: row,
+                bottom: row,
+            });
+            this.rect = this.env.model.getters.getRect(this.zone, this.env.model.getters.getActiveSnappedViewport());
+            owl.onMounted(() => {
+                const el = this.gridComposerRef.el;
+                //TODO Should be more correct to have a props that give the parent's clientHeight and clientWidth
+                const maxHeight = el.parentElement.clientHeight - this.rect[1] - SCROLLBAR_HIGHT;
+                el.style.maxHeight = (maxHeight + "px");
+                const maxWidth = el.parentElement.clientWidth - this.rect[0] - SCROLLBAR_WIDTH;
+                el.style.maxWidth = (maxWidth + "px");
+                this.composerState.rect = [this.rect[0], this.rect[1], el.clientWidth, el.clientHeight];
+                this.composerState.delimitation = {
+                    width: el.parentElement.clientWidth,
+                    height: el.parentElement.clientHeight,
+                };
+            });
+        }
+        get containerStyle() {
+            const isFormula = this.env.model.getters.getCurrentContent().startsWith("=");
+            const style = this.env.model.getters.getCurrentStyle();
+            // position style
+            const [left, top, width, height] = this.rect;
+            // color style
+            const background = (!isFormula && style.fillColor) || "#ffffff";
+            const color = (!isFormula && style.textColor) || "#000000";
+            // font style
+            const fontSize = (!isFormula && style.fontSize) || 10;
+            const fontWeight = !isFormula && style.bold ? "bold" : 500;
+            const fontStyle = !isFormula && style.italic ? "italic" : "normal";
+            const textDecoration = !isFormula ? getTextDecoration(style) : "none";
+            // align style
+            let textAlign = "left";
+            if (!isFormula) {
+                const cell = this.env.model.getters.getActiveCell();
+                textAlign = style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign) || "left";
+            }
+            return `
+      left: ${left - 1}px;
+      top: ${top}px;
+      min-width: ${width + 2}px;
+      min-height: ${height + 1}px;
+
+      background: ${background};
+      color: ${color};
+
+      font-size: ${fontSizeMap[fontSize]}px;
+      font-weight: ${fontWeight};
+      font-style: ${fontStyle};
+      text-decoration: ${textDecoration};
+
+      text-align: ${textAlign};
+    `;
+        }
+        get composerStyle() {
+            return `
+      line-height: ${DEFAULT_CELL_HEIGHT}px;
+      max-height: inherit;
+      overflow: hidden;
+    `;
+        }
+        onKeyDown(ev) {
+            // In selecting mode, arrows should not move the cursor but it should
+            // select adjacent cells on the grid.
+            if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
+                ev.preventDefault();
+            }
+        }
+    }
+    GridComposer.template = TEMPLATE$b;
+    GridComposer.components = { Composer };
+
+    const TEMPLATE$a = owl.xml /* xml */ `
+    <div class="o-error-tooltip"> 
+      <t t-esc="props.text"/>
+    </div>
+`;
+    css /* scss */ `
+  .o-error-tooltip {
+    font-size: 13px;
+    background-color: white;
+    border-left: 3px solid red;
+    padding: 10px;
+  }
+`;
+    class ErrorToolTip extends owl.Component {
+    }
+    ErrorToolTip.template = TEMPLATE$a;
+
+    const TEMPLATE$9 = owl.xml /* xml */ `
+<div class="o-chart-container" t-ref="chartContainer">
+  <div class="o-chart-menu" t-on-click="showMenu">${LIST}</div>
+  <canvas t-att-style="canvasStyle" t-ref="graphContainer"/>
+  <Menu t-if="menuState.isOpen"
+    position="menuState.position"
+    menuItems="menuState.menuItems"
+    onClose="() => this.menuState.isOpen=false"/>
+</div>`;
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    css /* scss */ `
+  .o-chart-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .o-chart-menu {
+      right: 0px;
+      display: none;
+      position: absolute;
+      padding: 5px;
+      cursor: pointer;
+    }
+  }
+  .o-figure.active:focus {
+    .o-chart-container {
+      .o-chart-menu {
+        display: flex;
+      }
+    }
+  }
+`;
+    class ChartFigure extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
+            this.canvas = owl.useRef("graphContainer");
+            this.chartContainerRef = owl.useRef("chartContainer");
+            this.state = { background: BACKGROUND_CHART_COLOR };
+            this.position = useAbsolutePosition(this.chartContainerRef);
+        }
+        get canvasStyle() {
+            return `background-color: ${this.state.background}`;
+        }
+        setup() {
+            owl.onMounted(() => {
+                const figure = this.props.figure;
+                const chartData = this.env.model.getters.getChartRuntime(figure.id);
+                if (chartData) {
+                    this.createChart(chartData);
+                }
+            });
+            owl.onPatched(() => {
+                var _a, _b, _c;
+                const figure = this.props.figure;
+                const chartData = this.env.model.getters.getChartRuntime(figure.id);
+                if (chartData) {
+                    if (chartData.type !== this.chart.config.type) {
+                        // Updating a chart type requires to update its options accordingly, if feasible at all.
+                        // Since we trust Chart.js to generate most of its options, it is safer to just start from scratch.
+                        // See https://www.chartjs.org/docs/latest/developers/updates.html
+                        // and https://stackoverflow.com/questions/36949343/chart-js-dynamic-changing-of-chart-type-line-to-bar-as-example
+                        this.chart && this.chart.destroy();
+                        this.createChart(chartData);
+                    }
+                    else if (chartData.data && chartData.data.datasets) {
+                        this.chart.data = chartData.data;
+                        if ((_a = chartData.options) === null || _a === void 0 ? void 0 : _a.title) {
+                            this.chart.config.options.title = chartData.options.title;
+                        }
+                    }
+                    else {
+                        this.chart.data.datasets = undefined;
+                    }
+                    this.chart.config.options.legend = (_b = chartData.options) === null || _b === void 0 ? void 0 : _b.legend;
+                    this.chart.config.options.scales = (_c = chartData.options) === null || _c === void 0 ? void 0 : _c.scales;
+                    this.chart.update({ duration: 0 });
+                }
+                else {
+                    this.chart && this.chart.destroy();
+                }
+                const def = this.env.model.getters.getChartDefinition(figure.id);
+                if (def) {
+                    this.state.background = def.background;
+                }
+            });
+        }
+        createChart(chartData) {
+            const canvas = this.canvas.el;
+            const ctx = canvas.getContext("2d");
+            this.chart = new window.Chart(ctx, chartData);
+            const def = this.env.model.getters.getChartDefinition(this.props.figure.id);
+            if (def) {
+                this.state.background = def.background;
+            }
+        }
+        showMenu(ev) {
+            const registry = new MenuItemRegistry();
+            registry.add("edit", {
+                name: _lt("Edit"),
+                sequence: 1,
+                action: () => this.env.openSidePanel("ChartPanel", { figure: this.props.figure }),
+            });
+            registry.add("delete", {
+                name: _lt("Delete"),
+                sequence: 10,
+                action: () => {
+                    this.env.model.dispatch("DELETE_FIGURE", {
+                        sheetId: this.env.model.getters.getActiveSheetId(),
+                        id: this.props.figure.id,
+                    });
+                    if (this.props.sidePanelIsOpen) {
+                        this.env.toggleSidePanel("ChartPanel", { figure: this.props.figure });
+                    }
+                    this.props.onFigureDeleted();
+                },
+            });
+            registry.add("refresh", {
+                name: _lt("Refresh"),
+                sequence: 11,
+                action: () => {
+                    this.env.model.dispatch("REFRESH_CHART", {
+                        id: this.props.figure.id,
+                    });
+                },
+            });
+            this.openContextMenu(ev.currentTarget, registry);
+        }
+        openContextMenu(target, registry) {
+            const x = target.offsetLeft;
+            const y = target.offsetTop;
+            this.menuState.isOpen = true;
+            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
+            this.menuState.position = {
+                x: this.position.x + x - MENU_WIDTH,
+                y: this.position.y + y,
+            };
+        }
+    }
+    ChartFigure.template = TEMPLATE$9;
+    ChartFigure.components = { Menu };
+
+    const TEMPLATE$8 = owl.xml /* xml */ `<div>
+    <t t-foreach="getVisibleFigures()" t-as="info" t-key="info.id">
+        <div class="o-figure-wrapper"
+             t-att-style="getStyle(info)"
+             t-on-mousedown="(ev) => this.onMouseDown(info.figure, ev)"
+             >
+            <div class="o-figure"
+                 t-att-class="{active: info.isSelected, 'o-dragging': info.id === dnd.figureId}"
+                 t-att-style="getDims(info)"
+                 tabindex="0"
+                 t-on-keydown.stop="(ev) => this.onKeyDown(info.figure, ev)">
+                <t t-component="figureRegistry.get(info.figure.tag).Component"
+                   t-key="info.id"
+                   sidePanelIsOpen="props.sidePanelIsOpen"
+                   onFigureDeleted="props.onFigureDeleted"
+                   figure="info.figure"/>
+                <t t-if="info.isSelected">
+                    <div class="o-anchor o-top" t-on-mousedown.stop="(ev) => resize(info.figure, 0,-1, ev)"/>
+                    <div class="o-anchor o-topRight" t-on-mousedown.stop="(ev) => resize(info.figure, 1,-1, ev)"/>
+                    <div class="o-anchor o-right" t-on-mousedown.stop="(ev) => resize(info.figure, 1,0, ev)"/>
+                    <div class="o-anchor o-bottomRight" t-on-mousedown.stop="(ev) => resize(info.figure, 1,1, ev)"/>
+                    <div class="o-anchor o-bottom" t-on-mousedown.stop="(ev) => resize(info.figure, 0,1, ev)"/>
+                    <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="(ev) => resize(info.figure, -1,1, ev)"/>
+                    <div class="o-anchor o-left" t-on-mousedown.stop="(ev) => resize(info.figure, -1,0, ev)"/>
+                    <div class="o-anchor o-topLeft" t-on-mousedown.stop="(ev) => resize(info.figure, -1,-1, ev)"/>
+                </t>
+            </div>
+        </div>
+    </t>
+</div>
+`;
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    const ANCHOR_SIZE = 8;
+    const BORDER_WIDTH = 1;
+    const ACTIVE_BORDER_WIDTH = 2;
+    const MIN_FIG_SIZE = 80;
+    css /*SCSS*/ `
+  .o-figure-wrapper {
+    overflow: hidden;
+  }
+
+  .o-figure {
+    border: 1px solid black;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    &:focus {
+      outline: none;
+    }
+    &.active {
+      border: ${ACTIVE_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
+      z-index: 1;
+    }
+
+    &.o-dragging {
+      opacity: 0.9;
+      cursor: grabbing;
+    }
+
+    .o-anchor {
+      z-index: 1000;
+      position: absolute;
+      outline: ${BORDER_WIDTH}px solid white;
+      width: ${ANCHOR_SIZE}px;
+      height: ${ANCHOR_SIZE}px;
+      background-color: #1a73e8;
+      &.o-top {
+        top: -${ANCHOR_SIZE / 2}px;
+        right: calc(50% - 4px);
+        cursor: n-resize;
+      }
+      &.o-topRight {
+        top: -${ANCHOR_SIZE / 2}px;
+        right: -${ANCHOR_SIZE / 2}px;
+        cursor: ne-resize;
+      }
+      &.o-right {
+        right: -${ANCHOR_SIZE / 2}px;
+        top: calc(50% - 4px);
+        cursor: e-resize;
+      }
+      &.o-bottomRight {
+        bottom: -${ANCHOR_SIZE / 2}px;
+        right: -${ANCHOR_SIZE / 2}px;
+        cursor: se-resize;
+      }
+      &.o-bottom {
+        bottom: -${ANCHOR_SIZE / 2}px;
+        right: calc(50% - 4px);
+        cursor: s-resize;
+      }
+      &.o-bottomLeft {
+        bottom: -${ANCHOR_SIZE / 2}px;
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: sw-resize;
+      }
+      &.o-left {
+        bottom: calc(50% - 4px);
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: w-resize;
+      }
+      &.o-topLeft {
+        top: -${ANCHOR_SIZE / 2}px;
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: nw-resize;
+      }
+    }
+  }
+`;
+    class FiguresContainer extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.figureRegistry = figureRegistry;
+            this.dnd = owl.useState({
+                figureId: "",
+                x: 0,
+                y: 0,
+                width: 0,
+                height: 0,
+            });
+        }
+        getVisibleFigures() {
+            const selectedId = this.env.model.getters.getSelectedFigureId();
+            return this.env.model.getters.getVisibleFigures().map((f) => ({
+                id: f.id,
+                isSelected: f.id === selectedId,
+                figure: f,
+            }));
+        }
+        getDims(info) {
+            const { figure, isSelected } = info;
+            const borders = 2 * (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
+            const { width, height } = isSelected && this.dnd.figureId ? this.dnd : figure;
+            return `width:${width + borders}px;height:${height + borders}px`;
+        }
+        getStyle(info) {
+            const { figure, isSelected } = info;
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
+            const { width, height } = target;
+            let x = target.x - offsetX + HEADER_WIDTH - 1;
+            let y = target.y - offsetY + HEADER_HEIGHT - 1;
+            // width and height of wrapper need to be adjusted so we do not overlap
+            // with headers
+            const correctionX = Math.max(0, HEADER_WIDTH - x);
+            x += correctionX;
+            const correctionY = Math.max(0, HEADER_HEIGHT - y);
+            y += correctionY;
+            if (width < 0 || height < 0) {
+                return `position:absolute;display:none;`;
+            }
+            const offset = ANCHOR_SIZE + ACTIVE_BORDER_WIDTH + (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
+            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px`;
+        }
+        setup() {
+            owl.onMounted(() => {
+                // horrible, but necessary
+                // the following line ensures that we render the figures with the correct
+                // viewport.  The reason is that whenever we initialize the grid
+                // component, we do not know yet the actual size of the viewport, so the
+                // first owl rendering is done with an empty viewport.  Only then we can
+                // compute which figures should be displayed, so we have to force a
+                // new rendering
+                this.render();
+            });
+        }
+        resize(figure, dirX, dirY, ev) {
+            ev.stopPropagation();
+            const initialX = ev.clientX;
+            const initialY = ev.clientY;
+            this.dnd.figureId = figure.id;
+            this.dnd.x = figure.x;
+            this.dnd.y = figure.y;
+            this.dnd.width = figure.width;
+            this.dnd.height = figure.height;
+            const onMouseMove = (ev) => {
+                const deltaX = dirX * (ev.clientX - initialX);
+                const deltaY = dirY * (ev.clientY - initialY);
+                this.dnd.width = Math.max(figure.width + deltaX, MIN_FIG_SIZE);
+                this.dnd.height = Math.max(figure.height + deltaY, MIN_FIG_SIZE);
+                if (dirX < 0) {
+                    this.dnd.x = figure.x - deltaX;
+                }
+                if (dirY < 0) {
+                    this.dnd.y = figure.y - deltaY;
+                }
+            };
+            const onMouseUp = (ev) => {
+                this.dnd.figureId = "";
+                const update = {
+                    x: this.dnd.x,
+                    y: this.dnd.y,
+                };
+                if (dirX) {
+                    update.width = this.dnd.width;
+                }
+                if (dirY) {
+                    update.height = this.dnd.height;
+                }
+                this.env.model.dispatch("UPDATE_FIGURE", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    id: figure.id,
+                    ...update,
+                });
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onMouseDown(figure, ev) {
+            if (ev.button > 0) {
+                // not main button, probably a context menu
+                return;
+            }
+            this.env.model.dispatch("SELECT_FIGURE", { id: figure.id });
+            if (this.props.sidePanelIsOpen) {
+                this.env.openSidePanel("ChartPanel", { figure });
+            }
+            const initialX = ev.clientX;
+            const initialY = ev.clientY;
+            this.dnd.figureId = figure.id;
+            this.dnd.x = figure.x;
+            this.dnd.y = figure.y;
+            this.dnd.width = figure.width;
+            this.dnd.height = figure.height;
+            const onMouseMove = (ev) => {
+                this.dnd.x = Math.max(figure.x - initialX + ev.clientX, 0);
+                this.dnd.y = Math.max(figure.y - initialY + ev.clientY, 0);
+            };
+            const onMouseUp = (ev) => {
+                this.dnd.figureId = "";
+                this.env.model.dispatch("UPDATE_FIGURE", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    id: figure.id,
+                    x: this.dnd.x,
+                    y: this.dnd.y,
+                });
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onKeyDown(figure, ev) {
+            ev.preventDefault();
+            switch (ev.key) {
+                case "Delete":
+                    this.env.model.dispatch("DELETE_FIGURE", {
+                        sheetId: this.env.model.getters.getActiveSheetId(),
+                        id: figure.id,
+                    });
+                    this.props.onFigureDeleted();
+                    break;
+                case "ArrowDown":
+                case "ArrowLeft":
+                case "ArrowRight":
+                case "ArrowUp":
+                    const deltaMap = {
+                        ArrowDown: [0, 1],
+                        ArrowLeft: [-1, 0],
+                        ArrowRight: [1, 0],
+                        ArrowUp: [0, -1],
+                    };
+                    const delta = deltaMap[ev.key];
+                    this.env.model.dispatch("UPDATE_FIGURE", {
+                        sheetId: this.env.model.getters.getActiveSheetId(),
+                        id: figure.id,
+                        x: figure.x + delta[0],
+                        y: figure.y + delta[1],
+                    });
+            }
+        }
+    }
+    FiguresContainer.template = TEMPLATE$8;
+    FiguresContainer.components = {};
+    figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
+
+    const TEMPLATE$7 = owl.xml /* xml */ `
+    <div class="o-border"
+        t-on-mousedown="onMouseDown"
+        t-att-style="style"
+        t-att-class="{
+          'o-moving': props.isMoving,
+          'o-border-n': props.orientation === 'n',
+          'o-border-s': props.orientation === 's',
+          'o-border-w': props.orientation === 'w',
+          'o-border-e': props.orientation === 'e',
+        }"
+        >
+    </div>
+`;
+    css /* scss */ `
+  .o-border {
+    position: absolute;
+    &:hover {
+      cursor: grab;
+    }
+  }
+  .o-moving {
+    cursor: grabbing;
+  }
+`;
+    class Border extends owl.Component {
+        get style() {
+            const isTop = ["n", "w", "e"].includes(this.props.orientation);
+            const isLeft = ["n", "w", "s"].includes(this.props.orientation);
+            const isHorizontal = ["n", "s"].includes(this.props.orientation);
+            const isVertical = ["w", "e"].includes(this.props.orientation);
+            const s = this.env.model.getters.getActiveSheet();
+            const z = this.props.zone;
+            const margin = 2;
+            const left = s.cols[z.left].start + margin;
+            const right = s.cols[z.right].end - 2 * margin;
+            const top = s.rows[z.top].start + margin;
+            const bottom = s.rows[z.bottom].end - 2 * margin;
+            const lineWidth = 4;
+            const leftValue = isLeft ? left : right;
+            const topValue = isTop ? top : bottom;
+            const widthValue = isHorizontal ? right - left : lineWidth;
+            const heightValue = isVertical ? bottom - top : lineWidth;
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            return `
+        left:${leftValue + HEADER_WIDTH - offsetX}px;
+        top:${topValue + HEADER_HEIGHT - offsetY}px;
+        width:${widthValue}px;
+        height:${heightValue}px;
+    `;
+        }
+        onMouseDown(ev) {
+            this.props.onMoveHighlight(ev.clientX, ev.clientY);
+        }
+    }
+    Border.template = TEMPLATE$7;
+
+    const TEMPLATE$6 = owl.xml /* xml */ `
+    <div class="o-corner"
+        t-on-mousedown="onMouseDown"
+        t-att-style="style"
+        t-att-class="{
+          'o-resizing': props.isResizing,
+          'o-corner-nw': props.orientation === 'nw',
+          'o-corner-ne': props.orientation === 'ne',
+          'o-corner-sw': props.orientation === 'sw',
+          'o-corner-se': props.orientation === 'se',
+        }"
+        >
+    </div>
+`;
+    css /* scss */ `
+  .o-corner {
+    position: absolute;
+    height: 6px;
+    width: 6px;
+    border: 1px solid white;
+  }
+  .o-corner-nw,
+  .o-corner-se {
+    &:hover {
+      cursor: nwse-resize;
+    }
+  }
+  .o-corner-ne,
+  .o-corner-sw {
+    &:hover {
+      cursor: nesw-resize;
+    }
+  }
+  .o-resizing {
+    cursor: grabbing;
+  }
+`;
+    class Corner extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.isTop = this.props.orientation[0] === "n";
+            this.isLeft = this.props.orientation[1] === "w";
+        }
+        get style() {
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const s = this.env.model.getters.getActiveSheet();
+            const z = this.props.zone;
+            const leftValue = this.isLeft ? s.cols[z.left].start : s.cols[z.right].end;
+            const topValue = this.isTop ? s.rows[z.top].start : s.rows[z.bottom].end;
+            return `
+      left:${leftValue + HEADER_WIDTH - offsetX - AUTOFILL_EDGE_LENGTH / 2}px;
+      top:${topValue + HEADER_HEIGHT - offsetY - AUTOFILL_EDGE_LENGTH / 2}px;
+      background-color:${this.props.color};
+    `;
+        }
+        onMouseDown(ev) {
+            this.props.onResizeHighlight(this.isLeft, this.isTop);
+        }
+    }
+    Corner.template = TEMPLATE$6;
+
+    const TEMPLATE$5 = owl.xml /* xml */ `
+  <div class="o-highlight" t-ref="highlight">
+    <t t-foreach="['nw', 'ne', 'sw', 'se']" t-as="orientation" t-key="orientation">
+      <Corner
+        onResizeHighlight="(isLeft, isTop) => this.onResizeHighlight(isLeft, isTop)"
+        isResizing='highlightState.shiftingMode === "isResizing"'
+        orientation="orientation"
+        zone="props.zone"
+        color="props.color"
+      />
+    </t>
+    <t t-foreach="['n', 's', 'w', 'e']" t-as="orientation" t-key="orientation">
+      <Border
+        onMoveHighlight="(x, y) => this.onMoveHighlight(x,y)"
+        isMoving='highlightState.shiftingMode === "isMoving"'
+        orientation="orientation"
+        zone="props.zone"
+      />
+    </t>
+  </div>
+`;
+    class Highlight extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.highlightRef = owl.useRef("highlight");
+            this.highlightState = owl.useState({
+                shiftingMode: "none",
+            });
+        }
+        onResizeHighlight(isLeft, isTop) {
+            this.highlightState.shiftingMode = "isResizing";
+            const z = this.props.zone;
+            const pivotCol = isLeft ? z.right : z.left;
+            const pivotRow = isTop ? z.bottom : z.top;
+            let lastCol = isLeft ? z.left : z.right;
+            let lastRow = isTop ? z.top : z.bottom;
+            let currentZone = z;
+            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
+            const mouseMove = (col, row) => {
+                if (lastCol !== col || lastRow !== row) {
+                    const activeSheet = this.env.model.getters.getActiveSheet();
+                    lastCol = clip(col === -1 ? lastCol : col, 0, activeSheet.cols.length - 1);
+                    lastRow = clip(row === -1 ? lastRow : row, 0, activeSheet.rows.length - 1);
+                    let newZone = {
+                        left: Math.min(pivotCol, lastCol),
+                        top: Math.min(pivotRow, lastRow),
+                        right: Math.max(pivotCol, lastCol),
+                        bottom: Math.max(pivotRow, lastRow),
+                    };
+                    newZone = this.env.model.getters.expandZone(activeSheet.id, newZone);
+                    if (!isEqual(newZone, currentZone)) {
+                        this.env.model.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
+                        currentZone = newZone;
+                    }
+                }
+            };
+            const mouseUp = () => {
+                this.highlightState.shiftingMode = "none";
+                // To do:
+                // Command used here to restore focus to the current composer,
+                // to be changed when refactoring the 'edition' plugin
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            };
+            dragAndDropBeyondTheViewport(this.highlightRef.el.parentElement, this.env, mouseMove, mouseUp);
+        }
+        onMoveHighlight(clientX, clientY) {
+            this.highlightState.shiftingMode = "isMoving";
+            const z = this.props.zone;
+            const parent = this.highlightRef.el.parentElement;
+            const position = parent.getBoundingClientRect();
+            const activeSheet = this.env.model.getters.getActiveSheet();
+            const { top: viewportTop, left: viewportLeft } = this.env.model.getters.getActiveSnappedViewport();
+            const initCol = this.env.model.getters.getColIndex(clientX - position.left, viewportLeft);
+            const initRow = this.env.model.getters.getRowIndex(clientY - position.top, viewportTop);
+            const deltaColMin = -z.left;
+            const deltaColMax = activeSheet.cols.length - z.right - 1;
+            const deltaRowMin = -z.top;
+            const deltaRowMax = activeSheet.rows.length - z.bottom - 1;
+            let currentZone = z;
+            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
+            let lastCol = initCol;
+            let lastRow = initRow;
+            const mouseMove = (col, row) => {
+                if (lastCol !== col || lastRow !== row) {
+                    lastCol = col === -1 ? lastCol : col;
+                    lastRow = row === -1 ? lastRow : row;
+                    const deltaCol = clip(lastCol - initCol, deltaColMin, deltaColMax);
+                    const deltaRow = clip(lastRow - initRow, deltaRowMin, deltaRowMax);
+                    let newZone = {
+                        left: z.left + deltaCol,
+                        top: z.top + deltaRow,
+                        right: z.right + deltaCol,
+                        bottom: z.bottom + deltaRow,
+                    };
+                    newZone = this.env.model.getters.expandZone(activeSheet.id, newZone);
+                    if (!isEqual(newZone, currentZone)) {
+                        this.env.model.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
+                        currentZone = newZone;
+                    }
+                }
+            };
+            const mouseUp = () => {
+                this.highlightState.shiftingMode = "none";
+                // To do:
+                // Command used here to restore focus to the current composer,
+                // to be changed when refactoring the 'edition' plugin
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            };
+            dragAndDropBeyondTheViewport(parent, this.env, mouseMove, mouseUp);
+        }
+    }
+    Highlight.template = TEMPLATE$5;
+    Highlight.components = {
+        Corner,
+        Border,
+    };
+
+    const TEMPLATE$4 = owl.xml /* xml */ `
+  <div class="o-link-tool">
+    <t t-set="link" t-value="cell.link"/>
+    <a t-if="link.isExternal"
+      class="o-link"
+      t-att-href="link.url"
+      target="_blank"
+      t-on-click.prevent="openLink"
+      t-att-title="link.url">
+      <t t-esc="cell.urlRepresentation"/>
+    </a>
+    <a t-else=""
+      class="o-link"
+      t-on-click.prevent="openLink"
+      t-att-title="cell.urlRepresentation">
+      <t t-esc="cell.urlRepresentation"/>
+    </a>
+    <span class="o-link-icon o-unlink" t-on-click="unlink" title="${LinkEditorTerms.Remove}">${UNLINK}</span>
+    <span class="o-link-icon o-edit-link" t-on-click="edit" title="${LinkEditorTerms.Edit}">${EDIT}</span>
+  </div>
+`;
+    css /* scss */ `
+  .o-link-tool {
+    font-size: 13px;
+    background-color: white;
+    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+    padding: 12px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    a.o-link {
+      color: #007bff;
+      flex-grow: 2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    a.o-link:hover {
+      text-decoration: underline;
+      color: #0056b3;
+      cursor: pointer;
+    }
+  }
+  .o-link-icon {
+    float: right;
+    padding-left: 4%;
+    .o-icon {
+      height: 16px;
+    }
+  }
+  .o-link-icon.o-unlink .o-icon {
+    padding-top: 1px;
+    height: 14px;
+  }
+  .o-link-icon:hover {
+    cursor: pointer;
+    color: #000;
+  }
+`;
+    class LinkDisplay extends owl.Component {
+        get cell() {
+            const { col, row } = this.props.cellPosition;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const cell = this.env.model.getters.getCell(sheetId, col, row);
+            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
+                return cell;
+            }
+            throw new Error(`LinkDisplay Component can only be used with link cells. ${toXC(col, row)} is not a link.`);
+        }
+        openLink() {
+            this.cell.action(this.env);
+        }
+        edit() {
+            this.env.openLinkEditor();
+        }
+        unlink() {
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const [col, row] = this.env.model.getters.getPosition();
+            const [mainCol, mainRow] = this.env.model.getters.getMainCell(sheetId, col, row);
+            const style = this.cell.style;
+            const textColor = (style === null || style === void 0 ? void 0 : style.textColor) === LINK_COLOR ? undefined : style === null || style === void 0 ? void 0 : style.textColor;
+            this.env.model.dispatch("UPDATE_CELL", {
+                col: mainCol,
+                row: mainRow,
+                sheetId,
+                content: this.cell.link.label,
+                style: { ...style, textColor, underline: undefined },
+            });
+        }
+    }
+    LinkDisplay.template = TEMPLATE$4;
+    LinkDisplay.components = { Menu };
+
+    const MENU_OFFSET_X = 320;
+    const MENU_OFFSET_Y = 100;
+    const PADDING = 12;
+    const TEMPLATE$3 = owl.xml /* xml */ `
+    <div class="o-link-editor" t-on-click.stop="() => this.menu.isOpen=false" t-on-keydown.stop="onKeyDown" t-ref="linkEditor">
+      <div class="o-section">
+        <div t-esc="env._t('${LinkEditorTerms.Text}')" class="o-section-title"/>
+        <div class="d-flex">
+          <input type="text" class="o-input flex-grow-1" t-model="state.link.label"></input>
+        </div>
+
+        <div t-esc="env._t('${LinkEditorTerms.Link}')" class="o-section-title mt-3"/>
+        <div class="o-link-url">
+          <t t-if="state.isUrlEditable">
+            <input type="text" t-ref="urlInput" t-model="state.link.url"></input>
+          </t>
+          <t t-else="">
+            <input type="text" t-att-value="state.urlRepresentation" disabled="1"></input>
+          </t>
+          <button t-if="state.link.url" t-on-click="removeLink" class="o-remove-url">✖</button>
+          <button t-if="!state.link.url" t-on-click.stop="openMenu" class="o-special-link">${LIST}</button>
+        </div>
+      </div>
+      <Menu
+        t-if="menu.isOpen"
+        position="menuPosition"
+        menuItems="menuItems"
+        onMenuClicked="(ev) => this.onSpecialLink(ev)"
+        onClose="() => this.menu.isOpen=false"/>
+      <div class="o-buttons">
+        <button t-on-click="cancel" class="o-button o-cancel" t-esc="env._t('${LinkEditorTerms.Cancel}')"></button>
+        <button t-on-click="save" class="o-button o-save" t-esc="env._t('${LinkEditorTerms.Confirm}')" t-att-disabled="!state.link.url" ></button>
+      </div>
+    </div>`;
+    css /* scss */ `
+  .o-link-editor {
+    font-size: 13px;
+    background-color: white;
+    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+    padding: ${PADDING}px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    .o-section {
+      .o-section-title {
+        font-weight: bold;
+        color: dimgrey;
+        margin-bottom: 5px;
+      }
+    }
+    .o-buttons {
+      padding-left: 16px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      text-align: right;
+      .o-button {
+        border: 1px solid lightgrey;
+        padding: 0px 20px 0px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 14px;
+        height: 30px;
+        line-height: 16px;
+        background: white;
+        margin-right: 8px;
+        &:hover:enabled {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
+      .o-button:enabled {
+        cursor: pointer;
+      }
+      .o-button:last-child {
+        margin-right: 0px;
+      }
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      border-radius: 4px;
+      padding: 4px 23px 4px 10px;
+      border: none;
+      height: 24px;
+      border: 1px solid lightgrey;
+    }
+    .o-link-url {
+      position: relative;
+      flex-grow: 1;
+      button {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        border: none;
+        height: 20px;
+        width: 20px;
+        background-color: #fff;
+        margin: 2px 3px 1px 0px;
+        padding: 0px 1px 0px 0px;
+      }
+      button:hover {
+        cursor: pointer;
+      }
+    }
+  }
+`;
+    class LinkEditor extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.menuItems = linkMenuRegistry.getAll();
+            this.state = owl.useState(this.defaultState);
+            this.menu = owl.useState({
+                isOpen: false,
+            });
+            this.linkEditorRef = owl.useRef("linkEditor");
+            this.position = useAbsolutePosition(this.linkEditorRef);
+            this.urlInput = owl.useRef("urlInput");
+        }
+        setup() {
+            owl.onMounted(() => { var _a; return (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus(); });
+        }
+        get defaultState() {
+            const { col, row } = this.props.cellPosition;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const cell = this.env.model.getters.getCell(sheetId, col, row);
+            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
+                return {
+                    link: { url: cell.link.url, label: cell.formattedValue },
+                    urlRepresentation: cell.urlRepresentation,
+                    isUrlEditable: cell.isUrlEditable,
+                };
+            }
+            return {
+                link: { url: "", label: (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "" },
+                isUrlEditable: true,
+                urlRepresentation: "",
+            };
+        }
+        get menuPosition() {
+            return {
+                x: this.position.x + MENU_OFFSET_X - PADDING - 2,
+                y: this.position.y + MENU_OFFSET_Y,
+            };
+        }
+        onSpecialLink(ev) {
+            const { detail } = ev;
+            this.state.link.url = detail.link.url;
+            this.state.link.label = detail.link.label;
+            this.state.isUrlEditable = detail.isUrlEditable;
+            this.state.urlRepresentation = detail.urlRepresentation;
+        }
+        openMenu() {
+            this.menu.isOpen = true;
+        }
+        removeLink() {
+            this.state.link.url = "";
+            this.state.urlRepresentation = "";
+            this.state.isUrlEditable = true;
+        }
+        save() {
+            const { col, row } = this.props.cellPosition;
+            const label = this.state.link.label || this.state.link.url;
+            this.env.model.dispatch("UPDATE_CELL", {
+                col: col,
+                row: row,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                content: markdownLink(label, this.state.link.url),
+            });
+            this.props.onLinkEditorClosed();
+        }
+        cancel() {
+            this.props.onLinkEditorClosed();
+        }
+        onKeyDown(ev) {
+            switch (ev.key) {
+                case "Enter":
+                    if (this.state.link.url) {
+                        this.save();
+                    }
+                    break;
+                case "Escape":
+                    this.cancel();
+                    break;
+            }
+        }
+    }
+    LinkEditor.template = TEMPLATE$3;
+    LinkEditor.components = { Menu };
+
+    // -----------------------------------------------------------------------------
+    // Resizer component
+    // -----------------------------------------------------------------------------
+    class AbstractResizer extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.PADDING = 0;
+            this.MAX_SIZE_MARGIN = 0;
+            this.MIN_ELEMENT_SIZE = 0;
+            this.lastSelectedElementIndex = null;
+            this.state = owl.useState({
+                resizerIsActive: false,
+                isResizing: false,
+                isMoving: false,
+                isSelecting: false,
+                waitingForMove: false,
+                activeElement: 0,
+                draggerLinePosition: 0,
+                draggerShadowPosition: 0,
+                draggerShadowThickness: 0,
+                delta: 0,
+                base: 0,
+            });
+        }
+        _computeHandleDisplay(ev) {
+            const position = this._getEvOffset(ev);
+            const elementIndex = this._getElementIndex(position);
+            if (elementIndex < 0) {
+                return;
+            }
+            const element = this._getElement(elementIndex);
+            const offset = this._getStateOffset();
+            if (position - (element.start - offset) < this.PADDING &&
+                elementIndex !== this._getViewportOffset()) {
+                this.state.resizerIsActive = true;
+                this.state.draggerLinePosition = element.start - offset - this._getHeaderSize();
+                this.state.activeElement = this._getPreviousVisibleElement(elementIndex);
+            }
+            else if (element.end - offset - position < this.PADDING) {
+                this.state.resizerIsActive = true;
+                this.state.draggerLinePosition = element.end - offset - this._getHeaderSize();
+                this.state.activeElement = elementIndex;
+            }
+            else {
+                this.state.resizerIsActive = false;
+            }
+        }
+        _computeGrabDisplay(ev) {
+            const index = this._getElementIndex(this._getEvOffset(ev));
+            const activeElements = this._getActiveElements();
+            const selectedZoneStart = this._getSelectedZoneStart();
+            const selectedZoneEnd = this._getSelectedZoneEnd();
+            if (activeElements.has(selectedZoneStart)) {
+                if (selectedZoneStart <= index && index <= selectedZoneEnd) {
+                    this.state.waitingForMove = true;
+                    return;
+                }
+            }
+            this.state.waitingForMove = false;
+        }
+        onMouseMove(ev) {
+            if (this.state.isResizing || this.state.isMoving || this.state.isSelecting) {
+                return;
+            }
+            this._computeHandleDisplay(ev);
+            this._computeGrabDisplay(ev);
+        }
+        onMouseLeave() {
+            this.state.resizerIsActive = this.state.isResizing;
+            this.state.waitingForMove = false;
+        }
+        onDblClick() {
+            this._fitElementSize(this.state.activeElement);
+            this.state.isResizing = false;
+        }
+        onMouseDown(ev) {
+            this.state.isResizing = true;
+            this.state.delta = 0;
+            const initialPosition = this._getClientPosition(ev);
+            const styleValue = this.state.draggerLinePosition;
+            const size = this._getElement(this.state.activeElement).size;
+            const minSize = styleValue - size + this.MIN_ELEMENT_SIZE;
+            const maxSize = this._getMaxSize();
+            const onMouseUp = (ev) => {
+                this.state.isResizing = false;
+                if (this.state.delta !== 0) {
+                    this._updateSize();
+                }
+            };
+            const onMouseMove = (ev) => {
+                this.state.delta = this._getClientPosition(ev) - initialPosition;
+                this.state.draggerLinePosition = styleValue + this.state.delta;
+                if (this.state.draggerLinePosition < minSize) {
+                    this.state.draggerLinePosition = minSize;
+                    this.state.delta = this.MIN_ELEMENT_SIZE - size;
+                }
+                if (this.state.draggerLinePosition > maxSize) {
+                    this.state.draggerLinePosition = maxSize;
+                    this.state.delta = maxSize - styleValue;
+                }
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        select(ev) {
+            if (ev.button > 0) {
+                // not main button, probably a context menu
+                return;
+            }
+            const index = this._getElementIndex(this._getEvOffset(ev));
+            if (index < 0) {
+                return;
+            }
+            if (this.state.waitingForMove === true) {
+                this.startMovement(ev);
+                return;
+            }
+            this.startSelection(ev, index);
+        }
+        startMovement(ev) {
+            this.state.waitingForMove = false;
+            this.state.isMoving = true;
+            const startElement = this._getElement(this._getSelectedZoneStart());
+            const endElement = this._getElement(this._getSelectedZoneEnd());
+            const initialPosition = this._getClientPosition(ev);
+            const defaultPosition = startElement.start - this._getStateOffset() - this._getHeaderSize();
+            this.state.draggerLinePosition = defaultPosition;
+            this.state.base = this._getSelectedZoneStart();
+            this.state.draggerShadowPosition = defaultPosition;
+            this.state.draggerShadowThickness = endElement.end - startElement.start;
+            const mouseMoveMovement = (elementIndex, currentEv) => {
+                if (elementIndex >= 0) {
+                    // define draggerLinePosition
+                    const element = this._getElement(elementIndex);
+                    const offset = this._getStateOffset() + this._getHeaderSize();
+                    if (elementIndex <= this._getSelectedZoneStart()) {
+                        this.state.draggerLinePosition = element.start - offset;
+                        this.state.base = elementIndex;
+                    }
+                    else if (this._getSelectedZoneEnd() < elementIndex) {
+                        this.state.draggerLinePosition = element.end - offset;
+                        this.state.base = elementIndex + 1;
+                    }
+                    else {
+                        this.state.draggerLinePosition = startElement.start - offset;
+                        this.state.base = this._getSelectedZoneStart();
+                    }
+                    // define draggerShadowPosition
+                    const delta = this._getClientPosition(currentEv) - initialPosition;
+                    this.state.draggerShadowPosition = Math.max(defaultPosition + delta, 0);
+                }
+            };
+            const mouseUpMovement = (finalEv) => {
+                this.state.isMoving = false;
+                if (this.state.base !== this._getSelectedZoneStart()) {
+                    this._moveElements();
+                }
+                this._computeGrabDisplay(finalEv);
+            };
+            this.dragOverlayBeyondTheViewport(ev, mouseMoveMovement, mouseUpMovement);
+        }
+        startSelection(ev, index) {
+            this.state.isSelecting = true;
+            this.env.model.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
+            if (ev.shiftKey) {
+                this._increaseSelection(index);
+            }
+            else {
+                this._selectElement(index, ev.ctrlKey);
+            }
+            this.lastSelectedElementIndex = index;
+            const mouseMoveSelect = (elementIndex, currentEv) => {
+                if (elementIndex !== this.lastSelectedElementIndex && elementIndex !== -1) {
+                    this._increaseSelection(elementIndex);
+                    this.lastSelectedElementIndex = elementIndex;
+                }
+            };
+            const mouseUpSelect = () => {
+                this.state.isSelecting = false;
+                this.lastSelectedElementIndex = null;
+                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
+                this._computeGrabDisplay(ev);
+            };
+            this.dragOverlayBeyondTheViewport(ev, mouseMoveSelect, mouseUpSelect);
+        }
+        dragOverlayBeyondTheViewport(ev, cbMouseMove, cbMouseUp) {
+            let timeOutId = null;
+            let currentEv;
+            const initialPosition = this._getClientPosition(ev);
+            const initialOffset = this._getEvOffset(ev);
+            const onMouseMove = (ev) => {
+                currentEv = ev;
+                if (timeOutId) {
+                    return;
+                }
+                const position = this._getClientPosition(currentEv) - initialPosition + initialOffset;
+                const EdgeScrollInfo = this._getEdgeScroll(position);
+                const { first, last } = this._getBoundaries();
+                let elementIndex;
+                if (EdgeScrollInfo.canEdgeScroll) {
+                    elementIndex = EdgeScrollInfo.direction > 0 ? last : first - 1;
+                }
+                else {
+                    elementIndex = this._getElementIndex(position);
+                }
+                cbMouseMove(elementIndex, currentEv);
+                // adjust viewport if necessary
+                if (EdgeScrollInfo.canEdgeScroll) {
+                    this._adjustViewport(EdgeScrollInfo.direction);
+                    timeOutId = setTimeout(() => {
+                        timeOutId = null;
+                        onMouseMove(currentEv);
+                    }, Math.round(EdgeScrollInfo.delay));
+                }
+            };
+            const onMouseUp = (finalEv) => {
+                clearTimeout(timeOutId);
+                cbMouseUp(finalEv);
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onMouseUp(ev) {
+            this.lastSelectedElementIndex = null;
+        }
+        onContextMenu(ev) {
+            ev.preventDefault();
+            const index = this._getElementIndex(this._getEvOffset(ev));
+            if (index < 0)
+                return;
+            if (!this._getActiveElements().has(index)) {
+                this._selectElement(index, false);
+            }
+            const type = this._getType();
+            const { x, y } = this._getXY(ev);
+            // todo: define props
+            this.props.onOpenContextMenu(type, x, y);
+        }
+    }
+    css /* scss */ `
+  .o-col-resizer {
+    position: absolute;
+    top: 0;
+    left: ${HEADER_WIDTH}px;
+    right: 0;
+    height: ${HEADER_HEIGHT}px;
+    &.o-dragging {
+      cursor: grabbing;
+    }
+    &.o-grab {
+      cursor: grab;
+    }
+    .dragging-col-line {
+      top: ${HEADER_HEIGHT}px;
+      position: absolute;
+      width: 2px;
+      height: 10000px;
+      background-color: black;
+    }
+    .dragging-col-shadow {
+      top: ${HEADER_HEIGHT}px;
+      position: absolute;
+      height: 10000px;
+      background-color: black;
+      opacity: 0.1;
+    }
+    .o-handle {
+      position: absolute;
+      height: ${HEADER_HEIGHT}px;
+      width: 4px;
+      cursor: e-resize;
+      background-color: ${SELECTION_BORDER_COLOR};
+    }
+    .dragging-resizer {
+      top: ${HEADER_HEIGHT}px;
+      position: absolute;
+      margin-left: 2px;
+      width: 1px;
+      height: 10000px;
+      background-color: ${SELECTION_BORDER_COLOR};
+    }
+    .o-unhide {
+      width: ${UNHIDE_ICON_EDGE_LENGTH}px;
+      height: ${UNHIDE_ICON_EDGE_LENGTH}px;
+      position: absolute;
+      overflow: hidden;
+      border-radius: 2px;
+      top: calc(${HEADER_HEIGHT}px / 2 - ${UNHIDE_ICON_EDGE_LENGTH}px / 2);
+    }
+    .o-unhide:hover {
+      z-index: 1;
+      background-color: lightgrey;
+    }
+    .o-unhide > svg {
+      position: relative;
+      top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
+    }
+  }
+`;
+    class ColResizer extends AbstractResizer {
+        setup() {
+            super.setup();
+            this.colResizerRef = owl.useRef("colResizer");
+            this.PADDING = 15;
+            this.MAX_SIZE_MARGIN = 90;
+            this.MIN_ELEMENT_SIZE = MIN_COL_WIDTH;
+        }
+        _getEvOffset(ev) {
+            return ev.offsetX + HEADER_WIDTH;
+        }
+        _getStateOffset() {
+            return this.env.model.getters.getActiveSnappedViewport().offsetX - HEADER_WIDTH;
+        }
+        _getViewportOffset() {
+            return this.env.model.getters.getActiveSnappedViewport().left;
+        }
+        _getClientPosition(ev) {
+            return ev.clientX;
+        }
+        _getElementIndex(index) {
+            return this.env.model.getters.getColIndex(index, this.env.model.getters.getActiveSnappedViewport().left);
+        }
+        _getSelectedZoneStart() {
+            return this.env.model.getters.getSelectedZone().left;
+        }
+        _getSelectedZoneEnd() {
+            return this.env.model.getters.getSelectedZone().right;
+        }
+        _getEdgeScroll(position) {
+            return this.env.model.getters.getEdgeScrollCol(position);
+        }
+        _getBoundaries() {
+            const { left, right } = this.env.model.getters.getActiveSnappedViewport();
+            return { first: left, last: right };
+        }
+        _getElement(index) {
+            return this.env.model.getters.getCol(this.env.model.getters.getActiveSheetId(), index);
+        }
+        _getBottomRightValue(element) {
+            return element.end;
+        }
+        _getHeaderSize() {
+            return HEADER_WIDTH;
+        }
+        _getMaxSize() {
+            return this.colResizerRef.el.clientWidth;
+        }
+        _updateSize() {
+            const index = this.state.activeElement;
+            const size = this.state.delta + this._getElement(index).size;
+            const cols = this.env.model.getters.getActiveCols();
+            this.env.model.dispatch("RESIZE_COLUMNS_ROWS", {
+                dimension: "COL",
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                elements: cols.has(index) ? [...cols] : [index],
+                size,
+            });
+        }
+        _moveElements() {
+            const elements = [];
+            const start = this._getSelectedZoneStart();
+            const end = this._getSelectedZoneEnd();
+            for (let colIndex = start; colIndex <= end; colIndex++) {
+                elements.push(colIndex);
+            }
+            const result = this.env.model.dispatch("MOVE_COLUMNS_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                dimension: "COL",
+                base: this.state.base,
+                elements,
+            });
+            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
+                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
+            }
+        }
+        _selectElement(index, ctrlKey) {
+            this.env.model.dispatch("SELECT_COLUMN", { index, createRange: ctrlKey });
+        }
+        _increaseSelection(index) {
+            this.env.model.dispatch("SELECT_COLUMN", { index, updateRange: true });
+        }
+        _adjustViewport(direction) {
+            const { left, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const { cols } = this.env.model.getters.getActiveSheet();
+            const offsetX = cols[left + direction].start;
+            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+        }
+        _fitElementSize(index) {
+            const cols = this.env.model.getters.getActiveCols();
+            this.env.model.dispatch("AUTORESIZE_COLUMNS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                cols: cols.has(index) ? [...cols] : [index],
+            });
+        }
+        _getType() {
+            return "COL";
+        }
+        _getActiveElements() {
+            return this.env.model.getters.getActiveCols();
+        }
+        _getXY(ev) {
+            return {
+                x: ev.offsetX + HEADER_WIDTH,
+                y: ev.offsetY,
+            };
+        }
+        _getPreviousVisibleElement(index) {
+            const cols = this.env.model.getters.getActiveSheet().cols.slice(0, index);
+            const step = cols.reverse().findIndex((col) => !col.isHidden);
+            return index - 1 - step;
+        }
+        unhide(hiddenElements) {
+            this.env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                elements: hiddenElements,
+                dimension: "COL",
+            });
+        }
+        unhideStyleValue(hiddenIndex) {
+            const col = this.env.model.getters.getCol(this.env.model.getters.getActiveSheetId(), hiddenIndex);
+            const offset = this._getStateOffset();
+            return col.start - offset - this._getHeaderSize();
+        }
+    }
+    ColResizer.template = owl.xml /* xml */ `
+    <div class="o-col-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select" t-ref="colResizer"
+      t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving, }">
+      <div t-if="state.isMoving" class="dragging-col-line" t-attf-style="left:{{state.draggerLinePosition}}px;"/>
+      <div t-if="state.isMoving" class="dragging-col-shadow" t-attf-style="left:{{state.draggerShadowPosition}}px; width:{{state.draggerShadowThickness}}px"/>
+      <t t-if="state.resizerIsActive">
+        <div class="o-handle" t-on-mousedown="onMouseDown" t-on-dblclick="onDblClick" t-on-contextmenu.prevent=""
+        t-attf-style="left:{{state.draggerLinePosition - 2}}px;">
+        <div class="dragging-resizer" t-if="state.isResizing"/>
+        </div>
+      </t>
+      <t t-foreach="env.model.getters.getHiddenColsGroups(env.model.getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
+        <t t-if="!hiddenItem.includes(0)">
+          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) - 17}}px; margin-right:6px;" t-on-click="() => this.unhide(hiddenItem)">
+          ${TRIANGLE_LEFT_ICON}
+          </div>
+        </t>
+        <t t-if="!hiddenItem.includes(env.model.getters.getActiveSheet().cols.length-1)">
+          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="() => this.unhide(hiddenItem)">
+          ${TRIANGLE_RIGHT_ICON}
+          </div>
+        </t>
+      </t>
+    </div>`;
+    css /* scss */ `
+  .o-row-resizer {
+    position: absolute;
+    top: ${HEADER_HEIGHT}px;
+    left: 0;
+    right: 0;
+    width: ${HEADER_WIDTH}px;
+    height: 100%;
+    &.o-dragging {
+      cursor: grabbing;
+    }
+    &.o-grab {
+      cursor: grab;
+    }
+    .dragging-row-line {
+      left: ${HEADER_WIDTH}px;
+      position: absolute;
+      width: 10000px;
+      height: 2px;
+      background-color: black;
+    }
+    .dragging-row-shadow {
+      left: ${HEADER_WIDTH}px;
+      position: absolute;
+      width: 10000px;
+      background-color: black;
+      opacity: 0.1;
+    }
+    .o-handle {
+      position: absolute;
+      height: 4px;
+      width: ${HEADER_WIDTH}px;
+      cursor: n-resize;
+      background-color: ${SELECTION_BORDER_COLOR};
+    }
+    .dragging-resizer {
+      left: ${HEADER_WIDTH}px;
+      position: absolute;
+      margin-top: 2px;
+      width: 10000px;
+      height: 1px;
+      background-color: ${SELECTION_BORDER_COLOR};
+    }
+    .o-unhide {
+      width: ${UNHIDE_ICON_EDGE_LENGTH}px;
+      height: ${UNHIDE_ICON_EDGE_LENGTH}px;
+      position: absolute;
+      overflow: hidden;
+      border-radius: 2px;
+      left: calc(${HEADER_WIDTH}px - ${UNHIDE_ICON_EDGE_LENGTH}px - 2px);
+    }
+    .o-unhide > svg {
+      position: relative;
+      left: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
+      top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
+    }
+    .o-unhide:hover {
+      z-index: 1;
+      background-color: lightgrey;
+    }
+  }
+`;
+    class RowResizer extends AbstractResizer {
+        setup() {
+            super.setup();
+            this.rowResizerRef = owl.useRef("rowResizer");
+            this.PADDING = 5;
+            this.MAX_SIZE_MARGIN = 60;
+            this.MIN_ELEMENT_SIZE = MIN_ROW_HEIGHT;
+        }
+        _getEvOffset(ev) {
+            return ev.offsetY + HEADER_HEIGHT;
+        }
+        _getStateOffset() {
+            return this.env.model.getters.getActiveSnappedViewport().offsetY - HEADER_HEIGHT;
+        }
+        _getViewportOffset() {
+            return this.env.model.getters.getActiveSnappedViewport().top;
+        }
+        _getClientPosition(ev) {
+            return ev.clientY;
+        }
+        _getElementIndex(index) {
+            return this.env.model.getters.getRowIndex(index, this.env.model.getters.getActiveSnappedViewport().top);
+        }
+        _getSelectedZoneStart() {
+            return this.env.model.getters.getSelectedZone().top;
+        }
+        _getSelectedZoneEnd() {
+            return this.env.model.getters.getSelectedZone().bottom;
+        }
+        _getEdgeScroll(position) {
+            return this.env.model.getters.getEdgeScrollRow(position);
+        }
+        _getBoundaries() {
+            const { top, bottom } = this.env.model.getters.getActiveSnappedViewport();
+            return { first: top, last: bottom };
+        }
+        _getElement(index) {
+            return this.env.model.getters.getRow(this.env.model.getters.getActiveSheetId(), index);
+        }
+        _getHeaderSize() {
+            return HEADER_HEIGHT;
+        }
+        _getMaxSize() {
+            return this.rowResizerRef.el.clientHeight;
+        }
+        _updateSize() {
+            const index = this.state.activeElement;
+            const size = this.state.delta + this._getElement(index).size;
+            const rows = this.env.model.getters.getActiveRows();
+            this.env.model.dispatch("RESIZE_COLUMNS_ROWS", {
+                dimension: "ROW",
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                elements: rows.has(index) ? [...rows] : [index],
+                size,
+            });
+        }
+        _moveElements() {
+            const elements = [];
+            const start = this._getSelectedZoneStart();
+            const end = this._getSelectedZoneEnd();
+            for (let rowIndex = start; rowIndex <= end; rowIndex++) {
+                elements.push(rowIndex);
+            }
+            const result = this.env.model.dispatch("MOVE_COLUMNS_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                dimension: "ROW",
+                base: this.state.base,
+                elements,
+            });
+            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
+                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
+            }
+        }
+        _selectElement(index, ctrlKey) {
+            this.env.model.dispatch("SELECT_ROW", { index, createRange: ctrlKey });
+        }
+        _increaseSelection(index) {
+            this.env.model.dispatch("SELECT_ROW", { index, updateRange: true });
+        }
+        _adjustViewport(direction) {
+            const { top, offsetX } = this.env.model.getters.getActiveSnappedViewport();
+            const { rows } = this.env.model.getters.getActiveSheet();
+            const offsetY = rows[top + direction].start;
+            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+        }
+        _fitElementSize(index) {
+            const rows = this.env.model.getters.getActiveRows();
+            this.env.model.dispatch("AUTORESIZE_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                rows: rows.has(index) ? [...rows] : [index],
+            });
+        }
+        _getType() {
+            return "ROW";
+        }
+        _getActiveElements() {
+            return this.env.model.getters.getActiveRows();
+        }
+        _getXY(ev) {
+            return {
+                x: ev.offsetX,
+                y: ev.offsetY + HEADER_HEIGHT,
+            };
+        }
+        _getPreviousVisibleElement(index) {
+            const rows = this.env.model.getters.getActiveSheet().rows.slice(0, index);
+            const step = rows.reverse().findIndex((row) => !row.isHidden);
+            return index - 1 - step;
+        }
+        unhide(hiddenElements) {
+            this.env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                dimension: "ROW",
+                elements: hiddenElements,
+            });
+        }
+        unhideStyleValue(hiddenIndex) {
+            const row = this.env.model.getters.getRow(this.env.model.getters.getActiveSheetId(), hiddenIndex);
+            const offset = this._getStateOffset();
+            return row.start - offset - this._getHeaderSize();
+        }
+    }
+    RowResizer.template = owl.xml /* xml */ `
+    <div class="o-row-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select" t-ref="rowResizer"
+    t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving}">
+      <div t-if="state.isMoving" class="dragging-row-line" t-attf-style="top:{{state.draggerLinePosition}}px;"/>
+      <div t-if="state.isMoving" class="dragging-row-shadow" t-attf-style="top:{{state.draggerShadowPosition}}px; height:{{state.draggerShadowThickness}}px;"/>
+      <t t-if="state.resizerIsActive">
+        <div class="o-handle" t-on-mousedown="onMouseDown" t-on-dblclick="onDblClick" t-on-contextmenu.prevent=""
+          t-attf-style="top:{{state.draggerLinePosition - 2}}px;">
+          <div class="dragging-resizer" t-if="state.isResizing"/>
+        </div>
+      </t>
+      <t t-foreach="env.model.getters.getHiddenRowsGroups(env.model.getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
+        <t t-if="!hiddenItem.includes(0)">
+          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) - 17}}px;" t-on-click="() => this.unhide(hiddenItem)">
+          ${TRIANGLE_UP_ICON}
+          </div>
+        </t>
+        <t t-if="!hiddenItem.includes(env.model.getters.getActiveSheet().rows.length-1)">
+         <div class="o-unhide" t-att-data-index="hiddenItem_index"  t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="() => this.unhide(hiddenItem)">
+         ${TRIANGLE_DOWN_ICON}
+         </div>
+        </t>
+      </t>
+    </div>`;
+    css /* scss */ `
+  .o-overlay {
+    .all {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: ${HEADER_WIDTH}px;
+      height: ${HEADER_HEIGHT}px;
+    }
+  }
+`;
+    class Overlay extends owl.Component {
+        selectAll() {
+            this.env.model.dispatch("SELECT_ALL");
+        }
+    }
+    Overlay.template = owl.xml /* xml */ `
+    <div class="o-overlay">
+      <ColResizer onOpenContextMenu="props.onOpenContextMenu" />
+      <RowResizer onOpenContextMenu="props.onOpenContextMenu" />
+      <div class="all" t-on-mousedown.self="selectAll"/>
+    </div>`;
+    Overlay.components = { ColResizer, RowResizer };
+
+    class ScrollBar {
+        constructor(el, direction) {
+            this.el = el;
+            this.direction = direction;
+        }
+        get scroll() {
+            return this.direction === "horizontal" ? this.el.scrollLeft : this.el.scrollTop;
+        }
+        set scroll(value) {
+            if (this.direction === "horizontal") {
+                this.el.scrollLeft = value;
+            }
+            else {
+                this.el.scrollTop = value;
+            }
+        }
+    }
+
+    const registries$1 = {
+        ROW: rowMenuRegistry,
+        COL: colMenuRegistry,
+        CELL: cellMenuRegistry,
+    };
+    const LINK_EDITOR_WIDTH = 340;
+    const LINK_EDITOR_HEIGHT = 180;
+    const ERROR_TOOLTIP_HEIGHT = 80;
+    const ERROR_TOOLTIP_WIDTH = 180;
+    // copy and paste are specific events that should not be managed by the keydown event,
+    // but they shouldn't be preventDefault and stopped (else copy and paste events will not trigger)
+    // and also should not result in typing the character C or V in the composer
+    const keyDownMappingIgnore = ["CTRL+C", "CTRL+V"];
+    function useCellHovered(env, getViewPort) {
+        const hoveredPosition = owl.useState({});
+        const { Date, setInterval, clearInterval } = window;
+        const canvasRef = owl.useRef("canvas");
+        let x = 0;
+        let y = 0;
+        let lastMoved = 0;
+        let interval;
+        function getPosition() {
+            const viewport = getViewPort();
+            const col = env.model.getters.getColIndex(x, viewport.left);
+            const row = env.model.getters.getRowIndex(y, viewport.top);
+            return [col, row];
+        }
+        function checkTiming() {
+            const [col, row] = getPosition();
+            const delta = Date.now() - lastMoved;
+            if (col !== hoveredPosition.col || row !== hoveredPosition.row) {
+                hoveredPosition.col = undefined;
+                hoveredPosition.row = undefined;
+            }
+            if (400 < delta && delta < 600) {
+                if (col < 0 || row < 0) {
+                    return;
+                }
+                hoveredPosition.col = col;
+                hoveredPosition.row = row;
+            }
+        }
+        function updateMousePosition(e) {
+            x = e.offsetX;
+            y = e.offsetY;
+            lastMoved = Date.now();
+        }
+        owl.onMounted(() => {
+            canvasRef.el.addEventListener("mousemove", updateMousePosition);
+            interval = setInterval(checkTiming, 200);
+        });
+        owl.onWillUnmount(() => {
+            canvasRef.el.removeEventListener("mousemove", updateMousePosition);
+            clearInterval(interval);
+        });
+        return hoveredPosition;
+    }
+    function useTouchMove(handler, canMoveUp) {
+        const canvasRef = owl.useRef("canvas");
+        let x = null;
+        let y = null;
+        function onTouchStart(ev) {
+            if (ev.touches.length !== 1)
+                return;
+            x = ev.touches[0].clientX;
+            y = ev.touches[0].clientY;
+        }
+        function onTouchEnd() {
+            x = null;
+            y = null;
+        }
+        function onTouchMove(ev) {
+            if (ev.touches.length !== 1)
+                return;
+            // On mobile browsers, swiping down is often associated with "pull to refresh".
+            // We only want this behavior if the grid is already at the top.
+            // Otherwise we only want to move the canvas up, without triggering any refresh.
+            if (canMoveUp()) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
+            const currentX = ev.touches[0].clientX;
+            const currentY = ev.touches[0].clientY;
+            handler(x - currentX, y - currentY);
+            x = currentX;
+            y = currentY;
+        }
+        owl.onMounted(() => {
+            canvasRef.el.addEventListener("touchstart", onTouchStart);
+            canvasRef.el.addEventListener("touchend", onTouchEnd);
+            canvasRef.el.addEventListener("touchmove", onTouchMove);
+        });
+        owl.onWillUnmount(() => {
+            canvasRef.el.removeEventListener("touchstart", onTouchStart);
+            canvasRef.el.removeEventListener("touchend", onTouchEnd);
+            canvasRef.el.removeEventListener("touchmove", onTouchMove);
+        });
+    }
+    // -----------------------------------------------------------------------------
+    // TEMPLATE
+    // -----------------------------------------------------------------------------
+    const TEMPLATE$2 = owl.xml /* xml */ `
+  <div class="o-grid" t-att-class="{'o-two-columns': !props.sidePanelIsOpen}" t-on-click="focus" t-on-keydown="onKeydown" t-on-wheel="onMouseWheel" t-ref="grid">
+    <t t-if="env.model.getters.getEditionMode() !== 'inactive'">
+      <GridComposer
+        onComposerUnmounted="() => this.focus()"
+        focus="props.focusComposer"
+        />
+    </t>
+    <canvas t-ref="canvas"
+      t-on-mousedown="onMouseDown"
+      t-on-dblclick="onDoubleClick"
+      tabindex="-1"
+      t-on-contextmenu="onCanvasContextMenu"
+       />
+    <t t-foreach="env.model.getters.getClientsToDisplay()" t-as="client" t-key="getClientPositionKey(client)">
+      <ClientTag name="client.name"
+                 color="client.color"
+                 col="client.position.col"
+                 row="client.position.row"
+                 active="isCellHovered(client.position.col, client.position.row)"
+                 />
+    </t>
+    <Popover
+      t-if="errorTooltip.isOpen"
+      position="errorTooltip.position"
+      childWidth="${ERROR_TOOLTIP_WIDTH}"
+      childHeight="${ERROR_TOOLTIP_HEIGHT}">
+      <ErrorToolTip text="errorTooltip.text"/>
+    </Popover>
+    <Popover
+      t-if="shouldDisplayLink"
+      position="popoverPosition.position"
+      flipHorizontalOffset="-popoverPosition.cellWidth"
+      flipVerticalOffset="-popoverPosition.cellHeight"
+      childWidth="${LINK_TOOLTIP_WIDTH}"
+      childHeight="${LINK_TOOLTIP_HEIGHT}">
+      <LinkDisplay cellPosition="activeCellPosition"/>
+    </Popover>
+    <Popover
+      t-if="props.linkEditorIsOpen"
+      position="popoverPosition.position"
+      flipHorizontalOffset="-popoverPosition.cellWidth"
+      flipVerticalOffset="-popoverPosition.cellHeight"
+      childWidth="${LINK_EDITOR_WIDTH}"
+      childHeight="${LINK_EDITOR_HEIGHT}">
+      <LinkEditor cellPosition="activeCellPosition" onLinkEditorClosed="props.onLinkEditorClosed"/>
+    </Popover>
+    <t t-if="env.model.getters.getEditionMode() === 'inactive'">
+      <Autofill position="getAutofillPosition()" getGridBoundingClientRect="() => this.getGridBoundingClientRect()"/>
+    </t>
+    <t t-if="env.model.getters.getEditionMode() !== 'inactive'">
+      <t t-foreach="env.model.getters.getHighlights()" t-as="highlight" t-key="highlight_index">
+        <t t-if="highlight.sheet === env.model.getters.getActiveSheetId()">
+          <Highlight zone="highlight.zone" color="highlight.color"/>
+        </t>
+      </t>
+    </t>
+    <Overlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)" />
+    <Menu t-if="menuState.isOpen"
+      menuItems="menuState.menuItems"
+      position="menuState.position"
+      onClose="() => this.menuState.isOpen=false"/>
+    <t t-set="gridSize" t-value="env.model.getters.getMaxViewportSize(env.model.getters.getActiveSheet())"/>
+    <FiguresContainer model="props.model" sidePanelIsOpen="props.sidePanelIsOpen" onFigureDeleted="() => this.focus()" />
+    <div class="o-scrollbar vertical" t-on-scroll="onScroll" t-ref="vscrollbar">
+      <div t-attf-style="width:1px;height:{{gridSize.height}}px"/>
+    </div>
+    <div class="o-scrollbar horizontal" t-on-scroll="onScroll" t-ref="hscrollbar">
+      <div t-attf-style="height:1px;width:{{gridSize.width}}px"/>
+    </div>
+  </div>`;
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    css /* scss */ `
+  .o-grid {
+    position: relative;
+    overflow: hidden;
+    background-color: ${BACKGROUND_GRAY_COLOR};
+
+    > canvas {
+      border-top: 1px solid #e2e3e3;
+      border-bottom: 1px solid #e2e3e3;
+
+      &:focus {
+        outline: none;
+      }
+    }
+    .o-scrollbar {
+      position: absolute;
+      overflow: auto;
+      z-index: 2;
+      &.vertical {
+        right: 0;
+        top: ${HEADER_HEIGHT}px;
+        bottom: ${SCROLLBAR_WIDTH$1}px;
+        width: ${SCROLLBAR_WIDTH$1}px;
+        overflow-x: hidden;
+      }
+      &.horizontal {
+        bottom: 0;
+        height: ${SCROLLBAR_WIDTH$1}px;
+        right: ${SCROLLBAR_WIDTH$1 + 1}px;
+        left: ${HEADER_WIDTH}px;
+        overflow-y: hidden;
+      }
+    }
+  }
+`;
+    // -----------------------------------------------------------------------------
+    // JS
+    // -----------------------------------------------------------------------------
+    class Grid extends owl.Component {
+        constructor() {
+            super(...arguments);
+            // this map will handle most of the actions that should happen on key down. The arrow keys are managed in the key
+            // down itself
+            this.keyDownMapping = {
+                ENTER: () => {
+                    const cell = this.env.model.getters.getActiveCell();
+                    !cell || cell.isEmpty()
+                        ? this.props.onGridComposerCellFocused()
+                        : this.props.onComposerContentFocused();
+                },
+                TAB: () => this.env.model.dispatch("MOVE_POSITION", { deltaX: 1, deltaY: 0 }),
+                "SHIFT+TAB": () => this.env.model.dispatch("MOVE_POSITION", { deltaX: -1, deltaY: 0 }),
+                F2: () => {
+                    const cell = this.env.model.getters.getActiveCell();
+                    !cell || cell.isEmpty()
+                        ? this.props.onGridComposerCellFocused()
+                        : this.props.onComposerContentFocused();
+                },
+                DELETE: () => {
+                    this.env.model.dispatch("DELETE_CONTENT", {
+                        sheetId: this.env.model.getters.getActiveSheetId(),
+                        target: this.env.model.getters.getSelectedZones(),
+                    });
+                },
+                "CTRL+A": () => this.env.model.dispatch("SELECT_ALL"),
+                "CTRL+S": () => {
+                    var _a, _b;
+                    (_b = (_a = this.props).onSaveRequested) === null || _b === void 0 ? void 0 : _b.call(_a);
+                },
+                "CTRL+Z": () => this.env.model.dispatch("REQUEST_UNDO"),
+                "CTRL+Y": () => this.env.model.dispatch("REQUEST_REDO"),
+                "CTRL+B": () => this.env.model.dispatch("SET_FORMATTING", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    target: this.env.model.getters.getSelectedZones(),
+                    style: { bold: !this.env.model.getters.getCurrentStyle().bold },
+                }),
+                "CTRL+I": () => this.env.model.dispatch("SET_FORMATTING", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    target: this.env.model.getters.getSelectedZones(),
+                    style: { italic: !this.env.model.getters.getCurrentStyle().italic },
+                }),
+                "CTRL+U": () => this.env.model.dispatch("SET_FORMATTING", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    target: this.env.model.getters.getSelectedZones(),
+                    style: { underline: !this.env.model.getters.getCurrentStyle().underline },
+                }),
+                "ALT+=": () => {
+                    var _a;
+                    const sheetId = this.env.model.getters.getActiveSheetId();
+                    const mainSelectedZone = this.env.model.getters.getSelectedZone();
+                    const sums = this.env.model.getters.getAutomaticSums(sheetId, mainSelectedZone, this.env.model.getters.getPosition());
+                    if (this.env.model.getters.isSingleCellOrMerge(sheetId, mainSelectedZone) ||
+                        (this.env.model.getters.isEmpty(sheetId, mainSelectedZone) && sums.length <= 1)) {
+                        const zone = (_a = sums[0]) === null || _a === void 0 ? void 0 : _a.zone;
+                        const zoneXc = zone ? this.env.model.getters.zoneToXC(sheetId, sums[0].zone) : "";
+                        const formula = `=SUM(${zoneXc})`;
+                        this.props.onGridComposerCellFocused(formula, { start: 5, end: 5 + zoneXc.length });
+                    }
+                    else {
+                        this.env.model.dispatch("SUM_SELECTION");
+                    }
+                },
+                "CTRL+HOME": () => {
+                    const sheet = this.env.model.getters.getActiveSheet();
+                    const [col, row] = getNextVisibleCellCoords(sheet, 0, 0);
+                    this.env.model.dispatch("SELECT_CELL", { col, row });
+                },
+                "CTRL+END": () => {
+                    const sheet = this.env.model.getters.getActiveSheet();
+                    const col = findVisibleHeader(sheet, "cols", range(0, sheet.cols.length).reverse());
+                    const row = findVisibleHeader(sheet, "rows", range(0, sheet.rows.length).reverse());
+                    this.env.model.dispatch("SELECT_CELL", { col, row });
+                },
+                "SHIFT+ ": () => {
+                    const { cols } = this.env.model.getters.getActiveSheet();
+                    const newZone = {
+                        ...this.env.model.getters.getSelectedZone(),
+                        left: 0,
+                        right: cols.length - 1,
+                    };
+                    this.env.model.dispatch("SET_SELECTION", {
+                        anchor: this.env.model.getters.getPosition(),
+                        zones: [newZone],
+                        anchorZone: newZone,
+                    });
+                },
+                "CTRL+ ": () => {
+                    const { rows } = this.env.model.getters.getActiveSheet();
+                    const newZone = {
+                        ...this.env.model.getters.getSelectedZone(),
+                        top: 0,
+                        bottom: rows.length - 1,
+                    };
+                    this.env.model.dispatch("SET_SELECTION", {
+                        anchor: this.env.model.getters.getPosition(),
+                        zones: [newZone],
+                        anchorZone: newZone,
+                    });
+                },
+                "CTRL+SHIFT+ ": () => {
+                    this.env.model.dispatch("SELECT_ALL");
+                },
+                "SHIFT+PAGEDOWN": () => {
+                    this.env.model.dispatch("ACTIVATE_NEXT_SHEET");
+                },
+                "SHIFT+PAGEUP": () => {
+                    this.env.model.dispatch("ACTIVATE_PREVIOUS_SHEET");
+                },
+                PAGEDOWN: () => this.env.model.dispatch("SHIFT_VIEWPORT_DOWN"),
+                PAGEUP: () => this.env.model.dispatch("SHIFT_VIEWPORT_UP"),
+            };
+        }
+        setup() {
+            this.menuState = owl.useState({
+                isOpen: false,
+                position: null,
+                menuItems: [],
+            });
+            this.vScrollbarRef = owl.useRef("vscrollbar");
+            this.hScrollbarRef = owl.useRef("hscrollbar");
+            this.gridRef = owl.useRef("grid");
+            this.canvas = owl.useRef("canvas");
+            this.vScrollbar = new ScrollBar(this.vScrollbarRef.el, "vertical");
+            this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
+            this.currentSheet = this.env.model.getters.getActiveSheetId();
+            this.clickedCol = 0;
+            this.clickedRow = 0;
+            this.clipBoardString = "";
+            this.hoveredCell = useCellHovered(this.env, () => this.env.model.getters.getActiveSnappedViewport());
+            owl.useExternalListener(document.body, "cut", this.copy.bind(this, true));
+            owl.useExternalListener(document.body, "copy", this.copy.bind(this, false));
+            owl.useExternalListener(document.body, "paste", this.paste);
+            useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0);
+            owl.onMounted(() => this.initGrid());
+            owl.onPatched(() => {
+                this.drawGrid();
+                this.resizeGrid();
+            });
+            this.props.exposeFocus(() => this.focus());
+        }
+        initGrid() {
+            this.vScrollbar.el = this.vScrollbarRef.el;
+            this.hScrollbar.el = this.hScrollbarRef.el;
+            this.focus();
+            this.resizeGrid();
+            this.drawGrid();
+        }
+        get errorTooltip() {
+            const { col, row } = this.hoveredCell;
+            if (col === undefined || row === undefined) {
+                return { isOpen: false };
+            }
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const [mainCol, mainRow] = this.env.model.getters.getMainCell(sheetId, col, row);
+            const cell = this.env.model.getters.getCell(sheetId, mainCol, mainRow);
+            if (cell && cell.evaluated.type === CellValueType.error) {
+                const viewport = this.env.model.getters.getActiveSnappedViewport();
+                const [x, y, width] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
+                return {
+                    isOpen: true,
+                    position: { x: x + width, y: y + TOPBAR_HEIGHT },
+                    text: cell.evaluated.error,
+                };
+            }
+            return { isOpen: false };
+        }
+        get activeCellPosition() {
+            const [col, row] = this.env.model.getters.getMainCell(this.env.model.getters.getActiveSheetId(), ...this.env.model.getters.getPosition());
+            return { col, row };
+        }
+        get shouldDisplayLink() {
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const { col, row } = this.activeCellPosition;
+            const viewport = this.env.model.getters.getActiveSnappedViewport();
+            const cell = this.env.model.getters.getCell(sheetId, col, row);
+            return (this.env.model.getters.isVisibleInViewport(col, row, viewport) &&
+                !!cell &&
+                cell.isLink() &&
+                !this.menuState.isOpen &&
+                !this.props.linkEditorIsOpen &&
+                !this.props.sidePanelIsOpen);
+        }
+        /**
+         * Get a reasonable position to display the popover, under the active cell.
+         * Used by link popover components.
+         */
+        get popoverPosition() {
+            const [col, row] = this.env.model.getters.getBottomLeftCell(this.env.model.getters.getActiveSheetId(), ...this.env.model.getters.getPosition());
+            const viewport = this.env.model.getters.getActiveSnappedViewport();
+            const [x, y, width, height] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
+            return {
+                position: { x, y: y + height + TOPBAR_HEIGHT },
+                cellWidth: width,
+                cellHeight: height,
+            };
+        }
+        focus() {
+            if (!this.env.model.getters.isSelectingForComposer() &&
+                !this.env.model.getters.getSelectedFigureId()) {
+                this.canvas.el.focus();
+            }
+        }
+        get gridEl() {
+            if (!this.gridRef.el) {
+                throw new Error("Grid el is not defined.");
+            }
+            return this.gridRef.el;
+        }
+        getGridBoundingClientRect() {
+            return this.gridEl.getBoundingClientRect();
+        }
+        resizeGrid() {
+            const currentHeight = this.gridEl.clientHeight - SCROLLBAR_WIDTH$1;
+            const currentWidth = this.gridEl.clientWidth - SCROLLBAR_WIDTH$1;
+            const { height: viewportHeight, width: viewportWidth } = this.env.model.getters.getViewportDimensionWithHeaders();
+            if (currentHeight != viewportHeight || currentWidth !== viewportWidth) {
+                this.env.model.dispatch("RESIZE_VIEWPORT", {
+                    height: currentHeight - HEADER_HEIGHT,
+                    width: currentWidth - HEADER_WIDTH,
+                });
+            }
+        }
+        onScroll() {
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            if (offsetX !== this.hScrollbar.scroll || offsetY !== this.vScrollbar.scroll) {
+                const { maxOffsetX, maxOffsetY } = this.env.model.getters.getMaximumViewportOffset(this.env.model.getters.getActiveSheet());
+                this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
+                    offsetX: Math.min(this.hScrollbar.scroll, maxOffsetX),
+                    offsetY: Math.min(this.vScrollbar.scroll, maxOffsetY),
+                });
+            }
+        }
+        checkSheetChanges() {
+            const currentSheet = this.env.model.getters.getActiveSheetId();
+            if (currentSheet !== this.currentSheet) {
+                this.focus();
+                this.currentSheet = currentSheet;
+            }
+        }
+        getAutofillPosition() {
+            const zone = this.env.model.getters.getSelectedZone();
+            const sheet = this.env.model.getters.getActiveSheet();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            return {
+                left: sheet.cols[zone.right].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
+                top: sheet.rows[zone.bottom].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
+            };
+        }
+        drawGrid() {
+            //reposition scrollbar
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            this.hScrollbar.scroll = offsetX;
+            this.vScrollbar.scroll = offsetY;
+            // check for position changes
+            this.checkSheetChanges();
+            // drawing grid on canvas
+            const canvas = this.canvas.el;
+            const dpr = window.devicePixelRatio || 1;
+            const ctx = canvas.getContext("2d", { alpha: false });
+            const thinLineWidth = 0.4 * dpr;
+            const renderingContext = {
+                ctx,
+                viewport: this.env.model.getters.getActiveViewport(),
+                dpr,
+                thinLineWidth,
+            };
+            const { width, height } = this.env.model.getters.getViewportDimensionWithHeaders();
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.setAttribute("style", `width:${width}px;height:${height}px;`);
+            ctx.translate(-0.5, -0.5);
+            ctx.scale(dpr, dpr);
+            this.env.model.drawGrid(renderingContext);
+        }
+        moveCanvas(deltaX, deltaY) {
+            this.vScrollbar.scroll = this.vScrollbar.scroll + deltaY;
+            this.hScrollbar.scroll = this.hScrollbar.scroll + deltaX;
+            this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
+                offsetX: this.hScrollbar.scroll,
+                offsetY: this.vScrollbar.scroll,
+            });
+        }
+        getClientPositionKey(client) {
+            var _a, _b, _c;
+            return `${client.id}-${(_a = client.position) === null || _a === void 0 ? void 0 : _a.sheetId}-${(_b = client.position) === null || _b === void 0 ? void 0 : _b.col}-${(_c = client.position) === null || _c === void 0 ? void 0 : _c.row}`;
+        }
+        onMouseWheel(ev) {
+            if (ev.ctrlKey) {
+                return;
+            }
+            function normalize(val) {
+                return val * (ev.deltaMode === 0 ? 1 : DEFAULT_CELL_HEIGHT);
+            }
+            const deltaX = ev.shiftKey ? ev.deltaY : ev.deltaX;
+            const deltaY = ev.shiftKey ? ev.deltaX : ev.deltaY;
+            this.moveCanvas(normalize(deltaX), normalize(deltaY));
+        }
+        isCellHovered(col, row) {
+            return this.hoveredCell.col === col && this.hoveredCell.row === row;
+        }
+        // ---------------------------------------------------------------------------
+        // Zone selection with mouse
+        // ---------------------------------------------------------------------------
+        /**
+         * Get the coordinates in pixels, with 0,0 being the top left of the grid itself
+         */
+        getCoordinates(ev) {
+            const rect = this.gridEl.getBoundingClientRect();
+            const x = ev.pageX - rect.left;
+            const y = ev.pageY - rect.top;
+            return [x, y];
+        }
+        getCartesianCoordinates(ev) {
+            const [x, y] = this.getCoordinates(ev);
+            const { left, top } = this.env.model.getters.getActiveSnappedViewport();
+            const colIndex = this.env.model.getters.getColIndex(x, left);
+            const rowIndex = this.env.model.getters.getRowIndex(y, top);
+            return [colIndex, rowIndex];
+        }
+        onMouseDown(ev) {
+            if (ev.button > 0) {
+                // not main button, probably a context menu
+                return;
+            }
+            const [col, row] = this.getCartesianCoordinates(ev);
+            if (col < 0 || row < 0) {
+                return;
+            }
+            this.clickedCol = col;
+            this.clickedRow = row;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const [mainCol, mainRow] = this.env.model.getters.getMainCell(sheetId, col, row);
+            const cell = this.env.model.getters.getCell(sheetId, mainCol, mainRow);
+            if (!(cell === null || cell === void 0 ? void 0 : cell.isLink())) {
+                this.closeLinkEditor();
+            }
+            this.env.model.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
+            if (ev.shiftKey) {
+                this.env.model.dispatch("ALTER_SELECTION", { cell: [col, row] });
+            }
+            else {
+                this.env.model.dispatch("SELECT_CELL", { col, row });
+                this.checkSheetChanges();
+            }
+            let prevCol = col;
+            let prevRow = row;
+            let isEdgeScrolling = false;
+            let timeOutId = null;
+            let timeoutDelay = 0;
+            let currentEv;
+            const sheet = this.env.model.getters.getActiveSheet();
+            const onMouseMove = (ev) => {
+                currentEv = ev;
+                if (timeOutId) {
+                    return;
+                }
+                const [x, y] = this.getCoordinates(currentEv);
+                isEdgeScrolling = false;
+                timeoutDelay = 0;
+                const colEdgeScroll = this.env.model.getters.getEdgeScrollCol(x);
+                const rowEdgeScroll = this.env.model.getters.getEdgeScrollRow(y);
+                const { left, right, top, bottom } = this.env.model.getters.getActiveSnappedViewport();
+                let col, row;
+                if (colEdgeScroll.canEdgeScroll) {
+                    col = colEdgeScroll.direction > 0 ? right : left - 1;
+                }
+                else {
+                    col = this.env.model.getters.getColIndex(x, left);
+                    col = col === -1 ? prevCol : col;
+                }
+                if (rowEdgeScroll.canEdgeScroll) {
+                    row = rowEdgeScroll.direction > 0 ? bottom : top - 1;
+                }
+                else {
+                    row = this.env.model.getters.getRowIndex(y, top);
+                    row = row === -1 ? prevRow : row;
+                }
+                isEdgeScrolling = colEdgeScroll.canEdgeScroll || rowEdgeScroll.canEdgeScroll;
+                timeoutDelay = Math.min(colEdgeScroll.canEdgeScroll ? colEdgeScroll.delay : MAX_DELAY, rowEdgeScroll.canEdgeScroll ? rowEdgeScroll.delay : MAX_DELAY);
+                if (col !== prevCol || row !== prevRow) {
+                    prevCol = col;
+                    prevRow = row;
+                    this.env.model.dispatch("ALTER_SELECTION", { cell: [col, row] });
+                }
+                if (isEdgeScrolling) {
+                    const offsetX = sheet.cols[left + colEdgeScroll.direction].start;
+                    const offsetY = sheet.rows[top + rowEdgeScroll.direction].start;
+                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+                    timeOutId = setTimeout(() => {
+                        timeOutId = null;
+                        onMouseMove(currentEv);
+                    }, Math.round(timeoutDelay));
+                }
+            };
+            const onMouseUp = (ev) => {
+                clearTimeout(timeOutId);
+                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
+                this.canvas.el.removeEventListener("mousemove", onMouseMove);
+                if (this.env.model.getters.isPaintingFormat()) {
+                    this.env.model.dispatch("PASTE", {
+                        target: this.env.model.getters.getSelectedZones(),
+                    });
+                }
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onDoubleClick(ev) {
+            const [col, row] = this.getCartesianCoordinates(ev);
+            if (this.clickedCol === col && this.clickedRow === row) {
+                const cell = this.env.model.getters.getActiveCell();
+                !cell || cell.isEmpty()
+                    ? this.props.onGridComposerCellFocused()
+                    : this.props.onComposerContentFocused();
+            }
+        }
+        closeLinkEditor() {
+            this.props.onLinkEditorClosed();
+        }
+        // ---------------------------------------------------------------------------
+        // Keyboard interactions
+        // ---------------------------------------------------------------------------
+        processTabKey(ev) {
+            ev.preventDefault();
+            const deltaX = ev.shiftKey ? -1 : 1;
+            this.env.model.dispatch("MOVE_POSITION", { deltaX, deltaY: 0 });
+        }
+        processArrows(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            this.closeLinkEditor();
+            const deltaMap = {
+                ArrowDown: [0, 1],
+                ArrowLeft: [-1, 0],
+                ArrowRight: [1, 0],
+                ArrowUp: [0, -1],
+            };
+            const delta = deltaMap[ev.key];
+            if (ev.shiftKey) {
+                const oldZone = this.env.model.getters.getSelectedZone();
+                this.env.model.dispatch("ALTER_SELECTION", { delta });
+                const newZone = this.env.model.getters.getSelectedZone();
+                const viewport = this.env.model.getters.getActiveSnappedViewport();
+                const sheet = this.env.model.getters.getActiveSheet();
+                const [col, row] = findCellInNewZone(oldZone, newZone, viewport);
+                const { left, right, top, bottom, offsetX, offsetY } = viewport;
+                const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
+                const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
+                if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
+                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
+                        offsetX: newOffsetX,
+                        offsetY: newOffsetY,
+                    });
+                }
+            }
+            else {
+                this.env.model.dispatch("MOVE_POSITION", { deltaX: delta[0], deltaY: delta[1] });
+            }
+            if (this.env.model.getters.isPaintingFormat()) {
+                this.env.model.dispatch("PASTE", {
+                    target: this.env.model.getters.getSelectedZones(),
+                });
+            }
+        }
+        onKeydown(ev) {
+            if (ev.key.startsWith("Arrow")) {
+                this.processArrows(ev);
+                return;
+            }
+            let keyDownString = "";
+            if (ev.ctrlKey)
+                keyDownString += "CTRL+";
+            if (ev.metaKey)
+                keyDownString += "CTRL+";
+            if (ev.altKey)
+                keyDownString += "ALT+";
+            if (ev.shiftKey)
+                keyDownString += "SHIFT+";
+            keyDownString += ev.key.toUpperCase();
+            let handler = this.keyDownMapping[keyDownString];
+            if (handler) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                handler();
+                return;
+            }
+            if (!keyDownMappingIgnore.includes(keyDownString)) {
+                if (ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !ev.altKey) {
+                    // if the user types a character on the grid, it means he wants to start composing the selected cell with that
+                    // character
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    this.props.onGridComposerCellFocused(ev.key);
+                }
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Context Menu
+        // ---------------------------------------------------------------------------
+        onCanvasContextMenu(ev) {
+            ev.preventDefault();
+            const [col, row] = this.getCartesianCoordinates(ev);
+            if (col < 0 || row < 0) {
+                return;
+            }
+            const zones = this.env.model.getters.getSelectedZones();
+            const lastZone = zones[zones.length - 1];
+            let type = "CELL";
+            if (!isInside(col, row, lastZone)) {
+                this.env.model.dispatch("STOP_EDITION");
+                this.env.model.dispatch("SELECT_CELL", { col, row });
+            }
+            else {
+                if (this.env.model.getters.getActiveCols().has(col)) {
+                    type = "COL";
+                }
+                else if (this.env.model.getters.getActiveRows().has(row)) {
+                    type = "ROW";
+                }
+            }
+            this.toggleContextMenu(type, ev.offsetX, ev.offsetY);
+        }
+        toggleContextMenu(type, x, y) {
+            this.closeLinkEditor();
+            this.menuState.isOpen = true;
+            this.menuState.position = { x, y: y + TOPBAR_HEIGHT };
+            this.menuState.menuItems = registries$1[type]
+                .getAll()
+                .filter((item) => !item.isVisible || item.isVisible(this.env));
+        }
+        copy(cut, ev) {
+            if (!this.gridEl.contains(document.activeElement)) {
+                return;
+            }
+            /* If we are currently editing a cell, let the default behavior */
+            if (this.env.model.getters.getEditionMode() !== "inactive") {
+                return;
+            }
+            const type = cut ? "CUT" : "COPY";
+            const target = this.env.model.getters.getSelectedZones();
+            this.env.model.dispatch(type, { target });
+            const content = this.env.model.getters.getClipboardContent();
+            this.clipBoardString = content;
+            ev.clipboardData.setData("text/plain", content);
+            ev.preventDefault();
+        }
+        paste(ev) {
+            if (!this.gridEl.contains(document.activeElement)) {
+                return;
+            }
+            const clipboardData = ev.clipboardData;
+            if (clipboardData.types.indexOf("text/plain") > -1) {
+                const content = clipboardData.getData("text/plain");
+                const target = this.env.model.getters.getSelectedZones();
+                if (this.clipBoardString === content) {
+                    // the paste actually comes from o-spreadsheet itself
+                    interactivePaste(this.env, target);
+                }
+                else {
+                    this.env.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
+                        target,
+                        text: content,
+                    });
+                }
+            }
+        }
+    }
+    Grid.template = TEMPLATE$2;
+    Grid.components = {
+        GridComposer,
+        Overlay,
+        Menu,
+        Autofill,
+        FiguresContainer,
+        ClientTag,
+        Highlight,
+        ErrorToolTip,
+        LinkDisplay,
+        LinkEditor,
+        Popover,
+    };
+
+    const TEMPLATE$1 = owl.xml /* xml */ `
+  <div class="o-sidePanel" >
+    <div class="o-sidePanelHeader">
+        <div class="o-sidePanelTitle" t-esc="getTitle()"/>
+        <div class="o-sidePanelClose" t-on-click="() => this.props.onCloseSidePanel()">×</div>
+    </div>
+    <div class="o-sidePanelBody">
+      <t t-component="state.panel.Body" t-props="props.panelProps" onCloseSidePanel="props.onCloseSidePanel" t-key="'Body_' + props.component"/>
+    </div>
+    <div class="o-sidePanelFooter" t-if="state.panel.Footer">
+      <t t-component="state.panel.Footer" t-props="props.panelProps" t-key="'Footer_' + props.component"/>
+    </div>
+  </div>`;
+    css /* scss */ `
+  .o-sidePanel {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    background-color: white;
+    border: 1px solid darkgray;
+    .o-sidePanelHeader {
+      padding: 6px;
+      height: 30px;
+      background-color: ${BACKGROUND_HEADER_COLOR};
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid darkgray;
+      border-top: 1px solid darkgray;
+      font-weight: bold;
+      .o-sidePanelTitle {
+        font-weight: bold;
+        padding: 5px 10px;
+        color: dimgrey;
+      }
+      .o-sidePanelClose {
+        font-size: 1.5rem;
+        padding: 5px 10px;
+        cursor: pointer;
+        &:hover {
+          background-color: WhiteSmoke;
+        }
+      }
+    }
+    .o-sidePanelBody {
+      overflow: auto;
+      width: 100%;
+      height: 100%;
+
+      .o-section {
+        padding: 16px;
+
+        .o-section-title {
+          font-weight: bold;
+          color: dimgrey;
+          margin-bottom: 5px;
+        }
+      }
+    }
+
+    .o-sidepanel-error {
+      color: red;
+      margin-top: 10px;
+    }
+
+    .o-sidePanelButtons {
+      padding: 16px;
+      text-align: right;
+      .o-sidePanelButton {
+        border: 1px solid lightgrey;
+        padding: 0px 20px 0px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 14px;
+        height: 30px;
+        line-height: 16px;
+        background: white;
+        margin-right: 8px;
+        &:hover:enabled {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
+      .o-sidePanelButton:enabled {
+        cursor: pointer;
+      }
+      .o-sidePanelButton:last-child {
+        margin-right: 0px;
+      }
+    }
+    .o-input {
+      color: #666666;
+      border-radius: 4px;
+      min-width: 0px;
+      padding: 4px 6px;
+      box-sizing: border-box;
+      line-height: 1;
+      width: 100%;
+      .o-type-selector {
+        background-position: right 5px top 11px;
+      }
+    }
+    input.o-required {
+      border-color: #4c4c4c;
+    }
+    input.o-invalid {
+      border-color: red;
+    }
+    select.o-input {
+      background-color: white;
+      text-align: left;
+    }
+  }
+`;
+    class SidePanel extends owl.Component {
+        setup() {
+            this.state = owl.useState({
+                panel: sidePanelRegistry.get(this.props.component),
+            });
+            owl.onWillUpdateProps((nextProps) => (this.state.panel = sidePanelRegistry.get(nextProps.component)));
+        }
+        getTitle() {
+            return typeof this.state.panel.title === "function"
+                ? this.state.panel.title(this.env)
+                : this.state.panel.title;
+        }
+    }
+    SidePanel.template = TEMPLATE$1;
+
+    const FORMATS = [
+        { name: "general", text: "General (no specific format)" },
+        { name: "number", text: "Number (1,000.12)", value: "#,##0.00" },
+        { name: "percent", text: "Percent (10.12%)", value: "0.00%" },
+        { name: "date", text: "Date (9/26/2008)", value: "m/d/yyyy" },
+        { name: "time", text: "Time (10:43:00 PM)", value: "hh:mm:ss a" },
+        { name: "datetime", text: "Date time (9/26/2008 22:43:00)", value: "m/d/yyyy hh:mm:ss" },
+        { name: "duration", text: "Duration (27:51:38)", value: "hhhh:mm:ss" },
+    ];
+    // -----------------------------------------------------------------------------
+    // TopBar
+    // -----------------------------------------------------------------------------
+    css /* scss */ `
+  .o-spreadsheet-topbar {
+    background-color: white;
+    line-height: 1.2;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    line-height: 1.2;
+    user-select: none;
+
+    .o-topbar-top {
+      border-bottom: 1px solid #e0e2e4;
+      display: flex;
+      padding: 2px 10px;
+      justify-content: space-between;
+
+      /* Menus */
+      .o-topbar-topleft {
+        display: flex;
+        .o-topbar-menu {
+          padding: 4px 6px;
+          margin: 0 2px;
+          cursor: pointer;
+        }
+
+        .o-topbar-menu:hover {
+          background-color: #f1f3f4;
+          border-radius: 2px;
+        }
+      }
+
+      .o-topbar-topright {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+    /* Toolbar + Cell Content */
+    .o-topbar-toolbar {
+      border-bottom: 1px solid #e0e2e4;
+      display: flex;
+
+      .o-readonly-toolbar {
+        display: flex;
+        align-items: center;
+        background-color: ${BACKGROUND_HEADER_COLOR};
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+      .o-composer-container {
+        height: 34px;
+        border: 1px solid #e0e2e4;
+        margin-top: -1px;
+        margin-bottom: -1px;
+      }
+
+      /* Toolbar */
+      .o-toolbar-tools {
+        display: flex;
+        flex-shrink: 0;
+        margin-left: 16px;
+        color: #333;
+        cursor: default;
+
+        .o-tool {
+          display: flex;
+          align-items: center;
+          margin: 2px;
+          padding: 0 3px;
+          border-radius: 2px;
+          cursor: pointer;
+          min-width: fit-content;
+        }
+
+        .o-tool.active,
+        .o-tool:not(.o-disabled):hover {
+          background-color: #f1f3f4;
+        }
+
+        .o-with-color > span {
+          border-bottom: 4px solid;
+          height: 16px;
+          margin-top: 2px;
+        }
+
+        .o-with-color {
+          .o-line-item:hover {
+            outline: 1px solid gray;
+          }
+        }
+
+        .o-border {
+          .o-line-item {
+            padding: 4px;
+            margin: 1px;
+          }
+        }
+
+        .o-divider {
+          display: inline-block;
+          border-right: 1px solid #e0e2e4;
+          width: 0;
+          margin: 0 6px;
+        }
+
+        .o-disabled {
+          opacity: 0.6;
+        }
+
+        .o-dropdown {
+          position: relative;
+
+          .o-text-icon {
+            height: 100%;
+            line-height: 30px;
+          }
+
+          .o-text-options > div {
+            line-height: 26px;
+            padding: 3px 12px;
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.08);
+            }
+          }
+
+          .o-dropdown-content {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            z-index: 10;
+            box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+            background-color: white;
+
+            .o-dropdown-item {
+              padding: 7px 10px;
+            }
+
+            .o-dropdown-item:hover {
+              background-color: rgba(0, 0, 0, 0.08);
+            }
+
+            .o-dropdown-line {
+              display: flex;
+              padding: 3px 6px;
+
+              .o-line-item {
+                width: 16px;
+                height: 16px;
+                margin: 1px 3px;
+
+                &:hover {
+                  background-color: rgba(0, 0, 0, 0.08);
+                }
+              }
+            }
+
+            &.o-format-tool {
+              width: 180px;
+              padding: 7px 0;
+              > div {
+                padding-left: 25px;
+
+                &.active:before {
+                  content: "✓";
+                  font-weight: bold;
+                  position: absolute;
+                  left: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      /* Cell Content */
+      .o-toolbar-cell-content {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 0 12px;
+        margin: 0;
+        line-height: 34px;
+        white-space: nowrap;
+        user-select: text;
+      }
+    }
+  }
+`;
+    class TopBar extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.formats = FORMATS;
+            this.currentFormat = "general";
+            this.fontSizes = fontSizes;
+            this.style = {};
+            this.state = owl.useState({
+                menuState: { isOpen: false, position: null, menuItems: [] },
+                activeTool: "",
+            });
+            this.isSelectingMenu = false;
+            this.openedEl = null;
+            this.inMerge = false;
+            this.cannotMerge = false;
+            this.undoTool = false;
+            this.redoTool = false;
+            this.paintFormatTool = false;
+            this.fillColor = "white";
+            this.textColor = "black";
+            this.menus = [];
+            this.composerStyle = `
+    line-height: 34px;
+    padding-left: 8px;
+    height: 34px;
+    background-color: white;
+  `;
+        }
+        setup() {
+            owl.useExternalListener(window, "click", this.onClick);
+            owl.onWillStart(() => this.updateCellState());
+            owl.onWillUpdateProps(() => this.updateCellState());
+        }
+        get topbarComponents() {
+            return topbarComponentRegistry
+                .getAll()
+                .filter((item) => !item.isVisible || item.isVisible(this.env));
+        }
+        onClick(ev) {
+            if (this.openedEl && isChildEvent(this.openedEl, ev)) {
+                return;
+            }
+            this.closeMenus();
+        }
+        toogleStyle(style) {
+            setStyle(this.env, { [style]: !this.style[style] });
+        }
+        toogleFormat(format) {
+            const formatter = FORMATS.find((f) => f.name === format);
+            const value = (formatter && formatter.value) || "";
+            setFormatter(this.env, value);
+        }
+        toggleAlign(align) {
+            setStyle(this.env, { ["align"]: align });
+        }
+        onMenuMouseOver(menu, ev) {
+            if (this.isSelectingMenu) {
+                this.toggleContextMenu(menu, ev);
+            }
+        }
+        toggleDropdownTool(tool, ev) {
+            const isOpen = this.state.activeTool === tool;
+            this.closeMenus();
+            this.state.activeTool = isOpen ? "" : tool;
+            this.openedEl = isOpen ? null : ev.target;
+        }
+        toggleContextMenu(menu, ev) {
+            this.closeMenus();
+            const x = ev.target.offsetLeft;
+            const y = ev.target.clientHeight + ev.target.offsetTop;
+            this.state.menuState.isOpen = true;
+            this.state.menuState.position = { x, y };
+            this.state.menuState.menuItems = topbarMenuRegistry
+                .getChildren(menu, this.env)
+                .filter((item) => !item.isVisible || item.isVisible(this.env));
+            this.isSelectingMenu = true;
+            this.openedEl = ev.target;
+        }
+        closeMenus() {
+            this.state.activeTool = "";
+            this.state.menuState.isOpen = false;
+            this.isSelectingMenu = false;
+            this.openedEl = null;
+        }
+        updateCellState() {
+            this.style = this.env.model.getters.getCurrentStyle();
+            this.fillColor = this.style.fillColor || "white";
+            this.textColor = this.style.textColor || "black";
+            const zones = this.env.model.getters.getSelectedZones();
+            const { top, left, right, bottom } = zones[0];
+            this.cannotMerge = zones.length > 1 || (top === bottom && left === right);
+            this.inMerge = false;
+            if (!this.cannotMerge) {
+                const [col, row] = this.env.model.getters.getPosition();
+                const zone = this.env.model.getters.expandZone(this.env.model.getters.getActiveSheetId(), {
+                    left: col,
+                    right: col,
+                    top: row,
+                    bottom: row,
+                });
+                this.inMerge = isEqual(zones[0], zone);
+            }
+            this.undoTool = this.env.model.getters.canUndo();
+            this.redoTool = this.env.model.getters.canRedo();
+            this.paintFormatTool = this.env.model.getters.isPaintingFormat();
+            const cell = this.env.model.getters.getActiveCell();
+            if (cell && cell.format) {
+                const format = this.formats.find((f) => f.value === cell.format);
+                this.currentFormat = format ? format.name : "";
+            }
+            else {
+                this.currentFormat = "general";
+            }
+            this.menus = topbarMenuRegistry
+                .getAll()
+                .filter((item) => !item.isVisible || item.isVisible(this.env));
+        }
+        getMenuName(menu) {
+            return topbarMenuRegistry.getName(menu, this.env);
+        }
+        toggleMerge() {
+            const zones = this.env.model.getters.getSelectedZones();
+            const target = [zones[zones.length - 1]];
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            if (this.inMerge) {
+                this.env.model.dispatch("REMOVE_MERGE", { sheetId, target });
+            }
+            else {
+                const result = this.env.model.dispatch("ADD_MERGE", { sheetId, target });
+                if (!result.isSuccessful) {
+                    if (result.isCancelledBecause(3 /* MergeIsDestructive */)) {
+                        this.env.askConfirmation(_lt("Merging these cells will only preserve the top-leftmost value. Merge anyway?"), () => {
+                            this.env.model.dispatch("ADD_MERGE", { sheetId, target, force: true });
+                        });
+                    }
+                }
+            }
+        }
+        setColor(target, color) {
+            setStyle(this.env, { [target]: color });
+        }
+        setBorder(command) {
+            this.env.model.dispatch("SET_FORMATTING", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                target: this.env.model.getters.getSelectedZones(),
+                border: command,
+            });
+        }
+        setFormat(ev) {
+            const format = ev.target.dataset.format;
+            if (format) {
+                this.toogleFormat(format);
+            }
+        }
+        setDecimal(step) {
+            this.env.model.dispatch("SET_DECIMAL", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                target: this.env.model.getters.getSelectedZones(),
+                step: step,
+            });
+        }
+        paintFormat() {
+            this.env.model.dispatch("ACTIVATE_PAINT_FORMAT", {
+                target: this.env.model.getters.getSelectedZones(),
+            });
+        }
+        clearFormatting() {
+            this.env.model.dispatch("CLEAR_FORMATTING", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                target: this.env.model.getters.getSelectedZones(),
+            });
+        }
+        setSize(ev) {
+            const fontSize = parseFloat(ev.target.dataset.size);
+            setStyle(this.env, { fontSize });
+        }
+        doAction(action) {
+            action(this.env);
+            this.closeMenus();
+        }
+        undo() {
+            this.env.model.dispatch("REQUEST_UNDO");
+        }
+        redo() {
+            this.env.model.dispatch("REQUEST_REDO");
+        }
+    }
+    TopBar.template = owl.xml /* xml */ `
+    <div class="o-spreadsheet-topbar o-two-columns" t-on-click="props.onClick">
+      <div class="o-topbar-top">
+        <!-- Menus -->
+        <div class="o-topbar-topleft">
+          <t t-foreach="menus" t-as="menu" t-key="menu_index">
+            <div t-if="menu.children.length !== 0"
+              class="o-topbar-menu"
+              t-on-click="(ev) => this.toggleContextMenu(menu, ev)"
+              t-on-mouseover="(ev) => this.onMenuMouseOver(menu, ev)"
+              t-att-data-id="menu.id">
+            <t t-esc="getMenuName(menu)"/>
+          </div>
+          </t>
+          <Menu t-if="state.menuState.isOpen"
+                position="state.menuState.position"
+                menuItems="state.menuState.menuItems"
+                onClose="() => this.state.menuState.isOpen=false"/>
+        </div>
+        <div class="o-topbar-topright">
+          <div t-foreach="topbarComponents" t-as="comp" t-key="comp_index">
+            <t t-component="comp.component"/>
+          </div>
+        </div>
+      </div>
+      <!-- Toolbar and Cell Content -->
+      <div class="o-topbar-toolbar">
+        <!-- Toolbar -->
+        <div t-if="env.model.getters.isReadonly()" class="o-readonly-toolbar text-muted">
+          <span>
+            <i class="fa fa-eye" /> <t t-esc="env._t('Readonly Access')" />
+          </span>
+        </div>
+        <div t-else="" class="o-toolbar-tools">
+          <div class="o-tool" title="Undo" t-att-class="{'o-disabled': !undoTool}" t-on-click="undo" >${UNDO_ICON}</div>
+          <div class="o-tool" t-att-class="{'o-disabled': !redoTool}" title="Redo"  t-on-click="redo">${REDO_ICON}</div>
+          <div class="o-tool" title="Paint Format" t-att-class="{active:paintFormatTool}" t-on-click="paintFormat">${PAINT_FORMAT_ICON}</div>
+          <div class="o-tool" title="Clear Format" t-on-click="clearFormatting">${CLEAR_FORMAT_ICON}</div>
+          <div class="o-divider"/>
+          <div class="o-tool" title="Format as percent" t-on-click="(ev) => this.toogleFormat('percent', ev)">%</div>
+          <div class="o-tool" title="Decrease decimal places" t-on-click="(ev) => this.setDecimal(-1, ev)">.0</div>
+          <div class="o-tool" title="Increase decimal places" t-on-click="(ev) => this.setDecimal(+1, ev)">.00</div>
+          <div class="o-tool o-dropdown" title="More formats" t-on-click="(ev) => this.toggleDropdownTool('formatTool', ev)">
+            <div class="o-text-icon">123${TRIANGLE_DOWN_ICON}</div>
+            <div class="o-dropdown-content o-text-options  o-format-tool "  t-if="state.activeTool === 'formatTool'" t-on-click="setFormat">
+              <t t-foreach="formats" t-as="format" t-key="format.name">
+                <div t-att-data-format="format.name" t-att-class="{active: currentFormat === format.name}"><t t-esc="format.text"/></div>
+              </t>
+            </div>
+          </div>
+          <div class="o-divider"/>
+          <!-- <div class="o-tool" title="Font"><span>Roboto</span> ${TRIANGLE_DOWN_ICON}</div> -->
+          <div class="o-tool o-dropdown" title="Font Size" t-on-click="(ev) => this.toggleDropdownTool('fontSizeTool', ev)">
+            <div class="o-text-icon"><t t-esc="style.fontSize || ${DEFAULT_FONT_SIZE}"/> ${TRIANGLE_DOWN_ICON}</div>
+            <div class="o-dropdown-content o-text-options "  t-if="state.activeTool === 'fontSizeTool'" t-on-click="setSize">
+              <t t-foreach="fontSizes" t-as="font" t-key="font_index">
+                <div t-esc="font.pt" t-att-data-size="font.pt"/>
+              </t>
+            </div>
+          </div>
+          <div class="o-divider"/>
+          <div class="o-tool" title="Bold" t-att-class="{active:style.bold}" t-on-click="(ev) => this.toogleStyle('bold', ev)">${BOLD_ICON}</div>
+          <div class="o-tool" title="Italic" t-att-class="{active:style.italic}" t-on-click="(ev) => this.toogleStyle('italic', ev)">${ITALIC_ICON}</div>
+          <div class="o-tool" title="Strikethrough"  t-att-class="{active:style.strikethrough}" t-on-click="(ev) => this.toogleStyle('strikethrough', ev)">${STRIKE_ICON}</div>
+          <div class="o-tool o-dropdown o-with-color">
+            <span t-attf-style="border-color:{{textColor}}" title="Text Color" t-on-click="(ev) => this.toggleDropdownTool('textColorTool', ev)">${TEXT_COLOR_ICON}</span>
+            <ColorPicker t-if="state.activeTool === 'textColorTool'" onColorPicked="(color) => this.setColor('textColor', color)" t-key="textColor"/>
+          </div>
+          <div class="o-divider"/>
+          <div class="o-tool  o-dropdown o-with-color">
+            <span t-attf-style="border-color:{{fillColor}}" title="Fill Color" t-on-click="(ev) => this.toggleDropdownTool('fillColorTool', ev)">${FILL_COLOR_ICON}</span>
+            <ColorPicker t-if="state.activeTool === 'fillColorTool'" onColorPicked="(color) => this.setColor('fillColor', color)" t-key="fillColor"/>
+          </div>
+          <div class="o-tool o-dropdown">
+            <span title="Borders" t-on-click="(ev) => this.toggleDropdownTool('borderTool', ev)">${BORDERS_ICON}</span>
+            <div class="o-dropdown-content o-border" t-if="state.activeTool === 'borderTool'">
+              <div class="o-dropdown-line">
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('all', ev)">${BORDERS_ICON}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('hv', ev)">${BORDER_HV}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('h', ev)">${BORDER_H}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('v', ev)">${BORDER_V}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('external', ev)">${BORDER_EXTERNAL}</span>
+              </div>
+              <div class="o-dropdown-line">
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('left', ev)">${BORDER_LEFT}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('top', ev)">${BORDER_TOP}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('right', ev)">${BORDER_RIGHT}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('bottom', ev)">${BORDER_BOTTOM}</span>
+                <span class="o-line-item" t-on-click="(ev) => this.setBorder('clear', ev)">${BORDER_CLEAR}</span>
+              </div>
+            </div>
+          </div>
+          <div class="o-tool o-merge-tool" title="Merge Cells"  t-att-class="{active:inMerge, 'o-disabled': cannotMerge}" t-on-click="toggleMerge">${MERGE_CELL_ICON}</div>
+          <div class="o-divider"/>
+          <div class="o-tool o-dropdown" title="Horizontal align" t-on-click="(ev) => this.toggleDropdownTool('alignTool', ev)">
+            <span>
+              <t t-if="style.align === 'right'">${ALIGN_RIGHT_ICON}</t>
+              <t t-elif="style.align === 'center'">${ALIGN_CENTER_ICON}</t>
+              <t t-else="">${ALIGN_LEFT_ICON}</t>
+              ${TRIANGLE_DOWN_ICON}
+            </span>
+            <div t-if="state.activeTool === 'alignTool'" class="o-dropdown-content">
+              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('left', ev)">${ALIGN_LEFT_ICON}</div>
+              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('center', ev)">${ALIGN_CENTER_ICON}</div>
+              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('right', ev)">${ALIGN_RIGHT_ICON}</div>
+            </div>
+          </div>
+          <!-- <div class="o-tool" title="Vertical align"><span>${ALIGN_MIDDLE_ICON}</span> ${TRIANGLE_DOWN_ICON}</div> -->
+          <!-- <div class="o-tool" title="Text Wrapping">${TEXT_WRAPPING_ICON}</div> -->
+        </div>
+        <Composer inputStyle="composerStyle" focus="props.focusComposer" onComposerContentFocused="props.onComposerContentFocused"/>
+
+      </div>
+    </div>`;
+    TopBar.components = { ColorPicker, Menu, Composer };
+
+    const TEMPLATE = owl.xml /* xml */ `
+  <div class="o-spreadsheet"  t-on-keydown="onKeydown">
+    <TopBar
+      onClick="() => this.focusGrid()"
+      onComposerContentFocused="(selection) => this.onTopBarComposerFocused(selection)"
+      focusComposer="focusTopBarComposer"/>
+    <Grid
+      sidePanelIsOpen="sidePanel.isOpen"
+      linkEditorIsOpen="linkEditor.isOpen"
+      onLinkEditorClosed="() => this.closeLinkEditor()"
+      onSaveRequested="() => this.save()"
+      focusComposer="focusGridComposer"
+      exposeFocus="(focus) => this._focusGrid = focus"
+      onComposerContentFocused="() => this.onGridComposerContentFocused()"
+      onGridComposerCellFocused="(content, selection) => this.onGridComposerCellFocused(content, selection)"/>
+    <SidePanel t-if="sidePanel.isOpen"
+           onCloseSidePanel="() => this.sidePanel.isOpen = false"
+           component="sidePanel.component"
+           panelProps="sidePanel.panelProps"/>
+    <BottomBar onClick="() => this.focusGrid()"/>
+  </div>`;
+    css /* scss */ `
+  .o-spreadsheet {
+    position: relative;
+    display: grid;
+    grid-template-rows: ${TOPBAR_HEIGHT}px auto ${BOTTOMBAR_HEIGHT + 1}px;
+    grid-template-columns: auto 350px;
+    * {
+      font-family: "Roboto", "RobotoDraft", Helvetica, Arial, sans-serif;
+    }
+    &,
+    *,
+    *:before,
+    *:after {
+      box-sizing: content-box;
+    }
+  }
+
+  .o-two-columns {
+    grid-column: 1 / 3;
+  }
+
+  .o-icon {
+    width: ${ICON_EDGE_LENGTH}px;
+    height: ${ICON_EDGE_LENGTH}px;
+    opacity: 0.6;
+    vertical-align: middle;
+  }
+
+  .o-cf-icon {
+    width: ${CF_ICON_EDGE_LENGTH}px;
+    height: ${CF_ICON_EDGE_LENGTH}px;
+    vertical-align: sub;
+  }
+`;
+    const t = (s) => s;
+    class Spreadsheet extends owl.Component {
+        setup() {
+            var _a, _b;
+            (_b = (_a = this.props).exposeSpreadsheet) === null || _b === void 0 ? void 0 : _b.call(_a, this);
+            this.model = this.props.model;
+            this.sidePanel = owl.useState({ isOpen: false, panelProps: {} });
+            this.linkEditor = owl.useState({ isOpen: false });
+            this.composer = owl.useState({
+                topBarFocus: "inactive",
+                gridFocusMode: "inactive",
+            });
+            this.keyDownMapping = {
+                "CTRL+H": () => this.toggleSidePanel("FindAndReplace", {}),
+                "CTRL+F": () => this.toggleSidePanel("FindAndReplace", {}),
+            };
+            owl.useSubEnv({
+                model: this.model,
+                openSidePanel: this.openSidePanel.bind(this),
+                toggleSidePanel: this.toggleSidePanel.bind(this),
+                openLinkEditor: this.openLinkEditor.bind(this),
+                _t: Spreadsheet._t,
+                clipboard: navigator.clipboard,
+            });
+            owl.useExternalListener(window, "resize", this.render);
+            owl.useExternalListener(document.body, "keyup", this.onKeyup.bind(this));
+            owl.useExternalListener(window, "beforeunload", this.unbindModelEvents.bind(this));
+            owl.onMounted(() => this.bindModelEvents());
+            owl.onWillUnmount(() => this.unbindModelEvents());
+            owl.onWillDestroy(() => this.model.destroy());
+        }
+        get focusTopBarComposer() {
+            return this.model.getters.getEditionMode() === "inactive"
+                ? "inactive"
+                : this.composer.topBarFocus;
+        }
+        get focusGridComposer() {
+            return this.model.getters.getEditionMode() === "inactive"
+                ? "inactive"
+                : this.composer.gridFocusMode;
+        }
+        bindModelEvents() {
+            this.model.on("update", this, this.render);
+            this.model.on("notify-ui", this, this.onNotifyUI);
+        }
+        unbindModelEvents() {
+            this.model.off("update", this);
+            this.model.off("notify-ui", this);
+        }
+        onNotifyUI(payload) {
+            switch (payload.type) {
+                case "NOTIFICATION":
+                    this.env.notifyUser(payload.text);
+                    break;
+            }
+        }
+        openSidePanel(panel, panelProps) {
+            this.sidePanel.component = panel;
+            this.sidePanel.panelProps = panelProps;
+            this.sidePanel.isOpen = true;
+        }
+        openLinkEditor() {
+            this.linkEditor.isOpen = true;
+        }
+        closeLinkEditor() {
+            this.linkEditor.isOpen = false;
+            this.focusGrid();
+        }
+        toggleSidePanel(panel, panelProps) {
+            if (this.sidePanel.isOpen && panel === this.sidePanel.component) {
+                this.sidePanel.isOpen = false;
+                this.focusGrid();
+            }
+            else {
+                this.openSidePanel(panel, panelProps);
+            }
+        }
+        focusGrid() {
+            if (!this._focusGrid) {
+                throw new Error("_focusGrid should be exposed by the grid component");
+            }
+            this._focusGrid();
+        }
+        save() {
+            var _a, _b;
+            (_b = (_a = this.props).onContentSaved) === null || _b === void 0 ? void 0 : _b.call(_a, this.model.exportData());
+        }
+        onKeyup(ev) {
+            if (ev.key === "Control" && this.model.getters.getSelectionMode() !== SelectionMode.expanding) {
+                this.model.dispatch("STOP_SELECTION");
+            }
+        }
+        onKeydown(ev) {
+            if (ev.key === "Control" && !ev.repeat) {
+                this.model.dispatch(this.model.getters.getSelectionMode() === SelectionMode.idle
+                    ? "PREPARE_SELECTION_EXPANSION"
+                    : "START_SELECTION_EXPANSION");
+            }
+            let keyDownString = "";
+            if (ev.ctrlKey || ev.metaKey) {
+                keyDownString += "CTRL+";
+            }
+            keyDownString += ev.key.toUpperCase();
+            let handler = this.keyDownMapping[keyDownString];
+            if (handler) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                handler();
+                return;
+            }
+        }
+        onTopBarComposerFocused(selection) {
+            if (this.model.getters.isReadonly()) {
+                return;
+            }
+            this.composer.topBarFocus = "contentFocus";
+            this.composer.gridFocusMode = "inactive";
+            this.setComposerContent({ selection } || {});
+            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
+        }
+        onGridComposerContentFocused() {
+            if (this.model.getters.isReadonly()) {
+                return;
+            }
+            this.composer.topBarFocus = "inactive";
+            this.composer.gridFocusMode = "contentFocus";
+            this.setComposerContent({});
+            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
+        }
+        onGridComposerCellFocused(content, selection) {
+            if (this.model.getters.isReadonly()) {
+                return;
+            }
+            this.composer.topBarFocus = "inactive";
+            this.composer.gridFocusMode = "cellFocus";
+            this.setComposerContent({ content, selection } || {});
+            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
+        }
+        /**
+         * Start the edition or update the content if it's already started.
+         */
+        setComposerContent({ content, selection, }) {
+            if (this.model.getters.getEditionMode() === "inactive") {
+                this.model.dispatch("START_EDITION", { text: content, selection });
+            }
+            else if (content) {
+                this.model.dispatch("SET_CURRENT_CONTENT", { content, selection });
+            }
+        }
+    }
+    Spreadsheet.template = TEMPLATE;
+    Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel, LinkEditor };
+    Spreadsheet._t = t;
 
     /**
      * DataSourceRegistry is used to contains all the DataSource of spreadsheet.
@@ -21715,9 +26785,8 @@
          */
         add(key, value) {
             this.registry.add(key, value);
-            // const debouncedLoaded: Function = debounce(() => this.trigger("data-loaded", { id: key }), 0);
-            // value.on("data-loaded", this, () => debouncedLoaded());
-            value.on("data-loaded", this, () => this.trigger("data-loaded", { id: key }));
+            const debouncedLoaded = debounce(() => this.trigger("data-loaded", { id: key }), 0);
+            value.on("data-loaded", this, () => debouncedLoaded());
             value.loadMetadata();
             return this;
         }
@@ -21817,6 +26886,23 @@
         }
         getLastUpdate() {
             return this.lastUpdate;
+        }
+    }
+
+    class LocalTransportService {
+        constructor() {
+            this.listeners = [];
+        }
+        sendMessage(message) {
+            for (const { callback } of this.listeners) {
+                callback(message);
+            }
+        }
+        onNewMessage(id, callback) {
+            this.listeners.push({ id, callback });
+        }
+        leave(id) {
+            this.listeners = this.listeners.filter((listener) => listener.id !== id);
         }
     }
 
@@ -25496,7 +30582,7 @@
             this.setupSessionEvents();
             // Load the initial revisions
             this.session.loadInitialMessages(stateUpdateMessages);
-            this.joinSession(config.client);
+            this.joinSession();
             if (config.snapshotRequested) {
                 this.session.snapshot(this.exportData());
             }
@@ -25504,8 +30590,8 @@
         get handlers() {
             return [this.range, ...this.corePlugins, ...this.uiPlugins, this.history];
         }
-        joinSession(client) {
-            this.session.join(client);
+        joinSession() {
+            this.session.join(this.config.client);
         }
         leaveSession() {
             this.session.leave();
@@ -25666,6 +30752,7 @@
                 this.dispatch("STOP_EDITION", { cancel: true });
             }
             this.config.isReadonly = isReadonly || false;
+            this.trigger("update");
         }
         /**
          * Wait until all cells that depends on dataSources in spreadsheet are computed
@@ -25695,5134 +30782,6 @@
             return getXLSX(data);
         }
     }
-
-    /**
-     * Return the o-spreadsheet element position relative
-     * to the browser viewport.
-     */
-    function useSpreadsheetPosition() {
-        const position = owl.useState({ x: 0, y: 0 });
-        let spreadsheetElement = document.querySelector(".o-spreadsheet");
-        function updatePosition() {
-            if (!spreadsheetElement) {
-                spreadsheetElement = document.querySelector(".o-spreadsheet");
-            }
-            if (spreadsheetElement) {
-                const { top, left } = spreadsheetElement.getBoundingClientRect();
-                position.x = left;
-                position.y = top;
-            }
-        }
-        owl.onMounted(updatePosition);
-        owl.onPatched(updatePosition);
-        return position;
-    }
-    /**
-     * Return the component (or ref's component) top left position (in pixels) relative
-     * to the upper left corner of the spreadsheet.
-     *
-     * Note: when used with a <Portal/> component, it will
-     * return the portal position, not the teleported position.
-     */
-    function useAbsolutePosition(ref) {
-        const position = owl.useState({ x: 0, y: 0 });
-        const spreadsheet = useSpreadsheetPosition();
-        function updateElPosition() {
-            const el = ref.el;
-            const { top, left } = el.getBoundingClientRect();
-            const x = left - spreadsheet.x;
-            const y = top - spreadsheet.y;
-            if (x !== position.x || y !== position.y) {
-                position.x = x;
-                position.y = y;
-            }
-        }
-        owl.onMounted(updateElPosition);
-        owl.onPatched(updateElPosition);
-        return position;
-    }
-
-    const TEMPLATE$j = owl.xml /* xml */ `
-  <t t-portal="'.o-spreadsheet'">
-    <div t-att-style="style">
-      <t t-slot="default"/>
-    </div>
-  </t>
-`;
-    class Popover extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.getters = this.env.getters;
-        }
-        get style() {
-            const horizontalPosition = `left:${this.horizontalPosition()}`;
-            const verticalPosition = `top:${this.verticalPosition()}`;
-            const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
-            return `
-      position: absolute;
-      z-index: 5;
-      ${verticalPosition}px;
-      ${horizontalPosition}px;
-      ${height}px;
-      width:${this.props.childWidth}px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
-    `;
-        }
-        get viewportDimension() {
-            return this.getters.getViewportDimensionWithHeaders();
-        }
-        get shouldRenderRight() {
-            const { x } = this.props.position;
-            return x + this.props.childWidth < this.viewportDimension.width;
-        }
-        get shouldRenderBottom() {
-            const { y } = this.props.position;
-            return y + this.props.childHeight < this.viewportDimension.height + TOPBAR_HEIGHT;
-        }
-        horizontalPosition() {
-            const { x } = this.props.position;
-            if (this.shouldRenderRight) {
-                return x;
-            }
-            return x - this.props.childWidth - this.props.flipHorizontalOffset;
-        }
-        verticalPosition() {
-            const { y } = this.props.position;
-            if (this.shouldRenderBottom) {
-                return y;
-            }
-            return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
-        }
-    }
-    Popover.template = TEMPLATE$j;
-    Popover.defaultProps = {
-        flipHorizontalOffset: 0,
-        flipVerticalOffset: 0,
-        verticalOffset: 0,
-        marginTop: 0,
-    };
-
-    //------------------------------------------------------------------------------
-    // Context Menu Component
-    //------------------------------------------------------------------------------
-    const TEMPLATE$i = owl.xml /* xml */ `
-    <Popover
-      position="props.position"
-      childWidth="${MENU_WIDTH}"
-      childHeight="menuHeight"
-      flipHorizontalOffset="popover.flipHorizontalOffset"
-      flipVerticalOffset="popover.flipVerticalOffset"
-      marginTop="popover.marginTop"
-      >
-      <div t-ref="menu" class="o-menu" t-on-scroll="onScroll" t-on-wheel.stop="" t-on-click.stop="">
-        <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
-          <t t-set="isMenuRoot" t-value="isRoot(menuItem)"/>
-          <t t-set="isMenuEnabled" t-value="isEnabled(menuItem)"/>
-          <div
-            t-att-title="getName(menuItem)"
-            t-att-data-name="menuItem.id"
-            t-on-click="() => this.onClickMenu(menuItem, menuItem_index)"
-            t-on-mouseover="() => this.onMouseOver(menuItem, menuItem_index)"
-            class="o-menu-item"
-            t-att-class="{
-              'o-menu-root': isMenuRoot,
-              'disabled': !isMenuEnabled,
-            }">
-            <t t-esc="getName(menuItem)"/>
-            <span class="o-menu-item-shortcut" t-esc="getShortCut(menuItem)"/>
-            <t t-if="isMenuRoot">
-              ${TRIANGLE_RIGHT_ICON}
-            </t>
-            <t t-elif="menuItem.icon">
-              <i t-att-class="menuItem.icon" class="o-menu-item-icon"/>
-            </t>
-          </div>
-          <div t-if="menuItem.separator and !menuItem_last" class="o-separator"/>
-        </t>
-      </div>
-      <Menu t-if="subMenu.isOpen"
-        position="subMenuPosition"
-        menuItems="subMenu.menuItems"
-        depth="props.depth + 1"
-        onMenuClicked="props.onMenuClicked"
-        onClose="() => this.close()"/>
-    </Popover>`;
-    const CSS$h = css /* scss */ `
-  .o-menu {
-    background-color: white;
-    padding: 8px 0px;
-    .o-menu-item {
-      display: flex;
-      justify-content: space-between;
-      box-sizing: border-box;
-      height: ${MENU_ITEM_HEIGHT}px;
-      padding: 4px 16px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      cursor: pointer;
-      user-select: none;
-
-      &.o-menu-root {
-        display: flex;
-        justify-content: space-between;
-      }
-      .o-menu-item-icon {
-        margin-top: auto;
-        margin-bottom: auto;
-      }
-      .o-icon {
-        width: 10px;
-      }
-
-      &:not(.disabled) {
-        &:hover {
-          background-color: #ebebeb;
-        }
-        .o-menu-item-shortcut {
-          color: grey;
-        }
-      }
-      &.disabled {
-        color: ${MENU_ITEM_DISABLED_COLOR};
-        cursor: not-allowed;
-      }
-    }
-
-    .o-separator {
-      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
-      margin-top: ${MENU_SEPARATOR_PADDING}px;
-      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
-    }
-  }
-`;
-    class Menu extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.subMenu = owl.useState({
-                isOpen: false,
-                position: null,
-                scrollOffset: 0,
-                menuItems: [],
-            });
-            this.menuRef = owl.useRef("menu");
-            this.position = useAbsolutePosition(this.menuRef);
-        }
-        setup() {
-            owl.useExternalListener(window, "click", this.onClick);
-            owl.useExternalListener(window, "contextmenu", this.onContextMenu);
-            owl.onWillUpdateProps((nextProps) => {
-                if (nextProps.menuItems !== this.props.menuItems) {
-                    this.subMenu.isOpen = false;
-                }
-            });
-        }
-        get subMenuPosition() {
-            const position = Object.assign({}, this.subMenu.position);
-            position.y -= this.subMenu.scrollOffset || 0;
-            return position;
-        }
-        get menuHeight() {
-            return this.menuComponentHeight(this.props.menuItems);
-        }
-        get subMenuHeight() {
-            return this.menuComponentHeight(this.subMenu.menuItems);
-        }
-        get popover() {
-            const isRoot = this.props.depth === 1;
-            return {
-                // some margin between the header and the component
-                marginTop: HEADER_HEIGHT + 6 + TOPBAR_HEIGHT,
-                flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
-                flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
-            };
-        }
-        async activateMenu(menu) {
-            var _a, _b;
-            const result = await menu.action(this.env);
-            this.close();
-            (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
-        }
-        close() {
-            this.subMenu.isOpen = false;
-            this.props.onClose();
-        }
-        /**
-         * Return the number of pixels between the top of the menu
-         * and the menu item at a given index.
-         */
-        subMenuVerticalPosition(position) {
-            const menusAbove = this.props.menuItems.slice(0, position);
-            return this.menuComponentHeight(menusAbove) + this.position.y;
-        }
-        onClick(ev) {
-            // Don't close a root menu when clicked to open the submenus.
-            const el = this.menuRef.el;
-            if (el && isChildEvent(el, ev)) {
-                return;
-            }
-            this.close();
-        }
-        onContextMenu(ev) {
-            // Don't close a root menu when clicked to open the submenus.
-            const el = this.menuRef.el;
-            if (el && isChildEvent(el, ev)) {
-                return;
-            }
-            this.subMenu.isOpen = false;
-        }
-        /**
-         * Return the total height (in pixels) needed for some
-         * menu items
-         */
-        menuComponentHeight(menuItems) {
-            const separators = menuItems.filter((m) => m.separator);
-            const others = menuItems;
-            return MENU_ITEM_HEIGHT * others.length + separators.length * MENU_SEPARATOR_HEIGHT;
-        }
-        getName(menu) {
-            return cellMenuRegistry.getName(menu, this.env);
-        }
-        getShortCut(menu) {
-            return cellMenuRegistry.getShortCut(menu);
-        }
-        isRoot(menu) {
-            return !menu.action;
-        }
-        isEnabled(menu) {
-            if (menu.isEnabled(this.env)) {
-                return this.env.getters.isReadonly() ? menu.isReadonlyAllowed : true;
-            }
-            return false;
-        }
-        onScroll(ev) {
-            this.subMenu.scrollOffset = ev.target.scrollTop;
-        }
-        /**
-         * If the given menu is not disabled, open it's submenu at the
-         * correct position according to available surrounding space.
-         */
-        openSubMenu(menu, position) {
-            const y = this.subMenuVerticalPosition(position);
-            this.subMenu.position = {
-                x: this.position.x + MENU_WIDTH,
-                y: y - (this.subMenu.scrollOffset || 0),
-            };
-            this.subMenu.menuItems = cellMenuRegistry.getChildren(menu, this.env);
-            this.subMenu.isOpen = true;
-        }
-        onClickMenu(menu, position) {
-            if (this.isEnabled(menu)) {
-                if (this.isRoot(menu)) {
-                    this.openSubMenu(menu, position);
-                }
-                else {
-                    this.activateMenu(menu);
-                }
-            }
-        }
-        onMouseOver(menu, position) {
-            if (menu.isEnabled(this.env)) {
-                if (this.isRoot(menu)) {
-                    this.openSubMenu(menu, position);
-                }
-                else {
-                    this.subMenu.isOpen = false;
-                }
-            }
-        }
-    }
-    Menu.template = TEMPLATE$i;
-    Menu.components = { Menu, Popover };
-    Menu.style = CSS$h;
-    Menu.defaultProps = {
-        depth: 1,
-    };
-
-    // -----------------------------------------------------------------------------
-    // SpreadSheet
-    // -----------------------------------------------------------------------------
-    const TEMPLATE$h = owl.xml /* xml */ `
-  <div class="o-spreadsheet-bottom-bar o-two-columns" t-on-click="props.onClick" t-ref="bottomBar">
-    <div class="o-sheet-item o-add-sheet" t-att-class="{'disabled': getters.isReadonly()}" t-on-click="addSheet">${PLUS}</div>
-    <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
-    <div class="o-all-sheets">
-      <t t-foreach="getters.getSheets()" t-as="sheet" t-key="sheet.id">
-        <div class="o-sheet-item o-sheet" t-on-click="(ev) => this.activateSheet(sheet.id, ev)"
-             t-on-contextmenu.prevent="(ev) => this.onContextMenu(sheet.id, ev)"
-             t-att-title="sheet.name"
-             t-att-data-id="sheet.id"
-             t-att-class="{active: sheet.id === getters.getActiveSheetId()}">
-          <span class="o-sheet-name" t-esc="sheet.name" t-on-dblclick="(ev) => this.onDblClick(sheet.id, ev)"/>
-          <span class="o-sheet-icon" t-on-click.stop="(ev) => this.onIconClick(sheet.id, ev)">${TRIANGLE_DOWN_ICON}</span>
-        </div>
-      </t>
-    </div>
-
-    <t t-set="selectedStatistic" t-value="getSelectedStatistic()"/>
-    <div t-if="selectedStatistic !== undefined" class="o-selection-statistic" t-on-click="listSelectionStatistics">
-      <t t-esc="selectedStatistic"/>
-      <span>${TRIANGLE_DOWN_ICON}</span>
-    </div>
-
-    <Menu t-if="menuState.isOpen"
-          position="menuState.position"
-          menuItems="menuState.menuItems"
-          onClose="() => this.menuState.isOpen=false"/>
-  </div>`;
-    const CSS$g = css /* scss */ `
-  .o-spreadsheet-bottom-bar {
-    background-color: ${BACKGROUND_GRAY_COLOR};
-    padding-left: ${HEADER_WIDTH}px;
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-    border-top: 1px solid lightgrey;
-    overflow: hidden;
-
-    .o-add-sheet,
-    .o-list-sheets {
-      margin-right: 5px;
-    }
-
-    .o-add-sheet.disabled {
-      cursor: not-allowed;
-    }
-
-    .o-sheet-item {
-      display: flex;
-      align-items: center;
-      padding: 5px;
-      cursor: pointer;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-    }
-
-    .o-all-sheets {
-      display: flex;
-      align-items: center;
-      max-width: 80%;
-      overflow: hidden;
-    }
-
-    .o-sheet {
-      color: #666;
-      padding: 0 15px;
-      padding-right: 10px;
-      height: ${BOTTOMBAR_HEIGHT}px;
-      line-height: ${BOTTOMBAR_HEIGHT}px;
-      user-select: none;
-      white-space: nowrap;
-      border-left: 1px solid #c1c1c1;
-
-      &:last-child {
-        border-right: 1px solid #c1c1c1;
-      }
-
-      &.active {
-        color: #484;
-        background-color: white;
-        box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-      }
-
-      .o-sheet-icon {
-        margin-left: 5px;
-
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.08);
-        }
-      }
-    }
-
-    .o-selection-statistic {
-      background-color: white;
-      margin-left: auto;
-      font-size: 14px;
-      margin-right: 20px;
-      padding: 4px 8px;
-      color: #333;
-      border-radius: 3px;
-      box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-      user-select: none;
-      cursor: pointer;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-    }
-
-    .fade-enter-active {
-      transition: opacity 0.5s;
-    }
-
-    .fade-enter {
-      opacity: 0;
-    }
-  }
-`;
-    class BottomBar extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.bottomBarRef = owl.useRef("bottomBar");
-            this.getters = this.env.getters;
-            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
-            this.selectedStatisticFn = "";
-        }
-        setup() {
-            owl.onMounted(() => this.focusSheet());
-            owl.onPatched(() => this.focusSheet());
-        }
-        focusSheet() {
-            const div = this.bottomBarRef.el.querySelector(`[data-id="${this.getters.getActiveSheetId()}"]`);
-            if (div && div.scrollIntoView) {
-                div.scrollIntoView();
-            }
-        }
-        addSheet() {
-            const activeSheetId = this.env.getters.getActiveSheetId();
-            const position = this.env.getters.getVisibleSheets().findIndex((sheetId) => sheetId === activeSheetId) + 1;
-            const sheetId = this.env.uuidGenerator.uuidv4();
-            this.env.dispatch("CREATE_SHEET", { sheetId, position });
-            this.env.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
-        }
-        listSheets(ev) {
-            const registry = new MenuItemRegistry();
-            const from = this.getters.getActiveSheetId();
-            let i = 0;
-            for (let sheet of this.getters.getSheets()) {
-                registry.add(sheet.id, {
-                    name: sheet.name,
-                    sequence: i,
-                    isReadonlyAllowed: true,
-                    action: (env) => env.dispatch("ACTIVATE_SHEET", { sheetIdFrom: from, sheetIdTo: sheet.id }),
-                });
-                i++;
-            }
-            const target = ev.currentTarget;
-            this.openContextMenu(target.offsetLeft, target.offsetTop, registry);
-        }
-        activateSheet(name) {
-            this.env.dispatch("ACTIVATE_SHEET", {
-                sheetIdFrom: this.getters.getActiveSheetId(),
-                sheetIdTo: name,
-            });
-        }
-        onDblClick(sheetId) {
-            interactiveRenameSheet(this.env, sheetId);
-        }
-        openContextMenu(x, y, registry) {
-            this.menuState.isOpen = true;
-            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
-            this.menuState.position = { x, y };
-        }
-        onIconClick(sheet, ev) {
-            if (this.getters.getActiveSheetId() !== sheet) {
-                this.activateSheet(sheet);
-            }
-            if (this.menuState.isOpen) {
-                this.menuState.isOpen = false;
-            }
-            else {
-                const target = ev.currentTarget.parentElement;
-                this.openContextMenu(target.offsetLeft, target.offsetTop, sheetMenuRegistry);
-            }
-        }
-        onContextMenu(sheet, ev) {
-            if (this.getters.getActiveSheetId() !== sheet) {
-                this.activateSheet(sheet);
-            }
-            const target = ev.currentTarget;
-            this.openContextMenu(target.offsetLeft, target.offsetTop, sheetMenuRegistry);
-        }
-        getSelectedStatistic() {
-            const statisticFnResults = this.getters.getStatisticFnResults();
-            // don't display button if no function has a result
-            if (Object.values(statisticFnResults).every((result) => result === undefined)) {
-                return undefined;
-            }
-            if (this.selectedStatisticFn === "") {
-                this.selectedStatisticFn = Object.keys(statisticFnResults)[0];
-            }
-            return this.getComposedFnName(this.selectedStatisticFn, statisticFnResults[this.selectedStatisticFn]);
-        }
-        listSelectionStatistics(ev) {
-            const registry = new MenuItemRegistry();
-            let i = 0;
-            for (let [fnName, fnValue] of Object.entries(this.getters.getStatisticFnResults())) {
-                registry.add(fnName, {
-                    name: this.getComposedFnName(fnName, fnValue),
-                    sequence: i,
-                    isReadonlyAllowed: true,
-                    action: () => {
-                        this.selectedStatisticFn = fnName;
-                    },
-                });
-                i++;
-            }
-            const target = ev.currentTarget;
-            this.openContextMenu(target.offsetLeft + target.offsetWidth, target.offsetTop, registry);
-        }
-        getComposedFnName(fnName, fnValue) {
-            return fnName + ": " + (fnValue !== undefined ? formatStandardNumber(fnValue) : "__");
-        }
-    }
-    BottomBar.template = TEMPLATE$h;
-    BottomBar.style = CSS$g;
-    BottomBar.components = { Menu };
-
-    function startDnd(onMouseMove, onMouseUp) {
-        const _onMouseUp = (ev) => {
-            onMouseUp(ev);
-            window.removeEventListener("mouseup", _onMouseUp);
-            window.removeEventListener("dragstart", _onDragStart);
-            window.removeEventListener("mousemove", onMouseMove);
-            window.removeEventListener("wheel", onMouseMove);
-        };
-        function _onDragStart(ev) {
-            ev.preventDefault();
-        }
-        window.addEventListener("mouseup", _onMouseUp);
-        window.addEventListener("dragstart", _onDragStart);
-        window.addEventListener("mousemove", onMouseMove);
-        window.addEventListener("wheel", onMouseMove);
-    }
-    /**
-     * Function to be used during a mousedown event, this function allows to
-     * perform actions related to the mousemove and mouseup events and adjusts the viewport
-     * when the new position related to the mousemove event is outside of it.
-     * Among inputs are two callback functions. First intended for actions performed during
-     * the mousemove event, it receives as parameters the current position of the mousemove
-     * (occurrence of the current column and the current row). Second intended for actions
-     * performed during the mouseup event.
-     */
-    function dragAndDropBeyondTheViewport(element, env, cbMouseMove, cbMouseUp) {
-        const position = element.getBoundingClientRect();
-        let timeOutId = null;
-        let currentEv;
-        const onMouseMove = (ev) => {
-            currentEv = ev;
-            if (timeOutId) {
-                return;
-            }
-            const offsetX = currentEv.clientX - position.left;
-            const offsetY = currentEv.clientY - position.top;
-            const edgeScrollInfoX = env.getters.getEdgeScrollCol(offsetX);
-            const edgeScrollInfoY = env.getters.getEdgeScrollRow(offsetY);
-            const { top, left, bottom, right } = env.getters.getActiveSnappedViewport();
-            let colIndex;
-            if (edgeScrollInfoX.canEdgeScroll) {
-                colIndex = edgeScrollInfoX.direction > 0 ? right : left - 1;
-            }
-            else {
-                colIndex = env.getters.getColIndex(offsetX, left);
-            }
-            let rowIndex;
-            if (edgeScrollInfoY.canEdgeScroll) {
-                rowIndex = edgeScrollInfoY.direction > 0 ? bottom : top - 1;
-            }
-            else {
-                rowIndex = env.getters.getRowIndex(offsetY, top);
-            }
-            cbMouseMove(colIndex, rowIndex);
-            if (edgeScrollInfoX.canEdgeScroll) {
-                const { left, offsetY } = env.getters.getActiveSnappedViewport();
-                const { cols } = env.getters.getActiveSheet();
-                const offsetX = cols[left + edgeScrollInfoX.direction].start;
-                env.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-                timeOutId = setTimeout(() => {
-                    timeOutId = null;
-                    onMouseMove(currentEv);
-                }, Math.round(edgeScrollInfoX.delay));
-            }
-            if (edgeScrollInfoY.canEdgeScroll) {
-                const { top, offsetX } = env.getters.getActiveSnappedViewport();
-                const { rows } = env.getters.getActiveSheet();
-                const offsetY = rows[top + edgeScrollInfoY.direction].start;
-                env.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-                timeOutId = setTimeout(() => {
-                    timeOutId = null;
-                    onMouseMove(currentEv);
-                }, Math.round(edgeScrollInfoX.delay));
-            }
-        };
-        const onMouseUp = () => {
-            clearTimeout(timeOutId);
-            cbMouseUp();
-        };
-        startDnd(onMouseMove, onMouseUp);
-    }
-
-    // -----------------------------------------------------------------------------
-    // Autofill
-    // -----------------------------------------------------------------------------
-    const TEMPLATE$g = owl.xml /* xml */ `
-  <div class="o-autofill" t-on-mousedown="onMouseDown" t-att-style="style" t-on-dblclick="onDblClick">
-    <div class="o-autofill-handler" t-att-style="styleHandler"/>
-    <t t-set="tooltip" t-value="getTooltip()"/>
-    <div t-if="tooltip" class="o-autofill-nextvalue" t-att-style="styleNextvalue">
-      <t t-component="tooltip.component" t-props="tooltip.props"/>
-    </div>
-  </div>
-`;
-    const CSS$f = css /* scss */ `
-  .o-autofill {
-    height: 6px;
-    width: 6px;
-    border: 1px solid white;
-    position: absolute;
-    background-color: #1a73e8;
-
-    .o-autofill-handler {
-      position: absolute;
-      height: ${AUTOFILL_EDGE_LENGTH}px;
-      width: ${AUTOFILL_EDGE_LENGTH}px;
-
-      &:hover {
-        cursor: crosshair;
-      }
-    }
-
-    .o-autofill-nextvalue {
-      position: absolute;
-      background-color: white;
-      border: 1px solid black;
-      padding: 5px;
-      font-size: 12px;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-  }
-`;
-    class Autofill extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState({
-                position: { left: 0, top: 0 },
-                handler: false,
-            });
-        }
-        get style() {
-            const { left, top } = this.props.position;
-            return `top:${top}px;left:${left}px`;
-        }
-        get styleHandler() {
-            let position = this.state.handler ? this.state.position : { left: 0, top: 0 };
-            return `top:${position.top}px;left:${position.left}px;`;
-        }
-        get styleNextvalue() {
-            let position = this.state.handler ? this.state.position : { left: 0, top: 0 };
-            return `top:${position.top + 5}px;left:${position.left + 15}px;`;
-        }
-        getTooltip() {
-            const tooltip = this.env.getters.getAutofillTooltip();
-            if (tooltip && !tooltip.component) {
-                tooltip.component = TooltipComponent;
-            }
-            return tooltip;
-        }
-        onMouseDown(ev) {
-            this.state.handler = true;
-            this.state.position = { left: 0, top: 0 };
-            const { offsetY, offsetX } = this.env.getters.getActiveSnappedViewport();
-            const start = {
-                left: ev.clientX + offsetX,
-                top: ev.clientY + offsetY,
-            };
-            let lastCol;
-            let lastRow;
-            const onMouseUp = () => {
-                this.state.handler = false;
-                this.env.dispatch("AUTOFILL");
-            };
-            const onMouseMove = (ev) => {
-                const position = this.props.getGridBoundingClientRect();
-                const { top: viewportTop, left: viewportLeft, offsetY, offsetX, } = this.env.getters.getActiveSnappedViewport();
-                this.state.position = {
-                    left: ev.clientX - start.left + offsetX,
-                    top: ev.clientY - start.top + offsetY,
-                };
-                const col = this.env.getters.getColIndex(ev.clientX - position.left, viewportLeft);
-                const row = this.env.getters.getRowIndex(ev.clientY - position.top, viewportTop);
-                if (lastCol !== col || lastRow !== row) {
-                    const activeSheet = this.env.getters.getActiveSheet();
-                    lastCol = col === -1 ? lastCol : clip(col, 0, activeSheet.cols.length);
-                    lastRow = row === -1 ? lastRow : clip(row, 0, activeSheet.rows.length);
-                    if (lastCol !== undefined && lastRow !== undefined) {
-                        this.env.dispatch("AUTOFILL_SELECT", { col: lastCol, row: lastRow });
-                    }
-                }
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onDblClick() {
-            this.env.dispatch("AUTOFILL_AUTO");
-        }
-    }
-    Autofill.template = TEMPLATE$g;
-    Autofill.style = CSS$f;
-    class TooltipComponent extends owl.Component {
-    }
-    TooltipComponent.template = owl.xml /* xml */ `
-    <div t-esc="props.content"/>
-  `;
-
-    const TEMPLATE$f = owl.xml /* xml */ `
-  <div>
-    <div
-      class="o-client-tag"
-      t-att-style="tagStyle"
-      t-esc="props.name"
-    />
-  </div>
-`;
-    const CSS$e = css /* scss */ `
-  .o-client-tag {
-    position: absolute;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    font-size: ${DEFAULT_FONT_SIZE};
-    color: white;
-    opacity: 0;
-    pointer-events: none;
-  }
-`;
-    class ClientTag extends owl.Component {
-        get tagStyle() {
-            const { col, row, color } = this.props;
-            const viewport = this.env.getters.getActiveSnappedViewport();
-            const { height } = this.env.getters.getViewportDimensionWithHeaders();
-            const [x, y, ,] = this.env.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
-            return `bottom: ${height - y + 15}px;left: ${x - 1}px;border: 1px solid ${color};background-color: ${color};${this.props.active ? "opacity:1 !important" : ""}`;
-        }
-    }
-    ClientTag.template = TEMPLATE$f;
-    ClientTag.style = CSS$e;
-
-    const functions$1 = functionRegistry.content;
-    const providerRegistry = new Registry();
-    providerRegistry.add("functions", () => {
-        return Object.keys(functions$1).map((key) => {
-            return {
-                text: key,
-                description: functions$1[key].description,
-            };
-        });
-    });
-    // -----------------------------------------------------------------------------
-    // Autocomplete DropDown component
-    // -----------------------------------------------------------------------------
-    const TEMPLATE$e = owl.xml /* xml */ `
-  <div t-att-class="{'o-autocomplete-dropdown':state.values.length}"
-       t-att-style="state.values.length > 0 ? props.borderStyle : null"
-    >
-    <t t-foreach="state.values" t-as="v" t-key="v.text">
-        <div t-att-class="{'o-autocomplete-value-focus': state.selectedIndex === v_index}" t-on-click.stop.prevent="() => this.fillValue(v_index)">
-             <div class="o-autocomplete-value" t-esc="v.text"/>
-             <div class="o-autocomplete-description" t-esc="v.description" t-if="state.selectedIndex === v_index"/>
-        </div>
-    </t>
-  </div>`;
-    const CSS$d = css /* scss */ `
-  .o-autocomplete-dropdown {
-    pointer-events: auto;
-    background-color: #fff;
-    & > div:hover {
-      background-color: #f2f2f2;
-    }
-    .o-autocomplete-value-focus {
-      background-color: rgba(0, 0, 0, 0.08);
-    }
-
-    & > div {
-      display: flex;
-      flex-direction: column;
-      padding: 1px 0 5px 5px;
-      .o-autocomplete-description {
-        padding: 0 0 0 5px;
-        font-size: 11px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-  }
-`;
-    class TextValueProvider extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState({
-                values: [],
-                selectedIndex: 0,
-            });
-        }
-        setup() {
-            owl.onMounted(() => this.filter(this.props.search));
-            owl.onWillUpdateProps((nextProps) => this.checkUpdateProps(nextProps));
-            this.props.exposeAPI({
-                getValueToFill: () => this.getValueToFill(),
-                moveDown: () => this.moveDown(),
-                moveUp: () => this.moveUp(),
-            });
-        }
-        checkUpdateProps(nextProps) {
-            if (nextProps.search !== this.props.search) {
-                this.filter(nextProps.search);
-            }
-        }
-        async filter(searchTerm) {
-            const provider = providerRegistry.get(this.props.provider);
-            let values = provider();
-            if (this.props.filter) {
-                values = this.props.filter(searchTerm, values);
-            }
-            else {
-                values = values
-                    .filter((t) => t.text.toUpperCase().startsWith(searchTerm.toUpperCase()))
-                    .sort((l, r) => (l.text < r.text ? -1 : l.text > r.text ? 1 : 0));
-            }
-            this.state.values = values.slice(0, 10);
-            this.state.selectedIndex = 0;
-        }
-        fillValue(index) {
-            this.state.selectedIndex = index;
-            this.props.onCompleted(this.getValueToFill());
-        }
-        moveDown() {
-            this.state.selectedIndex = (this.state.selectedIndex + 1) % this.state.values.length;
-        }
-        moveUp() {
-            this.state.selectedIndex--;
-            if (this.state.selectedIndex < 0) {
-                this.state.selectedIndex = this.state.values.length - 1;
-            }
-        }
-        getValueToFill() {
-            if (this.state.values.length) {
-                return this.state.values[this.state.selectedIndex].text;
-            }
-            return undefined;
-        }
-    }
-    TextValueProvider.template = TEMPLATE$e;
-    TextValueProvider.style = CSS$d;
-
-    class ContentEditableHelper {
-        constructor(el) {
-            this.el = el;
-        }
-        updateEl(el) {
-            this.el = el;
-        }
-        /**
-         * select the text at position start to end, no matter the children
-         */
-        selectRange(start, end) {
-            let selection = window.getSelection();
-            this.removeSelection();
-            let range = document.createRange();
-            if (start == end && start === 0) {
-                range.setStart(this.el, 0);
-                range.setEnd(this.el, 0);
-                selection.addRange(range);
-            }
-            else {
-                if (start < 0 || end > this.el.textContent.length) {
-                    console.warn(`wrong selection asked start ${start}, end ${end}, text content length ${this.el.textContent.length}`);
-                    if (start < 0)
-                        start = 0;
-                    if (end > this.el.textContent.length)
-                        end = this.el.textContent.length;
-                }
-                let startNode = this.findChildAtCharacterIndex(start);
-                let endNode = this.findChildAtCharacterIndex(end);
-                range.setStart(startNode.node, startNode.offset);
-                selection.addRange(range);
-                selection.extend(endNode.node, endNode.offset);
-            }
-        }
-        /**
-         * finds the dom element that contains the character at `offset`
-         */
-        findChildAtCharacterIndex(offset) {
-            let it = this.iterateChildren(this.el);
-            let current, previous;
-            let usedCharacters = offset;
-            do {
-                current = it.next();
-                if (!current.done && !current.value.hasChildNodes()) {
-                    if (current.value.textContent && current.value.textContent.length < usedCharacters) {
-                        usedCharacters -= current.value.textContent.length;
-                    }
-                    else {
-                        it.return(current.value);
-                    }
-                    previous = current.value;
-                }
-            } while (!current.done);
-            if (current.value) {
-                return { node: current.value, offset: usedCharacters };
-            }
-            return { node: previous, offset: usedCharacters };
-        }
-        /**
-         * Iterate over the dom tree starting at `el` and over all the children depth first.
-         * */
-        *iterateChildren(el) {
-            yield el;
-            if (el.hasChildNodes()) {
-                for (let child of el.childNodes) {
-                    yield* this.iterateChildren(child);
-                }
-            }
-        }
-        /**
-         * Sets (or Replaces all) the text inside the root element in the form of distinctive
-         * span for each element provided in `contents`.
-         *
-         * Each span will have its own fontcolor and specific class if provided in the HtmlContent object.
-         */
-        setText(contents) {
-            if (contents.length === 0) {
-                return;
-            }
-            for (const content of contents) {
-                const span = document.createElement("span");
-                span.innerText = content.value;
-                if (content.color) {
-                    span.style.color = content.color;
-                }
-                if (content.class) {
-                    span.classList.add(content.class);
-                }
-                this.el.appendChild(span);
-            }
-        }
-        /**
-         * remove the current selection of the user
-         * */
-        removeSelection() {
-            let selection = window.getSelection();
-            selection.removeAllRanges();
-        }
-        removeAll() {
-            if (this.el) {
-                while (this.el.firstChild) {
-                    this.el.removeChild(this.el.firstChild);
-                }
-            }
-        }
-        /**
-         * finds the indexes of the current selection.
-         * */
-        getCurrentSelection() {
-            let { startElement, endElement, startSelectionOffset, endSelectionOffset } = this.getStartAndEndSelection();
-            let startSizeBefore = this.findSizeBeforeElement(startElement);
-            let endSizeBefore = this.findSizeBeforeElement(endElement);
-            return {
-                start: startSizeBefore + startSelectionOffset,
-                end: endSizeBefore + endSelectionOffset,
-            };
-        }
-        findSizeBeforeElement(nodeToFind) {
-            let it = this.iterateChildren(this.el);
-            let usedCharacters = 0;
-            let current = it.next();
-            while (!current.done && current.value !== nodeToFind) {
-                if (!current.value.hasChildNodes()) {
-                    if (current.value.textContent) {
-                        usedCharacters += current.value.textContent.length;
-                    }
-                }
-                current = it.next();
-            }
-            return usedCharacters;
-        }
-        getStartAndEndSelection() {
-            const selection = document.getSelection();
-            return {
-                startElement: selection.anchorNode || this.el,
-                startSelectionOffset: selection.anchorOffset,
-                endElement: selection.focusNode || this.el,
-                endSelectionOffset: selection.focusOffset,
-            };
-        }
-    }
-
-    const formulaAssistantTerms = {
-        ABOUT: _lt("ABOUT"),
-        OPTIONAL: _lt("optional"),
-        BY_DEFAULT: _lt("by default"),
-        REPEATABLE: _lt("repeatable"),
-    };
-
-    // -----------------------------------------------------------------------------
-    // Formula Assistant component
-    // -----------------------------------------------------------------------------
-    const TEMPLATE$d = owl.xml /* xml */ `
-  <div class="o-formula-assistant-container"
-       t-att-style="props.borderStyle"
-       t-att-class="{
-         'o-formula-assistant-event-none': assistantState.allowCellSelectionBehind,
-         'o-formula-assistant-event-auto': !assistantState.allowCellSelectionBehind
-         }">
-    <t t-set="context" t-value="getContext()"/>
-    <div class="o-formula-assistant" t-if="context.functionName" t-on-mousemove="onMouseMove"
-         t-att-class="{'o-formula-assistant-transparency': assistantState.allowCellSelectionBehind}">
-
-      <div class="o-formula-assistant-head">
-        <span t-esc="context.functionName"/> (
-        <t t-foreach="context.functionDescription.args" t-as="arg" t-key="arg.name" >
-          <span t-if="arg_index > '0'" >, </span>
-          <span t-att-class="{ 'o-formula-assistant-focus': context.argToFocus === arg_index }" >
-            <span>
-              <span t-if="arg.optional || arg.repeating || arg.default">[</span>
-              <span t-esc="arg.name" />
-              <span t-if="arg.repeating">, ...</span>
-              <span t-if="arg.optional || arg.repeating || arg.default">]</span>
-            </span>
-          </span>
-        </t> )
-      </div>
-
-      <div class="o-formula-assistant-core">
-        <div class="o-formula-assistant-gray" t-esc="env._t('${formulaAssistantTerms.ABOUT}')"/>
-        <div t-esc="context.functionDescription.description"/>
-      </div>
-
-      <t t-foreach="context.functionDescription.args" t-as="arg" t-key="arg.name">
-        <div class="o-formula-assistant-arg"
-            t-att-class="{
-              'o-formula-assistant-gray': context.argToFocus >= '0',
-              'o-formula-assistant-focus': context.argToFocus === arg_index,
-            }" >
-          <div>
-            <span t-esc="arg.name" />
-            <span t-if="arg.optional || arg.repeating || arg.default "> - [<t t-esc="env._t('${formulaAssistantTerms.OPTIONAL}')"/>] </span>
-            <span t-if="arg.default">
-              <t t-esc="arg.defaultValue" />
-              <t t-esc="env._t(' ${formulaAssistantTerms.BY_DEFAULT}')"/>
-            </span>
-            <span t-if="arg.repeating" t-esc="env._t('${formulaAssistantTerms.REPEATABLE}')"/>
-          </div>
-          <div class="o-formula-assistant-arg-description" t-esc="arg.description"/>
-        </div>
-      </t>
-
-    </div>
-  </div>
-`;
-    const CSS$c = css /* scss */ `
-  .o-formula-assistant {
-    white-space: normal;
-    background-color: #fff;
-    .o-formula-assistant-head {
-      background-color: #f2f2f2;
-      padding: 10px;
-    }
-    .o-formula-assistant-core {
-      padding: 0px 0px 10px 0px;
-      margin: 10px;
-      border-bottom: 1px solid gray;
-    }
-    .o-formula-assistant-arg {
-      padding: 0px 10px 10px 10px;
-      display: flex;
-      flex-direction: column;
-    }
-    .o-formula-assistant-arg-description {
-      font-size: 85%;
-    }
-    .o-formula-assistant-focus {
-      div:first-child,
-      span {
-        color: purple;
-        text-shadow: 0px 0px 1px purple;
-      }
-      div:last-child {
-        color: black;
-      }
-    }
-    .o-formula-assistant-gray {
-      color: gray;
-    }
-  }
-  .o-formula-assistant-container {
-    user-select: none;
-  }
-  .o-formula-assistant-event-none {
-    pointer-events: none;
-  }
-  .o-formula-assistant-event-auto {
-    pointer-events: auto;
-  }
-  .o-formula-assistant-transparency {
-    opacity: 0.3;
-  }
-`;
-    class FunctionDescriptionProvider extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.assistantState = owl.useState({
-                allowCellSelectionBehind: false,
-            });
-            this.timeOutId = 0;
-        }
-        setup() {
-            owl.onWillUnmount(() => {
-                if (this.timeOutId) {
-                    clearTimeout(this.timeOutId);
-                }
-            });
-        }
-        getContext() {
-            return this.props;
-        }
-        onMouseMove() {
-            this.assistantState.allowCellSelectionBehind = true;
-            if (this.timeOutId) {
-                clearTimeout(this.timeOutId);
-            }
-            this.timeOutId = setTimeout(() => {
-                this.assistantState.allowCellSelectionBehind = false;
-            }, 2000);
-        }
-    }
-    FunctionDescriptionProvider.template = TEMPLATE$d;
-    FunctionDescriptionProvider.style = CSS$c;
-
-    const functions = functionRegistry.content;
-    const ASSISTANT_WIDTH = 300;
-    const FunctionColor = "#4a4e4d";
-    const OperatorColor = "#3da4ab";
-    const StringColor = "#f6cd61";
-    const SelectionIndicatorColor = "darkgrey";
-    const NumberColor = "#02c39a";
-    const MatchingParenColor = "pink";
-    const SelectionIndicatorClass = "selector-flag";
-    const tokenColor = {
-        OPERATOR: OperatorColor,
-        NUMBER: NumberColor,
-        STRING: StringColor,
-        FUNCTION: FunctionColor,
-        DEBUGGER: OperatorColor,
-        LEFT_PAREN: FunctionColor,
-        RIGHT_PAREN: FunctionColor,
-        COMMA: FunctionColor,
-    };
-    const TEMPLATE$c = owl.xml /* xml */ `
-<div class="o-composer-container">
-  <div
-    t-att-class="{ 'o-composer': true, 'text-muted': getters.isReadonly(), 'unfocusable': getters.isReadonly() }"
-    t-att-style="props.inputStyle"
-    t-ref="o_composer"
-    tabindex="1"
-    t-att-contenteditable="getters.isReadonly() ? 'false' : 'true'"
-    spellcheck="false"
-
-    t-on-keydown="onKeydown"
-    t-on-mousedown="onMousedown"
-    t-on-input="onInput"
-    t-on-keyup="onKeyup"
-    t-on-click.stop="onClick"
-    t-on-blur="onBlur"
-  />
-
-  <div t-if="props.focus !== 'inactive' and (autoCompleteState.showProvider or functionDescriptionState.showDescription)"
-    class="o-composer-assistant" t-att-style="assistantStyle">
-    <TextValueProvider
-        t-if="autoCompleteState.showProvider"
-        exposeAPI="(api) => this.autocompleteAPI = api"
-        search="autoCompleteState.search"
-        provider="autoCompleteState.provider"
-        onCompleted="(text) => this.onCompleted(text)"
-        borderStyle="borderStyle"
-    />
-    <FunctionDescriptionProvider
-        t-if="functionDescriptionState.showDescription"
-        functionName = "functionDescriptionState.functionName"
-        functionDescription = "functionDescriptionState.functionDescription"
-        argToFocus = "functionDescriptionState.argToFocus"
-        borderStyle="borderStyle"
-    />
-  </div>
-</div>
-  `;
-    const CSS$b = css /* scss */ `
-  .o-composer-container {
-    padding: 0;
-    margin: 0;
-    border: 0;
-    z-index: 5;
-    flex-grow: 1;
-    max-height: inherit;
-    .o-composer {
-      caret-color: black;
-      padding-left: 3px;
-      padding-right: 3px;
-      word-break: break-all;
-      &:focus {
-        outline: none;
-      }
-      &.unfocusable {
-        pointer-events: none;
-      }
-      span {
-        white-space: pre;
-        &.${SelectionIndicatorClass}:after {
-          content: "${SelectionIndicator}";
-          color: ${SelectionIndicatorColor};
-        }
-      }
-    }
-    .o-composer-assistant {
-      position: absolute;
-      margin: 4px;
-      pointer-events: none;
-    }
-  }
-
-  /* Custom css to highlight topbar composer on focus */
-  .o-topbar-toolbar .o-composer-container:focus-within {
-    border: 1px solid ${SELECTION_BORDER_COLOR};
-  }
-`;
-    class Composer extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.composerRef = owl.useRef("o_composer");
-            this.getters = this.env.getters;
-            this.dispatch = this.env.dispatch;
-            this.contentHelper = new ContentEditableHelper(this.composerRef.el);
-            this.composerState = owl.useState({
-                positionStart: 0,
-                positionEnd: 0,
-            });
-            this.autoCompleteState = owl.useState({
-                showProvider: false,
-                provider: "functions",
-                search: "",
-            });
-            this.functionDescriptionState = owl.useState({
-                showDescription: false,
-                functionName: "",
-                functionDescription: {},
-                argToFocus: 0,
-            });
-            this.isKeyStillDown = false;
-            this.borderStyle = `box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);`;
-            // we can't allow input events to be triggered while we remove and add back the content of the composer in processContent
-            this.shouldProcessInputEvents = false;
-            this.tokens = [];
-            this.keyMapping = {
-                ArrowUp: this.processArrowKeys,
-                ArrowDown: this.processArrowKeys,
-                ArrowLeft: this.processArrowKeys,
-                ArrowRight: this.processArrowKeys,
-                Enter: this.processEnterKey,
-                Escape: this.processEscapeKey,
-                F2: () => console.warn("Not implemented"),
-                F4: () => console.warn("Not implemented"),
-                Tab: (ev) => this.processTabKey(ev),
-            };
-        }
-        get assistantStyle() {
-            if (this.props.delimitation && this.props.rect) {
-                const [cellX, cellY, , cellHeight] = this.props.rect;
-                const remainingHeight = this.props.delimitation.height - (cellY + cellHeight);
-                let assistantStyle = "";
-                if (cellY > remainingHeight) {
-                    // render top
-                    assistantStyle += `
-          top: -8px;
-          transform: translate(0, -100%);
-        `;
-                }
-                if (cellX + ASSISTANT_WIDTH > this.props.delimitation.width) {
-                    // render left
-                    assistantStyle += `right:0px;`;
-                }
-                return (assistantStyle += `width:${ASSISTANT_WIDTH}px;`);
-            }
-            return `width:${ASSISTANT_WIDTH}px;`;
-        }
-        setup() {
-            owl.onMounted(() => {
-                DEBUG.composer = this;
-                const el = this.composerRef.el;
-                this.contentHelper.updateEl(el);
-                this.processContent();
-            });
-            owl.onWillUnmount(() => {
-                var _a, _b;
-                delete DEBUG.composer;
-                (_b = (_a = this.props).onComposerUnmounted) === null || _b === void 0 ? void 0 : _b.call(_a);
-            });
-            owl.onPatched(() => {
-                if (!this.isKeyStillDown) {
-                    this.processContent();
-                }
-            });
-        }
-        // ---------------------------------------------------------------------------
-        // Handlers
-        // ---------------------------------------------------------------------------
-        processArrowKeys(ev) {
-            if (this.getters.isSelectingForComposer()) {
-                this.functionDescriptionState.showDescription = false;
-                return;
-            }
-            if (this.props.focus === "cellFocus" && !this.autoCompleteState.showProvider) {
-                return;
-            }
-            ev.stopPropagation();
-            if (["ArrowUp", "ArrowDown"].includes(ev.key) &&
-                this.autoCompleteState.showProvider &&
-                this.autocompleteAPI) {
-                ev.preventDefault();
-                if (ev.key === "ArrowUp") {
-                    this.autocompleteAPI.moveUp();
-                }
-                else {
-                    this.autocompleteAPI.moveDown();
-                }
-            }
-        }
-        processTabKey(ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
-                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
-                if (autoCompleteValue) {
-                    this.autoComplete(autoCompleteValue);
-                    return;
-                }
-            }
-            else {
-                // when completing with tab, if there is no value to complete, the active cell will be moved to the right.
-                // we can't let the model think that it is for a ref selection.
-                // todo: check if this can be removed someday
-                this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            }
-            const deltaX = ev.shiftKey ? -1 : 1;
-            this.dispatch("MOVE_POSITION", { deltaX, deltaY: 0 });
-        }
-        processEnterKey(ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            this.isKeyStillDown = false;
-            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
-                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
-                if (autoCompleteValue) {
-                    this.autoComplete(autoCompleteValue);
-                    return;
-                }
-            }
-            this.dispatch("STOP_EDITION");
-            this.dispatch("MOVE_POSITION", {
-                deltaX: 0,
-                deltaY: ev.shiftKey ? -1 : 1,
-            });
-        }
-        processEscapeKey() {
-            this.dispatch("STOP_EDITION", { cancel: true });
-        }
-        onKeydown(ev) {
-            var _a, _b;
-            let handler = this.keyMapping[ev.key];
-            let isStopped = false;
-            if (handler) {
-                handler.call(this, ev);
-            }
-            else {
-                isStopped = true;
-                ev.stopPropagation();
-            }
-            const { start, end } = this.contentHelper.getCurrentSelection();
-            if (!this.getters.isSelectingForComposer()) {
-                this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", { start, end });
-                this.isKeyStillDown = true;
-            }
-            if (!isStopped) {
-                (_b = (_a = this.props).onKeyDown) === null || _b === void 0 ? void 0 : _b.call(_a, ev);
-            }
-        }
-        /*
-         * Triggered automatically by the content-editable between the keydown and key up
-         * */
-        onInput() {
-            if (this.props.focus === "inactive" || !this.shouldProcessInputEvents) {
-                return;
-            }
-            this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            const el = this.composerRef.el;
-            this.dispatch("SET_CURRENT_CONTENT", {
-                content: el.childNodes.length ? el.textContent : "",
-                selection: this.contentHelper.getCurrentSelection(),
-            });
-        }
-        onKeyup(ev) {
-            this.isKeyStillDown = false;
-            if (this.props.focus === "inactive" || ["Control", "Shift", "Tab", "Enter"].includes(ev.key)) {
-                return;
-            }
-            if (this.autoCompleteState.showProvider && ["ArrowUp", "ArrowDown"].includes(ev.key)) {
-                return; // already processed in keydown
-            }
-            if (this.getters.isSelectingForComposer() &&
-                ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
-                return; // already processed in keydown
-            }
-            ev.preventDefault();
-            ev.stopPropagation();
-            this.autoCompleteState.showProvider = false;
-            if (ev.ctrlKey && ev.key === " ") {
-                this.autoCompleteState.search = "";
-                this.autoCompleteState.showProvider = true;
-                this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-                return;
-            }
-            const { start: oldStart, end: oldEnd } = this.getters.getComposerSelection();
-            const { start, end } = this.contentHelper.getCurrentSelection();
-            if (start !== oldStart || end !== oldEnd) {
-                this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", this.contentHelper.getCurrentSelection());
-            }
-            this.processTokenAtCursor();
-            this.processContent();
-        }
-        onMousedown(ev) {
-            if (ev.button > 0) {
-                // not main button, probably a context menu
-                return;
-            }
-            this.contentHelper.removeSelection();
-        }
-        onClick() {
-            if (this.getters.isReadonly()) {
-                return;
-            }
-            const newSelection = this.contentHelper.getCurrentSelection();
-            this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            if (this.props.focus === "inactive") {
-                this.props.onComposerContentFocused(newSelection);
-            }
-            this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", newSelection);
-            this.processTokenAtCursor();
-        }
-        onBlur() {
-            this.isKeyStillDown = false;
-        }
-        onCompleted(text) {
-            text && this.autoComplete(text);
-        }
-        // ---------------------------------------------------------------------------
-        // Private
-        // ---------------------------------------------------------------------------
-        processContent() {
-            this.contentHelper.removeAll(); // removes the content of the composer, to be added just after
-            this.shouldProcessInputEvents = false;
-            if (this.props.focus !== "inactive") {
-                this.contentHelper.selectRange(0, 0); // move the cursor inside the composer at 0 0.
-            }
-            const content = this.getContent();
-            if (content.length !== 0) {
-                this.contentHelper.setText(content);
-                const { start, end } = this.getters.getComposerSelection();
-                if (this.props.focus !== "inactive") {
-                    // Put the cursor back where it was before the rendering
-                    this.contentHelper.selectRange(start, end);
-                }
-            }
-            this.shouldProcessInputEvents = true;
-        }
-        getContent() {
-            let content;
-            let value = this.getters.getCurrentContent();
-            if (value === "") {
-                content = [];
-            }
-            else if (value.startsWith("=") && this.getters.getEditionMode() !== "inactive") {
-                content = this.getColoredTokens();
-            }
-            else {
-                content = [{ value }];
-            }
-            return content;
-        }
-        getColoredTokens() {
-            const tokens = this.getters.getCurrentTokens();
-            const tokenAtCursor = this.getters.getTokenAtCursor();
-            const result = [];
-            const { end } = this.getters.getComposerSelection();
-            for (let token of tokens) {
-                switch (token.type) {
-                    case "OPERATOR":
-                    case "NUMBER":
-                    case "FUNCTION":
-                    case "COMMA":
-                    case "STRING":
-                        result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
-                        break;
-                    case "REFERENCE":
-                        const [xc, sheet] = token.value.split("!").reverse();
-                        result.push({ value: token.value, color: this.rangeColor(xc, sheet) || "#000" });
-                        break;
-                    case "SYMBOL":
-                        let value = token.value;
-                        if (["TRUE", "FALSE"].includes(value.toUpperCase())) {
-                            result.push({ value: token.value, color: NumberColor });
-                        }
-                        else {
-                            result.push({ value: token.value, color: "#000" });
-                        }
-                        break;
-                    case "LEFT_PAREN":
-                    case "RIGHT_PAREN":
-                        // Compute the matching parenthesis
-                        if (tokenAtCursor &&
-                            ["LEFT_PAREN", "RIGHT_PAREN"].includes(tokenAtCursor.type) &&
-                            tokenAtCursor.parenIndex &&
-                            tokenAtCursor.parenIndex === token.parenIndex) {
-                            result.push({ value: token.value, color: MatchingParenColor  });
-                        }
-                        else {
-                            result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
-                        }
-                        break;
-                    default:
-                        result.push({ value: token.value, color: "#000" });
-                        break;
-                }
-                // Note: mode === waitingForRangeSelection implies end === start
-                if (this.getters.getEditionMode() === "waitingForRangeSelection" && end === token.end) {
-                    result[result.length - 1].class = SelectionIndicatorClass;
-                }
-            }
-            return result;
-        }
-        rangeColor(xc, sheetName) {
-            if (this.getters.getEditionMode() === "inactive") {
-                return undefined;
-            }
-            const highlights = this.getters.getHighlights();
-            const refSheet = sheetName
-                ? this.getters.getSheetIdByName(sheetName)
-                : this.getters.getEditionSheet();
-            const highlight = highlights.find((highlight) => highlight.sheet === refSheet &&
-                isEqual(this.getters.expandZone(refSheet, toZone(xc)), highlight.zone));
-            return highlight && highlight.color ? highlight.color : undefined;
-        }
-        /**
-         * Compute the state of the composer from the tokenAtCursor.
-         * If the token is a function or symbol (that isn't a cell/range reference) we have to initialize
-         * the autocomplete engine otherwise we initialize the formula assistant.
-         */
-        processTokenAtCursor() {
-            let content = this.getters.getCurrentContent();
-            this.autoCompleteState.showProvider = false;
-            this.functionDescriptionState.showDescription = false;
-            if (content.startsWith("=")) {
-                const tokenAtCursor = this.getters.getTokenAtCursor();
-                if (tokenAtCursor) {
-                    const [xc] = tokenAtCursor.value.split("!").reverse();
-                    if (tokenAtCursor.type === "FUNCTION" ||
-                        (tokenAtCursor.type === "SYMBOL" && !rangeReference.test(xc))) {
-                        // initialize Autocomplete Dropdown
-                        this.autoCompleteState.search = tokenAtCursor.value;
-                        this.autoCompleteState.showProvider = true;
-                    }
-                    else if (tokenAtCursor.functionContext && tokenAtCursor.type !== "UNKNOWN") {
-                        // initialize Formula Assistant
-                        const tokenContext = tokenAtCursor.functionContext;
-                        const parentFunction = tokenContext.parent.toUpperCase();
-                        const description = functions[parentFunction];
-                        const argPosition = tokenContext.argPosition;
-                        this.functionDescriptionState.functionName = parentFunction;
-                        this.functionDescriptionState.functionDescription = description;
-                        this.functionDescriptionState.argToFocus = description.getArgToFocus(argPosition + 1) - 1;
-                        this.functionDescriptionState.showDescription = true;
-                    }
-                }
-            }
-        }
-        autoComplete(value) {
-            if (value) {
-                const tokenAtCursor = this.getters.getTokenAtCursor();
-                if (tokenAtCursor) {
-                    let start = tokenAtCursor.end;
-                    let end = tokenAtCursor.end;
-                    // shouldn't it be REFERENCE ?
-                    if (["SYMBOL", "FUNCTION"].includes(tokenAtCursor.type)) {
-                        start = tokenAtCursor.start;
-                    }
-                    const tokens = this.getters.getCurrentTokens();
-                    if (this.autoCompleteState.provider && tokens.length) {
-                        value += "(";
-                        const currentTokenIndex = tokens.map((token) => token.start).indexOf(tokenAtCursor.start);
-                        if (currentTokenIndex + 1 < tokens.length) {
-                            const nextToken = tokens[currentTokenIndex + 1];
-                            if (nextToken.type === "LEFT_PAREN") {
-                                end++;
-                            }
-                        }
-                    }
-                    this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", {
-                        start,
-                        end,
-                    });
-                }
-                this.dispatch("REPLACE_COMPOSER_CURSOR_SELECTION", {
-                    text: value,
-                });
-            }
-            this.processTokenAtCursor();
-        }
-    }
-    Composer.template = TEMPLATE$c;
-    Composer.style = CSS$b;
-    Composer.components = { TextValueProvider, FunctionDescriptionProvider };
-    Composer.defaultProps = {
-        inputStyle: "",
-        focus: "inactive",
-    };
-
-    const SCROLLBAR_WIDTH = 14;
-    const SCROLLBAR_HIGHT = 15;
-    const TEMPLATE$b = owl.xml /* xml */ `
-  <div class="o-grid-composer" t-att-style="containerStyle" t-ref="gridComposer">
-    <Composer
-      focus = "props.focus"
-      inputStyle = "composerStyle"
-      rect = "composerState.rect"
-      delimitation = "composerState.delimitation"
-      onComposerUnmounted="props.onComposerUnmounted"
-      onKeyDown="(ev) => this.onKeyDown(ev)"
-    />
-  </div>
-`;
-    const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
-    const CSS$a = css /* scss */ `
-  .o-grid-composer {
-    z-index: 5;
-    box-sizing: border-box;
-    position: absolute;
-    border: ${COMPOSER_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
-  }
-`;
-    /**
-     * This component is a composer which positions itself on the grid at the anchor cell.
-     * It also applies the style of the cell to the composer input.
-     */
-    class GridComposer extends owl.Component {
-        setup() {
-            this.gridComposerRef = owl.useRef("gridComposer");
-            this.getters = this.env.getters;
-            this.composerState = owl.useState({
-                rect: null,
-                delimitation: null,
-            });
-            const [col, row] = this.getters.getPosition();
-            this.zone = this.getters.expandZone(this.getters.getActiveSheetId(), {
-                left: col,
-                right: col,
-                top: row,
-                bottom: row,
-            });
-            this.rect = this.getters.getRect(this.zone, this.getters.getActiveSnappedViewport());
-            owl.onMounted(() => {
-                const el = this.gridComposerRef.el;
-                //TODO Should be more correct to have a props that give the parent's clientHeight and clientWidth
-                const maxHeight = el.parentElement.clientHeight - this.rect[1] - SCROLLBAR_HIGHT;
-                el.style.maxHeight = (maxHeight + "px");
-                const maxWidth = el.parentElement.clientWidth - this.rect[0] - SCROLLBAR_WIDTH;
-                el.style.maxWidth = (maxWidth + "px");
-                this.composerState.rect = [this.rect[0], this.rect[1], el.clientWidth, el.clientHeight];
-                this.composerState.delimitation = {
-                    width: el.parentElement.clientWidth,
-                    height: el.parentElement.clientHeight,
-                };
-            });
-        }
-        get containerStyle() {
-            const isFormula = this.getters.getCurrentContent().startsWith("=");
-            const style = this.getters.getCurrentStyle();
-            // position style
-            const [left, top, width, height] = this.rect;
-            // color style
-            const background = (!isFormula && style.fillColor) || "#ffffff";
-            const color = (!isFormula && style.textColor) || "#000000";
-            // font style
-            const fontSize = (!isFormula && style.fontSize) || 10;
-            const fontWeight = !isFormula && style.bold ? "bold" : 500;
-            const fontStyle = !isFormula && style.italic ? "italic" : "normal";
-            const textDecoration = !isFormula ? getTextDecoration(style) : "none";
-            // align style
-            let textAlign = "left";
-            if (!isFormula) {
-                const cell = this.getters.getActiveCell();
-                textAlign = style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign) || "left";
-            }
-            return `
-      left: ${left - 1}px;
-      top: ${top}px;
-      min-width: ${width + 2}px;
-      min-height: ${height + 1}px;
-
-      background: ${background};
-      color: ${color};
-
-      font-size: ${fontSizeMap[fontSize]}px;
-      font-weight: ${fontWeight};
-      font-style: ${fontStyle};
-      text-decoration: ${textDecoration};
-
-      text-align: ${textAlign};
-    `;
-        }
-        get composerStyle() {
-            return `
-      line-height: ${DEFAULT_CELL_HEIGHT}px;
-      max-height: inherit;
-      overflow: hidden;
-    `;
-        }
-        onKeyDown(ev) {
-            // In selecting mode, arrows should not move the cursor but it should
-            // select adjacent cells on the grid.
-            if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
-                ev.preventDefault();
-            }
-        }
-    }
-    GridComposer.template = TEMPLATE$b;
-    GridComposer.style = CSS$a;
-    GridComposer.components = { Composer };
-
-    const TEMPLATE$a = owl.xml /* xml */ `
-    <div class="o-error-tooltip"> 
-      <t t-esc="props.text"/>
-    </div>
-`;
-    const CSS$9 = css /* scss */ `
-  .o-error-tooltip {
-    font-size: 13px;
-    background-color: white;
-    border-left: 3px solid red;
-    padding: 10px;
-  }
-`;
-    class ErrorToolTip extends owl.Component {
-    }
-    ErrorToolTip.template = TEMPLATE$a;
-    ErrorToolTip.style = CSS$9;
-
-    const TEMPLATE$9 = owl.xml /* xml */ `
-<div class="o-chart-container" t-ref="chartContainer">
-  <div class="o-chart-menu" t-on-click="showMenu">${LIST}</div>
-  <canvas t-att-style="canvasStyle" t-ref="graphContainer"/>
-  <Menu t-if="menuState.isOpen"
-    position="menuState.position"
-    menuItems="menuState.menuItems"
-    onClose="() => this.menuState.isOpen=false"/>
-</div>`;
-    // -----------------------------------------------------------------------------
-    // STYLE
-    // -----------------------------------------------------------------------------
-    const CSS$8 = css /* scss */ `
-  .o-chart-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-
-    .o-chart-menu {
-      right: 0px;
-      display: none;
-      position: absolute;
-      padding: 5px;
-      cursor: pointer;
-    }
-  }
-  .o-figure.active:focus {
-    .o-chart-container {
-      .o-chart-menu {
-        display: flex;
-      }
-    }
-  }
-`;
-    class ChartFigure extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
-            this.canvas = owl.useRef("graphContainer");
-            this.chartContainerRef = owl.useRef("chartContainer");
-            this.state = { background: BACKGROUND_CHART_COLOR };
-            this.position = useAbsolutePosition(this.chartContainerRef);
-        }
-        get canvasStyle() {
-            return `background-color: ${this.state.background}`;
-        }
-        setup() {
-            owl.onMounted(() => {
-                const figure = this.props.figure;
-                const chartData = this.env.getters.getChartRuntime(figure.id);
-                if (chartData) {
-                    this.createChart(chartData);
-                }
-            });
-            owl.onPatched(() => {
-                var _a, _b, _c;
-                const figure = this.props.figure;
-                const chartData = this.env.getters.getChartRuntime(figure.id);
-                if (chartData) {
-                    if (chartData.type !== this.chart.config.type) {
-                        // Updating a chart type requires to update its options accordingly, if feasible at all.
-                        // Since we trust Chart.js to generate most of its options, it is safer to just start from scratch.
-                        // See https://www.chartjs.org/docs/latest/developers/updates.html
-                        // and https://stackoverflow.com/questions/36949343/chart-js-dynamic-changing-of-chart-type-line-to-bar-as-example
-                        this.chart && this.chart.destroy();
-                        this.createChart(chartData);
-                    }
-                    else if (chartData.data && chartData.data.datasets) {
-                        this.chart.data = chartData.data;
-                        if ((_a = chartData.options) === null || _a === void 0 ? void 0 : _a.title) {
-                            this.chart.config.options.title = chartData.options.title;
-                        }
-                    }
-                    else {
-                        this.chart.data.datasets = undefined;
-                    }
-                    this.chart.config.options.legend = (_b = chartData.options) === null || _b === void 0 ? void 0 : _b.legend;
-                    this.chart.config.options.scales = (_c = chartData.options) === null || _c === void 0 ? void 0 : _c.scales;
-                    this.chart.update({ duration: 0 });
-                }
-                else {
-                    this.chart && this.chart.destroy();
-                }
-                const def = this.env.getters.getChartDefinition(figure.id);
-                if (def) {
-                    this.state.background = def.background;
-                }
-            });
-        }
-        createChart(chartData) {
-            const canvas = this.canvas.el;
-            const ctx = canvas.getContext("2d");
-            this.chart = new window.Chart(ctx, chartData);
-            const def = this.env.getters.getChartDefinition(this.props.figure.id);
-            if (def) {
-                this.state.background = def.background;
-            }
-        }
-        showMenu(ev) {
-            const registry = new MenuItemRegistry();
-            registry.add("edit", {
-                name: _lt("Edit"),
-                sequence: 1,
-                action: () => this.env.openSidePanel("ChartPanel", { figure: this.props.figure }),
-            });
-            registry.add("delete", {
-                name: _lt("Delete"),
-                sequence: 10,
-                action: () => {
-                    this.env.dispatch("DELETE_FIGURE", {
-                        sheetId: this.env.getters.getActiveSheetId(),
-                        id: this.props.figure.id,
-                    });
-                    if (this.props.sidePanelIsOpen) {
-                        this.env.toggleSidePanel("ChartPanel", { figure: this.props.figure });
-                    }
-                    this.props.onFigureDeleted();
-                },
-            });
-            registry.add("refresh", {
-                name: _lt("Refresh"),
-                sequence: 11,
-                action: () => {
-                    this.env.dispatch("REFRESH_CHART", {
-                        id: this.props.figure.id,
-                    });
-                },
-            });
-            this.openContextMenu(ev.currentTarget, registry);
-        }
-        openContextMenu(target, registry) {
-            const x = target.offsetLeft;
-            const y = target.offsetTop;
-            this.menuState.isOpen = true;
-            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
-            this.menuState.position = {
-                x: this.position.x + x - MENU_WIDTH,
-                y: this.position.y + y,
-            };
-        }
-    }
-    ChartFigure.template = TEMPLATE$9;
-    ChartFigure.style = CSS$8;
-    ChartFigure.components = { Menu };
-
-    const TEMPLATE$8 = owl.xml /* xml */ `<div>
-    <t t-foreach="getVisibleFigures()" t-as="info" t-key="info.id">
-        <div class="o-figure-wrapper"
-             t-att-style="getStyle(info)"
-             t-on-mousedown="(ev) => this.onMouseDown(info.figure, ev)"
-             >
-            <div class="o-figure"
-                 t-att-class="{active: info.isSelected, 'o-dragging': info.id === dnd.figureId}"
-                 t-att-style="getDims(info)"
-                 tabindex="0"
-                 t-on-keydown.stop="(ev) => this.onKeyDown(info.figure, ev)">
-                <t t-component="figureRegistry.get(info.figure.tag).Component"
-                   t-key="info.id"
-                   sidePanelIsOpen="props.sidePanelIsOpen"
-                   onFigureDeleted="props.onFigureDeleted"
-                   figure="info.figure"/>
-                <t t-if="info.isSelected">
-                    <div class="o-anchor o-top" t-on-mousedown.stop="(ev) => resize(info.figure, 0,-1, ev)"/>
-                    <div class="o-anchor o-topRight" t-on-mousedown.stop="(ev) => resize(info.figure, 1,-1, ev)"/>
-                    <div class="o-anchor o-right" t-on-mousedown.stop="(ev) => resize(info.figure, 1,0, ev)"/>
-                    <div class="o-anchor o-bottomRight" t-on-mousedown.stop="(ev) => resize(info.figure, 1,1, ev)"/>
-                    <div class="o-anchor o-bottom" t-on-mousedown.stop="(ev) => resize(info.figure, 0,1, ev)"/>
-                    <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="(ev) => resize(info.figure, -1,1, ev)"/>
-                    <div class="o-anchor o-left" t-on-mousedown.stop="(ev) => resize(info.figure, -1,0, ev)"/>
-                    <div class="o-anchor o-topLeft" t-on-mousedown.stop="(ev) => resize(info.figure, -1,-1, ev)"/>
-                </t>
-            </div>
-        </div>
-    </t>
-</div>
-`;
-    // -----------------------------------------------------------------------------
-    // STYLE
-    // -----------------------------------------------------------------------------
-    const ANCHOR_SIZE = 8;
-    const BORDER_WIDTH = 1;
-    const ACTIVE_BORDER_WIDTH = 2;
-    const MIN_FIG_SIZE = 80;
-    const CSS$7 = css /*SCSS*/ `
-  .o-figure-wrapper {
-    overflow: hidden;
-  }
-
-  .o-figure {
-    border: 1px solid black;
-    box-sizing: border-box;
-    position: absolute;
-    bottom: 3px;
-    right: 3px;
-    &:focus {
-      outline: none;
-    }
-    &.active {
-      border: ${ACTIVE_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
-      z-index: 1;
-    }
-
-    &.o-dragging {
-      opacity: 0.9;
-      cursor: grabbing;
-    }
-
-    .o-anchor {
-      z-index: 1000;
-      position: absolute;
-      outline: ${BORDER_WIDTH}px solid white;
-      width: ${ANCHOR_SIZE}px;
-      height: ${ANCHOR_SIZE}px;
-      background-color: #1a73e8;
-      &.o-top {
-        top: -${ANCHOR_SIZE / 2}px;
-        right: calc(50% - 4px);
-        cursor: n-resize;
-      }
-      &.o-topRight {
-        top: -${ANCHOR_SIZE / 2}px;
-        right: -${ANCHOR_SIZE / 2}px;
-        cursor: ne-resize;
-      }
-      &.o-right {
-        right: -${ANCHOR_SIZE / 2}px;
-        top: calc(50% - 4px);
-        cursor: e-resize;
-      }
-      &.o-bottomRight {
-        bottom: -${ANCHOR_SIZE / 2}px;
-        right: -${ANCHOR_SIZE / 2}px;
-        cursor: se-resize;
-      }
-      &.o-bottom {
-        bottom: -${ANCHOR_SIZE / 2}px;
-        right: calc(50% - 4px);
-        cursor: s-resize;
-      }
-      &.o-bottomLeft {
-        bottom: -${ANCHOR_SIZE / 2}px;
-        left: -${ANCHOR_SIZE / 2}px;
-        cursor: sw-resize;
-      }
-      &.o-left {
-        bottom: calc(50% - 4px);
-        left: -${ANCHOR_SIZE / 2}px;
-        cursor: w-resize;
-      }
-      &.o-topLeft {
-        top: -${ANCHOR_SIZE / 2}px;
-        left: -${ANCHOR_SIZE / 2}px;
-        cursor: nw-resize;
-      }
-    }
-  }
-`;
-    class FiguresContainer extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.figureRegistry = figureRegistry;
-            this.dnd = owl.useState({
-                figureId: "",
-                x: 0,
-                y: 0,
-                width: 0,
-                height: 0,
-            });
-            this.getters = this.env.getters;
-            this.dispatch = this.env.dispatch;
-        }
-        getVisibleFigures() {
-            const selectedId = this.getters.getSelectedFigureId();
-            return this.getters.getVisibleFigures().map((f) => ({
-                id: f.id,
-                isSelected: f.id === selectedId,
-                figure: f,
-            }));
-        }
-        getDims(info) {
-            const { figure, isSelected } = info;
-            const borders = 2 * (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
-            const { width, height } = isSelected && this.dnd.figureId ? this.dnd : figure;
-            return `width:${width + borders}px;height:${height + borders}px`;
-        }
-        getStyle(info) {
-            const { figure, isSelected } = info;
-            const { offsetX, offsetY } = this.getters.getActiveSnappedViewport();
-            const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
-            const { width, height } = target;
-            let x = target.x - offsetX + HEADER_WIDTH - 1;
-            let y = target.y - offsetY + HEADER_HEIGHT - 1;
-            // width and height of wrapper need to be adjusted so we do not overlap
-            // with headers
-            const correctionX = Math.max(0, HEADER_WIDTH - x);
-            x += correctionX;
-            const correctionY = Math.max(0, HEADER_HEIGHT - y);
-            y += correctionY;
-            if (width < 0 || height < 0) {
-                return `position:absolute;display:none;`;
-            }
-            const offset = ANCHOR_SIZE + ACTIVE_BORDER_WIDTH + (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
-            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px`;
-        }
-        setup() {
-            owl.onMounted(() => {
-                // horrible, but necessary
-                // the following line ensures that we render the figures with the correct
-                // viewport.  The reason is that whenever we initialize the grid
-                // component, we do not know yet the actual size of the viewport, so the
-                // first owl rendering is done with an empty viewport.  Only then we can
-                // compute which figures should be displayed, so we have to force a
-                // new rendering
-                this.render();
-            });
-        }
-        resize(figure, dirX, dirY, ev) {
-            ev.stopPropagation();
-            const initialX = ev.clientX;
-            const initialY = ev.clientY;
-            this.dnd.figureId = figure.id;
-            this.dnd.x = figure.x;
-            this.dnd.y = figure.y;
-            this.dnd.width = figure.width;
-            this.dnd.height = figure.height;
-            const onMouseMove = (ev) => {
-                const deltaX = dirX * (ev.clientX - initialX);
-                const deltaY = dirY * (ev.clientY - initialY);
-                this.dnd.width = Math.max(figure.width + deltaX, MIN_FIG_SIZE);
-                this.dnd.height = Math.max(figure.height + deltaY, MIN_FIG_SIZE);
-                if (dirX < 0) {
-                    this.dnd.x = figure.x - deltaX;
-                }
-                if (dirY < 0) {
-                    this.dnd.y = figure.y - deltaY;
-                }
-            };
-            const onMouseUp = (ev) => {
-                this.dnd.figureId = "";
-                const update = {
-                    x: this.dnd.x,
-                    y: this.dnd.y,
-                };
-                if (dirX) {
-                    update.width = this.dnd.width;
-                }
-                if (dirY) {
-                    update.height = this.dnd.height;
-                }
-                this.dispatch("UPDATE_FIGURE", {
-                    sheetId: this.getters.getActiveSheetId(),
-                    id: figure.id,
-                    ...update,
-                });
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onMouseDown(figure, ev) {
-            if (ev.button > 0) {
-                // not main button, probably a context menu
-                return;
-            }
-            this.dispatch("SELECT_FIGURE", { id: figure.id });
-            if (this.props.sidePanelIsOpen) {
-                this.env.openSidePanel("ChartPanel", { figure });
-            }
-            const initialX = ev.clientX;
-            const initialY = ev.clientY;
-            this.dnd.figureId = figure.id;
-            this.dnd.x = figure.x;
-            this.dnd.y = figure.y;
-            this.dnd.width = figure.width;
-            this.dnd.height = figure.height;
-            const onMouseMove = (ev) => {
-                this.dnd.x = Math.max(figure.x - initialX + ev.clientX, 0);
-                this.dnd.y = Math.max(figure.y - initialY + ev.clientY, 0);
-            };
-            const onMouseUp = (ev) => {
-                this.dnd.figureId = "";
-                this.dispatch("UPDATE_FIGURE", {
-                    sheetId: this.getters.getActiveSheetId(),
-                    id: figure.id,
-                    x: this.dnd.x,
-                    y: this.dnd.y,
-                });
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onKeyDown(figure, ev) {
-            ev.preventDefault();
-            switch (ev.key) {
-                case "Delete":
-                    this.dispatch("DELETE_FIGURE", { sheetId: this.getters.getActiveSheetId(), id: figure.id });
-                    this.props.onFigureDeleted();
-                    break;
-                case "ArrowDown":
-                case "ArrowLeft":
-                case "ArrowRight":
-                case "ArrowUp":
-                    const deltaMap = {
-                        ArrowDown: [0, 1],
-                        ArrowLeft: [-1, 0],
-                        ArrowRight: [1, 0],
-                        ArrowUp: [0, -1],
-                    };
-                    const delta = deltaMap[ev.key];
-                    this.dispatch("UPDATE_FIGURE", {
-                        sheetId: this.getters.getActiveSheetId(),
-                        id: figure.id,
-                        x: figure.x + delta[0],
-                        y: figure.y + delta[1],
-                    });
-            }
-        }
-    }
-    FiguresContainer.template = TEMPLATE$8;
-    FiguresContainer.style = CSS$7;
-    FiguresContainer.components = {};
-    figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
-
-    const TEMPLATE$7 = owl.xml /* xml */ `
-    <div class="o-border"
-        t-on-mousedown="onMouseDown"
-        t-att-style="style"
-        t-att-class="{
-          'o-moving': props.isMoving,
-          'o-border-n': props.orientation === 'n',
-          'o-border-s': props.orientation === 's',
-          'o-border-w': props.orientation === 'w',
-          'o-border-e': props.orientation === 'e',
-        }"
-        >
-    </div>
-`;
-    const CSS$6 = css /* scss */ `
-  .o-border {
-    position: absolute;
-    &:hover {
-      cursor: grab;
-    }
-  }
-  .o-moving {
-    cursor: grabbing;
-  }
-`;
-    class Border extends owl.Component {
-        get style() {
-            const isTop = ["n", "w", "e"].includes(this.props.orientation);
-            const isLeft = ["n", "w", "s"].includes(this.props.orientation);
-            const isHorizontal = ["n", "s"].includes(this.props.orientation);
-            const isVertical = ["w", "e"].includes(this.props.orientation);
-            const s = this.env.getters.getActiveSheet();
-            const z = this.props.zone;
-            const margin = 2;
-            const left = s.cols[z.left].start + margin;
-            const right = s.cols[z.right].end - 2 * margin;
-            const top = s.rows[z.top].start + margin;
-            const bottom = s.rows[z.bottom].end - 2 * margin;
-            const lineWidth = 4;
-            const leftValue = isLeft ? left : right;
-            const topValue = isTop ? top : bottom;
-            const widthValue = isHorizontal ? right - left : lineWidth;
-            const heightValue = isVertical ? bottom - top : lineWidth;
-            const { offsetX, offsetY } = this.env.getters.getActiveSnappedViewport();
-            return `
-        left:${leftValue + HEADER_WIDTH - offsetX}px;
-        top:${topValue + HEADER_HEIGHT - offsetY}px;
-        width:${widthValue}px;
-        height:${heightValue}px;
-    `;
-        }
-        onMouseDown(ev) {
-            this.props.onMoveHighlight(ev.clientX, ev.clientY);
-        }
-    }
-    Border.template = TEMPLATE$7;
-    Border.style = CSS$6;
-
-    const TEMPLATE$6 = owl.xml /* xml */ `
-    <div class="o-corner"
-        t-on-mousedown="onMouseDown"
-        t-att-style="style"
-        t-att-class="{
-          'o-resizing': props.isResizing,
-          'o-corner-nw': props.orientation === 'nw',
-          'o-corner-ne': props.orientation === 'ne',
-          'o-corner-sw': props.orientation === 'sw',
-          'o-corner-se': props.orientation === 'se',
-        }"
-        >
-    </div>
-`;
-    const CSS$5 = css /* scss */ `
-  .o-corner {
-    position: absolute;
-    height: 6px;
-    width: 6px;
-    border: 1px solid white;
-  }
-  .o-corner-nw,
-  .o-corner-se {
-    &:hover {
-      cursor: nwse-resize;
-    }
-  }
-  .o-corner-ne,
-  .o-corner-sw {
-    &:hover {
-      cursor: nesw-resize;
-    }
-  }
-  .o-resizing {
-    cursor: grabbing;
-  }
-`;
-    class Corner extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.isTop = this.props.orientation[0] === "n";
-            this.isLeft = this.props.orientation[1] === "w";
-        }
-        get style() {
-            const { offsetX, offsetY } = this.env.getters.getActiveSnappedViewport();
-            const s = this.env.getters.getActiveSheet();
-            const z = this.props.zone;
-            const leftValue = this.isLeft ? s.cols[z.left].start : s.cols[z.right].end;
-            const topValue = this.isTop ? s.rows[z.top].start : s.rows[z.bottom].end;
-            return `
-      left:${leftValue + HEADER_WIDTH - offsetX - AUTOFILL_EDGE_LENGTH / 2}px;
-      top:${topValue + HEADER_HEIGHT - offsetY - AUTOFILL_EDGE_LENGTH / 2}px;
-      background-color:${this.props.color};
-    `;
-        }
-        onMouseDown(ev) {
-            this.props.onResizeHighlight(this.isLeft, this.isTop);
-        }
-    }
-    Corner.template = TEMPLATE$6;
-    Corner.style = CSS$5;
-
-    const TEMPLATE$5 = owl.xml /* xml */ `
-  <div class="o-highlight" t-ref="highlight">
-    <t t-foreach="['nw', 'ne', 'sw', 'se']" t-as="orientation" t-key="orientation">
-      <Corner
-        onResizeHighlight="(isLeft, isTop) => this.onResizeHighlight(isLeft, isTop)"
-        isResizing='highlightState.shiftingMode === "isResizing"'
-        orientation="orientation"
-        zone="props.zone"
-        color="props.color"
-      />
-    </t>
-    <t t-foreach="['n', 's', 'w', 'e']" t-as="orientation" t-key="orientation">
-      <Border
-        onMoveHighlight="(x, y) => this.onMoveHighlight(x,y)"
-        isMoving='highlightState.shiftingMode === "isMoving"'
-        orientation="orientation"
-        zone="props.zone"
-      />
-    </t>
-  </div>
-`;
-    class Highlight extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.highlightRef = owl.useRef("highlight");
-            this.highlightState = owl.useState({
-                shiftingMode: "none",
-            });
-        }
-        onResizeHighlight(isLeft, isTop) {
-            this.highlightState.shiftingMode = "isResizing";
-            const z = this.props.zone;
-            const pivotCol = isLeft ? z.right : z.left;
-            const pivotRow = isTop ? z.bottom : z.top;
-            let lastCol = isLeft ? z.left : z.right;
-            let lastRow = isTop ? z.top : z.bottom;
-            let currentZone = z;
-            this.env.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
-            const mouseMove = (col, row) => {
-                if (lastCol !== col || lastRow !== row) {
-                    const activeSheet = this.env.getters.getActiveSheet();
-                    lastCol = clip(col === -1 ? lastCol : col, 0, activeSheet.cols.length - 1);
-                    lastRow = clip(row === -1 ? lastRow : row, 0, activeSheet.rows.length - 1);
-                    let newZone = {
-                        left: Math.min(pivotCol, lastCol),
-                        top: Math.min(pivotRow, lastRow),
-                        right: Math.max(pivotCol, lastCol),
-                        bottom: Math.max(pivotRow, lastRow),
-                    };
-                    newZone = this.env.getters.expandZone(activeSheet.id, newZone);
-                    if (!isEqual(newZone, currentZone)) {
-                        this.env.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
-                        currentZone = newZone;
-                    }
-                }
-            };
-            const mouseUp = () => {
-                this.highlightState.shiftingMode = "none";
-                // To do:
-                // Command used here to restore focus to the current composer,
-                // to be changed when refactoring the 'edition' plugin
-                this.env.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            };
-            dragAndDropBeyondTheViewport(this.highlightRef.el.parentElement, this.env, mouseMove, mouseUp);
-        }
-        onMoveHighlight(clientX, clientY) {
-            this.highlightState.shiftingMode = "isMoving";
-            const z = this.props.zone;
-            const parent = this.highlightRef.el.parentElement;
-            const position = parent.getBoundingClientRect();
-            const activeSheet = this.env.getters.getActiveSheet();
-            const { top: viewportTop, left: viewportLeft } = this.env.getters.getActiveSnappedViewport();
-            const initCol = this.env.getters.getColIndex(clientX - position.left, viewportLeft);
-            const initRow = this.env.getters.getRowIndex(clientY - position.top, viewportTop);
-            const deltaColMin = -z.left;
-            const deltaColMax = activeSheet.cols.length - z.right - 1;
-            const deltaRowMin = -z.top;
-            const deltaRowMax = activeSheet.rows.length - z.bottom - 1;
-            let currentZone = z;
-            this.env.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
-            let lastCol = initCol;
-            let lastRow = initRow;
-            const mouseMove = (col, row) => {
-                if (lastCol !== col || lastRow !== row) {
-                    lastCol = col === -1 ? lastCol : col;
-                    lastRow = row === -1 ? lastRow : row;
-                    const deltaCol = clip(lastCol - initCol, deltaColMin, deltaColMax);
-                    const deltaRow = clip(lastRow - initRow, deltaRowMin, deltaRowMax);
-                    let newZone = {
-                        left: z.left + deltaCol,
-                        top: z.top + deltaRow,
-                        right: z.right + deltaCol,
-                        bottom: z.bottom + deltaRow,
-                    };
-                    newZone = this.env.getters.expandZone(activeSheet.id, newZone);
-                    if (!isEqual(newZone, currentZone)) {
-                        this.env.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
-                        currentZone = newZone;
-                    }
-                }
-            };
-            const mouseUp = () => {
-                this.highlightState.shiftingMode = "none";
-                // To do:
-                // Command used here to restore focus to the current composer,
-                // to be changed when refactoring the 'edition' plugin
-                this.env.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            };
-            dragAndDropBeyondTheViewport(parent, this.env, mouseMove, mouseUp);
-        }
-    }
-    Highlight.template = TEMPLATE$5;
-    Highlight.components = {
-        Corner,
-        Border,
-    };
-
-    const TEMPLATE$4 = owl.xml /* xml */ `
-  <div class="o-link-tool">
-    <t t-set="link" t-value="cell.link"/>
-    <a t-if="link.isExternal"
-      class="o-link"
-      t-att-href="link.url"
-      target="_blank"
-      t-on-click.prevent="openLink"
-      t-att-title="link.url">
-      <t t-esc="cell.urlRepresentation"/>
-    </a>
-    <a t-else=""
-      class="o-link"
-      t-on-click.prevent="openLink"
-      t-att-title="cell.urlRepresentation">
-      <t t-esc="cell.urlRepresentation"/>
-    </a>
-    <span class="o-link-icon o-unlink" t-on-click="unlink" title="${LinkEditorTerms.Remove}">${UNLINK}</span>
-    <span class="o-link-icon o-edit-link" t-on-click="edit" title="${LinkEditorTerms.Edit}">${EDIT}</span>
-  </div>
-`;
-    const CSS$4 = css /* scss */ `
-  .o-link-tool {
-    font-size: 13px;
-    background-color: white;
-    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    padding: 12px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    a.o-link {
-      color: #007bff;
-      flex-grow: 2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    a.o-link:hover {
-      text-decoration: underline;
-      color: #0056b3;
-      cursor: pointer;
-    }
-  }
-  .o-link-icon {
-    float: right;
-    padding-left: 4%;
-    .o-icon {
-      height: 16px;
-    }
-  }
-  .o-link-icon.o-unlink .o-icon {
-    padding-top: 1px;
-    height: 14px;
-  }
-  .o-link-icon:hover {
-    cursor: pointer;
-    color: #000;
-  }
-`;
-    class LinkDisplay extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.getters = this.env.getters;
-        }
-        get cell() {
-            const { col, row } = this.props.cellPosition;
-            const sheetId = this.getters.getActiveSheetId();
-            const cell = this.getters.getCell(sheetId, col, row);
-            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
-                return cell;
-            }
-            throw new Error(`LinkDisplay Component can only be used with link cells. ${toXC(col, row)} is not a link.`);
-        }
-        openLink() {
-            this.cell.action(this.env);
-        }
-        edit() {
-            this.env.openLinkEditor();
-        }
-        unlink() {
-            const sheetId = this.getters.getActiveSheetId();
-            const [col, row] = this.getters.getPosition();
-            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
-            const style = this.cell.style;
-            const textColor = (style === null || style === void 0 ? void 0 : style.textColor) === LINK_COLOR ? undefined : style === null || style === void 0 ? void 0 : style.textColor;
-            this.env.dispatch("UPDATE_CELL", {
-                col: mainCol,
-                row: mainRow,
-                sheetId,
-                content: this.cell.link.label,
-                style: { ...style, textColor, underline: undefined },
-            });
-        }
-    }
-    LinkDisplay.template = TEMPLATE$4;
-    LinkDisplay.components = { Menu };
-    LinkDisplay.style = CSS$4;
-
-    const MENU_OFFSET_X = 320;
-    const MENU_OFFSET_Y = 100;
-    const PADDING = 12;
-    const TEMPLATE$3 = owl.xml /* xml */ `
-    <div class="o-link-editor" t-on-click.stop="() => this.menu.isOpen=false" t-on-keydown.stop="onKeyDown" t-ref="linkEditor">
-      <div class="o-section">
-        <div t-esc="env._t('${LinkEditorTerms.Text}')" class="o-section-title"/>
-        <div class="d-flex">
-          <input type="text" class="o-input flex-grow-1" t-model="state.link.label"></input>
-        </div>
-
-        <div t-esc="env._t('${LinkEditorTerms.Link}')" class="o-section-title mt-3"/>
-        <div class="o-link-url">
-          <t t-if="state.isUrlEditable">
-            <input type="text" t-ref="urlInput" t-model="state.link.url"></input>
-          </t>
-          <t t-else="">
-            <input type="text" t-att-value="state.urlRepresentation" disabled="1"></input>
-          </t>
-          <button t-if="state.link.url" t-on-click="removeLink" class="o-remove-url">✖</button>
-          <button t-if="!state.link.url" t-on-click.stop="openMenu" class="o-special-link">${LIST}</button>
-        </div>
-      </div>
-      <Menu
-        t-if="menu.isOpen"
-        position="menuPosition"
-        menuItems="menuItems"
-        onMenuClicked="(ev) => this.onSpecialLink(ev)"
-        onClose="() => this.menu.isOpen=false"/>
-      <div class="o-buttons">
-        <button t-on-click="cancel" class="o-button o-cancel" t-esc="env._t('${LinkEditorTerms.Cancel}')"></button>
-        <button t-on-click="save" class="o-button o-save" t-esc="env._t('${LinkEditorTerms.Confirm}')" t-att-disabled="!state.link.url" ></button>
-      </div>
-    </div>`;
-    const CSS$3 = css /* scss */ `
-  .o-link-editor {
-    font-size: 13px;
-    background-color: white;
-    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    padding: ${PADDING}px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 4px;
-    .o-section {
-      .o-section-title {
-        font-weight: bold;
-        color: dimgrey;
-        margin-bottom: 5px;
-      }
-    }
-    .o-buttons {
-      padding-left: 16px;
-      padding-top: 16px;
-      padding-bottom: 16px;
-      text-align: right;
-      .o-button {
-        border: 1px solid lightgrey;
-        padding: 0px 20px 0px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        font-size: 14px;
-        height: 30px;
-        line-height: 16px;
-        background: white;
-        margin-right: 8px;
-        &:hover:enabled {
-          background-color: rgba(0, 0, 0, 0.08);
-        }
-      }
-      .o-button:enabled {
-        cursor: pointer;
-      }
-      .o-button:last-child {
-        margin-right: 0px;
-      }
-    }
-    input {
-      box-sizing: border-box;
-      width: 100%;
-      border-radius: 4px;
-      padding: 4px 23px 4px 10px;
-      border: none;
-      height: 24px;
-      border: 1px solid lightgrey;
-    }
-    .o-link-url {
-      position: relative;
-      flex-grow: 1;
-      button {
-        position: absolute;
-        right: 0px;
-        top: 0px;
-        border: none;
-        height: 20px;
-        width: 20px;
-        background-color: #fff;
-        margin: 2px 3px 1px 0px;
-        padding: 0px 1px 0px 0px;
-      }
-      button:hover {
-        cursor: pointer;
-      }
-    }
-  }
-`;
-    class LinkEditor extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.menuItems = linkMenuRegistry.getAll();
-            this.getters = this.env.getters;
-            this.state = owl.useState(this.defaultState);
-            this.menu = owl.useState({
-                isOpen: false,
-            });
-            this.linkEditorRef = owl.useRef("linkEditor");
-            this.position = useAbsolutePosition(this.linkEditorRef);
-            this.urlInput = owl.useRef("urlInput");
-        }
-        setup() {
-            owl.onMounted(() => { var _a; return (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus(); });
-        }
-        get defaultState() {
-            const { col, row } = this.props.cellPosition;
-            const sheetId = this.getters.getActiveSheetId();
-            const cell = this.getters.getCell(sheetId, col, row);
-            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
-                return {
-                    link: { url: cell.link.url, label: cell.formattedValue },
-                    urlRepresentation: cell.urlRepresentation,
-                    isUrlEditable: cell.isUrlEditable,
-                };
-            }
-            return {
-                link: { url: "", label: (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "" },
-                isUrlEditable: true,
-                urlRepresentation: "",
-            };
-        }
-        get menuPosition() {
-            return {
-                x: this.position.x + MENU_OFFSET_X - PADDING - 2,
-                y: this.position.y + MENU_OFFSET_Y,
-            };
-        }
-        onSpecialLink(ev) {
-            const { detail } = ev;
-            this.state.link.url = detail.link.url;
-            this.state.link.label = detail.link.label;
-            this.state.isUrlEditable = detail.isUrlEditable;
-            this.state.urlRepresentation = detail.urlRepresentation;
-        }
-        openMenu() {
-            this.menu.isOpen = true;
-        }
-        removeLink() {
-            this.state.link.url = "";
-            this.state.urlRepresentation = "";
-            this.state.isUrlEditable = true;
-        }
-        save() {
-            const { col, row } = this.props.cellPosition;
-            const label = this.state.link.label || this.state.link.url;
-            this.env.dispatch("UPDATE_CELL", {
-                col: col,
-                row: row,
-                sheetId: this.getters.getActiveSheetId(),
-                content: markdownLink(label, this.state.link.url),
-            });
-            this.props.onLinkEditorClosed();
-        }
-        cancel() {
-            this.props.onLinkEditorClosed();
-        }
-        onKeyDown(ev) {
-            switch (ev.key) {
-                case "Enter":
-                    if (this.state.link.url) {
-                        this.save();
-                    }
-                    break;
-                case "Escape":
-                    this.cancel();
-                    break;
-            }
-        }
-    }
-    LinkEditor.template = TEMPLATE$3;
-    LinkEditor.components = { Menu };
-    LinkEditor.style = CSS$3;
-
-    // -----------------------------------------------------------------------------
-    // Resizer component
-    // -----------------------------------------------------------------------------
-    class AbstractResizer extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.PADDING = 0;
-            this.MAX_SIZE_MARGIN = 0;
-            this.MIN_ELEMENT_SIZE = 0;
-            this.lastSelectedElementIndex = null;
-            this.getters = this.env.getters;
-            this.dispatch = this.env.dispatch;
-            this.state = owl.useState({
-                resizerIsActive: false,
-                isResizing: false,
-                isMoving: false,
-                isSelecting: false,
-                waitingForMove: false,
-                activeElement: 0,
-                draggerLinePosition: 0,
-                draggerShadowPosition: 0,
-                draggerShadowThickness: 0,
-                delta: 0,
-                base: 0,
-            });
-        }
-        _computeHandleDisplay(ev) {
-            const position = this._getEvOffset(ev);
-            const elementIndex = this._getElementIndex(position);
-            if (elementIndex < 0) {
-                return;
-            }
-            const element = this._getElement(elementIndex);
-            const offset = this._getStateOffset();
-            if (position - (element.start - offset) < this.PADDING &&
-                elementIndex !== this._getViewportOffset()) {
-                this.state.resizerIsActive = true;
-                this.state.draggerLinePosition = element.start - offset - this._getHeaderSize();
-                this.state.activeElement = this._getPreviousVisibleElement(elementIndex);
-            }
-            else if (element.end - offset - position < this.PADDING) {
-                this.state.resizerIsActive = true;
-                this.state.draggerLinePosition = element.end - offset - this._getHeaderSize();
-                this.state.activeElement = elementIndex;
-            }
-            else {
-                this.state.resizerIsActive = false;
-            }
-        }
-        _computeGrabDisplay(ev) {
-            const index = this._getElementIndex(this._getEvOffset(ev));
-            const activeElements = this._getActiveElements();
-            const selectedZoneStart = this._getSelectedZoneStart();
-            const selectedZoneEnd = this._getSelectedZoneEnd();
-            if (activeElements.has(selectedZoneStart)) {
-                if (selectedZoneStart <= index && index <= selectedZoneEnd) {
-                    this.state.waitingForMove = true;
-                    return;
-                }
-            }
-            this.state.waitingForMove = false;
-        }
-        onMouseMove(ev) {
-            if (this.state.isResizing || this.state.isMoving || this.state.isSelecting) {
-                return;
-            }
-            this._computeHandleDisplay(ev);
-            this._computeGrabDisplay(ev);
-        }
-        onMouseLeave() {
-            this.state.resizerIsActive = this.state.isResizing;
-            this.state.waitingForMove = false;
-        }
-        onDblClick() {
-            this._fitElementSize(this.state.activeElement);
-            this.state.isResizing = false;
-        }
-        onMouseDown(ev) {
-            this.state.isResizing = true;
-            this.state.delta = 0;
-            const initialPosition = this._getClientPosition(ev);
-            const styleValue = this.state.draggerLinePosition;
-            const size = this._getElement(this.state.activeElement).size;
-            const minSize = styleValue - size + this.MIN_ELEMENT_SIZE;
-            const maxSize = this._getMaxSize();
-            const onMouseUp = (ev) => {
-                this.state.isResizing = false;
-                if (this.state.delta !== 0) {
-                    this._updateSize();
-                }
-            };
-            const onMouseMove = (ev) => {
-                this.state.delta = this._getClientPosition(ev) - initialPosition;
-                this.state.draggerLinePosition = styleValue + this.state.delta;
-                if (this.state.draggerLinePosition < minSize) {
-                    this.state.draggerLinePosition = minSize;
-                    this.state.delta = this.MIN_ELEMENT_SIZE - size;
-                }
-                if (this.state.draggerLinePosition > maxSize) {
-                    this.state.draggerLinePosition = maxSize;
-                    this.state.delta = maxSize - styleValue;
-                }
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        select(ev) {
-            if (ev.button > 0) {
-                // not main button, probably a context menu
-                return;
-            }
-            const index = this._getElementIndex(this._getEvOffset(ev));
-            if (index < 0) {
-                return;
-            }
-            if (this.state.waitingForMove === true) {
-                this.startMovement(ev);
-                return;
-            }
-            this.startSelection(ev, index);
-        }
-        startMovement(ev) {
-            this.state.waitingForMove = false;
-            this.state.isMoving = true;
-            const startElement = this._getElement(this._getSelectedZoneStart());
-            const endElement = this._getElement(this._getSelectedZoneEnd());
-            const initialPosition = this._getClientPosition(ev);
-            const defaultPosition = startElement.start - this._getStateOffset() - this._getHeaderSize();
-            this.state.draggerLinePosition = defaultPosition;
-            this.state.base = this._getSelectedZoneStart();
-            this.state.draggerShadowPosition = defaultPosition;
-            this.state.draggerShadowThickness = endElement.end - startElement.start;
-            const mouseMoveMovement = (elementIndex, currentEv) => {
-                if (elementIndex >= 0) {
-                    // define draggerLinePosition
-                    const element = this._getElement(elementIndex);
-                    const offset = this._getStateOffset() + this._getHeaderSize();
-                    if (elementIndex <= this._getSelectedZoneStart()) {
-                        this.state.draggerLinePosition = element.start - offset;
-                        this.state.base = elementIndex;
-                    }
-                    else if (this._getSelectedZoneEnd() < elementIndex) {
-                        this.state.draggerLinePosition = element.end - offset;
-                        this.state.base = elementIndex + 1;
-                    }
-                    else {
-                        this.state.draggerLinePosition = startElement.start - offset;
-                        this.state.base = this._getSelectedZoneStart();
-                    }
-                    // define draggerShadowPosition
-                    const delta = this._getClientPosition(currentEv) - initialPosition;
-                    this.state.draggerShadowPosition = Math.max(defaultPosition + delta, 0);
-                }
-            };
-            const mouseUpMovement = (finalEv) => {
-                this.state.isMoving = false;
-                if (this.state.base !== this._getSelectedZoneStart()) {
-                    this._moveElements();
-                }
-                this._computeGrabDisplay(finalEv);
-            };
-            this.dragOverlayBeyondTheViewport(ev, mouseMoveMovement, mouseUpMovement);
-        }
-        startSelection(ev, index) {
-            this.state.isSelecting = true;
-            this.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
-            if (ev.shiftKey) {
-                this._increaseSelection(index);
-            }
-            else {
-                this._selectElement(index, ev.ctrlKey);
-            }
-            this.lastSelectedElementIndex = index;
-            const mouseMoveSelect = (elementIndex, currentEv) => {
-                if (elementIndex !== this.lastSelectedElementIndex && elementIndex !== -1) {
-                    this._increaseSelection(elementIndex);
-                    this.lastSelectedElementIndex = elementIndex;
-                }
-            };
-            const mouseUpSelect = () => {
-                this.state.isSelecting = false;
-                this.lastSelectedElementIndex = null;
-                this.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
-                this._computeGrabDisplay(ev);
-            };
-            this.dragOverlayBeyondTheViewport(ev, mouseMoveSelect, mouseUpSelect);
-        }
-        dragOverlayBeyondTheViewport(ev, cbMouseMove, cbMouseUp) {
-            let timeOutId = null;
-            let currentEv;
-            const initialPosition = this._getClientPosition(ev);
-            const initialOffset = this._getEvOffset(ev);
-            const onMouseMove = (ev) => {
-                currentEv = ev;
-                if (timeOutId) {
-                    return;
-                }
-                const position = this._getClientPosition(currentEv) - initialPosition + initialOffset;
-                const EdgeScrollInfo = this._getEdgeScroll(position);
-                const { first, last } = this._getBoundaries();
-                let elementIndex;
-                if (EdgeScrollInfo.canEdgeScroll) {
-                    elementIndex = EdgeScrollInfo.direction > 0 ? last : first - 1;
-                }
-                else {
-                    elementIndex = this._getElementIndex(position);
-                }
-                cbMouseMove(elementIndex, currentEv);
-                // adjust viewport if necessary
-                if (EdgeScrollInfo.canEdgeScroll) {
-                    this._adjustViewport(EdgeScrollInfo.direction);
-                    timeOutId = setTimeout(() => {
-                        timeOutId = null;
-                        onMouseMove(currentEv);
-                    }, Math.round(EdgeScrollInfo.delay));
-                }
-            };
-            const onMouseUp = (finalEv) => {
-                clearTimeout(timeOutId);
-                cbMouseUp(finalEv);
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onMouseUp(ev) {
-            this.lastSelectedElementIndex = null;
-        }
-        onContextMenu(ev) {
-            ev.preventDefault();
-            const index = this._getElementIndex(this._getEvOffset(ev));
-            if (index < 0)
-                return;
-            if (!this._getActiveElements().has(index)) {
-                this._selectElement(index, false);
-            }
-            const type = this._getType();
-            const { x, y } = this._getXY(ev);
-            // todo: define props
-            this.props.onOpenContextMenu(type, x, y);
-        }
-    }
-    class ColResizer extends AbstractResizer {
-        setup() {
-            super.setup();
-            this.colResizerRef = owl.useRef("colResizer");
-            this.PADDING = 15;
-            this.MAX_SIZE_MARGIN = 90;
-            this.MIN_ELEMENT_SIZE = MIN_COL_WIDTH;
-        }
-        _getEvOffset(ev) {
-            return ev.offsetX + HEADER_WIDTH;
-        }
-        _getStateOffset() {
-            return this.getters.getActiveSnappedViewport().offsetX - HEADER_WIDTH;
-        }
-        _getViewportOffset() {
-            return this.getters.getActiveSnappedViewport().left;
-        }
-        _getClientPosition(ev) {
-            return ev.clientX;
-        }
-        _getElementIndex(index) {
-            return this.getters.getColIndex(index, this.getters.getActiveSnappedViewport().left);
-        }
-        _getSelectedZoneStart() {
-            return this.getters.getSelectedZone().left;
-        }
-        _getSelectedZoneEnd() {
-            return this.getters.getSelectedZone().right;
-        }
-        _getEdgeScroll(position) {
-            return this.getters.getEdgeScrollCol(position);
-        }
-        _getBoundaries() {
-            const { left, right } = this.getters.getActiveSnappedViewport();
-            return { first: left, last: right };
-        }
-        _getElement(index) {
-            return this.getters.getCol(this.getters.getActiveSheetId(), index);
-        }
-        _getBottomRightValue(element) {
-            return element.end;
-        }
-        _getHeaderSize() {
-            return HEADER_WIDTH;
-        }
-        _getMaxSize() {
-            return this.colResizerRef.el.clientWidth;
-        }
-        _updateSize() {
-            const index = this.state.activeElement;
-            const size = this.state.delta + this._getElement(index).size;
-            const cols = this.getters.getActiveCols();
-            this.dispatch("RESIZE_COLUMNS_ROWS", {
-                dimension: "COL",
-                sheetId: this.getters.getActiveSheetId(),
-                elements: cols.has(index) ? [...cols] : [index],
-                size,
-            });
-        }
-        _moveElements() {
-            const elements = [];
-            const start = this._getSelectedZoneStart();
-            const end = this._getSelectedZoneEnd();
-            for (let colIndex = start; colIndex <= end; colIndex++) {
-                elements.push(colIndex);
-            }
-            const result = this.dispatch("MOVE_COLUMNS_ROWS", {
-                sheetId: this.getters.getActiveSheetId(),
-                dimension: "COL",
-                base: this.state.base,
-                elements,
-            });
-            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
-                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
-            }
-        }
-        _selectElement(index, ctrlKey) {
-            this.dispatch("SELECT_COLUMN", { index, createRange: ctrlKey });
-        }
-        _increaseSelection(index) {
-            this.dispatch("SELECT_COLUMN", { index, updateRange: true });
-        }
-        _adjustViewport(direction) {
-            const { left, offsetY } = this.getters.getActiveSnappedViewport();
-            const { cols } = this.getters.getActiveSheet();
-            const offsetX = cols[left + direction].start;
-            this.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-        }
-        _fitElementSize(index) {
-            const cols = this.getters.getActiveCols();
-            this.dispatch("AUTORESIZE_COLUMNS", {
-                sheetId: this.getters.getActiveSheetId(),
-                cols: cols.has(index) ? [...cols] : [index],
-            });
-        }
-        _getType() {
-            return "COL";
-        }
-        _getActiveElements() {
-            return this.getters.getActiveCols();
-        }
-        _getXY(ev) {
-            return {
-                x: ev.offsetX + HEADER_WIDTH,
-                y: ev.offsetY,
-            };
-        }
-        _getPreviousVisibleElement(index) {
-            const cols = this.getters.getActiveSheet().cols.slice(0, index);
-            const step = cols.reverse().findIndex((col) => !col.isHidden);
-            return index - 1 - step;
-        }
-        unhide(hiddenElements) {
-            this.dispatch("UNHIDE_COLUMNS_ROWS", {
-                sheetId: this.getters.getActiveSheetId(),
-                elements: hiddenElements,
-                dimension: "COL",
-            });
-        }
-        unhideStyleValue(hiddenIndex) {
-            const col = this.getters.getCol(this.getters.getActiveSheetId(), hiddenIndex);
-            const offset = this._getStateOffset();
-            return col.start - offset - this._getHeaderSize();
-        }
-    }
-    ColResizer.template = owl.xml /* xml */ `
-    <div class="o-col-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select" t-ref="colResizer"
-      t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving, }">
-      <div t-if="state.isMoving" class="dragging-col-line" t-attf-style="left:{{state.draggerLinePosition}}px;"/>
-      <div t-if="state.isMoving" class="dragging-col-shadow" t-attf-style="left:{{state.draggerShadowPosition}}px; width:{{state.draggerShadowThickness}}px"/>
-      <t t-if="state.resizerIsActive">
-        <div class="o-handle" t-on-mousedown="onMouseDown" t-on-dblclick="onDblClick" t-on-contextmenu.prevent=""
-        t-attf-style="left:{{state.draggerLinePosition - 2}}px;">
-        <div class="dragging-resizer" t-if="state.isResizing"/>
-        </div>
-      </t>
-      <t t-foreach="getters.getHiddenColsGroups(getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
-        <t t-if="!hiddenItem.includes(0)">
-          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) - 17}}px; margin-right:6px;" t-on-click="() => this.unhide(hiddenItem)">
-          ${TRIANGLE_LEFT_ICON}
-          </div>
-        </t>
-        <t t-if="!hiddenItem.includes(getters.getActiveSheet().cols.length-1)">
-          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="() => this.unhide(hiddenItem)">
-          ${TRIANGLE_RIGHT_ICON}
-          </div>
-        </t>
-      </t>
-    </div>`;
-    ColResizer.style = css /* scss */ `
-    .o-col-resizer {
-      position: absolute;
-      top: 0;
-      left: ${HEADER_WIDTH}px;
-      right: 0;
-      height: ${HEADER_HEIGHT}px;
-      &.o-dragging {
-        cursor: grabbing;
-      }
-      &.o-grab {
-        cursor: grab;
-      }
-      .dragging-col-line {
-        top: ${HEADER_HEIGHT}px;
-        position: absolute;
-        width: 2px;
-        height: 10000px;
-        background-color: black;
-      }
-      .dragging-col-shadow {
-        top: ${HEADER_HEIGHT}px;
-        position: absolute;
-        height: 10000px;
-        background-color: black;
-        opacity: 0.1;
-      }
-      .o-handle {
-        position: absolute;
-        height: ${HEADER_HEIGHT}px;
-        width: 4px;
-        cursor: e-resize;
-        background-color: ${SELECTION_BORDER_COLOR};
-      }
-      .dragging-resizer {
-        top: ${HEADER_HEIGHT}px;
-        position: absolute;
-        margin-left: 2px;
-        width: 1px;
-        height: 10000px;
-        background-color: ${SELECTION_BORDER_COLOR};
-      }
-      .o-unhide {
-        width: ${UNHIDE_ICON_EDGE_LENGTH}px;
-        height: ${UNHIDE_ICON_EDGE_LENGTH}px;
-        position: absolute;
-        overflow: hidden;
-        border-radius: 2px;
-        top: calc(${HEADER_HEIGHT}px / 2 - ${UNHIDE_ICON_EDGE_LENGTH}px / 2);
-      }
-      .o-unhide:hover {
-        z-index: 1;
-        background-color: lightgrey;
-      }
-      .o-unhide > svg {
-        position: relative;
-        top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
-      }
-    }
-  `;
-    class RowResizer extends AbstractResizer {
-        setup() {
-            super.setup();
-            this.rowResizerRef = owl.useRef("rowResizer");
-            this.PADDING = 5;
-            this.MAX_SIZE_MARGIN = 60;
-            this.MIN_ELEMENT_SIZE = MIN_ROW_HEIGHT;
-        }
-        _getEvOffset(ev) {
-            return ev.offsetY + HEADER_HEIGHT;
-        }
-        _getStateOffset() {
-            return this.getters.getActiveSnappedViewport().offsetY - HEADER_HEIGHT;
-        }
-        _getViewportOffset() {
-            return this.getters.getActiveSnappedViewport().top;
-        }
-        _getClientPosition(ev) {
-            return ev.clientY;
-        }
-        _getElementIndex(index) {
-            return this.getters.getRowIndex(index, this.getters.getActiveSnappedViewport().top);
-        }
-        _getSelectedZoneStart() {
-            return this.getters.getSelectedZone().top;
-        }
-        _getSelectedZoneEnd() {
-            return this.getters.getSelectedZone().bottom;
-        }
-        _getEdgeScroll(position) {
-            return this.getters.getEdgeScrollRow(position);
-        }
-        _getBoundaries() {
-            const { top, bottom } = this.getters.getActiveSnappedViewport();
-            return { first: top, last: bottom };
-        }
-        _getElement(index) {
-            return this.getters.getRow(this.getters.getActiveSheetId(), index);
-        }
-        _getHeaderSize() {
-            return HEADER_HEIGHT;
-        }
-        _getMaxSize() {
-            return this.rowResizerRef.el.clientHeight;
-        }
-        _updateSize() {
-            const index = this.state.activeElement;
-            const size = this.state.delta + this._getElement(index).size;
-            const rows = this.getters.getActiveRows();
-            this.dispatch("RESIZE_COLUMNS_ROWS", {
-                dimension: "ROW",
-                sheetId: this.getters.getActiveSheetId(),
-                elements: rows.has(index) ? [...rows] : [index],
-                size,
-            });
-        }
-        _moveElements() {
-            const elements = [];
-            const start = this._getSelectedZoneStart();
-            const end = this._getSelectedZoneEnd();
-            for (let rowIndex = start; rowIndex <= end; rowIndex++) {
-                elements.push(rowIndex);
-            }
-            const result = this.dispatch("MOVE_COLUMNS_ROWS", {
-                sheetId: this.getters.getActiveSheetId(),
-                dimension: "ROW",
-                base: this.state.base,
-                elements,
-            });
-            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
-                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
-            }
-        }
-        _selectElement(index, ctrlKey) {
-            this.dispatch("SELECT_ROW", { index, createRange: ctrlKey });
-        }
-        _increaseSelection(index) {
-            this.dispatch("SELECT_ROW", { index, updateRange: true });
-        }
-        _adjustViewport(direction) {
-            const { top, offsetX } = this.getters.getActiveSnappedViewport();
-            const { rows } = this.getters.getActiveSheet();
-            const offsetY = rows[top + direction].start;
-            this.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-        }
-        _fitElementSize(index) {
-            const rows = this.getters.getActiveRows();
-            this.dispatch("AUTORESIZE_ROWS", {
-                sheetId: this.getters.getActiveSheetId(),
-                rows: rows.has(index) ? [...rows] : [index],
-            });
-        }
-        _getType() {
-            return "ROW";
-        }
-        _getActiveElements() {
-            return this.getters.getActiveRows();
-        }
-        _getXY(ev) {
-            return {
-                x: ev.offsetX,
-                y: ev.offsetY + HEADER_HEIGHT,
-            };
-        }
-        _getPreviousVisibleElement(index) {
-            const rows = this.getters.getActiveSheet().rows.slice(0, index);
-            const step = rows.reverse().findIndex((row) => !row.isHidden);
-            return index - 1 - step;
-        }
-        unhide(hiddenElements) {
-            this.dispatch("UNHIDE_COLUMNS_ROWS", {
-                sheetId: this.getters.getActiveSheetId(),
-                dimension: "ROW",
-                elements: hiddenElements,
-            });
-        }
-        unhideStyleValue(hiddenIndex) {
-            const row = this.getters.getRow(this.getters.getActiveSheetId(), hiddenIndex);
-            const offset = this._getStateOffset();
-            return row.start - offset - this._getHeaderSize();
-        }
-    }
-    RowResizer.template = owl.xml /* xml */ `
-    <div class="o-row-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select" t-ref="rowResizer"
-    t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving}">
-      <div t-if="state.isMoving" class="dragging-row-line" t-attf-style="top:{{state.draggerLinePosition}}px;"/>
-      <div t-if="state.isMoving" class="dragging-row-shadow" t-attf-style="top:{{state.draggerShadowPosition}}px; height:{{state.draggerShadowThickness}}px;"/>
-      <t t-if="state.resizerIsActive">
-        <div class="o-handle" t-on-mousedown="onMouseDown" t-on-dblclick="onDblClick" t-on-contextmenu.prevent=""
-          t-attf-style="top:{{state.draggerLinePosition - 2}}px;">
-          <div class="dragging-resizer" t-if="state.isResizing"/>
-        </div>
-      </t>
-      <t t-foreach="getters.getHiddenRowsGroups(getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
-        <t t-if="!hiddenItem.includes(0)">
-          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) - 17}}px;" t-on-click="() => this.unhide(hiddenItem)">
-          ${TRIANGLE_UP_ICON}
-          </div>
-        </t>
-        <t t-if="!hiddenItem.includes(getters.getActiveSheet().rows.length-1)">
-         <div class="o-unhide" t-att-data-index="hiddenItem_index"  t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="() => this.unhide(hiddenItem)">
-         ${TRIANGLE_DOWN_ICON}
-         </div>
-        </t>
-      </t>
-    </div>`;
-    RowResizer.style = css /* scss */ `
-    .o-row-resizer {
-      position: absolute;
-      top: ${HEADER_HEIGHT}px;
-      left: 0;
-      right: 0;
-      width: ${HEADER_WIDTH}px;
-      height: 100%;
-      &.o-dragging {
-        cursor: grabbing;
-      }
-      &.o-grab {
-        cursor: grab;
-      }
-      .dragging-row-line {
-        left: ${HEADER_WIDTH}px;
-        position: absolute;
-        width: 10000px;
-        height: 2px;
-        background-color: black;
-      }
-      .dragging-row-shadow {
-        left: ${HEADER_WIDTH}px;
-        position: absolute;
-        width: 10000px;
-        background-color: black;
-        opacity: 0.1;
-      }
-      .o-handle {
-        position: absolute;
-        height: 4px;
-        width: ${HEADER_WIDTH}px;
-        cursor: n-resize;
-        background-color: ${SELECTION_BORDER_COLOR};
-      }
-      .dragging-resizer {
-        left: ${HEADER_WIDTH}px;
-        position: absolute;
-        margin-top: 2px;
-        width: 10000px;
-        height: 1px;
-        background-color: ${SELECTION_BORDER_COLOR};
-      }
-      .o-unhide {
-        width: ${UNHIDE_ICON_EDGE_LENGTH}px;
-        height: ${UNHIDE_ICON_EDGE_LENGTH}px;
-        position: absolute;
-        overflow: hidden;
-        border-radius: 2px;
-        left: calc(${HEADER_WIDTH}px - ${UNHIDE_ICON_EDGE_LENGTH}px - 2px);
-      }
-      .o-unhide > svg {
-        position: relative;
-        left: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
-        top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
-      }
-      .o-unhide:hover {
-        z-index: 1;
-        background-color: lightgrey;
-      }
-    }
-  `;
-    class Overlay extends owl.Component {
-        selectAll() {
-            this.env.dispatch("SELECT_ALL");
-        }
-    }
-    Overlay.template = owl.xml /* xml */ `
-    <div class="o-overlay">
-      <ColResizer onOpenContextMenu="props.onOpenContextMenu" />
-      <RowResizer onOpenContextMenu="props.onOpenContextMenu" />
-      <div class="all" t-on-mousedown.self="selectAll"/>
-    </div>`;
-    Overlay.style = css /* scss */ `
-    .o-overlay {
-      .all {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: ${HEADER_WIDTH}px;
-        height: ${HEADER_HEIGHT}px;
-      }
-    }
-  `;
-    Overlay.components = { ColResizer, RowResizer };
-
-    class ScrollBar {
-        constructor(el, direction) {
-            this.el = el;
-            this.direction = direction;
-        }
-        get scroll() {
-            return this.direction === "horizontal" ? this.el.scrollLeft : this.el.scrollTop;
-        }
-        set scroll(value) {
-            if (this.direction === "horizontal") {
-                this.el.scrollLeft = value;
-            }
-            else {
-                this.el.scrollTop = value;
-            }
-        }
-    }
-
-    const registries$1 = {
-        ROW: rowMenuRegistry,
-        COL: colMenuRegistry,
-        CELL: cellMenuRegistry,
-    };
-    const LINK_EDITOR_WIDTH = 340;
-    const LINK_EDITOR_HEIGHT = 180;
-    const ERROR_TOOLTIP_HEIGHT = 80;
-    const ERROR_TOOLTIP_WIDTH = 180;
-    // copy and paste are specific events that should not be managed by the keydown event,
-    // but they shouldn't be preventDefault and stopped (else copy and paste events will not trigger)
-    // and also should not result in typing the character C or V in the composer
-    const keyDownMappingIgnore = ["CTRL+C", "CTRL+V"];
-    function useCellHovered(env, getViewPort) {
-        const hoveredPosition = owl.useState({});
-        const { getters } = env;
-        const { Date, setInterval, clearInterval } = window;
-        const canvasRef = owl.useRef("canvas");
-        let x = 0;
-        let y = 0;
-        let lastMoved = 0;
-        let interval;
-        function getPosition() {
-            const viewport = getViewPort();
-            const col = getters.getColIndex(x, viewport.left);
-            const row = getters.getRowIndex(y, viewport.top);
-            return [col, row];
-        }
-        function checkTiming() {
-            const [col, row] = getPosition();
-            const delta = Date.now() - lastMoved;
-            if (col !== hoveredPosition.col || row !== hoveredPosition.row) {
-                hoveredPosition.col = undefined;
-                hoveredPosition.row = undefined;
-            }
-            if (400 < delta && delta < 600) {
-                if (col < 0 || row < 0) {
-                    return;
-                }
-                hoveredPosition.col = col;
-                hoveredPosition.row = row;
-            }
-        }
-        function updateMousePosition(e) {
-            x = e.offsetX;
-            y = e.offsetY;
-            lastMoved = Date.now();
-        }
-        owl.onMounted(() => {
-            canvasRef.el.addEventListener("mousemove", updateMousePosition);
-            interval = setInterval(checkTiming, 200);
-        });
-        owl.onWillUnmount(() => {
-            canvasRef.el.removeEventListener("mousemove", updateMousePosition);
-            clearInterval(interval);
-        });
-        return hoveredPosition;
-    }
-    function useTouchMove(handler, canMoveUp) {
-        const canvasRef = owl.useRef("canvas");
-        let x = null;
-        let y = null;
-        function onTouchStart(ev) {
-            if (ev.touches.length !== 1)
-                return;
-            x = ev.touches[0].clientX;
-            y = ev.touches[0].clientY;
-        }
-        function onTouchEnd() {
-            x = null;
-            y = null;
-        }
-        function onTouchMove(ev) {
-            if (ev.touches.length !== 1)
-                return;
-            // On mobile browsers, swiping down is often associated with "pull to refresh".
-            // We only want this behavior if the grid is already at the top.
-            // Otherwise we only want to move the canvas up, without triggering any refresh.
-            if (canMoveUp()) {
-                ev.preventDefault();
-                ev.stopPropagation();
-            }
-            const currentX = ev.touches[0].clientX;
-            const currentY = ev.touches[0].clientY;
-            handler(x - currentX, y - currentY);
-            x = currentX;
-            y = currentY;
-        }
-        owl.onMounted(() => {
-            canvasRef.el.addEventListener("touchstart", onTouchStart);
-            canvasRef.el.addEventListener("touchend", onTouchEnd);
-            canvasRef.el.addEventListener("touchmove", onTouchMove);
-        });
-        owl.onWillUnmount(() => {
-            canvasRef.el.removeEventListener("touchstart", onTouchStart);
-            canvasRef.el.removeEventListener("touchend", onTouchEnd);
-            canvasRef.el.removeEventListener("touchmove", onTouchMove);
-        });
-    }
-    // -----------------------------------------------------------------------------
-    // TEMPLATE
-    // -----------------------------------------------------------------------------
-    const TEMPLATE$2 = owl.xml /* xml */ `
-  <div class="o-grid" t-att-class="{'o-two-columns': !props.sidePanelIsOpen}" t-on-click="focus" t-on-keydown="onKeydown" t-on-wheel="onMouseWheel" t-ref="grid">
-    <t t-if="env.getters.getEditionMode() !== 'inactive'">
-      <GridComposer
-        onComposerUnmounted="() => this.focus()"
-        focus="props.focusComposer"
-        />
-    </t>
-    <canvas t-ref="canvas"
-      t-on-mousedown="onMouseDown"
-      t-on-dblclick="onDoubleClick"
-      tabindex="-1"
-      t-on-contextmenu="onCanvasContextMenu"
-       />
-    <t t-foreach="env.getters.getClientsToDisplay()" t-as="client" t-key="getClientPositionKey(client)">
-      <ClientTag name="client.name"
-                 color="client.color"
-                 col="client.position.col"
-                 row="client.position.row"
-                 active="isCellHovered(client.position.col, client.position.row)"
-                 />
-    </t>
-    <Popover
-      t-if="errorTooltip.isOpen"
-      position="errorTooltip.position"
-      childWidth="${ERROR_TOOLTIP_WIDTH}"
-      childHeight="${ERROR_TOOLTIP_HEIGHT}">
-      <ErrorToolTip text="errorTooltip.text"/>
-    </Popover>
-    <Popover
-      t-if="shouldDisplayLink"
-      position="popoverPosition.position"
-      flipHorizontalOffset="-popoverPosition.cellWidth"
-      flipVerticalOffset="-popoverPosition.cellHeight"
-      childWidth="${LINK_TOOLTIP_WIDTH}"
-      childHeight="${LINK_TOOLTIP_HEIGHT}">
-      <LinkDisplay cellPosition="activeCellPosition"/>
-    </Popover>
-    <Popover
-      t-if="props.linkEditorIsOpen"
-      position="popoverPosition.position"
-      flipHorizontalOffset="-popoverPosition.cellWidth"
-      flipVerticalOffset="-popoverPosition.cellHeight"
-      childWidth="${LINK_EDITOR_WIDTH}"
-      childHeight="${LINK_EDITOR_HEIGHT}">
-      <LinkEditor cellPosition="activeCellPosition" onLinkEditorClosed="props.onLinkEditorClosed"/>
-    </Popover>
-    <t t-if="env.getters.getEditionMode() === 'inactive'">
-      <Autofill position="getAutofillPosition()" getGridBoundingClientRect="() => this.getGridBoundingClientRect()"/>
-    </t>
-    <t t-if="env.getters.getEditionMode() !== 'inactive'">
-      <t t-foreach="env.getters.getHighlights()" t-as="highlight" t-key="highlight_index">
-        <t t-if="highlight.sheet === env.getters.getActiveSheetId()">
-          <Highlight zone="highlight.zone" color="highlight.color"/>
-        </t>
-      </t>
-    </t>
-    <Overlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)" />
-    <Menu t-if="menuState.isOpen"
-      menuItems="menuState.menuItems"
-      position="menuState.position"
-      onClose="() => this.menuState.isOpen=false"/>
-    <t t-set="gridSize" t-value="env.getters.getMaxViewportSize(env.getters.getActiveSheet())"/>
-    <FiguresContainer model="props.model" sidePanelIsOpen="props.sidePanelIsOpen" onFigureDeleted="() => this.focus()" />
-    <div class="o-scrollbar vertical" t-on-scroll="onScroll" t-ref="vscrollbar">
-      <div t-attf-style="width:1px;height:{{gridSize.height}}px"/>
-    </div>
-    <div class="o-scrollbar horizontal" t-on-scroll="onScroll" t-ref="hscrollbar">
-      <div t-attf-style="height:1px;width:{{gridSize.width}}px"/>
-    </div>
-  </div>`;
-    // -----------------------------------------------------------------------------
-    // STYLE
-    // -----------------------------------------------------------------------------
-    const CSS$2 = css /* scss */ `
-  .o-grid {
-    position: relative;
-    overflow: hidden;
-    background-color: ${BACKGROUND_GRAY_COLOR};
-
-    > canvas {
-      border-top: 1px solid #e2e3e3;
-      border-bottom: 1px solid #e2e3e3;
-
-      &:focus {
-        outline: none;
-      }
-    }
-    .o-scrollbar {
-      position: absolute;
-      overflow: auto;
-      z-index: 2;
-      &.vertical {
-        right: 0;
-        top: ${HEADER_HEIGHT}px;
-        bottom: ${SCROLLBAR_WIDTH$1}px;
-        width: ${SCROLLBAR_WIDTH$1}px;
-        overflow-x: hidden;
-      }
-      &.horizontal {
-        bottom: 0;
-        height: ${SCROLLBAR_WIDTH$1}px;
-        right: ${SCROLLBAR_WIDTH$1 + 1}px;
-        left: ${HEADER_WIDTH}px;
-        overflow-y: hidden;
-      }
-    }
-  }
-`;
-    // -----------------------------------------------------------------------------
-    // JS
-    // -----------------------------------------------------------------------------
-    class Grid extends owl.Component {
-        constructor() {
-            super(...arguments);
-            // this map will handle most of the actions that should happen on key down. The arrow keys are managed in the key
-            // down itself
-            this.keyDownMapping = {
-                ENTER: () => {
-                    const cell = this.env.getters.getActiveCell();
-                    !cell || cell.isEmpty()
-                        ? this.props.onGridComposerCellFocused()
-                        : this.props.onComposerContentFocused();
-                },
-                TAB: () => this.env.dispatch("MOVE_POSITION", { deltaX: 1, deltaY: 0 }),
-                "SHIFT+TAB": () => this.env.dispatch("MOVE_POSITION", { deltaX: -1, deltaY: 0 }),
-                F2: () => {
-                    const cell = this.env.getters.getActiveCell();
-                    !cell || cell.isEmpty()
-                        ? this.props.onGridComposerCellFocused()
-                        : this.props.onComposerContentFocused();
-                },
-                DELETE: () => {
-                    this.env.dispatch("DELETE_CONTENT", {
-                        sheetId: this.env.getters.getActiveSheetId(),
-                        target: this.env.getters.getSelectedZones(),
-                    });
-                },
-                "CTRL+A": () => this.env.dispatch("SELECT_ALL"),
-                "CTRL+S": () => {
-                    var _a, _b;
-                    (_b = (_a = this.props).onSaveRequested) === null || _b === void 0 ? void 0 : _b.call(_a);
-                },
-                "CTRL+Z": () => this.env.dispatch("REQUEST_UNDO"),
-                "CTRL+Y": () => this.env.dispatch("REQUEST_REDO"),
-                "CTRL+B": () => this.env.dispatch("SET_FORMATTING", {
-                    sheetId: this.env.getters.getActiveSheetId(),
-                    target: this.env.getters.getSelectedZones(),
-                    style: { bold: !this.env.getters.getCurrentStyle().bold },
-                }),
-                "CTRL+I": () => this.env.dispatch("SET_FORMATTING", {
-                    sheetId: this.env.getters.getActiveSheetId(),
-                    target: this.env.getters.getSelectedZones(),
-                    style: { italic: !this.env.getters.getCurrentStyle().italic },
-                }),
-                "CTRL+U": () => this.env.dispatch("SET_FORMATTING", {
-                    sheetId: this.env.getters.getActiveSheetId(),
-                    target: this.env.getters.getSelectedZones(),
-                    style: { underline: !this.env.getters.getCurrentStyle().underline },
-                }),
-                "ALT+=": () => {
-                    var _a;
-                    const sheetId = this.env.getters.getActiveSheetId();
-                    const mainSelectedZone = this.env.getters.getSelectedZone();
-                    const sums = this.env.getters.getAutomaticSums(sheetId, mainSelectedZone, this.env.getters.getPosition());
-                    if (this.env.getters.isSingleCellOrMerge(sheetId, mainSelectedZone) ||
-                        (this.env.getters.isEmpty(sheetId, mainSelectedZone) && sums.length <= 1)) {
-                        const zone = (_a = sums[0]) === null || _a === void 0 ? void 0 : _a.zone;
-                        const zoneXc = zone ? this.env.getters.zoneToXC(sheetId, sums[0].zone) : "";
-                        const formula = `=SUM(${zoneXc})`;
-                        this.props.onGridComposerCellFocused(formula, { start: 5, end: 5 + zoneXc.length });
-                    }
-                    else {
-                        this.env.dispatch("SUM_SELECTION");
-                    }
-                },
-                "CTRL+HOME": () => {
-                    const sheet = this.env.getters.getActiveSheet();
-                    const [col, row] = getNextVisibleCellCoords(sheet, 0, 0);
-                    this.env.dispatch("SELECT_CELL", { col, row });
-                },
-                "CTRL+END": () => {
-                    const sheet = this.env.getters.getActiveSheet();
-                    const col = findVisibleHeader(sheet, "cols", range(0, sheet.cols.length).reverse());
-                    const row = findVisibleHeader(sheet, "rows", range(0, sheet.rows.length).reverse());
-                    this.env.dispatch("SELECT_CELL", { col, row });
-                },
-                "SHIFT+ ": () => {
-                    const { cols } = this.env.getters.getActiveSheet();
-                    const newZone = { ...this.env.getters.getSelectedZone(), left: 0, right: cols.length - 1 };
-                    this.env.dispatch("SET_SELECTION", {
-                        anchor: this.env.getters.getPosition(),
-                        zones: [newZone],
-                        anchorZone: newZone,
-                    });
-                },
-                "CTRL+ ": () => {
-                    const { rows } = this.env.getters.getActiveSheet();
-                    const newZone = { ...this.env.getters.getSelectedZone(), top: 0, bottom: rows.length - 1 };
-                    this.env.dispatch("SET_SELECTION", {
-                        anchor: this.env.getters.getPosition(),
-                        zones: [newZone],
-                        anchorZone: newZone,
-                    });
-                },
-                "CTRL+SHIFT+ ": () => {
-                    this.env.dispatch("SELECT_ALL");
-                },
-                "SHIFT+PAGEDOWN": () => {
-                    this.env.dispatch("ACTIVATE_NEXT_SHEET");
-                },
-                "SHIFT+PAGEUP": () => {
-                    this.env.dispatch("ACTIVATE_PREVIOUS_SHEET");
-                },
-                PAGEDOWN: () => this.env.dispatch("SHIFT_VIEWPORT_DOWN"),
-                PAGEUP: () => this.env.dispatch("SHIFT_VIEWPORT_UP"),
-            };
-        }
-        setup() {
-            this.menuState = owl.useState({
-                isOpen: false,
-                position: null,
-                menuItems: [],
-            });
-            this.vScrollbarRef = owl.useRef("vscrollbar");
-            this.hScrollbarRef = owl.useRef("hscrollbar");
-            this.gridRef = owl.useRef("grid");
-            this.canvas = owl.useRef("canvas");
-            this.vScrollbar = new ScrollBar(this.vScrollbarRef.el, "vertical");
-            this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
-            this.currentSheet = this.env.getters.getActiveSheetId();
-            this.clickedCol = 0;
-            this.clickedRow = 0;
-            this.clipBoardString = "";
-            this.hoveredCell = useCellHovered(this.env, () => this.env.getters.getActiveSnappedViewport());
-            owl.useExternalListener(document.body, "cut", this.copy.bind(this, true));
-            owl.useExternalListener(document.body, "copy", this.copy.bind(this, false));
-            owl.useExternalListener(document.body, "paste", this.paste);
-            useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0);
-            owl.onMounted(() => this.initGrid());
-            owl.onPatched(() => {
-                this.drawGrid();
-                this.resizeGrid();
-            });
-            this.props.exposeFocus(() => this.focus());
-        }
-        initGrid() {
-            this.vScrollbar.el = this.vScrollbarRef.el;
-            this.hScrollbar.el = this.hScrollbarRef.el;
-            this.focus();
-            this.resizeGrid();
-            this.drawGrid();
-        }
-        get errorTooltip() {
-            const { col, row } = this.hoveredCell;
-            if (col === undefined || row === undefined) {
-                return { isOpen: false };
-            }
-            const sheetId = this.env.getters.getActiveSheetId();
-            const [mainCol, mainRow] = this.env.getters.getMainCell(sheetId, col, row);
-            const cell = this.env.getters.getCell(sheetId, mainCol, mainRow);
-            if (cell && cell.evaluated.type === CellValueType.error) {
-                const viewport = this.env.getters.getActiveSnappedViewport();
-                const [x, y, width] = this.env.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
-                return {
-                    isOpen: true,
-                    position: { x: x + width, y: y + TOPBAR_HEIGHT },
-                    text: cell.evaluated.error,
-                };
-            }
-            return { isOpen: false };
-        }
-        get activeCellPosition() {
-            const [col, row] = this.env.getters.getMainCell(this.env.getters.getActiveSheetId(), ...this.env.getters.getPosition());
-            return { col, row };
-        }
-        get shouldDisplayLink() {
-            const sheetId = this.env.getters.getActiveSheetId();
-            const { col, row } = this.activeCellPosition;
-            const viewport = this.env.getters.getActiveSnappedViewport();
-            const cell = this.env.getters.getCell(sheetId, col, row);
-            return (this.env.getters.isVisibleInViewport(col, row, viewport) &&
-                !!cell &&
-                cell.isLink() &&
-                !this.menuState.isOpen &&
-                !this.props.linkEditorIsOpen &&
-                !this.props.sidePanelIsOpen);
-        }
-        /**
-         * Get a reasonable position to display the popover, under the active cell.
-         * Used by link popover components.
-         */
-        get popoverPosition() {
-            const [col, row] = this.env.getters.getBottomLeftCell(this.env.getters.getActiveSheetId(), ...this.env.getters.getPosition());
-            const viewport = this.env.getters.getActiveSnappedViewport();
-            const [x, y, width, height] = this.env.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
-            return {
-                position: { x, y: y + height + TOPBAR_HEIGHT },
-                cellWidth: width,
-                cellHeight: height,
-            };
-        }
-        focus() {
-            if (!this.env.getters.isSelectingForComposer() && !this.env.getters.getSelectedFigureId()) {
-                this.canvas.el.focus();
-            }
-        }
-        get gridEl() {
-            if (!this.gridRef.el) {
-                throw new Error("Grid el is not defined.");
-            }
-            return this.gridRef.el;
-        }
-        getGridBoundingClientRect() {
-            return this.gridEl.getBoundingClientRect();
-        }
-        resizeGrid() {
-            const currentHeight = this.gridEl.clientHeight - SCROLLBAR_WIDTH$1;
-            const currentWidth = this.gridEl.clientWidth - SCROLLBAR_WIDTH$1;
-            const { height: viewportHeight, width: viewportWidth } = this.env.getters.getViewportDimensionWithHeaders();
-            if (currentHeight != viewportHeight || currentWidth !== viewportWidth) {
-                this.env.dispatch("RESIZE_VIEWPORT", {
-                    height: currentHeight - HEADER_HEIGHT,
-                    width: currentWidth - HEADER_WIDTH,
-                });
-            }
-        }
-        onScroll() {
-            const { offsetX, offsetY } = this.env.getters.getActiveViewport();
-            if (offsetX !== this.hScrollbar.scroll || offsetY !== this.vScrollbar.scroll) {
-                const { maxOffsetX, maxOffsetY } = this.env.getters.getMaximumViewportOffset(this.env.getters.getActiveSheet());
-                this.env.dispatch("SET_VIEWPORT_OFFSET", {
-                    offsetX: Math.min(this.hScrollbar.scroll, maxOffsetX),
-                    offsetY: Math.min(this.vScrollbar.scroll, maxOffsetY),
-                });
-            }
-        }
-        checkSheetChanges() {
-            const currentSheet = this.env.getters.getActiveSheetId();
-            if (currentSheet !== this.currentSheet) {
-                this.focus();
-                this.currentSheet = currentSheet;
-            }
-        }
-        getAutofillPosition() {
-            const zone = this.env.getters.getSelectedZone();
-            const sheet = this.env.getters.getActiveSheet();
-            const { offsetX, offsetY } = this.env.getters.getActiveSnappedViewport();
-            return {
-                left: sheet.cols[zone.right].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
-                top: sheet.rows[zone.bottom].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
-            };
-        }
-        drawGrid() {
-            //reposition scrollbar
-            const { offsetX, offsetY } = this.env.getters.getActiveViewport();
-            this.hScrollbar.scroll = offsetX;
-            this.vScrollbar.scroll = offsetY;
-            // check for position changes
-            this.checkSheetChanges();
-            // drawing grid on canvas
-            const canvas = this.canvas.el;
-            const dpr = window.devicePixelRatio || 1;
-            const ctx = canvas.getContext("2d", { alpha: false });
-            const thinLineWidth = 0.4 * dpr;
-            const renderingContext = {
-                ctx,
-                viewport: this.env.getters.getActiveViewport(),
-                dpr,
-                thinLineWidth,
-            };
-            const { width, height } = this.env.getters.getViewportDimensionWithHeaders();
-            canvas.style.width = `${width}px`;
-            canvas.style.height = `${height}px`;
-            canvas.width = width * dpr;
-            canvas.height = height * dpr;
-            canvas.setAttribute("style", `width:${width}px;height:${height}px;`);
-            ctx.translate(-0.5, -0.5);
-            ctx.scale(dpr, dpr);
-            this.props.model.drawGrid(renderingContext);
-        }
-        moveCanvas(deltaX, deltaY) {
-            this.vScrollbar.scroll = this.vScrollbar.scroll + deltaY;
-            this.hScrollbar.scroll = this.hScrollbar.scroll + deltaX;
-            this.env.dispatch("SET_VIEWPORT_OFFSET", {
-                offsetX: this.hScrollbar.scroll,
-                offsetY: this.vScrollbar.scroll,
-            });
-        }
-        getClientPositionKey(client) {
-            var _a, _b, _c;
-            return `${client.id}-${(_a = client.position) === null || _a === void 0 ? void 0 : _a.sheetId}-${(_b = client.position) === null || _b === void 0 ? void 0 : _b.col}-${(_c = client.position) === null || _c === void 0 ? void 0 : _c.row}`;
-        }
-        onMouseWheel(ev) {
-            if (ev.ctrlKey) {
-                return;
-            }
-            function normalize(val) {
-                return val * (ev.deltaMode === 0 ? 1 : DEFAULT_CELL_HEIGHT);
-            }
-            const deltaX = ev.shiftKey ? ev.deltaY : ev.deltaX;
-            const deltaY = ev.shiftKey ? ev.deltaX : ev.deltaY;
-            this.moveCanvas(normalize(deltaX), normalize(deltaY));
-        }
-        isCellHovered(col, row) {
-            return this.hoveredCell.col === col && this.hoveredCell.row === row;
-        }
-        // ---------------------------------------------------------------------------
-        // Zone selection with mouse
-        // ---------------------------------------------------------------------------
-        /**
-         * Get the coordinates in pixels, with 0,0 being the top left of the grid itself
-         */
-        getCoordinates(ev) {
-            const rect = this.gridEl.getBoundingClientRect();
-            const x = ev.pageX - rect.left;
-            const y = ev.pageY - rect.top;
-            return [x, y];
-        }
-        getCartesianCoordinates(ev) {
-            const [x, y] = this.getCoordinates(ev);
-            const { left, top } = this.env.getters.getActiveSnappedViewport();
-            const colIndex = this.env.getters.getColIndex(x, left);
-            const rowIndex = this.env.getters.getRowIndex(y, top);
-            return [colIndex, rowIndex];
-        }
-        onMouseDown(ev) {
-            if (ev.button > 0) {
-                // not main button, probably a context menu
-                return;
-            }
-            const [col, row] = this.getCartesianCoordinates(ev);
-            if (col < 0 || row < 0) {
-                return;
-            }
-            this.clickedCol = col;
-            this.clickedRow = row;
-            const sheetId = this.env.getters.getActiveSheetId();
-            const [mainCol, mainRow] = this.env.getters.getMainCell(sheetId, col, row);
-            const cell = this.env.getters.getCell(sheetId, mainCol, mainRow);
-            if (!(cell === null || cell === void 0 ? void 0 : cell.isLink())) {
-                this.closeLinkEditor();
-            }
-            this.env.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
-            if (ev.shiftKey) {
-                this.env.dispatch("ALTER_SELECTION", { cell: [col, row] });
-            }
-            else {
-                this.env.dispatch("SELECT_CELL", { col, row });
-                this.checkSheetChanges();
-            }
-            let prevCol = col;
-            let prevRow = row;
-            let isEdgeScrolling = false;
-            let timeOutId = null;
-            let timeoutDelay = 0;
-            let currentEv;
-            const sheet = this.env.getters.getActiveSheet();
-            const onMouseMove = (ev) => {
-                currentEv = ev;
-                if (timeOutId) {
-                    return;
-                }
-                const [x, y] = this.getCoordinates(currentEv);
-                isEdgeScrolling = false;
-                timeoutDelay = 0;
-                const colEdgeScroll = this.env.getters.getEdgeScrollCol(x);
-                const rowEdgeScroll = this.env.getters.getEdgeScrollRow(y);
-                const { left, right, top, bottom } = this.env.getters.getActiveSnappedViewport();
-                let col, row;
-                if (colEdgeScroll.canEdgeScroll) {
-                    col = colEdgeScroll.direction > 0 ? right : left - 1;
-                }
-                else {
-                    col = this.env.getters.getColIndex(x, left);
-                    col = col === -1 ? prevCol : col;
-                }
-                if (rowEdgeScroll.canEdgeScroll) {
-                    row = rowEdgeScroll.direction > 0 ? bottom : top - 1;
-                }
-                else {
-                    row = this.env.getters.getRowIndex(y, top);
-                    row = row === -1 ? prevRow : row;
-                }
-                isEdgeScrolling = colEdgeScroll.canEdgeScroll || rowEdgeScroll.canEdgeScroll;
-                timeoutDelay = Math.min(colEdgeScroll.canEdgeScroll ? colEdgeScroll.delay : MAX_DELAY, rowEdgeScroll.canEdgeScroll ? rowEdgeScroll.delay : MAX_DELAY);
-                if (col !== prevCol || row !== prevRow) {
-                    prevCol = col;
-                    prevRow = row;
-                    this.env.dispatch("ALTER_SELECTION", { cell: [col, row] });
-                }
-                if (isEdgeScrolling) {
-                    const offsetX = sheet.cols[left + colEdgeScroll.direction].start;
-                    const offsetY = sheet.rows[top + rowEdgeScroll.direction].start;
-                    this.env.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-                    timeOutId = setTimeout(() => {
-                        timeOutId = null;
-                        onMouseMove(currentEv);
-                    }, Math.round(timeoutDelay));
-                }
-            };
-            const onMouseUp = (ev) => {
-                clearTimeout(timeOutId);
-                this.env.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
-                this.canvas.el.removeEventListener("mousemove", onMouseMove);
-                if (this.env.getters.isPaintingFormat()) {
-                    this.env.dispatch("PASTE", {
-                        target: this.env.getters.getSelectedZones(),
-                    });
-                }
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onDoubleClick(ev) {
-            const [col, row] = this.getCartesianCoordinates(ev);
-            if (this.clickedCol === col && this.clickedRow === row) {
-                const cell = this.env.getters.getActiveCell();
-                !cell || cell.isEmpty()
-                    ? this.props.onGridComposerCellFocused()
-                    : this.props.onComposerContentFocused();
-            }
-        }
-        closeLinkEditor() {
-            this.props.onLinkEditorClosed();
-        }
-        // ---------------------------------------------------------------------------
-        // Keyboard interactions
-        // ---------------------------------------------------------------------------
-        processTabKey(ev) {
-            ev.preventDefault();
-            const deltaX = ev.shiftKey ? -1 : 1;
-            this.env.dispatch("MOVE_POSITION", { deltaX, deltaY: 0 });
-        }
-        processArrows(ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            this.closeLinkEditor();
-            const deltaMap = {
-                ArrowDown: [0, 1],
-                ArrowLeft: [-1, 0],
-                ArrowRight: [1, 0],
-                ArrowUp: [0, -1],
-            };
-            const delta = deltaMap[ev.key];
-            if (ev.shiftKey) {
-                const oldZone = this.env.getters.getSelectedZone();
-                this.env.dispatch("ALTER_SELECTION", { delta });
-                const newZone = this.env.getters.getSelectedZone();
-                const viewport = this.env.getters.getActiveSnappedViewport();
-                const sheet = this.env.getters.getActiveSheet();
-                const [col, row] = findCellInNewZone(oldZone, newZone, viewport);
-                const { left, right, top, bottom, offsetX, offsetY } = viewport;
-                const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
-                const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
-                if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
-                    this.env.dispatch("SET_VIEWPORT_OFFSET", { offsetX: newOffsetX, offsetY: newOffsetY });
-                }
-            }
-            else {
-                this.env.dispatch("MOVE_POSITION", { deltaX: delta[0], deltaY: delta[1] });
-            }
-            if (this.env.getters.isPaintingFormat()) {
-                this.env.dispatch("PASTE", {
-                    target: this.env.getters.getSelectedZones(),
-                });
-            }
-        }
-        onKeydown(ev) {
-            if (ev.key.startsWith("Arrow")) {
-                this.processArrows(ev);
-                return;
-            }
-            let keyDownString = "";
-            if (ev.ctrlKey)
-                keyDownString += "CTRL+";
-            if (ev.metaKey)
-                keyDownString += "CTRL+";
-            if (ev.altKey)
-                keyDownString += "ALT+";
-            if (ev.shiftKey)
-                keyDownString += "SHIFT+";
-            keyDownString += ev.key.toUpperCase();
-            let handler = this.keyDownMapping[keyDownString];
-            if (handler) {
-                ev.preventDefault();
-                ev.stopPropagation();
-                handler();
-                return;
-            }
-            if (!keyDownMappingIgnore.includes(keyDownString)) {
-                if (ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !ev.altKey) {
-                    // if the user types a character on the grid, it means he wants to start composing the selected cell with that
-                    // character
-                    ev.preventDefault();
-                    ev.stopPropagation();
-                    this.props.onGridComposerCellFocused(ev.key);
-                }
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Context Menu
-        // ---------------------------------------------------------------------------
-        onCanvasContextMenu(ev) {
-            ev.preventDefault();
-            const [col, row] = this.getCartesianCoordinates(ev);
-            if (col < 0 || row < 0) {
-                return;
-            }
-            const zones = this.env.getters.getSelectedZones();
-            const lastZone = zones[zones.length - 1];
-            let type = "CELL";
-            if (!isInside(col, row, lastZone)) {
-                this.env.dispatch("STOP_EDITION");
-                this.env.dispatch("SELECT_CELL", { col, row });
-            }
-            else {
-                if (this.env.getters.getActiveCols().has(col)) {
-                    type = "COL";
-                }
-                else if (this.env.getters.getActiveRows().has(row)) {
-                    type = "ROW";
-                }
-            }
-            this.toggleContextMenu(type, ev.offsetX, ev.offsetY);
-        }
-        toggleContextMenu(type, x, y) {
-            this.closeLinkEditor();
-            this.menuState.isOpen = true;
-            this.menuState.position = { x, y: y + TOPBAR_HEIGHT };
-            this.menuState.menuItems = registries$1[type]
-                .getAll()
-                .filter((item) => !item.isVisible || item.isVisible(this.env));
-        }
-        copy(cut, ev) {
-            if (!this.gridEl.contains(document.activeElement)) {
-                return;
-            }
-            /* If we are currently editing a cell, let the default behavior */
-            if (this.env.getters.getEditionMode() !== "inactive") {
-                return;
-            }
-            const type = cut ? "CUT" : "COPY";
-            const target = this.env.getters.getSelectedZones();
-            this.env.dispatch(type, { target });
-            const content = this.env.getters.getClipboardContent();
-            this.clipBoardString = content;
-            ev.clipboardData.setData("text/plain", content);
-            ev.preventDefault();
-        }
-        paste(ev) {
-            if (!this.gridEl.contains(document.activeElement)) {
-                return;
-            }
-            const clipboardData = ev.clipboardData;
-            if (clipboardData.types.indexOf("text/plain") > -1) {
-                const content = clipboardData.getData("text/plain");
-                const target = this.env.getters.getSelectedZones();
-                if (this.clipBoardString === content) {
-                    // the paste actually comes from o-spreadsheet itself
-                    interactivePaste(this.env, target);
-                }
-                else {
-                    this.env.dispatch("PASTE_FROM_OS_CLIPBOARD", {
-                        target,
-                        text: content,
-                    });
-                }
-            }
-        }
-    }
-    Grid.template = TEMPLATE$2;
-    Grid.style = CSS$2;
-    Grid.components = {
-        GridComposer,
-        Overlay,
-        Menu,
-        Autofill,
-        FiguresContainer,
-        ClientTag,
-        Highlight,
-        ErrorToolTip,
-        LinkDisplay,
-        LinkEditor,
-        Popover,
-    };
-
-    const TEMPLATE$1 = owl.xml /* xml */ `
-  <div class="o-sidePanel" >
-    <div class="o-sidePanelHeader">
-        <div class="o-sidePanelTitle" t-esc="getTitle()"/>
-        <div class="o-sidePanelClose" t-on-click="() => this.props.onCloseSidePanel()">×</div>
-    </div>
-    <div class="o-sidePanelBody">
-      <t t-component="state.panel.Body" t-props="props.panelProps" onCloseSidePanel="props.onCloseSidePanel" t-key="'Body_' + props.component"/>
-    </div>
-    <div class="o-sidePanelFooter" t-if="state.panel.Footer">
-      <t t-component="state.panel.Footer" t-props="props.panelProps" t-key="'Footer_' + props.component"/>
-    </div>
-  </div>`;
-    const CSS$1 = css /* scss */ `
-  .o-sidePanel {
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-    background-color: white;
-    border: 1px solid darkgray;
-    .o-sidePanelHeader {
-      padding: 6px;
-      height: 30px;
-      background-color: ${BACKGROUND_HEADER_COLOR};
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid darkgray;
-      border-top: 1px solid darkgray;
-      font-weight: bold;
-      .o-sidePanelTitle {
-        font-weight: bold;
-        padding: 5px 10px;
-        color: dimgrey;
-      }
-      .o-sidePanelClose {
-        font-size: 1.5rem;
-        padding: 5px 10px;
-        cursor: pointer;
-        &:hover {
-          background-color: WhiteSmoke;
-        }
-      }
-    }
-    .o-sidePanelBody {
-      overflow: auto;
-      width: 100%;
-      height: 100%;
-
-      .o-section {
-        padding: 16px;
-
-        .o-section-title {
-          font-weight: bold;
-          color: dimgrey;
-          margin-bottom: 5px;
-        }
-      }
-    }
-
-    .o-sidepanel-error {
-      color: red;
-      margin-top: 10px;
-    }
-
-    .o-sidePanelButtons {
-      padding: 16px;
-      text-align: right;
-      .o-sidePanelButton {
-        border: 1px solid lightgrey;
-        padding: 0px 20px 0px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        font-size: 14px;
-        height: 30px;
-        line-height: 16px;
-        background: white;
-        margin-right: 8px;
-        &:hover:enabled {
-          background-color: rgba(0, 0, 0, 0.08);
-        }
-      }
-      .o-sidePanelButton:enabled {
-        cursor: pointer;
-      }
-      .o-sidePanelButton:last-child {
-        margin-right: 0px;
-      }
-    }
-    .o-input {
-      color: #666666;
-      border-radius: 4px;
-      min-width: 0px;
-      padding: 4px 6px;
-      box-sizing: border-box;
-      line-height: 1;
-      width: 100%;
-      .o-type-selector {
-        background-position: right 5px top 11px;
-      }
-    }
-    input.o-required {
-      border-color: #4c4c4c;
-    }
-    input.o-invalid {
-      border-color: red;
-    }
-    select.o-input {
-      background-color: white;
-      text-align: left;
-    }
-  }
-`;
-    class SidePanel extends owl.Component {
-        setup() {
-            this.state = owl.useState({
-                panel: sidePanelRegistry.get(this.props.component),
-            });
-            owl.onWillUpdateProps((nextProps) => (this.state.panel = sidePanelRegistry.get(nextProps.component)));
-        }
-        getTitle() {
-            return typeof this.state.panel.title === "function"
-                ? this.state.panel.title(this.env)
-                : this.state.panel.title;
-        }
-    }
-    SidePanel.template = TEMPLATE$1;
-    SidePanel.style = CSS$1;
-
-    const FORMATS = [
-        { name: "general", text: "General (no specific format)" },
-        { name: "number", text: "Number (1,000.12)", value: "#,##0.00" },
-        { name: "percent", text: "Percent (10.12%)", value: "0.00%" },
-        { name: "date", text: "Date (9/26/2008)", value: "m/d/yyyy" },
-        { name: "time", text: "Time (10:43:00 PM)", value: "hh:mm:ss a" },
-        { name: "datetime", text: "Date time (9/26/2008 22:43:00)", value: "m/d/yyyy hh:mm:ss" },
-        { name: "duration", text: "Duration (27:51:38)", value: "hhhh:mm:ss" },
-    ];
-    // -----------------------------------------------------------------------------
-    // TopBar
-    // -----------------------------------------------------------------------------
-    class TopBar extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.formats = FORMATS;
-            this.currentFormat = "general";
-            this.fontSizes = fontSizes;
-            this.dispatch = this.env.dispatch;
-            this.getters = this.env.getters;
-            this.style = {};
-            this.state = owl.useState({
-                menuState: { isOpen: false, position: null, menuItems: [] },
-                activeTool: "",
-            });
-            this.isSelectingMenu = false;
-            this.openedEl = null;
-            this.inMerge = false;
-            this.cannotMerge = false;
-            this.undoTool = false;
-            this.redoTool = false;
-            this.paintFormatTool = false;
-            this.fillColor = "white";
-            this.textColor = "black";
-            this.menus = [];
-            this.composerStyle = `
-    line-height: 34px;
-    padding-left: 8px;
-    height: 34px;
-    background-color: white;
-  `;
-        }
-        setup() {
-            owl.useExternalListener(window, "click", this.onClick);
-            owl.onWillStart(() => this.updateCellState());
-            owl.onWillUpdateProps(() => this.updateCellState());
-        }
-        get topbarComponents() {
-            return topbarComponentRegistry
-                .getAll()
-                .filter((item) => !item.isVisible || item.isVisible(this.env));
-        }
-        onClick(ev) {
-            if (this.openedEl && isChildEvent(this.openedEl, ev)) {
-                return;
-            }
-            this.closeMenus();
-        }
-        toogleStyle(style) {
-            setStyle(this.env, { [style]: !this.style[style] });
-        }
-        toogleFormat(format) {
-            const formatter = FORMATS.find((f) => f.name === format);
-            const value = (formatter && formatter.value) || "";
-            setFormatter(this.env, value);
-        }
-        toggleAlign(align) {
-            setStyle(this.env, { ["align"]: align });
-        }
-        onMenuMouseOver(menu, ev) {
-            if (this.isSelectingMenu) {
-                this.toggleContextMenu(menu, ev);
-            }
-        }
-        toggleDropdownTool(tool, ev) {
-            const isOpen = this.state.activeTool === tool;
-            this.closeMenus();
-            this.state.activeTool = isOpen ? "" : tool;
-            this.openedEl = isOpen ? null : ev.target;
-        }
-        toggleContextMenu(menu, ev) {
-            this.closeMenus();
-            const x = ev.target.offsetLeft;
-            const y = ev.target.clientHeight + ev.target.offsetTop;
-            this.state.menuState.isOpen = true;
-            this.state.menuState.position = { x, y };
-            this.state.menuState.menuItems = topbarMenuRegistry
-                .getChildren(menu, this.env)
-                .filter((item) => !item.isVisible || item.isVisible(this.env));
-            this.isSelectingMenu = true;
-            this.openedEl = ev.target;
-        }
-        closeMenus() {
-            this.state.activeTool = "";
-            this.state.menuState.isOpen = false;
-            this.isSelectingMenu = false;
-            this.openedEl = null;
-        }
-        updateCellState() {
-            this.style = this.getters.getCurrentStyle();
-            this.fillColor = this.style.fillColor || "white";
-            this.textColor = this.style.textColor || "black";
-            const zones = this.getters.getSelectedZones();
-            const { top, left, right, bottom } = zones[0];
-            this.cannotMerge = zones.length > 1 || (top === bottom && left === right);
-            this.inMerge = false;
-            if (!this.cannotMerge) {
-                const [col, row] = this.getters.getPosition();
-                const zone = this.getters.expandZone(this.getters.getActiveSheetId(), {
-                    left: col,
-                    right: col,
-                    top: row,
-                    bottom: row,
-                });
-                this.inMerge = isEqual(zones[0], zone);
-            }
-            this.undoTool = this.getters.canUndo();
-            this.redoTool = this.getters.canRedo();
-            this.paintFormatTool = this.getters.isPaintingFormat();
-            const cell = this.getters.getActiveCell();
-            if (cell && cell.format) {
-                const format = this.formats.find((f) => f.value === cell.format);
-                this.currentFormat = format ? format.name : "";
-            }
-            else {
-                this.currentFormat = "general";
-            }
-            this.menus = topbarMenuRegistry
-                .getAll()
-                .filter((item) => !item.isVisible || item.isVisible(this.env));
-        }
-        getMenuName(menu) {
-            return topbarMenuRegistry.getName(menu, this.env);
-        }
-        toggleMerge() {
-            const zones = this.getters.getSelectedZones();
-            const target = [zones[zones.length - 1]];
-            const sheetId = this.getters.getActiveSheetId();
-            if (this.inMerge) {
-                this.dispatch("REMOVE_MERGE", { sheetId, target });
-            }
-            else {
-                const result = this.dispatch("ADD_MERGE", { sheetId, target });
-                if (!result.isSuccessful) {
-                    if (result.isCancelledBecause(3 /* MergeIsDestructive */)) {
-                        this.env.askConfirmation(_lt("Merging these cells will only preserve the top-leftmost value. Merge anyway?"), () => {
-                            this.dispatch("ADD_MERGE", { sheetId, target, force: true });
-                        });
-                    }
-                }
-            }
-        }
-        setColor(target, color) {
-            setStyle(this.env, { [target]: color });
-        }
-        setBorder(command) {
-            this.dispatch("SET_FORMATTING", {
-                sheetId: this.getters.getActiveSheetId(),
-                target: this.getters.getSelectedZones(),
-                border: command,
-            });
-        }
-        setFormat(ev) {
-            const format = ev.target.dataset.format;
-            if (format) {
-                this.toogleFormat(format);
-            }
-        }
-        setDecimal(step) {
-            this.dispatch("SET_DECIMAL", {
-                sheetId: this.getters.getActiveSheetId(),
-                target: this.getters.getSelectedZones(),
-                step: step,
-            });
-        }
-        paintFormat() {
-            this.dispatch("ACTIVATE_PAINT_FORMAT", {
-                target: this.getters.getSelectedZones(),
-            });
-        }
-        clearFormatting() {
-            this.dispatch("CLEAR_FORMATTING", {
-                sheetId: this.getters.getActiveSheetId(),
-                target: this.getters.getSelectedZones(),
-            });
-        }
-        setSize(ev) {
-            const fontSize = parseFloat(ev.target.dataset.size);
-            setStyle(this.env, { fontSize });
-        }
-        doAction(action) {
-            action(this.env);
-            this.closeMenus();
-        }
-        undo() {
-            this.dispatch("REQUEST_UNDO");
-        }
-        redo() {
-            this.dispatch("REQUEST_REDO");
-        }
-    }
-    TopBar.template = owl.xml /* xml */ `
-    <div class="o-spreadsheet-topbar o-two-columns" t-on-click="props.onClick">
-      <div class="o-topbar-top">
-        <!-- Menus -->
-        <div class="o-topbar-topleft">
-          <t t-foreach="menus" t-as="menu" t-key="menu_index">
-            <div t-if="menu.children.length !== 0"
-              class="o-topbar-menu"
-              t-on-click="(ev) => this.toggleContextMenu(menu, ev)"
-              t-on-mouseover="(ev) => this.onMenuMouseOver(menu, ev)"
-              t-att-data-id="menu.id">
-            <t t-esc="getMenuName(menu)"/>
-          </div>
-          </t>
-          <Menu t-if="state.menuState.isOpen"
-                position="state.menuState.position"
-                menuItems="state.menuState.menuItems"
-                onClose="() => this.state.menuState.isOpen=false"/>
-        </div>
-        <div class="o-topbar-topright">
-          <div t-foreach="topbarComponents" t-as="comp" t-key="comp_index">
-            <t t-component="comp.component"/>
-          </div>
-        </div>
-      </div>
-      <!-- Toolbar and Cell Content -->
-      <div class="o-topbar-toolbar">
-        <!-- Toolbar -->
-        <div t-if="getters.isReadonly()" class="o-readonly-toolbar text-muted">
-          <span>
-            <i class="fa fa-eye" /> <t t-esc="env._t('Readonly Access')" />
-          </span>
-        </div>
-        <div t-else="" class="o-toolbar-tools">
-          <div class="o-tool" title="Undo" t-att-class="{'o-disabled': !undoTool}" t-on-click="undo" >${UNDO_ICON}</div>
-          <div class="o-tool" t-att-class="{'o-disabled': !redoTool}" title="Redo"  t-on-click="redo">${REDO_ICON}</div>
-          <div class="o-tool" title="Paint Format" t-att-class="{active:paintFormatTool}" t-on-click="paintFormat">${PAINT_FORMAT_ICON}</div>
-          <div class="o-tool" title="Clear Format" t-on-click="clearFormatting">${CLEAR_FORMAT_ICON}</div>
-          <div class="o-divider"/>
-          <div class="o-tool" title="Format as percent" t-on-click="(ev) => this.toogleFormat('percent', ev)">%</div>
-          <div class="o-tool" title="Decrease decimal places" t-on-click="(ev) => this.setDecimal(-1, ev)">.0</div>
-          <div class="o-tool" title="Increase decimal places" t-on-click="(ev) => this.setDecimal(+1, ev)">.00</div>
-          <div class="o-tool o-dropdown" title="More formats" t-on-click="(ev) => this.toggleDropdownTool('formatTool', ev)">
-            <div class="o-text-icon">123${TRIANGLE_DOWN_ICON}</div>
-            <div class="o-dropdown-content o-text-options  o-format-tool "  t-if="state.activeTool === 'formatTool'" t-on-click="setFormat">
-              <t t-foreach="formats" t-as="format" t-key="format.name">
-                <div t-att-data-format="format.name" t-att-class="{active: currentFormat === format.name}"><t t-esc="format.text"/></div>
-              </t>
-            </div>
-          </div>
-          <div class="o-divider"/>
-          <!-- <div class="o-tool" title="Font"><span>Roboto</span> ${TRIANGLE_DOWN_ICON}</div> -->
-          <div class="o-tool o-dropdown" title="Font Size" t-on-click="(ev) => this.toggleDropdownTool('fontSizeTool', ev)">
-            <div class="o-text-icon"><t t-esc="style.fontSize || ${DEFAULT_FONT_SIZE}"/> ${TRIANGLE_DOWN_ICON}</div>
-            <div class="o-dropdown-content o-text-options "  t-if="state.activeTool === 'fontSizeTool'" t-on-click="setSize">
-              <t t-foreach="fontSizes" t-as="font" t-key="font_index">
-                <div t-esc="font.pt" t-att-data-size="font.pt"/>
-              </t>
-            </div>
-          </div>
-          <div class="o-divider"/>
-          <div class="o-tool" title="Bold" t-att-class="{active:style.bold}" t-on-click="(ev) => this.toogleStyle('bold', ev)">${BOLD_ICON}</div>
-          <div class="o-tool" title="Italic" t-att-class="{active:style.italic}" t-on-click="(ev) => this.toogleStyle('italic', ev)">${ITALIC_ICON}</div>
-          <div class="o-tool" title="Strikethrough"  t-att-class="{active:style.strikethrough}" t-on-click="(ev) => this.toogleStyle('strikethrough', ev)">${STRIKE_ICON}</div>
-          <div class="o-tool o-dropdown o-with-color">
-            <span t-attf-style="border-color:{{textColor}}" title="Text Color" t-on-click="(ev) => this.toggleDropdownTool('textColorTool', ev)">${TEXT_COLOR_ICON}</span>
-            <ColorPicker t-if="state.activeTool === 'textColorTool'" onColorPicked="(color) => this.setColor('textColor', color)" t-key="textColor"/>
-          </div>
-          <div class="o-divider"/>
-          <div class="o-tool  o-dropdown o-with-color">
-            <span t-attf-style="border-color:{{fillColor}}" title="Fill Color" t-on-click="(ev) => this.toggleDropdownTool('fillColorTool', ev)">${FILL_COLOR_ICON}</span>
-            <ColorPicker t-if="state.activeTool === 'fillColorTool'" onColorPicked="(color) => this.setColor('fillColor', color)" t-key="fillColor"/>
-          </div>
-          <div class="o-tool o-dropdown">
-            <span title="Borders" t-on-click="(ev) => this.toggleDropdownTool('borderTool', ev)">${BORDERS_ICON}</span>
-            <div class="o-dropdown-content o-border" t-if="state.activeTool === 'borderTool'">
-              <div class="o-dropdown-line">
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('all', ev)">${BORDERS_ICON}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('hv', ev)">${BORDER_HV}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('h', ev)">${BORDER_H}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('v', ev)">${BORDER_V}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('external', ev)">${BORDER_EXTERNAL}</span>
-              </div>
-              <div class="o-dropdown-line">
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('left', ev)">${BORDER_LEFT}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('top', ev)">${BORDER_TOP}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('right', ev)">${BORDER_RIGHT}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('bottom', ev)">${BORDER_BOTTOM}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('clear', ev)">${BORDER_CLEAR}</span>
-              </div>
-            </div>
-          </div>
-          <div class="o-tool o-merge-tool" title="Merge Cells"  t-att-class="{active:inMerge, 'o-disabled': cannotMerge}" t-on-click="toggleMerge">${MERGE_CELL_ICON}</div>
-          <div class="o-divider"/>
-          <div class="o-tool o-dropdown" title="Horizontal align" t-on-click="(ev) => this.toggleDropdownTool('alignTool', ev)">
-            <span>
-              <t t-if="style.align === 'right'">${ALIGN_RIGHT_ICON}</t>
-              <t t-elif="style.align === 'center'">${ALIGN_CENTER_ICON}</t>
-              <t t-else="">${ALIGN_LEFT_ICON}</t>
-              ${TRIANGLE_DOWN_ICON}
-            </span>
-            <div t-if="state.activeTool === 'alignTool'" class="o-dropdown-content">
-              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('left', ev)">${ALIGN_LEFT_ICON}</div>
-              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('center', ev)">${ALIGN_CENTER_ICON}</div>
-              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('right', ev)">${ALIGN_RIGHT_ICON}</div>
-            </div>
-          </div>
-          <!-- <div class="o-tool" title="Vertical align"><span>${ALIGN_MIDDLE_ICON}</span> ${TRIANGLE_DOWN_ICON}</div> -->
-          <!-- <div class="o-tool" title="Text Wrapping">${TEXT_WRAPPING_ICON}</div> -->
-        </div>
-        <Composer inputStyle="composerStyle" focus="props.focusComposer" onComposerContentFocused="props.onComposerContentFocused"/>
-
-      </div>
-    </div>`;
-    TopBar.style = css /* scss */ `
-    .o-spreadsheet-topbar {
-      background-color: white;
-      line-height: 1.2;
-      display: flex;
-      flex-direction: column;
-      font-size: 13px;
-      line-height: 1.2;
-      user-select: none;
-
-      .o-topbar-top {
-        border-bottom: 1px solid #e0e2e4;
-        display: flex;
-        padding: 2px 10px;
-        justify-content: space-between;
-
-        /* Menus */
-        .o-topbar-topleft {
-          display: flex;
-          .o-topbar-menu {
-            padding: 4px 6px;
-            margin: 0 2px;
-            cursor: pointer;
-          }
-
-          .o-topbar-menu:hover {
-            background-color: #f1f3f4;
-            border-radius: 2px;
-          }
-        }
-
-        .o-topbar-topright {
-          display: flex;
-          justify-content: flex-end;
-        }
-      }
-      /* Toolbar + Cell Content */
-      .o-topbar-toolbar {
-        border-bottom: 1px solid #e0e2e4;
-        display: flex;
-
-        .o-readonly-toolbar {
-          display: flex;
-          align-items: center;
-          background-color: ${BACKGROUND_HEADER_COLOR};
-          padding-left: 18px;
-          padding-right: 18px;
-        }
-        .o-composer-container {
-          height: 34px;
-          border: 1px solid #e0e2e4;
-          margin-top: -1px;
-          margin-bottom: -1px;
-        }
-
-        /* Toolbar */
-        .o-toolbar-tools {
-          display: flex;
-          flex-shrink: 0;
-          margin-left: 16px;
-          color: #333;
-          cursor: default;
-
-          .o-tool {
-            display: flex;
-            align-items: center;
-            margin: 2px;
-            padding: 0 3px;
-            border-radius: 2px;
-            cursor: pointer;
-            min-width: fit-content;
-          }
-
-          .o-tool.active,
-          .o-tool:not(.o-disabled):hover {
-            background-color: #f1f3f4;
-          }
-
-          .o-with-color > span {
-            border-bottom: 4px solid;
-            height: 16px;
-            margin-top: 2px;
-          }
-
-          .o-with-color {
-            .o-line-item:hover {
-              outline: 1px solid gray;
-            }
-          }
-
-          .o-border {
-            .o-line-item {
-              padding: 4px;
-              margin: 1px;
-            }
-          }
-
-          .o-divider {
-            display: inline-block;
-            border-right: 1px solid #e0e2e4;
-            width: 0;
-            margin: 0 6px;
-          }
-
-          .o-disabled {
-            opacity: 0.6;
-          }
-
-          .o-dropdown {
-            position: relative;
-
-            .o-text-icon {
-              height: 100%;
-              line-height: 30px;
-            }
-
-            .o-text-options > div {
-              line-height: 26px;
-              padding: 3px 12px;
-              &:hover {
-                background-color: rgba(0, 0, 0, 0.08);
-              }
-            }
-
-            .o-dropdown-content {
-              position: absolute;
-              top: calc(100% + 5px);
-              left: 0;
-              z-index: 10;
-              box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-              background-color: white;
-
-              .o-dropdown-item {
-                padding: 7px 10px;
-              }
-
-              .o-dropdown-item:hover {
-                background-color: rgba(0, 0, 0, 0.08);
-              }
-
-              .o-dropdown-line {
-                display: flex;
-                padding: 3px 6px;
-
-                .o-line-item {
-                  width: 16px;
-                  height: 16px;
-                  margin: 1px 3px;
-
-                  &:hover {
-                    background-color: rgba(0, 0, 0, 0.08);
-                  }
-                }
-              }
-
-              &.o-format-tool {
-                padding: 7px 0;
-                > div {
-                  padding-left: 25px;
-                  white-space: nowrap;
-                  &.active:before {
-                    content: "✓";
-                    font-weight: bold;
-                    position: absolute;
-                    left: 10px;
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        /* Cell Content */
-        .o-toolbar-cell-content {
-          font-size: 12px;
-          font-weight: 500;
-          padding: 0 12px;
-          margin: 0;
-          line-height: 34px;
-          white-space: nowrap;
-          user-select: text;
-        }
-      }
-    }
-  `;
-    TopBar.components = { ColorPicker, Menu, Composer };
-
-    const TEMPLATE = owl.xml /* xml */ `
-  <div class="o-spreadsheet"  t-on-keydown="onKeydown">
-    <TopBar
-      onClick="() => this.focusGrid()"
-      onComposerContentFocused="(selection) => this.onTopBarComposerFocused(selection)"
-      focusComposer="focusTopBarComposer"/>
-    <Grid
-      model="model"
-      sidePanelIsOpen="sidePanel.isOpen"
-      linkEditorIsOpen="linkEditor.isOpen"
-      onLinkEditorClosed="() => this.closeLinkEditor()"
-      onSaveRequested="() => this.save()"
-      focusComposer="focusGridComposer"
-      exposeFocus="(focus) => this._focusGrid = focus"
-      onComposerContentFocused="() => this.onGridComposerContentFocused()"
-      onGridComposerCellFocused="(content, selection) => this.onGridComposerCellFocused(content, selection)"/>
-    <SidePanel t-if="sidePanel.isOpen"
-           onCloseSidePanel="() => this.sidePanel.isOpen = false"
-           component="sidePanel.component"
-           panelProps="sidePanel.panelProps"/>
-    <BottomBar onClick="() => this.focusGrid()"/>
-  </div>`;
-    const CSS = css /* scss */ `
-  .o-spreadsheet {
-    position: relative;
-    display: grid;
-    grid-template-rows: ${TOPBAR_HEIGHT}px auto ${BOTTOMBAR_HEIGHT + 1}px;
-    grid-template-columns: auto 350px;
-    * {
-      font-family: "Roboto", "RobotoDraft", Helvetica, Arial, sans-serif;
-    }
-    &,
-    *,
-    *:before,
-    *:after {
-      box-sizing: content-box;
-    }
-  }
-
-  .o-two-columns {
-    grid-column: 1 / 3;
-  }
-
-  .o-icon {
-    width: ${ICON_EDGE_LENGTH}px;
-    height: ${ICON_EDGE_LENGTH}px;
-    opacity: 0.6;
-    vertical-align: middle;
-  }
-
-  .o-cf-icon {
-    width: ${CF_ICON_EDGE_LENGTH}px;
-    height: ${CF_ICON_EDGE_LENGTH}px;
-    vertical-align: sub;
-  }
-`;
-    const t = (s) => s;
-    class Spreadsheet extends owl.Component {
-        setup() {
-            this.model = new Model(this.props.data, {
-                evalContext: { env: this.env },
-                transportService: this.props.transportService,
-                client: this.props.client,
-                isReadonly: this.props.isReadonly,
-                snapshotRequested: this.props.snapshotRequested,
-            }, this.props.stateUpdateMessages);
-            if (this.props.exposeModel) {
-                this.props.exposeModel(this.model);
-            }
-            if (this.props.exposeSpreadsheet) {
-                this.props.exposeSpreadsheet(this);
-            }
-            this.sidePanel = owl.useState({ isOpen: false, panelProps: {} });
-            this.linkEditor = owl.useState({ isOpen: false });
-            this.composer = owl.useState({
-                topBarFocus: "inactive",
-                gridFocusMode: "inactive",
-            });
-            this.keyDownMapping = {
-                "CTRL+H": () => this.toggleSidePanel("FindAndReplace", {}),
-                "CTRL+F": () => this.toggleSidePanel("FindAndReplace", {}),
-            };
-            owl.useSubEnv({
-                openSidePanel: (panel, panelProps = {}) => this.openSidePanel(panel, panelProps),
-                toggleSidePanel: (panel, panelProps = {}) => this.toggleSidePanel(panel, panelProps),
-                dispatch: this.model.dispatch,
-                getters: this.model.getters,
-                uuidGenerator: this.model.uuidGenerator,
-                _t: Spreadsheet._t,
-                clipboard: navigator.clipboard,
-                export: this.model.exportData.bind(this.model),
-                waitForIdle: this.model.waitForIdle.bind(this.model),
-                exportXLSX: this.model.exportXLSX.bind(this.model),
-                openLinkEditor: () => this.openLinkEditor(),
-            });
-            this.activateFirstSheet();
-            owl.useExternalListener(window, "resize", this.render);
-            owl.useExternalListener(document.body, "keyup", this.onKeyup.bind(this));
-            owl.useExternalListener(window, "beforeunload", this.leaveCollaborativeSession.bind(this));
-            owl.onMounted(() => this.initiateModelEvents());
-            owl.onWillUnmount(() => this.leaveCollaborativeSession());
-            owl.onWillUpdateProps((nextProps) => this.checkReadonly(nextProps));
-            owl.onWillDestroy(() => this.model.destroy());
-        }
-        get focusTopBarComposer() {
-            return this.model.getters.getEditionMode() === "inactive"
-                ? "inactive"
-                : this.composer.topBarFocus;
-        }
-        get focusGridComposer() {
-            return this.model.getters.getEditionMode() === "inactive"
-                ? "inactive"
-                : this.composer.gridFocusMode;
-        }
-        initiateModelEvents() {
-            this.model.on("update", this, this.render);
-            this.model.on("notify-ui", this, this.onNotifyUI);
-            this.model.on("unexpected-revision-id", this, () => { var _a, _b; return (_b = (_a = this.props).onUnexpectedRevisionId) === null || _b === void 0 ? void 0 : _b.call(_a); });
-            if (this.props.client) {
-                this.model.joinSession(this.props.client);
-            }
-        }
-        onNotifyUI(payload) {
-            switch (payload.type) {
-                case "NOTIFICATION":
-                    this.env.notifyUser(payload.text);
-                    break;
-            }
-        }
-        checkReadonly(nextProps) {
-            if (this.props.isReadonly !== nextProps.isReadonly) {
-                this.model.updateReadOnly(nextProps.isReadonly);
-            }
-        }
-        leaveCollaborativeSession() {
-            this.model.off("update", this);
-            this.model.leaveSession();
-        }
-        activateFirstSheet() {
-            const sheetId = this.model.getters.getActiveSheetId();
-            const [firstSheet] = this.model.getters.getSheets();
-            if (firstSheet.id !== sheetId) {
-                this.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: sheetId, sheetIdTo: firstSheet.id });
-            }
-        }
-        openSidePanel(panel, panelProps) {
-            this.sidePanel.component = panel;
-            this.sidePanel.panelProps = panelProps;
-            this.sidePanel.isOpen = true;
-        }
-        openLinkEditor() {
-            this.linkEditor.isOpen = true;
-        }
-        closeLinkEditor() {
-            this.linkEditor.isOpen = false;
-            this.focusGrid();
-        }
-        toggleSidePanel(panel, panelProps) {
-            if (this.sidePanel.isOpen && panel === this.sidePanel.component) {
-                this.sidePanel.isOpen = false;
-                this.focusGrid();
-            }
-            else {
-                this.openSidePanel(panel, panelProps);
-            }
-        }
-        focusGrid() {
-            if (!this._focusGrid) {
-                throw new Error("_focusGrid should be exposed by the grid component");
-            }
-            this._focusGrid();
-        }
-        save() {
-            var _a, _b;
-            (_b = (_a = this.props).onContentSaved) === null || _b === void 0 ? void 0 : _b.call(_a, this.model.exportData());
-        }
-        onKeyup(ev) {
-            if (ev.key === "Control" && this.model.getters.getSelectionMode() !== SelectionMode.expanding) {
-                this.model.dispatch("STOP_SELECTION");
-            }
-        }
-        onKeydown(ev) {
-            if (ev.key === "Control" && !ev.repeat) {
-                this.model.dispatch(this.model.getters.getSelectionMode() === SelectionMode.idle
-                    ? "PREPARE_SELECTION_EXPANSION"
-                    : "START_SELECTION_EXPANSION");
-            }
-            let keyDownString = "";
-            if (ev.ctrlKey || ev.metaKey) {
-                keyDownString += "CTRL+";
-            }
-            keyDownString += ev.key.toUpperCase();
-            let handler = this.keyDownMapping[keyDownString];
-            if (handler) {
-                ev.preventDefault();
-                ev.stopPropagation();
-                handler();
-                return;
-            }
-        }
-        onTopBarComposerFocused(selection) {
-            if (this.model.getters.isReadonly()) {
-                return;
-            }
-            this.composer.topBarFocus = "contentFocus";
-            this.composer.gridFocusMode = "inactive";
-            this.setComposerContent({ selection } || {});
-            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
-        }
-        onGridComposerContentFocused() {
-            if (this.model.getters.isReadonly()) {
-                return;
-            }
-            this.composer.topBarFocus = "inactive";
-            this.composer.gridFocusMode = "contentFocus";
-            this.setComposerContent({});
-            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
-        }
-        onGridComposerCellFocused(content, selection) {
-            if (this.model.getters.isReadonly()) {
-                return;
-            }
-            this.composer.topBarFocus = "inactive";
-            this.composer.gridFocusMode = "cellFocus";
-            this.setComposerContent({ content, selection } || {});
-            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
-        }
-        /**
-         * Start the edition or update the content if it's already started.
-         */
-        setComposerContent({ content, selection, }) {
-            if (this.model.getters.getEditionMode() === "inactive") {
-                this.model.dispatch("START_EDITION", { text: content, selection });
-            }
-            else if (content) {
-                this.model.dispatch("SET_CURRENT_CONTENT", { content, selection });
-            }
-        }
-    }
-    Spreadsheet.template = TEMPLATE;
-    Spreadsheet.style = CSS;
-    Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel, LinkEditor };
-    Spreadsheet._t = t;
 
     /**
      * We export here all entities that needs to be accessed publicly by Odoo.
@@ -30909,8 +30868,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-02-09T11:38:10.133Z';
-    exports.__info__.hash = '629b7fe';
+    exports.__info__.date = '2022-02-10T11:36:16.010Z';
+    exports.__info__.hash = 'bb36f22';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

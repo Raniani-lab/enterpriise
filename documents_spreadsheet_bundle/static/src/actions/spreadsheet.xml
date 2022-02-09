@@ -2,13 +2,8 @@
 <templates>
 
     <div t-name="documents_spreadsheet.SpreadsheetComponent" class="o_spreadsheet_container" owl="1">
-        <Spreadsheet client="client"
-                     data="data"
+        <Spreadsheet model="model"
                      exposeSpreadsheet.bind="exposeSpreadsheet"
-                     stateUpdateMessages="stateUpdateMessages"
-                     transportService="props.transportService"
-                     snapshotRequested="props.snapshotRequested"
-                     isReadonly="isReadonly"
                      onUnexpectedRevisionId="props.onUnexpectedRevisionId"
         />
         <Dialog t-if="state.dialog.isDisplayed"

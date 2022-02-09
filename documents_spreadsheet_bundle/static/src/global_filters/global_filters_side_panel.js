@@ -18,15 +18,15 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
         setup() {
             this.TagSelectorWidget = TagSelectorWidget;
             this.periodOptions = getPeriodOptions(moment());
-            this.getters = this.env.getters;
+            this.getters = this.env.model.getters;
         }
 
         get isReadonly() {
-            return this.env.getters.isReadonly();
+            return this.env.model.getters.isReadonly();
         }
 
         get filters() {
-            return this.env.getters.getGlobalFilters();
+            return this.env.model.getters.getGlobalFilters();
         }
 
         newText() {
@@ -46,15 +46,15 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
         }
 
         onDateInput(id, value) {
-            this.env.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
+            this.env.model.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
         }
 
         onTextInput(id, value) {
-            this.env.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
+            this.env.model.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
         }
 
         onTagSelected(id, values) {
-            this.env.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            this.env.model.dispatch("SET_GLOBAL_FILTER_VALUE", {
                 id,
                 value: values.map((record) => record.id),
                 displayNames: values.map((record) => record.display_name),
@@ -63,7 +63,7 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
 
         onDelete() {
             if (this.id) {
-                this.env.dispatch("REMOVE_GLOBAL_FILTER", { id: this.id });
+                this.env.model.dispatch("REMOVE_GLOBAL_FILTER", { id: this.id });
             }
             this.trigger("close-side-panel");
         }

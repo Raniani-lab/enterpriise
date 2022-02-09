@@ -29,6 +29,7 @@ import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
 
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
+import { waitForEvaluation } from "../spreadsheet_test_utils";
 const { cellMenuRegistry } = spreadsheet.registries;
 
 const { module, test } = QUnit;
@@ -1657,12 +1658,12 @@ test("Can remove a pivot with undo after editing a cell", async function (assert
 test("Get value from pivot with a non-loaded cache", async function (assert) {
     assert.expect(3);
     const { model } = await createSpreadsheetFromPivot();
-    await model.waitForIdle();
+    await waitForEvaluation(model);
     assert.equal(getCellValue(model, "C3"), 15);
     model.getters.waitForPivotDataReady("1", { force: true });
     model.dispatch("EVALUATE_CELLS", { sheetId: model.getters.getActiveSheetId() });
     assert.equal(getCellValue(model, "C3"), "Loading...");
-    await model.waitForIdle();
+    await waitForEvaluation(model);
     assert.equal(getCellValue(model, "C3"), 15);
 });
 
@@ -1736,8 +1737,7 @@ QUnit.test("Can reopen a sheet after see records", async function (assert) {
     const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
     const env = {
         ...webClient.env,
-        getters: model.getters,
-        dispatch: model.dispatch,
+        model,
         services: model.config.evalContext.env.services,
     };
     await root.action(env);

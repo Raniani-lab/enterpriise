@@ -14,7 +14,7 @@ import { createDocumentsView } from "documents.test_utils";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
 import { SpreadsheetTemplateAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_template/spreadsheet_template_action";
 
-import { createSpreadsheetTemplate, createSpreadsheet } from "../spreadsheet_test_utils";
+import { createSpreadsheetTemplate, createSpreadsheet, waitForEvaluation } from "../spreadsheet_test_utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup, getFixture } from "@web/../tests/helpers/utils";
 import { actionService } from "@web/webclient/actions/action_service";
@@ -45,7 +45,7 @@ async function convertFormula(config) {
         evalContext: { env },
     });
 
-    await model.waitForIdle();
+    await waitForEvaluation(model);
     setCellContent(model, "A1", `=${config.formula}`);
     model.dispatch(config.convert);
     // Remove the equal sign

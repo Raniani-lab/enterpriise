@@ -73,8 +73,7 @@ export function getSpreadsheetActionEnv(actionManager) {
     const oComponent = getOSpreadsheetComponent(actionManager);
     return {
         ...component.env,
-        getters: model.getters,
-        dispatch: model.dispatch,
+        model,
         services: model.config.evalContext.env.services,
         openSidePanel: oComponent.openSidePanel.bind(oComponent),
         openLinkEditor: oComponent.openLinkEditor.bind(oComponent),

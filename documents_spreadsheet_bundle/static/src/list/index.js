@@ -47,22 +47,22 @@ cellMenuRegistry
         name: _lt("List properties"),
         sequence: 190,
         action(env) {
-            const [col, row] = env.getters.getPosition();
-            const sheetId = env.getters.getActiveSheetId();
-            const listId = env.getters.getListIdFromPosition(sheetId, col, row);
-            env.dispatch("SELECT_ODOO_LIST", { listId });
+            const [col, row] = env.model.getters.getPosition();
+            const sheetId = env.model.getters.getActiveSheetId();
+            const listId = env.model.getters.getListIdFromPosition(sheetId, col, row);
+            env.model.dispatch("SELECT_ODOO_LIST", { listId });
             env.openSidePanel("LIST_PROPERTIES_PANEL", {});
         },
         isVisible: (env) => {
-            const [col, row] = env.getters.getPosition();
-            const sheetId = env.getters.getActiveSheetId();
-            return env.getters.getListIdFromPosition(sheetId, col, row) !== undefined;
+            const [col, row] = env.model.getters.getPosition();
+            const sheetId = env.model.getters.getActiveSheetId();
+            return env.model.getters.getListIdFromPosition(sheetId, col, row) !== undefined;
         },
     })
     .add("reinsert_list", {
         name: _lt("Re-insert list"),
         sequence: 195,
         children: REINSERT_LIST_CHILDREN,
-        isVisible: (env) => env.getters.getListIds().length,
+        isVisible: (env) => env.model.getters.getListIds().length,
         separator: true,
     })

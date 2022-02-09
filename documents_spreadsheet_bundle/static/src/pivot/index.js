@@ -44,27 +44,27 @@ cellMenuRegistry
         name: _lt("Re-insert pivot"),
         sequence: 185,
         children: REINSERT_PIVOT_CHILDREN,
-        isVisible: (env) => env.getters.getPivotIds().length,
+        isVisible: (env) => env.model.getters.getPivotIds().length,
         separator: true,
     })
     .add("insert_pivot_cell", {
         name: _lt("Insert pivot cell"),
         sequence: 180,
         children: INSERT_PIVOT_CELL_CHILDREN,
-        isVisible: (env) => env.getters.getPivotIds().length,
+        isVisible: (env) => env.model.getters.getPivotIds().length,
     })
     .add("pivot_properties", {
         name: _lt("Pivot properties"),
         sequence: 170,
         action(env) {
-            const [col, row] = env.getters.getPosition();
-            const sheetId = env.getters.getActiveSheetId();
-            const pivotId = env.getters.getPivotIdFromPosition(sheetId, col, row);
-            env.dispatch("SELECT_PIVOT", { pivotId });
+            const [col, row] = env.model.getters.getPosition();
+            const sheetId = env.model.getters.getActiveSheetId();
+            const pivotId = env.model.getters.getPivotIdFromPosition(sheetId, col, row);
+            env.model.dispatch("SELECT_PIVOT", { pivotId });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
         },
         isVisible: (env) => {
-            const cell = env.getters.getActiveCell();
+            const cell = env.model.getters.getActiveCell();
             return cell && cell.isFormula() && cell.content.match(pivotFormulaRegex);
         },
     })
@@ -72,19 +72,19 @@ cellMenuRegistry
         name: _lt("See records"),
         sequence: 175,
         async action(env) {
-            const [col, row] = env.getters.getPosition();
-            const sheetId = env.getters.getActiveSheetId();
-            const cell = env.getters.getCell(sheetId, col, row);
+            const [col, row] = env.model.getters.getPosition();
+            const sheetId = env.model.getters.getActiveSheetId();
+            const cell = env.model.getters.getCell(sheetId, col, row);
             const { args } = getFirstPivotFunction(cell.content);
             const evaluatedArgs = args
                 .map(astToFormula)
-                .map((arg) => env.getters.evaluateFormula(arg));
-            const pivotId = env.getters.getPivotIdFromPosition(sheetId, col, row);
-            const model = env.getters.getPivotModel(pivotId);
-            await env.getters.waitForPivotMetaData(pivotId);
-            const cache = env.getters.getPivotStructureData(pivotId);
+                .map((arg) => env.model.getters.evaluateFormula(arg));
+            const pivotId = env.model.getters.getPivotIdFromPosition(sheetId, col, row);
+            const model = env.model.getters.getPivotModel(pivotId);
+            await env.model.getters.waitForPivotMetaData(pivotId);
+            const cache = env.model.getters.getPivotStructureData(pivotId);
             const domain = cache.getDomainFromFormula(evaluatedArgs);
-            const name = env.getters.getPivotModelDisplayName(pivotId);
+            const name = env.model.getters.getPivotModelDisplayName(pivotId);
             await env.services.action.doAction({
                 type: "ir.actions.act_window",
                 name,
@@ -96,7 +96,7 @@ cellMenuRegistry
             });
         },
         isVisible: (env) => {
-            const cell = env.getters.getActiveCell();
+            const cell = env.model.getters.getActiveCell();
             return (
                 cell &&
                 cell.evaluated.value !== "" &&

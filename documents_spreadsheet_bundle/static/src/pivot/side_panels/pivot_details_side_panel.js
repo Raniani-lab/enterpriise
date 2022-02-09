@@ -9,7 +9,7 @@ const { Component } = owl;
 
 export default class PivotDetailsSidePanel extends Component {
     setup() {
-        this.getters = this.env.getters;
+        this.getters = this.env.model.getters;
         this.DomainSelector = DomainSelector;
     }
 
@@ -44,7 +44,7 @@ export default class PivotDetailsSidePanel extends Component {
      *
      */
     refresh() {
-        this.env.dispatch("REFRESH_PIVOT", { id: this.props.pivotId });
+        this.env.model.dispatch("REFRESH_PIVOT", { id: this.props.pivotId });
     }
 }
 PivotDetailsSidePanel.template = "documents_spreadsheet.PivotDetailsSidePanel";

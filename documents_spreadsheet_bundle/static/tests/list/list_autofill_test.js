@@ -4,6 +4,7 @@ import { nextTick } from "web.test_utils";
 import { getCellFormula, getCellValue, getListAutofillValue } from "../utils/getters_helpers";
 import { autofill } from "../utils/commands_helpers";
 import { createSpreadsheetFromList } from "../utils/list_helpers";
+import { waitForEvaluation } from "../spreadsheet_test_utils";
 
 QUnit.module("documents_spreadsheet > list_autofill", {}, () => {
     QUnit.test("Autofill list values", async function (assert) {
@@ -111,8 +112,7 @@ QUnit.module("documents_spreadsheet > list_autofill", {}, () => {
         const { model } = await createSpreadsheetFromList({ linesNumber: 1 });
         autofill(model, "A2", "A3");
         assert.strictEqual(getCellValue(model, "A3"), undefined);
-        await nextTick(); // Wait for the RPC to be launched
-        await await model.waitForIdle();
+        await waitForEvaluation(model);
         assert.strictEqual(getCellValue(model, "A3"), 1);
     });
 

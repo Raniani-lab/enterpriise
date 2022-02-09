@@ -7,7 +7,7 @@ const { Menu } = spreadsheet;
 
 export class FilterComponent extends Component {
     get activeFilter() {
-        return this.env.getters.getActiveFilterCount();
+        return this.env.model.getters.getActiveFilterCount();
     }
 
     toggleDropdown() {

@@ -6,22 +6,22 @@ import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 const { createFullMenuItem } = spreadsheet.helpers;
 
 export const REINSERT_LIST_CHILDREN = (env) =>
-    env.getters.getListIds().map((listId, index) => {
+    env.model.getters.getListIds().map((listId, index) => {
         return createFullMenuItem(`reinsert_list_${listId}`, {
-            name: env.getters.getListDisplayName(listId),
+            name: env.model.getters.getListDisplayName(listId),
             sequence: index,
             action: async (env) => {
-                const zone = env.getters.getSelectedZone();
-                const columns = env.getters.getListColumns(listId);
+                const zone = env.model.getters.getSelectedZone();
+                const columns = env.model.getters.getListColumns(listId);
                 env.getLinesNumber((linesNumber) => {
                     linesNumber = Math.min(
                         linesNumber,
                         Math.floor(MAXIMUM_CELLS_TO_INSERT / columns.length)
                     );
-                    env.dispatch("REBUILD_ODOO_LIST", {
+                    env.model.dispatch("REBUILD_ODOO_LIST", {
                         listId: listId,
                         anchor: [zone.left, zone.top],
-                        sheetId: env.getters.getActiveSheetId(),
+                        sheetId: env.model.getters.getActiveSheetId(),
                         linesNumber,
                     });
                 });

@@ -55,9 +55,9 @@ topbarComponentRegistry.add("filter_component", {
   component: FilterComponent,
   isVisible: (env) => {
     return (
-      (!env.getters.isReadonly() &&
-        env.getters.getPivotIds().length + env.getters.getListIds().length) ||
-      (env.getters.isReadonly() && env.getters.getGlobalFilters().length)
+      (!env.model.getters.isReadonly() &&
+        env.model.getters.getPivotIds().length + env.model.getters.getListIds().length) ||
+      (env.model.getters.isReadonly() && env.model.getters.getGlobalFilters().length)
     );
   },
 });

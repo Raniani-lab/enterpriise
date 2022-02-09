@@ -5,7 +5,7 @@ import testUtils from "web.test_utils";
 import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import CommandResult from "@documents_spreadsheet_bundle/o_spreadsheet/cancelled_reason";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
-import { createSpreadsheetWithPivotAndList } from "../spreadsheet_test_utils";
+import { createSpreadsheetWithPivotAndList, waitForEvaluation } from "../spreadsheet_test_utils";
 
 import { getCellFormula, getCellValue } from "../utils/getters_helpers";
 import {
@@ -388,7 +388,7 @@ module("documents_spreadsheet > global_filters",
         let result = await addGlobalFilter(model, { filter: { ...filter, id: "456" } });
         assert.deepEqual(result.reasons, [CommandResult.DuplicatedFilterLabel]);
         assert.equal(model.getters.getGlobalFilters().length, 1);
-        await model.waitForIdle();
+        await waitForEvaluation(model);
 
         // Edit to set same name as other filter
         await addGlobalFilter(model, {
@@ -815,7 +815,7 @@ module("documents_spreadsheet > global_filters",
                 },
             },
         });
-        await model.waitForIdle();
+        await waitForEvaluation(model);
         await addGlobalFilter(model, {
             filter: {
                 id: "41",
@@ -825,7 +825,7 @@ module("documents_spreadsheet > global_filters",
                 pivotFields: { 1: { field: "product_id", type: "many2one" } },
             },
         });
-        await model.waitForIdle();
+        await waitForEvaluation(model);
         selectCell(model, "A6");
         const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
         const reinsertPivot = cellMenuRegistry.getChildren(root, env)[0];
@@ -969,7 +969,7 @@ module("documents_spreadsheet > global_filters",
                 },
             },
         });
-        await model.waitForIdle();
+        await waitForEvaluation(model);
         assert.equal(getCellValue(model, "A3"), "xphone");
         assert.equal(getCellValue(model, "A4"), "xpad");
         await addGlobalFilter(model, {
@@ -982,7 +982,7 @@ module("documents_spreadsheet > global_filters",
                 pivotFields: { 1: { field: "product_id", type: "many2one" } },
             },
         });
-        await model.waitForIdle();
+        await waitForEvaluation(model);
         await nextTick();
         assert.equal(getCellValue(model, "A3"), "xphone");
         assert.equal(getCellValue(model, "B3"), "");

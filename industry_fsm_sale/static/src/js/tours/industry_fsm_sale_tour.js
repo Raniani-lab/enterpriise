@@ -33,7 +33,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
 }, {
     trigger: ".breadcrumb-item:not(.active):last",
     extra_trigger: ".btn-primary",
-    content: Markup(_t("Use the breadcrumbs to go back to your <b>list of products</b>.")),
+    content: Markup(_t("Use the breadcrumbs to navigate to your <b>list of products</b>.")),
     position: "bottom",
 }, {
     trigger: "button[name='fsm_add_quantity']",
@@ -44,7 +44,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
 }, {
     trigger: ".breadcrumb-item:not(.active):last",
     extra_trigger: '.o_fsm_material_kanban',
-    content: Markup(_t("Use the breadcrumbs to go back to your <b>task</b>.")),
+    content: Markup(_t("Use the breadcrumbs to return to your <b>task</b>.")),
     position: "bottom"
 });
 

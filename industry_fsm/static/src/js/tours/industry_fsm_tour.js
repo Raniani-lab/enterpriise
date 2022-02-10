@@ -22,13 +22,13 @@ tour.register('industry_fsm_tour', {
 }, {
     trigger: 'input.o_task_name',
     extra_trigger: '.o_form_editable',
-    content: Markup(_t('Add a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning installation, etc.).</i>')),
+    content: Markup(_t('Give it a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning installation, etc.).</i>')),
     position: 'right',
     width: 200,
 }, {
     trigger: ".o_form_view .o_task_customer_field",
     extra_trigger: '.o_form_project_tasks.o_form_editable',
-    content: _t('Select the <b>customer</b> of your task.'),
+    content: _t('Select the <b>customer</b> for your task.'),
     position: "bottom",
     run: function (actions) {
         actions.text("Brandon Freeman", this.$anchor.find("input"));
@@ -36,13 +36,6 @@ tour.register('industry_fsm_tour', {
 }, {
     trigger: ".ui-autocomplete > li > a",
     auto: true,
-}, {
-    content: "Save the task",
-    trigger: 'button.o_form_button_save',
-}, {
-    trigger: 'button.o_form_button_edit',
-    content: 'Go back to edit mode',
-    run: function(){},
 }, {
     trigger: 'button[name="action_timer_start"]',
     extra_trigger: '.o_form_project_tasks',
@@ -60,7 +53,7 @@ tour.register('industry_fsm_tour', {
     position: 'bottom'
 }, {
     trigger: ".breadcrumb-item.o_back_button:nth-of-type(2)",
-    content: Markup(_t("Use the breadcrumbs to go back to your <b>task</b>.")),
+    content: Markup(_t("Use the breadcrumbs to return to your <b>task</b>.")),
     position: 'bottom'
 }, {
     trigger: 'button[name="action_timer_stop"]',
@@ -68,22 +61,22 @@ tour.register('industry_fsm_tour', {
     position: 'bottom',
 }, {
     trigger: 'button[name="save_timesheet"]',
-    content: Markup(_t('Confirm the <b>time spent</b> on your task. <i>Tip: a rounding of 15min has automatically been applied.</i>')),
+    content: Markup(_t('Confirm the <b>time spent</b> on your task. <i>Tip: note that the duration has automatically been rounded to 15 minutes.</i>')),
     position: 'bottom',
 }, {
     trigger: 'button[name="action_preview_worksheet"]',
     extra_trigger: '.o_form_project_tasks',
-    content: _t('<b>Review and sign</b> your <b>worksheet report</b> with your customer.'),
+    content: _t('<b>Review and sign</b> the <b>task report</b> with your customer.'),
     position: 'bottom',
 }, {
     trigger: 'a[data-target="#modalaccept"]',
     extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
-    content: _t('Invite your customer to <b>validate and sign your worksheet report</b>.'),
+    content: _t('Invite your customer to <b>validate and sign your task report</b>.'),
     position: 'right',
 }, {
     trigger: '.o_web_sign_auto_button',
     extra_trigger: 'div[id="o_fsm_worksheet_portal"]',
-    content: _t('Save time by generating a <b>signature</b> automatically.'),
+    content: _t('Save time by automatically generating a <b>signature</b>.'),
     position: 'right',
 }, {
     trigger: '.o_portal_sign_submit:enabled',
@@ -98,17 +91,17 @@ tour.register('industry_fsm_tour', {
 }, {
     trigger: 'button[name="action_send_report"]',
     extra_trigger: '.o_form_project_tasks ',
-    content: _t('<b>Send your worksheet report</b> to your customer.'),
+    content: _t('<b>Send your task report</b> to your customer.'),
     position: 'bottom',
 }, {
     trigger: 'button[name="action_send_mail"]',
     extra_trigger: '.o_form_project_tasks ',
-    content: _t('<b>Send your worksheet report</b> to your customer.'),
+    content: _t('<b>Send your task report</b> to your customer.'),
     position: 'right',
 }, {
     trigger: "button[name='action_fsm_validate']",
     extra_trigger: '.o_form_project_tasks',
-    content: _t('Let\'s <b>mark your task as done!</b> <i>Tip: when doing so, your stock will automatically be updated, and your task will move to the next stage.</i>'),
+    content: _t('Let\'s <b>mark your task as done!</b> <i>Tip: when doing so, your stock will automatically be updated, and your task will be closed.</i>'),
     position: 'bottom',
     id: 'fsm_invoice_create',
 }]);

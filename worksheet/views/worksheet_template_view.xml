@@ -4,7 +4,7 @@
         <field name="model">worksheet.template</field>
         <field name="priority">10</field>
         <field name="arch" type="xml">
-            <form create='0'>
+            <form create="0" duplicate="0">
                 <header>
                     <field name="model_id" invisible="True"/>
                     <widget name="open_studio_button" attrs="{'invisible': [('model_id', '=', False)]}" groups="base.group_system"/>

@@ -10,6 +10,11 @@ class TestClEightColumnsReport(TestAccountReportsCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_cl.cl_chart_template'):
         super().setUpClass(chart_template_ref=chart_template_ref)
+        cls.partner_a.write({
+            'country_id': cls.env.ref('base.cl').id,
+            'l10n_cl_sii_taxpayer_type': '1',
+            'vat': 'CL762012243',
+        })
 
         invoice = cls.env['account.move'].create({
             'move_type': 'out_invoice',

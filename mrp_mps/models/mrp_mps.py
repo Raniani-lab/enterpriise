@@ -847,7 +847,9 @@ class MrpProductionSchedule(models.Model):
 
     @api.model
     def _get_dest_moves_delay(self, move, delay=0):
-        if not move.move_dest_ids:
+        if move.origin_returned_move_id:
+            return delay
+        elif not move.move_dest_ids:
             return delay + move.rule_id.delay
         else:
             delays = []

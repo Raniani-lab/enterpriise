@@ -1,5 +1,4 @@
 /** @odoo-module **/
-
 import { BurgerMenu } from "@web/webclient/burger_menu/burger_menu";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
@@ -19,5 +18,4 @@ const systrayItem = {
     Component: EnterpriseBurgerMenu,
 };
 
-registry.category("systray").remove("burger_menu");
-registry.category("systray").add("burger_menu", systrayItem, { sequence: 0 });
+registry.category("systray").add("burger_menu", systrayItem, { sequence: 0, force: true });

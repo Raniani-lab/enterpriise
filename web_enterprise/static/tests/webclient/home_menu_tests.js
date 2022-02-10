@@ -274,12 +274,16 @@ QUnit.module(
         });
 
         QUnit.test("Navigation and open an app in the home menu", async function (assert) {
-            assert.expect(6);
+            assert.expect(7);
 
             bus.on("selectMenu", null, (menuId) => {
                 assert.step(`selectMenu ${menuId}`);
             });
             const homeMenu = await createHomeMenu(homeMenuProps);
+
+            // No app selected so nothing to open
+            await testUtils.dom.triggerEvent(window, "keydown", { key: "Enter" });
+            assert.verifySteps([]);
 
             const path = [
                 { number: 0, key: "ArrowDown", index: 0 },

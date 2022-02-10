@@ -205,7 +205,15 @@ export class HomeMenu extends Component {
             ["ArrowLeft", () => this._updateFocusedIndex("previousColumn")],
             ["Tab", () => this._updateFocusedIndex("nextElem")],
             ["shift+Tab", () => this._updateFocusedIndex("previousElem")],
-            ["Enter", () => this._openMenu(this.displayedApps[this.state.focusedIndex])],
+            [
+                "Enter",
+                () => {
+                    const menu = this.displayedApps[this.state.focusedIndex];
+                    if (menu) {
+                        this._openMenu(menu);
+                    }
+                },
+            ],
             ["Escape", () => this.homeMenuService.toggle(false)],
         ];
         hotkeys.forEach((hotkey) => {

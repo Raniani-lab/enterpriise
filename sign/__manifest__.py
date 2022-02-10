@@ -43,7 +43,7 @@ Let your customers follow the signature process easily.
     'license': 'OEEL-1',
     'assets': {
         'sign.assets_pdf_iframe': [
-            'web/static/lib/fontawesome/css/font-awesome.css',
+            'web/static/src/libs/fontawesome/css/font-awesome.css',
             'web/static/lib/jquery.ui/jquery-ui.css',
             'web/static/lib/select2/select2.css',
             'web/static/lib/bootstrap/scss/_functions.scss',

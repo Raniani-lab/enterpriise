@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <div t-name="web_grid.GridRenderer" class="o_grid_view"
-        t-on-grid-cell-focus="_onFocusComponent"
-        t-on-grid-cell-update="_onUpdateValue" owl="1">
-        <div t-if="showNoContentHelp" class="o_view_nocontent">
-            <div class="o_nocontent_help">
-                <t t-raw="props.noContentHelp"/>
+    <t t-name="web_grid.GridRenderer" owl="1">
+        <div class="o_grid_view"
+            t-on-grid-cell-focus="_onFocusComponent"
+            t-on-grid-cell-update="_onUpdateValue">
+            <div t-if="showNoContentHelp" class="o_view_nocontent">
+                <div class="o_nocontent_help">
+                    <t t-out="props.noContentHelp"/>
+                </div>
+            </div>
+            <div t-else="">
+                <t t-call="web_grid.Table"/>
             </div>
         </div>
-        <div t-else="">
-            <t t-call="web_grid.Table"/>
-        </div>
-    </div>
+    </t>
 
     <t t-name="web_grid.AddLineRow" owl="1">
         <tr class="o_grid_add_line_row">
@@ -245,7 +247,7 @@
             <t t-set="cellReadOnly" t-value="!props.editableCells || cell.readonly"/>
             <div t-att-class="_getCellClassMap(cell)">
                 <t t-if="cell.size or !cellReadOnly">
-                    <i class="fa fa-search-plus o_grid_cell_information" t-on-click="_onClickCellInformation(cellPath)"
+                    <i class="fa fa-search-plus o_grid_cell_information" t-on-click="() => this._onClickCellInformation(cellPath)"
                         title="See all the records aggregated in this cell">
                     </i >
                 </t>
@@ -281,13 +283,13 @@
             <t t-else="">
                 <t t-if="state.errors[cellPath]">
                     <div class="o_grid_input text-danger o_has_error" tabindex="1"
-                        t-on-focus="_onFocusGridCell(cellPath)">
+                        t-on-focus="() => this._onFocusGridCell(cellPath)">
                         <t t-esc="state.errors[cellPath]"/>
                     </div>
                 </t>
                 <t t-else="">
                     <div class="o_grid_input" tabindex="1"
-                        t-on-focus="_onFocusGridCell(cellPath)"
+                        t-on-focus="() => this._onFocusGridCell(cellPath)"
                         t-att-class="{'text-danger': cell.value lt 0}">
                         <t t-esc="_format(cell.value)"/>
                     </div>
@@ -367,7 +369,7 @@
                 Add a Line
             </button>
             <div t-if="widget._buttons.length" class="btn-group">
-                <button t-foreach="widget._buttons" t-as="btn"
+                <button t-foreach="widget._buttons" t-as="btn" t-key="btn_index"
                         t-attf-class="grid_arrow_button btn {{ btn['class'] || 'btn-secondary' }}"
                         type="button" t-att-data-index="btn_index" t-att-data-hotkey="btn['data-hotkey']">
                     <t t-esc="btn.string"/>
@@ -390,7 +392,7 @@
                     <t t-call="grid.RangeButtons.Mobile"/>
                 </t>
                 <t t-else="">
-                    <t t-foreach="widget._ranges" t-as="range">
+                    <t t-foreach="widget._ranges" t-as="range" t-key="range_index">
                         <t t-call="grid.RangeButton"/>
                     </t>
                 </t>
@@ -402,7 +404,7 @@
         <button class="btn btn-link btn-sm fa fa-calendar" data-toggle="dropdown" aria-expanded="false">
         </button>
         <ul class="dropdown-menu dropdown-menu-right list-inline">
-            <li t-foreach="widget._ranges" t-as="range">
+            <li t-foreach="widget._ranges" t-as="range" t-key="range_index">
                 <t t-call="grid.RangeButton"/>
             </li>
         </ul>

@@ -20,7 +20,7 @@
                                 name="appName"
                                 placeholder="e.g. Real Estate"
                                 t-att-value="state.appName"
-                                t-on-input="_onInput"
+                                t-on-input="onInput"
                             />
                         </div>
                     </t>
@@ -33,7 +33,7 @@
                                 name="menuName"
                                 placeholder="e.g. Properties"
                                 t-att-value="state.menuName"
-                                t-on-input="_onInput"
+                                t-on-input="onInput"
                             />
                         </div>
                         <div class="o_web_studio_app_creator_model_choice">
@@ -43,7 +43,7 @@
                                     name="model_choice"
                                     value="new"
                                     class="custom-control-input"
-                                    t-on-change="_onChecked"
+                                    t-on-change="onChecked"
                                     t-att-checked="state.modelChoice === 'new'" />
                                 <label class="custom-control-label" for="model_choice_new">New Model</label>
                             </div>
@@ -53,7 +53,7 @@
                                     name="model_choice"
                                     value="existing"
                                     class="custom-control-input"
-                                    t-on-change="_onChecked"
+                                    t-on-change="onChecked"
                                     t-att-checked="state.modelChoice === 'existing'" />
                                 <label class="custom-control-label" for="model_choice_existing">Existing Model</label>
                             </div>
@@ -65,7 +65,7 @@
                                 <label for="name">Model</label>
                                 <ModelSelector
                                     widgetArgs="['model', record, { mode: 'edit' }]"
-                                    t-on-field-changed="_onModelIdChanged"
+                                    onFieldChanged.bind="onModelIdChanged"
                                 />
                         </div>
                     </t>
@@ -75,14 +75,14 @@
                         class="btn fa fa-chevron-left o_web_studio_app_creator_previous"
                         aria-label="Previous"
                         title="Previous"
-                        t-on-click="_onPrevious"
+                        t-on-click="onPrevious"
                     />
                     <button type="button"
                         class="btn o_web_studio_app_creator_next"
                         aria-label="Next"
                         title="Next"
                         t-att-class="{ is_ready: isReady }"
-                        t-on-click="_onNext"
+                        t-on-click="onNext"
                         >
                         <span t-if="state.step === 'welcome' or (state.step === 'app' and state.app_name) or (state.step === 'model' and state.modelChoice === 'new' and state.menu_name)">Next</span>
                         <span t-elif="(state.step === 'model' and state.modelChoice === 'existing' and state.menu_name and !invalid.modelChoice) or (state.step === 'model_configuration')">Create your app</span>
@@ -102,7 +102,7 @@
                         editable="state.step === 'app'"
                         type="state.iconData.type"
                         webIconData="state.iconData.webIconData"
-                        t-on-icon-changed.stop="_onIconChanged"
+                        onIconChange.bind="onIconChanged"
                     />
                 </div>
             </div>
@@ -111,8 +111,8 @@
             t-if="state.step === 'model_configuration'"
             debug='debug'
             label="'Create your app'"
-            t-on-confirm-options.stop="_onConfirmOptions"
-            t-on-previous.stop="_onPrevious"
+            onConfirmOptions.bind="onConfirmOptions"
+            onPrevious.bind="onPrevious"
         />
     </div>
 </t>

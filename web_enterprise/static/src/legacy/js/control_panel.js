@@ -5,7 +5,7 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
     const { device } = require('web.config');
     const { patch } = require('web.utils');
 
-    const { Portal, useState } = owl;
+    const { onMounted, onWillUnmount, useRef, useState } = owl;
     const STICKY_CLASS = 'o_mobile_sticky';
 
     if (!device.isMobile) {
@@ -22,31 +22,32 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
      */
     patch(ControlPanel.prototype, 'web_enterprise.ControlPanel', {
         setup() {
-            this._super(...arguments);
+            this._super();
+
             this.state = useState({
                 showSearchBar: false,
                 showMobileSearch: false,
                 showViewSwitcher: false,
             });
-        },
 
-        mounted() {
-            // Bind additional events
-            this.onWindowClick = this._onWindowClick.bind(this);
-            this.onWindowScroll = this._onScrollThrottled.bind(this);
-            window.addEventListener('click', this.onWindowClick);
-            document.addEventListener('scroll', this.onWindowScroll);
+            this.controlPanelRef = useRef("controlPanel");
 
-            this.oldScrollTop = 0;
-            this.initialScrollTop = document.documentElement.scrollTop;
-            this.el.style.top = '0px';
+            onMounted(() => {
+                // Bind additional events
+                this.onWindowClick = this._onWindowClick.bind(this);
+                this.onWindowScroll = this._onScrollThrottled.bind(this);
+                window.addEventListener('click', this.onWindowClick);
+                document.addEventListener('scroll', this.onWindowScroll);
 
-            this._super(...arguments);
-        },
+                this.oldScrollTop = 0;
+                this.initialScrollTop = document.documentElement.scrollTop;
+                this.controlPanelRef.el.style.top = '0px';
+            });
 
-        willUnmount() {
-            window.removeEventListener('click', this.onWindowClick);
-            document.removeEventListener('scroll', this.onWindowScroll);
+            onWillUnmount(() => {
+                window.removeEventListener('click', this.onWindowClick);
+                document.removeEventListener('scroll', this.onWindowScroll);
+            });
         },
 
         //---------------------------------------------------------------------
@@ -85,7 +86,7 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
          * @private
          */
         _onScrollThrottled() {
-            if (this.isScrolling) {
+            if (!this.controlPanelRef.el || this.isScrolling) {
                 return;
             }
             this.isScrolling = true;
@@ -96,16 +97,16 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
 
             if (scrollTop > this.initialScrollTop) {
                 // Beneath initial position => sticky display
-                const elRect = this.el.getBoundingClientRect();
-                this.el.classList.add(STICKY_CLASS);
-                this.el.style.top = delta < 0 ?
+                const elRect = this.controlPanelRef.el.getBoundingClientRect();
+                this.controlPanelRef.el.classList.add(STICKY_CLASS);
+                this.controlPanelRef.el.style.top = delta < 0 ?
                     // Going up
                     `${Math.min(0, elRect.top - delta)}px` :
                     // Going down | not moving
                     `${Math.max(-elRect.height, elRect.top - delta)}px`;
             } else {
                 // Above intial position => standard display
-                this.el.classList.remove(STICKY_CLASS);
+                this.controlPanelRef.el.classList.remove(STICKY_CLASS);
             }
 
             this.oldScrollTop = scrollTop;
@@ -135,9 +136,5 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
 
     patch(ControlPanel, 'web_enterprise.ControlPanel', {
         template: 'web_enterprise._ControlPanel',
-        components: {
-            ...ControlPanel.components,
-            Portal,
-        },
     });
 });

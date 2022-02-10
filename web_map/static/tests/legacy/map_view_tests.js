@@ -8,7 +8,7 @@ const testUtils = require('web.test_utils');
 const { toggleGroupByMenu, toggleMenuItem } = require("@web/../tests/search/helpers");
 const createView = testUtils.createAsyncView;
 
-QUnit.module('mapView', {
+QUnit.module('mapView legacy', {
     beforeEach: function () {
         this.data = {
             'project.task': {
@@ -41,7 +41,7 @@ QUnit.module('mapView', {
                     records: [
                         { id: 1, display_name: "FooProject", sequence: 1, partner_id: [1] },
                         { id: 2, display_name: 'BarProject', sequence: 2, partner_id: [2] },
-                        { id: 1, display_name: "FooBarProject", sequence: 3, partner_id: [1] }
+                        { id: 3, display_name: "FooBarProject", sequence: 3, partner_id: [1] }
                     ],
                     length: 3
                 },

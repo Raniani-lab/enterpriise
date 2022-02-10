@@ -16,7 +16,7 @@ odoo.define('pos_iot.ScaleScreen', function(require) {
             /**
              * @override
              */
-            mounted() {
+            onMounted() {
                 this.iot_box = _.find(this.env.proxy.iot_boxes, iot_box => {
                     return iot_box.ip == this.scale._iot_ip;
                 });
@@ -45,13 +45,13 @@ odoo.define('pos_iot.ScaleScreen', function(require) {
                         this.scale.action({ action: 'start_reading' })
                     );
                 }
-                super.mounted();
+                super.onMounted();
             }
             /**
              * @override
              */
-            willUnmount() {
-                super.willUnmount();
+            onWillUnmount() {
+                super.onWillUnmount();
                 this.env.proxy_queue.schedule(() =>
                     this.scale.action({ action: 'stop_reading' })
                 );

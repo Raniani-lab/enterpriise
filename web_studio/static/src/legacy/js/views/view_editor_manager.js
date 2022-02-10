@@ -177,7 +177,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         return this._instantiateEditor(options).then(function (editor) {
             var fragment = document.createDocumentFragment();
             let prom = undefined;
-            if (editor instanceof Component) {
+            if (editor instanceof ComponentWrapper) {
                 prom = editor.mount(fragment);
             } else {
                 prom = editor.appendTo(fragment);

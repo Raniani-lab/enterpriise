@@ -7,7 +7,7 @@ import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_helpers";
 import { ControllerNotFoundError } from "@web/webclient/actions/action_service";
 import { HomeMenu } from "./home_menu";
 
-const { Component, xml } = owl;
+const { Component, onMounted, onWillUnmount, xml } = owl;
 
 export const homeMenuService = {
     dependencies: ["action", "router"],
@@ -23,15 +23,17 @@ export const homeMenuService = {
                 this.homeMenuProps = {
                     apps: computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps,
                 };
+                onMounted(() => this.onMounted());
+                onWillUnmount(this.onWillUnmount);
             }
-            async mounted() {
+            async onMounted() {
                 const { breadcrumbs } = this.env.config;
                 hasHomeMenu = true;
                 hasBackgroundAction = breadcrumbs.length > 0;
                 this.router.pushState({ menu_id: undefined }, { lock: false, replace: true });
                 this.env.bus.trigger("HOME-MENU:TOGGLED");
             }
-            willUnmount() {
+            onWillUnmount() {
                 hasHomeMenu = false;
                 hasBackgroundAction = false;
                 const currentMenuId = this.menus.getCurrentApp();
@@ -46,6 +48,10 @@ export const homeMenuService = {
         HomeMenuAction.template = xml`<HomeMenu t-props="homeMenuProps"/>`;
 
         registry.category("actions").add("menu", HomeMenuAction);
+
+        env.bus.on("HOME-MENU:TOGGLED", null, () => {
+            document.body.classList.toggle("o_home_menu_background", hasHomeMenu);
+        });
 
         return {
             get hasHomeMenu() {

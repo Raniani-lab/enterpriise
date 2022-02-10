@@ -1,38 +1,35 @@
-/* @odoo-module */
+/** @odoo-module **/
 
-import { _lt } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
-import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator";
+import { _lt } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
+import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator";
 
 const { useState } = owl;
 
 export class IconCreatorDialog extends Dialog {
     setup() {
         super.setup();
+
         this.user = useService("user");
         this.rpc = useService("rpc");
         this.menus = useService("menu");
-        this.initialAppData = Object.assign({}, this.props.editedAppData);
+        this.initialAppData = { ...this.props.editedAppData };
         this.editedAppData = useState(this.props.editedAppData);
     }
 
     /**
-     * @private
-     * @param {CustomEvent} ev
+     * @param {Object} icon
      */
-    onIconChanged(ev) {
+    onIconChanged(icon) {
         for (const key in this.editedAppData) {
             delete this.editedAppData[key];
         }
-        for (const key in ev.detail) {
-            this.editedAppData[key] = ev.detail[key];
+        for (const key in icon) {
+            this.editedAppData[key] = icon[key];
         }
     }
 
-    /**
-     * @private
-     */
     async saveIcon() {
         const { type } = this.initialAppData;
         const appId = this.props.appId;

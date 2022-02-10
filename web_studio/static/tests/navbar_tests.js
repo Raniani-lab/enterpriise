@@ -3,9 +3,16 @@
 import { StudioNavbar } from "@web_studio/client_action/navbar/navbar";
 import { browser } from "@web/core/browser/browser";
 import { registry } from "@web/core/registry";
-import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { click, getFixture, nextTick, patchWithCleanup, legacyExtraNextTick } from "@web/../tests/helpers/utils";
+import { registerCleanup } from "@web/../tests/helpers/cleanup";
+import {
+    click,
+    getFixture,
+    mount,
+    nextTick,
+    patchWithCleanup,
+    legacyExtraNextTick,
+} from "@web/../tests/helpers/utils";
 import { menuService } from "@web/webclient/menus/menu_service";
 import { actionService } from "@web/webclient/actions/action_service";
 import { makeFakeDialogService } from "@web/../tests/helpers/mock_services";
@@ -15,7 +22,6 @@ import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
 import { companyService } from "@web/webclient/company_service";
 
-const { mount } = owl;
 const serviceRegistry = registry.category("services");
 
 QUnit.module("Studio > Navbar", (hooks) => {
@@ -70,8 +76,7 @@ QUnit.module("Studio > Navbar", (hooks) => {
 
         // Set menu and mount
         env.services.menu.setCurrentMenu(1);
-        const navbar = await mount(MyStudioNavbar, { env, target });
-        registerCleanup(() => navbar.destroy());
+        const navbar = await mount(MyStudioNavbar, target, { env });
         await nextTick();
 
         assert.containsN(
@@ -152,48 +157,94 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         serverData.menus[1].actionID = 1;
         serverData.actions[1].xml_id = "action_xml_id";
 
-        const webClient = await createEnterpriseWebClient({ serverData, target });
-        webClient.el.style.width = "1080px";
+        const webClient = await createEnterpriseWebClient({ serverData });
+        const width = document.body.style.width;
+        document.body.style.width = "1080px";
+        registerCleanup(() => {
+            document.body.style.width = width;
+        });
+
         window.dispatchEvent(new Event("resize"));
         await nextTick();
         await nextTick();
-        await click(webClient.el.querySelector(".o_app[data-menu-xmlid=menu_1]"));
+        await click(target.querySelector(".o_app[data-menu-xmlid=menu_1]"));
         await legacyExtraNextTick();
         await nextTick();
         await nextTick();
-        assert.containsNone(webClient, ".o_menu_sections .o_menu_sections_more");
+        assert.containsNone(target, ".o_menu_sections .o_menu_sections_more");
 
-        await openStudio(webClient);
+        await openStudio(target);
         await legacyExtraNextTick();
         await nextTick();
         await nextTick();
         await nextTick();
-        assert.containsOnce(webClient, ".o_studio .o_menu_sections");
-        assert.containsNone(webClient, ".o_studio .o_menu_sections .o_menu_sections_more");
+        assert.containsOnce(target, ".o_studio .o_menu_sections");
+        assert.containsNone(target, ".o_studio .o_menu_sections .o_menu_sections_more");
 
         Object.assign(serverData.menus, {
-            10: { id: 10, children: [], name: "The chain", appID: 1, actionID: 1001, xmlid: "menu_1" },
-            11: { id: 11, children: [111], name: "Running in the shadows, damn your love, damn your lies", appID: 1, actionID: 1001, xmlid: "menu_1" },
-            12: { id: 12, children: [], name: "You would never break the chain (Never break the chain)", appID: 1, actionID: 1001, xmlid: "menu_1" },
-            13: { id: 13, children: [], name: "Chain keep us together (running in the shadow)", appID: 1, actionID: 1001, xmlid: "menu_1" },
-            111: { id: 111, children: [], name: "You will never love me again", appID: 1, actionID: 1001, xmlid: "menu_1" },
+            10: {
+                id: 10,
+                children: [],
+                name: "The chain",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
+            11: {
+                id: 11,
+                children: [111],
+                name: "Running in the shadows, damn your love, damn your lies",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
+            12: {
+                id: 12,
+                children: [],
+                name: "You would never break the chain (Never break the chain)",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
+            13: {
+                id: 13,
+                children: [],
+                name: "Chain keep us together (running in the shadow)",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
+            111: {
+                id: 111,
+                children: [],
+                name: "You will never love me again",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
         });
         serverData.menus[1].children = [10, 11, 12, 13];
         await webClient.env.services.menu.reload();
         // two ticks to allow the navbar to adapt
         await nextTick();
         await nextTick();
-        assert.strictEqual(webClient.el.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length, 3);
-        assert.containsOnce(webClient, ".o_studio .o_menu_sections .o_menu_sections_more");
+        assert.strictEqual(
+            target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
+            3
+        );
+        assert.containsOnce(target, ".o_studio .o_menu_sections .o_menu_sections_more");
 
-        await leaveStudio(webClient);
+        await leaveStudio(target);
         await legacyExtraNextTick();
         // two more ticks to allow the navbar to adapt
         await nextTick();
         await nextTick();
-        assert.containsNone(webClient, ".o_studio");
-        assert.strictEqual(webClient.el.querySelectorAll("header .o_menu_sections > *:not(.d-none)").length, 4);
-        assert.containsOnce(webClient, ".o_menu_sections .o_menu_sections_more");
+        assert.containsNone(target, ".o_studio");
+        assert.strictEqual(
+            target.querySelectorAll("header .o_menu_sections > *:not(.d-none)").length,
+            4
+        );
+        assert.containsOnce(target, ".o_menu_sections .o_menu_sections_more");
     });
 
     QUnit.test("adapt navbar when refreshing studio (loadState)", async (assert) => {
@@ -208,7 +259,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
                 const prom = this._super();
                 adapted.push(prom);
                 return prom;
-            }
+            },
         });
 
         serverData.menus[1].actionID = 1;
@@ -217,36 +268,79 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         serverData.menus[1].children = [10, 11, 12, 13];
 
         Object.assign(serverData.menus, {
-            10: { id: 10, children: [], name: "The chain", appID: 1, actionID: 1001, xmlid: "menu_1" },
-            11: { id: 11, children: [111], name: "Running in the shadows, damn your love, damn your lies", appID: 1, actionID: 1001, xmlid: "menu_1" },
-            12: { id: 12, children: [], name: "You would never break the chain (Never break the chain)", appID: 1, actionID: 1001, xmlid: "menu_1" },
-            13: { id: 13, children: [], name: "Chain keep us together (running in the shadow)", appID: 1, actionID: 1001, xmlid: "menu_1" },
-            111: { id: 111, children: [], name: "You will never love me again", appID: 1, actionID: 1001, xmlid: "menu_1" },
+            10: {
+                id: 10,
+                children: [],
+                name: "The chain",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
+            11: {
+                id: 11,
+                children: [111],
+                name: "Running in the shadows, damn your love, damn your lies",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
+            12: {
+                id: 12,
+                children: [],
+                name: "You would never break the chain (Never break the chain)",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
+            13: {
+                id: 13,
+                children: [],
+                name: "Chain keep us together (running in the shadow)",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
+            111: {
+                id: 111,
+                children: [],
+                name: "You will never love me again",
+                appID: 1,
+                actionID: 1001,
+                xmlid: "menu_1",
+            },
         });
 
-        const webClient = await createEnterpriseWebClient({ serverData, target });
+        const webClient = await createEnterpriseWebClient({ serverData });
         webClient.el.style.width = "1080px";
         window.dispatchEvent(new Event("resize"));
         await Promise.all(adapted);
-        await click(webClient.el.querySelector(".o_app[data-menu-xmlid=menu_1]"));
+        await click(target.querySelector(".o_app[data-menu-xmlid=menu_1]"));
         await legacyExtraNextTick();
         await Promise.all(adapted);
         await nextTick();
         await nextTick();
-        assert.containsNone(webClient, ".o_studio");
-        assert.strictEqual(webClient.el.querySelectorAll("header .o_menu_sections > *:not(.d-none)").length, 4);
-        assert.containsOnce(webClient, ".o_menu_sections .o_menu_sections_more");
+        assert.containsNone(target, ".o_studio");
+        assert.strictEqual(
+            target.querySelectorAll("header .o_menu_sections > *:not(.d-none)").length,
+            4
+        );
+        assert.containsOnce(target, ".o_menu_sections .o_menu_sections_more");
 
-        await openStudio(webClient);
+        await openStudio(target);
         await Promise.all(adapted);
-        assert.strictEqual(webClient.el.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length, 3);
-        assert.containsOnce(webClient, ".o_studio .o_menu_sections .o_menu_sections_more");
+        assert.strictEqual(
+            target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
+            3
+        );
+        assert.containsOnce(target, ".o_studio .o_menu_sections .o_menu_sections_more");
 
         const state = webClient.env.services.router.current.hash;
-        console.log(state);
         await loadState(webClient, state);
         await Promise.all(adapted);
-        assert.strictEqual(webClient.el.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length, 3);
-        assert.containsOnce(webClient, ".o_studio .o_menu_sections .o_menu_sections_more");
+        assert.strictEqual(
+            target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
+            3
+        );
+        assert.containsOnce(target, ".o_studio .o_menu_sections .o_menu_sections_more");
     });
 });

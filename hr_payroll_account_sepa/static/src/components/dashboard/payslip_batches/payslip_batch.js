@@ -18,9 +18,6 @@ export class PayrollDashboardPayslipBatchAdapter extends ComponentAdapter {
 }
 
 patch(PayrollDashboardPayslipBatch.prototype, 'payroll_sepa', {
-
-    // Lifecycle
-
     /**
      * @override
      */
@@ -29,32 +26,28 @@ patch(PayrollDashboardPayslipBatch.prototype, 'payroll_sepa', {
         this.FieldBinaryFile = FieldBinaryFile;
     },
 
-    // Private
-
     /**
-     * @private
      * @returns {boolean} Whether any batch has a sepa export to display
      */
     _hasSepaExport() {
-        return this.data.find(elem => elem['sepa_export']);
+        return this.props.batches.find(elem => elem.sepa_export);
     },
 
     /**
      * Creates a fake record with the necessary data.
      *
-     * @private
      * @param batchData data from hr.payslip.run
      * @returns a fake record with the necessary data to render the widget
      */
-    _generateRecord(batchData) {
+    generateRecord(batchData) {
         return {
-            id: batchData['id'],
-            res_id: batchData['id'],
+            id: batchData.id,
+            res_id: batchData.id,
             model: 'hr.payslip.run',
             data: {
-                id: batchData['id'],
-                sepa_export: batchData['sepa_export'],
-                sepa_export_filename: batchData['sepa_export_filename'],
+                id: batchData.id,
+                sepa_export: batchData.sepa_export,
+                sepa_export_filename: batchData.sepa_export_filename,
             },
             fields: {
                 sepa_export: {string: '', type: 'binary'},

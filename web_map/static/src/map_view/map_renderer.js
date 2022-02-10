@@ -2,9 +2,9 @@
 
 /*global L*/
 
-import { useEffect } from "@web/core/utils/hooks";
+import { renderToString } from "@web/core/utils/render";
 
-const { Component, useRef, useState } = owl;
+const { Component, onWillUnmount, onWillUpdateProps, useEffect, useRef, useState } = owl;
 
 const apiTilesRouteWithToken =
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}";
@@ -41,6 +41,7 @@ export class MapRenderer extends Component {
         this.state = useState({
             closedGroupIds: [],
         });
+        this.nextId = 1;
 
         useEffect(
             () => {
@@ -62,11 +63,14 @@ export class MapRenderer extends Component {
         useEffect(() => {
             this.updateMap();
         });
+
+        onWillUpdateProps(this.onWillUpdateProps);
+        onWillUnmount(this.onWillUnmount);
     }
     /**
      * Update group opened/closed state.
      */
-    async willUpdateProps(nextProps) {
+    async onWillUpdateProps(nextProps) {
         if (this.props.model.data.groupByKey !== nextProps.model.data.groupByKey) {
             this.state.closedGroupIds = [];
         }
@@ -74,7 +78,7 @@ export class MapRenderer extends Component {
     /**
      * Remove map and the listeners on its markers and routes.
      */
-    willUnmount() {
+    onWillUnmount() {
         this.removeMarkers();
         this.removeRoutes();
         this.leafletMap.remove();
@@ -137,7 +141,7 @@ export class MapRenderer extends Component {
             // Icon creation
             const iconInfo = {
                 className: "o-map-renderer--marker",
-                html: this.env.qweb.renderToString("web_map.marker", params),
+                html: renderToString("web_map.marker", params),
             };
 
             // Attach marker with icon and popup
@@ -198,7 +202,7 @@ export class MapRenderer extends Component {
     createMarkerPopup(markerInfo) {
         const popupFields = this.getMarkerPopupFields(markerInfo);
         const partner = markerInfo.record.partner;
-        const popupHtml = this.env.qweb.renderToString("web_map.markerPopup", {
+        const popupHtml = renderToString("web_map.markerPopup", {
             fields: popupFields,
             hasFormView: this.props.model.metaData.hasFormView,
             url: `https://www.google.com/maps/dir/?api=1&destination=${partner.partner_latitude},${partner.partner_longitude}`,
@@ -260,6 +264,7 @@ export class MapRenderer extends Component {
         if (markerInfo.ids.length > 1) {
             if (!this.props.model.metaData.hideAddress) {
                 fieldsView.push({
+                    id: this.nextId++,
                     value: record.partner.contact_address_complete,
                     string: this.env._t("Address"),
                 });
@@ -268,12 +273,14 @@ export class MapRenderer extends Component {
         }
         if (!this.props.model.metaData.hideName) {
             fieldsView.push({
+                id: this.nextId++,
                 value: record.display_name,
                 string: this.env._t("Name"),
             });
         }
         if (!this.props.model.metaData.hideAddress) {
             fieldsView.push({
+                id: this.nextId++,
                 value: record.partner.contact_address_complete,
                 string: this.env._t("Address"),
             });
@@ -285,6 +292,7 @@ export class MapRenderer extends Component {
                         ? record[field.fieldName][1]
                         : record[field.fieldName];
                 fieldsView.push({
+                    id: this.nextId++,
                     value: fieldName,
                     string: field.string,
                 });

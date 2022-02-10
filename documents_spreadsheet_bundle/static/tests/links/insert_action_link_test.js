@@ -1,6 +1,7 @@
 /** @odoo-module */
 import {
     click,
+    getFixture,
     legacyExtraNextTick,
     makeDeferred,
     nextTick,
@@ -27,14 +28,14 @@ import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@documents
 import { browser } from "@web/core/browser/browser";
 import { makeFakeSpreadsheetService } from "../utils/webclient_helpers";
 
-const { Component, loadJS } = owl;
+import { loadJS } from "@web/core/assets";
+
+const { Component } = owl;
 const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 
-
 let serverData;
-
 async function openView(viewType, options = {}) {
     legacyFavoriteMenuRegistry.add(
         "insert-action-link-in-spreadsheet",
@@ -62,14 +63,14 @@ async function openView(viewType, options = {}) {
     return webClient;
 }
 
-async function insertInSpreadsheetAndClickLink(webClient) {
+async function insertInSpreadsheetAndClickLink(target) {
     await loadJS("/web/static/lib/Chart/Chart.js");
-    await click(webClient.el, ".o_favorite_menu button");
-    await click(webClient.el, ".o_insert_action_spreadsheet_menu");
+    await click(target, ".o_favorite_menu button");
+    await click(target, ".o_insert_action_spreadsheet_menu");
     await click(document, ".modal-footer button.btn-primary");
     await nextTick();
     await legacyExtraNextTick();
-    await click(webClient.el, ".o-link-tool a");
+    await click(target, ".o-link-tool a");
     await nextTick();
     await legacyExtraNextTick();
 }
@@ -82,10 +83,12 @@ function getCurrentAction(webClient) {
     return webClient.env.services.action.currentController.action;
 }
 
+let target;
 QUnit.module(
     "documents_spreadsheet > action link",
     {
         beforeEach: function () {
+            target = getFixture();
             serverData = {};
             serverData.models = getBasicData();
             serverData.actions = {
@@ -144,7 +147,7 @@ QUnit.module(
         QUnit.test("simple list view", async function (assert) {
             assert.expect(1);
             const webClient = await openView("list");
-            await insertInSpreadsheetAndClickLink(webClient);
+            await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "list");
         });
 
@@ -156,14 +159,14 @@ QUnit.module(
             });
 
             // add a domain
-            await toggleFilterMenu(webClient);
-            await toggleMenuItem(webClient, 0);
+            await toggleFilterMenu(target);
+            await toggleMenuItem(target, 0);
 
             // group by name
-            await toggleGroupByMenu(webClient);
-            await toggleMenuItem(webClient, 0);
+            await toggleGroupByMenu(target);
+            await toggleMenuItem(target, 0);
 
-            await insertInSpreadsheetAndClickLink(webClient);
+            await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "list");
             const action = getCurrentAction(webClient);
             assert.deepEqual(
@@ -174,12 +177,12 @@ QUnit.module(
             assert.strictEqual(action.res_model, "partner");
             assert.strictEqual(action.type, "ir.actions.act_window");
             assert.deepEqual(action.context.group_by, ["name"], "It should be grouped by name");
-            assert.containsOnce(webClient.el, ".o_group_header", "The list view should be grouped");
+            assert.containsOnce(target, ".o_group_header", "The list view should be grouped");
         });
 
         QUnit.test("insert list in existing spreadsheet", async function (assert) {
             assert.expect(3);
-            const webClient = await openView("list", {
+            await openView("list", {
                 mockRPC: function (route, args) {
                     if (args.method === "join_spreadsheet_session") {
                         assert.step("spreadsheet-joined");
@@ -188,12 +191,12 @@ QUnit.module(
                 },
             });
             await loadJS("/web/static/lib/Chart/Chart.js");
-            await toggleFavoriteMenu(webClient);
-            await click(webClient.el, ".o_insert_action_spreadsheet_menu");
-            const select = webClient.el.querySelector(".modal-content select");
+            await toggleFavoriteMenu(target);
+            await click(target, ".o_insert_action_spreadsheet_menu");
+            const select = target.querySelector(".modal-content select");
             select.value = "1";
             await triggerEvent(select, null, "change");
-            await click(webClient.el, ".modal-footer button.btn-primary");
+            await click(target, ".modal-footer button.btn-primary");
             await nextTick();
             assert.verifySteps(["spreadsheet-joined"]);
         });
@@ -201,7 +204,7 @@ QUnit.module(
         QUnit.test("insert action in new spreadsheet", async function (assert) {
             assert.expect(5);
             const def = makeDeferred();
-            const webClient = await openView("list", {
+            await openView("list", {
                 mockRPC: async function (route, args) {
                     if (args.method === "create") {
                         await def;
@@ -210,16 +213,16 @@ QUnit.module(
                 },
             });
             await loadJS("/web/static/lib/Chart/Chart.js");
-            assert.containsNone(webClient, ".o_spreadsheet_action");
-            await toggleFavoriteMenu(webClient);
-            await click(webClient.el, ".o_insert_action_spreadsheet_menu");
-            await click(webClient.el, ".modal-footer button.btn-primary");
+            assert.containsNone(target, ".o_spreadsheet_action");
+            await toggleFavoriteMenu(target);
+            await click(target, ".o_insert_action_spreadsheet_menu");
+            await click(target, ".modal-footer button.btn-primary");
             def.resolve();
             await nextTick();
             assert.verifySteps(["spreadsheet-created"]);
-            assert.containsOnce(webClient, ".o_spreadsheet_action");
+            assert.containsOnce(target, ".o_spreadsheet_action");
             assert.strictEqual(
-                webClient.el.querySelector(".breadcrumb .o_spreadsheet_name input").value,
+                target.querySelector(".breadcrumb .o_spreadsheet_name input").value,
                 "Untitled spreadsheet"
             );
         });
@@ -227,25 +230,25 @@ QUnit.module(
         QUnit.test("kanban view", async function (assert) {
             assert.expect(1);
             const webClient = await openView("kanban");
-            await insertInSpreadsheetAndClickLink(webClient);
+            await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "kanban");
         });
 
         QUnit.test("simple graph view", async function (assert) {
             assert.expect(1);
             const webClient = await openView("graph");
-            await insertInSpreadsheetAndClickLink(webClient);
+            await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "graph");
         });
 
         QUnit.test("graph view with custom chart type and order", async function (assert) {
             assert.expect(3);
             const webClient = await openView("graph");
-            await click(webClient.el, ".oi-chart--pie");
+            await click(target, ".oi-chart--pie");
             // count measure
-            await toggleMenu(webClient, "Measures");
-            await toggleMenuItem(webClient, "Count");
-            await insertInSpreadsheetAndClickLink(webClient);
+            await toggleMenu(target, "Measures");
+            await toggleMenuItem(target, "Count");
+            await insertInSpreadsheetAndClickLink(target);
             const action = getCurrentAction(webClient);
             assert.deepEqual(action.context.graph_mode, "pie", "It should be a pie chart");
             assert.deepEqual(
@@ -253,13 +256,13 @@ QUnit.module(
                 "__count",
                 "It should have the custom measures"
             );
-            assert.containsOnce(webClient.el, ".oi-chart--pie.active");
+            assert.containsOnce(target, ".oi-chart--pie.active");
         });
 
         QUnit.test("calendar view", async function (assert) {
             assert.expect(1);
             const webClient = await openView("calendar");
-            await insertInSpreadsheetAndClickLink(webClient);
+            await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "calendar");
         });
 
@@ -267,7 +270,7 @@ QUnit.module(
             assert.expect(1);
             serviceRegistry.add("user", makeFakeUserService());
             const webClient = await openView("pivot");
-            await insertInSpreadsheetAndClickLink(webClient);
+            await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "pivot");
         });
 
@@ -277,14 +280,14 @@ QUnit.module(
             const webClient = await openView("pivot");
 
             // group by name
-            await toggleGroupByMenu(webClient);
-            await toggleMenuItem(webClient.el, "name");
+            await toggleGroupByMenu(target);
+            await toggleMenuItem(target, "name");
 
             // add count measure
-            await toggleMenu(webClient, "Measures");
-            await toggleMenuItem(webClient, "Count");
+            await toggleMenu(target, "Measures");
+            await toggleMenuItem(target, "Count");
 
-            await insertInSpreadsheetAndClickLink(webClient);
+            await insertInSpreadsheetAndClickLink(target);
             const action = getCurrentAction(webClient);
 
             assert.deepEqual(
@@ -298,7 +301,7 @@ QUnit.module(
                 "It should have the same two measures"
             );
             assert.containsN(
-                webClient.el,
+                target,
                 ".o_pivot_measure_row",
                 2,
                 "It should display the two measures"
@@ -308,7 +311,7 @@ QUnit.module(
         QUnit.test("simple dashboard view", async function (assert) {
             assert.expect(1);
             const webClient = await openView("dashboard");
-            await insertInSpreadsheetAndClickLink(webClient);
+            await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "dashboard");
         });
 
@@ -319,21 +322,21 @@ QUnit.module(
 
                 patchWithCleanup(browser, { setTimeout: (fn) => fn() });
                 const webClient = await openView("dashboard");
-                await click(webClient.el, ".oi-chart--pie");
+                await click(target, ".oi-chart--pie");
 
                 // custom group by
-                await toggleGroupByMenu(webClient);
-                await toggleAddCustomGroup(webClient);
-                await selectGroup(webClient, "bar");
-                await applyGroup(webClient);
+                await toggleGroupByMenu(target);
+                await toggleAddCustomGroup(target);
+                await selectGroup(target, "bar");
+                await applyGroup(target);
 
                 // count measure
-                await toggleMenu(webClient, "Measures");
-                await toggleMenuItem(webClient, "Count");
+                await toggleMenu(target, "Measures");
+                await toggleMenuItem(target, "Count");
 
-                await insertInSpreadsheetAndClickLink(webClient);
+                await insertInSpreadsheetAndClickLink(target);
                 const action = getCurrentAction(webClient);
-                assert.containsOnce(webClient.el, ".oi-chart--pie.active");
+                assert.containsOnce(target, ".oi-chart--pie.active");
                 assert.deepEqual(
                     action.context.graph.graph_mode,
                     "pie",
@@ -355,7 +358,7 @@ QUnit.module(
         QUnit.test("map view", async function (assert) {
             assert.expect(1);
             const webClient = await openView("map");
-            await insertInSpreadsheetAndClickLink(webClient);
+            await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "map");
         });
     }

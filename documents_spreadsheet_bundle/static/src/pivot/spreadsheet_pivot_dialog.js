@@ -5,11 +5,10 @@ import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 
-
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import PivotCache from "./pivot_cache";
 
-const { useState } = owl;
+const { onWillStart, useState } = owl;
 const formatDecimal = spreadsheet.helpers.formatDecimal;
 
 /**
@@ -48,9 +47,11 @@ export class PivotDialog extends Dialog {
         this.renderHeader = true;
         this.renderFooter = false;
         this.size = "large";
+
+        onWillStart(this.onWillStart);
     }
 
-    async willStart() {
+    async onWillStart() {
         await this.getters.waitForPivotDataReady(this.pivotId);
         this.data = {
             columns: this._buildColHeaders(),
@@ -67,8 +68,8 @@ export class PivotDialog extends Dialog {
         return this.props.getters;
     }
 
-    _onCellClicked(ev) {
-        this.props.insertPivotValueCallback(ev.detail.formula);
+    _onCellClicked(detail) {
+        this.props.insertPivotValueCallback(detail.formula);
         this.close();
     }
 

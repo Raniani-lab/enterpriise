@@ -131,7 +131,7 @@
     <div class="o_web_studio_toption_widget">
         <select>
             <option/>
-            <t t-foreach="widget.widgets" t-as="w">
+            <t t-foreach="widget.widgets" t-as="w" t-key="w_index">
                 <option t-att-value="w.key"><t t-esc="w.string"/></option>
             </t>
         </select>
@@ -218,7 +218,7 @@
         </div>
         <div t-if="widget.displayAlignment" class="col-4 o_web_studio_sidebar_text o_web_studio_text_alignment">
             <label>Alignment</label>
-            <t t-foreach="['left', 'center', 'right']" t-as="alignment">
+            <t t-foreach="['left', 'center', 'right']" t-as="alignment" t-key="alignment_index">
                 <button type="button" t-att-title="alignment" t-attf-data-property="text-#{alignment}" t-attf-class="btn btn-secondary #{widget.alignment === 'text-' + alignment ? 'active' : ''}">
                     <i t-attf-class="fa fa-align-#{alignment}"/>
                 </button>
@@ -302,7 +302,7 @@
 
 <t t-name="web_studio.ReportDirectiveTOptions.options">
     <div t-attf-class="o_web_studio_toption_options o_web_studio_toption_#{widget.key}">
-        <t t-foreach="widget.options" t-as="o">
+        <t t-foreach="widget.options" t-as="o" t-key="o_index">
             <div t-attf-class="o_web_studio_toption_option o_web_studio_toption_option_#{widget.key}_#{o.key} #{o.required ? 'o_web_studio_required_option' : ''}">
                 <label t-attf-class="#{o.required ? 'text-danger' : ''}">
                     <t t-esc="o.string"/>

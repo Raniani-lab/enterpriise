@@ -36,22 +36,22 @@ QUnit.module("WebClient Mobile", (hooks) => {
         // force the html node to be scrollable element
         const target = getFixture();
         target.style.position = "initial";
-        const webClient = await createEnterpriseWebClient({ serverData, target });
+        const webClient = await createEnterpriseWebClient({ serverData });
 
         await doAction(webClient, 3); // partners in list/kanban
-        assert.containsOnce(webClient, ".o_kanban_view");
+        assert.containsOnce(target, ".o_kanban_view");
 
         window.scrollTo(0, 123);
-        await click(webClient.el.querySelectorAll(".o_kanban_record")[20]);
+        await click(target.querySelectorAll(".o_kanban_record")[20]);
         await legacyExtraNextTick();
-        assert.containsOnce(webClient, ".o_form_view");
-        assert.containsNone(webClient, ".o_kanban_view");
+        assert.containsOnce(target, ".o_form_view");
+        assert.containsNone(target, ".o_kanban_view");
 
         window.scrollTo(0, 0);
-        await click(webClient.el.querySelector(".o_control_panel .o_back_button"));
+        await click(target.querySelector(".o_control_panel .o_back_button"));
         await legacyExtraNextTick();
-        assert.containsNone(webClient, ".o_form_view");
-        assert.containsOnce(webClient, ".o_kanban_view");
+        assert.containsNone(target, ".o_form_view");
+        assert.containsOnce(target, ".o_kanban_view");
 
         assert.strictEqual(document.firstElementChild.scrollTop, 123);
     });

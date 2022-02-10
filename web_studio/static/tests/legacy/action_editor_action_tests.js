@@ -3,11 +3,13 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
 
     var testUtils = require('web.test_utils');
 
-    const { doActionAndOpenStudio, registerStudioDependencies } = require("@web_studio/../tests/helpers");
-    const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+    const { openStudio, registerStudioDependencies } = require("@web_studio/../tests/helpers");
+    const { doAction } = require("@web/../tests/webclient/helpers");
+    const { getFixture, legacyExtraNextTick } = require("@web/../tests/helpers/utils");
     const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
 
     let serverData;
+    let target;
     QUnit.module('Studio', {
         beforeEach: function () {
             this.data = {
@@ -34,6 +36,7 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
                 "kikou,false,search": `<search />`,
             };
             serverData = {models: this.data, views};
+            target = getFixture();
             registerStudioDependencies();
         }
     }, function () {
@@ -55,15 +58,16 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
             };
 
             const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
-            await doActionAndOpenStudio(webClient, {
+            await doAction(webClient, {
                 xml_id: "some.xml_id",
                 type: "ir.actions.act_window",
                 res_model: 'kikou',
                 view_mode: 'list',
                 views: [[1, 'list'], [2, 'form']],
-            }, {clearBreadcrumbs: true}, {noEdit: true});
+            }, {clearBreadcrumbs: true});
+            await openStudio(target, {noEdit: true});
 
-            await testUtils.dom.click($(webClient.el).find('.o_web_studio_view_type[data-type="gantt"] .o_web_studio_thumbnail'));
+            await testUtils.dom.click($(target).find('.o_web_studio_view_type[data-type="gantt"] .o_web_studio_thumbnail'));
             await legacyExtraNextTick();
 
             assert.containsOnce($, '.o_web_studio_new_view_dialog',
@@ -121,22 +125,23 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
 
             const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
 
-            await doActionAndOpenStudio(webClient, 1);
+            await doAction(webClient, 1);
+            await openStudio(target);
 
-            await testUtils.dom.click(webClient.el.querySelector('.o_web_studio_menu_item a'));
+            await testUtils.dom.click(target.querySelector('.o_web_studio_menu_item a'));
 
             // make list view disable and form view only will be there in studio view
-            await testUtils.dom.click($(webClient.el).find('div[data-type="list"] .o_web_studio_more'));
-            await testUtils.dom.click($(webClient.el).find('div[data-type="list"] a[data-action="disable_view"]'));
+            await testUtils.dom.click($(target).find('div[data-type="list"] .o_web_studio_more'));
+            await testUtils.dom.click($(target).find('div[data-type="list"] a[data-action="disable_view"]'));
             // reloadAction = false;
             assert.hasClass(
-                $(webClient.el).find('div[data-type="list"]'),
+                $(target).find('div[data-type="list"]'),
                 'o_web_studio_inactive',
                 "list view should have become inactive");
 
             // make form view disable and it should prompt the alert dialog
-            await testUtils.dom.click($(webClient.el).find('div[data-type="form"] .o_web_studio_more'));
-            await testUtils.dom.click($(webClient.el).find('div[data-type="form"] a[data-action="disable_view"]'));
+            await testUtils.dom.click($(target).find('div[data-type="form"] .o_web_studio_more'));
+            await testUtils.dom.click($(target).find('div[data-type="form"] a[data-action="disable_view"]'));
             assert.containsOnce(
                 $,
                 '.o_technical_modal',
@@ -170,7 +175,8 @@ odoo.define('web_studio.ActionEditorActionTests', function (require) {
                 }
             };
             const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
-            await doActionAndOpenStudio(webClient, 1, {clearBreadcrumbs: true}, {noEdit: true});
+            await doAction(webClient, 1, {clearBreadcrumbs: true});
+            await openStudio(target, {noEdit: true});
 
             await testUtils.fields.many2one.clickOpenDropdown('groups_id');
             await testUtils.fields.many2one.clickHighlightedItem('groups_id');

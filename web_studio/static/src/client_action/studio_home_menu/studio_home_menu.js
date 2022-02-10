@@ -4,6 +4,7 @@ import { useService } from "@web/core/utils/hooks";
 import { NotEditableActionError } from "../../studio_service";
 import { IconCreatorDialog } from "./icon_creator_dialog/icon_creator_dialog";
 
+const { onMounted, onWillUpdateProps } = owl;
 const NEW_APP_BUTTON = {
     isNewAppButton: true,
     label: "New App",
@@ -32,19 +33,18 @@ export class StudioHomeMenu extends HomeMenu {
      * @param {string} [props.apps[].webIconData]
      * @param {string} props.apps[].xmlid
      */
-    constructor() {
-        super(...arguments);
+    setup() {
+        super.setup(...arguments);
 
         this.user = useService("user");
         this.studio = useService("studio");
         this.notifications = useService("notification");
         this.dialog = useService("dialog");
-    }
 
-    mounted() {
-        super.mounted();
-        this.canEditIcons = true;
-        this.el.classList.add("o_studio_home_menu");
+        onMounted(() => {
+            this.canEditIcons = true;
+            this.el.classList.add("o_studio_home_menu");
+        });
     }
 
     //--------------------------------------------------------------------------
@@ -52,17 +52,13 @@ export class StudioHomeMenu extends HomeMenu {
     //--------------------------------------------------------------------------
 
     get displayedApps() {
-        return super.displayedApps.concat([NEW_APP_BUTTON]);
+        return [...super.displayedApps, NEW_APP_BUTTON];
     }
 
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
 
-    /**
-     * @override
-     * @private
-     */
     async _openMenu(menu) {
         if (menu.isNewAppButton) {
             this.canEditIcons = false;
@@ -90,7 +86,6 @@ export class StudioHomeMenu extends HomeMenu {
     //--------------------------------------------------------------------------
 
     /**
-     * @private
      * @param {Object} app
      */
     onEditIconClick(app) {

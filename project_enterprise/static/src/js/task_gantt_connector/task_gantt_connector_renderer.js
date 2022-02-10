@@ -11,16 +11,6 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
     config: {
         GanttRow: TaskGanttConnectorRow,
     },
-    custom_events: Object.assign({ }, TaskGanttRenderer.prototype.custom_events || { }, {
-        connector_creation_abort: '_onConnectorCreationAbort',
-        connector_creation_done: '_onConnectorCreationDone',
-        connector_creation_start: '_onConnectorCreationStart',
-        connector_mouseout: '_onConnectorMouseOut',
-        connector_mouseover: '_onConnectorMouseOver',
-        connector_remove_button_click: '_onConnectorRemoveButtonClick',
-        connector_reschedule_later_button_click: 'onConnectorRescheduleLaterButtonClick',
-        connector_reschedule_sooner_button_click: 'onConnectorRescheduleSoonerButtonClick',
-    }),
     events: Object.assign({ }, TaskGanttRenderer.prototype.events || { }, {
         'mouseenter .o_gantt_pill, .o_connector_creator_wrapper': '_onPillMouseEnter',
         'mouseleave .o_gantt_pill, .o_connector_creator_wrapper': '_onPillMouseLeave',
@@ -61,11 +51,18 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
     */
     on_attach_callback() {
         this._super(...arguments);
+        WidgetAdapterMixin.on_attach_callback.call(this);
         // As we needs the source and target of the connectors to be part of the dom,
         // we need to use the on_attach_callback in order to have the first rendering successful.
         this._mountConnectorContainer();
         window.addEventListener('resize', this._throttledReRender);
     },
+    on_detach_callback() {
+        this._super();
+        WidgetAdapterMixin.on_detach_callback.call(this);
+        this._connectorContainerComponent.unmount();
+    },
+
     /**
      * @override
     */
@@ -360,6 +357,14 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
             preventHoverEffect: this._preventHoverEffect,
             sourceQuerySelector: this._connectorsCssSelectors.bullet,
             targetQuerySelector: this._connectorsCssSelectors.pillWrapper,
+            onRemoveButtonClick: this._onConnectorRemoveButtonClick.bind(this),
+            onRescheduleLaterButtonClick: this.onConnectorRescheduleLaterButtonClick.bind(this),
+            onRescheduleSoonerButtonClick: this.onConnectorRescheduleSoonerButtonClick.bind(this),
+            onCreationAbort: this._onConnectorCreationAbort.bind(this),
+            onCreationDone: this._onConnectorCreationDone.bind(this),
+            onCreationStart: this._onConnectorCreationStart.bind(this),
+            onMouseOut: this._onConnectorMouseOut.bind(this),
+            onMouseOver: this._onConnectorMouseOver.bind(this),
         };
     },
     /**
@@ -618,13 +623,12 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
     /**
      * Handler for Connector connector-creation-abort event.
      *
-     * @param {OdooEvent} ev
+     * @param {Object} payload
      * @private
      */
-    async _onConnectorCreationAbort(ev) {
-        ev.stopPropagation();
+    async _onConnectorCreationAbort(payload) {
         this._connectorInCreation = null;
-        const connectorCreatorInfo = this._getConnectorCreatorInfo(ev.data.data.sourceElement);
+        const connectorCreatorInfo = this._getConnectorCreatorInfo(payload.data.sourceElement);
         this._triggerPillHighlighting(connectorCreatorInfo.pill, false);
         this.trigger_up('on_connector_end_drag');
         this._togglePopoverVisibility(true);
@@ -632,14 +636,13 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
     /**
      * Handler for Connector connector-creation-done event.
      *
-     * @param {OdooEvent} ev
+     * @param {Object} ev
      * @private
      */
-    async _onConnectorCreationDone(ev) {
-        ev.stopPropagation();
+    async _onConnectorCreationDone(payload) {
         this._connectorInCreation = null;
-        const connectorSourceCreatorInfo = this._getConnectorCreatorInfo(ev.data.data.sourceElement);
-        const connectorTargetCreatorInfo = this._getConnectorCreatorInfo(ev.data.data.targetElement);
+        const connectorSourceCreatorInfo = this._getConnectorCreatorInfo(payload.data.sourceElement);
+        const connectorTargetCreatorInfo = this._getConnectorCreatorInfo(payload.data.targetElement);
         this.trigger_up('on_connector_end_drag');
         this.trigger_up(
             'on_create_connector',
@@ -652,46 +655,41 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
     /**
      * Handler for Connector connector-creation-start event.
      *
-     * @param {OdooEvent} ev
+     * @param {Object} ev
      * @private
      */
-    async _onConnectorCreationStart(ev) {
-        ev.stopPropagation();
-        this._connectorInCreation = ev.data;
+    async _onConnectorCreationStart(payload) {
+        this._connectorInCreation = payload;
         this._togglePopoverVisibility(false);
-        const connectorCreatorInfo = this._getConnectorCreatorInfo(ev.data.data.sourceElement);
+        const connectorCreatorInfo = this._getConnectorCreatorInfo(payload.data.sourceElement);
         this._triggerPillHighlighting(connectorCreatorInfo.pill, false);
         this.trigger_up('on_connector_start_drag');
     },
     /**
      * Handler for Connector connector-mouseout event.
      *
-     * @param {OdooEvent} ev
+     * @param {Object} ev
      * @private
      */
-    async _onConnectorMouseOut(ev) {
-        ev.stopPropagation();
-        this._triggerConnectorHighlighting(ev.data, false);
+    async _onConnectorMouseOut(payload) {
+        this._triggerConnectorHighlighting(payload, false);
     },
     /**
      * Handler for Connector connector-mouseover event.
      *
-     * @param {OdooEvent} ev
+     * @param {Object} ev
      * @private
      */
-    async _onConnectorMouseOver(ev) {
-        ev.stopPropagation();
-        this._triggerConnectorHighlighting(ev.data, true);
+    async _onConnectorMouseOver(payload) {
+        this._triggerConnectorHighlighting(payload, true);
     },
     /**
      * Handler for Connector connector-remove-button-click event.
      *
-     * @param {OdooEvent} ev
+     * @param {Object} payload
      * @private
      */
-    async _onConnectorRemoveButtonClick(ev) {
-        ev.stopPropagation();
-        const payload = ev.data;
+    async _onConnectorRemoveButtonClick(payload) {
         this.trigger_up(
         'on_remove_connector',
         {
@@ -702,12 +700,10 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
     /**
      * Handler for Connector connector_reschedule_later_button_click event.
      *
-     * @param {OdooEvent} ev
+     * @param {Object} payload
      * @private
      */
-    onConnectorRescheduleLaterButtonClick(ev) {
-        ev.stopPropagation();
-        const payload = ev.data;
+    onConnectorRescheduleLaterButtonClick(payload) {
         this.trigger_up(
         'on_reschedule_task',
         {
@@ -719,12 +715,10 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
     /**
      * Handler for Connector connector_reschedule_sooner_button_click event.
      *
-     * @param {OdooEvent} ev
+     * @param {Object} payload
      * @private
      */
-    onConnectorRescheduleSoonerButtonClick(ev) {
-        ev.stopPropagation();
-        const payload = ev.data;
+    onConnectorRescheduleSoonerButtonClick(payload) {
         this.trigger_up(
         'on_reschedule_task',
         {

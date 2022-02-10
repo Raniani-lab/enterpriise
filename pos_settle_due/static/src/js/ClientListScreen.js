@@ -3,12 +3,12 @@ odoo.define('pos_settle_due.ClientListScreen', function (require) {
 
     const ClientListScreen = require('point_of_sale.ClientListScreen');
     const Registries = require('point_of_sale.Registries');
-    const { useListener } = require('web.custom_hooks');
+    const { useListener } = require("@web/core/utils/hooks");
 
     const POSSettleDueClientListScreen = (ClientListScreen) =>
         class extends ClientListScreen {
-            constructor() {
-                super(...arguments);
+            setup() {
+                super.setup();
                 // trigger to close this screen (from being shown as tempScreen)
                 useListener('discard', this.back);
             }

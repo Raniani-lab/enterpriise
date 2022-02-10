@@ -89,6 +89,9 @@ export class CohortModel extends Model {
         this.data = await this.keepLast.add(this._fetchData(metaData));
         for (const i in this.data) {
             this.data[i].title = this.searchParams.domains[i].description;
+            this.data[i].rows.forEach((row) => {
+                row.columns = row.columns.filter((col) => col.percentage !== "");
+            });
         }
     }
 

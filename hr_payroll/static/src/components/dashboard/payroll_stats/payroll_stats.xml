@@ -5,13 +5,13 @@
             <div class="stats-header row p-2 pl-4">
                 <div class="col w-100">
                     <h2 class="btn btn-link p-0 disabled text-black">
-                        <t t-esc="data.label"/>
+                        <t t-esc="props.label"/>
                     </h2>
-                    <i class="fa fa-question-circle-o" t-if="data.help"
-                        data-tooltip-template="hr_payroll.Tooltip" t-att-data-tooltip-info="formatHelp()"/>
+                    <i class="fa fa-question-circle-o" t-if="props.help"
+                        data-tooltip-template="hr_payroll.Tooltip" t-att-data-tooltip-info="tooltipInfo"/>
                     <div class="d-inline float-right" id="period_selection_toggle">
                         Annually
-                        <div class="o_boolean_toggle custom-control custom-checkbox" t-on-click.stop.prevent="toggle()">
+                        <div class="o_boolean_toggle custom-control custom-checkbox" t-on-click.stop.prevent="toggle">
                             <input type="checkbox" class="custom-control-input" id="test" t-att-checked="state.monthly"/>
                             <label class="custom-control-label">
                                 &#8203;
@@ -24,18 +24,18 @@
             </div>
             <div class="row ml-0 mb-2">
                 <div class="col">
-                    <t t-foreach="actionData" t-as="action" t-key="action['action']">
-                        <div t-if="action['count'] > 0" class="row w-100">
+                    <t t-foreach="props.actions" t-as="action" t-key="action.action">
+                        <div t-if="action.count > 0" class="row w-100">
                             <a class="col-9 text-left" href="#"
-                                t-on-click="_doAction(action['action'])">
-                                <t t-esc="action['string']"/>
+                                t-on-click="() => this.actionService.doAction(action.action)">
+                                <t t-esc="action.string"/>
                             </a>
-                            <span class="col-3 pr-2 text-right m-auto"><t t-esc="action['count']"/></span>
+                            <span class="col-3 pr-2 text-right m-auto"><t t-esc="action.count"/></span>
                         </div>
                     </t>
                 </div>
             </div>
-            <div t-att-class="'canvas-container mt-auto ' + (type === 'line' ? 'payroll_line' : 'payroll_bar')">
+            <div t-att-class="'canvas-container mt-auto ' + (props.type === 'line' ? 'payroll_line' : 'payroll_bar')">
                 <canvas t-ref="canvas" class="w-100"/>
             </div>
         </div>

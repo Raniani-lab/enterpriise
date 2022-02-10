@@ -36,32 +36,32 @@
                 <PdfPage pageId="state.viewedPage"
                     canvas="previewCanvas"
                     isPreview="true"
-                    t-on-page-clicked="_onClickPreview"
+                    onPageClicked.bind="_onClickPreview"
                 />
             </div>
             <div class='o_documents_pdf_page_viewer'>
                 <t t-foreach="state.groupIds" t-as="groupId" t-key="groupId">
                     <t t-foreach="state.groupData[groupId].pageIds" t-as="pageId" t-key="pageId">
                         <div class="o_documents_pdf_page_frame" t-key="'div_' + pageId">
-                            <PdfPage t-ref="PdfPage_{{pageId}}"
+                            <PdfPage
                                 canvas="_pageCanvas[pageId].canvas"
                                 isPreview="false"
                                 isSelected="state.pages[pageId].isSelected"
                                 pageId="pageId"
-                                t-on-page-clicked="_onClickPage"
-                                t-on-page-dragged="_onPageDragStart"
-                                t-on-page-dropped="_onPageDrop"
-                                t-on-select-clicked="_onSelectClicked"
+                                onPageClicked.bind="_onClickPage"
+                                onPageDragged.bind="_onPageDragStart"
+                                onPageDropped.bind="_onPageDrop"
+                                onSelectClicked.bind="_onSelectClicked"
                             />
                             <div t-if="pageId_first" class="o_pdf_group_name_wrapper">
                                 <PdfGroupName groupId="groupId"
                                     name="state.groupData[groupId].name"
-                                    t-on-edit-name="_onEditName"
+                                    onEditName.bind="_onEditName"
                                 />
                             </div>
                         </div>
                         <t t-if="!(groupId_last and pageId_last)">
-                            <div class="o_page_splitter_wrapper" t-att-class="{ o_pdf_separator_activated: pageId_last }" t-on-click="_onClickPageSeparator(pageId, groupId)">
+                            <div class="o_page_splitter_wrapper" t-att-class="{ o_pdf_separator_activated: pageId_last }" t-on-click="(ev) => this._onClickPageSeparator(pageId, groupId, ev)">
                                 <div class="o_page_splitter"/>
                                 <i class="o_pdf_scissors fa fa-scissors fa-lg"/>
                             </div>
@@ -89,7 +89,7 @@
                     'o_pdf_rule_buttons': !isMobile,
                     'dropdown-item': isMobile,
                     'ml-3': !isMobile &amp;&amp; rule_index === 0}"
-                t-on-click="_onClickRule(rule.id)"
+                t-on-click="() => this._onClickRule(rule.id)"
                 t-esc="rule.display_name"
                 t-att-disabled="state.uploadingLock"/>
         </t>

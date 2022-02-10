@@ -27,7 +27,6 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         iframe_ready: '_onIframeReady',
         begin_preview_drag_component: '_onBeginPreviewDragComponent',
         end_preview_drag_component: '_onEndPreviewDragComponent',
-        pager_changed: '_onPagerChanged',
     }),
     events: _.extend({}, AbstractEditorManager.prototype.events, {
         'click .o_web_studio_report_print': '_onPrintReport',
@@ -75,7 +74,12 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         this.withPager = size > 1;
         if (this.withPager) {
             // only display the pager if useful
-            this.pager = new ComponentWrapper(this, Pager, { currentMinimum, limit, size });
+            this.pager = new ComponentWrapper(this, Pager, {
+                currentMinimum,
+                limit,
+                size,
+                onPagerChanged: this._onPagerChanged.bind(this),
+            });
         }
     },
     /**
@@ -459,8 +463,7 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
     /**
      * @private
      */
-    _onPagerChanged: async function (ev) {
-        const { currentMinimum, limit } = ev.data;
+    _onPagerChanged: async function ({ currentMinimum, limit }) {
         this._cleanOperationsStack();
         this.env.currentId = this.env.ids[currentMinimum - 1];
         // TODO: maybe we should trigger_up and the action should handle

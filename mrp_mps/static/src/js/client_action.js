@@ -21,9 +21,6 @@ var ClientAction = AbstractAction.extend({
     loadControlPanel: true,
     withSearchBar: true,
     searchMenuTypes: ['filter', 'favorite'],
-    custom_events: _.extend({}, AbstractAction.prototype.custom_events, {
-        pager_changed: '_onPagerChanged',
-    }),
     events: {
         'change .o_mrp_mps_input_forcast_qty': '_onChangeForecast',
         'change .o_mrp_mps_input_replenish_qty': '_onChangeToReplenish',
@@ -72,65 +69,23 @@ var ClientAction = AbstractAction.extend({
     },
 
     start: async function () {
+        this.$buttons = this._renderButtons();
+        this.controlPanelProps.cp_content = { $buttons: this.$buttons };
+        this.controlPanelProps.pager = this._getPagerProps();
         await this._super(...arguments);
         if (this.state.length == 0) {
             this.$el.find('.o_mrp_mps').append($(QWeb.render('mrp_mps_nocontent_helper')));
         }
-        await this.update_cp();
-        await this.renderPager();
+        this._update_cp_buttons();
+        this._controlPanelWrapper.$el.find('.o_filter_menu').before(
+            $(QWeb.render('mrp_mps_control_panel_option_buttons', {groups: this.groups}))
+        );
+        this._controlPanelWrapper.$el.find('.o_mps_mps_show_line').on('click', this._onChangeCompany.bind(this));
     },
 
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-
-
-    /**
-     * Create the Pager and render it. It needs the records information to determine the size.
-     * It also needs the controlPanel to be rendered in order to append the pager to it.
-     */
-    renderPager: async function () {
-        const currentMinimum = 1;
-        const limit = defaultPagerSize;
-        const size = this.recordsPager.length;
-
-        this.pager = new ComponentWrapper(this, Pager, { currentMinimum, limit, size });
-
-        await this.pager.mount(document.createDocumentFragment());
-        const pagerContainer = Object.assign(document.createElement('span'), {
-            className: 'o_mrp_mps_pager float-right',
-        });
-        pagerContainer.appendChild(this.pager.el);
-        this.$pager = pagerContainer;
-
-        this._controlPanelWrapper.el.querySelector('.o_cp_pager').append(pagerContainer);
-    },
-
-    /**
-     * Update the control panel in order to add the 'replenish' button and a
-     * custom menu with checkbox buttons in order to hide/display the different
-     * rows.
-     */
-    update_cp: async function () {
-        this.$buttons = $(QWeb.render('mrp_mps_control_panel_buttons', {groups: this.groups}));
-        this._update_cp_buttons();
-        var $replenishButton = this.$buttons.find('.o_mrp_mps_replenish');
-        $replenishButton.on('click', this._onClickReplenish.bind(this));
-        $replenishButton.on('mouseover', this._onMouseOverReplenish.bind(this));
-        $replenishButton.on('mouseout', this._onMouseOutReplenish.bind(this));
-        this.$buttons.find('.o_mrp_mps_create').on('click', this._onClickCreate.bind(this));
-        const res = await this.updateControlPanel({
-            title: _t('Master Production Schedule'),
-            cp_content: {
-                $buttons: this.$buttons,
-            },
-        });
-        this._controlPanelWrapper.$el.find('.o_filter_menu').before(
-            $(QWeb.render('mrp_mps_control_panel_option_buttons', {groups: this.groups}))
-        );
-        this._controlPanelWrapper.$el.find('.o_mps_mps_show_line').on('click', this._onChangeCompany.bind(this));
-        return res;
-    },
 
     loadFieldView: function (modelName, context, view_id, view_type, options) {
         // add the action_id to get favorite search correctly
@@ -296,6 +251,15 @@ var ClientAction = AbstractAction.extend({
         });
     },
 
+    _getPagerProps(currentMinimum = 1, limit = defaultPagerSize) {
+        return {
+            currentMinimum,
+            limit,
+            size: this.recordsPager.length,
+            onPagerChanged: this._onPagerChanged.bind(this),
+        };
+    },
+
     _getProductionScheduleState: function (productionScheduleId) {
         var self = this;
         return self._rpc({
@@ -358,6 +322,20 @@ var ClientAction = AbstractAction.extend({
                 return self._renderProductionSchedule(productionScheduleId);
             });
         });
+    },
+
+    /**
+     * Renders and returns the buttons to display in the control panel.
+     * @returns {jQuery}
+     */
+    _renderButtons() {
+        const $buttons = $(QWeb.render('mrp_mps_control_panel_buttons'));
+        var $replenishButton = $buttons.find('.o_mrp_mps_replenish');
+        $replenishButton.on('click', this._onClickReplenish.bind(this));
+        $replenishButton.on('mouseover', this._onMouseOverReplenish.bind(this));
+        $replenishButton.on('mouseout', this._onMouseOutReplenish.bind(this));
+        $buttons.find('.o_mrp_mps_create').on('click', this._onClickCreate.bind(this));
+        return $buttons;
     },
 
     /**
@@ -717,9 +695,10 @@ var ClientAction = AbstractAction.extend({
         table.find('.o_mrp_mps_hover').removeClass('o_mrp_mps_hover');
     },
 
-    _onPagerChanged: function (ev) {
-        let { currentMinimum, limit } = ev.data;
-        this.pager.update({ currentMinimum, limit });
+    _onPagerChanged: function ({ currentMinimum, limit }) {
+        this.updateControlPanel({
+            pager: this._getPagerProps(currentMinimum, limit),
+        });
         currentMinimum = currentMinimum - 1;
         this.active_ids = this.recordsPager.slice(currentMinimum, currentMinimum + limit).map(i => i.id);
         this._reloadContent();
@@ -734,12 +713,9 @@ var ClientAction = AbstractAction.extend({
      */
     _onSearch: async function (searchQuery) {
         this.domain = searchQuery.domain;
-        this.$pager.remove();
-        this.pager.destroy();
         await this._getRecordIds();
-        await this.renderPager();
         await this._reloadContent();
-        await this.updateControlPanel();
+        await this.updateControlPanel({ pager: this._getPagerProps() });
     },
 });
 

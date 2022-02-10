@@ -1,162 +1,80 @@
 /** @odoo-module **/
 
-import { loadAssets } from '@web/core/assets';
+import { useAssets } from "@web/core/assets";
+import { useService } from "@web/core/utils/hooks";
 
-const { Component } = owl;
-const { useRef, useState } = owl.hooks;
+const { Component, onWillUnmount, useEffect, useRef, useState } = owl;
 
 export class PayrollDashboardStats extends Component {
-
-    // Lifecycle
-
-    /**
-     * @override
-     */
     setup() {
+        this.actionService = useService("action");
         this.canvasRef = useRef('canvas');
-        this.state = useState(this._defaultState());
-    }
-
-    /**
-     * @override
-     */
-    async willStart() {
-        await loadAssets({
-            jsLibs: ["/web/static/lib/Chart/Chart.js"],
+        this.state = useState({ monthly: true });
+        useAssets({ jsLibs: ["/web/static/lib/Chart/Chart.js"] });
+        useEffect(() => this.renderChart());
+        onWillUnmount(() => {
+            if (this.chart) {
+                this.chart.destroy();
+            }
         });
     }
 
     /**
-     * @override
+     * @returns {string}
      */
-    willUnmount() {
-        if (this.chart) {
-            this.chart.destroy();
-        }
-    }
-
-    /**
-     * @override
-     */
-    mounted() {
-        this._renderChart();
-    }
-
-    /**
-     * @override
-     */
-    patched() {
-        this._renderChart();
-    }
-
-    // Public
-
-    /**
-     * @override
-     */
-    formatHelp() {
+    get tooltipInfo() {
         return JSON.stringify({
-            help: this.data.help,
-        })
+            help: this.props.help,
+        });
     }
 
-    /**
-     * @override
-     */
     toggle() {
         this.state.monthly = !this.state.monthly;
-    }
-
-    /**
-     * @returns {object} The complete data provided as props
-     */
-    get data() {
-        return this.props.data;
-    }
-
-    /**
-     * @returns {object} The graph type provided as props
-     */
-    get type() {
-        return this.props.data.type;
     }
 
     /**
      * @returns {object} The current chart data to be used depending on the state
      */
     get graphData() {
-        return this.props.data.data[this.state.monthly ? 'monthly': 'yearly'];
-    }
-
-    /**
-     * @return {object} Complete data provided as props
-     */
-    get actionData() {
-        return this.props.data.actions;
-    }
-
-    // Private
-
-    /**
-     * Executes the action given.
-     *
-     * @param {object} action
-     */
-    _doAction(action) {
-        this.trigger('do-action', {
-            action: action,
-        });
+        return this.props.data[this.state.monthly ? 'monthly': 'yearly'];
     }
 
     /**
      * Creates and binds the chart on `canvasRef`.
-     *
-     * @private
      */
-    _renderChart() {
+    renderChart() {
         if (this.chart) {
             this.chart.destroy();
         }
         const ctx = this.canvasRef.el.getContext('2d');
-        this.chart = new Chart(ctx, this._getChartConfig());
+        this.chart = new Chart(ctx, this.getChartConfig());
     }
 
     /**
-     * @private
-     * @returns {object} The default state for our component
-     */
-    _defaultState() {
-        return {
-            monthly: true,
-        }
-    }
-
-    /**
-     * @private
      * @returns {object} Chart config for the current data
      */
-    _getChartConfig() {
-        if (this.data.type === 'line') {
-            return this._getLineChartConfig();
-        } else if (this.data.type === 'bar') {
-            return this._getBarChartConfig();
-        } else if (this.data.type === 'stacked_bar') {
-            return this._getStackedBarChartConfig();
+    getChartConfig() {
+        const type = this.props.type;
+        if (type === 'line') {
+            return this.getLineChartConfig();
+        } else if (type === 'bar') {
+            return this.getBarChartConfig();
+        } else if (type === 'stacked_bar') {
+            return this.getStackedBarChartConfig();
         }
         return {};
     }
 
     /**
-     * @private
      * @returns {object} Chart config of type 'line'
      */
-    _getLineChartConfig() {
+    getLineChartConfig() {
         const data = this.graphData
         const labels = data.map(function (pt) {
             return pt.x;
         });
-        const borderColor = this.data.is_sample ? '#dddddd' : '#875a7b';
-        const backgroundColor = this.data.is_sample ? '#ebebeb' : '#dcd0d9';
+        const borderColor = this.props.is_sample ? '#dddddd' : '#875a7b';
+        const backgroundColor = this.props.is_sample ? '#ebebeb' : '#dcd0d9';
         return {
             type: 'line',
             data: {
@@ -164,7 +82,7 @@ export class PayrollDashboardStats extends Component {
                 datasets: [{
                     data: data,
                     fill: 'start',
-                    label: this.data.label,
+                    label: this.props.label,
                     backgroundColor: backgroundColor,
                     borderColor: borderColor,
                     borderWidth: 2,
@@ -199,21 +117,19 @@ export class PayrollDashboardStats extends Component {
     }
 
     /**
-     * @private
      * @returns {object} Chart config of type 'bar'
      */
-    _getBarChartConfig() {
-        const self = this;
+    getBarChartConfig() {
         const data = [];
         const labels = [];
         const backgroundColors = [];
 
-        this.graphData.forEach(function (pt) {
+        this.graphData.forEach((pt) => {
             data.push(pt.value);
             labels.push(pt.label);
-            const color = self.data.is_sample ? '#ebebeb' : (pt.type === 'past' ? '#ccbdc8' : (pt.type === 'future' ? '#a5d8d7' : '#ebebeb'));
+            const color = this.props.is_sample ? '#ebebeb' : (pt.type === 'past' ? '#ccbdc8' : (pt.type === 'future' ? '#a5d8d7' : '#ebebeb'));
             backgroundColors.push(color);
-        })
+        });
 
         return {
             type: 'bar',
@@ -222,7 +138,7 @@ export class PayrollDashboardStats extends Component {
                 datasets: [{
                     data: data,
                     fill: 'start',
-                    label: this.data.label,
+                    label: this.props.label,
                     backgroundColor: backgroundColors,
                 }],
             },
@@ -250,20 +166,18 @@ export class PayrollDashboardStats extends Component {
                     }
                 }
             }
-        }
+        };
     }
 
     /**
-     * @private
      * @returns {object} Chart config of type 'stacked bar'
      */
-    _getStackedBarChartConfig() {
-        const self = this;
+    getStackedBarChartConfig() {
         const data = [];
         const labels = [];
         const datasets = [];
         const datasets_labels = [];
-        const colors = self.data.is_sample ? ['#e7e7e7', '#dddddd', '#f0f0f0', '#fafafa'] : ['#ccbdc8', '#a5d8d7', '#ebebeb', '#ebebeb'];
+        const colors = this.props.is_sample ? ['#e7e7e7', '#dddddd', '#f0f0f0', '#fafafa'] : ['#ccbdc8', '#a5d8d7', '#ebebeb', '#ebebeb'];
 
 
         _.each(this.graphData, function(graphData, code) {

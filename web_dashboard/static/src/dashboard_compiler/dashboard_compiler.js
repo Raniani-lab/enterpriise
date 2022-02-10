@@ -177,7 +177,6 @@ export class DashboardCompiler {
         const type = node.getAttribute("type");
         view.setAttribute("t-props", `getViewWrapperProps("${type}")`);
         view.setAttribute("t-key", "subViewsRenderKey");
-        view.setAttribute("class", "o_subview");
         return view;
     }
 
@@ -222,9 +221,10 @@ export class DashboardCompiler {
             } else {
                 clickable = getModifier(node, "clickable");
             }
-            if (clickable) {
-                agg.setAttribute("t-on-change-statistic", `onStatisticChange("${aggName}")`);
-            }
+            agg.setAttribute(
+                "onStatisticChange",
+                `model.evalDomain(record, ${clickable}) and onStatisticChange.bind(this, "${aggName}") or (() => {})`
+            );
             agg.setAttribute("clickable", `model.evalDomain(record, ${clickable})`);
         }
         let compiled = agg;

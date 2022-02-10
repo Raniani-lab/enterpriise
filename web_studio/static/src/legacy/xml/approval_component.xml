@@ -8,9 +8,11 @@
     <!-- Desktop: display a popover with approval info -->
     <Popover
         t-if="!env.device.isMobile and should_display"
-        class="o_web_studio_approval"
-        title="'Approval'"
-        t-on-click="_toggleInfo">
+        class="'o_web_studio_approval'"
+        onOpened.bind="_toggleInfo"
+        onClosed.bind="_toggleInfo"
+        propagateClick="this.props.inStudio"
+        title="'Approval'">
         <t t-set-slot="opened">
             <t t-call="Studio.ApprovalComponentInfo"/>
         </t>
@@ -23,7 +25,7 @@
             <t t-call="Studio.ApprovalIcons"/>
         </div>
         <Dialog t-if="state.showInfo"
-                t-on-dialog-closed.stop="_toggleInfo"
+                onClosed.bind="_toggleInfo"
                 fullscreen="true"
                 title="'Approval'">
             <t t-call="Studio.ApprovalComponentInfo"/>
@@ -45,7 +47,7 @@
     </t>
     <!-- data fetched; display avatar for rules and entries -->
     <t t-if="state.rules.length">
-        <t t-foreach="state.rules" t-as="rule">
+        <t t-foreach="state.rules" t-as="rule" t-key="rule.id">
             <t t-if="num_rules lte 3 || (num_rules gt 3 and rule_index lt 2)">
                 <img
                     t-if="getEntry(rule.id)"
@@ -106,7 +108,7 @@
                         <button
                             class="btn btn-primary btn-sm btn-block o_web_approval_approve"
                             title="Approve"
-                            t-on-click="_setApproval(rule.id, true)"
+                            t-on-click="() => this._setApproval(rule.id, true)"
                             t-att-disabled="state.syncing || !props.resId || props.inStudio"
                             >
                             <i class="fa fa-fw fa-check"/>
@@ -116,7 +118,7 @@
                         <button
                             class="btn btn-danger btn-sm btn-block o_web_approval_reject"
                             title="Reject"
-                            t-on-click="_setApproval(rule.id, false)"
+                            t-on-click="() => this._setApproval(rule.id, false)"
                             t-att-disabled="state.syncing || !props.resId || props.inStudio"
                             >
                             <i class="fa fa-fw fa-times"/>
@@ -147,7 +149,7 @@
                         <button
                             class="btn btn-secondary btn-sm btn-block o_web_approval_cancel"
                             title="Revoke"
-                            t-on-click="_cancelApproval(rule.id)"
+                            t-on-click="(ev) => this._cancelApproval(rule.id)"
                             t-att-disabled="state.syncing || props.inStudio"
                             >
                             <i class="fa fa-fw fa-undo"/>

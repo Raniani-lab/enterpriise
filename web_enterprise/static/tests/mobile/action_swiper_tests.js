@@ -5,9 +5,15 @@ import { registry } from "@web/core/registry";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 
-import { nextTick, triggerEvent, getFixture, mockTimeout } from "@web/../tests/helpers/utils";
+import {
+    mount,
+    nextTick,
+    triggerEvent,
+    getFixture,
+    mockTimeout,
+} from "@web/../tests/helpers/utils";
 
-const { Component, mount, xml } = owl;
+const { Component, xml } = owl;
 const serviceRegistry = registry.category("services");
 
 let env;
@@ -34,15 +40,14 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 </ActionSwiper>
             </div>
         `;
-        const parent = await mount(Parent, { env, target });
+        const parent = await mount(Parent, target, { env });
         assert.containsNone(parent, "div.o_actionswiper");
         assert.containsOnce(parent, "div.target-component");
     });
 
     QUnit.test("only render the necessary divs", async (assert) => {
-        await mount(ActionSwiper, {
+        await mount(ActionSwiper, target, {
             env,
-            target,
             props: {
                 onRightSwipe: {
                     action: () => {},
@@ -53,9 +58,8 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         });
         assert.containsOnce(target, "div.o_actionswiper_right_swipe_area");
         assert.containsNone(target, "div.o_actionswiper_left_swipe_area");
-        await mount(ActionSwiper, {
+        await mount(ActionSwiper, target, {
             env,
-            target,
             props: {
                 onLeftSwipe: {
                     action: () => {},
@@ -88,7 +92,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 </ActionSwiper>
             </div>
         `;
-        const parent = await mount(Parent, { env, target });
+        const parent = await mount(Parent, target, { env });
         assert.ok(
             parent.el.querySelector(".o_actionswiper").scrollHeight ===
                 parent.el.querySelector(".target-component").scrollHeight,
@@ -122,7 +126,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     </ActionSwiper>
                 </div>
             `;
-            const parent = await mount(Parent, { env, target });
+            const parent = await mount(Parent, target, { env });
             const swiper = parent.el.querySelector(".o_actionswiper");
             const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
             await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
@@ -232,7 +236,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     </ActionSwiper>
                 </div>
             `;
-            const parent = await mount(Parent, { env, target });
+            const parent = await mount(Parent, target, { env });
             const swiper = parent.el.querySelector(".o_actionswiper");
             const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
             await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
@@ -370,7 +374,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 </div>
             `;
             serviceRegistry.add("localization", makeFakeLocalizationService({ direction: "rtl" }));
-            const parent = await mount(Parent, { env, target });
+            const parent = await mount(Parent, target, { env });
             const swiper = parent.el.querySelector(".o_actionswiper");
             const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
             await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
@@ -514,7 +518,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     </ActionSwiper>
                 </div>
             `;
-            const parent = await mount(Parent, { env, target });
+            const parent = await mount(Parent, target, { env });
             const swiper = parent.el.querySelector(".o_actionswiper");
             const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
             const scrollable = parent.el.querySelector(".large-content");
@@ -694,7 +698,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
             Parent.components = { ActionSwiper };
             Parent.template = xml`
                 <div class="d-flex">
-                    <ActionSwiper 
+                    <ActionSwiper
                         onRightSwipe = "{
                             action: onRightSwipe,
                             icon: 'fa-circle',
@@ -716,7 +720,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 </div>
             `;
             serviceRegistry.add("localization", makeFakeLocalizationService({ direction: "rtl" }));
-            const parent = await mount(Parent, { env, target });
+            const parent = await mount(Parent, target, { env });
             const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
             const scrollable = parent.el.querySelector(".large-content");
             // The scrollable element is set as scrollable

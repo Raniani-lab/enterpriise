@@ -6,21 +6,24 @@ import { _lt } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { StandaloneMany2OneField } from "../../widgets/standalone_many2one_field";
 
-const { Component, css, useExternalListener, useState, xml } = owl;
-
-const STYLE = css/* scss */ `
-    .o-ir-menu-selector .o_field_many2one {
-        width: 100%;
-    }
-`;
+const { Component, onMounted, onWillStart, useState, useExternalListener, xml } = owl;
 
 export class MenuSelectorWidgetAdapter extends ComponentAdapter {
     setup() {
+        super.setup();
         this.env = Component.env;
+        onMounted(() => {
+            this.widget.getFocusableElement().focus();
+            this.widget.$el.addClass(this.props.class);
+        });
     }
 
-    mounted() {
-        this.widget.getFocusableElement().focus();
+    _trigger_up(ev) {
+        if (ev.name === "value-changed") {
+            const { value } = ev.data;
+            return this.props.onValueChanged(value);
+        }
+        super._trigger_up(ev);
     }
 
     /**
@@ -58,31 +61,29 @@ export class IrMenuSelector extends Dialog {
         // a child of this component. It's actually a direct child of "body" ¯\_(ツ)_/¯
         // The following external listener handles this.
         useExternalListener(document.body, "click", (ev) => ev.stopPropagation())
+        onWillStart(this.onWillStart);
     }
-    async willStart() {
+    async onWillStart() {
         const [{groups_id}] = await this.orm.read("res.users", [this.user.userId], ["groups_id"]);
         this.userGroups = groups_id;
     }
     _onConfirm() {
         this.props.onMenuSelected(this.selectedMenu.id);
     }
-    _onValueChanged(ev) {
-        this.selectedMenu.id = ev.detail.value;
+    _onValueChanged(value) {
+        this.selectedMenu.id = value;
     }
 }
 IrMenuSelector.components = { MenuSelectorWidgetAdapter };
-IrMenuSelector.style = STYLE;
 IrMenuSelector.title = _lt("Select an Odoo menu to link in your spreadsheet");
 IrMenuSelector.size = "model-sm";
 
 IrMenuSelector.bodyTemplate = xml/* xml */ `
     <MenuSelectorWidgetAdapter
-        class="o-ir-menu-selector"
-        t-on-click.stop=""
+        class="'o-ir-menu-selector'"
         Component="StandaloneMany2OneField"
         menuId="props.menuId"
         userGroups="userGroups"
-        t-on-value-changed="_onValueChanged"
-    />
-`;
+        onValueChanged.bind="_onValueChanged"
+    />`;
 IrMenuSelector.footerTemplate = "documents_spreadsheet.IrMenuSelectorFooter";

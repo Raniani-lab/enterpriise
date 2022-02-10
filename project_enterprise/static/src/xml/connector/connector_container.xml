@@ -9,9 +9,10 @@
                t-as="connector"
                t-key="connector_value.id">
                 <Connector t-props="connector_value"
-                           t-on-remove-button-click="_onConnectorRemoveButtonClick"
-                           t-on-reschedule-later-click="_onConnectorRescheduleLaterButtonClick"
-                           t-on-reschedule-sooner-click="_onConnectorRescheduleSoonerButtonClick"/>
+                    onRemoveButtonClick="props.onRemoveButtonClick"
+                    onRescheduleSoonerButtonClick="props.onRescheduleSoonerButtonClick"
+                    onRescheduleLaterButtonClick="props.onRescheduleLaterButtonClick"
+                />
             </t>
             <Connector t-props="newConnector" t-if="!!newConnector.source &amp;&amp; !!newConnector.target"/>
         </div>

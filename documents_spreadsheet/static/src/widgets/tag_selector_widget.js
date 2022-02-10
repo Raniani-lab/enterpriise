@@ -103,8 +103,18 @@ odoo.define("documents_spreadsheet.tag_selector_widget", function (require) {
 
     class TagSelectorWidgetAdapter extends ComponentAdapter {
         setup() {
+            super.setup();
             this.env = Component.env;
         }
+
+        _trigger_up(ev) {
+            if (ev.name === "value-changed") {
+                const { value } = ev.data;
+                return this.props.onValueChanged(value);
+            }
+            super._trigger_up(ev);
+        }
+
         /**
          * @override
          */

@@ -77,8 +77,6 @@ odoo.define('web.action_menus_mobile_tests', function (require) {
             assert.containsNone(actionMenus.el, '.dropdown-menu-left',
                 "should not display the dropdown menu");
             assert.verifySteps(['load-action', 'do-action']);
-
-            actionMenus.destroy();
         });
     });
 });

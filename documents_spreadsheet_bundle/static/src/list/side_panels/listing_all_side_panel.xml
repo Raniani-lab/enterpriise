@@ -9,7 +9,7 @@
             </div>
         </t>
         <t t-else="1">
-            <div t-on-click="selectListing(listId)" t-foreach="getters.getListIds()" t-as="listId" t-key="listId">
+            <div t-on-click="() => this.selectListing(listId)" t-foreach="getters.getListIds()" t-as="listId" t-key="listId">
                 <div class="o_side_panel_select">
                     <span t-esc="getters.getListDisplayName(listId)"/>
                 </div>

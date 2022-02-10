@@ -14,7 +14,6 @@ import { useService } from "@web/core/utils/hooks";
 const { Component, EventBus } = owl;
 const serviceRegistry = registry.category("services");
 
-
 /**
  * Specialization of a ComponentAdapter for the DialingPanel. Uses the voip
  * service to toggle the legacy DialingPanel.

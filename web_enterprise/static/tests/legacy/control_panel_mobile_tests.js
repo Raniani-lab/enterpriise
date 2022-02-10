@@ -6,15 +6,17 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
 
     const cpHelpers = require('@web/../tests/search/helpers');
     const { browser } = require("@web/core/browser/browser");
-    const { patchWithCleanup } = require("@web/../tests/helpers/utils");
+    const { patchWithCleanup, getFixture } = require("@web/../tests/helpers/utils");
     const { createControlPanel, createView } = testUtils;
 
     const { createWebClient, doAction, getActionManagerServerData } = require('@web/../tests/webclient/helpers');
 
     let serverData;
+    let target;
 
     QUnit.module('Control Panel', {
         beforeEach: function () {
+            target = getFixture();
             this.actions = [{
                 id: 1,
                 name: "Yes",
@@ -61,9 +63,9 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
 
             await doAction(webClient, 1);
 
-            assert.containsNone(document.body, '.o_control_panel .o_mobile_search',
+            assert.containsNone(target, '.o_control_panel .o_mobile_search',
                 "search options are hidden by default");
-            assert.containsOnce(webClient, '.o_control_panel .o_enable_searchview',
+            assert.containsOnce(target, '.o_control_panel .o_enable_searchview',
                 "should display a button to toggle the searchview");
         });
 
@@ -168,8 +170,6 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             assert.containsOnce(document.body, ".o_group_by_menu");
             assert.containsOnce(document.body, ".o_comparison_menu");
             assert.containsOnce(document.body, ".o_favorite_menu");
-
-            controlPanel.destroy();
         });
 
         QUnit.test('mobile search: activate a filter through quick search', async function (assert) {
@@ -226,9 +226,9 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             assert.containsNone(document.body, '.o_mobile_search');
 
             // open the search view
-            await testUtils.dom.click(webClient.el.querySelector('button.o_enable_searchview'));
+            await testUtils.dom.click(target.querySelector('button.o_enable_searchview'));
             // open it in full screen
-            await testUtils.dom.click(webClient.el.querySelector('.o_toggle_searchview_full'));
+            await testUtils.dom.click(target.querySelector('.o_toggle_searchview_full'));
 
             assert.containsOnce(document.body, '.o_mobile_search');
 

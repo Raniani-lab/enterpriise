@@ -9,10 +9,6 @@ html {
     display: flex;
     flex-flow: column nowrap;
 
-    &.o_fullscreen > header > .o_main_navbar {
-      display: none;
-    }
-
     .o_main_navbar {
       flex: 0 0 auto;
     }
@@ -81,13 +77,6 @@ html {
   // FIXME: Fix scrolling in modal on focus input due to a bug between Chrome (Android) and Bootstrap
   body.modal-open {
     position: fixed;
-  }
-
-  .o_loading > span {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    z-index: $zindex-modal + 1;
   }
 }
 

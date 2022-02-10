@@ -5,9 +5,11 @@ const { _t } = require('web.core');
 const {Markup} = require('web.utils');
 const tour = require('web_tour.tour');
 
+const { markup } = owl;
+
 tour.register('documents_account_tour', {
     url: "/web",
-    rainbowManMessage: _t("Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now."),
+    rainbowManMessage: markup(_t("Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now.")),
     sequence: 170,
 }, [{
     trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',

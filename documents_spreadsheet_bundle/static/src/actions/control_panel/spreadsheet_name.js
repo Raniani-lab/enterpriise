@@ -2,28 +2,24 @@
 
 import { UNTITLED_SPREADSHEET_NAME } from "../../o_spreadsheet/constants";
 
-const { Component, useRef, useState } = owl;
+const { Component, onMounted, useState, useRef } = owl;
 
 const WIDTH_MARGIN = 3;
 const PADDING_RIGHT = 5;
 const PADDING_LEFT = PADDING_RIGHT - WIDTH_MARGIN;
 
 export class SpreadsheetName extends Component {
-  constructor() {
-    super(...arguments);
+  setup() {
     this.placeholder = UNTITLED_SPREADSHEET_NAME;
     this.state = useState({
       inputSize: 1,
       isUntitled: this._isUntitled(this.props.name),
     });
     this.input = useRef("speadsheetNameInput");
-  }
 
-  /**
-   * @override
-   */
-  mounted() {
-    this._setInputSize(this.props.name);
+    onMounted(() => {
+      this._setInputSize(this.props.name);
+    });
   }
 
   /**
@@ -97,7 +93,7 @@ export class SpreadsheetName extends Component {
     const value = ev.target.value.trim();
     ev.target.value = value;
     this._setInputSize(value);
-    this.trigger("spreadsheet-name-changed", {
+    this.props.onSpreadsheetNameChanged({
       name: value,
     });
     ev.target.blur();
@@ -107,5 +103,9 @@ export class SpreadsheetName extends Component {
 SpreadsheetName.template = "documents_spreadsheet.SpreadsheetName";
 SpreadsheetName.props = {
   name: String,
-  isReadonly: Boolean
+  isReadonly: Boolean,
+  onSpreadsheetNameChanged: { type: Function, optional: true },
+};
+SpreadsheetName.defaultProps = {
+  onSpreadsheetNameChanged: () => {},
 };

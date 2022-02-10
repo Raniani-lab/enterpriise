@@ -2,7 +2,7 @@
 
 import { getBasicData, getBasicServerData } from "../utils/spreadsheet_test_data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { click, nextTick, legacyExtraNextTick } from "@web/../tests/helpers/utils";
+import { click, nextTick, legacyExtraNextTick, getFixture } from "@web/../tests/helpers/utils";
 import { makeView } from "@web/../tests/views/helpers";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
@@ -140,9 +140,9 @@ test("pivot with two levels of group bys in rows", async (assert) => {
                 "partner,false,search": /* xml */ `<search/>`,
             },
         },
-        actions: async (pivot) => {
-            await click(pivot.el.querySelector("tbody .o_pivot_header_cell_closed"));
-            await click(pivot.el.querySelectorAll(".dropdown-item")[2]);
+        actions: async (target) => {
+            await click(target.querySelector("tbody .o_pivot_header_cell_closed"));
+            await click(target.querySelectorAll(".dropdown-item")[2]);
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 16);
@@ -1044,9 +1044,9 @@ test("pivot with two levels of group bys in cols", async (assert) => {
                 "partner,false,search": /* xml */ `<search/>`,
             },
         },
-        actions: async (pivot) => {
-            await click(pivot.el.querySelector("thead .o_pivot_header_cell_closed"));
-            await click(pivot.el.querySelectorAll(".dropdown-item")[2]);
+        actions: async (target) => {
+            await click(target.querySelector("thead .o_pivot_header_cell_closed"));
+            await click(target.querySelectorAll(".dropdown-item")[2]);
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 20);
@@ -1095,9 +1095,9 @@ test("pivot with count as measure", async (assert) => {
                 "partner,false,search": /* xml */ `<search/>`,
             },
         },
-        actions: async (pivot) => {
-            await toggleMenu(pivot, "Measures");
-            await toggleMenuItem(pivot, "Count");
+        actions: async (target) => {
+            await toggleMenu(target, "Measures");
+            await toggleMenuItem(target, "Count");
         },
     });
     assert.strictEqual(Object.keys(getCells(model)).length, 9);
@@ -1136,9 +1136,9 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
                 "partner,false,search": /* xml */ `<search/>`,
             },
         },
-        actions: async (pivot) => {
-            await click(pivot.el.querySelector("thead .o_pivot_header_cell_closed"));
-            await click(pivot.el.querySelectorAll(".dropdown-item")[2]);
+        actions: async (target) => {
+            await click(target.querySelector("thead .o_pivot_header_cell_closed"));
+            await click(target.querySelectorAll(".dropdown-item")[2]);
         },
     });
     // 72 products * 1 groups + 1 row header + 1 total col + 1 extra empty col at the end
@@ -1219,7 +1219,8 @@ test("Can save a pivot in a new spreadsheet", async (assert) => {
         type: "ir.actions.act_window",
         views: [[false, "pivot"]],
     });
-    await click(webClient.el.querySelector(".o_pivot_add_spreadsheet"));
+    const target = getFixture();
+    await click(target.querySelector(".o_pivot_add_spreadsheet"));
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     assert.verifySteps(["create"]);
 });
@@ -1281,8 +1282,8 @@ test("Can save a pivot in existing spreadsheet", async (assert) => {
         type: "ir.actions.act_window",
         views: [[false, "pivot"]],
     });
-
-    await click(webClient.el.querySelector(".o_pivot_add_spreadsheet"));
+    const target = getFixture();
+    await click(target.querySelector(".o_pivot_add_spreadsheet"));
     await click(document.querySelector(".modal-content select"));
     document.body
         .querySelector(".modal-content option[value='1']")
@@ -1722,7 +1723,7 @@ test("Add pivot with grouping on a many2many", async function (assert) {
     assert.equal(getCellContent(model, "D1"), `=PIVOT.HEADER("1")`);
 });
 
-test("Can reopen a sheet after see records", async function (assert) {
+QUnit.test("Can reopen a sheet after see records", async function (assert) {
     assert.expect(1);
 
     const { webClient, spreadsheetAction } = await createSpreadsheetFromPivot();

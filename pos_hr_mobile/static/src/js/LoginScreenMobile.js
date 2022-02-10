@@ -6,8 +6,8 @@ odoo.define('pos_hr_mobile.LoginScreen', function (require) {
     const BarcodeScanner = require('@web_enterprise/webclient/barcode/barcode_scanner');
 
     const LoginScreenMobile = LoginScreen => class extends LoginScreen {
-        constructor() {
-            super(...arguments);
+        setup() {
+            super.setup();
             this.hasMobileScanner = BarcodeScanner.isBarcodeScannerSupported();
         }
 

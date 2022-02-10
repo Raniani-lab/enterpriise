@@ -3,11 +3,10 @@
 import widgetRegistry from "web.widget_registry";
 import widgetRegistryOwl from "web.widgetRegistry";
 import { registry } from "@web/core/registry";
-import { useEffect } from "@web/core/utils/hooks";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import { decodeObjectForTemplate } from "./dashboard_compiler/compile_helpers";
 
-const { Component, xml } = owl;
+const { Component, useEffect, useSubEnv, xml } = owl;
 
 /**
  * A Component that supports rendering `<widget />` tags in a view arch
@@ -19,7 +18,6 @@ const { Component, xml } = owl;
  */
 export class ViewWidget extends Component {
     setup() {
-        this.wowlEnv = this.env;
         this.renderId = 1;
         useEffect(() => {
             this.renderId++;
@@ -28,7 +26,7 @@ export class ViewWidget extends Component {
         const Widget = registry.category("view_widgets").get(widgetName, null);
         if (!Widget) {
             this.isLegacyOwl = true;
-            this.env = Component.env;
+            useSubEnv(Component.env);
         }
         this.Widget = Widget || widgetRegistryOwl.get(widgetName) || widgetRegistry.get(widgetName);
         this.isLegacy = !(this.Widget instanceof Component);
@@ -55,8 +53,8 @@ export class ViewWidget extends Component {
     }
 }
 ViewWidget.template = xml/*xml*/ `<t>
-    <ComponentAdapter t-if="isLegacy" Component="Widget" widgetArgs="widgetArgs" t-key="renderId" class="o_widget" />
-    <t t-else="" t-component="Widget" t-props="widgetProps" class="o_widget" />
+    <ComponentAdapter t-if="isLegacy" Component="Widget" widgetArgs="widgetArgs" t-key="renderId"/>
+    <t t-else="" t-component="Widget" t-props="widgetProps"/>
 </t>
 `;
 ViewWidget.components = { ComponentAdapter };

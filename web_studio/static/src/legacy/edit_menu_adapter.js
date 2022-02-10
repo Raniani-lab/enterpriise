@@ -4,14 +4,23 @@ import { useService } from "@web/core/utils/hooks";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import { MenuItem } from "web_studio.EditMenu";
 
-const { Component, onPatched, onWillUpdateProps, xml } = owl;
+const { Component, onMounted, onPatched, onWillUpdateProps, xml } = owl;
 
 class EditMenuItemAdapter extends ComponentAdapter {
-    constructor(parent, props) {
+    constructor(props) {
         props.Component = MenuItem;
         super(...arguments);
+    }
+
+    setup() {
+        super.setup();
         this.menus = useService("menu");
         this.env = Component.env;
+        onMounted(() => {
+            if (this.props.keepOpen) {
+                this.widget.editMenu(this.props.scrollToBottom);
+            }
+        });
     }
 
     get currentMenuId() {
@@ -25,12 +34,13 @@ class EditMenuItemAdapter extends ComponentAdapter {
     get widgetArgs() {
         return [this.legacyMenuData, this.currentMenuId];
     }
-    mounted() {
-        super.mounted(...arguments);
-        if (this.props.keepOpen) {
-            this.widget.editMenu(this.props.scrollToBottom);
+    _trigger_up(ev) {
+        if (ev.name === "reload_menu_data") {
+            this.props.reloadMenuData(ev);
         }
+        super._trigger_up(...arguments);
     }
+
     updateWidget() {}
     renderWidget() {}
 }
@@ -40,18 +50,20 @@ class EditMenuItemAdapter extends ComponentAdapter {
 // the legacy widget's code
 // - allow to support the keepopen, and autoscroll features (yet to come)
 export class EditMenuItem extends Component {
-    constructor() {
-        super(...arguments);
-        this.localId = 0;
+    setup() {
         this.menus = useService("menu");
-        onWillUpdateProps(() => this.localId++);
+        this.localId = 0;
         this.editMenuParams = {};
+
+        onWillUpdateProps(() => {
+            this.localId++;
+        });
         onPatched(() => {
             this.editMenuParams = {};
         });
     }
     reloadMenuData(ev) {
-        const { keep_open, scroll_to_bottom } = ev.detail;
+        const { keep_open, scroll_to_bottom } = ev.data;
         this.editMenuParams = { keepOpen: keep_open, scrollToBottom: scroll_to_bottom };
         this.menus.reload();
     }
@@ -60,6 +72,6 @@ EditMenuItem.components = { EditMenuItemAdapter };
 EditMenuItem.template = xml`
   <t>
     <div t-if="!menus.getCurrentApp()"/>
-    <t t-else="" t-component="EditMenuItemAdapter" t-props="editMenuParams" t-key="localId" t-on-reload-menu-data="reloadMenuData" />
+    <EditMenuItemAdapter t-else="" t-key="localId" t-props="editMenuParams" reloadMenuData.bind="reloadMenuData" />
   </t>
 `;

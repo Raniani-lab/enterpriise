@@ -9,7 +9,6 @@ const { Component } = owl;
 
 export class SwiperView extends Component {
     setup() {
-        super.setup();
         useUpdate({
             func: () => {
                 // to observe useful values outside of slot, to guarantee proper re-render

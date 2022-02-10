@@ -8,14 +8,15 @@ import { base64ToJson, jsonToBase64 } from "../../o_spreadsheet/helpers";
 import { useService } from "@web/core/utils/hooks";
 import { AbstractSpreadsheetAction } from "../abstract_spreadsheet_action";
 
-const { useRef } = owl;
-
 export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
   setup() {
     super.setup();
     this.notificationMessage = this.env._t("New spreadsheet template created");
     this.orm = useService("orm");
-    this.spreadsheetRef = useRef("spreadsheet");
+  }
+
+  exposeSpreadsheet(spreadsheet) {
+    this.spreadsheet = spreadsheet;
   }
 
   _initializeWith(record) {
@@ -53,8 +54,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
    * @param {Object} values.data exported spreadsheet data
    * @param {string} values.thumbnail spreadsheet thumbnail
    */
-  async _onSpreadsheetSaved(ev) {
-    const { data, thumbnail } = ev.detail;
+  async _onSpreadsheetSaved({ data, thumbnail }) {
     await this.orm.write("spreadsheet.template", [this.resId], {
       data: jsonToBase64(data),
       thumbnail,
@@ -63,11 +63,11 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
 
   /**
    * Save a new name for the given template
-   * @param {number} spreadsheetTemplateId
-   * @param {string} name
+   * @param {Object} detail
+   * @param {string} detail.name
    */
-  async _onSpreadSheetNameChanged(ev) {
-    const { name } = ev.detail;
+  async _onSpreadSheetNameChanged(detail) {
+    const { name } = detail;
     this.state.spreadsheetName = name;
     this.env.config.setDisplayName(this.state.spreadsheetName);
     await this.orm.write("spreadsheet.template", [this.resId], {
@@ -75,8 +75,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
     });
   }
 
-  async _onMakeCopy(ev) {
-    const { data, thumbnail } = ev.detail;
+  async _onMakeCopy({ data, thumbnail }) {
     const defaultValues = {
       data: jsonToBase64(data),
       thumbnail,

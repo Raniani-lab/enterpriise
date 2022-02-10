@@ -11,6 +11,8 @@ var concurrency = require('web.concurrency');
 var qweb = core.qweb;
 var _t = core._t;
 
+const { markup } = owl;
+
 var GridController = AbstractController.extend({
     custom_events: Object.assign({}, AbstractController.prototype.custom_events, {
         'create_inline': '_addLine',
@@ -318,7 +320,7 @@ var GridController = AbstractController.extend({
             ],
             domain: cell.domain,
             context: ctx,
-            help: "<p class='o_view_nocontent_smiling_face'>No activities found</p>",
+            help: markup("<p class='o_view_nocontent_smiling_face'>No activities found</p>"),
         });
     },
     /**

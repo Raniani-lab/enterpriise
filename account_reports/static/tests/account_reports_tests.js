@@ -3,12 +3,13 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
 
     const ControlPanel = require('web.ControlPanel');
     const testUtils = require("web.test_utils");
-    const { patch, unpatch } = require("web.utils");
     const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
-    const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+    const { legacyExtraNextTick, getFixture, patchWithCleanup, destroy } = require("@web/../tests/helpers/utils");
 
     const { dom } = testUtils;
+    const { onMounted, onWillUnmount } = owl;
 
+    let target = getFixture();
     QUnit.module('Account Reports', {
         beforeEach: function () {
             this.models = {
@@ -53,6 +54,7 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
                     return Promise.resolve("");
                 }
             }
+            target = getFixture();
         }
     }, () => {
         QUnit.test("mounted is called once when returning on 'Account Reports' from breadcrumb", async function(assert) {
@@ -60,18 +62,18 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
             assert.expect(7);
 
             let mountCount = 0;
+            patchWithCleanup(ControlPanel.prototype, {
+                setup() {
+                    this._super();
+                    onMounted(() => {
+                        mountCount = mountCount + 1;
+                        this.__uniqueId = mountCount;
+                        assert.step(`mounted ${this.__uniqueId}`);
+                    });
 
-            patch(ControlPanel.prototype, 'test.ControlPanel', {
-                mounted() {
-                    mountCount = mountCount + 1;
-                    this.__uniqueId = mountCount;
-                    assert.step(`mounted ${this.__uniqueId}`);
-                    this.__superMounted = this._super.bind(this);
-                    this.__superMounted(...arguments);
-                },
-                willUnmount() {
-                    assert.step(`willUnmount ${this.__uniqueId}`);
-                    this.__superMounted(...arguments);
+                    onWillUnmount(() => {
+                        assert.step(`willUnmount ${this.__uniqueId}`);
+                    });
                 }
             });
 
@@ -82,11 +84,11 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
             });
 
             await doAction(webClient, 42);
-            await dom.click($(webClient.el).find('a[action="go_to_details"]'));
+            await dom.click($(target).find('a[action="go_to_details"]'));
             await legacyExtraNextTick();
-            await dom.click($(webClient.el).find('.breadcrumb-item:first'));
+            await dom.click($(target).find('.breadcrumb-item:first'));
             await legacyExtraNextTick();
-            webClient.destroy();
+            destroy(webClient);
 
             assert.verifySteps([
                 'mounted 1',
@@ -96,8 +98,6 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
                 'mounted 3',
                 'willUnmount 3',
             ]);
-
-            unpatch(ControlPanel.prototype, 'test.ControlPanel');
         });
 
         QUnit.test("recomputeHeader is unregistered when leaving the 'Account Reports' view", async function (assert) {
@@ -110,11 +110,10 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
             });
 
             await doAction(webClient, 42);
-            await dom.click($(webClient.el).find('a[action="go_to_details"]'));
+            await dom.click($(target).find('a[action="go_to_details"]'));
             await legacyExtraNextTick();
             $(window).trigger('resize');
             assert.ok(true);
-            webClient.destroy();
         });
     });
 

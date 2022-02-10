@@ -4,13 +4,14 @@ import ListView from "web.ListView";
 import testUtils from "web.test_utils";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
 import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/components/insert_list_spreadsheet_menu";
-import { click, nextTick } from "@web/../tests/helpers/utils";
+import { click, nextTick, getFixture } from "@web/../tests/helpers/utils";
 import { spawnListViewForSpreadsheet } from "../utils/list_helpers";
 
 const createView = testUtils.createView;
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 const { modal } = testUtils;
 
+let target;
 QUnit.module(
     "documents_spreadsheet > insert_list_spreadsheet_menu",
     {
@@ -28,6 +29,7 @@ QUnit.module(
                     records: [{ id: 1, foo: "yop" }],
                 },
             };
+            target = getFixture();
         },
     },
     function () {
@@ -49,7 +51,8 @@ QUnit.module(
 
         QUnit.test("Can save a list in a new spreadsheet", async (assert) => {
             assert.expect(2);
-            const webClient = await spawnListViewForSpreadsheet({
+
+            await spawnListViewForSpreadsheet({
                 mockRPC: async function (route, args) {
                     if (args.method === "create" && args.model === "documents.document") {
                         assert.step("create");
@@ -57,8 +60,8 @@ QUnit.module(
                 },
             });
 
-            await click(webClient.el.querySelector(".o_favorite_menu button"));
-            await click(webClient.el.querySelector(".o_insert_list_spreadsheet_menu"));
+            await click(target.querySelector(".o_favorite_menu button"));
+            await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             await modal.clickButton("Confirm");
             await nextTick();
             assert.verifySteps(["create"]);
@@ -67,7 +70,7 @@ QUnit.module(
         QUnit.test("Can save a list in existing spreadsheet", async (assert) => {
             assert.expect(3);
 
-            const webClient = await spawnListViewForSpreadsheet({
+            await spawnListViewForSpreadsheet({
                 mockRPC: async function (route, args) {
                     if (args.model === "documents.document") {
                         assert.step(args.method);
@@ -79,8 +82,8 @@ QUnit.module(
                 },
             });
 
-            await click(webClient.el.querySelector(".o_favorite_menu button"));
-            await click(webClient.el.querySelector(".o_insert_list_spreadsheet_menu"));
+            await click(target.querySelector(".o_favorite_menu button"));
+            await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             document.body
                 .querySelector(".modal-content option[value='1']")
                 .setAttribute("selected", "selected");

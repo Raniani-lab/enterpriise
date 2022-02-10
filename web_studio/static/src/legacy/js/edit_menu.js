@@ -5,7 +5,6 @@ const CommonMenuDialog = require('web_studio.CommonMenuDialog');
 var config = require('web.config');
 var core = require('web.core');
 var Dialog = require('web.Dialog');
-var FieldManagerMixin = require('web.FieldManagerMixin');
 var form_common = require('web.view_dialogs');
 var relational_fields = require('web.relational_fields');
 var session = require('web.session');

@@ -3,7 +3,7 @@
 
 import { registry } from "@web/core/registry";
 
-const { loadJS } = owl;
+import { loadJS } from "@web/core/assets";
 const actionRegistry = registry.category('actions');
 /* global OdooFin */
 

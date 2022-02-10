@@ -677,7 +677,7 @@ var Image = AbstractNewBuildingBlock.extend({
                     // But we want only a relative path
                     // https://www.w3schools.com/jsref/prop_img_src.asp
                     // We indeed expect only one image at this point
-                    value = el.attributes.src.value;
+                    value = el.attributes.src && el.attributes.src.value;
                 });
                 dialog.on('closed', self, function () {
                     if (value) {

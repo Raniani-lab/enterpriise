@@ -6,16 +6,17 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
     const TimerHeaderComponent = require('timesheet_grid.TimerHeaderComponent');
     const TimerStartComponent = require('timesheet_grid.TimerStartComponent');
 
-    const { useExternalListener, useRef, useState } = owl;
+    const { EventBus, onMounted, onWillUpdateProps, useState, useExternalListener } = owl;
 
     class TimerGridRenderer extends GridRenderer {
-        constructor(parent, props) {
-            super(...arguments);
+        setup() {
+            super.setup(...arguments);
             useExternalListener(window, 'keydown', this._onKeydown);
             useExternalListener(window, 'keyup', this._onKeyup);
 
-            this.initialGridAnchor = props.context.grid_anchor;
-            this.initialGroupBy = props.groupBy;
+            this._bus = new EventBus;
+            this.initialGridAnchor = this.props.context.grid_anchor;
+            this.initialGroupBy = this.props.groupBy;
 
             this.stateTimer = useState({
                 taskId: undefined,
@@ -30,21 +31,20 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
                 readOnly: false,
                 projectWarning: false,
             });
-            this.timerHeader = useRef('timerHeader');
             this.timesheetId = false;
             this._onChangeProjectTaskDebounce = _.debounce(this._setProjectTask.bind(this), 500);
-        }
-        mounted() {
-            super.mounted(...arguments);
-            if (this.formatType === 'float_time') {
-                this._get_running_timer();
-            }
-        }
-        async willUpdateProps(nextProps) {
-            if (nextProps.data !== this.props.data) {
-                this._match_line(nextProps.data);
-            }
-            return super.willUpdateProps(...arguments);
+
+            onMounted(() => {
+                if (this.formatType === 'float_time') {
+                    this._get_running_timer();
+                }
+            });
+
+            onWillUpdateProps(async (nextProps) => {
+                if (nextProps.data !== this.props.data) {
+                    this._match_line(nextProps.data);
+                }
+            });
         }
 
         //----------------------------------------------------------------------
@@ -116,9 +116,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
                 this.stateTimer.timerRunning = false;
                 this.stateTimer.description = '';
             }
-            if (this.timerHeader.comp.startButton.el) {
-                this.timerHeader.comp.startButton.el.focus();
-            }
+            this._bus.trigger("TIMESHEET_TIMER:focusStartButton");
             this._match_line();
         }
         async _onSetProject(data) {
@@ -198,9 +196,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
                 await this._onTimerStarted();
                 await this._onChangeProjectTaskDebounce(projectId, taskId);
             }
-            if (this.timerHeader.comp.stopButton.el) {
-                this.timerHeader.comp.stopButton.el.focus();
-            }
+            this._bus.trigger("TIMESHEET_TIMER:focusStopButton");
         }
         async _onTimerStarted() {
             this.stateTimer.timerRunning = true;
@@ -269,7 +265,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
                     time: toAdd
                 });
             }
-            this.timerHeader.comp.stopButton.el.focus();
+            this._bus.trigger("TIMESHEET_TIMER:focusStopButton");
         }
 
         //----------------------------------------------------------------------

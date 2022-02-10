@@ -1,10 +1,8 @@
 /** @odoo-module **/
 
-import { useService } from "@web/core/utils/hooks";
-
 export default class LazyBarcodeCache {
-    constructor(cacheData) {
-        this.rpc = useService('rpc');
+    constructor(cacheData, params) {
+        this.rpc = params.rpc;
         this.dbIdCache = {}; // Cache by model + id
         this.dbBarcodeCache = {}; // Cache by model + barcode
         this.missingBarcode = new Set(); // Used as a cache by `_getMissingRecord`

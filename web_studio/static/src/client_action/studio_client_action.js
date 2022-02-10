@@ -10,7 +10,7 @@ import { Editor } from "./editor/editor";
 import { StudioNavbar } from "./navbar/navbar";
 import { StudioHomeMenu } from "./studio_home_menu/studio_home_menu";
 
-const { Component } = owl;
+const { Component, onWillStart, onMounted, onPatched, onWillUnmount } = owl;
 
 export class StudioClientAction extends Component {
     setup() {
@@ -33,27 +33,31 @@ export class StudioClientAction extends Component {
         });
 
         this.AppCreatorWrapper = AppCreatorWrapper; // to remove
+
+        onWillStart(this.onWillStart);
+        onMounted(this.onMounted);
+        onPatched(this.onPatched);
+        onWillUnmount(this.onWillUnmount);
     }
 
-    willStart() {
+    onWillStart() {
         return this.studio.ready;
     }
 
-    mounted() {
+    onMounted() {
         this.studio.pushState();
         document.body.classList.add("o_in_studio"); // FIXME ?
     }
 
-    patched() {
+    onPatched() {
         this.studio.pushState();
     }
 
-    willUnmount() {
+    onWillUnmount() {
         document.body.classList.remove("o_in_studio");
     }
 
-    async onNewAppCreated(ev) {
-        const { menu_id, action_id } = ev.detail;
+    async onNewAppCreated({ action_id, menu_id }) {
         await this.menus.reload();
         this.menus.setCurrentMenu(menu_id);
         const action = await this.actionService.loadAction(action_id);

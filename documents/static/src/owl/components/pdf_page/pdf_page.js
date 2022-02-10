@@ -1,7 +1,7 @@
 odoo.define('documents.component.PdfPage', function (require) {
 'use strict';
 
-const { Component, useRef, useState } = owl;
+const { Component, onMounted, onPatched, useState, useRef } = owl;
 
 /**
  * Represents the page of a PDF.
@@ -11,23 +11,18 @@ class PdfPage extends Component {
     /**
      * @override
      */
-    constructor() {
-        super(...arguments);
+    setup() {
         this.state = useState({
             isHover: false,
             isRendered: false,
         });
         // Used to append a canvas when it has been rendered.
         this.canvasWrapperRef = useRef("canvasWrapper");
-    }
 
-    mounted() {
-        this.renderPage(this.props.canvas);
-    }
-
-    patched() {
-        this.renderPage(this.props.canvas);
-    }
+        onMounted(() => this.renderPage(this.props.canvas));
+    
+        onPatched(() => this.renderPage(this.props.canvas));
+    }   
 
     //--------------------------------------------------------------------------
     // Public
@@ -136,9 +131,31 @@ PdfPage.props = {
         type: Object,
         optional: true,
     },
-    isPreview: Boolean,
-    isSelected: Boolean,
-    pageId: String,
+    isPreview: {
+        type: Boolean,
+        optional: true,
+    },
+    isSelected: {
+        type: Boolean,
+        optional: true,
+    },
+    onPageClicked: {
+        type: Function,
+        optional: true,
+    },
+    onPageDragged: {
+        type: Function,
+        optional: true,
+    },
+    onPageDropped: {
+        type: Function,
+        optional: true,
+    },
+    onSelectClicked: {
+        type: Function,
+        optional: true,
+    },
+    pageId: String,    
 };
 
 PdfPage.template = 'documents.component.PdfPage';

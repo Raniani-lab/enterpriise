@@ -18,6 +18,7 @@ odoo.define("documents_spreadsheet.field_selector_widget", function (require) {
     class FieldSelectorAdapter extends ComponentAdapter {
 
         setup() {
+            super.setup();
             this.env = Component.env;
         }
         /**
@@ -36,6 +37,14 @@ odoo.define("documents_spreadsheet.field_selector_widget", function (require) {
                 }
             }
             return _fields;
+        }
+
+        _trigger_up(ev) {
+            if (ev.name === "field_chain_changed") {
+                const { chain } = ev.data;
+                return this.props.onFieldChainChanged(chain);
+            }
+            super._trigger_up(ev);
         }
 
         /**

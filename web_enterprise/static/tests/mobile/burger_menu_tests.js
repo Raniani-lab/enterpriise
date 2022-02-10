@@ -8,6 +8,11 @@ import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_s
 import { companyService } from "@web/webclient/company_service";
 import { makeFakeEnterpriseService } from "../mocks";
 
+/**
+ * Note: The asserts are all based on document.body (instead of getFixture() by example) because
+ * the burger menu is porteled into the dom and is not part of the qunit fixture.
+ */
+
 let serverData;
 
 const serviceRegistry = registry.category("services");
@@ -30,29 +35,29 @@ QUnit.module("Burger Menu", {
 QUnit.test("Burger menu can be opened and closed", async (assert) => {
     assert.expect(2);
 
-    const wc = await createEnterpriseWebClient({ serverData });
+    await createEnterpriseWebClient({ serverData });
 
-    await click(wc.el, ".o_mobile_menu_toggle");
-    assert.containsOnce(wc, ".o_burger_menu");
+    await click(document.body, ".o_mobile_menu_toggle");
+    assert.containsOnce(document.body, ".o_burger_menu");
 
-    await click(wc.el, ".o_burger_menu_close");
-    assert.containsNone(wc, ".o_burger_menu");
+    await click(document.body, ".o_burger_menu_close");
+    assert.containsNone(document.body, ".o_burger_menu");
 });
 
 QUnit.test("Burger Menu on home menu", async (assert) => {
     assert.expect(7);
 
-    const wc = await createEnterpriseWebClient({ serverData });
-    assert.containsNone(wc, ".o_burger_menu");
-    assert.isVisible(wc.el.querySelector(".o_home_menu"));
+    await createEnterpriseWebClient({ serverData });
+    assert.containsNone(document.body, ".o_burger_menu");
+    assert.isVisible(document.body.querySelector(".o_home_menu"));
 
-    await click(wc.el, ".o_mobile_menu_toggle");
-    assert.containsOnce(wc, ".o_burger_menu");
-    assert.containsOnce(wc, ".o_user_menu_mobile");
-    assert.containsOnce(wc, ".o_burger_menu_user");
-    assert.containsNone(wc, ".o_burger_menu_app");
-    await click(wc.el, ".o_burger_menu_close");
-    assert.containsNone(wc, ".o_burger_menu");
+    await click(document.body, ".o_mobile_menu_toggle");
+    assert.containsOnce(document.body, ".o_burger_menu");
+    assert.containsOnce(document.body, ".o_user_menu_mobile");
+    assert.containsOnce(document.body, ".o_burger_menu_user");
+    assert.containsNone(document.body, ".o_burger_menu_app");
+    await click(document.body, ".o_burger_menu_close");
+    assert.containsNone(document.body, ".o_burger_menu");
 });
 
 QUnit.test("Burger Menu on an App", async (assert) => {
@@ -70,28 +75,35 @@ QUnit.test("Burger Menu on an App", async (assert) => {
         webIcon: false,
     };
 
-    const wc = await createEnterpriseWebClient({ serverData });
-    await click(wc.el, ".o_app:first-of-type");
+    await createEnterpriseWebClient({ serverData });
+    await click(document.body, ".o_app:first-of-type");
     await legacyExtraNextTick();
 
-    assert.containsNone(wc, ".o_burger_menu");
-    assert.isNotVisible(wc.el.querySelector(".o_home_menu"));
+    assert.containsNone(document.body, ".o_burger_menu");
+    assert.isNotVisible(document.body.querySelector(".o_home_menu"));
 
-    await click(wc.el, ".o_mobile_menu_toggle");
-    assert.containsOnce(wc, ".o_burger_menu");
-    assert.containsOnce(wc, ".o_burger_menu .o_burger_menu_app .o_menu_sections .dropdown-item");
+    await click(document.body, ".o_mobile_menu_toggle");
+    assert.containsOnce(document.body, ".o_burger_menu");
+    assert.containsOnce(
+        document.body,
+        ".o_burger_menu .o_burger_menu_app .o_menu_sections .dropdown-item"
+    );
     assert.strictEqual(
-        wc.el.querySelector(".o_burger_menu .o_burger_menu_app .o_menu_sections .dropdown-item")
-            .textContent,
+        document.body.querySelector(
+            ".o_burger_menu .o_burger_menu_app .o_menu_sections .dropdown-item"
+        ).textContent,
         "SubMenu"
     );
-    assert.hasClass(wc.el.querySelector(".o_burger_menu_content"), "o_burger_menu_dark");
+    assert.hasClass(document.body.querySelector(".o_burger_menu_content"), "o_burger_menu_dark");
 
-    await click(wc.el, ".o_burger_menu_topbar");
-    assert.doesNotHaveClass(wc.el.querySelector(".o_burger_menu_content"), "o_burger_menu_dark");
+    await click(document.body, ".o_burger_menu_topbar");
+    assert.doesNotHaveClass(
+        document.body.querySelector(".o_burger_menu_content"),
+        "o_burger_menu_dark"
+    );
 
-    await click(wc.el, ".o_burger_menu_topbar");
-    assert.hasClass(wc.el.querySelector(".o_burger_menu_content"), "o_burger_menu_dark");
+    await click(document.body, ".o_burger_menu_topbar");
+    assert.hasClass(document.body.querySelector(".o_burger_menu_content"), "o_burger_menu_dark");
 });
 
 QUnit.test("Burger menu closes when an action is requested", async (assert) => {
@@ -99,11 +111,11 @@ QUnit.test("Burger menu closes when an action is requested", async (assert) => {
 
     const wc = await createEnterpriseWebClient({ serverData });
 
-    await click(wc.el, ".o_mobile_menu_toggle");
-    assert.containsOnce(wc, ".o_burger_menu");
+    await click(document.body, ".o_mobile_menu_toggle");
+    assert.containsOnce(document.body, ".o_burger_menu");
 
     await doAction(wc, 1);
     await legacyExtraNextTick();
-    assert.containsNone(wc, ".o_burger_menu");
-    assert.containsOnce(wc, ".o_kanban_view");
+    assert.containsNone(document.body, ".o_burger_menu");
+    assert.containsOnce(document.body, ".o_kanban_view");
 });

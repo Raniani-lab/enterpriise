@@ -10,30 +10,29 @@
                     </h2>
                 </div>
                 <div class="col-2">
-                    <button t-if="state.mode === 'readonly'" string="Edit" class="btn btn-primary float-right"
-                        t-on-click="_onClickEdit">
+                    <button t-if="state.mode === 'readonly'" string="Edit" class="btn btn-primary float-right" t-on-click="onClickEdit">
                         Edit
                     </button>
-                    <button t-if="state.mode === 'edit'" string="Save" class="btn btn-primary float-right"
-                        t-on-click="_onClickSave">
+                    <button t-if="state.mode === 'edit'" string="Save" class="btn btn-primary float-right" t-on-click="onClickSave">
                         Save
                     </button>
                 </div>
             </div>
             <div class="content">
                 <div class="o_hr_payroll_todo_tabs row flex-wrap m-0">
-                    <t t-foreach="notes" t-as="noteData" t-key="noteData['id']">
-                        <div t-att-class="'o_hr_payroll_todo_tab oe_kanban_color_' + noteData['color'] + ((noteData['id'] == state.activeNoteId) ? ' selected' : '')" t-on-click="_onClickNoteTab(noteData['id'])">
+                    <t t-foreach="props.notes" t-as="noteData" t-key="noteData.id">
+                        <div t-att-class="'o_hr_payroll_todo_tab oe_kanban_color_' + noteData.color + ((noteData.id == state.activeNoteId) ? ' selected' : '')"
+                            t-on-click="() => this.onClickNoteTab(noteData.id)">
                             <h3><t t-esc="(noteData.name || 'untitled').substring(0, 30)"/></h3>
                         </div>
                     </t>
-                    <div class="o_hr_payroll_todo_tab o_hr_payroll_todo_create" t-on-click="_onClickCreateNote">
+                    <div class="o_hr_payroll_todo_tab o_hr_payroll_todo_create" t-on-click="onClickCreateNote">
                         <span title="Create new todo note" class="fa fa-plus"/>
                     </div>
                 </div>
                 <div class="o_hr_payroll_todo_value">
                     <t t-if="state.mode !== ''">
-                        <PayrollDashboardTodoAdapter Component="FieldHtml" t-ref="memo_display" widgetArgs="noteWidgetArgs"/>
+                        <PayrollDashboardTodoAdapter Component="FieldHtml" setWidget.bind="setFieldHtmlWidget" widgetArgs="noteWidgetArgs"/>
                     </t>
                 </div>
             </div>

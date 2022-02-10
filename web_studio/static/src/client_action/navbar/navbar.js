@@ -28,10 +28,10 @@ export class StudioNavbar extends EnterpriseNavBar {
     closeStudio() {
         this.studio.leave();
     }
-    async onNavBarDropdownItemSelection(ev) {
-        if (ev.detail.payload.actionID) {
+    async onNavBarDropdownItemSelection(menu) {
+        if (menu.actionID) {
             try {
-                await this.studio.open(this.studio.MODES.EDITOR, ev.detail.payload.actionID);
+                await this.studio.open(this.studio.MODES.EDITOR, menu.actionID);
             } catch (e) {
                 if (e instanceof NotEditableActionError) {
                     const options = { type: "danger" };

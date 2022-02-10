@@ -1,7 +1,13 @@
 /** @odoo-module */
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { patchWithCleanup, click, nextTick } from "@web/../tests/helpers/utils";
+import {
+    patchWithCleanup,
+    click,
+    nextTick,
+    getFixture,
+    makeDeferred,
+} from "@web/../tests/helpers/utils";
 import { getBasicServerData } from "./spreadsheet_test_data";
 import { SpreadsheetAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_action";
 import {
@@ -61,10 +67,14 @@ export async function spawnPivotViewForSpreadsheet(params = {}) {
  */
 export async function createSpreadsheetFromPivot(params = {}) {
     let spreadsheetAction = {};
+    const def = makeDeferred();
     patchWithCleanup(SpreadsheetAction.prototype, {
         setup() {
             this._super();
             spreadsheetAction = this;
+            owl.onMounted(() => {
+                def.resolve();
+            });
         },
     });
     let { webClient } = params;
@@ -85,10 +95,11 @@ export async function createSpreadsheetFromPivot(params = {}) {
             domain: params.domain,
         });
     }
+    const target = getFixture();
     if (params.actions) {
-        await params.actions(webClient);
+        await params.actions(target);
     }
-    await click(webClient.el.querySelector(".o_pivot_add_spreadsheet"));
+    await click(target.querySelector(".o_pivot_add_spreadsheet"));
     if (params.documentId) {
         await click(document.querySelector(".modal-content select"));
         document.body
@@ -96,6 +107,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
             .setAttribute("selected", "selected");
     }
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
+    await def;
     await nextTick();
     const model = getSpreadsheetActionModel(spreadsheetAction);
     await model.waitForIdle();

@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import FavoriteMenu from "web.FavoriteMenu";
 import pyUtils from "web.py_utils";
 import Domain from "web.Domain";
@@ -13,8 +14,7 @@ const { Component } = owl;
 
 
 export class InsertViewSpreadsheet extends Component {
-    constructor() {
-        super(...arguments);
+    setup() {
         this.model = useModel("searchModel");
         this.notification = useService("notification");
     }
@@ -103,5 +103,6 @@ export class InsertViewSpreadsheet extends Component {
 
 InsertViewSpreadsheet.props = {};
 InsertViewSpreadsheet.template = "documents_spreadsheet.InsertActionSpreadsheet";
+InsertViewSpreadsheet.components = { DropdownItem };
 
 FavoriteMenu.registry.add("insert-action-link-in-spreadsheet", InsertViewSpreadsheet, 1);

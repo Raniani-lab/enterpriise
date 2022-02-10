@@ -1,40 +1,72 @@
 /** @odoo-module **/
 
+import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator";
 import { StudioHomeMenu } from "@web_studio/client_action/studio_home_menu/studio_home_menu";
 import { MODES } from "@web_studio/studio_service";
 
 import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
+
 import {
     fakeCommandService,
     makeFakeNotificationService,
+    makeFakeRPCService,
 } from "@web/../tests/helpers/mock_services";
 import { userService } from "@web/core/user_service";
 import { uiService } from "@web/core/ui/ui_service";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
-
-import { getFixture } from "@web/../tests/helpers/utils";
+import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
+import { click, getFixture, mount } from "@web/../tests/helpers/utils";
+import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
 
-import testUtils from "web.test_utils";
-
-import { dialogService } from "@web/core/dialog/dialog_service";
-import { makeFakeRPCService } from "@web/../tests/helpers/mock_services";
-
-const { Component, EventBus, mount, useRef, xml } = owl;
+const { Component, EventBus, xml } = owl;
 const serviceRegistry = registry.category("services");
+
+const genericHomeMenuProps = {
+    apps: [
+        {
+            actionID: 121,
+            id: 1,
+            appID: 1,
+            label: "Discuss",
+            parents: "",
+            webIcon: "mail,static/description/icon.png",
+            webIconData: "/web_enterprise/static/img/default_icon_app.png",
+            xmlid: "app.1",
+        },
+        {
+            actionID: 122,
+            id: 2,
+            appID: 2,
+            label: "Calendar",
+            parents: "",
+            webIcon: {
+                backgroundColor: "#C6572A",
+                color: "#FFFFFF",
+                iconClass: "fa fa-diamond",
+            },
+            xmlid: "app.2",
+        },
+        {
+            actionID: 123,
+            id: 3,
+            appID: 3,
+            label: "Contacts",
+            parents: "",
+            webIcon: false,
+            webIconData: "/web_enterprise/static/img/default_icon_app.png",
+            xmlid: "app.3",
+        },
+    ],
+};
 
 // -----------------------------------------------------------------------------
 // Helpers
 // -----------------------------------------------------------------------------
 
-async function createStudioHomeMenu(homeMenuProps) {
+const createStudioHomeMenu = async () => {
     class Parent extends Component {
-        constructor() {
-            super(...arguments);
-            this.homeMenuRef = useRef("home-menu");
-            this.homeMenuProps = homeMenuProps;
-        }
         get DialogContainer() {
             return registry.category("main_components").get("DialogContainer");
         }
@@ -42,28 +74,30 @@ async function createStudioHomeMenu(homeMenuProps) {
     Parent.components = { StudioHomeMenu };
     Parent.template = xml`
         <div>
-            <StudioHomeMenu t-ref="home-menu" t-props="homeMenuProps"/>
-            <div class="o_dialog_container"/>
-            <t t-component="DialogContainer.Component" t-props="DialogContainer.props"/>
+            <StudioHomeMenu t-props="props.homeMenuProps" />
+            <div class="o_dialog_container" />
+            <t t-component="DialogContainer.Component" t-props="DialogContainer.props" />
         </div>`;
+
     const env = await makeTestEnv();
     const target = getFixture();
-    const parent = await mount(Parent, { env, target });
-    return {
-        studioHomeMenu: parent.homeMenuRef.comp,
-        destroy: parent.destroy.bind(parent),
-    };
-}
+    await mount(Parent, target, { env, props: { homeMenuProps: { ...genericHomeMenuProps } } });
+    return target;
+};
 
 // -----------------------------------------------------------------------------
 // Tests
 // -----------------------------------------------------------------------------
 
-let homeMenuProps;
 let bus;
 
 QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
+        IconCreator.enableTransitions = false;
+        registerCleanup(() => {
+            IconCreator.enableTransitions = true;
+        });
+
         bus = new EventBus();
 
         const fakeEnterpriseService = makeFakeEnterpriseService();
@@ -94,8 +128,8 @@ QUnit.module("Studio", (hooks) => {
             start() {
                 return {
                     MODES,
-                    open() {
-                        bus.trigger("studio:open", ...arguments);
+                    open(...args) {
+                        bus.trigger("studio:open", args);
                     },
                 };
             },
@@ -117,72 +151,35 @@ QUnit.module("Studio", (hooks) => {
         serviceRegistry.add("dialog", dialogService);
         serviceRegistry.add("ui", uiService);
         serviceRegistry.add("command", fakeCommandService);
-        homeMenuProps = {
-            apps: [
-                {
-                    actionID: 121,
-                    id: 1,
-                    appID: 1,
-                    label: "Discuss",
-                    parents: "",
-                    webIcon: "mail,static/description/icon.png",
-                    webIconData: "/web_enterprise/static/img/default_icon_app.png",
-                    xmlid: "app.1",
-                },
-                {
-                    actionID: 122,
-                    id: 2,
-                    appID: 2,
-                    label: "Calendar",
-                    parents: "",
-                    webIcon: {
-                        backgroundColor: "#C6572A",
-                        color: "#FFFFFF",
-                        iconClass: "fa fa-diamond",
-                    },
-                    xmlid: "app.2",
-                },
-                {
-                    actionID: 123,
-                    id: 3,
-                    appID: 3,
-                    label: "Contacts",
-                    parents: "",
-                    webIcon: false,
-                    webIconData: "/web_enterprise/static/img/default_icon_app.png",
-                    xmlid: "app.3",
-                },
-            ],
-        };
     });
 
     QUnit.module("StudioHomeMenu");
 
-    QUnit.test("simple rendering", async function (assert) {
+    QUnit.test("simple rendering", async (assert) => {
         assert.expect(20);
 
-        const { studioHomeMenu, destroy } = await createStudioHomeMenu(homeMenuProps);
+        const target = await createStudioHomeMenu();
 
         // Main div
-        assert.hasClass(studioHomeMenu.el, "o_home_menu");
+        assert.containsOnce(target, ".o_home_menu");
 
         // Hidden elements
         assert.isNotVisible(
-            studioHomeMenu.el.querySelector(".database_expiration_panel"),
+            target.querySelector(".database_expiration_panel"),
             "Expiration panel should not be visible"
         );
 
         // App list
-        assert.containsOnce(studioHomeMenu.el, "div.o_apps");
+        assert.containsOnce(target, "div.o_apps");
         assert.containsN(
-            studioHomeMenu.el,
+            target,
             "div.o_apps > a.o_app.o_menuitem",
             4,
             "should contain 3 normal app icons + the new app button"
         );
 
         // App with image
-        const firstApp = studioHomeMenu.el.querySelector("div.o_apps > a.o_app.o_menuitem");
+        const firstApp = target.querySelector("div.o_apps > a.o_app.o_menuitem");
         assert.strictEqual(firstApp.dataset.menuXmlid, "app.1");
         assert.containsOnce(firstApp, "div.o_app_icon");
         assert.strictEqual(
@@ -194,7 +191,7 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(firstApp, ".o_web_studio_edit_icon i");
 
         // App with custom icon
-        const secondApp = studioHomeMenu.el.querySelectorAll("div.o_apps > a.o_app.o_menuitem")[1];
+        const secondApp = target.querySelectorAll("div.o_apps > a.o_app.o_menuitem")[1];
         assert.strictEqual(secondApp.dataset.menuXmlid, "app.2");
         assert.containsOnce(secondApp, "div.o_app_icon");
         assert.strictEqual(
@@ -212,11 +209,11 @@ QUnit.module("Studio", (hooks) => {
 
         // New app button
         assert.containsOnce(
-            studioHomeMenu.el,
+            target,
             "div.o_apps > a.o_app.o_web_studio_new_app",
             'should contain a "New App icon"'
         );
-        const newApp = studioHomeMenu.el.querySelector("a.o_app.o_web_studio_new_app");
+        const newApp = target.querySelector("a.o_app.o_web_studio_new_app");
         assert.strictEqual(
             newApp.querySelector("div.o_app_icon").style.backgroundImage,
             'url("/web_studio/static/src/img/default_icon_app.png")',
@@ -224,51 +221,44 @@ QUnit.module("Studio", (hooks) => {
         );
         assert.containsOnce(newApp, "div.o_caption");
         assert.strictEqual(newApp.querySelector("div.o_caption").innerText, "New App");
-
-        destroy();
     });
 
-    QUnit.test("Click on a normal App", async function (assert) {
-        assert.expect(3);
+    QUnit.test("Click on a normal App", async (assert) => {
+        assert.expect(2);
 
-        bus.on("studio:open", null, (mode, actionId) => {
-            assert.strictEqual(mode, MODES.EDITOR);
-            assert.strictEqual(actionId, 121);
+        bus.on("studio:open", null, (modeAndActionId) => {
+            assert.deepEqual(modeAndActionId, [MODES.EDITOR, 121]);
         });
         bus.on("menu:setCurrentMenu", null, (menuId) => {
             assert.strictEqual(menuId, 1);
         });
-        const { studioHomeMenu, destroy } = await createStudioHomeMenu(homeMenuProps);
+        const target = await createStudioHomeMenu();
 
-        await testUtils.dom.click(studioHomeMenu.el.querySelector(".o_menuitem"));
-
-        destroy();
+        await click(target.querySelector(".o_menuitem"));
     });
 
-    QUnit.test("Click on new App", async function (assert) {
+    QUnit.test("Click on new App", async (assert) => {
         assert.expect(1);
 
-        bus.on("studio:open", null, (mode) => {
+        bus.on("studio:open", null, ([mode]) => {
             assert.strictEqual(mode, MODES.APP_CREATOR);
         });
         bus.on("menu:setCurrentMenu", null, () => {
             throw new Error("should not update the current menu");
         });
-        const { studioHomeMenu, destroy } = await createStudioHomeMenu(homeMenuProps);
+        const target = await createStudioHomeMenu();
 
-        await testUtils.dom.click(studioHomeMenu.el.querySelector("a.o_app.o_web_studio_new_app"));
-
-        destroy();
+        await click(target, "a.o_app.o_web_studio_new_app");
     });
 
-    QUnit.test("Click on edit icon button", async function (assert) {
+    QUnit.test("Click on edit icon button", async (assert) => {
         assert.expect(11);
 
-        const { studioHomeMenu, destroy } = await createStudioHomeMenu(homeMenuProps);
+        const target = await createStudioHomeMenu();
 
         // TODO: we should maybe check icon visibility comes on mouse over
-        const firstEditIconButton = studioHomeMenu.el.querySelector(".o_web_studio_edit_icon i");
-        await testUtils.dom.click(firstEditIconButton);
+        const firstEditIconButton = target.querySelector(".o_web_studio_edit_icon i");
+        await click(firstEditIconButton);
 
         const dialog = document.querySelector("div.modal");
         assert.containsOnce(dialog, "header.modal-header");
@@ -295,19 +285,17 @@ QUnit.module("Studio", (hooks) => {
         assert.strictEqual(secondButton.innerText, "CANCEL");
         assert.hasClass(secondButton, "btn-secondary");
 
-        await testUtils.dom.click(secondButton);
+        await click(secondButton);
 
         assert.strictEqual(document.querySelector("div.modal"), null);
 
-        await testUtils.dom.click(firstEditIconButton);
-        await testUtils.dom.click(document.querySelector("footer button"));
+        await click(firstEditIconButton);
+        await click(document.querySelector("footer button"));
 
         assert.strictEqual(document.querySelector("div.modal"), null);
-
-        destroy();
     });
 
-    QUnit.test("edit an icon", async function (assert) {
+    QUnit.test("edit an icon", async (assert) => {
         assert.expect(3);
 
         const mockRPC = (route, args) => {
@@ -325,11 +313,11 @@ QUnit.module("Studio", (hooks) => {
         };
         registry.category("services").add("rpc", makeFakeRPCService(mockRPC), { force: true });
 
-        const { studioHomeMenu, destroy } = await createStudioHomeMenu(homeMenuProps);
+        const target = await createStudioHomeMenu();
 
-        await testUtils.dom.click(studioHomeMenu.el.querySelector(".o_web_studio_edit_icon i"));
+        await click(target.querySelector(".o_web_studio_edit_icon i"));
         const dialog = document.querySelector("div.modal");
-        await testUtils.dom.click(dialog.querySelector(".o_web_studio_upload a"));
+        await click(dialog.querySelector(".o_web_studio_upload a"));
 
         assert.doesNotHaveClass(
             dialog.querySelector(".o_web_studio_icon .o_app_icon i"),
@@ -337,17 +325,14 @@ QUnit.module("Studio", (hooks) => {
         );
 
         // Change the icon's pictogram
-        await testUtils.dom.click(dialog.querySelectorAll(".o_web_studio_selector")[2]);
-        await testUtils.dom.click(
-            dialog.querySelector(".o_web_studio_selector .fa.fa-balance-scale")
-        );
+        await click(dialog.querySelectorAll(".o_web_studio_selector")[2]);
+        await click(dialog, ".o_web_studio_selector .fa.fa-balance-scale");
 
         assert.hasClass(
             dialog.querySelector(".o_web_studio_icon .o_app_icon i"),
             "fa-balance-scale"
         );
 
-        await testUtils.dom.click(dialog.querySelector("footer button")); // trigger save
-        destroy();
+        await click(dialog.querySelector("footer button")); // trigger save
     });
 });

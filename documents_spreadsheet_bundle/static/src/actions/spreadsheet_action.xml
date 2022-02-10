@@ -5,11 +5,11 @@
     <SpreadsheetControlPanel
         spreadsheetName="state.spreadsheetName"
         isReadonly="isReadonly"
-        t-on-favorite-toggled="_onSpreadSheetFavoriteToggled"
+        onFavoriteToggled.bind="_onSpreadSheetFavoriteToggled"
         isFavorited="state.isFavorited"
         isSpreadsheetSynced="state.isSynced"
         numberOfConnectedUsers="state.numberOfConnectedUsers"
-        t-on-spreadsheet-name-changed="_onSpreadSheetNameChanged"
+        onSpreadsheetNameChanged.bind="_onSpreadSheetNameChanged"
     />
     <SpreadsheetComponent
         name="state.spreadsheetName"
@@ -21,14 +21,13 @@
         transportService="transportService"
         snapshotRequested="snapshotRequested"
         download="props.action.params &amp;&amp; props.action.params.download"
-        t-on-download="_onDownload"
-        t-on-unexpected-revision-id="_onUnexpectedRevisionId"
-        t-on-spreadsheet-sync-status="_onSpreadsheetSyncStatus"
-        t-on-make-copy="_onMakeCopy"
-        t-on-new-spreadsheet="_onNewSpreadsheet"
-        t-on-spreadsheet-saved="_onSpreadsheetSaved"
-        t-on-spreadsheet-name-changed="_onSpreadSheetNameChanged"
-        t-ref="spreadsheet"
+        onDownload.bind="_onDownload"
+        spreadsheetSyncStatus.bind="_onSpreadsheetSyncStatus"
+        onUnexpectedRevisionId.bind="_onUnexpectedRevisionId"
+        onMakeCopy.bind="_onMakeCopy"
+        onNewSpreadsheet.bind="_onNewSpreadsheet"
+        onSpreadsheetSaved.bind="_onSpreadsheetSaved"
+        exposeSpreadsheet.bind="exposeSpreadsheet"
     />
 </div>
 

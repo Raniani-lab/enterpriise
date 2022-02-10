@@ -50,7 +50,7 @@
                 <t t-foreach="props.model.data.recordGroups" t-as="groupId" t-key="groupId">
                     <div class="o-map-renderer--pin-list-group">
                         <t t-set="group" t-value="props.model.data.recordGroups[groupId]"/>
-                        <div class="o-map-renderer--pin-list-group-header" t-on-click="toggleGroup(groupId)">
+                        <div class="o-map-renderer--pin-list-group-header" t-on-click="() => this.toggleGroup(groupId)">
                             <i t-attf-class="fa fa-caret-{{ state.closedGroupIds.includes(groupId) ? 'right' : 'down' }}"/>
                             <span t-att-style="'color:' + getGroupColor(groupId)">
                                 <t t-call="web_map.pinSVG">
@@ -87,7 +87,7 @@
             <t t-set="latitude" t-value="record.partner and record.partner.partner_latitude"/>
             <t t-set="longitude" t-value="record.partner and record.partner.partner_longitude"/>
             <li t-att-class="{'o-map-renderer--pin-located': latitude and longitude}" t-att-title="(!latitude or !longitude) and 'Could not locate'">
-                <a t-if="latitude and longitude" href="" t-on-click.prevent="centerAndOpenPin(record)">
+                <a t-if="latitude and longitude" href="" t-on-click.prevent="() => this.centerAndOpenPin(record)">
                     <t t-esc="record.display_name"/>
                 </a>
                 <div t-else="" class="text-muted d-flex">
@@ -144,7 +144,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr t-foreach="fields" t-as="field">
+                    <tr t-foreach="fields" t-as="field" t-key="field.id">
                         <td class="o-map-renderer--popup-table-content-name">
                             <t t-esc="field.string"/>
                         </td>

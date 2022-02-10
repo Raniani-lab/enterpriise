@@ -3,8 +3,7 @@ odoo.define('web_enterprise.form_tests', function (require) {
 
 var FormView = require('web.FormView');
 var testUtils = require('web.test_utils');
-
-const { loadJS } = owl;
+const { loadJS } = require("@web/core/assets");
 
 var createView = testUtils.createView;
 

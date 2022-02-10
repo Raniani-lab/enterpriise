@@ -1,22 +1,28 @@
 /** @odoo-module **/
-import { useAutofocus } from "@web/core/utils/hooks";
+import { useAutofocus, useService } from "@web/core/utils/hooks";
+import { ModelConfigurator } from "@web_studio/client_action/model_configurator/model_configurator";
+import { BG_COLORS, COLORS, ICONS } from "@web_studio/utils";
 import { ComponentAdapter, ComponentWrapper, WidgetAdapterMixin } from "web.OwlCompatibility";
-import Widget from "web.Widget";
-import { COLORS, BG_COLORS, ICONS } from "@web_studio/utils";
 import { FieldMany2One } from "web.relational_fields";
 import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
-import { ModelConfigurator } from "web_studio.ModelConfigurator";
+import Widget from "web.Widget";
 import { IconCreator } from "../icon_creator/icon_creator";
 
-const { Component, useExternalListener, useState } = owl;
+const { Component, onWillStart, useExternalListener, useState } = owl;
 
 class ModelSelector extends ComponentAdapter {
-    constructor(parent, props) {
-        Object.assign(props, { Component: FieldMany2One });
-        super(parent, props);
+    constructor() {
+        Object.assign(arguments[0], { Component: FieldMany2One });
+        super(...arguments);
     }
-    updateWidget(nextProps) {}
+    updateWidget() {}
     renderWidget() {}
+    _trigger_up(ev) {
+        if (ev.name === "field_changed" && this.props.onFieldChanged) {
+            this.props.onFieldChanged(ev.data);
+        }
+        return super._trigger_up(...arguments);
+    }
 }
 
 export const AppCreatorWrapper = Widget.extend(StandaloneFieldManagerMixin, WidgetAdapterMixin, {
@@ -28,17 +34,20 @@ export const AppCreatorWrapper = Widget.extend(StandaloneFieldManagerMixin, Widg
      * and destroy it when destroyed itself.
      * @constructor
      */
-    init() {
+    init(parent, props) {
         this._super(...arguments);
         StandaloneFieldManagerMixin.init.call(this);
         this.appCreatorComponent = new ComponentWrapper(this, AppCreator, {
+            ...props,
             model: this.model,
         });
     },
 
     async start() {
-        this.$el.css("height", "100%");
-        this.$el.css("overflow", "auto");
+        Object.assign(this.el.style, {
+            height: "100%",
+            overflow: "auto",
+        });
         await this._super(...arguments);
         return this.appCreatorComponent.mount(this.el);
     },
@@ -78,8 +87,7 @@ export const AppCreatorWrapper = Widget.extend(StandaloneFieldManagerMixin, Widg
  * @extends Component
  */
 class AppCreator extends Component {
-    constructor() {
-        super(...arguments);
+    setup() {
         // TODO: Many2one component directly attached in XML. For now we have
         // to toggle it manually according to the state changes.
         this.state = useState({
@@ -97,6 +105,7 @@ class AppCreator extends Component {
             },
         });
         this.debug = Boolean(AppCreator.env.isDebug());
+        this.uiService = useService("ui");
 
         useAutofocus();
         this.invalid = useState({
@@ -104,10 +113,12 @@ class AppCreator extends Component {
             menuName: false,
             modelId: false,
         });
-        useExternalListener(window, "keydown", this._onKeydown);
+        useExternalListener(window, "keydown", this.onKeydown);
+
+        onWillStart(() => this.onWillStart());
     }
 
-    async willStart() {
+    async onWillStart() {
         const recordId = await this.props.model.makeRecord("ir.actions.act_window", [
             {
                 name: "model",
@@ -141,15 +152,14 @@ class AppCreator extends Component {
     }
 
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
      * Switch the current step and clean all invalid keys.
-     * @private
      * @param {string} step
      */
-    _changeStep(step) {
+    changeStep(step) {
         this.state.step = step;
         for (const key in this.invalid) {
             this.invalid[key] = false;
@@ -157,11 +167,10 @@ class AppCreator extends Component {
     }
 
     /**
-     * @private
      * @returns {Promise}
      */
-    async _createNewApp() {
-        this.env.services.ui.block();
+    async createNewApp() {
+        this.uiService.block();
         const iconValue =
             this.state.iconData.type === "custom_icon"
                 ? // custom icon data
@@ -186,15 +195,15 @@ class AppCreator extends Component {
                     context: this.env.session.user_context,
                 },
             });
-            this.trigger("new-app-created", result);
+            this.props.onNewAppCreated(result);
         } catch (error) {
             if (!error || !(error instanceof Error)) {
-                this._onPrevious();
+                this.onPrevious();
             } else {
                 throw error;
             }
         } finally {
-            this.env.services.ui.unblock();
+            this.uiService.unblock();
         }
     }
 
@@ -203,10 +212,9 @@ class AppCreator extends Component {
     //--------------------------------------------------------------------------
 
     /**
-     * @private
      * @param {Event} ev
      */
-    _onChecked(ev) {
+    onChecked(ev) {
         const modelChoice = ev.currentTarget.value;
         this.state.modelChoice = modelChoice;
         if (this.state.modelChoice === "new") {
@@ -215,12 +223,11 @@ class AppCreator extends Component {
     }
 
     /**
-     * @private
-     * @param {OwlEvent} ev
+     * @param {Object} detail
      */
-    _onModelIdChanged(ev) {
+    onModelIdChanged(detail) {
         if (this.state.modelChoice === "existing") {
-            this.state.modelId = ev.detail.changes.model.id;
+            this.state.modelId = detail.changes.model.id;
             this.invalid.modelId = isNaN(this.state.modelId);
         } else {
             this.state.modelId = false;
@@ -229,21 +236,19 @@ class AppCreator extends Component {
     }
 
     /**
-     * @private
-     * @param {OwlEvent} ev
+     * @param {Object} icon
      */
-    _onIconChanged(ev) {
+    onIconChanged(icon) {
         for (const key in this.state.iconData) {
             delete this.state.iconData[key];
         }
-        Object.assign(this.state.iconData, ev.detail);
+        Object.assign(this.state.iconData, icon);
     }
 
     /**
-     * @private
      * @param {InputEvent} ev
      */
-    _onInput(ev) {
+    onInput(ev) {
         const input = ev.currentTarget;
         if (this.invalid[input.id]) {
             this.invalid[input.id] = !input.value;
@@ -252,10 +257,9 @@ class AppCreator extends Component {
     }
 
     /**
-     * @private
      * @param {KeyboardEvent} ev
      */
-    _onKeydown(ev) {
+    onKeydown(ev) {
         if (
             ev.key === "Enter" &&
             !(
@@ -264,38 +268,36 @@ class AppCreator extends Component {
             )
         ) {
             ev.preventDefault();
-            this._onNext();
+            this.onNext();
         }
     }
 
     /**
      * Handle the confirmation of options in the modelconfigurator
-     * @param {OwlEvent} ev
+     * @param {Object} options
      */
-    _onConfirmOptions(ev) {
-        const options = ev.detail;
+    onConfirmOptions(options) {
         this.state.modelOptions = Object.entries(options)
             .filter((opt) => opt[1].value)
             .map((opt) => opt[0]);
-        return this._onNext();
+        return this.onNext();
     }
 
-    /**
-     * @private
-     */
-    async _onNext() {
+    async onNext() {
         switch (this.state.step) {
-            case "welcome":
-                this._changeStep("app");
+            case "welcome": {
+                this.changeStep("app");
                 break;
-            case "app":
+            }
+            case "app": {
                 if (!this.state.appName) {
                     this.invalid.appName = true;
                 } else {
-                    this._changeStep("model");
+                    this.changeStep("model");
                 }
                 break;
-            case "model":
+            }
+            case "model": {
                 if (!this.state.menuName) {
                     this.invalid.menuName = true;
                 }
@@ -310,33 +312,35 @@ class AppCreator extends Component {
                 );
                 if (isValid) {
                     if (this.state.modelChoice === "new") {
-                        this._changeStep("model_configuration");
+                        this.changeStep("model_configuration");
                     } else {
-                        this._createNewApp();
+                        this.createNewApp();
                     }
                 }
                 break;
-            case "model_configuration":
+            }
+            case "model_configuration": {
                 // no validation for this step, every configuration is valid
-                this._createNewApp();
+                this.createNewApp();
                 break;
+            }
         }
     }
 
-    /**
-     * @private
-     */
-    _onPrevious() {
+    async onPrevious() {
         switch (this.state.step) {
-            case "app":
-                this._changeStep("welcome");
+            case "app": {
+                this.changeStep("welcome");
                 break;
-            case "model":
-                this._changeStep("app");
+            }
+            case "model": {
+                this.changeStep("app");
                 break;
-            case "model_configuration":
-                this._changeStep("model");
+            }
+            case "model_configuration": {
+                this.changeStep("model");
                 break;
+            }
         }
     }
 }
@@ -344,5 +348,6 @@ class AppCreator extends Component {
 AppCreator.components = { ModelSelector, IconCreator, ModelConfigurator };
 AppCreator.props = {
     model: Object,
+    onNewAppCreated: { type: Function },
 };
 AppCreator.template = "web_studio.AppCreator";

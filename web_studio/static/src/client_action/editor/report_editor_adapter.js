@@ -7,9 +7,13 @@ import { registry } from "@web/core/registry";
 const { Component, xml } = owl;
 
 class ReportEditorAdapter extends ComponentAdapter {
-    constructor(parent, props) {
+    constructor(props) {
         props.Component = ReportEditorManager;
         super(...arguments);
+    }
+
+    setup() {
+        super.setup();
         this.actionService = useService("action");
         this.user = useService("user");
         this.rpc = useService("rpc");
@@ -23,7 +27,7 @@ class ReportEditorAdapter extends ComponentAdapter {
         return this.studio.editedReport;
     }
 
-    async willStart() {
+    async onWillStart() {
         const proms = [];
         await this._readReport();
         await this._loadEnvironment();
@@ -32,7 +36,7 @@ class ReportEditorAdapter extends ComponentAdapter {
         proms.push(this._getReportViews());
         proms.push(this._readPaperFormat());
         await Promise.all(proms);
-        return super.willStart();
+        return super.onWillStart();
     }
 
     get widgetArgs() {

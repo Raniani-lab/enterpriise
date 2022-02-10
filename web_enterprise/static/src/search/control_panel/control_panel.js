@@ -1,14 +1,17 @@
 /** @odoo-module **/
 
+import { Dropdown } from "@web/core/dropdown/dropdown";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { patch } from "@web/core/utils/patch";
 
-const { Portal, useExternalListener, useState } = owl;
+const { onMounted, useExternalListener, useState, useRef } = owl;
 const STICKY_CLASS = "o_mobile_sticky";
 
 patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
     setup() {
         this._super();
+
+        this.mobileControlPanelRef = useRef("mobile_control_panel");
 
         this.state = useState({
             showSearchBar: false,
@@ -21,13 +24,13 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
         if (!("adaptToScroll" in display) || display.adaptToScroll) {
             useExternalListener(document, "scroll", this.onScrollThrottled);
         }
-    },
-    mounted() {
-        this.oldScrollTop = 0;
-        this.initialScrollTop = document.documentElement.scrollTop;
-        this.el.style.top = "0px";
-
-        this._super();
+        onMounted(() => {
+            this.oldScrollTop = 0;
+            this.initialScrollTop = document.documentElement.scrollTop;
+            if (this.env.isSmall) {
+                this.mobileControlPanelRef.el.style.top = "0px";
+            }
+        });
     },
 
     /**
@@ -97,8 +100,5 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
 
 patch(ControlPanel, "web_enterprise.ControlPanel", {
     template: "web_enterprise.ControlPanel",
-    components: {
-        ...ControlPanel.components,
-        Portal,
-    },
+    components: { ...ControlPanel.components, Dropdown },
 });

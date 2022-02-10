@@ -4,6 +4,7 @@ import { MockServer } from "@web/../tests/helpers/mock_server";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import {
     click,
+    getFixture,
     legacyExtraNextTick,
     nextTick,
     patchDate,
@@ -47,10 +48,15 @@ import widgetRegistry from "web.widget_registry";
 const { Component, xml } = owl;
 const serviceRegistry = registry.category("services");
 
+const { markup } = owl;
+
 QUnit.module("Views", (hooks) => {
     let serverData;
+    let target;
 
     hooks.beforeEach(async () => {
+        target = getFixture();
+
         serverData = {
             models: {
                 test_report: {
@@ -165,7 +171,7 @@ QUnit.module("Views", (hooks) => {
                 </dashboard>
             `,
         });
-        assert.hasClass(dashboard.el, "o_dashboard_view");
+        assert.hasClass(dashboard.el, "o_action o_view_controller o_dashboard_view");
         assert.containsN(dashboard, ".o_group", 2, "should have rendered two groups");
         assert.hasClass(
             dashboard.el.querySelector(".o_group .o_group"),
@@ -222,6 +228,7 @@ QUnit.module("Views", (hooks) => {
         assert.expect(1);
 
         const MyWidget = Widget.extend({
+            className: "our_widget",
             init: function (parent, dataPoint) {
                 this.data = dataPoint.data;
                 this._super.apply(this, arguments);
@@ -243,7 +250,7 @@ QUnit.module("Views", (hooks) => {
             `,
         });
 
-        assert.containsOnce(dashboard, ".o_widget", "there should be a node with widget class");
+        assert.containsOnce(dashboard, ".our_widget");
     });
 
     QUnit.test("basic rendering of a pie chart widget", async function (assert) {
@@ -293,7 +300,7 @@ QUnit.module("Views", (hooks) => {
             legacyParams: { withLegacyMockServer: true },
         });
 
-        assert.strictEqual($(".o_widget").length, 1, "there should be a node with o_widget class");
+        assert.containsOnce(dashboard, ".o_pie_chart");
         const chartTitle = dashboard.el.querySelector(".o_pie_chart .o_legacy_graph_renderer label")
             .textContent;
         assert.strictEqual(
@@ -355,7 +362,7 @@ QUnit.module("Views", (hooks) => {
                 },
             });
 
-            await makeView({
+            const dashboard = await makeView({
                 type: "dashboard",
                 resModel: "test_report",
                 serverData,
@@ -391,15 +398,10 @@ QUnit.module("Views", (hooks) => {
                 },
                 legacyParams: { withLegacyMockServer: true },
             });
+            assert.containsOnce(dashboard, ".o_pie_chart");
             assert.strictEqual(
-                $(".o_widget").length,
-                1,
-                "there should be a node with o_widget class"
-            );
-            assert.strictEqual(
-                $(".o_pie_chart .o_legacy_graph_renderer label").text(),
-                "Products sold",
-                "the title of the graph should be displayed"
+                dashboard.el.querySelector(".o_pie_chart .o_legacy_graph_renderer label").innerText,
+                "Products sold"
             );
 
             const chart = pieChart.controller.renderer.componentRef.comp.chart;
@@ -427,8 +429,10 @@ QUnit.module("Views", (hooks) => {
         ];
 
         const mockRPC = async (route, args) => {
-            assert.step(args.method);
-            assert.deepEqual(args.kwargs.domain, readGroupDomains.shift());
+            if (args.method === "read_group") {
+                assert.step(args.method);
+                assert.deepEqual(args.kwargs.domain, readGroupDomains.shift());
+            }
         };
 
         const dashboard = await makeView({
@@ -457,7 +461,7 @@ QUnit.module("Views", (hooks) => {
         await toggleMenuItem(dashboard, "date: Previous period");
         assert.verifySteps(["read_group", "read_group"]);
 
-        assert.strictEqual($(".o_widget").length, 1, "there should be a node with o_widget class");
+        assert.containsOnce(dashboard, ".o_pie_chart");
         const chartTitle = $(".o_pie_chart .o_legacy_graph_renderer label").text();
         assert.strictEqual(
             chartTitle,
@@ -1922,32 +1926,28 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.strictEqual(
-            webClient.el.querySelector(".breadcrumb-item").textContent,
+            target.querySelector(".breadcrumb-item").textContent,
             "Dashboard",
             "'Dashboard' should be displayed in the breadcrumbs"
         );
 
         // activate 'Category 1' filter
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 0);
-        assert.deepEqual(getFacetTexts(webClient), ["Category 1"]);
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, 0);
+        assert.deepEqual(getFacetTexts(target), ["Category 1"]);
 
         // open graph in fullscreen
-        await click(webClient.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
+        await click(target.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
         await nextTick();
         assert.strictEqual(
-            $(webClient.el).find(".o_control_panel .breadcrumb-item:nth(1)").text(),
+            $(target).find(".o_control_panel .breadcrumb-item:nth(1)").text(),
             "Graph Analysis",
             "'Graph Analysis' should have been stacked in the breadcrumbs"
         );
-        assert.deepEqual(
-            getFacetTexts(webClient),
-            ["Category 1"],
-            "the filter should have been kept"
-        );
+        assert.deepEqual(getFacetTexts(target), ["Category 1"], "the filter should have been kept");
 
         // go back using the breadcrumbs
-        await click(webClient.el.querySelector(".breadcrumb-item.o_back_button"));
+        await click(target.querySelector(".breadcrumb-item.o_back_button"));
         await nextTick();
         assert.verifySteps([
             "initial web_read_group",
@@ -2013,28 +2013,28 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.strictEqual(
-            webClient.el.querySelector(".breadcrumb-item").textContent,
+            target.querySelector(".breadcrumb-item").textContent,
             "Dashboard",
             "'Dashboard' should be displayed in the breadcrumbs"
         );
 
         // activate 'Category 1' filter
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 0);
-        assert.deepEqual(getFacetTexts(webClient), ["Category 1"]);
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, 0);
+        assert.deepEqual(getFacetTexts(target), ["Category 1"]);
 
         // open cohort in fullscreen
-        await click(webClient.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
+        await click(target.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
         await nextTick();
         assert.strictEqual(
             $(".o_control_panel .breadcrumb li:nth(1)").text(),
             "Cohort Analysis",
             "'Cohort Analysis' should have been stacked in the breadcrumbs"
         );
-        assert.deepEqual(getFacetTexts(webClient), ["Category 1"]);
+        assert.deepEqual(getFacetTexts(target), ["Category 1"]);
 
         // go back using the breadcrumbs
-        await click(webClient.el.querySelector(".breadcrumb-item.o_back_button"));
+        await click(target.querySelector(".breadcrumb-item.o_back_button"));
         await nextTick();
 
         assert.verifySteps([
@@ -2357,8 +2357,8 @@ QUnit.module("Views", (hooks) => {
                 views: [[false, "dashboard"]],
             });
 
-            const graph = webClient.el.querySelector(".o_subview[type='graph']");
-            const pivot = webClient.el.querySelector(".o_subview[type='pivot']");
+            const graph = target.querySelector(".o_subview[type='graph']");
+            const pivot = target.querySelector(".o_subview[type='pivot']");
             // select 'untaxed' as measure in graph view
             await toggleMenu(graph, "Measures");
             await toggleMenuItem(graph, "Untaxed");
@@ -2371,7 +2371,7 @@ QUnit.module("Views", (hooks) => {
             await click(pivot.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
 
             // go back using the breadcrumbs
-            await click(webClient.el.querySelector(".breadcrumb-item.o_back_button"));
+            await click(target.querySelector(".breadcrumb-item.o_back_button"));
 
             assert.verifySteps([
                 // initial read_group
@@ -2441,20 +2441,20 @@ QUnit.module("Views", (hooks) => {
         });
 
         // open graph in fullscreen
-        await click(webClient.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
+        await click(target.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
 
         // filter on bar
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 0);
-        assert.deepEqual(getFacetTexts(webClient), ["Sold"]);
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, 0);
+        assert.deepEqual(getFacetTexts(target), ["Sold"]);
 
         // go back using the breadcrumbs
-        await click(webClient.el.querySelector(".breadcrumb-item.o_back_button"));
+        await click(target.querySelector(".breadcrumb-item.o_back_button"));
 
-        assert.deepEqual(getFacetTexts(webClient), []);
+        assert.deepEqual(getFacetTexts(target), []);
 
-        await toggleFilterMenu(webClient);
-        await toggleMenuItem(webClient, 1);
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, 1);
 
         assert.verifySteps([
             " ", // graph in dashboard
@@ -2504,10 +2504,10 @@ QUnit.module("Views", (hooks) => {
             });
 
             // open graph in fullscreen
-            await click(webClient.el.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
+            await click(target.querySelector(".o-web-dashboard-view-wrapper--switch-button"));
 
             // go back using the breadcrumbs
-            await click(webClient.el.querySelector(".breadcrumb-item.o_back_button"));
+            await click(target.querySelector(".breadcrumb-item.o_back_button"));
 
             assert.verifySteps([
                 "categ_id=1", // First rendering of dashboard view
@@ -3985,7 +3985,7 @@ QUnit.module("Views", (hooks) => {
                 </dashboard>
             `,
             context: { search_default_noId: 1 },
-            noContentHelp: `<p class="abc">click to add a foo</p>`,
+            noContentHelp: markup(`<p class="abc">click to add a foo</p>`),
         });
 
         assert.hasClass(dashboard.el, "o_view_sample_data");
@@ -4085,28 +4085,28 @@ QUnit.module("Views", (hooks) => {
                 target: "current",
                 res_model: "test_report",
                 views: [[1, "dashboard"]],
-                help: `<p class="abc">click to add a foo</p>`,
+                help: markup(`<p class="abc">click to add a foo</p>`),
             });
 
-            await toggleFilterMenu(webClient.el.querySelector(".o_control_panel"));
-            await toggleMenuItem(webClient.el.querySelector(".o_control_panel"), "noId");
+            await toggleFilterMenu(target.querySelector(".o_control_panel"));
+            await toggleMenuItem(target.querySelector(".o_control_panel"), "noId");
 
             await click(
-                webClient.el.querySelector(
+                target.querySelector(
                     ".o_subview[type='pivot'] .o-web-dashboard-view-wrapper--switch-button"
                 )
             );
-            assert.containsOnce(webClient, ".o_action");
-            assert.containsNone(webClient, ".o_dashboard_view");
-            assert.containsOnce(webClient, ".o_pivot_view ");
-            assert.containsOnce(webClient, ".o_view_nocontent_empty_folder");
+            assert.containsOnce(target, ".o_action");
+            assert.containsNone(target, ".o_dashboard_view");
+            assert.containsOnce(target, ".o_pivot_view ");
+            assert.containsOnce(target, ".o_view_nocontent_empty_folder");
 
-            await click(webClient.el.querySelector(".breadcrumb-item.o_back_button"));
-            assert.containsOnce(webClient, ".o_dashboard_view");
-            assert.containsOnce(webClient, ".o_subview[type=graph] canvas");
-            assert.containsOnce(webClient, ".o_subview[type=pivot] .o_view_nocontent");
-            assert.containsNone(webClient, ".o_subview[type=pivot] .o_view_nocontent .abc");
-            assert.containsNone(webClient, ".o_view_nocontent .abc");
+            await click(target.querySelector(".breadcrumb-item.o_back_button"));
+            assert.containsOnce(target, ".o_dashboard_view");
+            assert.containsOnce(target, ".o_subview[type=graph] canvas");
+            assert.containsOnce(target, ".o_subview[type=pivot] .o_view_nocontent");
+            assert.containsNone(target, ".o_subview[type=pivot] .o_view_nocontent .abc");
+            assert.containsNone(target, ".o_view_nocontent .abc");
         }
     );
 
@@ -4166,28 +4166,28 @@ QUnit.module("Views", (hooks) => {
                     [1, "dashboard"],
                     [2, "graph"],
                 ],
-                help: `<p class="abc">click to add a foo</p>`,
+                help: markup(`<p class="abc">click to add a foo</p>`),
             });
 
             assert.verifySteps(["read_group", "web_read_group", "read_group", "read_group"]); // dashboard, graph, pivotx2
 
-            await toggleFilterMenu(webClient.el.querySelector(".o_control_panel"));
-            await toggleMenuItem(webClient.el.querySelector(".o_control_panel"), "noId");
+            await toggleFilterMenu(target.querySelector(".o_control_panel"));
+            await toggleMenuItem(target.querySelector(".o_control_panel"), "noId");
             assert.verifySteps(["web_read_group", "read_group"]); //  graph, pivot
 
-            await click(webClient.el.querySelector(".o_cp_switch_buttons .o_graph"));
+            await click(target.querySelector(".o_cp_switch_buttons .o_graph"));
             assert.verifySteps(["web_read_group"]);
-            await toggleFilterMenu(webClient.el.querySelector(".o_control_panel"));
-            await toggleMenuItem(webClient.el.querySelector(".o_control_panel"), "noId");
+            await toggleFilterMenu(target.querySelector(".o_control_panel"));
+            await toggleMenuItem(target.querySelector(".o_control_panel"), "noId");
             assert.verifySteps(["web_read_group"]);
 
-            await click(webClient.el.querySelector(".o_cp_switch_buttons .o_dashboard"));
+            await click(target.querySelector(".o_cp_switch_buttons .o_dashboard"));
             assert.verifySteps(["web_read_group", "read_group", "read_group"]); // graph, pivotx2
-            assert.containsOnce(webClient, ".o_dashboard_view");
-            assert.containsOnce(webClient, ".o_subview[type=graph] canvas");
-            assert.containsNone(webClient, ".o_subview[type=pivot] .o_view_nocontent");
-            assert.containsNone(webClient, ".o_subview[type=pivot] .o_view_nocontent .abc");
-            assert.containsNone(webClient, ".o_view_nocontent .abc");
+            assert.containsOnce(target, ".o_dashboard_view");
+            assert.containsOnce(target, ".o_subview[type=graph] canvas");
+            assert.containsNone(target, ".o_subview[type=pivot] .o_view_nocontent");
+            assert.containsNone(target, ".o_subview[type=pivot] .o_view_nocontent .abc");
+            assert.containsNone(target, ".o_view_nocontent .abc");
         }
     );
 

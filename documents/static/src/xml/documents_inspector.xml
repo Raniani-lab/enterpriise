@@ -25,7 +25,7 @@
 
 <!-- Documents preview (called if at least one document selected) -->
 <t t-name="documents.DocumentsInspector.previews">
-    <t t-foreach="widget.records.slice(0, 4)" t-as="record">
+    <t t-foreach="widget.records.slice(0, 4)" t-as="record" t-key="record_index">
         <t t-set="recordData" t-value="widget.recordsData[record.id]"/>
         <div name="document_preview" t-attf-class="{{widget._computeClasses(record)}}">
             <t t-set="mimetype" t-value="record.data.mimetype"/>
@@ -198,7 +198,7 @@
 
 <!-- Versioning Template -->
 <t t-name="documents.inspector.attachmentHistory">
-    <t t-foreach="attachments" t-as="attachment">
+    <t t-foreach="attachments" t-as="attachment" t-key="attachment_index">
         <div class="o_inspector_history_line">
             <t t-set="createDate" t-value="str_to_datetime(attachment.create_date)"/>
             <t t-set="fullDate" t-value="createDate.toLocaleString()"/>

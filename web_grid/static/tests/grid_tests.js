@@ -8,6 +8,7 @@ var testUtils = require('web.test_utils');
 const cpHelpers = require('@web/../tests/search/helpers');
 var createView = testUtils.createView;
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+const { getFixture, mockTimeout } = require("@web/../tests/helpers/utils");
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -1157,6 +1158,8 @@ QUnit.module('Views', {
         };
         const serverData = {models: this.data, views};
 
+        const target = getFixture();
+
         // create an action manager to test the interactions with the search view
         const webClient = await createWebClient({
             serverData,
@@ -1174,17 +1177,17 @@ QUnit.module('Views', {
         });
 
         // check first column header
-        assert.strictEqual($(webClient.el).find('.o_view_grid th:eq(2)').text(), "Tue,Jan 31", "The first day of the span should be the 31st of January");
+        assert.strictEqual($(target).find('.o_view_grid th:eq(2)').text(), "Tue,Jan 31", "The first day of the span should be the 31st of January");
 
         // move to previous week, and check first column header
-        await testUtils.dom.click($(webClient.el).find('.o_control_panel .grid_arrow_previous'));
-        assert.strictEqual($(webClient.el).find('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should be the 24st of January, as we check the previous week");
+        await testUtils.dom.click($(target).find('.o_control_panel .grid_arrow_previous'));
+        assert.strictEqual($(target).find('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should be the 24st of January, as we check the previous week");
 
         // remove the filter in the searchview
-        await testUtils.dom.click($(webClient.el).find('.o_control_panel .o_searchview .o_facet_remove'));
+        await testUtils.dom.click($(target).find('.o_control_panel .o_searchview .o_facet_remove'));
 
         // recheck first column header
-        assert.strictEqual($(webClient.el).find('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should STILL be the 24st of January, even we resetting search");
+        assert.strictEqual($(target).find('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should STILL be the 24st of January, even we resetting search");
     });
 
     QUnit.test('grid with two tasks with same name, and widget', async function (assert) {
@@ -1380,6 +1383,8 @@ QUnit.module('Views', {
             },
         });
 
+        mockTimeout();
+
         // first section
         assert.strictEqual(grid.$('.o_grid_section:eq(0) button.o_grid_float_toggle').length, 7,
             "first section should be for project P1");
@@ -1415,7 +1420,6 @@ QUnit.module('Views', {
             "0.5 is the next value since 0.0 was the closest value in the range");
 
         await testUtils.nextTick();
-        await new Promise(resolve => setTimeout(resolve, 200));
 
         await testUtils.dom.click($button);
         assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '1.00',
@@ -1481,6 +1485,8 @@ QUnit.module('Views', {
             },
         });
 
+        mockTimeout();
+
         // clicking on empty cell button
         assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '0,00',
         "0,00 before we click on it");
@@ -1491,7 +1497,6 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '0,50',
             "0,5 is the next value since 0,0 was the closest value in the range");
         await testUtils.nextTick();
-        await new Promise(resolve => setTimeout(resolve, 200));
         await testUtils.dom.click($button);
         assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '1,00',
             "0,5 becomes 1,0 as it is the next value in the range");

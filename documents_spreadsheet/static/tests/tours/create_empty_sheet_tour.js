@@ -10,6 +10,7 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
             test: true,
         },
         [
+            tour.stepUtils.showAppsMenuItem(),
             {
                 trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
                 content: "Open document app",
@@ -53,6 +54,7 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
             test: true,
         },
         [
+            tour.stepUtils.showAppsMenuItem(),
             {
                 trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
                 content: "Open document app",

@@ -34,15 +34,15 @@ odoo.define('timesheet_grid.TimesheetConfigQRCodeMixin', function (require) {
             const url = ev.target.classList.contains("o_config_play_store") ? googleUrl : appleUrl;
 
             if (!this.env.device.isMobile) {
-                const actionDesktop = {
+                this.env.services.action.doAction({ action: {
                     name: this.env._t('Download our App'),
                     type: 'ir.actions.client',
                     tag: 'timesheet_qr_code_modal',
                     target: 'new',
-                };
-                this.trigger('do-action', {action: Object.assign(actionDesktop, {params: {'url': url}})});
+                    params: { url },
+                }});
             } else {
-                this.trigger('do-action', {action: {type: 'ir.actions.act_url', url: url}});
+                this.env.services.action.doAction({ action: { type: 'ir.actions.act_url', url }});
             }
         },
 

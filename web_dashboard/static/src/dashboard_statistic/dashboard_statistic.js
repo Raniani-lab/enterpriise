@@ -172,13 +172,9 @@ export class DashboardStatistic extends Component {
                 return { o_null: true };
             }
         }
-    }
-
-    onClicked() {
-        if (this.props.clickable) {
-            this.trigger("change-statistic");
-        }
+        return {};
     }
 }
 DashboardStatistic.template = "web_dashboard.DashboardStatistic";
 DashboardStatistic.components = { Field };
+DashboardStatistic.defaultProps = { onStatisticChange: () => {} };

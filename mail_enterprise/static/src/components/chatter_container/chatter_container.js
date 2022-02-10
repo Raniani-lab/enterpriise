@@ -14,6 +14,7 @@ Object.assign(ChatterContainer, {
     props: Object.assign(ChatterContainer.props, {
         isInFormSheetBg: {
             type: Boolean,
+            optional: true,
         },
     })
 });

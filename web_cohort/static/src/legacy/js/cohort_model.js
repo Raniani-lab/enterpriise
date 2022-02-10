@@ -111,6 +111,14 @@ var CohortModel = AbstractModel.extend({
         return Promise.all(proms).then(([report, comparisonReport]) => {
             this.data.report = report;
             this.data.comparisonReport = comparisonReport;
+            this.data.report.rows.forEach((row) => {
+                row.columns = row.columns.filter((col) => col.percentage !== "");
+            });
+            if (this.data.comparisonReport) {
+                this.data.comparisonReport.rows.forEach((row) => {
+                    row.columns = row.columns.filter((col) => col.percentage !== "");
+                });
+            }
         });
     },
     /**

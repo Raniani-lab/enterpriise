@@ -8,6 +8,7 @@ var createView = testUtils.createView;
 var triggerKeypressEvent = testUtils.dom.triggerKeypressEvent;
 
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+const { getFixture } = require("@web/../tests/helpers/utils");
 
 QUnit.module('stock_barcode', {}, function () {
 
@@ -284,11 +285,12 @@ QUnit.test('exclamation-triangle when picking is done', async function (assert) 
     };
     this.clientData.action.context.active_id = pickingRecord.id;
     this.clientData.currentState.data.records['stock.picking'].push(pickingRecord);
+    const target = getFixture();
     const webClient = await createWebClient({
         mockRPC: this.mockRPC,
     });
     await doAction(webClient, this.clientData.action);
-    assert.containsOnce(webClient, '.fa-5x.fa-exclamation-triangle:not(.d-none)', "Should have warning icon");
+    assert.containsOnce(target, '.fa-5x.fa-exclamation-triangle:not(.d-none)', "Should have warning icon");
 });
 
 });

@@ -6,6 +6,21 @@ import { useService } from "@web/core/utils/hooks";
 
 const { Component, onWillUpdateProps, xml } = owl;
 
+class NewModelItemAdapter extends ComponentAdapter {
+    setup() {
+        super.setup();
+        this.env = Component.env;
+    }
+    _trigger_up(ev) {
+        if (ev.name === "reload_menu_data") {
+            this.props.reloadMenuData(ev);
+        } else if (ev.name === "menu_clicked") {
+            this.props.editNewModel(ev);
+        }
+        super._trigger_up(...arguments);
+    }
+}
+
 export class NewModelItem extends Component {
     setup() {
         this.NewModel = NewModel;
@@ -25,19 +40,13 @@ export class NewModelItem extends Component {
 NewModelItem.template = xml`
   <t>
     <t t-set="currentApp" t-value="menus.getCurrentApp()" />
-    <t t-if="currentApp"
-       t-component="ComponentAdapter"
+    <NewModelItemAdapter t-if="currentApp"
        Component="NewModel.NewModelItem"
        widgetArgs="[currentApp and currentApp.id]"
        t-key="localId"
-       t-on-reload-menu-data="menus.reload()"
-       t-on-menu-clicked="editNewModel" />
+       reloadMenuData.bind= "() => { this.menus.reload(); }"
+       editNewModel.bind="editNewModel" />
     <div t-else="" />
   </t>
 `;
-NewModelItem.components.ComponentAdapter = class extends ComponentAdapter {
-    setup() {
-        super.setup();
-        this.env = Component.env;
-    }
-};
+NewModelItem.components = { NewModelItemAdapter };

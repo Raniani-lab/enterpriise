@@ -11,7 +11,7 @@
                 colHeaders="tableData.columns"
                 rowHeaders="tableData.rows"
                 values="tableData.values"
-                t-on-cell-selected="_onCellClicked" />
+                onCellSelected.bind="_onCellClicked" />
 
             <div class="alert alert-info" role="alert" t-else="1"><span t-esc="props.title" /> has no cell missing from this sheet</div>
 
@@ -29,7 +29,7 @@
                             <th t-att-colspan="cell.span"
                                 t-att-style="cell.style"
                                 t-att-class="{ o_missing_value: cell.isMissing }"
-                                t-on-click="_onCellClicked(cell.formula)">
+                                t-on-click="() => this._onCellClicked(cell.formula)">
                                 <t t-esc="cell.value" />
                             </th>
                         </t>
@@ -39,13 +39,13 @@
                 <tr>
                     <th t-att-style="row.style"
                         t-att-class="{ o_missing_value: row.isMissing }"
-                        t-on-click="_onCellClicked(row.formula)">
+                        t-on-click="() => this._onCellClicked(row.formula)">
                         <t t-esc="row.value"/>
                     </th>
                     <t t-foreach="props.values" t-as="col" t-key="col_index">
                         <td
                             t-att-class="{ o_missing_value: col[row_index].isMissing }"
-                            t-on-click="_onCellClicked(col[row_index].args.formula)">
+                            t-on-click="() => this._onCellClicked(col[row_index].args.formula)">
                             <t t-esc="col[row_index].args.value" />
                         </td>
                     </t>

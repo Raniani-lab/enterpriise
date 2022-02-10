@@ -1,9 +1,8 @@
 /** @odoo-module **/
 
-import { useEffect } from "@web/core/utils/hooks";
 import { View } from "@web/views/view";
 
-const { Component, useSubEnv } = owl;
+const { Component, useEffect, useChildSubEnv } = owl;
 
 /**
  * This file defines the ViewWrapper component, used to wrap sub views in the
@@ -16,7 +15,7 @@ const { Component, useSubEnv } = owl;
  */
 export class ViewWrapper extends Component {
     setup() {
-        useSubEnv(this.props.callbackRecorders);
+        useChildSubEnv(this.props.callbackRecorders);
         useEffect(() => {
             const btns = this.el.querySelectorAll(".btn-primary, .btn-secondary");
             btns.forEach((btn) => {

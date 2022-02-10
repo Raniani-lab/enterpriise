@@ -2,7 +2,8 @@
 
 import { patch } from "@web/core/utils/patch";
 import { PivotRenderer } from "@web/views/pivot/pivot_renderer";
-import { useEffect } from "@web/core/utils/hooks";
+
+const { useEffect } = owl;
 
 patch(PivotRenderer.prototype, "web_enterprise.PivotRendererMobile", {
     setup() {

@@ -9,15 +9,14 @@ const { isEventHandled, markEventHandled } = require('@mail/utils/utils');
 const ajax = require('web.ajax');
 const { csrf_token, _t } = require('web.core');
 
-const { Component, useState } = owl;
+const { Component, onMounted, onWillUnmount, onWillStart, useState } = owl;
 
 class PdfManager extends Component {
 
     /**
      * @override
      */
-    constructor() {
-        super(...arguments);
+    setup() {
         this.state = useState({
             // Disables upload button if currently uploading.
             uploadingLock: false,
@@ -52,26 +51,26 @@ class PdfManager extends Component {
         this._pageCanvas = {};
         this._onGlobalKeydown = this._onGlobalKeydown.bind(this);
         this._onGlobalCaptureKeyup = this._onGlobalCaptureKeyup.bind(this);
-    }
 
-    async willStart() {
-        await this._loadAssets();
-    }
-
-    mounted() {
-        document.addEventListener('keydown', this._onGlobalKeydown);
-        document.addEventListener('keyup', this._onGlobalCaptureKeyup, true);
-        for (const pdf_document of this.props.documents) {
-            this._addFile(pdf_document.name, {
-                url: `/documents/content/${pdf_document.id}`,
-                documentId: pdf_document.id,
-            });
-        }
-    }
-
-    willUnmount() {
-        document.removeEventListener('keydown', this._onGlobalKeydown);
-        document.removeEventListener('keyup', this._onGlobalCaptureKeyup);
+        onWillStart(async () => {
+            await this._loadAssets();
+        });
+    
+        onMounted(() => {
+            document.addEventListener('keydown', this._onGlobalKeydown);
+            document.addEventListener('keyup', this._onGlobalCaptureKeyup, true);
+            for (const pdf_document of this.props.documents) {
+                this._addFile(pdf_document.name, {
+                    url: `/documents/content/${pdf_document.id}`,
+                    documentId: pdf_document.id,
+                });
+            }
+        });
+    
+        onWillUnmount(() => {
+            document.removeEventListener('keydown', this._onGlobalKeydown);
+            document.removeEventListener('keyup', this._onGlobalCaptureKeyup);
+        });
     }
 
     //--------------------------------------------------------------------------
@@ -326,10 +325,6 @@ class PdfManager extends Component {
                 height: 230,
             });
             this._pageCanvas[pageId] = { page, canvas };
-            const pdfPage = this.__owl__.refs[`PdfPage_${pageId}`];
-            if (pdfPage) {
-                pdfPage.renderPage(canvas);
-            }
         }
     }
     /**
@@ -733,7 +728,7 @@ PdfManager.defaultProps = {
 
 PdfManager.props = {
     documents: Array,
-    rules: Array,
+    rules: { type: Array, optional: true },
 };
 
 PdfManager.template = 'documents.component.PdfManager';

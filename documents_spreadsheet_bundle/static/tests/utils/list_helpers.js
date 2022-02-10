@@ -1,8 +1,7 @@
 /** @odoo-module */
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { click, nextTick } from "@web/../tests/helpers/utils";
+import { patchWithCleanup, click, getFixture, makeDeferred } from "@web/../tests/helpers/utils";
 import { getBasicServerData } from "./spreadsheet_test_data";
 import {
     getSpreadsheetActionEnv,
@@ -51,11 +50,15 @@ export async function spawnListViewForSpreadsheet(params = {}) {
  * @returns Webclient
  */
 export async function createSpreadsheetFromList(params = {}) {
+    const def = makeDeferred();
     let spreadsheetAction = {};
     patchWithCleanup(SpreadsheetAction.prototype, {
-        mounted() {
+        setup() {
             this._super();
-            spreadsheetAction = this;
+            owl.onMounted(() => {
+                spreadsheetAction = this;
+                def.resolve();
+            });
         },
     });
     const webClient = await spawnListViewForSpreadsheet({
@@ -63,15 +66,15 @@ export async function createSpreadsheetFromList(params = {}) {
         serverData: params.serverData,
         mockRPC: params.mockRPC,
     });
-
+    const target = getFixture();
     /** Put the current list in a new spreadsheet */
-    await click(webClient.el.querySelector(".o_favorite_menu button"));
-    await click(webClient.el.querySelector(".o_insert_list_spreadsheet_menu"));
-    webClient.el.querySelector(`.o_threshold_list input`).value = params.linesNumber
+    await click(target.querySelector(".o_favorite_menu button"));
+    await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
+    target.querySelector(`.o_threshold_list input`).value = params.linesNumber
         ? params.linesNumber
         : 10;
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
-    await nextTick();
+    await def;
     const model = getSpreadsheetActionModel(spreadsheetAction);
     await model.waitForIdle();
     return {

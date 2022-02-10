@@ -11,10 +11,7 @@
         <span t-if="state.message === 'register'" class="oe_instance_register">
             <t t-if="!isMailInstalled">You will be able to register your database once you have installed your first app.</t>
             <t t-else="">
-                <t t-set="delay">
-                    <t t-if="state.diffDays === 30">1 month</t>
-                    <t t-else=""><t t-esc="state.diffDays"/> days</t>
-                </t>
+                <t t-set="delay" t-value="state.diffDays === 30 ? '1 month' : `${state.diffDays} days`"/>
                 <t t-if="state.diffDays &gt; 0">
                     <t t-if="expirationReason === 'demo'">This demo database will expire in <t t-esc="delay"/>. </t>
                     <t t-else="">This database will expire in <t t-esc="delay"/>. </t>
@@ -67,18 +64,19 @@
             </span>
             <span t-else="">- Contact your sales representative to help you to unlink your previous database</span>
         </span>
-        <form t-if="state.displayRegisterForm" class="oe_instance_register oe_instance_register_form form-inline justify-content-center mt-4" t-transition="vertical-slide">
-            <div class="form-group">
-                <label for="enterprise_code">Subscription Code: </label>
-                <input type="text" class="form-control mx-2" t-ref="input"
-                    placeholder="Paste code here"
-                    title="Your subscription code"
-                />
-            </div>
-            <button class="btn btn-primary" t-on-click.prevent="_onCodeSubmit" ><t t-esc="state.buttonText"/></button>
-        </form>
+        <Transition visible="state.displayRegisterForm" t-slot-scope="transition" leaveDuration="400" name="'o-vertical-slide'">
+            <form class="oe_instance_register oe_instance_register_form form-inline justify-content-center mt-4" t-att-class="transition.className">
+                <div class="form-group">
+                    <label for="enterprise_code">Subscription Code: </label>
+                    <input type="text" class="form-control mx-2" t-ref="input"
+                        placeholder="Paste code here"
+                        title="Your subscription code"
+                    />
+                </div>
+                <button class="btn btn-primary" t-on-click.prevent="_onCodeSubmit" ><t t-esc="state.buttonText"/></button>
+            </form>
+        </Transition>
     </div>
-    <span t-else=""/>
 </t>
 
 </templates>

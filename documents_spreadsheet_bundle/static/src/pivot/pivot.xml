@@ -6,14 +6,14 @@
                     class="btn btn-secondary fa fa-file-text-o o_pivot_add_spreadsheet"
                     t-att-disabled="!model.hasData() or model.metaData.activeMeasures.length === 0 or model.useSampleModel"
                     title="Insert in Spreadsheet" aria-label="Insert in Spreadsheet"
-                    t-on-click="onInsertInSpreadsheet()"/>
+                    t-on-click="onInsertInSpreadsheet"/>
         </xpath>
         <xpath expr="//div[hasclass('btn-group')][1]" position="after">
             <t t-if="canInsertPivot and !env.isSmall">
                 <div class="btn-group" role="toolbar" aria-label="Insert in Spreadsheet">
                     <button class="btn btn-secondary o_pivot_add_spreadsheet"
                             t-att-disabled="!model.hasData() or model.metaData.activeMeasures.length === 0 or model.useSampleModel"
-                            t-on-click="onInsertInSpreadsheet()">
+                            t-on-click="onInsertInSpreadsheet">
                         Insert in Spreadsheet
                     </button>
                 </div>

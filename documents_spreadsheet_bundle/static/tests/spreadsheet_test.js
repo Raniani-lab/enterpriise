@@ -9,7 +9,7 @@ import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";
 import * as BusService from "bus.BusService";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
-import { mockDownload } from "@web/../tests/helpers/utils";
+import { getFixture, mockDownload } from "@web/../tests/helpers/utils";
 import * as AbstractStorageService from "web.AbstractStorageService";
 import { fields, nextTick, dom } from "web.test_utils";
 import { createSpreadsheet } from "./spreadsheet_test_utils";
@@ -32,40 +32,46 @@ const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
 
 const { module, test } = QUnit;
 
-function getConnectedUsersEl(webClient) {
-    const numberUsers = $(webClient.el).find(".o_spreadsheet_number_users");
+function getConnectedUsersEl(target) {
+    const numberUsers = $(target).find(".o_spreadsheet_number_users");
     return numberUsers[0].querySelector("i");
 }
 
-function getSynchedStatus(webClient) {
-    return $(webClient.el).find(".o_spreadsheet_sync_status")[0].innerText;
+function getSynchedStatus(target) {
+    return $(target).find(".o_spreadsheet_sync_status")[0].innerText;
 }
 
-function displayedConnectedUsers(webClient) {
-    return parseInt(getConnectedUsersEl(webClient).innerText);
+function displayedConnectedUsers(target) {
+    return parseInt(getConnectedUsersEl(target).innerText);
 }
 
-module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
+let target;
+
+module("documents_spreadsheet > Spreadsheet Client Action", {
+    beforeEach: function () {
+        target = getFixture();
+    },
+}, function () {
     module("Spreadsheet control panel");
 
     test("Number of connected users is correctly rendered", async function (assert) {
         assert.expect(7);
-        const { webClient, transportService } = await createSpreadsheet();
-        assert.equal(displayedConnectedUsers(webClient), 1, "It should display one connected user");
+        const { transportService } = await createSpreadsheet();
+        assert.equal(displayedConnectedUsers(target), 1, "It should display one connected user");
         assert.hasClass(
-            getConnectedUsersEl(webClient),
+            getConnectedUsersEl(target),
             "fa-user",
             "It should display the fa-user icon"
         );
         joinSession(transportService, { id: 1234, userId: 9999 });
         await nextTick();
         assert.equal(
-            displayedConnectedUsers(webClient),
+            displayedConnectedUsers(target),
             2,
             "It should display two connected users"
         );
         assert.hasClass(
-            getConnectedUsersEl(webClient),
+            getConnectedUsersEl(target),
             "fa-users",
             "It should display the fa-users icon"
         );
@@ -74,7 +80,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
         joinSession(transportService, { id: 4321, userId: 9999 });
         await nextTick();
         assert.equal(
-            displayedConnectedUsers(webClient),
+            displayedConnectedUsers(target),
             2,
             "It should display two connected users"
         );
@@ -82,20 +88,20 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
         leaveSession(transportService, 4321);
         await nextTick();
         assert.equal(
-            displayedConnectedUsers(webClient),
+            displayedConnectedUsers(target),
             2,
             "It should display two connected users"
         );
 
         leaveSession(transportService, 1234);
         await nextTick();
-        assert.equal(displayedConnectedUsers(webClient), 1, "It should display one connected user");
+        assert.equal(displayedConnectedUsers(target), 1, "It should display one connected user");
     });
 
     test("spreadsheet with generic untitled name is styled", async function (assert) {
         assert.expect(4);
-        const { webClient } = await createSpreadsheet();
-        const input = $(webClient.el).find(".breadcrumb-item input")[0];
+        await createSpreadsheet();
+        const input = $(target).find(".breadcrumb-item input")[0];
         assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
         await fields.editInput(input, "My");
         assert.doesNotHaveClass(
@@ -128,7 +134,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
                 active_id: 1,
             },
         });
-        assert.containsOnce(webClient, ".o-spreadsheet", "It should have opened the spreadsheet");
+        assert.containsOnce(target, ".o-spreadsheet", "It should have opened the spreadsheet");
         assert.verifySteps(["spreadsheet-loaded"]);
     });
 
@@ -171,16 +177,16 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
     test("Sync status is correctly rendered", async function (assert) {
         assert.expect(3);
-        const { webClient, model, transportService } = await createSpreadsheetFromPivot();
+        const { model, transportService } = await createSpreadsheetFromPivot();
         await nextTick();
-        assert.strictEqual(getSynchedStatus(webClient), " Saved");
+        assert.strictEqual(getSynchedStatus(target), " Saved");
         await transportService.concurrent(async () => {
             setCellContent(model, "A1", "hello");
             await nextTick();
-            assert.strictEqual(getSynchedStatus(webClient), " Saving");
+            assert.strictEqual(getSynchedStatus(target), " Saving");
         });
         await nextTick();
-        assert.strictEqual(getSynchedStatus(webClient), " Saved");
+        assert.strictEqual(getSynchedStatus(target), " Saved");
     });
 
     test("breadcrumb is rendered in control panel", async function (assert) {
@@ -214,7 +220,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
                 transportService: new MockSpreadsheetCollaborativeChannel(),
             },
         });
-        const breadcrumbItems = $(webClient.el).find(".breadcrumb-item");
+        const breadcrumbItems = $(target).find(".breadcrumb-item");
         assert.equal(
             breadcrumbItems[0].querySelector("a").innerText,
             "Documents",
@@ -234,8 +240,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
     test("untitled spreadsheet", async function (assert) {
         assert.expect(3);
-        const { webClient } = await createSpreadsheet({ spreadsheetId: 2 });
-        const input = $(webClient.el).find(".breadcrumb-item input")[0];
+        await createSpreadsheet({ spreadsheetId: 2 });
+        const input = $(target).find(".breadcrumb-item input")[0];
         assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
         assert.equal(input.value, "", "It should be empty");
         assert.equal(input.placeholder, "Untitled spreadsheet", "It should display a placeholder");
@@ -244,8 +250,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
     test("input width changes when content changes", async function (assert) {
         assert.expect(2);
-        const { webClient } = await createSpreadsheet();
-        const input = $(webClient.el).find(".breadcrumb-item input")[0];
+        await createSpreadsheet();
+        const input = $(target).find(".breadcrumb-item input")[0];
         await fields.editInput(input, "My");
         let width = input.offsetWidth;
         await fields.editInput(input, "My title");
@@ -258,8 +264,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
     test("changing the input saves the name", async function (assert) {
         assert.expect(1);
         const serverData = getBasicServerData();
-        const { webClient } = await createSpreadsheet({ spreadsheetId: 2, serverData });
-        const input = $(webClient.el).find(".breadcrumb-item input")[0];
+        await createSpreadsheet({ spreadsheetId: 2, serverData });
+        const input = $(target).find(".breadcrumb-item input")[0];
         await fields.editAndTrigger(input, "My spreadsheet", ["change"]);
         assert.equal(
             serverData.models["documents.document"].records[1].name,
@@ -270,8 +276,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
     test("trailing white spaces are trimmed", async function (assert) {
         assert.expect(2);
-        const { webClient } = await createSpreadsheet();
-        const input = $(webClient.el).find(".breadcrumb-item input")[0];
+        await createSpreadsheet();
+        const input = $(target).find(".breadcrumb-item input")[0];
         await fields.editInput(input, "My spreadsheet  ");
         const width = input.offsetWidth;
         await dom.triggerEvent(input, "change");
@@ -281,8 +287,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
     test("focus sets the placeholder as value and select it", async function (assert) {
         assert.expect(4);
-        const { webClient } = await createSpreadsheet({ spreadsheetId: 2 });
-        const input = $(webClient.el).find(".breadcrumb-item input")[0];
+        await createSpreadsheet({ spreadsheetId: 2 });
+        const input = $(target).find(".breadcrumb-item input")[0];
         assert.equal(input.value, "", "It should be empty");
         await dom.triggerEvent(input, "focus");
         assert.equal(
@@ -325,8 +331,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
     test("only white spaces show the placeholder", async function (assert) {
         assert.expect(2);
-        const { webClient } = await createSpreadsheet();
-        const input = $(webClient.el).find(".breadcrumb-item input")[0];
+        await createSpreadsheet();
+        const input = $(target).find(".breadcrumb-item input")[0];
         await fields.editInput(input, "  ");
         const width = input.offsetWidth;
         await dom.triggerEvent(input, "change");
@@ -336,7 +342,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
     test("toggle favorite", async function (assert) {
         assert.expect(5);
-        const { webClient } = await createSpreadsheet({
+        await createSpreadsheet({
             spreadsheetId: 1,
             mockRPC: async function (route, args) {
                 if (args.method === "toggle_favorited" && args.model === "documents.document") {
@@ -349,18 +355,18 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
                 }
             },
         });
-        assert.containsNone(webClient, ".favorite_button_enabled");
-        const favorite = $(webClient.el).find(".o_spreadsheet_favorite")[0];
+        assert.containsNone(target, ".favorite_button_enabled");
+        const favorite = $(target).find(".o_spreadsheet_favorite")[0];
         await dom.click(favorite);
-        assert.containsOnce(webClient, ".favorite_button_enabled");
+        assert.containsOnce(target, ".favorite_button_enabled");
         assert.verifySteps(["favorite_toggled"]);
     });
 
     test("already favorited", async function (assert) {
         assert.expect(1);
-        const { webClient } = await createSpreadsheet({ spreadsheetId: 2 });
+        await createSpreadsheet({ spreadsheetId: 2 });
         assert.containsOnce(
-            webClient,
+            target,
             ".favorite_button_enabled",
             "It should already be favorited"
         );
@@ -376,7 +382,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             views: [[false, "pivot"]],
         });
         await nextTick();
-        const items = $(webClient.el).find(".breadcrumb-item");
+        const items = $(target).find(".breadcrumb-item");
         const [breadcrumb1, breadcrumb2, breadcrumb3] = Array.from(items).map(
             (item) => item.innerText
         );
@@ -401,7 +407,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
                 },
             },
         });
-        const input = $(webClient.el).find(".breadcrumb-item input")[0];
+        const input = $(target).find(".breadcrumb-item input")[0];
         await fields.editAndTrigger(input, "My awesome spreadsheet", ["change"]);
         await doAction(webClient, {
             name: "Partner",
@@ -410,7 +416,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             views: [[false, "pivot"]],
         });
         await nextTick();
-        const items = $(webClient.el).find(".breadcrumb-item");
+        const items = $(target).find(".breadcrumb-item");
         const [breadcrumb1, breadcrumb2, breadcrumb3] = Array.from(items).map(
             (item) => item.innerText
         );
@@ -421,7 +427,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
     module("Spreadsheet");
 
-    QUnit.test("relational PIVOT.HEADER with missing id", async function (assert) {
+    test("relational PIVOT.HEADER with missing id", async function (assert) {
         assert.expect(2);
 
         const { model } = await createSpreadsheetFromPivot({
@@ -678,7 +684,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
     test("Open pivot properties properties", async function (assert) {
         assert.expect(16);
 
-        const { webClient, model, env } = await createSpreadsheetFromPivot({
+        const { model, env } = await createSpreadsheetFromPivot({
             serverData: {
                 models: getBasicData(),
                 views: {
@@ -701,10 +707,10 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             pivot: pivotA3,
         });
         await nextTick();
-        let title = $(webClient.el).find(".o-sidePanelTitle")[0].innerText;
+        let title = $(target).find(".o-sidePanelTitle")[0].innerText;
         assert.equal(title, "Pivot properties");
 
-        const sections = $(webClient.el).find(".o_side_panel_section");
+        const sections = $(target).find(".o_side_panel_section");
         assert.equal(sections.length, 5, "it should have 5 sections");
         const [pivotName, pivotModel, domain, dimensions, measures] = sections;
 
@@ -732,10 +738,10 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             pivot: pivotA1,
         });
         await nextTick();
-        title = $(webClient.el).find(".o-sidePanelTitle")[0].innerText;
+        title = $(target).find(".o-sidePanelTitle")[0].innerText;
         assert.equal(title, "Pivot properties");
 
-        assert.containsOnce(webClient, ".o_side_panel_select");
+        assert.containsOnce(target, ".o_side_panel_select");
     });
 
     test("Verify absence of pivot properties on non-pivot cell", async function (assert) {
@@ -748,8 +754,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
     test("verify absence of pivots in top menu bar in a spreadsheet without a pivot", async function (assert) {
         assert.expect(1);
-        const { webClient } = await createSpreadsheet();
-        assert.containsNone(webClient, "div[data-id='pivots']");
+        await createSpreadsheet();
+        assert.containsNone(target, "div[data-id='pivots']");
     });
 
     test("Verify presence of pivots in top menu bar in a spreadsheet with a pivot", async function (assert) {
@@ -761,13 +767,13 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
         });
 
         assert.ok(
-            $(webClient.el).find("div[data-id='data']")[0],
+            $(target).find("div[data-id='data']")[0],
             "The 'Pivots' menu should be in the dom"
         );
 
         const root = topbarMenuRegistry.getAll().find((item) => item.id === "data");
         const children = topbarMenuRegistry.getChildren(root, env);
-        assert.equal(children.length, 6, "There should be 5 children in the menu");
+        assert.equal(children.length, 6, "There should be 6 children in the menu");
         assert.equal(children[0].name, "(#1) partner");
         assert.equal(children[1].name, "(#2) partner");
         // bottom children
@@ -818,18 +824,18 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
         root.action(env);
         assert.notOk(model.getters.getSelectedPivotId(), "No pivot should be selected");
         await nextTick();
-        assert.containsN(webClient, ".o_side_panel_select", 2);
-        await dom.click($(webClient.el).find(".o_side_panel_select")[0]);
+        assert.containsN(target, ".o_side_panel_select", 2);
+        await dom.click($(target).find(".o_side_panel_select")[0]);
         assert.strictEqual(
             model.getters.getSelectedPivotId(),
             "1",
             "The selected pivot should be have the id 1"
         );
         await nextTick();
-        await dom.click($(webClient.el).find(".o_pivot_cancel"));
+        await dom.click($(target).find(".o_pivot_cancel"));
         assert.notOk(model.getters.getSelectedPivotId(), "No pivot should be selected anymore");
-        assert.containsN(webClient, ".o_side_panel_select", 2);
-        await dom.click($(webClient.el).find(".o_side_panel_select")[1]);
+        assert.containsN(target, ".o_side_panel_select", 2);
+        await dom.click($(target).find(".o_side_panel_select")[1]);
         assert.strictEqual(
             model.getters.getSelectedPivotId(),
             "2",
@@ -842,7 +848,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
 
         const data = getBasicData();
 
-        const { webClient, model, env } = await createSpreadsheetFromPivot({
+        const { model, env } = await createSpreadsheetFromPivot({
             serverData: {
                 models: data,
                 views: getBasicServerData().views,
@@ -861,7 +867,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
         model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
         env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
         await nextTick();
-        await dom.click($(webClient.el).find(".o_refresh_measures")[0]);
+        await dom.click($(target).find(".o_refresh_measures")[0]);
         await nextTick();
         assert.equal(getCellValue(model, "D4"), 10 + 10);
     });
@@ -1068,12 +1074,12 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
     test("Simple display", async function (assert) {
         assert.expect(6);
 
-        const { webClient } = await createSpreadsheetFromPivot();
-        assert.notOk($(webClient.el).find(".o_spreadsheet_global_filters_side_panel")[0]);
-        const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+        await createSpreadsheetFromPivot();
+        assert.notOk($(target).find(".o_spreadsheet_global_filters_side_panel")[0]);
+        const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
         await dom.click(searchIcon);
-        assert.ok($(webClient.el).find(".o_spreadsheet_global_filters_side_panel")[0]);
-        const items = $(webClient.el).find(
+        assert.ok($(target).find(".o_spreadsheet_global_filters_side_panel")[0]);
+        const items = $(target).find(
             ".o_spreadsheet_global_filters_side_panel .o-sidePanelButton"
         );
         assert.equal(items.length, 3);
@@ -1085,46 +1091,46 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
     test("Display with an existing 'Date' global filter", async function (assert) {
         assert.expect(4);
 
-        const { webClient, model } = await createSpreadsheetFromPivot();
+        const { model } = await createSpreadsheetFromPivot();
         const label = "This year";
         await addGlobalFilter(model, {
             filter: { id: "42", type: "date", label, pivotFields: {}, defaultValue: {} },
         });
-        const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+        const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
         await dom.click(searchIcon);
-        const items = $(webClient.el).find(
+        const items = $(target).find(
             ".o_spreadsheet_global_filters_side_panel .o_side_panel_section"
         );
         assert.equal(items.length, 2);
         const labelElement = items[0].querySelector(".o_side_panel_filter_label");
         assert.equal(labelElement.innerText, label);
         await dom.click(items[0].querySelector(".o_side_panel_filter_icon"));
-        assert.ok($(webClient.el).find(".o_spreadsheet_filter_editor_side_panel"));
-        assert.equal($(webClient.el).find(".o_global_filter_label")[0].value, label);
+        assert.ok($(target).find(".o_spreadsheet_filter_editor_side_panel"));
+        assert.equal($(target).find(".o_global_filter_label")[0].value, label);
     });
 
     test("Create a new global filter", async function (assert) {
         assert.expect(4);
 
-        const { webClient, model } = await createSpreadsheetFromPivot();
-        const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+        const { model } = await createSpreadsheetFromPivot();
+        const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
         await dom.click(searchIcon);
-        const newText = $(webClient.el).find(".o_global_filter_new_text")[0];
+        const newText = $(target).find(".o_global_filter_new_text")[0];
         await dom.click(newText);
-        assert.equal($(webClient.el).find(".o-sidePanel").length, 1);
-        const input = $(webClient.el).find(".o_global_filter_label")[0];
+        assert.equal($(target).find(".o-sidePanel").length, 1);
+        const input = $(target).find(".o_global_filter_label")[0];
         await fields.editInput(input, "My Label");
-        const value = $(webClient.el).find(".o_global_filter_default_value")[0];
+        const value = $(target).find(".o_global_filter_default_value")[0];
         await fields.editInput(value, "Default Value");
         // Can't make it work with the DOM API :(
-        // await dom.triggerEvent($(webClient.el).find(".o_field_selector_value"), "focusin");
-        $($(webClient.el).find(".o_field_selector_value")).focusin();
-        await dom.click($(webClient.el).find(".o_field_selector_select_button")[0]);
-        const save = $(webClient.el).find(
+        // await dom.triggerEvent($(target).find(".o_field_selector_value"), "focusin");
+        $($(target).find(".o_field_selector_value")).focusin();
+        await dom.click($(target).find(".o_field_selector_select_button")[0]);
+        const save = $(target).find(
             ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
         )[0];
         await dom.click(save);
-        assert.equal($(webClient.el).find(".o_spreadsheet_global_filters_side_panel").length, 1);
+        assert.equal($(target).find(".o_spreadsheet_global_filters_side_panel").length, 1);
         const globalFilter = model.getters.getGlobalFilters()[0];
         assert.equal(globalFilter.label, "My Label");
         assert.equal(globalFilter.defaultValue, "Default Value");
@@ -1133,7 +1139,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
     test("Create a new relational global filter", async function (assert) {
         assert.expect(4);
 
-        const { webClient, model } = await createSpreadsheetFromPivot({
+        const { model } = await createSpreadsheetFromPivot({
             serverData: {
                 models: getBasicData(),
                 views: {
@@ -1147,32 +1153,32 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
                 },
             },
         });
-        const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+        const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
         await dom.click(searchIcon);
-        const newRelation = $(webClient.el).find(".o_global_filter_new_relation")[0];
+        const newRelation = $(target).find(".o_global_filter_new_relation")[0];
         await dom.click(newRelation);
         let selector = `.o_field_many2one[name="ir.model"] input`;
-        await dom.click($(webClient.el).find(selector)[0]);
+        await dom.click($(target).find(selector)[0]);
         let $dropdown = $(selector).autocomplete("widget");
         let $target = $dropdown.find(`li:contains(Product)`).first();
         await dom.click($target);
 
-        let save = $(webClient.el).find(
+        let save = $(target).find(
             ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
         )[0];
         await dom.click(save);
-        assert.equal($(webClient.el).find(".o_spreadsheet_global_filters_side_panel").length, 1);
+        assert.equal($(target).find(".o_spreadsheet_global_filters_side_panel").length, 1);
         let globalFilter = model.getters.getGlobalFilters()[0];
         assert.equal(globalFilter.label, "Product");
         assert.deepEqual(globalFilter.defaultValue, []);
         assert.deepEqual(globalFilter.pivotFields[1], { field: "product_id", type: "many2one" });
     });
 
-    QUnit.test(
+    test(
         "Prevent selection of a Field Matching before the Related model",
         async function (assert) {
             assert.expect(2);
-            const { webClient } = await createSpreadsheetFromPivot({
+            await createSpreadsheetFromPivot({
                 serverData: {
                     models: getBasicData(),
                     views: {
@@ -1195,19 +1201,19 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             await dom.click(".o_global_filter_new_relation");
             let relatedModelSelector = `.o_field_many2one[name="ir.model"] input`;
             let fieldMatchingSelector = `.o_pivot_field_matching`;
-            assert.containsNone(webClient, fieldMatchingSelector);
-            await dom.click(webClient.el.querySelector(relatedModelSelector));
+            assert.containsNone(target, fieldMatchingSelector);
+            await dom.click(target.querySelector(relatedModelSelector));
             let $dropdown = $(relatedModelSelector).autocomplete("widget");
             let $target = $dropdown.find(`li:contains(Product)`).first();
             await dom.click($target);
-            assert.containsOnce(webClient, fieldMatchingSelector);
+            assert.containsOnce(target, fieldMatchingSelector);
         }
     );
 
-    QUnit.test("Display with an existing 'Relation' global filter", async function (assert) {
+    test("Display with an existing 'Relation' global filter", async function (assert) {
         assert.expect(8);
 
-        const { webClient, model } = await createSpreadsheetFromPivot();
+        const { model } = await createSpreadsheetFromPivot();
         const label = "MyFoo";
         const pivot = model.getters.getPivotForRPC("1");
         model.dispatch("ADD_PIVOT", {
@@ -1226,22 +1232,22 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             defaultValue: [],
         };
         await addGlobalFilter(model, { filter });
-        const searchIcon = webClient.el.querySelector(".o_topbar_filter_icon");
+        const searchIcon = target.querySelector(".o_topbar_filter_icon");
         await dom.click(searchIcon);
-        const items = webClient.el.querySelectorAll(
+        const items = target.querySelectorAll(
             ".o_spreadsheet_global_filters_side_panel .o_side_panel_section"
         );
         assert.equal(items.length, 2);
         const labelElement = items[0].querySelector(".o_side_panel_filter_label");
         assert.equal(labelElement.innerText, label);
         await dom.click(items[0].querySelector(".o_side_panel_filter_icon"));
-        assert.ok(webClient.el.querySelectorAll(".o_spreadsheet_filter_editor_side_panel"));
-        assert.equal(webClient.el.querySelector(".o_global_filter_label").value, label);
+        assert.ok(target.querySelectorAll(".o_spreadsheet_filter_editor_side_panel"));
+        assert.equal(target.querySelector(".o_global_filter_label").value, label);
         assert.equal(
-            webClient.el.querySelector(`.o_field_many2one[name="ir.model"] input`).value,
+            target.querySelector(`.o_field_many2one[name="ir.model"] input`).value,
             "Product"
         );
-        const fieldsMatchingElements = webClient.el.querySelectorAll(
+        const fieldsMatchingElements = target.querySelectorAll(
             "span.o_field_selector_chain_part"
         );
         assert.equal(fieldsMatchingElements.length, 2);
@@ -1269,7 +1275,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             string: "Document",
             type: "many2one",
         };
-        const { webClient } = await createSpreadsheetFromPivot({
+        await createSpreadsheetFromPivot({
             serverData: {
                 models: data,
                 views: {
@@ -1283,12 +1289,12 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
                 },
             },
         });
-        const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+        const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
         await dom.click(searchIcon);
-        const newRelation = $(webClient.el).find(".o_global_filter_new_relation")[0];
+        const newRelation = $(target).find(".o_global_filter_new_relation")[0];
         await dom.click(newRelation);
         const selector = `.o_field_many2one[name="ir.model"] input`;
-        await dom.click($(webClient.el).find(selector)[0]);
+        await dom.click($(target).find(selector)[0]);
         const $dropdown = $(selector).autocomplete("widget");
         const [model1, model2] = $dropdown.find(`li`);
         assert.equal(model1.innerText, "Product");
@@ -1298,25 +1304,25 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
     test("Edit an existing global filter", async function (assert) {
         assert.expect(4);
 
-        const { webClient, model } = await createSpreadsheetFromPivot();
+        const { model } = await createSpreadsheetFromPivot();
         const label = "This year";
         const defaultValue = "value";
         await addGlobalFilter(model, {
             filter: { id: "42", type: "text", label, defaultValue, pivotFields: {} },
         });
-        const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+        const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
         await dom.click(searchIcon);
-        const editFilter = $(webClient.el).find(".o_side_panel_filter_icon");
+        const editFilter = $(target).find(".o_side_panel_filter_icon");
         await dom.click(editFilter);
-        assert.equal($(webClient.el).find(".o-sidePanel").length, 1);
-        const input = $(webClient.el).find(".o_global_filter_label")[0];
+        assert.equal($(target).find(".o-sidePanel").length, 1);
+        const input = $(target).find(".o_global_filter_label")[0];
         assert.equal(input.value, label);
-        const value = $(webClient.el).find(".o_global_filter_default_value")[0];
+        const value = $(target).find(".o_global_filter_default_value")[0];
         assert.equal(value.value, defaultValue);
         await fields.editInput(input, "New Label");
-        $($(webClient.el).find(".o_field_selector_value")).focusin();
-        await dom.click($(webClient.el).find(".o_field_selector_select_button")[0]);
-        const save = $(webClient.el).find(
+        $($(target).find(".o_field_selector_value")).focusin();
+        await dom.click($(target).find(".o_field_selector_select_button")[0]);
+        const save = $(target).find(
             ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
         )[0];
         await dom.click(save);
@@ -1760,7 +1766,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
         assert.containsN(document.body, ".o_pivot_table_dialog th", 5);
     });
 
-    QUnit.test("Grid has still the focus after a dialog", async function (assert) {
+    test("Grid has still the focus after a dialog", async function (assert) {
         assert.expect(1);
 
         const { model, env } = await createSpreadsheetFromPivot({
@@ -1786,10 +1792,10 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
         assert.strictEqual(document.activeElement.tagName, "CANVAS");
     });
 
-    QUnit.test("Open pivot properties properties with non-loaded field", async function (assert) {
+    test("Open pivot properties properties with non-loaded field", async function (assert) {
         assert.expect(1);
 
-        const { webClient, model, env } = await createSpreadsheetFromPivot();
+        const { model, env } = await createSpreadsheetFromPivot();
         const pivot = model.getters.getPivotForRPC("1");
         pivot.measures.push({
             field: "non-existing",
@@ -1800,7 +1806,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
             pivot: model.getters.getSelectedPivotId(),
         });
         await nextTick();
-        const sections = webClient.el.querySelectorAll(".o_side_panel_section");
+        const sections = target.querySelectorAll(".o_side_panel_section");
         const measures = sections[4];
         assert.equal(measures.children[2].innerText, "non-existing");
     });
@@ -1815,7 +1821,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
         registry.category("services").add("notification", makeFakeNotificationService(mock), {
             force: true,
         });
-        const { model, webClient } = await createSpreadsheetFromPivot({
+        const { model } = await createSpreadsheetFromPivot({
             serverData: {
                 models: getBasicData(),
                 views: {
@@ -1842,20 +1848,20 @@ module("documents_spreadsheet > Spreadsheet Client Action", {}, function () {
                 },
             },
         });
-        const searchIcon = $(webClient.el).find(".o_topbar_filter_icon")[0];
+        const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
         await dom.click(searchIcon);
-        const newText = $(webClient.el).find(".o_global_filter_new_text")[0];
+        const newText = $(target).find(".o_global_filter_new_text")[0];
         await dom.click(newText);
-        assert.equal($(webClient.el).find(".o-sidePanel").length, 1);
-        const input = $(webClient.el).find(".o_global_filter_label")[0];
+        assert.equal($(target).find(".o-sidePanel").length, 1);
+        const input = $(target).find(".o_global_filter_label")[0];
         await fields.editInput(input, uniqueFilterName);
-        const value = $(webClient.el).find(".o_global_filter_default_value")[0];
+        const value = $(target).find(".o_global_filter_default_value")[0];
         await fields.editInput(value, "Default Value");
         // Can't make it work with the DOM API :(
-        // await dom.triggerEvent($(webClient.el).find(".o_field_selector_value"), "focusin");
-        $($(webClient.el).find(".o_field_selector_value")).focusin();
-        await dom.click($(webClient.el).find(".o_field_selector_select_button")[0]);
-        const save = $(webClient.el).find(
+        // await dom.triggerEvent($(target).find(".o_field_selector_value"), "focusin");
+        $($(target).find(".o_field_selector_value")).focusin();
+        await dom.click($(target).find(".o_field_selector_select_button")[0]);
+        const save = $(target).find(
             ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
         )[0];
         await dom.click(save);

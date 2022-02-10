@@ -2,23 +2,28 @@
 <templates xml:space="preserve">
     <t t-name="documents_spreadsheet.TemplateDialog" owl="1">
         <div>
-            <Dialog t-if="state.isOpen" title="dialogTitle" t-on-dialog-closed="state.isOpen = false" contentClass="'o-spreadsheet-templates-dialog'">
+            <Dialog
+                t-if="state.isOpen"
+                title="dialogTitle"
+                contentClass="'o-spreadsheet-templates-dialog'"
+                onClosed="() => { this.state.isOpen = false }"
+            >
                 <div class="o_searchview">
                     <SearchBar fields="props.searchView.fields"/>
                 </div>
                 <div class="o-pager">
                     <Pager
                         t-if="state.templatesCount"
-                        t-on-pager-changed="_onPagerChanged"
                         size="state.templatesCount"
                         currentMinimum="state.currentMinimum"
-                        limit="limit" editable="false"/>
+                        limit="limit" editable="false"
+                        onPagerChanged.bind="_onPagerChanged"/>
                 </div>
                 <div class="o-templates-container">
                     <div class="o-template o-blank-template">
                         <img
                             tabindex="0"
-                            t-on-focus="_selectTemplate(null)"
+                            t-on-focus="() => this._selectTemplate(null)"
                             t-att-class="_isSelected(null) ? 'o-template-selected': ''"
                             src="documents_spreadsheet/static/img/spreadsheet.svg"
                             t-att-title="Blank"/>
@@ -31,7 +36,7 @@
                         <img
                             tabindex="0"
                             t-att-class="_isSelected(template.id) ? 'o-template-selected': ''"
-                            t-on-focus="_selectTemplate(template.id)"
+                            t-on-focus="() => this._selectTemplate(template.id)"
                             t-attf-src="/web/image?model=spreadsheet.template&amp;id={{template.id}}&amp;field=thumbnail"
                             t-att-title="template.name"/>
                         <div t-esc="template.name"/>
@@ -44,7 +49,7 @@
                         t-on-click="_createSpreadsheet">
                         <t>Create</t>
                     </button>
-                    <button class="btn btn-secondary" t-on-click="state.isOpen = false">
+                    <button class="btn btn-secondary" t-on-click="() => { this.state.isOpen = false; }">
                         <t>Cancel</t>
                     </button>
                 </t>

@@ -3,9 +3,10 @@ odoo.define('mrp_workorder_navigation.tests', function (require) {
 
     var testUtils = require("web.test_utils");
     const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
-    const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+    const { getFixture, legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 
     let serverData;
+    let target;
 
     QUnit.module('mrp_workorder_tabletview_navigation', {
         beforeEach: function () {
@@ -42,8 +43,9 @@ odoo.define('mrp_workorder_navigation.tests', function (require) {
                   '</group>' +
                   '</form>',
               'mrp.workorder,false,search': '<search><field name="name" string="Foo"/></search>',
-          };
+            };
             serverData = { models, views };
+            target = getFixture();
         },
     }, function() {
         QUnit.test("workorder navigation", async function (assert) {
@@ -77,11 +79,11 @@ odoo.define('mrp_workorder_navigation.tests', function (require) {
             }); // open workorder form view action
             await testUtils.dom.click($('button[name="open_tablet_view"]'));
             await legacyExtraNextTick();
-            assert.containsOnce(webClient, '.o_workorder_tablet', "tablet view should be opened");
+            assert.containsOnce(target, '.o_workorder_tablet', "tablet view should be opened");
 
             await testUtils.dom.click($('.btn.o_workorder_icon_btn'));
             await legacyExtraNextTick();
-            assert.strictEqual($(webClient.el).find('.breadcrumb-item').length, 1, "there should be only one controller in actionManager");
+            assert.containsOnce(target, '.breadcrumb-item', "there should be only one controller in actionManager");
         });
     });
 });

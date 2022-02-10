@@ -4,9 +4,8 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
     const fieldUtils = require('web.field_utils');
     const TimerHeaderM2O = require('timesheet_grid.TimerHeaderM2O');
 
+    const { onMounted, onWillUpdateProps, onPatched, Component, useState, useRef } = owl;
     const { ComponentAdapter } = require('web.OwlCompatibility');
-
-    const { Component, useRef, useState } = owl;
 
     class TimerHeaderM2OAdapter extends ComponentAdapter {
         async updateWidget(nextProps) {
@@ -27,9 +26,7 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
     }
 
     class TimerHeaderComponent extends Component {
-        constructor() {
-            super(...arguments);
-
+        setup() {
             this.state = useState({
                 time: null,
                 manualTimeInput: false,
@@ -50,38 +47,41 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
                     this.state.time = Math.floor(Date.now() / 1000) - this.props.timer;
                 }, 1000);
             }
-        }
-        async willUpdateProps(nextProps) {
-            if (nextProps.description !== this.props.description && this.descriptionInput.el) {
-                this.descriptionInput.el.value = nextProps.description;
-            }
-            return super.willUpdateProps(...arguments);
-        }
-        patched() {
-            if (this.state.manualTimeInput && !this.state.errorManualTimeInput && this.manualTimeInput.el !== document.activeElement) {
-                this.manualTimeInput.el.focus();
-                this.manualTimeInput.el.select();
-            }
-            if (this.props.timerRunning && !this.timerStarted) {
-                this.timerStarted = true;
-                this.state.time = Math.floor(Date.now() / 1000) - this.props.timer;
-                this.timer = setInterval(() => {
-                    this.state.time = Math.floor(Date.now() / 1000) - this.props.timer;
-                }, 1000);
-                this.stopButton.el.focus();
-            } else if (!this.props.timerRunning && this.timerStarted) {
-                this.timerStarted = false;
-                clearInterval(this.timer);
-                this.startButton.el.focus();
-            }
-        }
-        mounted() {
-            if (this.stopButton.el) {
-                this.stopButton.el.focus();
-            } else {
-                this.startButton.el.focus();
-            }
 
+            onWillUpdateProps(async (nextProps) => {
+                if (nextProps.description !== this.props.description && this.descriptionInput.el) {
+                    this.descriptionInput.el.value = nextProps.description;
+                }
+            });
+
+            onPatched(() => {
+                if (this.state.manualTimeInput && !this.state.errorManualTimeInput && this.manualTimeInput.el !== document.activeElement) {
+                    this.manualTimeInput.el.focus();
+                    this.manualTimeInput.el.select();
+                }
+                if (this.props.timerRunning && !this.timerStarted) {
+                    this.timerStarted = true;
+                    this.state.time = Math.floor(Date.now() / 1000) - this.props.timer;
+                    this.timer = setInterval(() => {
+                        this.state.time = Math.floor(Date.now() / 1000) - this.props.timer;
+                    }, 1000);
+                    this.stopButton.el.focus();
+                } else if (!this.props.timerRunning && this.timerStarted) {
+                    this.timerStarted = false;
+                    clearInterval(this.timer);
+                    this.startButton.el.focus();
+                }
+            });
+
+            onMounted(() => {
+                this.props.bus.on("TIMESHEET_TIMER:focusStartButton", this, this._focusStartButton);
+                this.props.bus.on("TIMESHEET_TIMER:focusStopButton", this, this._focusStopButton);
+                if (this.stopButton.el) {
+                    this.stopButton.el.focus();
+                } else {
+                    this.startButton.el.focus();
+                }
+            });
         }
 
         //----------------------------------------------------------------------
@@ -124,6 +124,18 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
 
         _display2digits(number) {
             return number > 9 ? "" + number : "0" + number;
+        }
+
+        _focusStopButton() {
+            if (this.stopButton.el) {
+                this.stopButton.el.focus();
+            }
+        }
+
+        _focusStartButton() {
+            if (this.startButton.el) {
+                this.startButton.el.focus();
+            }
         }
 
         //--------------------------------------------------------------------------
@@ -252,6 +264,14 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
             optional: true
         },
         projectWarning: Boolean,
+        onTimerStarted: Function,
+        onTimerStopped: Function,
+        onTimerUnlink: Function,
+        onTimerEditProject: Function,
+        onTimerEditTask: Function,
+        onNewTimerValue: Function,
+        onNewDescription: Function,
+        bus: Object,
     };
     TimerHeaderComponent.components = { TimerHeaderM2OAdapter };
 

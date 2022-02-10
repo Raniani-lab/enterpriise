@@ -16,7 +16,7 @@ import { SpreadsheetTemplateAction } from "@documents_spreadsheet_bundle/actions
 
 import { createSpreadsheetTemplate, createSpreadsheet } from "../spreadsheet_test_utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import { patchWithCleanup, getFixture } from "@web/../tests/helpers/utils";
 import { actionService } from "@web/webclient/actions/action_service";
 import { getCellContent, getCellFormula, getCellValue } from "../utils/getters_helpers";
 import { setCellContent } from "../utils/commands_helpers";
@@ -28,6 +28,8 @@ const { Model } = spreadsheet;
 const { topbarMenuRegistry } = spreadsheet.registries;
 
 const { module, test } = QUnit;
+
+const { onMounted } = owl;
 
 let serverData;
 
@@ -1362,7 +1364,8 @@ module(
                 },
             });
             const { env } = await createSpreadsheet({ spreadsheetId: 2, webClient });
-            const input = $(webClient.el).find(".breadcrumb-item input");
+            const target = getFixture();
+            const input = $(target).find(".breadcrumb-item input");
             await fields.editInput(input, "My spreadsheet");
             await dom.triggerEvent(input, "change");
             const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
@@ -1549,8 +1552,9 @@ module(
                 tag: "action_open_template",
                 params: { spreadsheet_id: 1 },
             });
-            assert.containsNone(webClient, ".o_spreadsheet_sync_status");
-            assert.containsNone(webClient, ".o_spreadsheet_number_users");
+            const target = getFixture();
+            assert.containsNone(target, ".o_spreadsheet_sync_status");
+            assert.containsNone(target, ".o_spreadsheet_number_users");
         });
 
         test("collaboration communication is disabled", async function (assert) {
@@ -1612,10 +1616,12 @@ module(
             ];
             let spreadSheetComponent;
             patchWithCleanup(SpreadsheetTemplateAction.prototype, {
-                mounted() {
+                setup() {
                     this._super();
-                    spreadSheetComponent = this.spreadsheetRef.comp;
-                },
+                    onMounted(() => {
+                        spreadSheetComponent = this.spreadsheet;
+                    });
+                }
             });
             const { model, webClient } = await createSpreadsheetTemplate({
                 serverData: { models: this.data },
@@ -1637,15 +1643,11 @@ module(
                             );
                         }
                     }
-                    if (this) {
-                        return this._super.apply(this, arguments);
-                    }
                 },
             });
 
             setCellContent(model, "B1", "Name");
-            await spreadSheetComponent.trigger(
-                "spreadsheet-saved",
+            await spreadSheetComponent.props.onSpreadsheetSaved(
                 spreadSheetComponent.getSaveData()
             );
             await doAction(webClient, {

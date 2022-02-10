@@ -68,7 +68,7 @@
             </div>
         </t>
         <t t-else="">
-            <div class="d-flex col-sm-12 align-items-center">
+            <div class="d-flex col-sm-12 pl-0 align-items-center">
                 <div class="my-2 pr-2" id="start">
                     <button class="btn btn_start_timer" t-on-click="_onClickStartTimer" t-ref="startButton"><i class="fa fa-play"></i> Start</button>
                 </div>

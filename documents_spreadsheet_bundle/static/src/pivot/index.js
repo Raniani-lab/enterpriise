@@ -2,8 +2,7 @@
 
 import { _t, _lt } from "web.core";
 
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
+import spreadsheet, { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
 
 import PivotPlugin from "./plugins/pivot_plugin";
 import PivotStructurePlugin from "./plugins/pivot_structure_plugin";

@@ -7,10 +7,9 @@ import {
     start,
 } from '@mail/utils/test_utils';
 
-import { file } from 'web.test_utils';
+import testUtils, { file } from 'web.test_utils';
 import config from 'web.config';
 import FormView from 'web.FormView';
-import testUtils from 'web.test_utils';
 const { createFile, inputFiles } = file;
 
 QUnit.module('mail_enterprise', {}, function () {

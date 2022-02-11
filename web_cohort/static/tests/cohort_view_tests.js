@@ -3,9 +3,16 @@
 import testUtils from "web.test_utils";
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    click,
+    getFixture,
+    nextTick,
+    patchWithCleanup,
+    makeDeferred,
+    mockDownload,
+    patchDate
+} from "@web/../tests/helpers/utils";
 import { makeView } from "@web/../tests/views/helpers";
-import { removeFacet, setupControlPanelServiceRegistry } from "@web/../tests/search/helpers";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
 import {
@@ -14,8 +21,9 @@ import {
     toggleComparisonMenu,
     toggleMenuItemOption,
     toggleMenu,
+    removeFacet,
+    setupControlPanelServiceRegistry,
 } from "@web/../tests/search/helpers";
-import { makeDeferred, mockDownload, patchDate } from "@web/../tests/helpers/utils";
 import { browser } from "@web/core/browser/browser";
 
 const serviceRegistry = registry.category("services");

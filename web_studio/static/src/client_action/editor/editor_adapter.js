@@ -4,10 +4,9 @@ import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { NewViewDialog } from "@web_studio/client_action/editor/new_view_dialogs/new_view_dialog";
 import { MapNewViewDialog } from "@web_studio/client_action/editor/new_view_dialogs/map_new_view_dialog";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { ConfirmationDialog, AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import ActionEditor from "web_studio.ActionEditor";
 import { ActionEditorMain } from "../../legacy/action_editor_main";
-import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 const { Component } = owl;
 
@@ -99,7 +98,7 @@ export class EditorAdapter extends ComponentAdapter {
         if (viewAdded !== true) {
             viewAdded = new Promise((resolve) => {
                 let DialogClass;
-                let dialogProps = {
+                const dialogProps = {
                     confirm: async () => {
                         await this.editAction(action, args);
                         resolve(true);

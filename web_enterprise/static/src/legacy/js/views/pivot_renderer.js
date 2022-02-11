@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
 import config from "web.config";
-import PivotRenderer from "@web/legacy/js/views/pivot/pivot_renderer";
-import { PivotGroupByMenu } from "@web/legacy/js/views/pivot/pivot_renderer";
+import PivotRenderer, { PivotGroupByMenu } from "@web/legacy/js/views/pivot/pivot_renderer";
 import { patch } from "web.utils";
 
 if (config.device.isMobile) {

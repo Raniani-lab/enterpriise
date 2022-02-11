@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
-import { createCalendarView } from 'web.test_utils';
+import testUtils, { createCalendarView } from 'web.test_utils';
 const initialDate = new Date("2021-06-22T08:00:00Z");
-import testUtils from 'web.test_utils';
 import PlanningCalendarView from '../src/js/calendar/planning_calendar_view.js';
 
 

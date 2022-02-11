@@ -1,7 +1,6 @@
 /** @odoo-module */
 
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
+import spreadsheet, { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
 import { _lt } from "@web/core/l10n/translation";
 
 import { IrMenuSelector } from "@documents_spreadsheet/components/ir_menu_selector/ir_menu_selector";

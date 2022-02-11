@@ -2,11 +2,10 @@
 import { jsonToBase64 } from "@documents_spreadsheet_bundle/o_spreadsheet/helpers";
 import { getBasicServerData } from "./utils/spreadsheet_test_data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import { patchWithCleanup, click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import { SpreadsheetAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_action";
 import { SpreadsheetTemplateAction } from "@documents_spreadsheet_bundle/actions/spreadsheet_template/spreadsheet_template_action";
 import { UNTITLED_SPREADSHEET_NAME } from "@documents_spreadsheet_bundle/o_spreadsheet/constants";
-import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import {
     getSpreadsheetActionEnv,
     getSpreadsheetActionModel,

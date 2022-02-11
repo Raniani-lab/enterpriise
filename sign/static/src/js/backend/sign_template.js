@@ -13,9 +13,11 @@ import Widget from "web.Widget";
 import { PDFIframe } from "@sign/js/common/PDFIframe";
 import { sign_utils } from "@sign/js/backend/utils";
 import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
-import { FormFieldMany2ManyTags } from "web.relational_fields";
+import {
+  FormFieldMany2ManyTags,
+  FieldSelection as FormFieldSelection
+} from "web.relational_fields";
 import SmoothScrollOnDrag from "web/static/src/js/core/smooth_scroll_on_drag.js";
-import { FieldSelection as FormFieldSelection } from "web.relational_fields";
 import { multiFileUpload } from "@sign/js/common/multi_file_upload";
 
 const { _t } = core;

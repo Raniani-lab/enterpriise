@@ -1,7 +1,6 @@
 /** @odoo-module */
 
-import testUtils from "web.test_utils";
-import { createView } from "web.test_utils";
+import testUtils, { createView } from "web.test_utils";
 import { Domain } from "@web/core/domain";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { TaskGanttConnectorView } from "@project_enterprise/js/task_gantt_connector/task_gantt_connector_view";

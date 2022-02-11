@@ -1,11 +1,10 @@
 /** @odoo-module **/
 
-import { click } from "@web/../tests/helpers/utils";
+import { click, getFixture } from "@web/../tests/helpers/utils";
 import { makeWithSearch, setupControlPanelServiceRegistry } from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { getFixture } from "@web/../tests/helpers/utils";
 
 let serverData;
 let target;

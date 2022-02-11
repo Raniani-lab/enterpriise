@@ -106,6 +106,42 @@ class TestItalianTaxReport(AccountTestInvoicingCommon):
             'VP7',
             0.0)
 
+    def test_tax_report_carryover_vp14_debit_valid_reset(self):
+        """
+        Test to have a value in line vp14 that would trigger a carryover, then another one added at the second period
+        to be out of bound.
+        In this case, we should see the carryover back to 0 after the second month.
+        """
+        report = self.env['account.generic.tax.report']
+        self._test_line_report_carryover(
+            '2015-05-10',
+            500,
+            self.tax_4v,
+            self._init_options(
+                report,
+                fields.Date.from_string('2015-05-01'),
+                fields.Date.from_string('2015-05-31')),
+            self._init_options(
+                report,
+                fields.Date.from_string('2015-06-01'),
+                fields.Date.from_string('2015-06-30')),
+            'VP7',
+            20.0)
+        self._test_line_report_carryover(
+            '2015-06-10',
+            500,
+            self.tax_4v,
+            self._init_options(
+                report,
+                fields.Date.from_string('2015-06-01'),
+                fields.Date.from_string('2015-06-30')),
+            self._init_options(
+                report,
+                fields.Date.from_string('2015-07-01'),
+                fields.Date.from_string('2015-07-30')),
+            'VP7',
+            0.0)
+
     def _test_line_report_carryover(self, invoice_date, invoice_amount, tax_line,
                                     first_month_options, second_month_options,
                                     target_line_code, target_line_value):

@@ -1179,13 +1179,13 @@ class AccountGenericTaxReport(models.AbstractModel):
 
                 # So that we can find that line if it is target of another one.
                 if line['tax_report_line'].carry_over_destination_line_id:
-                    destination_line_id = line['tax_report_line'].carry_over_destination_line_id.id
-                    if destination_line_id not in tax_report_line_report_line_mapping:
+                    destination_line = tax_report_line_report_line_mapping.get(line['tax_report_line'].carry_over_destination_line_id.id)
+                    if not destination_line:
                         continue
 
-                    columns = tax_report_line_report_line_mapping[destination_line_id]['columns']
+                    columns = destination_line['columns']
                     for index, column in enumerate(columns):
-                        self._format_column_after_carryover(line, column, index, options)
+                        self._format_column_after_carryover(destination_line, column, index, options)
 
             # Also update the section totals to represent those changes
             # Filter to ignore control lines if any
@@ -1205,6 +1205,9 @@ class AccountGenericTaxReport(models.AbstractModel):
         """
         tax_report_line = line.get('tax_report_line', False)
         carryover_bounds = column.get('carryover_bounds', None)
+        if not carryover_bounds:
+            return
+
         line_balance, carryover_balance = self.get_amounts_after_carryover(tax_report_line, column['balance'],
                                                                            carryover_bounds, options, period)
         carryover_balance = self.format_value(carryover_balance)
@@ -1293,8 +1296,8 @@ class AccountGenericTaxReport(models.AbstractModel):
         0 is the current period, and 1+ would be periods that are being compared to.
         :return: The newly adapted amount for the line, along with the one for the carryover
         """
-        if carryover_bounds is None:
-            return amount, self.get_carried_over_balance_before_date(tax_report_line, options, period)
+        if carryover_bounds in (None, (None, None)):
+            return amount, 0
 
         # Non-persistent carryover always bring the carryover balance to the balance of the line
         if not persistent:

@@ -83,6 +83,6 @@ tour.register('payroll_dashboard_ui_tour', {
     },
     {
         content: "Edit the note in dashboard view",
-        trigger: '.o_hr_payroll_dashboard_todo button[string="Edit"]',
+        trigger: 'div.o_hr_payroll_todo_value',
     },
 ]);

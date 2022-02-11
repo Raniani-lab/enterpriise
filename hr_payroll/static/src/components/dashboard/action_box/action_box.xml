@@ -9,19 +9,16 @@
                     </h2>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <t t-foreach="props.actions" t-as="action" t-key="action_index">
-                        <div t-if="action.count > 0" class="row w-100">
-                            <a class="col-9 text-left" href="#"
-                                t-on-click="() => this.actionService.doAction(action.action)">
-                                <t t-esc="action.string"/>
-                            </a>
-                            <span class="col-3 pr-2 text-right m-auto"><t t-esc="action.count"/></span>
-                        </div>
-                    </t>
-                </div>
-            </div>
+            <t t-foreach="props.actions" t-as="action" t-key="action_index">
+                <a t-if="action.count > 0" class="row w-100" href="#" t-on-click="() => this.actionService.doAction(action.action)">
+                    <span class="col-1 text-right p-0 mr-1">
+                        <t t-esc="action.count"/>
+                    </span>
+                    <span class="col text-left p-0">
+                        <t t-esc="action.string"/>
+                    </span>
+                </a>
+            </t>
         </div>
     </t>
 </templates>

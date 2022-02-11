@@ -1149,6 +1149,7 @@ class HrPayslip(models.Model):
         }
         employer_cost = {
             'type': 'stacked_bar',
+            'title': _('Employer Cost'),
             'label': _('Employer Cost'),
             'id': 'employer_cost',
             'is_sample': False,
@@ -1217,7 +1218,8 @@ class HrPayslip(models.Model):
         today = fields.Date.context_today(self)
         employees_trends = {
             'type': 'line',
-            'label': _('Employee Trends'),
+            'title': _('Employee Trends'),
+            'label': _('Employee Count'),
             'id': 'employees',
             'is_sample': False,
             'actions': self._get_employee_stats_actions(),

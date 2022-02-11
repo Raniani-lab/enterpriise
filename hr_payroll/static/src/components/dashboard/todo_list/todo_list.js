@@ -122,19 +122,24 @@ export class PayrollDashboardTodo extends Component {
     }
 
     /**
-     * Switches to the requested note or opens the configuration for the current note depending on the state.
+     * Switches to the requested note.
      *
-     * @param {number} noteId ID of the tab's note record
+     * @param { Number } noteId ID of the tab's note record
      */
     onClickNoteTab(noteId) {
-        if (this.state.activeNoteId == noteId) {
-            return this.openNoteForm(this.state.activeNoteId);
-        }
         if (this.state.mode === 'edit') {
             this.saveNote();
         }
         this.state.mode = 'readonly';
         this.state.activeNoteId = noteId;
+    }
+
+    /**
+     * Opens the configuration for the clicked note
+     * @param { Number } noteId
+     */
+    onDoubleClickNoteTab(noteId) {
+        this.openNoteForm(noteId);
     }
 
     /**
@@ -187,6 +192,10 @@ export class PayrollDashboardTodo extends Component {
      * Uses the current active note id.
      */
     generateRecord() {
+        // if active note was deleted, set the first note as the active one
+        if (!this.activeNoteData) {
+            this.state.activeNoteId = this.props.notes[0] && this.props.notes[0].id;
+        }
         const activeNote = this.activeNoteData;
         return {
             id: activeNote.id,

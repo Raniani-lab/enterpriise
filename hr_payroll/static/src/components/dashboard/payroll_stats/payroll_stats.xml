@@ -5,7 +5,7 @@
             <div class="stats-header row p-2 pl-4">
                 <div class="col w-100">
                     <h2 class="btn btn-link p-0 disabled text-black">
-                        <t t-esc="props.label"/>
+                        <t t-esc="props.title"/>
                     </h2>
                     <i class="fa fa-question-circle-o" t-if="props.help"
                         data-tooltip-template="hr_payroll.Tooltip" t-att-data-tooltip-info="tooltipInfo"/>

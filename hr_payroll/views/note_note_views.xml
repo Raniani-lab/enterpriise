@@ -11,12 +11,12 @@
                             <field name="message_partner_ids" widget="many2many_tags" string="Shared With"/>
                         </group>
                         <group>
-                            <button string="Add" type="object" name="action_add_follower" class="btn-primary float-right"/>
+                            <button string="Share" type="object" name="action_add_follower" class="btn-secondary"/>
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field string="Name" name="name" widget="char"/>
+                            <field string="Name" name="name" widget="char" required="1"/>
                         </group>
                     </group>
                     <group>
@@ -31,6 +31,7 @@
                 <footer>
                     <button string="Save" special="save" class="btn-primary"/>
                     <button string="Discard" special="cancel"/>
+                    <button string="Delete" type="object" name="unlink"/>
                 </footer>
             </form>
         </field>

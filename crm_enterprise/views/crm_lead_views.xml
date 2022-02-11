@@ -257,22 +257,6 @@
             <field name="act_window_id" ref="crm_enterprise.crm_lead_action_dashboard"/>
         </record>
 
-        <!-- add dashboard to pipeline action -->
-        <record id="crm_lead_action_pipeline_view_dashboard" model="ir.actions.act_window.view">
-            <field name="sequence" eval="7"/>
-            <field name="view_mode">dashboard</field>
-            <field name="view_id" ref="crm_enterprise.crm_opportunity_view_dashboard"/>
-            <field name="act_window_id" ref="crm.crm_lead_action_pipeline"/>
-        </record>
-
-        <!-- add cohort to pipeline action -->
-        <record id="crm_lead_action_pipeline_view_cohort" model="ir.actions.act_window.view">
-            <field name="sequence" eval="6"/>
-            <field name="view_mode">cohort</field>
-            <field name="view_id" ref="crm_enterprise.crm_lead_view_cohort"/>
-            <field name="act_window_id" ref="crm.crm_lead_action_pipeline"/>
-        </record>
-
         <!-- add map to pipeline action -->
         <record id="crm_lead_action_pipeline_view_map" model="ir.actions.act_window.view">
             <field name="sequence" eval="7"/>

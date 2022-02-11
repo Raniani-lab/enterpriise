@@ -201,6 +201,7 @@ class Applicant(models.Model):
                 self._send_notification(_('Your referrer got a step further!') + additional_message)
 
         self.env['hr.referral.points'].create(point_stage)
+        self.invalidate_recordset(['earned_points'])
 
     def choose_a_friend(self, friend_id):
         self.ensure_one()

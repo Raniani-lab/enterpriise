@@ -237,7 +237,7 @@ FormRenderer.include({
         attachments = _.filter(attachments, function (attachment) {
             var match = attachment.mimetype.match(options.types.join('|'));
             attachment.update({ type: match ? match[0] : false });
-            return match;
+            return match && !attachment.isUploading;
         });
         const thread = ev.data.thread;
         // most recent attachment is first in attachment list, so default order is 'desc'

@@ -251,10 +251,12 @@ class AccountEdiFormat(models.Model):
         def filter_tax_withholding(tax_values):
             return tax_values['tax_id'].amount < 0.0
 
+        compute_mode = 'tax_details' if invoice.company_id.tax_calculation_rounding_method == 'round_globally' else 'compute_all'
+
         cfdi_values.update({
             'get_tax_cfdi_name': get_tax_cfdi_name,
-            'tax_details_transferred': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_transferred),
-            'tax_details_withholding': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_withholding),
+            'tax_details_transferred': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_transferred, compute_mode=compute_mode),
+            'tax_details_withholding': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_withholding, compute_mode=compute_mode),
         })
 
         cfdi_values.update({

@@ -347,6 +347,169 @@ class TestEdiResults(TestMxEdiCommon):
             )
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
+    def test_invoice_cfdi_tax_rounding(self):
+        '''
+        To pass validation by the PAC, the tax amounts reported for each invoice
+        line need to fulfil the following two conditions:
+        (1) The total tax amount must be equal to the sum of the tax amounts
+            reported for each invoice line.
+        (2) The tax amount reported for each line must be equal to
+            (tax rate * base amount), rounded either up or down.
+
+        For example, for the line with base = MXN 398.28, the exact tax amount
+        would be 0.16 * 398.28 = 63.7248, so the acceptable values for the tax
+        amount on that line are 63.72 and 63.73.
+
+        For the line with base = 108.62, acceptable values are 17.37 and 17.38.
+        For the line with base = 362.07, acceptable values are 57.93 and 57.94.
+        For the lines with base = 31.9, acceptable values are 5.10 and 5.11.
+
+        This test is deliberately crafted (thanks to the lines with base = 31.9)
+        to introduce rounding errors which can fool some naive algorithms for
+        allocating the total tax amount among tax lines (such as algorithms
+        which allocate the total tax amount proportionately to the base amount).
+        '''
+        with freeze_time(self.frozen_today), \
+             mute_logger('py.warnings'), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
+
+            invoice = self.env['account.move'].create({
+                'move_type': 'out_invoice',
+                'partner_id': self.partner_a.id,
+                'invoice_date': '2017-01-01',
+                'date': '2017-01-01',
+                'currency_id': self.company_data['currency'].id,
+                'invoice_incoterm_id': self.env.ref('account.incoterm_FCA').id,
+                'invoice_line_ids': [
+                    Command.create({
+                        'product_id': self.product.id,
+                        'price_unit': 398.28,
+                        'quantity': 1,
+                        'tax_ids': [Command.set(self.tax_16.ids)],
+                    }),
+                    Command.create({
+                        'product_id': self.product.id,
+                        'price_unit': 108.62,
+                        'quantity': 1,
+                        'tax_ids': [Command.set(self.tax_16.ids)],
+                    }),
+                    Command.create({
+                        'product_id': self.product.id,
+                        'price_unit': 362.07,
+                        'quantity': 1,
+                        'tax_ids': [Command.set(self.tax_16.ids)],
+                    })] + [
+                    Command.create({
+                        'product_id': self.product.id,
+                        'price_unit': 31.9,
+                        'quantity': 1,
+                        'tax_ids': [Command.set(self.tax_16.ids)],
+                    }),
+                ] * 12,
+            })
+            invoice.action_post()
+
+            generated_files = self._process_documents_web_services(invoice, {'cfdi_3_3'})
+            self.assertTrue(generated_files)
+            cfdi = generated_files[0]
+
+            current_etree = self.get_xml_tree_from_string(cfdi)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
+                '''
+                    <xpath expr="//Comprobante" position="attributes">
+                        <attribute name="Moneda">MXN</attribute>
+                        <attribute name="Folio">2</attribute>
+                        <attribute name="Descuento">0.00</attribute>
+                        <attribute name="SubTotal">1251.77</attribute>
+                        <attribute name="Total">1452.00</attribute>
+                        <attribute name="TipoCambio" delete="true"/>
+                    </xpath>
+                    <xpath expr="//Concepto" position="replace">
+                        <Concepto
+                            Cantidad="1.000000"
+                            ClaveProdServ="01010101"
+                            Descripcion="product_mx"
+                            Importe="398.28"
+                            Descuento="0.00"
+                            ValorUnitario="398.28">
+                            <Impuestos>
+                                <Traslados>
+                                    <Traslado
+                                        Base="398.28"
+                                        Importe="63.72"
+                                        TasaOCuota="0.160000"
+                                        TipoFactor="Tasa"/>
+                                </Traslados>
+                            </Impuestos>
+                        </Concepto>
+                        <Concepto
+                            Cantidad="1.000000"
+                            ClaveProdServ="01010101"
+                            Descripcion="product_mx"
+                            Importe="108.62"
+                            ValorUnitario="108.62">
+                            <Impuestos>
+                                <Traslados>
+                                    <Traslado
+                                        Base="108.62"
+                                        Importe="17.38"
+                                        TasaOCuota="0.160000"
+                                        TipoFactor="Tasa"/>
+                                </Traslados>
+                            </Impuestos>
+                        </Concepto>
+                        <Concepto
+                            Cantidad="1.000000"
+                            ClaveProdServ="01010101"
+                            Descripcion="product_mx"
+                            Importe="362.07"
+                            ValorUnitario="362.07">
+                            <Impuestos>
+                                <Traslados>
+                                    <Traslado
+                                        Base="362.07"
+                                        Importe="57.93"
+                                        TasaOCuota="0.160000"
+                                        TipoFactor="Tasa"/>
+                                </Traslados>
+                            </Impuestos>
+                        </Concepto>
+                        ''' + '''<Concepto
+                            Cantidad="1.000000"
+                            ClaveProdServ="01010101"
+                            Descripcion="product_mx"
+                            Importe="31.90"
+                            Descuento="0.00"
+                            ValorUnitario="31.90">
+                            <Impuestos>
+                                <Traslados>
+                                    <Traslado
+                                        Base="31.90"
+                                        Importe="5.10"
+                                        TasaOCuota="0.160000"
+                                        TipoFactor="Tasa"/>
+                                </Traslados>
+                            </Impuestos>
+                        </Concepto>
+                        ''' * 12 + '''
+                    </xpath>
+                    <xpath expr="/Comprobante/Impuestos" position="replace">
+                        <Impuestos
+                            TotalImpuestosTrasladados="200.23">
+                            <Traslados>
+                                <Traslado
+                                    Importe="200.23"
+                                    TasaOCuota="0.160000"
+                                    TipoFactor="Tasa"/>
+                            </Traslados>
+                        </Impuestos>
+                    </xpath>
+                ''',
+            )
+            self.assertXmlTreeEqual(current_etree, expected_etree)
+
     # -------------------------------------------------------------------------
     # PAYMENTS
     # -------------------------------------------------------------------------

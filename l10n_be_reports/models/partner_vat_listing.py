@@ -256,4 +256,4 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
   </ns2:ClientListingConsignment>
   """ % annual_listing_data
 
-        return (data_file + data_begin + data_comp + data_client_info + data_end).encode('ISO-8859-1')
+        return (data_file + data_begin + data_comp + data_client_info + data_end).encode('ISO-8859-1', 'ignore')

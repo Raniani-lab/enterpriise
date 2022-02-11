@@ -235,4 +235,4 @@ class ECSalesReport(models.AbstractModel):
         data_decl = '\n\t<ns2:IntraListing SequenceNumber="1" ClientsNbr="%(clientnbr)s" DeclarantReference="%(dnum)s" AmountSum="%(amountsum).2f">' % (xml_data)
 
         data_rslt = data_head + data_decl + data_comp_period + data_clientinfo + '\n\t\t</ns2:IntraListing>\n</ns2:IntraConsignment>' % (xml_data)
-        return data_rslt.encode('ISO-8859-1')
+        return data_rslt.encode('ISO-8859-1', 'ignore')

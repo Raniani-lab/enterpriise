@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 11:00+0000\n"
-"PO-Revision-Date: 2021-09-14 11:00+0000\n"
+"POT-Creation-Date: 2022-02-11 15:06+0000\n"
+"PO-Revision-Date: 2022-02-11 15:06+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -165,6 +165,12 @@ msgid "Expense extract id"
 msgstr ""
 
 #. module: hr_expense_extract
+#: code:addons/hr_expense_extract/models/hr_expense.py:0
+#, python-format
+msgid "Expense is being Digitalized"
+msgstr ""
+
+#. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
 msgid "Expense processing option"
 msgstr ""
@@ -294,6 +300,12 @@ msgid "Not enough credit"
 msgstr ""
 
 #. module: hr_expense_extract
+#: code:addons/hr_expense_extract/models/hr_expense.py:0
+#, python-format
+msgid "Not enough credits for Bill Digitalization"
+msgstr ""
+
+#. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__date
 msgid "Payment Date"
 msgstr ""
@@ -380,6 +392,11 @@ msgid "Status code"
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__state_processed
+msgid "Status regarding OCR status"
+msgstr ""
+
+#. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
@@ -426,11 +443,6 @@ msgstr ""
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Update status"
-msgstr ""
-
-#. module: hr_expense_extract
-#: model_terms:ir.ui.view,arch_db:hr_expense_extract.res_config_settings_view_form
-msgid "View My Services"
 msgstr ""
 
 #. module: hr_expense_extract

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.1+e\n"
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-07 10:56+0000\n"
-"PO-Revision-Date: 2021-12-07 10:56+0000\n"
+"POT-Creation-Date: 2022-02-11 15:05+0000\n"
+"PO-Revision-Date: 2022-02-11 15:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -108,6 +108,11 @@ msgid "<b>Drag & drop “Name”</b> into the document."
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<b>Gas:</b> 18,700 Pounds of CO² = 18,700*0.4536 = 8482.32 kg"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "<b>Signature:</b>"
 msgstr ""
@@ -115,6 +120,26 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "<b>Signers:</b>"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<b>Solid Waste:</b> 1290 Pounds = 1290*0.4536 = 585.14 kg"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<b>Total Energy:</b> 27 Millions BTU = 27,000,000*0.0002931 = 7.91 kWh"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<b>Water:</b> 23,400 Gallons = 23,400*3.78541 = 88578.59 L"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+msgid "<b>Wood Use:</b> 4 US Short Tons = 4*907.18474 = 3628.73 kg"
 msgstr ""
 
 #. module: sign
@@ -136,16 +161,6 @@ msgid ""
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "<i class=\"fa fa-bolt\" aria-hidden=\"true\"/> Energy"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "<i class=\"fa fa-car\" aria-hidden=\"true\"/> Carbon"
-msgstr ""
-
-#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "<i class=\"fa fa-check\"/> The document's integrity is valid."
 msgstr ""
@@ -160,26 +175,6 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "<i class=\"fa fa-globe\"/> View"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "<i class=\"fa fa-recycle\" aria-hidden=\"true\"/> Paper Savings"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "<i class=\"fa fa-tint\" aria-hidden=\"true\"/> Water"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "<i class=\"fa fa-trash\" aria-hidden=\"true\"/> Waste"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "<i class=\"fa fa-tree\" aria-hidden=\"true\"/> Wood"
 msgstr ""
 
 #. module: sign
@@ -392,21 +387,21 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Add Initials"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Add once"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Add to all pages"
 msgstr ""
@@ -418,7 +413,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "Adopt & Sign"
@@ -426,7 +421,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Adopt Your Signature"
 msgstr ""
@@ -452,7 +447,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_template__privacy__employee
 #, python-format
 msgid "All Users"
@@ -529,7 +524,7 @@ msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "Based on various websites, here are our comparisons"
+msgid "Based on various websites, here are our comparisons:"
 msgstr ""
 
 #. module: sign
@@ -576,9 +571,9 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #: model_terms:ir.ui.view,arch_db:sign.sign_duplicate_template_with_pdf_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
@@ -602,7 +597,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/document.js:0
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Certificate"
@@ -627,7 +622,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Click to start"
 msgstr ""
@@ -730,7 +725,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/backend/utils.js:0
 #, python-format
 msgid "Create: \""
 msgstr ""
@@ -807,7 +802,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
@@ -970,9 +965,9 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/backend/document.js:0
+#: code:addons/sign/static/src/js/common/PDFIframe.js:0
+#: code:addons/sign/static/src/js/common/PDFIframe.js:0
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #, python-format
@@ -981,7 +976,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/PDFIframe.js:0
 #, python-format
 msgid "Download original document"
 msgstr ""
@@ -1023,7 +1018,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Duplicated Template"
 msgstr ""
@@ -1087,14 +1082,9 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Error"
 msgstr ""
@@ -1157,8 +1147,8 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Final Validation"
 msgstr ""
@@ -1200,13 +1190,8 @@ msgid "Future Activities"
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "Gas: 18,700 Pounds of CO² = 18,700*0.4536 = 8482.32 kg"
-msgstr ""
-
-#. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Generate PDF"
 msgstr ""
@@ -1238,7 +1223,7 @@ msgid "Green Savings"
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+#: model_terms:ir.ui.view,arch_db:sign.green_report_container_pdf
 msgid "Green Savings Report"
 msgstr ""
 
@@ -1248,7 +1233,7 @@ msgid "Green Savings Report model"
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+#: model_terms:ir.ui.view,arch_db:sign.green_report_container
 msgid "Green Savings Summary"
 msgstr ""
 
@@ -1285,7 +1270,7 @@ msgid "Hello"
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+#: model_terms:ir.ui.view,arch_db:sign.green_report_container
 msgid "How are these results calculated?"
 msgstr ""
 
@@ -1418,11 +1403,6 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__is_user_signer
 msgid "Is User Signer"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "L of water saved"
 msgstr ""
 
 #. module: sign
@@ -1598,6 +1578,12 @@ msgid "Main Attachment"
 msgstr ""
 
 #. module: sign
+#: code:addons/sign/models/sign_template.py:0
+#, python-format
+msgid "Malformed expression: %(exp)s"
+msgstr ""
+
+#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
@@ -1650,12 +1636,9 @@ msgid "Modify Template"
 msgstr ""
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__textarea
 #: model:sign.item.type,name:sign.sign_item_type_multiline_text
 #: model:sign.item.type,placeholder:sign.sign_item_type_multiline_text
-#, python-format
 msgid "Multiline Text"
 msgstr ""
 
@@ -1729,7 +1712,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/PDFIframe.js:0
 #, python-format
 msgid "Need a valid PDF to add signature fields !"
 msgstr ""
@@ -1772,8 +1755,8 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/backend/sign_request.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Next Document"
@@ -1781,16 +1764,16 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
-msgid "Next signatory (%s)"
+msgid "Next signatory (\"%s\")"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
-msgid "Next signatory is %s"
+msgid "Next signatory is \"%s\""
 msgstr ""
 
 #. module: sign
@@ -1868,7 +1851,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/document_signable.js:0
 #, python-format
 msgid "Ok"
 msgstr ""
@@ -1883,7 +1866,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_template__privacy__invite
 #, python-format
 msgid "On Invitation"
@@ -1963,7 +1946,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #: model_terms:ir.ui.view,arch_db:sign.encrypted_ask_password
 #, python-format
 msgid "PDF is encrypted"
@@ -1976,7 +1959,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Password is incorrect."
 msgstr ""
@@ -2071,7 +2054,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/PDFIframe.js:0
 #, python-format
 msgid "Print original document"
 msgstr ""
@@ -2099,7 +2082,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Re-send SMS"
 msgstr ""
@@ -2118,7 +2101,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__refuse
 #, python-format
 msgid "Refuse"
@@ -2126,7 +2109,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Refuse Document"
@@ -2200,7 +2183,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_request.js:0
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_item_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
@@ -2210,14 +2193,14 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Resend the invitation"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Resent !"
 msgstr ""
@@ -2273,7 +2256,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Rotate Clockwise"
 msgstr ""
@@ -2290,7 +2273,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "SMS Sent"
 msgstr ""
@@ -2346,14 +2329,14 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/backend/utils.js:0
 #, python-format
 msgid "Select available options"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/backend/utils.js:0
 #, python-format
 msgid "Select the responsible"
 msgstr ""
@@ -2372,7 +2355,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_request.js:0
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_item_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
@@ -2413,7 +2396,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Send the invitation"
 msgstr ""
@@ -2476,8 +2459,8 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/backend/sign_request.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #: code:addons/sign/wizard/sign_send_request.py:0
 #: code:addons/sign/wizard/sign_send_request.py:0
 #: code:addons/sign/wizard/sign_template_share.py:0
@@ -2512,7 +2495,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_request.js:0
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Sign Document"
@@ -2525,7 +2508,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Sign Next Document"
 msgstr ""
@@ -2589,7 +2572,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Sign all"
 msgstr ""
@@ -2830,42 +2813,37 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Signing as "
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "Solid Waste: 1290 Pounds = 1290*0.4536 = 585.14 kg"
-msgstr ""
-
-#. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Some fields have still to be completed !"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Somebody is already filling a document which uses this template"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Sorry, an error occurred, please try to fill the document again."
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Sorry, you cannot refuse this document"
 msgstr ""
@@ -2950,10 +2928,10 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
-#: code:addons/sign/static/src/js/sign_backend.js:0
-#: code:addons/sign/static/src/js/sign_backend.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/backend/sign_request.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
+#: code:addons/sign/static/src/js/backend/views_custo.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Template \"%s\""
 msgstr ""
@@ -3019,7 +2997,6 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__text
 #: model:sign.item.type,name:sign.sign_item_type_text
@@ -3030,8 +3007,8 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Thank You !"
 msgstr ""
@@ -3073,7 +3050,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "The document has been refused"
 msgstr ""
@@ -3158,7 +3135,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "The template doesn't exist anymore."
 msgstr ""
@@ -3241,11 +3218,6 @@ msgid "Today Activities"
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "Total Energy: 27 Millions BTU = 27,000,000*0.0002931 = 7.91 kWh"
-msgstr ""
-
-#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
@@ -3266,15 +3238,15 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/views_custo.js:0
 #, python-format
 msgid "UPLOAD A PDF TEMPLATE"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
-#: code:addons/sign/static/src/js/sign_backend.js:0
+#: code:addons/sign/static/src/js/backend/views_custo.js:0
+#: code:addons/sign/static/src/js/backend/views_custo.js:0
 #, python-format
 msgid "UPLOAD A PDF TO SIGN"
 msgstr ""
@@ -3286,9 +3258,8 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Unable to send the SMS, please contact the sender of the document."
 msgstr ""
@@ -3353,16 +3324,16 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Validate & Send"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
-msgid "Validate & the next signatory is %s"
+msgid "Validate & the next signatory is \"%s\""
 msgstr ""
 
 #. module: sign
@@ -3385,14 +3356,14 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Verify"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -3427,15 +3398,10 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/backend/sign_template.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Warning"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "Water: 23,400 Gallons = 23,400*3.78541 = 88578.59 L"
 msgstr ""
 
 #. module: sign
@@ -3454,7 +3420,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid ""
 "We'll send an email to warn other followers & signers with the reason you "
@@ -3509,11 +3475,6 @@ msgid "Width"
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "Wood Use: 4 US Short Tons = 4*907.18474 = 3628.73 kg"
-msgstr ""
-
-#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Write email or search contact..."
 msgstr ""
@@ -3556,7 +3517,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "You will receive a copy of the signed document by mail"
 msgstr ""
@@ -3602,15 +3563,15 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Your signature has been saved."
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid ""
 "Your signature was not submitted. Ensure that all required field of the "
@@ -3625,16 +3586,6 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "and:"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "can"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "cans"
 msgstr ""
 
 #. module: sign
@@ -3685,16 +3636,6 @@ msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "hour using the computer"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "hours using the computer"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "https://c.environmentalpaper.org/"
 msgstr ""
 
@@ -3704,38 +3645,9 @@ msgid "ip"
 msgstr ""
 
 #. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "kWh of energy sparred"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "kg of carbon sparred"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "kg of waste sparred"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "kg of wood saved"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
+#: model_terms:ir.ui.view,arch_db:sign.green_report_el
+#: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "like"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "liter of car fuel"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "liters of car fuel"
 msgstr ""
 
 #. module: sign
@@ -3745,26 +3657,11 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
-#: code:addons/sign/static/src/js/sign_common.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
+#: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "next"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "sheets of paper saved"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "shower"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "showers"
 msgstr ""
 
 #. module: sign
@@ -3815,20 +3712,22 @@ msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "tree"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
-msgid "trees"
-msgstr ""
-
-#. module: sign
-#: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "we've got a list of consumption for 1000 kg of paper usage."
 msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "you"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_report_el
+#: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
+msgid "{{green_report_el_title}}"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.green_report_el
+#: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
+msgid "{{green_report_el_title}} Summary"
 msgstr ""

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 13:42+0000\n"
-"PO-Revision-Date: 2021-11-16 13:42+0000\n"
+"POT-Creation-Date: 2022-02-11 15:05+0000\n"
+"PO-Revision-Date: 2022-02-11 15:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -629,8 +629,8 @@ msgid "A subscription product cannot be a storable product."
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__uuid
-msgid "Account UUID"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__access_warning
+msgid "Access warning"
 msgstr ""
 
 #. module: sale_subscription
@@ -833,6 +833,11 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_published
 msgid "Available on the Website"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_avg
+msgid "Average Rating"
 msgstr ""
 
 #. module: sale_subscription
@@ -1250,6 +1255,11 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__commercial_partner_id
 msgid "Customer Company"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_subscription__access_url
+msgid "Customer Portal URL"
 msgstr ""
 
 #. module: sale_subscription
@@ -1957,13 +1967,6 @@ msgid "Link Field"
 msgstr ""
 
 #. module: sale_subscription
-#. openerp-web
-#: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
-#, python-format
-msgid "Link your product to a subscription template in this tab"
-msgstr ""
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Log a note..."
 msgstr ""
@@ -2120,9 +2123,6 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__recurring_rule_type__monthly
-#: model:product.product,uom_name:sale_subscription.product_office_cleaning
-#: model:product.template,uom_name:sale_subscription.product_office_cleaning_product_template
-#: model:uom.uom,name:sale_subscription.subscription_uom_month
 msgid "Months"
 msgstr ""
 
@@ -2248,18 +2248,6 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
-#: model:product.product,name:sale_subscription.product_office_cleaning
-#: model:product.template,name:sale_subscription.product_office_cleaning_product_template
-msgid "Office Cleaning Subscription (Monthly)"
-msgstr ""
-
-#. module: sale_subscription
-#: model:product.product,name:sale_subscription.product_office_cleaning_yearly
-#: model:product.template,name:sale_subscription.product_office_cleaning_yearly_product_template
-msgid "Office Cleaning Subscription (Yearly)"
-msgstr ""
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__on_change_field_ids
 msgid "On Change Fields Trigger"
 msgstr ""
@@ -2306,23 +2294,6 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Pay With"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:sale.subscription.template,description:sale_subscription.monthly_subscription
-#: model_terms:sale.subscription.template,description:sale_subscription.yearly_subscription
-msgid ""
-"Payment\n"
-"All payments are due upon receipt. If a payment is not received or payment method is declined, the buyer forfeits the ownership of any service purchased.\n"
-"\n"
-"Refund Policy\n"
-"Services are entitled to be refunded based on complaint. If a service is unsatisfactory, a written explanation is needed before the service may be considered for a refund. Buyer must take into account the description of the service before requesting a refund. If the services matches the description by the seller and the buyer is unsatisfied, seller is not responsible for refund.\n"
-"\n"
-"Cancellation\n"
-"A service may be cancelled up until payment has been processed. Once payment has been processed, the buyer is responsible for payment.\n"
-"\n"
-"Complaints\n"
-"Any complaints about services or sellers may be sent to our support team: support@wesellyourstuff.com or (888) 555-0198. There is no guarantee of a resolution. Each case will be looked at individually, and the seller will be in contact as well."
 msgstr ""
 
 #. module: sale_subscription
@@ -2388,6 +2359,11 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_subscription.py:0
 #, python-format
 msgid "Please define a sale journal for the company \"%s\"."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__access_url
+msgid "Portal Access URL"
 msgstr ""
 
 #. module: sale_subscription
@@ -2475,8 +2451,8 @@ msgid "Rating"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_avg
-msgid "Rating Average"
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_avg_text
+msgid "Rating Avg Text"
 msgstr ""
 
 #. module: sale_subscription
@@ -2510,6 +2486,7 @@ msgid "Rating Percentage"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_percentage_satisfaction
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Rating Satisfaction"
 msgstr ""
@@ -2519,6 +2496,11 @@ msgstr ""
 msgid ""
 "Rating Satisfaction is the ratio of positive rating to total number of "
 "rating."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_last_text
+msgid "Rating Text"
 msgstr ""
 
 #. module: sale_subscription
@@ -2774,6 +2756,11 @@ msgstr ""
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Save this template and the modifications you've made to it."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__access_token
+msgid "Security Token"
 msgstr ""
 
 #. module: sale_subscription
@@ -3292,12 +3279,6 @@ msgid "Tags"
 msgstr ""
 
 #. module: sale_subscription
-#: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
-#: model:sale.subscription.alert,name:sale_subscription.subscription_alert_percent_revenue
-msgid "Take action on less satisfied clients"
-msgstr ""
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_id
 msgid "Target Model"
 msgstr ""
@@ -3386,11 +3367,6 @@ msgstr ""
 msgid ""
 "The following products are archived. Do you want to keep them in the renewal"
 " quotation ?"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_subscription__website_url
-msgid "The full URL to access the document through the website."
 msgstr ""
 
 #. module: sale_subscription
@@ -3493,11 +3469,6 @@ msgid "This upsell order has been created from the subscription "
 msgstr ""
 
 #. module: sale_subscription
-#: model:uom.category,name:sale_subscription.uom_categ_time
-msgid "Time"
-msgstr ""
-
-#. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_alert__trigger_condition__on_time
 msgid "Timed Condition"
 msgstr ""
@@ -3593,13 +3564,6 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.constraint,message:sale_subscription.constraint_sale_subscription_uuid_uniq
-msgid ""
-"UUIDs (Universally Unique IDentifier) for Sale Subscriptions should be "
-"unique!"
 msgstr ""
 
 #. module: sale_subscription
@@ -3752,11 +3716,6 @@ msgid "Website Path"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__website_url
-msgid "Website URL"
-msgstr ""
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_url
 msgid "Website Url"
 msgstr ""
@@ -3824,9 +3783,6 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_template__recurring_rule_type__yearly
-#: model:product.product,uom_name:sale_subscription.product_office_cleaning_yearly
-#: model:product.template,uom_name:sale_subscription.product_office_cleaning_yearly_product_template
-#: model:uom.uom,name:sale_subscription.subscription_uom_year
 msgid "Years"
 msgstr ""
 

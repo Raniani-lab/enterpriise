@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 11:16+0000\n"
-"PO-Revision-Date: 2021-10-05 11:16+0000\n"
+"POT-Creation-Date: 2022-02-11 15:05+0000\n"
+"PO-Revision-Date: 2022-02-11 15:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -32,7 +32,7 @@ msgid "#{day['today_cls'] and 'Today' or ''}"
 msgstr ""
 
 #. module: appointment
-#: code:addons/appointment/controllers/main.py:0
+#: code:addons/appointment/controllers/appointment.py:0
 #, python-format
 msgid "%s with %s"
 msgstr ""
@@ -43,7 +43,7 @@ msgid "(timezone:"
 msgstr ""
 
 #. module: appointment
-#: code:addons/appointment/controllers/main.py:0
+#: code:addons/appointment/controllers/calendar.py:0
 #, python-format
 msgid ", All Day"
 msgstr ""
@@ -264,17 +264,12 @@ msgid ""
 msgstr ""
 
 #. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_select_timezone
-msgid "<strong>Timezone</strong>"
-msgstr ""
-
-#. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "<strong>Your appointment has been successfully booked!</strong><br/>"
 msgstr ""
 
 #. module: appointment
-#: code:addons/appointment/controllers/calendar.py:0
+#: code:addons/appointment/controllers/calendar_view.py:0
 #, python-format
 msgid ""
 "A list of slots information is needed to create a custom appointment type"
@@ -286,8 +281,7 @@ msgid "A text message reminder is sent to you before your appointment"
 msgstr ""
 
 #. module: appointment
-#: code:addons/appointment/controllers/calendar.py:0
-#: code:addons/appointment/controllers/calendar.py:0
+#: code:addons/appointment/controllers/calendar_view.py:0
 #, python-format
 msgid "Access Denied"
 msgstr ""
@@ -334,13 +328,6 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_appointment_type_view_form
 msgid "Allow Cancelling"
-msgstr ""
-
-#. module: appointment
-#: code:addons/appointment/models/calendar_appointment_type.py:0
-#, python-format
-msgid ""
-"An employee should be set on the actual user to create the appointment type"
 msgstr ""
 
 #. module: appointment
@@ -416,6 +403,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_select
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_appointment_type_view_form
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_appointment_type_view_tree
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_search_inherit_appointment
 msgid "Appointment Type"
 msgstr ""
 
@@ -460,7 +448,7 @@ msgstr ""
 #: code:addons/appointment/models/calendar_appointment_slot.py:0
 #, python-format
 msgid ""
-"Atleast one slot duration from start to end is invalid: a slot should end "
+"At least one slot duration from start to end is invalid: a slot should end "
 "after start"
 msgstr ""
 
@@ -468,7 +456,7 @@ msgstr ""
 #: code:addons/appointment/models/calendar_appointment_slot.py:0
 #, python-format
 msgid ""
-"Atleast one slot duration is not enough to create a slot with the duration "
+"At least one slot duration is not enough to create a slot with the duration "
 "set in the appointment type"
 msgstr ""
 
@@ -499,7 +487,7 @@ msgstr ""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_appointment_type_view_form
-msgid "Available Employees"
+msgid "Available Users"
 msgstr ""
 
 #. module: appointment
@@ -684,11 +672,6 @@ msgid "Display Name"
 msgstr ""
 
 #. module: appointment
-#: model:calendar.appointment.type,name:appointment.calendar_appointment_1
-msgid "Doctor Appointment"
-msgstr ""
-
-#. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__calendar_appointment_question__question_type__select
 msgid "Dropdown (one answer)"
 msgstr ""
@@ -704,16 +687,9 @@ msgid "Duration:"
 msgstr ""
 
 #. module: appointment
-#: code:addons/appointment/controllers/main.py:0
+#: code:addons/appointment/controllers/appointment.py:0
 #, python-format
 msgid "Email: %s"
-msgstr ""
-
-#. module: appointment
-#: model:ir.model.fields,field_description:appointment.field_calendar_appointment_share__employee_ids
-#: model:ir.model.fields,field_description:appointment.field_calendar_appointment_type__employee_ids
-#: model_terms:ir.ui.view,arch_db:appointment.calendar_appointment_type_view_form
-msgid "Employees"
 msgstr ""
 
 #. module: appointment
@@ -763,17 +739,10 @@ msgid "Get Share Link"
 msgstr ""
 
 #. module: appointment
-#: model_terms:calendar.appointment.type,message_intro:appointment.calendar_appointment_0
+#: model:ir.model.fields,help:appointment.field_calendar_appointment_share__suggested_staff_user_ids
 msgid ""
-"Get a <strong>customized demo</strong> and an <strong>analysis of your "
-"needs</strong>."
-msgstr ""
-
-#. module: appointment
-#: model:ir.model.fields,help:appointment.field_calendar_appointment_share__suggested_employee_ids
-msgid ""
-"Get the employees link to the appointment type selected to apply a domain on"
-" the employees that can be selected"
+"Get the users linked to the appointment type selected to apply a domain on "
+"the users that can be selected"
 msgstr ""
 
 #. module: appointment
@@ -783,8 +752,7 @@ msgstr ""
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_calendar_appointment_type__assign_method
-msgid ""
-"How employees will be assigned to meetings customers book on your website."
+msgid "How users will be assigned to meetings customers book on your website."
 msgstr ""
 
 #. module: appointment
@@ -806,6 +774,13 @@ msgstr ""
 #: model:ir.model.fields,help:appointment.field_calendar_appointment_type__message_has_error
 #: model:ir.model.fields,help:appointment.field_calendar_appointment_type__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: appointment
+#: model:ir.model.fields,help:appointment.field_calendar_appointment_slot__restrict_to_user_ids
+msgid ""
+"If empty, all users are considered to be available.\n"
+"If set, only the selected users will be taken into account for this slot."
 msgstr ""
 
 #. module: appointment
@@ -919,7 +894,7 @@ msgid "Messages"
 msgstr ""
 
 #. module: appointment
-#: code:addons/appointment/controllers/main.py:0
+#: code:addons/appointment/controllers/appointment.py:0
 #, python-format
 msgid "Mobile: %s"
 msgstr ""
@@ -1028,13 +1003,6 @@ msgid "Online Appointments"
 msgstr ""
 
 #. module: appointment
-#: code:addons/appointment/models/calendar_appointment_type.py:0
-#, python-format
-msgid ""
-"Only one work hours appointment type is allowed for a specific employee."
-msgstr ""
-
-#. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Past"
@@ -1057,8 +1025,8 @@ msgid "Please, select another date."
 msgstr ""
 
 #. module: appointment
-#: model:ir.model.fields,field_description:appointment.field_calendar_appointment_share__suggested_employee_ids
-msgid "Possible employees"
+#: model:ir.model.fields,field_description:appointment.field_calendar_appointment_share__suggested_staff_user_ids
+msgid "Possible users"
 msgstr ""
 
 #. module: appointment
@@ -1120,6 +1088,11 @@ msgid "Restrict Countries"
 msgstr ""
 
 #. module: appointment
+#: model:ir.model.fields,field_description:appointment.field_calendar_appointment_slot__restrict_to_user_ids
+msgid "Restrict to Users"
+msgstr ""
+
+#. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_appointment_type_view_kanban
 msgid "SCHEDULED"
 msgstr ""
@@ -1142,11 +1115,6 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_appointment_type_view_form
 msgid "Schedule Appointment"
-msgstr ""
-
-#. module: appointment
-#: model:calendar.appointment.type,name:appointment.calendar_appointment_0
-msgid "Schedule a Demo"
 msgstr ""
 
 #. module: appointment
@@ -1257,21 +1225,24 @@ msgid "Sunday"
 msgstr ""
 
 #. module: appointment
-#: model:calendar.appointment.question,name:appointment.calendar_appointment_1_question_1
-msgid "Symptoms"
-msgstr ""
-
-#. module: appointment
-#: model:ir.model.fields,help:appointment.field_calendar_appointment_share__employee_ids
-msgid ""
-"The employees that will be display/filter for the user to make its "
-"appointment"
-msgstr ""
-
-#. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "The field '%s' does not exist in the targeted model"
+msgstr ""
+
+#. module: appointment
+#: code:addons/appointment/models/calendar_appointment_type.py:0
+#, python-format
+msgid ""
+"The following users are in restricted slots but they are not part of the "
+"available staff: %s"
+msgstr ""
+
+#. module: appointment
+#: model:ir.model.fields,help:appointment.field_calendar_appointment_share__staff_user_ids
+msgid ""
+"The users that will be displayed/filtered for the user to make its "
+"appointment"
 msgstr ""
 
 #. module: appointment
@@ -1283,8 +1254,7 @@ msgstr ""
 #: code:addons/appointment/models/calendar_appointment_type.py:0
 #, python-format
 msgid ""
-"This category of appointment type should only have one employee but got %s "
-"employees"
+"This category of appointment type should only have one user but got %s users"
 msgstr ""
 
 #. module: appointment
@@ -1295,11 +1265,6 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__calendar_appointment_slot__weekday__4
 msgid "Thursday"
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_calendar
-msgid "Time displayed in"
 msgstr ""
 
 #. module: appointment
@@ -1317,6 +1282,11 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_calendar_appointment_type__appointment_tz
 msgid "Timezone where appointment take place"
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.appointment_calendar
+msgid "Timezone:"
 msgstr ""
 
 #. module: appointment
@@ -1366,23 +1336,23 @@ msgstr ""
 msgid ""
 "Used to define this appointment type's category.\n"
 "        Can be one of:\n"
-"            - Website: the default category, the people can access and shedule the appointment with employees from the website\n"
-"            - Custom: the employee will create and share to an user a custom appointment type with hand-picked time slots\n"
-"            - Work Hours: a special type of appointment type that is used by one employee and which takes the working hours of this\n"
-"                employee as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots\n"
-"                based on its working hours and availabilities"
+"            - Website: the default category, the people can access and shedule the appointment with users from the website\n"
+"            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots\n"
+"            - Work Hours: a special type of appointment type that is used by one user and which takes the working hours of this\n"
+"                user as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots\n"
+"                based on its working hours and availabilities "
+msgstr ""
+
+#. module: appointment
+#: model:ir.model.fields,field_description:appointment.field_calendar_appointment_share__staff_user_ids
+#: model:ir.model.fields,field_description:appointment.field_calendar_appointment_type__staff_user_ids
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_appointment_type_view_form
+msgid "Users"
 msgstr ""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 msgid "View Availabilities <span class=\"fa fa-arrow-right\"/>"
-msgstr ""
-
-#. module: appointment
-#: model_terms:calendar.appointment.type,message_confirmation:appointment.calendar_appointment_0
-msgid ""
-"We thank you for your interest in our products!<br>\n"
-"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
 msgstr ""
 
 #. module: appointment
@@ -1416,16 +1386,8 @@ msgid "When:"
 msgstr ""
 
 #. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.employee_select
+#: model_terms:ir.ui.view,arch_db:appointment.staff_user_select
 msgid "With"
-msgstr ""
-
-#. module: appointment
-#. openerp-web
-#: code:addons/appointment/static/src/xml/calendar_appointment_scheduling.xml:0
-#: model:ir.model.fields.selection,name:appointment.selection__calendar_appointment_type__category__work_hours
-#, python-format
-msgid "Work Hours"
 msgstr ""
 
 #. module: appointment
@@ -1475,11 +1437,6 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "on"
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_calendar
-msgid "timezone"
 msgstr ""
 
 #. module: appointment

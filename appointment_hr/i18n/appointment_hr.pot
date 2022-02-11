@@ -1,0 +1,84 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* appointment_hr
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-11 15:07+0000\n"
+"PO-Revision-Date: 2022-02-11 15:07+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: appointment_hr
+#: code:addons/appointment_hr/controllers/calendar_view.py:0
+#, python-format
+msgid "Access Denied"
+msgstr ""
+
+#. module: appointment_hr
+#: code:addons/appointment_hr/models/calendar_appointment_type.py:0
+#, python-format
+msgid ""
+"An employee should be set on the actual user to create an appointment type "
+"tied to the working schedule."
+msgstr ""
+
+#. module: appointment_hr
+#: model:ir.model,name:appointment_hr.model_calendar_appointment_type
+msgid "Appointment Type"
+msgstr ""
+
+#. module: appointment_hr
+#: model:ir.model.fields,field_description:appointment_hr.field_calendar_appointment_type__category
+msgid "Category"
+msgstr ""
+
+#. module: appointment_hr
+#: model_terms:ir.ui.view,arch_db:appointment_hr.calendar_appointment_type_view_form_inherit_appointment_hr
+msgid "Employee Work Hours"
+msgstr ""
+
+#. module: appointment_hr
+#: model:ir.model.fields,field_description:appointment_hr.field_calendar_appointment_type__work_hours_activated
+msgid "Limit to Work Hours"
+msgstr ""
+
+#. module: appointment_hr
+#: code:addons/appointment_hr/models/calendar_appointment_type.py:0
+#, python-format
+msgid ""
+"Only one work hours appointment type is allowed for a specific employee."
+msgstr ""
+
+#. module: appointment_hr
+#: model:ir.model.fields,help:appointment_hr.field_calendar_appointment_type__category
+msgid ""
+"Used to define this appointment type's category.\n"
+"        Can be one of:\n"
+"            - Website: the default category, the people can access and shedule the appointment with users from the website\n"
+"            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots\n"
+"            - Work Hours: a special type of appointment type that is used by one user and which takes the working hours of this\n"
+"                user as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots\n"
+"                based on its working hours and availabilities "
+msgstr ""
+
+#. module: appointment_hr
+#: model:ir.model.fields,help:appointment_hr.field_calendar_appointment_type__work_hours_activated
+msgid ""
+"When this option is activated the slots computation takes into account the "
+"working hours of the users."
+msgstr ""
+
+#. module: appointment_hr
+#. openerp-web
+#: code:addons/appointment_hr/static/src/xml/calendar_appointment_scheduling.xml:0
+#: model:ir.model.fields.selection,name:appointment_hr.selection__calendar_appointment_type__category__work_hours
+#, python-format
+msgid "Work Hours"
+msgstr ""

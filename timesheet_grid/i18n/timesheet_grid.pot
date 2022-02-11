@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.1+e\n"
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-07 10:56+0000\n"
-"PO-Revision-Date: 2021-12-07 10:56+0000\n"
+"POT-Creation-Date: 2022-02-11 15:05+0000\n"
+"PO-Revision-Date: 2022-02-11 15:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -36,6 +36,13 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_kanban
 msgid "<i class=\"fa fa-play text-success\" title=\"Timer is Running\"/>"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
 
 #. module: timesheet_grid
@@ -208,6 +215,18 @@ msgid "Add a Task"
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid ""
+"After a certain date, users will not be able to create, modify, or delete "
+"their timesheets. However, managers will still be able to do so."
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_all_timesheets
+msgid "All Timesheets"
+msgstr ""
+
+#. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
 msgid "Amount"
 msgstr ""
@@ -221,6 +240,16 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_account_analytic_line
 msgid "Analytic Line"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid "Block encoding of timesheets after a certain date"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid "Block timesheets older than"
 msgstr ""
 
 #. module: timesheet_grid
@@ -268,18 +297,33 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_project_task_create_timesheet
+msgid "Create Timesheet from task"
+msgstr ""
+
+#. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__create_uid
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__create_date
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__date
 msgid "Date"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
+msgid "Day"
 msgstr ""
 
 #. module: timesheet_grid
@@ -305,6 +349,11 @@ msgid "Decrease Time"
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
+msgid "Delete"
+msgstr ""
+
+#. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Describe your activity"
@@ -322,12 +371,14 @@ msgstr ""
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 #, python-format
 msgid "Describe your activity..."
 msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__name
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__description
 msgid "Description"
 msgstr ""
 
@@ -350,7 +401,13 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
+msgid "Discard"
+msgstr ""
+
+#. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__display_name
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -408,6 +465,11 @@ msgid "Draft"
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
+msgid "Duration"
+msgstr ""
+
+#. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__employee_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__employee_id
@@ -462,7 +524,16 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__id
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__id
 msgid "ID"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.fields,help:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
+#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
+msgid ""
+"If checked, encoding of timesheets older than a certain number of days will "
+"be blocked"
 msgstr ""
 
 #. module: timesheet_grid
@@ -499,6 +570,7 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard____last_update
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -509,11 +581,13 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__write_uid
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__write_date
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -538,6 +612,12 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Launch the <b>timer</b> to start a new activity."
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
+#: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
+msgid "Lock Dates"
 msgstr ""
 
 #. module: timesheet_grid
@@ -710,6 +790,16 @@ msgid "Rounding applied when tracking your time using the timer"
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
+msgid "Save"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
+msgid "Save time"
+msgstr ""
+
+#. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
@@ -802,8 +892,14 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #: model:ir.model,name:timesheet_grid.model_project_task
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__task_id
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__task_id
 #, python-format
 msgid "Task"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.fields,help:timesheet_grid.field_project_task_create_timesheet__task_id
+msgid "Task for which we are creating a sales order"
 msgstr ""
 
 #. module: timesheet_grid
@@ -813,9 +909,19 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
+#: model:ir.model.constraint,message:timesheet_grid.constraint_res_company_check_encoding_limit
+msgid "The time limit for encoding timesheets must be positive."
+msgstr ""
+
+#. module: timesheet_grid
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
 #, python-format
 msgid "The timesheet entries have successfully been merged."
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.constraint,message:timesheet_grid.constraint_project_task_create_timesheet_time_positive
+msgid "The timesheet's time must be positive"
 msgstr ""
 
 #. module: timesheet_grid
@@ -842,6 +948,11 @@ msgstr ""
 msgid ""
 "There are no timesheet entries to reset to draft or they have already been "
 "invoiced."
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__time_spent
+msgid "Time"
 msgstr ""
 
 #. module: timesheet_grid
@@ -929,6 +1040,12 @@ msgid "Timesheets"
 msgstr ""
 
 #. module: timesheet_grid
+#: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheets_past_days_encoding_limit
+#: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheets_past_days_encoding_limit
+msgid "Timesheets Encoding Limit in Days"
+msgstr ""
+
+#. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_week
@@ -990,11 +1107,14 @@ msgid "Users"
 msgstr ""
 
 #. module: timesheet_grid
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timesheet_kanban.xml:0
 #: model:ir.actions.server,name:timesheet_grid.timesheet_validate_action
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_form_view
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee_validation
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_tree_user_inherited
+#, python-format
 msgid "Validate"
 msgstr ""
 
@@ -1012,6 +1132,11 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated
 msgid "Validated line"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.actions.server,name:timesheet_grid.timesheet_grid_all_timesheets_action_server
+msgid "Validation All Timesheet Server Action"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1053,6 +1178,12 @@ msgstr ""
 msgid ""
 "You can only validate the timesheets of employees of whom you are the "
 "manager or the timesheet approver."
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid "You cannot %s timesheets older than %d days."
 msgstr ""
 
 #. module: timesheet_grid

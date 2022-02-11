@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 11:00+0000\n"
-"PO-Revision-Date: 2021-09-14 11:00+0000\n"
+"POT-Creation-Date: 2022-02-11 15:06+0000\n"
+"PO-Revision-Date: 2022-02-11 15:06+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -48,6 +48,11 @@ msgid "Account Invoice Extract Notification"
 msgstr ""
 
 #. module: account_invoice_extract
+#: model:ir.model.fields,help:account_invoice_extract.field_account_invoice_extract_words__invoice_id
+msgid "Account move id"
+msgstr ""
+
+#. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid ""
 "All fields will be automated by Artificial Intelligence, it might take 5 "
@@ -64,6 +69,12 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_ir_attachment
 msgid "Attachment"
+msgstr ""
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "Bill is Digitalized successfully"
 msgstr ""
 
 #. module: account_invoice_extract
@@ -243,11 +254,6 @@ msgid "Invoice extract selected status."
 msgstr ""
 
 #. module: account_invoice_extract
-#: model:ir.model.fields,help:account_invoice_extract.field_account_invoice_extract_words__invoice_id
-msgid "Invoice id"
-msgstr ""
-
-#. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_move
 msgid "Journal Entry"
 msgstr ""
@@ -281,6 +287,12 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__not_enough_credit
 msgid "Not enough credit"
+msgstr ""
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid "Not enough credits for Bill Digitalization"
 msgstr ""
 
 #. module: account_invoice_extract
@@ -343,6 +355,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_status_code
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_status_code
 msgid "Status code"
+msgstr ""
+
+#. module: account_invoice_extract
+#: code:addons/account_invoice_extract/models/account_invoice.py:0
+#, python-format
+msgid ""
+"The 'invoice_ocr' IAP account token is invalid. Please delete it to let Odoo"
+" generate a new one or fill it with a valid token."
 msgstr ""
 
 #. module: account_invoice_extract

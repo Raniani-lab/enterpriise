@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:59+0000\n"
-"PO-Revision-Date: 2021-09-14 10:59+0000\n"
+"POT-Creation-Date: 2022-02-11 15:05+0000\n"
+"PO-Revision-Date: 2022-02-11 15:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -318,6 +318,11 @@ msgid "Point of Sale Payment Methods"
 msgstr ""
 
 #. module: pos_iot
+#: model:ir.model,name:pos_iot.model_pos_session
+msgid "Point of Sale Session"
+msgstr ""
+
+#. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_print_via_proxy
 msgid "Print via Proxy"
 msgstr ""
@@ -418,13 +423,4 @@ msgstr ""
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "You must select a payment terminal in your POS config."
-msgstr ""
-
-#. module: pos_iot
-#. openerp-web
-#: code:addons/pos_iot/static/src/xml/PaymentScreenPaymentLines.xml:0
-#, python-format
-msgid ""
-"line.payment_method.use_payment_terminal !== 'worldline' or ['retry', "
-"'pending', 'waiting', 'force_done'].includes(line.payment_status)"
 msgstr ""

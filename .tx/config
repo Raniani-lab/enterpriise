@@ -22,6 +22,11 @@ file_filter = account_asset/i18n/<lang>.po
 source_file = account_asset/i18n/account_asset.pot
 source_lang = en
 
+[odoo-master.account_asset_fleet]
+file_filter = account_asset_fleet/i18n/<lang>.po
+source_file = account_asset_fleet/i18n/account_asset_fleet.pot
+source_lang = en
+
 [odoo-master.account_auto_transfer]
 file_filter = account_auto_transfer/i18n/<lang>.po
 source_file = account_auto_transfer/i18n/account_auto_transfer.pot
@@ -160,6 +165,11 @@ source_lang = en
 [odoo-master.appointment_crm]
 file_filter = appointment_crm/i18n/<lang>.po
 source_file = appointment_crm/i18n/appointment_crm.pot
+source_lang = en
+
+[odoo-master.appointment_hr]
+file_filter = appointment_hr/i18n/<lang>.po
+source_file = appointment_hr/i18n/appointment_hr.pot
 source_lang = en
 
 [odoo-master.approvals]
@@ -592,6 +602,11 @@ file_filter = planning/i18n/<lang>.po
 source_file = planning/i18n/planning.pot
 source_lang = en
 
+[odoo-master.planning_calendar]
+file_filter = planning_calendar/i18n/<lang>.po
+source_file = planning_calendar/i18n/planning_calendar.pot
+source_lang = en
+
 [odoo-master.planning_holidays]
 file_filter = planning_holidays/i18n/<lang>.po
 source_file = planning_holidays/i18n/planning_holidays.pot
@@ -1000,11 +1015,6 @@ source_lang = en
 [odoo-master.website_helpdesk]
 file_filter = website_helpdesk/i18n/<lang>.po
 source_file = website_helpdesk/i18n/website_helpdesk.pot
-source_lang = en
-
-[odoo-master.website_helpdesk_form]
-file_filter = website_helpdesk_form/i18n/<lang>.po
-source_file = website_helpdesk_form/i18n/website_helpdesk_form.pot
 source_lang = en
 
 [odoo-master.website_helpdesk_forum]

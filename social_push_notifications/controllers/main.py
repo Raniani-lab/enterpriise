@@ -4,7 +4,7 @@
 import requests
 from werkzeug.urls import url_join
 
-from odoo import http, _
+from odoo import http, _, tools
 from odoo.http import request
 
 
@@ -90,3 +90,20 @@ class SocialPushNotificationsController(http.Controller):
             subscription_sudo = visitor_sudo.push_subscription_ids.filtered(lambda subscription:
                 subscription.push_token == token)
             subscription_sudo.unlink()
+
+    @http.route('/social_push_notifications/social_post/<int:post_id>/push_notification_image', type='http', auth='public')
+    def social_push_get_notification_image(self, post_id):
+        social_post = request.env['social.post'].sudo().search([('id', '=', post_id), ('state', 'in', ['posting', 'posted'])], limit=1)
+
+        if not social_post:
+            status = 200
+            headers = []
+            image_base64 = request.env['ir.http']._placeholder()
+        else:
+            status, headers, image_base64 = request.env['ir.http'].sudo().binary_content(model='social.post', id=post_id, field='push_notification_image', default_mimetype='image/png')
+            if status in [301, 304]:
+                return request.env['ir.http']._response_by_status(status, headers, image_base64)
+
+        image_base64 = tools.image_process(image_base64, size=(64, 64))
+
+        return request.env['ir.http']._content_image_get_response(status, headers, image_base64)

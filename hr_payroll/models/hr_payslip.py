@@ -95,8 +95,10 @@ class HrPayslip(models.Model):
         string='Made Payment Order ? ', readonly=True, copy=False,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     note = fields.Text(string='Internal Note', readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+    contract_domain_ids = fields.Many2many('hr.contract', compute='_compute_contract_domain_ids')
     contract_id = fields.Many2one(
-        'hr.contract', string='Contract', domain="[('company_id', '=', company_id)]",
+        'hr.contract', string='Contract',
+        domain="[('id', 'in', contract_domain_ids)]",
         compute='_compute_contract_id', store=True, readonly=False,
         states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
     credit_note = fields.Boolean(
@@ -134,6 +136,18 @@ class HrPayslip(models.Model):
         readonly=False,
     )
     salary_attachment_count = fields.Integer('Salary Attachment count', compute='_compute_salary_attachment_count')
+
+    @api.depends('company_id', 'employee_id', 'date_from', 'date_to')
+    def _compute_contract_domain_ids(self):
+        for payslip in self:
+            payslip.contract_domain_ids = self.env['hr.contract'].search([
+                ('company_id', '=', payslip.company_id.id),
+                ('employee_id', '=', payslip.employee_id.id),
+                ('state', '!=', 'cancel'),
+                ('date_start', '<=', payslip.date_to),
+                '|',
+                ('date_end', '>=', payslip.date_from),
+                ('date_end', '=', False)])
 
     @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to', 'struct_id')
     def _compute_input_line_ids(self):

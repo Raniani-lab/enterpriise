@@ -128,6 +128,16 @@ class Payslip(models.Model):
         for payslip in self:
             payslip.l10n_be_is_double_pay = payslip.struct_id.code == "CP200DOUBLE"
 
+    @api.depends('struct_id')
+    def _compute_contract_domain_ids(self):
+        reimbursement_payslips = self.filtered(lambda p: p.struct_id.code == "CP200REIMBURSEMENT")
+        for payslip in reimbursement_payslips:
+            payslip.contract_domain_ids = self.env['hr.contract'].search([
+                ('company_id', '=', payslip.company_id.id),
+                ('employee_id', '=', payslip.employee_id.id),
+                ('state', '!=', 'cancel')])
+        super(Payslip, self - reimbursement_payslips)._compute_contract_domain_ids()
+
     @api.depends('date_to', 'line_ids.total', 'input_line_ids.code')
     def _compute_l10n_be_max_seizable_amount(self):
         # Source: https://emploi.belgique.be/fr/themes/remuneration/protection-de-la-remuneration/saisie-et-cession-sur-salaires

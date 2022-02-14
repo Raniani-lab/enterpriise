@@ -73,6 +73,7 @@ Belgian Payroll Rules.
         'data/cp200/employee_termination_holidays_N_data.xml',
         'data/cp200/employee_thirteen_month_data.xml',
         'data/cp200/employee_warrant_salary_data.xml',
+        'data/cp200/employee_reimbursement_data.xml',
         'data/student/student_regular_pay_data.xml',
         'data/ir_cron_data.xml',
         'views/res_config_settings_views.xml',

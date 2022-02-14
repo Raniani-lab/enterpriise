@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 /**
- * @typedef {Object} SpreadsheetPivot
+ * @typedef {Object} PivotDefinition
  * @property {Array<string>} colGroupBys
  * @property {Object} context
  * @property {Array} domain
@@ -10,29 +10,22 @@
  * @property {string} model
  * @property {Array<string>} rowGroupBys
  *
- * @typedef {Object} SpreadsheetPivotForRPC
- * @property {Array<string>} colGroupBys
- * @property {Object} context
- * @property {Array} domain
- * @property {Array<string>} measures
- * @property {string} model
- * @property {Array<string>} rowGroupBys
  */
-
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import { getFirstPivotFunction } from "../pivot_helpers";
 import { getMaxObjectId } from "../../o_spreadsheet/helpers";
+import { HEADER_STYLE, TOP_LEVEL_STYLE, MEASURE_STYLE } from "../../o_spreadsheet/constants";
 import PivotDataSource from "../pivot_data_source";
+import { SpreadsheetPivotTable } from "../pivot_table";
 
 const { astToFormula } = spreadsheet;
 
 export default class PivotPlugin extends spreadsheet.CorePlugin {
-    constructor(getters, history, range, dispatch, config) {
-        super(getters, history, range, dispatch, config);
-        /** @type {Object.<string, SpreadsheetPivot>} */
-        this.pivots = {};
+    constructor(getters, history, range, dispatch, config, uuidGenerator) {
+        super(getters, history, range, dispatch, config, uuidGenerator);
+        this.odooViewsModels = config.odooViewsModels;
         this.dataSources = config.dataSources;
-        this.rpc = config.evalContext.env ? config.evalContext.env.delayedRPC : undefined;
+        this.pivots = {};
     }
 
     /**
@@ -42,29 +35,48 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
      */
     handle(cmd) {
         switch (cmd.type) {
-            case "ADD_PIVOT": {
-                const pivots = { ...this.pivots };
-                pivots[cmd.pivot.id] = cmd.pivot;
-                this.history.update("pivots", pivots);
-                this._addPivotSource(cmd.pivot.id);
+            case "INSERT_PIVOT": {
+                const { sheetId, col, row, id, definition, dataSourceId } = cmd;
+                const anchor = [col, row];
+                const { cols, rows, measures } = cmd.table;
+                const table = new SpreadsheetPivotTable(cols, rows, measures);
+                this._addPivot(id, definition, dataSourceId);
+                this._insertPivot(sheetId, anchor, id, table);
                 break;
             }
-            case "ADD_PIVOT_FORMULA":
-                this.dispatch("UPDATE_CELL", {
-                    sheetId: cmd.sheetId,
-                    col: cmd.col,
-                    row: cmd.row,
-                    content: `=${cmd.formula}("${cmd.args
-                        .map((arg) => arg.toString().replace(/"/g, '\\"'))
-                        .join('","')}")`,
-                });
+            case "RE_INSERT_PIVOT": {
+                const { sheetId, col, row, id } = cmd;
+                const anchor = [col, row];
+                const { cols, rows, measures } = cmd.table;
+                const table = new SpreadsheetPivotTable(cols, rows, measures);
+                this._insertPivot(sheetId, anchor, id, table);
                 break;
+            }
         }
     }
 
     // -------------------------------------------------------------------------
     // Getters
     // -------------------------------------------------------------------------
+
+    getSpreadsheetPivotModel(id) {
+        const dataSourceId = this.pivots[id].dataSourceId;
+        return this.dataSources.get(dataSourceId).getPivotModel();
+    }
+
+    getSpreadsheetPivotDataSource(id) {
+        const dataSourceId = this.pivots[id].dataSourceId;
+        return this.dataSources.get(dataSourceId);
+    }
+
+    getPivotDisplayName(id) {
+        return `(#${id}) ${this.getSpreadsheetPivotModel(id).getModelLabel()}`;
+    }
+
+    async getAsyncSpreadsheetPivotModel(id) {
+        const dataSourceId = this.pivots[id].dataSourceId;
+        return this.dataSources.get(dataSourceId).get();
+    }
 
     /**
      * Retrieve the next available id for a new pivot
@@ -76,43 +88,20 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     }
 
     /**
-     * Get the colGroupBys of a pivot
+     * @param {number} id Id of the pivot
      *
-     * @param {string} pivotId Id of the pivot
-     *
-     * @returns {Array<string>}
+     * @returns {PivotDefinition}
      */
-    getPivotColGroupBys(pivotId) {
-        return this._getPivot(pivotId).colGroupBys;
-    }
-
-    /**
-     * Get the domain of a pivot
-     *
-     * @param {string} pivotId Id of the pivot
-     *
-     * @returns {Array}
-     */
-    getPivotDomain(pivotId) {
-        return this._getPivot(pivotId).domain;
-    }
-
-    /**
-     * Get the pivot definition
-     *
-     * @param {string} pivotId Id of the pivot
-     *
-     * @returns {SpreadsheetPivotForRPC}
-     */
-    getPivotForRPC(pivotId) {
-        const pivot = this._getPivot(pivotId);
+    getPivotDefinition(id) {
+        const def = this.pivots[id].definition;
         return {
-            colGroupBys: pivot.colGroupBys,
-            context: pivot.context,
-            domain: pivot.domain,
-            measures: pivot.measures,
-            model: pivot.model,
-            rowGroupBys: pivot.rowGroupBys,
+            colGroupBys: [...def.metaData.colGroupBys],
+            context: { ...def.searchParams.context },
+            domain: [...def.searchParams.domain],
+            id,
+            measures: [...def.metaData.activeMeasures],
+            model: def.metaData.resModel,
+            rowGroupBys: [...def.metaData.rowGroupBys],
         };
     }
 
@@ -148,39 +137,6 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     }
 
     /**
-     * Get the measures of a pivot
-     *
-     * @param {string} pivotId Id of the pivot
-     *
-     * @returns {Array<string>}
-     */
-    getPivotMeasures(pivotId) {
-        return this._getPivot(pivotId).measures;
-    }
-
-    /**
-     * Get the technical name of the model of a pivot
-     *
-     * @param {string} pivotId Id of the pivot
-     *
-     * @returns {string}
-     */
-    getPivotModel(pivotId) {
-        return this._getPivot(pivotId).model;
-    }
-
-    /**
-     * Get the rowGroupBys of a pivot
-     *
-     * @param {string} pivotId Id of the pivot
-     *
-     * @returns {Array<string>}
-     */
-    getPivotRowGroupBys(pivotId) {
-        return this._getPivot(pivotId).rowGroupBys;
-    }
-
-    /**
      * Check if an id is an id of an existing pivot
      *
      * @param {string} pivotId Id of the pivot
@@ -195,34 +151,201 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     // Private
     // -------------------------------------------------------------------------
 
-    /**
-     * Retrieve the pivot associated to the given Id
-     *
-     * @param {string} pivotId Id of the pivot
-     *
-     * @returns {SpreadsheetPivot} Pivot
-     */
-    _getPivot(pivotId) {
-        return this.pivots[pivotId];
+    _addPivot(id, definition, dataSourceId) {
+        const pivots = { ...this.pivots };
+        pivots[id] = {
+            id,
+            definition,
+            dataSourceId,
+        };
+
+        if (!this.dataSources.contains(dataSourceId)) {
+            this.dataSources.add(
+                dataSourceId,
+                new PivotDataSource({
+                    odooViewsModels: this.odooViewsModels,
+                    definition,
+                })
+            );
+        }
+        this.history.update("pivots", pivots);
+    }
+
+    _insertPivot(sheetId, anchor, id, table) {
+        this._resizeSheet(sheetId, anchor, table);
+        this._insertColumns(sheetId, anchor, id, table);
+        this._insertRows(sheetId, anchor, id, table);
+        this._insertBody(sheetId, anchor, id, table);
     }
 
     /**
-     * Adds the data source information to the local state
+     * @param {string} sheetId
+     * @param {[number, number]} anchor
+     * @param {number} id
+     * @param {SpreadsheetPivotTable} table
+     */
+    _insertColumns(sheetId, anchor, id, table) {
+        let anchorLeft = anchor[0] + 1;
+        let anchorTop = anchor[1];
+        for (const _row of table.getCols()) {
+            anchorLeft = anchor[0] + 1;
+            for (const cell of _row) {
+                const args = [id];
+                for (let i = 0; i < cell.fields.length; i++) {
+                    args.push(cell.fields[i]);
+                    args.push(cell.values[i]);
+                }
+                if (cell.width > 1) {
+                    this._merge(sheetId, {
+                        top: anchorTop,
+                        bottom: anchorTop,
+                        left: anchorLeft,
+                        right: anchorLeft + cell.width - 1,
+                    });
+                }
+                this._addPivotFormula(sheetId, anchorLeft, anchorTop, "PIVOT.HEADER", args);
+                anchorLeft += cell.width;
+            }
+            anchorTop++;
+        }
+        const colHeight = table.getColHeight();
+        const colWidth = table.getColWidth();
+        const lastRowBeforeMeasureRow = anchor[1] + colHeight - 2;
+        let right = anchor[0] + colWidth;
+        let left = right - table.getNumberOfMeasures() + 1;
+        for (let anchorTop = anchor[1]; anchorTop < lastRowBeforeMeasureRow; anchorTop++) {
+            this._merge(sheetId, { top: anchorTop, bottom: anchorTop, left, right });
+        }
+        const headersZone = {
+            top: anchor[1],
+            bottom: lastRowBeforeMeasureRow,
+            left: anchor[0],
+            right: anchor[0] + colWidth,
+        };
+        const measuresZone = {
+            top: anchor[1] + colHeight - 1,
+            bottom: anchor[1] + colHeight - 1,
+            left: anchor[0],
+            right: anchor[0] + colWidth,
+        };
+        this.dispatch("SET_FORMATTING", { sheetId, target: [headersZone], style: TOP_LEVEL_STYLE });
+        this.dispatch("SET_FORMATTING", { sheetId, target: [measuresZone], style: MEASURE_STYLE });
+    }
+
+    /**
+     * Merge a zone
      *
-     * @param {string} pivotId Id of the pivot
+     * @param {string} sheetId
+     * @param {Object} zone
      *
      * @private
      */
-    _addPivotSource(pivotId) {
-        const definition = this.getPivotForRPC(pivotId);
-        this.dataSources.add(
-            `PIVOT_${pivotId}`,
-            new PivotDataSource({
-                rpc: this.rpc,
-                definition,
-                model: definition.model,
-            })
-        );
+    _merge(sheetId, zone) {
+        this.dispatch("ADD_MERGE", { sheetId, target: [zone] });
+    }
+
+    /**
+     * @param {string} sheetId
+     * @param {[number,number]} anchor
+     * @param {SpreadsheetPivotTable} table
+     */
+    _resizeSheet(sheetId, anchor, table) {
+        const colLimit = table.getColWidth() + 1; // +1 for the Top-Left
+        const sheet = this.getters.getSheet(sheetId);
+        const numberCols = sheet.cols.length;
+        const deltaCol = numberCols - anchor[0];
+        if (deltaCol < colLimit) {
+            this.dispatch("ADD_COLUMNS_ROWS", {
+                dimension: "COL",
+                base: numberCols - 1,
+                sheetId: sheetId,
+                quantity: colLimit - deltaCol,
+                position: "after",
+            });
+        }
+        const rowLimit = table.getColHeight() + table.getRowHeight();
+        const numberRows = sheet.rows.length;
+        const deltaRow = numberRows - anchor[1];
+        if (deltaRow < rowLimit) {
+            this.dispatch("ADD_COLUMNS_ROWS", {
+                dimension: "ROW",
+                base: numberRows - 1,
+                sheetId: sheetId,
+                quantity: rowLimit - deltaRow,
+                position: "after",
+            });
+        }
+    }
+
+    /**
+     * @param {string} sheetId
+     * @param {[number, number]} anchor
+     * @param {number} id
+     * @param {SpreadsheetPivotTable} table
+     */
+    _insertRows(sheetId, anchor, id, table) {
+        let y = anchor[1] + table.getColHeight();
+        const x = anchor[0];
+        for (const row of table.getRows()) {
+            const args = [id];
+            for (let i = 0; i < row.fields.length; i++) {
+                args.push(row.fields[i]);
+                args.push(row.values[i]);
+            }
+            this._addPivotFormula(sheetId, x, y, "PIVOT.HEADER", args);
+            if (row.indent <= 2) {
+                const target = [{ top: y, bottom: y, left: x, right: x }];
+                const style = row.indent === 2 ? HEADER_STYLE : TOP_LEVEL_STYLE;
+                this.dispatch("SET_FORMATTING", { sheetId, target, style });
+            }
+            y++;
+        }
+    }
+
+    /**
+     * @param {string} sheetId
+     * @param {[number, number]} anchor
+     * @param {number} id
+     * @param {SpreadsheetPivotTable} table
+     */
+    _insertBody(sheetId, anchor, id, table) {
+        let x = anchor[0] + 1;
+        for (const col of table.getMeasureRow()) {
+            let y = anchor[1] + table.getColHeight();
+            const measure = col.values[col.values.length - 1];
+            for (const row of table.getRows()) {
+                const args = [id, measure];
+                for (let i = 0; i < row.fields.length; i++) {
+                    args.push(row.fields[i]);
+                    args.push(row.values[i]);
+                }
+                for (let i = 0; i < col.fields.length - 1; i++) {
+                    args.push(col.fields[i]);
+                    args.push(col.values[i]);
+                }
+                this._addPivotFormula(sheetId, x, y, "PIVOT", args);
+                y++;
+            }
+            x++;
+        }
+        const bodyZone = {
+            top: anchor[1] + table.getColHeight(),
+            bottom: anchor[1] + table.getColHeight() + table.getRowHeight() - 1,
+            left: anchor[0] + 1,
+            right: x - 1,
+        };
+        this.dispatch("SET_FORMATTING", { sheetId, target: [bodyZone], format: "#,##0.00" });
+    }
+
+    _addPivotFormula(sheetId, col, row, formula, args) {
+        this.dispatch("UPDATE_CELL", {
+            sheetId,
+            col,
+            row,
+            content: `=${formula}("${args
+                .map((arg) => arg.toString().replace(/"/g, '\\"'))
+                .join('","')}")`,
+        });
     }
 
     // ---------------------------------------------------------------------
@@ -236,10 +359,23 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
      */
     import(data) {
         if (data.pivots) {
-            this.pivots = JSON.parse(JSON.stringify(data.pivots));
-        }
-        for (const pivotId in this.pivots) {
-            this._addPivotSource(pivotId);
+            for (const [id, pivot] of Object.entries(data.pivots)) {
+                const definition = {
+                    metaData: {
+                        colGroupBys: pivot.colGroupBys,
+                        rowGroupBys: pivot.rowGroupBys,
+                        activeMeasures: pivot.measures.map((elt) => elt.field),
+                        resModel: pivot.model,
+                    },
+                    searchParams: {
+                        groupBy: [],
+                        orderBy: [],
+                        domain: pivot.domain,
+                        context: pivot.context,
+                    },
+                };
+                this._addPivot(id, definition, this.uuidGenerator.uuidv4());
+            }
         }
     }
     /**
@@ -248,20 +384,23 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
      * @param {Object} data
      */
     export(data) {
-        data.pivots = JSON.parse(JSON.stringify(this.pivots));
+        data.pivots = {};
+        for (const id in this.pivots) {
+            data.pivots[id] = JSON.parse(JSON.stringify(this.getPivotDefinition(id)));
+            data.pivots[id].measures = data.pivots[id].measures.map((elt) => ({ field: elt }));
+        }
     }
 }
 
 PivotPlugin.modes = ["normal", "headless"];
 PivotPlugin.getters = [
     "getNextPivotId",
-    "getPivotColGroupBys",
-    "getPivotDomain",
-    "getPivotForRPC",
+    "getPivotDefinition",
+    "getPivotDisplayName",
     "getPivotIdFromPosition",
     "getPivotIds",
-    "getPivotModel",
-    "getPivotMeasures",
-    "getPivotRowGroupBys",
+    "getSpreadsheetPivotModel",
+    "getAsyncSpreadsheetPivotModel",
     "isExistingPivot",
+    "getSpreadsheetPivotDataSource",
 ];

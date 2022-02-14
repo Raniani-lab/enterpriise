@@ -108,7 +108,7 @@ odoo.define("documents_spreadsheet.tag_selector_widget", function (require) {
         }
 
         _trigger_up(ev) {
-            if (ev.name === "value-changed") {
+            if (ev.name === "value_changed") {
                 const { value } = ev.data;
                 return this.props.onValueChanged(value);
             }

@@ -26,8 +26,8 @@ uiPluginRegistry.add("odooPivotStructurePlugin", PivotStructurePlugin);
 uiPluginRegistry.add("odooPivotAutofillPlugin", PivotAutofillPlugin);
 uiPluginRegistry.add("odooPivotTemplatePlugin", PivotTemplatePlugin);
 
-coreTypes.add("ADD_PIVOT");
-coreTypes.add("ADD_PIVOT_FORMULA");
+coreTypes.add("INSERT_PIVOT");
+coreTypes.add("RE_INSERT_PIVOT");
 
 readonlyAllowedCommands.add("ADD_PIVOT_DOMAIN");
 
@@ -79,11 +79,10 @@ cellMenuRegistry
                 .map(astToFormula)
                 .map((arg) => env.model.getters.evaluateFormula(arg));
             const pivotId = env.model.getters.getPivotIdFromPosition(sheetId, col, row);
-            const model = env.model.getters.getPivotModel(pivotId);
-            await env.model.getters.waitForPivotMetaData(pivotId);
-            const cache = env.model.getters.getPivotStructureData(pivotId);
-            const domain = cache.getDomainFromFormula(evaluatedArgs);
-            const name = env.model.getters.getPivotModelDisplayName(pivotId);
+            const { model } = env.model.getters.getPivotDefinition(pivotId);
+            const pivotModel = await env.model.getters.getAsyncSpreadsheetPivotModel(pivotId);
+            const domain = pivotModel.getPivotCellDomain(evaluatedArgs.slice(2));
+            const name = pivotModel.getModelLabel();
             await env.services.action.doAction({
                 type: "ir.actions.act_window",
                 name,

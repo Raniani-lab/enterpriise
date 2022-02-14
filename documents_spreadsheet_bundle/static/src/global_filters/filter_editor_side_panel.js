@@ -108,7 +108,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
          */
         get relatedModels() {
             const pivots = this.pivotIds.map((pivotId) =>
-                Object.values(this.getters.getPivotFields(pivotId))
+                Object.values(this.getters.getSpreadsheetPivotModel(pivotId).getFields())
             );
             const lists = this.listIds.map((listId) =>
                 Object.values(this.getters.getListFields(listId))
@@ -145,7 +145,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             const proms = [];
             proms.push(this.fetchModelFromName());
             for (const pivotId of this.getters.getPivotIds()) {
-                proms.push(this.getters.waitForPivotMetaData(pivotId));
+                proms.push(this.getters.getSpreadsheetPivotDataSource(pivotId).loadMetadata());
             }
             await Promise.all(proms);
         }
@@ -176,7 +176,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             this.state.relation.relatedModelID = value;
             await this.fetchModelFromId();
             for (const pivotId of this.pivotIds) {
-                const [field, fieldDesc] = this._findRelation(this.getters.getPivotFields(pivotId));
+                const [field, fieldDesc] = this._findRelation(this.getters.getSpreadsheetPivotModel(pivotId).getFields());
                 this.state.pivotFields[pivotId] = field
                     ? { field, type: fieldDesc.type }
                     : undefined;
@@ -222,7 +222,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
 
         onSelectedPivotField(id, chain) {
             const fieldName = chain[0];
-            const field = this.getters.getPivotField(id, fieldName);
+            const field = this.getters.getSpreadsheetPivotModel(id, fieldName).getField(fieldName);
             if (field) {
                 this.state.pivotFields[id] = {
                     field: fieldName,

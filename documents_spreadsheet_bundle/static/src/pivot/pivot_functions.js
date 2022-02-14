@@ -9,6 +9,32 @@ const { functionRegistry } = spreadsheet.registries;
 // Spreadsheet functions
 //--------------------------------------------------------------------------
 
+function validatePivotId(pivotId, getters) {
+    if (!getters.isExistingPivot(pivotId)) {
+        throw new Error(_.str.sprintf(_t('There is no pivot with id "%s"'), pivotId));
+    }
+}
+
+function validateMeasure(pivotId, measure, getters) {
+    const { measures } = getters.getPivotDefinition(pivotId);
+    if (!measures.includes(measure)) {
+        const validMeasures = `(${measures})`;
+        throw new Error(
+            _.str.sprintf(
+                _t("The argument %s is not a valid measure. Here are the measures: %s"),
+                measure,
+                validMeasures
+            )
+        );
+    }
+}
+
+function validateDomain(domain) {
+    if (domain.length % 2 !== 0) {
+        throw new Error(_t("Function PIVOT takes an even number of arguments."));
+    }
+}
+
 functionRegistry
     .add("FILTER.VALUE", {
         description: _t("Return the current value of a spreadsheet filter."),
@@ -26,8 +52,10 @@ functionRegistry
             pivotId = toString(pivotId);
             const measure = toString(measureName);
             const args = domain.map(toString);
-            this.getters.validatePivotArguments(pivotId, measure, args);
-            return this.getters.getPivotValue(pivotId, measure, args, this);
+            validatePivotId(pivotId, this.getters);
+            validateMeasure(pivotId, measure, this.getters);
+            validateDomain(args);
+            return this.getters.getPivotCellValue(pivotId, measure, args, this);
         },
         args: args(`
         pivot_id (string) ${_t("ID of the pivot.")}
@@ -42,7 +70,8 @@ functionRegistry
         compute: function (pivotId, ...domain) {
             pivotId = toString(pivotId);
             const args = domain.map(toString);
-            this.getters.validatePivotHeaderArguments(pivotId, args);
+            validatePivotId(pivotId, this.getters);
+            validateDomain(args);
             return this.getters.getPivotHeaderValue(pivotId, args);
         },
         args: args(`

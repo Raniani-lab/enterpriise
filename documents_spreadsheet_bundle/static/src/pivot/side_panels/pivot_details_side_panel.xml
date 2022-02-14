@@ -4,7 +4,7 @@
         <t t-set="def" t-value="pivotDefinition"/>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Pivot name</div>
-            <div t-esc="getters.getPivotDisplayName(props.pivotId)"/>
+            <div t-esc="def.pivotDisplayName"/>
         </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Model</div>
@@ -17,13 +17,13 @@
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Dimensions</div>
             <t t-foreach="def.dimensions" t-as="gp" t-key="gp">
-                <div t-esc="getters.getFormattedGroupBy(props.pivotId, gp)"/>
+                <div t-esc="gp"/>
             </t>
         </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Measures</div>
             <t t-foreach="def.measures" t-as="measure" t-key="measure">
-                <div t-esc="getters.getFormattedHeader(props.pivotId, 'measure', measure.field)"/>
+                <div t-esc="measure"/>
             </t>
             <div class="o_pivot_last_update"><i>Last updated at <t t-esc="getLastUpdate()"/></i></div>
             <div class="btn btn-link o_refresh_measures" t-on-click="refresh"><i class="fa fa-arrow-right mr-1"/>Refresh values</div><br/>

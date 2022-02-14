@@ -1,7 +1,6 @@
-/** @odoo-module alias=documents_spreadsheet.SpreadsheetCollaborativeModelTests */
+/** @odoo-module */
 
-import { getBasicData } from "../utils/spreadsheet_test_data";
-import PivotDataSource from "@documents_spreadsheet_bundle/pivot/pivot_data_source";
+import { getBasicData, getBasicServerData } from "../utils/spreadsheet_test_data";
 import { getCellContent, getCellFormula, getCellValue } from "../utils/getters_helpers";
 import {
     addGlobalFilter,
@@ -9,26 +8,85 @@ import {
     setCellContent,
     setGlobalFilterValue,
 } from "../utils/commands_helpers";
-import { setupCollaborativeEnv } from "../utils/collaborative_helpers";
+import { setupCollaborativeEnv, setupCollaborativeEnvForList } from "../utils/collaborative_helpers";
 import { waitForEvaluation } from "../spreadsheet_test_utils";
+import PivotDataSource from "@documents_spreadsheet_bundle/pivot/pivot_data_source";
 
-async function getPivot(rpc, id) {
-    const pivot = {
-        colGroupBys: ["foo"],
-        domain: [],
-        measures: [{ field: "probability", operator: "avg" }],
-        model: "partner",
-        rowGroupBys: ["bar"],
-        id,
-    };
-
+/**
+ * Get a pivot definition, a data source and a pivot model (already loaded)
+ */
+async function getPivotReady(model) {
+    const definition = {
+        metaData: {
+            colGroupBys: ["foo"],
+            rowGroupBys: ["bar"],
+            activeMeasures: ["probability"],
+            resModel: "partner",
+        },
+        searchParams: {
+            domain: [],
+            context: {},
+            groupBy: [],
+            orderBy: [],
+        },
+    }
     const dataSource = new PivotDataSource({
-        rpc,
-        definition: pivot,
-        model: pivot.model,
+        odooViewsModels: model.config.odooViewsModels,
+        definition,
     });
-    const cache = await dataSource.get({ domain: pivot.domain });
-    return { pivot, cache };
+    const pivotModel = await dataSource.get();
+    return { definition, dataSource, pivotModel };
+}
+
+/**
+ * Insert a given pivot
+ * @param {Model} model
+ * @param {Object} params
+ * @param {Object} params.definition Pivot definition
+ * @param {PivotDataSource} params.dataSource Pivot data source (ready)
+ * @param {Object} params.pivotModel Pivot model
+ * @param {string|undefined} params.dataSourceId
+ * @param {[number, number]|undefined} params.anchor
+ */
+function insertPreloadedPivot(model, params) {
+    const { definition, dataSource, pivotModel } = params;
+    const structure = pivotModel.getSpreadsheetStructure();
+    const sheetId = model.getters.getActiveSheetId();
+    const { cols, rows, measures } = structure.export();
+    const table = {
+        cols,
+        rows,
+        measures,
+    };
+    const dataSourceId = params.dataSourceId || "data";
+    model.config.dataSources.add(dataSourceId, dataSource);
+    model.dispatch("INSERT_PIVOT", {
+        sheetId,
+        col: params.anchor ? params.anchor[0] : 0,
+        row: params.anchor ? params.anchor[1] : 0,
+        table,
+        id: 1,
+        dataSourceId,
+        definition,
+    });
+    const columns = [];
+    for (let col = 0; col <= table.cols[table.cols.length - 1].length; col++) {
+        columns.push(col);
+    }
+    model.dispatch("AUTORESIZE_COLUMNS", { sheetId, cols: columns });
+}
+
+/**
+ * Add a basic pivot in the current spreadsheet of model
+ * @param {Model} model
+ */
+async function insertPivot(model) {
+    const { definition, dataSource, pivotModel } = await getPivotReady(model);
+    insertPreloadedPivot(model, {
+        definition,
+        dataSource,
+        pivotModel,
+    })
 }
 
 function getList(id) {
@@ -49,16 +107,15 @@ function getListTypes() {
     };
 }
 
-let alice, bob, charlie, network, rpc;
+let alice, bob, charlie, network;
 
 QUnit.module("documents_spreadsheet > collaborative", {
-    beforeEach() {
-        const env = setupCollaborativeEnv(getBasicData());
+    async beforeEach() {
+        const env = await setupCollaborativeEnv(getBasicServerData());
         alice = env.alice;
         bob = env.bob;
         charlie = env.charlie;
         network = env.network;
-        rpc = env.rpc;
     },
 });
 
@@ -75,14 +132,7 @@ QUnit.test("A simple test", (assert) => {
 
 QUnit.test("Add a pivot", async (assert) => {
     assert.expect(7);
-    const sheetId = alice.getters.getActiveSheetId();
-    const { pivot, cache } = await getPivot(rpc, 1);
-    alice.dispatch("BUILD_PIVOT", {
-        sheetId,
-        pivot,
-        cache,
-        anchor: [0, 0],
-    });
+    await insertPivot(alice);
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => user.getters.getPivotIds().length,
@@ -107,20 +157,20 @@ QUnit.test("Add a pivot", async (assert) => {
 
 QUnit.test("Add two pivots concurrently", async (assert) => {
     assert.expect(6);
-    const sheetId = alice.getters.getActiveSheetId();
-    const { pivot: pivot1, cache: cache1 } = await getPivot(rpc, 1);
-    const { pivot: pivot2, cache: cache2 } = await getPivot(rpc, 1);
+    const { definition: def1, dataSource: ds1, pivotModel: pm1 } = await getPivotReady(alice);
+    const { definition: def2, dataSource: ds2, pivotModel: pm2 } = await getPivotReady(bob);
     await network.concurrent(() => {
-        alice.dispatch("BUILD_PIVOT", {
-            sheetId,
-            pivot: pivot1,
-            cache: cache1,
-            anchor: [0, 0],
+        insertPreloadedPivot(alice, {
+            definition: def1,
+            dataSource: ds1,
+            dataSourceId: "data1",
+            pivotModel: pm1,
         });
-        bob.dispatch("BUILD_PIVOT", {
-            sheetId,
-            pivot: pivot2,
-            cache: cache2,
+        insertPreloadedPivot(bob, {
+            definition: def2,
+            dataSource: ds2,
+            pivotModel: pm2,
+            dataSourceId: "data2",
             anchor: [0, 25],
         });
     });
@@ -157,14 +207,7 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
 
 QUnit.test("Add a filter with a default value", async (assert) => {
     assert.expect(3);
-    const sheetId = alice.getters.getActiveSheetId();
-    const { pivot, cache } = await getPivot(rpc, 1);
-    alice.dispatch("BUILD_PIVOT", {
-        sheetId,
-        pivot,
-        cache,
-        anchor: [0, 0],
-    });
+    await insertPivot(alice);
     const filter = {
         id: "41",
         type: "relation",
@@ -193,14 +236,7 @@ QUnit.test("Add a filter with a default value", async (assert) => {
 
 QUnit.test("Setting a filter value is only applied locally", async (assert) => {
     assert.expect(3);
-    const sheetId = alice.getters.getActiveSheetId();
-    const { pivot, cache } = await getPivot(rpc, 1);
-    alice.dispatch("BUILD_PIVOT", {
-        sheetId,
-        pivot,
-        cache,
-        anchor: [0, 0],
-    });
+    await insertPivot(alice);
     const filter = {
         id: "41",
         type: "relation",
@@ -222,14 +258,7 @@ QUnit.test("Setting a filter value is only applied locally", async (assert) => {
 
 QUnit.test("Edit a filter", async (assert) => {
     assert.expect(3);
-    const sheetId = alice.getters.getActiveSheetId();
-    const { pivot, cache } = await getPivot(rpc, 1);
-    alice.dispatch("BUILD_PIVOT", {
-        sheetId,
-        pivot,
-        cache,
-        anchor: [0, 0],
-    });
+    await insertPivot(alice);
     const filter = {
         id: "41",
         type: "relation",
@@ -361,13 +390,12 @@ QUnit.test("Remove a filter and edit another concurrently", async (assert) => {
 });
 
 QUnit.module("documents_spreadsheet > collaborative > list", {
-    beforeEach() {
-        const env = setupCollaborativeEnv(getBasicData());
+    async beforeEach() {
+        const env = setupCollaborativeEnvForList(getBasicData());
         alice = env.alice;
         bob = env.bob;
         charlie = env.charlie;
         network = env.network;
-        rpc = env.rpc;
     },
 });
 

@@ -34,69 +34,11 @@ export function formatDate(field, value) {
   return date.isValid() ? date.format(output) : _t("(Undefined)");
 }
 
-/**
- * Create the pivot object
- *
- * @param {PivotModel} instance of PivotModel
- *
- * @returns {Pivot}
- */
-export function sanitizePivot(pivotModel) {
-  let measures = _sanitizeFields(
-    pivotModel.metaData.activeMeasures,
-    pivotModel.metaData.measures
-  );
-  measures = pivotModel.metaData.activeMeasures.map((measure) => {
-    const fieldName = measure.split(":")[0];
-    const fieldDesc = pivotModel.metaData.measures[fieldName];
-    const operator =
-      (fieldDesc.group_operator && fieldDesc.group_operator.toLowerCase()) ||
-      (fieldDesc.type === "many2one" ? "count_distinct" : "sum");
-    return {
-      field: measure,
-      operator,
-    };
-  });
-  const rowGroupBys = _sanitizeFields(
-    pivotModel.metaData.fullRowGroupBys,
-    pivotModel.metaData.fields
-  );
-  const colGroupBys = _sanitizeFields(
-    pivotModel.metaData.fullColGroupBys,
-    pivotModel.metaData.fields
-  );
-  return {
-    model: pivotModel.metaData.resModel,
-    rowGroupBys,
-    colGroupBys,
-    measures,
-    domain: pivotModel.searchParams.domain,
-    context: removeContextUserInfo(pivotModel.searchParams.context),
-  };
-}
-
-//--------------------------------------------------------------------------
-// Private
-//--------------------------------------------------------------------------
-
-/**
- * Add a default interval for the date and datetime fields
- *
- * @param {Array<string>} fields List of the fields to sanitize
- * @param {Object} allFields fields_get result
- */
-function _sanitizeFields(fields, allFields) {
-  return fields.map((field) => {
-    let [fieldName, group] = field.split(":");
-    const fieldDesc = allFields[fieldName];
-    if (["date", "datetime"].includes(fieldDesc.type)) {
-      if (!group) {
-        group = "month";
-      }
-      return `${fieldName}:${group}`;
-    }
-    return fieldName;
-  });
+export function formatGroupBy(groupBy, fields) {
+  let [name, period] = groupBy.split(":");
+  period = PERIODS[period];
+  const fieldName = fields[name] ? fields[name].string : name;
+  return fieldName + (period ? ` (${period})` : "");
 }
 
 /**

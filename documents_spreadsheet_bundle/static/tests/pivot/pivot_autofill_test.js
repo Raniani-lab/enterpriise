@@ -376,7 +376,7 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
         assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "C3"), true), [
             {
                 title: "name",
-                value: "(Undefined)",
+                value: "None",
             },
             {
                 title: "Measure",

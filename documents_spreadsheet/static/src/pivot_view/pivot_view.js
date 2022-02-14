@@ -35,13 +35,6 @@ patch(PivotView.prototype, "pivot_spreadsheet", {
         dialog.on("confirm", this, this.insertInSpreadsheet);
     },
 
-    getPivotForSpreadsheet() {
-        return {
-            data: this.model.data, metaData: this.model.metaData,
-            searchParams: this.model.searchParams
-        };
-    },
-
     /**
      * Open a new spreadsheet or an existing one and insert the pivot in it.
      *
@@ -55,8 +48,12 @@ patch(PivotView.prototype, "pivot_spreadsheet", {
     async insertInSpreadsheet({ id: spreadsheet }) {
         let notificationMessage;
         const actionOptions = {
-            preProcessingAction: "insertPivot",
-            preProcessingActionData: this.getPivotForSpreadsheet()
+            preProcessingAsyncAction: "insertPivot",
+            preProcessingAsyncActionData: {
+                data: this.model.data,
+                metaData: this.model.metaData,
+                searchParams: this.model.searchParams
+            }
         };
 
         if (!spreadsheet.id) {

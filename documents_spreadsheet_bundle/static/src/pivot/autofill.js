@@ -109,9 +109,10 @@ autofillModifiersRegistry
             const pivotId = formulaString.match(/PIVOT\.POSITION\(\s*"(\w+)"\s*,/)[1];
             if (!getters.isExistingPivot(pivotId))
                 return { cellData: { ...data.cell, content: formulaString } };
+            const pivotDefinition = getters.getPivotDefinition(pivotId);
             const fields = [UP, DOWN].includes(direction)
-                ? getters.getPivotRowGroupBys(pivotId).slice()
-                : getters.getPivotColGroupBys(pivotId).slice();
+                ? pivotDefinition.rowGroupBys
+                : pivotDefinition.colGroupBys;
             const step = [RIGHT, DOWN].includes(direction) ? 1 : -1;
 
             const field = fields

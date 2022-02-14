@@ -468,6 +468,7 @@ module("documents_spreadsheet > global_filters",
         await addGlobalFilter(model, LAST_YEAR_FILTER);
         const newModel = new Model(model.exportData(), {
             evalContext: { env },
+            odooViewsModels: model.config.odooViewsModels,
         });
         assert.equal(newModel.getters.getGlobalFilters().length, 1);
         const [filter] = newModel.getters.getGlobalFilters();

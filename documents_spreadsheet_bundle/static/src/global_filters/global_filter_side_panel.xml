@@ -30,7 +30,7 @@
                             relatedModel="filter.modelName"
                             selectedValues="filterValue"
                             t-key="filter.id + filter.modelName"
-                            onValueChanged="value => this.onTagSelected(filter.id, value)"
+                            onValueChanged="(value) => this.onTagSelected(filter.id, value)"
                         />
                     </span>
                     <DateFilterValue
@@ -124,17 +124,20 @@
                 Match this filter to a field for each pivot/list
             </div>
             <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="missingPivotField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
-                <div><t t-esc="getters.getPivotModelDisplayName(pivotId)"/> <span class="o_pivot_model_technical_name text-muted">(Pivot #<t t-esc="pivotId"/>)</span></div>
-                <FieldSelectorAdapter
-                    Component="FieldSelectorWidget"
-                    model="getters.getPivotModel(pivotId)"
-                    fields="getters.getPivotFields(pivotId)"
-                    type="state.type"
-                    relatedModel="state.relation.relatedModelName"
-                    selected="state.pivotFields[pivotId]"
-                    t-key="pivotId + (state.relation.relatedModelName or 'not_defined')"
-                    onFieldChainChanged="chain => this.onSelectedPivotField(pivotId, chain)"
-                />
+                <t t-set="pivotModel" t-value="getters.getSpreadsheetPivotModel(pivotId)"/>
+                <t t-if="pivotModel !== undefined">
+                    <div><t t-esc="pivotModel.getModelLabel()"/> <span class="o_pivot_model_technical_name text-muted">(Pivot #<t t-esc="pivotId"/>)</span></div>
+                    <FieldSelectorAdapter
+                        Component="FieldSelectorWidget"
+                        model="getters.getPivotDefinition(pivotId).model"
+                        fields="pivotModel.getFields()"
+                        type="state.type"
+                        relatedModel="state.relation.relatedModelName"
+                        selected="state.pivotFields[pivotId]"
+                        t-key="pivotId + (state.relation.relatedModelName or 'not_defined')"
+                        onFieldChainChanged="chain => this.onSelectedPivotField(pivotId, chain)"
+                    />
+                </t>
             </div>
             <div t-foreach="listIds" t-as="listId" t-key="listId" t-att-class="missingListField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
                 <div><t t-esc="getters.getListModelDisplayName(listId)"/> <span class="o_pivot_model_technical_name text-muted">(List #<t t-esc="listId"/>)</span></div>

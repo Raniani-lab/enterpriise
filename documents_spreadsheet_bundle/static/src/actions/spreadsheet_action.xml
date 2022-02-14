@@ -18,6 +18,7 @@
         thumbnailSize="750"
         stateUpdateMessages="stateUpdateMessages"
         initCallback="initCallback"
+        asyncInitCallback="asyncInitCallback"
         transportService="transportService"
         snapshotRequested="snapshotRequested"
         download="props.action.params &amp;&amp; props.action.params.download"

@@ -5,10 +5,6 @@ import PivotDetailsSidePanel from "./pivot_details_side_panel";
 const { Component } = owl;
 
 export default class PivotSidePanel extends Component {
-    setup() {
-        this.getters = this.env.model.getters;
-    }
-
     selectPivot(pivotId) {
         this.env.model.dispatch("SELECT_PIVOT", { pivotId });
     }

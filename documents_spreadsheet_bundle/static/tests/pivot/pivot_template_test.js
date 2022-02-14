@@ -42,10 +42,16 @@ async function convertFormula(config) {
     //reload the model in headless mode, with the conversion plugin
     const model = new Model(m1.exportData(), {
         mode: "headless",
+        odooViewsModels: m1.config.odooViewsModels,
         evalContext: { env },
     });
 
     await waitForEvaluation(model);
+    const proms = [];
+    for (const pivotId of model.getters.getPivotIds()) {
+        proms.push(model.getters.getSpreadsheetPivotModel(pivotId).prepareForTemplateGeneration());
+    }
+    await Promise.all(proms);
     setCellContent(model, "A1", `=${config.formula}`);
     model.dispatch(config.convert);
     // Remove the equal sign
@@ -154,6 +160,7 @@ module(
             const model = new Model(m1.exportData(), {
                 mode: "headless",
                 evalContext: { env },
+                odooViewsModels: m1.config.odooViewsModels,
             });
             assert.deepEqual(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE").reasons, [
                 CommandResult.PivotCacheNotLoaded,

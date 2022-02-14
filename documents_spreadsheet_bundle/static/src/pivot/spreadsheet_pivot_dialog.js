@@ -7,7 +7,7 @@ import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
-const { onWillStart, useState } = owl;
+const { useState } = owl;
 const formatValue = spreadsheet.helpers.formatValue;
 
 /**
@@ -15,7 +15,6 @@ const formatValue = spreadsheet.helpers.formatValue;
  * @property {string} formula Pivot formula
  * @property {string} value Pivot value of the formula
  * @property {number} span Size of col-span
- * @property {number} position Position of the column
  * @property {boolean} isMissing True if the value is missing from the sheet
  * @property {string} style Style of the column
  */
@@ -39,6 +38,7 @@ const formatValue = spreadsheet.helpers.formatValue;
 
 export class PivotDialog extends Dialog {
     setup() {
+        super.setup();
         this.state = useState({
             showMissingValuesOnly: false,
         });
@@ -46,40 +46,20 @@ export class PivotDialog extends Dialog {
         this.renderHeader = true;
         this.renderFooter = false;
         this.size = "large";
+        this.pivotModel = this.props.getters.getSpreadsheetPivotModel(this.props.pivotId);
 
-        onWillStart(this.onWillStart);
-    }
-
-    async onWillStart() {
-        await this.getters.waitForPivotDataReady(this.pivotId);
+        const table = this.pivotModel.getSpreadsheetStructure();
+        const id = this.props.pivotId;
         this.data = {
-            columns: this._buildColHeaders(),
-            rows: this._buildRowHeaders(),
-            values: this._buildValues(),
+            columns: this._buildColHeaders(id, table),
+            rows: this._buildRowHeaders(id, table),
+            values: this._buildValues(id, table),
         };
-    }
-
-    get pivotId() {
-        return this.props.pivotId;
-    }
-
-    get getters() {
-        return this.props.getters;
     }
 
     _onCellClicked(detail) {
         this.props.insertPivotValueCallback(detail.formula);
         this.close();
-    }
-
-    /**
-     * This method always returns the PivotCache, as we ensure that it's
-     * loaded in the willStart
-     *
-     * @returns {PivotCache}
-     */
-    get pivotData() {
-        return this.getters.getPivotStructureData(this.pivotId);
     }
 
     // ---------------------------------------------------------------------
@@ -108,6 +88,12 @@ export class PivotDialog extends Dialog {
         const values = this._buildValuesMissing(colIndexes, rowIndexes);
         return { columns, rows, values };
     }
+
+    getRowIndex(groupValues) {
+        const stringifiedValues = JSON.stringify(groupValues);
+        return this._rows.findIndex((values) => JSON.stringify(values) === stringifiedValues);
+    }
+
     /**
      * Retrieve the parents of the given row
      * ex:
@@ -121,12 +107,13 @@ export class PivotDialog extends Dialog {
      * @returns {Array<number>}
      */
     _addRecursiveRow(index) {
-        const row = this.pivotData.getRowValues(index).slice();
+        const rows = this.pivotModel.getSpreadsheetStructure().getRows();
+        const row = [...rows[index].values]
         if (row.length <= 1) {
             return [index];
         }
         row.pop();
-        const parentRowIndex = this.pivotData.getRowIndex(row);
+        const parentRowIndex = rows.findIndex((r) => JSON.stringify(r.values) === JSON.stringify(row));
         return [index].concat(this._addRecursiveRow(parentRowIndex));
     }
     /**
@@ -268,237 +255,123 @@ export class PivotDialog extends Dialog {
         return Array.from(rowIndexes).sort((a, b) => a - b);
     }
 
-    // ---------------------------------------------------------------------
-    // Data table creation
-    // ---------------------------------------------------------------------
-
-    /**
-     * Create a cell information from the args of the pivot formula
-     *
-     * @private
-     * @param {Array<string>} args Args of the pivot formula
-     * @returns {Object} { value, formula }
-     */
-    _buildCell(args) {
-        const formula = `=PIVOT("${args.join('","')}")`;
-        const measure = args[1];
-        const measures = this.getters.getPivotMeasures(this.pivotId);
-        const operator = measures.filter((m) => m.field === measure)[0].operator;
-        args.splice(0, 2);
-        const domain = args.map((x) => x.toString());
-        const value = this.pivotData.getMeasureValue(measure, operator, domain);
-        return { value: this._formatValue(value), formula };
-    }
-    /**
-     * Create the columns headers of the Pivot
-     *
-     * @private
-     * @returns {Array<Array<PivotDialogColumn>>}
-     */
-    _buildColHeaders() {
-        const levels = this.pivotData.getColGroupByLevels();
-        const headers = [];
-
-        let length =
-            this.pivotData.getTopHeaderCount() -
-            this.getters.getPivotMeasures(this.pivotId).length;
-        if (length === 0) {
-            length = this.pivotData.getTopHeaderCount();
-        }
-        for (let i = 0; i < length; i++) {
-            for (let level = 0; level <= levels; level++) {
-                const pivotArgs = [];
-                const values = this.pivotData.getColGroupHierarchy(i, level);
-                for (const index in values) {
-                    pivotArgs.push(this.pivotData.getColLevelIdentifier(index));
-                    pivotArgs.push(values[index]);
-                }
-                const isMissing = !this.pivotData.isUsedHeader(pivotArgs);
-                pivotArgs.unshift(this.pivotId);
-                if (headers[level]) {
-                    headers[level].push({ args: pivotArgs, isMissing });
-                } else {
-                    headers[level] = [{ args: pivotArgs, isMissing }];
-                }
-            }
-        }
-        for (let i = length; i < this.pivotData.getTopHeaderCount(); i++) {
-            let isMissing = !this.pivotData.isUsedHeader([]);
-            headers[headers.length - 2].push({ args: [this.pivotId], isMissing });
-            const args = ["measure", this.pivotData.getColGroupHierarchy(i, 1)[0]];
-            isMissing = !this.pivotData.isUsedHeader(args);
-            headers[headers.length - 1].push({ args: [this.pivotId, ...args], isMissing });
-        }
-        return headers.map((row) => {
-            const reducedRow = row.reduce((acc, curr) => {
-                const val = curr.args.join('","');
-                if (acc[val] === undefined) {
-                    acc[val] = {
-                        count: 0,
-                        position: Object.keys(acc).length,
-                        isMissing: curr.isMissing,
-                    };
-                }
-                acc[val].count++;
-                return acc;
-            }, {});
-
-            return Object.entries(reducedRow)
-                .map(([val, info]) => {
-                    const style =
-                        row === headers[headers.length - 1] &&
-                        !info.isMissing &&
-                        "color: #756f6f;";
-                    return {
-                        formula: `=PIVOT.HEADER("${val}")`,
-                        value: this._getLabel(val),
-                        span: info.count,
-                        position: info.position,
-                        isMissing: info.isMissing,
-                        style,
-                    };
-                })
-                .sort((a, b) => (a.position > b.position ? 1 : -1));
-        });
-    }
-    /**
-     * Create the row of the pivot table
-     *
-     * @private
-     * @returns {Array<PivotDialogRow>}
-     */
-    _buildRowHeaders() {
-        const rowCount = this.pivotData.getRowCount();
-        const headers = [];
-        for (let index = 0; index < rowCount; index++) {
-            const pivotArgs = [];
-            const current = this.pivotData.getRowValues(index);
-            for (let i in current) {
-                pivotArgs.push(this.getters.getPivotRowGroupBys(this.pivotId)[i]);
-                pivotArgs.push(current[i]);
-            }
-            const isMissing = !this.pivotData.isUsedHeader(pivotArgs);
-            pivotArgs.unshift(this.pivotId);
-            headers.push({ args: pivotArgs, isMissing });
-        }
-        return headers.map(({ args, isMissing }) => {
-            const argsString = args.join('","');
-            const style = this._getStyle(args);
-            return {
-                args,
-                formula: `=PIVOT.HEADER("${argsString}")`,
-                value: this._getLabel(argsString),
-                style,
-                isMissing,
-            };
-        });
-    }
-    /**
-     * Build the values of the pivot table
-     *
-     * @private
-     * @returns {Array<PivotDialogValue>}
-     */
-    _buildValues() {
-        const length =
-            this.pivotData.getTopHeaderCount() -
-            this.getters.getPivotMeasures(this.pivotId).length;
-        const rowGroupBys = this.getters.getPivotRowGroupBys(this.pivotId);
-        const values = [];
-        for (let i = 0; i < length; i++) {
-            const colElement = [
-                ...this.pivotData.getColumnValues(i),
-                this.pivotData.getMeasureName(i),
-            ];
-            const colValues = [];
-            for (let rowElement of this.pivotData.getRows()) {
-                const pivotArgs = [];
-                for (let index in rowElement) {
-                    pivotArgs.push(rowGroupBys[index]);
-                    pivotArgs.push(rowElement[index]);
-                }
-                for (let index in colElement) {
-                    const field = this.pivotData.getColLevelIdentifier(index);
-                    if (field === "measure") {
-                        pivotArgs.unshift(colElement[index]);
-                    } else {
-                        pivotArgs.push(this.pivotData.getColLevelIdentifier(index));
-                        pivotArgs.push(colElement[index]);
-                    }
-                }
-                const isMissing = !this.pivotData.isUsedValue(pivotArgs);
-                pivotArgs.unshift(this.pivotId);
-                colValues.push({ args: this._buildCell(pivotArgs), isMissing });
-            }
-            values.push(colValues);
-        }
-        for (let i = length; i < this.pivotData.getTopHeaderCount(); i++) {
-            const colElement = [
-                ...this.pivotData.getColumnValues(i),
-                this.pivotData.getMeasureName(i),
-            ];
-            const colValues = [];
-            for (let rowElement of this.pivotData.getRows()) {
-                const pivotArgs = [];
-                for (let index in rowElement) {
-                    pivotArgs.push(rowGroupBys[index]);
-                    pivotArgs.push(rowElement[index]);
-                }
-                pivotArgs.unshift(colElement[0]);
-                const isMissing = !this.pivotData.isUsedValue(pivotArgs);
-                pivotArgs.unshift(this.pivotId);
-                colValues.push({ args: this._buildCell(pivotArgs), isMissing });
-            }
-            values.push(colValues);
-        }
-        return values;
-    }
-    /**
-     * Format the given value with two decimals
-     *
-     * @private
-     * @param {string} value Value to format
-     * @returns {string}
-     */
-    _formatValue(value) {
-        if (!value) {
-            return "";
-        }
-        return formatValue(value, "0.00");
-    }
-    /**
-     * Get the label of a pivot formula based on the args formula
-     *
-     * @private
-     * @param {string} args Args of the pivot formula
-     */
-    _getLabel(args) {
-        let domain = args.split('","');
-        domain.shift();
+    _getPivotHeaderValue(domain) {
         const len = domain.length;
         if (len === 0) {
             return _t("Total");
         }
         const field = domain[len - 2];
         const value = domain[len - 1];
-        return this.getters.getFormattedHeader(this.pivotId, field, value);
+        return this.pivotModel.getPivotHeaderValue(field, value);
     }
+
+    // ---------------------------------------------------------------------
+    // Data table creation
+    // ---------------------------------------------------------------------
+
     /**
-     * Get the style to apply to a row.
-     * It will compute the padding
+     * Create the columns headers of the Pivot
+     *
+     * @param {number} id Pivot Id
+     * @param {SpreadsheetPivotTable} table
      *
      * @private
-     * @param {Array<string>} args Args of the pivot row
-     * @returns {string}
+     * @returns {Array<Array<PivotDialogColumn>>}
      */
-    _getStyle(args) {
-        // The structure of args is [measure, gb, value, (gb, value)...]
-        // So, with a size of 3, the padding is null
-        const length = args.length - 3;
-        if (!length) {
-            return "";
+    _buildColHeaders(id, table) {
+        const headers = [];
+        for (const row of table.getCols()) {
+            const current = [];
+            for (const cell of row) {
+                const domain = [];
+                for (let i = 0; i < cell.fields.length; i++) {
+                    domain.push(cell.fields[i]);
+                    domain.push(cell.values[i]);
+                }
+                current.push({
+                    formula: `=PIVOT.HEADER("${id}","${domain.join('","')}")`,
+                    value: this._getPivotHeaderValue(domain),
+                    span: cell.width,
+                    isMissing: !this.pivotModel.isUsedHeader(domain),
+                })
+            }
+            headers.push(current);
         }
-        return `padding-left: ${length * 10}px`;
+        const last = headers[headers.length-1];
+        headers[headers.length - 1] = last.map((cell) => {
+            if (!cell.isMissing) {
+                cell.style = "color: #756f6f;"
+            }
+            return cell;
+        });
+        return headers;
+    }
+    /**
+     * Create the row of the pivot table
+     *
+     * @param {number} id Pivot Id
+     * @param {SpreadsheetPivotTable} table
+     *
+     * @private
+     * @returns {Array<PivotDialogRow>}
+     */
+    _buildRowHeaders(id, table) {
+        const headers = [];
+        for (const row of table.getRows()) {
+            const domain = [];
+            for (let i = 0; i < row.fields.length; i++) {
+                domain.push(row.fields[i]);
+                domain.push(row.values[i]);
+            }
+            const cell = {
+                args: domain,
+                formula: `=PIVOT.HEADER("${id}","${domain.join('","')}")`,
+                value: this._getPivotHeaderValue(domain),
+                isMissing: !this.pivotModel.isUsedHeader(domain),
+            };
+            if (row.indent > 1) {
+                cell.style = `padding-left: ${row.indent - 1 * 10}px`;
+            }
+            headers.push(cell);
+        }
+        return headers;
+    }
+    /**
+     * Build the values of the pivot table
+     *
+     * @param {number} id Pivot Id
+     * @param {SpreadsheetPivotTable} table
+     *
+     * @private
+     * @returns {Array<PivotDialogValue>}
+     */
+    _buildValues(id, table) {
+        const values = [];
+        for (const col of table.getMeasureRow()) {
+            const current = [];
+            const measure = col.values[col.values.length - 1];
+            for (const row of table.getRows()) {
+                const domain = [];
+                for (let i = 0; i < row.fields.length; i++) {
+                    domain.push(row.fields[i]);
+                    domain.push(row.values[i]);
+                }
+                for (let i = 0; i < col.fields.length - 1; i++) {
+                    domain.push(col.fields[i]);
+                    domain.push(col.values[i]);
+                }
+                const value = this.pivotModel.getPivotCellValue(measure, domain);
+                current.push({
+                    args: {
+                        formula: `=PIVOT("${id}","${measure}","${domain.join('","')}")`,
+                        value: !value ? "" : formatValue(value),
+                    },
+                    isMissing: !this.pivotModel.isUsedValue(domain, measure),
+                })
+            }
+            values.push(current);
+        }
+        return values;
     }
 }
 

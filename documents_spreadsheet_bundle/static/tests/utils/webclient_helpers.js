@@ -7,6 +7,8 @@ import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@d
 import { spreadsheetCollaborativeService } from "../../src/o_spreadsheet/collaborative/spreadsheet_collaborative_service";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
 import { loadJS } from "@web/core/assets";
+import { ormService } from "@web/core/orm_service";
+import { uiService } from "@web/core/ui/ui_service";
 
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 const serviceRegistry = registry.category("services");
@@ -19,6 +21,8 @@ export async function prepareWebClientForSpreadsheet() {
         makeFakeUserService(() => true),
         { force: true }
     );
+    serviceRegistry.add("ui", uiService);
+    serviceRegistry.add("orm", ormService);
     legacyFavoriteMenuRegistry.add(
         "insert-list-spreadsheet-menu",
         LegacyInsertListSpreadsheetMenu,

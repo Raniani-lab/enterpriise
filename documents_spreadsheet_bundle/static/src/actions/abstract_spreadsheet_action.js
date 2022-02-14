@@ -63,7 +63,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         let resId = this.resId;
         if (this.params.alwaysCreate) {
             const data = this.params.createFromTemplateId
-                ? await getDataFromTemplate(this.orm, this.params.createFromTemplateId)
+                ? await getDataFromTemplate(this.env, this.orm, this.params.createFromTemplateId)
                 : createEmptyWorkbookData(`${this.env._t("Sheet")}1`);
             resId = await this.orm.create("documents.document", {
                 name: this.params.createFromTemplateName || UNTITLED_SPREADSHEET_NAME,
@@ -76,6 +76,10 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         if (this.params.preProcessingAction) {
             const initCallbackGenerator = initCallbackRegistry.get(this.params.preProcessingAction).bind(this);
             this.initCallback = await initCallbackGenerator(this.params.preProcessingActionData);
+        }
+        if (this.params.preProcessingAsyncAction) {
+            const initCallbackGenerator = initCallbackRegistry.get(this.params.preProcessingAsyncAction).bind(this);
+            this.asyncInitCallback = await initCallbackGenerator(this.params.preProcessingAsyncActionData);
         }
         return resId;
     }

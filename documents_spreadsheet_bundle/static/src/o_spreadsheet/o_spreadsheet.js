@@ -27832,6 +27832,18 @@
             return this.registry.getKeys();
         }
         /**
+         * Check whether the key is already present in the registry or not.
+         */
+        contains(key) {
+            try {
+                this.get(key);
+                return true;
+            }
+            catch {
+                return false;
+            }
+        }
+        /**
          * Remove an item from the registry
          */
         remove(key) {

@@ -11,8 +11,10 @@ import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import CachedRPC from "../o_spreadsheet/cached_rpc";
 import { legacyRPC, jsonToBase64 } from "../o_spreadsheet/helpers";
 import { LegacyComponent } from "@web/legacy/legacy_component";
+import { OdooViewsModels } from "../o_spreadsheet/odoo_views_models";
+import { MetadataRepository } from "../o_spreadsheet/metadata_repository";
 
-const { onMounted, onWillUnmount, useExternalListener, useState, useSubEnv } = owl;
+const { onMounted, onWillUnmount, useExternalListener, useState, useSubEnv, onWillStart } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Spreadsheet, Model } = spreadsheet;
@@ -58,10 +60,14 @@ export default class SpreadsheetComponent extends LegacyComponent {
             },
         });
 
+        const metadataRepository = new MetadataRepository(this.orm);
+
+        const odooViewsModels = new OdooViewsModels(this.env, this.orm, metadataRepository);
+
         this.model = new Model(
             this.props.data,
             {
-                evalContext: { env: this.env },
+                evalContext: { env: this.env, orm: this.orm },
                 transportService: this.props.transportService,
                 client: {
                     id: uuidGenerator.uuidv4(),
@@ -70,6 +76,8 @@ export default class SpreadsheetComponent extends LegacyComponent {
                 },
                 isReadonly: this.props.isReadonly,
                 snapshotRequested: this.props.snapshotRequested,
+                odooViewsModels,
+
             },
             this.props.stateUpdateMessages
         );
@@ -79,18 +87,14 @@ export default class SpreadsheetComponent extends LegacyComponent {
             spreadsheet.__DEBUG__.model = this.model;
         }
 
-        this.model.on("update", this, () => {
-            if (this.props.spreadsheetSyncStatus) {
-                this.props.spreadsheetSyncStatus({
-                    synced: this.model.getters.isFullySynchronized(),
-                    numberOfConnectedUsers: this.getConnectedUsers(),
-                });
-            }
-        });
         this.model.on("unexpected-revision-id", this, () => {
             if (this.props.onUnexpectedRevisionId) {
                 this.props.onUnexpectedRevisionId();
             }
+        });
+        metadataRepository.addEventListener("labels-fetched", () => {
+            const sheetId = this.model.getters.getActiveSheetId();
+            this.model.dispatch("EVALUATE_CELLS", { sheetId });
         });
         if (this.props.showFormulas) {
             this.model.dispatch("SET_FORMULA_VISIBILITY", { show: true });
@@ -100,6 +104,12 @@ export default class SpreadsheetComponent extends LegacyComponent {
         this.pivot = undefined;
         this.confirmDialog = () => true;
 
+        onWillStart(async () => {
+            if (this.props.asyncInitCallback) {
+                await this.props.asyncInitCallback(this.model);
+            }
+        });
+
         onMounted(() => {
             if (this.props.initCallback) {
                 this.props.initCallback(this.model);
@@ -107,6 +117,14 @@ export default class SpreadsheetComponent extends LegacyComponent {
             if (this.props.download) {
                 this._download();
             }
+            this.model.on("update", this, () => {
+                if (this.props.spreadsheetSyncStatus) {
+                    this.props.spreadsheetSyncStatus({
+                        synced: this.model.getters.isFullySynchronized(),
+                        numberOfConnectedUsers: this.getConnectedUsers(),
+                    });
+                }
+            });
         });
 
         onWillUnmount(() => this._onLeave());
@@ -290,8 +308,14 @@ export default class SpreadsheetComponent extends LegacyComponent {
         const model = new Model(this.model.exportData(), {
             mode: "headless",
             evalContext: { env: this.env },
+            odooViewsModels: this.model.config.odooViewsModels,
         });
         await model.waitForIdle();
+        const proms = [];
+        for (const pivotId of model.getters.getPivotIds()) {
+            proms.push(model.getters.getSpreadsheetPivotModel(pivotId).prepareForTemplateGeneration());
+        }
+        await Promise.all(proms);
         model.dispatch("CONVERT_PIVOT_TO_TEMPLATE");
         const data = model.exportData();
         const name = this.props.name;
@@ -342,6 +366,10 @@ SpreadsheetComponent.props = {
     showFormulas: { type: Boolean, optional: true },
     download: { type: Boolean, optional: true },
     stateUpdateMessages: { type: Array, optional: true },
+    asyncInitCallback: {
+        optional: true,
+        type: Function,
+    },
     initCallback: {
         optional: true,
         type: Function,

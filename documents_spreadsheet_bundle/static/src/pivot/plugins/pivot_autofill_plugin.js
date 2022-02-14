@@ -6,6 +6,7 @@ import { formats } from "../../o_spreadsheet/constants";
 import {
     getFirstPivotFunction,
     getNumberOfPivotFormulas,
+    formatGroupBy,
 } from "../pivot_helpers";
 
 const { astToFormula } = spreadsheet;
@@ -61,7 +62,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                     // UP-DOWN
                     builder = this._autofillPivotColHeader.bind(this);
                 }
-            } else if (this.getters.getPivotRowGroupBys(pivotId).includes(evaluatedArgs[1])) {
+            } else if (this.getters.getPivotDefinition(pivotId).rowGroupBys.includes(evaluatedArgs[1])) {
                 builder = this._autofillPivotRowHeader.bind(this);
             } else {
                 builder = this._autofillPivotColHeader.bind(this);
@@ -104,27 +105,6 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
     // ---------------------------------------------------------------------
 
     /**
-     * Check if the pivot is only grouped by a date field.
-     *
-     * @param {string} pivotId Id of the pivot
-     * @param {Array<string>} groupBys Array of group by
-     *
-     * @private
-     *
-     * @returns {GroupByDate}
-     */
-    _isGroupedByDate(pivotId, groupBys) {
-        if (groupBys.length !== 1) {
-            return { isDate: false };
-        }
-        const [fieldName, group] = groupBys[0].split(":");
-        return {
-            isDate: this.getters.isPivotFieldDate(pivotId, fieldName),
-            group,
-        };
-    }
-
-    /**
      * Get the next value to autofill from a pivot value ("=PIVOT()")
      *
      * Here are the possibilities:
@@ -161,26 +141,23 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      */
     _autofillPivotValue(pivotId, args, isColumn, increment) {
         const currentElement = this._getCurrentValueElement(pivotId, args);
-        const pivotData = this.getters.getPivotStructureData(pivotId);
-        const date = this._isGroupedByDate(
-            pivotId,
-            isColumn
-                ? this.getters.getPivotColGroupBys(pivotId)
-                : this.getters.getPivotRowGroupBys(pivotId)
-        );
+        const pivotModel = this.getters.getSpreadsheetPivotModel(pivotId);
+        const table = pivotModel.getSpreadsheetStructure();
+        const isDate = pivotModel.isGroupedOnlyByOneDate(isColumn ? "COLUMN" : "ROW");
         let cols = [];
         let rows = [];
         let measure;
         if (isColumn) {
             // LEFT-RIGHT
             rows = currentElement.rows;
-            if (date.isDate) {
+            if (isDate) {
                 // Date
+                const group = pivotModel.getGroupOfFirstDate("COLUMN");
                 cols = currentElement.cols;
-                cols[0] = this._incrementDate(cols[0], date.group, increment);
+                cols[0] = this._incrementDate(cols[0], group, increment);
                 measure = cols.pop();
             } else {
-                const currentColIndex = pivotData.getTopGroupIndex(currentElement.cols);
+                const currentColIndex = table.getColMeasureIndex(currentElement.cols);
                 if (currentColIndex === -1) {
                     return "";
                 }
@@ -189,26 +166,28 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                     // Targeting row-header
                     return this._autofillRowFromValue(pivotId, currentElement);
                 }
-                if (nextColIndex < -1 || nextColIndex >= pivotData.getTopHeaderCount()) {
+                if (nextColIndex < -1 || nextColIndex >= table.getColWidth()) {
                     // Outside the pivot
                     return "";
                 }
                 // Targeting value
-                cols = pivotData.getColumnValues(nextColIndex);
-                measure = pivotData.getMeasureName(nextColIndex);
+                const measureCell = table.getCellFromMeasureRowAtIndex(nextColIndex);
+                cols = [...measureCell.values];
+                measure = cols.pop();
             }
         } else {
             // UP-DOWN
             cols = currentElement.cols;
-            if (date.isDate) {
+            if (isDate) {
                 // Date
                 if (currentElement.rows.length === 0) {
                     return "";
                 }
+                const group = pivotModel.getGroupOfFirstDate("ROW");
                 rows = currentElement.rows;
-                rows[0] = this._incrementDate(rows[0], date.group, increment);
+                rows[0] = this._incrementDate(rows[0], group, increment);
             } else {
-                const currentRowIndex = pivotData.getRowIndex(currentElement.rows);
+                const currentRowIndex = table.getRowIndex(currentElement.rows);
                 if (currentRowIndex === -1) {
                     return "";
                 }
@@ -217,12 +196,12 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                     // Targeting col-header
                     return this._autofillColFromValue(pivotId, nextRowIndex, currentElement);
                 }
-                if (nextRowIndex >= pivotData.getRowCount()) {
+                if (nextRowIndex >= table.getRowHeight()) {
                     // Outside the pivot
                     return "";
                 }
                 // Targeting value
-                rows = pivotData.getRowValues(nextRowIndex);
+                rows = [...table.getCellFromRowAtIndex(nextRowIndex).values];
             }
             measure = cols.pop();
         }
@@ -263,51 +242,62 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @returns {string}
      */
     _autofillPivotColHeader(pivotId, args, isColumn, increment) {
-        const pivotData = this.getters.getPivotStructureData(pivotId);
+        const pivotModel = this.getters.getSpreadsheetPivotModel(pivotId);
+        const table = pivotModel.getSpreadsheetStructure();
         const currentElement = this._getCurrentHeaderElement(pivotId, args);
-        const currentIndex = pivotData.getTopGroupIndex(currentElement.cols);
-        const date = this._isGroupedByDate(pivotId, this.getters.getPivotColGroupBys(pivotId));
+        const currentIndex = table.getColMeasureIndex(currentElement.cols);
+        const isDate = pivotModel.isGroupedOnlyByOneDate("COLUMN");
         if (isColumn) {
             // LEFT-RIGHT
             let groupValues;
-            if (date.isDate) {
+            if (isDate) {
                 // Date
+                const group = pivotModel.getGroupOfFirstDate("COLUMN");
                 groupValues = currentElement.cols;
-                groupValues[0] = this._incrementDate(groupValues[0], date.group, increment);
+                groupValues[0] = this._incrementDate(groupValues[0], group, increment);
             } else {
-                const colIndex = pivotData.getSubgroupLevel(currentElement.cols);
+                const colIndex = currentElement.cols.length - 1;
                 const nextIndex = currentIndex + increment;
                 if (
                     currentIndex === -1 ||
                     nextIndex < 0 ||
-                    nextIndex >= pivotData.getTopHeaderCount()
+                    nextIndex >= table.getColHeight()
                 ) {
                     // Outside the pivot
                     return "";
                 }
                 // Targeting a col.header
-                groupValues = pivotData.getColGroupHierarchy(nextIndex, colIndex);
+                groupValues = [];
+                const currentCols = table.getCellFromMeasureRowWithDomain(currentElement.cols);
+                for (let i = 0; i <= colIndex;i++) {
+                    groupValues.push(currentCols.values[i]);
+                }
             }
             return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, [], groupValues));
         } else {
             // UP-DOWN
-            const colIndex = pivotData.getSubgroupLevel(currentElement.cols);
+            const colIndex = currentElement.cols.length - 1;
             const nextIndex = colIndex + increment;
-            const groupLevels = pivotData.getColGroupByLevels();
-            if (nextIndex < 0 || nextIndex >= groupLevels + 1 + pivotData.getRowCount()) {
+            const groupLevels = pivotModel.getNumberOfColGroupBys();
+            if (nextIndex < 0 || nextIndex >= groupLevels + 1 + table.getRowHeight()) {
                 // Outside the pivot
                 return "";
             }
             if (nextIndex >= groupLevels + 1) {
                 // Targeting a value
                 const rowIndex = nextIndex - groupLevels - 1;
-                const measure = pivotData.getMeasureName(currentIndex);
-                const cols = pivotData.getColumnValues(currentIndex);
-                const rows = pivotData.getRowValues(rowIndex);
+                const measureCell = table.getCellFromMeasureRowAtIndex(currentIndex);
+                const cols = [...measureCell.values];
+                const measure = cols.pop();
+                const rows = [...table.getCellFromRowAtIndex(rowIndex).values];
                 return this._buildValueFormula(this._buildArgs(pivotId, measure, rows, cols));
             } else {
                 // Targeting a col.header
-                const cols = pivotData.getColGroupHierarchy(currentIndex, nextIndex);
+                const cols = [];
+                const currentCols = table.getCellFromMeasureRowWithDomain(currentElement.cols);
+                for (let i = 0; i <= nextIndex;i++) {
+                    cols.push(currentCols.values[i]);
+                }
                 return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, [], cols));
             }
         }
@@ -342,34 +332,38 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @returns {string}
      */
     _autofillPivotRowHeader(pivotId, args, isColumn, increment) {
-        const pivotData = this.getters.getPivotStructureData(pivotId);
+        const pivotModel = this.getters.getSpreadsheetPivotModel(pivotId);
+        const table = pivotModel.getSpreadsheetStructure();
         const currentElement = this._getCurrentHeaderElement(pivotId, args);
-        const currentIndex = pivotData.getRowIndex(currentElement.rows);
-        const date = this._isGroupedByDate(pivotId, this.getters.getPivotRowGroupBys(pivotId));
+        const currentIndex = table.getRowIndex(currentElement.rows);
+        const isDate = pivotModel.isGroupedOnlyByOneDate("ROW");
         if (isColumn) {
+            const colIndex = increment - 1;
             // LEFT-RIGHT
-            if (increment < 0 || increment > pivotData.getTopHeaderCount()) {
+            if (colIndex < 0 || colIndex >= table.getColWidth()) {
                 // Outside the pivot
                 return "";
             }
-            const values = pivotData.getColumnValues(increment - 1);
-            const measure = pivotData.getMeasureName(increment - 1);
+            const measureCell = table.getCellFromMeasureRowAtIndex(colIndex);
+            const values = [...measureCell.values];
+            const measure = values.pop();
             return this._buildValueFormula(
                 this._buildArgs(pivotId, measure, currentElement.rows, values)
             );
         } else {
             // UP-DOWN
             let rows;
-            if (date.isDate) {
+            if (isDate) {
                 // Date
+                const group = pivotModel.getGroupOfFirstDate("ROW");
                 rows = currentElement.rows;
-                rows[0] = this._incrementDate(rows[0], date.group, increment);
+                rows[0] = this._incrementDate(rows[0], group, increment);
             } else {
                 const nextIndex = currentIndex + increment;
-                if (currentIndex === -1 || nextIndex < 0 || nextIndex >= pivotData.getRowCount()) {
+                if (currentIndex === -1 || nextIndex < 0 || nextIndex >= table.getRowHeight()) {
                     return "";
                 }
-                rows = pivotData.getRowValues(nextIndex);
+                rows = [...table.getCellFromRowAtIndex(nextIndex).values];
             }
             return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, rows, []));
         }
@@ -386,17 +380,21 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @returns {string}
      */
     _autofillColFromValue(pivotId, nextIndex, currentElement) {
-        const pivotData = this.getters.getPivotStructureData(pivotId);
-        const groupIndex = pivotData.getTopGroupIndex(currentElement.cols);
+        const pivotModel = this.getters.getSpreadsheetPivotModel(pivotId);
+        const table = pivotModel.getSpreadsheetStructure();
+        const groupIndex = table.getColMeasureIndex(currentElement.cols);
         if (groupIndex < 0) {
             return "";
         }
-        const levels = pivotData.getColGroupByLevels();
+        const levels = pivotModel.getNumberOfColGroupBys();
         const index = levels + 1 + nextIndex;
         if (index < 0 || index >= levels + 1) {
             return "";
         }
-        const cols = pivotData.getColGroupHierarchy(groupIndex, index);
+        const cols = [];
+        for (let i = 0; i <= index;i++) {
+            cols.push(currentElement.cols[i]);
+        }
         return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, [], cols));
     }
     /**
@@ -428,12 +426,13 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @returns {CurrentElement}
      */
     _getCurrentHeaderElement(pivotId, args) {
+        const definition = this.getters.getPivotDefinition(pivotId);
         const values = this._parseArgs(args.slice(1));
         const cols = this._getFieldValues(
-            [...this.getters.getPivotColGroupBys(pivotId), "measure"],
+            [...definition.colGroupBys, "measure"],
             values
         );
-        const rows = this._getFieldValues(this.getters.getPivotRowGroupBys(pivotId), values);
+        const rows = this._getFieldValues(definition.rowGroupBys, values);
         return { cols, rows };
     }
     /**
@@ -448,20 +447,19 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @returns {CurrentElement}
      */
     _getCurrentValueElement(pivotId, args) {
+        const definition = this.getters.getPivotDefinition(pivotId);
         const values = this._parseArgs(args.slice(2));
-        const colGroupBys = this.getters.getPivotColGroupBys(pivotId);
-        const cols = this._getFieldValues(colGroupBys, values);
+        const cols = this._getFieldValues(definition.colGroupBys, values);
         cols.push(args[1]); // measure
-        const rowGroupBys = this.getters.getPivotRowGroupBys(pivotId);
-        const rows = this._getFieldValues(rowGroupBys, values);
+        const rows = this._getFieldValues(definition.rowGroupBys, values);
         return { cols, rows };
     }
     /**
      * Return the values for the fields which are present in the list of
      * fields
      *
-     * ex: groupBys: ["create_date"]
-     *     items: { create_date: "01/01", stage_id: 1 }
+     * ex: fields: ["create_date"]
+     *     values: { create_date: "01/01", stage_id: 1 }
      *      => ["01/01"]
      *
      * @param {Array<string>} fields List of fields
@@ -523,25 +521,25 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      */
     _tooltipFormatPivot(pivotId, args, isColumn) {
         const tooltips = [];
+        const definition = this.getters.getPivotDefinition(pivotId);
+        const model = this.getters.getSpreadsheetPivotModel(pivotId);
         const values = this._parseArgs(args.slice(2));
-        const colGroupBys = this.getters.getPivotColGroupBys(pivotId);
-        const rowGroupBys = this.getters.getPivotRowGroupBys(pivotId);
         for (let [field, value] of Object.entries(values)) {
             if (
-                (colGroupBys.includes(field) && isColumn) ||
-                (rowGroupBys.includes(field) && !isColumn)
+                (definition.colGroupBys.includes(field) && isColumn) ||
+                (definition.rowGroupBys.includes(field) && !isColumn)
             ) {
                 tooltips.push({
-                    title: this.getters.getFormattedGroupBy(pivotId, field),
-                    value: this.getters.getFormattedHeader(pivotId, field, value),
+                    title: formatGroupBy(field, model.getFields()),
+                    value: model.getPivotHeaderValue(field, value),
                 });
             }
         }
-        if (this.getters.getPivotMeasures(pivotId).length !== 1 && isColumn) {
+        if (definition.measures.length !== 1 && isColumn) {
             const measure = args[1];
             tooltips.push({
                 title: _t("Measure"),
-                value: this.getters.getFormattedHeader(pivotId, "measure", measure),
+                value: model.getPivotHeaderValue("measure", measure),
             });
         }
         return tooltips;
@@ -559,6 +557,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
     _tooltipFormatPivotHeader(pivotId, args) {
         const tooltips = [];
         const values = this._parseArgs(args.slice(1));
+        const model = this.getters.getSpreadsheetPivotModel(pivotId);
         if (Object.keys(values).length === 0) {
             return [{ title: _t("Total"), value: _t("Total") }];
         }
@@ -567,8 +566,8 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 title:
                     field === "measure"
                         ? _t("Measure")
-                        : this.getters.getFormattedGroupBy(pivotId, field),
-                value: this.getters.getFormattedHeader(pivotId, field, value),
+                        : formatGroupBy(field, model.getFields()),
+                value: model.getPivotHeaderValue(field, value)
             });
         }
         return tooltips;
@@ -591,23 +590,22 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @returns {Array<string>}
      */
     _buildArgs(pivotId, measure, rows, cols) {
+        const { rowGroupBys, measures } = this.getters.getPivotDefinition(pivotId);
         const args = [pivotId];
         if (measure) {
             args.push(measure);
         }
-        const rowGroupBys = this.getters.getPivotRowGroupBys(pivotId);
         for (let index in rows) {
             args.push(rowGroupBys[index]);
             args.push(rows[index]);
         }
-        const measures = this.getters.getPivotMeasures(pivotId);
         if (cols.length === 1 && measures.map((x) => x.field).includes(cols[0])) {
             args.push("measure");
             args.push(cols[0]);
         } else {
-            const pivotData = this.getters.getPivotStructureData(pivotId);
+            const pivotModel = this.getters.getSpreadsheetPivotModel(pivotId);
             for (let index in cols) {
-                args.push(pivotData.getColLevelIdentifier(index));
+                args.push(pivotModel.getGroupByAtIndex("COLUMN", index) || "measure");
                 args.push(cols[index]);
             }
         }

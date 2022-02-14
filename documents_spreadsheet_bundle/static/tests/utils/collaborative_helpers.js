@@ -1,11 +1,19 @@
 /** @odoo-module */
 
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
+import { makeTestEnv } from "@web/../tests/helpers/mock_env";
+import { OdooViewsModels } from "@documents_spreadsheet_bundle/o_spreadsheet/odoo_views_models";
+import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
+import { ormService } from "@web/core/orm_service";
+import { uiService } from "@web/core/ui/ui_service";
+import { registry } from "@web/core/registry";
+import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
 import MockServer from "web.MockServer";
 import makeTestEnvironment from "web.test_env";
-import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
+import { MetadataRepository } from "../../src/o_spreadsheet/metadata_repository";
 
 const { Model } = spreadsheet;
+const serviceRegistry = registry.category("services");
 
 export function joinSession(spreadsheetChannel, client) {
     spreadsheetChannel.broadcast({
@@ -32,7 +40,38 @@ export function leaveSession(spreadsheetChannel, clientId) {
 /**
  * Setup a realtime collaborative test environment, with the given data
  */
-export function setupCollaborativeEnv(data) {
+export async function setupCollaborativeEnv(serverData) {
+    serviceRegistry.add("ui", uiService);
+    serviceRegistry.add("orm", ormService);
+    serviceRegistry.add("localization", makeFakeLocalizationService());
+    const env = await makeTestEnv({ serverData });
+
+    const network = new MockSpreadsheetCollaborativeChannel();
+    const metadataRepository = new MetadataRepository(env.services.orm);
+    const odooViewsModels = new OdooViewsModels(env, env.services.orm, metadataRepository);
+    const model = new Model();
+    const alice = new Model(model.exportData(), {
+        odooViewsModels,
+        evalContext: { env },
+        transportService: network,
+        client: { id: "alice", name: "Alice" },
+    });
+    const bob = new Model(model.exportData(), {
+        odooViewsModels,
+        evalContext: { env },
+        transportService: network,
+        client: { id: "bob", name: "Bob" },
+    });
+    const charlie = new Model(model.exportData(), {
+        odooViewsModels,
+        evalContext: { env },
+        transportService: network,
+        client: { id: "charlie", name: "Charlie" },
+    });
+    return { network, alice, bob, charlie, rpc: env.services.rpc };
+}
+
+export function setupCollaborativeEnvForList(data) {
     const mockServer = new MockServer(data, {});
     const env = makeTestEnvironment({}, mockServer.performRpc.bind(mockServer));
     env.delayedRPC = env.services.rpc;

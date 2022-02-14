@@ -25,6 +25,7 @@ import {
 import { joinSession, leaveSession } from "./utils/collaborative_helpers";
 import { prepareWebClientForSpreadsheet } from "./utils/webclient_helpers";
 import { createSpreadsheetFromPivot } from "./utils/pivot_helpers";
+import PivotPlugin from "../src/pivot/plugins/pivot_plugin";
 
 const { Model } = spreadsheet;
 const { toCartesian, createEmptyWorkbookData } = spreadsheet.helpers;
@@ -459,7 +460,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     module("Spreadsheet");
 
     test("relational PIVOT.HEADER with missing id", async function (assert) {
-        assert.expect(2);
+        assert.expect(1);
 
         const { model } = await createSpreadsheetFromPivot({
             serverData: {
@@ -484,7 +485,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         });
 
         await waitForEvaluation(model);
-        assert.ok(getCell(model, "E10").evaluated.error);
         assert.equal(
             getCell(model, "E10").evaluated.error,
             "Unable to fetch the label of 1111111 of model product"
@@ -543,8 +543,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
         const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
         await reinsertPivot1.action(env);
-        assert.equal(model.getters.getActiveSheet().cols.length, 7);
-        assert.equal(model.getters.getActiveSheet().rows.length, 6);
+        assert.equal(model.getters.getActiveSheet().cols.length, 6);
+        assert.equal(model.getters.getActiveSheet().rows.length, 5);
         assert.equal(
             getCellFormula(model, "B3"),
             `=PIVOT("1","probability","bar","false","foo","1")`,
@@ -732,7 +732,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         // opening from a pivot cell
         const sheetId = model.getters.getActiveSheetId();
         const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
-        await model.getters.waitForPivotDataReady(pivotA3);
+        await model.getters.getAsyncSpreadsheetPivotModel(pivotA3);
         model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
         env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
             pivot: pivotA3,
@@ -759,8 +759,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.equal(measures.children[2].innerText, "Probability");
 
         assert.equal(dimensions.children[0].innerText, "Dimensions");
-        assert.equal(dimensions.children[1].innerText, "Bar");
-        assert.equal(dimensions.children[2].innerText, "Foo");
+        assert.equal(dimensions.children[1].innerText, "bar");
+        assert.equal(dimensions.children[2].innerText, "foo");
 
         // opening from a non pivot cell
         const pivotA1 = model.getters.getPivotIdFromPosition(sheetId, 0, 0);
@@ -1013,121 +1013,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         );
     });
 
-    test("Can rebuild the Odoo domain of records based on the according pivot cell", async function (assert) {
-        assert.expect(1);
-        const { env, model } = await createSpreadsheetFromPivot({
-            serverData: {
-                models: getBasicData(),
-                views: {
-                    "partner,false,pivot": `
-                            <pivot string="Partners">
-                                <field name="product_id" type="col"/>
-                                <field name="bar" type="row"/>
-                                <field name="probability" type="measure"/>
-                            </pivot>`,
-                    "partner,false,list": `<List/>`,
-                    "partner,false,search": `<search/>`,
-                },
-            },
-        });
-        selectCell(model, "C3");
-        await nextTick();
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
-        await root.action(env);
-        const currentAction = env.services.action.currentController.action;
-        assert.equal(
-            JSON.stringify(currentAction.domain),
-            `["&",["product_id","=",41],["bar","=",false]]`
-        );
-    });
-
-    test("Can rebuild the Odoo domain of records based on a cell containing the total of pivots cells (in a column)", async function (assert) {
-        assert.expect(1);
-        const { env, model } = await createSpreadsheetFromPivot({
-            serverData: {
-                models: getBasicData(),
-                views: {
-                    "partner,false,pivot": `
-                            <pivot string="Partners">
-                                <field name="product_id" type="col"/>
-                                <field name="bar" type="row"/>
-                                <field name="probability" type="measure"/>
-                            </pivot>`,
-                    "partner,false,list": `<List/>`,
-                    "partner,false,search": `<search/>`,
-                },
-            },
-        });
-        selectCell(model, "B4");
-        await nextTick();
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
-        await root.action(env);
-        const currentAction = env.services.action.currentController.action;
-        assert.equal(
-            JSON.stringify(currentAction.domain),
-            `["&",["product_id","=",37],["bar","=",true]]`
-        );
-    });
-
-    test("Can rebuild the Odoo domain of records based on a cell containing the total of pivots cells (in a row)", async function (assert) {
-        assert.expect(4);
-        const { env, model } = await createSpreadsheetFromPivot({
-            serverData: {
-                models: getBasicData(),
-                views: {
-                    "partner,false,pivot": `
-                            <pivot string="Partners">
-                                <field name="product_id" type="col"/>
-                                <field name="bar" type="row"/>
-                                <field name="probability" type="measure"/>
-                            </pivot>`,
-                    "partner,false,list": `<List/>`,
-                    "partner,false,search": `<search/>`,
-                },
-            },
-        });
-        selectCell(model, "D4");
-        await nextTick();
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
-        await root.action(env);
-        const currentAction = env.services.action.currentController.action;
-        assert.equal(
-            JSON.stringify(currentAction.domain),
-            `["|","&",["product_id","=",37],["bar","=",true],"&",["product_id","=",41],["bar","=",true]]`
-        );
-        assert.strictEqual(currentAction.res_model, "partner");
-        assert.strictEqual(currentAction.view_mode, "list");
-        assert.strictEqual(currentAction.type, "ir.actions.act_window");
-    });
-
-    test("Can rebuild the Odoo domain of records based on a total of all pivot cells", async function (assert) {
-        assert.expect(1);
-        const { env, model } = await createSpreadsheetFromPivot({
-            serverData: {
-                models: getBasicData(),
-                views: {
-                    "partner,false,pivot": `
-                            <pivot string="Partners">
-                                <field name="product_id" type="col"/>
-                                <field name="bar" type="row"/>
-                                <field name="probability" type="measure"/>
-                            </pivot>`,
-                    "partner,false,list": `<List/>`,
-                    "partner,false,search": `<search/>`,
-                },
-            },
-        });
-        selectCell(model, "D5");
-        await nextTick();
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
-        await root.action(env);
-        const currentAction = env.services.action.currentController.action;
-        assert.equal(
-            JSON.stringify(currentAction.domain),
-            '["|","&",["product_id","=",41],["bar","=",false],"|","&",["product_id","=",37],["bar","=",true],"&",["product_id","=",41],["bar","=",true]]'
-        );
-    });
-
     module("Global filters panel");
 
     test("Simple display", async function (assert) {
@@ -1272,13 +1157,12 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     test("Display with an existing 'Relation' global filter", async function (assert) {
         assert.expect(8);
 
-        const { model } = await createSpreadsheetFromPivot();
-        const label = "MyFoo";
-        const pivot = model.getters.getPivotForRPC("1");
-        model.dispatch("ADD_PIVOT", {
-            anchor: [15, 15],
-            pivot: { ...pivot, id: 2 },
+        const { webClient, spreadsheetAction } = await createSpreadsheetFromPivot();
+        const { model } = await createSpreadsheetFromPivot({
+            webClient,
+            documentId: spreadsheetAction.resId,
         });
+        const label = "MyFoo";
         const filter = {
             id: "42",
             type: "relation",
@@ -1413,134 +1297,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.equal(model.getters.getGlobalFilterValue(filter.id), defaultValue);
     });
 
-    test("Name is only fetched once", async function (assert) {
-        assert.expect(6);
-        const data = getBasicData();
-        data.partner.records.push(
-            {
-                active: true,
-                id: 5,
-                foo: 12,
-                bar: 110,
-                product_id: 41,
-                probability: 15,
-            },
-            {
-                active: true,
-                id: 6,
-                foo: 1,
-                bar: 110,
-                product_id: 37,
-                probability: 16,
-            }
-        );
-        const { model } = await createSpreadsheetFromPivot({
-            serverData: {
-                models: data,
-                views: {
-                    "partner,false,pivot": `
-                            <pivot>
-                                <field name="bar" type="col"/>
-                                <field name="foo" type="row"/>
-                                <field name="product_id" type="row"/>
-                                <field name="probability" type="measure"/>
-                            </pivot>`,
-                    "partner,false,search": `<search/>`,
-                },
-            },
-            mockRPC: function (route, args) {
-                if (args.method === "name_get" && args.model === "product") {
-                    assert.step(`name_get_product_${args.args[0].join("-")}`);
-                }
-            },
-        });
-        await addGlobalFilter(model, {
-            filter: {
-                id: "42",
-                type: "relation",
-                label: "Filter",
-                pivotFields: {
-                    1: {
-                        field: "product_id",
-                        type: "many2one",
-                    },
-                },
-            },
-        });
-        await nextTick();
-        // It contains product twice
-        assert.equal(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","foo","1","product_id","37")`);
-        assert.equal(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","foo","1","product_id","41")`);
-        assert.equal(getCellFormula(model, "A7"), `=PIVOT.HEADER("1","foo","2","product_id","41")`);
-        assert.equal(
-            getCellFormula(model, "A9"),
-            `=PIVOT.HEADER("1","foo","12","product_id","37")`
-        );
-        await setGlobalFilterValue(model, {
-            id: "42",
-            value: [17],
-        });
-        await waitForEvaluation(model);
-        await nextTick();
-
-        // But it only fetches names once
-        assert.verifySteps(["name_get_product_37-41"]);
-    });
-
-    test("Name is not fetched if related record is not assigned", async function (assert) {
-        assert.expect(4);
-        const data = getBasicData();
-        data.partner.records[0].product_id = false;
-        const { model } = await createSpreadsheetFromPivot({
-            serverData: {
-                models: data,
-                views: {
-                    "partner,false,pivot": `
-                            <pivot>
-                                <field name="bar" type="col"/>
-                                <field name="foo" type="row"/>
-                                <field name="product_id" type="row"/>
-                                <field name="probability" type="measure"/>
-                            </pivot>`,
-                    "partner,false,search": `<search/>`,
-                },
-            },
-            mockRPC: function (route, args) {
-                if (args.method === "name_get" && args.model === "product") {
-                    assert.step(`name_get_product_${args.args[0]}`);
-                }
-            },
-        });
-        await addGlobalFilter(model, {
-            filter: {
-                id: "42",
-                type: "relation",
-                label: "Filter",
-                pivotFields: {
-                    1: {
-                        field: "product_id",
-                        type: "many2one",
-                    },
-                },
-            },
-        });
-        await nextTick();
-        // It contains undefined headers
-        assert.equal(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","foo","1","product_id","41")`);
-        assert.equal(
-            getCellFormula(model, "A8"),
-            `=PIVOT.HEADER("1","foo","12","product_id","false")`
-        );
-        await setGlobalFilterValue(model, {
-            id: "42",
-            value: [17],
-        });
-        await nextTick();
-
-        // It only fetch names for defined records
-        assert.verifySteps(["name_get_product_41"]);
-    });
-
     test("Open pivot dialog and insert a value, with UNDO/REDO", async function (assert) {
         assert.expect(4);
 
@@ -1621,7 +1377,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     });
 
     test("Styling on row headers", async function (assert) {
-        assert.expect(12);
+        assert.expect(10);
 
         const { model } = await createSpreadsheetFromPivot({
             serverData: {
@@ -1646,8 +1402,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             fillColor: "#f2f2f2",
         };
         const styleSubSubHeader = undefined;
-        assert.deepEqual(getCell(model, "A1").style, styleSubHeader);
-        assert.deepEqual(getCell(model, "A2").style, styleSubHeader);
         assert.deepEqual(getCell(model, "A3").style, styleMainheader);
         assert.deepEqual(getCell(model, "A4").style, styleSubHeader);
         assert.deepEqual(getCell(model, "A5").style, styleSubSubHeader);
@@ -1855,11 +1609,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.expect(1);
 
         const { model, env } = await createSpreadsheetFromPivot();
-        const pivot = model.getters.getPivotForRPC("1");
-        pivot.measures.push({
-            field: "non-existing",
-            operator: "sum",
-        });
+        const pivotPlugin = model["handlers"].find((handler) => handler instanceof PivotPlugin);
+        pivotPlugin.pivots["1"].definition.metaData.activeMeasures.push("non-existing");
         model.dispatch("SELECT_PIVOT", { pivotId: "1" });
         env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
             pivot: model.getters.getSelectedPivotId(),

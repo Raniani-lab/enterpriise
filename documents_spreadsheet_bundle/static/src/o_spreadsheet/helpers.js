@@ -3,7 +3,8 @@
 import { _t } from "@web/core/l10n/translation";
 import { UNTITLED_SPREADSHEET_NAME } from "./constants";
 import  spreadsheet  from "./o_spreadsheet_extended";
-import  CachedRPC  from "./cached_rpc";
+import { OdooViewsModels } from "./odoo_views_models";
+import { MetadataRepository } from "./metadata_repository";
 
 const { createEmptyWorkbookData } = spreadsheet.helpers;
 
@@ -164,13 +165,14 @@ export function base64ToJson(string) {
  * @param {number} templateId
  * @returns {Promise<Object>} spreadsheetData
  */
-export async function getDataFromTemplate(orm, templateId) {
+export async function getDataFromTemplate(env, orm, templateId) {
   let [{ data }] = await orm.read(
     "spreadsheet.template",
     [templateId],
     ["data"]
   );
   data = base64ToJson(data);
+  const metadataRepository = new MetadataRepository(orm);
 
   const rpc = legacyRPC(orm);
   const cacheRPC = new CachedRPC(rpc);
@@ -183,8 +185,14 @@ export async function getDataFromTemplate(orm, templateId) {
         services: { rpc },
       },
     },
+    odooViewsModels: new OdooViewsModels(env, orm, metadataRepository),
   });
   await model.waitForIdle();
+  const proms = [];
+  for (const pivotId of model.getters.getPivotIds()) {
+    proms.push(model.getters.getSpreadsheetPivotModel(pivotId).prepareForTemplateGeneration());
+  }
+  await Promise.all(proms);
   model.dispatch("CONVERT_PIVOT_FROM_TEMPLATE");
   return model.exportData();
 }

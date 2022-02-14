@@ -19,7 +19,7 @@ import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup, getFixture } from "@web/../tests/helpers/utils";
 import { actionService } from "@web/webclient/actions/action_service";
 import { getCellContent, getCellFormula, getCellValue } from "../utils/getters_helpers";
-import { setCellContent } from "../utils/commands_helpers";
+import { setCellContent, setSelection } from "../utils/commands_helpers";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
 import { getBasicServerData } from "../utils/spreadsheet_test_data";
@@ -50,6 +50,10 @@ async function convertFormula(config) {
     model.dispatch(config.convert);
     // Remove the equal sign
     return getCellContent(model, "A1").slice(1);
+}
+
+function selectB2(model) {
+    setSelection(model, "B2");
 }
 
 module(
@@ -952,14 +956,6 @@ module(
                 `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`
             );
 
-            function selectB2(model) {
-                model.dispatch("SET_SELECTION", {
-                    anchor: [1, 1],
-                    zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
-                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
-                });
-            }
-
             // DOWN
             selectB2(model);
             model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
@@ -1020,11 +1016,7 @@ module(
             );
 
             // DOWN
-            model.dispatch("SET_SELECTION", {
-                anchor: [1, 1],
-                zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
-                anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
-            });
+            setSelection(model, "B2");
             model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
             model.dispatch("AUTOFILL");
             assert.equal(
@@ -1058,11 +1050,7 @@ module(
                 )`.replace(/\n/g, "")
             );
 
-            model.dispatch("SET_SELECTION", {
-                anchor: [1, 1],
-                zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
-                anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
-            });
+            setSelection(model, "B2");
             model.dispatch("AUTOFILL_SELECT", { col: 1, row: 2 });
             model.dispatch("AUTOFILL");
             // Well this does not work, it only updates the last PIVOT figure. But at least it does not crash.
@@ -1092,13 +1080,6 @@ module(
                 },
             });
             setCellContent(model, "B2", `=PIVOT.POSITION("1","foo", 3333)`);
-            function selectB2(model) {
-                model.dispatch("SET_SELECTION", {
-                    anchor: [1, 1],
-                    zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
-                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
-                });
-            }
 
             // DOWN
             selectB2(model);
@@ -1132,13 +1113,6 @@ module(
                 "B2",
                 `=PIVOT("1","probability","product_id",PIVOT.POSITION("10000","product_id", 9999))`
             );
-            function selectB2(model) {
-                model.dispatch("SET_SELECTION", {
-                    anchor: [1, 1],
-                    zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
-                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
-                });
-            }
 
             // DOWN
             selectB2(model);
@@ -1173,13 +1147,6 @@ module(
                 "B2",
                 `=PIVOT("1","probability","foo",PIVOT.POSITION("1","foo", 3333),"product_id",PIVOT.POSITION("1","product_id", 9999),"bar",PIVOT.POSITION("1","bar", 4444))`
             );
-            function selectB2(model) {
-                model.dispatch("SET_SELECTION", {
-                    anchor: [1, 1],
-                    zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
-                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
-                });
-            }
 
             // DOWN
             selectB2(model);
@@ -1215,13 +1182,6 @@ module(
                 "B2",
                 `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id", 9999), "foo","10","bar","15")`
             );
-            function selectB2(model) {
-                model.dispatch("SET_SELECTION", {
-                    anchor: [1, 1],
-                    zones: [{ top: 1, bottom: 1, right: 1, left: 1 }],
-                    anchorZone: { top: 1, bottom: 1, right: 1, left: 1 },
-                });
-            }
 
             // DOWN
             selectB2(model);

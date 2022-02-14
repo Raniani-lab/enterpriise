@@ -9,7 +9,8 @@ const { toCartesian, toZone } = spreadsheet.helpers;
  * Select a cell
  */
 export function selectCell(model, xc) {
-    return setSelection(model, xc);
+    const [col, row] = toCartesian(xc);
+    return model.selection.selectCell(col, row);
 }
 
 /**
@@ -54,12 +55,7 @@ export async function setGlobalFilterValue(model, payload) {
  */
 export function setSelection(model, xc) {
     const zone = toZone(xc);
-    const anchor = [zone.left, zone.top];
-    model.dispatch("SET_SELECTION", {
-        anchorZone: zone,
-        anchor,
-        zones: [zone],
-    });
+    model.selection.selectZone({ cell: { col: zone.left, row: zone.top }, zone });
 }
 
 /**

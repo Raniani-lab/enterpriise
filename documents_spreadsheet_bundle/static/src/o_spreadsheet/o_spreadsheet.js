@@ -1210,19 +1210,10 @@
         "START",
         "ACTIVATE_SHEET",
         "COPY",
-        "START_SELECTION",
-        "SET_SELECTION",
-        "ALTER_SELECTION",
-        "START_SELECTION_EXPANSION",
-        "PREPARE_SELECTION_EXPANSION",
-        "STOP_SELECTION",
+        "PREPARE_SELECTION_INPUT_EXPANSION",
+        "STOP_SELECTION_INPUT",
         "RESIZE_VIEWPORT",
         "SET_VIEWPORT_OFFSET",
-        "SELECT_ALL",
-        "SELECT_CELL",
-        "SELECT_COLUMN",
-        "SELECT_ROW",
-        "SELECT_FIGURE",
         "MOVE_POSITION",
         "SELECT_SEARCH_NEXT_MATCH",
         "SELECT_SEARCH_PREVIOUS_MATCH",
@@ -3083,7 +3074,7 @@
     }
     function findVisibleHeader(sheet, dimension, indexes) {
         const headers = sheet[dimension];
-        return indexes.find((index) => !headers[index].isHidden);
+        return indexes.find((index) => headers[index] && !headers[index].isHidden);
     }
     function findLastVisibleColRow(sheet, dimension) {
         let lastIndex = sheet[dimension].length - 1;
@@ -3519,6 +3510,9 @@
             left: Math.min(zone.left, zone.right),
             right: Math.max(zone.left, zone.right),
         };
+    }
+    function positionToZone(position) {
+        return { left: position.col, right: position.col, top: position.row, bottom: position.row };
     }
 
     // Note: dataY and dataX may not have the same dimension
@@ -11750,11 +11744,8 @@
             }
         }
         if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
-            env.model.dispatch("SET_SELECTION", {
-                anchor: anchor,
-                zones: [zone],
-                anchorZone: zone,
-            });
+            const [col, row] = anchor;
+            env.model.selection.selectZone({ cell: { col, row }, zone });
             env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
         }
     }
@@ -14199,7 +14190,6 @@
         }
         focus(rangeId) {
             this.state.isMissing = false;
-            this.env.model.dispatch("STOP_EDITION", { cancel: true });
             this.env.model.dispatch("FOCUS_RANGE", {
                 id: this.id,
                 rangeId,
@@ -15921,10 +15911,11 @@
      * They can draw on the grid canvas.
      */
     class UIPlugin extends BasePlugin {
-        constructor(getters, state, dispatch, config) {
+        constructor(getters, state, dispatch, config, selection) {
             super(state, dispatch, config);
             this.getters = getters;
             this.ui = config;
+            this.selection = selection;
         }
         // ---------------------------------------------------------------------------
         // Grid rendering
@@ -16126,11 +16117,7 @@
                 this.lastCellSelected = {};
                 this.direction = undefined;
                 this.tooltip = undefined;
-                this.dispatch("SET_SELECTION", {
-                    zones: [zone],
-                    anchor: [zone.left, zone.top],
-                    anchorZone: zone,
-                });
+                this.selection.selectZone({ cell: { col: zone.left, row: zone.top }, zone });
             }
         }
         /**
@@ -16883,11 +16870,7 @@
                 right: activeCol + width - 1,
                 bottom: activeRow + height - 1,
             };
-            this.dispatch("SET_SELECTION", {
-                anchor: [activeCol, activeRow],
-                zones: [zone],
-                anchorZone: zone,
-            });
+            this.selection.selectZone({ cell: { col: activeCol, row: activeRow }, zone });
         }
         isPasteAllowed(state, target, force) {
             const sheetId = this.getters.getActiveSheetId();
@@ -16953,20 +16936,13 @@
             const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
             const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
             if (height > 1 || width > 1) {
-                const newSelection = {
+                const newZone = {
                     left: col,
                     top: row,
                     right: col + repX * width - 1,
                     bottom: row + repY * height - 1,
                 };
-                const [anchorCol, anchorRow] = this.getters.getSelection().anchor;
-                const newCol = clip(anchorCol, col, col + repX * width - 1);
-                const newRow = clip(anchorRow, row, row + repY * height - 1);
-                this.dispatch("SET_SELECTION", {
-                    anchor: [newCol, newRow],
-                    zones: [newSelection],
-                    anchorZone: newSelection,
-                });
+                this.selection.selectZone({ cell: { col, row }, zone: newZone });
             }
         }
         /**
@@ -17141,870 +17117,6 @@
     ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat"];
     ClipboardPlugin.modes = ["normal"];
 
-    const selectionStatisticFunctions = [
-        {
-            name: _lt("Sum"),
-            types: [CellValueType.number],
-            compute: (values) => SUM.compute([values]),
-        },
-        {
-            name: _lt("Avg"),
-            types: [CellValueType.number],
-            compute: (values) => AVERAGE.compute([values]),
-        },
-        {
-            name: _lt("Min"),
-            types: [CellValueType.number],
-            compute: (values) => MIN.compute([values]),
-        },
-        {
-            name: _lt("Max"),
-            types: [CellValueType.number],
-            compute: (values) => MAX.compute([values]),
-        },
-        {
-            name: _lt("Count"),
-            types: [CellValueType.number, CellValueType.text, CellValueType.boolean, CellValueType.error],
-            compute: (values) => COUNTA.compute([values]),
-        },
-        {
-            name: _lt("Count Numbers"),
-            types: [CellValueType.number, CellValueType.text, CellValueType.boolean, CellValueType.error],
-            compute: (values) => COUNT.compute([values]),
-        },
-    ];
-    var SelectionMode;
-    (function (SelectionMode) {
-        SelectionMode[SelectionMode["idle"] = 0] = "idle";
-        SelectionMode[SelectionMode["selecting"] = 1] = "selecting";
-        SelectionMode[SelectionMode["readyToExpand"] = 2] = "readyToExpand";
-        SelectionMode[SelectionMode["expanding"] = 3] = "expanding";
-    })(SelectionMode || (SelectionMode = {}));
-    /**
-     * SelectionPlugin
-     */
-    class SelectionPlugin extends UIPlugin {
-        constructor(getters, state, dispatch, config) {
-            super(getters, state, dispatch, config);
-            this.selection = {
-                zones: [{ top: 0, left: 0, bottom: 0, right: 0 }],
-                anchor: [0, 0],
-                anchorZone: { top: 0, left: 0, bottom: 0, right: 0 },
-            };
-            this.selectedFigureId = null;
-            this.activeCol = 0;
-            this.activeRow = 0;
-            this.mode = SelectionMode.idle;
-            this.sheetsData = {};
-            // This flag is used to avoid to historize the ACTIVE_SHEET command when it's
-            // the main command.
-            this.activeSheet = null;
-            this.moveClient = config.moveClient;
-        }
-        // ---------------------------------------------------------------------------
-        // Command Handling
-        // ---------------------------------------------------------------------------
-        allowDispatch(cmd) {
-            switch (cmd.type) {
-                case "SET_SELECTION": {
-                    if (cmd.zones.findIndex((z) => isEqual(z, cmd.anchorZone)) === -1) {
-                        return 14 /* InvalidAnchorZone */;
-                    }
-                    break;
-                }
-                case "ALTER_SELECTION":
-                    if (cmd.delta) {
-                        const { left, right, top, bottom } = this.getSelectedZone();
-                        const sheet = this.getters.getActiveSheet();
-                        const refCol = findVisibleHeader(sheet, "cols", range(left, right + 1));
-                        const refRow = findVisibleHeader(sheet, "rows", range(top, bottom + 1));
-                        if ((cmd.delta[0] !== 0 && refRow === undefined) ||
-                            (cmd.delta[1] !== 0 && refCol === undefined)) {
-                            return 15 /* SelectionOutOfBound */;
-                        }
-                    }
-                    break;
-                case "MOVE_POSITION": {
-                    const { cols, rows } = this.getters.getActiveSheet();
-                    if ((cmd.deltaX !== 0 && rows[this.activeRow].isHidden) ||
-                        (cmd.deltaY !== 0 && cols[this.activeCol].isHidden)) {
-                        return 15 /* SelectionOutOfBound */;
-                    }
-                    const { col: targetCol, row: targetRow } = this.getNextAvailablePosition(cmd.deltaX, cmd.deltaY);
-                    const outOfBound = targetRow < 0 ||
-                        targetRow > rows.length - 1 ||
-                        targetCol < 0 ||
-                        targetCol > cols.length - 1;
-                    if (outOfBound) {
-                        return 15 /* SelectionOutOfBound */;
-                    }
-                    break;
-                }
-                case "SELECT_COLUMN": {
-                    const { index } = cmd;
-                    if (index < 0 || index >= this.getters.getActiveSheet().cols.length) {
-                        return 15 /* SelectionOutOfBound */;
-                    }
-                    break;
-                }
-                case "SELECT_ROW": {
-                    const { index } = cmd;
-                    if (index < 0 || index >= this.getters.getActiveSheet().rows.length) {
-                        return 15 /* SelectionOutOfBound */;
-                    }
-                    break;
-                }
-                case "ACTIVATE_SHEET":
-                    try {
-                        this.getters.getSheet(cmd.sheetIdTo);
-                        break;
-                    }
-                    catch (error) {
-                        return 21 /* InvalidSheetId */;
-                    }
-                case "MOVE_COLUMNS_ROWS":
-                    return this.isMoveElementAllowed(cmd);
-            }
-            return 0 /* Success */;
-        }
-        handle(cmd) {
-            switch (cmd.type) {
-                // some commands should not remove the current selection
-                case "CREATE_SHEET":
-                case "DELETE_SHEET":
-                case "CREATE_FIGURE":
-                case "CREATE_CHART":
-                case "UPDATE_FIGURE":
-                case "EVALUATE_CELLS":
-                case "DISABLE_SELECTION_INPUT":
-                case "ENABLE_NEW_SELECTION_INPUT":
-                case "RESIZE_VIEWPORT":
-                    break;
-                case "DELETE_FIGURE":
-                    if (this.selectedFigureId === cmd.id) {
-                        this.selectedFigureId = null;
-                    }
-                    break;
-                default:
-                    this.selectedFigureId = null;
-            }
-            switch (cmd.type) {
-                case "START":
-                    const firstSheet = this.getters.getSheets()[0];
-                    const firstVisiblePosition = getNextVisibleCellCoords(firstSheet, 0, 0);
-                    this.activeCol = firstVisiblePosition[0];
-                    this.activeRow = firstVisiblePosition[1];
-                    this.dispatch("ACTIVATE_SHEET", {
-                        sheetIdTo: this.getters.getSheets()[0].id,
-                        sheetIdFrom: this.getters.getSheets()[0].id,
-                    });
-                    this.selectCell(...firstVisiblePosition);
-                    break;
-                case "ACTIVATE_SHEET":
-                    //TODO Change the way selectCell work, perhaps take the sheet as argument ?
-                    this.setActiveSheet(cmd.sheetIdTo);
-                    this.sheetsData[cmd.sheetIdFrom] = {
-                        selection: JSON.parse(JSON.stringify(this.selection)),
-                        activeCol: this.activeCol,
-                        activeRow: this.activeRow,
-                    };
-                    if (cmd.sheetIdTo in this.sheetsData) {
-                        Object.assign(this, this.sheetsData[cmd.sheetIdTo]);
-                    }
-                    else {
-                        this.selectCell(...getNextVisibleCellCoords(this.getters.getSheets()[0], 0, 0));
-                    }
-                    break;
-                case "SET_SELECTION":
-                    this.setSelection(cmd.anchor, cmd.zones, cmd.anchorZone, cmd.strict);
-                    break;
-                case "START_SELECTION":
-                    this.mode = SelectionMode.selecting;
-                    break;
-                case "PREPARE_SELECTION_EXPANSION":
-                    this.mode = SelectionMode.readyToExpand;
-                    break;
-                case "START_SELECTION_EXPANSION":
-                    this.mode = SelectionMode.expanding;
-                    break;
-                case "STOP_SELECTION":
-                    this.mode = SelectionMode.idle;
-                    break;
-                case "MOVE_POSITION":
-                    this.movePosition(cmd.deltaX, cmd.deltaY);
-                    break;
-                case "SELECT_CELL":
-                    this.selectCell(cmd.col, cmd.row);
-                    break;
-                case "SELECT_COLUMN":
-                    this.selectColumn(cmd.index, cmd.createRange || false, cmd.updateRange || false);
-                    break;
-                case "SELECT_ROW":
-                    this.selectRow(cmd.index, cmd.createRange || false, cmd.updateRange || false);
-                    break;
-                case "SELECT_ALL":
-                    this.selectAll();
-                    break;
-                case "ALTER_SELECTION":
-                    if (cmd.delta) {
-                        this.moveSelection(cmd.delta[0], cmd.delta[1]);
-                    }
-                    if (cmd.cell) {
-                        this.addCellToSelection(...cmd.cell);
-                    }
-                    break;
-                case "UNDO":
-                case "REDO":
-                case "DELETE_SHEET":
-                    if (!this.getters.tryGetSheet(this.getActiveSheetId())) {
-                        const currentSheets = this.getters.getVisibleSheets();
-                        this.activeSheet = this.getters.getSheet(currentSheets[0]);
-                        this.selectCell(0, 0);
-                    }
-                    this.ensureSelectionValidity();
-                    break;
-                case "REMOVE_COLUMNS_ROWS":
-                    if (cmd.sheetId === this.getActiveSheetId()) {
-                        if (cmd.dimension === "COL") {
-                            this.onColumnsRemoved(cmd);
-                        }
-                        else {
-                            this.onRowsRemoved(cmd);
-                        }
-                    }
-                    break;
-                case "ADD_COLUMNS_ROWS":
-                    if (cmd.sheetId === this.getActiveSheetId()) {
-                        this.onAddElements(cmd);
-                    }
-                    break;
-                case "MOVE_COLUMNS_ROWS":
-                    if (cmd.sheetId === this.getActiveSheetId()) {
-                        this.onMoveElements(cmd);
-                    }
-                    break;
-                case "UPDATE_CHART":
-                case "SELECT_FIGURE":
-                    this.selectedFigureId = cmd.id;
-                    break;
-                case "ACTIVATE_NEXT_SHEET":
-                    this.activateNextSheet("right");
-                    break;
-                case "ACTIVATE_PREVIOUS_SHEET":
-                    this.activateNextSheet("left");
-                    break;
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Getters
-        // ---------------------------------------------------------------------------
-        getActiveSheet() {
-            return this.activeSheet;
-        }
-        getActiveSheetId() {
-            return this.activeSheet.id;
-        }
-        getActiveCell() {
-            const sheetId = this.getters.getActiveSheetId();
-            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, this.activeCol, this.activeRow);
-            return this.getters.getCell(sheetId, mainCol, mainRow);
-        }
-        getActiveCols() {
-            const activeCols = new Set();
-            for (let zone of this.selection.zones) {
-                if (zone.top === 0 && zone.bottom === this.getters.getActiveSheet().rows.length - 1) {
-                    for (let i = zone.left; i <= zone.right; i++) {
-                        activeCols.add(i);
-                    }
-                }
-            }
-            return activeCols;
-        }
-        getActiveRows() {
-            const activeRows = new Set();
-            for (let zone of this.selection.zones) {
-                if (zone.left === 0 && zone.right === this.getters.getActiveSheet().cols.length - 1) {
-                    for (let i = zone.top; i <= zone.bottom; i++) {
-                        activeRows.add(i);
-                    }
-                }
-            }
-            return activeRows;
-        }
-        getCurrentStyle() {
-            const cell = this.getters.getActiveCell();
-            return cell ? this.getters.getCellStyle(cell) : {};
-        }
-        getSelectedZones() {
-            return this.selection.zones;
-        }
-        getSelectedZone() {
-            return this.selection.anchorZone;
-        }
-        getSelection() {
-            return this.selection;
-        }
-        getSelectedFigureId() {
-            return this.selectedFigureId;
-        }
-        getPosition() {
-            return [this.activeCol, this.activeRow];
-        }
-        getSheetPosition(sheetId) {
-            if (sheetId === this.getters.getActiveSheetId()) {
-                return this.getPosition();
-            }
-            else {
-                const sheetData = this.sheetsData[sheetId];
-                return sheetData
-                    ? [sheetData.activeCol, sheetData.activeRow]
-                    : getNextVisibleCellCoords(this.getters.getSheet(sheetId), 0, 0);
-            }
-        }
-        getStatisticFnResults() {
-            // get deduplicated cells in zones
-            const cells = new Set(this.selection.zones
-                .map((zone) => this.getters.getCellsInZone(this.getters.getActiveSheetId(), zone))
-                .flat()
-                .filter((cell) => cell !== undefined));
-            let cellsTypes = new Set();
-            let cellsValues = [];
-            for (let cell of cells) {
-                cellsTypes.add(cell.evaluated.type);
-                cellsValues.push(cell.evaluated.value);
-            }
-            let statisticFnResults = {};
-            for (let fn of selectionStatisticFunctions) {
-                // We don't want to display statistical information when there is no interest:
-                // We set the statistical result to undefined if the data handled by the selection
-                // does not match the data handled by the function.
-                // Ex: if there are only texts in the selection, we prefer that the SUM result
-                // be displayed as undefined rather than 0.
-                let fnResult = undefined;
-                if (fn.types.some((t) => cellsTypes.has(t))) {
-                    fnResult = fn.compute(cellsValues);
-                }
-                statisticFnResults[fn.name] = fnResult;
-            }
-            return statisticFnResults;
-        }
-        getSelectionMode() {
-            return this.mode;
-        }
-        isSelected(zone) {
-            return !!this.getters.getSelectedZones().find((z) => isEqual(z, zone));
-        }
-        getVisibleFigures() {
-            const sheetId = this.getters.getActiveSheetId();
-            const result = [];
-            const figures = this.getters.getFigures(sheetId);
-            const { offsetX, offsetY } = this.getters.getActiveSnappedViewport();
-            const { width, height } = this.getters.getViewportDimensionWithHeaders();
-            for (let figure of figures) {
-                if (figure.x >= offsetX + width || figure.x + figure.width <= offsetX) {
-                    continue;
-                }
-                if (figure.y >= offsetY + height || figure.y + figure.height <= offsetY) {
-                    continue;
-                }
-                result.push(figure);
-            }
-            return result;
-        }
-        /**
-         * Returns a sorted array of indexes of all columns (respectively rows depending
-         * on the dimension parameter) intersected by the currently selected zones.
-         *
-         * example:
-         * assume selectedZones: [{left:0, right: 2, top :2, bottom: 4}, {left:5, right: 6, top :3, bottom: 5}]
-         *
-         * if dimension === "COL" => [0,1,2,5,6]
-         * if dimension === "ROW" => [2,3,4,5]
-         */
-        getElementsFromSelection(dimension) {
-            if (dimension === "COL" && this.getters.getActiveCols().size === 0) {
-                return [];
-            }
-            if (dimension === "ROW" && this.getters.getActiveRows().size === 0) {
-                return [];
-            }
-            const zones = this.getters.getSelectedZones();
-            let elements = [];
-            const start = dimension === "COL" ? "left" : "top";
-            const end = dimension === "COL" ? "right" : "bottom";
-            for (const zone of zones) {
-                const zoneRows = Array.from({ length: zone[end] - zone[start] + 1 }, (_, i) => zone[start] + i);
-                elements = elements.concat(zoneRows);
-            }
-            return [...new Set(elements)].sort();
-        }
-        // ---------------------------------------------------------------------------
-        // Other
-        // ---------------------------------------------------------------------------
-        selectColumn(index, createRange, updateRange) {
-            const bottom = this.getters.getActiveSheet().rows.length - 1;
-            let zone = { left: index, right: index, top: 0, bottom };
-            const current = this.selection.zones;
-            let newZones, anchor;
-            const top = this.getters.getActiveSheet().rows.findIndex((row) => !row.isHidden);
-            if (updateRange) {
-                const [col, row] = this.selection.anchor;
-                zone = union(zone, { left: col, right: col, top, bottom });
-                newZones = this.updateSelectionZones(zone);
-                anchor = [col, row];
-            }
-            else {
-                newZones = createRange ? current.concat(zone) : [zone];
-                anchor = [index, top];
-            }
-            this.dispatch("SET_SELECTION", { zones: newZones, anchor, strict: true, anchorZone: zone });
-        }
-        selectRow(index, createRange, updateRange) {
-            const right = this.getters.getActiveSheet().cols.length - 1;
-            let zone = { top: index, bottom: index, left: 0, right };
-            const current = this.selection.zones;
-            let zones, anchor;
-            const left = this.getters.getActiveSheet().cols.findIndex((col) => !col.isHidden);
-            if (updateRange) {
-                const [col, row] = this.selection.anchor;
-                zone = union(zone, { left, right, top: row, bottom: row });
-                zones = this.updateSelectionZones(zone);
-                anchor = [col, row];
-            }
-            else {
-                zones = createRange ? current.concat(zone) : [zone];
-                anchor = [left, index];
-            }
-            this.dispatch("SET_SELECTION", { zones, anchor, strict: true, anchorZone: zone });
-        }
-        selectAll() {
-            const bottom = this.getters.getActiveSheet().rows.length - 1;
-            const right = this.getters.getActiveSheet().cols.length - 1;
-            const zone = { left: 0, top: 0, bottom, right };
-            this.dispatch("SET_SELECTION", { zones: [zone], anchor: [0, 0], anchorZone: zone });
-        }
-        /**
-         * Change the anchor of the selection active cell to an absolute col and row index.
-         *
-         * This is a non trivial task. We need to stop the editing process and update
-         * properly the current selection.  Also, this method can optionally create a new
-         * range in the selection.
-         */
-        selectCell(col, row) {
-            const sheet = this.getters.getActiveSheet();
-            this.moveClient({ sheetId: sheet.id, col, row });
-            const anchorZone = this.getters.expandZone(sheet.id, {
-                left: col,
-                right: col,
-                top: row,
-                bottom: row,
-            });
-            let zones;
-            if (this.mode === SelectionMode.expanding) {
-                zones = uniqueZones([...this.selection.zones, anchorZone]);
-            }
-            else {
-                zones = [anchorZone];
-            }
-            this.selection = this.clipSelection(sheet.id, {
-                anchor: [col, row],
-                zones,
-                anchorZone,
-            });
-            this.activeCol = this.selection.anchor[0];
-            this.activeRow = this.selection.anchor[1];
-        }
-        setActiveSheet(id) {
-            const sheet = this.getters.getSheet(id);
-            this.activeSheet = sheet;
-        }
-        /** Computes the next cell position in the direction of deltaX and deltaY
-         * by crossing through merges and skipping hidden cells.
-         * Note that the resulting position might be out of the sheet, it needs to be validated.
-         */
-        getNextAvailablePosition(deltaX, deltaY) {
-            return {
-                col: this.getNextAvailableCol(deltaX, this.activeCol, this.activeRow),
-                row: this.getNextAvailableRow(deltaY, this.activeCol, this.activeRow),
-            };
-        }
-        getNextAvailableCol(delta, colIndex, rowIndex) {
-            const { cols, id: sheetId } = this.getActiveSheet();
-            const position = { col: colIndex, row: rowIndex };
-            const isInPositionMerge = (nextCol) => this.getters.isInSameMerge(sheetId, colIndex, rowIndex, nextCol, rowIndex);
-            return this.getNextAvailableHeader(delta, cols, colIndex, position, isInPositionMerge);
-        }
-        getNextAvailableRow(delta, colIndex, rowIndex) {
-            const { rows, id: sheetId } = this.getActiveSheet();
-            const position = { col: colIndex, row: rowIndex };
-            const isInPositionMerge = (nextRow) => this.getters.isInSameMerge(sheetId, colIndex, rowIndex, colIndex, nextRow);
-            return this.getNextAvailableHeader(delta, rows, rowIndex, position, isInPositionMerge);
-        }
-        getNextAvailableHeader(delta, headers, startingHeaderIndex, position, isInPositionMerge) {
-            var _a, _b, _c;
-            const sheetId = this.getters.getActiveSheetId();
-            const { col, row } = position;
-            if (delta === 0) {
-                return startingHeaderIndex;
-            }
-            let header = startingHeaderIndex + delta;
-            if (this.getters.isInMerge(sheetId, col, row)) {
-                while (isInPositionMerge(header)) {
-                    header += delta;
-                }
-                while ((_a = headers[header]) === null || _a === void 0 ? void 0 : _a.isHidden) {
-                    header += delta;
-                }
-            }
-            else if ((_b = headers[header]) === null || _b === void 0 ? void 0 : _b.isHidden) {
-                while ((_c = headers[header]) === null || _c === void 0 ? void 0 : _c.isHidden) {
-                    header += delta;
-                }
-            }
-            const outOfBound = header < 0 || header > headers.length - 1;
-            if (outOfBound) {
-                if (headers[startingHeaderIndex].isHidden) {
-                    return this.getNextAvailableHeader(-delta, headers, startingHeaderIndex, position, isInPositionMerge);
-                }
-                else {
-                    return startingHeaderIndex;
-                }
-            }
-            return header;
-        }
-        /**
-         * Moves the position of either the active cell of the anchor of the current selection by a number of rows / cols delta
-         */
-        movePosition(deltaX, deltaY) {
-            const { col: targetCol, row: targetRow } = this.getNextAvailablePosition(deltaX, deltaY);
-            this.selectCell(targetCol, targetRow);
-        }
-        setSelection(anchor, zones, anchorZone, strict = false) {
-            this.selectCell(...anchor);
-            const sheetId = this.getters.getActiveSheetId();
-            let selection;
-            zones = uniqueZones(zones);
-            if (strict) {
-                selection = { zones, anchorZone, anchor };
-            }
-            else {
-                selection = {
-                    anchor,
-                    zones: zones.map((zone) => this.getters.expandZone(sheetId, zone)),
-                    anchorZone: this.getters.expandZone(sheetId, anchorZone),
-                };
-            }
-            this.selection = this.clipSelection(sheetId, selection);
-        }
-        /**
-         * Finds a visible cell in the currently selected zone starting with the anchor.
-         * If the anchor is hidden, browses from left to right and top to bottom to
-         * find a visible cell.
-         */
-        getReferencePosition() {
-            const sheet = this.getters.getActiveSheet();
-            const selection = this.selection;
-            const { left, right, top, bottom } = selection.anchorZone;
-            const [anchorCol, anchorRow] = selection.anchor;
-            return {
-                col: sheet.cols[anchorCol].isHidden
-                    ? findVisibleHeader(sheet, "cols", range(left, right + 1)) || anchorCol
-                    : anchorCol,
-                row: sheet.rows[anchorRow].isHidden
-                    ? findVisibleHeader(sheet, "rows", range(top, bottom + 1)) || anchorRow
-                    : anchorRow,
-            };
-        }
-        moveSelection(deltaX, deltaY) {
-            const selection = this.selection;
-            let newZones = [];
-            const [anchorCol, anchorRow] = selection.anchor;
-            const { left, right, top, bottom } = selection.anchorZone;
-            let result = selection.anchorZone;
-            const activeSheet = this.getters.getActiveSheet();
-            const expand = (z) => {
-                const { left, right, top, bottom } = this.getters.expandZone(activeSheet.id, z);
-                return {
-                    left: Math.max(0, left),
-                    right: Math.min(activeSheet.cols.length - 1, right),
-                    top: Math.max(0, top),
-                    bottom: Math.min(activeSheet.rows.length - 1, bottom),
-                };
-            };
-            const { col: refCol, row: refRow } = this.getReferencePosition();
-            // check if we can shrink selection
-            let n = 0;
-            while (result !== null) {
-                n++;
-                if (deltaX < 0) {
-                    const newRight = this.getNextAvailableCol(deltaX, right - (n - 1), refRow);
-                    result = refCol <= right - n ? expand({ top, left, bottom, right: newRight }) : null;
-                }
-                if (deltaX > 0) {
-                    const newLeft = this.getNextAvailableCol(deltaX, left + (n - 1), refRow);
-                    result = left + n <= refCol ? expand({ top, left: newLeft, bottom, right }) : null;
-                }
-                if (deltaY < 0) {
-                    const newBottom = this.getNextAvailableRow(deltaY, refCol, bottom - (n - 1));
-                    result = refRow <= bottom - n ? expand({ top, left, bottom: newBottom, right }) : null;
-                }
-                if (deltaY > 0) {
-                    const newTop = this.getNextAvailableRow(deltaY, refCol, top + (n - 1));
-                    result = top + n <= refRow ? expand({ top: newTop, left, bottom, right }) : null;
-                }
-                result = result ? organizeZone(result) : result;
-                if (result && !isEqual(result, selection.anchorZone)) {
-                    newZones = this.updateSelectionZones(result);
-                    this.dispatch("SET_SELECTION", {
-                        zones: newZones,
-                        anchor: [anchorCol, anchorRow],
-                        anchorZone: result,
-                    });
-                    return;
-                }
-            }
-            const currentZone = { top: anchorRow, bottom: anchorRow, left: anchorCol, right: anchorCol };
-            const zoneWithDelta = organizeZone({
-                top: this.getNextAvailableRow(deltaY, refCol, top),
-                left: this.getNextAvailableCol(deltaX, left, refRow),
-                bottom: this.getNextAvailableRow(deltaY, refCol, bottom),
-                right: this.getNextAvailableCol(deltaX, right, refRow),
-            });
-            result = expand(union(currentZone, zoneWithDelta));
-            if (!isEqual(result, selection.anchorZone)) {
-                newZones = this.updateSelectionZones(result);
-                this.dispatch("SET_SELECTION", {
-                    zones: newZones,
-                    anchor: [anchorCol, anchorRow],
-                    anchorZone: result,
-                });
-            }
-        }
-        addCellToSelection(col, row) {
-            const selection = this.selection;
-            const [anchorCol, anchorRow] = selection.anchor;
-            const zone = {
-                left: Math.min(anchorCol, col),
-                top: Math.min(anchorRow, row),
-                right: Math.max(anchorCol, col),
-                bottom: Math.max(anchorRow, row),
-            };
-            const newZones = this.updateSelectionZones(zone);
-            this.dispatch("SET_SELECTION", {
-                zones: newZones,
-                anchor: [anchorCol, anchorRow],
-                anchorZone: zone,
-            });
-        }
-        /**
-         * Ensure selections are not outside sheet boundaries.
-         * They are clipped to fit inside the sheet if needed.
-         */
-        ensureSelectionValidity() {
-            const { anchor, zones, anchorZone } = this.clipSelection(this.getActiveSheetId(), this.selection);
-            this.setSelection(anchor, zones, anchorZone);
-            const deletedSheetIds = Object.keys(this.sheetsData).filter((sheetId) => !this.getters.tryGetSheet(sheetId));
-            for (const sheetId of deletedSheetIds) {
-                delete this.sheetsData[sheetId];
-            }
-            for (const sheetId in this.sheetsData) {
-                const { anchor, zones, anchorZone } = this.clipSelection(sheetId, this.sheetsData[sheetId].selection);
-                this.sheetsData[sheetId] = {
-                    selection: { anchor, zones, anchorZone },
-                    activeCol: anchor[0],
-                    activeRow: anchor[1],
-                };
-            }
-        }
-        /**
-         * Clip the selection if it spans outside the sheet
-         */
-        clipSelection(sheetId, selection) {
-            const sheet = this.getters.getSheet(sheetId);
-            const cols = sheet.cols.length - 1;
-            const rows = sheet.rows.length - 1;
-            const zones = selection.zones.map((z) => ({
-                left: clip(z.left, 0, cols),
-                right: clip(z.right, 0, cols),
-                top: clip(z.top, 0, rows),
-                bottom: clip(z.bottom, 0, rows),
-            }));
-            const anchorCol = clip(selection.anchor[0], 0, cols);
-            const anchorRow = clip(selection.anchor[1], 0, rows);
-            const anchorZone = {
-                left: clip(selection.anchorZone.left, 0, cols),
-                right: clip(selection.anchorZone.right, 0, cols),
-                top: clip(selection.anchorZone.top, 0, rows),
-                bottom: clip(selection.anchorZone.bottom, 0, rows),
-            };
-            return {
-                anchor: [anchorCol, anchorRow],
-                zones,
-                anchorZone,
-            };
-        }
-        onColumnsRemoved(cmd) {
-            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "left", [...cmd.elements]);
-            this.setSelection([zone.left, zone.top], [zone], zone, true);
-            this.ensureSelectionValidity();
-        }
-        onRowsRemoved(cmd) {
-            const zone = updateSelectionOnDeletion(this.getSelectedZone(), "top", [...cmd.elements]);
-            this.setSelection([zone.left, zone.top], [zone], zone, true);
-            this.ensureSelectionValidity();
-        }
-        onAddElements(cmd) {
-            const selection = this.getSelectedZone();
-            const zone = updateSelectionOnInsertion(selection, cmd.dimension === "COL" ? "left" : "top", cmd.base, cmd.position, cmd.quantity);
-            this.setSelection([zone.left, zone.top], [zone], zone, true);
-        }
-        /**
-         * this function searches for anchorZone in selection.zones
-         * and modifies it by newZone
-         */
-        updateSelectionZones(newZone) {
-            let zones = [...this.selection.zones];
-            const current = this.selection.anchorZone;
-            const index = zones.findIndex((z) => isEqual(z, current));
-            if (index >= 0) {
-                zones[index] = newZone;
-            }
-            return zones;
-        }
-        activateNextSheet(direction) {
-            const sheetIds = this.getters.getSheets().map((sheet) => sheet.id);
-            const oldSheetPosition = sheetIds.findIndex((id) => id === this.activeSheet.id);
-            const delta = direction === "left" ? sheetIds.length - 1 : 1;
-            const newPosition = (oldSheetPosition + delta) % sheetIds.length;
-            this.dispatch("ACTIVATE_SHEET", {
-                sheetIdFrom: this.getActiveSheetId(),
-                sheetIdTo: sheetIds[newPosition],
-            });
-        }
-        onMoveElements(cmd) {
-            const thickness = cmd.elements.length;
-            this.dispatch("ADD_COLUMNS_ROWS", {
-                dimension: cmd.dimension,
-                sheetId: cmd.sheetId,
-                base: cmd.base,
-                quantity: thickness,
-                position: "before",
-            });
-            const isCol = cmd.dimension === "COL";
-            const start = cmd.elements[0];
-            const end = cmd.elements[thickness - 1];
-            const isBasedbefore = cmd.base < start;
-            const deltaCol = isBasedbefore && isCol ? thickness : 0;
-            const deltaRow = isBasedbefore && !isCol ? thickness : 0;
-            const sheet = this.getters.getSheet(cmd.sheetId);
-            this.dispatch("CUT", {
-                target: [
-                    {
-                        left: isCol ? start + deltaCol : 0,
-                        right: isCol ? end + deltaCol : sheet.cols.length - 1,
-                        top: !isCol ? start + deltaRow : 0,
-                        bottom: !isCol ? end + deltaRow : sheet.rows.length - 1,
-                    },
-                ],
-            });
-            this.dispatch("PASTE", {
-                target: [
-                    {
-                        left: isCol ? cmd.base : 0,
-                        right: isCol ? cmd.base + thickness - 1 : sheet.cols.length - 1,
-                        top: !isCol ? cmd.base : 0,
-                        bottom: !isCol ? cmd.base + thickness - 1 : sheet.rows.length - 1,
-                    },
-                ],
-            });
-            this.dispatch("REMOVE_COLUMNS_ROWS", {
-                dimension: cmd.dimension,
-                sheetId: cmd.sheetId,
-                elements: isBasedbefore ? cmd.elements.map((el) => el + thickness) : cmd.elements,
-            });
-        }
-        isMoveElementAllowed(cmd) {
-            const isCol = cmd.dimension === "COL";
-            const start = cmd.elements[0];
-            const end = cmd.elements[cmd.elements.length - 1];
-            const id = cmd.sheetId;
-            const doesElementsHaveCommonMerges = isCol
-                ? this.getters.doesColumnsHaveCommonMerges
-                : this.getters.doesRowsHaveCommonMerges;
-            if (doesElementsHaveCommonMerges(id, start - 1, start) ||
-                doesElementsHaveCommonMerges(id, end, end + 1) ||
-                doesElementsHaveCommonMerges(id, cmd.base - 1, cmd.base)) {
-                return 2 /* WillRemoveExistingMerge */;
-            }
-            return 0 /* Success */;
-        }
-        // ---------------------------------------------------------------------------
-        // Grid rendering
-        // ---------------------------------------------------------------------------
-        drawGrid(renderingContext) {
-            if (this.getters.getEditionMode() !== "inactive") {
-                return;
-            }
-            const { viewport, ctx, thinLineWidth } = renderingContext;
-            // selection
-            const zones = this.getSelectedZones();
-            ctx.fillStyle = "#f3f7fe";
-            const onlyOneCell = zones.length === 1 && zones[0].left === zones[0].right && zones[0].top === zones[0].bottom;
-            ctx.fillStyle = onlyOneCell ? "#f3f7fe" : "#e9f0ff";
-            ctx.strokeStyle = SELECTION_BORDER_COLOR;
-            ctx.lineWidth = 1.5 * thinLineWidth;
-            ctx.globalCompositeOperation = "multiply";
-            for (const zone of zones) {
-                const [x, y, width, height] = this.getters.getRect(zone, viewport);
-                ctx.fillRect(x, y, width, height);
-                ctx.strokeRect(x, y, width, height);
-            }
-            ctx.globalCompositeOperation = "source-over";
-            // active zone
-            const activeSheet = this.getters.getActiveSheetId();
-            const [col, row] = this.getPosition();
-            ctx.strokeStyle = SELECTION_BORDER_COLOR;
-            ctx.lineWidth = 3 * thinLineWidth;
-            let zone;
-            if (this.getters.isInMerge(activeSheet, col, row)) {
-                zone = this.getters.getMerge(activeSheet, col, row);
-            }
-            else {
-                zone = {
-                    top: row,
-                    bottom: row,
-                    left: col,
-                    right: col,
-                };
-            }
-            const [x, y, width, height] = this.getters.getRect(zone, viewport);
-            if (width > 0 && height > 0) {
-                ctx.strokeRect(x, y, width, height);
-            }
-        }
-    }
-    SelectionPlugin.layers = [5 /* Selection */];
-    SelectionPlugin.modes = ["normal"];
-    SelectionPlugin.getters = [
-        "getActiveSheet",
-        "getActiveSheetId",
-        "getActiveCell",
-        "getActiveCols",
-        "getActiveRows",
-        "getCurrentStyle",
-        "getSelectedZones",
-        "getSelectedZone",
-        "getStatisticFnResults",
-        "getSelectedFigureId",
-        "getVisibleFigures",
-        "getSelection",
-        "getPosition",
-        "getSheetPosition",
-        "getSelectionMode",
-        "isSelected",
-        "getElementsFromSelection",
-    ];
-
     const CELL_DELETED_MESSAGE = _lt("The cell you are trying to edit has been deleted.");
     const SelectionIndicator = "␣";
     class EditionPlugin extends UIPlugin {
@@ -18013,13 +17125,12 @@
             this.col = 0;
             this.row = 0;
             this.mode = "inactive";
-            this.sheet = "";
+            this.sheetId = "";
             this.currentContent = "";
             this.currentTokens = [];
             this.selectionStart = 0;
             this.selectionEnd = 0;
             this.selectionInitialStart = 0;
-            this.multiSelectionInitialStart = 0;
             this.initialContent = "";
             this.previousRef = "";
             this.previousRange = undefined;
@@ -18050,6 +17161,19 @@
                     }
                 default:
                     return 0 /* Success */;
+            }
+        }
+        handleEvent(event) {
+            if (this.mode !== "selecting") {
+                return;
+            }
+            switch (event.mode) {
+                case "newAnchor":
+                    this.insertSelectedRange(event.anchor.zone);
+                    break;
+                default:
+                    this.replaceSelectedRanges(event.anchor.zone);
+                    break;
             }
         }
         handle(cmd) {
@@ -18085,44 +17209,6 @@
                     this.cancelEdition();
                     this.resetContent();
                     break;
-                case "SELECT_CELL":
-                case "SET_SELECTION":
-                case "MOVE_POSITION":
-                    switch (this.mode) {
-                        case "editing":
-                            this.dispatch("STOP_EDITION");
-                            break;
-                        case "waitingForRangeSelection":
-                            this.insertSelectedRange();
-                            break;
-                        case "rangeSelected":
-                            switch (cmd.type) {
-                                case "MOVE_POSITION":
-                                    this.replaceAllSelectedRanges();
-                                    break;
-                                case "SELECT_CELL":
-                                    if (this.getters.getSelectionMode() === SelectionMode.expanding) {
-                                        this.insertSelectedRange();
-                                    }
-                                    else {
-                                        this.replaceAllSelectedRanges();
-                                    }
-                                    break;
-                                case "SET_SELECTION":
-                                    if (!cmd.strict) {
-                                        this.replaceSelectedRange();
-                                    }
-                                    else if (this.getters.getSelectionMode() === SelectionMode.expanding) {
-                                        this.insertSelectedRange();
-                                    }
-                                    else {
-                                        this.replaceAllSelectedRanges();
-                                    }
-                                    break;
-                            }
-                            break;
-                    }
-                    break;
                 case "ADD_COLUMNS_ROWS":
                     this.onAddElements(cmd);
                     break;
@@ -18141,7 +17227,7 @@
                         .find((token) => {
                         let value = token.value;
                         const [xc, sheet] = value.split("!").reverse();
-                        const sheetName = sheet || this.getters.getSheetName(this.sheet);
+                        const sheetName = sheet || this.getters.getSheetName(this.sheetId);
                         const activeSheetId = this.getters.getActiveSheetId();
                         return (isEqual(this.getters.expandZone(activeSheetId, toZone(xc)), cmd.zone) &&
                             this.getters.getSheetName(activeSheetId) === sheetName);
@@ -18162,8 +17248,9 @@
                 case "DELETE_SHEET":
                 case "UNDO":
                 case "REDO":
-                    const sheetIdExists = !!this.getters.tryGetSheet(this.sheet);
+                    const sheetIdExists = !!this.getters.tryGetSheet(this.sheetId);
                     if (!sheetIdExists && this.mode !== "inactive") {
+                        this.sheetId = this.getters.getActiveSheetId();
                         this.cancelEdition();
                         this.resetContent();
                         this.ui.notifyUI({
@@ -18173,6 +17260,9 @@
                     }
                     break;
             }
+        }
+        unsubscribe() {
+            this.mode = "inactive";
         }
         // ---------------------------------------------------------------------------
         // Getters
@@ -18188,7 +17278,7 @@
             return this.currentContent;
         }
         getEditionSheet() {
-            return this.sheet;
+            return this.sheetId;
         }
         getComposerSelection() {
             return {
@@ -18197,9 +17287,10 @@
             };
         }
         isSelectingForComposer() {
-            return (this.mode === "waitingForRangeSelection" ||
-                this.mode === "rangeSelected" ||
-                this.mode === "resettingPosition");
+            return this.mode === "selecting";
+        }
+        showSelectionIndicator() {
+            return this.isSelectingForComposer() && this.canStartComposerRangeSelection();
         }
         getCurrentTokens() {
             return this.currentTokens;
@@ -18260,17 +17351,10 @@
          * Enable the selecting mode
          */
         startComposerRangeSelection() {
-            this.mode = "resettingPosition";
-            this.dispatch("SELECT_CELL", {
-                col: this.col,
-                row: this.row,
-            });
-            this.mode = "waitingForRangeSelection";
-            // We set this variable to store the start of the multiple range
-            // selection. This is useful for example when we select multiple
-            // cells with ctrl, release the ctrl and select a new cell.
-            // This should result in deletions of previously selected cells.
-            this.multiSelectionInitialStart = this.selectionStart;
+            const zone = positionToZone({ col: this.col, row: this.row });
+            this.selection.resetAnchor(this, { cell: { col: this.col, row: this.row }, zone });
+            this.mode = "selecting";
+            this.selectionInitialStart = this.selectionStart;
         }
         /**
          * start the edition of a cell
@@ -18285,23 +17369,27 @@
             const [col, row] = this.getters.getPosition();
             this.col = col;
             this.row = row;
-            this.sheet = this.getters.getActiveSheetId();
+            this.sheetId = this.getters.getActiveSheetId();
             this.setContent(str || this.initialContent, selection);
             this.colorIndexByRange = {};
+            const zone = positionToZone({ col: this.col, row: this.row });
+            this.selection.capture(this, { cell: { col: this.col, row: this.row }, zone }, {
+                handleEvent: this.handleEvent.bind(this),
+                release: () => (this.mode = "inactive"),
+            });
         }
         stopEdition() {
             if (this.mode !== "inactive") {
+                const activeSheetId = this.getters.getActiveSheetId();
                 this.cancelEdition();
-                const sheetId = this.getters.getActiveSheetId();
-                const mergeSheetId = this.getters.getSheets().find((sheet) => sheet.id === this.sheet).id;
-                const [col, row] = this.getters.getMainCell(mergeSheetId, this.col, this.row);
+                const [col, row] = this.getters.getMainCell(this.sheetId, this.col, this.row);
                 let content = this.currentContent;
                 const didChange = this.initialContent !== content;
                 if (!didChange) {
                     return;
                 }
                 if (content) {
-                    const cell = this.getters.getCell(sheetId, col, row);
+                    const cell = this.getters.getCell(activeSheetId, col, row);
                     if (content.startsWith("=")) {
                         const left = this.currentTokens.filter((t) => t.type === "LEFT_PAREN").length;
                         const right = this.currentTokens.filter((t) => t.type === "RIGHT_PAREN").length;
@@ -18314,7 +17402,7 @@
                         content = markdownLink(content, cell.link.url);
                     }
                     this.dispatch("UPDATE_CELL", {
-                        sheetId: this.sheet,
+                        sheetId: this.sheetId,
                         col,
                         row,
                         content,
@@ -18322,23 +17410,28 @@
                 }
                 else {
                     this.dispatch("UPDATE_CELL", {
-                        sheetId: this.sheet,
+                        sheetId: this.sheetId,
                         content: "",
                         col,
                         row,
-                    });
-                }
-                if (sheetId !== this.sheet) {
-                    this.dispatch("ACTIVATE_SHEET", {
-                        sheetIdFrom: this.getters.getActiveSheetId(),
-                        sheetIdTo: this.sheet,
                     });
                 }
                 this.setContent("");
             }
         }
         cancelEdition() {
+            if (this.mode === "inactive") {
+                return;
+            }
             this.mode = "inactive";
+            this.selection.release(this);
+            const sheetId = this.getters.getActiveSheetId();
+            if (sheetId !== this.sheetId) {
+                this.dispatch("ACTIVATE_SHEET", {
+                    sheetIdFrom: this.getters.getActiveSheetId(),
+                    sheetIdTo: this.sheetId,
+                });
+            }
         }
         /**
          * Reset the current content to the active cell content
@@ -18363,48 +17456,25 @@
                 this.startComposerRangeSelection();
             }
         }
-        /**
-         * Insert reference of the currently selected zone in the composer content.
-         * Separates references with commas when more than one is selected.
-         */
-        insertSelectedRange() {
+        insertSelectedRange(zone) {
+            // infer if range selected or selecting range from cursor position
             const start = Math.min(this.selectionStart, this.selectionEnd);
-            const ref = this.getZoneReference(this.getters.getSelectedZone());
-            if (this.mode === "waitingForRangeSelection") {
+            const ref = this.getZoneReference(zone);
+            if (this.canStartComposerRangeSelection()) {
                 this.insertText(ref, start);
                 this.selectionInitialStart = start;
-                this.mode = "rangeSelected";
-                return;
             }
-            // range already present (mean this.mode === "rangeSelected")
-            this.insertText("," + ref, start);
-            this.selectionInitialStart = start + 1;
+            else {
+                this.insertText("," + ref, start);
+                this.selectionInitialStart = start + 1;
+            }
         }
         /**
-         * Replace the last reference by the new one.
-         * This function is particularly useful when multiple cells selection is
-         * enabled and we need to change the last reference (eg: change the cell
-         * reference to a range reference)
-         */
-        replaceSelectedRange() {
-            const { end } = this.getters.getComposerSelection();
-            this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", {
-                start: this.selectionInitialStart,
-                end,
-            });
-            this.replaceSelection(this.getZoneReference(this.getters.getSelectedZone()));
-        }
-        /**
-         * Replace all references selected by the new one.
+         * Replace the current reference selected by the new one.
          * */
-        replaceAllSelectedRanges() {
-            const { end } = this.getters.getComposerSelection();
-            this.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", {
-                start: this.multiSelectionInitialStart,
-                end,
-            });
-            this.replaceSelection(this.getZoneReference(this.getters.getSelectedZone()));
-            this.selectionInitialStart = this.multiSelectionInitialStart;
+        replaceSelectedRanges(zone) {
+            const ref = this.getZoneReference(zone);
+            this.replaceText(ref, this.selectionInitialStart, this.selectionEnd);
         }
         getZoneReference(zone, fixedParts = [{ colFixed: false, rowFixed: false }]) {
             const sheetId = this.getters.getActiveSheetId();
@@ -18486,9 +17556,6 @@
          * - Previous and next tokens can be separated by spaces
          */
         canStartComposerRangeSelection() {
-            if (this.mode !== "editing" && this.selectionStart === this.selectionEnd) {
-                return false;
-            }
             if (this.currentContent.startsWith("=")) {
                 const tokenAtCursor = this.getTokenAtCursor();
                 if (tokenAtCursor) {
@@ -18526,6 +17593,7 @@
     EditionPlugin.getters = [
         "getEditionMode",
         "isSelectingForComposer",
+        "showSelectionIndicator",
         "getCurrentContent",
         "getEditionSheet",
         "getComposerSelection",
@@ -18537,8 +17605,8 @@
 
     const functionMap = functionRegistry.mapping;
     class EvaluationPlugin extends UIPlugin {
-        constructor(getters, state, dispatch, config) {
-            super(getters, state, dispatch, config);
+        constructor(getters, state, dispatch, config, selection) {
+            super(getters, state, dispatch, config, selection);
             this.isUpToDate = new Set(); // Set<sheetIds>
             this.evalContext = config.evalContext;
             config.dataSources.on("data-loaded", this, () => {
@@ -19673,7 +18741,7 @@
             nextIndex = ((nextIndex % matches.length) + matches.length) % matches.length;
             if (this.selectedMatchIndex !== nextIndex) {
                 this.selectedMatchIndex = nextIndex;
-                this.dispatch("SELECT_CELL", { col: matches[nextIndex].col, row: matches[nextIndex].row });
+                this.selection.selectCell(matches[nextIndex].col, matches[nextIndex].row);
             }
             for (let index = 0; index < this.searchMatches.length; index++) {
                 this.searchMatches[index].selected = index === this.selectedMatchIndex;
@@ -20389,6 +19457,621 @@
     ];
     RendererPlugin.modes = ["normal"];
 
+    const selectionStatisticFunctions = [
+        {
+            name: _lt("Sum"),
+            types: [CellValueType.number],
+            compute: (values) => SUM.compute([values]),
+        },
+        {
+            name: _lt("Avg"),
+            types: [CellValueType.number],
+            compute: (values) => AVERAGE.compute([values]),
+        },
+        {
+            name: _lt("Min"),
+            types: [CellValueType.number],
+            compute: (values) => MIN.compute([values]),
+        },
+        {
+            name: _lt("Max"),
+            types: [CellValueType.number],
+            compute: (values) => MAX.compute([values]),
+        },
+        {
+            name: _lt("Count"),
+            types: [CellValueType.number, CellValueType.text, CellValueType.boolean, CellValueType.error],
+            compute: (values) => COUNTA.compute([values]),
+        },
+        {
+            name: _lt("Count Numbers"),
+            types: [CellValueType.number, CellValueType.text, CellValueType.boolean, CellValueType.error],
+            compute: (values) => COUNT.compute([values]),
+        },
+    ];
+    /**
+     * SelectionPlugin
+     */
+    class GridSelectionPlugin extends UIPlugin {
+        constructor(getters, state, dispatch, config, selection) {
+            super(getters, state, dispatch, config, selection);
+            this.gridSelection = {
+                anchor: {
+                    cell: { col: 0, row: 0 },
+                    zone: { top: 0, left: 0, bottom: 0, right: 0 },
+                },
+                zones: [{ top: 0, left: 0, bottom: 0, right: 0 }],
+            };
+            this.selectedFigureId = null;
+            this.sheetsData = {};
+            // This flag is used to avoid to historize the ACTIVE_SHEET command when it's
+            // the main command.
+            this.activeSheet = null;
+            this.moveClient = config.moveClient;
+        }
+        // ---------------------------------------------------------------------------
+        // Command Handling
+        // ---------------------------------------------------------------------------
+        allowDispatch(cmd) {
+            switch (cmd.type) {
+                case "ACTIVATE_SHEET":
+                    try {
+                        this.getters.getSheet(cmd.sheetIdTo);
+                        break;
+                    }
+                    catch (error) {
+                        return 21 /* InvalidSheetId */;
+                    }
+                case "MOVE_COLUMNS_ROWS":
+                    return this.isMoveElementAllowed(cmd);
+            }
+            return 0 /* Success */;
+        }
+        handleEvent(event) {
+            const anchor = event.anchor;
+            let zones = [];
+            switch (event.mode) {
+                case "overrideSelection":
+                    zones = [anchor.zone];
+                    break;
+                case "updateAnchor":
+                    zones = [...this.gridSelection.zones];
+                    const index = zones.findIndex((z) => isEqual(z, event.previousAnchor.zone));
+                    if (index >= 0) {
+                        zones[index] = anchor.zone;
+                    }
+                    break;
+                case "newAnchor":
+                    zones = [...this.gridSelection.zones, anchor.zone];
+                    break;
+            }
+            this.setSelectionMixin(event.anchor, zones);
+            const { col, row } = this.gridSelection.anchor.cell;
+            this.moveClient({
+                sheetId: this.getters.getActiveSheetId(),
+                col,
+                row,
+            });
+            this.selectedFigureId = null;
+        }
+        handle(cmd) {
+            switch (cmd.type) {
+                // some commands should not remove the current selection
+                case "CREATE_SHEET":
+                case "DELETE_SHEET":
+                case "CREATE_FIGURE":
+                case "CREATE_CHART":
+                case "UPDATE_FIGURE":
+                case "EVALUATE_CELLS":
+                case "DISABLE_SELECTION_INPUT":
+                case "ENABLE_NEW_SELECTION_INPUT":
+                    break;
+                case "DELETE_FIGURE":
+                    if (this.selectedFigureId === cmd.id) {
+                        this.selectedFigureId = null;
+                    }
+                    break;
+                default:
+                    this.selectedFigureId = null;
+            }
+            switch (cmd.type) {
+                case "START":
+                    const firstSheet = this.getters.getSheets()[0];
+                    this.selection.registerAsDefault(this, this.gridSelection.anchor, {
+                        handleEvent: this.handleEvent.bind(this),
+                    });
+                    this.dispatch("ACTIVATE_SHEET", {
+                        sheetIdTo: firstSheet.id,
+                        sheetIdFrom: firstSheet.id,
+                    });
+                    const firstVisiblePosition = getNextVisibleCellCoords(firstSheet, 0, 0);
+                    this.selectCell(...firstVisiblePosition);
+                    this.moveClient({ sheetId: firstSheet.id, col: 0, row: 0 });
+                    break;
+                case "ACTIVATE_SHEET": {
+                    this.setActiveSheet(cmd.sheetIdTo);
+                    const { col, row } = this.gridSelection.anchor.cell;
+                    this.sheetsData[cmd.sheetIdFrom] = {
+                        gridSelection: deepCopy(this.gridSelection),
+                        activeCol: col,
+                        activeRow: row,
+                    };
+                    if (cmd.sheetIdTo in this.sheetsData) {
+                        Object.assign(this, this.sheetsData[cmd.sheetIdTo]);
+                        this.selection.resetDefaultAnchor(this, this.gridSelection.anchor);
+                    }
+                    else {
+                        this.selectCell(...getNextVisibleCellCoords(this.getters.getSheets()[0], 0, 0));
+                    }
+                    break;
+                }
+                case "REMOVE_COLUMNS_ROWS": {
+                    const sheetId = this.getters.getActiveSheetId();
+                    if (cmd.sheetId === sheetId) {
+                        if (cmd.dimension === "COL") {
+                            this.onColumnsRemoved(cmd);
+                        }
+                        else {
+                            this.onRowsRemoved(cmd);
+                        }
+                        const { col, row } = this.gridSelection.anchor.cell;
+                        this.moveClient({ sheetId, col, row });
+                    }
+                    break;
+                }
+                case "ADD_COLUMNS_ROWS": {
+                    const sheetId = this.getters.getActiveSheetId();
+                    if (cmd.sheetId === sheetId) {
+                        this.onAddElements(cmd);
+                        const { col, row } = this.gridSelection.anchor.cell;
+                        this.moveClient({ sheetId, col, row });
+                    }
+                    break;
+                }
+                case "MOVE_COLUMNS_ROWS":
+                    if (cmd.sheetId === this.getActiveSheetId()) {
+                        this.onMoveElements(cmd);
+                    }
+                    break;
+                case "UPDATE_CHART":
+                case "SELECT_FIGURE":
+                    this.selectedFigureId = cmd.id;
+                    break;
+                case "ACTIVATE_NEXT_SHEET":
+                    this.activateNextSheet("right");
+                    break;
+                case "ACTIVATE_PREVIOUS_SHEET":
+                    this.activateNextSheet("left");
+                    break;
+                case "UNDO":
+                case "REDO":
+                case "DELETE_SHEET":
+                    if (!this.getters.tryGetSheet(this.getters.getActiveSheetId())) {
+                        const currentSheets = this.getters.getVisibleSheets();
+                        this.activeSheet = this.getters.getSheet(currentSheets[0]);
+                        this.selectCell(0, 0);
+                        this.moveClient({
+                            sheetId: this.getters.getActiveSheetId(),
+                            col: 0,
+                            row: 0,
+                        });
+                    }
+                    const deletedSheetIds = Object.keys(this.sheetsData).filter((sheetId) => !this.getters.tryGetSheet(sheetId));
+                    for (const sheetId of deletedSheetIds) {
+                        delete this.sheetsData[sheetId];
+                    }
+                    for (const sheetId in this.sheetsData) {
+                        const { anchor } = this.clipSelection(sheetId, this.sheetsData[sheetId].gridSelection);
+                        this.sheetsData[sheetId] = {
+                            gridSelection: this.gridSelection,
+                            activeCol: anchor.cell.col,
+                            activeRow: anchor.cell.row,
+                        };
+                    }
+                    const sheetId = this.getters.getActiveSheetId();
+                    this.gridSelection.zones = this.gridSelection.zones.map((z) => this.getters.expandZone(sheetId, z));
+                    this.gridSelection.anchor.zone = this.getters.expandZone(sheetId, this.gridSelection.anchor.zone);
+                    this.ensureSelectionValidity();
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Getters
+        // ---------------------------------------------------------------------------
+        getActiveSheet() {
+            return this.activeSheet;
+        }
+        getActiveSheetId() {
+            return this.activeSheet.id;
+        }
+        getActiveCell() {
+            const sheetId = this.getters.getActiveSheetId();
+            const { col, row } = this.gridSelection.anchor.cell;
+            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
+            return this.getters.getCell(sheetId, mainCol, mainRow);
+        }
+        getActiveCols() {
+            const activeCols = new Set();
+            for (let zone of this.gridSelection.zones) {
+                if (zone.top === 0 && zone.bottom === this.getters.getActiveSheet().rows.length - 1) {
+                    for (let i = zone.left; i <= zone.right; i++) {
+                        activeCols.add(i);
+                    }
+                }
+            }
+            return activeCols;
+        }
+        getActiveRows() {
+            const activeRows = new Set();
+            for (let zone of this.gridSelection.zones) {
+                if (zone.left === 0 && zone.right === this.getters.getActiveSheet().cols.length - 1) {
+                    for (let i = zone.top; i <= zone.bottom; i++) {
+                        activeRows.add(i);
+                    }
+                }
+            }
+            return activeRows;
+        }
+        getCurrentStyle() {
+            const cell = this.getters.getActiveCell();
+            return cell ? this.getters.getCellStyle(cell) : {};
+        }
+        getSelectedZones() {
+            return this.gridSelection.zones;
+        }
+        getSelectedZone() {
+            return this.gridSelection.anchor.zone;
+        }
+        getSelection() {
+            const { col, row } = this.gridSelection.anchor.cell;
+            return {
+                anchor: [col, row],
+                anchorZone: this.gridSelection.anchor.zone,
+                zones: this.getSelectedZones(),
+            };
+        }
+        getSelectedFigureId() {
+            return this.selectedFigureId;
+        }
+        getPosition() {
+            return [this.gridSelection.anchor.cell.col, this.gridSelection.anchor.cell.row];
+        }
+        getSheetPosition(sheetId) {
+            if (sheetId === this.getters.getActiveSheetId()) {
+                return this.getPosition();
+            }
+            else {
+                const sheetData = this.sheetsData[sheetId];
+                return sheetData
+                    ? [sheetData.gridSelection.anchor.cell.col, sheetData.gridSelection.anchor.cell.row]
+                    : getNextVisibleCellCoords(this.getters.getSheet(sheetId), 0, 0);
+            }
+        }
+        getStatisticFnResults() {
+            // get deduplicated cells in zones
+            const cells = new Set(this.gridSelection.zones
+                .map((zone) => this.getters.getCellsInZone(this.getters.getActiveSheetId(), zone))
+                .flat()
+                .filter((cell) => cell !== undefined));
+            let cellsTypes = new Set();
+            let cellsValues = [];
+            for (let cell of cells) {
+                cellsTypes.add(cell.evaluated.type);
+                cellsValues.push(cell.evaluated.value);
+            }
+            let statisticFnResults = {};
+            for (let fn of selectionStatisticFunctions) {
+                // We don't want to display statistical information when there is no interest:
+                // We set the statistical result to undefined if the data handled by the selection
+                // does not match the data handled by the function.
+                // Ex: if there are only texts in the selection, we prefer that the SUM result
+                // be displayed as undefined rather than 0.
+                let fnResult = undefined;
+                if (fn.types.some((t) => cellsTypes.has(t))) {
+                    fnResult = fn.compute(cellsValues);
+                }
+                statisticFnResults[fn.name] = fnResult;
+            }
+            return statisticFnResults;
+        }
+        getAggregate() {
+            let aggregate = 0;
+            let n = 0;
+            const sheetId = this.getters.getActiveSheetId();
+            const cellPositions = this.gridSelection.zones.map(positions).flat();
+            for (const [col, row] of cellPositions) {
+                const cell = this.getters.getCell(sheetId, col, row);
+                if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number) {
+                    n++;
+                    aggregate += cell.evaluated.value;
+                }
+            }
+            return n < 2 ? null : formatStandardNumber(aggregate);
+        }
+        isSelected(zone) {
+            return !!this.getters.getSelectedZones().find((z) => isEqual(z, zone));
+        }
+        getVisibleFigures() {
+            const sheetId = this.getters.getActiveSheetId();
+            const result = [];
+            const figures = this.getters.getFigures(sheetId);
+            const { offsetX, offsetY } = this.getters.getActiveSnappedViewport();
+            const { width, height } = this.getters.getViewportDimensionWithHeaders();
+            for (let figure of figures) {
+                if (figure.x >= offsetX + width || figure.x + figure.width <= offsetX) {
+                    continue;
+                }
+                if (figure.y >= offsetY + height || figure.y + figure.height <= offsetY) {
+                    continue;
+                }
+                result.push(figure);
+            }
+            return result;
+        }
+        /**
+         * Returns a sorted array of indexes of all columns (respectively rows depending
+         * on the dimension parameter) intersected by the currently selected zones.
+         *
+         * example:
+         * assume selectedZones: [{left:0, right: 2, top :2, bottom: 4}, {left:5, right: 6, top :3, bottom: 5}]
+         *
+         * if dimension === "COL" => [0,1,2,5,6]
+         * if dimension === "ROW" => [2,3,4,5]
+         */
+        getElementsFromSelection(dimension) {
+            if (dimension === "COL" && this.getters.getActiveCols().size === 0) {
+                return [];
+            }
+            if (dimension === "ROW" && this.getters.getActiveRows().size === 0) {
+                return [];
+            }
+            const zones = this.getters.getSelectedZones();
+            let elements = [];
+            const start = dimension === "COL" ? "left" : "top";
+            const end = dimension === "COL" ? "right" : "bottom";
+            for (const zone of zones) {
+                const zoneRows = Array.from({ length: zone[end] - zone[start] + 1 }, (_, i) => zone[start] + i);
+                elements = elements.concat(zoneRows);
+            }
+            return [...new Set(elements)].sort();
+        }
+        // ---------------------------------------------------------------------------
+        // Other
+        // ---------------------------------------------------------------------------
+        setSelectionMixin(anchor, zones) {
+            const { anchor: clippedAnchor, zones: clippedZones } = this.clipSelection(this.getters.getActiveSheetId(), { anchor, zones });
+            this.gridSelection.anchor.cell.col = clippedAnchor.cell.col;
+            this.gridSelection.anchor.cell.row = clippedAnchor.cell.row;
+            this.gridSelection.anchor.zone = clippedAnchor.zone;
+            this.gridSelection.zones = uniqueZones(clippedZones);
+        }
+        /**
+         * Change the anchor of the selection active cell to an absolute col and row index.
+         *
+         * This is a non trivial task. We need to stop the editing process and update
+         * properly the current selection.  Also, this method can optionally create a new
+         * range in the selection.
+         */
+        selectCell(col, row) {
+            const sheetId = this.getters.getActiveSheetId();
+            const zone = this.getters.expandZone(sheetId, { left: col, right: col, top: row, bottom: row });
+            this.setSelectionMixin({ zone, cell: { col, row } }, [zone]);
+        }
+        setActiveSheet(id) {
+            const sheet = this.getters.getSheet(id);
+            this.activeSheet = sheet;
+        }
+        activateNextSheet(direction) {
+            const sheetIds = this.getters.getSheets().map((sheet) => sheet.id);
+            const oldSheetPosition = sheetIds.findIndex((id) => id === this.activeSheet.id);
+            const delta = direction === "left" ? sheetIds.length - 1 : 1;
+            const newPosition = (oldSheetPosition + delta) % sheetIds.length;
+            this.dispatch("ACTIVATE_SHEET", {
+                sheetIdFrom: this.getActiveSheetId(),
+                sheetIdTo: sheetIds[newPosition],
+            });
+        }
+        onColumnsRemoved(cmd) {
+            const { cell, zone } = this.gridSelection.anchor;
+            const selectedZone = updateSelectionOnDeletion(zone, "left", [...cmd.elements]);
+            let anchorZone = { left: cell.col, right: cell.col, top: cell.row, bottom: cell.row };
+            anchorZone = updateSelectionOnDeletion(anchorZone, "left", [...cmd.elements]);
+            const anchor = {
+                cell: {
+                    col: anchorZone.left,
+                    row: anchorZone.top,
+                },
+                zone: selectedZone,
+            };
+            this.setSelectionMixin(anchor, [selectedZone]);
+            this.ensureSelectionValidity();
+        }
+        onRowsRemoved(cmd) {
+            const { cell, zone } = this.gridSelection.anchor;
+            const selectedZone = updateSelectionOnDeletion(zone, "top", [...cmd.elements]);
+            let anchorZone = { left: cell.col, right: cell.col, top: cell.row, bottom: cell.row };
+            anchorZone = updateSelectionOnDeletion(anchorZone, "top", [...cmd.elements]);
+            const anchor = {
+                cell: {
+                    col: anchorZone.left,
+                    row: anchorZone.top,
+                },
+                zone: selectedZone,
+            };
+            this.setSelectionMixin(anchor, [selectedZone]);
+            this.ensureSelectionValidity();
+        }
+        onAddElements(cmd) {
+            const selection = this.gridSelection.anchor.zone;
+            const zone = updateSelectionOnInsertion(selection, cmd.dimension === "COL" ? "left" : "top", cmd.base, cmd.position, cmd.quantity);
+            const anchor = { cell: { col: zone.left, row: zone.top }, zone };
+            this.setSelectionMixin(anchor, [zone]);
+        }
+        onMoveElements(cmd) {
+            const thickness = cmd.elements.length;
+            this.dispatch("ADD_COLUMNS_ROWS", {
+                dimension: cmd.dimension,
+                sheetId: cmd.sheetId,
+                base: cmd.base,
+                quantity: thickness,
+                position: "before",
+            });
+            const isCol = cmd.dimension === "COL";
+            const start = cmd.elements[0];
+            const end = cmd.elements[thickness - 1];
+            const isBasedbefore = cmd.base < start;
+            const deltaCol = isBasedbefore && isCol ? thickness : 0;
+            const deltaRow = isBasedbefore && !isCol ? thickness : 0;
+            const sheet = this.getters.getSheet(cmd.sheetId);
+            this.dispatch("CUT", {
+                target: [
+                    {
+                        left: isCol ? start + deltaCol : 0,
+                        right: isCol ? end + deltaCol : sheet.cols.length - 1,
+                        top: !isCol ? start + deltaRow : 0,
+                        bottom: !isCol ? end + deltaRow : sheet.rows.length - 1,
+                    },
+                ],
+            });
+            this.dispatch("PASTE", {
+                target: [
+                    {
+                        left: isCol ? cmd.base : 0,
+                        right: isCol ? cmd.base + thickness - 1 : sheet.cols.length - 1,
+                        top: !isCol ? cmd.base : 0,
+                        bottom: !isCol ? cmd.base + thickness - 1 : sheet.rows.length - 1,
+                    },
+                ],
+            });
+            this.dispatch("REMOVE_COLUMNS_ROWS", {
+                dimension: cmd.dimension,
+                sheetId: cmd.sheetId,
+                elements: isBasedbefore ? cmd.elements.map((el) => el + thickness) : cmd.elements,
+            });
+        }
+        isMoveElementAllowed(cmd) {
+            const isCol = cmd.dimension === "COL";
+            const start = cmd.elements[0];
+            const end = cmd.elements[cmd.elements.length - 1];
+            const id = cmd.sheetId;
+            const doesElementsHaveCommonMerges = isCol
+                ? this.getters.doesColumnsHaveCommonMerges
+                : this.getters.doesRowsHaveCommonMerges;
+            if (doesElementsHaveCommonMerges(id, start - 1, start) ||
+                doesElementsHaveCommonMerges(id, end, end + 1) ||
+                doesElementsHaveCommonMerges(id, cmd.base - 1, cmd.base)) {
+                return 2 /* WillRemoveExistingMerge */;
+            }
+            return 0 /* Success */;
+        }
+        //-------------------------------------------
+        // Helpers for extensions
+        // ------------------------------------------
+        /**
+         * Ensure selections are not outside sheet boundaries.
+         * They are clipped to fit inside the sheet if needed.
+         */
+        ensureSelectionValidity() {
+            let { anchor, zones } = this.clipSelection(this.getters.getActiveSheetId(), this.gridSelection);
+            this.gridSelection.zones = uniqueZones(zones);
+            this.gridSelection.anchor.cell.col = anchor.cell.col;
+            this.gridSelection.anchor.cell.row = anchor.cell.row;
+            this.gridSelection.anchor.zone = anchor.zone;
+        }
+        /**
+         * Clip the selection if it spans outside the sheet
+         */
+        clipSelection(sheetId, selection) {
+            const sheet = this.getters.getSheet(sheetId);
+            const cols = sheet.cols.length - 1;
+            const rows = sheet.rows.length - 1;
+            const zones = selection.zones.map((z) => {
+                return {
+                    left: clip(z.left, 0, cols),
+                    right: clip(z.right, 0, cols),
+                    top: clip(z.top, 0, rows),
+                    bottom: clip(z.bottom, 0, rows),
+                };
+            });
+            const anchorCol = clip(selection.anchor.cell.col, 0, cols);
+            const anchorRow = clip(selection.anchor.cell.row, 0, rows);
+            const anchorZone = {
+                left: clip(selection.anchor.zone.left, 0, cols),
+                right: clip(selection.anchor.zone.right, 0, cols),
+                top: clip(selection.anchor.zone.top, 0, rows),
+                bottom: clip(selection.anchor.zone.bottom, 0, rows),
+            };
+            return {
+                zones,
+                anchor: {
+                    cell: { col: anchorCol, row: anchorRow },
+                    zone: anchorZone,
+                },
+            };
+        }
+        // ---------------------------------------------------------------------------
+        // Grid rendering
+        // ---------------------------------------------------------------------------
+        drawGrid(renderingContext) {
+            const { viewport, ctx, thinLineWidth } = renderingContext;
+            // selection
+            const zones = this.getSelectedZones();
+            ctx.fillStyle = "#f3f7fe";
+            const onlyOneCell = zones.length === 1 && zones[0].left === zones[0].right && zones[0].top === zones[0].bottom;
+            ctx.fillStyle = onlyOneCell ? "#f3f7fe" : "#e9f0ff";
+            ctx.strokeStyle = SELECTION_BORDER_COLOR;
+            ctx.lineWidth = 1.5 * thinLineWidth;
+            ctx.globalCompositeOperation = "multiply";
+            for (const zone of zones) {
+                const [x, y, width, height] = this.getters.getRect(zone, viewport);
+                ctx.fillRect(x, y, width, height);
+                ctx.strokeRect(x, y, width, height);
+            }
+            ctx.globalCompositeOperation = "source-over";
+            // active zone
+            const activeSheet = this.getters.getActiveSheetId();
+            const [col, row] = this.getPosition();
+            ctx.strokeStyle = SELECTION_BORDER_COLOR;
+            ctx.lineWidth = 3 * thinLineWidth;
+            let zone;
+            if (this.getters.isInMerge(activeSheet, col, row)) {
+                zone = this.getters.getMerge(activeSheet, col, row);
+            }
+            else {
+                zone = {
+                    top: row,
+                    bottom: row,
+                    left: col,
+                    right: col,
+                };
+            }
+            const [x, y, width, height] = this.getters.getRect(zone, viewport);
+            if (width > 0 && height > 0) {
+                ctx.strokeRect(x, y, width, height);
+            }
+        }
+    }
+    GridSelectionPlugin.layers = [5 /* Selection */];
+    GridSelectionPlugin.modes = ["normal"];
+    GridSelectionPlugin.getters = [
+        "getActiveSheet",
+        "getActiveSheetId",
+        "getActiveCell",
+        "getActiveCols",
+        "getActiveRows",
+        "getCurrentStyle",
+        "getSelectedZones",
+        "getSelectedZone",
+        "getStatisticFnResults",
+        "getAggregate",
+        "getSelectedFigureId",
+        "getVisibleFigures",
+        "getSelection",
+        "getPosition",
+        "getSheetPosition",
+        "isSelected",
+        "getElementsFromSelection",
+    ];
+
     const uuidGenerator = new UuidGenerator();
     /**
      * Selection input Plugin
@@ -20398,185 +20081,125 @@
      * This plugin handles this internal state.
      */
     class SelectionInputPlugin extends UIPlugin {
-        constructor() {
-            super(...arguments);
-            this.inputs = {};
-            this.activeSheets = {};
-            this.inputHasSingleRange = {};
-            this.focusedInputId = null;
-            this.focusedRange = null;
+        constructor(getters, state, dispatch, config, selection, initialRanges, inputHasSingleRange) {
+            super(getters, state, dispatch, config, selection);
+            this.inputHasSingleRange = inputHasSingleRange;
+            this.ranges = [];
+            this.focusedRangeIndex = null;
             this.willAddNewRange = false;
+            this.insertNewRange(0, initialRanges);
+            this.activeSheet = this.getters.getActiveSheetId();
+            if (this.ranges.length === 0) {
+                this.insertNewRange(this.ranges.length, [""]);
+                this.focusLast();
+            }
         }
         // ---------------------------------------------------------------------------
         // Command Handling
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
             switch (cmd.type) {
-                case "FOCUS_RANGE":
-                    const index = this.getIndex(cmd.id, cmd.rangeId);
-                    if (this.focusedInputId === cmd.id && this.focusedRange === index) {
-                        return 22 /* InputAlreadyFocused */;
-                    }
-                    break;
                 case "ADD_EMPTY_RANGE":
-                    if (this.inputHasSingleRange[cmd.id] && this.inputs[cmd.id].length === 1) {
+                    if (this.inputHasSingleRange && this.ranges.length === 1) {
                         return 23 /* MaximumRangesReached */;
                     }
                     break;
             }
             return 0 /* Success */;
         }
+        handleEvent(event) {
+            const xc = zoneToXc(event.anchor.zone);
+            const inputSheetId = this.activeSheet;
+            const sheetId = this.getters.getActiveSheetId();
+            const sheetName = this.getters.getSheetName(sheetId);
+            this.add([sheetId === inputSheetId ? xc : `${getComposerSheetName(sheetName)}!${xc}`]);
+        }
         handle(cmd) {
             switch (cmd.type) {
-                case "ENABLE_NEW_SELECTION_INPUT":
-                    this.initInput(cmd.id, cmd.initialRanges || [], cmd.hasSingleRange);
-                    break;
-                case "DISABLE_SELECTION_INPUT":
-                    if (this.focusedInputId === cmd.id) {
-                        this.unfocus();
-                    }
-                    delete this.inputs[cmd.id];
-                    delete this.activeSheets[cmd.id];
-                    delete this.inputHasSingleRange[cmd.id];
-                    break;
                 case "UNFOCUS_SELECTION_INPUT":
                     this.unfocus();
                     break;
                 case "FOCUS_RANGE":
-                    this.focus(cmd.id, this.getIndex(cmd.id, cmd.rangeId));
+                    this.focus(this.getIndex(cmd.rangeId));
                     break;
                 case "CHANGE_RANGE": {
-                    const index = this.getIndex(cmd.id, cmd.rangeId);
+                    const index = this.getIndex(cmd.rangeId);
+                    if (index !== null && this.focusedRangeIndex !== index) {
+                        this.focus(index);
+                    }
                     if (index !== null) {
-                        const id = cmd.id;
-                        if (this.focusedInputId !== id || this.focusedRange !== index) {
-                            this.dispatch("FOCUS_RANGE", { id, rangeId: this.inputs[id][index].id });
-                        }
                         const values = cmd.value.split(",").map((reference) => reference.trim());
-                        this.setRange(id, index, values);
+                        this.setRange(index, values);
                     }
                     break;
                 }
                 case "ADD_EMPTY_RANGE":
-                    this.insertNewRange(cmd.id, this.inputs[cmd.id].length, [""]);
-                    this.focusLast(cmd.id);
+                    this.insertNewRange(this.ranges.length, [""]);
+                    this.focusLast();
                     break;
                 case "REMOVE_RANGE":
-                    const index = this.getIndex(cmd.id, cmd.rangeId);
+                    const index = this.getIndex(cmd.rangeId);
                     if (index !== null) {
-                        this.removeRange(cmd.id, index);
+                        this.removeRange(index);
                     }
                     break;
-                case "SELECT_CELL":
-                case "SET_SELECTION":
-                    if (!this.focusedInputId) {
-                        break;
-                    }
-                    const all = this.getSelectionInputValue(this.focusedInputId);
-                    const selectedZones = this.inputHasSingleRange[this.focusedInputId]
-                        ? [this.getters.getSelectedZone()]
-                        : this.getters.getSelectedZones();
-                    const selectedXCs = selectedZones.map(zoneToXc).filter((zoneXc) => !all.includes(zoneXc));
-                    const inputSheetId = this.activeSheets[this.focusedInputId];
-                    const sheetId = this.getters.getActiveSheetId();
-                    const sheetName = this.getters.getSheetName(sheetId);
-                    this.add(selectedXCs.map((xc) => sheetId === inputSheetId ? xc : `${getComposerSheetName(sheetName)}!${xc}`));
+                case "STOP_SELECTION_INPUT":
+                    this.willAddNewRange = false;
                     break;
-                case "PREPARE_SELECTION_EXPANSION": {
-                    const [id, index] = [this.focusedInputId, this.focusedRange];
-                    if (id !== null && index !== null && !this.inputHasSingleRange[id]) {
-                        this.willAddNewRange = this.inputs[id][index].xc.trim() !== "";
+                case "PREPARE_SELECTION_INPUT_EXPANSION": {
+                    const index = this.focusedRangeIndex;
+                    if (index !== null && !this.inputHasSingleRange) {
+                        this.willAddNewRange = this.ranges[index].xc.trim() !== "";
                     }
                     break;
                 }
             }
         }
-        // ---------------------------------------------------------------------------
-        // Getters
-        // ---------------------------------------------------------------------------
-        /**
-         * Return a list of all valid XCs.
-         * e.g. ["A1", "Sheet2!B3", "E12"]
-         */
-        getSelectionInput(id) {
-            if (!this.inputs[id]) {
-                return [];
-            }
-            return this.inputs[id].map((input, index) => Object.assign({}, input, {
-                color: this.focusedInputId === id && this.focusedRange !== null && this.isRangeValid(input.xc)
-                    ? input.color
-                    : null,
-                isFocused: this.focusedInputId === id && this.focusedRange === index,
-            }));
+        unsubscribe() {
+            this.unfocus();
         }
-        isRangeValid(xc) {
-            if (!xc) {
-                return false;
-            }
-            const [rangeXc, sheetName] = xc.split("!").reverse();
-            return (rangeXc.match(rangeReference) !== null &&
-                (sheetName === undefined || this.getters.getSheetIdByName(sheetName) !== undefined));
-        }
-        getSelectionInputValue(id) {
-            return this.cleanInputs(this.inputs[id].map((range) => {
+        // ---------------------------------------------------------------------------
+        // Getters || only callable by the parent
+        // ---------------------------------------------------------------------------
+        getSelectionInputValue() {
+            return this.cleanInputs(this.ranges.map((range) => {
                 return range.xc ? range.xc : "";
             }));
         }
         getSelectionInputHighlights() {
-            if (!this.focusedInputId) {
-                return [];
-            }
-            return this.inputs[this.focusedInputId]
-                .map((input) => this.inputToHighlights(this.focusedInputId, input))
-                .flat();
+            return this.ranges.map((input) => this.inputToHighlights(input)).flat();
         }
         // ---------------------------------------------------------------------------
         // Other
         // ---------------------------------------------------------------------------
-        initInput(id, initialRanges, inputHasSingleRange = false) {
-            this.inputs[id] = [];
-            this.insertNewRange(id, 0, initialRanges);
-            this.activeSheets[id] = this.getters.getActiveSheetId();
-            this.inputHasSingleRange[id] = inputHasSingleRange;
-            if (this.inputs[id].length === 0) {
-                this.dispatch("ADD_EMPTY_RANGE", { id });
-            }
-        }
         /**
          * Focus a given range or remove the focus.
          */
-        focus(id, index) {
-            this.focusedInputId = id;
-            this.focusedRange = index;
+        focus(index) {
+            this.focusedRangeIndex = index;
         }
-        focusLast(id) {
-            this.focus(id, this.inputs[id].length - 1);
+        focusLast() {
+            this.focus(this.ranges.length - 1);
         }
         unfocus() {
-            this.focusedInputId = null;
-            this.focusedRange = null;
+            this.focusedRangeIndex = null;
         }
         add(newRanges) {
-            if (this.focusedInputId === null ||
-                this.focusedRange === null ||
-                this.getters.isSelectingForComposer() ||
-                newRanges.length === 0) {
+            if (this.focusedRangeIndex === null || newRanges.length === 0) {
                 return;
             }
-            const mode = this.getters.getSelectionMode();
-            if (mode === SelectionMode.expanding && this.willAddNewRange) {
-                const id = this.focusedInputId;
-                this.insertNewRange(id, this.inputs[id].length, newRanges);
-                this.focusLast(this.focusedInputId);
+            if (this.willAddNewRange) {
+                this.insertNewRange(this.ranges.length, newRanges);
+                this.focusLast();
                 this.willAddNewRange = false;
             }
             else {
-                this.setRange(this.focusedInputId, this.focusedRange, newRanges);
+                this.setRange(this.focusedRangeIndex, newRanges);
             }
         }
-        setContent(id, index, xc) {
-            this.inputs[id][index] = {
-                ...this.inputs[id][index],
+        setContent(index, xc) {
+            this.ranges[index] = {
+                ...this.ranges[index],
                 id: uuidGenerator.uuidv4(),
                 xc,
             };
@@ -20584,10 +20207,10 @@
         /**
          * Insert new inputs after the given index.
          */
-        insertNewRange(id, index, values) {
-            this.inputs[id].splice(index, 0, ...values.map((xc, i) => ({
+        insertNewRange(index, values) {
+            this.ranges.splice(index, 0, ...values.map((xc, i) => ({
                 xc,
-                id: (this.inputs[id].length + i + 1).toString(),
+                id: (this.ranges.length + i + 1).toString(),
                 color: getNextColor(),
             })));
         }
@@ -20595,19 +20218,19 @@
          * Set a new value in a given range input. If more than one value is provided,
          * new inputs will be added.
          */
-        setRange(id, index, values) {
+        setRange(index, values) {
             const [, ...additionalValues] = values;
-            this.setContent(id, index, values[0]);
-            this.insertNewRange(id, index + 1, additionalValues);
+            this.setContent(index, values[0]);
+            this.insertNewRange(index + 1, additionalValues);
             // focus the last newly added range
             if (additionalValues.length) {
-                this.focus(id, index + additionalValues.length);
+                this.focus(index + additionalValues.length);
             }
         }
-        removeRange(id, index) {
-            this.inputs[id].splice(index, 1);
-            if (this.focusedInputId === id && this.focusedRange !== null) {
-                this.focusLast(id);
+        removeRange(index) {
+            this.ranges.splice(index, 1);
+            if (this.focusedRangeIndex !== null) {
+                this.focusLast();
             }
         }
         /**
@@ -20616,10 +20239,10 @@
          * Invalid ranges and ranges from other sheets than the active sheets
          * are ignored.
          */
-        inputToHighlights(id, { xc, color }) {
+        inputToHighlights({ xc, color, }) {
             const ranges = this.cleanInputs([xc])
-                .filter((range) => this.isRangeValid(range))
-                .filter((reference) => this.shouldBeHighlighted(this.activeSheets[id], reference));
+                .filter((range) => this.getters.isRangeValid(range))
+                .filter((reference) => this.shouldBeHighlighted(this.activeSheet, reference));
             if (ranges.length === 0)
                 return [];
             const [fromInput, ...otherRanges] = ranges;
@@ -20647,7 +20270,7 @@
             const sheetName = reference.split("!").reverse()[1];
             const sheetId = this.getters.getSheetIdByName(sheetName);
             const activeSheetId = this.getters.getActiveSheet().id;
-            const valid = this.isRangeValid(reference);
+            const valid = this.getters.isRangeValid(reference);
             return (valid &&
                 (sheetId === activeSheetId || (sheetId === undefined && activeSheetId === inputSheetId)));
         }
@@ -20655,14 +20278,142 @@
          * Return the index of a range given its id
          * or `null` if the range is not found.
          */
-        getIndex(id, rangeId) {
-            const index = this.inputs[id].findIndex((range) => range.id === rangeId);
+        getIndex(rangeId) {
+            const index = this.ranges.findIndex((range) => range.id === rangeId);
             return index >= 0 ? index : null;
         }
     }
     SelectionInputPlugin.modes = ["normal"];
     SelectionInputPlugin.layers = [1 /* Highlights */];
-    SelectionInputPlugin.getters = [
+    SelectionInputPlugin.getters = [];
+
+    /**
+     * Selection input Plugin
+     *
+     * The SelectionInput component input and output are both arrays of strings, but
+     * it requires an intermediary internal state to work.
+     * This plugin handles this internal state.
+     */
+    class SelectionInputsManagerPlugin extends UIPlugin {
+        constructor(getters, state, dispatch, config, selection) {
+            super(getters, state, dispatch, config, selection);
+            this.state = state;
+            this.config = config;
+            this.inputs = {};
+            this.focusedInputId = null;
+        }
+        get currentInput() {
+            return this.focusedInputId ? this.inputs[this.focusedInputId] : null;
+        }
+        // ---------------------------------------------------------------------------
+        // Command Handling
+        // ---------------------------------------------------------------------------
+        allowDispatch(cmd) {
+            var _a, _b;
+            switch (cmd.type) {
+                case "FOCUS_RANGE":
+                    const index = (_a = this.currentInput) === null || _a === void 0 ? void 0 : _a.getIndex(cmd.rangeId);
+                    if (this.focusedInputId === cmd.id && ((_b = this.currentInput) === null || _b === void 0 ? void 0 : _b.focusedRangeIndex) === index) {
+                        return 22 /* InputAlreadyFocused */;
+                    }
+                    break;
+            }
+            if (this.currentInput) {
+                return this.currentInput.allowDispatch(cmd);
+            }
+            return 0 /* Success */;
+        }
+        handle(cmd) {
+            var _a;
+            switch (cmd.type) {
+                case "ENABLE_NEW_SELECTION_INPUT":
+                    this.initInput(cmd.id, cmd.initialRanges || [], cmd.hasSingleRange);
+                    break;
+                case "DISABLE_SELECTION_INPUT":
+                    if (this.focusedInputId === cmd.id) {
+                        this.unfocus();
+                    }
+                    delete this.inputs[cmd.id];
+                    break;
+                case "UNFOCUS_SELECTION_INPUT":
+                    this.unfocus();
+                    break;
+                case "ADD_EMPTY_RANGE":
+                case "REMOVE_RANGE":
+                case "FOCUS_RANGE":
+                case "CHANGE_RANGE":
+                    if (cmd.id !== this.focusedInputId) {
+                        const input = this.inputs[cmd.id];
+                        this.selection.capture(input, { cell: { col: 0, row: 0 }, zone: positionToZone({ col: 0, row: 0 }) }, { handleEvent: input.handleEvent.bind(input) });
+                        this.focusedInputId = cmd.id;
+                    }
+                    break;
+            }
+            (_a = this.currentInput) === null || _a === void 0 ? void 0 : _a.handle(cmd);
+        }
+        unsubscribe() {
+            this.unfocus();
+        }
+        // ---------------------------------------------------------------------------
+        // Getters
+        // ---------------------------------------------------------------------------
+        /**
+         * Return a list of all valid XCs.
+         * e.g. ["A1", "Sheet2!B3", "E12"]
+         */
+        getSelectionInput(id) {
+            if (!this.inputs[id]) {
+                return [];
+            }
+            return this.inputs[id].ranges.map((input, index) => Object.assign({}, input, {
+                color: this.focusedInputId === id &&
+                    this.inputs[id].focusedRangeIndex !== null &&
+                    this.isRangeValid(input.xc)
+                    ? input.color
+                    : null,
+                isFocused: this.focusedInputId === id && this.inputs[id].focusedRangeIndex === index,
+            }));
+        }
+        isRangeValid(xc) {
+            if (!xc) {
+                return false;
+            }
+            const [rangeXc, sheetName] = xc.split("!").reverse();
+            return (rangeXc.match(rangeReference) !== null &&
+                (sheetName === undefined || this.getters.getSheetIdByName(sheetName) !== undefined));
+        }
+        getSelectionInputValue(id) {
+            return this.inputs[id].getSelectionInputValue();
+        }
+        getSelectionInputHighlights() {
+            if (!this.focusedInputId) {
+                return [];
+            }
+            return this.inputs[this.focusedInputId].getSelectionInputHighlights();
+        }
+        // ---------------------------------------------------------------------------
+        // Other
+        // ---------------------------------------------------------------------------
+        initInput(id, initialRanges, inputHasSingleRange = false) {
+            this.inputs[id] = new SelectionInputPlugin(this.getters, this.state, this.dispatch, this.config, this.selection, initialRanges, inputHasSingleRange);
+            if (initialRanges.length === 0) {
+                const input = this.inputs[id];
+                const anchor = {
+                    zone: positionToZone({ col: 0, row: 0 }),
+                    cell: { col: 0, row: 0 },
+                };
+                this.selection.capture(input, anchor, { handleEvent: input.handleEvent.bind(input) });
+                this.focusedInputId = id;
+            }
+        }
+        unfocus() {
+            this.selection.release(this.currentInput);
+            this.focusedInputId = null;
+        }
+    }
+    SelectionInputsManagerPlugin.modes = ["normal"];
+    SelectionInputsManagerPlugin.layers = [1 /* Highlights */];
+    SelectionInputsManagerPlugin.getters = [
         "getSelectionInput",
         "getSelectionInputValue",
         "isRangeValid",
@@ -21325,8 +21076,30 @@
                     return 0 /* Success */;
             }
         }
+        handleEvent(event) {
+            switch (event.type) {
+                case "HeadersSelected":
+                case "AlterZoneCorner":
+                    break;
+                case "ZonesSelected":
+                    if (event.mode === "updateAnchor") {
+                        // altering a zone should not move the viewport
+                        const [col, row] = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone, this.getActiveSnappedViewport());
+                        this.refreshViewport(this.getters.getActiveSheetId(), { col, row });
+                    }
+                    else {
+                        this.refreshViewport(this.getters.getActiveSheetId());
+                    }
+                    break;
+            }
+        }
         handle(cmd) {
             switch (cmd.type) {
+                case "START":
+                    this.selection.observe(this, {
+                        handleEvent: this.handleEvent.bind(this),
+                    });
+                    break;
                 case "UNDO":
                 case "REDO":
                     this.cleanViewports();
@@ -21371,10 +21144,6 @@
                     break;
                 case "ACTIVATE_SHEET":
                     this.refreshViewport(cmd.sheetIdTo);
-                    break;
-                case "SELECT_CELL":
-                case "MOVE_POSITION":
-                    this.refreshViewport(this.getters.getActiveSheetId());
                     break;
             }
         }
@@ -21455,9 +21224,10 @@
         }
         resetViewports() {
             for (let [sheetId, viewport] of Object.entries(this.viewports)) {
+                const [col, row] = this.getters.getSheetPosition(sheetId);
                 this.adjustViewportOffsetX(sheetId, viewport);
                 this.adjustViewportOffsetY(sheetId, viewport);
-                this.adjustViewportsPosition(sheetId);
+                this.adjustViewportsPosition(sheetId, { col, row });
             }
         }
         /** Corrects the viewport's horizontal offset based on the current structure
@@ -21537,10 +21307,13 @@
             };
             return this.viewports[sheetId];
         }
-        refreshViewport(sheetId) {
+        /**
+         * Adjust the viewport such that the anchor position is visible
+         */
+        refreshViewport(sheetId, anchorPosition) {
             const viewport = this.getViewport(sheetId);
             this.adjustViewportZone(sheetId, viewport);
-            this.adjustViewportsPosition(sheetId);
+            this.adjustViewportsPosition(sheetId, anchorPosition);
         }
         adjustViewportZone(sheetId, viewport) {
             this.adjustViewportZoneX(sheetId, viewport);
@@ -21587,8 +21360,11 @@
             const sheet = this.getters.getSheet(sheetId);
             const { cols, rows } = sheet;
             const adjustedViewport = this.getSnappedViewport(sheetId);
-            position = position || this.getters.getSheetPosition(sheetId);
-            const [col, row] = getNextVisibleCellCoords(sheet, ...this.getters.getMainCell(sheetId, position[0], position[1]));
+            if (!position) {
+                const sheetPosition = this.getters.getSheetPosition(sheetId);
+                position = { col: sheetPosition[0], row: sheetPosition[1] };
+            }
+            const [col, row] = getNextVisibleCellCoords(sheet, ...this.getters.getMainCell(sheetId, position.col, position.row));
             while (cols[col].end > adjustedViewport.offsetX + this.viewportWidth &&
                 adjustedViewport.offsetX < cols[col].start) {
                 adjustedViewport.offsetX = cols[adjustedViewport.left].end;
@@ -21644,10 +21420,7 @@
             this.setViewportOffset(offsetX, offset);
             const { anchor } = this.getters.getSelection();
             const deltaRow = this.getActiveSnappedViewport().top - top;
-            this.dispatch("SELECT_CELL", {
-                col: anchor[0],
-                row: anchor[1] + deltaRow,
-            });
+            this.selection.selectCell(anchor[0], anchor[1] + deltaRow);
         }
         /**
          * Return the row at the viewport's top
@@ -21677,7 +21450,7 @@
         .add("sort", SortPlugin)
         .add("chart", ChartPlugin);
     const uiPluginRegistry = new Registry()
-        .add("selection", SelectionPlugin)
+        .add("selection", GridSelectionPlugin)
         .add("ui_sheet", SheetUIPlugin)
         .add("ui_options", UIOptionsPlugin)
         .add("evaluation", EvaluationPlugin)
@@ -21685,7 +21458,7 @@
         .add("evaluation_chart", EvaluationChartPlugin)
         .add("clipboard", ClipboardPlugin)
         .add("edition", EditionPlugin)
-        .add("selectionInput", SelectionInputPlugin)
+        .add("selectionInputManager", SelectionInputsManagerPlugin)
         .add("highlight", HighlightPlugin)
         .add("viewport", ViewportPlugin)
         .add("grid renderer", RendererPlugin)
@@ -23057,9 +22830,13 @@
         processArrowKeys(ev) {
             if (this.env.model.getters.isSelectingForComposer()) {
                 this.functionDescriptionState.showDescription = false;
+                // let the event bubble to the grid. Arrows are supposed
+                // to select cells
                 return;
             }
+            // only for arrow up and down
             if (this.props.focus === "cellFocus" && !this.autoCompleteState.showProvider) {
+                this.env.model.dispatch("STOP_EDITION");
                 return;
             }
             ev.stopPropagation();
@@ -23091,8 +22868,9 @@
                 // todo: check if this can be removed someday
                 this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
             }
-            const deltaX = ev.shiftKey ? -1 : 1;
-            this.env.model.dispatch("MOVE_POSITION", { deltaX, deltaY: 0 });
+            const deltaCol = ev.shiftKey ? -1 : 1;
+            this.env.model.dispatch("STOP_EDITION");
+            this.env.model.selection.moveAnchorCell(deltaCol, 0);
         }
         processEnterKey(ev) {
             ev.preventDefault();
@@ -23106,10 +22884,7 @@
                 }
             }
             this.env.model.dispatch("STOP_EDITION");
-            this.env.model.dispatch("MOVE_POSITION", {
-                deltaX: 0,
-                deltaY: ev.shiftKey ? -1 : 1,
-            });
+            this.env.model.selection.moveAnchorCell(0, ev.shiftKey ? -1 : 1);
         }
         processEscapeKey() {
             this.env.model.dispatch("STOP_EDITION", { cancel: true });
@@ -23228,7 +23003,7 @@
             if (value === "") {
                 content = [];
             }
-            else if (value.startsWith("=") && this.env.model.getters.getEditionMode() !== "inactive") {
+            else if (value.startsWith("=") && this.props.focus !== "inactive") {
                 content = this.getColoredTokens();
             }
             else {
@@ -23240,7 +23015,7 @@
             const tokens = this.env.model.getters.getCurrentTokens();
             const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
             const result = [];
-            const { end } = this.env.model.getters.getComposerSelection();
+            const { end, start } = this.env.model.getters.getComposerSelection();
             for (let token of tokens) {
                 switch (token.type) {
                     case "OPERATOR":
@@ -23280,16 +23055,14 @@
                         result.push({ value: token.value, color: "#000" });
                         break;
                 }
-                // Note: mode === waitingForRangeSelection implies end === start
-                if (this.env.model.getters.getEditionMode() === "waitingForRangeSelection" &&
-                    end === token.end) {
+                if (this.env.model.getters.showSelectionIndicator() && end === start && end === token.end) {
                     result[result.length - 1].class = SelectionIndicatorClass;
                 }
             }
             return result;
         }
         rangeColor(xc, sheetName) {
-            if (this.env.model.getters.getEditionMode() === "inactive") {
+            if (this.props.focus === "inactive") {
                 return undefined;
             }
             const highlights = this.env.model.getters.getHighlights();
@@ -24597,7 +24370,6 @@
         }
         startSelection(ev, index) {
             this.state.isSelecting = true;
-            this.env.model.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
             if (ev.shiftKey) {
                 this._increaseSelection(index);
             }
@@ -24614,7 +24386,7 @@
             const mouseUpSelect = () => {
                 this.state.isSelecting = false;
                 this.lastSelectedElementIndex = null;
-                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
+                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_INPUT_EXPANSION" : "STOP_SELECTION_INPUT");
                 this._computeGrabDisplay(ev);
             };
             this.dragOverlayBeyondTheViewport(ev, mouseMoveSelect, mouseUpSelect);
@@ -24809,10 +24581,10 @@
             }
         }
         _selectElement(index, ctrlKey) {
-            this.env.model.dispatch("SELECT_COLUMN", { index, createRange: ctrlKey });
+            this.env.model.selection.selectColumn(index, ctrlKey ? "newAnchor" : "overrideSelection");
         }
         _increaseSelection(index) {
-            this.env.model.dispatch("SELECT_COLUMN", { index, updateRange: true });
+            this.env.model.selection.selectColumn(index, "updateAnchor");
         }
         _adjustViewport(direction) {
             const { left, offsetY } = this.env.model.getters.getActiveSnappedViewport();
@@ -25017,10 +24789,10 @@
             }
         }
         _selectElement(index, ctrlKey) {
-            this.env.model.dispatch("SELECT_ROW", { index, createRange: ctrlKey });
+            this.env.model.selection.selectRow(index, ctrlKey ? "newAnchor" : "overrideSelection");
         }
         _increaseSelection(index) {
-            this.env.model.dispatch("SELECT_ROW", { index, updateRange: true });
+            this.env.model.selection.selectRow(index, "updateAnchor");
         }
         _adjustViewport(direction) {
             const { top, offsetX } = this.env.model.getters.getActiveSnappedViewport();
@@ -25103,7 +24875,7 @@
 `;
     class Overlay extends owl.Component {
         selectAll() {
-            this.env.model.dispatch("SELECT_ALL");
+            this.env.model.selection.selectAll();
         }
     }
     Overlay.template = owl.xml /* xml */ `
@@ -25357,8 +25129,8 @@
                         ? this.props.onGridComposerCellFocused()
                         : this.props.onComposerContentFocused();
                 },
-                TAB: () => this.env.model.dispatch("MOVE_POSITION", { deltaX: 1, deltaY: 0 }),
-                "SHIFT+TAB": () => this.env.model.dispatch("MOVE_POSITION", { deltaX: -1, deltaY: 0 }),
+                TAB: () => this.env.model.selection.moveAnchorCell(1, 0),
+                "SHIFT+TAB": () => this.env.model.selection.moveAnchorCell(-1, 0),
                 F2: () => {
                     const cell = this.env.model.getters.getActiveCell();
                     !cell || cell.isEmpty()
@@ -25371,7 +25143,7 @@
                         target: this.env.model.getters.getSelectedZones(),
                     });
                 },
-                "CTRL+A": () => this.env.model.dispatch("SELECT_ALL"),
+                "CTRL+A": () => this.env.model.selection.selectAll(),
                 "CTRL+S": () => {
                     var _a, _b;
                     (_b = (_a = this.props).onSaveRequested) === null || _b === void 0 ? void 0 : _b.call(_a);
@@ -25412,13 +25184,13 @@
                 "CTRL+HOME": () => {
                     const sheet = this.env.model.getters.getActiveSheet();
                     const [col, row] = getNextVisibleCellCoords(sheet, 0, 0);
-                    this.env.model.dispatch("SELECT_CELL", { col, row });
+                    this.env.model.selection.selectCell(col, row);
                 },
                 "CTRL+END": () => {
                     const sheet = this.env.model.getters.getActiveSheet();
                     const col = findVisibleHeader(sheet, "cols", range(0, sheet.cols.length).reverse());
                     const row = findVisibleHeader(sheet, "rows", range(0, sheet.rows.length).reverse());
-                    this.env.model.dispatch("SELECT_CELL", { col, row });
+                    this.env.model.selection.selectCell(col, row);
                 },
                 "SHIFT+ ": () => {
                     const { cols } = this.env.model.getters.getActiveSheet();
@@ -25427,11 +25199,8 @@
                         left: 0,
                         right: cols.length - 1,
                     };
-                    this.env.model.dispatch("SET_SELECTION", {
-                        anchor: this.env.model.getters.getPosition(),
-                        zones: [newZone],
-                        anchorZone: newZone,
-                    });
+                    const [col, row] = this.env.model.getters.getPosition();
+                    this.env.model.selection.selectZone({ cell: { col, row }, zone: newZone });
                 },
                 "CTRL+ ": () => {
                     const { rows } = this.env.model.getters.getActiveSheet();
@@ -25440,14 +25209,11 @@
                         top: 0,
                         bottom: rows.length - 1,
                     };
-                    this.env.model.dispatch("SET_SELECTION", {
-                        anchor: this.env.model.getters.getPosition(),
-                        zones: [newZone],
-                        anchorZone: newZone,
-                    });
+                    const [col, row] = this.env.model.getters.getPosition();
+                    this.env.model.selection.selectZone({ cell: { col, row }, zone: newZone });
                 },
                 "CTRL+SHIFT+ ": () => {
-                    this.env.model.dispatch("SELECT_ALL");
+                    this.env.model.selection.selectAll();
                 },
                 "SHIFT+PAGEDOWN": () => {
                     this.env.model.dispatch("ACTIVATE_NEXT_SHEET");
@@ -25544,8 +25310,7 @@
             };
         }
         focus() {
-            if (!this.env.model.getters.isSelectingForComposer() &&
-                !this.env.model.getters.getSelectedFigureId()) {
+            if (!this.env.model.getters.getSelectedFigureId()) {
                 this.canvas.el.focus();
             }
         }
@@ -25685,14 +25450,19 @@
             if (!(cell === null || cell === void 0 ? void 0 : cell.isLink())) {
                 this.closeLinkEditor();
             }
-            this.env.model.dispatch(ev.ctrlKey ? "START_SELECTION_EXPANSION" : "START_SELECTION");
+            if (this.env.model.getters.getEditionMode() === "editing") {
+                this.env.model.dispatch("STOP_EDITION");
+            }
             if (ev.shiftKey) {
-                this.env.model.dispatch("ALTER_SELECTION", { cell: [col, row] });
+                this.env.model.selection.setAnchorCorner(col, row);
+            }
+            else if (ev.ctrlKey) {
+                this.env.model.selection.addCellToSelection(col, row);
             }
             else {
-                this.env.model.dispatch("SELECT_CELL", { col, row });
-                this.checkSheetChanges();
+                this.env.model.selection.selectCell(col, row);
             }
+            this.checkSheetChanges();
             let prevCol = col;
             let prevRow = row;
             let isEdgeScrolling = false;
@@ -25731,7 +25501,7 @@
                 if (col !== prevCol || row !== prevRow) {
                     prevCol = col;
                     prevRow = row;
-                    this.env.model.dispatch("ALTER_SELECTION", { cell: [col, row] });
+                    this.env.model.selection.setAnchorCorner(col, row);
                 }
                 if (isEdgeScrolling) {
                     const offsetX = sheet.cols[left + colEdgeScroll.direction].start;
@@ -25745,7 +25515,7 @@
             };
             const onMouseUp = (ev) => {
                 clearTimeout(timeOutId);
-                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_EXPANSION" : "STOP_SELECTION");
+                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_INPUT_EXPANSION" : "STOP_SELECTION_INPUT");
                 this.canvas.el.removeEventListener("mousemove", onMouseMove);
                 if (this.env.model.getters.isPaintingFormat()) {
                     this.env.model.dispatch("PASTE", {
@@ -25770,11 +25540,6 @@
         // ---------------------------------------------------------------------------
         // Keyboard interactions
         // ---------------------------------------------------------------------------
-        processTabKey(ev) {
-            ev.preventDefault();
-            const deltaX = ev.shiftKey ? -1 : 1;
-            this.env.model.dispatch("MOVE_POSITION", { deltaX, deltaY: 0 });
-        }
         processArrows(ev) {
             ev.preventDefault();
             ev.stopPropagation();
@@ -25788,7 +25553,7 @@
             const delta = deltaMap[ev.key];
             if (ev.shiftKey) {
                 const oldZone = this.env.model.getters.getSelectedZone();
-                this.env.model.dispatch("ALTER_SELECTION", { delta });
+                this.env.model.selection.resizeAnchorZone(delta[0], delta[1]);
                 const newZone = this.env.model.getters.getSelectedZone();
                 const viewport = this.env.model.getters.getActiveSnappedViewport();
                 const sheet = this.env.model.getters.getActiveSheet();
@@ -25804,7 +25569,7 @@
                 }
             }
             else {
-                this.env.model.dispatch("MOVE_POSITION", { deltaX: delta[0], deltaY: delta[1] });
+                this.env.model.selection.moveAnchorCell(delta[0], delta[1]);
             }
             if (this.env.model.getters.isPaintingFormat()) {
                 this.env.model.dispatch("PASTE", {
@@ -25857,8 +25622,9 @@
             const lastZone = zones[zones.length - 1];
             let type = "CELL";
             if (!isInside(col, row, lastZone)) {
+                this.env.model.dispatch("UNFOCUS_SELECTION_INPUT");
                 this.env.model.dispatch("STOP_EDITION");
-                this.env.model.dispatch("SELECT_CELL", { col, row });
+                this.env.model.selection.selectCell(col, row);
             }
             else {
                 if (this.env.model.getters.getActiveCols().has(col)) {
@@ -26702,15 +26468,13 @@
             (_b = (_a = this.props).onContentSaved) === null || _b === void 0 ? void 0 : _b.call(_a, this.model.exportData());
         }
         onKeyup(ev) {
-            if (ev.key === "Control" && this.model.getters.getSelectionMode() !== SelectionMode.expanding) {
-                this.model.dispatch("STOP_SELECTION");
+            if (ev.key === "Control") {
+                this.model.dispatch("STOP_SELECTION_INPUT");
             }
         }
         onKeydown(ev) {
             if (ev.key === "Control" && !ev.repeat) {
-                this.model.dispatch(this.model.getters.getSelectionMode() === SelectionMode.idle
-                    ? "PREPARE_SELECTION_EXPANSION"
-                    : "START_SELECTION_EXPANSION");
+                this.model.dispatch("PREPARE_SELECTION_INPUT_EXPANSION");
             }
             let keyDownString = "";
             if (ev.ctrlKey || ev.metaKey) {
@@ -26729,28 +26493,28 @@
             if (this.model.getters.isReadonly()) {
                 return;
             }
+            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
             this.composer.topBarFocus = "contentFocus";
             this.composer.gridFocusMode = "inactive";
             this.setComposerContent({ selection } || {});
-            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         onGridComposerContentFocused() {
             if (this.model.getters.isReadonly()) {
                 return;
             }
+            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "contentFocus";
             this.setComposerContent({});
-            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         onGridComposerCellFocused(content, selection) {
             if (this.model.getters.isReadonly()) {
                 return;
             }
+            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
             this.composer.topBarFocus = "inactive";
             this.composer.gridFocusMode = "cellFocus";
             this.setComposerContent({ content, selection } || {});
-            this.model.dispatch("UNFOCUS_SELECTION_INPUT");
         }
         /**
          * Start the edition or update the content if it's already started.
@@ -28697,6 +28461,429 @@
     }
     RangeAdapter.getters = ["getRangeString", "getRangeFromSheetXC", "createAdaptedRanges"];
 
+    /**
+     * Stateless sequence of events that can be processed by consumers.
+     *
+     * There are three kind of consumers:
+     * - the main consumer
+     * - the default consumer
+     * - observer consumers
+     *
+     * Main consumer
+     * -------------
+     * Anyone can capture the event stream and become the main consumer.
+     * If there is already a main consumer, it is kicked off and it will no longer
+     * receive events.
+     * The main consumer can release the stream at any moment to stop listening
+     * events.
+     *
+     * Default consumer
+     * ----------------
+     * When the main consumer releases the stream and until the stream is captured
+     * again, all events are transmitted to the default consumer.
+     *
+     * Observer consumers
+     * ------------------
+     * Observers permanently receive events.
+     *
+     */
+    class EventStream {
+        constructor() {
+            this.observers = [];
+        }
+        registerAsDefault(owner, callbacks) {
+            this.defaultSubscription = { owner, callbacks };
+            if (!this.mainSubscription) {
+                this.mainSubscription = this.defaultSubscription;
+            }
+        }
+        /**
+         * Register callbacks to observe the steam
+         */
+        observe(owner, callbacks) {
+            this.observers.push({ owner, callbacks });
+        }
+        /**
+         * Capture the stream for yourself
+         */
+        capture(owner, callbacks) {
+            var _a, _b, _c;
+            if (this.observers.find((sub) => sub.owner === owner)) {
+                throw new Error("You are already subscribed forever");
+            }
+            if ((_a = this.mainSubscription) === null || _a === void 0 ? void 0 : _a.owner) {
+                (_c = (_b = this.mainSubscription.callbacks).release) === null || _c === void 0 ? void 0 : _c.call(_b);
+            }
+            this.mainSubscription = { owner, callbacks };
+        }
+        release(owner) {
+            var _a, _b, _c, _d;
+            if (((_a = this.mainSubscription) === null || _a === void 0 ? void 0 : _a.owner) !== owner ||
+                this.observers.find((sub) => sub.owner === owner)) {
+                return;
+            }
+            (_d = (_b = this.mainSubscription) === null || _b === void 0 ? void 0 : (_c = _b.callbacks).release) === null || _d === void 0 ? void 0 : _d.call(_c);
+            this.mainSubscription = this.defaultSubscription;
+        }
+        /**
+         * Check if you are currently the main stream consumer
+         */
+        isListening(owner) {
+            var _a;
+            return ((_a = this.mainSubscription) === null || _a === void 0 ? void 0 : _a.owner) === owner;
+        }
+        /**
+         * Push an event to the stream and broadcast it to consumers
+         */
+        send(event) {
+            var _a;
+            (_a = this.mainSubscription) === null || _a === void 0 ? void 0 : _a.callbacks.handleEvent(event);
+            [...this.observers].forEach((sub) => sub.callbacks.handleEvent(event));
+        }
+    }
+
+    /**
+     * Processes all selection updates (usually from user inputs) and emits an event
+     * with the new selected anchor
+     */
+    class SelectionStreamProcessor {
+        constructor(getters) {
+            this.getters = getters;
+            this.stream = new EventStream();
+            this.anchor = { cell: { col: 0, row: 0 }, zone: positionToZone({ col: 0, row: 0 }) };
+            this.defaultAnchor = this.anchor;
+        }
+        capture(owner, anchor, callbacks) {
+            this.stream.capture(owner, callbacks);
+            this.anchor = anchor;
+        }
+        /**
+         * Register as default subscriber and capture the event stream.
+         */
+        registerAsDefault(owner, anchor, callbacks) {
+            this.stream.registerAsDefault(owner, callbacks);
+            this.defaultAnchor = anchor;
+            this.capture(owner, anchor, callbacks);
+        }
+        resetDefaultAnchor(owner, anchor) {
+            if (this.stream.isListening(owner)) {
+                this.anchor = anchor;
+            }
+            this.defaultAnchor = anchor;
+        }
+        resetAnchor(owner, anchor) {
+            if (this.stream.isListening(owner)) {
+                this.anchor = anchor;
+            }
+        }
+        observe(owner, callbacks) {
+            this.stream.observe(owner, callbacks);
+        }
+        release(owner) {
+            this.stream.release(owner);
+            this.anchor = this.defaultAnchor;
+        }
+        /**
+         * Select a new anchor
+         */
+        selectZone(anchor) {
+            const sheetId = this.getters.getActiveSheetId();
+            anchor = {
+                ...anchor,
+                zone: this.getters.expandZone(sheetId, anchor.zone),
+            };
+            return this.processEvent({
+                type: "ZonesSelected",
+                anchor,
+                mode: "overrideSelection",
+            });
+        }
+        /**
+         * Select a single cell as the new anchor.
+         */
+        selectCell(col, row) {
+            const zone = positionToZone({ col, row });
+            return this.selectZone({ zone, cell: { col, row } });
+        }
+        /**
+         * Set the selection to one of the cells adjacent to the current anchor cell.
+         */
+        moveAnchorCell(deltaCol, deltaRow) {
+            const { col, row } = this.getNextAvailablePosition(deltaCol, deltaRow);
+            return this.selectCell(col, row);
+        }
+        /**
+         * Update the current anchor such that it includes the given
+         * cell position.
+         */
+        setAnchorCorner(col, row) {
+            const sheetId = this.getters.getActiveSheetId();
+            const { col: anchorCol, row: anchorRow } = this.anchor.cell;
+            const zone = {
+                left: Math.min(anchorCol, col),
+                top: Math.min(anchorRow, row),
+                right: Math.max(anchorCol, col),
+                bottom: Math.max(anchorRow, row),
+            };
+            const expandedZone = this.getters.expandZone(sheetId, zone);
+            const anchor = { zone: expandedZone, cell: { col: anchorCol, row: anchorRow } };
+            return this.processEvent({
+                type: "AlterZoneCorner",
+                mode: "updateAnchor",
+                anchor: anchor,
+            });
+        }
+        /**
+         * Add a new cell to the current selection
+         */
+        addCellToSelection(col, row) {
+            const sheetId = this.getters.getActiveSheetId();
+            [col, row] = this.getters.getMainCell(sheetId, col, row);
+            const zone = positionToZone({ col, row });
+            return this.processEvent({
+                type: "ZonesSelected",
+                anchor: { zone, cell: { col, row } },
+                mode: "newAnchor",
+            });
+        }
+        /**
+         * Increase or decrease the size of the current anchor zone.
+         * The anchor cell remains where it is. It's the opposite side
+         * of the anchor zone which moves.
+         */
+        resizeAnchorZone(deltaCol, deltaRow) {
+            const sheet = this.getters.getActiveSheet();
+            const anchor = this.anchor;
+            const { col: anchorCol, row: anchorRow } = anchor.cell;
+            const { left, right, top, bottom } = anchor.zone;
+            let result = anchor.zone;
+            const expand = (z) => {
+                z = organizeZone(z);
+                const { left, right, top, bottom } = this.getters.expandZone(sheet.id, z);
+                return {
+                    left: Math.max(0, left),
+                    right: Math.min(sheet.cols.length - 1, right),
+                    top: Math.max(0, top),
+                    bottom: Math.min(sheet.rows.length - 1, bottom),
+                };
+            };
+            const { col: refCol, row: refRow } = this.getReferencePosition();
+            // check if we can shrink selection
+            let n = 0;
+            while (result !== null) {
+                n++;
+                if (deltaCol < 0) {
+                    const newRight = this.getNextAvailableCol(deltaCol, right - (n - 1), refRow);
+                    result = refCol <= right - n ? expand({ top, left, bottom, right: newRight }) : null;
+                }
+                if (deltaCol > 0) {
+                    const newLeft = this.getNextAvailableCol(deltaCol, left + (n - 1), refRow);
+                    result = left + n <= refCol ? expand({ top, left: newLeft, bottom, right }) : null;
+                }
+                if (deltaRow < 0) {
+                    const newBottom = this.getNextAvailableRow(deltaRow, refCol, bottom - (n - 1));
+                    result = refRow <= bottom - n ? expand({ top, left, bottom: newBottom, right }) : null;
+                }
+                if (deltaRow > 0) {
+                    const newTop = this.getNextAvailableRow(deltaRow, refCol, top + (n - 1));
+                    result = top + n <= refRow ? expand({ top: newTop, left, bottom, right }) : null;
+                }
+                result = result ? organizeZone(result) : result;
+                if (result && !isEqual(result, anchor.zone)) {
+                    return this.processEvent({
+                        type: "ZonesSelected",
+                        mode: "updateAnchor",
+                        anchor: { zone: result, cell: { col: anchorCol, row: anchorRow } },
+                    });
+                }
+            }
+            const currentZone = {
+                top: anchorRow,
+                bottom: anchorRow,
+                left: anchorCol,
+                right: anchorCol,
+            };
+            const zoneWithDelta = organizeZone({
+                top: this.getNextAvailableRow(deltaRow, refCol, top),
+                left: this.getNextAvailableCol(deltaCol, left, refRow),
+                bottom: this.getNextAvailableRow(deltaRow, refCol, bottom),
+                right: this.getNextAvailableCol(deltaCol, right, refRow),
+            });
+            result = expand(union(currentZone, zoneWithDelta));
+            const newAnchor = { zone: result, cell: { col: anchorCol, row: anchorRow } };
+            return this.processEvent({
+                type: "ZonesSelected",
+                anchor: newAnchor,
+                mode: "updateAnchor",
+            });
+        }
+        selectColumn(index, mode) {
+            const sheet = this.getters.getActiveSheet();
+            const bottom = sheet.rows.length - 1;
+            let zone = { left: index, right: index, top: 0, bottom };
+            const top = sheet.rows.findIndex((row) => !row.isHidden);
+            let col, row;
+            switch (mode) {
+                case "overrideSelection":
+                case "newAnchor":
+                    col = index;
+                    row = top;
+                    break;
+                case "updateAnchor":
+                    ({ col, row } = this.anchor.cell);
+                    zone = union(zone, { left: col, right: col, top, bottom });
+                    break;
+            }
+            return this.processEvent({
+                type: "HeadersSelected",
+                anchor: { zone, cell: { col, row } },
+                mode,
+            });
+        }
+        selectRow(index, mode) {
+            const right = this.getters.getActiveSheet().cols.length - 1;
+            let zone = { top: index, bottom: index, left: 0, right };
+            const left = this.getters.getActiveSheet().cols.findIndex((col) => !col.isHidden);
+            let col, row;
+            switch (mode) {
+                case "overrideSelection":
+                case "newAnchor":
+                    col = left;
+                    row = index;
+                    break;
+                case "updateAnchor":
+                    ({ col, row } = this.anchor.cell);
+                    zone = union(zone, { left, right, top: row, bottom: row });
+                    break;
+            }
+            return this.processEvent({
+                type: "HeadersSelected",
+                anchor: { zone, cell: { col, row } },
+                mode,
+            });
+        }
+        /**
+         * Select the entire sheet
+         */
+        selectAll() {
+            const sheet = this.getters.getActiveSheet();
+            const bottom = sheet.rows.length - 1;
+            const right = sheet.cols.length - 1;
+            const zone = { left: 0, top: 0, bottom, right };
+            return this.processEvent({
+                type: "HeadersSelected",
+                mode: "overrideSelection",
+                anchor: { zone, cell: { col: 0, row: 0 } },
+            });
+        }
+        /**
+         * Process a new anchor selection event. If the new anchor is inside
+         * the sheet boundaries, the event is pushed to the event stream to
+         * be processed.
+         */
+        processEvent(newAnchorEvent) {
+            const event = { ...newAnchorEvent, previousAnchor: this.anchor };
+            const commandResult = this.checkAnchorZone(event);
+            if (commandResult !== 0 /* Success */) {
+                return new DispatchResult(commandResult);
+            }
+            this.anchor = event.anchor;
+            this.stream.send(event);
+            return DispatchResult.Success;
+        }
+        checkAnchorZone(event) {
+            const { cell, zone } = event.anchor;
+            if (!isInside(cell.col, cell.row, zone)) {
+                return 14 /* InvalidAnchorZone */;
+            }
+            const { left, right, top, bottom } = zone;
+            const sheet = this.getters.getActiveSheet();
+            const refCol = findVisibleHeader(sheet, "cols", range(left, right + 1));
+            const refRow = findVisibleHeader(sheet, "rows", range(top, bottom + 1));
+            if (refRow === undefined || refCol === undefined) {
+                return 15 /* SelectionOutOfBound */;
+            }
+            return 0 /* Success */;
+        }
+        /**
+         *  ---- PRIVATE ----
+         */
+        /** Computes the next cell position in the direction of deltaX and deltaY
+         * by crossing through merges and skipping hidden cells.
+         * Note that the resulting position might be out of the sheet, it needs to be validated.
+         */
+        getNextAvailablePosition(deltaX, deltaY) {
+            const { col, row } = this.anchor.cell;
+            return {
+                col: this.getNextAvailableCol(deltaX, col, row),
+                row: this.getNextAvailableRow(deltaY, col, row),
+            };
+        }
+        getNextAvailableCol(delta, colIndex, rowIndex) {
+            const { cols, id: sheetId } = this.getters.getActiveSheet();
+            const position = { col: colIndex, row: rowIndex };
+            const isInPositionMerge = (nextCol) => this.getters.isInSameMerge(sheetId, colIndex, rowIndex, nextCol, rowIndex);
+            return this.getNextAvailableHeader(delta, cols, colIndex, position, isInPositionMerge);
+        }
+        getNextAvailableRow(delta, colIndex, rowIndex) {
+            const { rows, id: sheetId } = this.getters.getActiveSheet();
+            const position = { col: colIndex, row: rowIndex };
+            const isInPositionMerge = (nextRow) => this.getters.isInSameMerge(sheetId, colIndex, rowIndex, colIndex, nextRow);
+            return this.getNextAvailableHeader(delta, rows, rowIndex, position, isInPositionMerge);
+        }
+        getNextAvailableHeader(delta, headers, startingHeaderIndex, position, isInPositionMerge) {
+            var _a, _b, _c;
+            const sheetId = this.getters.getActiveSheetId();
+            const { col, row } = position;
+            if (delta === 0) {
+                return startingHeaderIndex;
+            }
+            let header = startingHeaderIndex + delta;
+            if (this.getters.isInMerge(sheetId, col, row)) {
+                while (isInPositionMerge(header)) {
+                    header += delta;
+                }
+                while ((_a = headers[header]) === null || _a === void 0 ? void 0 : _a.isHidden) {
+                    header += delta;
+                }
+            }
+            else if ((_b = headers[header]) === null || _b === void 0 ? void 0 : _b.isHidden) {
+                while ((_c = headers[header]) === null || _c === void 0 ? void 0 : _c.isHidden) {
+                    header += delta;
+                }
+            }
+            const outOfBound = header < 0 || header > headers.length - 1;
+            if (outOfBound) {
+                if (headers[startingHeaderIndex].isHidden) {
+                    return this.getNextAvailableHeader(-delta, headers, startingHeaderIndex, position, isInPositionMerge);
+                }
+                else {
+                    return startingHeaderIndex;
+                }
+            }
+            return header;
+        }
+        /**
+         * Finds a visible cell in the currently selected zone starting with the anchor.
+         * If the anchor is hidden, browses from left to right and top to bottom to
+         * find a visible cell.
+         */
+        getReferencePosition() {
+            const sheet = this.getters.getActiveSheet();
+            const anchor = this.anchor;
+            const { left, right, top, bottom } = anchor.zone;
+            const { col: anchorCol, row: anchorRow } = anchor.cell;
+            return {
+                col: sheet.cols[anchorCol].isHidden
+                    ? findVisibleHeader(sheet, "cols", range(left, right + 1)) || anchorCol
+                    : anchorCol,
+                row: sheet.rows[anchorRow].isHidden
+                    ? findVisibleHeader(sheet, "rows", range(top, bottom + 1)) || anchorRow
+                    : anchorRow,
+            };
+        }
+    }
+
     class StateObserver {
         constructor() {
             this.changes = [];
@@ -30567,6 +30754,8 @@
             this.getters.getRangeFromSheetXC = this.range.getRangeFromSheetXC.bind(this.range);
             this.getters.createAdaptedRanges = this.range.createAdaptedRanges.bind(this.range);
             this.uuidGenerator.setIsFastStrategy(true);
+            // Initiate stream processor
+            this.selection = new SelectionStreamProcessor(this.getters);
             // registering plugins
             for (let Plugin of corePluginRegistry.getAll()) {
                 this.setupCorePlugin(Plugin, workbookData);
@@ -30577,6 +30766,11 @@
             this.uuidGenerator.setIsFastStrategy(false);
             // starting plugins
             this.dispatch("START");
+            // Model should be the last permanent subscriber in the list since he should render
+            // after all changes have been applied to the other subscribers (plugins)
+            this.selection.observe(this, {
+                handleEvent: () => this.trigger("update"),
+            });
             // This should be done after construction of LocalHistory due to order of
             // events
             this.setupSessionEvents();
@@ -30601,7 +30795,7 @@
         }
         setupUiPlugin(Plugin) {
             if (Plugin.modes.includes(this.config.mode)) {
-                const plugin = new Plugin(this.getters, this.state, this.dispatch, this.config);
+                const plugin = new Plugin(this.getters, this.state, this.dispatch, this.config, this.selection);
                 for (let name of Plugin.getters) {
                     if (!(name in plugin)) {
                         throw new Error(`Invalid getter name: ${name} for plugin ${plugin.constructor}`);
@@ -30868,8 +31062,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-02-10T11:36:16.010Z';
-    exports.__info__.hash = 'bb36f22';
+    exports.__info__.date = '2022-02-14T12:12:54.698Z';
+    exports.__info__.hash = 'c6bfc09';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

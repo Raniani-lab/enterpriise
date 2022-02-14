@@ -638,6 +638,7 @@ class Payslip(models.Model):
         res.update({
             'PPTOTAL': _('Withholding Taxes'),
             'ONSSEMPLOYER': _('ONSS: Employee Part'),
+            'IP.DED': _('Intellectual Property Income Deduction'),
         })
         return res
 

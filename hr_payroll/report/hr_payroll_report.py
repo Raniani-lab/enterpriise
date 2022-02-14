@@ -3,8 +3,7 @@
 
 from psycopg2 import sql
 
-from odoo import tools
-from odoo import fields, models
+from odoo import api, fields, models, tools
 
 
 class HrPayrollReport(models.Model):
@@ -29,6 +28,7 @@ class HrPayrollReport(models.Model):
 
     employee_id = fields.Many2one('hr.employee', 'Employee', readonly=True)
     department_id = fields.Many2one('hr.department', 'Department', readonly=True)
+    master_department_id = fields.Many2one('hr.department', 'Master Department', readonly=True)
     job_id = fields.Many2one('hr.job', 'Job Position', readonly=True)
     number_of_days = fields.Float('Number of Days', readonly=True)
     number_of_hours = fields.Float('Number of Hours', readonly=True)
@@ -59,6 +59,7 @@ class HrPayrollReport(models.Model):
                 p.date_to as date_to,
                 e.id as employee_id,
                 e.department_id as department_id,
+                d.master_department_id as master_department_id,
                 c.job_id as job_id,
                 e.company_id as company_id,
                 wet.id as work_code,
@@ -79,12 +80,14 @@ class HrPayrollReport(models.Model):
                 left join hr_payslip_line pln on (pln.slip_id = p.id and pln.code = 'NET')
                 left join hr_payslip_line plb on (plb.slip_id = p.id and plb.code = 'BASIC')
                 left join hr_payslip_line plg on (plg.slip_id = p.id and plg.code = 'GROSS')
-                left join hr_contract c on (p.contract_id = c.id)"""
+                left join hr_contract c on (p.contract_id = c.id)
+                left join hr_department d on (e.department_id = d.id)"""
 
     def _group_by(self):
         return """GROUP BY
             e.id,
             e.department_id,
+            d.master_department_id,
             e.company_id,
             wd.id,
             wet.id,

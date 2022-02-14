@@ -45,6 +45,7 @@
             <field name="model">hr.payroll.report</field>
             <field name="arch" type="xml">
                 <pivot string="Payroll Analysis" sample="1">
+                    <field name="master_department_id" type="row"/>
                     <field name="department_id" type="row"/>
                     <field name="count" type="measure"/>
                     <field name="net_wage" type="measure"/>
@@ -91,6 +92,7 @@
                     <field name="company_id" filter_domain="[('company_id', 'ilike', self)]"/>
                     <field name="employee_id" filter_domain="[('employee_id', 'ilike', self)]"/>
                     <field name="department_id" filter_domain="[('department_id', 'ilike', self)]"/>
+                    <field name="master_department_id" filter_domain="[('master_department_id', 'ilike', self)]"/>
                     <field name="job_id" filter_domain="[('job_id', 'ilike', self)]"/>
                     <field name="work_code" filter_domain="[('work_code', 'ilike', self)]"/>
                     <field name="work_type" filter_domain="[('work_type', 'ilike', self)]"/>
@@ -104,6 +106,7 @@
                     <group expand="1" string="Group By">
                         <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
                         <filter string="Department" name="department_id" context="{'group_by':'department_id'}"/>
+                        <filter string="Master Department" name="master_department_id" context="{'group_by':'master_department_id'}"/>
                         <filter string="Job Position" name="job_id" context="{'group_by':'job_id'}"/>
                         <filter string="Company" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
                     </group>

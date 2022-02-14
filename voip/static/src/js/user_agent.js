@@ -4,7 +4,6 @@ odoo.define('voip.UserAgent', function (require) {
 const Class = require('web.Class');
 const concurrency = require('web.concurrency');
 const core = require('web.core');
-const Dialog = require('web.Dialog');
 const mixins = require('web.mixins');
 const mobile = require('web_mobile.core');
 const ServicesMixin = require('web.ServicesMixin');
@@ -151,8 +150,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             if (this.PLAY_MEDIA) {
                 this._audioRingbackTone.play().catch(() => {});
             }
-            this._timerAcceptedTimeout = this._demoTimeout(() =>
-                this._onAccepted());
+            this._timerAcceptedTimeout = this._demoTimeout(() => this._onOutgoingCallAccepted());
             this._isOutgoing = true;
             return;
         }
@@ -230,6 +228,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
     /**
      * Answer to a INVITE message and accept the call.
      *
@@ -256,11 +255,8 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         const callOptions = {
             sessionDescriptionHandlerOptions: {
-                constraints: {
-                    audio: true,
-                    video: false
-                }
-            }
+                constraints: { audio: true, video: false },
+            },
         };
         inviteSession.accept(callOptions);
         this._isOutgoing = false;
@@ -366,13 +362,13 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             params.traceSip = true;
             params.log = {
                 level: 3,
-                builtinEnabled: true
+                builtinEnabled: true,
             };
         } else {
             params.traceSip = false;
             params.log = {
                 level: 2,
-                builtinEnabled: false
+                builtinEnabled: false,
             };
         }
         try {
@@ -415,7 +411,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             sessionDescriptionHandlerFactoryOptions,
             transportOptions: {
                 wsServers: params.wsServer || null,
-                traceSip: params.traceSip
+                traceSip: params.traceSip,
             },
             uri: `${params.login}@${params.pbx_ip}`,
         };
@@ -552,7 +548,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             isConnecting: true,
             message: _t("Please accept the use of the microphone."),
         });
-        this._sipSession.on('accepted', () => this._onAccepted());
+        this._sipSession.on('accepted', () => this._onOutgoingCallAccepted());
         this._sipSession.on('cancel', () => this._onCancel());
         this._sipSession.on('rejected', response => this._onRejected(response));
         this._sipSession.on('progress', () => this._onTry());
@@ -614,26 +610,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     // Handlers
     //--------------------------------------------------------------------------
 
-    /**
-     * Triggered when the call is answered.
-     *
-     * @private
-     */
-    async _onAccepted() {
-        this._updateCallState(CALL_STATE.ONGOING_CALL);
-        const call = this._sipSession;
-        this._stopRingtones();
-        if (this._mode === 'prod') {
-            this._configureRemoteAudio();
-            call.sessionDescriptionHandler.on('addTrack', () =>
-                this._configureRemoteAudio());
-            call.on('bye', () => this._onBye());
-            if (this._alwaysTransfer && this._currentNumber) {
-                call.refer(this._currentNumber);
-            }
-        }
-        this.trigger_up('sip_accepted');
-    },
     /**
      * Handles the sip session ending.
      *
@@ -879,6 +855,26 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._triggerError(
             _t("The call was rejected as access rights to the microphone were not given"),
             { isTemporary: true });
+    },
+    /**
+     * Triggered when receiving a 2xx final response to the INVITE request.
+     *
+     * @private
+     */
+    async _onOutgoingCallAccepted() {
+        this._updateCallState(CALL_STATE.ONGOING_CALL);
+        const call = this._sipSession;
+        this._stopRingtones();
+        if (this._mode === 'prod') {
+            this._configureRemoteAudio();
+            call.sessionDescriptionHandler.on('addTrack', () =>
+                this._configureRemoteAudio());
+            call.on('bye', () => this._onBye());
+            if (this._alwaysTransfer && this._currentNumber) {
+                call.refer(this._currentNumber);
+            }
+        }
+        this.trigger_up('sip_accepted');
     },
     /**
      * Triggered when the user agent is connected.

@@ -92,6 +92,14 @@ msgid "Responsible"
 msgstr ""
 
 #. module: hr_payroll_holidays
+#: code:addons/hr_payroll_holidays/models/hr_leave.py:0
+#, python-format
+msgid ""
+"The selected period is covered by a validated payslip. You can't create a "
+"time off for that period."
+msgstr ""
+
+#. module: hr_payroll_holidays
 #: code:addons/hr_payroll_holidays/models/hr_payslip.py:0
 #, python-format
 msgid ""

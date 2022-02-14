@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.exceptions import ValidationError
 from odoo.fields import Datetime
 from odoo.tests.common import tagged
 from odoo.addons.hr_payroll_holidays.tests.common import TestPayrollHolidaysBase
@@ -89,3 +90,66 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         leave.action_approve()
 
         self.assertNotEqual(leave.payslip_state, 'blocked', 'Leave should not be to defer')
+
+    def test_payslip_paid_past(self):
+        payslip = self.env['hr.payslip'].create({
+            'name': 'toto payslip',
+            'employee_id': self.emp.id,
+            'date_from': '2022-01-01',
+            'date_to': '2022-01-31',
+        })
+
+        payslip.compute_sheet()
+        self.assertEqual(payslip.state, 'verify')
+
+        self.env['hr.leave'].with_user(self.vlad).create({
+            'name': 'Tennis',
+            'holiday_status_id': self.leave_type.id,
+            'employee_id': self.emp.id,
+            'date_from': '2022-01-12',
+            'date_to': '2022-01-12',
+            'number_of_days': 1,
+        })
+        payslip.action_payslip_done()
+
+        # A Simple User can't request a leave if a payslip is paid
+        with self.assertRaises(ValidationError):
+            self.env['hr.leave'].with_user(self.vlad).create({
+                'name': 'Tennis',
+                'holiday_status_id': self.leave_type.id,
+                'employee_id': self.emp.id,
+                'date_from': '2022-01-19',
+                'date_to': '2022-01-19',
+                'number_of_days': 1,
+            })
+
+        # Check overlapping periods with no payslip
+        with self.assertRaises(ValidationError):
+            self.env['hr.leave'].with_user(self.vlad).create({
+                'name': 'Tennis',
+                'holiday_status_id': self.leave_type.id,
+                'employee_id': self.emp.id,
+                'date_from': '2022-01-31',
+                'date_to': '2022-02-01',
+                'number_of_days': 2,
+            })
+
+        with self.assertRaises(ValidationError):
+            self.env['hr.leave'].with_user(self.vlad).create({
+                'name': 'Tennis',
+                'holiday_status_id': self.leave_type.id,
+                'employee_id': self.emp.id,
+                'date_from': '2021-01-31',
+                'date_to': '2022-01-03',
+                'number_of_days': 2,
+            })
+
+        # But a time off officer can
+        self.env['hr.leave'].with_user(self.joseph).create({
+            'name': 'Tennis',
+            'holiday_status_id': self.leave_type.id,
+            'employee_id': self.emp.id,
+            'date_from': '2022-01-19',
+            'date_to': '2022-01-19',
+            'number_of_days': 1,
+        })

@@ -4,8 +4,8 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models, _
-from odoo.exceptions import UserError
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 
@@ -17,6 +17,27 @@ class HrLeave(models.Model):
         ('done', 'Computed in current payslip'),
         ('blocked', 'To defer to next payslip')], string='Payslip State',
         copy=False, default='normal', required=True)
+
+    @api.constrains('date_from', 'date_to', 'employee_id')
+    def _check_payslip_generated(self):
+        if self.env.user.has_group('hr_holidays.group_hr_holidays_user') or self.env.is_superuser():
+            return
+
+        all_payslips = self.env['hr.payslip'].sudo().search([
+            ('employee_id', 'in', self.employee_id.ids),
+            ('date_from', '<=', max(self.mapped('date_to'))),
+            ('date_to', '>=', min(self.mapped('date_from'))),
+            ('state', 'in', ['done', 'paid']),
+        ])
+
+        for leave in self:
+            if any(
+                p.employee_id == leave.employee_id and
+                p.date_from <= leave.date_to.date() and
+                p.date_to >= leave.date_from.date()
+                for p in all_payslips
+            ):
+                raise ValidationError(_("The selected period is covered by a validated payslip. You can't create a time off for that period."))
 
     def action_validate(self):
         # Get employees payslips

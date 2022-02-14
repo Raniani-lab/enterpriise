@@ -1238,7 +1238,7 @@ var StatementModel = BasicModel.extend({
             && (!line.st_line.mv_lines_match_other || line.st_line.mv_lines_match_other.length === 0)) {
             return 'inactive';
         }
-        if (line['mv_lines_'+line.mode] && line['mv_lines_'+line.mode].length) {
+        if (line['mv_lines_'+line.mode] && (line['mv_lines_'+line.mode].length || line['filter_'+line.mode].length)) {
             return line.mode;
         }
         if (line.mv_lines_match_rp && line.mv_lines_match_rp.length) {

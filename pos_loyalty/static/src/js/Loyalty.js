@@ -9,7 +9,7 @@ var round_pr = utils.round_precision;
 
 const PosLoyaltyPosGlobalState = (PosGlobalState) => class PosLoyaltyPosGlobalState extends PosGlobalState {
     async _processData(loadedData) {
-        super._processData(...arguments);
+        await super._processData(...arguments);
         if (!!this.config.loyalty_id[0]) {
             this.loyalty = loadedData['loyalty.program'];
         }

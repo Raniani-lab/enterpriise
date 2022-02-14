@@ -13,7 +13,7 @@ from odoo import api, Command, fields, models, _
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv.expression import AND
-from odoo.tools import float_round, date_utils, convert_file, html2plaintext, is_html_empty
+from odoo.tools import float_round, date_utils, convert_file, html2plaintext, is_html_empty, format_amount
 from odoo.tools.float_utils import float_compare
 from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
@@ -1176,9 +1176,11 @@ class HrPayslip(models.Model):
                 idx = -((end.year - start.year) * 12 + (end.month - start.month) - 2)
                 period_str = format_date(self.env, start, date_format=date_formats['monthly'])
                 amount = employer_cost['data']['monthly'][code_desc][idx].get('value', 0.0)
+                rounded_amount = round(amount + line_values[code][slip.id]['total'], 2)
                 employer_cost['data']['monthly'][code_desc][idx].update({
-                    'value': round(amount + line_values[code][slip.id]['total'], 2),
+                    'value': rounded_amount,
                     'label': period_str,
+                    'formatted_value': format_amount(self.env, rounded_amount, self.env.company.currency_id),
                 })
         # Retrieve employer costs over the last 3 years
         last_payslips = self.env['hr.payslip'].search([
@@ -1194,22 +1196,28 @@ class HrPayslip(models.Model):
                 idx = -(end.year - start.year - 2)
                 period_str = format_date(self.env, start, date_format=date_formats['yearly'])
                 amount = employer_cost['data']['yearly'][code_desc][idx].get('value', 0.0)
+                rounded_amount = round(amount + line_values[code][slip.id]['total'], 2)
                 employer_cost['data']['yearly'][code_desc][idx].update({
-                    'value': round(amount + line_values[code][slip.id]['total'], 2),
+                    'value': rounded_amount,
                     'label': period_str,
+                    'formatted_value': format_amount(self.env, rounded_amount, self.env.company.currency_id),
                 })
         # Nullify empty sections
         for i in range(3):
             for code, code_desc in cost_codes.items():
                 if not employer_cost['data']['monthly'][code_desc][i]:
+                    value = 0 if not employer_cost['is_sample'] else random.randint(1000, 1500)
                     employer_cost['data']['monthly'][code_desc][i].update({
-                        'value': 0 if not employer_cost['is_sample'] else random.randint(1000, 1500),
-                        'label': format_date(self.env, today + relativedelta(months=i-2), date_format=date_formats['monthly'])
+                        'value': value,
+                        'label': format_date(self.env, today + relativedelta(months=i-2), date_format=date_formats['monthly']),
+                        'formatted_value': format_amount(self.env, value, self.env.company.currency_id),
                     })
                 if not employer_cost['data']['yearly'][code_desc][i]:
+                    value = 0 if not employer_cost['is_sample'] else random.randint(10000, 15000)
                     employer_cost['data']['yearly'][code_desc][i].update({
-                        'value': 0 if not employer_cost['is_sample'] else random.randint(10000, 15000),
-                        'label': format_date(self.env, today + relativedelta(years=i-2), date_format=date_formats['yearly'])
+                        'value': value,
+                        'label': format_date(self.env, today + relativedelta(years=i-2), date_format=date_formats['yearly']),
+                        'formatted_value': format_amount(self.env, value, self.env.company.currency_id),
                     })
         return employer_cost
 

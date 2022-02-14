@@ -182,16 +182,19 @@ export class PayrollDashboardStats extends Component {
         _.each(this.graphData, function(graphData, code) {
             datasets_labels.push(code);
             const dataset_data = [];
+            const formatted_data = []
             graphData.forEach(function (pt) {
                 if (!labels.includes(pt.label)) {
                     labels.push(pt.label);
                 }
+                formatted_data.push(`${code}: ${pt.formatted_value || pt.value}`);
                 dataset_data.push(pt.value);
             })
             datasets.push({
                 data: dataset_data,
                 label: code,
                 backgroundColor: colors[datasets_labels.length - 1],
+                formatted_data: formatted_data
             })
         });
 
@@ -226,6 +229,12 @@ export class PayrollDashboardStats extends Component {
                     intersect: false,
                     position: 'nearest',
                     caretSize: 0,
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            const {datasetIndex, index} = tooltipItem;
+                            return data.datasets[datasetIndex].formatted_data[index];
+                        }
+                    }
                 },
                 elements: {
                     line: {

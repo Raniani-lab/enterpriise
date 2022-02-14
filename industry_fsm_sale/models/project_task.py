@@ -22,16 +22,21 @@ class Task(models.Model):
     display_create_invoice_secondary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
     warning_message = fields.Char('Warning Message', compute='_compute_warning_message')
+    invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
+
+    # Project Sharing fields
+    portal_quotation_count = fields.Integer(compute='_compute_portal_quotation_count')
+    portal_invoice_count = fields.Integer('Invoice Count', compute='_compute_portal_invoice_count')
 
     @property
     def SELF_READABLE_FIELDS(self):
         return super().SELF_READABLE_FIELDS | {'allow_material',
                                               'allow_quotations',
-                                              'quotation_count',
+                                              'portal_quotation_count',
                                               'material_line_product_count',
                                               'material_line_total_price',
                                               'currency_id',
-                                              'invoice_count',
+                                              'portal_invoice_count',
                                               'warning_message'}
 
     @api.depends('allow_material', 'material_line_product_count')
@@ -52,6 +57,15 @@ class Task(models.Model):
         mapped_data = dict([(q['task_id'][0], q['task_id_count']) for q in quotation_data])
         for task in self:
             task.quotation_count = mapped_data.get(task.id, 0)
+
+    def _compute_portal_quotation_count(self):
+        domain = [('task_id', 'in', self.ids)]
+        if self.user_has_groups('base.group_portal'):
+            domain = expression.AND([domain, [('state', '!=', 'draft')]])
+        quotation_data = self.env['sale.order'].read_group(domain, ['task_id'], ['task_id'])
+        mapped_data = {q['task_id'][0]: q['task_id_count'] for q in quotation_data}
+        for task in self:
+            task.portal_quotation_count = mapped_data.get(task.id, 0)
 
     @api.depends('sale_order_id.order_line.product_uom_qty', 'sale_order_id.order_line.price_total')
     def _compute_material_line_totals(self):
@@ -117,6 +131,20 @@ class Task(models.Model):
                 task.warning_message = False
         (self - employee_rate_fsm_tasks).update({'warning_message': False})
 
+    @api.depends_context('uid')
+    @api.depends('sale_order_id.invoice_ids')
+    def _compute_portal_invoice_count(self):
+        """ The goal of portal_invoice_count field is to show the Invoices stat button in Project sharing feature. """
+        is_portal_user = self.user_has_groups('base.group_portal')
+        invoices_by_so = {}
+        available_invoices = False
+        if is_portal_user:
+            sale_orders_sudo = self.sale_order_id.sudo()
+            invoices_by_so = {so.id: set(so.invoice_ids.ids) for so in sale_orders_sudo}
+            available_invoices = set(self.env['account.move'].search([('id', 'in', sale_orders_sudo.invoice_ids.ids)]).ids)
+        for task in self:
+            task.portal_invoice_count = len(invoices_by_so.get(task.sale_order_id.id, set()).intersection(available_invoices)) if is_portal_user else task.invoice_count
+
     def action_create_invoice(self):
         # ensure the SO exists before invoicing, then confirm it
         so_to_confirm = self.filtered(
@@ -177,6 +205,19 @@ class Task(models.Model):
             }
         }
 
+    def action_project_sharing_view_invoices(self):
+        """ Action used only in project sharing feature """
+        if self.user_has_groups('base.group_portal'):
+            return {
+                "name": "Portal Invoices",
+                "type": "ir.actions.act_url",
+                "url":
+                    self.env['account.move'].search([('id', 'in', self.sale_order_id.sudo().invoice_ids.ids)], limit=1).get_portal_url()
+                    if self.portal_invoice_count == 1
+                    else f"/my/projects/{self.project_id.id}/task/{self.id}/invoices",
+            }
+        return self.action_project_sharing_view_invoices()
+
     def action_fsm_create_quotation(self):
         view_form_id = self.env.ref('sale.view_order_form').id
         action = self.env["ir.actions.actions"]._for_xml_id("sale.action_quotations")
@@ -196,6 +237,7 @@ class Task(models.Model):
         return action
 
     def action_fsm_view_quotations(self):
+        self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("sale.action_quotations")
         action.update({
             'name': self.name,
@@ -209,6 +251,20 @@ class Task(models.Model):
             action['res_id'] = self.env['sale.order'].search([('task_id', '=', self.id)]).id
             action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
         return action
+
+    def action_project_sharing_view_quotations(self):
+        """ Action used only in project sharing feature """
+        self.ensure_one()
+        if self.user_has_groups('base.group_portal'):
+            return {
+                "name": "Portal Quotations",
+                "type": "ir.actions.act_url",
+                "url":
+                    self.env['sale.order'].search([('task_id', '=', self.id)], limit=1).get_portal_url()
+                    if self.portal_quotation_count == 1
+                    else f"/my/projects/{self.project_id.id}/task/{self.id}/quotes",
+            }
+        return self.action_fsm_view_quotations()
 
     def action_fsm_view_material(self):
         if not self.partner_id:
@@ -294,7 +350,6 @@ class Task(models.Model):
         sale_order = SaleOrder.create({
             'partner_id': self.partner_id.id,
             'company_id': self.company_id.id,
-            'task_id': self.id,
             'analytic_account_id': self._get_task_analytic_account_id().id,
             'team_id': team.id if team else False,
             'origin': _('%s - %s') % (self.project_id.name, self.name),

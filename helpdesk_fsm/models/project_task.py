@@ -9,17 +9,33 @@ class Task(models.Model):
 
     helpdesk_ticket_id = fields.Many2one('helpdesk.ticket', string='Ticket', help='Ticket this task was generated from', readonly=True)
 
+    # Project Sharing fields
+    display_helpdesk_ticket_button = fields.Boolean('Display Ticket', compute='_compute_display_helpdesk_ticket_button')
+
     @property
     def SELF_READABLE_FIELDS(self):
-        return super().SELF_READABLE_FIELDS | {'helpdesk_ticket_id'}
+        return super().SELF_READABLE_FIELDS | {'helpdesk_ticket_id', 'display_helpdesk_ticket_button'}
 
-    def action_view_ticket(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'helpdesk.ticket',
-            'view_mode': 'form',
-            'res_id': self.helpdesk_ticket_id.id,
-        }
+    @api.depends_context('uid')
+    @api.depends('helpdesk_ticket_id')
+    def _compute_display_helpdesk_ticket_button(self):
+        is_portal = self.user_has_groups('base.group_portal')
+        if is_portal:
+            tickets = self.env['helpdesk.ticket'].search([('id', 'in', self.helpdesk_ticket_id.ids)])
+        for task in self:
+            task.display_helpdesk_ticket_button = task.helpdesk_ticket_id in tickets if is_portal else bool(task.helpdesk_ticket_id)
+
+    def action_project_sharing_view_ticket(self):
+        self.ensure_one()
+        if self.env.user.share:
+            if not self.display_helpdesk_ticket_button:
+                return {}
+            return {
+                "name": "Portal Ticket",
+                "type": "ir.actions.act_url",
+                "url": self.helpdesk_ticket_id.get_portal_url(),
+            }
+        return self.action_view_ticket()
 
     def write(self, vals):
         previous_states = None

@@ -56,9 +56,6 @@ class TestProjectSharing(TestProjectSharingCommon):
             .with_context({'tracking_disable': True, 'default_project_id': project_shared.id}) \
             .create({
                 'name': 'Test Timesheets invoicing policy',
-                'timesheet_ids': [
-
-                ],
             })
         common_timesheet_vals = {
             'project_id': project_shared.id,

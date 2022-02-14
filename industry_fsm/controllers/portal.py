@@ -16,7 +16,13 @@ class CustomerPortal(portal.CustomerPortal):
         return {}
 
     @http.route(['/my/task/<int:task_id>/worksheet',
-                 '/my/task/<int:task_id>/worksheet/<string:source>'], type='http', auth="public", website=True)
+                 '/my/task/<int:task_id>/worksheet/<string:source>',
+                 '/my/task/<int:task_id>/worksheet/sign/<string:source>'], type='http', auth="public")
+    def portal_worksheet_outdated(self, **kwargs):
+        return request.redirect(request.httprequest.path.replace('/my/task/', '/my/tasks/'))
+
+    @http.route(['/my/tasks/<int:task_id>/worksheet',
+                 '/my/tasks/<int:task_id>/worksheet/<string:source>'], type='http', auth="public", website=True)
     def portal_my_worksheet(self, task_id, access_token=None, source=False, report_type=None, download=False, message=False, **kw):
 
         try:
@@ -32,7 +38,7 @@ class CustomerPortal(portal.CustomerPortal):
         return request.render("industry_fsm.portal_my_worksheet", data)
 
 
-    @http.route(['/my/task/<int:task_id>/worksheet/sign/<string:source>'], type='json', auth="public", website=True)
+    @http.route(['/my/tasks/<int:task_id>/worksheet/sign/<string:source>'], type='json', auth="public", website=True)
     def portal_worksheet_sign(self, task_id, access_token=None, source=False, name=None, signature=None):
         # get from query string if not on json param
         access_token = access_token or request.httprequest.args.get('access_token')

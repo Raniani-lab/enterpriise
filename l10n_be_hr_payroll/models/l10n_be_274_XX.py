@@ -255,7 +255,7 @@ class L10nBe274XX(models.Model):
             raise UserError(_('There is no valid payslip to declare.'))
 
         year_period_code = {
-            2018: '6',
+            2022: '6',
             2019: '7',
             2020: '8',
             2021: '9',

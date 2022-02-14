@@ -7,7 +7,7 @@ import TaskGanttRenderer from './task_gantt_renderer';
 import TaskGanttModel from './task_gantt_model';
 import { ProjectControlPanel } from '@project/js/project_control_panel';
 
-export const TaskGanttView = GanttView.extend({
+const TaskGanttView = GanttView.extend({
     config: Object.assign({}, GanttView.prototype.config, {
         Controller: TaskGanttController,
         Renderer: TaskGanttRenderer,
@@ -23,7 +23,7 @@ export const TaskGanttView = GanttView.extend({
      * @override
      */
     init: function (viewInfo, params) {
-        this._super.apply(this, arguments);
+        this._super(...arguments);
         const fieldsToFetch = ['project_id']
         if (this.rendererParams.dependencyEnabled) {
             fieldsToFetch.push('allow_task_dependencies', 'display_warning_dependency_in_gantt');
@@ -33,3 +33,5 @@ export const TaskGanttView = GanttView.extend({
 });
 
 viewRegistry.add('task_gantt', TaskGanttView);
+
+export default TaskGanttView;

@@ -1,18 +1,17 @@
-odoo.define('web_gantt.GanttView', function (require) {
-"use strict";
+/** @odoo-module alias=web_gantt.GanttView */
 
-var AbstractView = require('web.AbstractView');
-var core = require('web.core');
-var GanttModel = require('web_gantt.GanttModel');
-var GanttRenderer = require('web_gantt.GanttRenderer');
-var GanttController = require('web_gantt.GanttController');
-var pyUtils = require('web.py_utils');
-var view_registry = require('web.view_registry');
+import AbstractView from 'web.AbstractView';
+import core from 'web.core';
+import GanttModel from 'web_gantt.GanttModel';
+import GanttRenderer from 'web_gantt.GanttRenderer';
+import GanttController from 'web_gantt.GanttController';
+import pyUtils from 'web.py_utils';
+import view_registry from 'web.view_registry';
 
-var _t = core._t;
-var _lt = core._lt;
+const _t = core._t;
+const _lt = core._lt;
 
-var GanttView = AbstractView.extend({
+const GanttView = AbstractView.extend({
     display_name: _lt('Gantt'),
     icon: 'oi-chart--bullet',
     config: _.extend({}, AbstractView.prototype.config, {
@@ -28,7 +27,7 @@ var GanttView = AbstractView.extend({
     /**
      * @override
      */
-    init: function (viewInfo, params) {
+    init(viewInfo, params) {
         this._super.apply(this, arguments);
 
         const { domain } = params.action || {};
@@ -41,31 +40,31 @@ var GanttView = AbstractView.extend({
             year: { string: _t('Year'), hotkey: 'y', cellPrecisions: { full: 1 }, defaultPrecision: 'full', time: 'months', interval: 'month' },
         };
 
-        var arch = this.arch;
+        const arch = this.arch;
 
         // Decoration fields
-        var decorationFields = [];
-        _.each(arch.children, function (child) {
+        const decorationFields = [];
+        _.each(arch.children, (child) => {
             if (child.tag === 'field') {
                 decorationFields.push(child.attrs.name);
             }
         });
 
-        var collapseFirstLevel = !!arch.attrs.collapse_first_level;
+        let collapseFirstLevel = !!arch.attrs.collapse_first_level;
 
         // Unavailability
-        var displayUnavailability = !!arch.attrs.display_unavailability;
+        const displayUnavailability = !!arch.attrs.display_unavailability;
 
         // Colors
-        var colorField = arch.attrs.color;
+        const colorField = arch.attrs.color;
 
         // Cell precision
         // precision = {'day': 'hour:half', 'week': 'day:half', 'month': 'day', 'year': 'month:quarter'}
-        var precisionAttrs = arch.attrs.precision ? pyUtils.py_eval(arch.attrs.precision) : {};
-        var cellPrecisions = {};
-        _.each(this.SCALES, function (vals, key) {
+        const precisionAttrs = arch.attrs.precision ? pyUtils.py_eval(arch.attrs.precision) : {};
+        const cellPrecisions = {};
+        _.each(this.SCALES, (vals, key) => {
             if (precisionAttrs[key]) {
-                var precision = precisionAttrs[key].split(':'); // hour:half
+                const precision = precisionAttrs[key].split(':'); // hour:half
                 // Note that precision[0] (which is the cell interval) is not
                 // taken into account right now because it is no customizable.
                 if (precision[1] && _.contains(_.keys(vals.cellPrecisions), precision[1])) {
@@ -75,9 +74,9 @@ var GanttView = AbstractView.extend({
             cellPrecisions[key] = cellPrecisions[key] || vals.defaultPrecision;
         });
 
-        var consolidationMaxField;
-        var consolidationMaxValue;
-        var consolidationMax = arch.attrs.consolidation_max ? pyUtils.py_eval(arch.attrs.consolidation_max) : {};
+        let consolidationMaxField;
+        let consolidationMaxValue;
+        const consolidationMax = arch.attrs.consolidation_max ? pyUtils.py_eval(arch.attrs.consolidation_max) : {};
         if (Object.keys(consolidationMax).length > 0) {
             consolidationMaxField = Object.keys(consolidationMax)[0];
             consolidationMaxValue = consolidationMax[consolidationMaxField];
@@ -85,7 +84,7 @@ var GanttView = AbstractView.extend({
             collapseFirstLevel = !!consolidationMaxField || collapseFirstLevel;
         }
 
-        var consolidationParams = {
+        const consolidationParams = {
             field: arch.attrs.consolidation,
             maxField: consolidationMaxField,
             maxValue: consolidationMaxValue,
@@ -93,17 +92,17 @@ var GanttView = AbstractView.extend({
         };
 
         // form view which is opened by gantt
-        var formViewId = arch.attrs.form_view_id ? parseInt(arch.attrs.form_view_id, 10) : false;
+        let formViewId = arch.attrs.form_view_id ? parseInt(arch.attrs.form_view_id, 10) : false;
         if (params.action && !formViewId) { // fallback on form view action, or 'false'
-            var result = _.findWhere(params.action.views, { type: 'form' });
+            const result = _.findWhere(params.action.views, { type: 'form' });
             formViewId = result ? result.viewID : false;
         }
-        var dialogViews = [[formViewId, 'form']];
+        const dialogViews = [[formViewId, 'form']];
 
-        var allowedScales;
+        let allowedScales;
         if (arch.attrs.scales) {
-            var possibleScales = Object.keys(this.SCALES);
-            allowedScales = _.reduce(arch.attrs.scales.split(','), function (allowedScales, scale) {
+            const possibleScales = Object.keys(this.SCALES);
+            allowedScales = _.reduce(arch.attrs.scales.split(','), (allowedScales, scale) => {
                 if (possibleScales.indexOf(scale) >= 0) {
                     allowedScales.push(scale.trim());
                 }
@@ -113,17 +112,17 @@ var GanttView = AbstractView.extend({
             allowedScales = Object.keys(this.SCALES);
         }
 
-        var scale = params.context.default_scale || arch.attrs.default_scale || 'month';
-        var initialDate = moment(params.context.initialDate || params.initialDate || arch.attrs.initial_date || new Date());
-        var offset = arch.attrs.offset;
+        const scale = params.context.default_scale || arch.attrs.default_scale || 'month';
+        const initialDate = moment(params.context.initialDate || params.initialDate || arch.attrs.initial_date || new Date());
+        const offset = arch.attrs.offset;
         if (offset && scale) {
             initialDate.add(offset, scale);
         }
 
         // thumbnails for groups (display a thumbnail next to the group name)
-        var thumbnails = this.arch.attrs.thumbnails ? pyUtils.py_eval(this.arch.attrs.thumbnails) : {};
+        const thumbnails = this.arch.attrs.thumbnails ? pyUtils.py_eval(this.arch.attrs.thumbnails) : {};
         // plan option
-        var canPlan = this.arch.attrs.plan ? !!JSON.parse(this.arch.attrs.plan) : true;
+        const canPlan = this.arch.attrs.plan ? !!JSON.parse(this.arch.attrs.plan) : true;
         // cell create option
         const canCellCreate = this.arch.attrs.cell_create ? !!JSON.parse(this.arch.attrs.cell_create) : true;
 
@@ -185,6 +184,4 @@ var GanttView = AbstractView.extend({
 
 view_registry.add('gantt', GanttView);
 
-return GanttView;
-
-});
+export default GanttView;

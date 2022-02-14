@@ -1,16 +1,15 @@
-odoo.define('web_gantt.GanttController', function (require) {
-"use strict";
+/** @odoo-module alias=web_gantt.GanttController */
 
-var AbstractController = require('web.AbstractController');
-var core = require('web.core');
-var config = require('web.config');
-var dialogs = require('web.view_dialogs');
-var confirmDialog = require('web.Dialog').confirm;
+import AbstractController from 'web.AbstractController';
+import core from 'web.core';
+import config from 'web.config';
+import dialogs from 'web.view_dialogs';
+import { confirm as confirmDialog } from 'web.Dialog';
 
-var QWeb = core.qweb;
-var _t = core._t;
+const QWeb = core.qweb;
+const _t = core._t;
 
-var GanttController = AbstractController.extend({
+export default AbstractController.extend({
     events: _.extend({}, AbstractController.prototype.events, {
         'click .o_gantt_button_add': '_onAddClicked',
         'click .o_gantt_button_scale': '_onScaleClicked',
@@ -51,7 +50,7 @@ var GanttController = AbstractController.extend({
      * @param {Object} params.SCALES
      * @param {boolean} params.collapseFirstLevel
      */
-    init: function (parent, model, renderer, params) {
+    init(parent, model, renderer, params) {
         this._super.apply(this, arguments);
         this.model = model;
         this.context = params.context;
@@ -74,20 +73,20 @@ var GanttController = AbstractController.extend({
      * @override
      * @param {jQuery} [$node] to which the buttons will be appended
      */
-    renderButtons: function ($node) {
+    renderButtons($node) {
         this.$buttons = this._renderButtonsQWeb();
         if ($node) {
             this.$buttons.appendTo($node);
         }
     },
-    _renderButtonsQWeb: function () {
+    _renderButtonsQWeb() {
         return $(QWeb.render(this.buttonTemplateName, this._renderButtonQWebParameter()));
     },
-    _renderButtonQWebParameter: function () {
-        var state = this.model.get();
-        var nbGroups = state.groupedBy.length;
-        var minNbGroups = this.collapseFirstLevel ? 0 : 1;
-        var displayExpandCollapseButtons = nbGroups > minNbGroups;
+    _renderButtonQWebParameter() {
+        const state = this.model.get();
+        const nbGroups = state.groupedBy.length;
+        const minNbGroups = this.collapseFirstLevel ? 0 : 1;
+        const displayExpandCollapseButtons = nbGroups > minNbGroups;
         return {
             groupedBy: state.groupedBy,
             widget: this,
@@ -101,7 +100,7 @@ var GanttController = AbstractController.extend({
     /**
      * @override
      */
-    updateButtons: function () {
+    updateButtons() {
         if (!this.$buttons) {
             return;
         }
@@ -117,7 +116,7 @@ var GanttController = AbstractController.extend({
      * @param {integer} id
      * @param {Object} schedule
      */
-    _copy: function (id, schedule) {
+    _copy(id, schedule) {
         return this._executeAsyncOperation(
             this.model.copy.bind(this.model),
             [id, schedule]
@@ -128,12 +127,11 @@ var GanttController = AbstractController.extend({
      * @param {function} operation
      * @param {Array} args
      */
-    _executeAsyncOperation: function (operation, args) {
-        const self = this;
-        var prom = new Promise(function (resolve, reject) {
-            var asyncOp = operation(...args);
+    _executeAsyncOperation(operation, args) {
+        const prom = new Promise((resolve, reject) => {
+            const asyncOp = operation(...args);
             asyncOp.then(resolve).guardedCatch(resolve);
-            self.dp.add(asyncOp).guardedCatch(reject);
+            this.dp.add(asyncOp).guardedCatch(reject);
         });
         return prom.then(this.reload.bind(this, {}));
     },
@@ -141,17 +139,17 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {OdooEvent} event
      */
-    _getDialogContext: function (date, rowId) {
-        var state = this.model.get();
-        var context = {};
+    _getDialogContext(date, rowId) {
+        const state = this.model.get();
+        const context = {};
         context[state.dateStartField] = date.clone();
         context[state.dateStopField] = date.clone().endOf(this.SCALES[state.scale].interval);
         if (rowId) {
             // Default values of the group this cell belongs in
             // We can read them from any pill in this group row
-            _.each(state.groupedBy, function (fieldName) {
+            for (const fieldName of state.groupedBy) {
                 const groupValue = Object.assign({}, ...JSON.parse(rowId));
-                var value = groupValue[fieldName];
+                let value = groupValue[fieldName];
                 if (Array.isArray(value)) {
                     const { type: fieldType } = state.fields[fieldName];
                     if (fieldType === "many2many") {
@@ -163,13 +161,13 @@ var GanttController = AbstractController.extend({
                 if (value !== undefined) {
                     context[fieldName] = value;
                 }
-            });
+            }
         }
 
         // moment context dates needs to be converted in server time in view
         // dialog (for default values)
-        for (var k in context) {
-            var type = state.fields[k].type;
+        for (const k in context) {
+            const type = state.fields[k].type;
             if (context[k] && (type === 'datetime' || type === 'date')) {
                 context[k] = this.model.convertToServerTime(context[k]);
             }
@@ -185,8 +183,8 @@ var GanttController = AbstractController.extend({
      * @param {Object|undefined} context
      * @returns {FormViewDialog}
      */
-    _openDialog: function (resID, context) {
-        var title = resID ? _t("Open") : _t("Create");
+    _openDialog(resID, context) {
+        const title = resID ? _t("Open") : _t("Create");
 
         return new dialogs.FormViewDialog(this, {
             title: _.str.sprintf(title),
@@ -207,30 +205,28 @@ var GanttController = AbstractController.extend({
      *
      * @returns {function}
      */
-    _onDialogRemove: function (resID) {
-        var controller = this;
-
-        var confirm = new Promise(function (resolve) {
+    _onDialogRemove(resID) {
+        const confirm = new Promise((resolve) => {
             confirmDialog(this, _t('Are you sure to delete this record?'), {
-                confirm_callback: function () {
+                confirm_callback: () => {
                     resolve(true);
                 },
-                cancel_callback: function () {
+                cancel_callback: () => {
                     resolve(false);
                 },
             });
         });
 
-        return confirm.then(function (confirmed) {
+        return confirm.then((confirmed) => {
             if ((!confirmed)) {
                 return Promise.resolve();
             }// else
-            return controller._rpc({
-                model: controller.modelName,
+            return this._rpc({
+                model: this.modelName,
                 method: 'unlink',
                 args: [[resID,],],
-            }).then(function () {
-                return controller.reload();
+            }).then(() => {
+                return this.reload();
             })
         });
     },
@@ -240,10 +236,9 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {Object} context
      */
-    _openPlanDialog: function (context) {
-        var self = this;
-        var state = this.model.get();
-        var domain = [
+    _openPlanDialog(context) {
+        const state = this.model.get();
+        const domain = [
             '|',
             [state.dateStartField, '=', false],
             [state.dateStopField, '=', false],
@@ -253,13 +248,13 @@ var GanttController = AbstractController.extend({
             res_model: this.modelName,
             domain: this.actionDomain.concat(domain),
             views: this.dialogViews,
-            context: _.extend({}, this.context, context),
-            on_selected: function (records) {
-                var ids = _.pluck(records, 'id');
+            context: Object.assign({}, this.context, context),
+            on_selected: (records) => {
+                const ids = _.pluck(records, 'id');
                 if (ids.length) {
                     // Here, the dates are already in server time so we set the
                     // isUTC parameter of reschedule to true to avoid conversion
-                    self._reschedule(ids, context, true, self.openPlanDialogCallback);
+                    this._reschedule(ids, context, true, this.openPlanDialogCallback);
                 }
             },
         }).open();
@@ -270,9 +265,9 @@ var GanttController = AbstractController.extend({
      *
      * @param {object} context
      */
-    _onCreate: function (context) {
+    _onCreate(context) {
         if (this.createAction) {
-            var fullContext = _.extend({}, this.context, context);
+            const fullContext = Object.assign({}, this.context, context);
             this.do_action(this.createAction, {
                 additional_context: fullContext,
                 on_close: this.reload.bind(this, {})
@@ -296,7 +291,7 @@ var GanttController = AbstractController.extend({
      * @returns {Promise} resolved when the record has been reloaded, rejected
      *   if the request has been dropped by DropPrevious
      */
-    _reschedule: function (ids, schedule, isUTC, callback) {
+    _reschedule(ids, schedule, isUTC, callback) {
         return this._executeAsyncOperation(
             this.model.reschedule.bind(this.model),
             [ids, schedule, isUTC, callback]
@@ -313,10 +308,10 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {OdooEvent} ev
      */
-    _onCellAddClicked: function (ev) {
+    _onCellAddClicked(ev) {
         ev.stopPropagation();
         const context = this._getDialogContext(ev.data.date, ev.data.rowId);
-        for (var k in context) {
+        for (const k in context) {
             context[_.str.sprintf('default_%s', k)] = context[k];
         }
         this._onCreate(context);
@@ -325,13 +320,13 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onAddClicked: function (ev) {
+    _onAddClicked(ev) {
         ev.preventDefault();
-        var context = {};
-        var state = this.model.get();
+        const context = {};
+        const state = this.model.get();
         context[state.dateStartField] = this.model.convertToServerTime(state.focusDate.clone().startOf(state.scale));
         context[state.dateStopField] = this.model.convertToServerTime(state.focusDate.clone().endOf(state.scale));
-        for (var k in context) {
+        for (const k in context) {
             context[_.str.sprintf('default_%s', k)] = context[k];
         }
         this._onCreate(context);
@@ -340,7 +335,7 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onCollapseClicked: function (ev) {
+    _onCollapseClicked(ev) {
         ev.preventDefault();
         this.model.collapseRows();
         this.update({}, { reload: false });
@@ -350,7 +345,7 @@ var GanttController = AbstractController.extend({
      * @param {OdooEvent} ev
      * @param {string} ev.data.rowId
      */
-    _onCollapseRow: function (ev) {
+    _onCollapseRow(ev) {
         ev.stopPropagation();
         this.model.collapseRow(ev.data.rowId);
         this.renderer.updateRow(this.model.get(ev.data.rowId));
@@ -405,7 +400,7 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onExpandClicked: function (ev) {
+    _onExpandClicked(ev) {
         ev.preventDefault();
         this.model.expandRows();
         this.update({}, { reload: false });
@@ -415,7 +410,7 @@ var GanttController = AbstractController.extend({
      * @param {OdooEvent} ev
      * @param {string} ev.data.rowId
      */
-    _onExpandRow: function (ev) {
+    _onExpandRow(ev) {
         ev.stopPropagation();
         this.model.expandRow(ev.data.rowId);
         this.renderer.updateRow(this.model.get(ev.data.rowId));
@@ -424,9 +419,9 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onNextPeriodClicked: function (ev) {
+    _onNextPeriodClicked(ev) {
         ev.preventDefault();
-        var state = this.model.get();
+        const state = this.model.get();
         this.update({ date: state.focusDate.add(1, state.scale) });
     },
     /**
@@ -436,15 +431,15 @@ var GanttController = AbstractController.extend({
      * @param {OdooEvent} ev
      * @param {jQuery} ev.data.target
      */
-    _onPillClicked: async function (ev) {
+    async _onPillClicked(ev) {
         if (!this._updating) {
             ev.data.target.addClass('o_gantt_pill_editing');
 
             // Sync with the mutex to wait for potential changes on the view
             await this.model.mutex.getUnlockedDef();
 
-            var dialog = this._openDialog(ev.data.target.data('id'));
-            dialog.on('closed', this, function () {
+            const dialog = this._openDialog(ev.data.target.data('id'));
+            dialog.on('closed', this, () => {
                 ev.data.target.removeClass('o_gantt_pill_editing');
             });
         }
@@ -462,17 +457,17 @@ var GanttController = AbstractController.extend({
      * @param {string} [ev.data.oldRowId]
      * @param {'copy'|'reschedule'} [ev.data.action]
      */
-    _onPillDropped: function (ev) {
+    _onPillDropped(ev) {
         ev.stopPropagation();
 
-        var state = this.model.get();
+        const state = this.model.get();
 
-        var schedule = {};
+        const schedule = {};
 
-        var diff = ev.data.diff;
+        let diff = ev.data.diff;
         diff = this.isRTL ? -diff : diff;
         if (diff) {
-            var pill = _.findWhere(state.records, { id: ev.data.pillId });
+            const pill = _.findWhere(state.records, { id: ev.data.pillId });
             schedule[state.dateStartField] = this.model.dateAdd(pill[state.dateStartField], diff, this.SCALES[state.scale].time);
             schedule[state.dateStopField] = this.model.dateAdd(pill[state.dateStopField], diff, this.SCALES[state.scale].time);
         } else if (ev.data.action === 'copy') {
@@ -487,8 +482,8 @@ var GanttController = AbstractController.extend({
 
             // if the pill is dragged in a top level group, we only want to
             // write on fields linked to this top level group
-            var fieldsToWrite = state.groupedBy.slice(0, ev.data.groupLevel + 1);
-            _.each(fieldsToWrite, function (fieldName) {
+            const fieldsToWrite = state.groupedBy.slice(0, ev.data.groupLevel + 1);
+            for (const fieldName of fieldsToWrite) {
                 // TODO: maybe not write if the value hasn't changed?
                 let valueToWrite = groupValue[fieldName];
                 if (Array.isArray(valueToWrite)) {
@@ -500,7 +495,7 @@ var GanttController = AbstractController.extend({
                     }
                 }
                 schedule[fieldName] = valueToWrite;
-            });
+            }
         }
         if (ev.data.action === 'copy') {
             this._copy(ev.data.pillId, schedule);
@@ -526,9 +521,9 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {OdooEvent} ev
      */
-    _onPillResized: function (ev) {
+    _onPillResized(ev) {
         ev.stopPropagation();
-        var schedule = {};
+        const schedule = {};
         schedule[ev.data.field] = ev.data.date;
         this._reschedule(ev.data.id, schedule);
     },
@@ -536,7 +531,7 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {OdooEvent} ev
      */
-    _onPillUpdatingStarted: function (ev) {
+    _onPillUpdatingStarted(ev) {
         ev.stopPropagation();
         this._updating = true;
         this.renderer.togglePreventConnectorsHoverEffect(true);
@@ -545,7 +540,7 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {OdooEvent} ev
      */
-    _onPillUpdatingStopped: function (ev) {
+    _onPillUpdatingStopped(ev) {
         ev.stopPropagation();
         this._updating = false;
         this.renderer.togglePreventConnectorsHoverEffect(false);
@@ -556,7 +551,7 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {OdooEvent} ev
      */
-    _onCellPlanClicked: function (ev) {
+    _onCellPlanClicked(ev) {
         ev.stopPropagation();
         const context = this._getDialogContext(ev.data.date, ev.data.rowId);
         this._openPlanDialog(context);
@@ -565,9 +560,9 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onPrevPeriodClicked: function (ev) {
+    _onPrevPeriodClicked(ev) {
         ev.preventDefault();
-        var state = this.model.get();
+        const state = this.model.get();
         this.update({ date: state.focusDate.subtract(1, state.scale) });
     },
     /**
@@ -606,9 +601,9 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onScaleClicked: function (ev) {
+    _onScaleClicked(ev) {
         ev.preventDefault();
-        var $button = $(ev.currentTarget);
+        const $button = $(ev.currentTarget);
         if ($button.hasClass('active')) {
             return;
         }
@@ -618,12 +613,8 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onTodayClicked: function (ev) {
+    _onTodayClicked(ev) {
         ev.preventDefault();
         this.update({ date: moment() });
     },
-});
-
-return GanttController;
-
 });

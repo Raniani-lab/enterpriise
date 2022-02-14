@@ -1,21 +1,19 @@
-odoo.define('web_gantt.GanttRenderer', function (require) {
-"use strict";
+/** @odoo-module alias=web_gantt.GanttRenderer */
 
-var AbstractRenderer = require('web.AbstractRenderer');
-var core = require('web.core');
-var GanttRow = require('web_gantt.GanttRow');
-var qweb = require('web.QWeb');
-var session = require('web.session');
-var utils = require('web.utils');
-var ConnectorContainer = require('web_gantt.ConnectorContainer');
-var { device, isDebug } = require('web.config');
-var { ComponentWrapper, WidgetAdapterMixin } = require('web.OwlCompatibility');
+import AbstractRenderer from 'web.AbstractRenderer';
+import core from 'web.core';
+import GanttRow from 'web_gantt.GanttRow';
+import qweb from 'web.QWeb';
+import session from 'web.session';
+import utils from 'web.utils';
+import ConnectorContainer from './connector/connector_container';
+import { device, isDebug } from 'web.config';
+import { ComponentWrapper, WidgetAdapterMixin } from 'web.OwlCompatibility';
 
-var QWeb = core.qweb;
-var _t = core._t;
+const QWeb = core.qweb;
+const _t = core._t;
 
-
-var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
+export default AbstractRenderer.extend(WidgetAdapterMixin, {
     config: {
         GanttRow: GanttRow
     },
@@ -52,8 +50,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @param {string} params.totalRow
      * @param {string} [params.popoverTemplate]
      */
-    init: function (parent, state, params) {
-        var self = this;
+    init(parent, state, params) {
         this._super.apply(this, arguments);
 
         this.$draggedPill = null;
@@ -80,9 +77,9 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
         this.rowWidgets = {};
         // Pill decoration colors, By default display primary color for pill
         this.pillDecorations = _.chain(this.arch.attrs)
-            .pick(function (value, key) {
-                return self.DECORATIONS.indexOf(key) >= 0;
-            }).mapObject(function (value) {
+            .pick((value, key) => {
+                return this.DECORATIONS.indexOf(key) >= 0;
+            }).mapObject((value) => {
                 return py.parse(py.tokenize(value));
             }).value();
         if (params.popoverTemplate) {
@@ -119,7 +116,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
     /**
      * Called each time the renderer is attached into the DOM.
      */
-    on_attach_callback: function () {
+    on_attach_callback() {
         this._isInDom = true;
         core.bus.on("keydown", this, this._onKeydown);
         core.bus.on("keyup", this, this._onKeyup);
@@ -137,13 +134,15 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
     /**
      * Called each time the renderer is detached from the DOM.
      */
-    on_detach_callback: function () {
+    on_detach_callback() {
         this._isInDom = false;
         core.bus.off("keydown", this, this._onKeydown);
         core.bus.off("keyup", this, this._onKeyup);
         _.invoke(this.rowWidgets, 'on_detach_callback');
-        WidgetAdapterMixin.on_detach_callback.call(this);
-        this._connectorContainerComponent.unmount();
+        if (this.dependencyEnabled) {
+            WidgetAdapterMixin.on_detach_callback.call(this);
+            this._connectorContainerComponent.unmount();
+        }
     },
     /**
      * @override
@@ -265,29 +264,28 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @param {Object} rowState part of the state concerning the row to update
      * @returns {Promise}
      */
-    updateRow: function (rowState) {
-        var self = this;
-        var oldRowIds = [rowState.id].concat(rowState.childrenRowIds);
-        var oldRows = [];
-        oldRowIds.forEach(function (rowId) {
-            if (self.rowWidgets[rowId]) {
-                oldRows.push(self.rowWidgets[rowId]);
-                delete self.rowWidgets[rowId];
+    updateRow(rowState) {
+        const oldRowIds = [rowState.id].concat(rowState.childrenRowIds);
+        const oldRows = [];
+        oldRowIds.forEach((rowId) => {
+            if (this.rowWidgets[rowId]) {
+                oldRows.push(this.rowWidgets[rowId]);
+                delete this.rowWidgets[rowId];
             }
         });
         this.proms = [];
-        var rows = this._renderRows([rowState], rowState.groupedBy);
-        var proms = this.proms;
+        const rows = this._renderRows([rowState], rowState.groupedBy);
+        const proms = this.proms;
         delete this.proms;
-        return Promise.all(proms).then(function () {
-            var $previousRow = oldRows[0].$el;
-            rows.forEach(function (row) {
+        return Promise.all(proms).then(() => {
+            let $previousRow = oldRows[0].$el;
+            rows.forEach((row) => {
                 row.$el.insertAfter($previousRow);
                 $previousRow = row.$el;
             });
             _.invoke(oldRows, 'destroy');
-            if (!self.disableDragdrop) {
-                self._setRowsDroppable();
+            if (!this.disableDragdrop) {
+                this._setRowsDroppable();
             }
         });
     },
@@ -522,7 +520,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @private
      * @param {jQueryEvent} event
      */
-    _getAction: function (event) {
+    _getAction(event) {
         return event.ctrlKey || event.metaKey ? 'copy': 'reschedule';
     },
     /**
@@ -611,14 +609,14 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      *
      * @private
      */
-    _getFocusDateFormat: function () {
-        var focusDate = this.state.focusDate;
+    _getFocusDateFormat() {
+        const focusDate = this.state.focusDate;
         switch (this.state.scale) {
             case 'day':
                 return focusDate.format('dddd, MMMM DD, YYYY');
             case 'week':
-                var dateStart = focusDate.clone().startOf('week').format('DD MMMM YYYY');
-                var dateEnd = focusDate.clone().endOf('week').format('DD MMMM YYYY');
+                const dateStart = focusDate.clone().startOf('week').format('DD MMMM YYYY');
+                const dateEnd = focusDate.clone().endOf('week').format('DD MMMM YYYY');
                 return _.str.sprintf('%s - %s', dateStart, dateEnd);
             case 'month':
                 return focusDate.format('MMMM YYYY');
@@ -643,7 +641,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @param {Object} row
      * @param {*} groupLevel
      */
-    _getPillsInfo: function (row, groupLevel) {
+    _getPillsInfo(row, groupLevel) {
         return {
             resId: row.resId,
             pills: row.records,
@@ -657,11 +655,11 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @private
      * @returns {Moment[]}
      */
-    _getSlotsDates: function () {
-        var token = this.SCALES[this.state.scale].interval;
-        var stopDate = this.state.stopDate;
-        var day = this.state.startDate;
-        var dates = [];
+    _getSlotsDates() {
+        const token = this.SCALES[this.state.scale].interval;
+        const stopDate = this.state.stopDate;
+        let day = this.state.startDate;
+        const dates = [];
         while (day <= stopDate) {
             dates.push(day);
             day = day.clone().add(1, token);
@@ -749,7 +747,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @private
      * @returns {Object}
      */
-    _prepareViewInfo: function () {
+    _prepareViewInfo() {
         return {
             colorField: this.colorField,
             progressField: this.progressField,
@@ -784,51 +782,50 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @override
      */
     async _renderView() {
-        var self = this;
-        var oldRowWidgets = Object.keys(this.rowWidgets).map(function (rowId) {
-            return self.rowWidgets[rowId];
+        const oldRowWidgets = Object.keys(this.rowWidgets).map((rowId) => {
+            return this.rowWidgets[rowId];
         });
         this.rowWidgets = {};
         this.viewInfo = this._prepareViewInfo();
 
         this.proms = [];
-        var rows = this._renderRows(this.state.rows, this.state.groupedBy);
-        var totalRow;
+        const rows = this._renderRows(this.state.rows, this.state.groupedBy);
+        let totalRow;
         if (this.totalRow) {
             totalRow = this._renderTotalRow();
         }
         this.proms.push(this._super.apply(this, arguments));
-        var proms = this.proms;
+        const proms = this.proms;
         delete this.proms;
-        return Promise.all(proms).then(function () {
+        return Promise.all(proms).then(() => {
             _.invoke(oldRowWidgets, 'destroy');
-            if (self.firstRendering) {
-                self._replaceElement(QWeb.render(self.template_to_use, {widget: self, isMobile: device.isMobile}));
-                self.firstRendering = false;
+            if (this.firstRendering) {
+                this._replaceElement(QWeb.render(this.template_to_use, {widget: this, isMobile: device.isMobile}));
+                this.firstRendering = false;
             } else {
-                const newContent = $(QWeb.render(self.template_to_use, {widget: self, isMobile: device.isMobile}));
-                self.$el.html(newContent[0].innerHTML);
+                const newContent = $(QWeb.render(this.template_to_use, {widget: this, isMobile: device.isMobile}));
+                this.$el.html(newContent[0].innerHTML);
             }
             const $containment = $('<div id="o_gantt_containment"/>');
-            const $rowContainer = self.$('.o_gantt_row_container');
+            const $rowContainer = this.$('.o_gantt_row_container');
             $rowContainer.append($containment);
-            if (!self.state.groupedBy.length) {
-                $containment.css(self.isRTL ? {right: 0} : {left: 0});
+            if (!this.state.groupedBy.length) {
+                $containment.css(this.isRTL ? {right: 0} : {left: 0});
             }
 
-            rows.forEach(function (row) {
+            rows.forEach((row) => {
                 row.$el.appendTo($rowContainer);
             });
             if (totalRow) {
-                totalRow.$el.appendTo(self.$('.o_gantt_total_row_container'));
+                totalRow.$el.appendTo(this.$('.o_gantt_total_row_container'));
             }
 
-            if (self._isInDom && !self.disableDragdrop) {
-                self._setRowsDroppable();
+            if (this._isInDom && !this.disableDragdrop) {
+                this._setRowsDroppable();
             }
 
-            if (self.state.isSample) {
-                self._renderNoContentHelper();
+            if (this.state.isSample) {
+                this._renderNoContentHelper();
             }
         });
     },
@@ -842,44 +839,43 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @param {string[]} groupedBy
      * @returns {Promise<GanttRow[]>} resolved with the row widgets
      */
-    _renderRows: function (rows, groupedBy) {
-        var self = this;
-        var rowWidgets = [];
+    _renderRows(rows, groupedBy) {
+        let rowWidgets = [];
 
-        var groupLevel = this.state.groupedBy.length - groupedBy.length;
+        const groupLevel = this.state.groupedBy.length - groupedBy.length;
         // FIXME: could we get rid of collapseFirstLevel in Renderer, and fully
         // handle this in Model?
-        var hideSidebar = groupedBy.length === 0;
+        let hideSidebar = groupedBy.length === 0;
         if (this.collapseFirstLevel) {
-            hideSidebar = self.state.groupedBy.length === 0;
+            hideSidebar = this.state.groupedBy.length === 0;
         }
-        rows.forEach(function (row) {
-            const pillsInfo = self._getPillsInfo(row, groupLevel);
+        rows.forEach((row) => {
+            const pillsInfo = this._getPillsInfo(row, groupLevel);
             if (groupedBy.length) {
                 pillsInfo.groupName = row.name;
                 pillsInfo.groupedByField = row.groupedByField;
             }
-            var params = {
-                canCreate: self.canCreate,
-                canCellCreate: self.canCellCreate,
-                canEdit: self.canEdit,
-                canPlan: self.canPlan,
+            const params = {
+                canCreate: this.canCreate,
+                canCellCreate: this.canCellCreate,
+                canEdit: this.canEdit,
+                canPlan: this.canPlan,
                 isGroup: row.isGroup,
-                consolidate: (groupLevel === 0) && (self.state.groupedBy[0] === self.consolidationParams.maxField),
+                consolidate: (groupLevel === 0) && (this.state.groupedBy[0] === this.consolidationParams.maxField),
                 hideSidebar: hideSidebar,
                 isOpen: row.isOpen,
-                disableDragdrop: self.disableDragdrop,
+                disableDragdrop: this.disableDragdrop,
                 rowId: row.id,
                 fromServer: row.fromServer,
-                scales: self.SCALES,
+                scales: this.SCALES,
                 unavailabilities: row.unavailabilities,
             };
-            if (self.thumbnails && row.groupedByField && row.groupedByField in self.thumbnails){
-                params.thumbnail = {model: self.fieldsInfo[row.groupedByField].relation, field: self.thumbnails[row.groupedByField],};
+            if (this.thumbnails && row.groupedByField && row.groupedByField in this.thumbnails){
+                params.thumbnail = {model: this.fieldsInfo[row.groupedByField].relation, field: this.thumbnails[row.groupedByField],};
             }
-            rowWidgets.push(self._renderRow(pillsInfo, params));
+            rowWidgets.push(this._renderRow(pillsInfo, params));
             if (row.isGroup && row.isOpen) {
-                var subRowWidgets = self._renderRows(row.rows, groupedBy.slice(1));
+                const subRowWidgets = this._renderRows(row.rows, groupedBy.slice(1));
                 rowWidgets = rowWidgets.concat(subRowWidgets);
             }
         });
@@ -898,10 +894,10 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @param {Object} params
      * @returns {Promise<GanttRow>} resolved when the row is ready
      */
-    _renderRow: function (pillsInfo, params) {
-        var ganttRow = new this.config.GanttRow(this, pillsInfo, this.viewInfo, params);
+    _renderRow(pillsInfo, params) {
+        const ganttRow = new this.config.GanttRow(this, pillsInfo, this.viewInfo, params);
         this.rowWidgets[ganttRow.rowId] = ganttRow;
-        this.proms.push(ganttRow._widgetRenderAndInsert(function () {}));
+        this.proms.push(ganttRow._widgetRenderAndInsert(() => {}));
         return ganttRow;
     },
     /**
@@ -910,13 +906,13 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      *
      * @returns {Promise<GanttRow} resolved with the row widget
      */
-    _renderTotalRow: function () {
-        var pillsInfo = {
+    _renderTotalRow() {
+        const pillsInfo = {
             pills: this.state.records,
             groupLevel: 0,
             groupName: "Total"
         };
-        var params = {
+        const params = {
             canCreate: this.canCreate,
             canCellCreate: this.canCellCreate,
             canEdit: this.canEdit,
@@ -931,7 +927,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
     /**
      * Set droppable on all rows
      */
-    _setRowsDroppable: function () {
+    _setRowsDroppable() {
         // jQuery (< 3.0) rounds the width value but we need the exact value
         // getBoundingClientRect is costly when there are lots of rows
         const firstCell = this.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0];
@@ -1109,7 +1105,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
     /**
      * @param {KeyboardEvent} ev
      */
-    _onKeydown: function (ev) {
+    _onKeydown(ev) {
         this.action = this._getAction(ev);
         if (this.$draggedPill && this.action === 'copy') {
             this.$el.addClass('o_copying');
@@ -1119,7 +1115,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
     /**
      * @param {KeyboardEvent} ev
      */
-    _onKeyup: function (ev) {
+    _onKeyup(ev) {
         this.action = this._getAction(ev);
         if (this.$draggedPill && this.action === 'reschedule') {
             this.$el.addClass('o_grabbing');
@@ -1150,7 +1146,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * @private
      * @param {OdooEvent} event
      */
-    _onStartDragging: function (event) {
+    _onStartDragging(event) {
         this.$draggedPill = event.data.$draggedPill;
         this.$draggedPill.addClass('o_dragged_pill');
         if (this.action === 'copy') {
@@ -1166,7 +1162,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
      * Used to give a feedback on the impossibility of moving the pill
      * @private
      */
-    _onStartNoDragging: function () {
+    _onStartNoDragging() {
         this.$el.addClass('o_no_dragging');
     },
     /**
@@ -1182,11 +1178,7 @@ var GanttRenderer = AbstractRenderer.extend(WidgetAdapterMixin, {
     /**
      * @private
      */
-    _onStopNoDragging: function () {
+    _onStopNoDragging() {
         this.$el.removeClass('o_no_dragging');
     },
-});
-
-return GanttRenderer;
-
 });

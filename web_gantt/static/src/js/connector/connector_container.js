@@ -1,4 +1,4 @@
-/** @odoo-module alias=web_gantt.ConnectorContainer **/
+/** @odoo-module **/
 
 import Connector from "./connector";
 import { deepMerge } from "./connector_utils";

@@ -66,13 +66,15 @@ QUnit.module("Views", (hooks) => {
                             type: "many2one",
                             relation: "test_report",
                             store: true,
+                            sortable: true,
                         },
-                        sold: { string: "Sold", type: "float", store: true, group_operator: "sum" },
+                        sold: { string: "Sold", type: "float", store: true, group_operator: "sum", sortable: true },
                         untaxed: {
                             string: "Untaxed",
                             type: "float",
                             group_operator: "sum",
                             store: true,
+                            sortable: true,
                         },
                     },
                     records: [
@@ -94,13 +96,14 @@ QUnit.module("Views", (hooks) => {
                 },
                 test_time_range: {
                     fields: {
-                        categ_id: { string: "categ_id", type: "many2one", relation: "test_report" },
-                        sold: { string: "Sold", type: "float", store: true, group_operator: "sum" },
+                        categ_id: { string: "categ_id", type: "many2one", relation: "test_report", sortable: true },
+                        sold: { string: "Sold", type: "float", store: true, group_operator: "sum", sortable: true },
                         untaxed: {
                             string: "Untaxed",
                             type: "float",
                             group_operator: "sum",
                             store: true,
+                            sortable: true,
                         },
                         date: { string: "Date", type: "date", store: true, sortable: true },
                         transformation_date: {
@@ -1823,6 +1826,7 @@ QUnit.module("Views", (hooks) => {
                 string: "Untaxed_2",
                 type: "float",
                 store: true,
+                sortable: true,
             };
             serverData.models.test_report.records.forEach((record) => (record.untaxed_2 = 3.1415));
 
@@ -2229,6 +2233,7 @@ QUnit.module("Views", (hooks) => {
                 type: "many2one",
                 relation: "product",
                 store: true,
+                sortable: true,
             };
             serverData.models.product = {
                 fields: {

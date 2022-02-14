@@ -17,7 +17,6 @@ class TestSignRequest(SignRequestCommon):
             self.assertEqual(sign_request.state, 'sent', 'The default state for a new created sign request should be "sent"')
             self.assertTrue(all(sign_request.request_item_ids.mapped('is_mail_sent')), 'The mail should be sent for the new created sign request by default')
             self.assertEqual(sign_request.with_context(active_test=False).cc_partner_ids, self.partner_4 + self.env.user.partner_id, 'The cc_partners should be the specified one and the creator')
-            self.assertEqual(sign_request.with_context(active_test=False).message_partner_ids, sign_request.request_item_ids.partner_id + self.partner_4 + self.env.user.partner_id, 'Signers, CC partners and the sender should be the followers')
             self.assertEqual(len(sign_request.sign_log_ids.filtered(lambda log: log.action == 'create')), 1, 'A log with action="create" should be created')
             for sign_request_item in sign_request:
                 self.assertEqual(sign_request_item.state, 'sent', 'The default state for a new created sign request item should be "sent"')
@@ -111,7 +110,6 @@ class TestSignRequest(SignRequestCommon):
         self.assertEqual(new_sign_request_no_item.state, 'sent', 'The default state for a new created sign request should be "sent"')
         self.assertTrue(all(new_sign_request_no_item.request_item_ids.mapped('is_mail_sent')), 'The mail should be sent for the new created sign request by default')
         self.assertEqual(new_sign_request_no_item.with_context(active_test=False).cc_partner_ids, self.partner_4 + self.env.user.partner_id, 'The cc_partners should be the specified one and the creator')
-        self.assertEqual(new_sign_request_no_item.with_context(active_test=False).message_partner_ids, new_sign_request_no_item.request_item_ids.partner_id + self.partner_4 + self.env.user.partner_id, 'Signers, CC partners and the sender should be the followers')
         self.assertEqual(len(new_sign_request_no_item.sign_log_ids.filtered(lambda log: log.action == 'create')), 1, 'A log with action="create" should be created')
         for sign_request_item in new_sign_request_no_item:
             self.assertEqual(sign_request_item.state, 'sent', 'The default state for a new created sign request item should be "sent"')
@@ -277,7 +275,7 @@ class TestSignRequest(SignRequestCommon):
         self.assertNotEqual(sign_request_item_customer.access_token, token_customer, "sign request item's access token should be changed")
         self.assertEqual(sign_request_item_customer.is_mail_sent, False, 'email should not be sent')
         self.assertEqual(len(sign_request_3_roles.sign_log_ids), logs_num, 'No new log should be created')
-        self.assertEqual(sign_request_3_roles.with_context(active_test=False).message_partner_ids, sign_request_3_roles.request_item_ids.partner_id + self.partner_4 + self.env.user.partner_id + self.partner_1, 'Old Signers, CC partners, the sender and the new signer should be the followers')
+        self.assertEqual(sign_request_3_roles.with_context(active_test=False).cc_partner_ids, self.partner_4 + self.env.user.partner_id + self.partner_1, 'If a signer is reassigned and no longer be a signer, he should be a contact in copy')
         self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 0, 'The activity for the old signer should be removed')
         self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_5.id)), 0, 'No activity should be created for user without permission to access Sign')
 
@@ -295,7 +293,7 @@ class TestSignRequest(SignRequestCommon):
         self.assertNotEqual(sign_request_item_employee.access_token, token_employee, "sign request item's access token should be changed")
         self.assertEqual(sign_request_item_employee.is_mail_sent, False, 'email should not be sent')
         self.assertEqual(len(sign_request_3_roles.sign_log_ids), logs_num, 'No new log should be created')
-        self.assertEqual(sign_request_3_roles.with_context(active_test=False).message_partner_ids, sign_request_3_roles.request_item_ids.partner_id + self.partner_4 + self.env.user.partner_id + self.partner_2, 'Old Signers, CC partners, the sender and the new signer should be the followers')
+        self.assertEqual(sign_request_3_roles.with_context(active_test=False).cc_partner_ids, self.partner_4 + self.env.user.partner_id + self.partner_2, 'If a signer is reassigned and no longer be a signer, he should be a contact in copy')
         self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_2.id)), 0, 'The activity for the old signer should be removed')
         self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 1, 'An activity for the new signer should be created')
 

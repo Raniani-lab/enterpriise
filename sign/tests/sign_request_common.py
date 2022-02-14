@@ -136,18 +136,19 @@ class SignRequestCommon(TransactionCase):
         })
 
     def create_sign_request_no_item(self, signer, cc_partners):
-        return self.env['sign.request'].create({
+        sign_request = self.env['sign.request'].create({
             'template_id': self.template_no_item.id,
             'reference': self.template_no_item.display_name,
             'request_item_ids': [Command.create({
                 'partner_id': signer.id,
                 'role_id': self.env.ref('sign.sign_item_role_default').id,
             })],
-            'cc_partner_ids': cc_partners.ids,
         })
+        sign_request.message_subscribe(partner_ids=cc_partners.ids)
+        return sign_request
 
     def create_sign_request_3_roles(self, customer, employee, company, cc_partners):
-        return self.env['sign.request'].create({
+        sign_request = self.env['sign.request'].create({
             'template_id': self.template_3_roles.id,
             'reference': self.template_3_roles.display_name,
             'request_item_ids': [Command.create({
@@ -160,8 +161,9 @@ class SignRequestCommon(TransactionCase):
                 'partner_id': company.id,
                 'role_id': self.env.ref('sign.sign_item_role_company').id,
             })],
-            'cc_partner_ids': cc_partners.ids,
         })
+        sign_request.message_subscribe(partner_ids=cc_partners.ids)
+        return sign_request
 
     def get_sign_item_config(self, role_id):
         return {

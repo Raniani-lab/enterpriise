@@ -133,18 +133,17 @@ class HrContractSignDocumentWizard(models.TransientModel):
                   'partner_id': self.responsible_id.partner_id.id}]
             ))
 
-        cc_partner_ids = self.cc_partner_ids.ids + self.responsible_id.partner_id.ids
         sign_requests = self.env['sign.request'].create([{
             'template_id': sign_request_values[0].id,
             'request_item_ids': [Command.create({
                 'partner_id': signer['partner_id'],
                 'role_id': signer['role_id'],
             }) for signer in sign_request_values[1]],
-            'cc_partner_ids': cc_partner_ids,
             'reference': _('Signature Request - %s', sign_request_values[0].name),
             'subject': self.subject,
             'message': self.message,
         } for sign_request_values in sign_values])
+        sign_requests.message_subscribe(partner_ids=self.cc_partner_ids.ids)
 
         if not self.check_access_rights('write', raise_exception=False):
             sign_requests = sign_requests.sudo()

@@ -141,7 +141,7 @@
                     </div>
 
                     <field name="request_item_ids" context="{'default_sign_request_id': id}" nolabel="1"/>
-                    <field name="cc_partner_ids" attrs="{'readonly': [('state', 'not in', ['sent', 'signed'])]}">
+                    <field name="cc_partner_ids">
                         <tree>
                             <field name="name" string="Contacts in copy"/>
                             <field name="email"/>

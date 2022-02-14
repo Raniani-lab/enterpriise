@@ -104,10 +104,10 @@ class SignContract(Sign):
                         Command.create({'role_id': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id,
                                         'partner_id': contract.hr_responsible_id.partner_id.id}),
                     ],
-                    'cc_partner_ids': [Command.set(contract.hr_responsible_id.partner_id.ids + advantage.sign_copy_partner_id.ids)],
                     'reference': _('Signature Request - %s', advantage.name or contract.name),
                     'subject': _('Signature Request - %s', advantage.name or contract.name),
                 })
+                sign_request_sudo.message_subcribe(partner_ids=advantage.sign_copy_partner_id.ids)
                 sign_request_sudo.toggle_favorited()
 
                 contract.sign_request_ids += sign_request_sudo
@@ -790,7 +790,6 @@ class HrContractSalary(http.Controller):
                 Command.create({'role_id': request.env.ref('sign.sign_item_role_employee').id, 'partner_id': new_contract.employee_id.address_home_id.id}),
                 Command.create({'role_id': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id, 'partner_id': new_contract.hr_responsible_id.partner_id.id}),
             ],
-            'cc_partner_ids': [Command.set(new_contract.hr_responsible_id.partner_id.ids)],
             'reference': _('Signature Request - %s', new_contract.name),
             'subject': _('Signature Request - %s', new_contract.name),
         })

@@ -93,7 +93,7 @@ class SignRequest(models.Model):
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
     template_tags = fields.Many2many('sign.template.tag', string='Template Tags', related='template_id.tag_ids')
-    cc_partner_ids = fields.Many2many('res.partner', string='Copy to')
+    cc_partner_ids = fields.Many2many('res.partner', string='Copy to', compute='_compute_cc_partners')
     message = fields.Html('sign.message')
     message_cc = fields.Html('sign.message_cc')
     attachment_ids = fields.Many2many('ir.attachment', string='Attachments', readonly=True, copy=False, ondelete="restrict")
@@ -139,30 +139,20 @@ class SignRequest(models.Model):
                 'signing_date': item.signing_date or ''
             } for item in request.request_item_ids]
 
-    def write(self, vals):
-        if 'cc_partner_ids' in vals:
-            sign_requests = self.filtered(lambda sr: sr.state == 'signed')
-            sign_request2cc_partner_ids = zip(sign_requests, [set(sign_request.cc_partner_ids.ids) for sign_request in sign_requests])
-        res = super(SignRequest, self).write(vals)
-        if 'cc_partner_ids' in vals:
-            for sign_request in self:
-                sign_request.message_subscribe(partner_ids=sign_request.cc_partner_ids.ids)
-            for sign_request, old_cc_partner_ids in sign_request2cc_partner_ids:
-                new_cc_partner_ids = set(sign_request.cc_partner_ids.ids) - old_cc_partner_ids
-                if new_cc_partner_ids:
-                    sign_request._send_completed_document(partner_ids=new_cc_partner_ids)
-        return res
+    @api.depends('message_follower_ids.partner_id')
+    def _compute_cc_partners(self):
+        for sign_request in self:
+            sign_request.cc_partner_ids = sign_request.message_follower_ids.partner_id - sign_request.request_item_ids.partner_id
 
     @api.model_create_multi
     def create(self, vals_list):
         sign_requests = super().create(vals_list)
         sign_requests.template_id._check_send_ready()
-        sign_requests.cc_partner_ids = [Command.link(self.env.user.partner_id.id)]
         for sign_request in sign_requests:
             if not sign_request.request_item_ids:
                 raise ValidationError(_("A valid sign request needs at least one sign request item"))
             sign_request.attachment_ids.write({'res_model': sign_request._name, 'res_id': sign_request.id})
-            sign_request.message_subscribe(partner_ids=sign_request.cc_partner_ids.ids + sign_request.request_item_ids.partner_id.ids)
+            sign_request.message_subscribe(partner_ids=sign_request.request_item_ids.partner_id.ids)
             sign_users = sign_request.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee'))
             sign_request._schedule_activity(sign_users)
             self.env['sign.log'].sudo().create({'sign_request_id': sign_request.id, 'action': 'create'})
@@ -175,7 +165,9 @@ class SignRequest(models.Model):
         default = default or {}
         if 'attachment_ids' not in default:
             default['attachment_ids'] = [attachment.copy().id for attachment in self.attachment_ids]
-        return super().copy(default)
+        sign_request = super().copy(default)
+        sign_request.message_subscribe(partner_ids=self.cc_partner_ids.ids)
+        return sign_request
 
     def toggle_active(self):
         self.filtered(lambda sr: sr.active and sr.state == 'sent').cancel()
@@ -368,11 +360,8 @@ class SignRequest(models.Model):
 
         self.env['sign.log'].sudo().create([{'sign_request_id': sign_request.id, 'action': 'cancel'} for sign_request in self])
 
-    def _send_completed_document(self, partner_ids=None):
-        """ Send the completed document to specified partners.
-        Only partners who are also in the cc_partner_ids can receive message_cc
-        :param list(int) partner_ids: recipient partners.
-            If not specified, all  signers and cc_partner_ids will become the recipient partners
+    def _send_completed_document(self):
+        """ Send the completed document to signers and Contacts in copy with emails
         """
         self.ensure_one()
         if self.state != 'signed':
@@ -384,12 +373,11 @@ class SignRequest(models.Model):
 
         signers = [{'name': signer.partner_id.name, 'email': signer.signer_email, 'id': signer.partner_id.id} for signer in self.request_item_ids]
         request_edited = any(log.action == "update" for log in self.sign_log_ids)
-        for sign_request_item in self.request_item_ids if partner_ids is None else self.request_item_ids.filtered(lambda sri: sri.id in partner_ids):
-            self._send_completed_document_mail(signers, request_edited, sign_request_item.partner_id, access_token=sign_request_item.access_token, with_message_cc=sign_request_item.partner_id in self.cc_partner_ids, force_send=True)
+        for sign_request_item in self.request_item_ids:
+            self._send_completed_document_mail(signers, request_edited, sign_request_item.partner_id, access_token=sign_request_item.access_token, with_message_cc=False, force_send=True)
 
         cc_partners_valid = self.cc_partner_ids.filtered(lambda p: p.email_formatted)
-        cc_partners_valid = cc_partners_valid if partner_ids is None else cc_partners_valid.filtered(lambda p: p.id in partner_ids)
-        for cc_partner in cc_partners_valid - self.request_item_ids.partner_id:
+        for cc_partner in cc_partners_valid:
             self._send_completed_document_mail(signers, request_edited, cc_partner)
         if cc_partners_valid:
             body = _("The mail has been sent to contacts in copy: ") + ', '.join(cc_partners_valid.mapped('name'))

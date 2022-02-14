@@ -101,13 +101,12 @@ class SignSendRequest(models.TransientModel):
         message_cc = self.message_cc
         attachment_ids = self.attachment_ids
         refusal_allowed = self.refusal_allowed
-        return self.env['sign.request'].create({
+        sign_request = self.env['sign.request'].create({
             'template_id': template_id,
             'request_item_ids': [Command.create({
                 'partner_id': signer['partner_id'],
                 'role_id': signer['role_id'],
             }) for signer in signers],
-            'cc_partner_ids': [Command.set(cc_partner_ids)],
             'reference': reference,
             'subject': subject,
             'message': message,
@@ -115,6 +114,8 @@ class SignSendRequest(models.TransientModel):
             'attachment_ids': [Command.set(attachment_ids.ids)],
             'refusal_allowed': refusal_allowed,
         })
+        sign_request.message_subscribe(partner_ids=cc_partner_ids)
+        return sign_request
 
     def send_request(self):
         request = self.create_request()

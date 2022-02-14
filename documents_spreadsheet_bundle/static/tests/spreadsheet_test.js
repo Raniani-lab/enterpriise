@@ -1870,4 +1870,36 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             "create (Duplicated Label)",
         ]);
     });
+
+    test("dialog window not normally displayed", async function (assert) {
+        assert.expect(1);
+        const { } = await createSpreadsheet();
+        const dialog = document.querySelector(".o_dialog");
+        assert.equal(dialog, undefined, "Dialog should not normally be displayed ");
+    });
+
+    test("edit text window", async function (assert) {
+        assert.expect(4);
+        const { env } = await createSpreadsheet();
+        env.editText("testTitle", () => {}, {error : "testErrorText", placeholder : "testPlaceholder"})
+        await nextTick()
+        const dialog = document.querySelector(".o_dialog");
+        assert.ok(dialog !== undefined, "Dialog can be opened");
+        assert.equal(document.querySelector(".modal-title").textContent, "testTitle", "Can set dialog title")
+        assert.equal(document.querySelector(".o_dialog_error_text").textContent, "testErrorText", "Can set dialog error text")
+        assert.equal(document.querySelectorAll(".modal-footer button").length, 2, "Edit text have 2 buttons")
+    });
+
+    test("notify user window", async function (assert) {
+        assert.expect(4);
+        const { env } = await createSpreadsheet();
+        env.notifyUser("this is a notification")
+        await nextTick()
+        const dialog = document.querySelector(".o_dialog");
+        assert.ok(dialog !== undefined, "Dialog can be opened");
+        assert.equal(document.querySelector(".modal-body div").textContent, "this is a notification", "Can set dialog content")
+        assert.equal(document.querySelector(".o_dialog_error_text"), null, "NotifyUser have no error text")
+        assert.equal(document.querySelectorAll(".modal-footer button").length, 1, "NotifyUser have 1 button")
+    });
+
 });

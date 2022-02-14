@@ -49,6 +49,7 @@ export default class SpreadsheetComponent extends Component {
                 isDisplayed: false,
                 title: undefined,
                 isEditText: false,
+                errorText : undefined,
                 inputContent: undefined,
                 isEditInteger: false,
                 inputIntegerContent: undefined,
@@ -138,20 +139,22 @@ export default class SpreadsheetComponent extends Component {
      * Ask the user to edit a text
      *
      * @param {string} title Title of the popup
-     * @param {string} placeholder Placeholder of the text input
      * @param {Function} callback Callback to call with the entered text
+     * @param {Object} options Options of the dialog. Can contain a placeholder and an error message.
      */
-    editText(title, placeholder, callback) {
+    editText(title, callback, options = {}) {
         this.dialogContent = undefined;
         this.state.dialog.title = title && title.toString();
+        this.state.dialog.errorText = options.error && options.error.toString();
         this.state.dialog.isEditText = true;
-        this.state.inputContent = placeholder;
+        this.state.inputContent = options.placeholder;
         this.confirmDialog = () => {
             this.closeDialog();
             callback(this.state.inputContent);
         };
         this.state.dialog.isDisplayed = true;
     }
+
     _getLinesNumber(callback) {
         this.dialogContent = _t("Select the number of records to insert");
         this.state.dialog.title = _t("Re-insert list");
@@ -163,6 +166,7 @@ export default class SpreadsheetComponent extends Component {
         };
         this.state.dialog.isDisplayed = true;
     }
+
     /**
      * Close the dialog.
      */
@@ -170,11 +174,13 @@ export default class SpreadsheetComponent extends Component {
         this.dialogContent = undefined;
         this.confirmDialog = () => true;
         this.state.dialog.title = undefined;
+        this.state.dialog.errorText = undefined;
         this.state.dialog.isDisplayed = false;
         this.state.dialog.isEditText = false;
         this.state.dialog.isEditInteger = false;
         document.querySelector("canvas").focus();
     }
+
     /**
      * Retrieve the spreadsheet_data and the thumbnail associated to the
      * current spreadsheet

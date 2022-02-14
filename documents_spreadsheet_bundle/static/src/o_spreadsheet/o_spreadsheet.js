@@ -13289,11 +13289,10 @@
         action: OPEN_CF_SIDEPANEL_ACTION,
     });
 
-    function interactiveRenameSheet(env, sheetId, message) {
+    function interactiveRenameSheet(env, sheetId, errorText) {
         const placeholder = env.model.getters.getSheetName(sheetId);
-        //TODO We should update editText to take a message in addition to the title
-        const t = _lt("Rename Sheet") + (message ? " - " + message : "");
-        env.editText(t, placeholder, (name) => {
+        const title = _lt("Rename Sheet");
+        const callback = (name) => {
             if (name === null || name === placeholder) {
                 return;
             }
@@ -13309,6 +13308,10 @@
                     interactiveRenameSheet(env, sheetId, _lt("Some used characters are not allowed in a sheet name (Forbidden characters are %s).", FORBIDDEN_SHEET_CHARS.join(" ")));
                 }
             }
+        };
+        env.editText(title, callback, {
+            placeholder: placeholder,
+            error: errorText,
         });
     }
 
@@ -17117,6 +17120,92 @@
     ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat"];
     ClipboardPlugin.modes = ["normal"];
 
+    /**
+     * Change the reference types inside the given token, if the token represent a range or a cell
+     *
+     * Eg. :
+     *   A1 => $A$1 => A$1 => $A1 => A1
+     *   A1:$B$1 => $A$1:B$1 => A$1:$B1 => $A1:B1 => A1:$B$1
+     */
+    function loopThroughReferenceType(token) {
+        if (token.type !== "REFERENCE")
+            return token;
+        const [range, sheet] = token.value.split("!").reverse();
+        const [left, right] = range.split(":");
+        const sheetRef = sheet ? `${sheet}!` : "";
+        const updatedLeft = getTokenNextReferenceType(left);
+        const updatedRight = right ? `:${getTokenNextReferenceType(right)}` : "";
+        return { ...token, value: sheetRef + updatedLeft + updatedRight };
+    }
+    /**
+     * Get a new token with a changed type of reference from the given cell token symbol.
+     * Undefined behavior if given a token other than a cell or if the Xc contains a sheet reference
+     *
+     * A1 => $A$1 => A$1 => $A1 => A1
+     */
+    function getTokenNextReferenceType(xc) {
+        switch (getReferenceType(xc)) {
+            case "none":
+                xc = setXcToReferenceType(xc, "colrow");
+                break;
+            case "colrow":
+                xc = setXcToReferenceType(xc, "row");
+                break;
+            case "row":
+                xc = setXcToReferenceType(xc, "col");
+                break;
+            case "col":
+                xc = setXcToReferenceType(xc, "none");
+                break;
+        }
+        return xc;
+    }
+    /**
+     * Returns the given XC with the given reference type.
+     */
+    function setXcToReferenceType(xc, referenceType) {
+        xc = xc.replace(/\$/g, "");
+        let indexOfNumber;
+        switch (referenceType) {
+            case "col":
+                return "$" + xc;
+            case "row":
+                indexOfNumber = xc.search(/[0-9]/);
+                return xc.slice(0, indexOfNumber) + "$" + xc.slice(indexOfNumber);
+            case "colrow":
+                indexOfNumber = xc.search(/[0-9]/);
+                xc = xc.slice(0, indexOfNumber) + "$" + xc.slice(indexOfNumber);
+                return "$" + xc;
+            case "none":
+                return xc;
+        }
+    }
+    /**
+     * Return the type of reference used in the given XC of a cell.
+     * Undefined behavior if the XC have a sheet reference
+     */
+    function getReferenceType(xcCell) {
+        if (isColAndRowFixed(xcCell)) {
+            return "colrow";
+        }
+        else if (isColFixed(xcCell)) {
+            return "col";
+        }
+        else if (isRowFixed(xcCell)) {
+            return "row";
+        }
+        return "none";
+    }
+    function isColFixed(xc) {
+        return xc.startsWith("$");
+    }
+    function isRowFixed(xc) {
+        return xc.includes("$", 1);
+    }
+    function isColAndRowFixed(xc) {
+        return xc.startsWith("$") && xc.length > 1 && xc.slice(1).includes("$");
+    }
+
     const CELL_DELETED_MESSAGE = _lt("The cell you are trying to edit has been deleted.");
     const SelectionIndicator = "␣";
     class EditionPlugin extends UIPlugin {
@@ -17259,6 +17348,9 @@
                         });
                     }
                     break;
+                case "CYCLE_EDITION_REFERENCES":
+                    this.cycleReferences();
+                    break;
             }
         }
         unsubscribe() {
@@ -17311,6 +17403,25 @@
         // ---------------------------------------------------------------------------
         // Misc
         // ---------------------------------------------------------------------------
+        cycleReferences() {
+            const tokens = this.getTokensInSelection();
+            const refTokens = tokens.filter((token) => token.type === "REFERENCE");
+            if (refTokens.length === 0)
+                return;
+            const updatedReferences = tokens
+                .map(loopThroughReferenceType)
+                .map((token) => token.value)
+                .join("");
+            const content = this.currentContent;
+            const start = tokens[0].start;
+            const end = tokens[tokens.length - 1].end;
+            const newContent = content.slice(0, start) + updatedReferences + content.slice(end);
+            const lengthDiff = newContent.length - content.length;
+            this.setContent(newContent, {
+                start: refTokens[0].start,
+                end: refTokens[refTokens.length - 1].end + lengthDiff,
+            });
+        }
         validateSelection(length, start, end) {
             return start >= 0 && start <= length && end >= 0 && end <= length
                 ? 0 /* Success */
@@ -17558,29 +17669,26 @@
         canStartComposerRangeSelection() {
             if (this.currentContent.startsWith("=")) {
                 const tokenAtCursor = this.getTokenAtCursor();
-                if (tokenAtCursor) {
-                    const tokenIdex = this.currentTokens
-                        .map((token) => token.start)
-                        .indexOf(tokenAtCursor.start);
-                    let count = tokenIdex;
-                    let currentToken = tokenAtCursor;
-                    // check previous token
-                    while (!["COMMA", "LEFT_PAREN", "OPERATOR"].includes(currentToken.type)) {
-                        if (currentToken.type !== "SPACE" || count < 1) {
-                            return false;
-                        }
-                        count--;
-                        currentToken = this.currentTokens[count];
+                if (!tokenAtCursor) {
+                    return false;
+                }
+                const tokenIdex = this.currentTokens.map((token) => token.start).indexOf(tokenAtCursor.start);
+                let count = tokenIdex;
+                let currentToken = tokenAtCursor;
+                // check previous token
+                while (!["COMMA", "LEFT_PAREN", "OPERATOR"].includes(currentToken.type)) {
+                    if (currentToken.type !== "SPACE" || count < 1) {
+                        return false;
                     }
-                    count = tokenIdex + 1;
+                    count--;
                     currentToken = this.currentTokens[count];
-                    // check next token
-                    while (currentToken && !["COMMA", "RIGHT_PAREN", "OPERATOR"].includes(currentToken.type)) {
-                        if (currentToken.type !== "SPACE") {
-                            return false;
-                        }
-                        count++;
-                        currentToken = this.currentTokens[count];
+                }
+                count = tokenIdex + 1;
+                currentToken = this.currentTokens[count];
+                // check next token
+                while (currentToken && !["COMMA", "RIGHT_PAREN", "OPERATOR"].includes(currentToken.type)) {
+                    if (currentToken.type !== "SPACE") {
+                        return false;
                     }
                     count++;
                     currentToken = this.currentTokens[count];
@@ -17588,6 +17696,15 @@
                 return true;
             }
             return false;
+        }
+        /**
+         * Return all the tokens between selectionStart and selectionEnd.
+         * Includes token that begin right on selectionStart or end right on selectionEnd.
+         */
+        getTokensInSelection() {
+            const start = Math.min(this.selectionStart, this.selectionEnd);
+            const end = Math.max(this.selectionStart, this.selectionEnd);
+            return this.currentTokens.filter((t) => (t.start <= start && t.end >= start) || (t.start >= start && t.start < end));
         }
     }
     EditionPlugin.getters = [
@@ -18893,7 +19010,7 @@
              * In order to avoid superposing the same color layer and modifying the final
              * opacity, we filter highlights to remove duplicates.
              */
-            for (let h of this.getHighlights().filter((highlight, index) => 
+            for (let h of this.getHighlights().filter((highlight, index) =>
             // For every highlight in the sheet, deduplicated by zone
             this.getHighlights().findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheet === sheetId) === index)) {
                 const [x, y, width, height] = this.getters.getRect(h.zone, viewport);
@@ -22782,7 +22899,7 @@
                 Enter: this.processEnterKey,
                 Escape: this.processEscapeKey,
                 F2: () => console.warn("Not implemented"),
-                F4: () => console.warn("Not implemented"),
+                F4: this.processF4Key,
                 Tab: (ev) => this.processTabKey(ev),
             };
         }
@@ -22889,6 +23006,10 @@
         processEscapeKey() {
             this.env.model.dispatch("STOP_EDITION", { cancel: true });
         }
+        processF4Key() {
+            this.env.model.dispatch("CYCLE_EDITION_REFERENCES");
+            this.processContent();
+        }
         onKeydown(ev) {
             var _a, _b;
             let handler = this.keyMapping[ev.key];
@@ -22925,7 +23046,8 @@
         }
         onKeyup(ev) {
             this.isKeyStillDown = false;
-            if (this.props.focus === "inactive" || ["Control", "Shift", "Tab", "Enter"].includes(ev.key)) {
+            if (this.props.focus === "inactive" ||
+                ["Control", "Shift", "Tab", "Enter", "F4"].includes(ev.key)) {
                 return;
             }
             if (this.autoCompleteState.showProvider && ["ArrowUp", "ArrowDown"].includes(ev.key)) {
@@ -23257,7 +23379,7 @@
     GridComposer.components = { Composer };
 
     const TEMPLATE$a = owl.xml /* xml */ `
-    <div class="o-error-tooltip"> 
+    <div class="o-error-tooltip">
       <t t-esc="props.text"/>
     </div>
 `;
@@ -31062,8 +31184,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-02-14T12:12:54.698Z';
-    exports.__info__.hash = 'c6bfc09';
+    exports.__info__.date = '2022-02-15T12:50:39.802Z';
+    exports.__info__.hash = 'd979317';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

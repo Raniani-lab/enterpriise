@@ -18,6 +18,7 @@
         'views/hr_payslip_run_views.xml',
         'views/hr_payslip_views.xml',
         'data/mail_activity_data.xml',
+        'data/ir_actions_server_data.xml',
     ],
     'demo': [
         'data/demo.xml',

@@ -222,14 +222,14 @@ class HrContractSalary(http.Controller):
 
         if not contract.employee_id:
             be_country = request.env["res.country"].search([("code", "=", "BE")])
-            contract.employee_id = request.env['hr.employee'].sudo().create({
+            contract.employee_id = request.env['hr.employee'].with_context(tracking_disable=True).sudo().create({
                 'name': '',
                 'active': False,
                 'country_id': be_country.id,
                 'certificate': False,  # To force encoding it
                 'company_id': contract.company_id.id,
             })
-            contract.employee_id.address_home_id = request.env['res.partner'].sudo().create({
+            contract.employee_id.address_home_id = request.env['res.partner'].with_context(tracking_disable=True).sudo().create({
                 'name': 'Simulation',
                 'type': 'private',
                 'country_id': be_country.id,
@@ -511,7 +511,7 @@ class HrContractSalary(http.Controller):
             partner.write(address_home_vals)
         else:
             address_home_vals['active'] = False
-            partner = request.env['res.partner'].sudo().with_context(lang=None).create(address_home_vals)
+            partner = request.env['res.partner'].sudo().with_context(lang=None, tracking_disable=True).create(address_home_vals)
 
         # Update personal info on the employee
         if bank_account_vals:
@@ -551,7 +551,7 @@ class HrContractSalary(http.Controller):
                 ('applicant_id', '=', applicant.id), ('employee_id', '!=', False)], limit=1)
             employee = existing_contract.employee_id
         if not employee:
-            employee = request.env['hr.employee'].sudo().create({
+            employee = request.env['hr.employee'].sudo().with_context(tracking_disable=True).create({
                 'name': 'Simulation Employee',
                 'active': False,
                 'company_id': contract.company_id.id,
@@ -573,7 +573,7 @@ class HrContractSalary(http.Controller):
         if not no_write and contract.state == 'draft':
             contract.write(vals)
         else:
-            contract = request.env['hr.contract'].sudo().create(vals)
+            contract = request.env['hr.contract'].sudo().with_context(tracking_disable=True).create(vals)
 
         return contract
 

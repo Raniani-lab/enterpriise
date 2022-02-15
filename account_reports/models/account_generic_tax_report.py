@@ -1012,8 +1012,20 @@ class AccountGenericTaxReport(models.AbstractModel):
         html_lines = []
         for line in lines:
             if line.get('line_code'):
-                amounts[line['line_code']] = line['columns'][0]['balance']
-                carried_over[line['line_code']] = line['columns'][0].get('carryover_bounds', False)
+                tax_report_line = line.get('tax_report_line', False)
+                carryover_bounds = line['columns'][0].get('carryover_bounds', False)
+                if tax_report_line and carryover_bounds:
+                    amounts[line['line_code']] = self.get_amounts_after_carryover(
+                        tax_report_line,
+                        line['columns'][0]['balance'],
+                        line['columns'][0]['carryover_bounds'],
+                        options,
+                        0,
+                        tax_report_line.is_carryover_persistent
+                    )[0]
+                else:
+                    amounts[line['line_code']] = line['columns'][0]['balance']
+                carried_over[line['line_code']] = carryover_bounds
 
         for i, calc in enumerate(tax_report.get_checks_to_perform(amounts, carried_over)):
             if calc[1]:
@@ -1021,13 +1033,15 @@ class AccountGenericTaxReport(models.AbstractModel):
                     value = self.format_value(calc[1])
                 else:
                     value = calc[1]
-                controls.append({'name': calc[0], 'id': 'control_' + str(i), 'columns': [{'name': value,
-                                                                                          'style': 'white-space:nowrap;',
-                                                                                          'balance': calc[1]}],
-                                                                                          'is_control': True})
+                control_line_id = self._get_generic_line_id(None, str(i), markup='control')
+                controls.append({'name': calc[0], 'id': control_line_id, 'columns': [{'name': value,
+                                                                                      'style': 'white-space:nowrap;',
+                                                                                      'balance': calc[1]}],
+                                 'is_control': True})
                 html_lines.append("<tr><td>{name}</td><td>{amount}</td></tr>".format(name=calc[0], amount=value))
         if controls:
-            lines.extend([{'id': 'section_control', 'name': _('Controls failed'), 'unfoldable': False,
+            control_line_id = self._get_generic_line_id(None, None, markup='section_control')
+            lines.extend([{'id': control_line_id, 'name': _('Controls failed'), 'unfoldable': False,
                            'columns': [{'name': '',
                                         'style': 'white-space:nowrap;',
                                         'balance': ''}] * col_nber, 'level': 0, 'line_code': False, 'is_control': True}] + controls)

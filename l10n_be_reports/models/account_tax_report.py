@@ -13,9 +13,9 @@ class AccountTaxReport(models.Model):
     def get_checks_to_perform(self, amounts, carried_over):
         if self.id == self.env['ir.model.data']._xmlid_to_res_id('l10n_be.tax_report_vat'):
             return [
-                # code 13. Carried over grids can be ignored by these rules, they will be set to 0 if they are negative.
+                # code 13.
                 (_('Not allowed negative amounts'),
-                    not all(v >= 0 for v in [v for k, v in amounts.items() if not carried_over[k]])),
+                    not all(v >= 0 for v in amounts.values())),
                 # Code C
                 (_('[55] > 0 if [86] > 0 or [88] > 0'),
                     min(0.0, amounts['c55']) if amounts['c86'] > 0 or amounts['c88'] > 0 else False),

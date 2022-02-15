@@ -265,15 +265,19 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             self.assertEqual(carried_over_sum, 0)
 
     def test_tax_report_carry_over_non_persistent_and_used_in_balance_with_empty_period(self):
-        tax_25_line = self._create_tax_report_line('Base 25%', self.tax_report, sequence=5, tag_name='base_25',
-                                                   code='t25', is_carryover_used_in_balance=True)
-        tax_32_line = self._create_tax_report_line('Total line', self.tax_report, sequence=6,
-                                                   carry_over_condition='always_carry_over_and_set_to_0',
-                                                   formula='t25',
-                                                   carry_over_destination_line_id=tax_25_line.id,
-                                                   is_carryover_persistent=False)
+        tax_25_line = self._create_tax_report_line(
+            'Base 25%', self.tax_report, sequence=5, tag_name='base_25',
+            code='t25', is_carryover_used_in_balance=True
+        )
+        self._create_tax_report_line(
+            'Total line', self.tax_report, sequence=6,
+            carry_over_condition='always_carry_over_and_set_to_0',
+            formula='t25',
+            carry_over_destination_line_id=tax_25_line.id,
+            is_carryover_persistent=False
+        )
         # Create a move with 100$ 25% tax
-        report, taxes, invoice = self._trigger_carryover_line_creation(self.company_data, [tax_25_line], False)
+        report, dummy, invoice = self._trigger_carryover_line_creation(self.company_data, [tax_25_line], False)
 
         # Then close the period to trigger the carryover line creation
         # Line 32 is using line 25 in its formula, and will carry over to line 25 of next period

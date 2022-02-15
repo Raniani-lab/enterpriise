@@ -123,6 +123,16 @@
                                             t-att-data-requested_documents="advantage.requested_documents"
                                             t-att-value="initial_values[advantage.field + '_manual']"/>
                                     </t>
+                                    <t t-if="advantage.display_type == 'text'">
+                                        <textarea
+                                            rows="6" cols="60"
+                                            applies-on="contract"
+                                            class="form-control form-control-primary mb8 advantage_input"
+                                            t-att-name="advantage.field + '_text'"
+                                            t-att-data-field-type="advantage.manual_res_field_id.ttype"
+                                            t-att-data-requested_documents="advantage.requested_documents"
+                                        ><t t-esc="initial_values[advantage.field + '_text']"/></textarea>
+                                    </t>
                                     <t t-if="advantage.display_type == 'dropdown'">
                                         <select
                                             class="form-control form-control-primary mt16 mb8 advantage_input"

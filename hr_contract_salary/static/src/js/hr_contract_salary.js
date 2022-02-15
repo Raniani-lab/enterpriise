@@ -136,6 +136,13 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     advantages[appliesOn][input.name] = input.value;
                 }
             });
+        $('textarea')
+            .toArray()
+            .filter(area => area.hasAttribute('applies-on'))
+            .forEach(area => {
+                const appliesOn = $(area).attr('applies-on');
+                advantages[appliesOn][area.name] = area.value;
+            });
         $('select.advantage_input,select.personal_info').toArray().forEach(select => {
             const appliesOn = $(select).attr('applies-on');
             advantages[appliesOn][select.name] = $(select).val();

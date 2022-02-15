@@ -56,6 +56,7 @@ class HrContractSalaryAdvantage(models.Model):
         ('slider', 'Slider'),
         ('radio', 'Radio Buttons'),
         ('manual', 'Manual Input'),
+        ('text', 'Text'),
     ])
     impacts_net_salary = fields.Boolean(default=True)
     description = fields.Char('Description')

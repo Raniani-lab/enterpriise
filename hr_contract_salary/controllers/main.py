@@ -362,6 +362,10 @@ class HrContractSalary(http.Controller):
                 manual_field = '%s_manual' % (advantage.field)
                 field = advantage.manual_field or advantage.field
                 initial_values[manual_field] = contract[field] if field and field in contract else 0
+            if advantage.display_type == 'text':
+                text_field = '%s_text' % (advantage.field)
+                field = advantage.manual_field or advantage.field
+                initial_values[text_field] = contract[field] if field and field in contract else ''
             elif advantage.display_type == 'dropdown' or advantage.display_type == 'dropdown-group':
                 initial_values['select_%s' % field] = contract[field]
 
@@ -434,8 +438,8 @@ class HrContractSalary(http.Controller):
                 contract_vals[advantage.fold_field or advantage.field] = advantages['fold_%s' % (advantage.field)]
             if advantage.display_type == 'dropdown':
                 contract_vals[advantage.field] = advantages[advantage.field]
-            if advantage.display_type == 'manual':
-                contract_vals[advantage.manual_field or advantage.field] = advantages['%s_manual' % (advantage.field)]
+            if advantage.display_type in ['manual', 'text']:
+                contract_vals[advantage.manual_field or advantage.field] = advantages['%s_%s' % (advantage.field, 'manual' if advantage.display_type == 'manual' else 'text')]
             else:
                 contract_vals[advantage.field] = advantages[advantage.field]
         return contract_vals

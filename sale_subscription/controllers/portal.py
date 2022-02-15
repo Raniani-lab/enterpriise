@@ -12,7 +12,7 @@ from odoo.tools.translate import _
 from odoo.addons.payment.controllers import portal as payment_portal
 from odoo.addons.payment import utils as payment_utils
 from odoo.addons.portal.controllers import portal
-from odoo.addons.portal.controllers.portal import get_records_pager, pager as portal_pager
+from odoo.addons.portal.controllers.portal import pager as portal_pager
 
 
 class CustomerPortal(portal.CustomerPortal):
@@ -164,8 +164,8 @@ class CustomerPortal(portal.CustomerPortal):
         }
         values.update(payment_values)
 
-        history = request.session.get('my_subscriptions_history', [])
-        values.update(get_records_pager(history, subscription_sudo))
+        values = self._get_page_view_values(
+            subscription_sudo, access_token, values, 'my_subscriptions_history', False)
 
         return request.render("sale_subscription.subscription", values)
 

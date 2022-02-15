@@ -164,18 +164,16 @@
 
             <div t-if="ticket.team_id.allow_portal_ticket_closing and not ticket.stage_id.is_close and not ticket.closed_by_partner" class="text-center mt-5">
                 <button class="btn btn-primary mb-1 pt-1" data-target="#helpdesk_ticket_close_modal" data-toggle="modal"><small><b>Close this ticket</b></small></button>
-                <p><small>
-                    If the issue has been solved, you can close the request.
-                </small></p>
+                <p>
+                    <small>
+                        If the issue has been solved, you can close the request.
+                    </small>
+                </p>
             </div>
 
             <div class="o_portal_messages_container mt32">
                 <h4>Message and communication history</h4>
                 <t t-call="portal.message_thread">
-                    <t t-set="token" t-value="ticket.access_token"/>
-                    <t t-set="object" t-value="ticket"/>
-                    <t t-set="pid" t-value="pid"/>
-                    <t t-set="hash" t-value="hash"/>
                     <t t-set="disable_composer" t-value="ticket.stage_id.is_close"/>
                 </t>
             </div>

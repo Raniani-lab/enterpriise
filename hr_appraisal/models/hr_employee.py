@@ -71,7 +71,7 @@ class HrEmployee(models.Model):
             else:
                 month = employee.company_id.duration_first_appraisal if employee.appraisal_count == 1 else employee.company_id.duration_next_appraisal
                 starting_date = employee.last_appraisal_date
-            dates[employee.id] = (starting_date + relativedelta(months=month, days=-days))
+            dates[employee.id] = (starting_date or today) + relativedelta(months=month, days=-days)
         return dates
 
     def _get_appraisal_plan_starting_date(self):

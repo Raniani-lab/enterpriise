@@ -231,13 +231,19 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     transfer(number) {
         if (this._mode === 'demo') {
-            this._onBye();
+            this._updateCallState(CALL_STATE.NO_CALL);
+            this.trigger_up('sip_bye');
             return;
         }
         if (this._callState !== CALL_STATE.ONGOING_CALL) {
             return;
         }
-        this._sipSession.refer(number);
+        const transferTarget = window.SIP.UserAgent.makeURI(`sip:${number}@${this.infoPbxConfiguration.pbx_ip}`);
+        this._sipSession.refer(transferTarget, {
+            requestDelegate: {
+                onAccept: (response) => this._onReferAccepted(response),
+            },
+        });
     },
     unmuteCall() {
         if (this._mode === 'demo') {
@@ -905,9 +911,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._updateCallState(CALL_STATE.ONGOING_CALL);
         this._stopRingtones();
         if (this._mode === 'prod' && this._alwaysTransfer && this._currentNumber) {
-            this._sipSession.refer(this._currentNumber);
+            this.transfer(this._currentNumber);
+        } else {
+            this.trigger_up('sip_accepted');
         }
-        this.trigger_up('sip_accepted');
     },
     /**
      * Triggered when receiving a 1xx provisional response to the INVITE
@@ -972,6 +979,17 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         })();
         this._triggerError(errorMessage, { isTemporary: true });
         this.trigger_up('sip_cancel_outgoing');
+    },
+    /**
+     * Triggered when receiving a response with status code 2xx to the REFER
+     * request.
+     *
+     * @private
+     * @param {SIP.IncomingResponse} response The server final response to the
+     * REFER request.
+     */
+    _onReferAccepted(response) {
+        this._terminateSession();
     },
     /**
      * @private

@@ -66,9 +66,8 @@ class ShareRoute(http.Controller):
         if status != 200:
             return request.env['ir.http']._response_by_status(status, headers, content)
         else:
-            content_base64 = base64.b64decode(content)
-            headers.append(('Content-Length', len(content_base64)))
-            response = request.make_response(content_base64, headers)
+            headers.append(('Content-Length', len(content)))
+            response = request.make_response(content, headers)
 
         return response
 
@@ -92,8 +91,7 @@ class ShareRoute(http.Controller):
                     status, content, filename, mimetype, filehash = request.env['ir.http']._binary_record_content(
                         document, field='datas', filename=None, filename_field='name',
                         default_mimetype='application/octet-stream')
-                    doc_zip.writestr(filename, base64.b64decode(content),
-                                     compress_type=zipfile.ZIP_DEFLATED)
+                    doc_zip.writestr(filename, content, compress_type=zipfile.ZIP_DEFLATED)
         except zipfile.BadZipfile:
             logger.exception("BadZipfile exception")
 

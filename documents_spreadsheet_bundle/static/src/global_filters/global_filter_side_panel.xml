@@ -146,7 +146,7 @@
                     relatedModel="state.relation.relatedModelName"
                     selected="state.listFields[listId]"
                     t-key="listId + (state.relation.relatedModelName or 'not_defined')"
-                    onFieldChainChanged="chain => this.onSelectedPivotField(listId, chain)"
+                    onFieldChainChanged="chain => this.onSelectedListField(listId, chain)"
                     />
             </div>
         </div>

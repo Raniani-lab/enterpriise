@@ -97,22 +97,9 @@ module("documents_spreadsheet > global_filters",
     });
 
     test("Create a new date filter", async function (assert) {
-        assert.expect(14);
+        assert.expect(17);
 
-        const { model } = await createSpreadsheetFromPivot({
-            serverData: {
-                models: getBasicData(),
-                views: {
-                    "partner,false,pivot": `
-                            <pivot string="Partners">
-                                <field name="date" interval="month" type="row"/>
-                                <field name="id" type="col"/>
-                                <field name="probability" type="measure"/>
-                            </pivot>`,
-                    "partner,false,search": `<search/>`,
-                },
-            },
-        });
+        const { model } = await createSpreadsheetWithPivotAndList();
         await nextTick();
         await click(target.querySelector(".o_topbar_filter_icon"));
         await click(target.querySelector(".o_global_filter_new_time"));
@@ -137,8 +124,13 @@ module("documents_spreadsheet > global_filters",
 
         await testUtils.fields.editAndTrigger(year, "this_year", ["change"]);
 
+        // pivot
         $($(target).find(".o_field_selector_value")[0]).focusin();
         await click(target.querySelector(".o_field_selector_select_button"));
+
+        //list
+        $($(target).find(".o_field_selector_value")[1]).focusin();
+        await click(target.querySelector(".o_field_selector_popover:not(.d-none) .o_field_selector_select_button"));
 
         await click(
             target.querySelector(".o_spreadsheet_filter_editor_side_panel .o_global_filter_save")
@@ -152,10 +144,14 @@ module("documents_spreadsheet > global_filters",
         assert.equal(globalFilter.rangeType, "month");
         assert.equal(globalFilter.type, "date");
         const currentYear = new Date().getFullYear();
-        const computedDomain = model.getters.getPivotComputedDomain("1");
-        assert.deepEqual(computedDomain[0], "&");
-        assert.deepEqual(computedDomain[1], ["date", ">=", currentYear + "-10-01"]);
-        assert.deepEqual(computedDomain[2], ["date", "<=", currentYear + "-10-31"]);
+        const computedPivotDomain = model.getters.getPivotComputedDomain("1");
+        assert.deepEqual(computedPivotDomain[0], "&");
+        assert.deepEqual(computedPivotDomain[1], ["date", ">=", currentYear + "-10-01"]);
+        assert.deepEqual(computedPivotDomain[2], ["date", "<=", currentYear + "-10-31"]);
+        const computedListDomain = model.getters.getListComputedDomain("1");
+        assert.deepEqual(computedListDomain[0], "&");
+        assert.deepEqual(computedListDomain[1], ["date", ">=", currentYear + "-10-01"]);
+        assert.deepEqual(computedListDomain[2], ["date", "<=", currentYear + "-10-31"]);
     });
 
     test("Create a new date filter without specifying the year", async function (assert) {

@@ -118,6 +118,12 @@ msgid "Call Name"
 msgstr ""
 
 #. module: voip
+#: code:addons/voip/models/voip_phonecall.py:0
+#, python-format
+msgid "Call duration: %(min)smin %(sec)ssec"
+msgstr ""
+
+#. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format

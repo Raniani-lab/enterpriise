@@ -815,6 +815,10 @@ class AccountMove(models.Model):
             if self.move_type in {'in_invoice', 'in_refund'} and not move_form.ref and not no_ref:
                 move_form.ref = invoice_id_ocr
 
+            if self.move_type in {'out_invoice', 'out_refund'}:
+                with mute_logger('odoo.tests.common.onchange'):
+                    move_form.name = invoice_id_ocr
+
             if not move_form.currency_id or move_form.currency_id == self._get_default_currency():
                 currency = self.env["res.currency"].search([
                         '|', '|', ('currency_unit_label', 'ilike', currency_ocr),

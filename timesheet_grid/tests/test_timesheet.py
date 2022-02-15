@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields, Command
+from odoo.osv import expression
 
 from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
 from odoo.exceptions import AccessError
@@ -226,3 +227,43 @@ class TestTimesheetValidation(TestCommonTimesheet):
 
         working_hours = employee.get_timesheet_and_working_hours_for_employees(employees_grid_data, '2021-12-01', '2021-12-31')
         self.assertEqual(working_hours[employee.id]['units_to_work'], 184.0, "Number of hours should be 23d * 8h/d = 184h")
+
+    def test_timesheet_grid_filter_equal_string(self):
+        """Make sure that if you use a filter with (not) equal to,
+           there won't be any error with grid view"""
+        row_fields = ['project_id', 'task_id']
+        col_field = 'date'
+        cell_field = 'unit_amount'
+        domain = [['employee_id', '=', self.user_employee.employee_id.id],
+                  ['project_id', '!=', False]]
+        grid_range = {'name': 'week', 'string': 'Week', 'span': 'week', 'step': 'day'}
+        orderby = 'project_id,task_id'
+
+        # Filter on project equal a different name, expect 0 row
+        new_domain = expression.AND([domain, [('project_id', '=', self.project_customer.name[:-1])]])
+        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
+        self.assertFalse(result['rows'])
+
+        # Filter on project not equal to exact name, expect 0 row
+        new_domain = expression.AND([domain, [('project_id', '!=', self.project_customer.name)]])
+        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
+        self.assertFalse(result['rows'])
+
+        # Filter on project_id to make sure there are timesheets
+        new_domain = expression.AND([domain, [('project_id', '=', self.project_customer.name)]])
+        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
+        self.assertEqual(len(result['rows']), 2)
+
+        # Filter on task equal to task1, expect timesheet1 (task 1)
+        new_domain = expression.AND([domain, [('task_id', '=', self.timesheet1.task_id.name)]])
+        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
+        self.assertEqual(len(result['rows']), 1)
+        self.assertEqual(result['rows'][0]['values']['project_id'][0], self.timesheet1.project_id.id)
+        self.assertEqual(result['rows'][0]['values']['task_id'][0], self.timesheet1.task_id.id)
+
+        # Filter on task not equal to task1, expect timesheet2 (task 2)
+        new_domain = expression.AND([domain, [('task_id', '!=', self.timesheet1.task_id.name)]])
+        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
+        self.assertEqual(len(result['rows']), 1)
+        self.assertEqual(result['rows'][0]['values']['project_id'][0], self.timesheet2.project_id.id)
+        self.assertEqual(result['rows'][0]['values']['task_id'][0], self.timesheet2.task_id.id)

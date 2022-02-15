@@ -149,7 +149,8 @@ class AnalyticLine(models.Model):
                 domain_search.append([name, operator, value])
                 if name in ['project_id', 'task_id']:
                     if operator in ['=', '!='] and value:
-                        domain_project_task[name].append(('id', operator, value))
+                        field = "name" if isinstance(value, str) else "id"
+                        domain_project_task[name].append((field, operator, value))
                     elif operator in ['ilike', 'not ilike']:
                         domain_project_task[name].append(('name', operator, value))
             else:

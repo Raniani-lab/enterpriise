@@ -2,8 +2,8 @@
 /* global moment */
 
 import { _t } from "web.core";
-import Domain from "web.Domain";
-import pyUtils from "web.py_utils";
+import { Domain } from "@web/core/domain";
+
 import { BasicDataSource } from "../o_spreadsheet/basic_data_source";
 import { formats } from "../o_spreadsheet/constants";
 
@@ -263,11 +263,7 @@ export default class PivotDataSource extends BasicDataSource {
         values = ["boolean", "many2one", "many2many", "integer", "float"].includes(field.type)
             ? values.map((value) => JSON.parse(value))
             : values;
-        const domainString = pyUtils.assembleDomains([
-            field.relation ? "[]" : Domain.prototype.arrayToString(baseDomain),
-            Domain.prototype.arrayToString([[requestField, "in", values]]),
-            ], "AND");
-        const domain = pyUtils.eval("domain", domainString, {});
+        const domain = Domain.and([field.relation ? []: baseDomain, [[requestField, "in", values]]]).toList();
         const records = await this.rpc({
             model: field.relation ? field.relation : model,
             domain,

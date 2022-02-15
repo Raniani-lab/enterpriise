@@ -2,8 +2,7 @@
 /* global _ */
 
 import { _t } from "web.core";
-import Domain from "web.Domain";
-import pyUtils from "web.py_utils";
+import { Domain } from "@web/core/domain";
 
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import PivotDataSource from "../pivot_data_source";
@@ -449,14 +448,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * @param {boolean} refresh whether the cache should be reloaded or not
      */
     _addDomain(pivotId, domain, refresh = true) {
-        domain = pyUtils.assembleDomains(
-            [
-                Domain.prototype.arrayToString(this.getters.getPivotDomain(pivotId)),
-                Domain.prototype.arrayToString(domain),
-            ],
-            "AND"
-        );
-        const computedDomain = pyUtils.eval("domain", domain, {});
+        const computedDomain = Domain.and([this.getters.getPivotDomain(pivotId), domain]).toList()
         this._getDataSource(pivotId).setComputedDomain(computedDomain);
         if (refresh) {
             this._refreshOdooPivot(pivotId);

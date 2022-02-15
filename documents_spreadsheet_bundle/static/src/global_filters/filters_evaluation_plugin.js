@@ -7,9 +7,8 @@
  */
 
 import { _t } from "web.core";
-import Domain from "web.Domain";
+import { Domain } from "@web/core/domain";
 import { constructDateDomain, constructDateRange, yearSelected, getPeriodOptions } from "web.searchUtils";
-import pyUtils from "web.py_utils";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import CommandResult from "../o_spreadsheet/cancelled_reason";
@@ -233,7 +232,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                     setParam: this._getSelectedOptions(values),
                 })
                 : constructDateDomain(moment(), field, type, values);
-        return Domain.prototype.arrayToString(pyUtils.eval("domain", dateFilterRange.domain, {}));
+        return new Domain(dateFilterRange.domain);
     }
 
     /**
@@ -252,7 +251,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             return undefined;
         }
         const field = fieldDesc.field;
-        return Domain.prototype.arrayToString([[field, "ilike", value]]);
+        return new Domain([[field, "ilike", value]]);
     }
 
     /**
@@ -271,7 +270,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             return undefined;
         }
         const field = fieldDesc.field;
-        return Domain.prototype.arrayToString([[field, "in", values]]);
+        return new Domain([[field, "in", values]]);
     }
 
     /**
@@ -286,7 +285,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
      * @returns {string}
      */
     _getComputedDomain(getFieldDesc) {
-        let domain = "[]";
+        let domain = new Domain([]);
         for (let filter of this.getters.getGlobalFilters()) {
             const fieldDesc = getFieldDesc(filter.id);
             if (!fieldDesc) {
@@ -305,10 +304,10 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                     break;
             }
             if (domainToAdd) {
-                domain = pyUtils.assembleDomains([domain, domainToAdd], "AND");
+                domain = Domain.and([domain, domainToAdd])
             }
         }
-        return domain;
+        return domain.toString();
     }
 
     _getSelectedOptions(selectedOptionIds) {

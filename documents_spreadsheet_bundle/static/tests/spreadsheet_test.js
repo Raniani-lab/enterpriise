@@ -1065,7 +1065,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const currentAction = env.services.action.currentController.action;
         assert.equal(
             JSON.stringify(currentAction.domain),
-            `["|","|","&",["product_id","=",41],["bar","=",false],"&",["product_id","=",37],["bar","=",true],"&",["product_id","=",41],["bar","=",true]]`
+            '["|","&",["product_id","=",41],["bar","=",false],"|","&",["product_id","=",37],["bar","=",true],"&",["product_id","=",41],["bar","=",true]]'
         );
     });
 

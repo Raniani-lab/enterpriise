@@ -1,7 +1,6 @@
 /** @odoo-module */
 
-import Domain from "web.Domain";
-import pyUtils from "web.py_utils";
+import { Domain } from "@web/core/domain";
 
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 
@@ -82,14 +81,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      * @param {boolean} refresh whether the cache should be reloaded or not
      */
     _addDomain(listId, domain, refresh = true) {
-        domain = pyUtils.assembleDomains(
-            [
-                Domain.prototype.arrayToString(this.getters.getListDomain(listId)),
-                Domain.prototype.arrayToString(domain),
-            ],
-            "AND"
-        );
-        const computedDomain = pyUtils.eval("domain", domain, {});
+        const computedDomain = Domain.and([this.getters.getListDomain(listId), domain]).toList()
         this._getDataSource(listId).setComputedDomain(computedDomain);
         if (refresh) {
             this._refreshOdooList(listId);

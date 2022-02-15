@@ -1,7 +1,7 @@
 /** @odoo-module alias=documents_spreadsheet.PivotCache */
 
 import { _t } from "web.core";
-import Domain from "web.Domain";
+import { Domain } from "@web/core/domain";
 import pyUtils from "web.py_utils";
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
@@ -174,6 +174,7 @@ export default class PivotCache {
         /**
          * for each individual cell map the domain of a cell to its formula
          * */
+        /** @type {Object} */
         this._formulaToDomain = data.formulaToDomain;
     }
 
@@ -394,10 +395,7 @@ export default class PivotCache {
             const parsedCellDomain = groupDomainElements(cellDomain.split(","));
             return parsedFormulaDomain.every((v) => parsedCellDomain.includes(v));
         });
-        const domains = formulaDomains.map((formulaDomain) =>
-            Domain.prototype.arrayToString(this._formulaToDomain[formulaDomain])
-        );
-        return pyUtils.assembleDomains(domains, "OR");
+        return Domain.or(formulaDomains.map((fD) => this._formulaToDomain[fD])).toList();
     }
 
     //--------------------------------------------------------------------------

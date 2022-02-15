@@ -110,6 +110,7 @@
                         <field name="l10n_be_ambulatory_insurance_amount" nolabel="1"/>
                         <span>€ / month</span>
                     </div>
+                    <field name="l10n_be_ambulatory_insurance_notes" string="Additional Information" attrs="{'invisible': [('l10n_be_has_ambulatory_insurance', '=', False)]}"/>
                     <field name="l10n_be_ambulatory_amount_per_child" string="Amount per Child" invisible="1"/>
                     <field name="l10n_be_ambulatory_amount_per_adult" string="Amount per Adult" invisible="1"/>
                 </group>
@@ -125,6 +126,7 @@
                         <field name="insurance_amount" nolabel="1"/>
                         <span>€ / month</span>
                     </div>
+                    <field name="l10n_be_hospital_insurance_notes" string="Additional Information" attrs="{'invisible': [('has_hospital_insurance', '=', False)]}"/>
                     <field name="hospital_insurance_amount_per_child" invisible="1"/>
                     <field name="hospital_insurance_amount_per_adult" invisible="1"/>
                 </group>

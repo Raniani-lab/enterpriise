@@ -50,6 +50,7 @@ hrContractSalary.include({
         $("input[name='insured_relative_children']").parent().addClass('d-none');
         $("input[name='insured_relative_adults']").parent().addClass('d-none');
         $("input[name='insured_relative_spouse']").parent().addClass('d-none');
+        $("input[name='l10n_be_hospital_insurance_notes']").parent().addClass('d-none');
         $("input[name='insured_relative_children_manual']").before($('<strong>', {
             class: 'mt8',
             text: '# Children < 19'
@@ -58,11 +59,16 @@ hrContractSalary.include({
             class: 'mt8',
             text: '# Children >= 19'
         }));
+        $("textarea[name='l10n_be_hospital_insurance_notes_text']").before($('<strong>', {
+            class: 'mt8',
+            text: 'Additional Information'
+        }));
         this.onchangeAmbulatory();
         // YTI TODO: There is probably a way to remove this crap
         $("input[name='l10n_be_ambulatory_insured_children']").parent().addClass('d-none');
         $("input[name='l10n_be_ambulatory_insured_adults']").parent().addClass('d-none');
         $("input[name='l10n_be_ambulatory_insured_spouse']").parent().addClass('d-none');
+        $("input[name='l10n_be_ambulatory_insurance_notes']").parent().addClass('d-none');
         $("input[name='l10n_be_ambulatory_insured_children_manual']").before($('<strong>', {
             class: 'mt8',
             text: '# Children < 19'
@@ -70,6 +76,10 @@ hrContractSalary.include({
         $("input[name='l10n_be_ambulatory_insured_adults_manual']").before($('<strong>', {
             class: 'mt8',
             text: '# Children >= 19'
+        }));
+        $("textarea[name='l10n_be_ambulatory_insurance_notes_text']").before($('<strong>', {
+            class: 'mt8',
+            text: 'Additional Information'
         }));
         return res;
     },
@@ -81,6 +91,7 @@ hrContractSalary.include({
             $("label[for='insured_relative_children']").parent().removeClass('d-none');
             $("label[for='insured_relative_adults']").parent().removeClass('d-none');
             $("label[for='insured_relative_spouse']").parent().removeClass('d-none');
+            $("label[for='l10n_be_hospital_insurance_notes']").parent().removeClass('d-none');
         } else {
             // Reset values
             $("input[name='fold_insured_relative_spouse']").prop('checked', false);
@@ -90,6 +101,7 @@ hrContractSalary.include({
             $("label[for='insured_relative_children']").parent().addClass('d-none');
             $("label[for='insured_relative_adults']").parent().addClass('d-none');
             $("label[for='insured_relative_spouse']").parent().addClass('d-none');
+            $("label[for='l10n_be_hospital_insurance_notes']").parent().addClass('d-none');
         }
     },
 
@@ -100,6 +112,7 @@ hrContractSalary.include({
             $("label[for='l10n_be_ambulatory_insured_children']").parent().removeClass('d-none');
             $("label[for='l10n_be_ambulatory_insured_adults']").parent().removeClass('d-none');
             $("label[for='l10n_be_ambulatory_insured_spouse']").parent().removeClass('d-none');
+            $("label[for='l10n_be_ambulatory_insurance_notes']").parent().removeClass('d-none');
         } else {
             // Reset values
             $("input[name='fold_l10n_be_ambulatory_insured_spouse']").prop('checked', false);
@@ -109,6 +122,7 @@ hrContractSalary.include({
             $("label[for='l10n_be_ambulatory_insured_children']").parent().addClass('d-none');
             $("label[for='l10n_be_ambulatory_insured_adults']").parent().addClass('d-none');
             $("label[for='l10n_be_ambulatory_insured_spouse']").parent().addClass('d-none');
+            $("label[for='l10n_be_ambulatory_insurance_notes']").parent().addClass('d-none');
         }
     },
 });

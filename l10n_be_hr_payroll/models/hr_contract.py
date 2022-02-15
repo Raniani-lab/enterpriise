@@ -117,6 +117,7 @@ class HrContract(models.Model):
         default=lambda self: float(self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_adult', default=20.5)))
     insurance_amount = fields.Float(compute='_compute_insurance_amount', string="Insurance Amount", groups="hr_contract.group_hr_contract_manager", tracking=True)
     insured_relative_adults_total = fields.Integer(compute='_compute_insured_relative_adults_total', groups="hr_contract.group_hr_contract_manager")
+    l10n_be_hospital_insurance_notes = fields.Text(string="Hospital Insurance: Additional Info")
 
     wage_with_holidays = fields.Monetary(
         string="Wage With Sacrifices",
@@ -154,6 +155,8 @@ class HrContract(models.Model):
     l10n_be_ambulatory_insured_adults_total = fields.Integer(
         compute='_compute_ambulatory_insured_adults_total',
         groups="hr_contract.group_hr_contract_manager")
+    l10n_be_ambulatory_insurance_notes = fields.Text(string="Ambulatory Insurance: Additional Info")
+
 
     l10n_be_is_below_scale = fields.Boolean(
         string="Is below CP200 salary scale", compute='_compute_l10n_be_is_below_scale', search='_search_l10n_be_is_below_scale')

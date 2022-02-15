@@ -321,6 +321,18 @@
         <field name="display_type">manual</field>
     </record>
 
+    <record id="l10n_be_hospital_insurance_note" model="hr.contract.salary.advantage">
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_hospital_insurance_notes')])"/>
+        <field name="cost_res_field_id" model="ir.model.fields" eval="False"/>
+        <field name="sequence">44</field>
+        <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="fold_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'has_hospital_insurance')])"/>
+        <field name="manual_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_hospital_insurance_notes')])"/>
+        <field name="display_type">text</field>
+        <field name="description">For all insured persons, indicate the last name / first name / date of birth / relationship / Indicate if disabled</field>
+    </record>
+
     <record id="l10n_be_group_insurance" model="hr.contract.salary.advantage">
         <field name="name">Group Insurance</field>
         <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_group_insurance_rate')])"/>
@@ -412,6 +424,18 @@
         <field name="fold_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_has_ambulatory_insurance')])"/>
         <field name="manual_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_ambulatory_insured_adults')])"/>
         <field name="display_type">manual</field>
+    </record>
+
+    <record id="l10n_be_ambulatory_insurance_note" model="hr.contract.salary.advantage">
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_ambulatory_insurance_notes')])"/>
+        <field name="cost_res_field_id" model="ir.model.fields" eval="False"/>
+        <field name="sequence">49</field>
+        <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="fold_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_has_ambulatory_insurance')])"/>
+        <field name="manual_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_ambulatory_insurance_notes')])"/>
+        <field name="display_type">text</field>
+        <field name="description">For all insured persons, indicate the last name / first name / date of birth / relationship / Indicate if disabled</field>
     </record>
     </data>
 </odoo>

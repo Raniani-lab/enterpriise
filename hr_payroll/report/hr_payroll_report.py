@@ -3,7 +3,7 @@
 
 from psycopg2 import sql
 
-from odoo import api, fields, models, tools
+from odoo import fields, models, tools
 
 
 class HrPayrollReport(models.Model):

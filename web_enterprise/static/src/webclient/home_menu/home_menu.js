@@ -5,7 +5,16 @@ import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { useService } from "@web/core/utils/hooks";
 import { ExpirationPanel } from "./expiration_panel";
 
-const { Component, onPatched, onWillUpdateProps, useExternalListener, useState, useRef, xml } = owl;
+const {
+    Component,
+    useExternalListener,
+    onMounted,
+    onPatched,
+    onWillUpdateProps,
+    useState,
+    useRef,
+    xml,
+} = owl;
 
 class FooterComponent extends Component {
     setup() {
@@ -56,6 +65,10 @@ export class HomeMenu extends Component {
         onWillUpdateProps(() => {
             // State is reset on each remount
             this.state.focusedIndex = null;
+        });
+
+        onMounted(() => {
+            this.inputRef.el.focus();
         });
 
         onPatched(() => {
@@ -220,24 +233,42 @@ export class HomeMenu extends Component {
                 allowRepeat: true,
             });
         });
-        useExternalListener(window, "keydown", this._openCommandPalette);
+        useExternalListener(window, "keydown", this._onKeydownFocusInput);
     }
 
-    _openCommandPalette() {
+    _onKeydownFocusInput() {
         if (
+            document.activeElement !== this.inputRef.el &&
             this.ui.activeElement === document &&
             !["TEXTAREA", "INPUT"].includes(document.activeElement.tagName)
         ) {
-            this.inputRef.el.value = "";
             this.inputRef.el.focus();
         }
     }
-
     _onInputSearch() {
-        this.command.openMainPalette({
-            searchValue: `/${this.inputRef.el.value}`,
-            FooterComponent,
-        });
+        const onClose = () => {
+            if (this.inputRef.el) {
+                this.inputRef.el.focus();
+            }
+        };
+        const searchValue = this.compositionStart ? "/" : `/${this.inputRef.el.value.trim()}`;
+        this.compositionStart = false;
+        this.command.openMainPalette({ searchValue, FooterComponent }, onClose);
+        this.inputRef.el.value = "";
+    }
+
+    _onInputBlur() {
+        // if we blur search input to focus on body (eg. click on any
+        // non-interactive element) restore focus to avoid IME input issue
+        setTimeout(() => {
+            if (document.activeElement === document.body && this.ui.activeElement === document) {
+                this.inputRef.el.focus();
+            }
+        }, 0);
+    }
+
+    _onCompositionStart() {
+        this.compositionStart = true;
     }
 }
 HomeMenu.components = { ExpirationPanel };

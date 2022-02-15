@@ -452,7 +452,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             sheetId,
         });
 
-        await nextTick();
+        await waitForEvaluation(model);
         assert.ok(getCell(model, "E10").evaluated.error);
         assert.equal(
             getCell(model, "E10").evaluated.error,
@@ -479,7 +479,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         });
         setCellContent(model, "F10", `=PIVOT.HEADER("1", "product_id", A25)`);
         assert.equal(getCell(model, "A25"), null, "the cell should be empty");
-        await nextTick();
+        await waitForEvaluation(model);
         assert.equal(getCellValue(model, "F10"), "(Undefined)");
     });
 

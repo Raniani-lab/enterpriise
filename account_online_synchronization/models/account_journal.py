@@ -33,9 +33,12 @@ class AccountJournal(models.Model):
     def _cron_fetch_online_transactions(self):
         for journal in self.search([('account_online_account_id', '!=', False)]):
             if journal.account_online_link_id.auto_sync:
-                journal.with_context(cron=True).manual_sync()
-                # for cron jobs it is usually recommended to commit after each iteration, so that a later error or job timeout doesn't discard previous work
-                self.env.cr.commit()
+                try:
+                    journal.with_context(cron=True).manual_sync()
+                    # for cron jobs it is usually recommended to commit after each iteration, so that a later error or job timeout doesn't discard previous work
+                    self.env.cr.commit()
+                except UserError:
+                    pass
 
     def manual_sync(self):
         self.ensure_one()

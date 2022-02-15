@@ -839,7 +839,10 @@ class AccountMove(models.Model):
                             rounding_error = move_form.amount_total - total_ocr
                             threshold = len(vals_invoice_lines) * move_form.currency_id.rounding
                             if not move_form.currency_id.is_zero(rounding_error) and abs(rounding_error) < threshold:
-                                line.debit -= rounding_error
+                                if self.is_purchase_document():
+                                    line.debit -= rounding_error
+                                else:
+                                    line.credit -= rounding_error
                             break
 
     def _set_invoice_lines(self, move_form, vals_invoice_lines):

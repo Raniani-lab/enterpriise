@@ -247,17 +247,18 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
     def test_tax_adjustments(self):
         # test that if the total computed by Odoo doesn't exactly match the total found by the OCR, the tax are adjusted accordingly
-        self.env['res.currency'].search([('name', '!=', 'USD')]).active = False
-        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
-        extract_response = self.get_default_extract_response()
-        extract_response['results'][0]['total']['selected_value']['content'] += 0.01
+        for move_type in ('in_invoice', 'out_invoice'):
+            self.env['res.currency'].search([('name', '!=', 'USD')]).active = False
+            invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'waiting_extraction'})
+            extract_response = self.get_default_extract_response()
+            extract_response['results'][0]['total']['selected_value']['content'] += 0.01
 
-        with self.mock_iap_extract(extract_response, {}):
-            invoice._check_status()
+            with self.mock_iap_extract(extract_response, {}):
+                invoice._check_status()
 
-        self.assertEqual(invoice.amount_tax, 30.01)
-        self.assertEqual(invoice.amount_untaxed, 300)
-        self.assertEqual(invoice.amount_total, 330.01)
+            self.assertEqual(invoice.amount_tax, 30.01)
+            self.assertEqual(invoice.amount_untaxed, 300)
+            self.assertEqual(invoice.amount_total, 330.01)
 
     def test_non_existing_tax(self):
         # test that if there is an invoice line with a tax which doesn't exist in database it is ignored

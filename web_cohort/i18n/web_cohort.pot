@@ -40,7 +40,7 @@ msgstr ""
 #: code:addons/web_cohort/static/src/cohort_view/cohort_renderer.xml:0
 #: code:addons/web_cohort/static/src/legacy/xml/web_cohort.xml:0
 #, python-format
-msgid "Average"
+msgid "Average Value"
 msgstr ""
 
 #. module: web_cohort

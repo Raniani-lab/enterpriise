@@ -211,8 +211,11 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
     def test_camt_with_several_tx_details_and_instructed_amount(self):
         self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_instructed_amount.xml')
 
-    def test_camt_with_several_tx_details_and_multicurrency(self):
-        self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_multicurrency.xml')
+    def test_camt_with_several_tx_details_and_multicurrency_01(self):
+        self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_multicurrency_01.xml')
+
+    def test_camt_with_several_tx_details_and_multicurrency_02(self):
+        self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_multicurrency_02.xml')
 
     def test_several_ibans_match_journal_camt_file_import(self):
         # Create a bank account and journal corresponding to the CAMT

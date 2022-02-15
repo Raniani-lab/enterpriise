@@ -535,6 +535,10 @@ _currency_amount_getters = [
     (partial(_generic_get, xpath='ns:Amt/text()'), partial(_generic_get, xpath='ns:Amt/@Ccy')),
 ]
 
+_total_amount_getters = [
+    (partial(_generic_get, xpath='ns:NtryDtls/ns:Btch/ns:TtlAmt/text()'), partial(_generic_get, xpath='ns:NtryDtls/ns:Btch/ns:TtlAmt/@Ccy'))
+]
+
 # Start Balance
 #   OPBD : Opening Booked
 #   PRCD : Previous Closing Balance
@@ -646,6 +650,7 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
 
     entry_details = nodes[0]
     entry = nodes[1] if len(nodes) > 1 else nodes[0]
+    entry_amount = get_value_and_currency_name(entry, _amount_charges_getters, target_currency=journal_currency.name)[0]
 
     charges = get_charges(entry_details, entry)
     getters = _amount_charges_getters if charges else _amount_getters
@@ -668,7 +673,19 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
             raise ValidationError(_("No exchange rate was found to convert an amount into the currency of the journal"))
 
     sign = 1 if _get_credit_debit_indicator(*nodes, namespaces=namespaces) == "CRDT" else -1
-    return sign * amount * rate
+    total_amount, total_amount_currency = get_value_and_currency_name(entry, _total_amount_getters)
+    if total_amount and total_amount_currency == journal_currency.name:
+        if total_amount == entry_amount:
+            return sign * amount * rate
+    else:
+        if not total_amount:
+            total_amount = amount
+        if total_amount * rate == entry_amount:
+            return sign * amount * rate
+        elif journal_currency:
+            if journal_currency.compare_amounts(total_amount / rate, entry_amount) == 0:
+                return journal_currency.round(sign * amount / rate)
+    return sign * entry_amount
 
 def _get_counter_party(*nodes, namespaces):
     ind = _get_credit_debit_indicator(*nodes, namespaces=namespaces)

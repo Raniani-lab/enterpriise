@@ -5,6 +5,7 @@ var ace = require('web_editor.ace');
 const ajax = require('web.ajax');
 var config = require('web.config');
 const core = require('web.core');
+const { Markup } = require('web.utils');
 var MediaDialog = require('wysiwyg.widgets.MediaDialog');
 var testUtils = require('web.test_utils');
 var testUtilsDom = require('web.test_utils_dom');
@@ -944,6 +945,78 @@ QUnit.module('ReportEditorManager', {
             // cancel the field selection
             await testUtils.dom.click($('.o_web_studio_field_modal .btn-secondary'));
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_hook').length, 0, "Must cancel the dragAndDrop");
+
+            rem.destroy();
+            done();
+        });
+    });
+    QUnit.test('drag & drop components with corrected p inside p', async function (assert) {
+        const done = assert.async();
+        assert.expect(9);
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                        '<p class="root_p">hello ' +
+                            '<p class="child_p">world</p>' +
+                            '<t t-out="note"/>' +
+                        '</p>' +
+                    '</t>' +
+                '</kikou>',
+        });
+
+        const templateData = {
+          note: Markup('<p class="html_field_p">!</p>'),
+        };
+
+        const rem = await studioTestUtils.createReportEditorManager({
+            data: this.data,
+            models: this.models,
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {
+                report_name: 'awesome_report',
+            },
+            reportHTML: studioTestUtils.getReportHTML(this.templates, templateData),
+            reportViews: studioTestUtils.getReportViews(this.templates, templateData),
+            reportMainViewID: 42,
+        });
+
+        await rem.editorIframeDef.then(async function () {
+            let $page = rem.$('iframe').contents().find('.page');
+
+            assert.containsOnce($page, '> .root_p[data-oe-id]');
+            assert.containsOnce($page, '> .child_p[data-oe-id]');
+            assert.containsOnce($page, '> .html_field_p:not([data-oe-id])');
+
+            // drag and drop a Field component
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+            const $field = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Field):eq(0)');
+            await testUtils.dom.dragAndDrop($field, $page.find('.root_p'));
+
+            // hook after p inside the template, but not after p in html field
+            assert.containsOnce($page, '.root_p + .o_web_studio_hook');
+            assert.containsOnce($page, '.child_p + .o_web_studio_hook');
+            assert.containsNone($page, '.html_field_p + .o_web_studio_hook');
+
+            // cancel the field selection
+            await testUtils.dom.click($('.o_web_studio_field_modal .btn-secondary'));
+
+            // drag and drop a Field & Text component
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+            const $fieldAndLabel = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Field & Label):eq(0)');
+            await testUtils.dom.dragAndDrop($fieldAndLabel, $page.find('.root_p'));
+
+            // hook after p inside the template, but not after p in html field
+            assert.containsOnce($page, '.root_p + .o_web_studio_structure_hook');
+            assert.containsOnce($page, '.child_p + .o_web_studio_structure_hook');
+            assert.containsNone($page, '.html_field_p + .o_web_studio_structure_hook');
 
             rem.destroy();
             done();

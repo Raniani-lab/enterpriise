@@ -129,7 +129,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
             });
 
             var $page = this.$content.find('.page');
-            var $children = $page.children().not('.o_web_studio_hook');
+            var $children = $page.children().not('.o_web_studio_hook,p:not([data-oe-id])');
 
             if ($children.length) {
                 $gridHooks.find('.o_web_studio_hook').data('oe-node', $children.first()).data('oe-position', 'before');
@@ -459,7 +459,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         var $hook = this._createHook($node, component);
         var $newHook = $hook.clone();
         var $children = $node.children()
-            .not('.o_web_studio_hook')
+            .not('.o_web_studio_hook,p:not([data-oe-id])')
 
         // display the hook with max height of this sibling
         if ($children.length === 1 && $children.is('td[colspan="99"]')) {

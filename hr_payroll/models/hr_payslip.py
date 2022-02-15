@@ -1096,6 +1096,17 @@ class HrPayslip(models.Model):
                 'action': self._dashboard_default_action(schedule_change_str, 'hr.contract', multiple_schedule_contracts.ids, additional_context={'search_default_group_by_employee': 1}),
             })
 
+        # Nearly expired contracts
+        date_today = fields.Date.from_string(fields.Date.today())
+        outdated_days = fields.Date.to_string(date_today + relativedelta(days=+14))
+        nearly_expired_contracts = self.env['hr.contract']._get_nearly_expired_contracts(outdated_days)
+        if nearly_expired_contracts:
+            result.append({
+                'string': _('Running contracts coming to an end'),
+                'count': len(nearly_expired_contracts),
+                'action': self._dashboard_default_action('Employees with running contracts coming to an end', 'hr.contract', nearly_expired_contracts.ids)
+            })
+
         # Payslip Section
         if employees_previous_contract:
             result.append({

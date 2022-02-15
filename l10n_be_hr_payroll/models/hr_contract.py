@@ -451,7 +451,7 @@ class HrContract(models.Model):
         nearly_expired_contracts.write({'kanban_state': 'blocked'})
 
         for contract in nearly_expired_contracts.filtered(lambda contract: contract.hr_responsible_id):
-            contract.activity_schedule(
+            contract.with_context(mail_activity_quick_update=True).activity_schedule(
                 'mail.mail_activity_data_todo', contract.date_end,
                 user_id=contract.hr_responsible_id.id)
 

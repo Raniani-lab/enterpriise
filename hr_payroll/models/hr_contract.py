@@ -221,6 +221,29 @@ class HrContract(models.Model):
         # Returns the fields that should recompute the payslip
         return [self._get_contract_wage]
 
+    def _get_nearly_expired_contracts(self, outdated_days):
+        nearly_expired_contracts = self.search([
+            ('company_id', '=', self.env.company.id),
+            ('state', '=', 'open'),
+            ('date_end', '<', outdated_days)])
+
+        # Check if no new contracts starting after the end of the expiring one
+        nearly_expired_contracts_without_new_contracts = self.env['hr.contract']
+        new_contracts_grouped_by_employee = {
+            c['employee_id'][0]: c['employee_id_count']
+            for c in self._read_group([
+                ('company_id', '=', self.env.company.id),
+                ('state', '=', 'draft'),
+                ('date_start', '>=', outdated_days),
+                ('employee_id', 'in', nearly_expired_contracts.employee_id.ids)
+            ], groupby=['employee_id'], fields=['employee_id'])
+        }
+
+        for expired_contract in nearly_expired_contracts:
+            if expired_contract.employee_id.id not in new_contracts_grouped_by_employee:
+                nearly_expired_contracts_without_new_contracts |= expired_contract
+        return nearly_expired_contracts_without_new_contracts
+
     @api.model_create_multi
     def create(self, vals_list):
         res = super().create(vals_list)

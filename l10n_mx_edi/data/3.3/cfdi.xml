@@ -65,7 +65,7 @@
                                                     t-att-Base="format_float(balance_multiplicator * tax_detail_vals['base_amount_currency'], currency_precision)"
                                                     t-att-Impuesto="get_tax_cfdi_name(tax_detail_vals)"
                                                     t-att-TipoFactor="tax.l10n_mx_tax_type"
-                                                    t-att-TasaOCuota="format_float(tax.amount / 100.0, 6) if tax.l10n_mx_tax_type != 'Exento' else False"
+                                                    t-att-TasaOCuota="format_float(tax_detail_vals['tax_rate_transferred'], 6)"
                                                     t-att-Importe="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], 2) if tax.l10n_mx_tax_type != 'Exento' else False"/>
                                             </t>
                                         </cfdi:Traslados>
@@ -113,7 +113,7 @@
                                             t-att-Importe="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'], currency_precision)"
                                             t-att-Impuesto="get_tax_cfdi_name(tax_detail_vals)"
                                             t-att-TipoFactor="tax.l10n_mx_tax_type"
-                                            t-att-TasaOCuota="format_float(tax.amount / 100.0, 6)"/>
+                                            t-att-TasaOCuota="format_float(tax_detail_vals['tax_rate_transferred'], 6)"/>
                                     </t>
                                 </t>
                             </cfdi:Traslados>

@@ -510,6 +510,62 @@ class TestEdiResults(TestMxEdiCommon):
             )
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
+    def test_invoice_cfdi_fixed_tax(self):
+        with freeze_time(self.frozen_today), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac):
+            fixed_tax = self.env['account.tax'].create({
+                'name': 'fixed_tax',
+                'amount_type': 'fixed',
+                'amount': 200,
+                'type_tax_use': 'sale',
+                'l10n_mx_tax_type': 'Cuota',
+                'price_include': False,
+                'include_base_amount': False,
+            })
+
+            self.invoice.write({
+                'invoice_line_ids': [(1, self.invoice.invoice_line_ids.id, {'tax_ids': [(6, 0, fixed_tax.ids)]})],
+            })
+            self.invoice.action_post()
+
+            generated_files = self._process_documents_web_services(self.invoice, {'cfdi_3_3'})
+            self.assertTrue(generated_files)
+            cfdi = generated_files[0]
+
+            current_etree = self.get_xml_tree_from_string(cfdi)
+            expected_etree = self.with_applied_xpath(
+                self.get_xml_tree_from_string(self.expected_invoice_cfdi_values),
+                '''
+                    <xpath expr="//Comprobante" position="attributes">
+                      <attribute name="Total">9000.000</attribute>
+                    </xpath>
+                    <xpath expr="//Concepto/Impuestos" position="replace">
+                      <Impuestos>
+                        <Traslados>
+                          <Traslado
+                            Base="8000.000"
+                            Importe="1000.00"
+                            TasaOCuota="0.125000"
+                            TipoFactor="Cuota"/>
+                        </Traslados>
+                      </Impuestos>
+                    </xpath>
+                    <xpath expr="//Comprobante/Impuestos" position="replace">
+                      <Impuestos TotalImpuestosTrasladados="1000.000">
+                        <Traslados>
+                          <Traslado
+                            Importe="1000.000"
+                            TasaOCuota="0.125000"
+                            TipoFactor="Cuota"/>
+                        </Traslados>
+                      </Impuestos>
+                    </xpath>
+                ''',
+            )
+
+            self.assertXmlTreeEqual(current_etree, expected_etree)
+
     # -------------------------------------------------------------------------
     # PAYMENTS
     # -------------------------------------------------------------------------

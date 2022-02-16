@@ -253,9 +253,21 @@ class AccountEdiFormat(models.Model):
 
         compute_mode = 'tax_details' if invoice.company_id.tax_calculation_rounding_method == 'round_globally' else 'compute_all'
 
+        tax_details_transferred = invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_transferred, compute_mode=compute_mode)
+        for tax_detail_transferred in (list(tax_details_transferred['invoice_line_tax_details'].values())
+                                       + [tax_details_transferred]):
+            for tax_detail_vals in tax_detail_transferred['tax_details'].values():
+                tax = tax_detail_vals['tax']
+                if tax.l10n_mx_tax_type == 'Tasa':
+                    tax_detail_vals['tax_rate_transferred'] = tax.amount / 100.0
+                elif tax.l10n_mx_tax_type == 'Cuota':
+                    tax_detail_vals['tax_rate_transferred'] = tax_detail_vals['tax_amount_currency'] / tax_detail_vals['base_amount_currency']
+                else:
+                    tax_detail_vals['tax_rate_transferred'] = None
+
         cfdi_values.update({
             'get_tax_cfdi_name': get_tax_cfdi_name,
-            'tax_details_transferred': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_transferred, compute_mode=compute_mode),
+            'tax_details_transferred': tax_details_transferred,
             'tax_details_withholding': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_withholding, compute_mode=compute_mode),
         })
 

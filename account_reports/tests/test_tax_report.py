@@ -2161,3 +2161,15 @@ class TestTaxReport(TestAccountReportsCommon):
                 ('Refund tax',                                  ''),
             ],
         )
+
+    def test_tax_report_get_past_closing_entry(self):
+        options = self._generate_options(self.basic_tax_report, '2021-01-01', '2021-12-31')
+
+        with patch.object(type(self.env['account.move']), '_get_vat_report_attachments', autospec=True, side_effect=lambda *args, **kwargs: []):
+            # Generate the tax closing entry and close the period without posting it, so that we can assert on the exception
+            vat_closing_move = self.env['account.generic.tax.report.handler']._generate_tax_closing_entries(self.basic_tax_report, options)
+            vat_closing_move.action_post()
+
+        # Calling the action_periodic_vat_entries method should return the existing tax closing entry.
+        vat_closing_action = self.env['account.generic.tax.report.handler'].action_periodic_vat_entries(options)
+        self.assertEqual(vat_closing_move.id, vat_closing_action['res_id'])

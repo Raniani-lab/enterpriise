@@ -544,9 +544,20 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
      # -------------------------------------------------------------------------
 
     def action_periodic_vat_entries(self, options):
-        # Return action to open form view of newly entry created
+        # Return action to open form view of newly created entry
         report = self.env.ref('account.generic_tax_report')
-        moves = self._generate_tax_closing_entries(report, options)
+        moves = self.env['account.move']
+        # Get all companies impacting the report.
+        end_date = fields.Date.from_string(options['date']['date_to'])
+        options_company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])]
+        companies = self.env['res.company'].browse(options_company_ids) if options_company_ids else self.env.company
+        # Get the moves separately for companies with a lock date on the concerned period, and those without.
+        tax_locked_companies = companies.filtered(lambda c: c.tax_lock_date and c.tax_lock_date >= end_date)
+        moves += self._get_tax_closing_entries_for_closed_period(report, options, tax_locked_companies)
+
+        non_tax_locked_companies = companies - tax_locked_companies
+        moves += self._generate_tax_closing_entries(report, options, companies=non_tax_locked_companies)
+        # Make the action for the retrieved move and return it.
         action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_journal_line")
         action = clean_action(action, env=self.env)
         if len(moves) == 1:
@@ -556,7 +567,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
             action['domain'] = [('id', 'in', moves.ids)]
         return action
 
-    def _generate_tax_closing_entries(self, report, options, closing_moves=None):
+    def _generate_tax_closing_entries(self, report, options, closing_moves=None, companies=None):
         """Generates and/or updates VAT closing entries.
 
         This method computes the content of the tax closing in the following way:
@@ -573,11 +584,13 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
         :param options: the tax report options dict to use to make the closing.
         :param closing_moves: If provided, closing moves to update the content from.
                               They need to be compatible with the provided options (if they have a fiscal_position_id, for example).
-
+        :param companies: optional params, the companies given will be used instead of taking all the companies impacting
+                          the report.
         :return: The closing moves.
         """
-        options_company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])]
-        companies = self.env['res.company'].browse(options_company_ids) if options_company_ids else self.env.company
+        if companies is None:
+            options_company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])]
+            companies = self.env['res.company'].browse(options_company_ids) if options_company_ids else self.env.company
         end_date = fields.Date.from_string(options['date']['date_to'])
 
         closing_moves_by_company = defaultdict(lambda: self.env['account.move'])
@@ -626,6 +639,29 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
                 move_vals['tax_report_control_error'] = bool(move_options.get('tax_report_control_error'))
 
                 move.write(move_vals)
+
+        return closing_moves
+
+    def _get_tax_closing_entries_for_closed_period(self, report, options, companies):
+        """ Fetch the closing entries related to the given companies for the currently selected tax report period.
+        Only used when the selected period already has a tax lock date impacting it, and assuming that these periods
+        all have a tax closing entry.
+        :param report: The tax report for which we are getting the closing entries.
+        :param options: the tax report options dict needed to get the period end date and fiscal position info.
+        :param companies: a recordset of companies for which the period has already been closed.
+        :return: The closing moves.
+        """
+        end_date = fields.Date.from_string(options['date']['date_to'])
+        closing_moves = self.env['account.move']
+        for company in companies:
+            include_domestic, fiscal_positions = self._get_fpos_info_for_tax_closing(company, report, options)
+            fiscal_position_ids = fiscal_positions.ids + ([False] if include_domestic else [])
+            closing_moves += self.env['account.move'].search([
+                ('company_id', '=', company.id),
+                ('fiscal_position_id', 'in', fiscal_position_ids),
+                ('state', '=', 'posted'),
+                ('tax_closing_end_date', '=', end_date),
+            ], limit=1)
 
         return closing_moves
 

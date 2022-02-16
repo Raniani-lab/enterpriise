@@ -3,7 +3,7 @@
 
 <t t-name="DatabaseExpirationPanel" owl="1">
     <div t-if="state.display" role="alert"
-        class="database_expiration_panel alert o-hidden-ios"
+        class="database_expiration_panel alert o-hidden-ios text-center mt-4"
         t-attf-class="alert-{{state.alertType}}"
         >
         <!-- t-translation="off" should be on next a element below -->
@@ -30,7 +30,7 @@
                             aria-label="Refresh subscription status"
                             t-on-click.prevent="_onCheckStatus"
                             >
-                            <i class="fa fa-refresh"/>
+                            <i class="fa fa-refresh mx-1"/>
                         </a>
                     </t>
                     <t t-elif="expirationReason === 'upsell'">You have more users or more apps installed than your subscription allows.<br/>
@@ -40,7 +40,7 @@
                             aria-label="Refresh subscription status"
                             t-on-click.prevent="_onCheckStatus"
                             >
-                            <i class="fa fa-refresh"/>
+                            <i class="fa fa-refresh mx-1"/>
                         </a>
                     </t>
                 </t>
@@ -65,14 +65,12 @@
             <span t-else="">- Contact your sales representative to help you to unlink your previous database</span>
         </span>
         <Transition visible="state.displayRegisterForm" t-slot-scope="transition" leaveDuration="400" name="'o-vertical-slide'">
-            <form class="oe_instance_register oe_instance_register_form form-inline justify-content-center mt-4" t-att-class="transition.className">
-                <div class="form-group">
-                    <label for="enterprise_code">Subscription Code: </label>
-                    <input type="text" class="form-control mx-2" t-ref="input"
-                        placeholder="Paste code here"
-                        title="Your subscription code"
+            <form class="oe_instance_register oe_instance_register_form form-inline overflow-hidden justify-content-center mt-4" t-att-class="transition.className">
+                <label for="enterprise_code">Subscription Code: </label>
+                <input type="text" class="form-control mx-2 mb-2 mb-sm-0" t-ref="input"
+                    placeholder="Paste code here"
+                    title="Your subscription code"
                     />
-                </div>
                 <button class="btn btn-primary" t-on-click.prevent="_onCodeSubmit" ><t t-esc="state.buttonText"/></button>
             </form>
         </Transition>

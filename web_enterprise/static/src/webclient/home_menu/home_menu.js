@@ -43,7 +43,6 @@ export class HomeMenu extends Component {
         this.menus = useService("menu");
         this.homeMenuService = useService("home_menu");
         this.ui = useService("ui");
-        this.mainContentRef = useRef("mainContent");
         this.state = useState({
             focusedIndex: null,
             isIosApp: isIosApp(),

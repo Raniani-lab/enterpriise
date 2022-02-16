@@ -181,10 +181,10 @@ QUnit.module("Studio", (hooks) => {
         // App with image
         const firstApp = target.querySelector("div.o_apps > a.o_app.o_menuitem");
         assert.strictEqual(firstApp.dataset.menuXmlid, "app.1");
-        assert.containsOnce(firstApp, "div.o_app_icon");
+        assert.containsOnce(firstApp, "img.o_app_icon");
         assert.strictEqual(
-            firstApp.querySelector("div.o_app_icon").style.backgroundImage,
-            'url("/web_enterprise/static/img/default_icon_app.png")'
+            new URL(firstApp.querySelector("img.o_app_icon").src).pathname,
+            "/web_enterprise/static/img/default_icon_app.png"
         );
         assert.containsOnce(firstApp, "div.o_caption");
         assert.strictEqual(firstApp.querySelector("div.o_caption").innerText, "Discuss");
@@ -215,8 +215,8 @@ QUnit.module("Studio", (hooks) => {
         );
         const newApp = target.querySelector("a.o_app.o_web_studio_new_app");
         assert.strictEqual(
-            newApp.querySelector("div.o_app_icon").style.backgroundImage,
-            'url("/web_studio/static/src/img/default_icon_app.png")',
+            new URL(newApp.querySelector("img.o_app_icon").src).pathname,
+            "/web_studio/static/src/img/default_icon_app.png",
             "Image source URL should end with '/web_studio/static/src/img/default_icon_app.png'"
         );
         assert.containsOnce(newApp, "div.o_caption");

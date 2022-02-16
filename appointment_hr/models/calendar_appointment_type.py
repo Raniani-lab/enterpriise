@@ -4,7 +4,7 @@
 import pytz
 
 from datetime import timedelta
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
 from odoo.osv.expression import AND
 
@@ -16,9 +16,10 @@ class CalendarAppointmentType(models.Model):
     @api.model
     def default_get(self, default_fields):
         result = super().default_get(default_fields)
-        if result.get('category') == 'work_hours':
+
+        if result.get('category') == 'work_hours' and result.get('staff_user_ids') == [Command.set(self.env.user.ids)]:
             if not self.env.user.employee_id:
-                raise ValueError(_("An employee should be set on the actual user to create an appointment type tied to the working schedule."))
+                raise ValueError(_("An employee should be set on the current user to create an appointment type tied to the working schedule."))
         return result
 
     category = fields.Selection(

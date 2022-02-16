@@ -30,6 +30,14 @@ msgid ""
 msgstr ""
 
 #. module: appointment_hr
+#: code:addons/appointment_hr/models/calendar_appointment_type.py:0
+#, python-format
+msgid ""
+"An employee should be set on the current user to create an appointment type "
+"tied to the working schedule."
+msgstr ""
+
+#. module: appointment_hr
 #: model:ir.model,name:appointment_hr.model_calendar_appointment_type
 msgid "Appointment Type"
 msgstr ""

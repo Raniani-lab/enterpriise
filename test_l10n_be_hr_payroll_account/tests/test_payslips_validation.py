@@ -5879,7 +5879,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertAlmostEqual(termination_payslips.line_ids.filtered(lambda l: l.code == 'PROF_TAX').rate, -25.04, places=2)
         self._validate_payslip(termination_payslips, payslip_results)
 
-    def test_aa_termination_holidays_december_payslip(self):
+    def test_termination_holidays_december_payslip(self):
         termination_payslips = self.env['hr.payslip'].create({
             'name': 'Payslip',
             'contract_id': self.contract.id,
@@ -6548,3 +6548,208 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'NET': 474.46,
         }
         self._validate_payslip(double_pay_payslip, payslip_results)
+
+    def test_double_remuneration_line_2_contracts(self):
+        self.employee.km_home_work = 41
+
+        contract_1 = self.contract
+        contract_1.write({
+            'date_start': datetime.date(2022, 2, 1),
+            'date_end': datetime.date(2022, 2, 15),
+            'transport_mode_private_car': True,
+            'transport_mode_train': True,
+            'train_transport_employee_amount': 50,
+        })
+
+        contract_2 = contract_1.copy({
+            'date_start': datetime.date(2022, 2, 16),
+            'date_end': False,
+            'state': 'open',
+        })
+
+        (contract_1 + contract_2)._generate_work_entries(datetime.date(2022, 2, 1), datetime.date(2022, 2, 28))
+
+        payslip_1 = self.env['hr.payslip'].create([{
+            'name': "Test Payslip 1",
+            'employee_id': self.employee.id,
+            'contract_id': contract_1.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2022, 2, 1),
+            'date_to': datetime.date(2022, 2, 28),
+        }])
+        payslip_2 = self.env['hr.payslip'].create([{
+            'name': "Test Payslip 2",
+            'employee_id': self.employee.id,
+            'contract_id': contract_2.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2022, 2, 1),
+            'date_to': datetime.date(2022, 2, 28),
+        }])
+        (payslip_1 + payslip_2).compute_sheet()
+
+        payslip_1_results = {
+            'BASIC': 1549.23,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 1558.23,
+            'ONSS': -203.66,
+            'EmpBonus.1': 0.0,
+            'ONSSTOTAL': 203.66,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 1516.99,
+            'IP.PART': -387.31,
+            'GROSS': 1129.68,
+            'P.P': -31.03,
+            'PPTOTAL': 31.03,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'PUB.TRANS': 40.0,
+            'CAR.PRIV': 41.51,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': -11.99,
+            'REP.FEES': 87.69,
+            'IP': 387.31,
+            'IP.DED': -29.05,
+            'NET': 1442.7,
+            'REMUNERATION': 1161.92,
+            'ONSSEMPLOYER': 422.9,
+        }
+        payslip_2_results = {
+            'BASIC': 1304.62,
+            'ATN.INT': 0.0,
+            'ATN.MOB': 0.0,
+            'SALARY': 1304.62,
+            'ONSS': -170.51,
+            'EmpBonus.1': 0.0,
+            'ONSSTOTAL': 170.51,
+            'ATN.CAR': 0.0,
+            'GROSSIP': 1134.11,
+            'IP.PART': -326.16,
+            'GROSS': 807.95,
+            'P.P': 0.0,
+            'PPTOTAL': 0.0,
+            'ATN.CAR.2': 0.0,
+            'ATN.INT.2': 0.0,
+            'ATN.MOB.2': 0.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': -9.81,
+            'PUB.TRANS': 0.0,
+            'CAR.PRIV': 34.95,
+            'REP.FEES': 73.85,
+            'IP': 326.16,
+            'IP.DED': -24.46,
+            'NET': 1208.63,
+            'REMUNERATION': 978.47,
+            'ONSSEMPLOYER': 354.07,
+        }
+        self._validate_payslip(payslip_1, payslip_1_results)
+        self._validate_payslip(payslip_2, payslip_2_results)
+
+    def test_double_remuneration_line_1_contract(self):
+        # In case only one of both contracts has an advantage
+        # Ensure we don't set it to 0
+        self.employee.km_home_work = 41
+
+        contract_1 = self.contract
+        contract_1.write({
+            'date_start': datetime.date(2022, 2, 1),
+            'date_end': datetime.date(2022, 2, 15),
+            'transport_mode_car': False,
+            'mobile': False,
+            'internet': False,
+            'transport_mode_private_car': False,
+            'transport_mode_train': False,
+            'train_transport_employee_amount': 0,
+        })
+
+        contract_2 = contract_1.copy({
+            'date_start': datetime.date(2022, 2, 16),
+            'date_end': False,
+            'state': 'open',
+            'transport_mode_car': True,
+            'mobile': 30,
+            'internet': 38.0,
+            'transport_mode_private_car': True,
+            'transport_mode_train': True,
+            'train_transport_employee_amount': 50,
+        })
+
+        (contract_1 + contract_2)._generate_work_entries(datetime.date(2022, 2, 1), datetime.date(2022, 2, 28))
+
+        payslip_1 = self.env['hr.payslip'].create([{
+            'name': "Test Payslip 1",
+            'employee_id': self.employee.id,
+            'contract_id': contract_1.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2022, 2, 1),
+            'date_to': datetime.date(2022, 2, 28),
+        }])
+        payslip_2 = self.env['hr.payslip'].create([{
+            'name': "Test Payslip 2",
+            'employee_id': self.employee.id,
+            'contract_id': contract_2.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2022, 2, 1),
+            'date_to': datetime.date(2022, 2, 28),
+        }])
+        (payslip_1 + payslip_2).compute_sheet()
+
+        payslip_1_results = {
+            'BASIC': 1549.23,
+            'SALARY': 1549.23,
+            'ONSS': -202.48,
+            'EmpBonus.1': 0.0,
+            'ONSSTOTAL': 202.48,
+            'GROSSIP': 1346.75,
+            'IP.PART': -387.31,
+            'GROSS': 959.44,
+            'P.P': 0.0,
+            'PPTOTAL': 0.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': -11.99,
+            'REP.FEES': 87.69,
+            'IP': 387.31,
+            'IP.DED': -29.05,
+            'NET': 1393.4,
+            'REMUNERATION': 1161.92,
+            'ONSSEMPLOYER': 420.46,
+        }
+        payslip_2_results = {
+            'BASIC': 1304.62,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 1313.62,
+            'ONSS': -171.69,
+            'EmpBonus.1': 0.0,
+            'ONSSTOTAL': 171.69,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 1304.35,
+            'IP.PART': -326.16,
+            'GROSS': 978.2,
+            'P.P': -2.94,
+            'PPTOTAL': 2.94,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': -9.81,
+            'PUB.TRANS': 0.0,
+            'CAR.PRIV': 34.95,
+            'REP.FEES': 73.85,
+            'IP': 326.16,
+            'IP.DED': -24.46,
+            'NET': 1204.52,
+            'REMUNERATION': 978.47,
+            'ONSSEMPLOYER': 356.52,
+        }
+        self._validate_payslip(payslip_1, payslip_1_results)
+        self._validate_payslip(payslip_2, payslip_2_results)

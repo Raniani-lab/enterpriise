@@ -2,12 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from pytz import timezone
-from odoo import api, models, fields, _
 from dateutil.relativedelta import relativedelta, MO, SU
 from dateutil import rrule
 from collections import defaultdict
 from datetime import date, timedelta
-from odoo.tools import float_round, date_utils
+from odoo import api, models, fields, _
+from odoo.tools import float_round, date_utils, ormcache
 from odoo.exceptions import UserError
 from odoo.addons.l10n_be_hr_payroll.models.hr_contract import EMPLOYER_ONSS
 
@@ -59,6 +59,20 @@ class Payslip(models.Model):
                         'input_type_id': self.env.ref('l10n_be_hr_payroll.input_double_holiday_european_leave_deduction').id,
                     })]})
         return res
+
+    @ormcache('self.employee_id', 'self.date_from', 'self.date_to', 'tuple([self.env.context.get("salary_simulation", False)])')
+    def _get_period_contracts(self):
+        # Returns all the employee contracts over the same payslip period, to avoid
+        # double remunerations for some line codes
+        self.ensure_one()
+        if self.env.context.get('salary_simulation'):
+            return self.contract_id.id
+        contracts = self.employee_id._get_contracts(
+            self.date_from,
+            self.date_to,
+            states=['open', 'close']
+        ).sorted('date_start')
+        return contracts.ids
 
     @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid', 'worked_days_line_ids.is_credit_time')
     def _compute_worked_hours(self):

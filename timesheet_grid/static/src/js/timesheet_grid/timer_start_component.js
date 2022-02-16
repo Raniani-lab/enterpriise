@@ -10,7 +10,7 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
         //----------------------------------------------------------------------
 
         get letter() {
-            if (this.props.runningIndex !== this.props.index && this.props.index < 26) {
+            if (this.props.runningIndex !== this.props.index && this.props.index < 26 && !this.env.device.isMobile) {
                 const from = this.props.addTimeMode ? 65 : 97;
                 return String.fromCharCode(from + this.props.index);
             } else {
@@ -20,7 +20,7 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
         get iconClass() {
             if (this.props.runningIndex === this.props.index) {
                 return 'fa fa-play primary-green';
-            } else if (this.props.index < 26) {
+            } else if (this.props.index < 26 && !this.env.device.isMobile) {
                 return '';
             } else if (this.props.addTimeMode) {
                 return 'fa fa-plus';

@@ -36,7 +36,8 @@
                                 Block encoding of timesheets after a certain date
                             </div>
                             <div class="text-muted col-md-12" attrs="{'invisible': [('prevent_old_timesheets_encoding', '=', False)]}">
-                                Block timesheets older than <field name="timesheets_past_days_encoding_limit" class="col-lg-2 text-center"/> days
+                                <label class="mt16" for="timesheets_past_days_encoding_limit" string="Block timesheets older than"/>
+                                <field name="timesheets_past_days_encoding_limit" class="col-lg-2 text-center"/> days
                             </div>
                         </div>
                     </div>

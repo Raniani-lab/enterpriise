@@ -67,7 +67,7 @@
         </record>
 
         <record id="timesheet_action_view_report_by_billing_rate_grid" model="ir.actions.act_window.view">
-            <field name="sequence" eval="7"/>
+            <field name="sequence" eval="4"/>
             <field name="view_mode">grid</field>
             <field name="view_id" ref="timesheet_view_grid_by_billing_rate"/>
             <field name="act_window_id" ref="sale_timesheet.timesheet_action_billing_report"/>

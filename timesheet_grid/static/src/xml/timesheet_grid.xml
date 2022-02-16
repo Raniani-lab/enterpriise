@@ -74,8 +74,7 @@
                 </div>
                 <div class="p-2">
                     <span t-if="timerMode"><span class="text-muted">use a hot key to</span> add <t t-esc="props.stepTimer"/> min</span>
-                    <t t-elif="isMobile"><span class="text-muted"> or use a </span><span>hot key</span></t>
-                    <t t-else=""><span class="text-muted">press </span><span>Enter</span><span class="text-muted"> or use a </span><span>hot key</span></t>
+                    <t t-elif="!isMobile"><span class="text-muted">press </span><span>Enter</span><span class="text-muted"> or use a </span><span>hot key</span></t>
                 </div>
             </div>
         </t>

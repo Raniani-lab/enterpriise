@@ -1198,7 +1198,7 @@ tour.register('test_gs1_receipt_packaging', {test: true}, [
         run: 'scan 01000000000022263700000004',
     },
     {
-        trigger: '.o_barcode_line',
+        trigger: '.o_barcode_line [name=quantity]:contains("30")',
         run: function () {
             helper.assertLinesCount(1);
             const $line = helper.getLine({barcode: '1113'});

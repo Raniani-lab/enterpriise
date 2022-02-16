@@ -85,7 +85,9 @@ class AccountJournal(models.Model):
 
     def _default_outbound_payment_methods(self):
         res = super()._default_outbound_payment_methods()
-        return res | self.env.ref('account_sepa.account_payment_method_sepa_ct')
+        if self._is_payment_method_available('sepa_ct'):
+            res |= self.env.ref('account_sepa.account_payment_method_sepa_ct')
+        return res
 
     def create_iso20022_credit_transfer(self, payments, batch_booking=False, sct_generic=False):
         """

@@ -835,11 +835,12 @@ class AccountReport(models.AbstractModel):
                 ('move_id.fiscal_position_id.foreign_vat', '=', False),
             ]
 
-        if fiscal_position_opt == 'all':
-            return []
+        if isinstance(fiscal_position_opt, int):
+            # It's a fiscal position id
+            return [('move_id.fiscal_position_id', '=', fiscal_position_opt)]
 
-        # Else it's a fiscal position id
-        return [('move_id.fiscal_position_id', '=', fiscal_position_opt)]
+        # 'all', or option isn't specified
+        return []
 
     ####################################################
     # OPTIONS: MULTI COMPANY

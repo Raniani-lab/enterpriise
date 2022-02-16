@@ -22,7 +22,7 @@
         <xpath expr="//div[hasclass('o_event_full_page_ticket_barcode_container')]" position="inside">
             <t t-if="attendee">
                 <img class="barcode"
-                    t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1&amp;quiet=0' % ('Code128', attendee.barcode, 205, 67)" alt="Barcode"></img>
+                    t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1&amp;quiet=0' % ('Code128', attendee.barcode, 205, 67)" alt="Barcode"></img>
             </t>
             <t t-elif="not attendee">
                 <div>

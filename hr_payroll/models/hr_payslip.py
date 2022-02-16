@@ -1120,10 +1120,8 @@ class HrPayslip(models.Model):
                 'count': len(payslips_with_negative_net),
                 'action': self._dashboard_default_action(_('Payslips with negative NET'), 'hr.payslip', payslips_with_negative_net.ids),
             })
-        return result
 
-    def _get_employee_stats_actions(self):
-        result = []
+        # new contracts warning
         new_contracts = self.env['hr.contract'].search([
             ('state', '=', 'draft'),
             ('kanban_state', '=', 'normal')])
@@ -1132,10 +1130,45 @@ class HrPayslip(models.Model):
             result.append({
                 'string': new_contracts_str,
                 'count': len(new_contracts),
-                'action': self._dashboard_default_action(new_contracts_str, 'hr.contract', new_contracts.ids),
+                'action': self._dashboard_default_action(new_contracts_str, 'hr.contract', new_contracts.ids)
             })
+
+        return result
+
+    def _get_employee_stats_actions(self):
+        result = []
+        today = fields.Date.today()
+        HRContract = self.env['hr.contract']
+        new_contracts = HRContract.search([
+            ('state', '=', 'open'),
+            ('kanban_state', '=', 'normal'),
+            ('date_start', '>=', today + relativedelta(months=-3, day=1))])
+
+        past_contracts_grouped_by_employee_id = {
+            c['employee_id'][0]: c['employee_id_count']
+            for c in HRContract._read_group([
+                ('employee_id', 'in', new_contracts.employee_id.ids),
+                ('date_end', '<', today),
+                ('id', 'not in', new_contracts.ids)
+            ], groupby=['employee_id'], fields=['employee_id'])
+        }
+
+        new_contracts_without_past_contract = HRContract
+        for new_contract in new_contracts:
+            if new_contract.employee_id.id not in past_contracts_grouped_by_employee_id:
+                new_contracts_without_past_contract |= new_contract
+
+        if new_contracts_without_past_contract:
+            new_contracts_str = _('New Employees')
+            employees_from_new_contracts = new_contracts_without_past_contract.mapped('employee_id')
+            result.append({
+                'string': new_contracts_str,
+                'count': len(employees_from_new_contracts),
+                'action': self._dashboard_default_action(new_contracts_str, 'hr.employee', employees_from_new_contracts.ids),
+            })
+
         gone_employees = self.env['hr.employee'].with_context(active_test=False).search([
-            ('departure_date', '>=', fields.Date.today() + relativedelta(months=-1, day=1)),
+            ('departure_date', '>=', today + relativedelta(months=-1, day=1)),
         ])
         if gone_employees:
             gone_employees_str = _('Last Departures')
@@ -1236,7 +1269,7 @@ class HrPayslip(models.Model):
     def _get_dashboard_stat_employee_trends(self):
         today = fields.Date.context_today(self)
         employees_trends = {
-            'type': 'line',
+            'type': 'bar',
             'title': _('Employee Trends'),
             'label': _('Employee Count'),
             'id': 'employees',
@@ -1309,8 +1342,8 @@ class HrPayslip(models.Model):
             period_str = format_date(self.env, start, date_format=date_formats[period_type])
             # The data is formatted for the chart module
             employees_trends['data'][period_type][period_idx] = {
-                'x': period_str,
-                'y': res['employee_count'],
+                'label': period_str,
+                'value': res['employee_count'],
                 'name': period_str,
             }
 

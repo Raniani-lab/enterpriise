@@ -123,7 +123,6 @@ export class PayrollDashboardStats extends Component {
         const data = [];
         const labels = [];
         const backgroundColors = [];
-
         this.graphData.forEach((pt) => {
             data.push(pt.value);
             labels.push(pt.label);

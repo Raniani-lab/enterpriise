@@ -181,7 +181,7 @@ class L10nClDailySalesBook(models.Model):
             'timestamp': self.env['l10n_cl.edi.util']._get_cl_current_strftime(),
             'items': items,
         })
-        dte = self.env['l10n_cl.edi.util']._sign_full_xml(xml_book.decode(), digital_signature, doc_id, 'consu')
+        dte = self.env['l10n_cl.edi.util']._sign_full_xml(xml_book, digital_signature, doc_id, 'consu')
         attachment = self.env['ir.attachment'].create({
             'name': '%s.xml' % doc_id,
             'res_id': self.id,

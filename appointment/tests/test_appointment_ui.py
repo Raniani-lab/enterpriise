@@ -48,7 +48,7 @@ class AppointmentUITest(AppointmentUICommon):
                 'allday': True,
             }]
             request = self.url_open(
-                "/appointment/calendar_appointment_type/create_custom",
+                "/appointment/appointment_type/create_custom",
                 data=json.dumps({
                     'params': {
                         'slots': unique_slots,
@@ -58,8 +58,7 @@ class AppointmentUITest(AppointmentUICommon):
             ).json()
         result = request.get('result', {})
         self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
-
-        appointment_type = self.env['calendar.appointment.type'].browse(result['id'])
+        appointment_type = self.env['appointment.type'].browse(result['id'])
         self.assertEqual(appointment_type.category, 'custom')
         self.assertEqual(appointment_type.name, "%s - Let's meet" % self.env.user.name)
         self.assertEqual(len(appointment_type.slot_ids), 2, "Two slots have been created")

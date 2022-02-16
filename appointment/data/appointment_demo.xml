@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
 
-    <record id="calendar_appointment_0" model="calendar.appointment.type">
+    <record id="appointment_type_1" model="appointment.type">
         <field name="name">Schedule a Demo</field>
         <field name="max_schedule_days">45</field>
         <field name="message_intro" type="xml">
@@ -15,35 +15,35 @@
         <field name="staff_user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
     </record>
 
-    <record id="calendar_appointment_slot_1" model="calendar.appointment.slot">
-        <field name="appointment_type_id" ref="calendar_appointment_0"/>
+    <record id="appointment_type_1_slot_1" model="appointment.slot">
+        <field name="appointment_type_id" ref="appointment_type_1"/>
         <field name="weekday">5</field>
         <field name="start_hour">9</field>
         <field name="end_hour">16</field>
     </record>
 
-    <record id="calendar_appointment_slot_2" model="calendar.appointment.slot">
-        <field name="appointment_type_id" ref="calendar_appointment_0"/>
+    <record id="appointment_type_1_slot_2" model="appointment.slot">
+        <field name="appointment_type_id" ref="appointment_type_1"/>
         <field name="weekday">3</field>
         <field name="start_hour">9</field>
         <field name="end_hour">16</field>
     </record>
 
-    <record id="calendar_appointment_slot_3" model="calendar.appointment.slot">
-        <field name="appointment_type_id" ref="calendar_appointment_0"/>
+    <record id="appointment_type_1_slot_3" model="appointment.slot">
+        <field name="appointment_type_id" ref="appointment_type_1"/>
         <field name="weekday">1</field>
         <field name="start_hour">9</field>
         <field name="end_hour">14</field>
     </record>
 
-    <record id="calendar_appointment_slot_4" model="calendar.appointment.slot">
-        <field name="appointment_type_id" ref="calendar_appointment_0"/>
+    <record id="appointment_type_1_slot_4" model="appointment.slot">
+        <field name="appointment_type_id" ref="appointment_type_1"/>
         <field name="weekday">1</field>
         <field name="start_hour">15.5</field>
         <field name="end_hour">16.5</field>
     </record>
 
-    <record id="calendar_appointment_1" model="calendar.appointment.type">
+    <record id="appointment_type_2" model="appointment.type">
         <field name="name">Doctor Appointment</field>
         <field name="location_id" ref="res_partner_appointment_1"/>
         <field name="appointment_duration">0.5</field>
@@ -53,36 +53,36 @@
         <field name="assign_method">chosen</field>
     </record>
 
-    <record id="calendar_appointment_1_slot_1" model="calendar.appointment.slot">
-        <field name="appointment_type_id" ref="calendar_appointment_1"/>
+    <record id="appointment_type_2_slot_1" model="appointment.slot">
+        <field name="appointment_type_id" ref="appointment_type_2"/>
         <field name="weekday">5</field>
         <field name="start_hour">9</field>
         <field name="end_hour">16</field>
     </record>
 
-    <record id="calendar_appointment_1_slot_2" model="calendar.appointment.slot">
-        <field name="appointment_type_id" ref="calendar_appointment_1"/>
+    <record id="appointment_type_2_slot_2" model="appointment.slot">
+        <field name="appointment_type_id" ref="appointment_type_2"/>
         <field name="weekday">3</field>
         <field name="start_hour">9</field>
         <field name="end_hour">16</field>
     </record>
 
-    <record id="calendar_appointment_1_slot_3" model="calendar.appointment.slot">
-        <field name="appointment_type_id" ref="calendar_appointment_1"/>
+    <record id="appointment_type_2_slot_3" model="appointment.slot">
+        <field name="appointment_type_id" ref="appointment_type_2"/>
         <field name="weekday">1</field>
         <field name="start_hour">9</field>
         <field name="end_hour">14</field>
     </record>
 
-    <record id="calendar_appointment_1_slot_4" model="calendar.appointment.slot">
-        <field name="appointment_type_id" ref="calendar_appointment_1"/>
+    <record id="appointment_type_2_slot_4" model="appointment.slot">
+        <field name="appointment_type_id" ref="appointment_type_2"/>
         <field name="weekday">1</field>
         <field name="start_hour">15.5</field>
         <field name="end_hour">16.5</field>
     </record>
 
-    <record id="calendar_appointment_1_question_1" model="calendar.appointment.question">
-        <field name="appointment_type_id" ref="calendar_appointment_1"/>
+    <record id="appointment_type_2_question_1" model="appointment.question">
+        <field name="appointment_type_id" ref="appointment_type_2"/>
         <field name="name">Symptoms</field>
         <field name="sequence">10</field>
     </record>

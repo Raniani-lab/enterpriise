@@ -17,7 +17,7 @@
     <record id="mt_appointment_type_booked" model="mail.message.subtype">
         <field name="name">Appointment Booked</field>
         <field name="sequence">10</field>
-        <field name="res_model">calendar.appointment.type</field>
+        <field name="res_model">appointment.type</field>
         <field name="default" eval="True"/>
         <field name="parent_id" ref="mt_calendar_event_booked"/>
         <field name="relation_field">appointment_type_id</field>
@@ -25,7 +25,7 @@
     <record id="mt_appointment_type_canceled" model="mail.message.subtype">
         <field name="name">Appointment Canceled</field>
         <field name="sequence">11</field>
-        <field name="res_model">calendar.appointment.type</field>
+        <field name="res_model">appointment.type</field>
         <field name="default" eval="True"/>
         <field name="parent_id" ref="mt_calendar_event_canceled"/>
         <field name="relation_field">appointment_type_id</field>

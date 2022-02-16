@@ -8,7 +8,7 @@ var qweb = core.qweb;
 publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     selector: '.o_appointment',
     xmlDependencies: [
-        '/appointment/static/src/xml/calendar_appointment_slots.xml',
+        '/appointment/static/src/xml/appointment_slots.xml',
         '/appointment/static/src/xml/appointment_no_slot.xml',
     ],
     events: {

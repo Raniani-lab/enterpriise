@@ -48,7 +48,7 @@ class AppointmentCalendarController(CalendarController):
         return request.redirect('/calendar/view/%s?partner_id=%s' % (attendee.event_id.access_token, attendee.partner_id.id))
 
     @route(['/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
-    def calendar_appointment_view(self, access_token, partner_id, state=False, **kwargs):
+    def appointment_view(self, access_token, partner_id, state=False, **kwargs):
         """
         Render the validation of an appointment and display a summary of it
 
@@ -106,7 +106,7 @@ class AppointmentCalendarController(CalendarController):
     @route(['/calendar/cancel/<string:access_token>',
             '/calendar/<string:access_token>/cancel',
            ], type='http', auth="public", website=True)
-    def calendar_appointment_cancel(self, access_token, partner_id, **kwargs):
+    def appointment_cancel(self, access_token, partner_id, **kwargs):
         """
             Route to cancel an appointment event, this route is linked to a button in the validation page
         """
@@ -120,7 +120,7 @@ class AppointmentCalendarController(CalendarController):
         return request.redirect('/calendar/%s/appointment?%s' % (slug(appointment_type), keep_query('*', state="cancel")))
 
     @route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)
-    def calendar_appointment_ics(self, access_token, **kwargs):
+    def appointment_get_ics_file(self, access_token, **kwargs):
         """
             Route to add the appointment event in a iCal/Outlook calendar
         """

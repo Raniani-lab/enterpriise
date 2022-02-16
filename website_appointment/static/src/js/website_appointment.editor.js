@@ -99,7 +99,7 @@ const NewAppointmentDialog = Dialog.extend({
         }
         const staff_user_ids = $('#user_ids').select2('data').map(user => user.id);
         return this._rpc({
-            model: 'calendar.appointment.type',
+            model: 'appointment.type',
             method: 'create_and_get_website_url',
             args: [[]],
             kwargs: {

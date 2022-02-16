@@ -82,7 +82,7 @@ class AppointmenHrPerformanceCase(AppointmentHrCommon):
             for user_idx, user in enumerate(cls.staff_users)
         ])
 
-        cls.test_apt_type = cls.env['calendar.appointment.type'].create({
+        cls.test_apt_type = cls.env['appointment.type'].create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'random',
@@ -127,7 +127,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
     @users('staff_user_bxls')
     def test_get_appointment_slots_custom(self):
         """ Custom type: mono user, unique slots, work hours check. """
-        apt_type_custom_bxls = self.env['calendar.appointment.type'].sudo().create({
+        apt_type_custom_bxls = self.env['appointment.type'].sudo().create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'random',
@@ -193,7 +193,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
     @users('staff_user_bxls')
     def test_get_appointment_slots_custom_whours(self):
         """ Custom type: mono user, unique slots, work hours check. """
-        apt_type_custom_bxls = self.env['calendar.appointment.type'].sudo().create({
+        apt_type_custom_bxls = self.env['appointment.type'].sudo().create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'random',

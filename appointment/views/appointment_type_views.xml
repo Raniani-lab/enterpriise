@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="calendar_appointment_type_view_search" model="ir.ui.view">
-        <field name="name">calendar.appointment.type.search</field>
-        <field name="model">calendar.appointment.type</field>
+    <record id="appointment_type_view_search" model="ir.ui.view">
+        <field name="name">appointment.type.search</field>
+        <field name="model">appointment.type</field>
         <field name="arch" type="xml">
             <search string="Appointment Types">
                 <field name="name"/>
@@ -20,9 +20,9 @@
         </field>
     </record>
 
-    <record id="calendar_appointment_type_view_kanban" model="ir.ui.view">
-        <field name="name">calendar.appointment.type.kanban</field>
-        <field name="model">calendar.appointment.type</field>
+    <record id="appointment_type_view_kanban" model="ir.ui.view">
+        <field name="name">appointment.type.kanban</field>
+        <field name="model">appointment.type</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_dashboard o_appointment_kanban" sample="1">
                 <field name="appointment_tz"/>
@@ -142,9 +142,9 @@
         </field>
     </record>
 
-    <record id="calendar_appointment_type_view_tree" model="ir.ui.view">
-        <field name="name">calendar.appointment.type.tree</field>
-        <field name="model">calendar.appointment.type</field>
+    <record id="appointment_type_view_tree" model="ir.ui.view">
+        <field name="name">appointment.type.tree</field>
+        <field name="model">appointment.type</field>
         <field name="arch" type="xml">
             <tree string="Appointment Type" multi_edit="1" sample="1">
                 <field name="sequence" widget="handle"/>
@@ -157,9 +157,9 @@
         </field>
     </record>
 
-    <record id="calendar_appointment_type_view_tree_invitation" model="ir.ui.view">
-        <field name="name">calendar.appointment.type.tree.invitation</field>
-        <field name="model">calendar.appointment.type</field>
+    <record id="appointment_type_view_tree_invitation" model="ir.ui.view">
+        <field name="name">appointment.type.tree.invitation</field>
+        <field name="model">appointment.type</field>
         <field name="priority">20</field>
         <field name="arch" type="xml">
             <tree string="Appointment Invitations" multi_edit="1" sample="1">
@@ -172,9 +172,9 @@
         </field>
     </record>
 
-    <record id="calendar_appointment_type_view_form" model="ir.ui.view">
-        <field name="name">calendar.appointment.type.form</field>
-        <field name="model">calendar.appointment.type</field>
+    <record id="appointment_type_view_form" model="ir.ui.view">
+        <field name="name">appointment.type.form</field>
+        <field name="model">appointment.type</field>
         <field name="arch" type="xml">
             <form string="Appointment Type">
                 <field name="active" invisible="1"/>
@@ -307,10 +307,10 @@
         </field>
     </record>
 
-    <record id="calendar_appointment_type_action" model="ir.actions.act_window">
+    <record id="appointment_type_action" model="ir.actions.act_window">
         <field name="name">Online Appointments</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">calendar.appointment.type</field>
+        <field name="res_model">appointment.type</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('category', '=', 'website')]</field>
         <field name="help" type="html">
@@ -322,12 +322,12 @@
         </field>
     </record>
 
-    <record id="calendar_appointment_type_action_custom_and_work_hours" model="ir.actions.act_window">
+    <record id="appointment_type_action_custom_and_work_hours" model="ir.actions.act_window">
         <field name="name">Appointment Invitations</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">calendar.appointment.type</field>
+        <field name="res_model">appointment.type</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="calendar_appointment_type_view_tree_invitation"/>
+        <field name="view_id" ref="appointment_type_view_tree_invitation"/>
         <field name="domain">[('category', '!=', 'website')]</field>
         <field name="context">{
             'default_category': 'custom',

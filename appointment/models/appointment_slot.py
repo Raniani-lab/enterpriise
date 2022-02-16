@@ -6,13 +6,13 @@ from odoo.exceptions import ValidationError
 from odoo.tools.misc import format_duration
 
 
-class CalendarAppointmentSlot(models.Model):
-    _name = "calendar.appointment.slot"
+class AppointmentSlot(models.Model):
+    _name = "appointment.slot"
     _description = "Online Appointment : Time Slot"
     _rec_name = "weekday"
     _order = "weekday, start_hour, start_datetime, end_datetime"
 
-    appointment_type_id = fields.Many2one('calendar.appointment.type', 'Appointment Type', ondelete='cascade')
+    appointment_type_id = fields.Many2one('appointment.type', 'Appointment Type', ondelete='cascade')
     slot_type = fields.Selection([('recurring', 'Recurring'), ('unique', 'One Shot')],
         string='Slot type', default='recurring', required=True, compute="_compute_slot_type", store=True,
         help="""Defines the type of slot. The recurring slot is the default type which is used for

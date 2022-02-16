@@ -17,13 +17,13 @@ class AppointmentTest(AppointmentCommon):
     @users('apt_manager')
     def test_appointment_type_create(self):
         # Custom: current user set as default, otherwise accepts only 1 user
-        apt_type = self.env['calendar.appointment.type'].create({
+        apt_type = self.env['appointment.type'].create({
             'category': 'custom',
             'name': 'Custom without user',
         })
         self.assertEqual(apt_type.staff_user_ids, self.apt_manager)
 
-        apt_type = self.env['calendar.appointment.type'].create({
+        apt_type = self.env['appointment.type'].create({
             'category': 'custom',
             'staff_user_ids': [(4, self.staff_users[0].id)],
             'name': 'Custom with user',
@@ -31,7 +31,7 @@ class AppointmentTest(AppointmentCommon):
         self.assertEqual(apt_type.staff_user_ids, self.staff_users[0])
 
         with self.assertRaises(ValidationError):
-            self.env['calendar.appointment.type'].create({
+            self.env['appointment.type'].create({
                 'category': 'custom',
                 'staff_user_ids': self.staff_users.ids,
                 'name': 'Custom with users',
@@ -40,12 +40,12 @@ class AppointmentTest(AppointmentCommon):
     @users('apt_manager')
     def test_appointment_slot_start_end_hour_auto_correction(self):
         """ Test the autocorrection of invalid intervals [start_hour, end_hour]. """
-        apt_type = self.env['calendar.appointment.type'].create({
+        apt_type = self.env['appointment.type'].create({
             'category': 'website',
             'name': 'Schedule a demo',
             'appointment_duration': 1,
         })
-        slot = self.env['calendar.appointment.slot'].create({
+        slot = self.env['appointment.slot'].create({
             'appointment_type_id': apt_type.id,
             'start_hour': 9,
             'end_hour': 17,
@@ -252,7 +252,7 @@ class AppointmentTest(AppointmentCommon):
             'end_datetime': (self.reference_monday + timedelta(days=2)).replace(microsecond=0),
             'allday': True,
         }]
-        apt_type = self.env['calendar.appointment.type'].create({
+        apt_type = self.env['appointment.type'].create({
             'category': 'custom',
             'name': 'Custom with unique slots',
             'slot_ids': [(5, 0)] + [
@@ -295,7 +295,7 @@ class AppointmentTest(AppointmentCommon):
     @users('apt_manager')
     def test_slots_for_today(self):
         test_reference_now = datetime(2022, 2, 14, 11, 0, 0)  # is a Monday
-        appointment = self.env['calendar.appointment.type'].create({
+        appointment = self.env['appointment.type'].create({
             'appointment_tz': 'UTC',
             'min_schedule_hours': 1.0,
             'max_schedule_days': 8,

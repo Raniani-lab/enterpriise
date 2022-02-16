@@ -37,7 +37,7 @@ CalendarModel.include({
     async _loadCalendar() {
         const _super = this._super.bind(this);
         const appointmentStaffUserInfo = await this._rpc({
-            route: '/appointment/calendar_appointment_type/get_staff_user_appointment_types',
+            route: '/appointment/appointment_type/get_staff_user_appointment_types',
         });
         this.data.appointmentStaffUserInfo = appointmentStaffUserInfo;
         this.data.staffUserAppointmentTypes = appointmentStaffUserInfo.appointment_types_info;

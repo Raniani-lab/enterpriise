@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <odoo>
 <data>
-    <record id="calendar_appointment_type_view_kanban" model="ir.ui.view">
-        <field name="name">calendar.appointment.type.view.kanban.inherit.website</field>
-        <field name="model">calendar.appointment.type</field>
-        <field name="inherit_id" ref="appointment.calendar_appointment_type_view_kanban"/>
+    <record id="appointment_type_view_kanban" model="ir.ui.view">
+        <field name="name">appointment.type.view.kanban.inherit.website</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//templates" position="before">
                 <field name="is_published"/>
@@ -45,10 +45,10 @@
         </field>
     </record>
 
-    <record id="calendar_appointment_type_view_form" model="ir.ui.view">
-        <field name="name">calendar.appointment.type.view.form.inherit.website</field>
-        <field name="model">calendar.appointment.type</field>
-        <field name="inherit_id" ref="appointment.calendar_appointment_type_view_form"/>
+    <record id="appointment_type_view_form" model="ir.ui.view">
+        <field name="name">appointment.type.view.form.inherit.website</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="attributes">
                 <attribute name="attrs">{'invisible': [('is_published', '=', False)]}</attribute>
@@ -59,10 +59,11 @@
             </xpath>
         </field>
     </record>
-    <record id="calendar_appointment_type_view_search" model="ir.ui.view">
-        <field name="name">calendar.appointment.type.search.inherit.website</field>
-        <field name="model">calendar.appointment.type</field>
-        <field name="inherit_id" ref="appointment.calendar_appointment_type_view_search"/>
+
+    <record id="appointment_type_view_search" model="ir.ui.view">
+        <field name="name">appointment.type.search.inherit.website</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_search"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='group_by_timezone']" position="after">
                 <separator />

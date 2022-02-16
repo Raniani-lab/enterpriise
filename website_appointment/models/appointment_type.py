@@ -5,10 +5,10 @@ from odoo import api, fields, models
 from odoo.addons.http_routing.models.ir_http import slug
 
 
-class CalendarAppointmentType(models.Model):
-    _name = "calendar.appointment.type"
+class AppointmentType(models.Model):
+    _name = "appointment.type"
     _inherit = [
-        'calendar.appointment.type',
+        'appointment.type',
         'website.seo.metadata',
         'website.published.mixin',
         'website.cover_properties.mixin',
@@ -43,7 +43,7 @@ class CalendarAppointmentType(models.Model):
                 appointment_type.is_published = False
 
     def _compute_website_url(self):
-        super(CalendarAppointmentType, self)._compute_website_url()
+        super()._compute_website_url()
         for appointment_type in self:
             if appointment_type.id:
                 appointment_type.website_url = '/calendar/%s/appointment' % (slug(appointment_type),)

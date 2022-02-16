@@ -17,7 +17,7 @@ class WebsiteAppointment(Appointment):
     # ------------------------------------------------------------
 
     @http.route()
-    def calendar_appointments(self, page=1, **kwargs):
+    def appointment_type_index(self, page=1, **kwargs):
         """
         Display the appointments to choose (the display depends of a custom option called 'Card Design')
 
@@ -32,7 +32,7 @@ class WebsiteAppointment(Appointment):
         if cards_layout:
             return request.render('website_appointment.appointments_cards_layout', self._prepare_appointments_cards_data(page, **kwargs))
         else:
-            return super().calendar_appointments(page, **kwargs)
+            return super().appointment_type_index(page, **kwargs)
 
 
     # Tools / Data preparation
@@ -44,7 +44,7 @@ class WebsiteAppointment(Appointment):
         """
         domain = self._appointments_base_domain(kwargs.get('filter_appointment_type_ids'))
 
-        Appointment = request.env['calendar.appointment.type']
+        Appointment = request.env['appointment.type']
         website = request.website
 
         # Add domain related to the search bar

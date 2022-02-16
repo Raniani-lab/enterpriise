@@ -14,13 +14,13 @@ Wysiwyg.include({
                 fontawesome: 'fa-calendar',
                 callback: async () => {
                     const dialog = new dialogs.FormViewDialog(this, {
-                        res_model: 'calendar.appointment.share',
+                        res_model: 'appointment.share',
                         res_id: 0,
                         res_ids: [],
                         res_IDs: [],
                         resIDs: [],
                         context: {
-                            form_view_ref: "appointment.calendar_appointment_insert_share_view_form",
+                            form_view_ref: "appointment.appointment_insert_share_view_form",
                             default_appointment_type_ids: [],
                             default_staff_user_ids: [],
                         },

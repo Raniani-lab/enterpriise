@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import calendar_appointment_type
+from . import appointment_type

@@ -41,7 +41,7 @@ class AppointmentCommon(MailCommon):
             cls.env,
             company_id=cls.company_admin.id,
             email='apt_manager@test.example.com',
-            groups='base.group_user,appointment.group_calendar_manager',
+            groups='base.group_user,appointment.group_appointment_manager',
             name='Appointment Manager',
             notification_type='email',
             login='apt_manager',
@@ -72,7 +72,7 @@ class AppointmentCommon(MailCommon):
         # Default (test) appointment type
         # Slots are each hours from 8 to 13 (UTC + 1)
         # -> working hours: 7, 8, 9, 10 and 12 UTC as 11 is lunch time in working hours
-        cls.apt_type_bxls_2days = cls.env['calendar.appointment.type'].create({
+        cls.apt_type_bxls_2days = cls.env['appointment.type'].create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'random',

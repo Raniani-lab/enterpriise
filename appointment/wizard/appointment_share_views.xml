@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="calendar_appointment_share_view_form" model="ir.ui.view">
-        <field name="name">calendar.appointment.share.view.form</field>
-        <field name="model">calendar.appointment.share</field>
+    <record id="appointment_share_view_form" model="ir.ui.view">
+        <field name="name">appointment.share.view.form</field>
+        <field name="model">appointment.share</field>
         <field name="arch" type="xml">
             <form string="Link Generator" create="false">
                 <sheet>
@@ -33,11 +33,11 @@
             </form>
         </field>
     </record>
-    <record id="calendar_appointment_insert_share_view_form" model="ir.ui.view">
-        <field name="name">calendar.appointment.share.view.form</field>
-        <field name="model">calendar.appointment.share</field>
+    <record id="appointment_insert_share_view_form" model="ir.ui.view">
+        <field name="name">appointment.share.view.form</field>
+        <field name="model">appointment.share</field>
         <field name="mode">primary</field>
-        <field name="inherit_id" ref="calendar_appointment_share_view_form"/>
+        <field name="inherit_id" ref="appointment_share_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='share_link']" position="replace"></xpath>
             <xpath expr="//sheet">

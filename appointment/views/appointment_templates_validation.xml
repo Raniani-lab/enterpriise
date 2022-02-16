@@ -10,7 +10,7 @@
                     <div class="alert alert-info" t-if="state == 'new'" role="status">
                         <p class="mb-0">
                             <strong>Your appointment has been successfully booked!</strong>
-                            <a groups="appointment.group_calendar_manager" t-attf-href="/web#id=#{event.appointment_type_id.id}&amp;view_type=form&amp;model=calendar.appointment.type&amp;action=appointment.calendar_appointment_type_action">
+                            <a groups="appointment.group_appointment_manager" t-attf-href="/web#id=#{event.appointment_type_id.id}&amp;view_type=form&amp;model=appointment.type&amp;action=appointment.appointment_type_action">
                                     <span class="text-nowrap"><i class="fa fa-arrow-right mx-2"/>Back to edit mode</span></a>
                             <br/>
                         </p>

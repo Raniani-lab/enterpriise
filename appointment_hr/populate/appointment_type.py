@@ -5,8 +5,8 @@ from odoo import models
 from odoo.tools import populate
 
 
-class CalendarAppointmentType(models.Model):
-    _inherit = "calendar.appointment.type"
+class AppointmentType(models.Model):
+    _inherit = "appointment.type"
 
     def _populate(self, size):
         appointment_types = super()._populate(size)

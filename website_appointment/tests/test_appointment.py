@@ -24,7 +24,7 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
             "timezone": False,
         })
 
-        AppointmentType = self.env['calendar.appointment.type']
+        AppointmentType = self.env['appointment.type']
         with self.mock_visitor_from_request(force_visitor=visitor):
             # Test appointment timezone when user and visitor both don't have timezone
             AppointmentType.with_user(test_user).create_and_get_website_url(**{'name': 'Appointment UTC Timezone'})
@@ -55,17 +55,17 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
     @users('apt_manager')
     def test_apt_type_create_from_website_slots(self):
         """ Test that when creating an appointment type from the website, defaults slots are set."""
-        pre_slots = self.env['calendar.appointment.slot'].search([])
+        pre_slots = self.env['appointment.slot'].search([])
         # Necessary for appointment type as `create_and_get_website_url` does not return the record.
-        pre_appts = self.env['calendar.appointment.type'].search([])
+        pre_appts = self.env['appointment.type'].search([])
 
-        self.env['calendar.appointment.type'].create_and_get_website_url(**{
+        self.env['appointment.type'].create_and_get_website_url(**{
             'name': 'Test Appointment Type has slots',
             'staff_user_ids': [self.staff_user_bxls.id]
         })
 
-        new_appt = self.env['calendar.appointment.type'].search([]) - pre_appts
-        new_slots = self.env['calendar.appointment.slot'].search([]) - pre_slots
+        new_appt = self.env['appointment.type'].search([]) - pre_appts
+        new_slots = self.env['appointment.slot'].search([]) - pre_slots
         self.assertEqual(new_slots.appointment_type_id, new_appt)
 
         expected_slots = {
@@ -85,7 +85,7 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
                 ('website', False),
                 ('work_hours', True)
             ]:
-            appointment_type = self.env['calendar.appointment.type'].create({
+            appointment_type = self.env['appointment.type'].create({
                 'name': 'Custom Appointment',
                 'category': category,
             })
@@ -105,7 +105,7 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
 
     @users('admin')
     def test_apt_type_is_published_update(self):
-        appointment = self.env['calendar.appointment.type'].create({
+        appointment = self.env['appointment.type'].create({
             'name': 'Website Appointment',
             'category': 'website',
         })

@@ -6,14 +6,14 @@ from werkzeug.urls import url_encode, url_join
 from odoo.addons.http_routing.models.ir_http import slug
 from odoo import api, models, fields
 
-class CalendarAppointmentShare(models.TransientModel):
-    _name = 'calendar.appointment.share'
-    _description = 'Calendar Appointment Share Wizard'
+class AppointmentShare(models.TransientModel):
+    _name = 'appointment.share'
+    _description = 'Appointment Share Wizard'
 
     def _domain_appointment_type_ids(self):
         return [('category', '=', 'website')]
 
-    appointment_type_ids = fields.Many2many('calendar.appointment.type', domain=_domain_appointment_type_ids, string='Appointments')
+    appointment_type_ids = fields.Many2many('appointment.type', domain=_domain_appointment_type_ids, string='Appointments')
     appointment_type_count = fields.Integer('Selected Appointments Count', compute='_compute_appointment_type_count')
     suggested_staff_user_ids = fields.Many2many(
         'res.users', related='appointment_type_ids.staff_user_ids', string='Possible users',

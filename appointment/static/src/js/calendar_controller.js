@@ -54,7 +54,7 @@ CalendarController.include({
         if (slots.length) {
             slotEvents.forEach(event => event.remove());
             const customAppointment = await this._rpc({
-                route: '/appointment/calendar_appointment_type/create_custom',
+                route: '/appointment/appointment_type/create_custom',
                 params: {
                     slots: slots,
                     context: this.context, // To pass default values like opportunity_id for appointment_crm

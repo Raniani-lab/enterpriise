@@ -5,22 +5,22 @@ from odoo import fields, models
 
 
 class CalendarAppointmentAnswer(models.Model):
-    _name = "calendar.appointment.answer"
+    _name = "appointment.answer"
     _description = "Appointment Question Answers"
     _order = "sequence,id"
 
-    question_id = fields.Many2one('calendar.appointment.question', 'Question', required=True, ondelete="cascade")
+    question_id = fields.Many2one('appointment.question', 'Question', required=True, ondelete="cascade")
     name = fields.Char('Answer', translate=True, required=True)
     sequence = fields.Integer(default=10)
 
 class CalendarAppointmentAnswerInput(models.Model):
-    _name = "calendar.appointment.answer.input"
+    _name = "appointment.answer.input"
     _rec_name = "question_id"
     _description = "Appointment Answer Inputs"
     _order = "id desc"
 
-    question_id = fields.Many2one('calendar.appointment.question', 'Question', required=True, ondelete="cascade")
-    value_answer_id = fields.Many2one('calendar.appointment.answer', 'Selected Answer', ondelete="restrict")
+    question_id = fields.Many2one('appointment.question', 'Question', required=True, ondelete="cascade")
+    value_answer_id = fields.Many2one('appointment.answer', 'Selected Answer', ondelete="restrict")
     value_text_box = fields.Text('Text Answer')
     # Reporting
     appointment_type_id = fields.Many2one(related='question_id.appointment_type_id', required=True, store=True, ondelete="cascade")

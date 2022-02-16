@@ -14,14 +14,13 @@ class AppointmentHrUITest(AppointmentUICommon):
     def test_route_apt_type_search_create_work_hours(self):
         self.authenticate(self.env.user.login, self.env.user.login)
         request = self.url_open(
-            "/appointment/calendar_appointment_type/search_create_work_hours",
+            "/appointment/appointment_type/search_create_work_hours",
             data=json.dumps({}),
             headers={"Content-Type": "application/json"},
         ).json()
         result = request.get('result', {})
         self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
-
-        appointment_type = self.env['calendar.appointment.type'].browse(result['id'])
+        appointment_type = self.env['appointment.type'].browse(result['id'])
         self.assertEqual(appointment_type.category, 'work_hours')
         self.assertEqual(len(appointment_type.slot_ids), 14, "14 slots have been created: (2 / days for 7 days)")
         self.assertTrue(all(slot.slot_type == 'recurring' for slot in appointment_type.slot_ids), "All slots are 'recurring'")

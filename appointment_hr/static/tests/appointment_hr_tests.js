@@ -52,7 +52,7 @@ QUnit.module('appointment_hr.appointment_link', {
                     stop: {string: 'Stop datetime', type: 'datetime'},
                     allday: {string: 'Allday', type: 'boolean'},
                     partner_ids: {string: 'Attendees', type: 'one2many', relation: 'res.partner'},
-                    appointment_type_id: {string: 'Appointment Type', type: 'many2one', relation: 'calendar.appointment.type'},
+                    appointment_type_id: {string: 'Appointment Type', type: 'many2one', relation: 'appointment.type'},
                 },
                 records: [{
                     id: 1,
@@ -87,13 +87,13 @@ QUnit.module('appointment_hr.appointment_link', {
                     return Promise.resolve(true);
                 }
             },
-            'calendar.appointment.type': {
+            'appointment.type': {
                 fields: {
                     name: {type: 'char'},
                     website_url: {type: 'char'},
                     staff_user_ids: {type: 'many2many', relation: 'res.users'},
                     website_published: {type: 'boolean'},
-                    slot_ids: {type: 'one2many', relation: 'calendar.appointment.slot'},
+                    slot_ids: {type: 'one2many', relation: 'appointment.slot'},
                     category: {
                         type: 'selection',
                         selection: [['website', 'Website'], ['custom', 'Custom'], ['work_hours', 'Work Hours']]
@@ -115,9 +115,9 @@ QUnit.module('appointment_hr.appointment_link', {
                     category: 'website',
                 }],
             },
-            'calendar.appointment.slot': {
+            'appointment.slot': {
                 fields: {
-                    appointment_type_id: {type: 'many2one', relation: 'calendar.appointment.type'},
+                    appointment_type_id: {type: 'many2one', relation: 'appointment.type'},
                     start_datetime: {string: 'Start', type: 'datetime'},
                     end_datetime: {string: 'End', type: 'datetime'},
                     duration: {string: 'Duration', type: 'float'},
@@ -247,7 +247,7 @@ QUnit.test('create/search work hours appointment type', async function (assert) 
             initialDate: initialDate,
         },
         mockRPC: function (route, args) {
-            if (route === "/appointment/calendar_appointment_type/search_create_work_hours") {
+            if (route === "/appointment/appointment_type/search_create_work_hours") {
                 assert.step(route);
             } else if (route === '/microsoft_calendar/sync_data') {
                 return Promise.resolve();
@@ -261,15 +261,15 @@ QUnit.test('create/search work hours appointment type', async function (assert) 
         },
     }, { positionalClicks: true });
 
-    assert.strictEqual(2, this.data['calendar.appointment.type'].records.length)
+    assert.strictEqual(2, this.data['appointment.type'].records.length)
 
     await testUtils.dom.click(calendar.$('#dropdownAppointmentLink'));
 
     await testUtils.dom.click(calendar.$('.o_appointment_search_create_work_hours_appointment'));
     await testUtils.nextTick();
 
-    assert.verifySteps(['/appointment/calendar_appointment_type/search_create_work_hours']);
-    assert.strictEqual(3, this.data['calendar.appointment.type'].records.length,
+    assert.verifySteps(['/appointment/appointment_type/search_create_work_hours']);
+    assert.strictEqual(3, this.data['appointment.type'].records.length,
         "Create a new appointment type")
 
     await testUtils.dom.click(calendar.$('.o_appointment_change_display'));
@@ -278,8 +278,8 @@ QUnit.test('create/search work hours appointment type', async function (assert) 
     await testUtils.dom.click(calendar.$('.o_appointment_search_create_work_hours_appointment'));
     await testUtils.nextTick();
 
-    assert.verifySteps(['/appointment/calendar_appointment_type/search_create_work_hours']);
-    assert.strictEqual(3, this.data['calendar.appointment.type'].records.length,
+    assert.verifySteps(['/appointment/appointment_type/search_create_work_hours']);
+    assert.strictEqual(3, this.data['appointment.type'].records.length,
         "Does not create a new appointment type");
 
     calendar.destroy();

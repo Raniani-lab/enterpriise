@@ -26,12 +26,12 @@
     <menuitem
         id="appointment_type_menu"
         parent="calendar.mail_menu_calendar"
-        action="calendar_appointment_type_action"
+        action="appointment_type_action"
         sequence="10"/>
 
     <menuitem
-        id="menu_calendar_appointment_type_custom_and_work_hours"
+        id="menu_appointment_type_custom_and_work_hours"
         parent="calendar.calendar_menu_config"
-        action="calendar_appointment_type_action_custom_and_work_hours"
+        action="appointment_type_action_custom_and_work_hours"
         groups="base.group_no_one"/>
 </odoo>

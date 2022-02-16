@@ -50,7 +50,7 @@ QUnit.module('appointment.appointment_link', {
                     stop: {string: 'Stop datetime', type: 'datetime'},
                     allday: {string: 'Allday', type: 'boolean'},
                     partner_ids: {string: 'Attendees', type: 'one2many', relation: 'res.partner'},
-                    appointment_type_id: {string: 'Appointment Type', type: 'many2one', relation: 'calendar.appointment.type'},
+                    appointment_type_id: {string: 'Appointment Type', type: 'many2one', relation: 'appointment.type'},
                 },
                 records: [{
                     id: 1,
@@ -85,13 +85,13 @@ QUnit.module('appointment.appointment_link', {
                     return Promise.resolve(true);
                 }
             },
-            'calendar.appointment.type': {
+            'appointment.type': {
                 fields: {
                     name: {type: 'char'},
                     website_url: {type: 'char'},
                     staff_user_ids: {type: 'many2many', relation: 'res.users'},
                     website_published: {type: 'boolean'},
-                    slot_ids: {type: 'one2many', relation: 'calendar.appointment.slot'},
+                    slot_ids: {type: 'one2many', relation: 'appointment.slot'},
                     category: {
                         type: 'selection',
                         selection: [['website', 'Website'], ['custom', 'Custom']]
@@ -113,9 +113,9 @@ QUnit.module('appointment.appointment_link', {
                     category: 'website',
                 }],
             },
-            'calendar.appointment.slot': {
+            'appointment.slot': {
                 fields: {
-                    appointment_type_id: {type: 'many2one', relation: 'calendar.appointment.type'},
+                    appointment_type_id: {type: 'many2one', relation: 'appointment.type'},
                     start_datetime: {string: 'Start', type: 'datetime'},
                     end_datetime: {string: 'End', type: 'datetime'},
                     duration: {string: 'Duration', type: 'float'},
@@ -343,7 +343,7 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
             initialDate: initialDate,
         },
         mockRPC: function (route, args) {
-            if (route === "/appointment/calendar_appointment_type/create_custom") {
+            if (route === "/appointment/appointment_type/create_custom") {
                 assert.step(route);
             } else if (route === '/microsoft_calendar/sync_data') {
                 return Promise.resolve();
@@ -379,10 +379,10 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
     assert.containsOnce(calendar, '.o_calendar_slot', 'One of them is a slot');
 
     await testUtils.dom.click(calendar.$('button.o_appointment_create_custom_appointment'));
-    assert.verifySteps(['/appointment/calendar_appointment_type/create_custom']);
+    assert.verifySteps(['/appointment/appointment_type/create_custom']);
     assert.containsOnce(calendar, '.fc-event', 'The calendar event is still here');
     assert.containsNone(calendar, '.o_calendar_slot', 'The slot has been cleared after the creation');
-    assert.strictEqual(this.data['calendar.appointment.slot'].records.length, 1);
+    assert.strictEqual(this.data['appointment.slot'].records.length, 1);
 
     calendar.destroy();
 });

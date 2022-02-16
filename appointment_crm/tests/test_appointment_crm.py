@@ -19,7 +19,7 @@ class AppointmentCRMTest(TestCrmCommon):
             "min_cancellation_hours": 1,
             "min_schedule_hours": 1,
         }
-        return cls.env['calendar.appointment.type'].create(dict(default, **kwargs))
+        return cls.env['appointment.type'].create(dict(default, **kwargs))
 
     @classmethod
     def setUpClass(cls):
@@ -151,7 +151,7 @@ class AppointmentCRMTest(TestCrmCommon):
     def test_no_type(self):
         """ Make sure no lead is created, if the appointment type is empty """
         event = self.env['calendar.event'].create(self._prepare_event_value(
-            self.env['calendar.appointment.type'],
+            self.env['appointment.type'],
             self.user_sales_leads,
             self.contact_1,
         ))

@@ -18,8 +18,8 @@ from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.http_routing.models.ir_http import slug
 
 
-class CalendarAppointmentType(models.Model):
-    _name = "calendar.appointment.type"
+class AppointmentType(models.Model):
+    _name = "appointment.type"
     _description = "Appointment Type"
     _inherit = ['mail.thread']
     _order = "sequence, id"
@@ -68,9 +68,9 @@ class CalendarAppointmentType(models.Model):
     country_ids = fields.Many2many(
         'res.country', 'appointment_type_country_rel', string='Restrict Countries',
         help="Keep empty to allow visitors from any country, otherwise you only allow visitors from selected countries")
-    question_ids = fields.One2many('calendar.appointment.question', 'appointment_type_id', string='Questions', copy=True)
+    question_ids = fields.One2many('appointment.question', 'appointment_type_id', string='Questions', copy=True)
 
-    slot_ids = fields.One2many('calendar.appointment.slot', 'appointment_type_id', 'Availabilities', copy=True)
+    slot_ids = fields.One2many('appointment.slot', 'appointment_type_id', 'Availabilities', copy=True)
     appointment_tz = fields.Selection(
         _tz_get, string='Timezone', required=True, default=lambda self: self.env.user.tz,
         help="Timezone where appointment take place")
@@ -133,7 +133,7 @@ class CalendarAppointmentType(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         """ We don't want the current user to be follower of all created types """
-        return super(CalendarAppointmentType, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
+        return super(AppointmentType, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
 
     def create_and_get_website_url(self, **kwargs):
         """Override WebsitePublishedMixin method to add default slots. """
@@ -144,7 +144,7 @@ class CalendarAppointmentType(models.Model):
     def copy(self, default=None):
         default = default or {}
         default['name'] = self.name + _(' (copy)')
-        return super(CalendarAppointmentType, self).copy(default=default)
+        return super().copy(default=default)
 
     def write(self, vals):
         # If no text outside html tags, replace with False to get back placeholder.
@@ -186,7 +186,7 @@ class CalendarAppointmentType(models.Model):
         return {
             'name': _('Share Link'),
             'type': 'ir.actions.act_window',
-            'res_model': 'calendar.appointment.share',
+            'res_model': 'appointment.share',
             'view_mode': 'form',
             'target': 'new',
             'context': {
@@ -254,7 +254,7 @@ class CalendarAppointmentType(models.Model):
             slots.
 
             :param date day: day for which we generate slots;
-            :param record slot: a <calendar.appointment.slot> record
+            :param record slot: a <appointment.slot> record
             """
             local_start = appt_tz.localize(
                 datetime.combine(day,

@@ -9,9 +9,9 @@ from odoo.exceptions import ValidationError
 from odoo.osv.expression import AND
 
 
-class CalendarAppointmentType(models.Model):
-    _name = "calendar.appointment.type"
-    _inherit = "calendar.appointment.type"
+class AppointmentType(models.Model):
+    _name = "appointment.type"
+    _inherit = "appointment.type"
 
     @api.model
     def default_get(self, default_fields):

@@ -4,7 +4,7 @@
         <t t-set="no_breadcrumbs" t-value="True"/>
         <t t-call="portal.portal_layout">
             <div id="wrap" class="d-flex bg-o-color-4 px-3 mt-3">
-                <t t-set="o_portal_fullwidth_alert" groups="appointment.group_calendar_manager">
+                <t t-set="o_portal_fullwidth_alert" groups="appointment.group_appointment_manager">
                     <t t-call="appointment.appointment_edit_in_backend"/>
                 </t>
                 <div class="oe_structure container o_appointment mb64">
@@ -23,7 +23,7 @@
 
                     <div class="oe_structure"/>
                     <div class="oe_structure container mb64 o_appointment_attendee_form">
-                        <div groups="appointment.group_calendar_manager" class="alert alert-info rounded-0 o_not_editable" role="status">
+                        <div groups="appointment.group_appointment_manager" class="alert alert-info rounded-0 o_not_editable" role="status">
                             <a t-attf-href="/web#id=#{appointment_type.id}&amp;view_type=form&amp;model=#{appointment_type._name}">
                                 <i class="fa fa-pencil mr-2" role="img" aria-label="Edit" title="Create custom questions in backend"/><em>Add Custom Questions</em>
                             </a>

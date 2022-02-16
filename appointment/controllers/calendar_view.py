@@ -15,8 +15,8 @@ class AppointmentCalendarView(http.Controller):
     # APPOINTMENT JSON ROUTES FOR BACKEND
     # ------------------------------------------------------------
 
-    @route('/appointment/calendar_appointment_type/create_custom', type='json', auth='user')
-    def appointment_create_custom_appointment_type(self, slots):
+    @route('/appointment/appointment_type/create_custom', type='json', auth='user')
+    def appointment_type_create_custom(self, slots):
         """
         Return the info (id and url) of the custom appointment type
         that is created with the time slots in the calendar.
@@ -51,7 +51,7 @@ class AppointmentCalendarView(http.Controller):
         context = request.env.context.copy()
         if context.get('default_name'):
             del context['default_name']
-        appointment_type = request.env['calendar.appointment.type'].with_context(context).sudo().create({
+        appointment_type = request.env['appointment.type'].with_context(context).sudo().create({
             'category': 'custom',
             'slot_ids': [(0, 0, {
                 'start_datetime': fields.Datetime.from_string(slot.get('start')),
@@ -63,11 +63,11 @@ class AppointmentCalendarView(http.Controller):
 
         return self._get_staff_user_appointment_info(appointment_type)
 
-    @route('/appointment/calendar_appointment_type/get_staff_user_appointment_types', type='json', auth='user')
-    def appointment_get_staff_user_appointment_types(self):
+    @route('/appointment/appointment_type/get_staff_user_appointment_types', type='json', auth='user')
+    def appointment_get_user_appointment_types(self):
         appointment_types_info = []
         domain = self._get_staff_user_appointment_type_domain()
-        appointment_types_info = request.env['calendar.appointment.type'].search_read(domain, ['name', 'category'])
+        appointment_types_info = request.env['appointment.type'].search_read(domain, ['name', 'category'])
         return {
             'appointment_types_info': appointment_types_info,
         }

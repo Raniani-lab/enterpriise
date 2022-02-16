@@ -12,7 +12,7 @@
                     <field name="sdd_sms_verification_required"/>
                     <field name="sdd_sms_credits"
                            attrs="{'invisible': [('sdd_sms_verification_required', '=', False)]}"/>
-                    <field name="currency_id" invisible="1"/>
+                    <field name="main_currency_id" invisible="1"/>
                 </group>
                 <group attrs="{'invisible': [('provider', '!=', 'sepa_direct_debit')]}">
                     <widget name="iap_buy_more_credits"

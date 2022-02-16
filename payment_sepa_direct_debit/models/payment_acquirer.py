@@ -20,8 +20,9 @@ class PaymentAcquirer(models.Model):
         string="Online Signature", help="Whether a signature is required to create a new mandate.")
     sdd_sms_verification_required = fields.Boolean(
         string="Phone Verification", help="Whether phone numbers must be verified by an SMS code.")
-    sdd_sms_credits = fields.Monetary(string="SMS Credits", compute='_compute_sdd_sms_credits')
-    currency_id = fields.Many2one(related='company_id.currency_id')
+    sdd_sms_credits = fields.Monetary(
+        string="SMS Credits", currency_field='main_currency_id', compute='_compute_sdd_sms_credits'
+    )
 
     #=== COMPUTE METHODS ===#
 
@@ -76,12 +77,12 @@ class PaymentAcquirer(models.Model):
                     "Debit payment request. It can be set in Accounting settings."
                 ))
 
-    @api.constrains('country_ids')
+    @api.constrains('available_country_ids')
     def _check_country_in_sepa_zone(self):
         """ Check that all selected countries are in the SEPA zone. """
         sepa_countries = self.env.ref('base.sepa_zone').country_ids
         for acquirer in self.filtered(lambda a: a.provider == 'sepa_direct_debit'):
-            non_sepa_countries = acquirer.country_ids - sepa_countries
+            non_sepa_countries = acquirer.available_country_ids - sepa_countries
             if non_sepa_countries:
                 raise ValidationError(_(
                     "Restricted to countries in the SEPA zone. Forbidden countries: %s",

@@ -122,6 +122,7 @@ class CustomerPortal(portal.CustomerPortal):
         acquirers_sudo = request.env['payment.acquirer'].sudo()._get_compatible_acquirers(
             order_sudo.company_id.id,
             order_sudo.partner_id.id,
+            order_sudo.amount_total,
             currency_id=order_sudo.currency_id.id,
             is_validation=not order_sudo.to_renew,
         )  # In sudo mode to read the fields of acquirers and partner (if not logged in)

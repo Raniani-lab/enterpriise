@@ -18,7 +18,7 @@
              official currency -->
         <!-- Non-Eurozone countries -->
         <!-- UK including Gibraltar -->
-        <field name="country_ids" eval="[
+        <field name="available_country_ids" eval="[
             (4,(ref('base.at'))),
             (4,(ref('base.be'))),
             (4,(ref('base.cy'))),

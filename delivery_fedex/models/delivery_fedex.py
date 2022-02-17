@@ -76,6 +76,8 @@ class ProviderFedex(models.Model):
     fedex_default_package_type_id = fields.Many2one('stock.package.type', string="Fedex Package Type")
     fedex_service_type = fields.Selection([('INTERNATIONAL_ECONOMY', 'INTERNATIONAL_ECONOMY'),
                                            ('INTERNATIONAL_PRIORITY', 'INTERNATIONAL_PRIORITY'),
+                                           ('FEDEX_INTERNATIONAL_PRIORITY', 'FEDEX_INTERNATIONAL_PRIORITY'),
+                                           ('FEDEX_INTERNATIONAL_PRIORITY_EXPRESS', 'FEDEX_INTERNATIONAL_PRIORITY_EXPRESS'),
                                            ('FEDEX_GROUND', 'FEDEX_GROUND'),
                                            ('FEDEX_2_DAY', 'FEDEX_2_DAY'),
                                            ('FEDEX_2_DAY_AM', 'FEDEX_2_DAY_AM'),
@@ -89,7 +91,7 @@ class ProviderFedex(models.Model):
                                            ('FEDEX_NEXT_DAY_END_OF_DAY', 'FEDEX_NEXT_DAY_END_OF_DAY'),
                                            ('FEDEX_EXPRESS_SAVER', 'FEDEX_EXPRESS_SAVER'),
                                            ],
-                                          default='INTERNATIONAL_PRIORITY')
+                                          default='FEDEX_INTERNATIONAL_PRIORITY')
     fedex_duty_payment = fields.Selection([('SENDER', 'Sender'), ('RECIPIENT', 'Recipient')], required=True, default="SENDER")
     fedex_weight_unit = fields.Selection([('LB', 'LB'),
                                           ('KG', 'KG')],
@@ -194,7 +196,7 @@ class ProviderFedex(models.Model):
             srm.set_master_package(weight_value, 1)
 
         # Commodities for customs declaration (international shipping)
-        if self.fedex_service_type in ['INTERNATIONAL_ECONOMY', 'INTERNATIONAL_PRIORITY'] or is_india:
+        if 'INTERNATIONAL' in self.fedex_service_type or is_india:
             total_commodities_amount = 0.0
 
             for line in order.order_line.filtered(lambda l: l.product_id.type in ['product', 'consu'] and not l.display_type):
@@ -260,7 +262,7 @@ class ProviderFedex(models.Model):
             net_weight = self._fedex_convert_weight(picking.shipping_weight, self.fedex_weight_unit)
 
             # Commodities for customs declaration (international shipping)
-            if self.fedex_service_type in ['INTERNATIONAL_ECONOMY', 'INTERNATIONAL_PRIORITY'] or (picking.partner_id.country_id.code == 'IN' and picking.picking_type_id.warehouse_id.partner_id.country_id.code == 'IN'):
+            if 'INTERNATIONAL' in self.fedex_service_type  or (picking.partner_id.country_id.code == 'IN' and picking.picking_type_id.warehouse_id.partner_id.country_id.code == 'IN'):
 
                 commodity_currency = order_currency
                 total_commodities_amount = 0.0
@@ -484,7 +486,7 @@ class ProviderFedex(models.Model):
             dept_number=dept_number,
         )
         srm.set_master_package(net_weight, 1)
-        if self.fedex_service_type in ['INTERNATIONAL_ECONOMY', 'INTERNATIONAL_PRIORITY'] or (picking.partner_id.country_id.code == 'IN' and picking.picking_type_id.warehouse_id.partner_id.country_id.code == 'IN'):
+        if 'INTERNATIONAL' in self.fedex_service_type  or (picking.partner_id.country_id.code == 'IN' and picking.picking_type_id.warehouse_id.partner_id.country_id.code == 'IN'):
 
             order_currency = picking.sale_id.currency_id or picking.company_id.currency_id
             commodity_currency = order_currency

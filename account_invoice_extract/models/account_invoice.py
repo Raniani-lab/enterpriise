@@ -500,14 +500,15 @@ class AccountMove(models.Model):
         return word.word_text
 
     def _create_supplier_from_vat(self, vat_number_ocr):
-        params = {
-            'db_uuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
-            'account_token': self.env['iap.account'].get('partner_autocomplete').account_token,
-            'country_code': self.company_id.country_id.code,
-            'vat': vat_number_ocr,
-        }
         try:
-            response = self._contact_iap_partner_autocomplete('/iap/partner_autocomplete/enrich', params)
+            response = self.env['iap.autocomplete.api']._contact_iap(
+                local_endpoint='/iap/partner_autocomplete',
+                action='enrich',
+                params={'vat': vat_number_ocr},
+            )
+        except KeyError:
+            _logger.warning("Partner autocomplete isn't installed, supplier creation from VAT is disabled")
+            return False
         except Exception as exception:
             _logger.error('Check VAT error: %s' % str(exception))
             return False
@@ -530,11 +531,8 @@ class AccountMove(models.Model):
                 'phone': resp_values.get('phone', ''),
                 'email': resp_values.get('email', ''),
                 'is_company': True,
+                'partner_gid': resp_values.get('partner_gid', ''),
             }
-            # partner_gid is defined in partner_autocomplete, which is not a dependency of
-            # account_invoice_extract
-            if 'partner_gid' in self.env['res.partner']._fields:
-                values['partner_gid'] = resp_values.get('partner_gid', '')
             new_partner = self.env["res.partner"].with_context(clean_context(self.env.context)).create(values)
             return new_partner
         return False

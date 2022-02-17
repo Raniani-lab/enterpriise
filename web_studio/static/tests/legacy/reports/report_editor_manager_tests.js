@@ -2685,6 +2685,62 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
+    QUnit.test('preselect appropriate value in t-if dialog', async function (assert) {
+        //Checks that using 'in' operator with '()' does not unnecessarily trigger a view change
+        assert.expect(1);
+        var self = this;
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                        '<div class="class1">' +
+                        `<span t-if="true or o in ('foo','bar')">First span</span>` +
+                        '</div>' +
+                    '</t>' +
+                '</kikou>',
+        });
+
+        var templateData = {
+            dataOeContext: '{"docs": "model.test", "o": "model.test"}'
+        };
+
+        var rem = await studioTestUtils.createReportEditorManager({
+            data: this.data,
+            models: this.models,
+            env: {
+                modelName: 'kikou',
+                ids: [42],
+                currentId: 42,
+            },
+            report: {
+                report_name: 'awesome_report',
+            },
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_report_view') {
+                    assert.step('edit_report_view');
+                    return Promise.resolve({
+                        report_html: studioTestUtils.getReportHTML(self.templates),
+                        views: studioTestUtils.getReportViews(self.templates),
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+            reportHTML: studioTestUtils.getReportHTML(this.templates, templateData),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+            reportMainViewID: 42,
+        });
+
+        await rem.editorIframeDef;
+        await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First span)'));
+        await testUtils.dom.click(rem.$('.card.o_web_studio_active .o_field_domain_dialog_button'));
+        await testUtils.dom.click($('body.modal-open .modal-footer button.btn-primary'));
+        assert.verifySteps([], "Shouldn't have changed the view");
+        rem.destroy();
+    });
+
 });
 
 });

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 10:16+0000\n"
-"PO-Revision-Date: 2019-01-17 13:36+0100\n"
+"POT-Creation-Date: 2022-02-17 14:55+0000\n"
+"PO-Revision-Date: 2022-02-17 15:57+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -691,6 +691,11 @@ msgid "72 - Production immobilisée"
 msgstr "72 - Geproduceerde vaste activa"
 
 #. module: l10n_be_reports
+#: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_chiffre_daffaires73
+msgid "73 - Cotisations, dons, legs et subsides"
+msgstr ""
+
+#. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_chiffre_daffaires74
 msgid "74 - Autres produits d'exploitation"
 msgstr "74 - Andere bedrijfsopbrengsten"
@@ -825,9 +830,40 @@ msgid "ACTIF"
 msgstr "ACTIVA"
 
 #. module: l10n_be_reports
+#: model:ir.model,name:l10n_be_reports.model_account_report
+msgid "Account Report"
+msgstr ""
+
+#. module: l10n_be_reports
+#: model:ir.model,name:l10n_be_reports.model_mail_activity
+msgid "Activity"
+msgstr ""
+
+#. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_affectation
 msgid "Affectations et prélèvements"
 msgstr "Toewijzingen en onttrekkingen"
+
+#. module: l10n_be_reports
+#: code:addons/l10n_be_reports/models/partner_vat_intra.py:0
+#, python-format
+msgid "Amount"
+msgstr ""
+
+#. module: l10n_be_reports
+#: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__ask_payment
+msgid "Ask Payment"
+msgstr ""
+
+#. module: l10n_be_reports
+#: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__ask_restitution
+msgid "Ask Restitution"
+msgstr ""
+
+#. module: l10n_be_reports
+#: model:ir.model,name:l10n_be_reports.model_l10n_be_reports_periodic_vat_xml_export
+msgid "Belgian Periodic VAT Report Export Wizard"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report,name:l10n_be_reports.account_financial_report_be_balancesheet0
@@ -1070,6 +1106,12 @@ msgstr ""
 
 #. module: l10n_be_reports
 #: code:addons/l10n_be_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "No negative number"
+msgstr "Geen negatief getal"
+
+#. module: l10n_be_reports
+#: code:addons/l10n_be_reports/models/account_generic_tax_report.py:0
 #: code:addons/l10n_be_reports/models/partner_vat_intra.py:0
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
@@ -1115,6 +1157,14 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_account_reports_export_wizard__l10n_be_reports_periodic_vat_wizard_id
 msgid "Periodic VAT Export Wizard"
+msgstr ""
+
+#. module: l10n_be_reports
+#: code:addons/l10n_be_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"Please first fill in the full coordinates (address, VAT, mail and phone) of "
+"the representative configured for your xml export (%s)"
 msgstr ""
 
 #. module: l10n_be_reports
@@ -1175,3 +1225,31 @@ msgstr ""
 #, python-format
 msgid "XML Export Options"
 msgstr ""
+
+#. module: l10n_be_reports
+#: code:addons/l10n_be_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid ""
+"[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 "
+"if [44] > 99.999"
+msgstr ""
+"[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 "
+"als [44] > 99.999"
+
+#. module: l10n_be_reports
+#: code:addons/l10n_be_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "[55] > 0 if [86] > 0 or [88] > 0"
+msgstr "[55] > 0 als [86] > 0 of [88] > 0"
+
+#. module: l10n_be_reports
+#: code:addons/l10n_be_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "[56] + [57] > 0 if [87] > 0"
+msgstr "[56] + [57] > 0 als [87] > 0"
+
+#. module: l10n_be_reports
+#: code:addons/l10n_be_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "[88] < ([81] + [82] + [83] + [84]) * 100 if [88] > 99.999"
+msgstr "[88] < ([81] + [82] + [83] + [84]) * 100 als [88] > 99.999"

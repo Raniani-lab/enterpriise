@@ -20,9 +20,9 @@ class TestAccountAsset(TestAccountReportsCommon):
         super(TestAccountAsset, cls).setUpClass()
         today = fields.Date.today()
         cls.truck = cls.env['account.asset'].create({
-            'account_asset_id': cls.company_data['default_account_expense'].id,
+            'account_asset_id': cls.company_data['default_account_assets'].id,
             'account_depreciation_id': cls.company_data['default_account_assets'].copy().id,
-            'account_depreciation_expense_id': cls.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': cls.company_data['default_account_expense'].id,
             'journal_id': cls.company_data['default_journal_misc'].id,
             'asset_type': 'purchase',
             'name': 'truck',
@@ -864,6 +864,106 @@ class TestAccountAsset(TestAccountReportsCommon):
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  3250.0,     0.0,  7750.0,  3750.0],
                              [x['no_format_name'] for x in lines[0]['columns'][4:]])
+
+    def test_asset_pause_resume(self):
+        """Test that depreciation remains the same after a pause and resume at a later date"""
+        today = fields.Date.today()
+        self.assertEqual(len(self.truck.depreciation_move_ids.filtered(lambda e: e.state == 'draft')), 4)
+        self.env['asset.modify'].create({
+            'date': fields.Date.today(),
+            'asset_id': self.truck.id,
+        }).pause()
+        self.assertEqual(len(self.truck.depreciation_move_ids.filtered(lambda e: e.state == 'draft')), 0)
+        with freeze_time(today) as frozen_time:
+            frozen_time.move_to(today + relativedelta(years=1))
+            self.env['asset.modify'].with_context(resume_after_pause=True).create({
+                'asset_id': self.truck.id,
+            }).modify()
+            self.assertEqual(len(self.truck.depreciation_move_ids.filtered(lambda e: e.state == 'posted')), 7)
+            self.assertEqual(
+                self.truck.depreciation_move_ids.filtered(lambda e: e.state == 'draft').mapped('amount_total'),
+                [750.0, 750.0, 750.0])
+
+    def test_asset_modify_sell_profit(self):
+        """Test that a credit is realised in the gain account when selling an asset for a sum greater than book value"""
+        closing_invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'invoice_line_ids': [(0, 0, {'price_unit': self.truck.book_value + 100})]
+        })
+        self.env['asset.modify'].create({
+            'asset_id': self.truck.id,
+            'invoice_id': closing_invoice.id,
+            'modify_action': 'sell',
+        }).sell_dispose()
+        closing_move = self.truck.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
+        self.assertRecordValues(closing_move.line_ids, [{
+            'debit': 0,
+            'credit': 10000,
+            'account_id': self.truck.account_asset_id.id,
+        }, {
+            'debit': 4500,
+            'credit': 0,
+            'account_id': self.truck.account_depreciation_id.id,
+        }, {
+            'debit': 5600,
+            'credit': 0,
+            'account_id': closing_invoice.invoice_line_ids.account_id.id,
+        }, {
+            'debit': 0,
+            'credit': 100,
+            'account_id': self.env.company.gain_account_id.id,
+        }])
+
+    def test_asset_modify_sell_loss(self):
+        """Test that a debit is realised in the loss account when selling an asset for a sum less than book value"""
+        closing_invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'invoice_line_ids': [(0, 0, {'price_unit': self.truck.book_value - 100})]
+        })
+        self.env['asset.modify'].create({
+            'asset_id': self.truck.id,
+            'invoice_id': closing_invoice.id,
+            'modify_action': 'sell',
+        }).sell_dispose()
+        closing_move = self.truck.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
+        self.assertRecordValues(closing_move.line_ids, [{
+            'debit': 0,
+            'credit': 10000,
+            'account_id': self.truck.account_asset_id.id,
+        }, {
+            'debit': 4500,
+            'credit': 0,
+            'account_id': self.truck.account_depreciation_id.id,
+        }, {
+            'debit': 5400,
+            'credit': 0,
+            'account_id': closing_invoice.invoice_line_ids.account_id.id,
+        }, {
+            'debit': 100,
+            'credit': 0,
+            'account_id': self.env.company.loss_account_id.id,
+        }])
+
+    def test_asset_modify_dispose(self):
+        """Test the loss of the remaining book_value when an asset is disposed using the wizard"""
+        self.env['asset.modify'].create({
+            'asset_id': self.truck.id,
+            'modify_action': 'dispose',
+        }).sell_dispose()
+        closing_move = self.truck.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
+        self.assertRecordValues(closing_move.line_ids, [{
+            'debit': 0,
+            'credit': 10000,
+            'account_id': self.truck.account_asset_id.id,
+        }, {
+            'debit': 4500,
+            'credit': 0,
+            'account_id': self.truck.account_depreciation_id.id,
+        }, {
+            'debit': 5500,
+            'credit': 0,
+            'account_id': self.env.company.loss_account_id.id,
+        }])
 
     def test_asset_reverse_depreciation(self):
         """Test the reversal of a depreciation move"""

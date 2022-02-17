@@ -148,13 +148,16 @@ class CalendarAppointmentType(models.Model):
     # Slots Generation
     # --------------------------------------
 
-    def _slots_generate(self, first_day, last_day, timezone):
+    def _slots_generate(self, first_day, last_day, timezone, reference_date=None):
         """ Generate all appointment slots (in naive UTC, appointment timezone, and given (visitors) timezone)
             between first_day and last_day (datetimes in appointment timezone)
 
             :return: [ {'slot': slot_record, <timezone>: (date_start, date_end), ...},
                       ... ]
         """
+        if not reference_date:
+            reference_date = datetime.utcnow()
+
         def append_slot(day, slot):
             local_start = appt_tz.localize(datetime.combine(day, time(hour=int(slot.start_hour), minute=int(round((slot.start_hour % 1) * 60)))))
             local_end = appt_tz.localize(
@@ -196,7 +199,7 @@ class CalendarAppointmentType(models.Model):
                     append_slot(day, slot)
         else:
             # Custom appointment type, we use "unique" slots here that have a defined start/end datetime
-            unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique' and slot.end_datetime > datetime.utcnow())
+            unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique' and slot.end_datetime > reference_date)
 
             staff_user = self.staff_user_ids[0]  # There is only 1 staff_user in this case
             for slot in unique_slots:
@@ -265,7 +268,7 @@ class CalendarAppointmentType(models.Model):
             this hook allows fetching the working schedule of employees only once for the whole "_slots_available" method."""
         return {}
 
-    def _get_appointment_slots(self, timezone, staff_user=None):
+    def _get_appointment_slots(self, timezone, staff_user=None, reference_date=None):
         """ Fetch available slots to book an appointment
             :param timezone: timezone string e.g.: 'Europe/Brussels' or 'Etc/GMT+1'
             :param staff_user: if set will only check available slots for this user.
@@ -273,23 +276,32 @@ class CalendarAppointmentType(models.Model):
                       complex structure used to simplify rendering of template
         """
         self.ensure_one()
+        if not reference_date:
+            reference_date = datetime.utcnow()
+
         appt_tz = pytz.timezone(self.appointment_tz)
         requested_tz = pytz.timezone(timezone)
-        first_day = requested_tz.fromutc(datetime.utcnow() + relativedelta(hours=self.min_schedule_hours))
+        first_day = requested_tz.fromutc(reference_date + relativedelta(hours=self.min_schedule_hours))
         appointment_duration_days = self.max_schedule_days
         unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique')
         if self.category == 'custom' and unique_slots:
-            appointment_duration_days = (unique_slots[-1].end_datetime - datetime.utcnow()).days
-        last_day = requested_tz.fromutc(datetime.utcnow() + relativedelta(days=appointment_duration_days))
+            appointment_duration_days = (unique_slots[-1].end_datetime - reference_date).days
+        last_day = requested_tz.fromutc(reference_date + relativedelta(days=appointment_duration_days))
 
         # Compute available slots (ordered)
-        slots = self._slots_generate(first_day.astimezone(appt_tz), last_day.astimezone(appt_tz), timezone)
+        slots = self._slots_generate(
+            first_day.astimezone(appt_tz),
+            last_day.astimezone(appt_tz),
+            timezone,
+            reference_date=reference_date
+        )
         if not staff_user or staff_user in self.staff_user_ids:
             self._slots_available(slots, first_day.astimezone(pytz.UTC), last_day.astimezone(pytz.UTC), staff_user)
         total_nb_slots = len(slots)
         nb_slots_previous_months = 0
+
         # Compute calendar rendering and inject available slots
-        today = requested_tz.fromutc(datetime.utcnow())
+        today = requested_tz.fromutc(reference_date)
         start = today
         locale = babel_locale_parse(get_lang(self.env).code)
         month_dates_calendar = cal.Calendar(locale.first_week_day).monthdatescalendar

@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 from werkzeug.exceptions import NotFound
 
 from odoo import http, fields, _
-from odoo.addons.base.models.ir_ui_view import keep_query
+from odoo.addons.http_routing.models.ir_qweb import keep_query
 from odoo.addons.http_routing.models.ir_http import slug
 from odoo.http import request, route
 from odoo.osv import expression
@@ -340,7 +340,7 @@ class Appointment(http.Controller):
         month_first_available = next((month['id'] for month in slots if month['has_availabilities']), 0)
         formated_days = _formated_weekdays(get_lang(request.env).code)
 
-        return request.env.ref('appointment.appointment_calendar')._render({
+        return request.env['ir.qweb']._render('appointment.appointment_calendar', {
             'appointment_type': appointment_type,
             'timezone': request.session['timezone'],
             'formated_days': formated_days,

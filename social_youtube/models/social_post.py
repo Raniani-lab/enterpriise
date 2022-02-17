@@ -53,7 +53,7 @@ class SocialPostYoutube(models.Model):
     @api.depends('youtube_title', 'youtube_description', 'youtube_video_id', 'scheduled_date')
     def _compute_youtube_preview(self):
         for post in self:
-            post.youtube_preview = self.env.ref('social_youtube.youtube_preview')._render({
+            post.youtube_preview = self.env['ir.qweb']._render('social_youtube.youtube_preview', {
                 'youtube_title': post.youtube_title or _('Video'),
                 'youtube_description': post.youtube_description,
                 'youtube_video_id': post.youtube_video_id,

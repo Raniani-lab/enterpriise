@@ -335,7 +335,7 @@ class AccountGeneralLedger(models.AbstractModel):
         options['unfold_all'] = False
 
         template_vals = self._prepare_saft_report_values(options)
-        content = self.env.ref('account_saft.saft_template')._render(template_vals)
+        content = self.env['ir.qweb']._render('account_saft.saft_template', template_vals)
 
         # Indent the XML data and return as Pretty XML string and remove extra new lines.
         pretty_xml = xml.dom.minidom.parseString(content).toprettyxml()

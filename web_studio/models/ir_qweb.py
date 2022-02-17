@@ -18,30 +18,25 @@ class IrQWeb(models.AbstractModel):
     """
     _inherit = 'ir.qweb'
 
-    def _get_template(self, template, options):
-        element, document, ref = super(IrQWeb, self)._get_template(template, options)
-        if options.get('full_branding'):
-            view_id = self.env['ir.ui.view']._view_obj(template).id
-            if not view_id:
+    def _get_template(self, template):
+        element, document, ref = super()._get_template(template)
+        if self.env.context.get('full_branding'):
+            if not isinstance(ref, int):
                 raise ValueError("Template '%s' undefined" % template)
 
             root = element.getroottree()
             basepath = len('/'.join(root.getpath(root.xpath('//*[@t-name]')[0]).split('/')[0:-1]))
             for node in element.iter(tag=etree.Element):
-                node.set('data-oe-id', str(view_id))
+                node.set('data-oe-id', str(ref))
                 node.set('data-oe-xpath', root.getpath(node)[basepath:])
         return (element, document, ref)
 
     def _get_template_cache_keys(self):
-        keys = super(IrQWeb, self)._get_template_cache_keys()
-        keys.append('full_branding')
-        return keys
+        return super()._get_template_cache_keys() + ['full_branding']
 
-    def _render(self, template, values=None, **options):
-        if values is None:
-            values = {}
+    def _prepare_environment(self, values):
         values['json'] = scriptsafe
-        return super(IrQWeb, self)._render(template, values=values, **options)
+        return super()._prepare_environment(values)
 
     def _is_static_node(self, el, options):
         return not options.get('full_branding') and super()._is_static_node(el, options)

@@ -315,7 +315,7 @@ class AccountEdiFormat(models.Model):
         namespaces = {'ds': 'http://www.w3.org/2000/09/xmldsig#'}
         edi_tree_copy = deepcopy(edi_tree)
         signature_element = edi_tree_copy.xpath('.//ds:Signature', namespaces=namespaces)[0]
-        signature_str = self.env.ref('l10n_pe_edi.pe_ubl_2_1_signature')._render({'digest_value': ''})
+        signature_str = self.env['ir.qweb']._render('l10n_pe_edi.pe_ubl_2_1_signature', {'digest_value': ''})
         signature_element.getparent().replace(signature_element, objectify.fromstring(signature_str))
 
         error = self.env['ir.attachment']._l10n_pe_edi_check_with_xsd(edi_tree_copy, invoice.l10n_latam_document_type_id.code)
@@ -753,7 +753,7 @@ class AccountEdiFormat(models.Model):
         if not latam_invoice_type:
             return _("Missing LATAM document code.").encode()
         edi_values = self._l10n_pe_edi_get_edi_values(invoice)
-        return self.env.ref('l10n_pe_edi.%s' % latam_invoice_type)._render(edi_values)
+        return self.env['ir.qweb']._render('l10n_pe_edi.%s' % latam_invoice_type, edi_values)
 
     def _get_latam_invoice_type(self, code):
         template_by_latam_type_mapping = {
@@ -782,7 +782,7 @@ class AccountEdiFormat(models.Model):
             return {invoice: {'error': _("Missing LATAM document code.")}}
 
         edi_values = self._l10n_pe_edi_get_edi_values(invoice)
-        edi_str = self.env.ref('l10n_pe_edi.%s' % latam_invoice_type)._render(edi_values).encode()
+        edi_str = self.env['ir.qweb']._render('l10n_pe_edi.%s' % latam_invoice_type, edi_values).encode()
 
         res = self._l10n_pe_edi_post_invoice_web_service(invoice, edi_filename, edi_str)
 
@@ -802,7 +802,7 @@ class AccountEdiFormat(models.Model):
             'company': company,
             'records': invoices,
         }
-        void_str = self.env.ref('l10n_pe_edi.pe_ubl_2_1_void_documents')._render(void_values).encode()
+        void_str = self.env['ir.qweb']._render('l10n_pe_edi.pe_ubl_2_1_void_documents', void_values).encode()
         void_filename = '%s-%s' % (company.vat, void_number)
 
         res = getattr(self, '_l10n_pe_edi_cancel_invoices_step_1_%s' % provider)(company, invoices, void_filename, void_str)

@@ -206,7 +206,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         }
 
         export_template_ref = self._get_oss_xml_template(options)
-        rendered_content = self.env.ref(export_template_ref)._render(values)
+        rendered_content = self.env['ir.qweb']._render(export_template_ref, values)
         tree = objectify.fromstring(rendered_content)
         return etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='utf-8')
 

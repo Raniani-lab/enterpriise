@@ -160,7 +160,7 @@ class WebStudioReportController(main.WebStudioController):
 
             view = get_report_view(view_name)
             studio_view = self._get_studio_view(view)
-            element = request.env['ir.qweb']._get_template(view.id, {"full_branding": True})[0]
+            element = request.env['ir.qweb'].with_context(full_branding=True)._get_template(view.id)[0]
 
             process_template_groups(element)
 

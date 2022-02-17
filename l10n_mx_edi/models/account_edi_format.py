@@ -45,12 +45,12 @@ class AccountEdiFormat(models.Model):
         ''' Append an additional block to the signed CFDI passed as parameter.
         :param move:    The account.move record.
         :param cfdi:    The invoice's CFDI as a string.
-        :param addenda: The addenda to add as a string.
+        :param addenda: (ir.ui.view) The addenda to add as a string.
         :return cfdi:   The cfdi including the addenda.
         '''
         addenda_values = {'record': move, 'cfdi': cfdi}
 
-        addenda = addenda._render(values=addenda_values).strip()
+        addenda = self.env['ir.qweb']._render(addenda.id, values=addenda_values).strip()
         if not addenda:
             return cfdi
 
@@ -381,7 +381,7 @@ class AccountEdiFormat(models.Model):
         cfdi_values = self._l10n_mx_edi_get_invoice_cfdi_values(invoice)
 
         # == Generate the CFDI ==
-        cfdi = self.env.ref('l10n_mx_edi.cfdiv33')._render(cfdi_values)
+        cfdi = self.env['ir.qweb']._render('l10n_mx_edi.cfdiv33', cfdi_values)
         decoded_cfdi_values = invoice._l10n_mx_edi_decode_cfdi(cfdi_data=cfdi)
         cfdi_cadena_crypted = cfdi_values['certificate'].sudo()._get_encrypted_cadena(decoded_cfdi_values['cadena'])
         decoded_cfdi_values['cfdi_node'].attrib['Sello'] = cfdi_cadena_crypted
@@ -520,7 +520,7 @@ class AccountEdiFormat(models.Model):
         else:
             cfdi_values['customer_fiscal_residence'] = None
 
-        cfdi = self.env.ref('l10n_mx_edi.payment10')._render(cfdi_values)
+        cfdi = self.env['ir.qweb']._render('l10n_mx_edi.payment10', cfdi_values)
         decoded_cfdi_values = move._l10n_mx_edi_decode_cfdi(cfdi_data=cfdi)
         cfdi_cadena_crypted = cfdi_values['certificate'].sudo()._get_encrypted_cadena(decoded_cfdi_values['cadena'])
         decoded_cfdi_values['cfdi_node'].attrib['Sello'] = cfdi_cadena_crypted

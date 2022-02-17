@@ -128,7 +128,7 @@ class SocialPostConvert2Lead(models.TransientModel):
             'source_id': self.utm_source_id.id,
             'medium_id': self.utm_medium_id.id,
             'campaign_id': self.utm_campaign_id.id,
-            'description': self.env.ref("social_crm.social_post_to_lead_description")._render({
+            'description': self.env['ir.qweb']._render("social_crm.social_post_to_lead_description", {
                 'object': self
             }),
         }

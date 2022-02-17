@@ -167,7 +167,7 @@ class Picking(models.Model):
                 'format_float': format_float,
                 'weight_uom': self.env['product.template']._get_weight_uom_id_from_ir_config_parameter(),
             }
-            xml = self.env.ref('l10n_mx_edi_stock.cfdi_cartaporte')._render(values)
+            xml = self.env['ir.qweb']._render('l10n_mx_edi_stock.cfdi_cartaporte', values)
             certificate = record.company_id.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
             if certificate:
                 xml = certificate._certify_and_stamp(xml, CFDI_XSLT_CADENA)

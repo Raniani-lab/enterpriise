@@ -1543,7 +1543,7 @@ class AccountReport(models.AbstractModel):
                     footnotes_to_render.append({'id': f.id, 'number': number, 'text': f.text})
 
         # Render.
-        html = self.env.ref(template)._render(render_values)
+        html = self.env['ir.qweb']._render(template, render_values)
         if self.env.context.get('print_mode', False):
             for k,v in self._replace_class().items():
                 html = html.replace(k, v)

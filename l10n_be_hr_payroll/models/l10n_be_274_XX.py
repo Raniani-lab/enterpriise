@@ -393,7 +393,7 @@ class L10nBe274XX(models.Model):
         filename = '%s-%s-finprof.xml' % (self.date_start.strftime("%d%B%Y"), self.date_end.strftime("%d%B%Y"))
         self.xml_filename = filename
 
-        xml_str = self.env.ref('l10n_be_hr_payroll.finprof_xml_report')._render(
+        xml_str = self.env['ir.qweb']._render('l10n_be_hr_payroll.finprof_xml_report',
             self._get_rendering_data())
 
         # Prettify xml string

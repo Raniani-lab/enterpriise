@@ -189,7 +189,7 @@ class AccountMove(models.Model):
         Send to the supplier the acceptance or claim of the bill received.
         """
         response_id = self.env['ir.sequence'].browse(self.env.ref('l10n_cl_edi.response_sequence').id).next_by_id()
-        response = self.env.ref('l10n_cl_edi.response_dte')._render({
+        response = self.env['ir.qweb']._render('l10n_cl_edi.response_dte', {
             'move': self,
             'format_vat': self._l10n_cl_format_vat,
             'time_stamp': self._get_cl_current_strftime(),
@@ -348,7 +348,7 @@ class AccountMove(models.Model):
         xml_dte = base64.b64decode(dte_attachment.datas).decode('utf-8')
         xml_content = etree.fromstring(xml_dte)
         response_id = self.env['ir.sequence'].browse(self.env.ref('l10n_cl_edi.response_sequence').id).next_by_id()
-        xml_ack_template = self.env.ref('l10n_cl_edi.ack_template')._render({
+        xml_ack_template = self.env['ir.qweb']._render('l10n_cl_edi.ack_template', {
             'move': self,
             'format_vat': self._l10n_cl_format_vat,
             'get_cl_current_strftime': self._get_cl_current_strftime,
@@ -459,7 +459,7 @@ class AccountMove(models.Model):
         doc_id_number = 'F{}T{}'.format(folio, self.l10n_latam_document_type_id.code)
         dte_barcode_xml = self._l10n_cl_get_dte_barcode_xml()
         self.l10n_cl_sii_barcode = dte_barcode_xml['barcode']
-        dte = self.env.ref('l10n_cl_edi.dte_template')._render({
+        dte = self.env['ir.qweb']._render('l10n_cl_edi.dte_template', {
             'move': self,
             'format_vat': self._l10n_cl_format_vat,
             'get_cl_current_strftime': self._get_cl_current_strftime,
@@ -505,7 +505,7 @@ class AccountMove(models.Model):
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         template = self.l10n_latam_document_type_id._is_doc_type_voucher() and self.env.ref(
             'l10n_cl_edi.envio_boleta') or self.env.ref('l10n_cl_edi.envio_dte')
-        dte_rendered = template._render({
+        dte_rendered = self.env['ir.qweb']._render(template.id, {
             'move': self,
             'RutEmisor': self._l10n_cl_format_vat(self.company_id.vat),
             'RutEnvia': digital_signature.subject_serial_number,
@@ -687,7 +687,7 @@ class AccountMove(models.Model):
         of the invoice, etc.
         :return: xml that goes embedded inside the pdf417 code
         """
-        dd = self.env.ref('l10n_cl_edi.dd_template')._render({
+        dd = self.env['ir.qweb']._render('l10n_cl_edi.dd_template', {
             'move': self,
             'format_vat': self._l10n_cl_format_vat,
             'float_repr': float_repr,
@@ -699,7 +699,7 @@ class AccountMove(models.Model):
         })
         dd = str(dd).replace(r'&amp;', '&')
         caf_file = self.l10n_latam_document_type_id._get_caf_file(self.company_id.id, int(self.l10n_latam_document_number))
-        ted = self.env.ref('l10n_cl_edi.ted_template')._render({
+        ted = self.env['ir.qweb']._render('l10n_cl_edi.ted_template', {
             'dd': dd,
             'frmt': self._sign_message(dd.encode('ISO-8859-1'), caf_file.findtext('RSASK')),
             'stamp': self._get_cl_current_strftime(),

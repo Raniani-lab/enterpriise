@@ -16,7 +16,7 @@ class OnboardingController(http.Controller):
             return {}
 
         return {
-            'html': request.env.ref('website_sale_dashboard.website_sale_dashboard_onboarding_panel')._render({
+            'html': request.env['ir.qweb']._render('website_sale_dashboard.website_sale_dashboard_onboarding_panel', {
                 'company': company,
                 'state': company.get_and_update_website_sale_dashboard_onboarding_state()
             })

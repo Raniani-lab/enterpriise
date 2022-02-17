@@ -18,7 +18,7 @@ class SocialPostTemplate(models.Model):
     @api.depends(lambda self: ['message', 'image_ids'] + self._get_post_message_modifying_fields())
     def _compute_twitter_preview(self):
         for post in self:
-            post.twitter_preview = self.env.ref('social_twitter.twitter_preview')._render({
+            post.twitter_preview = self.env['ir.qweb']._render('social_twitter.twitter_preview', {
                 **post._prepare_preview_values("twitter"),
                 'message': post._prepare_post_content(
                     post.message,

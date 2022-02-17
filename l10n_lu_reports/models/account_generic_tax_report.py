@@ -73,7 +73,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         self._lu_validate_ecdf_prefix()
 
         lu_template_values = self._get_lu_electronic_report_values(options)
-        rendered_content = self.env.ref('l10n_lu_reports.l10n_lu_electronic_report_template_1_1')._render(lu_template_values)
+        rendered_content = self.env['ir.qweb']._render('l10n_lu_reports.l10n_lu_electronic_report_template_1_1', lu_template_values, minimal_qcontext=True)
         content = "\n".join(re.split(r'\n\s*\n', rendered_content)) # Remove empty lines
         self._lu_validate_xml_content(content)
 

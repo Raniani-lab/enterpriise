@@ -43,12 +43,11 @@ class HrAppraisal(models.Model):
                 } for skill in appraisal_skills])
 
                 if len(updated_skills + added_skills + deleted_skills) > 0:
-                    template = self.env.ref('hr_appraisal_skills.appraisal_skills_update_template', raise_if_not_found=False)
-                    rendered = template._render({
+                    rendered = self.env['ir.qweb']._render('hr_appraisal_skills.appraisal_skills_update_template', {
                         'updated_skills': updated_skills,
                         'added_skills': added_skills,
                         'deleted_skills': deleted_skills,
-                    }, engine='ir.qweb')
+                    }, raise_if_not_found=False)
                     appraisal.message_post(body=rendered)
         result = super(HrAppraisal, self).write(vals)
         return result

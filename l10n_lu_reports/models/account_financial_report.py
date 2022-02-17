@@ -106,7 +106,7 @@ class ReportAccountFinancialReport(models.Model):
 
         lu_template_values = self._get_lu_electronic_report_values(options)
 
-        rendered_content = self.env.ref('l10n_lu_reports.l10n_lu_electronic_report_template_2_0')._render(lu_template_values)
+        rendered_content = self.env['ir.qweb']._render('l10n_lu_reports.l10n_lu_electronic_report_template_2_0', lu_template_values)
         content = "\n".join(re.split(r'\n\s*\n', rendered_content))
         self._lu_validate_xml_content(content)
 

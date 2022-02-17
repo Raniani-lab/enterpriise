@@ -15,7 +15,7 @@ class OnboardingController(http.Controller):
             return {}
 
         return {
-            'html': request.env.ref('account_consolidation.account_consolidation_dashboard_onboarding_panel')._render({
+            'html': request.env['ir.qweb']._render('account_consolidation.account_consolidation_dashboard_onboarding_panel', {
                 'company': company,
                 'state': company.get_and_update_consolidation_dashboard_onboarding_state()
             })

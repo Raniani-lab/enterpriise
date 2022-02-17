@@ -186,7 +186,7 @@ class L10nBe273S(models.Model):
     def action_generate_xml(self):
         self.ensure_one()
         self.xml_filename = '%s-273S_report.xml' % (self.period.strftime('%B%Y'))
-        xml_str = self.env.ref('l10n_be_hr_payroll.273S_xml_report')._render(self._get_rendering_data())
+        xml_str = self.env['ir.qweb']._render('l10n_be_hr_payroll.273S_xml_report', self._get_rendering_data())
 
         # Prettify xml string
         root = etree.fromstring(xml_str, parser=etree.XMLParser(remove_blank_text=True))

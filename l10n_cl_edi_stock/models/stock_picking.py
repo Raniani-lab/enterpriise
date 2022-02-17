@@ -401,11 +401,11 @@ class Picking(models.Model):
         of the invoice, etc.
         :return: xml that goes embedded inside the pdf417 code
         """
-        dd = self.env.ref('l10n_cl_edi_stock.dd_template')._render(self._l10n_cl_edi_prepare_values())
+        dd = self.env['ir.qweb']._render('l10n_cl_edi_stock.dd_template', self._l10n_cl_edi_prepare_values())
         # We need to unescape this because if not, in the xml you will have &amp;amp; and will give you errors
         # in the signature check, with a rejection.
         dd = str(dd).replace(r'&amp;', '&')
-        ted = self.env.ref('l10n_cl_edi.ted_template')._render({
+        ted = self.env['ir.qweb']._render('l10n_cl_edi.ted_template', {
             'dd': dd,
             'frmt': self._sign_message(dd.encode('ISO-8859-1'), caf_file.findtext('RSASK')),
             'stamp': self._get_cl_current_strftime()
@@ -438,8 +438,7 @@ class Picking(models.Model):
         caf_file = self.l10n_latam_document_type_id.sudo()._get_caf_file(self.company_id.id,
                                                                   int(self.l10n_latam_document_number))
         dte_barcode_xml = self._l10n_cl_get_dte_barcode_xml(caf_file)
-        template = self._get_dte_template()
-        dte = template._render(self._prepare_dte_values())
+        dte = self.env['ir.qweb']._render(self._get_dte_template().id, self._prepare_dte_values())
         dte = unescape(dte).replace(r'&', '&amp;')
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         signed_dte = self._sign_full_xml(
@@ -450,8 +449,8 @@ class Picking(models.Model):
     def _l10n_cl_get_dte_envelope(self, receiver_rut='60803000-K'):
         file_name = 'F{}T{}.xml'.format(self.l10n_latam_document_number, self.l10n_latam_document_type_id.code)
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
-        template = self.env.ref('l10n_cl_edi.envio_dte') # Guia is always DTE
-        dte_rendered = template._render({
+        # Guia is always DTE
+        dte_rendered = self.env['ir.qweb']._render('l10n_cl_edi.envio_dte', {
             'move': self, # Only needed for the name of the document type
             'RutEmisor': self._l10n_cl_format_vat(self.company_id.vat),
             'RutEnvia': digital_signature.subject_serial_number,

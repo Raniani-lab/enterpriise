@@ -224,17 +224,17 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         digest_value = re.sub(r'\n\s*$', '', message, flags=re.MULTILINE)
         digest_value_tree = etree.tostring(etree.fromstring(digest_value)[0])
         if xml_type in ['doc', 'recep', 'token']:
-            signed_info_template = self.env.ref('l10n_cl_edi.signed_info_template')
+            signed_info_template = 'l10n_cl_edi.signed_info_template'
         else:
-            signed_info_template = self.env.ref('l10n_cl_edi.signed_info_template_with_xsi')
-        signed_info = signed_info_template._render({
+            signed_info_template = 'l10n_cl_edi.signed_info_template_with_xsi'
+        signed_info = self.env['ir.qweb']._render(signed_info_template, {
             'uri': '#{}'.format(uri),
             'digest_value': base64.b64encode(
                 self._get_sha1_digest(etree.tostring(etree.fromstring(digest_value_tree), method='c14n'))).decode(),
         })
         signed_info_c14n = etree.tostring(etree.fromstring(signed_info), method='c14n', exclusive=False,
                                           with_comments=False, inclusive_ns_prefixes=None).decode()
-        signature = self.env.ref('l10n_cl_edi.signature_template')._render({
+        signature = self.env['ir.qweb']._render('l10n_cl_edi.signature_template', {
             'signed_info': signed_info_c14n,
             'signature_value': self._sign_message(
                 signed_info_c14n.encode('utf-8'), digital_signature.private_key.encode('ascii')),
@@ -285,7 +285,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         return response_parsed.xpath('//SEMILLA')[0].text
 
     def _get_signed_token(self, digital_signature, seed):
-        token_xml = self.env.ref('l10n_cl_edi.token_template')._render({'seed': seed})
+        token_xml = self.env['ir.qweb']._render('l10n_cl_edi.token_template', {'seed': seed})
         return self._sign_full_xml(token_xml, digital_signature, '', 'token')
 
     @l10n_cl_edi_retry(logger=_logger)

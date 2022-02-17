@@ -63,7 +63,7 @@ class IntrastatReport(models.AbstractModel):
             query_res = self._cr.dictfetchall()
             out_vals = self._fill_missing_values(query_res)
 
-        return self.env.ref('l10n_be_intrastat.intrastat_report_export_xml')._render({
+        return self.env['ir.qweb']._render('l10n_be_intrastat.intrastat_report_export_xml', {
             'company': company,
             'in_vals': in_vals,
             'out_vals': out_vals,

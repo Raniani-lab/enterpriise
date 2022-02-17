@@ -89,8 +89,7 @@ class PosSession(models.Model):
 
         amounts_per_vat_id_result = self.env.cr.dictfetchall()
 
-        template = self.env.ref('l10n_de_pos_cert.dsfinvk_cash_point_closing_template')
-        json = template._render({
+        json = self.env['ir.qweb']._render('l10n_de_pos_cert.dsfinvk_cash_point_closing_template', {
             'company': self.company_id,
             'config': self.config_id,
             'session': self,

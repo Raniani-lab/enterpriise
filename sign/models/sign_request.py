@@ -317,15 +317,14 @@ class SignRequest(models.Model):
         subject = _("The document (%s) has been rejected by one of the signers", self.template_id.name)
         base_url = self.get_base_url()
         partner_lang = get_lang(self.env, lang_code=partner.lang).code
-        tpl = self.env.ref('sign.sign_template_mail_refused')
-        body = tpl.with_context(lang=partner_lang)._render({
+        body = self.env['ir.qweb']._render('sign.sign_template_mail_refused', {
             'record': self,
             'recipient': partner,
             'refuser': refuser,
             'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, access_token)),
             'subject': subject,
             'body': Markup('<p style="white-space: pre">{}</p>').format(refusal_reason),
-        }, engine='ir.qweb', minimal_qcontext=True)
+        }, lang=partner_lang, minimal_qcontext=True)
 
         self._message_send_mail(
             body, 'mail.mail_notification_light',
@@ -413,11 +412,9 @@ class SignRequest(models.Model):
         self.ensure_one()
         if access_token is None:
             access_token = self.access_token
-        tpl = self.env.ref('sign.sign_template_mail_completed')
         partner_lang = get_lang(self.env, lang_code=partner.lang).code
-        tpl = tpl.with_context(lang=partner_lang)
         base_url = self.get_base_url()
-        body = tpl._render({
+        body = self.env['ir.qweb']._render('sign.sign_template_mail_completed', {
             'record': self,
             'link': url_join(base_url, 'sign/document/%s/%s' % (self.id, access_token)),
             'subject': '%s signed' % self.reference,
@@ -426,7 +423,7 @@ class SignRequest(models.Model):
             'recipient_id': partner.id,
             'signers': signers,
             'request_edited': request_edited,
-        }, engine='ir.qweb', minimal_qcontext=True)
+            }, lang=partner_lang, minimal_qcontext=True)
 
         self.env['sign.request']._message_send_mail(
             body, 'mail.mail_notification_light',
@@ -609,8 +606,7 @@ class SignRequest(models.Model):
         # to actually create the record
         # See @tde-banana-odoo for details
         msg = sign_request.env['mail.message'].sudo().new(dict(body=body, **message_values))
-        email_layout = sign_request.env.ref(email_layout_xmlid)
-        body_html = email_layout._render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
+        body_html = self.env['ir.qweb']._render(email_layout_xmlid, dict(message=msg, **notif_values), minimal_qcontext=True)
         body_html = sign_request.env['mail.render.mixin']._replace_local_links(body_html)
 
         mail = sign_request.env['mail.mail'].sudo().create(dict(body_html=body_html, **mail_values))
@@ -761,18 +757,16 @@ class SignRequestItem(models.Model):
         self.sign_request_id._refuse(self.partner_id, refusal_reason)
 
     def _send_signature_access_mail(self):
-        tpl = self.env.ref('sign.sign_template_mail_request')
         for signer in self:
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
-            tpl = tpl.with_context(lang=signer_lang)
-            body = tpl._render({
+            body = self.env['ir.qweb']._render('sign.sign_template_mail_request', {
                 'record': signer,
                 'link': url_join(signer.get_base_url(), "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
                 'subject': signer.sign_request_id.subject,
                 'body': signer.sign_request_id.message if not is_html_empty(signer.sign_request_id.message) else False,
                 'use_sign_terms': self.env['ir.config_parameter'].sudo().get_param('sign.use_sign_terms'),
                 'user_signature': signer.create_uid.signature,
-            }, engine='ir.qweb', minimal_qcontext=True)
+            }, minimal_qcontext=True)
 
             attachment_ids = signer.sign_request_id.attachment_ids.ids
             self.env['sign.request']._message_send_mail(

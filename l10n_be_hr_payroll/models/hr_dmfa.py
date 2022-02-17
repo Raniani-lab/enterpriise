@@ -986,7 +986,7 @@ class HrDMFAReport(models.Model):
         # PDF History: https://www.socialsecurity.be/lambda/portail/glossaires/dmfa.nsf/consult/fr/ImprPDF
         # Most related documentation: https://www.socialsecurity.be/lambda/portail/glossaires/dmfa.nsf/web/glossary_home_fr
 
-        xml_str = self.env.ref('l10n_be_hr_payroll.dmfa_xml_report')._render(self._get_rendering_data())
+        xml_str = self.env['ir.qweb']._render('l10n_be_hr_payroll.dmfa_xml_report', self._get_rendering_data())
 
         # Prettify xml string
         root = etree.fromstring(xml_str, parser=etree.XMLParser(remove_blank_text=True))

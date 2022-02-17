@@ -274,7 +274,7 @@ class AccountEdiFormat(models.Model):
         description_code = invoice[description_field] if description_field else None
         description = dict(invoice._fields[description_field].selection).get(description_code) if description_code else None
 
-        xml_content = self.env.ref('l10n_co_edi.electronic_invoice_xml')._render({
+        xml_content = self.env['ir.qweb']._render('l10n_co_edi.electronic_invoice_xml', {
             'invoice': invoice,
             'edi_type': edi_type,
             'company_partner': invoice.company_id.partner_id,

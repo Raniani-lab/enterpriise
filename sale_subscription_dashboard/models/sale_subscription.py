@@ -381,8 +381,7 @@ class SaleSubscription(models.Model):
             stats['image'] = rendering_values['graphs'][str(user_id)]
 
         pdf_rendering_values['n_companies'] = len(company_ids)
-        template = self.env.ref('sale_subscription_dashboard.sales_men_pdf_template')
-        body_html = template._render(pdf_rendering_values)
+        body_html = self.env['ir.qweb']._render('sale_subscription_dashboard.sales_men_pdf_template', pdf_rendering_values)
         return body_html
 
     def get_report_filename(self,):

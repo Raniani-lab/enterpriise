@@ -173,7 +173,7 @@ class L10nClDailySalesBook(models.Model):
             })
         doc_id = 'CF_' + self.date.strftime('%Y-%m-%d')
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
-        xml_book = self.env.ref('l10n_cl_edi_boletas.dss_template')._render({
+        xml_book = self.env['ir.qweb']._render('l10n_cl_edi_boletas.dss_template', {
             'object': self,
             'rut_sends': digital_signature.subject_serial_number,
             'id': doc_id,

@@ -35,7 +35,7 @@ class SocialPostTemplate(models.Model):
         See #_get_instagram_image_error() for more information. """
 
         for post in self:
-            post.instagram_preview = self.env.ref('social_instagram.instagram_preview')._render({
+            post.instagram_preview = self.env['ir.qweb']._render('social_instagram.instagram_preview', {
                 **post._prepare_preview_values("instagram"),
                 'error_code': post._get_instagram_image_error(),
                 'image': post.instagram_image_id.with_context(bin_size=False).datas if post.instagram_image_id else False,

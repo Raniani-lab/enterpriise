@@ -173,7 +173,7 @@ textarea.o_sign_sign_item {
 
 .ui-draggable .ui-draggable-handle, .o_sign_field_type_button.ui-draggable { /* jQuery UI */
     /* See o-grab-cursor mixin */
-    cursor: url(/web/static/src/img/openhand.cur), grab;
+    cursor: url(/web/static/img/openhand.cur), grab;
 }
 
 .ui-draggable-dragging .ui-draggable-handle,

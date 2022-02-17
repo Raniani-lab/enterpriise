@@ -14,8 +14,8 @@ const { createFile, inputFiles } = file;
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('attachment_preview_tests.js', {
-    beforeEach() {
-        beforeEach(this);
+    async beforeEach() {
+        await beforeEach(this);
 
         Object.assign(this.data, {
             partner: {

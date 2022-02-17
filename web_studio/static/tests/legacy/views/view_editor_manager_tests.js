@@ -30,8 +30,8 @@ let target;
 
 QUnit.module('web_studio', {}, function () {
 QUnit.module('ViewEditorManager', {
-    beforeEach() {
-        beforeEach(this);
+    async beforeEach() {
+        await beforeEach(this);
 
         Object.assign(this.data, {
             coucou: {

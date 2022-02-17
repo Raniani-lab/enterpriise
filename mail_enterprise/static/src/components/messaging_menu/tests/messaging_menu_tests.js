@@ -15,8 +15,8 @@ QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('components', {}, function () {
 QUnit.module('messaging_menu', {}, function () {
 QUnit.module('messaging_menu_tests.js', {
-    beforeEach() {
-        beforeEach(this);
+    async beforeEach() {
+        await beforeEach(this);
 
         this.start = async params => {
             return start(Object.assign(

@@ -11,8 +11,8 @@ const { dom, nextTick } = require('web.test_utils');
 
 QUnit.module('documents', {}, function () {
 QUnit.module('documents_kanban_mobile_tests.js', {
-    beforeEach() {
-        beforeEach(this);
+    async beforeEach() {
+        await beforeEach(this);
 
         Object.assign(this.data, {
             'documents.document': {

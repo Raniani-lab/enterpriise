@@ -16,8 +16,8 @@ QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('widgets', {}, function () {
 QUnit.module('form_renderer', {}, function () {
 QUnit.module('form_renderer_tests.js', {
-    beforeEach() {
-        beforeEach(this);
+    async beforeEach() {
+        await beforeEach(this);
 
         // FIXME archs could be removed once task-2248306 is done
         // The mockServer will try to get the list view

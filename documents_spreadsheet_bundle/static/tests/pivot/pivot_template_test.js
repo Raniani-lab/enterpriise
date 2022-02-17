@@ -59,8 +59,8 @@ function selectB2(model) {
 module(
     "documents_spreadsheet > pivot_templates",
     {
-        beforeEach: function () {
-            beforeEach(this);
+        async beforeEach() {
+            await beforeEach(this);
             Object.assign(this.data, {
                 "ir.model": {
                     fields: {

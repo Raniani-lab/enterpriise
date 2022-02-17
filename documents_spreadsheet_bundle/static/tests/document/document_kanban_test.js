@@ -8,8 +8,8 @@ import { getBasicData } from "../utils/spreadsheet_test_data";
 const { module, test } = QUnit;
 
 module("documents_spreadsheet kanban", {
-    beforeEach: function () {
-        beforeEach(this);
+    async beforeEach() {
+        await beforeEach(this);
         this.data = {
             ...this.data,
             ...getBasicData(),

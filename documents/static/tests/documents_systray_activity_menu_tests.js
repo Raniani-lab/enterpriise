@@ -7,8 +7,8 @@ import testUtils from 'web.test_utils';
 
 QUnit.module('documents', {}, function () {
     QUnit.module('documents_systray_activity_menu_tests.js', {
-        beforeEach() {
-            beforeEach(this);
+        async beforeEach() {
+            await beforeEach(this);
         },
         afterEach() {
             afterEach(this);

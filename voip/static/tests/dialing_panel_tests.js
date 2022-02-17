@@ -31,8 +31,8 @@ async function createDialingPanel(params) {
 
 QUnit.module('voip', {}, function () {
 QUnit.module('DialingPanel', {
-    beforeEach() {
-        beforeEach(this);
+    async beforeEach() {
+        await beforeEach(this);
 
         this.onaccepted = undefined;
         this.recentList = {};

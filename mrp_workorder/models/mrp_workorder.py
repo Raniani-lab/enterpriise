@@ -116,7 +116,7 @@ class MrpProductionWorkcenterLine(models.Model):
             if wo.test_type in ('register_byproducts', 'register_consumed_materials'):
                 if wo.quality_state == 'none':
                     completed_lines = wo.move_line_ids.filtered(lambda l: l.lot_id) if wo.component_id.tracking != 'none' else wo.move_line_ids
-                    if not self.move_id.additional:
+                    if not wo.move_id.additional:
                         wo.component_remaining_qty = self._prepare_component_quantity(wo.move_id, wo.qty_producing) - sum(completed_lines.mapped('qty_done'))
                     else:
                         wo.component_remaining_qty = self._prepare_component_quantity(wo.move_id, wo.qty_remaining) - sum(completed_lines.mapped('qty_done'))

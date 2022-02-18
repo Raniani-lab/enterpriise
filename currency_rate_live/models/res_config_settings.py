@@ -16,12 +16,15 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 BANXICO_DATE_FORMAT = '%d/%m/%Y'
 CBUAE_URL = "https://www.centralbank.ae/en/fx-rates"
-CBUAE_CURRENCIES = {
+CBEGY_URL = "https://www.cbe.org.eg/en/EconomicResearch/Statistics/Pages/OfficialRatesListing.aspx"
+MAP_CURRENCIES = {
     'US Dollar': 'USD',
+    'UAE Dirham': 'AED',
     'Argentine Peso': 'ARS',
     'Australian Dollar': 'AUD',
     'Bangladesh Taka': 'BDT',
     'Bahrani Dinar': 'BHD',
+    'Bahraini Dinar': 'BHD',
     'Brunei Dollar': 'BND',
     'Brazilian Real': 'BRL',
     'Botswana Pula': 'BWP',
@@ -38,13 +41,16 @@ CBUAE_CURRENCIES = {
     'Egypt Pound': 'EGP',
     'Euro': 'EUR',
     'GB Pound': 'GBP',
+    'Pound Sterling': 'GBP',
     'Hongkong Dollar': 'HKD',
     'Hungarian Forint': 'HUF',
     'Indonesia Rupiah': 'IDR',
     'Indian Rupee': 'INR',
     'Iceland Krona': 'ISK',
     'Jordan Dinar': 'JOD',
+    'Jordanian Dinar': 'JOD',
     'Japanese Yen': 'JPY',
+    'Japanese Yen 100': 'JPY',
     'Kenya Shilling': 'KES',
     'Korean Won': 'KRW',
     'Kuwaiti Dinar': 'KWD',
@@ -59,6 +65,7 @@ CBUAE_CURRENCIES = {
     'Norwegian Krone': 'NOK',
     'NewZealand Dollar': 'NZD',
     'Omani Rial': 'OMR',
+    'Omani Riyal': 'OMR',
     'Peru Sol': 'PEN',
     'Philippine Piso': 'PHP',
     'Pakistan Rupee': 'PKR',
@@ -119,6 +126,7 @@ CURRENCY_PROVIDER_SELECTION = [
     (['CA'], 'boc', 'Bank Of Canada'),
     (['CH'], 'fta', 'Federal Tax Administration (Switzerland)'),
     (['CL'], 'mindicador', 'Chilean mindicador.cl'),
+    (['EG'], 'cbegy', 'Central Bank of Egypt'),
     (['MX'], 'banxico', 'Mexican Bank'),
     (['PE'], 'bcrp', 'Bank of Peru'),
     (['RO'], 'bnr', 'National Bank Of Romania'),
@@ -300,13 +308,36 @@ class ResCompany(models.Model):
         rslt = {}
         for rate_entry in rates_entries:
             # line structure is <td>Currency Description</td><td>rate</td>
-            currency_code = CBUAE_CURRENCIES.get(rate_entry[0].text)
+            currency_code = MAP_CURRENCIES.get(rate_entry[0].text)
             rate = float(rate_entry[1].text)
             if currency_code in available_currency_names:
                 rslt[currency_code] = (1.0/rate, fields.Date.today())
 
         if 'AED' in available_currency_names:
             rslt['AED'] = (1.0, fields.Date.today())
+        return rslt
+
+    def _parse_cbegy_data(self, available_currencies):
+        ''' This method is used to update the currencies by using the Central Bank of Egypt service provider.
+            Exchange rates are expressed as 1 unit of the foreign currency converted into EGP
+        '''
+        fetched_data = requests.get(CBEGY_URL, timeout=30)
+        fetched_data.raise_for_status()
+
+        htmlelem = etree.fromstring(fetched_data.content, etree.HTMLParser())
+        rates_entries = htmlelem.xpath("//table/tbody/tr")
+        available_currency_names = set(available_currencies.mapped('name'))
+        rslt = {}
+        for rate_entry in rates_entries:
+            currency_code = MAP_CURRENCIES.get(rate_entry[0].text)
+            # line structure is <td>Currency Description</td><td><span>BUY RATE</span></td><td><span>SELL RATE</span></td>
+            # we use the average of SELL and BUY rates
+            rate = (float(rate_entry[1][0].text) + float(rate_entry[2][0].text)) / 2
+            if currency_code in available_currency_names:
+                rslt[currency_code] = (1.0/rate, fields.Date.today())
+
+        if 'EGP' in available_currency_names:
+            rslt['EGP'] = (1.0, fields.Date.today())
         return rslt
 
     def _parse_boc_data(self, available_currencies):

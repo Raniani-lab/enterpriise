@@ -198,7 +198,7 @@ class HrExpense(models.Model):
             bill_reference_ocr = ocr_results['bill_reference']['selected_value']['content'] if 'bill_reference' in ocr_results else ""
 
             self.name = description_ocr
-            self.date = date_ocr
+            self.date = date_ocr or self.date
             self.reference = bill_reference_ocr
             self.predicted_category = description_ocr
             self.state = 'draft'

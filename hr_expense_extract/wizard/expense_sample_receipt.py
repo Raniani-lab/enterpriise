@@ -32,13 +32,13 @@ class ExpenseSampleReceipt(models.Model):
         }
 
         # 4/ Ensure we have a jounal
-        journal_id = self.env['account.journal'].search([('type', '=', 'purchase'), ('company_id', '=', self.env.company.id)], limit=1).id
-        journal_id = journal_id or self.env['account.journal'].create({
-            'type': 'purchase',
-            'company_id': self.env.company.id,
-            'name': 'Sample Journal',
-            'code': 'SAMPLE_P',
-        }).id
+        if not self.env['hr.expense.sheet']._default_journal_id():
+            self.env['account.journal'].create({
+                'type': 'purchase',
+                'company_id': self.env.company.id,
+                'name': 'Sample Journal',
+                'code': 'SAMPLE_P',
+            }).id
 
         # 5/ Create the expense
         expense = self.env['hr.expense'].create(expense_line_values)

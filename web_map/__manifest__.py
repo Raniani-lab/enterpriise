@@ -19,6 +19,10 @@
         ],
         'web.qunit_suite_tests': [
             'web_map/static/tests/**/*',
+            ('remove', 'web_map/static/tests/map_view/map_view_mobile_tests.js'),
+        ],
+        'web.qunit_mobile_suite_tests': [
+            'web_map/static/tests/map_view/map_view_mobile_tests.js',
         ],
         'web.assets_qweb': [
             'web_map/static/src/**/*.xml',

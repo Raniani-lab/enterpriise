@@ -223,7 +223,7 @@ class L10nBe28110(models.Model):
 
         line_codes = [
             'NET', 'PAY_SIMPLE', 'PPTOTAL', 'M.ONSS', 'ATN.INT', 'ATN.MOB', 'ATN.LAP',
-            'ATN.CAR', 'REP.FEES', 'REP.FEES.VOLATILE', 'PUB.TRANS', 'EmpBonus.1', 'GROSS'
+            'ATN.CAR', 'REP.FEES', 'REP.FEES.VOLATILE', 'PUB.TRANS', 'CAR.PRIV', 'EmpBonus.1', 'GROSS'
         ]
         all_line_values = all_payslips._get_line_values(line_codes)
 
@@ -324,7 +324,7 @@ class L10nBe28110(models.Model):
                 'f10_2085_forfbezoldiging': 0,
                 'f10_2086_openbaargemeenschap': _to_eurocent(round(mapped_total['PUB.TRANS'], 2)),
                 'f10_2087_bedrag': 0,
-                'f10_2088_andervervoermiddel': 0,
+                'f10_2088_andervervoermiddel': _to_eurocent(round(mapped_total['CAR.PRIV'], 2)),
                 'f10_2090_outborderdays': 0,
                 'f10_2092_othercode1': 0,
                 'f10_2094_othercode2': 0,

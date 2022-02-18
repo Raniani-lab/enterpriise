@@ -1387,27 +1387,32 @@ const SignablePDFIframe = PDFIframe.extend({
    */
   adjustSignatureSize: function (data, signatureItem) {
     return new Promise(function (resolve, reject) {
-      const img = new Image(),
-        c = document.createElement("canvas");
-
-      c.height = signatureItem.height();
-      c.width = signatureItem.width();
-
+      const img = new Image();
       img.onload = function () {
+        const c = document.createElement("canvas");
+        const boxWidth = signatureItem.width();
+        const boxHeight = signatureItem.height();
+        const imgHeight = img.height;
+        const imgWidth = img.width;
+        const ratio_box_w_h = boxWidth / boxHeight;
+        const ratio_img_w_h = imgWidth / imgHeight;
+
+        const [canvasHeight, canvasWidth] = ratio_box_w_h > ratio_img_w_h ?
+          [imgHeight,  imgHeight * ratio_box_w_h] :
+          [imgWidth / ratio_box_w_h, imgWidth];
+
+        c.height = canvasHeight;
+        c.width = canvasWidth;
+
         const ctx = c.getContext("2d");
         const oldShadowColor = ctx.shadowColor;
         ctx.shadowColor = "transparent";
-        const ratio =
-          img.width / img.height > c.width / c.height
-            ? c.width / img.width
-            : c.height / img.height;
-
         ctx.drawImage(
           img,
-          c.width / 2 - (img.width * ratio) / 2,
-          c.height / 2 - (img.height * ratio) / 2,
-          img.width * ratio,
-          img.height * ratio
+          c.width / 2 - (img.width) / 2,
+          c.height / 2 - (img.height) / 2,
+          img.width,
+          img.height
         );
         ctx.shadowColor = oldShadowColor;
         resolve(c.toDataURL());

@@ -744,6 +744,12 @@ class HrContractSalary(http.Controller):
 
     @http.route(['/salary_package/submit'], type='json', auth='public')
     def submit(self, contract_id=None, advantages=None, **kw):
+        if not kw.get('applicant_id') and not kw.get('employee_contract_id'):
+            return request.render(
+                'http_routing.http_error',
+                {'status_code': _('Oops'),
+                 'status_message': _('This link is invalid. Please contact the HR Responsible to get a new one...')})
+
         contract = self._check_access_rights(contract_id)
         if kw.get('employee_contract_id', False):
             contract = request.env['hr.contract'].sudo().browse(kw.get('employee_contract_id'))

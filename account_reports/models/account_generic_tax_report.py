@@ -151,7 +151,7 @@ class AccountTaxReportHandler(models.AbstractModel):
 
         return closing_moves
 
-    def _get_tax_closing_entries_for_closed_period(self, report, options, companies):
+    def _get_tax_closing_entries_for_closed_period(self, report, options, companies, posted_only=True):
         """ Fetch the closing entries related to the given companies for the currently selected tax report period.
         Only used when the selected period already has a tax lock date impacting it, and assuming that these periods
         all have a tax closing entry.
@@ -165,11 +165,12 @@ class AccountTaxReportHandler(models.AbstractModel):
         for company in companies:
             include_domestic, fiscal_positions = self._get_fpos_info_for_tax_closing(company, report, options)
             fiscal_position_ids = fiscal_positions.ids + ([False] if include_domestic else [])
+            state_domain = ('state', '=', 'posted') if posted_only else ('state', '!=', 'cancel')
             closing_moves += self.env['account.move'].search([
                 ('company_id', '=', company.id),
                 ('fiscal_position_id', 'in', fiscal_position_ids),
-                ('state', '=', 'posted'),
                 ('tax_closing_end_date', '=', end_date),
+                state_domain,
             ], limit=1)
 
         return closing_moves

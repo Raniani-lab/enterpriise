@@ -152,7 +152,8 @@
                     <span t-field="move_line.product_uom_id.unspsc_code_id.code"/>
                 </td>
                 <td>
-                    <span t-field="move_line.move_id.weight"/>
+                    <span t-field="move_line.l10n_mx_edi_weight"/>
+                    <span t-field="o.weight_uom_name"/>
                 </td>
             </t>
         </xpath>

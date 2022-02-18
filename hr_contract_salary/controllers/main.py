@@ -181,7 +181,7 @@ class HrContractSalary(http.Controller):
         })
         return values
 
-    @http.route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True)
+    @http.route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True, sitemap=False)
     def salary_package(self, contract_id=None, **kw):
 
         # Used to flatten the response after the rollback.
@@ -263,7 +263,7 @@ class HrContractSalary(http.Controller):
         request.env.cr.execute('ROLLBACK TO SAVEPOINT salary')
         return response
 
-    @http.route(['/salary_package/thank_you/<int:contract_id>'], type='http', auth="public", website=True)
+    @http.route(['/salary_package/thank_you/<int:contract_id>'], type='http', auth="public", website=True, sitemap=False)
     def salary_package_thank_you(self, contract_id=None, **kw):
         contract = request.env['hr.contract'].sudo().browse(contract_id)
         return request.render("hr_contract_salary.salary_package_thank_you", {

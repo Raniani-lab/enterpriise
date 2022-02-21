@@ -319,9 +319,9 @@ class AccountMove(models.Model):
                 'tax_amount_type': line.tax_line_id.amount_type,
                 'tax_price_include': line.tax_line_id.price_include} for line in self.line_ids.filtered('tax_repartition_line_id')]
         elif field == "date":
-            text_to_send["content"] = str(self.invoice_date)
+            text_to_send["content"] = str(self.invoice_date) if self.invoice_date else False
         elif field == "due_date":
-            text_to_send["content"] = str(self.invoice_date_due)
+            text_to_send["content"] = str(self.invoice_date_due) if self.invoice_date_due else False
         elif field == "invoice_id":
             if self.is_purchase_document():
                 text_to_send["content"] = self.ref

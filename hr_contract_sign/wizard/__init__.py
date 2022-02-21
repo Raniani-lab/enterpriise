@@ -2,3 +2,4 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from . import hr_contract_sign_document_wizard
+from . import hr_plan_wizard

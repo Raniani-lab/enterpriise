@@ -8,6 +8,8 @@ class HrEmployee(models.Model):
     _name = 'hr.employee'
     _inherit = 'hr.employee'
 
+    sign_request_ids = fields.Many2many(
+        'sign.request', string='Requested Signatures')
     sign_request_count = fields.Integer(
         compute="_compute_sign_request_count",
         groups="hr_contract.group_hr_contract_manager",
@@ -24,7 +26,7 @@ class HrEmployee(models.Model):
                     ('partner_id', '=', employee.user_id.partner_id.id),
                     ('role_id', '=', self.env.ref('sign.sign_item_role_employee').id)]).mapped('sign_request_id')
 
-            employee.sign_request_count = len(set(sign_from_contract + sign_from_role))
+            employee.sign_request_count = len(set(sign_from_contract + sign_from_role + employee.sign_request_ids))
 
     def open_employee_sign_requests(self):
         self.ensure_one()
@@ -33,7 +35,7 @@ class HrEmployee(models.Model):
         sign_from_role = self.env['sign.request.item'].sudo().search([
             ('partner_id', '=', self.user_id.partner_id.id),
             ('role_id', '=', self.env.ref('sign.sign_item_role_employee').id)]).mapped('sign_request_id')
-        sign_request_ids = sign_from_contract + sign_from_role
+        sign_request_ids = sign_from_contract + sign_from_role + self.sign_request_ids
         if len(sign_request_ids.ids) == 1:
             return sign_request_ids.go_to_document()
 
@@ -45,8 +47,8 @@ class HrEmployee(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Signature Requests',
-            'view_mode': 'kanban',
+            'view_mode': 'kanban,tree',
             'res_model': 'sign.request',
-            'view_id': view_id,
+            'view_ids': [(view_id, 'kanban'), (False, 'tree')],
             'domain': [('id', 'in', sign_request_ids.ids)]
         }

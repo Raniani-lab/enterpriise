@@ -51,8 +51,8 @@ class ResUsers(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Signature Requests',
-            'view_mode': 'kanban',
+            'view_mode': 'kanban,tree',
             'res_model': 'sign.request',
-            'view_id': view_id,
+            'view_ids': [(view_id, 'kanban'), (False, 'tree')],
             'domain': [('id', 'in', sign_request_ids.ids)]
         }

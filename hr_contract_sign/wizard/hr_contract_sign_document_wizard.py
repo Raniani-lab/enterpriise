@@ -27,24 +27,38 @@ class HrContractSignDocumentWizard(models.TransientModel):
     def _default_get_template_warning(self):
         return not bool(self._get_sign_template_ids()) and _('No appropriate template could be found, please make sure you configured them properly.')
 
+
+
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
         if 'responsible_id' in fields_list and not defaults.get('responsible_id') and defaults.get('contract_id'):
             contract = self.env['hr.contract'].browse(defaults.get('contract_id'))
             defaults['responsible_id'] = contract.hr_responsible_id
+        active_id = self.env.context.get('active_id')
+        active_model = self.env.context.get('active_model', '')
+        if active_model == 'hr.contract':
+            defaults['contract_id'] = active_id
+        elif active_model == 'hr.employee':
+            defaults['employee_id'] = active_id
         return defaults
 
-    contract_id = fields.Many2one('hr.contract', string='Contract',
-        default=lambda self: self.env.context.get('active_id'))
-    employee_id = fields.Many2one('hr.employee', string='Employee', compute='_compute_employee')
+    contract_id = fields.Many2one(
+        'hr.contract', string='Contract',
+        compute='_compute_contract_id', store=True, readonly=False)
+    employee_id = fields.Many2one(
+        'hr.employee', string='Employee',
+        compute='_compute_employee_id', store=True, readonly=False)
     responsible_id = fields.Many2one('res.users', string='Responsible', domain=_group_hr_contract_domain)
-    employee_role_id = fields.Many2one("sign.item.role", string="Employee Role", required=True, domain="[('id', 'in', sign_template_responsible_ids)]",
+    employee_role_id = fields.Many2one(
+        "sign.item.role", string="Employee Role",
+        required=True, domain="[('id', 'in', sign_template_responsible_ids)]",
         compute='_compute_employee_role_id', store=True, readonly=False,
         help="Employee's role on the templates to sign. The same role must be present in all the templates")
-    sign_template_responsible_ids = fields.Many2many('sign.item.role', compute='_compute_responsible_ids')
-
-    sign_template_ids = fields.Many2many('sign.template', string='Documents to sign',
+    sign_template_responsible_ids = fields.Many2many(
+        'sign.item.role', compute='_compute_responsible_ids')
+    sign_template_ids = fields.Many2many(
+        'sign.template', string='Documents to sign',
         domain=_sign_template_domain, help="""Documents to sign. Only documents with 1 or 2 different responsible are selectable.
         Documents with 1 responsible will only have to be signed by the employee while documents with 2 different responsible will have to be signed by both the employee and the responsible.
         """, required=True)
@@ -73,9 +87,16 @@ class HrContractSignDocumentWizard(models.TransientModel):
             r.sign_template_responsible_ids = responsible_ids
 
     @api.depends('contract_id')
-    def _compute_employee(self):
-        for contract in self:
-            contract.employee_id = contract.contract_id.employee_id
+    def _compute_employee_id(self):
+        for wizard in self:
+            if wizard.contract_id:
+                wizard.employee_id = wizard.contract_id.employee_id
+
+    @api.depends('employee_id')
+    def _compute_contract_id(self):
+        for wizard in self:
+            if wizard.employee_id != wizard.contract_id.employee_id:
+                wizard.contract_id = False
 
     @api.depends('sign_template_ids')
     def _compute_has_both_template(self):
@@ -134,15 +155,17 @@ class HrContractSignDocumentWizard(models.TransientModel):
         sign_requests.write({'state': 'sent'})
         sign_requests.request_item_ids.write({'state': 'sent'})
 
-        self.contract_id.sign_request_ids += sign_requests
+        (self.contract_id or self.employee_id).sign_request_ids += sign_requests
 
         if self.responsible_id and sign_templates_both_ids:
             signatories_text = _('%s and %s are the signatories.') % (self.employee_id.display_name, self.responsible_id.display_name)
         else:
             signatories_text = _('Only %s has to sign.') % self.employee_id.display_name
-        self.contract_id.message_post(body=_('%s requested a new signature on the following documents:<br/><ul>%s</ul>%s') %
-            (self.env.user.display_name, '\n'.join('<li>%s</li>' % name for name in self.sign_template_ids.mapped('name')),
-            signatories_text))
+        (self.contract_id or self.employee_id).message_post(
+            body=_('%s requested a new signature on the following documents:<br/><ul>%s</ul>%s') % (
+                self.env.user.display_name,
+                '\n'.join('<li>%s</li>' % name for name in self.sign_template_ids.mapped('name')),
+                signatories_text))
 
         if len(sign_requests) == 1 and self.env.user.id == self.responsible_id.id:
             return sign_requests.go_to_document()

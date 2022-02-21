@@ -17,8 +17,12 @@
         'views/hr_employee_view.xml',
         'views/res_users_view.xml',
         'views/sign_request_views.xml',
+        'views/hr_plan_views.xml',
         'report/hr_contract_history_report_views.xml',
-        'data/hr_contract_data.xml',
+        'data/hr_contract_sign_data.xml',
+    ],
+    'demo': [
+        'data/hr_contract_sign_demo.xml',
     ],
     'installable': True,
     'auto_install': True,

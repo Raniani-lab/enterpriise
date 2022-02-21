@@ -3,7 +3,7 @@
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { registry } from "@web/core/registry";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { getFixture } from "@web/../tests/helpers/utils";
+import { click, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { browser } from "@web/core/browser/browser";
 import { ormService } from "@web/core/orm_service";
 import { patch, unpatch } from "@web/core/utils/patch";
@@ -67,8 +67,9 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.module("Expiration Panel");
 
     QUnit.test("Expiration Panel one app installed", async function (assert) {
-        const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-        registerCleanup(unpatchDate);
+        assert.expect(3);
+
+        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -96,8 +97,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("Expiration Panel one app installed, buy subscription", async function (assert) {
         assert.expect(6);
 
-        const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-        registerCleanup(unpatchDate);
+        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -145,8 +145,7 @@ QUnit.module("web_enterprise", {}, function () {
         async function (assert) {
             assert.expect(47);
 
-            const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-            registerCleanup(unpatchDate);
+            registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
 
             let callToGetParamCount = 0;
 
@@ -339,8 +338,8 @@ QUnit.module("web_enterprise", {}, function () {
         async function (assert) {
             assert.expect(13);
 
-            const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-            registerCleanup(unpatchDate);
+            registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+
             // There are some line breaks mismatches between local and runbot test instances.
             // Since they don't affect the layout and we're only interested in the text itself,
             // we normalize whitespaces and line breaks from both the expected and end result
@@ -462,8 +461,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, database expired", async function (assert) {
         assert.expect(13);
 
-        const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-        registerCleanup(unpatchDate);
+        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
 
         let callToGetParamCount = 0;
 
@@ -540,8 +538,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, renew with success", async function (assert) {
         assert.expect(14);
 
-        const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-        registerCleanup(unpatchDate);
+        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
 
         let callToGetParamCount = 0;
 
@@ -621,8 +618,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, check status and get success", async function (assert) {
         assert.expect(8);
 
-        const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-        registerCleanup(unpatchDate);
+        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
 
         let callToGetParamCount = 0;
 
@@ -675,8 +671,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, check status and get page reload", async function (assert) {
         assert.expect(5);
 
-        const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-        registerCleanup(unpatchDate);
+        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -719,8 +714,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, upgrade database", async function (assert) {
         assert.expect(6);
 
-        const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-        registerCleanup(unpatchDate);
+        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -775,8 +769,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, message for non admin user", async function (assert) {
         assert.expect(2);
 
-        const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
-        registerCleanup(unpatchDate);
+        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -793,5 +786,45 @@ QUnit.module("web_enterprise", {}, function () {
         );
 
         assert.hasClass(panel.el, "alert-info", "Color should be grey");
+    });
+
+    QUnit.test("One app installed, different locale (arabic)", async function (assert) {
+        assert.expect(1);
+
+        registerCleanup(patchDate(2019, 9, 25, 12, 0, 0));
+        patchWithCleanup(luxon.Settings, {
+            defaultLocale: "ar-001",
+            defaultNumberingSystem: "arab",
+        });
+
+        let callToGetParamCount = 0;
+
+        const target = getFixture();
+        await createExpirationPanel({
+            enterprise: {
+                expirationDate: "2019-10-20 12:00:00",
+                expirationReason: "renewal",
+                isMailInstalled: true,
+                warning: "admin",
+            },
+            async mockRPC(route, { method }) {
+                if (method === "get_param") {
+                    callToGetParamCount++;
+                    if (callToGetParamCount === 1) {
+                        return "2019-10-20 12:00:00";
+                    } else if (callToGetParamCount === 2) {
+                        return "2019-11-09 12:00:00";
+                    }
+                }
+                return true;
+            },
+        });
+
+        await click(target, ".oe_instance_renew");
+
+        assert.strictEqual(
+            target.querySelector(".oe_instance_register").innerText,
+            "Thank you, your registration was successful! Your database is valid until ٩ نوفمبر ٢٠١٩."
+        );
     });
 });

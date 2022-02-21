@@ -18,7 +18,7 @@ QUnit.module("Studio", (hooks) => {
     QUnit.module("IconCreator");
 
     QUnit.test("icon creator: with initial web icon data", async (assert) => {
-        assert.expect(4);
+        assert.expect(5);
 
         const target = getFixture();
         await mount(IconCreator, target, {
@@ -50,6 +50,7 @@ QUnit.module("Studio", (hooks) => {
         await click(target.querySelector(".o_web_studio_upload a"));
 
         assert.verifySteps(["icon-changed"]);
+        assert.strictEqual(target.querySelector('.o_web_studio_upload input').accept, 'image/png', "Input should now only accept pngs");
     });
 
     QUnit.test("icon creator: without initial web icon data", async (assert) => {

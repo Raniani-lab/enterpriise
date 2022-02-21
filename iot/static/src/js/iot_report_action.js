@@ -36,7 +36,7 @@ async function iotReportActionHandler(action, options, env) {
         iotDevice.add_listener(data => onValueChange(data, env));
         iotDevice.action({ document })
             .then(data => onIoTActionResult(data, env))
-            .guardedCatch(() => adapterParent.call("iot_longpolling", "_doWarnFail", ip));
+            .guardedCatch(() => iotDevice.call("iot_longpolling", "_doWarnFail", ip));
         return true;
     }
 }

@@ -133,6 +133,45 @@ QUnit.module("Studio > Navbar", (hooks) => {
         // Check the navbar adaptation calls
         assert.verifySteps(["adapt -> hide 0/3 sections", "adapt -> hide 3/3 sections"]);
     });
+
+    QUnit.test("homemenu customizer rendering", async (assert) => {
+        assert.expect(6);
+
+        serviceRegistry.add("company", companyService);
+
+        const fakeHTTPService = {
+            start() {
+                return {};
+            },
+        };
+        serviceRegistry.add("http", fakeHTTPService);
+
+        const env = await makeTestEnv(baseConfig);
+
+        patchWithCleanup(env.services.studio, {
+            get mode() {
+                // Will force the navbar in the studio home_menu state
+                return "home_menu";
+            },
+        });
+
+        const target = getFixture();
+
+        // Set menu and mount
+        const navbar = await mount(StudioNavbar, target, { env });
+        await nextTick();
+
+        assert.containsOnce(navbar.el, ".o_studio_navbar");
+        assert.containsOnce(navbar.el, ".o_web_studio_home_studio_menu");
+
+        await click(navbar.el.querySelector(".o_web_studio_home_studio_menu .dropdown-toggle"));
+
+        assert.containsOnce(navbar.el, ".o_web_studio_change_background");
+        assert.strictEqual(navbar.el.querySelector(".o_web_studio_change_background input").accept, "image/*", "Input should now only accept images");
+
+        assert.containsOnce(navbar.el, ".o_web_studio_import");
+        assert.containsOnce(navbar.el, ".o_web_studio_export");
+    });
 });
 
 QUnit.module("Studio > navbar coordination", (hooks) => {

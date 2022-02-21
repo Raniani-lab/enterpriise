@@ -116,7 +116,7 @@ class HrExpense(models.Model):
         if field == "total":
             text_to_send["content"] = self.unit_amount
         elif field == "date":
-            text_to_send["content"] = str(self.date)
+            text_to_send["content"] = str(self.date) if self.date else False
         elif field == "description":
             text_to_send["content"] = self.name
         elif field == "currency":

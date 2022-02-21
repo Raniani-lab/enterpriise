@@ -17,20 +17,9 @@ class Forecast(models.Model):
     can_open_timesheets = fields.Boolean(compute='_compute_can_open_timesheet')
     percentage_hours = fields.Float("Progress", compute='_compute_percentage_hours', compute_sudo=True, store=True)
     encode_uom_in_days = fields.Boolean(compute='_compute_encode_uom_in_days')
-    allocated_hours_cost = fields.Float("Allocated Hours Cost", compute='_compute_hours_cost', store=True)
-    effective_hours_cost = fields.Float("Effective Hours Cost", compute='_compute_hours_cost', store=True)
 
     def _compute_encode_uom_in_days(self):
         self.encode_uom_in_days = self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day')
-
-    @api.depends('allocated_hours', 'effective_hours', 'employee_id')
-    def _compute_hours_cost(self):
-        employee_read = self.env['hr.employee'].search_read([('id', 'in', self.employee_id.ids)], ['id', 'timesheet_cost'])
-        employee_dict = {res['id']: res['timesheet_cost'] for res in employee_read}
-        for slot in self:
-            timesheet_cost = employee_dict.get(slot.employee_id.id, 0.0)
-            slot.allocated_hours_cost = slot.allocated_hours * timesheet_cost
-            slot.effective_hours_cost = slot.effective_hours * timesheet_cost
 
     @api.depends('allocated_hours', 'effective_hours')
     def _compute_percentage_hours(self):

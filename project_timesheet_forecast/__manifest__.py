@@ -19,6 +19,7 @@ Better plan your future schedules by considering time effectively spent on old p
         'report/timesheet_forecast_report_views.xml',
         'security/ir.model.access.csv',
         'data/project_timesheet_forecast_data.xml',
+        'views/planning_report_views.xml',
         'views/project_forecast_views.xml',
         ],
     'demo': [

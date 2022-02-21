@@ -4,6 +4,7 @@
 from odoo import api, SUPERUSER_ID
 from . import models
 from . import controllers
+from . import report
 
 def post_init(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})

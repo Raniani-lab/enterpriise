@@ -15,6 +15,7 @@
     """,
     'depends': ['sale_planning', 'sale_project', 'project_forecast'],
     'data': [
+        'views/planning_report_views.xml',
         'views/planning_slot_views.xml',
     ],
     'auto_install': True,

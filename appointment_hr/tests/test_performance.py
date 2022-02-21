@@ -530,4 +530,4 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         t1 = time.time()
 
         _logger.info('Browsed /calendar/%i, time %.3f', self.test_apt_type.id, t1 - t0)
-        # Time before optimization: ~0.80 (but with boilerplate)
+        # Time before optimization: ~1.90 (but with boilerplate)

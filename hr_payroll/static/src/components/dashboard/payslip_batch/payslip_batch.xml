@@ -10,15 +10,14 @@
                 </div>
             </div>
             <t t-foreach="props.batches" t-as="batch" t-key="batch.id">
-                <div class="row">
-                    <div class="col">
-                        <t t-esc="batch.date_start"/>
+                <div class="row w-100">
+                     <div class="col col-3 btn text-left">
+                        <span t-att-class="'badge badge-pill text-left o_field_badge o_readonly_modifier o_required_modifier o_field_widget ' + this.getColorFromState(batch.state)">
+                            <t t-esc="batch.state"/>
+                        </span>
                     </div>
-                    <div class="col btn btn-link p-0 border-0 text-left" t-on-click="() => this.onClickLine(batch.id, batch.name)">
+                    <div class="col col btn btn-link text-left" t-on-click="() => this.onClickLine(batch.id, batch.name)">
                         <t t-esc="batch.name"/>
-                    </div>
-                    <div class="col text-right">
-                        <span class="badge badge-pill badge-primary"><t t-esc="batch.state"/></span>
                     </div>
                 </div>
             </t>

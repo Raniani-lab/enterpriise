@@ -1393,7 +1393,7 @@ class HrPayslip(models.Model):
 
     @api.model
     def _get_dashboard_batch_fields(self):
-        return ['id', 'date_start', 'name', 'state']
+        return ['id', 'date_start', 'name', 'state', 'payslip_count']
 
     @api.model
     def get_payroll_dashboard_data(self, sections=None):
@@ -1435,8 +1435,8 @@ class HrPayslip(models.Model):
             translated_states = dict(self.env['hr.payslip.run']._fields['state']._description_selection(self.env))
             for batch_read in batches_read_result:
                 batch_read.update({
+                    'name': f"{batch_read['name']} ({format_date(self.env, batch_read['date_start'], date_format='MM/y')}) {_('(%s Payslips)', batch_read['payslip_count'])}",
                     'state': translated_states.get(batch_read['state'], _('Unknown State')),
-                    'date_start': format_date(self.env, batch_read['date_start'], date_format='MM/y'),
                 })
             result['batches'] = batches_read_result
         if 'notes' in sections:

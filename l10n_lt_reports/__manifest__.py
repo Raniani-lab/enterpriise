@@ -21,6 +21,6 @@
     'data': [
         'data/account_financial_html_report_data.xml',
     ],
-    'auto_install': True,
+    'auto_install': ['l10n_lt', 'account_reports'],
     'installable': True,
 }

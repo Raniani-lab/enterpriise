@@ -31,6 +31,6 @@ Accounting reports for Luxembourg
         'security/ir.model.access.csv',
     ],
     'demo': ['demo/demo_company.xml'],
-    'auto_install': True,
+    'auto_install': ['l10n_lu', 'account_reports'],
     'license': 'OEEL-1',
 }

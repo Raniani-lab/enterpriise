@@ -26,7 +26,7 @@ Financial requirement contributor: Baskhuu Lodoikhuu. BumanIT LLC
         'data/vat_report.xml',
         'data/tax_report.xml'
     ],
-    'auto_install': True,
+    'auto_install': ['l10n_mn', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',
 }

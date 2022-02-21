@@ -57,7 +57,7 @@ This module allows the creation of the EDI documents and the communication with 
     ],
     'post_init_hook': 'post_init_hook',
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_mx', 'account_edi'],
     'license': 'OEEL-1',
     'assets': {
         'web.report_assets_pdf': [

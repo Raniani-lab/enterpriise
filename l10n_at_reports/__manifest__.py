@@ -33,5 +33,5 @@ Accounting reports for Austria.
         'data/account_financial_html_report_profit_loss.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_at', 'account_reports'],
 }

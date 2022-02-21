@@ -19,7 +19,7 @@ Accounting reports for France
         'data/balance_sheet.xml',
     ],
     'demo': [],
-    'auto_install': True,
+    'auto_install': ['l10n_fr', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',
 }

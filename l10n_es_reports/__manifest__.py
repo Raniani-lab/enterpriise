@@ -42,6 +42,6 @@
     ],
     'post_init_hook': '_setup_mod_sequences',
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_es', 'account_reports'],
     'license': 'OEEL-1',
 }

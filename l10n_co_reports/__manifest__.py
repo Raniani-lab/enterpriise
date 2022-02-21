@@ -26,7 +26,7 @@ Accounting reports for Colombia
         'report/certification_report_templates.xml',
     ],
     'demo': [],
-    'auto_install': True,
+    'auto_install': ['l10n_co', 'account_reports'],
     'installable': True,
     'website': 'https://xoe.solutions',
     'license': 'OEEL-1',

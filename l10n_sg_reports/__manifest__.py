@@ -23,6 +23,6 @@ This module allow to generate the GST Return (F5) and the IRAS Audit File.
         'views/iaf_template.xml'
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_sg', 'account_reports'],
     'license': 'OEEL-1',
 }

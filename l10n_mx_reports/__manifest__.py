@@ -17,6 +17,7 @@
     "license": "OEEL-1",
     "depends": [
         "account_reports",
+        "l10n_mx",
         "l10n_mx_edi",
     ],
     "demo": [
@@ -32,5 +33,5 @@
         "views/res_partner_view.xml",
     ],
     "installable": True,
-    "auto_install": True,
+    "auto_install": ['l10n_mx', 'account_reports'],
 }

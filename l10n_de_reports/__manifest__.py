@@ -23,6 +23,6 @@
         'data/report_export_template.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_de', 'account_reports'],
     'license': 'OEEL-1',
 }

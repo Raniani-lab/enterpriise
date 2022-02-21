@@ -15,6 +15,6 @@
         'data/account_financial_report_data.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_us', 'account_reports'],
     'license': 'OEEL-1',
 }

@@ -17,6 +17,6 @@ Accounting reports for Denmark
         'data/account_income_statement_html_report_data.xml',
         'data/account_balance_dk_html_report_data.xml'
     ],
-    'auto_install': True,
+    'auto_install': ['l10n_dk', 'account_reports'],
     'license': 'OEEL-1',
 }

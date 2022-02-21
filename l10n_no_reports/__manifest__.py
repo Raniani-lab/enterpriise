@@ -16,7 +16,7 @@ Accounting reports for Norway
         'data/balance_sheet.xml',
     ],
     'demo': [],
-    'auto_install': True,
+    'auto_install': ['l10n_no', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',
 }

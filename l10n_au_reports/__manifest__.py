@@ -30,11 +30,15 @@ The annual report must be provided to the Commissioner no later than 28 August a
 
 The report uses tax tags ``Service`` and ``Tax Withheld`` in order to find adequate journal items. These are set using the fiscal positions, and the right type of product (Services).
     """,
-    'depends': ['account_reports_cash_basis', 'l10n_au'],
+    'depends': [
+        'l10n_au',
+        'account_reports',
+        'account_reports_cash_basis',
+    ],
     'data': [
         'views/tpar_views.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_au', 'account_reports'],
     'license': 'OEEL-1',
 }

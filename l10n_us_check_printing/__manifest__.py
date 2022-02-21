@@ -32,7 +32,7 @@ You can choose between:
         'report/print_check_bottom.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_us'],
     'license': 'OEEL-1',
     'assets': {
         'web.report_assets_common': [

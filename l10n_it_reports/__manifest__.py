@@ -13,7 +13,7 @@ Accounting reports for Italy
     'depends': ['l10n_it', 'account_reports'],
     'data': [],
     'demo': [],
-    'auto_install': True,
+    'auto_install': ['l10n_it', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',
 }

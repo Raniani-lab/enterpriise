@@ -27,6 +27,6 @@
         'wizard/hmrc_send_wizard.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_uk', 'account_reports'],
     'license': 'OEEL-1',
 }

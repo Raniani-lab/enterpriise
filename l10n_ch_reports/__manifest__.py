@@ -16,7 +16,7 @@
         'data/account_financial_html_report_data.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_ch', 'account_reports'],
     'website': 'https://www.odoo.com/app/accounting',
     'license': 'OEEL-1',
 }

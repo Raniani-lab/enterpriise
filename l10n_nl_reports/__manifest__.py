@@ -82,6 +82,6 @@
         'data/xml_audit_file_3_2.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_nl', 'account_reports'],
     'license': 'OEEL-1',
 }

@@ -20,7 +20,7 @@
         'data/f29_report_data.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_cl', 'account_reports'],
     'website': 'http://cubicERP.com',
     'license': 'OEEL-1',
 }

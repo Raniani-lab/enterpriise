@@ -26,7 +26,7 @@
         'report/l10n_be_281_50_xml_templates.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_be', 'account_reports'],
     'website': 'https://www.odoo.com/app/accounting',
     'license': 'OEEL-1',
 }

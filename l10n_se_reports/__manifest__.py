@@ -19,7 +19,7 @@
         'views/report_export_template.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_se', 'account_reports'],
     'website': 'https://www.odoo.com/app/accounting',
     'license': 'OEEL-1',
 }

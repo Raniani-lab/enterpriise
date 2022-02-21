@@ -17,7 +17,7 @@ Accounting reports for Finland
         'data/profit_and_loss.xml',
     ],
     'demo': [],
-    'auto_install': True,
+    'auto_install': ['l10n_fi', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',
 }

@@ -1264,12 +1264,39 @@ class SaleSubscriptionLine(models.Model):
                 self.uom_id = self.product_id.uom_id.id
 
             subscription = self.analytic_account_id
+            pricelist = subscription.pricelist_id
 
             self = self.with_company(subscription.company_id)
-            self.price_unit = self.analytic_account_id.pricelist_id._get_product_price(
+
+            if not self.uom_id or self.product_id.uom_id.category_id.id != self.uom_id.category_id.id:
+                self.uom_id = self.product_id.uom_id.id
+
+            product = self.product_id.with_context(
+                pricelist=pricelist.id,
+                quantity=self.quantity,
+                uom=self.uom_id.id
+            )
+            pricelist_price = pricelist._get_product_price(     # Price according to pricelist in pricelist currency in self.uom
                 self.product_id,
                 self.quantity,
-                self.uom_id)
+                self.uom_id
+            )
+            base_price = product.lst_price      # Base price of the product in self.uom
+
+            if product.currency_id != pricelist.currency_id:
+                base_price = product.currency_id._convert(base_price, pricelist.currency_id, product.company_id or self.env.company, fields.Date.today())
+
+            if pricelist.discount_policy == 'without_discount' and pricelist_price:
+                discount = max(0, (base_price - pricelist_price) * 100 / base_price)
+                price_unit = base_price
+            else:
+                price_unit = pricelist_price
+                discount = 0
+
+            self.update({
+                'price_unit': price_unit,
+                'discount': discount
+            })
 
     @api.onchange('uom_id')
     def onchange_uom_id(self):

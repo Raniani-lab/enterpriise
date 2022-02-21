@@ -386,3 +386,93 @@ class TestSubscription(TestSubscriptionCommon):
         self.subscription.partner_id.property_account_position_id = fp
         inv = self.subscription._recurring_create_invoice()
         self.assertEqual(100, inv.invoice_line_ids[0].price_unit, "The included tax must be subtracted to the price")
+
+    def test_prevents_assigning_not_owned_payment_tokens_to_subscriptions(self):
+        # Test if payment token are correctly related to the user linked to the subscription
+        malicious_user_subscription = self.env['sale.subscription'].create({
+            'name': 'Free Subscription',
+            'partner_id': self.malicious_user.partner_id.id,
+            'template_id': self.subscription_tmpl.id,
+        })
+        self.partner = self.env['res.partner'].create(
+            {'name': 'Stevie Nicks',
+             'email': 'sti@fleetwood.mac',
+             'property_account_receivable_id': self.account_receivable.id,
+             'property_account_payable_id': self.account_receivable.id,
+             'company_id': self.env.company.id})
+        self.acquirer = self.env['payment.acquirer'].create(
+            {'name': 'The Wire',
+             'provider': 'transfer',
+             'company_id': self.env.company.id,
+             'state': 'test'})
+        stolen_payment_method = self.env['payment.token'].create(
+            {'name': 'Jimmy McNulty',
+             'partner_id': self.partner.id,
+             'acquirer_id': self.acquirer.id,
+             'acquirer_ref': 'Omar Little'})
+
+        with self.assertRaises(AccessError):
+            malicious_user_subscription.with_user(self.malicious_user).write({
+                'payment_token_id': stolen_payment_method.id,  # payment token not related to al capone
+            })
+
+    def test_pricelist_discount(self):
+        # Check if pricelist with discount policy set to `without_discount` correctly apply to subscription line
+        discount_pricelist = self.env['product.pricelist'].create({
+            'name': 'Discount Pricelist',
+            'discount_policy': 'without_discount',
+            'currency_id': self.product.currency_id.id,
+        })
+
+        # Discount Pricelist item
+        self.env['product.pricelist.item'].create({
+            'percent_price': 20,
+            'compute_price': 'percentage',
+            'pricelist_id': discount_pricelist.id
+        })
+
+        subscription = self.env['sale.subscription'].create({
+            'name': 'TestSubscriptionDiscount',
+            'partner_id': self.user_portal.partner_id.id,
+            'pricelist_id': discount_pricelist.id,
+            'template_id': self.subscription_tmpl.id,
+            'company_id': self.company_data['company'].id
+        })
+        self.cr.precommit.clear()
+        subscription.write({'recurring_invoice_line_ids': [(0, 0, {
+            'name': 'TestRecurringLine',
+            'product_id': self.product.id,
+            'quantity': 1,
+            'price_unit': 50,
+            'uom_id': self.product.uom_id.id})]
+        })
+        line = subscription.recurring_invoice_line_ids
+
+        # Manually trigger onchange
+        line.onchange_product_quantity()
+
+        self.assertEqual(line.price_unit, 50, 'Price unit should not have change')
+        self.assertEqual(line.discount, 20, 'Discount should be applied on the line')
+        self.assertEqual(line.price_subtotal, 40, 'Price unit should be QTY * PRICE_UNIT * (1-DISCOUNT/100) = 1 * 50 * (1-0.20) = 40')
+
+    def test_onchange_product_quantity_with_different_currencies(self):
+        # onchange_product_quantity compute price unit into the currency of the subscription pricelist
+        # when currency of the product (Gold Coin) is different than subscription pricelist (USD)
+        self.subscription.write({'recurring_invoice_line_ids': [(0, 0, {
+            'name': 'TestRecurringLine',
+            'product_id': self.product.id,
+            'quantity': 1,
+            'price_unit': 50,
+            'uom_id': self.product.uom_id.id,
+        })]})
+        line = self.subscription.recurring_invoice_line_ids
+        self.assertEqual(line.price_unit, 50, 'Price unit should not have changed')
+        self.product.currency_id = self.currency_data['currency']
+        conversion_rate = self.env['res.currency']._get_conversion_rate(
+            self.product.currency_id,
+            self.subscription.pricelist_id.currency_id,
+            self.product.company_id or self.env.company,
+            fields.Date.today())
+        self.subscription.recurring_invoice_line_ids.onchange_product_quantity()
+        self.assertEqual(line.price_unit, self.subscription.pricelist_id.currency_id.round(50 * conversion_rate),
+                         'Price unit must be converted into the currency of the pricelist (USD)')

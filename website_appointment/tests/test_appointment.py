@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.addons.appointment.tests.common import AppointmentCommon
 from odoo.exceptions import ValidationError
-from odoo.tests import common, tagged, users
+from odoo.tests import users
 
 
-@tagged('-at_install', 'post_install')
-class WebsiteAppointmentTest(common.TransactionCase):
+class WebsiteAppointmentTest(AppointmentCommon):
+
     @users('admin')
     def test_is_published_custom_appointment_type(self):
         custom_appointment = self.env['calendar.appointment.type'].create({

@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import json
-
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
+from odoo.addons.mail.tests.common import MailCommon
 from odoo.exceptions import ValidationError
-from odoo.tests import common, tagged, users
-from odoo.tests.common import new_test_user
+from odoo.tests import tagged, users
 
 
-@tagged('-at_install', 'post_install')
-class AppointmentTest(common.HttpCase):
+@tagged('timezone')
+class AppointmentTest(MailCommon):
 
     def setUp(self):
         super(AppointmentTest, self).setUp()
@@ -83,49 +81,6 @@ class AppointmentTest(common.HttpCase):
         # It might be more accurate to assert mondays_count >= 2, but we don't want this test to break when it pleases
         self.assertGreaterEqual(mondays_count, 1, 'There should be at least one monday in the time range')
 
-    def test_accept_meeting_unauthenticated(self):
-        user = new_test_user(self.env, "test_user_1", email="test_user_1@nowhere.com", password="P@ssw0rd!", tz="UTC")
-        event = (
-            self.env["calendar.event"]
-            .create(
-                {
-                    "name": "Doom's day",
-                    "start": datetime(2019, 10, 25, 8, 0),
-                    "stop": datetime(2019, 10, 27, 18, 0),
-                    "partner_ids": [(4, user.partner_id.id)],
-                }
-            )
-        )
-        token = event.attendee_ids[0].access_token
-        url = "/calendar/meeting/accept?token=%s&id=%d" % (token, event.id)
-        res = self.url_open(url)
-
-        self.assertEqual(res.status_code, 200, "Response should = OK")
-        event.attendee_ids[0].invalidate_cache()
-        self.assertEqual(event.attendee_ids[0].state, "accepted", "Attendee should have accepted")
-
-    def test_accept_meeting_authenticated(self):
-        user = new_test_user(self.env, "test_user_1", email="test_user_1@nowhere.com", password="P@ssw0rd!", tz="UTC")
-        event = (
-            self.env["calendar.event"]
-            .create(
-                {
-                    "name": "Doom's day",
-                    "start": datetime(2019, 10, 25, 8, 0),
-                    "stop": datetime(2019, 10, 27, 18, 0),
-                    "partner_ids": [(4, user.partner_id.id)],
-                }
-            )
-        )
-        token = event.attendee_ids[0].access_token
-        url = "/calendar/meeting/accept?token=%s&id=%d" % (token, event.id)
-        self.authenticate("test_user_1", "P@ssw0rd!")
-        res = self.url_open(url)
-
-        self.assertEqual(res.status_code, 200, "Response should = OK")
-        event.attendee_ids[0].invalidate_cache()
-        self.assertEqual(event.attendee_ids[0].state, "accepted", "Attendee should have accepted")
-
     def test_generate_recurring_slots(self):
         slots = self.appointment_in_brussel._get_appointment_slots('UTC')
         now = fields.Date.context_today(self.appointment_in_brussel)
@@ -188,38 +143,8 @@ class AppointmentTest(common.HttpCase):
                     self.assertEqual(len(slot), 0, "There should be no slot for this date")
 
     @users('admin')
-    def test_create_custom_appointment(self):
-        self.authenticate('admin', 'admin')
-        now = datetime.now()
-        unique_slots = [{
-            'start': (now + timedelta(hours=1)).replace(microsecond=0).isoformat(' '),
-            'end': (now + timedelta(hours=2)).replace(microsecond=0).isoformat(' '),
-            'allday': False,
-        }, {
-            'start': (now + timedelta(days=2)).replace(microsecond=0).isoformat(' '),
-            'end': (now + timedelta(days=3)).replace(microsecond=0).isoformat(' '),
-            'allday': True,
-        }]
-        request = self.url_open(
-            "/appointment/calendar_appointment_type/create_custom",
-            data=json.dumps({
-                'params': {
-                    'slots': unique_slots,
-                }
-            }),
-            headers={"Content-Type": "application/json"},
-        ).json()
-        result = request.get('result', False)
-        self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
-        appointment_type = self.env['calendar.appointment.type'].browse(result['id'])
-        self.assertEqual(appointment_type.name, "Mitchell Admin - Let's meet")
-        self.assertEqual(appointment_type.category, 'custom')
-        self.assertEqual(len(appointment_type.slot_ids), 2, "Two slots have been created")
-        self.assertTrue(all(slot.slot_type == 'unique' for slot in appointment_type.slot_ids), "All slots are 'unique'")
-
-    @users('admin')
     def test_create_custom_appointment_without_user(self):
-        # No Validation Error, the actual user should be set by default
+        # No Validation Error, the current user should be set by default
         self.env['calendar.appointment.type'].create({
             'name': 'Custom without user',
             'category': 'custom',

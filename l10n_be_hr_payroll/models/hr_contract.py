@@ -507,6 +507,12 @@ class HrContract(models.Model):
         contract_vals += self._get_contract_credit_time_values(date_start, date_stop)
         return contract_vals
 
+    def _preprocess_work_hours_data_split_half(self, work_data, date_from, date_to):
+        """
+        Method is meant to be overriden, see l10n_be_hr_payroll_attendance
+        """
+        return
+
     def _get_work_hours_split_half(self, date_from, date_to, domain=None):
         """
         Returns the amount (expressed in hours) of work
@@ -528,6 +534,8 @@ class HrContract(models.Model):
             ['date_start:day', 'work_entry_type_id'],
             lazy=False
         )
+
+        self._preprocess_work_hours_data_split_half(work_entries, date_from, date_to)
 
         for day_data in work_entries:
             work_entry_type_id = day_data['work_entry_type_id'][0] if day_data['work_entry_type_id'] else False

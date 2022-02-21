@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import date, datetime
 from unittest.mock import patch
 
 from odoo.addons.appointment.models.res_partner import Partner
@@ -34,7 +34,8 @@ class AppointmentCommon(MailCommon):
 
         # reference dates to have reproducible tests (sunday evening, allowing full week)
         cls.reference_now = datetime(2022, 2, 13, 20, 0, 0)
-        cls.reference_monday = datetime(2022, 2, 14, 8, 0, 0)
+        cls.reference_monday = datetime(2022, 2, 14, 7, 0, 0)
+        cls.reference_now_monthweekstart = date(2022, 1, 30)  # starts on a Sunday, first week containing Feb day
 
         cls.apt_manager = mail_new_test_user(
             cls.env,
@@ -54,7 +55,7 @@ class AppointmentCommon(MailCommon):
             name='Employee Brussels',
             notification_type='email',
             login='staff_user_bxls',
-            tz='Europe/Brussels'
+            tz='Europe/Brussels'  # UTC + 1 (at least in February)
         )
         cls.staff_user_aust = mail_new_test_user(
             cls.env,
@@ -64,10 +65,13 @@ class AppointmentCommon(MailCommon):
             name='Employee Australian',
             notification_type='email',
             login='staff_user_aust',
-            tz='Australia/West'
+            tz='Australia/West'  # UTC + 8 (at least in February)
         )
+        cls.staff_users = cls.staff_user_bxls + cls.staff_user_aust
 
         # Default (test) appointment type
+        # Slots are each hours from 8 to 13 (UTC + 1)
+        # -> working hours: 7, 8, 9, 10 and 12 UTC as 11 is lunch time in working hours
         cls.apt_type_bxls_2days = cls.env['calendar.appointment.type'].create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
@@ -89,6 +93,19 @@ class AppointmentCommon(MailCommon):
             'staff_user_ids': [(4, cls.staff_user_bxls.id)],
         })
 
+    def _create_meetings(self, user, time_info):
+        return self.env['calendar.event'].with_context(self._test_context).create([
+            {'allday': allday,
+             'attendee_ids': [(0, 0, {'partner_id': user.partner_id.id})],
+             'name': 'Event for %s (%s / %s - %s)' % (user.name, allday, start, stop),
+             'partner_ids': [(4, user.partner_id.id)],
+             'start': start,
+             'stop': stop,
+             'user_id': user.id,
+            }
+            for start, stop, allday in time_info
+        ])
+
     def _flush_tracking(self):
         """ Force the creation of tracking values notably, and ensure tests are
         reproducible. """
@@ -104,6 +121,55 @@ class AppointmentCommon(MailCommon):
         for month, expected_month in zip(slots, exp_months):
             self.assertEqual(month['month'], expected_month['name_formated'])
             self.assertEqual(len(month['weeks']), expected_month['weeks_count'])
+            if not slots_data.get('slots_startdate'):  # not all tests are detailed
+                continue
+
+            # global slots configuration
+            slots_days_leave = slots_data.get('slots_days_leave', [])
+            slots_enddate = slots_data.get('slots_enddate')
+            slots_startdate = slots_data.get('slots_startdate')
+            slots_weekdays_nowork = slots_data.get('slots_weekdays_nowork', [])
+
+            # slots specific
+            slots_start_hours = slots_data.get('slots_start_hours', [])
+
+            for week in month['weeks']:
+                for day in week:
+                    day_date = day['day']
+                    # days linked to "next month" or "previous month" are there for filling but have no slots
+                    is_void = day_date.month != expected_month['month_date'].month
+
+                    # before reference date: no slots generated (just there to fill up calendar)
+                    is_working = day_date >= slots_startdate
+                    if is_working and slots_enddate:
+                        is_working = day_date <= slots_enddate
+                    if is_working:
+                        is_working = day_date not in slots_days_leave
+                    if is_working:
+                        is_working = day_date.weekday() not in slots_weekdays_nowork
+                    # after end date: no slots generated (just there to fill up calendar)
+
+                    # standard day: should have slots according to apt type slots hours
+                    if not is_void and is_working:
+                        if day_date in slots_data.get('slots_day_specific', {}):
+                            slot_count = len(slots_data['slots_day_specific'][day_date])
+                            slot_start_hours = [slot['start'] for slot in slots_data['slots_day_specific'][day_date]]
+                        else:
+                            slot_count = len(slots_start_hours)
+                            slot_start_hours = slots_start_hours
+                        self.assertEqual(
+                            len(day['slots']), slot_count,
+                            'Slot: wrong number of slots for %s' % day
+                        )
+                        self.assertEqual(
+                            [datetime.strptime(slot['datetime'], '%Y-%m-%d %H:%M:%S').hour for slot in day['slots']],
+                            slot_start_hours,
+                            'Slot: wrong starting hours'
+                        )
+                    elif is_void:
+                        self.assertFalse(len(day['slots']), 'Slot: out of range should have no slot for %s' % day)
+                    else:
+                        self.assertFalse(len(day['slots']), 'Slot: not worked should have no slot for %s' % day)
 
     @contextmanager
     def mockAppointmentCalls(self):

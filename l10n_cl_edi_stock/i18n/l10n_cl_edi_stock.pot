@@ -659,6 +659,12 @@ msgid "This company has no connection with the SII configured.  "
 msgstr ""
 
 #. module: l10n_cl_edi_stock
+#: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
+#, python-format
+msgid "This electronic document is being processed already."
+msgstr ""
+
+#. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.barcode_stamp_footer
 msgid ""
 "Timbre Electrónico SII\n"

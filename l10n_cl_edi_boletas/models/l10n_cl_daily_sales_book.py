@@ -5,6 +5,7 @@ import base64
 import logging
 from datetime import timedelta
 from lxml import etree
+from psycopg2 import OperationalError
 
 from odoo import _, api, fields, models, _lt
 from odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util import UnexpectedXMLResponse
@@ -212,6 +213,18 @@ class L10nClDailySalesBook(models.Model):
         if not self.company_id.l10n_cl_dte_service_provider:
             self.message_post(body=_('Cannot send Sales Book Report to SII due to the service provider is not set in '
                                      'your company. Please go to your company and select one'))
+            return None
+        try:
+            with self.env.cr.savepoint(flush=False):
+                self.env.cr.execute(f'SELECT 1 FROM {self._table} WHERE id IN %s FOR UPDATE NOWAIT', [tuple(self.ids)])
+        except OperationalError as e:
+            if e.pgcode == '55P03':
+                if not self.env.context.get('cron_skip_connection_errs'):
+                    raise UserError(_('This electronic document is being processed already.'))
+                return
+            raise e
+        # To avoid double send on double-click
+        if self.l10n_cl_dte_status != "not_sent":
             return None
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         response = self._send_xml_to_sii(

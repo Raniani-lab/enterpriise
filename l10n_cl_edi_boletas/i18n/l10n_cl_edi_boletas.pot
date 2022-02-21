@@ -491,6 +491,13 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi_boletas
+#: code:addons/l10n_cl_edi_boletas/models/account_move.py:0
+#: code:addons/l10n_cl_edi_boletas/models/l10n_cl_daily_sales_book.py:0
+#, python-format
+msgid "This electronic document is being processed already."
+msgstr ""
+
+#. module: l10n_cl_edi_boletas
 #: code:addons/l10n_cl_edi_boletas/models/l10n_cl_edi_util.py:0
 #, python-format
 msgid "Token cannot be generated. Please try again"

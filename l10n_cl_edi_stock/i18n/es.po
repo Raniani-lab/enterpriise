@@ -455,10 +455,8 @@ msgstr "Tipo de Documento"
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid ""
-"Document type with code 52 active not found. You can update the module to "
-"solve this problem. "
-msgstr ""
+msgid "Document type with code 52 active not found. You can update the module to solve this problem. "
+msgstr "No encentramos el tipo de documento 52.  Tiene que updatar el modulo"
 
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
@@ -750,6 +748,12 @@ msgstr ""
 #, python-format
 msgid "This company has no connection with the SII configured.  "
 msgstr "Esta compañía no tiene configurada una conexión con el SII. "
+
+#. module: l10n_cl_edi_stock
+#: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
+#, python-format
+msgid "This electronic document is being processed already."
+msgstr "Este documento electrónico ya se encuentra en proceso."
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.barcode_stamp_footer

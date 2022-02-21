@@ -253,7 +253,7 @@ class HelpdeskTicket(models.Model):
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True, help="If checked, this means the ticket was closed through the customer portal by the customer.")
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
-    priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='1')
+    priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='0')
     stage_id = fields.Many2one(
         'helpdesk.stage', string='Stage', compute='_compute_user_and_stage_ids', store=True,
         readonly=False, ondelete='restrict', tracking=True, group_expand='_read_group_stage_ids',

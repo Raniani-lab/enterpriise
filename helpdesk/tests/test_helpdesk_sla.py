@@ -146,6 +146,7 @@ class HelpdeskSLA(TransactionCase):
             'team_id': self.test_team.id,
             'tag_ids': [(4, self.tag_urgent.id)],
             'stage_id': self.stage_new.id,
+            'priority': '1',
         }
         if 'tag_ids' in kwargs:
             # from recordset to ORM command

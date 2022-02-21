@@ -111,6 +111,7 @@ class AccountBankStatementImport(models.TransientModel):
             'type': 'ir.actions.act_window',
             'res_model': 'account.bank.statement.import.journal.creation',
             'view_mode': 'form',
+            'views': [(False, 'form')],
             'target': 'new',
             'context': {
                 'statement_import_transient_id': self.env.context['active_id'],

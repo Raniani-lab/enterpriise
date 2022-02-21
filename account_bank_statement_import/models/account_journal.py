@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, api, _
+from odoo.exceptions import UserError
 
 
 class AccountJournal(models.Model):
@@ -27,3 +28,19 @@ class AccountJournal(models.Model):
         # Note: this drops action['context'], which is a dict stored as a string, which is not easy to update
         action.update({'context': (u"{'journal_id': " + str(self.id) + u"}")})
         return action
+
+    def create_invoice_from_attachment(self, attachment_ids=None):
+        journal = self.browse(self.env.context.get('default_journal_id'))
+        if journal.type in ('bank', 'cash'):
+            attachments = self.env['ir.attachment'].browse(attachment_ids)
+            if not attachments:
+                raise UserError(_("No attachment was provided"))
+            wizard = self.env['account.bank.statement.import'].create({
+                'attachment_ids': attachments,
+            })
+            return wizard.with_context(
+                journal_id=journal.id,
+                active_id=wizard.id,
+                default_journal_id=None,
+            ).import_file()
+        return super().create_invoice_from_attachment(attachment_ids)

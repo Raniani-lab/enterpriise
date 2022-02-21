@@ -156,7 +156,7 @@ class AccountEdiFormat(models.Model):
                        "1. Linked Digiflow as OSE.\n"
                        "2. Authorize Digiflow as PSE.\n"
                        "Reference: \n"
-                       "https://www.odoo.com/documentation/user/14.0/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"),
+                       "https://www.odoo.com/documentation/master/applications/finance/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"),
         }
 
     @api.model

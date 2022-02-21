@@ -538,10 +538,10 @@ class Planning(models.Model):
                                                                                      slot.previous_template_id,
                                                                                      slot.template_reset)
 
-    @api.depends('start_datetime', 'end_datetime', 'resource_id', 'state')
+    @api.depends(lambda self: self._get_fields_breaking_publication())
     def _compute_publication_warning(self):
         for slot in self:
-            slot.publication_warning = slot.resource_id and slot.state == 'published'
+            slot.publication_warning = slot.resource_id and slot.resource_type != 'material' and slot.state == 'published'
 
     def _company_working_hours(self, start, end):
         company = self.company_id or self.env.company
@@ -667,20 +667,24 @@ class Planning(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        Resource = self.env['resource.resource']
         for vals in vals_list:
-            if not vals.get('company_id') and vals.get('resource_id'):
-                vals['company_id'] = self.env['resource.resource'].browse(vals.get('resource_id')).company_id.id
+            if vals.get('resource_id'):
+                resource = Resource.browse(vals.get('resource_id'))
+                if not vals.get('company_id'):
+                    vals['company_id'] = resource.company_id.id
+                if resource.resource_type == 'material':
+                    vals['state'] = 'published'
             if not vals.get('company_id'):
                 vals['company_id'] = self.env.company.id
         return super().create(vals_list)
 
     def write(self, values):
+        if 'resource_id' in values and self.env['resource.resource'].browse(values['resource_id']).resource_type == 'material':
+            values['state'] = 'published'
         # detach planning entry from recurrency
         if any(fname in values.keys() for fname in self._get_fields_breaking_recurrency()) and not values.get('recurrency_id'):
             values.update({'recurrency_id': False})
-        # warning on published shifts
-        if 'publication_warning' not in values and (set(values.keys()) & set(self._get_fields_breaking_publication())):
-            values['publication_warning'] = True
         result = super(Planning, self).write(values)
         # recurrence
         if any(key in ('repeat', 'repeat_type', 'repeat_until', 'repeat_interval') for key in values):
@@ -939,9 +943,9 @@ class Planning(models.Model):
     def action_unpublish(self):
         if not self.env.user.has_group('planning.group_planning_manager'):
             raise AccessError(_('You are not allowed to reset to draft shifts.'))
-        published_shifts = self.filtered(lambda shift: shift.state == 'published')
+        published_shifts = self.filtered(lambda shift: shift.state == 'published' and shift.resource_type != 'material')
         if published_shifts:
-            published_shifts.write({'state': 'draft'})
+            published_shifts.write({'state': 'draft', 'publication_warning': False,})
             notif_type = "success"
             message = _('The shifts have been successfully reset to draft.')
         else:
@@ -1215,6 +1219,7 @@ class Planning(models.Model):
         """ Fields list triggering the `publication_warning` to True when updating shifts """
         return [
             'resource_id',
+            'resource_type',
             'start_datetime',
             'end_datetime',
             'role_id',

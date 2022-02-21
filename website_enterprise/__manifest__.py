@@ -17,7 +17,10 @@ This module overrides community website features and introduces enterprise look 
     'license': 'OEEL-1',
     'assets': {
         'web.assets_frontend': [
-            'website_enterprise/static/src/**/*',
+            'website_enterprise/static/src/js/*.js',
+        ],
+        'web.assets_backend': [
+            'website_enterprise/static/src/js/systray_items/*.js',
         ],
     }
 }

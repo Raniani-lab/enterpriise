@@ -14,6 +14,9 @@
                     <field name="document_count" widget="statinfo" string="Documents"/>
                 </button>
             </xpath>
+            <field name="user_id" position="after">
+                <field name="documents_share_id" groups="base.group_no_one"/>
+            </field>
         </field>
     </record>
 </odoo>

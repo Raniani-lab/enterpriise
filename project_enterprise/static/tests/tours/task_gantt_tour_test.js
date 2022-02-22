@@ -84,7 +84,7 @@ tour.register('project_enterprise_tour', {
         trigger: 'button[name="action_assign_to_me"]',
         content: 'Assign the task to you',
     }, {
-        trigger: 'button span:contains("Save & Close")',
+        trigger: 'button span:contains("Save")',
         extra_trigger: '.o_field_many2manytags .badge-pill',
         content: 'Save task',
     }, {

@@ -141,9 +141,6 @@
         <field name="priority">1000</field>
         <field name="inherit_id" ref="project.quick_create_task_form"/>
         <field name="arch" type="xml">
-            <field name="name" position="attributes">
-                <attribute name="placeholder">e.g. Boiler replacement</attribute>
-            </field>
             <field name="user_ids" position="attributes">
                 <attribute name="widget">many2many_avatar_user</attribute>
             </field>

@@ -136,6 +136,18 @@
     </record>
 
     <!-- Primary kanban inherit all tasks in fsm must display their date in hours format -->
+    <record id="quick_create_task_form_fsm_inherited" model="ir.ui.view">
+        <field name="name">project.task.form.quick_create_inherited</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.quick_create_task_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="placeholder">e.g. Boiler replacement</attribute>
+            </field>
+        </field>
+    </record>
+
     <record id="project_task_view_kanban_fsm" model="ir.ui.view">
         <field name="name">project.task.kanban.fsm</field>
         <field name="model">project.task</field>
@@ -146,7 +158,7 @@
                 <attribute name="group_create">0</attribute>
                 <attribute name="default_order">planned_date_begin</attribute>
                 <attribute name="class">o_fsm_kanban o_kanban_project_tasks</attribute>
-                <attribute name="quick_create_view">industry_fsm.quick_create_task_form_fsm</attribute>
+                <attribute name="quick_create_view">industry_fsm.quick_create_task_form_fsm_inherited</attribute>
                 <attribute name="on_create">quick_create</attribute>
             </xpath>
         </field>
@@ -353,6 +365,18 @@
             </xpath>
         </field>
     </record>
+    <!-- Tasks with Add stage column -->
+    <record id="project_tasks_view_kanban_action_fsm" model="ir.ui.view">
+        <field name="name">project.tasks.kanban.fsm</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_kanban_fsm_all"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes" t-translation="off">
+                <attribute name="group_create">1</attribute>
+            </xpath>
+        </field>
+    </record>
     <!-- All Tasks: main action -->
     <record id="project_task_action_all_fsm" model="ir.actions.act_window">
         <field name="name">All Tasks</field>
@@ -451,6 +475,56 @@
         <field name="view_mode">form</field>
         <field name="view_id" ref="project.view_task_form2"/>
         <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
+    </record>
+
+     <!-- Tasks: main action -->
+    <record id="project_tasks_action_fsm" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,gantt,calendar,map,pivot,graph,form,activity</field>
+        <field name="search_view_id" ref="project_task_view_search_fsm"/>
+        <field name="domain">[('is_fsm', '=', True), ('display_project_id', '=', active_id)]</field>
+        <field name="context">{
+            'pivot_row_groupby': ['user_ids'],
+            'default_project_id': active_id,
+            'show_project_update': True,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No tasks found. Let's create one!
+            </p><p>
+                To get things done, use activities and status on tasks.<br/>
+                Chat in real-time or by email to collaborate efficiently.
+            </p>
+        </field>
+    </record>
+
+    <record id="project_tasks_action_fsm_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_tasks_view_kanban_action_fsm"/>
+        <field name="act_window_id" ref="project_tasks_action_fsm"/>
+    </record>
+
+    <record id="project_tasks_action_fsm_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_task_view_list_fsm"/>
+        <field name="act_window_id" ref="project_tasks_action_fsm"/>
+    </record>
+
+    <record id="project_tasks_action_fsm_view_calendar" model="ir.actions.act_window.view">
+        <field name="sequence" eval="30"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="project_task_view_calendar_fsm"/>
+        <field name="act_window_id" ref="project_tasks_action_fsm"/>
+    </record>
+
+    <record id="project_tasks_action_fsm_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="40"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project.view_task_form2"/>
+        <field name="act_window_id" ref="project_tasks_action_fsm"/>
     </record>
 
     <!-- Planning : by users -->
@@ -608,12 +682,56 @@
         </field>
     </record>
 
+    <record id="project_project_view_form_simplified_footer_fsm" model="ir.ui.view">
+        <field name="name">project.project.view.form.simplified</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="after">
+                <footer>
+                    <button string="Create" name="%(industry_fsm.project_tasks_action_fsm)d" type="action" class="btn-primary o_open_tasks" data-hotkey="q"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="open_create_project_fsm" model="ir.actions.act_window">
+        <field name="name">Create a Project</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="industry_fsm.project_project_view_form_simplified_footer_fsm"/>
+        <field name="target">new</field>
+        <field name="context">{"default_allow_billable": 1}</field>
+    </record>
+
+    <record id="view_project_kanban_fsm" model="ir.ui.view">
+        <field name="name">project.project.kanban</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="on_create">industry_fsm.open_create_project_fsm</attribute>
+            </xpath>
+            <xpath expr='//a[@name="action_view_tasks"]' position='attributes'>
+                <attribute name="name">%(industry_fsm.project_tasks_action_fsm)d</attribute>
+                <attribute name="type">action</attribute>
+            </xpath>
+            <xpath expr="//a[@name='action_view_tasks'][hasclass('o_project_kanban_box')]" position='attributes'>
+                <attribute name="name">%(industry_fsm.project_tasks_action_fsm)d</attribute>
+                <attribute name="type">action</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_project_action_only_fsm" model="ir.actions.act_window" >
         <field name="name">Projects</field>
         <field name="res_model">project.project</field>
         <field name="domain">[('is_fsm', '=', True)]</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="view_id" ref="project.view_project"/>
+        <field name="view_id" eval="False"/>
         <field name="search_view_id" ref="industry_fsm.view_project_project_filter_inherit_industry_fsm"/>
         <field name="target">main</field>
         <field name="context">{
@@ -635,7 +753,7 @@
     <record id="project_project_action_only_fsm_view_kanban" model="ir.actions.act_window.view">
         <field name="sequence" eval="25"/>
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="project.view_project_kanban"/>
+        <field name="view_id" ref="industry_fsm.view_project_kanban_fsm"/>
         <field name="act_window_id" ref="project_project_action_only_fsm"/>
     </record>
 

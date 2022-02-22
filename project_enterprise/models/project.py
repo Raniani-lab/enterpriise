@@ -73,6 +73,12 @@ class Task(models.Model):
             result.update(planned_date_begin=planned_date_begin, planned_date_end=planned_date_end)
         return result
 
+    def action_unschedule_task(self):
+        self.write({
+            'planned_date_begin': False,
+            'planned_date_end': False
+        })
+
     @api.depends('stage_id')
     def _compute_display_warning_dependency_in_gantt(self):
         for task in self:

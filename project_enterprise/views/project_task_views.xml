@@ -29,6 +29,22 @@
         </field>
     </record>
 
+    <record id="project_task_view_form_in_gantt" model="ir.ui.view">
+        <field name="name">project.task.view.form.gantt</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_task_view_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="after">
+                <footer>
+                    <button string="Save" special="save" data-hotkey="v" class="btn btn-primary" close="1"/>
+                    <button name="action_unschedule_task" string="Unschedule" type="object" data-hotkey="u" class="btn btn-secondary" close="1" attrs="{'invisible': [('id', '=', False)]}"/>
+                    <button string="Discard" special="cancel" data-hotkey="z" class="btn btn-secondary"/>
+                </footer>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Adding manager gantt view to Project -->
     <record id="project_task_view_gantt" model="ir.ui.view">
         <field name="name">project.task.view.gantt</field>
@@ -36,6 +52,7 @@
         <field name="priority">10</field>
         <field name="arch" type="xml">
             <gantt date_start="planned_date_begin"
+                form_view_id="%(project_task_view_form_in_gantt)d"
                 date_stop="planned_date_end"
                 default_scale="month"
                 scales="week,month,year"

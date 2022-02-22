@@ -568,7 +568,7 @@ class HrContractSalary(http.Controller):
             contract.write(vals)
         else:
             contract = request.env['hr.contract'].sudo().with_context(tracking_disable=True).create(vals)
-
+            contract.final_yearly_costs = float(contract_values['final_yearly_costs'] or 0.0)
         return contract
 
     @http.route('/salary_package/update_salary', type="json", auth="public")

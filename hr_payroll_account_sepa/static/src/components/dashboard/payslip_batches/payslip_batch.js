@@ -13,6 +13,7 @@ export class PayrollDashboardPayslipBatchAdapter extends ComponentAdapter {
      */
     setup() {
         // FieldBinaryFile requires getSession which requires the legacy environment.
+        super.setup();
         this.env = owl.Component.env;
     }
 }
@@ -39,7 +40,7 @@ patch(PayrollDashboardPayslipBatch.prototype, 'payroll_sepa', {
      * @param batchData data from hr.payslip.run
      * @returns a fake record with the necessary data to render the widget
      */
-    generateRecord(batchData) {
+    _generateRecord(batchData) {
         return {
             id: batchData.id,
             res_id: batchData.id,

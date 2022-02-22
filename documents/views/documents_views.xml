@@ -432,6 +432,7 @@
                                 </div>
                             </div>
                             <field name="folder_id" readonly="1" attrs="{'invisible' : [('type', 'in', ['ids'])] }"/>
+                            <field name="include_sub_folders" readonly="1" attrs="{'invisible' : [('type', 'in', ['ids'])] }"/>
                             <field name="tag_ids" readonly="1" groups="base.group_no_one" widget="many2many_tags" attrs="{'invisible' : [('type', 'in', ['ids'])] }"/>
                         </group>
                     </group>
@@ -487,6 +488,7 @@
                             <i class="fa fa-tag o_documents_tag_color ml-2" attrs="{'invisible': [('tag_ids', '=', [])]}" title="Tags"/>
                             <field name="tag_ids" readonly="1" widget="many2many_tags"/>
                         </div>
+                        <field name="include_sub_folders"/>
                     </group>
                     <group>
                         <group>

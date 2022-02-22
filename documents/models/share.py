@@ -17,6 +17,7 @@ class DocumentShare(models.Model):
     _description = 'Documents Share'
 
     folder_id = fields.Many2one('documents.folder', string="Workspace", required=True)
+    include_sub_folders = fields.Boolean()
     name = fields.Char(string="Name")
 
     access_token = fields.Char(required=True, default=lambda x: str(uuid.uuid4()), groups="documents.group_documents_user")
@@ -80,7 +81,10 @@ class DocumentShare(models.Model):
         Documents = limited_self.env['documents.document']
 
         search_ids = set()
-        domains = [[('folder_id', '=', self.folder_id.id)]]
+        if self.include_sub_folders:
+            domains = [[('folder_id', 'child_of', self.folder_id.id)]]
+        else:
+            domains = [[('folder_id', '=', self.folder_id.id)]]
 
         if document_ids is not None:
             if not document_ids:

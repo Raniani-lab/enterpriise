@@ -492,9 +492,11 @@ class AccountMove(models.Model):
 
         return super().button_draft()
 
-    def _reverse_moves(self, default_values_list, cancel=False):
+    def _reverse_moves(self, default_values_list=None, cancel=False):
         # OVERRIDE
         # The '01' code is used to indicate the document is a credit note.
+        if not default_values_list:
+            default_values_list = [{}] * len(self)
 
         for default_vals, move in zip(default_values_list, self):
             if move.l10n_mx_edi_cfdi_uuid:

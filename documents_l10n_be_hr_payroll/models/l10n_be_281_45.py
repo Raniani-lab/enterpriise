@@ -12,16 +12,11 @@ class L10nBe28145(models.Model):
     @api.depends('company_id.documents_payroll_folder_id', 'company_id.documents_hr_settings')
     def _compute_documents_enabled(self):
         for wizard in self:
-            wizard.documents_enabled = self._payroll_documents_enabled() and all(not line.pdf_to_generate for line in wizard.line_ids)
-
-    @api.model
-    def _payroll_documents_enabled(self):
-        company = self.env.company
-        return company.documents_payroll_folder_id and company.documents_hr_settings
+            wizard.documents_enabled = self.env.company._payroll_documents_enabled() and all(not line.pdf_to_generate for line in wizard.line_ids)
 
     def action_post_in_documents(self):
         self.ensure_one()
-        if not self._payroll_documents_enabled():
+        if not self.env.company._payroll_documents_enabled():
             return
         self.line_ids.write({'pdf_to_post': True})
         self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()

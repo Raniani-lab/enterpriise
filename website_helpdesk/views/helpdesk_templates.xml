@@ -244,7 +244,7 @@
                         By Tags
                     </t>
                 </a>
-                <div class="dropdown-menu whelpdesk_tags_dropdown">
+                <div class="dropdown-menu whelpdesk_tags_dropdown overflow-auto">
                     <a t-attf-class="dropdown-item o_dropdown_reset_tags {{'active' if not current_tag else ''}}" t-attf-href="?{{keep_query('search', 'date', 'type')}}">
                         All Tags
                     </a>
@@ -317,7 +317,7 @@
                             <t t-if="not results">
                                 <p class="text-center">No results found. Please try another search.</p>
                             </t>
-                            <div t-foreach="results" t-as="result" class="whelpdesk_result">
+                            <div t-foreach="results" t-as="result" class="whelpdesk_result mb-3">
                                 <t t-call="{{ result['template'] }}">
                                     <t t-set="record" t-value="result['record']" />
                                     <t t-set="url" t-value="result['url']" />

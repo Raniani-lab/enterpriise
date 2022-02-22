@@ -1,35 +1,18 @@
 .whelpdesk_tags_dropdown {
-    max-height: 60vh;
-    overflow: auto;
+    // Show a maximum of 7 items. 
+    max-height: $dropdown-padding-y * 2 + ($dropdown-font-size * $o-line-height-base + $dropdown-item-padding-y * 2) * 7;
 }
 
-.whelpdesk_search_results {
+.whelpdesk_search_description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    
     p {
-        margin-bottom: 0.3rem;
-    }
-
-    .whelpdesk_result {
-        margin-bottom: 1rem;
-
-        .whelpdesk_search_description {
-            display: -webkit-box;
-            word-break: break-word;
-            max-height: 80px;
-            line-height: 20px;
-            overflow: hidden;
-            line-clamp: 4;
-            -moz-box-orient: vertical;
-            -moz-line-clamp: 4;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 4;
-        }
+        margin-bottom: 0.25rem;
     }
 }
 
-#about_team {
-    span[data-oe-model="helpdesk.team"][data-oe-field="description"] {
-        *:last-child {
-            margin-bottom: 0;
-        }
-    }
+#about_team [data-oe-field="description"] *:last-child {
+    margin-bottom: 0;
 }

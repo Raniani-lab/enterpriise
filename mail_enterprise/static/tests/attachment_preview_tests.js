@@ -31,6 +31,12 @@ QUnit.module('attachment_preview_tests.js', {
                     display_name: "first partner",
                     foo: "HELLO",
                     message_ids: [],
+                }, {
+                    id: 10,
+                    message_attachment_count: 0,
+                    display_name: "first partner",
+                    foo: "HELLO",
+                    message_ids: [],
                 }],
             },
         });
@@ -39,6 +45,67 @@ QUnit.module('attachment_preview_tests.js', {
         afterEach(this);
     },
 }, function () {
+
+    QUnit.test('Should not have attachment preview for still uploading attachment', async function (assert) {
+        assert.expect(2);
+
+        this.data['res.partner'].records.push({id: 10 });
+        let form;
+        await afterNextRender(async () => { // because of chatter container
+            const { env, widget } = await start({
+                hasView: true,
+                View: FormView,
+                model: 'res.partner',
+                data: this.data,
+                arch: '<form string="Partners">' +
+                        '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                        '<div class="oe_chatter">' +
+                            '<field name="message_ids"/>' +
+                        '</div>' +
+                    '</form>',
+                // FIXME could be removed once task-2248306 is done
+                archs: {
+                    'mail.message,false,list': '<tree/>',
+                },
+                config: {
+                    device: {
+                        size_class: config.device.SIZES.XXL,
+                    },
+                },
+                res_id: 10,
+                async mockRPC(route, args) {
+                    if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
+                        assert.step("pdf viewer");
+                    }
+                    return this._super.apply(this, arguments);
+                },
+                async mockFetch(resource, init) {
+                    const res = this._super(...arguments);
+                    if (resource === '/mail/attachment/upload') {
+                        await new Promise(() => {});
+                    }
+                    return res;
+                }
+            });
+            this.env = env;
+            form = widget;
+        });
+
+        await afterNextRender(() =>
+            document.querySelector('.o_ChatterTopbar_buttonAttachments').click()
+        );
+        const files = [
+            await createFile({ name: 'invoice.pdf', contentType: 'application/pdf' }),
+        ];
+        const messaging = await this.env.services.messaging.get();
+        const chatter = messaging.models['Chatter'].all()[0];
+        await afterNextRender(() =>
+            inputFiles(chatter.attachmentBoxView.fileUploader.fileInput, files)
+        );
+        assert.containsNone(form, '.o_attachment_preview_container');
+        assert.verifySteps([], "The page should never render a PDF while it is uploading, as the uploading is blocked in this test we should never render a PDF preview");
+        form.destroy();
+    });
 
     QUnit.test('Attachment on side', async function (assert) {
         assert.expect(10);

@@ -262,10 +262,10 @@
                 <separator/>
                 <filter string="My Roles" name="my_role" domain="[('role_id.employee_ids.user_id','=', uid)]" groups="planning.group_planning_user"/>
                 <separator/>
-                <filter name="conflict_shifts" string="Shifts in Conflict" domain="[('overlap_slot_count', '>', 0)]"/>
+                <filter name="conflict_shifts" string="Shifts in Conflict" domain="[('overlap_slot_count', '>', 0)]" groups="planning.group_planning_user"/>
                 <separator/>
-                <filter string="Human" name="human" domain="[('resource_type','=', 'user')]"/>
-                <filter string="Material" name="material" domain="[('resource_type','=', 'material')]"/>
+                <filter string="Human" name="human" domain="[('resource_type','=', 'user')]" groups="planning.group_planning_user"/>
+                <filter string="Material" name="material" domain="[('resource_type','=', 'material')]" groups="planning.group_planning_user"/>
                 <separator/>
                 <filter name="unpublished_shifts" string="Draft" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
                 <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>

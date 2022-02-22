@@ -1597,7 +1597,7 @@ class Planning(models.Model):
         if field == 'resource_id':
             return dict(
                 self._gantt_progress_bar_resource_id(res_ids, start, stop),
-                warning=_("This resource isn't expected to have a shift during this period. Planned hours :")
+                warning=_("As there is no running contract during this period, this resource is not expected to work a shift. Planned hours:")
             )
         raise NotImplementedError("This Progress Bar is not implemented.")
 

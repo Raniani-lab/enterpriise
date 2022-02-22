@@ -4,7 +4,7 @@
         <field name="name">Tags</field>
         <field name="model">planning.tag</field>
         <field name="arch" type="xml">
-            <tree editable="top" string="Tags" sample="1" multi_edit="1">
+            <tree editable="bottom" string="Tags" sample="1" multi_edit="1">
                 <field name="name"/>
                 <field name="color" widget="color_picker" optional="show"/>
             </tree>

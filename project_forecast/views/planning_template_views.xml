@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id"/>
-                <field name="task_id"/>
+                <field name="task_id" context="{'default_project_id': project_id}"/>
             </xpath>
         </field>
     </record>

@@ -22,11 +22,11 @@ odoo.define('planning.tour', function (require) {
     }, {
         trigger: ".o_field_widget[name='resource_id']",
         content: _t("Assign this shift to your <b>resource</b>, or leave it open for the moment."),
-        position: "bottom",
+        position: "right",
     }, {
         trigger: ".o_field_widget[name='role_id']",
         content: _t("Select the <b>role</b> your employee will have (<i>e.g. Chef, Bartender, Waiter, etc.</i>)."),
-        position: "bottom",
+        position: "right",
     }, {
         trigger: "button[special='save']",
         content: _t("Save this shift once it is ready."),

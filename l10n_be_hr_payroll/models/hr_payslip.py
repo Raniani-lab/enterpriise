@@ -60,7 +60,7 @@ class Payslip(models.Model):
                     })]})
         return res
 
-    @ormcache('self.employee_id', 'self.date_from', 'self.date_to', 'tuple([self.env.context.get("salary_simulation", False)])')
+    @ormcache('self.employee_id', 'self.date_from', 'self.date_to')
     def _get_period_contracts(self):
         # Returns all the employee contracts over the same payslip period, to avoid
         # double remunerations for some line codes

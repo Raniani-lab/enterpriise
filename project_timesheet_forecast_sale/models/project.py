@@ -44,7 +44,7 @@ class Project(models.Model):
         sols = self._get_sale_order_lines()
         sold_items = super()._get_sold_items()
         sold_items['allow_forecast'] = self.allow_forecast
-        planned_hours = self.env['planning.slot'].read_group([
+        planned_hours = self.env['planning.slot']._read_group([
             ('start_datetime', '>=', fields.Date.today()),
             '|',
             ('project_id', '=', self.id),

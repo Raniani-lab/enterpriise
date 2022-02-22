@@ -22,7 +22,7 @@ class SaleOrderLine(models.Model):
         super(SaleOrderLine, self - planning_forecast_sols)._compute_planning_hours_planned()
         if planning_forecast_sols:
             # Search for validated timesheets, and the most recent date of validated timesheets
-            group_unit_amount = self.env['account.analytic.line'].read_group([
+            group_unit_amount = self.env['account.analytic.line']._read_group([
                 ('validated', '=', True),
                 ('so_line', 'in', planning_forecast_sols.ids),
                 ('project_id', '!=', False),
@@ -45,7 +45,7 @@ class SaleOrderLine(models.Model):
                 else:
                     planning_domain = [('sale_line_id', 'in', sol_without_validated_aal), ('start_datetime', '!=', False)]
             # Search for the allocated hours on the slots in the domain
-            group_allocated_hours = PlanningSlot.with_context(sale_planning_prevent_recompute=True).read_group(
+            group_allocated_hours = PlanningSlot.with_context(sale_planning_prevent_recompute=True)._read_group(
                 expression.AND([[('start_datetime', '!=', False)], planning_domain]),
                 ['sale_line_id', 'allocated_hours'],
                 ['sale_line_id'])

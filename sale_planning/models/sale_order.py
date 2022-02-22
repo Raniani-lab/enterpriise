@@ -15,7 +15,7 @@ class SaleOrder(models.Model):
 
     @api.depends('order_line.planning_hours_to_plan', 'order_line.planning_hours_planned')
     def _compute_planning_hours(self):
-        group_data = self.env['sale.order.line'].read_group([
+        group_data = self.env['sale.order.line']._read_group([
             ('order_id', 'in', self.ids),
         ], ['order_id', 'planning_hours_to_plan', 'planning_hours_planned'], ['order_id'])
         mapped_data = defaultdict(lambda: {'planning_hours_to_plan': 0.0, 'planning_hours_planned': 0.0})
@@ -44,7 +44,7 @@ class SaleOrder(models.Model):
 
     @api.depends('order_line.planning_slot_ids.start_datetime')
     def _compute_planning_initial_date(self):
-        group_data = self.env['planning.slot'].read_group([
+        group_data = self.env['planning.slot']._read_group([
             ('sale_order_id', 'in', self.ids)
         ], ['sale_order_id', 'start_datetime:min'], ['sale_order_id'])
         mapped_data = {data['sale_order_id'][0]: data['start_datetime'] for data in group_data}

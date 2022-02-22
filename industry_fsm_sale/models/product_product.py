@@ -20,7 +20,7 @@ class ProductProduct(models.Model):
                 task = task.sudo()
                 SaleOrderLine = SaleOrderLine.sudo()
 
-            products_qties = SaleOrderLine.read_group(
+            products_qties = SaleOrderLine._read_group(
                 [('id', 'in', task.sale_order_id.order_line.ids), ('task_id', '=', task.id)],
                 ['product_id', 'product_uom_qty'], ['product_id'])
             qty_dict = dict([(x['product_id'][0], x['product_uom_qty']) for x in products_qties if x['product_id']])
@@ -33,7 +33,7 @@ class ProductProduct(models.Model):
         task = self._get_contextual_fsm_task()
         if task:
             SaleOrderLine_sudo = self.env['sale.order.line'].sudo()
-            sale_lines_read_group = SaleOrderLine_sudo.read_group([
+            sale_lines_read_group = SaleOrderLine_sudo._read_group([
                 ('order_id', '=', task.sale_order_id.id),
                 ('product_id', 'in', self.ids),
                 ('task_id', '=', task.id)],

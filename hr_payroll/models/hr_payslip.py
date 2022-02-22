@@ -1050,7 +1050,7 @@ class HrPayslip(models.Model):
 
         # Retrieve employees with both draft and running contracts
         ambiguous_domain = [('company_id', 'in', self.env.companies.ids), ('state', 'in', ('draft', 'open'))]
-        employee_contract_groups = self.env['hr.contract'].read_group(
+        employee_contract_groups = self.env['hr.contract']._read_group(
             ambiguous_domain,
             fields=['state:count_distinct'], groupby=['employee_id'])
         ambiguous_employee_ids = [

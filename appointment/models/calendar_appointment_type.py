@@ -72,7 +72,7 @@ class CalendarAppointmentType(models.Model):
     appointment_count = fields.Integer('# Appointments', compute='_compute_appointment_count')
 
     def _compute_appointment_count(self):
-        meeting_data = self.env['calendar.event'].read_group([('appointment_type_id', 'in', self.ids)], ['appointment_type_id'], ['appointment_type_id'])
+        meeting_data = self.env['calendar.event']._read_group([('appointment_type_id', 'in', self.ids)], ['appointment_type_id'], ['appointment_type_id'])
         mapped_data = {m['appointment_type_id'][0]: m['appointment_type_id_count'] for m in meeting_data}
         for appointment_type in self:
             appointment_type.appointment_count = mapped_data.get(appointment_type.id, 0)

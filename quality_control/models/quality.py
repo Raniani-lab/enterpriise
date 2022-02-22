@@ -373,7 +373,7 @@ class ProductProduct(models.Model):
     def _count_quality_checks(self):
         quality_fail_qty = 0
         quality_pass_qty = 0
-        quality_checks_by_state = self.env['quality.check'].read_group(
+        quality_checks_by_state = self.env['quality.check']._read_group(
             [('product_id', 'in', self.ids), ('company_id', '=', self.env.company.id), ('quality_state', '!=', 'none')],
             ['product_id'],
             ['quality_state']

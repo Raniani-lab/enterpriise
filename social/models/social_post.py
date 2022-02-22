@@ -80,7 +80,7 @@ class SocialPost(models.Model):
 
     @api.depends('live_post_ids.engagement')
     def _compute_post_engagement(self):
-        results = self.env['social.live.post'].read_group(
+        results = self.env['social.live.post']._read_group(
             [('post_id', 'in', self.ids)],
             ['post_id', 'engagement_total:sum(engagement)'],
             ['post_id'],

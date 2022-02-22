@@ -72,7 +72,7 @@ class AmazonAccount(models.Model):
         # This has trivial impact on performance since the field is rarely computed and the set
         # of accounts will always be of minimal size.
         for account in self:
-            account.order_count = len(self.env['sale.order.line'].read_group(
+            account.order_count = len(self.env['sale.order.line']._read_group(
                 [('amazon_offer_id.account_id', '=', account.id)], ['order_id'], ['order_id']))
     
     def _compute_offer_count(self):

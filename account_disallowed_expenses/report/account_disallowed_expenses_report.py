@@ -37,7 +37,7 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
         options = super(AccountDisallowedExpensesReport, self)._get_options(previous_options)
         # check if there are multiple rates
         period_domain = [('date_from', '>=', options['date']['date_from']), ('date_from', '<=', options['date']['date_to'])]
-        rg = self.env['account.disallowed.expenses.rate'].read_group(period_domain, ['rate'], 'category_id')
+        rg = self.env['account.disallowed.expenses.rate']._read_group(period_domain, ['rate'], 'category_id')
         options['multi_rate_in_period'] = any(cat['category_id_count'] > 1 for cat in rg)
         return options
 

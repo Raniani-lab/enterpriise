@@ -22,7 +22,7 @@ class SaleOrder(models.Model):
     def _compute_subscription_count(self):
         """Compute the number of distinct subscriptions linked to the order."""
         for order in self:
-            sub_count = len(self.env['sale.order.line'].read_group([('order_id', '=', order.id), ('subscription_id', '!=', False)],
+            sub_count = len(self.env['sale.order.line']._read_group([('order_id', '=', order.id), ('subscription_id', '!=', False)],
                                                     ['subscription_id'], ['subscription_id']))
             order.subscription_count = sub_count
 

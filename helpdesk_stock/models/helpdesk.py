@@ -21,13 +21,13 @@ class HelpdeskTicket(models.Model):
 
     @api.depends('partner_id')
     def _compute_suitable_product_ids(self):
-        sale_data = self.env['sale.order.line'].read_group([
+        sale_data = self.env['sale.order.line']._read_group([
             ('order_id.state', '=', 'sale'),
             ('order_partner_id', 'in', self.mapped('partner_id').ids)
         ], ['order_partner_id', 'product_id:array_agg(product_id)'], ['order_partner_id'], lazy=False)
         order_data = {data['order_partner_id'][0]: data['product_id'] for data in sale_data}
 
-        picking_data = self.env['stock.picking'].read_group([
+        picking_data = self.env['stock.picking']._read_group([
             ('state', '=', 'done'),
             ('partner_id', 'in', self.mapped('partner_id').ids),
             ('picking_type_code', '=', 'outgoing'),
@@ -37,7 +37,7 @@ class HelpdeskTicket(models.Model):
         picking_ids = [picking for key, picking in picking_mapped_data.items()]
         outoing_product = {}
         if picking_ids and picking_ids[0]:
-            move_line_data = self.env['stock.move.line'].read_group([
+            move_line_data = self.env['stock.move.line']._read_group([
                 ('state', '=', 'done'),
                 ('picking_id', 'in', picking_ids[0]),
                 ('picking_code', '=', 'outgoing'),

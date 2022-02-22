@@ -59,7 +59,7 @@ class analytic_report(models.AbstractModel):
 
         currency_obj = self.env['res.currency']
         company_currency = self.env.company.currency_id
-        analytic_lines = self.env['account.analytic.line'].read_group(analytic_line_domain_for_group, ['amount', 'currency_id'], ['currency_id'])
+        analytic_lines = self.env['account.analytic.line']._read_group(analytic_line_domain_for_group, ['amount', 'currency_id'], ['currency_id'])
         balance = sum([currency_obj.browse(row['currency_id'][0])._convert(
             row['amount'], company_currency, self.env.company, fields.Date.today()) for row in analytic_lines])
         return balance

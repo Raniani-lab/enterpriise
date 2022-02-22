@@ -12,7 +12,7 @@ class ProjectTask(models.Model):
 
     def _get_task_document_data(self):
         domain = [('res_model', '=', 'project.task'), ('res_id', 'in', self.ids)]
-        documents_data = self.env['documents.document'].read_group(domain, ['res_id'], ['res_id'])
+        documents_data = self.env['documents.document']._read_group(domain, ['res_id'], ['res_id'])
         return {document_data['res_id']: document_data['res_id_count'] for document_data in documents_data}
 
     def _compute_attached_document_count(self):

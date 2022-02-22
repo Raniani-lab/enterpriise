@@ -20,7 +20,7 @@ class HelpdeskTeam(models.Model):
         if not helpdesk_timesheet_teams:
             self.total_timesheet_time = 0.0
             return
-        timesheets_read_group = self.env['account.analytic.line'].read_group(
+        timesheets_read_group = self.env['account.analytic.line']._read_group(
             [('helpdesk_ticket_id', 'in', helpdesk_timesheet_teams.ticket_ids.filtered(lambda x: not x.stage_id.is_close).ids)],
             ['helpdesk_ticket_id', 'unit_amount', 'product_uom_id'],
             ['helpdesk_ticket_id', 'product_uom_id'],

@@ -10,7 +10,7 @@ class Partner(models.Model):
     document_count = fields.Integer('Document Count', compute='_compute_document_count')
 
     def _compute_document_count(self):
-        read_group_var = self.env['documents.document'].read_group(
+        read_group_var = self.env['documents.document']._read_group(
             [('partner_id', 'in', self.ids)],
             fields=['partner_id'],
             groupby=['partner_id'])

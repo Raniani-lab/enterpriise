@@ -11,7 +11,7 @@ class Project(models.Model):
 
     @api.depends('analytic_account_id')
     def _compute_budget(self):
-        budget_items = self.env['crossovered.budget.lines'].read_group([
+        budget_items = self.env['crossovered.budget.lines']._read_group([
             ('analytic_account_id', 'in', self.analytic_account_id.ids)
         ], ['analytic_account_id', 'planned_amount'], ['analytic_account_id'])
         budget_items_by_account_analytic = {res['analytic_account_id'][0]: res['planned_amount'] for res in budget_items}

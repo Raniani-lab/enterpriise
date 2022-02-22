@@ -18,7 +18,7 @@ class Project(models.Model):
                                          help="Total number of forecast hours in the project rounded to the unit.")
 
     def _compute_total_forecast_time(self):
-        shifts_read_group = self.env['planning.slot'].read_group(
+        shifts_read_group = self.env['planning.slot']._read_group(
             [('start_datetime', '!=', False), ('end_datetime', '!=', False), ('project_id', 'in', self.ids)],
             ['project_id', 'allocated_hours'],
             ['project_id'],
@@ -78,7 +78,7 @@ class Task(models.Model):
             self._get_domain_compute_forecast_hours(),
             [('task_id', 'in', self.ids + self._get_all_subtasks().ids)]
         ])
-        forecast_data = self.env['planning.slot'].read_group(domain, ['allocated_hours', 'task_id'], ['task_id'])
+        forecast_data = self.env['planning.slot']._read_group(domain, ['allocated_hours', 'task_id'], ['task_id'])
         mapped_data = dict([(f['task_id'][0], f['allocated_hours']) for f in forecast_data])
         for task in self:
             hours = mapped_data.get(task.id, 0) + sum(mapped_data.get(child_task.id, 0) for child_task in task._get_all_subtasks())

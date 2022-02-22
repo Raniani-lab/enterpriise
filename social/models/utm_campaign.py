@@ -29,7 +29,7 @@ class UtmCampaign(models.Model):
 
     def _compute_social_posts_count(self):
         domain = expression.AND([self._get_social_posts_domain(), [('utm_campaign_id', 'in', self.ids)]])
-        post_data = self.env['social.post'].read_group(
+        post_data = self.env['social.post']._read_group(
             domain,
             ['utm_campaign_id'], ['utm_campaign_id']
         )

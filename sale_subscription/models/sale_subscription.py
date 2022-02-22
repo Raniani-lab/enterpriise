@@ -138,7 +138,7 @@ class SaleSubscription(models.Model):
     def _compute_sale_order_count(self):
         sol = self.env['sale.order.line']
         if sol.check_access_rights('read', raise_exception=False):
-            raw_data = sol.read_group(
+            raw_data = sol._read_group(
                 [('subscription_id', 'in', self.ids)],
                 ['subscription_id', 'order_id'],
                 ['subscription_id', 'order_id'],
@@ -252,7 +252,7 @@ class SaleSubscription(models.Model):
         if not can_read:
             self.update({'invoice_count': 0})
             return
-        res = self.env['account.move.line'].read_group(
+        res = self.env['account.move.line']._read_group(
             [('subscription_id', 'in', self.ids)], ['move_id:count_distinct'], ['subscription_id'])
         invoice_count_dict = {r['subscription_id'][0]: r['move_id'] for r in res}
         for subscription in self:

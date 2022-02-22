@@ -55,7 +55,7 @@ class HelpdeskTicket(models.Model):
     @api.depends_context('uid')
     @api.depends('forum_post_ids')
     def _compute_forum_post_count(self):
-        rg = self.env['forum.post'].read_group([('can_view', '=', True), ('id', 'in', self.forum_post_ids.ids)], ['ticket_id'], ['ticket_id'])
+        rg = self.env['forum.post']._read_group([('can_view', '=', True), ('id', 'in', self.forum_post_ids.ids)], ['ticket_id'], ['ticket_id'])
         posts_count = {r['ticket_id'][0]: r['ticket_id_count'] for r in rg}
         for ticket in self:
             ticket.forum_post_count = posts_count.get(ticket.id, 0)

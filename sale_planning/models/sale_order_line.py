@@ -36,7 +36,7 @@ class SaleOrderLine(models.Model):
         sol_planning = self.filtered_domain([('product_id.planning_enabled', '=', True), ('state', 'not in', ['draft', 'sent'])])
         if sol_planning:
             # For every confirmed SO service lines with slot generation, the allocated hours on planned slots are summed
-            group_data = PlanningSlot.with_context(sale_planning_prevent_recompute=True).read_group([
+            group_data = PlanningSlot.with_context(sale_planning_prevent_recompute=True)._read_group([
                 ('sale_line_id', 'in', sol_planning.ids),
                 ('start_datetime', '!=', False)
             ], ['sale_line_id', 'allocated_hours:sum'], ['sale_line_id'])

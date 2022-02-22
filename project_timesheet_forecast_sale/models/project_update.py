@@ -16,7 +16,7 @@ class ProjectUpdate(models.Model):
             service['sol'].id
             for service in services['data']
         ]
-        slots = self.env['planning.slot'].read_group([
+        slots = self.env['planning.slot']._read_group([
             ('order_line_id', 'in', sol_ids),
             ('start_datetime', '>=', fields.Date.today())
         ], ['order_line_id', 'allocated_hours'], ['order_line_id'])

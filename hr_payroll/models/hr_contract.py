@@ -187,7 +187,7 @@ class HrContract(models.Model):
         work_data = defaultdict(int)
 
         # First, found work entry that didn't exceed interval.
-        work_entries = self.env['hr.work.entry'].read_group(
+        work_entries = self.env['hr.work.entry']._read_group(
             self._get_work_hours_domain(date_from, date_to, domain=domain, inside=True),
             ['hours:sum(duration)'],
             ['work_entry_type_id']

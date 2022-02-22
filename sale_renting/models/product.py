@@ -95,7 +95,7 @@ class ProductProduct(models.Model):
         Note: we don't use product.with_context(location=self.env.company.rental_loc_id.id).qty_available
         because there are no stock moves for services (which can be rented).
         """
-        active_rental_lines = self.env['sale.order.line'].read_group(
+        active_rental_lines = self.env['sale.order.line']._read_group(
             domain=self._get_qty_in_rent_domain(),
             fields=['product_id', 'qty_delivered:sum', 'qty_returned:sum'],
             groupby=['product_id'],

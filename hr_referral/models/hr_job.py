@@ -22,7 +22,7 @@ class Job(models.Model):
 
     def _compute_clicks(self):
         if self.env.user.utm_source_id:
-            grouped_data = self.env['link.tracker'].read_group([
+            grouped_data = self.env['link.tracker']._read_group([
                 ('source_id', '=', self.env.user.utm_source_id.id),
                 ('campaign_id', 'in', self.mapped('utm_campaign_id').ids)
                 ], ['count', 'campaign_id', 'medium_id'], ['campaign_id', 'medium_id'], lazy=False)

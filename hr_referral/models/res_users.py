@@ -24,7 +24,7 @@ class ResUsers(models.Model):
         reward_responsible_group = self.env.ref('hr_referral.group_hr_referral_reward_responsible_user', raise_if_not_found=False)
         if not self or not reward_responsible_group:
             return
-        res = self.env['hr.referral.reward'].read_group(
+        res = self.env['hr.referral.reward']._read_group(
             [('gift_manager_id', 'in', self.ids)],
             ['gift_manager_id'],
             ['gift_manager_id'])

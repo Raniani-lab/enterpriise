@@ -339,7 +339,7 @@ class HelpdeskTicket(models.Model):
 
     @api.depends('sla_status_ids.deadline', 'sla_status_ids.reached_datetime')
     def _compute_sla_reached(self):
-        sla_status_read_group = self.env['helpdesk.sla.status'].read_group(
+        sla_status_read_group = self.env['helpdesk.sla.status']._read_group(
             [('exceeded_hours', '<', 0), ('ticket_id', 'in', self.ids)],
             ['ticket_id', 'ids:array_agg(id)'],
             ['ticket_id'],

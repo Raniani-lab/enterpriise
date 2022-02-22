@@ -17,7 +17,7 @@ class WebsiteVisitor(models.Model):
 
     @api.depends('event_track_visitor_ids.track_id')
     def _compute_event_track_push_enabled_ids(self):
-        results = self.env['event.track.visitor'].read_group(
+        results = self.env['event.track.visitor']._read_group(
             [('visitor_id', 'in', self.ids), ('is_blacklisted', '!=', True)],
             ['visitor_id', 'track_id:array_agg'],
             ['visitor_id']

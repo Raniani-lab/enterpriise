@@ -34,7 +34,7 @@ class ProjectTask(models.Model):
         if is_portal_user:
             subtasks_per_task = {task.id: task.sudo().with_context(active_test=False)._get_all_subtasks() for task in self}
             all_task_ids = [t.id for subtasks in subtasks_per_task.values() for t in subtasks] + self.ids
-            timesheet_read_group = self.env['account.analytic.line'].read_group(
+            timesheet_read_group = self.env['account.analytic.line']._read_group(
                 [
                     ('project_id', '!=', False),
                     ('task_id', 'in', all_task_ids),
@@ -75,7 +75,7 @@ class ProjectTask(models.Model):
             # We need to check if configuration
             param_invoiced_timesheet = self.env['ir.config_parameter'].sudo().get_param('sale.invoiced_timesheet', DEFAULT_INVOICED_TIMESHEET)
             if param_invoiced_timesheet == 'approved':
-                timesheets_read_group = self.env['account.analytic.line'].read_group(
+                timesheets_read_group = self.env['account.analytic.line']._read_group(
                     [('task_id', 'in', self.ids), ('validated', '=', True)],
                     ['ids:array_agg(id)', 'task_id'],
                     ['task_id'],
@@ -89,7 +89,7 @@ class ProjectTask(models.Model):
         if not self.env['sale.order.line'].check_access_rights('read', raise_exception=False):
             return {}
         uom_hour = self.env.ref('uom.product_uom_hour')
-        allocated_hours_per_sol = self.env['project.task'].read_group([
+        allocated_hours_per_sol = self.env['project.task']._read_group([
             ('sale_line_id', 'in', res_ids),
         ], ['sale_line_id', 'allocated_hours'], ['sale_line_id'])
         allocated_hours_per_sol_mapped = {

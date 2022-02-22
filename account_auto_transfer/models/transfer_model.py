@@ -252,7 +252,7 @@ class TransferModel(models.Model):
             ('analytic_account_id', 'not in', self.line_ids.analytic_account_ids.ids),
             ('partner_id', 'not in', self.line_ids.partner_ids.ids),
         ]])
-        total_balance_by_accounts = self.env['account.move.line'].read_group(domain, ['balance', 'account_id'],
+        total_balance_by_accounts = self.env['account.move.line']._read_group(domain, ['balance', 'account_id'],
                                                                              ['account_id'])
 
         # balance = debit - credit
@@ -364,7 +364,7 @@ class TransferModelLine(models.Model):
         already_handled_move_line_ids = []
         for transfer_model_line in self:
             domain = transfer_model_line._get_move_lines_domain(start_date, end_date, already_handled_move_line_ids)
-            total_balances_by_account = self.env['account.move.line'].read_group(domain, ['ids:array_agg(id)', 'balance', 'account_id'], ['account_id'])
+            total_balances_by_account = self.env['account.move.line']._read_group(domain, ['ids:array_agg(id)', 'balance', 'account_id'], ['account_id'])
             for total_balance_account in total_balances_by_account:
                 already_handled_move_line_ids += total_balance_account['ids']
                 balance = total_balance_account['balance']

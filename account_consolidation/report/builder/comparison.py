@@ -28,7 +28,7 @@ class ComparisonBuilder(AbstractBuilder):
             ('period_id', 'in', kwargs.get('period_ids', []))
         ]
         groupby = ('period_id',)
-        total_lines = self.env['consolidation.journal.line'].read_group(domain, ('total:sum(amount)',), groupby)
+        total_lines = self.env['consolidation.journal.line']._read_group(domain, ('total:sum(amount)',), groupby)
         if len(total_lines) == 0:
             return []
         totals = []

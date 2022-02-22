@@ -13,7 +13,7 @@ class ProjectProject(models.Model):
 
     def _compute_attached_document_count(self):
         Task = self.env['project.task']
-        task_read_group = Task.read_group(
+        task_read_group = Task._read_group(
             [('project_id', 'in', self.ids)],
             ['project_id', 'ids:array_agg(id)'],
             ['project_id'],
@@ -24,7 +24,7 @@ class ProjectProject(models.Model):
             task_ids += res['ids']
             task_ids_per_project_id[res['project_id'][0]] = res['ids']
         Document = self.env['documents.document']
-        project_document_read_group = Document.read_group(
+        project_document_read_group = Document._read_group(
             [('res_model', '=', 'project.project'), ('res_id', 'in', self.ids)],
             ['res_id'],
             ['res_id'],

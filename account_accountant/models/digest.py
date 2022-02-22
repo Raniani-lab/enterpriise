@@ -16,7 +16,7 @@ class Digest(models.Model):
             raise AccessError(_("Do not have access, skip this data for user's digest email"))
         for record in self:
             start, end, company = record._get_kpi_compute_parameters()
-            account_moves = self.env['account.move'].read_group([
+            account_moves = self.env['account.move']._read_group([
                 ('date', '>=', start),
                 ('date', '<', end),
                 ('journal_id.type', 'in', ['cash', 'bank']),

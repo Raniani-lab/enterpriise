@@ -30,7 +30,7 @@ class HrReferralReward(models.Model):
         help="This field holds the image used as image for the product, limited to 1024x1024px.")
 
     def _compute_awarded_employees(self):
-        data = {d['hr_referral_reward_id'][0]: d['__count'] for d in self.env['hr.referral.points'].read_group(
+        data = {d['hr_referral_reward_id'][0]: d['__count'] for d in self.env['hr.referral.points']._read_group(
             [('hr_referral_reward_id', 'in', self.ids)],
             ['hr_referral_reward_id'],
             ['hr_referral_reward_id'],
@@ -40,7 +40,7 @@ class HrReferralReward(models.Model):
 
     def _compute_points_missing(self):
         available_points_company = dict()
-        for item in self.env['hr.referral.points'].read_group([('ref_user_id', '=', self.env.user.id)], ['company_id', 'points'], ['company_id']):
+        for item in self.env['hr.referral.points']._read_group([('ref_user_id', '=', self.env.user.id)], ['company_id', 'points'], ['company_id']):
             available_points_company[item['company_id'][0]] = item['points']
         for item in self:
             item.points_missing = item.cost - (available_points_company[item.company_id.id] if item.company_id.id in available_points_company else 0)

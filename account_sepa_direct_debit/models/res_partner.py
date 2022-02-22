@@ -12,7 +12,7 @@ class Partner(models.Model):
     sdd_count = fields.Integer(compute='_compute_sdd_count', string="SDD count")
 
     def _compute_sdd_count(self):
-        sdd_data = self.env['sdd.mandate'].read_group(
+        sdd_data = self.env['sdd.mandate']._read_group(
             domain=[('partner_id', 'in', self.ids)],
             fields=['partner_id'],
             groupby=['partner_id'])

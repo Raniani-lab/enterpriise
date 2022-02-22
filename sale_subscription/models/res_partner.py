@@ -14,7 +14,7 @@ class ResPartner(models.Model):
         all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
         all_partners.read(['parent_id'])
 
-        subscription_data = self.env['sale.subscription'].read_group(
+        subscription_data = self.env['sale.subscription']._read_group(
             domain=[('partner_id', 'in', all_partners.ids)],
             fields=['partner_id'], groupby=['partner_id']
         )

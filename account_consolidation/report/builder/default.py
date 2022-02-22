@@ -33,7 +33,7 @@ class DefaultBuilder(AbstractBuilder):
         for journal in self.journals:
             # Check if a journal line exists
             domain = [('account_id', '=', account.id), ('journal_id', '=', journal.id)]
-            groupby_res = JournalLine.read_group(domain, ['amount:sum', 'journal_id'], ['journal_id'])
+            groupby_res = JournalLine._read_group(domain, ['amount:sum', 'journal_id'], ['journal_id'])
             journal_total_balance = groupby_res[0]['amount'] if len(groupby_res) > 0 else 0
             journal_total_balance *= account.sign
             # Update totals

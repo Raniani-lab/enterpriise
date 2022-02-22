@@ -489,7 +489,7 @@ class PlanningSlot(models.Model):
         if isinstance(end, str):
             end = datetime.strptime(end, DEFAULT_SERVER_DATETIME_FORMAT)
 
-        employee_per_sol = self.env['planning.slot'].read_group([
+        employee_per_sol = self.env['planning.slot']._read_group([
             ('sale_line_id', 'in', slots.sale_line_id.ids),
             ('start_datetime', '<', end),
             ('end_datetime', '>', start),

@@ -51,7 +51,7 @@ class ConsolidationPeriod(models.Model):
             domain = [('period_id.id', '=', record.id), ('group_id.show_on_dashboard', '=', True)]
             rfields = ['group_id.id', 'total:sum(amount)']
             group_by = ['group_id']
-            grouped_res = self.env['consolidation.journal.line'].read_group(domain, rfields, group_by)
+            grouped_res = self.env['consolidation.journal.line']._read_group(domain, rfields, group_by)
             results = [
                 '["%s","%s"]' % (Section.browse(value['group_id'][0]).name, record._format_value(value['total']))
                 for value in grouped_res
@@ -493,7 +493,7 @@ class ConsolidationPeriodComposition(models.Model):
             ('account_id.used_in_ids', '=', consolidation_account.id),
             ('period_id.id', '=', self.composed_period_id.id)
         ]
-        amounts = self.env['consolidation.journal.line'].sudo().read_group(domain, ['amount:sum(amount)'], [])
+        amounts = self.env['consolidation.journal.line'].sudo()._read_group(domain, ['amount:sum(amount)'], [])
         amount = amounts[0]['amount'] or 0.0
         return (self.rate_consolidation / 100.0) * (amount * self.currency_rate)
 
@@ -631,7 +631,7 @@ class ConsolidationCompanyPeriod(models.Model):
         """
         self.ensure_one()
         domain = self._get_move_lines_domain(consolidation_account)
-        res = self.env['account.move.line'].read_group(domain, ['balance:sum', 'id:array_agg'], [])
+        res = self.env['account.move.line']._read_group(domain, ['balance:sum', 'id:array_agg'], [])
         return res[0]['balance'] or 0.0, res[0]['id'] or []
 
     def _apply_rates(self, amount, consolidation_account):

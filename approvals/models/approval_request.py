@@ -87,7 +87,7 @@ class ApprovalRequest(models.Model):
 
     def _compute_attachment_number(self):
         domain = [('res_model', '=', 'approval.request'), ('res_id', 'in', self.ids)]
-        attachment_data = self.env['ir.attachment'].read_group(domain, ['res_id'], ['res_id'])
+        attachment_data = self.env['ir.attachment']._read_group(domain, ['res_id'], ['res_id'])
         attachment = dict((data['res_id'], data['res_id_count']) for data in attachment_data)
         for request in self:
             request.attachment_number = attachment.get(request.id, 0)

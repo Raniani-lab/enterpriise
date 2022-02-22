@@ -64,7 +64,7 @@ class DataCleaningModel(models.Model):
             self.rule_ids = [(5, 0, 0)]
 
     def _compute_records_to_clean(self):
-        count_data = self.env['data_cleaning.record'].read_group(
+        count_data = self.env['data_cleaning.record']._read_group(
             [('cleaning_model_id', 'in', self.ids)],
             ['cleaning_model_id'],
             ['cleaning_model_id'])

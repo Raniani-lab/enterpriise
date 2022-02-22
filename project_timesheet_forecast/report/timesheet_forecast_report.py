@@ -16,7 +16,7 @@ class TimesheetForecastReport(models.Model):
 
     entry_date = fields.Date('Date', readonly=True)
     employee_id = fields.Many2one('hr.employee', 'Employee', readonly=True)
-    company_id = fields.Many2one('res.company', string="Company", related='employee_id.company_id', readonly=True)
+    company_id = fields.Many2one('res.company', string="Company", readonly=True)
     task_id = fields.Many2one('project.task', string='Task', readonly=True)
     project_id = fields.Many2one('project.project', string='Project', readonly=True)
     line_type = fields.Selection([('forecast', 'Planning'), ('timesheet', 'Timesheet')], string='Type', readonly=True)
@@ -31,6 +31,7 @@ class TimesheetForecastReport(models.Model):
                     SELECT
                         d::date AS entry_date,
                         F.employee_id AS employee_id,
+                        E.company_id AS company_id,
                         F.task_id AS task_id,
                         F.project_id AS project_id,
                         F.user_id AS user_id,
@@ -55,6 +56,7 @@ class TimesheetForecastReport(models.Model):
                     SELECT
                         A.date AS entry_date,
                         E.id AS employee_id,
+                        E.company_id AS company_id,
                         A.task_id AS task_id,
                         A.project_id AS project_id,
                         A.user_id AS user_id,

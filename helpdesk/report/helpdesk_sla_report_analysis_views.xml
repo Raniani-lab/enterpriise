@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
         <pivot string="SLA Status Analysis" disable_linking="1" sample="1">
             <field name="team_id" type="row"/>
-            <field name="sla_name" type="row"/>
+            <field name="sla_id" type="row"/>
             <field name="sla_status_failed" type="measure"/>
             <field name="failed_sla_rate" type="measure"/>
             <field name="successful_sla_rate" widget="percentage"/>
@@ -26,7 +26,7 @@
         <field name="arch" type="xml">
             <graph string="SLA Status Analysis" disable_linking="1" sample="1" stacked="0">
                  <field name="team_id"/>
-                 <field name="sla_name"/>
+                 <field name="sla_id"/>
                  <field name="failed_sla_rate" type="measure"/>
              </graph>
          </field>
@@ -43,7 +43,7 @@
                 <field name="team_id"/>
                 <field name="ticket_type_id"/>
                 <field name="ticket_stage_id"/>
-                <field name="sla_name"/>
+                <field name="sla_id"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="sla_deadline" groups="helpdesk.group_use_sla"/>
                 <filter string="My Tickets" name="my_ticket" domain="[('user_id', '=',uid)]"/>
@@ -68,7 +68,7 @@
                 <separator/>
                 <filter string="Archived" domain="[('ticket_id.active', '=', False)]" name="archive"/>
                 <group expand="0" string="Group By">
-                    <filter string="SLA" name="sla_name" context="{'group_by': 'sla_name'}" />
+                    <filter string="SLA" name="sla_id" context="{'group_by': 'sla_id'}" />
                     <filter string="SLA Status" name="sla_status" context="{'group_by': 'sla_status'}"/>
                     <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
                     <filter string="Assigned to" name="assignee" context="{'group_by':'user_id'}"/>

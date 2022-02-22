@@ -66,6 +66,8 @@
             <xpath expr="//field[@name='email_cc']" position="after">
                 <field name="use_helpdesk_timesheet" invisible="1"/>
                 <field name="project_id" invisible="1"/>
+                <field name="analytic_account_id" groups="analytic.group_analytic_accounting" attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}"/>
+                <field name="analytic_tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags" attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='description']" position="replace">
                 <notebook>
@@ -159,6 +161,14 @@
                 <filter string="My Team's Tickets" name="my_team_ticket" domain="[('user_id.employee_parent_id.user_id', '=', uid)]"/>
                 <filter string="My Department" name="department" domain="[('user_id.employee_id.member_of_department', '=', True)]" help="My Department"/>
             </filter>
+            <field name="rating_last_text" position="after">
+                <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                <field name="analytic_tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags"/>
+            </field>
+            <filter name="company" position="after">
+                <filter name="analytic_account" context="{'group_by': 'analytic_account_id'}" groups="analytic.group_analytic_accounting"/>
+                <filter name="analytic_account_tag" context="{'group_by': 'analytic_tag_ids'}" groups="analytic.group_analytic_tags"/>
+            </filter>
         </field>
     </record>
 
@@ -170,6 +180,8 @@
         <field name="arch" type="xml">
             <field name='partner_id' position="after">
                 <field name="total_hours_spent" widget="timesheet_uom" optional="hide" attrs="{'invisible': [('total_hours_spent', '=', 0)]}"/>
+                <field name="analytic_account_id" groups="analytic.group_analytic_accounting" optional="hide"/>
+                <field name="analytic_tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags" optional="hide"/>
             </field>
         </field>
     </record>

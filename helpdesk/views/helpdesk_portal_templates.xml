@@ -134,7 +134,6 @@
                         </div>
                     </div>
                     <div class="row mb-4" name="description">
-                        <strong class="col-lg-2">Description</strong>
                         <div t-if="not is_html_empty(ticket.description)" class="col-lg-10" t-field="ticket.description"/>
                         <div t-else="" class="col-lg-10">
                             <em class="text-muted"><small>No description</small></em>

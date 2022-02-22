@@ -87,6 +87,17 @@
                     <h2>Assignment &amp; Visibility</h2>
                     <div class="row mt16 o_settings_container" id="productivity">
                         <div class="col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="privacy_visibility"/>
+                                <div class="text-muted">
+                                    Users to whom this team will be visible
+                                </div>
+                                <div>
+                                    <field name="privacy_visibility" class="mt16 o_light_label" widget="radio"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 o_setting_box">
                             <div class="o_setting_left_pane">
                                 <field name="auto_assignment"/>
                             </div>
@@ -101,17 +112,6 @@
                                         <field name="member_ids" widget="many2many_avatar_user"
                                         class="mt16" placeholder="Add team members..." options="{'no_quick_create': True'}"/>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_right_pane">
-                                <label for="privacy_visibility"/>
-                                <div class="text-muted">
-                                    Users to whom this team will be visible
-                                </div>
-                                <div>
-                                    <field name="privacy_visibility" class="mt16 o_light_label" widget="radio"/>
                                 </div>
                             </div>
                         </div>

@@ -48,6 +48,7 @@
         <t t-call="website.layout">
             <div id="wrap" class="oe_structure oe_empty h-100">
                 <div class="container d-flex flex-column justify-content-center h-100">
+                    <div class="oe_structure" id="oe_structure_website_helpdesk_thanks_you"/>
                     <div class="row justify-content-center">
                         <t t-if="request.session.get('form_builder_model_model', '') == 'helpdesk.ticket'">
                             <t t-set="ticket" t-value="request.website._website_form_last_record()"/>
@@ -60,6 +61,7 @@
                         </h1>
                         <h1 class="text-center">Thank you for submitting your issue, our team will get right on it!</h1>
                     </div>
+                    <div class="oe_structure" id="oe_structure_website_helpdesk_thanks_you_bottom"/>
                 </div>
             </div>
         </t>

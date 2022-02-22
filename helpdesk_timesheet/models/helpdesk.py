@@ -100,10 +100,15 @@ class HelpdeskTicket(models.Model):
     timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets')
     use_helpdesk_timesheet = fields.Boolean('Timesheet activated on Team', related='team_id.use_helpdesk_timesheet', readonly=True)
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
-    total_hours_spent = fields.Float("Spent Hours", compute='_compute_total_hours_spent', default=0, compute_sudo=True, store=True)
+    total_hours_spent = fields.Float("Hours Spent", compute='_compute_total_hours_spent', default=0, compute_sudo=True, store=True)
     display_timer_start_secondary = fields.Boolean(compute='_compute_display_timer_buttons')
     display_timer = fields.Boolean(compute='_compute_display_timer')
     encode_uom_in_days = fields.Boolean(compute='_compute_encode_uom_in_days')
+    analytic_account_id = fields.Many2one('account.analytic.account',
+        compute='_compute_analytic_account_id', store=True, readonly=False,
+        string='Analytic Account', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     def _compute_encode_uom_in_days(self):
         self.encode_uom_in_days = self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day')
@@ -148,6 +153,11 @@ class HelpdeskTicket(models.Model):
     def _compute_total_hours_spent(self):
         for ticket in self:
             ticket.total_hours_spent = round(sum(ticket.timesheet_ids.mapped('unit_amount')), 2)
+
+    @api.depends('project_id')
+    def _compute_analytic_account_id(self):
+        for ticket in self:
+            ticket.analytic_account_id = ticket.project_id.analytic_account_id
 
     @api.model
     def _get_view(self, view_id=None, view_type='form', **options):

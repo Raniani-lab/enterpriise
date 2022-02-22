@@ -23,7 +23,7 @@ class HelpdeskSLAReport(models.Model):
     ticket_close_hours = fields.Integer("Working Hours to Close", group_operator="avg", readonly=True)
     ticket_assignation_hours = fields.Integer("Working Hours to Assign", group_operator="avg", readonly=True)
     close_date = fields.Datetime("Close date", readonly=True)
-    sla_name = fields.Char('SLA', readonly=True)
+    sla_id = fields.Many2one('helpdesk.sla', string='SLA', readonly=True)
 
     sla_stage_id = fields.Many2one('helpdesk.stage', string="SLA Stage", readonly=True)
     sla_deadline = fields.Datetime("SLA Deadline", group_operator='min', readonly=True)
@@ -63,7 +63,7 @@ class HelpdeskSLAReport(models.Model):
                             SLA.stage_id as sla_stage_id,
                             SLA_S.deadline AS sla_deadline,
                             SLA_S.reached_datetime AS sla_reached_datetime,
-                            SLA.name as sla_name,
+                            SLA.id as sla_id,
                             SLA_S.exceeded_hours AS sla_exceeded_hours,
                             SLA_S.reached_datetime >= SLA_S.deadline OR (SLA_S.reached_datetime IS NULL AND SLA_S.deadline < NOW() AT TIME ZONE 'UTC') AS sla_status_fail,
                             CASE

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import api, Command, fields, models, _
 from odoo.osv import expression
 from odoo.exceptions import ValidationError
 
@@ -30,6 +30,10 @@ class AccountAnalyticLine(models.Model):
             ticket = self.env['helpdesk.ticket'].browse(helpdesk_ticket_id)
             if ticket.project_id:
                 vals['project_id'] = ticket.project_id.id
+            vals.update({
+                'account_id': ticket.analytic_account_id.id,
+                'tag_ids': [Command.link(tag_id.id) for tag_id in ticket.analytic_tag_ids],
+            })
         vals = super(AccountAnalyticLine, self)._timesheet_preprocess(vals)
         return vals
 

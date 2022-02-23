@@ -208,7 +208,7 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             await cpHelpers.validateSearch(document.body);
 
             // close quick search
-            await testUtils.dom.click(document.querySelector('button.o_enable_searchview.oi-arrow--left'));
+            await testUtils.dom.click(document.querySelector('button.o_enable_searchview.fa-arrow-left'));
 
             assert.containsNone(document.body, '.o_toggle_searchview_full',
                 "Expand icon shoud be hidden");

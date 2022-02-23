@@ -19,7 +19,7 @@ const MapView = AbstractView.extend({
         Controller: MapController,
         Renderer: MapRenderer,
     }),
-    icon: 'oi-map',
+    icon: 'fa fa-map-marker',
     display_name: 'Map',
     viewType: 'map',
     mobile_friendly: true,

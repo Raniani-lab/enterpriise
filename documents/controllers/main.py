@@ -272,8 +272,11 @@ class ShareRoute(http.Controller):
             logger.exception("Failed to zip share link id: %s" % share_id)
         return request.not_found()
 
-    @http.route(["/document/avatar/<int:share_id>/<access_token>"], type='http', auth='public')
-    def get_avatar(self, access_token=None, share_id=None):
+    @http.route([
+        "/document/avatar/<int:share_id>/<access_token>",
+        "/document/avatar/<int:share_id>/<access_token>/<document_id>",
+    ], type='http', auth='public')
+    def get_avatar(self, access_token=None, share_id=None, document_id=None):
         """
         :param share_id: id of the share.
         :param access_token: share access token
@@ -283,7 +286,8 @@ class ShareRoute(http.Controller):
             env = request.env
             share = env['documents.share'].sudo().browse(share_id)
             if share._get_documents_and_check_access(access_token, document_ids=[], operation='read') is not False:
-                image = env['res.users'].sudo().browse(share.create_uid.id).avatar_128
+                user_id = share.create_uid.id if not document_id else env['documents.document'].sudo().browse(int(document_id)).owner_id.id
+                image = env['res.users'].sudo().browse(user_id).avatar_128
 
                 if not image:
                     return env['ir.http']._placeholder()

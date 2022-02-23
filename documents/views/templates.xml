@@ -136,7 +136,7 @@
                                 </div>
                             </div>
                             <div class="o_card_right d-flex flex-column flex-nowrap justify-content-between text-right">
-                                <img t-attf-title="Owner: #{document.create_uid.name}" t-att-alt="document.create_uid.name" class="o_object_fit_cover rounded-circle" width="15" height="15" t-attf-src="/document/avatar/#{share_id}/#{token}"/>
+                                <img t-attf-title="Owner: #{document.owner_id.name}" t-att-alt="document.owner_id.name" class="o_object_fit_cover rounded-circle" width="15" height="15" t-attf-src="/document/avatar/#{share_id}/#{token}/#{document.id}"/>
                                 <a t-if="not document_request" t-att-href="download_URL" target="new" t-att-title="'Download ' + document.name"><i t-attf-class="fa #{'url' not in document.type and 'fa-download' or 'fa-link'}"/></a>
                             </div>
                         </article>

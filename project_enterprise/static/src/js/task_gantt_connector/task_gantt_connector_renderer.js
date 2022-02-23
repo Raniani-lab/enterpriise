@@ -602,6 +602,8 @@ const TaskGanttConnectorRenderer = TaskGanttRenderer.extend(WidgetAdapterMixin, 
                 });
                 await this._connectorContainerComponent.update(this._getConnectorContainerProps());
             }
+            // Check if connector should be rendered
+            if (!(this._rowsAndRecordsDict && this._shouldRenderConnectors())) return
             for (const pill of Object.values(this._rowsAndRecordsDict.records[connectorCreatorInfo.pill.dataset.id].rowsInfo).map((rowInfo) => rowInfo.pillElement)) {
                 const tempConnectorCreatorInfo = this._getConnectorCreatorInfo(pill);
                 if (highlighted || !this._isConnectorCreatorDragged(tempConnectorCreatorInfo)) {

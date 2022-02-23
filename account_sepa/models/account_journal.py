@@ -151,7 +151,7 @@ class AccountJournal(models.Model):
             PmtInf.append(self._get_DbtrAcct())
             DbtrAgt = etree.SubElement(PmtInf, "DbtrAgt")
             FinInstnId = etree.SubElement(DbtrAgt, "FinInstnId")
-            if pain_version == "pain.001.001.03.se" and not self.bank_account_id.bank_bic:
+            if pain_version in ['pain.001.001.03.se', 'pain.001.001.03.ch.02'] and not self.bank_account_id.bank_bic:
                 raise UserError(_("Bank account %s 's bank does not have any BIC number associated. Please define one.") % self.bank_account_id.sanitized_acc_number)
             if self.bank_account_id.bank_bic:
                 BIC = etree.SubElement(FinInstnId, "BIC")
@@ -306,6 +306,15 @@ class AccountJournal(models.Model):
             AdrLine.text = sanitize_communication((partner_id.zip + " " + partner_id.city)[:70])
         return PstlAdr
 
+    def _skip_CdtrAgt(self, partner_bank, pain_version, local_instrument):
+        return (
+            self.env.context.get('skip_bic', False)
+            # Creditor Agent can be omitted with IBAN and QR-IBAN accounts
+            or pain_version == 'pain.001.001.03.ch.02'
+            and (self._is_qr_iban({'partner_bank_id' : partner_bank.id, 'journal_id' : self.id})
+                 or local_instrument == 'CH01')
+        )
+
     def _get_CdtTrfTxInf(self, PmtInfId, payment, sct_generic, pain_version, local_instrument=None):
         CdtTrfTxInf = etree.Element("CdtTrfTxInf")
         PmtId = etree.SubElement(CdtTrfTxInf, "PmtId")
@@ -338,7 +347,7 @@ class AccountJournal(models.Model):
 
         partner_bank = self.env['res.partner.bank'].sudo().browse(partner_bank_id)
 
-        if local_instrument != 'CH01' and not self.env.context.get('skip_bic', False):
+        if not self._skip_CdtrAgt(partner_bank, pain_version, local_instrument):
             CdtTrfTxInf.append(self._get_CdtrAgt(partner_bank, sct_generic, pain_version))
 
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")
@@ -368,8 +377,8 @@ class AccountJournal(models.Model):
             BIC = etree.SubElement(FinInstnId, "BIC")
             BIC.text = bank_account.bank_bic.replace(' ', '').upper()
         else:
-            if pain_version == 'pain.001.001.03.austrian.004':
-                # Othr and NOTPROVIDED are not supported in CdtrAgt by this variant
+            if pain_version in ['pain.001.001.03.austrian.004', 'pain.001.001.03.ch.02']:
+                # Othr and NOTPROVIDED are not supported in CdtrAgt by those flavours
                 raise UserError(_("The bank defined on account %s (from partner %s) has no BIC. Please first set one.", bank_account.acc_number, bank_account.partner_id.name))
 
             Othr = etree.SubElement(FinInstnId, "Othr")

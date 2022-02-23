@@ -950,7 +950,7 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         run: 'scan 3000000004\x1D10b1-b004\x1D0100000076543210',
     },
     {
-        trigger: '.o_barcode_line.o_selected .qty-done:contains("4")',
+        trigger: '.o_sublines .o_barcode_line:contains("b1-b004") .qty-done:contains("4")',
         run: function () {
             helper.assertSublinesCount(4);
             const $line1 = helper.getSubline(':contains("b1-b001")');
@@ -973,7 +973,7 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         run: 'scan 10b1-b005',
     },
     {
-        trigger: '.o_barcode_line:contains("b1-b005")',
+        trigger: '.o_sublines .o_barcode_line:contains("b1-b005") .qty-done:contains("1")',
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(5);
@@ -1000,7 +1000,7 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         run: 'scan 3000007',
     },
     {
-        trigger: '.o_sublines .o_barcode_line.o_selected .qty-done:contains("8")',
+        trigger: '.o_sublines .o_barcode_line:contains("b1-b005") .qty-done:contains("8")',
         run: function () {
             helper.assertSublinesCount(5);
             const $line1 = helper.getSubline(':contains("b1-b001")');

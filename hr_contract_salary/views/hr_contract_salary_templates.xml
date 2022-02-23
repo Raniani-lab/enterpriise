@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="frontend_layout_salary" name="Frontend Layout" inherit_id="web.frontend_layout" primary="True">
+    </template>
 
     <template id="salary_package" name="My Contract">
-        <t t-call="portal.frontend_layout">
+        <t t-call="hr_contract_salary.frontend_layout_salary">
             <div id="wrap">
                 <form id="hr_cs_form">
                     <section>

@@ -1770,52 +1770,9 @@ QUnit.module('ReportEditorManager', {
                         content:
                             '<div class="row">' +
                                 '<div class="col-5">' +
-                                    '<table class="table table-sm o_report_block_total">' +
-                                        '<t t-set="total_currency_id" t-value="o.currency_id"/>' +
-                                        '<t t-set="total_amount_total" t-value="o.amount_total"/>' +
-                                        '<t t-set="total_amount_untaxed" t-value="o.amount_untaxed"/>' +
-                                        '<t t-set="total_amount_by_groups" t-value="o.amount_by_group"/>' +
-                                        '<tr class="border-black o_subtotal">' +
-                                        '<td><strong>Subtotal</strong></td>' +
-                                        '<td class="text-right">' +
-                                            '<span t-esc="total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                                        '</td>' +
-                                        '</tr>' +
-                                        '<t t-foreach="total_amount_by_groups" t-as="total_amount_by_group">' +
-                                            '<tr>' +
-                                                '<t t-if="len(total_amount_by_group) == 1 and total_amount_untaxed == total_amount_by_group[2]">' +
-                                                    '<td><span t-esc="total_amount_by_group[0]"/></td>' +
-                                                    '<td class="text-right o_price_total">' +
-                                                        '<span t-esc="total_amount_by_group[3]"/>' +
-                                                    '</td>' +
-                                                '</t>' +
-                                                '<t t-else="">' +
-                                                    '<td>' +
-                                                        '<span t-esc="total_amount_by_group[0]"/>' +
-                                                        '<span><span>on</span>' +
-                                                            '<t t-esc="total_amount_by_group[4]"/>' +
-                                                        '</span>' +
-                                                    '</td>' +
-                                                    '<td class="text-right o_price_total">' +
-                                                        '<span t-esc="total_amount_by_group[3]"/>' +
-                                                    '</td>' +
-                                                '</t>' +
-                                            '</tr>' +
-                                        '</t>' +
-                                        '<t t-if="total_amount_by_groups is None">' +
-                                            '<tr>' +
-                                                '<td>Taxes</td>' +
-                                                '<td class="text-right">' +
-                                                    '<span t-esc="total_amount_total - total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                                                '</td>' +
-                                            '</tr>' +
-                                        '</t>' +
-                                        '<tr class="border-black o_total">' +
-                                            '<td><strong>Total</strong></td>' +
-                                            '<td class="text-right">' +
-                                                '<span t-esc="total_amount_total" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                                            '</td>' +
-                                        '</tr>' +
+                                    '<table class="table table-sm">' +
+                                        '<t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>' +
+                                        '<t t-call="account.document_tax_totals"/>' +
                                     '</table>' +
                                 '</div>' +
                                 '<div class="col-5 offset-2"></div>' +

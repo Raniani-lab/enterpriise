@@ -327,7 +327,9 @@ class TestFetchmailServer(TestL10nClEdiCommon):
 
         self.assertEqual(move.l10n_cl_dte_acceptation_status, 'received')
 
-    def test_process_incoming_customer_claim_accepted(self):
+    @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
+    def test_process_incoming_customer_claim_accepted(self, get_cl_current_strftime):
+        get_cl_current_strftime.return_value = '2019-10-24T20:00:00'
         l10n_latam_document_type = self.env['l10n_latam.document.type'].search([
             ('code', '=', '33'),
             ('country_id.code', '=', 'CL')
@@ -336,6 +338,7 @@ class TestFetchmailServer(TestL10nClEdiCommon):
             invoice_form.partner_id = self.partner_sii
             invoice_form.l10n_latam_document_number = '0301'
             invoice_form.l10n_latam_document_type_id = l10n_latam_document_type
+            invoice_form.invoice_date = '2019-10-23'
             with invoice_form.invoice_line_ids.new() as invoice_line_form:
                 invoice_line_form.product_id = self.product_a
                 invoice_line_form.quantity = 1
@@ -355,7 +358,9 @@ class TestFetchmailServer(TestL10nClEdiCommon):
 
         self.assertEqual(move.l10n_cl_dte_acceptation_status, 'accepted')
 
-    def test_process_incoming_customer_claim_rejected(self):
+    @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
+    def test_process_incoming_customer_claim_rejected(self, get_cl_current_strftime):
+        get_cl_current_strftime.return_value = '2019-10-24T20:00:00'
         l10n_latam_document_type = self.env['l10n_latam.document.type'].search([
             ('code', '=', '34'),
             ('country_id.code', '=', 'CL')
@@ -364,7 +369,7 @@ class TestFetchmailServer(TestL10nClEdiCommon):
             invoice_form.partner_id = self.partner_sii
             invoice_form.l10n_latam_document_number = '254'
             invoice_form.l10n_latam_document_type_id = l10n_latam_document_type
-
+            invoice_form.invoice_date = '2019-10-23'
             with invoice_form.invoice_line_ids.new() as invoice_line_form:
                 invoice_line_form.product_id = self.product_a
                 invoice_line_form.quantity = 1

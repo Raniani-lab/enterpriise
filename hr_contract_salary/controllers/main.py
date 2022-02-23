@@ -5,7 +5,7 @@ import hashlib
 
 from itertools import groupby
 from collections import defaultdict, OrderedDict
-from odoo import fields, http, models, _, Command
+from odoo import fields, http, models, _, Command, SUPERUSER_ID
 
 from odoo.addons.sign.controllers.main import Sign
 from odoo.http import request
@@ -211,20 +211,26 @@ class HrContractSalary(http.Controller):
                 raise NotFound()
 
         if not contract.employee_id:
-            be_country = request.env["res.country"].search([("code", "=", "BE")])
-            contract.employee_id = request.env['hr.employee'].with_context(tracking_disable=True).sudo().create({
-                'name': '',
-                'active': False,
-                'country_id': be_country.id,
-                'certificate': False,  # To force encoding it
-                'company_id': contract.company_id.id,
-            })
-            contract.employee_id.address_home_id = request.env['res.partner'].with_context(tracking_disable=True).sudo().create({
+            contract_country = contract.company_id.country_id
+            address_home_id = request.env['res.partner'].with_context(
+                tracking_disable=True
+            ).with_user(SUPERUSER_ID).sudo().create({
                 'name': 'Simulation',
                 'type': 'private',
-                'country_id': be_country.id,
+                'country_id': contract_country.id,
                 'active': False,
                 'company_id': contract.company_id.id,
+            })
+            contract.employee_id = request.env['hr.employee'].with_context(
+                tracking_disable=True,
+                salary_simulation=True,
+            ).with_user(SUPERUSER_ID).sudo().create({
+                'name': '',
+                'active': False,
+                'country_id': contract_country.id,
+                'certificate': False,  # To force encoding it
+                'company_id': contract.company_id.id,
+                'address_home_id': address_home_id.id,
             })
 
         if 'applicant_id' in kw:

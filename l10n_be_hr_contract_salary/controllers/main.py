@@ -73,7 +73,7 @@ class HrContractSalary(main.HrContractSalary):
     def salary_package(self, contract_id=None, **kw):
         contract = request.env['hr.contract'].sudo().browse(contract_id)
 
-        if contract.exists() and contract._get_work_time_rate() == 0:
+        if contract._get_work_time_rate() == 0:
             return request.render('http_routing.http_error', {'status_code': _('Oops'),
                                                          'status_message': _('This contract is a full time credit time... No simulation can be done for this type of contract as its wage is equal to 0.')})
         return super(HrContractSalary, self).salary_package(contract_id, **kw)

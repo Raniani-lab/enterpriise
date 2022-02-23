@@ -70,6 +70,15 @@ class DocumentShare(models.Model):
             name_array.append((record.id, record.name or "unnamed link"))
         return name_array
 
+    def _get_documents_domain(self):
+        """
+            Allows overriding the domain in customizations for modifying the search() domain
+        """
+        if self.include_sub_folders:
+            return [[('folder_id', 'child_of', self.folder_id.id)]]
+        else:
+            return [[('folder_id', '=', self.folder_id.id)]]
+
     def _get_documents(self, document_ids=None):
         """
         :param list[int] document_ids: limit to the list of documents to fetch.
@@ -81,10 +90,7 @@ class DocumentShare(models.Model):
         Documents = limited_self.env['documents.document']
 
         search_ids = set()
-        if self.include_sub_folders:
-            domains = [[('folder_id', 'child_of', self.folder_id.id)]]
-        else:
-            domains = [[('folder_id', '=', self.folder_id.id)]]
+        domains = self._get_documents_domain()
 
         if document_ids is not None:
             if not document_ids:

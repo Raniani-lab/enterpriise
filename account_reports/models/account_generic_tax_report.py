@@ -1175,7 +1175,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         :param options: The options for this report.
         :return: The formatted list of lines
         """
-        if options.get('tax_report'):
+        if not self._is_generic_layout(options):
             tax_report_line_report_line_mapping = {}
 
             for line in lines:

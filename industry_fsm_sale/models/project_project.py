@@ -118,3 +118,22 @@ class Project(models.Model):
     def _compute_partner_id(self):
         basic_projects = self.filtered(lambda project: not project.is_fsm)
         super(Project, basic_projects)._compute_partner_id()
+
+    def _get_sale_order_items_query(self, domain_per_model=None):
+        basic_project_domain = [('is_fsm', '=', False)]  # when the project is a fsm one, no SOL is linked to that project.
+        employee_mapping_domain = [('project_id.is_fsm', '=', False)]
+        if domain_per_model is None:
+            domain_per_model = {
+                'project.project': basic_project_domain,
+                'project.sale.line.employee.map': employee_mapping_domain,
+            }
+        else:
+            domain_per_model['project.project'] = expression.AND([
+                domain_per_model.get('project.project', []),
+                basic_project_domain,
+            ])
+            domain_per_model['project.sale.line.employee.map'] = expression.AND([
+                domain_per_model.get('project.sale.line.employee.map', []),
+                employee_mapping_domain,
+            ])
+        return super()._get_sale_order_items_query(domain_per_model)

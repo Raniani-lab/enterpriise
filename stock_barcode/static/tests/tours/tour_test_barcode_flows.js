@@ -1473,8 +1473,8 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
             helper.assertLinesCount(1);
             helper.assertSublinesCount(2);
             helper.assertScanMessage('scan_product');
-            var $line1 = $('.o_sublines .o_barcode_line').eq(0);
-            var $line2 = $('.o_sublines .o_barcode_line').eq(1);
+            const $line1 = helper.getSubline(':eq(0)');
+            const $line2 = helper.getSubline(':eq(1)');
             helper.assert($line1.find('.o_line_lot_name').text(), 'sn1');
             helper.assert($line1.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
             helper.assert($line2.find('.o_line_lot_name').text(), 'sn2');
@@ -1501,10 +1501,10 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
             helper.assertLinesCount(1);
             helper.assertSublinesCount(4);
             helper.assertScanMessage('scan_product');
-            var $line1 = $('.o_sublines .o_barcode_line').eq(0);
-            var $line2 = $('.o_sublines .o_barcode_line').eq(1);
-            var $line3 = $('.o_sublines .o_barcode_line').eq(2);
-            var $line4 = $('.o_sublines .o_barcode_line').eq(3);
+            const $line1 = helper.getSubline(':eq(0)');
+            const $line2 = helper.getSubline(':eq(1)');
+            const $line3 = helper.getSubline(':eq(2)');
+            const $line4 = helper.getSubline(':eq(3)');
             helper.assert($line1.find('.o_line_lot_name').text(), 'sn4');
             helper.assert($line1.find('.fa-user-o').parent().text().trim(), "Particulier");
             helper.assert($line1.find('.fa-archive').parent().text().includes("pack_sn_2"), true);

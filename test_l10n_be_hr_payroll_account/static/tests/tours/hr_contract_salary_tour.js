@@ -424,7 +424,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Country of Birth",
-            trigger: 'label[for=country_of_birth]',
+            trigger: 'label[for=country_of_birth]:eq(0)',
             run: function () {
                 $('select[name=country_of_birth] option:contains(Belgium)').prop('selected', true);
                 $('select[name=country_of_birth]').trigger('change');
@@ -616,7 +616,7 @@ Tour.register('hr_contract_salary_tour', {
             run: 'click',
         },
         {
-            content: "Next",
+            content: "Next 1",
             trigger: 'iframe .o_sign_sign_item_navigator',
             run: 'click',
         },
@@ -626,7 +626,7 @@ Tour.register('hr_contract_salary_tour', {
             run: 'text 17/09/2018',
         },
         {
-            content: "Next",
+            content: "Next 2",
             trigger: 'iframe .o_sign_sign_item_navigator',
             run: 'click',
         },
@@ -637,7 +637,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         // fill signature
         {
-            content: "Next",
+            content: "Next 3",
             trigger: 'iframe .o_sign_sign_item_navigator',
             run: 'click',
         },
@@ -663,7 +663,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         // fill date
         {
-            content: "Next",
+            content: "Next 4",
             trigger: 'iframe .o_sign_sign_item_navigator:contains("next")',
             run: 'click',
         },
@@ -745,7 +745,7 @@ Tour.register('hr_contract_salary_tour_hr_sign', {
         run: 'click',
     },
     {
-        content: "Next",
+        content: "Next 5",
         trigger: 'iframe .o_sign_sign_item_navigator',
         run: 'click',
     },
@@ -1138,7 +1138,7 @@ Tour.register('hr_contract_salary_tour_2', {
             run: 'click',
         },
         {
-            content: "Next",
+            content: "Next 6",
             trigger: 'iframe .o_sign_sign_item_navigator',
             run: 'click',
         },
@@ -1148,7 +1148,7 @@ Tour.register('hr_contract_salary_tour_2', {
             run: 'text 17/09/2018',
         },
         {
-            content: "Next",
+            content: "Next 7",
             trigger: 'iframe .o_sign_sign_item_navigator',
             run: 'click',
         },
@@ -1159,7 +1159,7 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         // fill signature
         {
-            content: "Next",
+            content: "Next 8",
             trigger: 'iframe .o_sign_sign_item_navigator',
             run: 'click',
         },
@@ -1185,7 +1185,7 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         // fill date
         {
-            content: "Next",
+            content: "Next 9",
             trigger: 'iframe .o_sign_sign_item_navigator:contains("next")',
             run: 'click',
         },

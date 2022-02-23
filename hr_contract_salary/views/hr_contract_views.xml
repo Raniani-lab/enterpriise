@@ -6,6 +6,15 @@
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="priority">50</field>
         <field name="arch" type="xml">
+            <xpath expr="//label[@for='wage']" position="replace">
+                <label for="wage" attrs="{'invisible': [('holidays', '!=', 0.0)]}"/>
+            </xpath>
+            <xpath expr="//div[@name='wage']" position="replace">
+                <div class="o_row" name="wage" attrs="{'invisible': [('holidays', '!=', 0.0)]}">
+                    <field name="wage" nolabel="1"/>
+                    <span>/ month</span>
+                </div>
+            </xpath>
             <xpath expr="//div[@name='wage']" position="after">
                 <label name="label_wage_with_holidays" for="wage_with_holidays" attrs="{'invisible': [('holidays', '=', 0.0)]}"/>
                 <div class="o_row" name="div_wage_with_holidays" attrs="{'invisible': [('holidays', '=', 0.0)]}">
@@ -27,7 +36,7 @@
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value"><field name="contract_reviews_count"/></span>
                         <span class="o_stat_text">Reviews</span>
-                     </div>
+                    </div>
                 </button>
             </div>
             <xpath expr="//field[@name='state']" position="before">
@@ -40,12 +49,12 @@
                     <span>/ month</span>
                 </div>
             </field>
-             <xpath expr="//group[@name='contract_details']" position="inside">
+            <xpath expr="//group[@name='contract_details']" position="inside">
                 <field name="default_contract_id"/>
                 <field name="sign_template_id" options="{'no_create': True}" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s" required="1"/>
                 <field name="contract_update_template_id" options="{'no_create': True}" required="1"/>
                 <field name="signatures_count" invisible="1"/>
-             </xpath>
+            </xpath>
             <page name="information" position="after">
                 <page string="Personal Documents" name="personal_documents" groups="hr.group_hr_manager" attrs="{'invisible': [('employee_id', '=', False)]}">
                     <group>

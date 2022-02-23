@@ -25,6 +25,7 @@
                         <field name="full_wage"/>
                         <field name="current_wage"/>
                         <field name="wage"/>
+                        <field name="previous_contract_creation"/>
                     </group>
                     <group>
                         <field name="full_resource_calendar_id" options="{'no_create' : True}"/>

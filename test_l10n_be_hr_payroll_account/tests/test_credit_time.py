@@ -102,6 +102,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'date_end': datetime.date(2020, 4, 30),
             'resource_calendar_id': new_calendar.id,
             'part_time': True,
+            'previous_contract_creation': True,
         })
         wizard.action_validate()
 
@@ -230,6 +231,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'date_end': datetime.date(2020, 4, 30),
             'resource_calendar_id': new_calendar.id,
             'part_time': True,
+            'previous_contract_creation': True,
         })
         wizard.action_validate()
 

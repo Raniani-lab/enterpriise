@@ -102,7 +102,8 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'date_start': date(2018, 4, 1),
             'date_end': date(2018, 4, 30),
             'resource_calendar_id': self.resource_calendar_30_hours_per_week.id,
-            'leave_type_id': self.paid_time_off_type.id
+            'leave_type_id': self.paid_time_off_type.id,
+            'previous_contract_creation': True,
         })
         self.assertEqual(wizard.time_off_allocation, 16)
         view = wizard.with_context(force_schedule=True).action_validate()
@@ -153,7 +154,8 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'date_start': date(2018, 4, 1),
             'date_end': date(2018, 4, 30),
             'resource_calendar_id': self.resource_calendar_30_hours_per_week.id,
-            'leave_type_id': self.paid_time_off_type.id
+            'leave_type_id': self.paid_time_off_type.id,
+            'previous_contract_creation': True,
         })
         self.assertEqual(wizard.time_off_allocation, 16)
         view = wizard.with_context(force_schedule=True).action_validate()
@@ -242,7 +244,8 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'date_start': date(2018, 4, 1),
             'date_end': date(2018, 4, 30),
             'resource_calendar_id': self.resource_calendar_24_hours_per_week_4_days_per_week.id,
-            'leave_type_id': self.paid_time_off_type.id
+            'leave_type_id': self.paid_time_off_type.id,
+            'previous_contract_creation': True,
         })
         self.assertEqual(wizard.time_off_allocation, 12.5)
         view = wizard.with_context(force_schedule=True).action_validate()

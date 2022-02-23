@@ -52,6 +52,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_mid_time.id,
             'leave_type_id': self.paid_time_off_type.id,
             'part_time': True,
+            'previous_contract_creation': True,
         })
         self.assertEqual(wizard.time_off_allocation, 10)
         self.assertAlmostEqual(wizard.work_time_rate, 50, 2)
@@ -84,6 +85,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_9_10.id,
             'leave_type_id': self.paid_time_off_type.id,
             'part_time': True,
+            'previous_contract_creation': True,
         })
         self.assertEqual(wizard.time_off_allocation, 16) # John may have 88% of 20 days this year -> ~17.5
         self.assertAlmostEqual(wizard.work_time_rate, 90, 2)
@@ -121,6 +123,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_4_5.id,
             'leave_type_id': self.paid_time_off_type.id,
             'part_time': True,
+            'previous_contract_creation': True,
         })
         self.assertEqual(wizard.time_off_allocation, 16)
         self.assertAlmostEqual(wizard.work_time_rate, 80, 2)
@@ -163,6 +166,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_4_5.id,
             'leave_type_id': self.paid_time_off_type.id,
             'part_time': True,
+            'previous_contract_creation': True,
         })
         self.assertEqual(wizard.time_off_allocation, 16) # 16 max
         self.assertAlmostEqual(wizard.work_time_rate, 80, 2)
@@ -195,6 +199,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_mid_time.id,
             'leave_type_id': self.paid_time_off_type.id,
             'part_time': True,
+            'previous_contract_creation': True,
         })
         self.assertEqual(wizard.time_off_allocation, 12) # Should be 10 but since the employee has already taken 12 days, it's 12
         self.assertAlmostEqual(wizard.work_time_rate, 50, 2)

@@ -333,7 +333,7 @@ class HrContractSalary(main.HrContractSalary):
         return res
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):
-        new_contract = super().create_new_contract(contract, advantages, no_write=no_write, **kw)
+        new_contract, contract_diff = super().create_new_contract(contract, advantages, no_write=no_write, **kw)
         if new_contract.time_credit:
             new_contract.date_end = contract.date_end
         if kw.get('package_submit', False):
@@ -365,7 +365,7 @@ class HrContractSalary(main.HrContractSalary):
                 vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
                 vehicle_contract.cost_frequency = 'no'
                 vehicle_contract.purchaser_id = new_contract.employee_id.address_home_id.id
-            return new_contract
+            return new_contract, contract_diff
 
         if new_contract.transport_mode_car and new_contract.new_car:
             employee = new_contract.employee_id
@@ -385,7 +385,7 @@ class HrContractSalary(main.HrContractSalary):
             vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
             vehicle_contract.cost_frequency = 'no'
             vehicle_contract.purchaser_id = employee.address_home_id.id
-        return new_contract
+        return new_contract, contract_diff
 
     def _get_compute_results(self, new_contract):
         result = super()._get_compute_results(new_contract)

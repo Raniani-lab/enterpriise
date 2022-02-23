@@ -21,7 +21,7 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
         return super().default_get(field_list)
 
     employee_id = fields.Many2one('hr.employee', string='Employee', default=lambda self: self.env.context.get('active_id'))
-    leaving_type_id = fields.Many2one('hr.departure.reason', string='Leaving Type', required=True)
+    leaving_type_id = fields.Many2one('hr.departure.reason', string='Departure Reason', required=True)
     departure_reason_code = fields.Integer(related='leaving_type_id.reason_code')
 
     start_notice_period = fields.Date('Start notice period', required=True, default=fields.Date.context_today)

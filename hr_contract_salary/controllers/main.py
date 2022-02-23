@@ -538,6 +538,7 @@ class HrContractSalary(http.Controller):
 
     def create_new_contract(self, contract, advantages, no_write=False, **kw):
         # Generate a new contract with the current modifications
+        contract_diff = []
         contract_values = advantages['contract']
         personal_infos = {
             'employee': advantages['employee'],
@@ -559,10 +560,60 @@ class HrContractSalary(http.Controller):
                 'active': False,
                 'company_id': contract.company_id.id,
             })
+
+        # get differences for personnal information
+        if no_write:
+            employee_fields = request.env['hr.employee']._fields
+            for section in personal_infos:
+                for field in personal_infos[section]:
+                    if field in employee_fields:
+                        current_value = employee[field]
+                        new_value = personal_infos[section][field]
+
+                        if isinstance(current_value, type(new_value)) and current_value == new_value:
+                            continue
+
+                        elif employee_fields[field].relational:
+                            current_value = str(current_value.name)
+                            if new_value:
+                                new_record = request.env[employee_fields[field].comodel_name].sudo().browse(int(new_value))
+                                new_value = new_record['name'] if new_record else ''
+
+                        elif employee_fields[field].type in ['integer', 'float']:
+                            current_value = str(current_value)
+                            if not new_value:
+                                new_value = '0'
+
+                        elif employee_fields[field].type == 'date':
+                            current_value = current_value.strftime('%Y-%m-%d') if current_value else ''
+
+                        elif employee_fields[field].type == 'boolean':
+                            current_value = str(current_value)
+                            new_value = str(new_value)
+
+                        elif employee_fields[field].type == 'binary':
+                            continue
+
+                        if current_value != new_value:
+                            employee_field_name = employee_fields[field].string or field
+                            contract_diff.append((employee_field_name, current_value, new_value))
+
         self._update_personal_info(employee, contract, personal_infos, no_name_write=bool(kw.get('employee')))
         new_contract = request.env['hr.contract'].with_context(
             tracking_disable=True
         ).sudo().create(self._get_new_contract_values(contract, employee, contract_values))
+
+        # get differences for contract information
+        if no_write:
+            contract_fields = request.env['hr.contract']._fields
+            for field in contract_fields:
+                if field in contract_values and contract[field] != new_contract[field]\
+                        and (contract[field] or new_contract[field]):
+                    current_value = contract[field]
+                    new_value = new_contract[field]
+                    contract_field_name = contract_fields[field].string or field
+                    contract_diff.append((contract_field_name, current_value, new_value))
+
 
         if 'original_link' in kw:
             start_date = parse_qs(urlparse(kw['original_link']).query).get('contract_start_date', False)
@@ -572,14 +623,15 @@ class HrContractSalary(http.Controller):
         new_contract.wage_with_holidays = contract_values['wage']
         new_contract.final_yearly_costs = float(contract_values['final_yearly_costs'] or 0.0)
         new_contract._inverse_wage_with_holidays()
-        return new_contract
+
+        return new_contract, contract_diff
 
     @http.route('/salary_package/update_salary', type="json", auth="public")
     def update_salary(self, contract_id=None, advantages=None, **kw):
         result = {}
         contract = self._check_access_rights(contract_id)
 
-        new_contract = self.create_new_contract(contract, advantages)
+        new_contract = self.create_new_contract(contract, advantages)[0]
         final_yearly_costs = float(advantages['contract']['final_yearly_costs'] or 0.0)
         new_gross = new_contract._get_gross_from_employer_costs(final_yearly_costs)
         new_contract.write({
@@ -726,14 +778,27 @@ class HrContractSalary(http.Controller):
         result[_('Personal Information')] = personal_infos
         return {'mapped_data': result}
 
-    def send_email(self, contract, **kw):
-        values = self._get_email_info(contract, **kw)
+    def _send_mail_message(self, template, kw, values, new_contract_id=None):
         model = 'hr.applicant' if kw.get('applicant_id') else 'hr.contract'
-        res_id = kw.get('applicant_id') or kw.get('employee_contract_id')
+        res_id = kw.get('applicant_id') or new_contract_id or kw.get('employee_contract_id')
         request.env[model].sudo().browse(res_id).message_post_with_view(
-            'hr_contract_salary.hr_contract_salary_email_template',
+            template,
             values=values)
+
+    def send_email(self, contract, **kw):
+        self._send_mail_message(
+            'hr_contract_salary.hr_contract_salary_email_template',
+            kw,
+            self._get_email_info(contract, **kw))
         return contract.id
+
+    def send_diff_email(self, differences, new_contract_id, **kw):
+        self._send_mail_message(
+            'hr_contract_salary.hr_contract_salary_diff_email_template',
+            kw,
+            {'differences': differences},
+            new_contract_id)
+        return
 
     @http.route(['/salary_package/submit'], type='json', auth='public')
     def submit(self, contract_id=None, advantages=None, **kw):
@@ -749,12 +814,23 @@ class HrContractSalary(http.Controller):
             if contract.employee_id.user_id == request.env.user:
                 kw['employee'] = contract.employee_id
         kw['package_submit'] = True
-        new_contract = self.create_new_contract(contract, advantages, no_write=True, **kw)
+        new_contract, contract_diff = self.create_new_contract(contract, advantages, no_write=True, **kw)
+
 
         if isinstance(new_contract, dict) and new_contract.get('error'):
             return new_contract
 
+        #write on new contract differences with current one
+        current_contract = request.env['hr.contract'].sudo().search([
+            ('active', '=', True),
+            ('employee_id', '=', new_contract.employee_id.id),
+            ('state', '=', 'open'),
+        ])
+        if current_contract:
+            self.send_diff_email(contract_diff, new_contract.id, **kw)
+
         self.send_email(new_contract, **kw)
+
 
         applicant = request.env['hr.applicant'].sudo().browse(kw.get('applicant_id')).exists()
         if applicant and kw.get('token', False):

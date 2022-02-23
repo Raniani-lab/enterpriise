@@ -29,6 +29,9 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
         string='New Wage', required=True,
         help="Employee's monthly gross wage for the new contract.")
     currency_id = fields.Many2one(string="Currency", related='company_id.currency_id', readonly=True)
+    previous_contract_creation = fields.Boolean('Post Change Contract Creation',
+        help='If checked, the wizard will create another contract after the new working schedule contract, with current working schedule',
+        default=False)
 
     full_resource_calendar_id = fields.Many2one(
         'resource.calendar', 'Full Working Schedule',
@@ -235,23 +238,24 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
             or (self.date_end + timedelta(days=1)) < self.contract_id.date_end):
 
             # Create a contract for the rest of the original contrat's time period if it exists
-            post_contract = self.contract_id.copy({
-                'date_start': (self.date_end + timedelta(days=1)),
-                # resource_calendar_id is copy=False
-                'resource_calendar_id': self.contract_id.resource_calendar_id.id,
-                'state': 'draft',
-            })
-            new_contracts |= post_contract
-            # We also need to update the allocation when this contract starts,
-            #  basically revert back changes
-            if self.leave_allocation_id:
-                self._update_allocation_or_schedule(
-                    post_contract.date_start,
-                    post_contract,
-                    self.resource_calendar_id,
-                    self.current_resource_calendar_id,
-                    original_allocated_days,
-                )
+            if self.previous_contract_creation:
+                post_contract = self.contract_id.copy({
+                    'date_start': (self.date_end + timedelta(days=1)),
+                    # resource_calendar_id is copy=False
+                    'resource_calendar_id': self.contract_id.resource_calendar_id.id,
+                    'state': 'draft',
+                })
+                new_contracts |= post_contract
+                # We also need to update the allocation when this contract starts,
+                #  basically revert back changes
+                if self.leave_allocation_id:
+                    self._update_allocation_or_schedule(
+                        post_contract.date_start,
+                        post_contract,
+                        self.resource_calendar_id,
+                        self.current_resource_calendar_id,
+                        original_allocated_days,
+                    )
 
         # Set a closing date on the current contract
         if self.date_start == self.contract_id.date_start:

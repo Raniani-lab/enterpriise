@@ -183,7 +183,7 @@ QUnit.module("Studio", (hooks) => {
         assert.strictEqual(firstApp.dataset.menuXmlid, "app.1");
         assert.containsOnce(firstApp, "img.o_app_icon");
         assert.strictEqual(
-            new URL(firstApp.querySelector("img.o_app_icon").src).pathname,
+            firstApp.querySelector("img.o_app_icon").dataset.src,
             "/web_enterprise/static/img/default_icon_app.png"
         );
         assert.containsOnce(firstApp, "div.o_caption");
@@ -215,7 +215,7 @@ QUnit.module("Studio", (hooks) => {
         );
         const newApp = target.querySelector("a.o_app.o_web_studio_new_app");
         assert.strictEqual(
-            new URL(newApp.querySelector("img.o_app_icon").src).pathname,
+            newApp.querySelector("img.o_app_icon").dataset.src,
             "/web_studio/static/src/img/default_icon_app.png",
             "Image source URL should end with '/web_studio/static/src/img/default_icon_app.png'"
         );

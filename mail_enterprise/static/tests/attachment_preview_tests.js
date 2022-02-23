@@ -260,7 +260,6 @@ QUnit.module('attachment_preview_tests.js', {
             res_model: 'partner',
             url: '/web/content/1?download=true',
         });
-        const attachmentLoaded = testUtils.makeTestPromise();
         const { widget: form } = await start({
             hasView: true,
             arch: `
@@ -283,10 +282,6 @@ QUnit.module('attachment_preview_tests.js', {
             },
             async mockRPC(route, { method }) {
                 const _super = this._super.bind(this, ...arguments); // limitation of class.js
-                if (route === '/web/image/1?unique=1') {
-                    await testUtils.nextTick();
-                    attachmentLoaded.resolve();
-                }
                 switch (method) {
                     case 'register_as_main_attachment':
                         return true;
@@ -307,7 +302,17 @@ QUnit.module('attachment_preview_tests.js', {
 
         assert.containsNone(form, 'img#attachment_img');
 
-        await attachmentLoaded;
+        // Wait for image to be loaded
+        await new Promise(resolve => {
+            const loadHandler = async ev => {
+                if (ev.target.dataset.src === "/web/image/1?unique=1") {
+                    await testUtils.nextTick();
+                    document.body.removeEventListener("load", loadHandler, { capture: true });
+                    resolve();
+                }
+            };
+            document.body.addEventListener("load", loadHandler, { capture: true });
+        });
 
         assert.containsOnce(form, 'img#attachment_img');
         assert.notEqual(form.el.querySelector('table th').style.width, '0px',

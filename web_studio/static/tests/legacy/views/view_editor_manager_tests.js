@@ -1488,16 +1488,19 @@ QUnit.module('ViewEditorManager', {
             image: "sulochan",
         });
 
+        const imageLoadHandler = (ev) => {
+            if (ev.target.dataset.src === "data:image/png;base64,sulochan") {
+                assert.step('image');
+            }
+        }
+        document.body.addEventListener("load", imageLoadHandler, { capture: true });
         var vem = await studioTestUtils.createViewEditorManager({
             data: this.data,
             model: 'partner',
             arch: arch,
             res_id: 8,
             mockRPC: function (route, args) {
-                if (route === 'data:image/png;base64,sulochan') {
-                    assert.step('image');
-                    return Promise.resolve();
-                } else if (route === '/web_studio/edit_view') {
+                if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].new_attrs.options, "{\"size\":[0,270],\"preview_image\":\"coucou\"}",
                         "appropriate options for 'image' widget should be passed");
                     // the server sends the arch in string but it's post-processed
@@ -1542,6 +1545,7 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size option:selected').val(), "[0,270]",
             "the image size should be correctly selected");
         vem.destroy();
+        document.body.removeEventListener("load", imageLoadHandler, { capture: true });
     });
 
     QUnit.test('signature field edition (change full_name)', async function (assert) {

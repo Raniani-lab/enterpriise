@@ -868,26 +868,18 @@ QUnit.module('documents_kanban_tests.js', {
     });
 
     QUnit.test('document inspector: document preview', async function (assert) {
-        assert.expect(9);
+        assert.expect(8);
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             data: this.data,
-            mockRPC: function (route) {
-                if (route === '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?model%3Ddocuments.document%26filename%3Dblip') {
-                    assert.step('pdf route');
-                    return Promise.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
-
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
@@ -923,13 +915,13 @@ QUnit.module('documents_kanban_tests.js', {
         await testUtils.dom.click(kanban.$('.o_preview_available'));
 
         assert.containsOnce(kanban, '.o_documents_split_pdf_area', "should have a pdf splitter");
+        assert.containsOnce(kanban, 'iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?model%3Ddocuments.document%26filename%3Dblip"]',
+            "should have an iframe with the correct pdfviewer src");
 
         await testUtils.dom.click(kanban.$('.o_close_btn'));
 
         assert.containsNone(kanban, '.o_viewer_content',
             "should not have a document preview after pdf exit");
-
-        assert.verifySteps(['pdf route']);
 
         kanban.destroy();
     });

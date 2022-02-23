@@ -13,6 +13,7 @@ Bridge module for project and enterprise
     'data': [
         'views/res_config_settings_views.xml',
         'views/project_task_views.xml',
+        'views/project_views.xml',
         'views/project_sharing_templates.xml',
         'report/project_report_views.xml',
     ],

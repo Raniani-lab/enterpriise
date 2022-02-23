@@ -582,10 +582,8 @@ class SaleSubscription(models.Model):
         recurring_next_date = self._get_recurring_next_date(self.recurring_rule_type, self.recurring_interval, next_date, self.recurring_invoice_day)
         end_date = fields.Date.from_string(recurring_next_date) - relativedelta(days=1)     # remove 1 day as normal people thinks in term of inclusive ranges.
         addr = self.partner_id.address_get(['delivery', 'invoice'])
-        sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
-        use_sale_order = sale_order and sale_order.partner_id == self.partner_id
-        partner = sale_order.partner_invoice_id if use_sale_order else self.partner_invoice_id or self.env['res.partner'].browse(addr['invoice'])
-        partner_shipping = sale_order.partner_shipping_id if use_sale_order else self.partner_shipping_id or self.env['res.partner'].browse(addr['delivery'])
+        partner = self.partner_invoice_id or self.env['res.partner'].browse(addr['invoice'])
+        partner_shipping = self.partner_shipping_id or self.env['res.partner'].browse(addr['delivery'])
         fpos = self.env['account.fiscal.position'].with_company(company)._get_fiscal_position(
             self.partner_id, partner_shipping)
         narration = _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date))

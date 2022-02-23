@@ -476,3 +476,67 @@ class TestSubscription(TestSubscriptionCommon):
         self.subscription.recurring_invoice_line_ids.onchange_product_quantity()
         self.assertEqual(line.price_unit, self.subscription.pricelist_id.currency_id.round(50 * conversion_rate),
                          'Price unit must be converted into the currency of the pricelist (USD)')
+    def test_archive_partner_invoice_shipping_compute_so(self):
+        # archived a partner must not remain set on invoicing/shipping address in subscription
+        # here, they are set via their parent (compute) on SO
+        self.sale_order.partner_id = self.partner_a
+        self.assertEqual(self.partner_a_invoice, self.sale_order.partner_invoice_id, "Setting the customer on SO should set its invoice address via onchange.")
+        self.assertEqual(self.partner_a_shipping, self.sale_order.partner_shipping_id, "Setting the customer on SO should set its delivery address via onchange.")
+
+        self.sale_order.order_line.mapped('subscription_id').unlink()
+        self.sale_order.action_confirm()
+        subscription = self.sale_order.order_line.mapped('subscription_id')
+        self.assertEqual(self.partner_a_invoice, subscription.partner_invoice_id, "On the subscription, invoice address should be customer's invoice address.")
+        self.assertEqual(self.partner_a_shipping, subscription.partner_shipping_id, "On the subscription, delivery address should be customer's delivery address.")
+
+        invoice = subscription._recurring_create_invoice()
+        self.assertEqual(self.partner_a_invoice, invoice.partner_id, "On the invoice, invoice address should be customer's invoice address.")
+        self.assertEqual(self.partner_a_shipping, invoice.partner_shipping_id, "On the invoice, delivery address should be customer's delivery address.")
+
+        self.partner_a.child_ids.write({'active': False})
+        self.assertFalse(subscription.partner_invoice_id, "As invoice address have been archived, it should not be on the subscrption anymore.")
+        self.assertFalse(subscription.partner_shipping_id, "As delivery address have been archived, it should not be on the subscrption anymore.")
+
+        invoice = subscription._recurring_create_invoice()
+        self.assertEqual(self.partner_a, invoice.partner_id, "As there is no invoice address on the subscription, customer's address should be chosen as invoice address on the invoice.")
+        self.assertEqual(self.partner_a, invoice.partner_shipping_id, "As there is no delivery address on the subscription, customer's address should be chosen as delivery address on the invoice.")
+
+    def test_onchange_partner_id_on_subscription(self):
+        # test onchange_partner_id on subscription
+        self.sale_order.order_line.mapped('subscription_id').unlink()
+        self.sale_order.action_confirm()
+
+        subscription = self.sale_order.order_line.mapped('subscription_id')
+
+        subscription.partner_id = self.partner_a
+        subscription.onchange_partner_id()
+        self.assertEqual(self.partner_a_invoice, subscription.partner_invoice_id, "Setting the customer on subscription should set its invoice address via onchange.")
+        self.assertEqual(self.partner_a_shipping, subscription.partner_shipping_id, "Setting the customer on subscription should set its delivery address via onchange.")
+
+    def test_archive_partner_invoice_shipping_manual_sub(self):
+        # archived a partner must not remain set on invoicing/shipping address in subscription
+        # here, they are set manually on subscription
+        self.sale_order.order_line.mapped('subscription_id').unlink()
+        self.sale_order.action_confirm()
+
+        subscription = self.sale_order.order_line.mapped('subscription_id')
+        initial_sub_partner = subscription.partner_id
+
+        subscription.write({
+            'partner_invoice_id': self.partner_a_invoice,
+            'partner_shipping_id': self.partner_a_shipping,
+        })
+        self.assertEqual(self.partner_a_invoice, subscription.partner_invoice_id, "Invoice address should have been set manually on the subscription.")
+        self.assertEqual(self.partner_a_shipping, subscription.partner_shipping_id, "Delivery address should have been set manually on the subscription.")
+
+        invoice = subscription._recurring_create_invoice()
+        self.assertEqual(self.partner_a_invoice, invoice.partner_id, "On the invoice, invoice address should be the same as on the subscription.")
+        self.assertEqual(self.partner_a_shipping, invoice.partner_shipping_id, "On the invoice, delivery address should be the same as on the subscription.")
+
+        self.partner_a.child_ids.write({'active': False})
+        self.assertFalse(subscription.partner_invoice_id, "As invoice address have been archived, it should not be on the subscrption anymore.")
+        self.assertFalse(subscription.partner_shipping_id, "As delivery address have been archived, it should not be on the subscrption anymore.")
+
+        invoice = subscription._recurring_create_invoice()
+        self.assertEqual(initial_sub_partner, invoice.partner_id, "As there is no invoice address on the subscription, initial customer's address should be chosen as invoice address on the invoice.")
+        self.assertEqual(initial_sub_partner, invoice.partner_shipping_id, "As there is no delivery address on the subscription, initial customer's address should be chosen as delivery address on the invoice.")

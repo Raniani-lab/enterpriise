@@ -1181,8 +1181,19 @@ class HrPayslip(models.Model):
         return result
 
     @api.model
+    def _get_other_expenses_cost_codes(self):
+        other_expenses = self.env['hr.salary.rule'].search_read([
+            ('appears_on_employee_cost_dashboard', '=', True)],
+            fields=['code', 'name'])
+        other_expenses_cost_codes = {}
+
+        for other_expense in other_expenses:
+            other_expenses_cost_codes[other_expense['code']] = other_expense['name']
+        return other_expenses_cost_codes
+
+    @api.model
     def _get_dashboard_stat_employer_cost_codes(self):
-        return {'NET': _('Net Salary')}
+        return {'NET': _('Net Salary'), **self._get_other_expenses_cost_codes()}
 
     @api.model
     def _get_dashboard_stats_employer_cost(self):

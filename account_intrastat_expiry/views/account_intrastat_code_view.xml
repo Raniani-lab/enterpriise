@@ -39,8 +39,8 @@
         <field name="model">account.intrastat.code</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='country_id']" position="after">
-                <field name="start_date" attrs="{'invisible':[('type', '!=', 'transaction')]}"/>
-                <field name="expiry_date" attrs="{'invisible':[('type', '!=', 'transaction')]}"/>
+                <field name="start_date" attrs="{'invisible':[('type', 'not in', ('transaction','commodity'))]}"/>
+                <field name="expiry_date" attrs="{'invisible':[('type', 'not in', ('transaction','commodity'))]}"/>
             </xpath>
         </field>
     </record>

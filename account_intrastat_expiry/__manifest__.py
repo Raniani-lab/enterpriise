@@ -11,6 +11,8 @@
         'data/account.intrastat.code.csv',
         'views/account_intrastat_code_view.xml',
         'views/account_invoice_view.xml',
+        'views/product_views.xml',
+        'views/report_financial.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

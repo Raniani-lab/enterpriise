@@ -150,13 +150,13 @@ class HelpdeskTicket(models.Model):
             ticket.total_hours_spent = round(sum(ticket.timesheet_ids.mapped('unit_amount')), 2)
 
     @api.model
-    def _fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+    def _get_view(self, view_id=None, view_type='form', **options):
         """ Set the correct label for `unit_amount`, depending on company UoM """
-        result = super(HelpdeskTicket, self)._fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
-        result['arch'] = self.env['account.analytic.line']._apply_timesheet_label(result['arch'])
+        arch, view = super()._get_view(view_id, view_type, **options)
+        arch = self.env['account.analytic.line']._apply_timesheet_label(arch)
         if view_type in ['tree', 'pivot', 'graph', 'cohort'] and self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day'):
-            result['arch'] = self.env['account.analytic.line']._apply_time_label(result['arch'], related_model=self._name)
-        return result
+            arch = self.env['account.analytic.line']._apply_time_label(arch, related_model=self._name)
+        return arch, view
 
     def action_timer_start(self):
         if not self.user_timer_id.timer_start and self.display_timesheet_timer:

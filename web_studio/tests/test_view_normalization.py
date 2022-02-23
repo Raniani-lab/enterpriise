@@ -128,7 +128,7 @@ class TestViewNormalization(TransactionCase):
         normalized = studio_view.normalize()
 
         self.studio_controller._set_studio_view(view, normalized)
-        self.env[self.view.model].with_context(studio=True, load_all_views=True).fields_view_get(view.id, view.type)
+        self.env[self.view.model].with_context(studio=True, load_all_views=True).get_view(view.id, view.type)
 
         normalized = normalized and normalized.strip()
         expected = expected and textwrap.dedent(expected).strip()

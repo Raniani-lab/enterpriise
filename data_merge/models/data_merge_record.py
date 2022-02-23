@@ -91,16 +91,9 @@ class DataMergeRecord(models.Model):
 
     @api.depends('res_id')
     def _compute_differences(self):
-        model_list_fields = {}
-        for model in list(set(self.mapped('res_model_name'))):
-            view = self.env[model].load_views([(False, 'list')])
-            list_fields = view['fields_views']['list']['fields'].keys()
-            model_list_fields[model] = list_fields
-
         for record in self:
-            list_fields = model_list_fields[record.res_model_name]
-            read_fields = record.group_id.divergent_fields.split(',') & list_fields
-            if read_fields != {''}:
+            if record.group_id.divergent_fields:
+                read_fields = record.group_id.divergent_fields.split(',')
                 record.differences = ', '.join(['%s: %s' % (k, v) for k,v in record._render_values(read_fields).items()])
             else:
                 record.differences = ''

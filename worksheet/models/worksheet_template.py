@@ -404,12 +404,14 @@ class WorksheetTemplate(models.Model):
             :param ir_model: ir.model record
             :returns the arch of the template qweb (t-name included)
         """
-        fields_view_get_result = self.env[ir_model.model].fields_view_get(view_id=form_view_id, view_type='form', toolbar=False, submenu=False)
-        form_view_arch = fields_view_get_result['arch']
-        form_view_fields = fields_view_get_result['fields']
+        view_get_result = self.env[ir_model.model].get_view(form_view_id, 'form')
+        form_view_arch = view_get_result['arch']
+        node = etree.fromstring(form_view_arch)
+        form_view_fields = set(el.get('name') for el in node.xpath('.//field[not(ancestor::field)]'))
+        form_view_fields = {fname: field_info for fname, field_info in self.env[ir_model.model].fields_get().items() if fname in form_view_fields}
 
         qweb_arch = etree.Element("div")
-        for row_node in etree.fromstring(form_view_arch).xpath('//group[not(ancestor::group)]|//field[not(ancestor::group)]'):
+        for row_node in node.xpath('//group[not(ancestor::group)]|//field[not(ancestor::group)]'):
             container_row = etree.Element('div')
             container_col = etree.Element('div')
             # pattern A: field is not in any element group --> field take full width

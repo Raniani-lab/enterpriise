@@ -511,7 +511,7 @@ class AnalyticLine(models.Model):
 
     @api.model
     def _apply_timesheet_label(self, view_arch, view_type='form'):
-        doc = etree.XML(view_arch)
+        doc = view_arch
         encoding_uom = self.env.company.timesheet_encode_uom_id
         # Here, we select only the unit_amount field having no string set to give priority to
         # custom inheretied view stored in database. Even if normally, no xpath can be done on
@@ -521,7 +521,7 @@ class AnalyticLine(models.Model):
                 node.set('string', encoding_uom.name)
             else:
                 node.set('string', _('%s Spent') % (re.sub(r'[\(\)]', '', encoding_uom.name or '')))
-        return etree.tostring(doc, encoding='unicode')
+        return doc
 
     def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
         if column_field != 'date' or cell_field != 'unit_amount':

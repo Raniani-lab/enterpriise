@@ -297,7 +297,7 @@ class Task(models.Model):
                 ('is_fsm', '=', True),
                 ('user_ids', '!=', False)
             ])
-            search_domain = ['|', '|', ('id', 'in', users.ids), ('groups_id', 'in', self.env.ref('industry_fsm.group_fsm_user').id), ('id', 'in', recently_created_tasks.mapped('user_ids.id'))]
+            search_domain = ['&', ('company_id', 'in', self.env.companies.ids), '|', '|', ('id', 'in', users.ids), ('groups_id', 'in', self.env.ref('industry_fsm.group_fsm_user').id), ('id', 'in', recently_created_tasks.mapped('user_ids.id'))]
             return users.search(search_domain, order=order)
         return users
 

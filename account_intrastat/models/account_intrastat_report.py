@@ -60,7 +60,7 @@ class IntrastatReport(models.AbstractModel):
     @api.model
     def _create_intrastat_report_line(self, options, vals):
         columns = [{'name': c} for c in [
-            vals['invoice_date'], vals['system'], vals['country_code'], vals['trans_code'],
+            vals['invoice_date'], vals['system'], vals['country_code'], vals['transaction_code'],
             vals['region_code'], vals['commodity_code'], vals['type'],
             vals['intrastat_product_origin_country'], vals['partner_vat'],
         ]]
@@ -116,7 +116,7 @@ class IntrastatReport(models.AbstractModel):
                 CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN %(import_merchandise_code)s ELSE %(export_merchandise_code)s END AS system,
                 country.code AS country_code,
                 company_country.code AS comp_country_code,
-                CASE WHEN inv_line.intrastat_transaction_id IS NULL THEN '1' ELSE transaction.code END AS transaction_code,
+                transaction.code AS transaction_code,
                 company_region.code AS region_code,
                 code.code AS commodity_code,
                 inv_line.id AS id,
@@ -131,7 +131,6 @@ class IntrastatReport(models.AbstractModel):
                 comp_incoterm.code AS company_incoterm,
                 inv_transport.code AS invoice_transport,
                 comp_transport.code AS company_transport,
-                CASE WHEN inv_line.intrastat_transaction_id IS NULL THEN '1' ELSE transaction.code END AS trans_code,
                 CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN 'Arrival' ELSE 'Dispatch' END AS type,
                 partner.vat as partner_vat,
                 ROUND(
@@ -237,6 +236,10 @@ class IntrastatReport(models.AbstractModel):
             if not vals['commodity_code']:
                 category_id = self.env['product.category'].browse(vals['category_id'])
                 vals['commodity_code'] = category_id.search_intrastat_code().code
+
+            # set transaction_code default value if none (this is overridden in account_intrastat_expiry)
+            if not vals['transaction_code']:
+                vals['transaction_code'] = 1
 
             # Check the currency.
             currency_id = self.env['res.currency'].browse(vals['invoice_currency_id'])

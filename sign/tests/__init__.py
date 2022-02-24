@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 # import tests
+from . import test_access_right
 from . import test_sign_template
 from . import sign_request_common
 from . import test_sign_request

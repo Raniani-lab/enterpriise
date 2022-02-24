@@ -72,7 +72,21 @@
         <form string="Mail Template">
             <sheet>
                 <group>
-                    <field name="subject"/>
+                    <label for="subject">Subject</label>
+                    <div class="o_mass_mailing_subject d-flex flex-row align-items-baseline">
+                        <field class="o_text_overflow" name="subject" string="Subject"/>
+                        <field name="favorite" invisible="1"/>
+                        <button type="object" name="action_set_favorite"
+                            class="o_mass_mailing_favorite"
+                            icon="fa-star-o"
+                            attrs="{'invisible': [('favorite', '=', True)]}"
+                            title="Add to Templates"/>
+                        <button type="object" name="action_remove_favorite"
+                            class="o_mass_mailing_favorite"
+                            icon="fa-star"
+                            attrs="{'invisible': [('favorite', '=', False)]}"
+                            title="Remove from Templates"/>
+                    </div>
                     <field name="email_from"/>
                     <field name="mailing_type" invisible="1"/>
                     <label for="mailing_model_id" string="Participants" invisible="1"/>

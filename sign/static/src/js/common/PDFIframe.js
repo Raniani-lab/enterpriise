@@ -245,6 +245,12 @@ export const PDFIframe = Widget.extend(
       // The following password input is used to decrypt the PDF when needed.
       // The autocomplete="off" doesn't work anymore. https://bugs.chromium.org/p/chromium/issues/detail?id=468153#c164
       this.$(":password").attr("autocomplete", "new-password");
+      // hack to prevent opening files in the pdf js viewer when dropping files/images to the viewerContainer
+      // ref: https://stackoverflow.com/a/68939139
+      this.$("#viewerContainer")[0].addEventListener('drop', (e) => {
+        e.stopImmediatePropagation();
+        e.stopPropagation();
+      }, true);
       if (this.readonlyFields && !this.editMode && is_all_signed) {
         this._managedToolBarButtonsForSignedDocument();
       }

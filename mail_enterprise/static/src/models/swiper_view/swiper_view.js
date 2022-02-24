@@ -196,7 +196,7 @@ registerModel({
             inverse: 'swiperView',
             readonly: true,
         }),
-        record: one('Model', {
+        record: one('Record', {
             compute: '_computeRecord',
             readonly: true,
             required: true,

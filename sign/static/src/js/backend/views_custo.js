@@ -4,6 +4,7 @@
 
 import config from "web.config";
 import core from "web.core";
+import Dialog from "web.Dialog";
 import { sprintf } from "@web/core/utils/strings";
 import KanbanController from "web.KanbanController";
 import KanbanColumn from "web.KanbanColumn";
@@ -136,7 +137,7 @@ function makeCusto(selector_button) {
         .on("click", (e) => {
           e.preventDefault();
           e.stopPropagation();
-          _sign_upload_file.bind(this)(true, false, "sign_send_request");
+          _sign_upload_file.bind(this)(true, "sign_send_request");
         });
       // don't allow template creation on mobile devices
       if (config.device.isMobile) {
@@ -156,11 +157,7 @@ function makeCusto(selector_button) {
               .on("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                _sign_upload_file.bind(this)(
-                  false,
-                  false,
-                  "sign_template_edit"
-                );
+                _sign_upload_file.bind(this)(false,"sign_template_edit");
               })
           );
         }
@@ -175,7 +172,7 @@ function makeCusto(selector_button) {
         .on("click", (e) => {
           e.preventDefault();
           e.stopImmediatePropagation();
-          _sign_upload_file.bind(this)(true, false, "sign_send_request");
+          _sign_upload_file.bind(this)(true, "sign_send_request");
         });
       if (config.device.isMobile) {
         this.$buttons.find(selector_button).hide();
@@ -185,11 +182,12 @@ function makeCusto(selector_button) {
   };
 }
 
-function _sign_upload_file(
-  inactive,
-  sign_directly_without_mail,
-  sign_edit_context
-) {
+/**
+ * Handles template file upload logic
+ * @param { Boolean } inactive - whether the created template should be archived or not
+ * @param { String } sign_edit_context - sign edit context to be used when redirecting the user to the created template
+ */
+function _sign_upload_file(inactive, sign_edit_context) {
   const $upload_input = $(
     '<input type="file" name="files[]" accept="application/pdf, application/x-pdf, application/vnd.cups-pdf" multiple="true"/>'
   );
@@ -207,28 +205,63 @@ function _sign_upload_file(
           });
         });
       })
-    )
-      .then((uploadedTemplateData) => {
-        let templates = uploadedTemplateData.map((template, index) => {
+    ).then((uploadedTemplates) => {
+        const handleTemplates = (templates) => {
+          if(templates && templates.length > 0) {
+            const file = templates.shift();
+            if (templates.length) {
+              multiFileUpload.addNewFiles(templates)
+            }
+            this.do_action({
+              type: "ir.actions.client",
+              tag: "sign.Template",
+              name: sprintf(_t('Template "%s"'), file.name),
+              context: {
+                sign_edit_call: sign_edit_context,
+                id: file.template,
+                sign_directly_without_mail: false,
+              },
+            });
+          }
+        }
+
+        const groupBy = (array, key) => {
+          const res = {}
+          array.forEach(item => {
+            res[key(item)] = (res[key(item)] || []);
+            res[key(item)].push(item);
+          });
+          return res;
+        };
+
+        const templates = uploadedTemplates.map((template, index) => {
           return {
-            template: template,
+            template,
             name: files[index].name,
           };
         });
-        const file = templates.shift();
-        if (templates.length) {
-          multiFileUpload.addNewFiles(templates);
+
+        let {true: succesfulTemplates, false: failedTemplates} = groupBy(templates, (item) => Boolean(item.template));
+
+        if (failedTemplates && failedTemplates.length) {
+          const errorMessage = 
+            core.qweb.render("sign.upload_template_error", {
+              'failedTemplates': failedTemplates,
+              'uploadedTemplatesCount': uploadedTemplates.length
+            });
+          Dialog.alert(this, '', {
+            $content: $('<div/>', {
+                role: 'alert',
+                html: errorMessage
+              }),
+            title: _t("File Error"),
+            confirm_callback: () => {
+              handleTemplates.bind(this)(succesfulTemplates);
+            },
+          })
+        } else {
+          handleTemplates.bind(this)(succesfulTemplates);
         }
-        this.do_action({
-          type: "ir.actions.client",
-          tag: "sign.Template",
-          name: sprintf(_t('Template "%s"'), file.name),
-          context: {
-            sign_edit_call: sign_edit_context,
-            id: file.template,
-            sign_directly_without_mail: sign_directly_without_mail || false,
-          },
-        });
       })
       .then(() => {
         $upload_input.removeAttr("disabled");

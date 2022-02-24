@@ -130,9 +130,12 @@ class SignTemplate(models.Model):
         return super().copy(default)
 
     @api.model
-    def create_with_attachment_data(self, name, datas, active=True):
-        attachment = self.env['ir.attachment'].create({'name': name, 'datas': datas})
-        return self.create({'attachment_id': attachment.id, 'active': active}).id
+    def create_with_attachment_data(self, name, data, active=True):
+        try:
+            attachment = self.env['ir.attachment'].create({'name': name, 'datas': data})
+            return self.create({'attachment_id': attachment.id, 'active': active}).id
+        except UserError:
+            return 0
 
     @api.model
     def _get_pdf_number_of_pages(self, pdf_data):

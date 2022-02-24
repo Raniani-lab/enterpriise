@@ -11,7 +11,7 @@ class TestSignTemplate(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         with file_open('sign/static/demo/sample_contract.pdf', "rb") as f:
-            cls.pdf_datas = base64.b64encode(f.read())
+            cls.pdf_data = base64.b64encode(f.read())
 
         cls.test_user = new_test_user(cls.env,
                                       "test_user_1",
@@ -23,7 +23,7 @@ class TestSignTemplate(TransactionCase):
     def test_create_update_copy_unlink_template(self):
         # create
         sign_template_id = self.env['sign.template'].with_user(self.test_user).create_with_attachment_data(
-            name='sample_contract.pdf', datas=self.pdf_datas)
+            name='sample_contract.pdf', data=self.pdf_data)
         sign_template = self.env['sign.template'].with_user(self.test_user).browse(sign_template_id)
         self.assertTrue(sign_template.exists(), 'The template should be created')
         self.assertTrue(sign_template.attachment_id.exists(), 'The template should be created')
@@ -80,7 +80,7 @@ class TestSignTemplate(TransactionCase):
     def test_update_from_pdfviewer_bad_internet(self):
         # create
         sign_template_id = self.env['sign.template'].with_user(self.test_user).create_with_attachment_data(
-            name='sample_contract.pdf', datas=self.pdf_datas)
+            name='sample_contract.pdf', data=self.pdf_data)
         sign_template = self.env['sign.template'].with_user(self.test_user).browse(sign_template_id)
 
         # add new sign items

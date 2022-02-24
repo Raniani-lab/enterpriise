@@ -422,7 +422,7 @@ class HrContractSalary(http.Controller):
             'sign_template_id': contract.sign_template_id.id,
             'contract_update_template_id': contract.contract_update_template_id.id,
             'date_start': fields.Date.today().replace(day=1),
-            'contract_type_id': contract.contract_type_id,
+            'contract_type_id': contract.contract_type_id.id,
         }
         for advantage in contract_advantages:
             if advantage.field not in contract:
@@ -551,13 +551,18 @@ class HrContractSalary(http.Controller):
                 ('applicant_id', '=', applicant.id), ('employee_id', '!=', False)], limit=1)
             employee = existing_contract.employee_id
         if not employee:
-            employee = request.env['hr.employee'].sudo().with_context(tracking_disable=True).create({
+            employee = request.env['hr.employee'].sudo().with_context(
+                tracking_disable=True,
+                salary_simulation=not no_write,
+            ).create({
                 'name': 'Simulation Employee',
                 'active': False,
                 'company_id': contract.company_id.id,
             })
         self._update_personal_info(employee, contract, personal_infos, no_name_write=bool(kw.get('employee')))
-        new_contract = request.env['hr.contract'].sudo().new(self._get_new_contract_values(contract, employee, contract_values))
+        new_contract = request.env['hr.contract'].with_context(
+            tracking_disable=True
+        ).sudo().create(self._get_new_contract_values(contract, employee, contract_values))
 
         if 'original_link' in kw:
             start_date = parse_qs(urlparse(kw['original_link']).query).get('contract_start_date', False)
@@ -567,15 +572,7 @@ class HrContractSalary(http.Controller):
         new_contract.wage_with_holidays = contract_values['wage']
         new_contract.final_yearly_costs = float(contract_values['final_yearly_costs'] or 0.0)
         new_contract._inverse_wage_with_holidays()
-
-        vals = new_contract._convert_to_write(new_contract._cache)
-
-        if not no_write and contract.state == 'draft':
-            contract.write(vals)
-        else:
-            contract = request.env['hr.contract'].sudo().with_context(tracking_disable=True).create(vals)
-            contract.final_yearly_costs = float(contract_values['final_yearly_costs'] or 0.0)
-        return contract
+        return new_contract
 
     @http.route('/salary_package/update_salary', type="json", auth="public")
     def update_salary(self, contract_id=None, advantages=None, **kw):

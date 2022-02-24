@@ -118,7 +118,7 @@ class HrContractSignDocumentWizard(models.TransientModel):
         for sign_template_id in sign_templates_employee_ids:
             sign_values.append((
                 sign_template_id,
-                [{'role': self.employee_role_id.id,
+                [{'role_id': self.employee_role_id.id,
                   'partner_id': self.employee_id.user_id.partner_id.id}]
             ))
         for sign_template_id in sign_templates_both_ids:

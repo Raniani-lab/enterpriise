@@ -613,12 +613,13 @@ class AccountEdiFormat(models.Model):
         try:
             transport = Transport(timeout=20)
             client = Client(credentials['cancel_url'], transport=transport)
-            uuid_type = client.get_type('ns0:UUID')()
+            factory = client.type_factory('apps.services.soap.core.views')
+            uuid_type = factory.UUID()
             uuid_type.UUID = uuid
             uuid_type.Motivo = "01" if uuid_replace else "02"
             if uuid_replace:
                 uuid_type.FolioSustitucion = uuid_replace
-            docs_list = client.get_type('ns0:UUIDS')(uuid_type)
+            docs_list = factory.UUIDArray(uuid_type)
             response = client.service.cancel(
                 docs_list,
                 credentials['username'],

@@ -13,25 +13,23 @@
                 <group class="o_label_nowrap">
                     <field name="contract_id" invisible="1"/>
                     <field name="has_both_template" invisible="1"/>
+                    <field name="sign_template_responsible_ids" invisible="1"/>
+                    <field name="possible_template_ids" invisible="1"/>
                     <field name="sign_template_ids" options="{'no_create': True}" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s"
                         widget="many2many_tags" force_save="1"/>
+                    <field name="employee_ids" widget="many2many_avatar_employee" required="1"/>
+                </group>
+                <group attrs="{'invisible': [('sign_template_ids', '=', [])]}" string="Sign Request Options">
+                    <field name="employee_role_id" options="{'no_create': True}"/>
                     <field name="responsible_id" options="{'no_create_edit': True}"
                         attrs="{'invisible': [('has_both_template', '=', False)], 'required': [('has_both_template', '=', True)]}"/>
-                </group>
-                <group attrs="{'invisible': [('sign_template_ids', '=', [])]}">
-                    <group>
-                        <field name="sign_template_responsible_ids" invisible="1"/>
-                        <field name="employee_role_id" options="{'no_create': True}"/>
-                    </group>
-                    <group>
-                        <field name="employee_id"/>
-                    </group>
-                </group>
-                <group class="o_label_nowrap">
                     <field name="cc_partner_ids" widget="many2many_tags" placeholder="Write email or search contact..."/>
-                    <field name="subject" placeholder="Signature Request"/>
-                    <field name="message" placeholder="Optional Message..."/>
                 </group>
+                <group class="o_label_nowrap" string="Mail Options">
+                    <field name="subject" placeholder="Signature Request"/>
+                </group>
+                <field name="message" placeholder="Optional Message..." widget="html"/>
+                <field name="attachment_ids" widget="many2many_binary" string="Attach a file"/>
                 <footer>
                     <button name="validate_signature" string="Send" type="object" class="oe_highlight" data-hotkey="q"/>
                     <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>

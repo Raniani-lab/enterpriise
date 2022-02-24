@@ -9,7 +9,7 @@
     <record id="template_rental_sign" model="sign.template">
         <field name="attachment_id" ref="attachment_rental_sign"/>
         <field name="active">True</field>
-        <field name="privacy">employee</field>
+        <field name="group_ids" eval="[(4,ref('sign.group_sign_user'))]"/>
     </record>
 
     <record model="sign.item" id="sign_item_1">

@@ -24,7 +24,7 @@
                                     <div class="o_kanban_record_title">
                                         <t t-if="record.favorited_ids.raw_value.indexOf(user_context.uid) &lt; 0">
                                             <a type="object" name="toggle_favorited" aria-label="Not in favorites, set it" title="Not in favorites, add it"
-                                                class="fa fa-lg fa-star-o favorite_sign_button" groups="sign.group_sign_manager"/>
+                                                class="fa fa-lg fa-star-o favorite_sign_button"/>
                                         </t>
                                         <t t-else="">
                                             <a type="object" name="toggle_favorited" aria-label="In favorites, remove it" title="In favorites, remove it"
@@ -146,8 +146,7 @@
                         <group>
                             <field name="redirect_url" widget="url"/>
                             <field name="redirect_url_text"  attrs="{'invisible':[('redirect_url','=','')]}"/>
-                            <field name="privacy"/>
-                            <field name="favorited_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="authorized_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="group_ids" groups="base.group_no_one" widget="many2many_tags" />
                             <field name="user_id" domain="[('share', '=', False)]" groups="base.group_no_one" options="{'no_open': True}"/>
                         </group>
@@ -363,9 +362,9 @@
     </record>
 
     <!-- Menus -->
-    <menuitem id="menu_document" name="Sign" web_icon="sign,static/description/icon.svg" groups="sign.group_sign_employee" sequence="180"/>
+    <menuitem id="menu_document" name="Sign" web_icon="sign,static/description/icon.svg" sequence="180"/>
     <menuitem id="sign.sign_template_menu" name="Dashboard" parent="sign.menu_document" action="sign_template_action" sequence="10"/>
-    <menuitem id="sign_request_menu" name="Documents" parent="menu_document" action="sign_request_action" groups="sign.group_sign_employee" sequence="20"/>
+    <menuitem id="sign_request_menu" name="Documents" parent="menu_document" action="sign_request_action" sequence="20"/>
     <menuitem id="sign_reports" name="Reports" parent="menu_document" sequence="99"/>
     <menuitem id="menu_sign_configuration" sequence="100" name="Configuration" parent="menu_document"/>
     <!-- Menus -->

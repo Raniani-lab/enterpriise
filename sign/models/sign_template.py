@@ -28,14 +28,7 @@ class SignTemplate(models.Model):
     responsible_count = fields.Integer(compute='_compute_responsible_count', string="Responsible Count")
 
     active = fields.Boolean(default=True, string="Active")
-    privacy = fields.Selection([('employee', 'All Users'), ('invite', 'On Invitation')],
-                               string="Who can Sign", default="invite",
-                               help="Set who can use this template:\n"
-                                    "- All Users: all users of the Sign application can view and use the template\n"
-                                    "- On Invitation: only invited users can view and use the template\n"
-                                    "Invited users can always edit the document template.\n"
-                                    "Existing requests based on this template will not be affected by changes.")
-    favorited_ids = fields.Many2many('res.users', string="Invited Users", default=lambda s: s._default_favorited_ids(), copy=False)
+    favorited_ids = fields.Many2many('res.users', string="Favorited Users", relation="sign_template_favorited_users_rel", default=_default_favorited_ids)
     user_id = fields.Many2one('res.users', string="Responsible", default=lambda self: self.env.user)
 
     sign_request_ids = fields.One2many('sign.request', 'template_id', string="Signature Requests")
@@ -49,7 +42,8 @@ class SignTemplate(models.Model):
     signed_count = fields.Integer(compute='_compute_signed_in_progress_template')
     in_progress_count = fields.Integer(compute='_compute_signed_in_progress_template')
 
-    group_ids = fields.Many2many("res.groups", string="Template Access Group")
+    authorized_ids = fields.Many2many('res.users', string="Authorized Users", relation="sign_template_authorized_users_rel", default=_default_favorited_ids)
+    group_ids = fields.Many2many("res.groups", string="Authorized Groups")
 
     is_sharing = fields.Boolean(compute='_compute_is_sharing', help='Checked if this template has created a shared document for you')
 
@@ -100,7 +94,7 @@ class SignTemplate(models.Model):
 
     @api.model
     def get_empty_list_help(self, help):
-        if not self.env.ref('sign.template_sign_tour', raise_if_not_found=False) or not self.env.user.has_group('sign.group_sign_user'):
+        if not self.env.ref('sign.template_sign_tour', raise_if_not_found=False):
             return '<p class="o_view_nocontent_smiling_face">%s</p>' % _('Upload a PDF')
         return super().get_empty_list_help(help)
 

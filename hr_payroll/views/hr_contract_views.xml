@@ -19,6 +19,13 @@
                     <field name="hourly_wage" nolabel="1"/>
                     <span>/ hour</span>
                 </div>
+                <label for="time_credit_full_time_wage"
+                       attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('time_credit', '=', False)]}"/>
+                <div class="o_row" name="time_credit_full_time_wage"
+                     attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('time_credit', '=', False)]}">
+                    <field name="time_credit_full_time_wage" nolabel="1"/>
+                    <span>/ month</span>
+                </div>
             </xpath>
             <xpath expr="//label[@for='wage']" position="attributes">
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
@@ -33,6 +40,21 @@
                     <field name="payslips_count" string="Payslips" widget="statinfo"/>
                 </button>
             </div>
+            <page name="information" position="after">
+                <page string="Part Time" name="part_time">
+                    <group>
+                        <group>
+                            <div colspan="2" class="o_checkbox_optional_field">
+                                <label for="time_credit"/>
+                                <field name="time_credit"/>
+                                <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
+                            </div>
+                            <field name="standard_calendar_id" attrs="{'invisible': [('time_credit', '=', False)]}" help="The Standard Calendar is the calendar used by the people working at a 100% rate. It's used here to compute your part-time percentage."/>
+                            <field name="time_credit_type_id" attrs="{'invisible': [('time_credit', '=', False)], 'required': [('time_credit', '=', True)]}"/>
+                        </group>
+                    </group>
+                </page>
+            </page>
         </field>
     </record>
 

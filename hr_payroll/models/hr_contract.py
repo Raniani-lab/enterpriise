@@ -7,6 +7,7 @@ from odoo import _, api, fields, models
 from odoo.tools import date_utils
 from odoo.osv import expression
 
+import pytz
 
 class HrContract(models.Model):
     _inherit = 'hr.contract'
@@ -22,6 +23,46 @@ class HrContract(models.Model):
     hourly_wage = fields.Monetary('Hourly Wage', default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
     payslips_count = fields.Integer("# Payslips", compute='_compute_payslips_count', groups="hr_payroll.group_hr_payroll_user")
     calendar_changed = fields.Boolean(help="Whether the previous or next contract has a different schedule or not")
+
+    time_credit_full_time_wage = fields.Monetary(
+        'Full Time Equivalent Wage', compute='_compute_time_credit_full_time_wage',
+        store=True, readonly=False)
+    time_credit = fields.Boolean('Part Time', readonly=False, help='This is a part time contract.')
+    work_time_rate = fields.Float(
+        compute='_compute_work_time_rate', store=True, readonly=True,
+        string='Work time rate', help='Work time rate versus full time working schedule.')
+    standard_calendar_id = fields.Many2one(
+        'resource.calendar', default=lambda self: self.env.company.resource_calendar_id, readonly=True,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    time_credit_type_id = fields.Many2one(
+        'hr.work.entry.type', string='Part Time Work Entry Type',
+        domain=[('is_leave', '=', True)],
+        help="The work entry type used when generating work entries to fit full time working schedule.")
+
+    @api.depends('wage', 'time_credit', 'work_time_rate')
+    def _compute_time_credit_full_time_wage(self):
+        for contract in self:
+            work_time_rate = contract._get_work_time_rate()
+            if contract.time_credit and work_time_rate != 0:
+                contract.time_credit_full_time_wage = contract.wage / work_time_rate
+            elif contract.time_credit and not work_time_rate:
+                contract.time_credit_full_time_wage = contract._get_contract_wage()
+            else:
+                contract.time_credit_full_time_wage = contract.wage
+
+    @api.depends('time_credit', 'resource_calendar_id.hours_per_week', 'standard_calendar_id.hours_per_week')
+    def _compute_work_time_rate(self):
+        for contract in self:
+            if contract.time_credit:
+                hours_per_week = contract.resource_calendar_id.hours_per_week
+                hours_per_week_ref = contract.standard_calendar_id.hours_per_week
+            else:
+                hours_per_week = contract.resource_calendar_id.hours_per_week
+                hours_per_week_ref = contract.company_id.resource_calendar_id.hours_per_week
+            if not hours_per_week and not hours_per_week_ref:
+                contract.work_time_rate = 1
+            else:
+                contract.work_time_rate = hours_per_week / (hours_per_week_ref or hours_per_week)
 
     def _compute_payslips_count(self):
         count_data = self.env['hr.payslip'].read_group(
@@ -126,6 +167,60 @@ class HrContract(models.Model):
                 contract_changed |= next_row[0][0]
         contract_changed.filtered(lambda c: not c.calendar_changed).write({'calendar_changed': True})
         (self - contract_changed).filtered(lambda c: c.calendar_changed).write({'calendar_changed': False})
+
+    def _get_contract_work_entries_values(self, date_start, date_stop):
+        contract_vals = super()._get_contract_work_entries_values(date_start, date_stop)
+        contract_vals += self._get_contract_credit_time_values(date_start, date_stop)
+        return contract_vals
+
+    def _get_contract_credit_time_values(self, date_start, date_stop):
+        contract_vals = []
+        for contract in self:
+            if not contract.time_credit or not contract.time_credit_type_id:
+                continue
+
+            employee = contract.employee_id
+            resource = employee.resource_id
+            calendar = contract.resource_calendar_id
+            standard_calendar = contract.standard_calendar_id
+
+            # YTI TODO master: The domain is hacky, but we can't modify the method signature
+            # Add an argument compute_leaves=True on the method
+            standard_attendances = standard_calendar._work_intervals_batch(
+                pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
+                pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
+                resources=resource,
+                domain=[('resource_id', '=', -1)])[resource.id]
+
+            # YTI TODO master: The domain is hacky, but we can't modify the method signature
+            # Add an argument compute_leaves=True on the method
+            attendances = calendar._work_intervals_batch(
+                pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
+                pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
+                resources=resource,
+                domain=[('resource_id', '=', -1)]
+            )[resource.id]
+
+            credit_time_intervals = standard_attendances - attendances
+
+            for interval in credit_time_intervals:
+                work_entry_type_id = contract.time_credit_type_id
+                contract_vals += [{
+                    'name': "%s: %s" % (work_entry_type_id.name, employee.name),
+                    'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),
+                    'date_stop': interval[1].astimezone(pytz.utc).replace(tzinfo=None),
+                    'work_entry_type_id': work_entry_type_id.id,
+                    'is_credit_time': True,
+                    'employee_id': employee.id,
+                    'contract_id': contract.id,
+                    'company_id': contract.company_id.id,
+                    'state': 'draft',
+                }]
+        return contract_vals
+
+    def _get_work_time_rate(self):
+        self.ensure_one()
+        return self.work_time_rate if self.time_credit else 1.0
 
     @api.model
     def _recompute_calendar_changed(self, employee_ids):

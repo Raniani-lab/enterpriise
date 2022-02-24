@@ -3,6 +3,7 @@
 
 from . import browsable_object
 from . import hr_contract
+from . import hr_contract_history
 from . import hr_employee
 from . import res_config_settings
 from . import hr_payroll_structure

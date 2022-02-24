@@ -5,14 +5,17 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_payroll.hr_contract_form_inherit"/>
         <field name="arch" type="xml">
-            <xpath expr="//label[@for='wage']" position="before">
-                <label for="time_credit_full_time_wage"
-                       attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), '|', ('time_credit', '=', False), ('country_code', '!=', 'BE')]}"/>
-                <div class="o_row" name="time_credit_full_time_wage"
-                     attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), '|', ('time_credit', '=', False), ('country_code', '!=', 'BE')]}">
-                    <field name="time_credit_full_time_wage" nolabel="1"/>
-                    <span>/ month</span>
-                </div>
+            <xpath expr="//field[@name='time_credit']" position="attributes">
+                <attribute name="attrs">{'readonly': [('country_code', '=', 'BE')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='work_time_rate']" position="attributes">
+                <attribute name="attrs">{'invisible': [('time_credit', '=', False)], 'readonly': [('country_code', '=', 'BE')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='standard_calendar_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('time_credit', '=', False)], 'readonly': [('country_code', '=', 'BE')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='time_credit_type_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('time_credit', '=', False)], 'required': ['&amp;', ('country_code', '!=', 'BE'), ('time_credit', '=', True)], 'readonly': [('country_code', '=', 'BE')]}</attribute>
             </xpath>
             <xpath expr="//label[@for='wage']" position="attributes">
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
@@ -23,26 +26,11 @@
             <xpath expr="//field[@name='resource_calendar_id']" position="attributes">
                 <attribute name="attrs">{'readonly': [('country_code', '=', 'BE'), ('state', '!=', 'draft')]}</attribute>
             </xpath>
-            <page name="information" position="after">
-                <page string="Part Time" name="part_time" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
-                    <group>
-                        <group>
-                            <div colspan="2" class="o_checkbox_optional_field" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
-                                <label for="time_credit"/>
-                                <field name="time_credit"/>
-                                <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
-                            </div>
-                            <field name="standard_calendar_id" attrs="{'invisible': ['|', ('time_credit', '=', False), ('country_code', '!=', 'BE')]}"/>
-                            <field name="time_credit_type_id" attrs="{'invisible': ['|', ('time_credit', '=', False), ('country_code', '!=', 'BE')]}"/>
-                        </group>
-                    </group>
-                </page>
-            </page>
             <xpath expr="//header" position="inside">
                 <field name="time_credit" invisible="1"/>
                 <button name="%(schedule_change_wizard_action)d" string="Working Schedule Change"
                         type="action" groups="hr_contract.group_hr_contract_manager"
-                        attrs="{'invisible': ['|', ('country_code', '!=', 'BE'), ('state', '=', 'draft')]}"/>
+                        attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
             </xpath>
             <xpath expr="//group[@name='yearly_advantages']" position="attributes">
                 <attribute name="string">Yearly Advantages</attribute>

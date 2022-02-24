@@ -79,21 +79,6 @@ class HrContract(models.Model):
     ip = fields.Boolean('Intellectual Property', default=False, tracking=True)
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
     ip_value = fields.Float(compute='_compute_ip_value')
-    # Please stop making this field readonly
-    time_credit = fields.Boolean('Part Time', readonly=False, help='This is a part time contract.')
-    work_time_rate = fields.Float(
-        compute='_compute_work_time_rate', store=True, readonly=True,
-        string='Work time rate', help='Work time rate versus full time working schedule.')
-    time_credit_full_time_wage = fields.Monetary(
-        'Full Time Equivalent Wage', compute='_compute_time_credit_full_time_wage',
-        store=True, readonly=False)
-    standard_calendar_id = fields.Many2one(
-        'resource.calendar', default=lambda self: self.env.company.resource_calendar_id, readonly=True,
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    time_credit_type_id = fields.Many2one(
-        'hr.work.entry.type', string='Part Time Work Entry Type',
-        domain=['&', ('is_leave', '=', True), ('leave_right', '=', False)],
-        help="The work entry type used when generating work entries to fit full time working schedule.")
     fiscal_voluntarism = fields.Boolean(
         string="Fiscal Voluntarism", default=False, tracking=True,
         help="Voluntarily increase withholding tax rate.")
@@ -169,20 +154,6 @@ class HrContract(models.Model):
         ('check_percentage_fiscal_voluntary_rate', 'CHECK(fiscal_voluntary_rate >= 0 AND fiscal_voluntary_rate <= 100)', 'The Fiscal Voluntary rate on wage should be between 0 and 100.'),
         ('check_percentage_group_insurance_rate', 'CHECK(l10n_be_group_insurance_rate >= 0 AND l10n_be_group_insurance_rate <= 100)', 'The group insurance salary sacrifice rate on wage should be between 0 and 100.'),
     ]
-
-    @api.depends('time_credit', 'resource_calendar_id.hours_per_week', 'standard_calendar_id.hours_per_week')
-    def _compute_work_time_rate(self):
-        for contract in self:
-            if contract.time_credit:
-                hours_per_week = contract.resource_calendar_id.hours_per_week
-                hours_per_week_ref = contract.standard_calendar_id.hours_per_week
-            else:
-                hours_per_week = contract.resource_calendar_id.hours_per_week
-                hours_per_week_ref = contract.company_id.resource_calendar_id.hours_per_week
-            if not hours_per_week and not hours_per_week_ref:
-                contract.work_time_rate = 1
-            else:
-                contract.work_time_rate = hours_per_week / (hours_per_week_ref or hours_per_week)
 
     @api.depends(
         'wage', 'state', 'employee_id.l10n_be_scale_seniority', 'job_id.l10n_be_scale_category',
@@ -276,17 +247,6 @@ class HrContract(models.Model):
         for contract in self:
             if contract.rd_percentage and contract.employee_id.certificate not in ['civil_engineer', 'doctor', 'master', 'bachelor']:
                 raise ValidationError(_('Only employees with a Bachelor/Master/Doctor/Civil Engineer degree can benefit from the withholding taxes exemption.'))
-
-    @api.depends('wage', 'time_credit', 'work_time_rate')
-    def _compute_time_credit_full_time_wage(self):
-        for contract in self:
-            work_time_rate = contract._get_work_time_rate()
-            if contract.time_credit and work_time_rate != 0:
-                contract.time_credit_full_time_wage = contract.wage / work_time_rate
-            elif contract.time_credit and not work_time_rate:
-                contract.time_credit_full_time_wage = contract._get_contract_wage()
-            else:
-                contract.time_credit_full_time_wage = contract.wage
 
     @api.depends('ip', 'ip_wage_rate')
     def _compute_ip_value(self):
@@ -422,10 +382,6 @@ class HrContract(models.Model):
                 contract.l10n_be_ambulatory_amount_per_adult,
                 contract.l10n_be_ambulatory_insured_adults_total)
 
-    def _get_work_time_rate(self):
-        self.ensure_one()
-        return self.work_time_rate if self.time_credit else 1.0
-
     @api.model
     def _get_private_car_reimbursed_amount(self, distance):
         # monthly train subscription amount => half is reimbursed
@@ -457,62 +413,6 @@ class HrContract(models.Model):
                 user_id=contract.hr_responsible_id.id)
 
         return super(HrContract, self).update_state()
-
-    def _get_contract_credit_time_values(self, date_start, date_stop):
-        contract_vals = []
-        for contract in self:
-            if not contract.time_credit or not contract.time_credit_type_id:
-                continue
-
-            employee = contract.employee_id
-            resource = employee.resource_id
-            calendar = contract.resource_calendar_id
-            standard_calendar = contract.standard_calendar_id
-
-            # YTI TODO master: The domain is hacky, but we can't modify the method signature
-            # Add an argument compute_leaves=True on the method
-            standard_attendances = standard_calendar._work_intervals_batch(
-                pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
-                pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-                resources=resource,
-                domain=[('resource_id', '=', -1)])[resource.id]
-
-            # YTI TODO master: The domain is hacky, but we can't modify the method signature
-            # Add an argument compute_leaves=True on the method
-            attendances = calendar._work_intervals_batch(
-                pytz.utc.localize(date_start) if not date_start.tzinfo else date_start,
-                pytz.utc.localize(date_stop) if not date_stop.tzinfo else date_stop,
-                resources=resource,
-                domain=[('resource_id', '=', -1)]
-            )[resource.id]
-
-            credit_time_intervals = standard_attendances - attendances
-
-            for interval in credit_time_intervals:
-                work_entry_type_id = contract.time_credit_type_id
-                contract_vals += [{
-                    'name': "%s: %s" % (work_entry_type_id.name, employee.name),
-                    'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),
-                    'date_stop': interval[1].astimezone(pytz.utc).replace(tzinfo=None),
-                    'work_entry_type_id': work_entry_type_id.id,
-                    'is_credit_time': True,
-                    'employee_id': employee.id,
-                    'contract_id': contract.id,
-                    'company_id': contract.company_id.id,
-                    'state': 'draft',
-                }]
-        return contract_vals
-
-    def _get_contract_work_entries_values(self, date_start, date_stop):
-        contract_vals = super()._get_contract_work_entries_values(date_start, date_stop)
-        contract_vals += self._get_contract_credit_time_values(date_start, date_stop)
-        return contract_vals
-
-    def _preprocess_work_hours_data_split_half(self, work_data, date_from, date_to):
-        """
-        Method is meant to be overriden, see l10n_be_hr_payroll_attendance
-        """
-        return
 
     def _get_work_hours_split_half(self, date_from, date_to, domain=None):
         """

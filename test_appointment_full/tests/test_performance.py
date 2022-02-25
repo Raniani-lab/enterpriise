@@ -7,7 +7,8 @@ import time
 from freezegun import freeze_time
 from logging import getLogger
 
-from odoo.addons.appointment_hr.tests.test_performance import AppointmentUIPerformanceCase
+from odoo.addons.appointment.tests.test_performance import AppointmentUIPerformanceCase
+from odoo.addons.appointment_hr.tests.test_performance import AppointmenHrPerformanceCase
 from odoo.tests import tagged
 from odoo.tests.common import warmup
 
@@ -15,7 +16,7 @@ _logger = getLogger(__name__)
 
 
 @tagged('appointment_performance', 'post_install', '-at_install')
-class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase):
+class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase, AppointmenHrPerformanceCase):
 
     @classmethod
     def setUpClass(cls):
@@ -29,7 +30,7 @@ class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate(None, None)
-            with self.assertQueryCount(default=40):  # apt only: 40
+            with self.assertQueryCount(default=41):  # apt only: 41
                 self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 
@@ -44,7 +45,7 @@ class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=49):  # apt only: 49
+            with self.assertQueryCount(default=50):  # apt only: 42
                 self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 

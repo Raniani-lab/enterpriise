@@ -2,14 +2,21 @@
 <odoo>
     <!-- Templates inherited -->
 
-    <template id="appointments_list_layout" name="Online Appointment: Appointments List Layout" inherit_id="appointment.appointments_list_layout">
+    <template id="appointments_list_layout" name="Online Appointment: Appointments List Layout"
+              inherit_id="appointment.appointments_list_layout" track="1">
         <xpath expr="//t[@t-call='portal.portal_layout']" position="attributes">
             <attribute name="t-call">website.layout</attribute>
-        </xpath> 
+        </xpath>
         <xpath expr="//div[hasclass('o_appointment_choice')]" position="before">
             <t t-call="website_appointment.website_calendar_index"/>
         </xpath>
     </template>
+
+    <record id="appointment.appointments_list_layout" model="ir.ui.view">
+        <!-- As the track field is not properly overridden (the value is different whether you get it by the base class
+        name or the overridden name), write it to the base class as well -->
+        <field name="track">1</field>
+    </record>
 
     <template id="appointment_info" name="Online Appointment: Appointment Info" inherit_id="appointment.appointment_info" track="1">
         <xpath expr="//t[@t-call='portal.portal_layout']" position="attributes">
@@ -46,9 +53,14 @@
         </xpath>
     </template>
 
+    <record id="appointment.appointment_info" model="ir.ui.view">
+        <!-- Write track=1 to the base class as well (see explanation above) -->
+        <field name="track">1</field>
+    </record>
+
     <!-- Pages -->
 
-    <template id="appointments_cards_layout" name="Appointment Types">
+    <template id="appointments_cards_layout" name="Appointment Types" track="1">
         <t t-call="website.layout">
             <div id="wrap" class="o_appointment_index h-100">
                 <t t-call="website_appointment.website_calendar_index"/>

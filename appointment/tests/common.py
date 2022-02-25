@@ -94,6 +94,11 @@ class AppointmentCommon(MailCommon, common.HttpCase):
             'staff_user_ids': [(4, cls.staff_user_bxls.id)],
         })
 
+    def _test_url_open(self, url):
+        """ Call url_open with nocache parameter """
+        url += ('?' not in url and '?' or '&') + 'nocache'
+        return self.url_open(url)
+
     def _create_meetings(self, user, time_info):
         return self.env['calendar.event'].with_context(self._test_context).create([
             {'allday': allday,

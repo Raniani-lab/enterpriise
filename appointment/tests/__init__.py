@@ -3,4 +3,5 @@
 
 from . import test_appointment
 from . import test_appointment_ui
+from . import test_performance
 from . import test_res_partner

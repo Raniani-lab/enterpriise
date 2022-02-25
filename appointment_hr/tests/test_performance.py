@@ -9,14 +9,14 @@ from freezegun import freeze_time
 from logging import getLogger
 
 from odoo.addons.appointment_hr.tests.common import AppointmentHrCommon
-from odoo.addons.website.tests.test_performance import UtilPerf
+from odoo.addons.appointment.tests.test_performance import AppointmentPerformanceCase, AppointmentUIPerformanceCase
 from odoo.tests import tagged, users
 from odoo.tests.common import warmup
 
 _logger = getLogger(__name__)
 
 
-class AppointmenHrPerformanceCase(AppointmentHrCommon):
+class AppointmenHrPerformanceCase(AppointmentHrCommon, AppointmentPerformanceCase):
 
     @classmethod
     def setUpClass(cls):
@@ -106,12 +106,6 @@ class AppointmenHrPerformanceCase(AppointmentHrCommon):
             'name': 'Bxls Office',
             'street': 'Rue Haute 63'
         })
-
-    def setUp(self):
-        super(AppointmenHrPerformanceCase, self).setUp()
-        # patch registry to simulate a ready environment
-        self.patch(self.env.registry, 'ready', True)
-        self._flush_tracking()
 
 
 @tagged('appointment_performance', 'post_install', '-at_install')
@@ -565,22 +559,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
 
 
 @tagged('appointment_performance', 'post_install', '-at_install')
-class AppointmentUIPerformanceCase(AppointmenHrPerformanceCase, UtilPerf):
-
-    @classmethod
-    def setUpClass(cls):
-        super(AppointmentUIPerformanceCase, cls).setUpClass()
-        # if website_livechat is installed, disable it
-        if 'website' in cls.env and 'channel_id' in cls.env['website']:
-            cls.env['website'].search([]).channel_id = False
-
-    def _test_url_open(self, url):
-        url += ('?' not in url and '?' or '') + '&nocache'
-        return self.url_open(url)
-
-
-@tagged('appointment_performance', 'post_install', '-at_install')
-class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
+class OnlineAppointmentPerformance(AppointmentUIPerformanceCase, AppointmenHrPerformanceCase):
 
     @warmup
     def test_appointment_type_page_website_whours_user(self):
@@ -591,7 +570,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=49):  # apt only: 38 (44 w website)
+            with self.assertQueryCount(default=51):  # apt only: 38 (48 w website)
                 self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 
@@ -623,7 +602,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=51):  # apt only: 40 (46 w website)
+            with self.assertQueryCount(default=53):  # apt only: 40 (44 w website)
                 self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 

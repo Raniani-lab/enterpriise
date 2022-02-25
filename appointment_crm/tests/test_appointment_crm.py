@@ -53,16 +53,17 @@ class AppointmentCRMTest(TestCrmCommon):
         }
         return dict(default, **kwargs)
 
+    def _create_meetings_from_appointment_type(self, appointment_type, user, contact, **kwargs):
+        return self.env['calendar.event'].create(self._prepare_event_value(appointment_type, user, contact, **kwargs))
+
     @users('user_employee')
     def test_create_opportunity(self):
         """ Test the creation of a lead based on the creation of an event
             with appointment type configured to create lead
         """
-        event = self.env['calendar.event'].create(self._prepare_event_value(
-            self.appointment_type_create,
-            self.user_sales_leads,
-            self.contact_1,
-        ))
+        event = self._create_meetings_from_appointment_type(
+            self.appointment_type_create, self.user_sales_leads, self.contact_1
+        )
 
         self.assertEqual(event.res_model_id, self.env['ir.model']._get('crm.lead'),
             "Event should be linked with the model crm.lead")
@@ -117,22 +118,18 @@ class AppointmentCRMTest(TestCrmCommon):
 
     def test_no_create_lead(self):
         """ Make sure no lead is created for appointment type with create_lead=False """
-        event = self.env['calendar.event'].create(self._prepare_event_value(
-            self.appointment_type_nocreate,
-            self.user_sales_leads,
-            self.contact_1,
-        ))
+        event = self._create_meetings_from_appointment_type(
+            self.appointment_type_nocreate, self.user_sales_leads, self.contact_1
+        )
         self.assertFalse(event.opportunity_id)
 
     def test_no_partner(self):
         """ Make sure no lead is created
             if there is no external partner attempting the appointment
         """
-        event = self.env['calendar.event'].create(self._prepare_event_value(
-            self.appointment_type_create,
-            self.user_sales_leads,
-            self.user_sales_leads.partner_id,
-        ))
+        event = self._create_meetings_from_appointment_type(
+            self.appointment_type_create, self.user_sales_leads, self.user_sales_leads.partner_id
+        )
         self.assertFalse(event.opportunity_id)
 
     def test_two_partner(self):
@@ -150,11 +147,9 @@ class AppointmentCRMTest(TestCrmCommon):
 
     def test_no_type(self):
         """ Make sure no lead is created, if the appointment type is empty """
-        event = self.env['calendar.event'].create(self._prepare_event_value(
-            self.env['appointment.type'],
-            self.user_sales_leads,
-            self.contact_1,
-        ))
+        event = self._create_meetings_from_appointment_type(
+            self.env['appointment.type'], self.user_sales_leads, self.contact_1
+        )
         self.assertFalse(event.opportunity_id)
 
     def test_tag_deleted(self):
@@ -162,9 +157,7 @@ class AppointmentCRMTest(TestCrmCommon):
             if master data is removed
         """
         self.env.ref('appointment_crm.appointment_crm_tag').unlink()
-        event = self.env['calendar.event'].create(self._prepare_event_value(
-            self.appointment_type_create,
-            self.user_sales_leads,
-            self.contact_1,
-        ))
+        event = self._create_meetings_from_appointment_type(
+            self.appointment_type_create, self.user_sales_leads, self.contact_1
+        )
         self.assertTrue(event.opportunity_id)

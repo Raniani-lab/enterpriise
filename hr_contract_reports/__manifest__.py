@@ -12,6 +12,7 @@ Add a dynamic report about contracts and employees.
     'depends': ['hr_contract', 'web_dashboard'],
     'data': [
         'security/ir.model.access.csv',
+        'security/hr_contract_reports_security.xml',
         'report/hr_contract_employee_report_views.xml',
     ],
     'assets': {

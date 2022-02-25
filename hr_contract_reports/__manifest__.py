@@ -14,6 +14,11 @@ Add a dynamic report about contracts and employees.
         'security/ir.model.access.csv',
         'report/hr_contract_employee_report_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'hr_contract_reports/static/src/js/hr_contract_employee_report_views.js',
+        ]
+    },
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

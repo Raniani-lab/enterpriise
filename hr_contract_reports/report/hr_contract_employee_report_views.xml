@@ -23,7 +23,8 @@
                         </group>
 
                         <group col="1">
-                            <widget name="pie_chart" title="Departure Reason" attrs="{'groupby': 'departure_reason_id', 'domain':'[(\'count_employee_exit\', \'=\', 1)]'}"/>
+                            <widget name="contract_employee_report_pie_chart" title="Departure Reason"
+                                attrs="{'groupby': 'departure_reason_id', 'domain':'[(\'count_employee_exit\', \'=\', 1)]'}"/>
                         </group>
 
                     </group>
@@ -36,7 +37,7 @@
             <field name="name">contract.employee.report.view.pivot</field>
             <field name="model">hr.contract.employee.report</field>
             <field name="arch" type="xml">
-                <pivot string="Employees Analysis" sample="1">
+                <pivot string="Employees Analysis" sample="1" js_class="contract_employee_report_pivot">
                     <field name="department_id" type="row"/>
                     <field name="employee_id" type="measure"/>
                     <field name="wage" type="measure"/>
@@ -50,7 +51,7 @@
             <field name="name">contract.employee.report.view.graph</field>
             <field name="model">hr.contract.employee.report</field>
             <field name="arch" type="xml">
-                <graph string="Employees Analysis" type="line" sample="1">
+                <graph string="Employees Analysis" type="line" sample="1" js_class="contract_employee_report_graph">
                     <field name="date"/>
                     <field name="count_new_employee" type="measure"/>
                 </graph>

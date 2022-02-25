@@ -7,6 +7,7 @@ const testUtils = require('web.test_utils');
 
 const { toggleGroupByMenu, toggleMenuItem } = require("@web/../tests/search/helpers");
 const createView = testUtils.createAsyncView;
+const patchDate = testUtils.mock.patchDate;
 
 QUnit.module('mapView legacy', {
     beforeEach: function () {
@@ -14,6 +15,7 @@ QUnit.module('mapView legacy', {
             'project.task': {
                 fields: {
                     display_name: { string: "name", type: "char" },
+                    scheduled_date: { string: "Schedule date", type: "datetime"},
                     sequence: { string: "sequence", type: 'integer' },
                     partner_id: { string: "partner", type: "many2one", relation: 'res.partner' },
                     another_partner_id: { string: "another relation", type: "many2one", relation: 'res.partner}' },
@@ -28,6 +30,14 @@ QUnit.module('mapView legacy', {
                     ],
                     length: 1
                 },
+
+                oneRecordFieldDateTime: {
+                    records: [
+                        { id: 1, display_name: "Foo", scheduled_date: "02/07/2022 21:09:31", partner_id: [1] }
+                    ],
+                    length: 1
+                },
+
 
                 twoRecords: {
                     records: [
@@ -1577,6 +1587,48 @@ QUnit.module('mapView legacy', {
             'The popup should contain 2 buttons and one divider');
 
         map.destroy();
+    });
+
+    QUnit.test('Content of the marker popup with date time', async function (assert) {
+        assert.expect(2);
+        const unpatchDate = patchDate(2017, 9, 8, 15, 35, 11); // October 8 2017, 15:35:11, UTC+1
+
+        const map = await createView({
+            View: MapView,
+            model: 'project.task',
+            data: this.data,
+            arch:
+                `<map res_partner="partner_id" routing="true" hide_name="true" hide_address="true">
+                    <field name="display_name" string="Name"/>
+                    <field name="scheduled_date" string="Scheduled Date"/>
+                </map>`,
+            viewOptions: {
+                actionViews: [{ type: 'form' }]
+            },
+            mockRPC: function (route, args) {
+                switch (route) {
+                    case '/web/dataset/search_read':
+                        assert.ok(args.fields.includes('display_name'));
+                        return Promise.resolve(this.data['project.task'].oneRecordFieldDateTime);
+                    case '/web/dataset/call_kw/res.partner/search_read':
+                        return Promise.resolve(this.data['res.partner'].twoRecordsAddressCoordinates);
+                }
+                return Promise.resolve();
+            },
+            session: {
+                map_box_token: 'token',
+                getTZOffset: function () {
+                    return 60;
+                },
+            },
+        });
+
+        await testUtils.dom.click(map.$('div.leaflet-marker-icon').eq(0)[0]);
+        assert.strictEqual(map.$('tbody').children().eq(1).children().eq(2).prop("innerText"), '02/07/2022 22:09:31',
+            'The second element of the table should \'02/07/2022 22:09:31\'');
+
+        map.destroy();
+        unpatchDate();
     });
 
     /**

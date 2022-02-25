@@ -5,6 +5,7 @@ odoo.define('web_map.MapRenderer', function (require) {
 
     const AbstractRendererOwl = require('web.AbstractRendererOwl');
     const { renderToString } = require('@web/core/utils/render');
+    const { format } = require("web.field_utils");
 
     const { useRef, useState, onWillStart, onMounted, onPatched, onWillUpdateProps, onWillUnmount } = owl;
 
@@ -330,9 +331,15 @@ odoo.define('web_map.MapRenderer', function (require) {
             }
             for (const field of this.props.fieldNamesMarkerPopup) {
                 if (record[field.fieldName]) {
-                    const fieldName = record[field.fieldName] instanceof Array ?
+                    let fieldName = record[field.fieldName] instanceof Array ?
                         record[field.fieldName][1] :
                         record[field.fieldName];
+
+                    if (["date", "datetime"].includes(field.type)) {
+                        const date = moment.utc(fieldName);
+                        fieldName = format[field.type](date);
+                    }
+
                     fieldsView.push({
                         id: this.nextId++,
                         value: fieldName,
@@ -432,6 +439,7 @@ odoo.define('web_map.MapRenderer', function (require) {
                 shape: {
                     fieldName: String,
                     string: String,
+                    type: String,
                 },
             },
         },

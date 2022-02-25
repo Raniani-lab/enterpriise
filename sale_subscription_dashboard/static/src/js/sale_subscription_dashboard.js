@@ -1170,8 +1170,8 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
 
     init: function() {
         this._super.apply(this, arguments);
-        this.start_date = moment().startOf('month');
-        this.end_date = moment().endOf('month');
+        this.start_date = moment().subtract(1, 'months').startOf('month');
+        this.end_date = moment().subtract(1, 'months').endOf('month');
         this.barGraph = {};
         this.migrationDate = false;
         this.currentCompany = $.bbq.getState('cids') && parseInt($.bbq.getState('cids').split(',')[0]);

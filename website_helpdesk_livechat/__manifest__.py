@@ -21,6 +21,10 @@ Features:
 
     """,
     'data': [
+        'data/helpdesk_livechat_chatbot_data.xml',
+
+        'views/chatbot_script_views.xml',
+        'views/chatbot_script_step_views.xml',
         'views/helpdesk_view.xml',
     ],
     'auto_install': True,

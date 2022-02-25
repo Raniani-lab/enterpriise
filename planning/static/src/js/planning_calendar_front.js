@@ -73,6 +73,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 timeFormat: 'LT',
                 displayEventEnd: true,
                 height: 'auto',
+                eventRender: this.eventRenderFunction,
                 eventTextColor: 'white',
                 eventOverlap: true,
                 eventTimeFormat: {
@@ -92,6 +93,19 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 this.calendar.setOption('locale', locale);
                 this.calendar.render();
            }
+    },
+    eventRenderFunction: function (calRender) {
+        const eventContent = calRender.el.querySelectorAll('.fc-time, .fc-title');
+        if (calRender.view.type != 'listMonth') {
+            calRender.el.classList.add('px-2', 'py-1');
+        }
+        if (calRender.view.type === 'dayGridMonth') {
+            for (let i = 0; i < eventContent.length; i++) {
+                eventContent[i].classList.add('d-block', 'text-truncate');
+            }
+        }
+        calRender.el.classList.add('o_cursor_pointer');
+        calRender.el.childNodes[0].classList.add('font-weight-bold');
     },
     eventFunction: function (calEvent) {
         const planningToken = $('.planning_token').attr('value');

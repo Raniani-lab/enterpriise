@@ -46,12 +46,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="container o_planning_calendar_open_shifts d-print-none">
+                <div class="container o_planning_calendar_open_shifts d-print-none mt-5">
                     <!-- open shift's container -->
                     <t t-if="open_slots_ids">
                         <div class="container">
                             <h1 align="center" class="m-3">Open Shifts Available</h1>
-                            <div>
+                            <div class="table-responsive-md">
                                 <table class="table table-borderless">
                                     <thead class="o_thead">
                                         <tr>
@@ -99,7 +99,7 @@
                             <div class="modal-content border-0">
                                 <div class="modal-header modal-header-primary py-3 border-0 rounded-top text-light">
                                     <h5 class="modal-title"/>
-                                    <button type="button" class="close text-light shadow-none" data-dismiss="modal">
+                                    <button type="button" class="close btn text-light shadow-none" data-dismiss="modal">
                                         <span aria-label="Close">×</span>
                                     </button>
                                 </div>
@@ -147,7 +147,7 @@
             <t t-else="">
                 <t t-set="o_toast_color" t-value="'bg-danger'"/>
             </t>
-            <div t-att-class="'toast o_planning_toast ' + o_toast_color" role="alert" id="PlanningToast" data-delay="3000">
+            <div t-att-class="'position-absolute mx-2 my-1 toast o_planning_toast ' + o_toast_color" role="alert" id="PlanningToast" data-delay="3000">
                 <div class="toast-body">
                     <t t-if="message_slug == 'assign'">
                         <i class="fa fa-check-circle text-success"/> You were successfully assigned this open shift.

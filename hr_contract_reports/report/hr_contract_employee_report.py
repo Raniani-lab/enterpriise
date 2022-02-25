@@ -39,7 +39,7 @@ class HrContractEmployeeReport(models.Model):
             e.department_id as department_id,
             c.wage AS wage,
             CASE WHEN serie = start.contract_start THEN 1 ELSE 0 END as count_new_employee,
-            CASE WHEN date_part('month', exit.contract_end) = date_part('month', serie) AND date_part('year', exit.contract_end) = date_part('year', serie) THEN 1 ELSE 0 END as count_employee_exit,
+            CASE WHEN exit.contract_end IS NOT NULL AND date_part('month', exit.contract_end) = date_part('month', serie) AND date_part('year', exit.contract_end) = date_part('year', serie) THEN 1 ELSE 0 END as count_employee_exit,
             c.date_start,
             c.date_end,
             exit.contract_end as date_end_contract,
@@ -68,7 +68,7 @@ class HrContractEmployeeReport(models.Model):
                 LEFT JOIN hr_employee e ON (e.id = c.employee_id)
                 LEFT JOIN (
                     SELECT employee_id, contract_end
-                    FROM (SELECT employee_id, MAX(COALESCE(date_end, current_date)) as contract_end FROM hr_contract WHERE state != 'cancel' GROUP BY employee_id) c_end
+                    FROM (SELECT employee_id, CASE WHEN array_position(array_agg(date_end), NULL) IS NOT NULL THEN NULL ELSE max(date_end) END as contract_end FROM hr_contract WHERE state != 'cancel' GROUP BY employee_id) c_end
                     WHERE c_end.contract_end <= current_date) exit on (exit.employee_id = c.employee_id)
                 LEFT JOIN (
                     SELECT employee_id, MIN(date_start) as contract_start

@@ -193,7 +193,8 @@ class SaleSubscription(models.Model):
         """ Add an invoice line on the sales order for the specified option and add a discount
         to take the partial recurring period into account """
         order_line_obj = self.env['sale.order.line']
-        ratio, message, period_msg = self._partial_recurring_invoice_ratio(date_from=date_from)
+        ratio, message, period_msg = self.with_context(lang=sale_order.partner_id.lang)\
+            ._partial_recurring_invoice_ratio(date_from=date_from)
         if message != "":
             sale_order.message_post(body=message)
         _discount = (1 - ratio) * 100
@@ -206,7 +207,7 @@ class SaleSubscription(models.Model):
             'discount': _discount,
             'price_unit': self.pricelist_id._get_product_price(
                 option_line.product_id, 1, option_line.uom_id),
-            'name': option_line.name + '\n' + period_msg,
+            'name': option_line.with_context(lang=sale_order.partner_id.lang).name + '\n' + period_msg,
         }
         return order_line_obj.create(values)
 

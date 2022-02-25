@@ -1,5 +1,10 @@
 /** @odoo-module **/
-import { getFixture, legacyExtraNextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    getFixture,
+    legacyExtraNextTick,
+    makeDeferred,
+    patchWithCleanup,
+} from "@web/../tests/helpers/utils";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
 import { companyService } from "@web/webclient/company_service";
@@ -556,6 +561,34 @@ QUnit.module("Studio", (hooks) => {
                 ".o_web_studio_client_action .o_web_studio_form_view_editor",
                 "the form view should be opened"
             );
+        }
+    );
+
+    QUnit.test(
+        "concurrency: execute a non editable action and try to enter studio",
+        async function (assert) {
+            // the purpose of this test is to ensure that there's no time window
+            // during which if the icon isn't disabled, but the current action isn't
+            // editable (typically, just after the current action has changed).
+            assert.expect(5);
+
+            const def = makeDeferred();
+            serverData.actions[4].xml_id = false; // make action 4 non editable
+            const webClient = await createEnterpriseWebClient({ serverData });
+            assert.containsOnce(target, ".o_home_menu");
+
+            webClient.env.bus.on("ACTION_MANAGER:UI-UPDATED", null, () => {
+                assert.containsOnce(target, ".o_kanban_view");
+                assert.hasClass(target.querySelector(".o_web_studio_navbar_item"), "o_disabled");
+                def.resolve();
+            });
+
+            // open app Partners (non editable act window action)
+            await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+            await def;
+
+            assert.containsOnce(target, ".o_kanban_view");
+            assert.hasClass(target.querySelector(".o_web_studio_navbar_item"), "o_disabled");
         }
     );
 });

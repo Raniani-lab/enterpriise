@@ -29,8 +29,8 @@ class IntrastatExpiryReport(models.AbstractModel):
             ('premature_trans', 'invoice_id'),
             ('expired_comm', 'product_id'),
             ('premature_comm', 'product_id'),
-            ('expired_templ_comm', 'template_categ'),
-            ('premature_templ_comm', 'template_categ'),
+            ('expired_categ_comm', 'template_categ'),
+            ('premature_categ_comm', 'template_categ'),
         ):
             if vals.get(error):
                 options['warnings'][error].add(vals[val_key])
@@ -92,27 +92,27 @@ class IntrastatExpiryReport(models.AbstractModel):
         }
 
     @api.model
-    def _fill_missing_values(self, vals, cache=None):
-        if cache is None:
-            cache = {}
-
-        for val in vals:
+    def _fill_missing_values(self, vals_list):
+        for vals in vals_list:
             # set transaction_code default value if none, code "1" is expired from 2022-01-01, replaced by code "11"
-            if not val['transaction_code']:
-                val['transaction_code'] = 1 if val['invoice_date'] < datetime.strptime('2022-01-01', '%Y-%m-%d').date() else 11
+            if not vals['transaction_code']:
+                vals['transaction_code'] = 1 if vals['invoice_date'] < datetime.strptime('2022-01-01', '%Y-%m-%d').date() else 11
 
-        res = super()._fill_missing_values(vals, cache)
+        res = super()._fill_missing_values(vals_list)
 
-        for val in vals:
-            commodity_code_code = cache.get('commodity_code_%d' % val['template_id'])
-            if commodity_code_code:
-                commodity_code = cache.get('commodity_code_obj_%s' % commodity_code_code)
-                if not commodity_code:
-                    commodity_code = self.env['account.intrastat.code'].search([('code', '=', commodity_code_code)], limit=1)
-                    cache['commodity_code_obj_%s' % commodity_code_code] = commodity_code
-                if commodity_code.expiry_date and commodity_code.expiry_date <= val['invoice_date']:
-                    val['expired_templ_comm'] = True
-                if commodity_code.start_date and commodity_code.start_date > val['invoice_date']:
-                    val['premature_templ_comm'] = True
+        codes_from_prod_categ = [x['commodity_code'] for x in vals_list if x['commodity_code']]
+        commodity_code_by_code = {
+            record.code: record
+            for record in self.env['account.intrastat.code'].search([('code', 'in', codes_from_prod_categ)])
+        }
+
+        for vals in vals_list:
+            if vals['commodity_code']:
+                # if vals now has a commodity_code, it's from it's product category
+                commodity_code = commodity_code_by_code[vals['commodity_code']]
+                if commodity_code.expiry_date and commodity_code.expiry_date <= vals['invoice_date']:
+                    vals['expired_categ_comm'] = True
+                if commodity_code.start_date and commodity_code.start_date > vals['invoice_date']:
+                    vals['premature_categ_comm'] = True
 
         return res

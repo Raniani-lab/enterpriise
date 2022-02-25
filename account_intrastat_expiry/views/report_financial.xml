@@ -28,16 +28,16 @@
                     t-att-data-option_key="'premature_comm'">product's commodity codes</a>.
                 </span>
             </div>
-            <div class="alert alert-warning text-center mb-0 no_print" t-if="options['warnings'].get('expired_templ_comm')">
+            <div class="alert alert-warning text-center mb-0 no_print" t-if="options['warnings'].get('expired_categ_comm')">
                 <span>
                     Check the expired <a type="action" action="action_invalid_code_product_categories"
-                    t-att-data-option_key="'expired_templ_comm'">product categorie's commodity codes</a>.
+                    t-att-data-option_key="'expired_categ_comm'">product categorie's commodity codes</a>.
                 </span>
             </div>
-            <div class="alert alert-warning text-center mb-0 no_print" t-if="options['warnings'].get('premature_templ_comm')">
+            <div class="alert alert-warning text-center mb-0 no_print" t-if="options['warnings'].get('premature_categ_comm')">
                 <span>
                     Check the premature <a type="action" action="action_invalid_code_product_categories"
-                    t-att-data-option_key="'premature_templ_comm'">product categorie's commodity codes</a>.
+                    t-att-data-option_key="'premature_categ_comm'">product categorie's commodity codes</a>.
                 </span>
             </div>
         </t>

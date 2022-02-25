@@ -5,13 +5,14 @@ const PdfGroupName = require('documents.component.PdfGroupName');
 const PdfPage = require('documents.component.PdfPage');
 const { computeMultiSelection } = require('documents.utils');
 const { isEventHandled, markEventHandled } = require('@mail/utils/utils');
+const { LegacyComponent } = require("@web/legacy/legacy_component");
 
 const ajax = require('web.ajax');
 const { csrf_token, _t } = require('web.core');
 
 const { Component, onMounted, onWillUnmount, onWillStart, useState } = owl;
 
-class PdfManager extends Component {
+class PdfManager extends LegacyComponent {
 
     /**
      * @override

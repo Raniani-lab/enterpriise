@@ -3,6 +3,7 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
 
     const fieldUtils = require('web.field_utils');
     const TimerHeaderM2O = require('timesheet_grid.TimerHeaderM2O');
+    const { LegacyComponent } = require("@web/legacy/legacy_component");
 
     const { onMounted, onWillUpdateProps, onPatched, Component, useState, useRef } = owl;
     const { ComponentAdapter } = require('web.OwlCompatibility');
@@ -25,7 +26,7 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
         }
     }
 
-    class TimerHeaderComponent extends Component {
+    class TimerHeaderComponent extends LegacyComponent {
         setup() {
             this.state = useState({
                 time: null,

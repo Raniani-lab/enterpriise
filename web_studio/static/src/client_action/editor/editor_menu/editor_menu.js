@@ -5,11 +5,12 @@ import { _lt } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 import { localization } from "@web/core/l10n/localization";
 import { registry } from "@web/core/registry";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, useState } = owl;
 const editorTabRegistry = registry.category("web_studio.editor_tabs");
 
-export class EditorMenu extends Component {
+export class EditorMenu extends LegacyComponent {
     setup() {
         this.l10n = localization;
         this.studio = useService("studio");

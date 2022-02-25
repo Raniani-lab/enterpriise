@@ -311,7 +311,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         });
 
         const webClient = await createEnterpriseWebClient({ serverData });
-        webClient.el.style.width = "1080px";
+
         window.dispatchEvent(new Event("resize"));
         await Promise.all(adapted);
         await click(target.querySelector(".o_app[data-menu-xmlid=menu_1]"));

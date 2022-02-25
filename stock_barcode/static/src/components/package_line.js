@@ -1,8 +1,9 @@
 /** @odoo-module **/
 
+import { LegacyComponent } from "@web/legacy/legacy_component";
 const { Component } = owl;
 
-export default class PackageLineComponent extends Component {
+export default class PackageLineComponent extends LegacyComponent {
     get isSelected() {
         return this.line.package_id.id === this.env.model.lastScannedPackage;
     }

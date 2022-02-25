@@ -17,6 +17,7 @@ import { makeFakeEnterpriseService } from "../mocks";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { errorService } from "@web/core/errors/error_service";
 import { browser } from "@web/core/browser/browser";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, xml } = owl;
 
@@ -265,7 +266,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
 
             let doVeryFastClick = false;
 
-            class DelayedClientAction extends Component {
+            class DelayedClientAction extends LegacyComponent {
                 setup() {
                     owl.onMounted(() => {
                         if (doVeryFastClick) {

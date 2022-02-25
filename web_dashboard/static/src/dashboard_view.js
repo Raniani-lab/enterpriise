@@ -15,6 +15,7 @@ import { DashboardModel } from "./dashboard_model";
 import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
 import { ViewWidget } from "./view_widget";
 import { ViewWrapper } from "./view_wrapper/view_wrapper";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, onWillStart, onWillUpdateProps, useEffect } = owl;
 
@@ -36,7 +37,7 @@ const VIEW_PROPS = {
     graph: GRAPH_VIEW_PROPS,
 };
 
-export class DashboardView extends Component {
+export class DashboardView extends LegacyComponent {
     setup() {
         this._viewService = useService("view");
         this.action = useService("action");

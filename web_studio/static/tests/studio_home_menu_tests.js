@@ -19,6 +19,7 @@ import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { click, getFixture, mount } from "@web/../tests/helpers/utils";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, EventBus, xml } = owl;
 const serviceRegistry = registry.category("services");
@@ -66,7 +67,7 @@ const genericHomeMenuProps = {
 // -----------------------------------------------------------------------------
 
 const createStudioHomeMenu = async () => {
-    class Parent extends Component {
+    class Parent extends LegacyComponent {
         get DialogContainer() {
             return registry.category("main_components").get("DialogContainer");
         }

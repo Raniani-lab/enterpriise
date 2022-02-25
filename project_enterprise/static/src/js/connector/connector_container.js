@@ -2,10 +2,11 @@
 
 import Connector from "./connector";
 import { deepMerge } from "./connector_utils";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, onMounted, onWillUnmount, onWillUpdateProps } = owl;
 
-class ConnectorContainer extends Component {
+class ConnectorContainer extends LegacyComponent {
 
     // -----------------------------------------------------------------------------
     // Life cycle hooks

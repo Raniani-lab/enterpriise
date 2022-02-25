@@ -58,6 +58,7 @@ export class IconCreator extends Component {
                 this.FileInput = CustomFileInput;
             }
         }
+        this.rpc = useService("rpc");
 
         this.state = useState({ iconClass: this.props.iconClass });
         this.show = useState({

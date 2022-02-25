@@ -6,10 +6,11 @@ import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants"
 import { getDataFromTemplate } from "../o_spreadsheet/helpers";
 import { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, onMounted, onWillStart, useState } = owl;
 
-export class AbstractSpreadsheetAction extends Component {
+export class AbstractSpreadsheetAction extends LegacyComponent {
     setup() {
         if (!this.props.action.params) {
             // the action is coming from a this.trigger("do-action", ... ) of owl (not wowl and not legacy)

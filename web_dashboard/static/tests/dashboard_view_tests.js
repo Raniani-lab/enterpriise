@@ -44,6 +44,7 @@ import legacyFieldRegistry from "web.field_registry";
 import PieChart from "web.PieChart";
 import Widget from "web.Widget";
 import widgetRegistry from "web.widget_registry";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, xml } = owl;
 const serviceRegistry = registry.category("services");
@@ -68,7 +69,13 @@ QUnit.module("Views", (hooks) => {
                             store: true,
                             sortable: true,
                         },
-                        sold: { string: "Sold", type: "float", store: true, group_operator: "sum", sortable: true },
+                        sold: {
+                            string: "Sold",
+                            type: "float",
+                            store: true,
+                            group_operator: "sum",
+                            sortable: true,
+                        },
                         untaxed: {
                             string: "Untaxed",
                             type: "float",
@@ -96,8 +103,19 @@ QUnit.module("Views", (hooks) => {
                 },
                 test_time_range: {
                     fields: {
-                        categ_id: { string: "categ_id", type: "many2one", relation: "test_report", sortable: true },
-                        sold: { string: "Sold", type: "float", store: true, group_operator: "sum", sortable: true },
+                        categ_id: {
+                            string: "categ_id",
+                            type: "many2one",
+                            relation: "test_report",
+                            sortable: true,
+                        },
+                        sold: {
+                            string: "Sold",
+                            type: "float",
+                            store: true,
+                            group_operator: "sum",
+                            sortable: true,
+                        },
                         untaxed: {
                             string: "Untaxed",
                             type: "float",
@@ -4199,7 +4217,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("dashboard statistic support wowl field", async (assert) => {
         assert.expect(5);
 
-        class CustomField extends Component {
+        class CustomField extends LegacyComponent {
             setup() {
                 assert.ok(this.props.model instanceof DashboardModel);
                 assert.ok("record" in this.props);
@@ -4227,7 +4245,7 @@ QUnit.module("Views", (hooks) => {
         assert.expect(31);
 
         const expectedFieldValues = [8, 16, 4];
-        class CustomField extends Component {
+        class CustomField extends LegacyComponent {
             setup() {
                 assert.ok(this.props.model instanceof DashboardModel);
                 assert.ok("record" in this.props);

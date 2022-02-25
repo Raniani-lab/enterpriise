@@ -3,6 +3,7 @@ odoo.define('web_studio.ApprovalComponent', function (require) {
 
     const Dialog = require('web.OwlDialog');
     const Popover = require("web.Popover");
+    const { useService } = require("@web/core/utils/hooks");
 
     const { Component, onMounted, onWillUnmount, onWillStart, onWillUpdateProps, useState } = owl;
 
@@ -19,6 +20,8 @@ odoo.define('web_studio.ApprovalComponent', function (require) {
                 syncing: false,
                 init: true,
             });
+
+            this.rpc = useService("rpc");
 
             onMounted( () => {
                 this.env.bus.on('refresh-approval', this, this._onRefresh);

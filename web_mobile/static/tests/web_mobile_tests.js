@@ -27,6 +27,7 @@ odoo.define("web_mobile.tests", function (require) {
         getFixture,
         destroy,
     } = require("@web/../tests/helpers/utils");
+    const { LegacyComponent } = require("@web/legacy/legacy_component");
     const { Component, useState, xml } = owl;
 
     const { createParent, createView, mock } = testUtils;
@@ -279,7 +280,7 @@ odoo.define("web_mobile.tests", function (require) {
                     },
                 });
 
-                class DummyComponent extends Component {
+                class DummyComponent extends LegacyComponent {
                     setup() {
                         this._backButtonHandler = useBackButton(this._onBackButton);
                     }
@@ -318,7 +319,7 @@ odoo.define("web_mobile.tests", function (require) {
                         },
                     });
 
-                    class DummyComponent extends Component {
+                    class DummyComponent extends LegacyComponent {
                         setup() {
                             this._backButtonHandler = useBackButton(this._onBackButton);
                         }
@@ -372,7 +373,7 @@ odoo.define("web_mobile.tests", function (require) {
                         },
                     });
 
-                    class DummyComponent extends Component {
+                    class DummyComponent extends LegacyComponent {
                         setup() {
                             this._backButtonHandler = useBackButton(
                                 this._onBackButton,
@@ -505,7 +506,7 @@ odoo.define("web_mobile.tests", function (require) {
                     },
                 });
 
-                class Parent extends Component {
+                class Parent extends LegacyComponent {
                     setup() {
                         this.state = useState({ display: true });
                     }
@@ -551,7 +552,7 @@ odoo.define("web_mobile.tests", function (require) {
                     },
                 });
 
-                class Parent extends Component {}
+                class Parent extends LegacyComponent {}
 
                 Parent.components = { Popover };
                 Parent.template = xml`

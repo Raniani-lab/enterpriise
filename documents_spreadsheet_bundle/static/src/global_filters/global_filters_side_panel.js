@@ -7,6 +7,7 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
         TagSelectorWidgetAdapter,
     } = require("documents_spreadsheet.tag_selector_widget");
     const { getPeriodOptions } = require("web.searchUtils");
+    const { LegacyComponent } = require("@web/legacy/legacy_component");
 
     const { Component } = owl;
 
@@ -14,7 +15,7 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
      * This is the side panel to define/edit a global filter.
      * It can be of 3 different type: text, date and relation.
      */
-    class GlobalFiltersSidePanel extends Component {
+    class GlobalFiltersSidePanel extends LegacyComponent {
         setup() {
             this.TagSelectorWidget = TagSelectorWidget;
             this.periodOptions = getPeriodOptions(moment());

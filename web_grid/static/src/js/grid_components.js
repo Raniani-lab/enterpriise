@@ -4,11 +4,12 @@ odoo.define('web_grid.components', function (require) {
     const fieldUtils = require('web.field_utils');
     const utils = require('web.utils');
     const { debounce } = require("@web/core/utils/timing");
+    const { LegacyComponent } = require("@web/legacy/legacy_component");
 
     const { Component, onPatched, onWillUpdateProps, useRef, useState } = owl;
 
 
-    class BaseGridComponent extends Component {
+    class BaseGridComponent extends LegacyComponent {
         setup() {
             this.currentInput = useRef("currentInput");
             this.state = useState({

@@ -106,6 +106,7 @@ class AppCreator extends Component {
         });
         this.debug = Boolean(AppCreator.env.isDebug());
         this.uiService = useService("ui");
+        this.rpc = useService("rpc");
 
         useAutofocus();
         this.invalid = useState({

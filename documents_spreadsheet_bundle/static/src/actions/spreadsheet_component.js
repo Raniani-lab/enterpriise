@@ -10,13 +10,14 @@ import { DEFAULT_LINES_NUMBER } from "../o_spreadsheet/constants";
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import CachedRPC from "../o_spreadsheet/cached_rpc";
 import { legacyRPC, jsonToBase64 } from "../o_spreadsheet/helpers";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, onMounted, onWillUnmount, useExternalListener, useState, useSubEnv } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Spreadsheet, Model } = spreadsheet;
 
-export default class SpreadsheetComponent extends Component {
+export default class SpreadsheetComponent extends LegacyComponent {
     setup() {
         this.orm = useService("orm");
         const user = useService("user");

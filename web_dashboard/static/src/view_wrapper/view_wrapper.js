@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import { View } from "@web/views/view";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, useEffect, useChildSubEnv } = owl;
 
@@ -13,7 +14,7 @@ const { Component, useEffect, useChildSubEnv } = owl;
  * Moreover, it adds a button to open sub views in fullscreen, and changes some
  * classNames on control panel buttons to slightly change their style.
  */
-export class ViewWrapper extends Component {
+export class ViewWrapper extends LegacyComponent {
     setup() {
         useChildSubEnv(this.props.callbackRecorders);
         useEffect(() => {

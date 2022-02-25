@@ -1,8 +1,9 @@
 /** @odoo-module **/
 
+import { LegacyComponent } from "@web/legacy/legacy_component";
 const { Component } = owl;
 
-export default class LineComponent extends Component {
+export default class LineComponent extends LegacyComponent {
     get displayResultPackage() {
         return this.env.model.displayResultPackage;
     }

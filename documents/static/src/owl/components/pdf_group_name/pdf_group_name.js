@@ -1,9 +1,10 @@
 odoo.define('documents.component.PdfGroupName', function (require) {
 'use strict';
 
+const { LegacyComponent } = require("@web/legacy/legacy_component");
 const { Component, useRef, useState } = owl;
 
-class PdfGroupName extends Component {
+class PdfGroupName extends LegacyComponent {
 
     /**
      * @override

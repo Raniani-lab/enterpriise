@@ -12,6 +12,7 @@ import { useService } from "@web/core/utils/hooks";
 import ViewsWidget from '@stock_barcode/widgets/views_widget';
 import ViewsWidgetAdapter from '@stock_barcode/components/views_widget_adapter';
 import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component, onMounted, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
 
@@ -21,7 +22,7 @@ const { Component, onMounted, onWillStart, onWillUnmount, reactive, useSubEnv } 
  * Manage the scan and save process.
  */
 
-class MainComponent extends Component {
+class MainComponent extends LegacyComponent {
     //--------------------------------------------------------------------------
     // Lifecycle
     //--------------------------------------------------------------------------

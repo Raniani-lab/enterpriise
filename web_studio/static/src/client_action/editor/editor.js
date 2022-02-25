@@ -49,6 +49,7 @@ export class Editor extends Component {
 
         this.studio = useService("studio");
         this.actionService = useService("action");
+        this.rpc = useService("rpc");
 
         useBus(this.studio.bus, "UPDATE", async () => {
             const action = await this.getStudioAction();

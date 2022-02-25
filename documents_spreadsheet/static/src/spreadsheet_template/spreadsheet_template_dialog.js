@@ -7,10 +7,11 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
     const ActionModel = require("web.ActionModel");
 
     const { DropPrevious } = require("web.concurrency");
+    const { LegacyComponent } = require("@web/legacy/legacy_component");
 
     const { Component, useState, useChildSubEnv, onWillStart } = owl;
 
-    class TemplateDialog extends Component {
+    class TemplateDialog extends LegacyComponent {
         setup() {
             this.dialogTitle = this.env._t("New Spreadsheet");
             this.limit = 9;

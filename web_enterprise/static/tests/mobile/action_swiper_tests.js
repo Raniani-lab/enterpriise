@@ -4,6 +4,7 @@ import { ActionSwiper } from "@web_enterprise/core/action_swiper/action_swiper";
 import { registry } from "@web/core/registry";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 import {
     mount,
@@ -31,7 +32,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
     // TouchEvent by default. It might be an option to activate on some browser.
 
     QUnit.test("render only its target if no props is given", async (assert) => {
-        class Parent extends Component {}
+        class Parent extends LegacyComponent {}
         Parent.components = { ActionSwiper };
         Parent.template = xml`
             <div class="d-flex">
@@ -74,7 +75,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
 
     QUnit.test("render with the height of its content", async (assert) => {
         assert.expect(2);
-        class Parent extends Component {
+        class Parent extends LegacyComponent {
             onRightSwipe() {
                 assert.step("onRightSwipe");
             }
@@ -109,7 +110,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(5);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends Component {
+            class Parent extends LegacyComponent {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -210,7 +211,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(7);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends Component {
+            class Parent extends LegacyComponent {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -347,7 +348,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(7);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends Component {
+            class Parent extends LegacyComponent {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -486,7 +487,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(9);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends Component {
+            class Parent extends LegacyComponent {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -687,7 +688,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(8);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends Component {
+            class Parent extends LegacyComponent {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }

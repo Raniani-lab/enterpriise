@@ -8,12 +8,13 @@ import { useService } from "@web/core/utils/hooks";
 import { useModel } from "web.Model";
 import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
 import { sprintf } from "@web/core/utils/strings"
+import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const { Component } = owl;
 
 
 
-export class InsertViewSpreadsheet extends Component {
+export class InsertViewSpreadsheet extends LegacyComponent {
     setup() {
         this.model = useModel("searchModel");
         this.notification = useService("notification");

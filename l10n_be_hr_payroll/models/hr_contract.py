@@ -178,7 +178,10 @@ class HrContract(models.Model):
             else:
                 hours_per_week = contract.resource_calendar_id.hours_per_week
                 hours_per_week_ref = contract.company_id.resource_calendar_id.hours_per_week
-            contract.work_time_rate = hours_per_week / (hours_per_week_ref or hours_per_week)
+            if not hours_per_week and not hours_per_week_ref:
+                contract.work_time_rate = 1
+            else:
+                contract.work_time_rate = hours_per_week / (hours_per_week_ref or hours_per_week)
 
     @api.depends(
         'wage', 'state', 'employee_id.l10n_be_scale_seniority', 'job_id.l10n_be_scale_category',

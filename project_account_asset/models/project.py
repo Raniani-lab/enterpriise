@@ -10,9 +10,11 @@ class Project(models.Model):
 
     @api.depends('analytic_account_id')
     def _compute_assets_count(self):
+        if not self.analytic_account_id:
+            self.assets_count = 0
+            return
         assets_data = self.env['account.asset'].read_group([
-                ('account_analytic_id', '!=', False),
-                ('account_analytic_id', 'in', self.analytic_account_id.ids)
+            ('account_analytic_id', 'in', self.analytic_account_id.ids)
         ], ['account_analytic_id'], ['account_analytic_id'])
         mapped_data = {data['account_analytic_id'][0]: data['account_analytic_id_count'] for data in assets_data}
         for project in self:

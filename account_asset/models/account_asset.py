@@ -85,6 +85,7 @@ class AccountAsset(models.Model):
     account_analytic_id = fields.Many2one(
         comodel_name='account.analytic.account',
         string='Analytic Account',
+        index=True,
         readonly=True,
         states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")

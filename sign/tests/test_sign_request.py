@@ -331,7 +331,7 @@ class TestSignRequest(SignRequestCommon):
             lambda log: log.action == 'sign' and log.sign_request_item_id == sign_request_item)),
             1, 'A log with action="sign" should be created')
 
-    def test_sign_reqeuest_3_roles_editsign_sign_sign_unlink(self):
+    def test_sign_request_3_roles_editsign_sign_sign_unlink(self):
         # create
         sign_request_3_roles = self.create_sign_request_3_roles(customer=self.partner_1, employee=self.partner_2, company=self.partner_3, cc_partners=self.partner_4)
         role2sign_request_item = dict([(sign_request_item.role_id, sign_request_item) for sign_request_item in sign_request_3_roles.request_item_ids])
@@ -392,3 +392,44 @@ class TestSignRequest(SignRequestCommon):
         self.assertFalse(sign_request_items.exists(), 'All sign request items should be unlinked')
         self.assertFalse(sign_item_values.exists(), 'All sign item values should be unlinked')
         self.assertFalse(sign_logs.exists(), 'All sign logs should be unlinked')
+
+    def test_sign_request_mail_sent_order(self):
+        sign_request_3_roles = self.env['sign.request'].create({
+            'template_id': self.template_3_roles.id,
+            'reference': self.template_3_roles.display_name,
+            'request_item_ids': [Command.create({
+                'partner_id': self.partner_1.id,
+                'role_id': self.env.ref('sign.sign_item_role_customer').id,
+                'mail_sent_order': 1,
+            }), Command.create({
+                'partner_id': self.partner_2.id,
+                'role_id': self.env.ref('sign.sign_item_role_employee').id,
+                'mail_sent_order': 2,
+            }), Command.create({
+                'partner_id': self.partner_3.id,
+                'role_id': self.env.ref('sign.sign_item_role_company').id,
+                'mail_sent_order': 2,
+            })],
+        })
+        role2sign_request_item = dict([(sign_request_item.role_id, sign_request_item) for sign_request_item in sign_request_3_roles.request_item_ids])
+        sign_request_item_customer = role2sign_request_item[self.role_customer]
+        sign_request_item_employee = role2sign_request_item[self.role_employee]
+        sign_request_item_company = role2sign_request_item[self.role_company]
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_1.id)), 1, 'An activity should be scheduled for the first signer')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_2.id)), 0, 'No activity should be scheduled for the second signer')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_3.id)), 0, 'No activity should be scheduled for the third signer')
+        self.assertTrue(sign_request_item_customer.is_mail_sent, 'An email should be sent for the first signer')
+        self.assertFalse(sign_request_item_employee.is_mail_sent, 'No email should be sent for the second signer')
+        self.assertFalse(sign_request_item_company.is_mail_sent, 'No email should be sent for the third signer')
+
+        # sign
+        sign_request_item_customer._edit_and_sign(self.customer_sign_values)
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_2.id)), 1, 'An activity should be scheduled for the second signer')
+        self.assertEqual(len(sign_request_3_roles.activity_search(['mail.mail_activity_data_todo'], user_id=self.user_3.id)), 1, 'An activity should be scheduled for the third signer')
+        self.assertTrue(sign_request_item_employee.is_mail_sent, 'An email should be sent for the second signer')
+        self.assertTrue(sign_request_item_company.is_mail_sent, 'An email should be sent for the third signer')
+
+        # sign and sign
+        sign_request_item_employee._edit_and_sign(self.employee_sign_values)
+        sign_request_item_company._edit_and_sign(self.company_sign_values)
+        self.assertEqual(sign_request_3_roles.state, 'signed', 'The sign request should be signed')

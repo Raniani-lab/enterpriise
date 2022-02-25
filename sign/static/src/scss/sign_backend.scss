@@ -25,14 +25,38 @@
         }
     }
     .modal-content {
-
         .o_field_one2many.o_sign_flat_o2m {
             table {
-                border-collapse: collapse;
+                border-collapse: initial;
                 border: none;
             }
-            thead {
-                display: none;
+            thead > tr > th{
+                .o_resize {
+                    display: none;
+                }
+                &:nth-child(1) {
+                    visibility: hidden;
+                }
+                &:nth-child(2) {
+                    // fix alignment bug on safari
+                    width: initial !important;
+                }
+                padding-left: 0px;
+                @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
+                    font-weight: 400;
+                    color: $o-brand-secondary !important;
+                    &:nth-child(1) {
+                        display: none;
+                    }
+                    &:nth-child(2) {
+                        &:nth-last-child(1) {
+                            visibility: hidden;
+                        }
+                    }
+                    &:nth-child(3) {
+                        width: 80px;
+                    }
+                }
             }
             tr.o_data_row {
                 border-bottom: none !important;
@@ -57,7 +81,6 @@
                 border: none !important;
             }
             tbody > tr > td.o_list_many2one:nth-child(1) {
-                width: 150px !important;
                 @include media-breakpoint-down(md) {
                     width: 100px !important;
                 }
@@ -69,25 +92,38 @@
                         margin-bottom: 0!important;
                     }
                 }
-                color:#666666 !important;
-                font-weight: bold;
+                width: 150px !important;
+                color:#212529 !important;
+                font-weight: 500;
                 padding-left: 0px;
                 cursor: default !important;
                 border: none;
-                border-bottom: none
             }
-            tbody > tr > td.o_list_many2one:nth-child(2) {
-                @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
-                    display: block;
-                    min-height: 47px;
+            tbody > tr > td:not(:nth-child(1)){
+                color: #212529 !important;
+                padding-left: 0px;
+                cursor: default !important;
+                border: none;
+                border-bottom: 1px solid #212529;
+                &:focus-within {
+                    border-color: #017e84 !important;
                 }
-                border-right-style: none;
-                &:not([style]) {
-                    padding-right: 0;
-                    border: 2px solid #666666;
-                    border-top-style: none;
-                    border-right-style: none;
-                    border-left-style: none;
+                &:nth-child(2) {
+                    @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
+                        display: block !important;
+                        min-height: 47px;
+                    }
+                }
+                &:nth-child(3) {
+                    width: 80px !important;
+                    text-align:right;
+                    @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
+                        vertical-align: bottom !important;
+                        padding-bottom: 20px;
+                        input {
+                            margin-bottom: 0px;
+                        }
+                    }
                 }
             }
             tfoot {
@@ -96,6 +132,9 @@
             // hide the optionalColumnsDropdown button in a listview added by web_enterprise
             i.o_optional_columns_dropdown_toggle {
                 display: none;
+            }
+            th.o_column_sortable:not(:empty):last-child {
+                padding-right: 1px !important;
             }
         }
     }

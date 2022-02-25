@@ -152,8 +152,8 @@ class SignRequestCommon(TransactionCase):
             'email': 'char.aznable.a@example.com',
         })
 
-    def create_sign_request_no_item(self, signer, cc_partners):
-        sign_request = self.env['sign.request'].create({
+    def create_sign_request_no_item(self, signer, cc_partners, no_sign_mail=False):
+        sign_request = self.env['sign.request'].with_context(no_sign_mail=no_sign_mail).create({
             'template_id': self.template_no_item.id,
             'reference': self.template_no_item.display_name,
             'request_item_ids': [Command.create({

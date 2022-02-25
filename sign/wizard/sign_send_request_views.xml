@@ -11,6 +11,7 @@
                         <tree editable="bottom" create="false" delete="false" >
                             <field name="role_id" force_save="1" options="{'no_open': True}"/>
                             <field name="partner_id" placeholder="Name or email..." context="{'force_email': True, 'show_email': True}"/>
+                            <field name="mail_sent_order" attrs="{'column_invisible': [('parent.set_sign_order', '=', False)]}"/>
                         </tree>
                     </field>
                     <field name="signer_id" attrs="{'invisible': ['|', ('signers_count', '!=', 0), ('template_id', '=', False)], 'required': [('signers_count', '=', 0)]}" context="{'force_email':True, 'show_email': True}"/>
@@ -21,6 +22,7 @@
                     <field name="cc_partner_ids" widget="many2many_tags" invisible="not context.get('sign_directly_without_mail',False)" string="Contacts in copy" placeholder="Write email or search contact..." context="{'show_email': True}"/>
                     <field name="subject" placeholder="Signature Request"/>
                     <field name="filename" placeholder="Name for the file"  colspan="2"/>
+                    <field name="set_sign_order" invisible="context.get('sign_directly_without_mail',False)" attrs="{'invisible': [('signers_count', '&lt;', 2)]}" groups="sign.show_sign_order"/>
                     <field name="refusal_allowed"/>
                 </group>
 

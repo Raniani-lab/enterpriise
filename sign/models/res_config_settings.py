@@ -19,6 +19,8 @@ class ResConfigSettings(models.TransientModel):
         config_parameter='sign.use_sign_terms',
         default=False)
 
+    group_show_sign_order = fields.Boolean(string="Enable Signing Order", implied_group='sign.show_sign_order')
+
     @api.depends('sign_terms_type')
     def _compute_sign_terms_preview(self):
         for setting in self:

@@ -21,7 +21,7 @@ from random import randint
 from markupsafe import Markup
 
 from odoo import api, fields, models, http, _, Command
-from odoo.tools import config, get_lang, is_html_empty, formataddr
+from odoo.tools import config, get_lang, is_html_empty, formataddr, groupby
 from odoo.exceptions import UserError, ValidationError
 
 TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "fonts", "sign"))
@@ -107,7 +107,7 @@ class SignRequest(models.Model):
     def _compute_need_my_signature(self):
         my_partner_id = self.env.user.partner_id
         for sign_request in self:
-            sign_request.need_my_signature = any(sri.partner_id.id == my_partner_id.id and sri.state == 'sent' for sri in sign_request.request_item_ids)
+            sign_request.need_my_signature = any(sri.partner_id.id == my_partner_id.id and sri.state == 'sent' and sri.is_mail_sent for sri in sign_request.request_item_ids)
 
     @api.model
     def _search_need_my_signature(self, operator, value):
@@ -115,7 +115,7 @@ class SignRequest(models.Model):
         if operator not in ['=', '!='] or not isinstance(value, bool):
             return []
         domain_operator = 'not in' if (operator == '=') ^ value else 'in'
-        documents_ids = self.env['sign.request.item'].search([('partner_id', '=', my_partner_id.id), ('state', '=', 'sent')]).mapped('sign_request_id').ids
+        documents_ids = self.env['sign.request.item'].search([('partner_id', '=', my_partner_id.id), ('state', '=', 'sent'), ('is_mail_sent', '=', True)]).mapped('sign_request_id').ids
         return [('id', domain_operator, documents_ids)]
 
     @api.depends('request_item_ids.state')
@@ -161,8 +161,6 @@ class SignRequest(models.Model):
                 raise ValidationError(_("A valid sign request needs at least one sign request item"))
             sign_request.attachment_ids.write({'res_model': sign_request._name, 'res_id': sign_request.id})
             sign_request.message_subscribe(partner_ids=sign_request.request_item_ids.partner_id.ids)
-            sign_users = sign_request.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee'))
-            sign_request._schedule_activity(sign_users)
             self.env['sign.log'].sudo().create({'sign_request_id': sign_request.id, 'action': 'create'})
         if not self._context.get('no_sign_mail'):
             sign_requests.send_signature_accesses()
@@ -206,6 +204,15 @@ class SignRequest(models.Model):
         all_recipients = set(self.request_item_ids.mapped('signer_email')) | \
                          set(self.cc_partner_ids.filtered(lambda p: p.email_formatted).mapped('email'))
         return all_recipients
+
+    def _get_next_sign_request_items(self):
+        self.ensure_one()
+        sign_request_items_sent = self.request_item_ids.filtered(lambda sri: sri.state == 'sent')
+        if not sign_request_items_sent:
+            return self.env['sign.request.item']
+        smallest_order = min(sign_request_items_sent.mapped('mail_sent_order'))
+        next_request_items = sign_request_items_sent.filtered(lambda sri: sri.mail_sent_order == smallest_order)
+        return next_request_items
 
     def go_to_document(self):
         self.ensure_one()
@@ -342,15 +349,7 @@ class SignRequest(models.Model):
         # Send/Resend accesses for 'sent' sign.request.items by email
         self._check_senders_validity()
         for sign_request in self:
-            request_items = sign_request.request_item_ids.filtered(lambda sri: sri.state == 'sent')
-            if request_items:
-                request_items._send_signature_access_mail()
-                body = _("The signature mail has been sent to: ")
-                receiver_names = ["%s(%s)" % (sri.partner_id.name, sri.role_id.name) for sri in request_items]
-                body += ', '.join(receiver_names)
-                if not is_html_empty(sign_request.message):
-                    body += sign_request.message
-                sign_request.message_post(body=body, attachment_ids=sign_request.attachment_ids.ids)
+            sign_request._get_next_sign_request_items().send_signature_accesses()
 
     def _sign(self):
         """ Sign a SignRequest. It can only be used in the SignRequestItem._sign """
@@ -641,6 +640,7 @@ class SignRequestItem(models.Model):
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", ondelete='cascade', required=True, copy=False)
     sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
     reference = fields.Char(related='sign_request_id.reference', string="Document Name")
+    mail_sent_order = fields.Integer(default=1)
 
     access_token = fields.Char(required=True, default=_default_access_token, readonly=True, copy=False)
     access_via_link = fields.Boolean('Accessed Through Token', copy=False)
@@ -860,6 +860,8 @@ class SignRequestItem(models.Model):
         sign_request = self.sign_request_id
         if all(sri.state == 'completed' for sri in sign_request.request_item_ids):
             sign_request._sign()
+        elif all(sri.state == 'completed' for sri in sign_request.request_item_ids.filtered(lambda sri: sri.mail_sent_order == self.mail_sent_order)):
+            sign_request.send_signature_accesses()
 
     def _fill(self, signature):
         """ Stores the sign request item values. (Can be used to pre-fill the document as a hack)
@@ -896,12 +898,20 @@ class SignRequestItem(models.Model):
 
     def send_signature_accesses(self):
         self.sign_request_id._check_senders_validity()
+        users = self.partner_id.user_ids
+        user_ids = set(users.sudo().search([('groups_id', 'in', self.env.ref('sign.group_sign_employee').id), ('id', 'in', users.ids)]).ids)
+        for sign_request, sign_request_items_list in groupby(self, lambda sri: sri.sign_request_id):
+            notified_users = [sri.partner_id.user_ids[:1]
+                              for sri in sign_request_items_list
+                              if not sri.is_mail_sent and sri.state == 'sent' and sri.partner_id.user_ids[:1].id in user_ids]
+            sign_request._schedule_activity(notified_users)
+            body = _("The signature mail has been sent to: ")
+            receiver_names = ["%s(%s)" % (sri.partner_id.name, sri.role_id.name) for sri in sign_request_items_list]
+            body += ', '.join(receiver_names)
+            if not is_html_empty(sign_request.message):
+                body += sign_request.message
+            sign_request.message_post(body=body, attachment_ids=sign_request.attachment_ids.ids)
         self._send_signature_access_mail()
-        for sign_request_item in self:
-            body = _("The signature mail has been sent to: %s(%s)", sign_request_item.partner_id.name, sign_request_item.role_id.name)
-            if not is_html_empty(sign_request_item.sign_request_id.message):
-                body += sign_request_item.sign_request_id.message
-            sign_request_item.sign_request_id.message_post(body=body, attachment_ids=sign_request_item.sign_request_id.attachment_ids.ids)
 
     def _get_user_signature(self, signature_type='sign_signature'):
         """ Gets the user's stored sign_signature/sign_initials (needs sudo permission)

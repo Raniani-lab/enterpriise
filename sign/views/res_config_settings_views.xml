@@ -44,6 +44,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 col-md-6 o_setting_box" id="enable_sign_order">
+                            <div class="o_setting_left_pane">
+                                <field name="group_show_sign_order"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="group_show_sign_order"/>
+                                <div class="text-muted">
+                                    Allow users to define a signing order, where recipients are only notified when it is their turn to sign.
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-xs-12 col-md-6 o_setting_box" id="sms">
                             <div class="o_setting_right_pane" id="sms_settings">
                                 <div class="o_form_label">

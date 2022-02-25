@@ -23,7 +23,7 @@ class CustomerPortal(portal.CustomerPortal):
         if 'sign_count' in counters:
             partner_id = request.env.user.partner_id
             values['sign_count'] = request.env['sign.request.item'].sudo().search_count([
-                ('partner_id', '=', partner_id.id), ('sign_request_id.state', '!=', 'canceled')
+                ('partner_id', '=', partner_id.id), '|', ('sign_request_id.state', '=', 'refused'), '|', ('state', '=', 'completed'), ('is_mail_sent', '=', True)
             ])
         return values
 
@@ -34,7 +34,7 @@ class CustomerPortal(portal.CustomerPortal):
         values = self._prepare_portal_layout_values()
         partner_id = request.env.user.partner_id
         SignRequestItem = request.env['sign.request.item'].sudo()
-        default_domain = [('partner_id', '=', partner_id.id), ('sign_request_id.state', '!=', 'canceled')]
+        default_domain = [('partner_id', '=', partner_id.id), '|', ('sign_request_id.state', '=', 'refused'), '|', ('state', '=', 'completed'), ('is_mail_sent', '=', True)]
 
         searchbar_sortings = {
             'new': {'label': _('Newest'), 'order': 'sign_request_id desc'},
@@ -116,7 +116,10 @@ class CustomerPortal(portal.CustomerPortal):
     def portal_my_signature(self, item_id, **kwargs):
         partner_id = request.env.user.partner_id
         sign_item_sudo = request.env['sign.request.item'].sudo().browse(item_id)
-        if not sign_item_sudo.exists() or sign_item_sudo.partner_id != partner_id or sign_item_sudo.sign_request_id.state == 'canceled':
+        if not sign_item_sudo.exists()\
+                or sign_item_sudo.partner_id != partner_id \
+                or sign_item_sudo.sign_request_id.state == 'canceled' \
+                or (sign_item_sudo.state == 'sent' and sign_item_sudo.is_mail_sent is False):
             return request.redirect('/my/')
         url = f'/sign/document/{sign_item_sudo.sign_request_id.id}/{sign_item_sudo.access_token}?portal=1'
         values = {

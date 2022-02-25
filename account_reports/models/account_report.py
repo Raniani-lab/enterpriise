@@ -708,9 +708,9 @@ class AccountReport(models.AbstractModel):
                 for i in val_dict['children_codes']:
                     hierarchy[i]['parent_code'] = i
                 all_lines = [hierarchy[id] for id in val_dict["children_codes"]] + val_dict["lines"]
-                children = []
                 for line in sorted(all_lines, key=lambda k: k.get('account_code', '') + k['name']):
                     if 'children_codes' in line:
+                        children = []
                         # if the line is a child group, add it recursively
                         add_to_hierarchy(children, line['parent_code'], level + 1, val_dict['id'], hierarchy)
                         lines.extend(children)

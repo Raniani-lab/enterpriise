@@ -936,7 +936,7 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string('0000', length=4) # Ejercicio for metalico operations ; automatic computation not supported
 
         for trimester_index in range(3, -1, -1): # 4th trimester is at position 0 ; 1st at position 3
-            trimester_total = report_data['line_data'].get('columns', [{} for i in range(0, 4)])[trimester_index].get('no_format',0)
+            trimester_total = report_data['line_data'].get('columns', [{} for i in range(0, 4)])[trimester_index].get('no_format', 0)
             rslt += self._boe_format_number(trimester_total, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
             rslt += self._boe_format_number(real_estates_vat_by_trimester[trimester_index], length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 

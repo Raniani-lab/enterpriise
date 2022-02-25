@@ -88,7 +88,7 @@ class AccountMove(models.Model):
         for record in posted.filtered(lambda move: move.is_invoice()):
             if record.company_id.chart_template_id in spanish_coa_list and \
             record.partner_id.country_id.code == "ES" and \
-            (not record.l10n_es_reports_mod347_invoice_type or (record.l10n_es_reports_mod349_available and not record.l10n_es_reports_mod349_invoice_type)):
+            record.l10n_es_reports_mod349_available and not record.l10n_es_reports_mod349_invoice_type:
                 raise UserError(_("Please select a Spanish invoice type for this invoice."))
         return posted
 

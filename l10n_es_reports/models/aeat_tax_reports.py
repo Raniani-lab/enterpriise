@@ -762,7 +762,7 @@ class AEATAccountFinancialReport(models.Model):
         # Header
         self = self.with_context(self._set_context(boe_report_options))
 
-        rslt = self._mod347_write_type2_header_record(current_company, boe_wizard, boe_report_options)
+        rslt = self._mod347_write_type2_header_record(current_company, boe_wizard, boe_report_options, year=year)
         seguros_required_b = self._mod347_get_required_partner_ids_for_boe('insurance', year+'-01-01', year+'-12-31', boe_wizard, 'B', 'seguros')
         rslt += self._call_on_sublines(boe_report_options, 'l10n_es_reports.mod_347_operations_insurance_bought', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'B', manual_parameters_map=manual_params, insurance=True), required_ids_set=seguros_required_b)
 
@@ -776,7 +776,7 @@ class AEATAccountFinancialReport(models.Model):
 
     def _mod347_build_boe_report_options(self, options, year):
         boe_report_options = options.copy()
-        boe_report_options['date'] = {'filter': 'this_quarter', 'string': 'Q4 '+year, 'date_from': year+'-10-01', 'date_to': year+'-12-31', 'mode': 'range'}
+        boe_report_options['date'] = {'filter': 'custom', 'string': 'Q4 '+year, 'date_from': year+'-10-01', 'date_to': year+'-12-31', 'mode': 'range'}
         boe_report_options['comparison'] = {'date_to': year+'-09-30',
                                  'periods': [{'date_to': year+'-09-30', 'date_from': year+'-07-01', 'string': 'Q3 '+year, 'mode': 'range'},
                                              {'date_to': year+'-06-30', 'date_from': year+'-04-01', 'string': 'Q2 '+year, 'mode': 'range'},
@@ -803,9 +803,13 @@ class AEATAccountFinancialReport(models.Model):
 
         return set(all_partners.ids)
 
-    def _mod347_write_type2_header_record(self, current_company, boe_wizard, boe_report_options):
+    def _mod347_write_type2_header_record(self, current_company, boe_wizard, boe_report_options, year=None):
+        if not year:
+            year = str(fields.Date.today().year)
+
         rslt = self._boe_format_number(1)
         rslt += self._boe_format_number(347)
+        rslt += self._boe_format_string(year, length=4)
         rslt += self._boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
         rslt += self._boe_format_string(current_company.name, length=40)
         rslt += self._boe_format_string('T')
@@ -829,7 +833,7 @@ class AEATAccountFinancialReport(models.Model):
         real_estates_data = self._mod347_get_real_estates_data(boe_report_options, current_company.currency_id)
         rslt += self._boe_format_number(real_estates_data['count'], length=9)
 
-        rslt += self._boe_format_number(real_estates_data['total'], length=15, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
+        rslt += self._boe_format_number(real_estates_data['total'], length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 
         rslt += self._boe_format_string(' ' * 205)
         rslt += self._boe_format_string(' ' * 9) # TIN of the legal representant; blank if 14 years or older
@@ -858,16 +862,22 @@ class AEATAccountFinancialReport(models.Model):
         rslt += self._boe_format_string(year, length=4)
         rslt += self._boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
         rslt += self._boe_format_string(line_partner.country_id.code == 'ES' and self._extract_spanish_tin(line_partner) or '', length=9)
+        rslt += self._boe_format_string(' ' * 9) # TIN of the legal representant; blank if 14 years or older
         rslt += self._boe_format_string(line_partner.display_name, length=40)
         rslt += self._boe_format_string('D') # 'Tipo de hoja', constant
 
         province_code = line_partner.state_id and SPANISH_PROVINCES_REPORT_CODES.get(line_partner.state_id.code) or '99'
         rslt += self._boe_format_string(province_code, length=2)
         # The country code is only mandatory if there is no province code (hence: no head office in Spain)
-        if province_code == '99' and (not line_partner.country_id or not line_partner.country_id.code):
-            raise UserError(_("Partner with %s (id %d) is not associated to any Spanish province, and should hence have a country code. For this, fill in its 'country' field.") % (line_partner.name, line_partner.id))
+        if province_code == '99':
+            if not line_partner.country_id or not line_partner.country_id.code:
+                raise UserError(_("Partner with %s (id %d) is not associated to any Spanish province, and should hence have a country code. For this, fill in its 'country' field.") % (line_partner.name, line_partner.id))
 
-        rslt += self._boe_format_string(line_partner.country_id.code or '', length=2)
+            if line_partner.country_id.code == 'ES':
+                raise UserError(_("Partner %s (id %s) is located in Spain but does not have any province. Please set one.", line_partner.name, line_partner.id))
+
+        partner_country_code = line_partner.country_id.code
+        rslt += self._boe_format_string(partner_country_code if partner_country_code and partner_country_code != 'ES' else '', length=2)
         rslt += self._boe_format_string(' ') # Constant
         rslt += self._boe_format_string(operation_key, length=1)
 
@@ -923,12 +933,12 @@ class AEATAccountFinancialReport(models.Model):
         real_estates_vat_year_total = currency_id.round(real_estates_vat_year_total)
         rslt += self._boe_format_number(real_estates_vat_year_total, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 
-        rslt += self._boe_format_string(year, length=4)
+        rslt += self._boe_format_string('0000', length=4) # Ejercicio for metalico operations ; automatic computation not supported
 
-        for trimester in range(1, 4):
-            trimester_total = report_data['line_data'].get('columns', [{} for i in range(1, 4)])[-trimester].get('no_format', 0)
+        for trimester_index in range(3, -1, -1): # 4th trimester is at position 0 ; 1st at position 3
+            trimester_total = report_data['line_data'].get('columns', [{} for i in range(0, 4)])[trimester_index].get('no_format',0)
             rslt += self._boe_format_number(trimester_total, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
-            rslt += self._boe_format_number(real_estates_vat_by_trimester[trimester], length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
+            rslt += self._boe_format_number(real_estates_vat_by_trimester[trimester_index], length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 
         # 'NIF Operador Comunitario'
         europe_countries = self.env.ref('base.europe').country_ids

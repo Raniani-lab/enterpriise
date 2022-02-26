@@ -12,7 +12,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
 
     @classmethod
     def setUpClass(cls):
-        super(IntrastatExpiryReportTest, cls).setUpClass()
+        super().setUpClass()
 
         values = [
             {
@@ -101,8 +101,10 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 ('DE',          '105',             'QU'),
             ],
         )
-        self.assertEqual(options['warnings']['expired_trans'], [invoice.id])
-        self.assertEqual(options['warnings']['premature_trans'], [invoice.id])
+        self.assertEqual(options['warnings'], {
+            'expired_trans': [invoice.id],
+            'premature_trans': [invoice.id],
+        })
 
     @freeze_time('2022-02-01')
     def test_intrastat_report_commodity_on_products(self):
@@ -126,8 +128,10 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 ('DE',          11,                '102',          'QU'),
             ],
         )
-        self.assertEqual(options['warnings']['expired_comm'], [self.product_b.id])
-        self.assertEqual(options['warnings']['premature_comm'], [self.product_c.id])
+        self.assertEqual(options['warnings'], {
+            'expired_comm': [self.product_b.id],
+            'premature_comm': [self.product_c.id],
+        })
 
     @freeze_time('2022-02-01')
     def test_intrastat_report_commodity_on_product_categories(self):
@@ -160,5 +164,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 ('DE',          11,                '102',          'QU'),
             ],
         )
-        self.assertEqual(options['warnings']['expired_categ_comm'], [self.product_b.categ_id.id])
-        self.assertEqual(options['warnings']['premature_categ_comm'], [self.product_c.categ_id.id])
+        self.assertEqual(options['warnings'], {
+            'expired_categ_comm': [self.product_b.categ_id.id],
+            'premature_categ_comm': [self.product_c.categ_id.id],
+        })

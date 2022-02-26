@@ -93,20 +93,24 @@ class IntrastatExpiryReport(models.AbstractModel):
 
     @api.model
     def _fill_missing_values(self, vals_list):
+        vals_with_no_commodity_code = []
         for vals in vals_list:
             # set transaction_code default value if none, code "1" is expired from 2022-01-01, replaced by code "11"
             if not vals['transaction_code']:
                 vals['transaction_code'] = 1 if vals['invoice_date'] < datetime.strptime('2022-01-01', '%Y-%m-%d').date() else 11
+            # Keep track of vals with no commodity code. If vals has code after super() call, we know the code comes from the product's category.
+            if not vals['commodity_code']:
+                vals_with_no_commodity_code.append(vals)
 
         res = super()._fill_missing_values(vals_list)
 
-        codes_from_prod_categ = [x['commodity_code'] for x in vals_list if x['commodity_code']]
+        codes_from_prod_categ = [x['commodity_code'] for x in vals_with_no_commodity_code if x['commodity_code']]
         commodity_code_by_code = {
             record.code: record
             for record in self.env['account.intrastat.code'].search([('code', 'in', codes_from_prod_categ)])
         }
 
-        for vals in vals_list:
+        for vals in vals_with_no_commodity_code:
             if vals['commodity_code']:
                 # if vals now has a commodity_code, it's from it's product category
                 commodity_code = commodity_code_by_code[vals['commodity_code']]

@@ -1,4 +1,4 @@
-odoo.define('pos_restaurant_iot.multiprint', function (require) {
+odoo.define('pos_restaurant_iot.models', function (require) {
 "use strict";
 
 var { PosGlobalState } = require('point_of_sale.models');
@@ -7,8 +7,8 @@ const Registries = require('point_of_sale.Registries');
 
 // The override of create_printer needs to happen after its declaration in
 // pos_restaurant. We need to make sure that this code is executed after the
-// multiprint file in pos_restaurant.
-require('pos_restaurant.multiprint');
+// models file in pos_restaurant.
+require('pos_restaurant.models');
 
 
 const PosResIotPosGlobalState = (PosGlobalState) => class PosResIotPosGlobalState extends PosGlobalState {

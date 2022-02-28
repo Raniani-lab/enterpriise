@@ -549,14 +549,14 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
 //            return posmodel_super.after_load_server_data.apply(this, arguments);
 //        },
 
-        delete_current_order: async function () {
+        removeOrder: async function (order) {
             if (this.useBlackBoxBe() && this.get_order().get_orderlines().length) {
                 await Gui.showPopup('ErrorPopup', {
                     'title': _t("Fiscal Data Module error"),
                     'body':  _t("Deleting of orders is not allowed."),
                 });
             } else {
-                posmodel_super.delete_current_order.apply(this, arguments);
+                posmodel_super.removeOrder.apply(this, arguments);
             }
         },
 

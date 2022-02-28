@@ -2,7 +2,7 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
     "use strict";
 
     const { PosGlobalState, Order } = require('point_of_sale.models');
-    const { uuidv4 } = require('l10n_de_pos_cert.utils');
+    const { uuidv4 } = require('point_of_sale.utils');
     const Registries = require('point_of_sale.Registries');
 
 
@@ -15,24 +15,25 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
             let result = super.disallowLineQuantityChange(...arguments);
             return this.isRestaurantCountryGermanyAndFiskaly() || result;
         }
-        update_table_order(server_id, table_orders) {
-            const order = super.update_table_order(...arguments);
-            if (this.isRestaurantCountryGermanyAndFiskaly() && server_id.differences && order) {
-                    order.createAndFinishOrderTransaction(server_id.differences)
+        //@Override
+        _updateTableOrder(orderResponseData, tableOrders) {
+            const order = super._updateTableOrder(...arguments);
+            if (this.isRestaurantCountryGermanyAndFiskaly() && orderResponseData.differences && order) {
+                    order.createAndFinishOrderTransaction(orderResponseData.differences)
                 }
             return order
         }
-        _post_remove_from_server(server_ids, data) {
+        //@Override
+        _postRemoveFromServer(serverIds, data) {
             if (this.isRestaurantCountryGermanyAndFiskaly() && data.length > 0) {
                 // at this point of the flow, it's impossible to retrieve the local order, only the ids were stored
                 // therefore we create an "empty" order object in order to call the needed methods
                 data.forEach(async elem => {
                     const order = Order.create({}, {pos: this});
                     await order.cancelOrderTransaction(elem.differences);
-                    order.destroy();
                 })
             }
-            return super._post_remove_from_server(...arguments);
+            return super._postRemoveFromServer(...arguments);
         }
         //@Override
         /**
@@ -69,7 +70,6 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
                         try {
                             await order.sendLineDifference(differences[orderJsonData.uid]);
                             ordersToUpdate[orderJsonData.uid] = order.export_as_JSON();
-                            order.finalize() // destroy the order so that it's not stored in the unpaid order
                         } catch (error) {
                             fiskalyError = error;
                         }

@@ -2,7 +2,8 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
     "use strict";
 
     const { PosGlobalState, Order } = require('point_of_sale.models');
-    const { uuidv4, convertFromEpoch } = require('l10n_de_pos_cert.utils');
+    const { uuidv4 } = require('point_of_sale.utils');
+    const { convertFromEpoch } = require('l10n_de_pos_cert.utils');
     const { TaxError } = require('l10n_de_pos_cert.errors');
     var utils = require('web.utils');
     const round_di = utils.round_decimals;

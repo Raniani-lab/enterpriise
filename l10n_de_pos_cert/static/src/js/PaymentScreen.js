@@ -7,8 +7,8 @@ odoo.define('l10n_de_pos_cert.PaymentScreen', function(require) {
 
     const PosDePaymentScreen = PaymentScreen => class extends PaymentScreen {
         //@Override
-        constructor() {
-            super(...arguments);
+        setup() {
+            super.setup();
             if (this.env.pos.isCountryGermanyAndFiskaly()) {
                 const _super_handlePushOrderError = this._handlePushOrderError.bind(this);
                 this._handlePushOrderError = async (error) => {

@@ -229,7 +229,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
                      self._mock_calevent_search_count.call_count,
                      self._mock_partner_calendar_check.call_count,
                      self._mock_cal_work_intervals.call_count)
-        # Time before optimization: ~0.45
+        # Time before optimization: ~0.48
         # Method count before optimization: 480 - 480 - 480 - 1
 
         global_slots_startdate = self.reference_now_monthweekstart
@@ -306,7 +306,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
 
         # with self.profile(collectors=['sql']) as profile:
         with self.mockAppointmentCalls(), \
-             self.assertQueryCount(staff_user_bxls=1372):  # apt only: 1370
+             self.assertQueryCount(staff_user_bxls=1377):  # apt only: 1370
             t0 = time.time()
             res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
             t1 = time.time()
@@ -320,7 +320,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
                      self._mock_calevent_search_count.call_count,
                      self._mock_partner_calendar_check.call_count,
                      self._mock_cal_work_intervals.call_count)
-        # Time before optimization: ~1.5
+        # Time before optimization: ~1.8
         # Method count before optimization: 1261 - 1261 - 1261 - 20
 
         global_slots_startdate = self.reference_now_monthweekstart
@@ -356,7 +356,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
 
         # with self.profile(collectors=['sql']) as profile:
         with self.mockAppointmentCalls(), \
-             self.assertQueryCount(staff_user_bxls=352):  # apt only: 346
+             self.assertQueryCount(staff_user_bxls=353):  # apt only: 346
             t0 = time.time()
             res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
             t1 = time.time()
@@ -370,7 +370,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
                      self._mock_calevent_search_count.call_count,
                      self._mock_partner_calendar_check.call_count,
                      self._mock_cal_work_intervals.call_count)
-        # Time before optimization: ~0.2
+        # Time before optimization: ~0.35
         # Method count before optimization: 237 - 237 - 237 - 20
 
         global_slots_startdate = self.reference_now_monthweekstart
@@ -525,7 +525,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=1365):  # apt only: 1357 (1357 w website)
+            with self.assertQueryCount(default=1366):  # apt only: 1357 (1358 w website)
                 self._test_url_open('/calendar/%i' % self.test_apt_type.id)
         t1 = time.time()
 

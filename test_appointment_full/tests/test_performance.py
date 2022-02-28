@@ -34,7 +34,7 @@ class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase):
         t1 = time.time()
 
         _logger.info('Browsed /calendar/%i, time %.3f', self.test_apt_type.id, t1 - t0)
-        # Time before optimization: ~1.00 (but with boilerplate)
+        # Time before optimization: ~1.90 (but with boilerplate)
 
     @warmup
     def test_appointment_type_page_website_whours_user(self):
@@ -43,9 +43,9 @@ class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=1364):  # apt only: 1356
+            with self.assertQueryCount(default=1366):  # apt only: 1358
                 self._test_url_open('/calendar/%i' % self.test_apt_type.id)
         t1 = time.time()
 
         _logger.info('Browsed /calendar/%i, time %.3f', self.test_apt_type.id, t1 - t0)
-        # Time before optimization: ~1.00 (but with boilerplate)
+        # Time before optimization: ~1.90 (but with boilerplate)

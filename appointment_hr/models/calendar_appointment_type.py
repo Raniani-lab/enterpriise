@@ -111,7 +111,7 @@ class CalendarAppointmentType(models.Model):
             work_schedules[staff_user.id] = [
                 (interval[0].astimezone(pytz.UTC).replace(tzinfo=None),
                     interval[1].astimezone(pytz.UTC).replace(tzinfo=None))
-                for interval in staff_user_resource_id.calendar_id._work_intervals_batch(
+                for interval in staff_user_resource_id.calendar_id.sudo()._work_intervals_batch(
                     first_day, last_day, resources=staff_user_resource_id
                 )[staff_user_resource_id.id]
             ]

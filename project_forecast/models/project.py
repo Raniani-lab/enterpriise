@@ -5,8 +5,7 @@ import ast
 import datetime
 import json
 
-from odoo import api, exceptions, fields, models, _
-from odoo.exceptions import UserError
+from odoo import api, fields, models, _lt
 from odoo.osv import expression
 
 
@@ -55,7 +54,7 @@ class Project(models.Model):
         buttons = super(Project, self)._get_stat_buttons()
         buttons.append({
             'icon': 'tasks',
-            'text': _('Forecast'),
+            'text': _lt('Forecast'),
             'number': '%s Hours' % (self.total_forecast_time),
             'action_type': 'object',
             'action': 'action_project_forecast_from_project',

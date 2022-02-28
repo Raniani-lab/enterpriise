@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
 
-from odoo import fields, models, _
+from odoo import fields, models, _, _lt
 
 
 class ProjectProject(models.Model):
@@ -44,7 +44,7 @@ class ProjectProject(models.Model):
         buttons = super(ProjectProject, self)._get_stat_buttons()
         buttons.append({
             'icon': 'file-text-o',
-            'text': _('Documents'),
+            'text': _lt('Documents'),
             'number': self.document_count,
             'action_type': 'object',
             'action': 'action_view_documents_project',

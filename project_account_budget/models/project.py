@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, _
+from odoo import fields, models, _lt
 from odoo.tools import format_amount
 
 
@@ -29,7 +29,7 @@ class Project(models.Model):
         buttons = super(Project, self)._get_stat_buttons()
         buttons.append({
             'icon': 'usd',
-            'text': _('Budget'),
+            'text': _lt('Budget'),
             'number': format_amount(self.env, self.total_planned_amount, self.company_id.currency_id),
             'action_type': 'object',
             'action': 'action_view_budget_lines',

@@ -32,16 +32,15 @@ class ResCompany(models.Model):
             if not number.isdecimal() or len(number) != 10 or (not number.startswith('0') and not number.startswith('1')):
                 raise ValidationError(_("The company number should contain digits only, starts with a '0' or a '1' and be 10 characters long."))
 
-    def _create_resource_calendar(self):
+    def _prepare_resource_calendar_values(self):
         """
         Override to set the default calendar to
         38 hours/week for Belgian companies
         """
-        be_companies = self.filtered(lambda c: c.country_id.code == "BE" and not c.resource_calendar_id)
-        for company in be_companies:
-            company.resource_calendar_id = self.env['resource.calendar'].create({
+        vals = super()._prepare_resource_calendar_values()
+        if self.country_id.code == 'BE':
+            vals.update({
                 'name': _('Standard 38 hours/week'),
-                'company_id': company.id,
                 'hours_per_day': 7.6,
                 'full_time_required_hours': 38.0,
                 'attendance_ids': [
@@ -56,8 +55,8 @@ class ResCompany(models.Model):
                     (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
                     (0, 0, {'name': 'Friday Afternoon', 'dayofweek': '4', 'hour_from': 13, 'hour_to': 16.6, 'day_period': 'afternoon'})
                 ],
-            }).id
-        super(ResCompany, self - be_companies)._create_resource_calendar()
+            })
+        return vals
 
     def _get_ffe_contribution_rate(self, worker_count):
         # Fond de fermeture d'entreprise

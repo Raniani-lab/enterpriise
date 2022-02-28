@@ -3,6 +3,7 @@
 
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
 
 from odoo import fields, Command
 from odoo.osv import expression
@@ -15,6 +16,8 @@ try:
 except ImportError:
     from mock import patch
 
+
+@freeze_time(datetime(2022, 4, 1) + timedelta(hours=12, minutes=21))
 class TestTimesheetValidation(TestCommonTimesheet):
 
     def setUp(self):

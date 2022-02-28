@@ -107,18 +107,11 @@ class CalendarAppointmentType(models.Model):
             ('appointment_type_id', '=', self.id), ('start', '>=', datetime.today() + timedelta(weeks=1))
         ])
 
-        display_mode = "month" if nbr_appointments_week_later else "week"
-
-        if len(appointments) > 0:
-            action['res_id'] = appointments[0].id
-            start = appointments[0].start
-        else:
-            start = datetime.today()
         action['context'] = {
             'default_appointment_type_id': self.id,
             'search_default_appointment_type_id': self.id,
-            'default_mode': display_mode,
-            'initial_date': start,
+            'default_mode': "month" if nbr_appointments_week_later else "week",
+            'initial_date': appointments[0].start if appointments else datetime.today(),
         }
         return action
 

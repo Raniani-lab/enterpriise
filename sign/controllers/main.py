@@ -75,6 +75,7 @@ class Sign(http.Controller):
             'sign_items': sign_request.template_id.sign_item_ids,
             'item_values': item_values,
             'role': current_request_item.role_id.id if current_request_item else 0,
+            'role_name': current_request_item.role_id.name if current_request_item else '',
             'readonly': not (current_request_item and current_request_item.state == 'sent' and sign_request.state in ['sent', 'shared']),
             'sign_item_types': sign_item_types,
             'sign_item_select_options': sign_request.template_id.sign_item_ids.mapped('option_ids'),

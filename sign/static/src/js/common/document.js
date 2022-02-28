@@ -55,7 +55,8 @@ export const Document = Widget.extend({
           signatureItems: this.items,
           select_options: this.select_options,
         },
-        parseInt(this.$("#o_sign_input_current_role").val())
+        parseInt(this.$("#o_sign_input_current_role").val()),
+        this.$("#o_sign_input_current_role_name").val()
       );
       return this.iframeWidget.attachTo(this.$iframe);
     }

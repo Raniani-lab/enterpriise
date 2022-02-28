@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.DocumentBackend **/
+/** @odoo-module alias=sign.DocumentAction **/
 
 "use strict";
 import AbstractAction from "web.AbstractAction";
@@ -6,7 +6,7 @@ import core from "web.core";
 import { Document } from "@sign/js/common/document";
 import framework from "web.framework";
 
-export const DocumentBackend = AbstractAction.extend({
+export const DocumentAction = AbstractAction.extend({
   hasControlPanel: true,
 
   on_detach_callback: function () {
@@ -110,4 +110,4 @@ export const DocumentBackend = AbstractAction.extend({
   },
 });
 
-export default DocumentBackend;
+export default DocumentAction;

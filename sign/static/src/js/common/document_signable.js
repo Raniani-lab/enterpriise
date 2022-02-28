@@ -11,7 +11,6 @@ import { debounce } from "@web/core/utils/timing";
 import Dialog from "web.Dialog";
 import { Document } from "@sign/js/common/document";
 import { NameAndSignature } from "web.name_and_signature";
-import { PDFIframe } from "@sign/js/common/PDFIframe";
 import session from "web.session";
 import Widget from "web.Widget";
 import time from "web.time";
@@ -970,389 +969,6 @@ const NextDirectSignDialog = Dialog.extend({
   },
 });
 
-const SignablePDFIframe = PDFIframe.extend({
-  init: function () {
-    this._super.apply(this, arguments);
-    this.events = Object.assign(this.events || {}, {
-      "keydown .page .ui-selected": function (e) {
-        if ((e.keyCode || e.which) !== 13) {
-          return true;
-        }
-        e.preventDefault();
-        this.signatureItemNav.goToNextSignItem();
-      },
-    });
-    this.fonts = [];
-  },
-  fetchSignatureFonts: function () {
-    return this._rpc({
-      route: `/web/sign/get_fonts/`
-    }).then(data => {
-      this.fonts = data;
-    })
-  },
-  doPDFPostLoad: function () {
-    Promise.all([
-      this.fullyLoaded,
-      this.fetchSignatureFonts()
-    ]).then(() => {
-      this.signatureItemNav = new SignItemNavigator(this, this.types);
-      return this.signatureItemNav
-        .prependTo(this.$("#viewerContainer"))
-        .then(() => {
-          this.checkSignItemsCompletion();
-          this.$("#viewerContainer").on("scroll", (e) => {
-            if (
-              !this.signatureItemNav.isScrolling &&
-              this.signatureItemNav.started
-            ) {
-              this.signatureItemNav.setTip(_t("next"));
-            }
-          });
-        });
-    });
-
-    this._super.apply(this, arguments);
-  },
-
-  createSignItem: function (
-    type,
-    required,
-    responsible,
-    posX,
-    posY,
-    width,
-    height,
-    value,
-    options,
-    name,
-    tooltip,
-    alignment,
-    isSignItemEditable,
-    update = true
-  ) {
-    // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
-    if (value === 0) {
-      value = "0";
-    }
-    const $signatureItem = this._super.apply(this, arguments);
-    const readonly =
-      this.readonlyFields ||
-      (responsible > 0 && responsible !== this.role) ||
-      !!value;
-    if (!readonly) {
-      // Do not display the placeholder of Text and Multiline Text if the name of the item is the default one.
-      if (
-        ["text", "textarea"].includes(type.name) &&
-        type.placeholder === $signatureItem.prop("placeholder")
-      ) {
-        $signatureItem.attr("placeholder", " ");
-        $signatureItem.find(".o_placeholder").text(" ");
-      }
-      this.registerCreatedSignItemEvents(
-        $signatureItem,
-        type,
-        isSignItemEditable
-      );
-    } else {
-      $signatureItem.val(value);
-    }
-    return $signatureItem;
-  },
-  /**
-   * Fills text sign item with value
-   * @param { jQuery } $signatureItem sign item
-   * @param { String } value
-   */
-  fillTextSignItem($signatureItem, value) {
-    if ($signatureItem.val() === "") {
-      $signatureItem.val(value);
-      $signatureItem.trigger("input");
-    }
-  },
-
-  /**
-   *
-   * @param { jQuery } $signatureItem
-   * @param { Object } type type of sign item
-   * @param { Boolean } isSignItemEditable flag for sign item added while signing
-   */
-  registerCreatedSignItemEvents($signatureItem, type, isSignItemEditable) {
-    if (type.name === _t("Date")) {
-      $signatureItem.on("focus", (e) =>
-        this.fillTextSignItem(
-          $signatureItem,
-          moment().format(time.getLangDateFormat())
-        )
-      );
-    }
-    if (type.item_type === "signature" || type.item_type === "initial") {
-      $signatureItem.on(
-        "click",
-        debounce(
-          (e) => {
-            // when signing for the first time in edit mode, clicking in .o_sign_item_display should cause the sign.
-            // (because both edit and sign are possible) However if you want to change the signature after another
-            // one is set, .o_sign_item_display is not there anymore.
-            if (
-              isSignItemEditable &&
-              $signatureItem.find('.o_sign_item_display').length &&
-              !$(e.target).hasClass('o_sign_item_display')
-            ) {
-              return;
-            }
-            this.handleSignatureDialogClick($signatureItem, type)
-          },
-          800
-        )
-      );
-    }
-    if (type.auto_value && ['text', 'textarea'].includes(type.item_type)) {
-      $signatureItem.on("focus", (e) =>
-        this.fillTextSignItem($signatureItem, type.auto_value)
-      );
-    }
-
-    if (
-      config.device.isMobile &&
-      ["text", "textarea"].includes(type.item_type)
-    ) {
-      const inputBottomSheet = new InputBottomSheet(this, {
-        type: type.item_type,
-        value: $signatureItem.val(),
-        label: `${type.tip}: ${type.placeholder}`,
-        placeholder: $signatureItem.attr("placeholder"),
-        onTextChange: (value) => {
-          $signatureItem.val(value);
-        },
-        onValidate: (value) => {
-          $signatureItem.val(value);
-          $signatureItem.trigger("input");
-          inputBottomSheet.hide();
-          this.signatureItemNav.goToNextSignItem();
-        },
-      });
-      inputBottomSheet.appendTo(document.body);
-
-      $signatureItem.on("focus", () => {
-        inputBottomSheet.updateInputText($signatureItem.val());
-        inputBottomSheet.show();
-      });
-    }
-
-    $signatureItem.on("input", (e) => {
-      this.checkSignItemsCompletion(this.role);
-      this.signatureItemNav.setTip(_t("next"));
-    });
-  },
-  /**
-   * Logic for wizard/mark behavior is:
-   * If auto_value is defined and the item is not marked yet, auto_value is used
-   * Else, wizard is opened.
-   * @param { jQuery } $signatureItem
-   * @param { Object } type
-   */
-  handleSignatureDialogClick($signatureItem, type) {
-    this.refreshSignItems();
-    if (
-      type.auto_value &&
-      !$signatureItem.data("signature")
-    ) {
-      this.adjustSignatureSize(type.auto_value, $signatureItem).then(
-        (data) => {
-          $signatureItem
-            .data("signature", data)
-            .empty()
-            .append(
-              $("<span/>").addClass("o_sign_helper"),
-              $("<img/>", { src: $signatureItem.data("signature") })
-            );
-          $signatureItem.trigger("input");
-        }
-      );
-    } else {
-      this.openSignatureDialog($signatureItem, type);
-    }
-  },
-
-  openSignatureDialog($signatureItem, type) {
-    const nameAndSignatureOptions = {
-      defaultName: this.getParent().signerName || "",
-      fontColor: "DarkBlue",
-      signatureType: type.item_type,
-      defaultSignature: type.auto_value,
-      displaySignatureRatio:
-        parseFloat($signatureItem.css("width")) /
-        parseFloat($signatureItem.css("height")),
-    };
-    const signDialog = new SignatureDialog(
-      this,
-      { nameAndSignatureOptions: nameAndSignatureOptions },
-      this.getParent().requestID,
-      this.getParent().accessToken,
-      this.fonts
-    );
-
-    signDialog.open().onConfirm(() => {
-      if (!signDialog.isSignatureEmpty()) {
-        const name = signDialog.getName();
-        const signature = signDialog.getSignatureImageSrc();
-        this.getParent().signerName = name;
-
-        type.auto_value = signature;
-
-        if (signDialog.nameAndSignature.signatureChanged) {
-          this.updateUserSignature(type);
-        }
-
-        $signatureItem
-          .data({
-            signature: signature,
-          })
-          .empty()
-          .append(
-            $("<span/>").addClass("o_sign_helper"),
-            $("<img/>", { src: $signatureItem.data("signature") })
-          );
-      } else {
-        $signatureItem
-          .removeData("signature")
-          .empty()
-          .append($("<span/>").addClass("o_sign_helper"), type.placeholder);
-      }
-
-      $signatureItem.trigger("input").focus();
-      signDialog.close();
-    });
-
-    signDialog.onConfirmAll(async () => {
-      const name = signDialog.getName();
-      const signature = signDialog.getSignatureImageSrc();
-      this.getParent().signerName = name;
-
-      type.auto_value = signature;
-
-      if (signDialog.nameAndSignature.signatureChanged) {
-        this.updateUserSignature(type);
-      }
-
-      for (const pageNumber of Object.keys(this.configuration)) {
-        const page = this.configuration[pageNumber];
-        await Promise.all(
-          page.reduce((promise, item) => {
-            if (
-              item.data("type") === type.id &&
-              item.data("responsible") === this.role
-            ) {
-              promise.push(
-                this.adjustSignatureSize(signature, item).then((data) => {
-                  item
-                    .data("signature", data)
-                    .empty()
-                    .append(
-                      $("<span/>").addClass("o_sign_helper"),
-                      $("<img/>", { src: item.data("signature") })
-                    );
-                })
-              );
-            }
-            return promise;
-          }, [])
-        );
-      }
-      $signatureItem.trigger("input").focus();
-      signDialog.close();
-    });
-  },
-  /**
-   * Updates the user's signature in the res.user model
-   * @param { Object } type
-   */
-  updateUserSignature(type) {
-    this._rpc({
-      route: "/sign/update_user_signature/",
-      params: {
-        sign_request_id: this.getParent().requestID,
-        role: this.role,
-        signature_type:
-          type.item_type === "signature" ? "sign_signature" : "sign_initials",
-        datas: type.auto_value,
-      },
-    });
-  },
-
-  /**
-   * Adjusts signature/initial size to fill the dimensions of the sign item box
-   * @param { String } data base64 image
-   * @param { jQuery } signatureItem
-   * @returns { Promise }
-   */
-  adjustSignatureSize: function (data, signatureItem) {
-    return new Promise(function (resolve, reject) {
-      const img = new Image();
-      img.onload = function () {
-        const c = document.createElement("canvas");
-        const boxWidth = signatureItem.width();
-        const boxHeight = signatureItem.height();
-        const imgHeight = img.height;
-        const imgWidth = img.width;
-        const ratio_box_w_h = boxWidth / boxHeight;
-        const ratio_img_w_h = imgWidth / imgHeight;
-
-        const [canvasHeight, canvasWidth] = ratio_box_w_h > ratio_img_w_h ?
-          [imgHeight,  imgHeight * ratio_box_w_h] :
-          [imgWidth / ratio_box_w_h, imgWidth];
-
-        c.height = canvasHeight;
-        c.width = canvasWidth;
-
-        const ctx = c.getContext("2d");
-        const oldShadowColor = ctx.shadowColor;
-        ctx.shadowColor = "transparent";
-        ctx.drawImage(
-          img,
-          c.width / 2 - (img.width) / 2,
-          c.height / 2 - (img.height) / 2,
-          img.width,
-          img.height
-        );
-        ctx.shadowColor = oldShadowColor;
-        resolve(c.toDataURL());
-      };
-      img.src = data;
-    });
-  },
-
-  checkSignItemsCompletion: function () {
-    this.refreshSignItems();
-    const $toComplete = this.$(
-      ".o_sign_sign_item.o_sign_sign_item_required:not(.o_sign_sign_item_pdfview)"
-    ).filter(function (i, el) {
-      let $elem = $(el);
-      /* in edit mode, the text sign item has a different html structure due to the form and resize/close icons
-            for this reason, we need to check the input field inside the element to check if it has a value */
-      $elem =
-        $elem.data("isEditMode") && $elem.attr("type") === "text"
-          ? $elem.find("input")
-          : $elem;
-      const unchecked_box = $elem.val() == "on" && !$elem.is(":checked");
-      return (
-        !(($elem.val() && $elem.val().trim()) || $elem.data("signature")) ||
-        unchecked_box
-      );
-    });
-
-    this.signatureItemNav.$el
-      .add(this.signatureItemNav.$signatureItemNavLine)
-      .toggle($toComplete.length > 0);
-    this.$iframe.trigger(
-      $toComplete.length > 0 ? "pdfToComplete" : "pdfCompleted"
-    );
-
-    return $toComplete;
-  },
-});
-
 const InputBottomSheet = Widget.extend({
   events: {
     "blur .o_sign_item_bottom_sheet_field": "_onBlurField",
@@ -1473,6 +1089,407 @@ const SignableDocument = Document.extend({
   },
 
   get_pdfiframe_class: function () {
+    const SignablePDFIframe = this._super.apply(this, arguments).extend({
+      init: function () {
+        this._super.apply(this, arguments);
+        this.events = Object.assign(this.events || {}, {
+          "keydown .page .ui-selected": function (e) {
+            if ((e.keyCode || e.which) !== 13) {
+              return true;
+            }
+            e.preventDefault();
+            this.signatureItemNav.goToNextSignItem();
+          },
+        });
+        this.fonts = [];
+      },
+      fetchSignatureFonts: function () {
+        return this._rpc({
+          route: `/web/sign/get_fonts/`
+        }).then(data => {
+          this.fonts = data;
+        })
+      },
+
+      doPDFPostLoad: function () {
+        Promise.all([
+          this.fullyLoaded,
+          this.fetchSignatureFonts()
+        ]).then(() => {
+          this.signatureItemNav = new SignItemNavigator(this, this.types);
+          return this.signatureItemNav
+            .prependTo(this.$("#viewerContainer"))
+            .then(() => {
+              this.checkSignItemsCompletion();
+              this.$("#viewerContainer").on("scroll", (e) => {
+                if (
+                  !this.signatureItemNav.isScrolling &&
+                  this.signatureItemNav.started
+                ) {
+                  this.signatureItemNav.setTip(_t("next"));
+                }
+              });
+            });
+        });
+
+        this._super.apply(this, arguments);
+      },
+
+      createSignItem: function (
+        type,
+        required,
+        responsible,
+        posX,
+        posY,
+        width,
+        height,
+        value,
+        options,
+        name,
+        tooltip,
+        alignment,
+        isSignItemEditable,
+        update = true
+      ) {
+        // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
+        if (value === 0) {
+          value = "0";
+        }
+        const $signatureItem = this._super.apply(this, arguments);
+        const readonly =
+          this.readonlyFields ||
+          (responsible > 0 && responsible !== this.role) ||
+          !!value;
+        if (!readonly) {
+          // Do not display the placeholder of Text and Multiline Text if the name of the item is the default one.
+          if (
+            ["text", "textarea"].includes(type.name) &&
+            type.placeholder === $signatureItem.prop("placeholder")
+          ) {
+            $signatureItem.attr("placeholder", " ");
+            $signatureItem.find(".o_placeholder").text(" ");
+          }
+          this.registerCreatedSignItemEvents(
+            $signatureItem,
+            type,
+            isSignItemEditable
+          );
+        } else {
+          $signatureItem.val(value);
+        }
+        return $signatureItem;
+      },
+      /**
+       * Fills text sign item with value
+       * @param { jQuery } $signatureItem sign item
+       * @param { String } value
+       */
+      fillTextSignItem($signatureItem, value) {
+        if ($signatureItem.val() === "") {
+          $signatureItem.val(value);
+          $signatureItem.trigger("input");
+        }
+      },
+
+      /**
+       *
+       * @param { jQuery } $signatureItem
+       * @param { Object } type type of sign item
+       * @param { Boolean } isSignItemEditable flag for sign item added while signing
+       */
+      registerCreatedSignItemEvents($signatureItem, type, isSignItemEditable) {
+        if (type.name === _t("Date")) {
+          $signatureItem.on("focus", (e) =>
+            this.fillTextSignItem(
+              $(e.currentTarget),
+              moment().format(time.getLangDateFormat())
+            )
+          );
+        }
+        if (type.item_type === "signature" || type.item_type === "initial") {
+          $signatureItem.on(
+            "click",
+            debounce(
+              (e) => {
+                // when signing for the first time in edit mode, clicking in .o_sign_item_display should cause the sign.
+                // (because both edit and sign are possible) However if you want to change the signature after another
+                // one is set, .o_sign_item_display is not there anymore.
+                if (
+                  isSignItemEditable &&
+                  $(e.currentTarget).find('.o_sign_item_display').length &&
+                  !$(e.target).hasClass('o_sign_item_display')
+                ) {
+                  return;
+                }
+                this.handleSignatureDialogClick($(e.currentTarget), type)
+              },
+              800
+            )
+          );
+        }
+
+        if (type.auto_value && ['text', 'textarea'].includes(type.item_type)) {
+          $signatureItem.on("focus", (e) =>
+            this.fillTextSignItem($signatureItem, type.auto_value)
+          );
+        }
+
+        if (
+          config.device.isMobile &&
+          ["text", "textarea"].includes(type.item_type)
+        ) {
+          const inputBottomSheet = new InputBottomSheet(this, {
+            type: type.item_type,
+            value: $signatureItem.val(),
+            label: `${type.tip}: ${type.placeholder}`,
+            placeholder: $signatureItem.attr("placeholder"),
+            onTextChange: (value) => {
+              $signatureItem.val(value);
+            },
+            onValidate: (value) => {
+              $signatureItem.val(value);
+              $signatureItem.trigger("input");
+              inputBottomSheet.hide();
+              this.signatureItemNav.goToNextSignItem();
+            },
+          });
+          inputBottomSheet.appendTo(document.body);
+
+          $signatureItem.on("focus", () => {
+            inputBottomSheet.updateInputText($signatureItem.val());
+            inputBottomSheet.show();
+          });
+        }
+
+        $signatureItem.on("input", (e) => {
+          this.checkSignItemsCompletion(this.role);
+          this.signatureItemNav.setTip(_t("next"));
+        });
+      },
+      /**
+       * Logic for wizard/mark behavior is:
+       * If auto_value is defined and the item is not marked yet, auto_value is used
+       * Else, wizard is opened.
+       * @param { jQuery } $signatureItem
+       * @param { Object } type
+       */
+      handleSignatureDialogClick($signatureItem, type) {
+        this.refreshSignItems();
+        if (
+          type.auto_value &&
+          !$signatureItem.data("signature")
+        ) {
+          this.adjustSignatureSize(type.auto_value, $signatureItem).then(
+            (data) => {
+              $signatureItem
+                .data("signature", data)
+                .empty()
+                .append(
+                  $("<span/>").addClass("o_sign_helper"),
+                  $("<img/>", { src: $signatureItem.data("signature") })
+                );
+              $signatureItem.trigger("input");
+            }
+          );
+        } else if (
+          type.item_type === "initial" &&
+          this.nextInitial &&
+          !$signatureItem.data("signature")
+        ) {
+          this.adjustSignatureSize(this.nextInitial, $signatureItem).then(
+            (data) => {
+              $signatureItem
+                .data("signature", data)
+                .empty()
+                .append(
+                  $("<span/>").addClass("o_sign_helper"),
+                  $("<img/>", { src: $signatureItem.data("signature") })
+                );
+              $signatureItem.trigger("input");
+            }
+          );
+        } else {
+          this.openSignatureDialog($signatureItem, type);
+        }
+      },
+
+      openSignatureDialog($signatureItem, type) {
+        const nameAndSignatureOptions = {
+          defaultName: this.getParent().signerName || "",
+          fontColor: "DarkBlue",
+          signatureType: type.item_type,
+          displaySignatureRatio:
+            parseFloat($signatureItem.css("width")) /
+            parseFloat($signatureItem.css("height")),
+        };
+        const signDialog = new SignatureDialog(
+          this,
+          { nameAndSignatureOptions: nameAndSignatureOptions },
+          this.getParent().requestID,
+          this.getParent().accessToken,
+          this.fonts
+        );
+
+        signDialog.open().onConfirm(() => {
+          if (!signDialog.isSignatureEmpty()) {
+            const name = signDialog.getName();
+            const signature = signDialog.getSignatureImageSrc();
+            this.getParent().signerName = name;
+
+            type.auto_value = signature;
+
+            if (signDialog.nameAndSignature.signatureChanged) {
+              this.updateUserSignature(type);
+            }
+
+            $signatureItem
+              .data({
+                signature: signature,
+              })
+              .empty()
+              .append(
+                $("<span/>").addClass("o_sign_helper"),
+                $("<img/>", { src: $signatureItem.data("signature") })
+              );
+          } else {
+            $signatureItem
+              .removeData("signature")
+              .empty()
+              .append($("<span/>").addClass("o_sign_helper"), type.placeholder);
+          }
+
+          $signatureItem.trigger("input").focus();
+          signDialog.close();
+        });
+
+        signDialog.onConfirmAll(async () => {
+          const name = signDialog.getName();
+          const signature = signDialog.getSignatureImageSrc();
+          this.getParent().signerName = name;
+
+          type.auto_value = signature;
+
+          if (signDialog.nameAndSignature.signatureChanged) {
+            this.updateUserSignature(type);
+          }
+
+          for (const pageNumber of Object.keys(this.configuration)) {
+            const page = this.configuration[pageNumber];
+            await Promise.all(
+              page.reduce((promise, item) => {
+                if (
+                  item.data("type") === type.id &&
+                  item.data("responsible") === this.role
+                ) {
+                  promise.push(
+                    this.adjustSignatureSize(signature, item).then((data) => {
+                      item
+                        .data("signature", data)
+                        .empty()
+                        .append(
+                          $("<span/>").addClass("o_sign_helper"),
+                          $("<img/>", { src: item.data("signature") })
+                        );
+                    })
+                  );
+                }
+                return promise;
+              }, [])
+            );
+          }
+          $signatureItem.trigger("input").focus();
+          signDialog.close();
+        });
+      },
+
+      /**
+       * Updates the user's signature in the res.user model
+       * @param { Object } type
+       */
+      updateUserSignature(type) {
+        this._rpc({
+          route: "/sign/update_user_signature/",
+          params: {
+            sign_request_id: this.getParent().requestID,
+            role: this.role,
+            signature_type:
+              type.item_type === "signature" ? "sign_signature" : "sign_initials",
+            datas: type.auto_value,
+          },
+        });
+      },
+
+      /**
+       * Adjusts signature/initial size to fill the dimensions of the sign item box
+       * @param { String } data base64 image
+       * @param { jQuery } signatureItem
+       * @returns { Promise }
+       */
+      adjustSignatureSize: function (data, signatureItem) {
+        return new Promise(function (resolve, reject) {
+          const img = new Image();
+          img.onload = function () {
+            const c = document.createElement("canvas");
+            const boxWidth = signatureItem.width();
+            const boxHeight = signatureItem.height();
+            const imgHeight = img.height;
+            const imgWidth = img.width;
+            const ratio_box_w_h = boxWidth / boxHeight;
+            const ratio_img_w_h = imgWidth / imgHeight;
+
+            const [canvasHeight, canvasWidth] = ratio_box_w_h > ratio_img_w_h ?
+              [imgHeight,  imgHeight * ratio_box_w_h] :
+              [imgWidth / ratio_box_w_h, imgWidth];
+
+            c.height = canvasHeight;
+            c.width = canvasWidth;
+
+            const ctx = c.getContext("2d");
+            const oldShadowColor = ctx.shadowColor;
+            ctx.shadowColor = "transparent";
+            ctx.drawImage(
+              img,
+              c.width / 2 - (img.width) / 2,
+              c.height / 2 - (img.height) / 2,
+              img.width,
+              img.height
+            );
+            ctx.shadowColor = oldShadowColor;
+            resolve(c.toDataURL());
+          };
+          img.src = data;
+        });
+      },
+
+      checkSignItemsCompletion: function () {
+        this.refreshSignItems();
+        const $toComplete = this.$(
+          ".o_sign_sign_item.o_sign_sign_item_required:not(.o_sign_sign_item_pdfview)"
+        ).filter(function (i, el) {
+          let $elem = $(el);
+          /* in edit mode, the text sign item has a different html structure due to the form and resize/close icons
+                for this reason, we need to check the input field inside the element to check if it has a value */
+          $elem =
+            $elem.data("isEditMode") && $elem.attr("type") === "text"
+              ? $elem.find("input")
+              : $elem;
+          const unchecked_box = $elem.val() == "on" && !$elem.is(":checked");
+          return (
+            !(($elem.val() && $elem.val().trim()) || $elem.data("signature")) ||
+            unchecked_box
+          );
+        });
+
+        this.signatureItemNav.$el
+          .add(this.signatureItemNav.$signatureItemNavLine)
+          .toggle($toComplete.length > 0);
+        this.$iframe.trigger(
+          $toComplete.length > 0 ? "pdfToComplete" : "pdfCompleted"
+        );
+
+        return $toComplete;
+      },
+    });
     return SignablePDFIframe;
   },
 

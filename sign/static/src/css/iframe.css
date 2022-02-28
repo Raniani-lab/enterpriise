@@ -309,6 +309,10 @@ textarea.o_sign_sign_item {
     width: auto;
 }
 
+.o_sign_sign_item_navigator.o_sign_field_type_toolbar_visible {
+    margin-left: 14rem;
+}
+
 .o_tooltip > .o_tooltip_content {
     font-size: 12px !important;
     box-sizing: border-box;

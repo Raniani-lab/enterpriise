@@ -4,13 +4,13 @@
 
 import core from "web.core";
 import session from "web.session";
-import { DocumentBackend } from "@sign/js/backend/document";
+import { DocumentAction } from "@sign/js/backend/document";
 import { multiFileUpload } from "@sign/js/common/multi_file_upload";
 import { sprintf } from "@web/core/utils/strings";
 
 const { _t } = core;
 
-const EditableDocumentBackend = DocumentBackend.extend({
+const EditableDocumentAction = DocumentAction.extend({
   events: {
     "click .o_sign_resend_access_button": async function (e) {
       const $envelope = $(e.target);
@@ -109,4 +109,4 @@ const EditableDocumentBackend = DocumentBackend.extend({
   },
 });
 
-core.action_registry.add("sign.Document", EditableDocumentBackend);
+core.action_registry.add("sign.Document", EditableDocumentAction);

@@ -11,7 +11,7 @@ const { createView } = testUtils;
 import { getFixture } from "@web/../tests/helpers/utils";
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 
-import { DocumentBackend } from '@sign/js/backend/document';
+import { DocumentAction } from '@sign/js/backend/document';
 
 let serverData;
 let target;
@@ -97,7 +97,7 @@ QUnit.module('document_backend_tests', {
         });
 
         const proms = [];
-        testUtils.mock.patch(DocumentBackend, {
+        testUtils.mock.patch(DocumentAction, {
             _init_page() {
                 const prom = this._super.apply(this, arguments);
                 proms.push(prom);
@@ -131,7 +131,7 @@ QUnit.module('document_backend_tests', {
         await Promise.all(proms);
 
         assert.verifySteps(["/sign/get_document/5/abc", "/sign/get_document/5/abc"]);
-        testUtils.mock.unpatch(DocumentBackend);
+        testUtils.mock.unpatch(DocumentAction);
         testUtils.mock.unpatch(framework);
     });
 

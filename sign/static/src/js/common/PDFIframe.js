@@ -84,7 +84,7 @@ const PinchItemMixin = {
 
 export const PDFIframe = Widget.extend(
   Object.assign({}, PinchItemMixin, {
-    init: function (parent, attachmentLocation, editMode, datas, role) {
+    init: function (parent, attachmentLocation, editMode, datas, role, roleName) {
       this._super(parent);
       this.attachmentLocation = attachmentLocation;
       this.editMode = editMode;
@@ -101,6 +101,7 @@ export const PDFIframe = Widget.extend(
 
       this.normalSize = () => this.$(".page").first().innerHeight() * 0.015;
       this.role = role || 0;
+      this.roleName = roleName;
       this.configuration = {};
       this.deletedSignItemIds = [];
       this.minID = -(2 ** 30);
@@ -331,15 +332,6 @@ export const PDFIframe = Widget.extend(
           .css("visibility", "visible")
           .animate({ opacity: 1 }, 1000);
 
-        if (
-          !self.readonlyFields &&
-          self.templateEditable &&
-          typeof self.enableSignTemplateEdition === "function" &&
-          !config.device.isMobile
-        ) {
-          await self.enableSignTemplateEdition();
-        }
-
         self.fullyLoaded.resolve();
 
         /**
@@ -518,9 +510,13 @@ export const PDFIframe = Widget.extend(
           option_ids: option_ids,
           alignment: alignment,
         })
-        .data("hasValue", !!value)
-        .toggle(!!value || this.requestState != "signed")
-        .data({ updated: updated });
+        .data({
+          hasValue: !!value,
+          typeData: type,
+          updated: updated,
+          isEditMode: this.isSignItemEditable,
+        })
+        .toggle(!!value || this.requestState != "signed");
     },
 
     /**

@@ -1192,7 +1192,7 @@ var StatementModel = BasicModel.extend({
 
         this._formatLineProposition(line, mv_lines);
 
-        if (line.mode !== 'create') {
+        if (!line.balance.amount || ((line.mode == 'match_other' || line.mode == "match_rp") && line['mv_lines_'+mode] && line['mv_lines_'+mode].length == 0 && line['filter_'+mode].length == 0)) {
             line.mode = self._getDefaultMode(handle);
             if (line.mode !== 'match_rp' && line.mode !== 'match_other' && line.mode !== 'inactive') {
                 return this._computeLine(line).then(function () {

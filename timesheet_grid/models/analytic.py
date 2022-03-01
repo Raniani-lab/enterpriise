@@ -79,15 +79,27 @@ class AnalyticLine(models.Model):
         )
 
     @api.model
-    def _build_grid(self, row_fields, col_field, cell_field, column_info,
-                    groups=None, domain=None, readonly_field=None):
-        result = super()._build_grid(row_fields, col_field, cell_field, column_info,
-                                     groups=groups, domain=domain, readonly_field=readonly_field)
+    def _apply_grid_grouped_expand(
+            self, grid_domain, row_fields, built_grids, section_field=None, group_expand_section_values=None):
+        """ Returns the built_grids, after having applied the group_expand on it, according to the grid_domain,
+            row_fields, section_field and group_expand_domain_info.
+
+            :param grid_domain: The grid domain.
+            :param row_fields: The row fields.
+            :param built_grids: The grids that have been previously built and on top of which the group expand has to
+                                be performed.
+            :param section_field: The section field.
+            :param group_expand_section_values: A set containing the record ids for the section field, resulting from the
+                                             read_group_raw. The ids can be used in order to limit the queries scopes.
+            :return: The modified built_grids.
+        """
+        result = super()._apply_grid_grouped_expand(grid_domain, row_fields, built_grids, section_field, group_expand_section_values)
+
+        if group_expand_section_values is None:
+            group_expand_section_values = set()
 
         if not self.env.context.get('group_expand', False):
             return result
-
-        res_rows = [row['values'] for row in result['rows']]
 
         # For the group_expand, we need to have some information :
         #   1) search in domain one rule with one of next conditions :
@@ -129,9 +141,8 @@ class AnalyticLine(models.Model):
 
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
-
         last_week = (fields.Datetime.from_string(grid_anchor) - timedelta(days=7)).date()
-        domain_search = [
+        domain_timesheet_search = [
             ('project_id', '!=', False),
             '|',
                 ('task_id.active', '=', True),
@@ -139,14 +150,13 @@ class AnalyticLine(models.Model):
             ('date', '>=', last_week),
             ('date', '<=', grid_anchor)
         ]
-
         domain_project_task = defaultdict(list)
 
-        # check if project_id or employee_id is in domain
-        # if not then group_expand return None
+        # check if project_id, task_id or employee_id is in domain
+        # if not then group_expand return an empty dict.
         apply_group_expand = False
 
-        for rule in domain:
+        for rule in grid_domain:
             if len(rule) == 3:
                 name, operator, value = rule
                 if name in ['project_id', 'employee_id', 'task_id']:
@@ -155,7 +165,7 @@ class AnalyticLine(models.Model):
                     if operator == '=':
                         operator = '<='
                     value = '1-1-2250' if operator in ['<', '<='] else '1-1-1970'
-                domain_search.append([name, operator, value])
+                domain_timesheet_search.append([name, operator, value])
                 if name in ['project_id', 'task_id']:
                     if operator in ['=', '!='] and value:
                         field = "name" if isinstance(value, str) else "id"
@@ -163,30 +173,56 @@ class AnalyticLine(models.Model):
                     elif operator in ['ilike', 'not ilike']:
                         domain_project_task[name].append(('name', operator, value))
             else:
-                domain_search.append(rule)
+                domain_timesheet_search.append(rule)
+
+        if group_expand_section_values:
+            if section_field in ['project_id', 'employee_id', 'task_id']:
+                apply_group_expand = True
+                if section_field == 'employee_id':
+                    domain_timesheet_search = expression.AND([domain_timesheet_search, [(section_field, 'in', list(group_expand_section_values))]])
+                if section_field in ['project_id', 'task_id']:
+                    domain_project_task[section_field] = expression.AND([domain_project_task[section_field], [('id', 'in', list(group_expand_section_values))]])
+
         if not apply_group_expand:
             return result
 
+        rows_dict = defaultdict(dict)
+
+        def is_record_candidate(grid, record):
+            return not any(record == grid_row['values'] for grid_row in grid['rows'])
+
+        def add_record(section_key, key, value):
+            rows_dict[section_key][key] = value
+
         # step 2: search timesheets
-        timesheets = self.search(domain_search)
+        timesheets = self.search(domain_timesheet_search)
 
         # step 3: retrieve data and create correctly the grid and rows in result
-        seen = []  # use to not have duplicated rows
-        rows = []
+        timesheet_section_field = self.env['account.analytic.line']._fields[section_field] if section_field else False
+
         def read_row_value(row_field, timesheet):
             field_name = row_field.split(':')[0]  # remove all groupby operator e.g. "date:quarter"
             return timesheets._fields[field_name].convert_to_read(timesheet[field_name], timesheet)
+
         for timesheet in timesheets:
             # check uniq project or task, or employee
-            k = tuple(read_row_value(f, timesheet) for f in row_fields)
-            if k not in seen:  # check if it's not a duplicated row
-                record = {
-                    row_field: read_row_value(row_field, timesheet)
-                    for row_field in row_fields
-                }
-                seen.append(k)
-                if not any(record == row for row in res_rows):
-                    rows.append({'values': record, 'domain': [('id', '=', timesheet.id)]})
+            timesheet_section_key = timesheet[timesheet_section_field.name].id if timesheet_section_field else False
+            record = {
+                row_field: read_row_value(row_field, timesheet)
+                for row_field in row_fields
+            }
+            key = tuple(record.values())
+            if timesheet_section_field:
+                for grid in result:
+                    grid_section = grid['__label']
+                    if timesheet_section_field.type == 'many2one' and grid_section:
+                        grid_section = grid_section[0]
+                    if grid_section == timesheet_section_key and is_record_candidate(grid, record):
+                        add_record(grid['__label'], key, {'values': record, 'domain': [('id', '=', timesheet.id)]})
+                        break
+            else:
+                if is_record_candidate(result, record):
+                    add_record(False, key, {'values': record, 'domain': [('id', '=', timesheet.id)]})
 
         def read_row_fake_value(row_field, project, task):
             if row_field == 'project_id':
@@ -199,46 +235,64 @@ class AnalyticLine(models.Model):
         if 'project_id' in domain_project_task:
             project_ids = self.env['project.project'].search(domain_project_task['project_id'])
             for project_id in project_ids:
-                k = tuple(read_row_fake_value(f, project_id, False) for f in row_fields)
-                if k not in seen:  # check if it's not a duplicated row
-                    record = {
-                        row_field: read_row_fake_value(row_field, project_id, False)
-                        for row_field in row_fields
-                    }
-                    seen.append(k)
-                    if not any(record == row for row in res_rows):
-                        rows.append({'values': record, 'domain': [('id', '=', -1)]})
+                record = {
+                    row_field: read_row_fake_value(row_field, project_id, False)
+                    for row_field in row_fields
+                }
+                key = tuple(record.values())
+                if timesheet_section_field:
+                    for grid in result:
+                        if is_record_candidate(grid, record):
+                            add_record(grid['__label'], key, {'values': record, 'domain': [('id', '=', -1)]})
+                else:
+                    if is_record_candidate(result, record):
+                        add_record(False, key, {'values': record, 'domain': [('id', '=', -1)]})
 
         if 'task_id' in domain_project_task:
             task_ids = self.env['project.task'].search(domain_project_task['task_id'])
             for task_id in task_ids:
-                k = tuple(read_row_fake_value(f, False, task_id) for f in row_fields)
-                if k not in seen:  # check if it's not a duplicated row
-                    record = {
-                        row_field: read_row_fake_value(row_field, False, task_id)
-                        for row_field in row_fields
-                    }
-                    seen.append(k)
-                    if not any(record == row for row in res_rows):
-                        rows.append({'values': record, 'domain': [('id', '=', -1)]})
+                record = {
+                    row_field: read_row_fake_value(row_field, False, task_id)
+                    for row_field in row_fields
+                }
+                key = tuple(record.values())
+                if timesheet_section_field:
+                    for grid in result:
+                        if is_record_candidate(grid, record):
+                            add_record(grid['__label'], key, {'values': record, 'domain': [('id', '=', -1)]})
+                else:
+                    if is_record_candidate(result, record):
+                        add_record(False, key, {'values': record, 'domain': [('id', '=', -1)]})
 
-        rows = sorted(rows, key=lambda l: [l['values'][field][1] if l['values'][field] else " " for field in row_fields[0:2]])
-        # _grid_make_empty_cell return a dict, in this dictionary,
-        # we need to check if the cell is in the current date,
-        # then, we add a key 'is_current' into this dictionary
-        # to get the result of this checking.
-        grid = [
-            [{**self._grid_make_empty_cell(r['domain'], c['domain'], domain), 'is_current': c.get('is_current', False),
-              'is_unavailable': c.get('is_unavailable', False)} for c in result['cols']]
-            for r in rows]
+        if rows_dict:
+            if timesheet_section_field:
+                read_grid_grouped_result_dict = {res['__label']: res for res in result}
+            for section_id, rows in rows_dict.items():
+                res = result
+                rows = rows.values()
+                rows = sorted(rows, key=lambda l: [l['values'][field][1] if l['values'][field] else " " for field in row_fields[0:2]])
+                # _grid_make_empty_cell return a dict, in this dictionary,
+                # we need to check if the cell is in the current date,
+                # then, we add a key 'is_current' into this dictionary
+                # to get the result of this checking.
+                if section_field:
+                    domain_section_id = section_id
+                    if timesheet_section_field.type == 'many2one' and domain_section_id:
+                        domain_section_id = domain_section_id[0]
+                    grid_domain = expression.AND([grid_domain, [(section_field, '=', domain_section_id)]])
+                    res = read_grid_grouped_result_dict[section_id]
+                grid = [
+                    [{**self._grid_make_empty_cell(r['domain'], c['domain'], grid_domain), 'is_current': c.get('is_current', False),
+                      'is_unavailable': c.get('is_unavailable', False)} for c in res['cols']]
+                    for r in rows]
 
-        if len(rows) > 0:
-            # update grid and rows in result
-            if len(result['rows']) == 0 and len(result['grid']) == 0:
-                result.update(rows=rows, grid=grid)
-            else:
-                result['rows'].extend(rows)
-                result['grid'].extend(grid)
+                if len(rows) > 0:
+                    # update grid and rows in result
+                    if len(res['rows']) == 0 and len(res['grid']) == 0:
+                        res.update(rows=rows, grid=grid)
+                    else:
+                        res['rows'].extend(rows)
+                        res['grid'].extend(grid)
 
         return result
 

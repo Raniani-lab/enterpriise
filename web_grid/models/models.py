@@ -53,8 +53,10 @@ class Base(models.AbstractModel):
             lazy=False, orderby=orderby
         )
 
-        return self._build_grid(row_fields, col_field, cell_field, column_info,
+        results = self._build_grid(row_fields, col_field, cell_field, column_info,
                                 groups=groups, domain=domain, readonly_field=readonly_field)
+
+        return self._apply_grid_grouped_expand(domain, row_fields, results)
 
     @api.model
     def read_grid_grouped(self, row_fields, col_field, cell_field, section_field, domain,
@@ -96,19 +98,21 @@ class Base(models.AbstractModel):
         )
 
         section_all_groups = {}
-        field = self._fields[section_field]
-        if field.group_expand:
+        s_field = self._fields[section_field]
+        if s_field.group_expand:
             section_read_group = self.read_group(grid_domain, [section_field], [section_field])
             section_all_groups = {group[section_field]: group['__domain'] for group in section_read_group}
 
         section_groups = collections.defaultdict(lambda: {'__domain': [], 'groups': []})
+        group_expand_section_values = set()
+
         for group in groups:
-            section_group = section_groups[group[section_field]]
-            section_all_groups.pop(group[section_field], None)
-            if self._fields[section_field].type == 'many2one' and group[section_field]:
-                section_field_value = group[section_field][0]
-            else:
-                section_field_value = group[section_field]
+            section_field_value = group[section_field]
+            section_group = section_groups[section_field_value]
+            section_all_groups.pop(section_field_value, None)
+            if s_field.type == 'many2one' and section_field_value:
+                section_field_value = section_field_value[0]
+            group_expand_section_values.add(section_field_value)
             if not section_group['__domain']:
                 section_group['__domain'] = expression.AND([
                     grid_domain,
@@ -117,6 +121,10 @@ class Base(models.AbstractModel):
             section_group['groups'].append(group)
 
         for key, value in section_all_groups.items():
+            section_field_value = key
+            if s_field.type == 'many2one' and key:
+                section_field_value = key[0]
+            group_expand_section_values.add(section_field_value)
             section_groups[key]['__domain'] = value
 
         if not section_groups:
@@ -135,7 +143,28 @@ class Base(models.AbstractModel):
                                    readonly_field=readonly_field),
                 '__label': section_group_label,
             } for section_group_label, section_group in section_groups.items()]
-        return results
+
+        return self._apply_grid_grouped_expand(
+            grid_domain, row_fields, results,
+            section_field, group_expand_section_values
+        )
+
+    @api.model
+    def _apply_grid_grouped_expand(
+            self, grid_domain, row_fields, built_grids, section_field=None, group_expand_section_values=None):
+        """ Returns the built_grids, after having applied the group_expand on it, according to the grid_domain,
+            row_fields, section_field and group_expand_domain_info.
+
+            :param grid_domain: The grid domain.
+            :param row_fields: The row fields.
+            :param built_grids: The grids that have been previously built and on top of which the group expand has to
+                                be performed.
+            :param section_field: The section field.
+            :param group_expand_section_values: A set containing the record ids for the section field, resulting from the
+                                             read_group_raw. The ids can be used in order to limit the queries scopes.
+            :return: The modified built_grids.
+        """
+        return built_grids
 
     @api.model
     def _build_grid(self, row_fields, col_field, cell_field, column_info,

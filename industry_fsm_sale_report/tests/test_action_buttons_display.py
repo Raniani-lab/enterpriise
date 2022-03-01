@@ -4,12 +4,13 @@
 import base64
 import io
 
-from odoo.tests.common import TransactionCase
 from PIL import Image
 from datetime import datetime
 
+from odoo.addons.industry_fsm_sale.tests.common import TestFsmFlowSaleCommon
 
-class TestTimerButtons(TransactionCase):
+
+class TestTimerButtons(TestFsmFlowSaleCommon):
     """ Test visibility of the following buttons:
         - START/STOP/PAUSE/RESUME
         - Send/Sign Report

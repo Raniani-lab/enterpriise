@@ -41,17 +41,51 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         var self = this;
         mixins.EventDispatcherMixin.init.call(this);
         this.setParent(parent);
+        /**
+         * The audio element used to play the dial tone.
+         */
         this._audioDialRingtone = undefined;
+        /**
+         * The audio element used to play the incoming call ringtone.
+         */
         this._audioIncomingRingtone = undefined;
+        /**
+         * The audio element used to play the ringback tone.
+         */
         this._audioRingbackTone = undefined;
         this._updateCallState(CALL_STATE.NO_CALL);
+        /**
+         * The phone number of the current external party.
+         */
         this._currentNumber = undefined;
+        /**
+         * The partner id and the phone number of the current external party.
+         */
         this._currentCallParams = false;
+        /**
+         * The session created from an inbound invitation.
+         */
         this._currentInviteSession = false;
+        /**
+         * Determines the direction of the ongoing call (either outgoing or
+         * incoming).
+         */
         this._isOutgoing = false;
+        /**
+         * Either 'demo' or 'prod'. The demo mode simulates a call in the
+         * interface but no session is actually established.
+         */
         this._mode = undefined;
         this._progressCount = 0;
+        /**
+         * Represents the real-time communication session between two user
+         * agents, managed according to the SIP protocol.
+         */
         this._sipSession = undefined;
+        /**
+         * The id of the setTimeout used in demo mode to simulate the waiting
+         * time before the call is picked up.
+         */
         this._timerAcceptedTimeout = undefined;
         this._userAgent = undefined;
 

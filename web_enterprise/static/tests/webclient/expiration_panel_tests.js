@@ -3,17 +3,15 @@
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { registry } from "@web/core/registry";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { click, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, getFixture, patchDate, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { browser } from "@web/core/browser/browser";
 import { ormService } from "@web/core/orm_service";
-import { patch, unpatch } from "@web/core/utils/patch";
 import testUtils from "web.test_utils";
 import { ExpirationPanel } from "@web_enterprise/webclient/home_menu/expiration_panel";
 import { makeFakeEnterpriseService } from "../mocks";
 import { uiService } from "@web/core/ui/ui_service";
 
 const { App } = owl;
-const patchDate = testUtils.mock.patchDate;
 const serviceRegistry = registry.category("services");
 
 async function createExpirationPanel(params = {}) {
@@ -36,8 +34,7 @@ async function createExpirationPanel(params = {}) {
     serviceRegistry.add("orm", ormService);
     const mockedEnterpriseService = makeFakeEnterpriseService(params.enterprise);
     serviceRegistry.add(mockedEnterpriseService.name, mockedEnterpriseService);
-    patch(browser, "mocked_browser", Object.assign({ location: "" }, params.browser));
-    registerCleanup(() => unpatch(browser, "mocked_browser"));
+    patchWithCleanup(browser, Object.assign({ location: "" }, params.browser));
 
     const env = await makeTestEnv({
         mockRPC: params.mockRPC,
@@ -69,7 +66,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("Expiration Panel one app installed", async function (assert) {
         assert.expect(3);
 
-        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+        patchDate(2019, 9, 10, 12, 0, 0);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -89,7 +86,7 @@ QUnit.module("web_enterprise", {}, function () {
         assert.hasClass(panel.el, "alert-info");
 
         // Close the expiration panel
-        await testUtils.dom.click(panel.el.querySelector(".oe_instance_hide_panel"));
+        await click(panel.el.querySelector(".oe_instance_hide_panel"));
 
         assert.containsNone(panel, ".database_expiration_panel");
     });
@@ -97,7 +94,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("Expiration Panel one app installed, buy subscription", async function (assert) {
         assert.expect(6);
 
-        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+        patchDate(2019, 9, 10, 12, 0, 0);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -132,7 +129,7 @@ QUnit.module("web_enterprise", {}, function () {
         );
 
         // Click on 'buy subscription'
-        await testUtils.dom.click(panel.el.querySelector(".oe_instance_buy"));
+        await click(panel.el.querySelector(".oe_instance_buy"));
 
         assert.strictEqual(
             browser.location,
@@ -145,7 +142,7 @@ QUnit.module("web_enterprise", {}, function () {
         async function (assert) {
             assert.expect(47);
 
-            registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+            patchDate(2019, 9, 10, 12, 0, 0);
 
             let callToGetParamCount = 0;
 
@@ -227,7 +224,7 @@ QUnit.module("web_enterprise", {}, function () {
             );
 
             // Click on 'register your subscription'
-            await testUtils.dom.click(panel.el.querySelector(".oe_instance_register_show"));
+            await click(panel.el.querySelector(".oe_instance_register_show"));
 
             assert.containsOnce(
                 panel.el,
@@ -249,7 +246,7 @@ QUnit.module("web_enterprise", {}, function () {
                 "REGISTER"
             );
 
-            await testUtils.dom.click(panel.el.querySelector(".oe_instance_register_form button"));
+            await click(panel.el.querySelector(".oe_instance_register_form button"));
 
             assert.containsOnce(
                 panel.el,
@@ -271,7 +268,7 @@ QUnit.module("web_enterprise", {}, function () {
                 panel.el.querySelector(".oe_instance_register_form input"),
                 "ABCDEF"
             );
-            await testUtils.dom.click(panel.el.querySelector(".oe_instance_register_form button"));
+            await click(panel.el.querySelector(".oe_instance_register_form button"));
 
             assert.strictEqual(
                 panel.el.querySelector(".oe_instance_register").innerText,
@@ -303,7 +300,7 @@ QUnit.module("web_enterprise", {}, function () {
                 panel.el.querySelector(".oe_instance_register_form input"),
                 "ABC"
             );
-            await testUtils.dom.click(panel.el.querySelector(".oe_instance_register_form button"));
+            await click(panel.el.querySelector(".oe_instance_register_form button"));
 
             assert.strictEqual(
                 panel.el.querySelector(".oe_instance_register.oe_instance_success").innerText,
@@ -338,7 +335,7 @@ QUnit.module("web_enterprise", {}, function () {
         async function (assert) {
             assert.expect(13);
 
-            registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+            patchDate(2019, 9, 10, 12, 0, 0);
 
             // There are some line breaks mismatches between local and runbot test instances.
             // Since they don't affect the layout and we're only interested in the text itself,
@@ -406,12 +403,12 @@ QUnit.module("web_enterprise", {}, function () {
             );
 
             // Click on 'register your subscription'
-            await testUtils.dom.click(panel.el.querySelector(".oe_instance_register_show"));
+            await click(panel.el.querySelector(".oe_instance_register_show"));
             await testUtils.fields.editInput(
                 panel.el.querySelector(".oe_instance_register_form input"),
                 "ABC"
             );
-            await testUtils.dom.click(panel.el.querySelector(".oe_instance_register_form button"));
+            await click(panel.el.querySelector(".oe_instance_register_form button"));
 
             assert.strictEqual(
                 formatWhiteSpaces(
@@ -426,7 +423,7 @@ QUnit.module("web_enterprise", {}, function () {
                 )
             );
 
-            await testUtils.dom.click(panel.el.querySelector("a.oe_contract_send_mail"));
+            await click(panel.el.querySelector("a.oe_contract_send_mail"));
 
             assert.hasClass(panel.el, "alert-danger", "Color should be red");
 
@@ -461,7 +458,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, database expired", async function (assert) {
         assert.expect(13);
 
-        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+        patchDate(2019, 9, 10, 12, 0, 0);
 
         let callToGetParamCount = 0;
 
@@ -520,12 +517,12 @@ QUnit.module("web_enterprise", {}, function () {
         assert.containsNone(panel.el, ".oe_instance_register_form");
 
         // Click on 'Register your subscription'
-        await testUtils.dom.click(panel.el.querySelector(".oe_instance_register_show"));
+        await click(panel.el.querySelector(".oe_instance_register_show"));
         await testUtils.fields.editInput(
             panel.el.querySelector(".oe_instance_register_form input"),
             "ABC"
         );
-        await testUtils.dom.click(panel.el.querySelector(".oe_instance_register_form button"));
+        await click(panel.el.querySelector(".oe_instance_register_form button"));
 
         assert.strictEqual(
             panel.el.querySelector(".oe_instance_register").innerText,
@@ -538,7 +535,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, renew with success", async function (assert) {
         assert.expect(14);
 
-        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+        patchDate(2019, 9, 10, 12, 0, 0);
 
         let callToGetParamCount = 0;
 
@@ -599,7 +596,7 @@ QUnit.module("web_enterprise", {}, function () {
         assert.containsNone(panel.el, ".oe_instance_register_form");
 
         // Click on 'Renew your subscription'
-        await testUtils.dom.click(panel.el.querySelector(".oe_instance_renew"));
+        await click(panel.el.querySelector(".oe_instance_renew"));
 
         assert.strictEqual(
             panel.el.querySelector(".oe_instance_register.oe_instance_success").innerText,
@@ -618,7 +615,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, check status and get success", async function (assert) {
         assert.expect(8);
 
-        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+        patchDate(2019, 9, 10, 12, 0, 0);
 
         let callToGetParamCount = 0;
 
@@ -658,7 +655,7 @@ QUnit.module("web_enterprise", {}, function () {
         // click on "Refresh subscription status"
         const refreshButton = panel.el.querySelector("a.check_enterprise_status");
         assert.strictEqual(refreshButton.getAttribute("aria-label"), "Refresh subscription status");
-        await testUtils.dom.click(refreshButton);
+        await click(refreshButton);
 
         assert.strictEqual(
             panel.el.querySelector(".oe_instance_register.oe_subscription_updated").innerText,
@@ -671,7 +668,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, check status and get page reload", async function (assert) {
         assert.expect(5);
 
-        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+        patchDate(2019, 9, 10, 12, 0, 0);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -706,7 +703,7 @@ QUnit.module("web_enterprise", {}, function () {
         });
 
         // click on "Refresh subscription status"
-        await testUtils.dom.click(panel.el.querySelector("a.check_enterprise_status"));
+        await click(panel.el.querySelector("a.check_enterprise_status"));
 
         assert.verifySteps(["get_param", "update_notification", "get_param", "reloadPage"]);
     });
@@ -714,7 +711,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, upgrade database", async function (assert) {
         assert.expect(6);
 
-        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+        patchDate(2019, 9, 10, 12, 0, 0);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -757,7 +754,7 @@ QUnit.module("web_enterprise", {}, function () {
         );
 
         // click on "Upgrade your subscription"
-        await testUtils.dom.click(panel.el.querySelector("a.oe_instance_upsell"));
+        await click(panel.el.querySelector("a.oe_instance_upsell"));
 
         assert.verifySteps(["get_param", "search_count"]);
         assert.strictEqual(
@@ -769,7 +766,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, message for non admin user", async function (assert) {
         assert.expect(2);
 
-        registerCleanup(patchDate(2019, 9, 10, 12, 0, 0));
+        patchDate(2019, 9, 10, 12, 0, 0);
 
         const panel = await createExpirationPanel({
             enterprise: {
@@ -791,7 +788,7 @@ QUnit.module("web_enterprise", {}, function () {
     QUnit.test("One app installed, different locale (arabic)", async function (assert) {
         assert.expect(1);
 
-        registerCleanup(patchDate(2019, 9, 25, 12, 0, 0));
+        patchDate(2019, 9, 25, 12, 0, 0);
         patchWithCleanup(luxon.Settings, {
             defaultLocale: "ar-001",
             defaultNumberingSystem: "arab",

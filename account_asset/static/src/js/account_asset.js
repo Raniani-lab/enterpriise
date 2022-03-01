@@ -3,10 +3,7 @@ odoo.define('account_asset.AssetFormView', function(require) {
 
 var FormRenderer = require('web.FormRenderer');
 var FormView = require('web.FormView');
-var core = require('web.core');
 var viewRegistry = require('web.view_registry');
-
-var _t = core._t;
 
 var AccountAssetFormRenderer = FormRenderer.extend({
     events: _.extend({}, FormRenderer.prototype.events, {

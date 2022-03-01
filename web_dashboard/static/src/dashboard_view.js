@@ -17,7 +17,7 @@ import { ViewWidget } from "./view_widget";
 import { ViewWrapper } from "./view_wrapper/view_wrapper";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, onWillStart, onWillUpdateProps, useEffect } = owl;
+const { onWillStart, onWillUpdateProps, useEffect } = owl;
 
 const viewRegistry = registry.category("views");
 

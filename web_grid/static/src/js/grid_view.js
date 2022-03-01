@@ -10,7 +10,6 @@ var GridRenderer = require('web_grid.GridRenderer');
 var viewRegistry = require('web.view_registry');
 var pyUtils = require('web.py_utils');
 const RendererWrapper = require('web.RendererWrapper');
-var session = require('web.session');
 
 var _t = core._t;
 var _lt = core._lt;

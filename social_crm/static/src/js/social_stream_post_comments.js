@@ -1,8 +1,5 @@
 odoo.define('social_crm.social_stream_post_comments', function (require) {
 
-var core = require('web.core');
-var _t = core._t;
-
 var StreamPostComments = require('social.social_post_kanban_comments');
 
 /**

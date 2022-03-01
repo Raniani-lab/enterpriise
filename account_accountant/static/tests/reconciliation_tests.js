@@ -332,8 +332,7 @@ var db = {
             return Promise.resolve();
         },
         get_reconciliation_dict_from_model: function(args) {
-            var model_id, st_line, residual_balance;
-            [model_id, st_line, residual_balance] = args;
+            const [model_id] = args;
             var today = new moment().utc().format();
             if (model_id === 3) {
                 return [
@@ -1160,8 +1159,6 @@ QUnit.module('account', {
         });
         await clientAction.appendTo($('#qunit-fixture'));
         await testUtils.nextTick();
-
-        var widget = clientAction.widgets[0];
 
         assert.strictEqual(clientAction.$('.accounting_view tfoot .cell_right, .accounting_view tfoot .cell_left').text().replace(/[\n\r\s]+/g, ' '),
             "$ 1,175.00$ 32.58$ 2,000.00", "should display the different amounts with the currency");

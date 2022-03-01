@@ -4,7 +4,7 @@ import { localization } from "@web/core/l10n/localization";
 import { clamp } from "@web/core/utils/numbers";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, onMounted, onWillUnmount, useEffect, useRef, useState } = owl;
+const { onMounted, onWillUnmount, useEffect, useRef, useState } = owl;
 
 const isScrollSwipable = (scrollables) => {
     return {

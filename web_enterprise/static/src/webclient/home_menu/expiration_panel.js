@@ -5,7 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 import { Transition } from "@web/core/transition";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, useState, useRef, onMounted } = owl;
+const { useState, useRef, onMounted } = owl;
 const { DateTime } = luxon;
 
 /**

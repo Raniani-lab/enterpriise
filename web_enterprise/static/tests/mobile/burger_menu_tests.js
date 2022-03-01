@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import { click, legacyExtraNextTick } from "@web/../tests/helpers/utils";
-import { doAction, getActionManagerServerData } from "@web/../tests/webclient/helpers";
+import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { EnterpriseBurgerMenu } from "@web_enterprise/webclient/burger_menu/burger_menu";

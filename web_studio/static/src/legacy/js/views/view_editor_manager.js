@@ -3,7 +3,6 @@ odoo.define('web_studio.ViewEditorManager', function (require) {
 
 const { ComponentWrapper } = require('web.OwlCompatibility');
 var core = require('web.core');
-var data_manager = require('web.data_manager');
 var Dialog = require('web.Dialog');
 var dom = require('web.dom');
 var framework = require('web.framework');
@@ -28,8 +27,6 @@ var NewFieldDialog = require('web_studio.NewFieldDialog');
 var utils = require('web_studio.utils');
 var ViewEditorSidebar = require('web_studio.ViewEditorSidebar');
 const { isComponent } = require('web.utils');
-
-const { Component } = owl;
 
 var _t = core._t;
 var QWeb = core.qweb;
@@ -1443,7 +1440,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         // and widgets will fetch their spec on re-render
         const isMethod = node.attrs.type === 'object';
         bus.trigger('toggle_snack_bar', 'saving');
-        const result = await this._rpc({
+        await this._rpc({
             route: '/web_studio/edit_approval',
             params: {
                 model: this.model_name,

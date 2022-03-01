@@ -8,7 +8,7 @@ import { PayrollDashboardPayslipBatch } from '@hr_payroll/components/dashboard/p
 import { PayrollDashboardTodo } from '@hr_payroll/components/dashboard/todo_list/todo_list';
 import { PayrollDashboardStats } from '@hr_payroll/components/dashboard/payroll_stats/payroll_stats';
 
-const { Component, onWillStart, useState } = owl;
+const { Component, onWillStart } = owl;
 
 class PayrollDashboardComponent extends Component {
     setup() {

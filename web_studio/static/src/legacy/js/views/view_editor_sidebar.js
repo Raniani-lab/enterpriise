@@ -775,7 +775,6 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      * @returns {Promise}
      */
     _renderWidgetsPivotMeasuresFields() {
-        const measuresKeys = Object.keys(this.measures);
         const fieldIDs = JSON.parse(this.state.attrs.studio_pivot_measure_field_ids || '[]');
         return this.model.makeRecord('ir.model', [{
             name: 'pivot_popup',

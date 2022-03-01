@@ -14,8 +14,6 @@ import { CohortModel } from "./cohort_model";
 import { CohortRenderer } from "./cohort_renderer";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component } = owl;
-
 class CohortView extends LegacyComponent {
     setup() {
         this.actionService = useService("action");

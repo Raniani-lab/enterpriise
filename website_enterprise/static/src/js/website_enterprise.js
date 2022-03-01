@@ -1,7 +1,6 @@
 odoo.define('website.home_menu', function (require) {
     'use strict';
 
-    var session = require('web.session');
     var websiteNavbarData = require('website.navbar');
 
     websiteNavbarData.WebsiteNavbar.include({

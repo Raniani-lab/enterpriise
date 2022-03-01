@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import { _lt } from "@web/core/l10n/translation";
 
 const { LinkCell } = spreadsheet.cellTypes;
 const { isMarkdownLink, parseMarkdownLink } = spreadsheet.helpers;

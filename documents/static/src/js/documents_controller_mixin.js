@@ -465,7 +465,6 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
      * @param {Object} searchDomain
      */
     async _updateHelper(searchDomain) {
-        var self = this;
         const rpcDomain = searchDomain.filter(elem => Array.isArray(elem) && elem.includes('folder_id'))
         // Avoid updating the Helper when the "All folder" is selected in the search panel or
         // if the user does not have the rights to read documents shares.

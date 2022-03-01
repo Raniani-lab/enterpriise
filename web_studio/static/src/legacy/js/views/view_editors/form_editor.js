@@ -444,7 +444,6 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
      * @returns {jQueryElement}
      */
     _renderHeaderButton: function (node) {
-        var self = this;
         var $button = this._super.apply(this, arguments);
         $button = this._addButtonHandler(node, $button);
         return $button;

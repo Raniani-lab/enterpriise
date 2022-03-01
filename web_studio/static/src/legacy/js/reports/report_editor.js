@@ -507,7 +507,6 @@ var ReportEditor = Widget.extend(EditorMixin, {
         var dropZone = this.$dropZone.get();
         dropZone.reverse();
         _.each(dropZone, function (node) {
-            var $node = $(node);
             var box = node.getBoundingClientRect();
             box.el = node;
             box.centerY = (box.top + box.bottom) / 2;

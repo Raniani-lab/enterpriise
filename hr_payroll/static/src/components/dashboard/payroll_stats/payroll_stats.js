@@ -173,7 +173,6 @@ export class PayrollDashboardStats extends Component {
      * @returns {object} Chart config of type 'stacked bar'
      */
     getStackedBarChartConfig() {
-        const data = [];
         const labels = [];
         const datasets = [];
         const datasets_labels = [];

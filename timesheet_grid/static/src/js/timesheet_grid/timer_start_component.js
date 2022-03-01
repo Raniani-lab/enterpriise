@@ -2,7 +2,6 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
     "use strict";
 
     const { LegacyComponent } = require("@web/legacy/legacy_component");
-    const { Component } = owl;
 
     class TimerStartComponent extends LegacyComponent {
 

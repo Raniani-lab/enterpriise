@@ -5,7 +5,7 @@ import Dialog from "web.OwlDialog";
 import { delay } from "web.concurrency";
 import { loadAssets } from "@web/core/assets";
 
-const { App, Component, EventBus, onMounted, onWillStart, onWillUnmount, useRef, mount } = owl;
+const { App, Component, EventBus, onMounted, onWillStart, onWillUnmount, useRef } = owl;
 import { _t } from "web.core";
 const bus = new EventBus();
 const busOk = "BarcodeDialog-Ok";

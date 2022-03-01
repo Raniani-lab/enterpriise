@@ -1,10 +1,7 @@
 odoo.define('account_reports.activity', function (require) {
 "use strict";
 
-var core = require('web.core');
 var AccountActivity = require('account.activity');
-
-var _t = core._t;
 
 AccountActivity.include({
     events: _.extend({

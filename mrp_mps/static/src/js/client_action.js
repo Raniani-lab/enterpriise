@@ -1,11 +1,8 @@
 odoo.define('mrp_mps.ClientAction', function (require) {
 'use strict';
 
-const { ComponentWrapper } = require('web.OwlCompatibility');
-
 var concurrency = require('web.concurrency');
 var core = require('web.core');
-var Pager = require('web.Pager');
 var AbstractAction = require('web.AbstractAction');
 var Dialog = require('web.Dialog');
 var field_utils = require('web.field_utils');

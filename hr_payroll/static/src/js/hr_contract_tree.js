@@ -2,13 +2,11 @@ odoo.define('hr_payroll.hr_contract_tree', function (require) {
     'use strict';
 
     var core = require('web.core');
-    var time = require('web.time');
 
     var viewRegistry = require('web.view_registry');
     var ListView = require('web.ListView');
     var ListController = require('web.ListController');
 
-    var _t = core._t;
     var QWeb = core.qweb;
 
     var IndexWageButton = {

@@ -14,7 +14,7 @@ import {
     mockTimeout,
 } from "@web/../tests/helpers/utils";
 
-const { Component, xml } = owl;
+const { xml } = owl;
 const serviceRegistry = registry.category("services");
 
 let env;

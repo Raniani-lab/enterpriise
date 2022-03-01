@@ -754,7 +754,6 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('widget without description property in sidebar should be shown a technical name of widget when selected in normal mode', async function (assert) {
         assert.expect(2);
 
-        const originalOdooDebug = odoo.debug;
         odoo.debug = false;
         const FieldChar = fieldRegistry.get('char');
         // add widget in fieldRegistry without desciption
@@ -6449,7 +6448,6 @@ QUnit.module('ViewEditorManager', {
             display_name: 'Coucou 11',
             product_ids: [37],
         }];
-        var fieldsView;
 
         const action = serverData.actions["studio.coucou_action"];
         action.views = [[1, "form"]];

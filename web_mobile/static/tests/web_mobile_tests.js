@@ -28,7 +28,7 @@ odoo.define("web_mobile.tests", function (require) {
         destroy,
     } = require("@web/../tests/helpers/utils");
     const { LegacyComponent } = require("@web/legacy/legacy_component");
-    const { Component, useState, xml } = owl;
+    const { useState, xml } = owl;
 
     const { createParent, createView, mock } = testUtils;
 
@@ -341,9 +341,9 @@ odoo.define("web_mobile.tests", function (require) {
                     const target = getFixture();
                     const env = makeTestEnv();
 
-                    const dummy1 = await mount(DummyComponent, target, { props: props1, env });
-                    const dummy2 = await mount(DummyComponent, target, { props: props2, env });
-                    const dummy3 = await mount(DummyComponent, target, { props: props3, env });
+                    await mount(DummyComponent, target, { props: props1, env });
+                    await mount(DummyComponent, target, { props: props2, env });
+                    await mount(DummyComponent, target, { props: props3, env });
 
                     // simulate 'backbutton' events triggered by the app
                     await testUtils.dom.triggerEvent(document, "backbutton");

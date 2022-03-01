@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import { _t } from 'web.core';
 import time from 'web.time';
 import CalendarModel from 'calendar.CalendarModel';
 

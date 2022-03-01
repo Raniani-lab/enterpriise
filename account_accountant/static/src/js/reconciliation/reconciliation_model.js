@@ -130,7 +130,6 @@ var StatementModel = BasicModel.extend({
      * @returns {Promise}
      */
     addProposition: function (handle, mv_line_id) {
-        var self = this;
         var line = this.getLine(handle);
         var prop = _.clone(_.find(line['mv_lines_'+line.mode], {'id': mv_line_id}));
 
@@ -1434,7 +1433,6 @@ var StatementModel = BasicModel.extend({
      * @returns {Deferred}
      */
     _validatePostProcess: function (data) {
-        var self = this;
         return Promise.resolve();
     },
 });

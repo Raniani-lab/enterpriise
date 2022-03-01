@@ -22,7 +22,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     const { useService } = require("@web/core/utils/hooks");
     const { LegacyComponent } = require("@web/legacy/legacy_component");
     const _t = core._t;
-    const { Component, onMounted, onWillStart, useState } = owl;
+    const { onMounted, onWillStart, useState } = owl;
     const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
     /**

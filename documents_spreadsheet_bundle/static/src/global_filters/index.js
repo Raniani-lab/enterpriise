@@ -3,8 +3,8 @@
 import { _t } from "@web/core/l10n/translation";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import * as pivot from "../pivot/index"; // filter depends on pivot and lists for its getters
-import * as list from "../list/index"; // filter depends on pivot and lists for its getters
+import "../pivot/index"; // filter depends on pivot and lists for its getters
+import "../list/index"; // filter depends on pivot and lists for its getters
 
 
 import FiltersPlugin from "./filters_plugin";
@@ -15,7 +15,7 @@ import FilterEditorSidePanel from "documents_spreadsheet.filter_editor_side_pane
 import GlobalFiltersSidePanel  from "documents_spreadsheet.global_filters_side_panel";
 import { FilterComponent } from "./filter_component";
 
-import * as ot from "./operational_transform";
+import "./operational_transform";
 
 const { coreTypes, invalidateEvaluationCommands, readonlyAllowedCommands } =
   spreadsheet;

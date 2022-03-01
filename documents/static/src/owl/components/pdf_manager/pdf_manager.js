@@ -10,7 +10,7 @@ const { LegacyComponent } = require("@web/legacy/legacy_component");
 const ajax = require('web.ajax');
 const { csrf_token, _t } = require('web.core');
 
-const { Component, onMounted, onWillUnmount, onWillStart, useState } = owl;
+const { onMounted, onWillUnmount, onWillStart, useState } = owl;
 
 class PdfManager extends LegacyComponent {
 

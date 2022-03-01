@@ -12,7 +12,6 @@ const FormRenderer = require('web.FormRenderer');
 const PayslipLineOne2Many = FieldOne2Many.extend({
     _onFieldChanged: function (ev) {
         this._super.apply(this, arguments);
-        var self = this;
         var line_handle;
         if (ev.data.changes && ev.data.changes.line_ids && ev.data.changes.line_ids.operation === "CREATE") {
             return;
@@ -35,7 +34,6 @@ fieldRegistry.add('payslip_line_one2many', PayslipLineOne2Many);
 const WorkedDaysLineOne2Many = FieldOne2Many.extend({
     _onFieldChanged: function (ev) {
         this._super.apply(this, arguments);
-        var self = this;
         var line_handle;
         if (ev.data.changes && ev.data.changes.line_ids && ev.data.changes.line_ids.operation === "CREATE") {
             return;

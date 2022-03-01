@@ -4,7 +4,7 @@ import { useService } from "@web/core/utils/hooks";
 import { NotEditableActionError } from "../../studio_service";
 import { IconCreatorDialog } from "./icon_creator_dialog/icon_creator_dialog";
 
-const { onMounted, onWillUpdateProps } = owl;
+const { onMounted } = owl;
 const NEW_APP_BUTTON = {
     isNewAppButton: true,
     label: "New App",

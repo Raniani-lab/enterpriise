@@ -4,9 +4,7 @@ odoo.define('bank_stmt_import_csv.import', function (require) {
 var core = require('web.core');
 var BaseImport = require('base_import.import')
 
-var QWeb = core.qweb;
 var _t = core._t;
-var _lt = core._lt;
 
 var DataImportStmt = BaseImport.DataImport.extend({
     init: function (parent, action) {

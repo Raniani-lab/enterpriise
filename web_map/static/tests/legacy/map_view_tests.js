@@ -2216,7 +2216,7 @@ QUnit.module('mapView legacy', {
             groupBy: ['user_ids'],
         });
 
-        const [header, group1, group2] = $('.o_pin_list_container').children();
+        const [/* header */, group1, group2] = $('.o_pin_list_container').children();
 
         assert.strictEqual(group1.childNodes[0].textContent, users[0].name, 'The first group should be named like the first user.');
         assert.strictEqual(group2.childNodes[0].textContent, users[1].name, 'The second group should be named like the second user.');

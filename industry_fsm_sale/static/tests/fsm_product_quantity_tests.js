@@ -5,7 +5,6 @@ const ProductKanbanView = require('industry_fsm_sale.ProductKanbanView');
 const {
     dom,
     createView,
-    nextTick,
 } = require('web.test_utils');
 
 QUnit.module('industry_fsm_sale', {}, function () {
@@ -35,7 +34,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
                     if (method === 'fsm_remove_quantity') {
                         const [id] = args;
                         return new Promise((resolve, reject) => {
-                            const records = this.data[model].records.map((record) => {
+                            this.data[model].records.map((record) => {
                                 if (id === record.id) {
                                     record.fsm_quantity -= 1;
                                 }
@@ -47,7 +46,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
                     } else if (method === 'fsm_add_quantity') {
                         const [id] = args;
                         return new Promise((resolve, reject) => {
-                            const records = this.data[model].records.map((record) => {
+                            this.data[model].records.map((record) => {
                                 if (id === record.id) {
                                     record.fsm_quantity += 1;
                                 }
@@ -59,7 +58,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
                     } else if (method === 'set_fsm_quantity') {
                         const [id, quantity] = args;
                         return new Promise((resolve, reject) => {
-                            const records = this.data[model].records.map((record) => {
+                            this.data[model].records.map((record) => {
                                 if (id === record.id) {
                                     record.fsm_quantity = quantity;
                                 }

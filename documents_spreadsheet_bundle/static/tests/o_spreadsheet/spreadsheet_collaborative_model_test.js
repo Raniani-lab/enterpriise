@@ -1,7 +1,5 @@
 /** @odoo-module alias=documents_spreadsheet.SpreadsheetCollaborativeModelTests */
 
-import { nextTick } from "web.test_utils";
-
 import { getBasicData } from "../utils/spreadsheet_test_data";
 import PivotDataSource from "@documents_spreadsheet_bundle/pivot/pivot_data_source";
 import { getCellContent, getCellFormula, getCellValue } from "../utils/getters_helpers";

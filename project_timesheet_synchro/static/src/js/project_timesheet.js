@@ -1903,7 +1903,6 @@ odoo.define('project_timeshee.ui', function (require ) {
             });
         },
         sync_now: function() {
-            var self = this;
             core.bus.trigger('change_screen', {
                 id : 'activities',
             });
@@ -2073,8 +2072,6 @@ odoo.define('project_timeshee.ui', function (require ) {
             var login = this.$(".pt_premise_login").val();
             var password = this.$(".pt_premise_password").val();
             var db_name = this.$(".pt_premise_db").val();
-            var server_address = this.$(".pt_premise_url").val();
-            var protocol = this.$(".pt_premise_protocol").val();
             session._session_authenticate(db_name, login, password).then(function() {
                 local_storage.setItem('pt_current_server', session.origin);
                 self.getParent().on_successful_login();

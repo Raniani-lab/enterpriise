@@ -2,10 +2,8 @@ odoo.define('voip.PhoneField', function (require) {
 "use strict";
 
 const basicFields = require('web.basic_fields');
-const core = require('web.core');
 
 const Phone = basicFields.FieldPhone;
-const _t = core._t;
 
 /**
  * Override of FieldPhone to use the DialingPanel to perform calls on clicks.

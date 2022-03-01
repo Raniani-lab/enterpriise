@@ -2,7 +2,6 @@
 
 import { _t } from "web.core";
 import { Domain } from "@web/core/domain";
-import pyUtils from "web.py_utils";
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
 const { toString } = spreadsheet.helpers;

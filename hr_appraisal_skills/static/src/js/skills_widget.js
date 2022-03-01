@@ -104,7 +104,6 @@ var ListRendererGrouped = ListRenderer.extend({
     },
 
     async _renderView() {
-        const self = this;
         await this._super(...arguments);
 
         if (this.state.data.length === 0 && this.sampleData) {

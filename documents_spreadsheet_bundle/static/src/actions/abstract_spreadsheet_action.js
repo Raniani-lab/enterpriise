@@ -8,7 +8,7 @@ import { getDataFromTemplate } from "../o_spreadsheet/helpers";
 import { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, onMounted, onWillStart, useState } = owl;
+const { onMounted, onWillStart, useState } = owl;
 
 export class AbstractSpreadsheetAction extends LegacyComponent {
     setup() {

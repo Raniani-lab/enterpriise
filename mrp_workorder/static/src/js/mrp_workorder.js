@@ -11,10 +11,6 @@ var ListController = require('web.ListController');
 var ListView = require('web.ListView');
 
 var FieldInteger = basic_fields.FieldInteger;
-var FieldBinaryImage = basic_fields.FieldBinaryImage;
-
-var core = require('web.core');
-var QWeb = core.qweb;
 
 KanbanRecord.include({
     _openRecord: function () {

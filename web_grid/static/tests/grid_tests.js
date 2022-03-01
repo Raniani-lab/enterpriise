@@ -1926,10 +1926,6 @@ QUnit.module('Views', {
     QUnit.test('Unavailable day is greyed', async function (assert) {
         assert.expect(1);
 
-        var nbReadGridDomain = 0;
-        var nbReadGroup = 0;
-        var nbReadGrid = 0;
-
         this.data['analytic.line'].records.push(
             {id: 6, project_id: 142, task_id: 12, date: "2020-06-23", unit_amount: 3.5}
         );

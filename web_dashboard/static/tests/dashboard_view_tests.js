@@ -46,7 +46,7 @@ import Widget from "web.Widget";
 import widgetRegistry from "web.widget_registry";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, xml } = owl;
+const { xml } = owl;
 const serviceRegistry = registry.category("services");
 
 const { markup } = owl;

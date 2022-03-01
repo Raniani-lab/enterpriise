@@ -5,7 +5,7 @@ odoo.define('hr_payroll.payslip.run.tree', function (require) {
 
     var QWeb = core.qweb;
 
-    var PayslipBatchListController = PayslipRunPayrollHolidaysControllerMixin.include({
+    PayslipRunPayrollHolidaysControllerMixin.include({
         /**
          * Extends the renderButtons function of ListView by adding a button
          * on the payslip batch list.

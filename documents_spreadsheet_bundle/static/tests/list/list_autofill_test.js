@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { nextTick } from "web.test_utils";
 import { getCellFormula, getCellValue, getListAutofillValue } from "../utils/getters_helpers";
 import { autofill } from "../utils/commands_helpers";
 import { createSpreadsheetFromList } from "../utils/list_helpers";

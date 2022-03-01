@@ -37,7 +37,6 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
      * @override
      */
     start: function () {
-        var self = this;
         var defs = [this._super.apply(this, arguments)];
         this.time = Date.now();
         this.$progress = $('');
@@ -89,7 +88,6 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
      * @param {[object]} [state.notifications]
      */
     update: function (state) {
-        var self = this;
         this._updateProgressBar(state);
 
         if (state.valuenow === state.valuemax && !this.$('.done_message').length) {
@@ -342,7 +340,6 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
 
         // Search propositions that could be a partial credit/debit.
         var props = [];
-        var balance = state.balance.amount_currency;
         _.each(state.reconciliation_proposition, function (prop) {
             if (prop.display) {
                 props.push(prop);

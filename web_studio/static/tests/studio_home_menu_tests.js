@@ -21,7 +21,7 @@ import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, EventBus, xml } = owl;
+const { EventBus, xml } = owl;
 const serviceRegistry = registry.category("services");
 
 const genericHomeMenuProps = {

@@ -3,7 +3,7 @@
 import { View } from "@web/views/view";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, useEffect, useChildSubEnv } = owl;
+const { useEffect, useChildSubEnv } = owl;
 
 /**
  * This file defines the ViewWrapper component, used to wrap sub views in the

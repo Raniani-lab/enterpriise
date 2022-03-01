@@ -5,10 +5,8 @@ import { _t } from "web.core";
 import { Domain } from "@web/core/domain";
 
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
-import PivotDataSource from "../pivot_data_source";
 
 import { HEADER_STYLE, TOP_LEVEL_STYLE, MEASURE_STYLE } from "../../o_spreadsheet/constants"
-import PivotCache from "../pivot_cache"; //Used for types
 import { PERIODS, formatDate } from "../pivot_helpers";
 
 /**

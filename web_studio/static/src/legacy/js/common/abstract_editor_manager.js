@@ -9,8 +9,6 @@ var bus = require('web_studio.bus');
 var XMLEditor = require('web_studio.XMLEditor');
 const { ComponentWrapper } = require("web.OwlCompatibility");
 
-const { Component } = owl;
-
 var _lt = core._lt;
 var _t = core._t;
 

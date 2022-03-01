@@ -3,7 +3,6 @@ odoo.define('payment_sepa_direct_debit.signature_form', function(require) {
 
 var SignatureForm = require('portal.signature_form').SignatureForm;
 var NameAndSignature = require('web.name_and_signature').NameAndSignature;
-var publicWidget = require('web.public.widget');
 
 /*
     I just wanted an extended template \o/

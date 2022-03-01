@@ -15,7 +15,6 @@ import bus from "web_studio.bus";
 import ViewEditorManager from "web_studio.ViewEditorManager";
 
 const _t = core._t;
-const _lt = core._lt;
 
 export const ActionEditorMain = Widget.extend({
     custom_events: {

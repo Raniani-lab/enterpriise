@@ -1,5 +1,4 @@
 /** @odoo-module */
-/* global moment */
 
 /**
  * @typedef {Object} GlobalFilter

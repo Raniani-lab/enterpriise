@@ -1815,8 +1815,6 @@ document.createElement("a").classList.contains
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "click");
         await testUtils.nextTick();
 
-        var $modal = $('.modal');
-
         // trigger the delete button
         await testUtils.modal.clickButton('Remove');
         await testUtils.nextTick();
@@ -2595,7 +2593,6 @@ document.createElement("a").classList.contains
 
         // move a pill in the next cell (+1 day)
         var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
-        var rect = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect();
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill'),
             gantt.$('.o_gantt_pill'),
@@ -2660,7 +2657,6 @@ document.createElement("a").classList.contains
 
         // we are going to move the pill for task 8 (10/24/2020 06:30:12) by 1 cell to the right (+1 day)
         var cellWidth = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect().width + 4;
-        var rect = gantt.$('.o_gantt_header_scale .o_gantt_header_cell:first')[0].getBoundingClientRect();
         await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill[data-id=8]'),
             gantt.$('.o_gantt_pill[data-id=8]'),

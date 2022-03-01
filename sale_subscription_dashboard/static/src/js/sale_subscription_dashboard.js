@@ -94,7 +94,7 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
     },
 
     start: async function () {
-        const [res, data] = await Promise.all([this._super(), this.fetch_data()]);
+        const [res] = await Promise.all([this._super(), this.fetch_data()]);
         this.render_dashboard();
         return res;
     },
@@ -390,7 +390,6 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
     },
 
     fetch_data: async function () {
-        var self = this;
         const data = await this._rpc({
             route: '/sale_subscription_dashboard/fetch_data',
             params: {context: session.user_context},
@@ -443,7 +442,6 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
     on_reverse_breadcrumb: function () {
         this._super();
 
-        var self = this;
         if(this.$main_dashboard) {
             this.defs = [];
             // If there is unresolved defs, we need to replace the uncompleted boxes
@@ -1047,7 +1045,7 @@ var SaleSubscriptionDashboardStatBox = Widget.extend({
     },
 
     start: async function() {
-        const data = await this.compute_graph();
+        await this.compute_graph();
         const display_tooltip = '<b>' + this.box_name + '</b><br/>' + _t('Current Value: ') + this.format_number(this.value);
         this.$el.tooltip({title: display_tooltip, trigger: 'hover'});
         this.$('[data-toggle="popover"]').popover({trigger: 'hover'});
@@ -1120,7 +1118,7 @@ var SaleSubscriptionDashboardForecastBox = Widget.extend({
         };
     },
     start: async function() {
-        const data = await this.compute_numbers();
+        await this.compute_numbers();
         const display_tooltip = '<b>' + this.box_name + '</b><br/>' + _t('Current Value: ') + this.format_number(this.value);
         this.$el.tooltip({title: display_tooltip, trigger: 'hover'});
         const options = {

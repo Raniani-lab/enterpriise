@@ -2,7 +2,6 @@
 import { legacyExtraNextTick, click } from "@web/../tests/helpers/utils";
 import { registry } from "@web/core/registry";
 
-import { doAction } from "@web/../tests/webclient/helpers";
 import { systrayItem } from "@web_studio/systray_item/systray_item";
 import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";

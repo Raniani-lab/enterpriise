@@ -18,8 +18,6 @@ var Abstract = require('web_studio.AbstractReportComponent');
 var DomainSelectorDialog = require('web.DomainSelectorDialog');
 var Domain = require("web.Domain");
 
-const { Component } = owl;
-
 var py = window.py; // look py.js
 var qweb = core.qweb;
 
@@ -379,7 +377,6 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
     },
 });
 
-var loadColors;
 var LayoutEditable = AbstractEditComponent.extend({
     name: 'layout',
     template : 'web_studio.ReportLayoutEditable',
@@ -493,7 +490,6 @@ var LayoutEditable = AbstractEditComponent.extend({
      * @returns {JQuery Node}
      */
     _createPalette: function () {
-        var self = this;
         var $fontPlugin = $('<div/>');
         this._groupColors.forEach(function (color) {
             var $row;

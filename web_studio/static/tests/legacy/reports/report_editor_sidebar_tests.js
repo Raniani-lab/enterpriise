@@ -1,7 +1,6 @@
 odoo.define('web_studio.ReportEditorSidebar_tests', function (require) {
 "use strict";
 
-var config = require('web.config');
 var testUtils = require('web.test_utils');
 
 var studioTestUtils = require('web_studio.testUtils');
@@ -867,8 +866,6 @@ QUnit.module('Studio', {}, function () {
             var initialDebugMode = odoo.debug;
             // show 'class' in the sidebar
             odoo.debug = true;
-
-            var defs = [];
 
             function poll (changeOperation) {
                 var node = {

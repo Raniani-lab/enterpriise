@@ -4,7 +4,6 @@ odoo.define('account_followup.FollowupFormModel', function (require) {
 var BasicModel = require('web.BasicModel');
 var field_utils = require('web.field_utils');
 var session = require('web.session');
-var time = require('web.time');
 
 var FollowupFormModel = BasicModel.extend({
     /**

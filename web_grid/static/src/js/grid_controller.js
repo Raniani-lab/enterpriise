@@ -272,7 +272,6 @@ var GridController = AbstractController.extend({
      * @param {OwlEvent} ev
      */
     _onOpenCellInformation: function (ev) {
-        var self = this;
         var cell_path = ev.data.path.split('.');
         var row_path = cell_path.slice(0, -3).concat(['rows'], cell_path.slice(-2, -1));
         var state = this.model.get();
@@ -295,9 +294,6 @@ var GridController = AbstractController.extend({
             column_value = column_value.split("/")[0];
         }
         var ctx = _.extend({}, this.context);
-        var sectionField = _.find(this.renderer.fields, function (res) {
-            return self.model.sectionField === res.name;
-        });
         if (this.model.sectionField && state.groupBy && state.groupBy[0] === this.model.sectionField) {
             var value = state.data[parseInt(cols_path[0])].__label;
             ctx['default_' + this.model.sectionField] = _.isArray(value) ? value[0] : value;

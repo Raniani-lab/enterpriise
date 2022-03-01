@@ -6,12 +6,10 @@ var datepicker = require('web.datepicker');
 var Dialog = require('web.Dialog');
 var dom = require('web.dom');
 var FormRenderer = require('web.FormRenderer');
-var SystrayMenu = require('web.SystrayMenu');
 
 const { Component } = owl;
 
 var QWeb = core.qweb;
-var _t = core._t;
 
 var FollowupFormRenderer = FormRenderer.extend({
     events: _.extend({}, FormRenderer.prototype.events, {

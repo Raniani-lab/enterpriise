@@ -159,7 +159,6 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
             if(this.pos.useBlackBoxBe()) {
                 var taxes = this.get_taxes()[0];
                 taxes = this._map_tax_fiscal_position(taxes, this.order);
-                var line_name = this.get_product().display_name;
 
                  if (!taxes) {
                     if (this.pos.gui.popup_instances.error) {
@@ -352,7 +351,6 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
             } else {
                 this.chrome.ready.then(function () {
                     $(self.chrome.$el).find('.placeholder-posVersion').text(' Ver: ' + self.version.server_version + "1807BE_FDM");
-                    var current = $(self.chrome.$el).find('.placeholder-posID').text();
                     $(self.chrome.$el).find('.placeholder-posID').text(' ID: ' + self.config.blackbox_pos_production_id);
                 });
             }
@@ -450,7 +448,6 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
 
                     // we need to filter out negative orderlines
                     var order_total = self.get_order().get_total_with_tax_without_discounts();
-                    var discount_percentage_on_order = Math.abs(discount_line.get_price_with_tax() / order_total);
                     var resale_quantity = discount_line.get_quantity();
 
                     // 1. delete line

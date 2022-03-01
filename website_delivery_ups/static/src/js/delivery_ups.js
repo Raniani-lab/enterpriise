@@ -6,7 +6,6 @@ odoo.define('website_delivery_ups.delivery_ups', function (require) {
     $(document).ready(function () {
 
         $('#service_type select[name="ups_service_type"]').on('change', function () {
-            var value = $(this).val();
             var apply_button = $('.o_apply_ups_bill_my_account');
             var sale_id = $('#service_type input[name="sale_order_id"]').val();
             apply_button.prop("disabled", true);

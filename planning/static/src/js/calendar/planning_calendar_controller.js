@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _t, qweb as QWeb } from "web.core";
+import { qweb as QWeb } from "web.core";
 
 import CalendarController from 'web.CalendarController';
 import { PlanningControllerMixin } from '../planning_mixins';

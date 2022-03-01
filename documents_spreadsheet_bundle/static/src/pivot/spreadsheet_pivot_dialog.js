@@ -6,7 +6,6 @@ import { Dialog } from "@web/core/dialog/dialog";
 import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import PivotCache from "./pivot_cache";
 
 const { onWillStart, useState } = owl;
 const formatDecimal = spreadsheet.helpers.formatDecimal;

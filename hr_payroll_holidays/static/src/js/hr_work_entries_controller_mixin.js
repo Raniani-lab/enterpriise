@@ -2,9 +2,6 @@ odoo.define('hr_payroll_holidays.WorkEntryPayrollHolidaysControllerMixin', funct
     'use strict';
 
     var core = require('web.core');
-    var time = require('web.time');
-
-    var _t = core._t;
     var QWeb = core.qweb;
 
     var WorkEntryPayrollHolidaysControllerMixin = {

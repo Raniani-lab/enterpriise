@@ -10,9 +10,6 @@ import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelector
 import { sprintf } from "@web/core/utils/strings"
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component } = owl;
-
-
 
 export class InsertViewSpreadsheet extends LegacyComponent {
     setup() {

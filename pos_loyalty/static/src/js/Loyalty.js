@@ -156,7 +156,7 @@ const PosLoyaltyOrder = (Order) => class PosLoyaltyOrder extends Order {
 
     apply_reward(reward){
         let partner = this.get_partner();
-        var product, product_price, order_total, spendable;
+        var product, order_total, spendable;
         var crounding;
 
         if (!partner) {

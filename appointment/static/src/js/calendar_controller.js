@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import { _t } from 'web.core';
 import { browser } from "@web/core/browser/browser";
 import field_utils from "web.field_utils";
 import CalendarController from 'calendar.CalendarController';

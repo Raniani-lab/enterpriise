@@ -19,7 +19,7 @@ import { errorService } from "@web/core/errors/error_service";
 import { browser } from "@web/core/browser/browser";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, xml } = owl;
+const { xml } = owl;
 
 let serverData;
 let fixture;
@@ -470,7 +470,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 webIconData: undefined,
                 webIcon: false,
             };
-            const webClient = await createEnterpriseWebClient({ fixture, serverData });
+            await createEnterpriseWebClient({ fixture, serverData });
             assert.containsNone(fixture, "nav .o_menu_sections");
             assert.containsNone(fixture, "nav .o_menu_brand");
             await click(fixture.querySelector(".o_app.o_menuitem:nth-child(1)"));

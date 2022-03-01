@@ -1,8 +1,6 @@
 odoo.define('web_studio.ReportEditorComponents_tests', function (require) {
 "use strict";
 
-var ajax = require('web.ajax');
-
 var testUtils = require('web.test_utils');
 var studioTestUtils = require('web_studio.testUtils');
 var Widget = require('web.Widget');

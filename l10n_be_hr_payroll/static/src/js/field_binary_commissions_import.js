@@ -1,7 +1,6 @@
 odoo.define('l10n_be_hr_payroll.import_file', function (require) {
 "use strict";
 
-var widget_registry = require('web.widget_registry');
 const basicFields = require('web.basic_fields');
 var fieldRegistry = require('web.field_registry');
 

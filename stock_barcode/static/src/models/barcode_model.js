@@ -225,7 +225,7 @@ export default class BarcodeModel extends EventBus {
             }
             groupedLinesByKey[key].push(...lines.splice(index, 1));
         }
-        for (const [key, sublines] of Object.entries(groupedLinesByKey)) {
+        for (const sublines of Object.values(groupedLinesByKey)) {
             if (sublines.length === 1) {
                 lines.push(...sublines);
                 continue;
@@ -567,7 +567,6 @@ export default class BarcodeModel extends EventBus {
     }
 
     toggleSublines(line) {
-        const productId = line.product_id.id;
         const lineKey = this.groupKey(line);
         this.unfoldLineKey = this.unfoldLineKey === lineKey ? false : lineKey;
         this.trigger('update');
@@ -839,7 +838,7 @@ export default class BarcodeModel extends EventBus {
             groups[key].push(line);
         }
         const pages = [];
-        for (const [key, lines] of Object.entries(groups)) {
+        for (const lines of Object.values(groups)) {
             const page = {
                 index: pages.length,
                 lines,

@@ -305,7 +305,6 @@ var accountReportsWidget = AbstractAction.extend({
             });
     },
     render: function() {
-        var self = this;
         this.render_template();
         this.render_footnotes();
         this.render_searchview_buttons();

@@ -1,5 +1,4 @@
 /** @odoo-module */
-/* global _ */
 
 import ListController from "web.ListController";
 import { _t } from "web.core";

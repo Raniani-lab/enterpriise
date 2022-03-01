@@ -2,7 +2,6 @@ odoo.define('voip.dialingPanel', function (require) {
 "use strict";
 
 const core = require('web.core');
-const config = require('web.config');
 
 /**
  * @param {*} parent

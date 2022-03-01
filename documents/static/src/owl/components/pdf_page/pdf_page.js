@@ -2,7 +2,7 @@ odoo.define('documents.component.PdfPage', function (require) {
 'use strict';
 
 const { LegacyComponent } = require("@web/legacy/legacy_component");
-const { Component, onMounted, onPatched, useState, useRef } = owl;
+const { onMounted, onPatched, useState, useRef } = owl;
 
 /**
  * Represents the page of a PDF.

@@ -14,7 +14,7 @@ import ViewsWidgetAdapter from '@stock_barcode/components/views_widget_adapter';
 import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, onMounted, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
+const { onMounted, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
 
 /**
  * Main Component

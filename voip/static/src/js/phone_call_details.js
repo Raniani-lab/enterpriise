@@ -9,7 +9,6 @@ const Widget = require('web.Widget');
 const { Component } = owl;
 
 const QWeb = core.qweb;
-const _t = core._t;
 
 function cleanNumber(number) {
     if (!number) {

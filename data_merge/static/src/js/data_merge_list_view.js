@@ -3,7 +3,6 @@ odoo.define('data_merge.ListView', function (require) {
 
     var core = require('web.core');
     var Dialog = require('web.Dialog');
-    var ListController = require('web.ListController');
     var ListRenderer = require('web.ListRenderer');
     var ListView = require('web.ListView');
     var viewRegistry = require('web.view_registry');

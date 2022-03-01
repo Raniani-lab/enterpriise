@@ -12,7 +12,7 @@ import CachedRPC from "../o_spreadsheet/cached_rpc";
 import { legacyRPC, jsonToBase64 } from "../o_spreadsheet/helpers";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { Component, onMounted, onWillUnmount, useExternalListener, useState, useSubEnv } = owl;
+const { onMounted, onWillUnmount, useExternalListener, useState, useSubEnv } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Spreadsheet, Model } = spreadsheet;

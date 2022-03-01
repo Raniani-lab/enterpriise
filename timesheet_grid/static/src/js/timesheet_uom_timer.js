@@ -7,7 +7,6 @@ const TimesheetUom = require('hr_timesheet.timesheet_uom');
 const { _lt } = require('web.core');
 const { registry } = require("@web/core/registry");
 const Timer = require('timer.Timer');
-const session = require('web.session');
 
 const TimesheetUomDisplayTimer = TimesheetUom.FieldTimesheetTime.extend({
     /**
@@ -111,7 +110,7 @@ const FieldTimesheetTimeTimer = TimesheetUomDisplayTimer.extend({
     _onToggleButton: async function (event) {
         const context = this.record.getContext();
         event.stopPropagation();
-        const result = await this._rpc({
+        await this._rpc({
             model: this.model,
             method: this._getActionButton(),
             context: context,

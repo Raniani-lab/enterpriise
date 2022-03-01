@@ -53,7 +53,7 @@ const TimerToggleButton = FieldToggleBoolean.extend({
     _onToggleButton: async function (event) {
         const context = this.record.getContext();
         event.stopPropagation();
-        const result = await this._rpc({
+        await this._rpc({
             model: this.model,
             method: this._getActionButton(),
             context: context,

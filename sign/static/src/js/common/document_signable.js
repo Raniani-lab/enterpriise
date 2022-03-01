@@ -979,7 +979,7 @@ const NextDirectSignDialog = Dialog.extend({
 
   on_click_next: function () {
     const newCurrentToken = this.token_list.shift();
-    const newCurrentName = this.name_list.shift();
+    this.name_list.shift();
 
     this.do_action(
       {

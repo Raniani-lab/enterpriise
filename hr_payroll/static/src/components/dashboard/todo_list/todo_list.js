@@ -5,7 +5,7 @@ import FieldHtml from 'web_editor.field.html';
 import { useService } from "@web/core/utils/hooks";
 import { session } from '@web/session';
 
-const { Component, onMounted, onPatched, onWillUnmount, useRef, useState } = owl;
+const { Component, onMounted, onPatched, onWillUnmount, useState } = owl;
 
 class PayrollDashboardTodoAdapter extends ComponentAdapter {
     setup() {

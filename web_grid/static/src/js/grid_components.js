@@ -6,7 +6,7 @@ odoo.define('web_grid.components', function (require) {
     const { debounce } = require("@web/core/utils/timing");
     const { LegacyComponent } = require("@web/legacy/legacy_component");
 
-    const { Component, onPatched, onWillUpdateProps, useRef, useState } = owl;
+    const { onPatched, onWillUpdateProps, useRef, useState } = owl;
 
 
     class BaseGridComponent extends LegacyComponent {

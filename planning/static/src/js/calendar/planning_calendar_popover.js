@@ -4,7 +4,6 @@ import { qweb as QWeb } from 'web.core';
 
 import CalendarPopover from 'web.CalendarPopover';
 import fieldUtils from 'web.field_utils';
-import view_registry from 'web.view_registry';
 
     const PlanningCalendarPopover = CalendarPopover.extend({
         template: 'Planning.event.popover',

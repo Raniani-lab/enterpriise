@@ -3,7 +3,7 @@
 import session from "web.session";
 import { registry } from "@web/core/registry";
 import { doAction, getActionManagerServerData } from "@web/../tests/webclient/helpers";
-import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 

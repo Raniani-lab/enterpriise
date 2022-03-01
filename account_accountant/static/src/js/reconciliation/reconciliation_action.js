@@ -335,7 +335,6 @@ var StatementAction = AbstractAction.extend({
     _onActionPartialAmount: function(event) {
         var self = this;
         var handle = event.target.handle;
-        var line = this.model.getLine(handle);
         var amount = this.model.getPartialReconcileAmount(handle, event.data);
         self._getWidget(handle).updatePartialAmount(event.data.data, amount);
     },

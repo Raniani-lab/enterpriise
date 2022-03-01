@@ -5,8 +5,6 @@ odoo.define("web.SearchPanelMobile", function (require) {
     const { device } = require("web.config");
     const { patch } = require('web.utils');
 
-    const { Portal } = owl;
-
     if (!device.isMobile) {
         return;
     }
@@ -23,7 +21,7 @@ odoo.define("web.SearchPanelMobile", function (require) {
      */
     function nameOfCheckedValues(values) {
         const names = [];
-        for (const [_, value] of values) {
+        for (const [ , value] of values) {
             if (value.checked) {
                 names.push(value.display_name);
             }

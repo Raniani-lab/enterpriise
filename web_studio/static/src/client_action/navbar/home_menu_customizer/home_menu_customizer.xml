@@ -7,7 +7,7 @@
         <t t-set-slot="toggler">
           Customizations
         </t>
-        <DropdownItem class="'o_web_studio_change_background'">
+        <DropdownItem class="'o_web_studio_change_background'" parentClosingMode="'none'">
         <FileInput
           action="'/web/binary/upload_attachment'"
           model="'res.company'" id="company.currentCompany.id"

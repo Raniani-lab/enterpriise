@@ -12,6 +12,7 @@ import { registry } from "@web/core/registry";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import {
     click,
+    getFixture,
     makeDeferred,
     nextTick,
     patchWithCleanup,
@@ -29,6 +30,7 @@ import { MapRenderer } from "@web_map/map_view/map_renderer";
 const serviceRegistry = registry.category("services");
 
 let serverData;
+let target;
 const MAP_BOX_TOKEN = "token";
 
 function findMapRenderer(map) {
@@ -37,6 +39,7 @@ function findMapRenderer(map) {
 
 QUnit.module("Views", (hooks) => {
     hooks.beforeEach(() => {
+        target = getFixture();
         const models = {
             "project.task": {
                 fields: {
@@ -355,7 +358,7 @@ QUnit.module("Views", (hooks) => {
             },
         });
         assert.strictEqual(
-            map.el.querySelector("a.btn.btn-primary").href,
+            target.querySelector("a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1",
             "The link's URL should not contain any coordinates"
         );
@@ -365,9 +368,9 @@ QUnit.module("Views", (hooks) => {
             "the resPartnerField should be set"
         );
         assert.strictEqual(map.model.data.records.length, 0, "There should be no records");
-        assert.containsNone(map.el, "div.leaflet-marker-icon", "No marker should be on a the map.");
+        assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "No route should be shown"
         );
@@ -397,18 +400,18 @@ QUnit.module("Views", (hooks) => {
             },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be 1 records");
-        assert.containsNone(map.el, "div.leaflet-marker-icon", "No marker should be on a the map.");
+        assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "No route should be shown"
         );
         assert.containsOnce(
-            map.el,
+            target,
             ".o-map-renderer--pin-list-container .o-map-renderer--pin-list-details li"
         );
         assert.containsOnce(
-            map.el,
+            target,
             ".o-map-renderer--pin-list-container .o-map-renderer--pin-list-details li span"
         );
     });
@@ -440,12 +443,12 @@ QUnit.module("Views", (hooks) => {
             });
             assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
             assert.containsOnce(
-                map.el,
+                target,
                 "div.leaflet-marker-icon",
                 "There should be one marker on the map"
             );
             assert.containsNone(
-                map.el.querySelector(".leaflet-overlay-pane"),
+                target.querySelector(".leaflet-overlay-pane"),
                 "path",
                 "There should be no route on the map"
             );
@@ -480,21 +483,21 @@ QUnit.module("Views", (hooks) => {
             });
             assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
             assert.containsNone(
-                map.el,
+                target,
                 "div.leaflet-marker-icon",
                 "There should be np marker on the map"
             );
             assert.containsNone(
-                map.el.querySelector(".leaflet-overlay-pane"),
+                target.querySelector(".leaflet-overlay-pane"),
                 "path",
                 "There should be no route on the map"
             );
             assert.containsOnce(
-                map,
+                target,
                 ".o-map-renderer--pin-list-container .o-map-renderer--pin-list-details li"
             );
             assert.containsOnce(
-                map,
+                target,
                 ".o-map-renderer--pin-list-container .o-map-renderer--pin-list-details li span"
             );
         }
@@ -527,12 +530,12 @@ QUnit.module("Views", (hooks) => {
             });
             assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
             assert.containsNone(
-                map.el,
+                target,
                 "div.leaflet-marker-icon",
                 "There should be no marker on the map"
             );
             assert.containsNone(
-                map.el.querySelector(".leaflet-overlay-pane"),
+                target.querySelector(".leaflet-overlay-pane"),
                 "path",
                 "There should be no route on the map"
             );
@@ -578,12 +581,12 @@ QUnit.module("Views", (hooks) => {
             });
             assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
             assert.containsOnce(
-                map.el,
+                target,
                 "div.leaflet-marker-icon",
                 "There should be one marker on the map"
             );
             assert.containsNone(
-                map.el.querySelector(".leaflet-overlay-pane"),
+                target.querySelector(".leaflet-overlay-pane"),
                 "path",
                 "There should be no route on the map"
             );
@@ -631,12 +634,12 @@ QUnit.module("Views", (hooks) => {
             });
             assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
             assert.containsOnce(
-                map.el,
+                target,
                 "div.leaflet-marker-icon",
                 "There should be one marker on the map"
             );
             assert.containsNone(
-                map.el.querySelector(".leaflet-overlay-pane"),
+                target.querySelector(".leaflet-overlay-pane"),
                 "path",
                 "There should be no route on the map"
             );
@@ -668,9 +671,9 @@ QUnit.module("Views", (hooks) => {
             },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
-        assert.containsNone(map.el, "div.leaflet-marker-icon", "No marker should be on a the map.");
+        assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "No route should be shown"
         );
@@ -700,9 +703,9 @@ QUnit.module("Views", (hooks) => {
             },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
-        assert.containsNone(map.el, "div.leaflet-marker-icon", "No marker should be on a the map.");
+        assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "No route should be shown"
         );
@@ -732,9 +735,9 @@ QUnit.module("Views", (hooks) => {
             },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
-        assert.containsNone(map.el, "div.leaflet-marker-icon", "No marker should be on a the map.");
+        assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "No route should be shown"
         );
@@ -766,9 +769,9 @@ QUnit.module("Views", (hooks) => {
             },
         });
         assert.strictEqual(map.model.data.records.length, 1, "There should be one records");
-        assert.containsNone(map.el, "div.leaflet-marker-icon", "No marker should be on a the map.");
+        assert.containsNone(target, "div.leaflet-marker-icon", "No marker should be on a the map.");
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "No route should be shown"
         );
@@ -801,13 +804,13 @@ QUnit.module("Views", (hooks) => {
         });
         assert.strictEqual(map.model.data.records.length, 2, "There should be 2 records");
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+            target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                 .textContent,
             "2",
             "There should be a marker for two records"
         );
         assert.containsOnce(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "There should be one route showing"
         );
@@ -852,13 +855,13 @@ QUnit.module("Views", (hooks) => {
             });
             assert.strictEqual(map.model.data.records.length, 2, "There should be 2 records");
             assert.strictEqual(
-                map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+                target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                     .textContent,
                 "2",
                 "There should be a marker for two records"
             );
             assert.containsOnce(
-                map.el.querySelector(".leaflet-overlay-pane"),
+                target.querySelector(".leaflet-overlay-pane"),
                 "path",
                 "There should be one route showing"
             );
@@ -922,13 +925,13 @@ QUnit.module("Views", (hooks) => {
         });
         assert.strictEqual(map.model.data.records.length, 2, "There should be two records");
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+            target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                 .textContent,
             "2",
             "There should be a marker for two records"
         );
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "There should be no route showing"
         );
@@ -968,18 +971,18 @@ QUnit.module("Views", (hooks) => {
             serverData.models["project.task"].threeRecords.records;
         serverData.models["res.partner"].records =
             serverData.models["res.partner"].twoRecordsAddressCoordinates;
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" limit="2" />`,
         });
         assert.strictEqual(
-            map.el.querySelector(`.o_pager_counter .o_pager_value`).textContent.trim(),
+            target.querySelector(`.o_pager_counter .o_pager_value`).textContent.trim(),
             "1-2"
         );
         assert.strictEqual(
-            map.el.querySelector(`.o_pager_counter span.o_pager_limit`).innerText.trim(),
+            target.querySelector(`.o_pager_counter span.o_pager_limit`).innerText.trim(),
             "3"
         );
     });
@@ -991,7 +994,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Google Maps redirection", async function (assert) {
         assert.expect(2);
 
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1007,14 +1010,14 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.strictEqual(
-            map.el.querySelector("a.btn.btn-primary").href,
+            target.querySelector("a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1&waypoints=10,10.5",
             "The link's URL should contain the right sets of coordinates"
         );
 
-        await click(map.el, ".leaflet-marker-icon");
+        await click(target, ".leaflet-marker-icon");
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-popup a.btn.btn-primary").href,
+            target.querySelector("div.leaflet-popup a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1&destination=10,10.5",
             "The link's URL should the right set of coordinates"
         );
@@ -1023,7 +1026,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Google Maps redirection (with routing = true)", async function (assert) {
         assert.expect(2);
 
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1039,14 +1042,14 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.strictEqual(
-            map.el.querySelector("a.btn.btn-primary").href,
+            target.querySelector("a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1&destination=10,10.5",
             "The link's URL should contain the right sets of coordinates"
         );
 
-        await click(map.el, ".leaflet-marker-icon");
+        await click(target, ".leaflet-marker-icon");
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-popup a.btn.btn-primary").href,
+            target.querySelector("div.leaflet-popup a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1&destination=10,10.5",
             "The link's URL should the right set of coordinates"
         );
@@ -1055,7 +1058,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Unicity of coordinates in Google Maps url", async function (assert) {
         assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1070,13 +1073,13 @@ QUnit.module("Views", (hooks) => {
             },
         });
         assert.strictEqual(
-            map.el.querySelector("a.btn.btn-primary").href,
+            target.querySelector("a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1&waypoints=10.5,10",
             "The link's URL should contain unqiue sets of coordinates"
         );
-        await click(map.el, ".leaflet-marker-icon");
+        await click(target, ".leaflet-marker-icon");
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-popup a.btn.btn-primary").href,
+            target.querySelector("div.leaflet-popup a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1&destination=10.5,10",
             "The link's URL should only contain unqiue sets of coordinates"
         );
@@ -1099,9 +1102,9 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        assert.containsOnce(map.el, ".o-map-renderer--marker", "Should have one marker created");
+        assert.containsOnce(target, ".o-map-renderer--marker", "Should have one marker created");
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+            target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                 .textContent,
             "2",
             "There should be a marker for two records"
@@ -1142,22 +1145,22 @@ QUnit.module("Views", (hooks) => {
         });
         assert.notOk(map.model.metaData.resPartnerField, "the resPartnerField should not be set");
 
-        assert.hasClass(map.el, "o_action o_view_controller o_map_view");
-        assert.containsOnce(map.el, ".leaflet-map-pane", "If the map exists this div should exist");
+        assert.hasClass(target.querySelector(".o_map_view"), "o_action o_view_controller");
+        assert.containsOnce(target, ".leaflet-map-pane", "If the map exists this div should exist");
         assert.ok(
-            map.el.querySelector(".leaflet-pane .leaflet-tile-pane").children.length,
+            target.querySelector(".leaflet-pane .leaflet-tile-pane").children.length,
             "The map tiles should have been happened to the DOM"
         );
         // if element o-map-renderer--container has class leaflet-container then
         // the map is mounted
         assert.hasClass(
-            map.el.querySelector(".o-map-renderer--container"),
+            target.querySelector(".o-map-renderer--container"),
             "leaflet-container",
             "the map should be in the DOM"
         );
 
         assert.strictEqual(
-            map.el.querySelector(".leaflet-overlay-pane").children.length,
+            target.querySelector(".leaflet-overlay-pane").children.length,
             0,
             "Should have no showing route"
         );
@@ -1189,29 +1192,29 @@ QUnit.module("Views", (hooks) => {
         assert.notOk(map.model.metaData.numbering, "the numbering option should not be enabled");
         assert.notOk(map.model.metaData.routing, "The routing option should not be enabled");
 
-        assert.containsOnce(map.el, ".leaflet-marker-icon", "There should be 1 marker");
+        assert.containsOnce(target, ".leaflet-marker-icon", "There should be 1 marker");
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "There should be no route showing"
         );
 
-        await click(map.el, ".leaflet-marker-icon");
+        await click(target, ".leaflet-marker-icon");
 
         assert.strictEqual(
-            map.el.querySelector(".leaflet-popup-pane").children.length,
+            target.querySelector(".leaflet-popup-pane").children.length,
             1,
             "Should have one showing popup"
         );
 
-        await click(map.el, "div.leaflet-container");
+        await click(target, "div.leaflet-container");
         // wait for the popup's destruction which takes a certain time...
         for (let i = 0; i < 15; i++) {
             await nextTick();
         }
 
         assert.strictEqual(
-            map.el.querySelector(".leaflet-popup-pane").children.length,
+            target.querySelector(".leaflet-popup-pane").children.length,
             0,
             "Should not have any showing popup"
         );
@@ -1247,21 +1250,21 @@ QUnit.module("Views", (hooks) => {
         });
         assert.notOk(map.model.metaData.numbering, "the numbering option should not be enabled");
         assert.notOk(map.model.metaData.routing, "The routing option should not be enabled");
-        assert.containsOnce(map.el, "div.leaflet-marker-icon", "There should be 1 marker");
+        assert.containsOnce(target, "div.leaflet-marker-icon", "There should be 1 marker");
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+            target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                 .textContent,
             "2",
             "There should be a marker for two records"
         );
         assert.strictEqual(
-            map.el.querySelector(".leaflet-popup-pane").children.length,
+            target.querySelector(".leaflet-popup-pane").children.length,
             0,
             "Should have no showing popup"
         );
-        await click(map.el, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon");
         assert.strictEqual(
-            map.el.querySelector(".leaflet-popup-pane").children.length,
+            target.querySelector(".leaflet-popup-pane").children.length,
             1,
             "Should have one showing popup"
         );
@@ -1301,29 +1304,29 @@ QUnit.module("Views", (hooks) => {
         );
         assert.strictEqual(map.model.data.routes.length, 1, "Should have 1 computed route");
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+            target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                 .textContent,
             "2",
             "There should be a marker for two records"
         );
         assert.strictEqual(
-            map.el.querySelector("path.leaflet-interactive").getAttribute("stroke"),
+            target.querySelector("path.leaflet-interactive").getAttribute("stroke"),
             "blue",
             "The route should be blue if it has not been clicked"
         );
         assert.strictEqual(
-            map.el.querySelector("path.leaflet-interactive").getAttribute("stroke-opacity"),
+            target.querySelector("path.leaflet-interactive").getAttribute("stroke-opacity"),
             "0.3",
             "The opacity of the polyline should be 0.3"
         );
-        await click(map.el, "path.leaflet-interactive");
+        await click(target, "path.leaflet-interactive");
         assert.strictEqual(
-            map.el.querySelector("path.leaflet-interactive").getAttribute("stroke"),
+            target.querySelector("path.leaflet-interactive").getAttribute("stroke"),
             "darkblue",
             "The route should be darkblue after being clicked"
         );
         assert.strictEqual(
-            map.el.querySelector("path.leaflet-interactive").getAttribute("stroke-opacity"),
+            target.querySelector("path.leaflet-interactive").getAttribute("stroke-opacity"),
             "1",
             "The opacity of the polyline should be 1"
         );
@@ -1339,7 +1342,7 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1355,7 +1358,7 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.containsOnce(
-            map.el,
+            target,
             ".o-map-renderer > .o-map-renderer--alert",
             "should have alert"
         );
@@ -1508,7 +1511,7 @@ QUnit.module("Views", (hooks) => {
         async function (assert) {
             assert.expect(3);
             patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-            const map = await makeView({
+            await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -1523,24 +1526,24 @@ QUnit.module("Views", (hooks) => {
                 },
             });
             assert.notOk(
-                map.el.querySelector(".leaflet-pane .leaflet-popup-pane").children.length,
+                target.querySelector(".leaflet-pane .leaflet-popup-pane").children.length,
                 "The popup div should be empty"
             );
 
-            await click(map.el, "div.leaflet-marker-icon");
+            await click(target, "div.leaflet-marker-icon");
             assert.strictEqual(
-                map.el.querySelector(".leaflet-popup-pane").children.length,
+                target.querySelector(".leaflet-popup-pane").children.length,
                 1,
                 "The popup div should contain one element"
             );
 
-            await click(map.el, ".leaflet-map-pane");
+            await click(target, ".leaflet-map-pane");
             // wait for the popup's destruction which takes a certain time...
             for (let i = 0; i < 15; i++) {
                 await nextTick();
             }
             assert.notOk(
-                map.el.querySelector(".leaflet-pane .leaflet-popup-pane").children.length,
+                target.querySelector(".leaflet-pane .leaflet-popup-pane").children.length,
                 "The popup div should be empty"
             );
         }
@@ -1553,7 +1556,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("assert that all the records are shown on the map", async function (assert) {
         assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1567,15 +1570,15 @@ QUnit.module("Views", (hooks) => {
                 }
             },
         });
-        const mapX = map.el.querySelector(".leaflet-map-pane")._leaflet_pos.x;
-        const mapY = map.el.querySelector(".leaflet-map-pane")._leaflet_pos.y;
+        const mapX = target.querySelector(".leaflet-map-pane")._leaflet_pos.x;
+        const mapY = target.querySelector(".leaflet-map-pane")._leaflet_pos.y;
         assert.ok(
-            mapX - map.el.querySelector("div.leaflet-marker-icon")._leaflet_pos.x < 0,
+            mapX - target.querySelector("div.leaflet-marker-icon")._leaflet_pos.x < 0,
             "If the marker is currently shown on the map, the subtraction of latitude should be under 0"
         );
-        assert.ok(mapY - map.el.querySelector("div.leaflet-marker-icon")._leaflet_pos.y < 0);
+        assert.ok(mapY - target.querySelector("div.leaflet-marker-icon")._leaflet_pos.y < 0);
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+            target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                 .textContent,
             "2",
             "There should be a marker for two records"
@@ -1610,21 +1613,21 @@ QUnit.module("Views", (hooks) => {
         });
         assert.strictEqual(map.model.metaData.fieldNamesMarkerPopup[0].fieldName, "display_name");
 
-        await click(map.el, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon");
 
         assert.strictEqual(
             map.model.metaData.fieldNamesMarkerPopup.length,
             1,
             "fieldsMarkerPopup should contain one field"
         );
-        assert.containsOnce(map.el, "tbody tr", "The popup should have one field");
+        assert.containsOnce(target, "tbody tr", "The popup should have one field");
         assert.strictEqual(
-            map.el.querySelector("tbody tr").textContent,
+            target.querySelector("tbody tr").textContent,
             "NameFoo",
             "Field row's text should be 'Name Foo'"
         );
         assert.strictEqual(
-            map.el.querySelector(".o-map-renderer--popup-buttons").children.length,
+            target.querySelector(".o-map-renderer--popup-buttons").children.length,
             3,
             "The popup should contain 2 buttons and one divider"
         );
@@ -1637,7 +1640,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Content of the marker with no field", async function (assert) {
         assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const map = await makeView({
+        await makeView({
             config: { views: [[false, "form"]] },
             serverData,
             type: "map",
@@ -1652,15 +1655,15 @@ QUnit.module("Views", (hooks) => {
                 }
             },
         });
-        await click(map.el, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon");
 
         assert.strictEqual(
-            map.el.querySelector("tbody").children.length,
+            target.querySelector("tbody").children.length,
             0,
             "The popup should have only the button"
         );
         assert.strictEqual(
-            map.el.querySelector(".o-map-renderer--popup-buttons").children.length,
+            target.querySelector(".o-map-renderer--popup-buttons").children.length,
             3,
             "The popup should contain 2 buttons and one divider"
         );
@@ -1669,7 +1672,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Attribute: hide_name", async function (assert) {
         assert.expect(2);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1684,11 +1687,11 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await click(map.el, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon");
 
-        assert.containsOnce(map.el, "tbody > tr", "The popup should have one field");
+        assert.containsOnce(target, "tbody > tr", "The popup should have one field");
         assert.strictEqual(
-            map.el
+            target
                 .querySelector("tbody tr .o-map-renderer--popup-table-content-name")
                 .textContent.trim(),
             "Address",
@@ -1699,7 +1702,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Render partner address field in popup", async function (assert) {
         assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1714,18 +1717,18 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await click(map.el, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon");
 
-        assert.containsOnce(map.el, "tbody tr", "The popup should have one field");
+        assert.containsOnce(target, "tbody tr", "The popup should have one field");
         assert.strictEqual(
-            map.el
+            target
                 .querySelector("tbody tr .o-map-renderer--popup-table-content-name")
                 .textContent.trim(),
             "Address",
             "The popup should have address field"
         );
         assert.strictEqual(
-            map.el
+            target
                 .querySelector("tbody tr .o-map-renderer--popup-table-content-value")
                 .textContent.trim(),
             "Chaussée de Namur 40, 1367, Ramillies",
@@ -1736,7 +1739,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Hide partner address field in popup", async function (assert) {
         assert.expect(3);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1751,18 +1754,18 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await click(map.el, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon");
 
-        assert.containsOnce(map.el, "tbody tr", "The popup should have one field");
+        assert.containsOnce(target, "tbody tr", "The popup should have one field");
         assert.strictEqual(
-            map.el
+            target
                 .querySelector("tbody tr .o-map-renderer--popup-table-content-name")
                 .textContent.trim(),
             "Name",
             "The popup should have name field"
         );
         assert.strictEqual(
-            map.el
+            target
                 .querySelector("tbody tr .o-map-renderer--popup-table-content-value")
                 .textContent.trim(),
             "Foo",
@@ -1773,7 +1776,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Handle records of same co-ordinates in marker", async function (assert) {
         assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1788,19 +1791,19 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        assert.containsOnce(map.el, "div.leaflet-marker-icon", "There should be a one marker");
+        assert.containsOnce(target, "div.leaflet-marker-icon", "There should be a one marker");
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+            target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                 .textContent,
             "2",
             "There should be a marker for two records"
         );
 
-        await click(map.el, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon");
 
-        assert.containsOnce(map.el, "tbody tr", "The popup should have one field");
+        assert.containsOnce(target, "tbody tr", "The popup should have one field");
         assert.strictEqual(
-            map.el
+            target
                 .querySelector("tbody tr .o-map-renderer--popup-table-content-name")
                 .textContent.trim(),
             "Address",
@@ -1811,7 +1814,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Pager", async function (assert) {
         assert.expect(4);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1839,22 +1842,22 @@ QUnit.module("Views", (hooks) => {
                 }
             },
         });
-        assert.containsOnce(map.el, ".o_pager");
+        assert.containsOnce(target, ".o_pager");
         assert.strictEqual(
-            map.el.querySelector(`.o_pager_counter .o_pager_value`).textContent.trim(),
+            target.querySelector(`.o_pager_counter .o_pager_value`).textContent.trim(),
             "1-80",
             "current pager value should be 1-20"
         );
         assert.strictEqual(
-            map.el.querySelector(`.o_pager_counter span.o_pager_limit`).innerText.trim(),
+            target.querySelector(`.o_pager_counter span.o_pager_limit`).innerText.trim(),
             "101",
             "current pager limit should be 21"
         );
 
-        await click(map.el.querySelector(`.o_pager button.o_pager_next`));
+        await click(target.querySelector(`.o_pager button.o_pager_next`));
 
         assert.strictEqual(
-            map.el.querySelector(`.o_pager_counter .o_pager_value`).textContent.trim(),
+            target.querySelector(`.o_pager_counter .o_pager_value`).textContent.trim(),
             "81-101",
             "pager value should be 21-40"
         );
@@ -1881,12 +1884,12 @@ QUnit.module("Views", (hooks) => {
         });
         assert.strictEqual(map.model.data.records.length, 2, "There should be 2 records");
         assert.containsOnce(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "There should be one route displayed"
         );
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+            target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                 .textContent,
             "2",
             "There should be a marker for two records"
@@ -1901,11 +1904,15 @@ QUnit.module("Views", (hooks) => {
 
         assert.strictEqual(map.model.data.records.length, 1, "There should be 1 record");
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "There should be no route on the map"
         );
-        assert.containsOnce(map, "div.leaflet-marker-icon", "There should be 1 marker on the map");
+        assert.containsOnce(
+            target,
+            "div.leaflet-marker-icon",
+            "There should be 1 marker on the map"
+        );
 
         map.env.searchModel.setDomainParts({
             test: {
@@ -1916,11 +1923,15 @@ QUnit.module("Views", (hooks) => {
 
         assert.strictEqual(map.model.data.records.length, 0, "There should be no record");
         assert.containsNone(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "There should be no route on the map"
         );
-        assert.containsNone(map, "div.leaflet-marker-icon", "There should be 0 marker on the map");
+        assert.containsNone(
+            target,
+            "div.leaflet-marker-icon",
+            "There should be 0 marker on the map"
+        );
 
         map.env.searchModel.setDomainParts({
             test: {
@@ -1931,13 +1942,17 @@ QUnit.module("Views", (hooks) => {
 
         assert.strictEqual(map.model.data.records.length, 2, "There should be 2 record");
         assert.containsOnce(
-            map.el.querySelector(".leaflet-overlay-pane"),
+            target.querySelector(".leaflet-overlay-pane"),
             "path",
             "There should be 1 route on the map"
         );
-        assert.containsOnce(map, "div.leaflet-marker-icon", "There should be 1 marker on the map");
+        assert.containsOnce(
+            target,
+            "div.leaflet-marker-icon",
+            "There should be 1 marker on the map"
+        );
         assert.strictEqual(
-            map.el.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
+            target.querySelector("div.leaflet-marker-icon .o-map-renderer--marker-badge")
                 .textContent,
             "2",
             "There should be a marker for two records"
@@ -1953,7 +1968,7 @@ QUnit.module("Views", (hooks) => {
             // add name on partner_id to have name_get like value
             record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
         }
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -1970,51 +1985,51 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.containsN(
-            map.el,
+            target,
             ".o-map-renderer--pin-list-group-header",
             2,
             "Should have 2 groups"
         );
         const groupHeaders = Array.from(
-            map.el.querySelectorAll(".o-map-renderer--pin-list-group-header")
+            target.querySelectorAll(".o-map-renderer--pin-list-group-header")
         );
         assert.deepEqual(
             groupHeaders.map((gh) => gh.innerText),
             ["Bar", "Foo"]
         );
-        assert.containsN(map.el, ".o-map-renderer--pin-list-details", 2);
-        assert.containsN(map.el, ".o-map-renderer--pin-list-details li", 3);
-        let details = Array.from(map.el.querySelectorAll(".o-map-renderer--pin-list-details"));
+        assert.containsN(target, ".o-map-renderer--pin-list-details", 2);
+        assert.containsN(target, ".o-map-renderer--pin-list-details li", 3);
+        let details = Array.from(target.querySelectorAll(".o-map-renderer--pin-list-details"));
         assert.deepEqual(
             details.map((d) => d.innerText),
             ["FooProject\nFooBarProject", "BarProject"]
         );
 
-        await click(map.el.querySelectorAll(".o-map-renderer--pin-list-group-header")[1]);
+        await click(target.querySelectorAll(".o-map-renderer--pin-list-group-header")[1]);
 
         assert.containsN(
-            map.el,
+            target,
             ".o-map-renderer--pin-list-group-header",
             2,
             "Should still have 2 groups"
         );
-        assert.containsOnce(map.el, ".o-map-renderer--pin-list-details");
-        assert.containsN(map.el, ".o-map-renderer--pin-list-details li", 2);
-        details = Array.from(map.el.querySelectorAll(".o-map-renderer--pin-list-details"));
+        assert.containsOnce(target, ".o-map-renderer--pin-list-details");
+        assert.containsN(target, ".o-map-renderer--pin-list-details li", 2);
+        details = Array.from(target.querySelectorAll(".o-map-renderer--pin-list-details"));
         assert.deepEqual(
             details.map((d) => d.innerText),
             ["FooProject\nFooBarProject"]
         );
 
-        await click(map.el.querySelectorAll(".o-map-renderer--pin-list-group-header")[0]);
+        await click(target.querySelectorAll(".o-map-renderer--pin-list-group-header")[0]);
 
-        assert.containsNone(map.el, ".o-map-renderer--pin-list-details");
+        assert.containsNone(target, ".o-map-renderer--pin-list-details");
 
-        await click(map.el.querySelectorAll(".o-map-renderer--pin-list-group-header")[1]);
+        await click(target.querySelectorAll(".o-map-renderer--pin-list-group-header")[1]);
 
-        assert.containsOnce(map.el, ".o-map-renderer--pin-list-details");
-        assert.containsOnce(map.el, ".o-map-renderer--pin-list-details li");
-        details = Array.from(map.el.querySelectorAll(".o-map-renderer--pin-list-details"));
+        assert.containsOnce(target, ".o-map-renderer--pin-list-details");
+        assert.containsOnce(target, ".o-map-renderer--pin-list-details li");
+        details = Array.from(target.querySelectorAll(".o-map-renderer--pin-list-details"));
         assert.deepEqual(
             details.map((d) => d.innerText),
             ["BarProject"]
@@ -2030,7 +2045,7 @@ QUnit.module("Views", (hooks) => {
             // add name on partner_id to have name_get like value
             record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
         }
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2053,74 +2068,74 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.containsNone(
-            map.el,
+            target,
             ".o-map-renderer--pin-list-group-header",
             "Should not have any groups"
         );
 
-        await toggleGroupByMenu(map);
-        await toggleMenuItem(map, "Partner");
+        await toggleGroupByMenu(target);
+        await toggleMenuItem(target, "Partner");
 
         assert.containsN(
-            map.el,
+            target,
             ".o-map-renderer--pin-list-group-header",
             2,
             "Should have 2 groups"
         );
         let groupHeaders = Array.from(
-            map.el.querySelectorAll(".o-map-renderer--pin-list-group-header")
+            target.querySelectorAll(".o-map-renderer--pin-list-group-header")
         );
         assert.deepEqual(
             groupHeaders.map((gh) => gh.innerText),
             ["Bar", "Foo"]
         );
         // Groups should be loaded too
-        assert.containsN(map.el, ".o-map-renderer--pin-list-details li", 3);
-        let details = Array.from(map.el.querySelectorAll(".o-map-renderer--pin-list-details"));
+        assert.containsN(target, ".o-map-renderer--pin-list-details li", 3);
+        let details = Array.from(target.querySelectorAll(".o-map-renderer--pin-list-details"));
         assert.deepEqual(
             details.map((d) => d.innerText),
             ["FooProject\nFooBarProject", "BarProject"]
         );
 
-        await toggleMenuItem(map, "Name");
+        await toggleMenuItem(target, "Name");
 
         groupHeaders = Array.from(
-            map.el.querySelectorAll(".o-map-renderer--pin-list-group-header")
+            target.querySelectorAll(".o-map-renderer--pin-list-group-header")
         );
         assert.deepEqual(
             groupHeaders.map((gh) => gh.innerText),
             ["Bar", "Foo"],
             "Should not have changed"
         );
-        details = Array.from(map.el.querySelectorAll(".o-map-renderer--pin-list-details"));
+        details = Array.from(target.querySelectorAll(".o-map-renderer--pin-list-details"));
         assert.deepEqual(
             details.map((d) => d.innerText),
             ["FooProject\nFooBarProject", "BarProject"]
         );
 
-        await toggleMenuItem(map, "Partner");
+        await toggleMenuItem(target, "Partner");
 
         assert.containsN(
-            map.el,
+            target,
             ".o-map-renderer--pin-list-group-header",
             3,
             "Should have 3 groups"
         );
         groupHeaders = Array.from(
-            map.el.querySelectorAll(".o-map-renderer--pin-list-group-header")
+            target.querySelectorAll(".o-map-renderer--pin-list-group-header")
         );
         assert.deepEqual(
             groupHeaders.map((gh) => gh.innerText),
             ["FooProject", "BarProject", "FooBarProject"]
         );
-        details = Array.from(map.el.querySelectorAll(".o-map-renderer--pin-list-details"));
+        details = Array.from(target.querySelectorAll(".o-map-renderer--pin-list-details"));
         assert.deepEqual(
             details.map((d) => d.innerText),
             ["FooProject", "BarProject", "FooBarProject"]
         );
-        assert.containsOnce(map.el.querySelectorAll(".o-map-renderer--pin-list-details")[0], "li");
-        assert.containsOnce(map.el.querySelectorAll(".o-map-renderer--pin-list-details")[1], "li");
-        assert.containsOnce(map.el.querySelectorAll(".o-map-renderer--pin-list-details")[2], "li");
+        assert.containsOnce(target.querySelectorAll(".o-map-renderer--pin-list-details")[0], "li");
+        assert.containsOnce(target.querySelectorAll(".o-map-renderer--pin-list-details")[1], "li");
+        assert.containsOnce(target.querySelectorAll(".o-map-renderer--pin-list-details")[2], "li");
     });
 
     //--------------------------------------------------------------------------
@@ -2156,7 +2171,7 @@ QUnit.module("Views", (hooks) => {
             { force: true }
         );
 
-        const map = await makeView({
+        await makeView({
             config: { views: [[false, "form"]] },
             serverData,
             type: "map",
@@ -2172,14 +2187,14 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await click(map.el, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon");
         assert.containsOnce(
-            map.el,
+            target,
             "div.leaflet-popup-pane button.btn.btn-primary.o-map-renderer--popup-buttons-open",
             "The button should be present in the dom"
         );
         await click(
-            map.el,
+            target,
             "div.leaflet-popup-pane button.btn.btn-primary.o-map-renderer--popup-buttons-open"
         );
         assert.verifySteps(["switchView"]);
@@ -2188,7 +2203,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("Test the lack of open button", async function (assert) {
         assert.expect(1);
 
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2203,10 +2218,10 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await click(map.el, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon");
 
         assert.containsNone(
-            map.el,
+            target,
             "div.leaflet-popup-pane button.btn.btn-primary.o-map-renderer--popup-buttons-open",
             "The button should not be present in the dom"
         );
@@ -2217,7 +2232,7 @@ QUnit.module("Views", (hooks) => {
         async function (assert) {
             assert.expect(1);
 
-            const map = await makeView({
+            await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -2233,7 +2248,7 @@ QUnit.module("Views", (hooks) => {
             });
 
             assert.strictEqual(
-                map.el.querySelector(".o-map-renderer--pin-list-container .o_pin_list_header span")
+                target.querySelector(".o-map-renderer--pin-list-container .o_pin_list_header span")
                     .textContent,
                 "AAAAAAAAAAAAAAAAA"
             );
@@ -2245,7 +2260,7 @@ QUnit.module("Views", (hooks) => {
         async function (assert) {
             assert.expect(1);
 
-            const map = await makeView({
+            await makeView({
                 serverData,
                 type: "map",
                 resModel: "project.task",
@@ -2260,10 +2275,10 @@ QUnit.module("Views", (hooks) => {
                 },
             });
 
-            await click(map.el, "div.leaflet-marker-icon");
+            await click(target, "div.leaflet-marker-icon");
 
             assert.containsNone(
-                map.el,
+                target,
                 "div.leaflet-popup-pane button.btn.btn-primary.o-map-renderer--popup-buttons-open",
                 "The button should not be present in the dom"
             );
@@ -2278,7 +2293,7 @@ QUnit.module("Views", (hooks) => {
             { id: 2, name: "BarProject", sequence: 2, partner_id: 3 },
         ];
 
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2290,16 +2305,16 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.strictEqual(
-            map.el.querySelector("a.btn.btn-primary").href,
+            target.querySelector("a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1&waypoints=10,10.5|11,11.5",
             "The link's URL initially should contain the coordinates for all records"
         );
 
         //apply domain and check that the Google Maps URL on the button reflects the changes
-        await toggleFilterMenu(map);
-        await toggleMenuItem(map, "FooProject only");
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "FooProject only");
         assert.strictEqual(
-            map.el.querySelector("a.btn.btn-primary").href,
+            target.querySelector("a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1&waypoints=10,10.5",
             "The link's URL after domain is applied should only contain coordinates for filtered records"
         );
@@ -2313,7 +2328,7 @@ QUnit.module("Views", (hooks) => {
             { id: 2, name: "BarProject", sequence: 2, partner_id: 3 },
         ];
 
-        const map = await makeView({
+        await makeView({
             serverData,
             type: "map",
             resModel: "project.task",
@@ -2321,7 +2336,7 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.strictEqual(
-            map.el.querySelector("a.btn.btn-primary").href,
+            target.querySelector("a.btn.btn-primary").href,
             "https://www.google.com/maps/dir/?api=1&destination=11,11.5&waypoints=10,10.5",
             "The link's URL initially should contain the coordinates for all records"
         );

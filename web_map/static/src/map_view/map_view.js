@@ -12,11 +12,10 @@ import { usePager } from "@web/search/pager_hook";
 import { MapArchParser } from "./map_arch_parser";
 import { MapModel } from "./map_model";
 import { MapRenderer } from "./map_renderer";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { onWillUnmount } = owl;
+const { Component, onWillUnmount } = owl;
 
-export class MapView extends LegacyComponent {
+export class MapView extends Component {
     setup() {
         this.action = useService("action");
 

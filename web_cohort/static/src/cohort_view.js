@@ -12,9 +12,10 @@ import { Layout } from "@web/views/layout";
 import { CohortArchParser } from "./cohort_arch_parser";
 import { CohortModel } from "./cohort_model";
 import { CohortRenderer } from "./cohort_renderer";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 
-class CohortView extends LegacyComponent {
+const { Component } = owl;
+
+class CohortView extends Component {
     setup() {
         this.actionService = useService("action");
 

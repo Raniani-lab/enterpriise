@@ -1334,7 +1334,7 @@ test("Insert in spreadsheet is disabled when no measure is specified", async (as
     const serverData = {
         models: getBasicData(),
     };
-    const pivot = await makeView({
+    await makeView({
         type: "pivot",
         resModel: "partner",
         serverData,
@@ -1349,9 +1349,10 @@ test("Insert in spreadsheet is disabled when no measure is specified", async (as
         },
     });
 
-    await toggleMenu(pivot, "Measures");
-    await toggleMenuItem(pivot, "Foo");
-    assert.ok(pivot.el.querySelector("button.o_pivot_add_spreadsheet").disabled);
+    const target = getFixture();
+    await toggleMenu(target, "Measures");
+    await toggleMenuItem(target, "Foo");
+    assert.ok(target.querySelector("button.o_pivot_add_spreadsheet").disabled);
 });
 
 test("Insert in spreadsheet is disabled when data is empty", async (assert) => {

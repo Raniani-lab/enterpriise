@@ -73,6 +73,11 @@ export default class SpreadsheetComponent extends LegacyComponent {
             this.props.stateUpdateMessages
         );
 
+        if (this.env.debug) {
+            spreadsheet.__DEBUG__ = spreadsheet.__DEBUG__ || {};
+            spreadsheet.__DEBUG__.model = this.model;
+        }
+
         this.model.on("update", this, () => {
             if (this.props.spreadsheetSyncStatus) {
                 this.props.spreadsheetSyncStatus({

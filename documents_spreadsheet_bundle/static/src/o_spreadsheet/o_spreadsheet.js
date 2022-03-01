@@ -28,15 +28,24 @@
     const _t = function (s, ...values) {
         return sprintf(_translate(s), ...values);
     };
-    const _lt = function (s, ...values) {
-        return {
-            toString: function () {
-                return sprintf(_translate(s), ...values);
-            },
-            // casts the object to unknown then to string to trick typescript into thinking that the object it receives is actually a string
-            // this way it will be typed correctly (behaves like a string) but tests like typeof _lt("whatever") will be object and not string !
-        };
+    const _lt = function (str, ...values) {
+        // casts the object to unknown then to string to trick typescript into thinking that the object it receives is actually a string
+        // this way it will be typed correctly (behaves like a string) but tests like typeof _lt("whatever") will be object and not string !
+        return new LazyTranslatedString(str, values);
     };
+    class LazyTranslatedString extends String {
+        constructor(str, values) {
+            super(str);
+            this.values = values;
+        }
+        valueOf() {
+            const str = super.valueOf();
+            return sprintf(_translate(str), ...this.values);
+        }
+        toString() {
+            return this.valueOf();
+        }
+    }
 
     // Colors
     const BACKGROUND_GRAY_COLOR = "#f5f5f5";
@@ -987,6 +996,12 @@
             return Object.values(this.content);
         }
         /**
+         * Get a list of all keys in the registry
+         */
+        getKeys() {
+            return Object.keys(this.content);
+        }
+        /**
          * Remove an item from the registry
          */
         remove(key) {
@@ -1249,6 +1264,7 @@
         /** CONDITIONAL FORMAT */
         "ADD_CONDITIONAL_FORMAT",
         "REMOVE_CONDITIONAL_FORMAT",
+        "MOVE_CONDITIONAL_FORMAT",
         /** FIGURES */
         "CREATE_FIGURE",
         "DELETE_FIGURE",
@@ -1355,6 +1371,8 @@
         CommandResult[CommandResult["Readonly"] = 50] = "Readonly";
         CommandResult[CommandResult["InvalidOffset"] = 51] = "InvalidOffset";
         CommandResult[CommandResult["InvalidViewportSize"] = 52] = "InvalidViewportSize";
+        CommandResult[CommandResult["FigureDoesNotExist"] = 53] = "FigureDoesNotExist";
+        CommandResult[CommandResult["InvalidConditionalFormatId"] = 54] = "InvalidConditionalFormatId";
     })(exports.CommandResult || (exports.CommandResult = {}));
 
     var ReturnFormatType;
@@ -2477,170 +2495,6 @@
         TRUNC: TRUNC
     });
 
-    const colors$1 = [
-        "#eb6d00",
-        "#0074d9",
-        "#ad8e00",
-        "#169ed4",
-        "#b10dc9",
-        "#00a82d",
-        "#00a3a3",
-        "#f012be",
-        "#3d9970",
-        "#111111",
-        "#62A300",
-        "#ff4136",
-        "#949494",
-        "#85144b",
-        "#001f3f",
-    ];
-    /*
-     * transform a color number (R * 256^2 + G * 256 + B) into classic RGB
-     * */
-    function colorNumberString(color) {
-        return color.toString(16).padStart(6, "0");
-    }
-    let colorIndex = 0;
-    function getNextColor() {
-        colorIndex = ++colorIndex % colors$1.length;
-        return colors$1[colorIndex];
-    }
-    /**
-     * Converts any CSS color value to a standardized hex6 value.
-     * Accepts: hex3, hex6 and rgb (rgba is not supported)
-     *
-     * toHex6("#ABC")
-     * >> "AABBCC"
-     *
-     * toHex6("#AAAFFF")
-     * >> "AAAFFF"
-     *
-     * toHex6("rgb(30, 80, 16)")
-     * >> "1E5010"
-     *
-     * (note: number sign is dropped as it is not supported in xlsx format)
-     */
-    function toHex6(color) {
-        if (color.includes("rgb")) {
-            return rgbToHex6(color);
-        }
-        color = color.replace("#", "").toUpperCase();
-        if (color.length === 3) {
-            color = color.split("").reduce((acc, h) => acc + h + h, "");
-        }
-        return color;
-    }
-    /**
-     * Convert a CSS rgb color string to a standardized hex6 color value.
-     *
-     * rgbToHex6("rgb(30, 80, 16)")
-     * >> "1E5010"
-     */
-    function rgbToHex6(color) {
-        return color
-            .slice(4, -1)
-            .split(",")
-            .map((valueString) => parseInt(valueString, 10).toString(16).padStart(2, "0"))
-            .join("")
-            .toUpperCase();
-    }
-
-    /**
-     * Regex that detect cell reference and a range reference (without the sheetName)
-     */
-    const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
-    const rangeReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7})?/, "i");
-
-    //------------------------------------------------------------------------------
-    /**
-     * Convert a (col) number to the corresponding letter.
-     *
-     * Examples:
-     *     0 => 'A'
-     *     25 => 'Z'
-     *     26 => 'AA'
-     *     27 => 'AB'
-     */
-    function numberToLetters(n) {
-        if (n < 0) {
-            throw new Error(`number must be positive. Got ${n}`);
-        }
-        if (n < 26) {
-            return String.fromCharCode(65 + n);
-        }
-        else {
-            return numberToLetters(Math.floor(n / 26) - 1) + numberToLetters(n % 26);
-        }
-    }
-    /**
-     * Convert a string (describing a column) to its number value.
-     *
-     * Examples:
-     *     'A' => 0
-     *     'Z' => 25
-     *     'AA' => 26
-     */
-    function lettersToNumber(letters) {
-        let result = 0;
-        const l = letters.length;
-        for (let i = 0; i < l; i++) {
-            let n = letters.charCodeAt(i) - 65 + (i < l - 1 ? 1 : 0);
-            result += n * 26 ** (l - i - 1);
-        }
-        return result;
-    }
-    /**
-     * Convert a "XC" coordinate to cartesian coordinates.
-     *
-     * Examples:
-     *   A1 => [0,0]
-     *   B3 => [1,2]
-     *
-     * Note: it also accepts lowercase coordinates, but not fixed references
-     */
-    function toCartesian(xc) {
-        xc = xc.toUpperCase().trim();
-        const match = xc.match(cellReference);
-        if (match !== null) {
-            const [m, letters, numbers] = match;
-            if (m === xc) {
-                const col = lettersToNumber(letters);
-                const row = parseInt(numbers, 10) - 1;
-                return [col, row];
-            }
-        }
-        throw new Error(`Invalid cell description: ${xc}`);
-    }
-    /**
-     * Convert from cartesian coordinate to the "XC" coordinate system.
-     *
-     * Examples:
-     *   - 0,0 => A1
-     *   - 1,2 => B3
-     *   - 0,0, {colFixed: false, rowFixed: true} => A$1
-     *   - 1,2, {colFixed: true, rowFixed: false} => $B3
-     */
-    function toXC(col, row, rangePart = { colFixed: false, rowFixed: false }) {
-        return ((rangePart.colFixed ? "$" : "") +
-            numberToLetters(col) +
-            (rangePart.rowFixed ? "$" : "") +
-            String(row + 1));
-    }
-
-    const MAX_DELAY = 140;
-    const MIN_DELAY = 20;
-    const ACCELERATION = 0.035;
-    /**
-     * Decreasing exponential function used to determine the "speed" of edge-scrolling
-     * as the timeout delay.
-     *
-     * Returns a timeout delay in milliseconds.
-     */
-    function scrollDelay(value) {
-        // decreasing exponential from MAX_DELAY to MIN_DELAY
-        return MIN_DELAY + (MAX_DELAY - MIN_DELAY) * Math.exp(-ACCELERATION * (value - 1));
-    }
-
     const fontSizes = [
         { pt: 7.5, px: 10 },
         { pt: 8, px: 11 },
@@ -2881,7 +2735,6 @@
     function isDefined(argument) {
         return argument !== undefined;
     }
-    const DEBUG = {};
     /**
      * Get the id of the given item (its key in the given dictionnary).
      * If the given item does not exist in the dictionary, it creates one with a new id.
@@ -2926,6 +2779,179 @@
                 func.apply(context, args);
             }
         };
+    }
+    /*
+     * Concatenate an array of strings.
+     */
+    function concat(chars) {
+        // ~40% faster than chars.join("")
+        let output = "";
+        for (let i = 0, len = chars.length; i < len; i++) {
+            output += chars[i];
+        }
+        return output;
+    }
+
+    const colors$1 = [
+        "#eb6d00",
+        "#0074d9",
+        "#ad8e00",
+        "#169ed4",
+        "#b10dc9",
+        "#00a82d",
+        "#00a3a3",
+        "#f012be",
+        "#3d9970",
+        "#111111",
+        "#62A300",
+        "#ff4136",
+        "#949494",
+        "#85144b",
+        "#001f3f",
+    ];
+    /*
+     * transform a color number (R * 256^2 + G * 256 + B) into classic RGB
+     * */
+    function colorNumberString(color) {
+        return color.toString(16).padStart(6, "0");
+    }
+    let colorIndex = 0;
+    function getNextColor() {
+        colorIndex = ++colorIndex % colors$1.length;
+        return colors$1[colorIndex];
+    }
+    /**
+     * Converts any CSS color value to a standardized hex6 value.
+     * Accepts: hex3, hex6 and rgb (rgba is not supported)
+     *
+     * toHex6("#ABC")
+     * >> "AABBCC"
+     *
+     * toHex6("#AAAFFF")
+     * >> "AAAFFF"
+     *
+     * toHex6("rgb(30, 80, 16)")
+     * >> "1E5010"
+     *
+     * (note: number sign is dropped as it is not supported in xlsx format)
+     */
+    function toHex6(color) {
+        if (color.includes("rgb")) {
+            return rgbToHex6(color);
+        }
+        color = color.replace("#", "").toUpperCase();
+        if (color.length === 3) {
+            color = color.split("").reduce((acc, h) => acc + h + h, "");
+        }
+        return color;
+    }
+    /**
+     * Convert a CSS rgb color string to a standardized hex6 color value.
+     *
+     * rgbToHex6("rgb(30, 80, 16)")
+     * >> "1E5010"
+     */
+    function rgbToHex6(color) {
+        return concat(color
+            .slice(4, -1)
+            .split(",")
+            .map((valueString) => parseInt(valueString, 10).toString(16).padStart(2, "0"))).toUpperCase();
+    }
+
+    /**
+     * Regex that detect cell reference and a range reference (without the sheetName)
+     */
+    const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
+    const rangeReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7})?/, "i");
+
+    //------------------------------------------------------------------------------
+    /**
+     * Convert a (col) number to the corresponding letter.
+     *
+     * Examples:
+     *     0 => 'A'
+     *     25 => 'Z'
+     *     26 => 'AA'
+     *     27 => 'AB'
+     */
+    function numberToLetters(n) {
+        if (n < 0) {
+            throw new Error(`number must be positive. Got ${n}`);
+        }
+        if (n < 26) {
+            return String.fromCharCode(65 + n);
+        }
+        else {
+            return numberToLetters(Math.floor(n / 26) - 1) + numberToLetters(n % 26);
+        }
+    }
+    /**
+     * Convert a string (describing a column) to its number value.
+     *
+     * Examples:
+     *     'A' => 0
+     *     'Z' => 25
+     *     'AA' => 26
+     */
+    function lettersToNumber(letters) {
+        let result = 0;
+        const l = letters.length;
+        for (let i = 0; i < l; i++) {
+            let n = letters.charCodeAt(i) - 65 + (i < l - 1 ? 1 : 0);
+            result += n * 26 ** (l - i - 1);
+        }
+        return result;
+    }
+    /**
+     * Convert a "XC" coordinate to cartesian coordinates.
+     *
+     * Examples:
+     *   A1 => [0,0]
+     *   B3 => [1,2]
+     *
+     * Note: it also accepts lowercase coordinates, but not fixed references
+     */
+    function toCartesian(xc) {
+        xc = xc.toUpperCase().trim();
+        const match = xc.match(cellReference);
+        if (match !== null) {
+            const [m, letters, numbers] = match;
+            if (m === xc) {
+                const col = lettersToNumber(letters);
+                const row = parseInt(numbers, 10) - 1;
+                return [col, row];
+            }
+        }
+        throw new Error(`Invalid cell description: ${xc}`);
+    }
+    /**
+     * Convert from cartesian coordinate to the "XC" coordinate system.
+     *
+     * Examples:
+     *   - 0,0 => A1
+     *   - 1,2 => B3
+     *   - 0,0, {colFixed: false, rowFixed: true} => A$1
+     *   - 1,2, {colFixed: true, rowFixed: false} => $B3
+     */
+    function toXC(col, row, rangePart = { colFixed: false, rowFixed: false }) {
+        return ((rangePart.colFixed ? "$" : "") +
+            numberToLetters(col) +
+            (rangePart.rowFixed ? "$" : "") +
+            String(row + 1));
+    }
+
+    const MAX_DELAY = 140;
+    const MIN_DELAY = 20;
+    const ACCELERATION = 0.035;
+    /**
+     * Decreasing exponential function used to determine the "speed" of edge-scrolling
+     * as the timeout delay.
+     *
+     * Returns a timeout delay in milliseconds.
+     */
+    function scrollDelay(value) {
+        // decreasing exponential from MAX_DELAY to MIN_DELAY
+        return MIN_DELAY + (MAX_DELAY - MIN_DELAY) * Math.exp(-ACCELERATION * (value - 1));
     }
 
     function createDefaultCols(colNumber) {
@@ -3163,7 +3189,8 @@
         const dimension = start === "left" ? "columns" : "rows";
         const baseElement = position === "before" ? base - 1 : base;
         const end = start === "left" ? "right" : "bottom";
-        if (zone[start] <= baseElement && zone[end] >= baseElement) {
+        const shouldIncludeEnd = position === "before" ? zone[end] > baseElement : zone[end] >= baseElement;
+        if (zone[start] <= baseElement && shouldIncludeEnd) {
             return createAdaptedZone(zone, dimension, "RESIZE", quantity);
         }
         if (baseElement < zone[start]) {
@@ -3479,7 +3506,7 @@
      * This function will compare the modifications of selection to determine
      * a cell that is part of the new zone and not the previous one.
      */
-    function findCellInNewZone(oldZone, currentZone, viewport) {
+    function findCellInNewZone(oldZone, currentZone) {
         let col, row;
         const { left: oldLeft, right: oldRight, top: oldTop, bottom: oldBottom } = oldZone;
         const { left, right, top, bottom } = currentZone;
@@ -3490,7 +3517,7 @@
             col = right;
         }
         else {
-            col = viewport.left;
+            col = left;
         }
         if (top != oldTop) {
             row = top;
@@ -3499,7 +3526,7 @@
             row = bottom;
         }
         else {
-            row = viewport.top;
+            row = top;
         }
         return [col, row];
     }
@@ -7144,17 +7171,6 @@
         }
         return null;
     }
-    /**
-     * Concatenate an array of strings.
-     */
-    function concat(chars) {
-        // ~40% faster than chars.join("")
-        let output = "";
-        for (let i = 0, len = chars.length; i < len; i++) {
-            output += chars[i];
-        }
-        return output;
-    }
 
     const UNARY_OPERATORS = ["-", "+"];
     const ASSOCIATIVE_OPERATORS = ["*", "+", "&"];
@@ -7447,11 +7463,10 @@
                         if (startIncludingSpaces && refStart && operator && refEnd) {
                             const newToken = {
                                 type: "REFERENCE",
-                                value: result
+                                value: concat(result
                                     .slice(startIncludingSpaces, i)
                                     .filter((x) => !removeSpace || x.type !== "SPACE")
-                                    .map((x) => x.value)
-                                    .join(""),
+                                    .map((x) => x.value)),
                             };
                             result.splice(startIncludingSpaces, i - startIncludingSpaces, newToken);
                             i = startIncludingSpaces + 1;
@@ -7494,11 +7509,10 @@
         if (startIncludingSpaces && refStart && operator && refEnd) {
             const newToken = {
                 type: "REFERENCE",
-                value: result
+                value: concat(result
                     .slice(startIncludingSpaces, i + 1)
                     .filter((x) => !removeSpace || x.type !== "SPACE")
-                    .map((x) => x.value)
-                    .join(""),
+                    .map((x) => x.value)),
             };
             result.splice(startIncludingSpaces, i - startIncludingSpaces + 1, newToken);
         }
@@ -7828,8 +7842,7 @@
      * A formula `=A1+A2+SUM(2, 2, "2")` have the cache key `=|0|+|1|+SUM(|N0|, |N0|, |S0|)`
      */
     function compilationCacheKey(tokens, dependencies, constantValues) {
-        return tokens
-            .map((token) => {
+        return concat(tokens.map((token) => {
             switch (token.type) {
                 case "STRING":
                     const value = removeStringQuotes(token.value);
@@ -7842,8 +7855,7 @@
                 default:
                     return token.value;
             }
-        })
-            .join("");
+        }));
     }
     /**
      * Return formula arguments which are references, strings and numbers.
@@ -8097,6 +8109,13 @@
         constructor(id, value, properties = {}) {
             super(id, { value: value, type: CellValueType.number }, properties);
             this.content = formatStandardNumber(this.evaluated.value);
+        }
+        get composerContent() {
+            var _a;
+            if ((_a = this.format) === null || _a === void 0 ? void 0 : _a.includes("%")) {
+                return `${this.evaluated.value * 100}%`;
+            }
+            return super.composerContent;
         }
     }
     class BooleanCell extends AbstractCell {
@@ -9252,9 +9271,12 @@
             const formats = {};
             for (let _sheet of data.sheets) {
                 const cells = {};
-                for (let [cellId, cell] of Object.entries(this.cells[_sheet.id] || {})) {
-                    let position = this.getters.getCellPosition(cellId);
-                    let xc = toXC(position.col, position.row);
+                const positions = Object.keys(this.cells[_sheet.id] || {})
+                    .map((cellId) => this.getters.getCellPosition(cellId))
+                    .sort((a, b) => (a.col === b.col ? a.row - b.row : a.col - b.col));
+                for (const { col, row } of positions) {
+                    const cell = this.getters.getCell(_sheet.id, col, row);
+                    const xc = toXC(col, row);
                     cells[xc] = {
                         style: cell.style ? getItemId(cell.style, styles) : undefined,
                         format: cell.format ? getItemId(cell.format, formats) : undefined,
@@ -9337,15 +9359,13 @@
          */
         buildFormulaContent(sheetId, cell, dependencies) {
             const ranges = dependencies || [...cell.dependencies];
-            return cell.compiledFormula.tokens
-                .map((token) => {
+            return concat(cell.compiledFormula.tokens.map((token) => {
                 if (token.type === "REFERENCE") {
                     const range = ranges.shift();
                     return this.getters.getRangeString(range, sheetId);
                 }
                 return token.value;
-            })
-                .join("");
+            }));
         }
         getFormulaCellContent(sheetId, cell) {
             return this.buildFormulaContent(sheetId, cell);
@@ -9964,8 +9984,11 @@
         // Command Handling
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
-            if (cmd.type === "ADD_CONDITIONAL_FORMAT") {
-                return this.checkValidations(cmd, this.checkCFRule, this.checkEmptyRange);
+            switch (cmd.type) {
+                case "ADD_CONDITIONAL_FORMAT":
+                    return this.checkValidations(cmd, this.checkCFRule, this.checkEmptyRange);
+                case "MOVE_CONDITIONAL_FORMAT":
+                    return this.checkValidReordering(cmd.cfId, cmd.direction, cmd.sheetId);
             }
             return 0 /* Success */;
         }
@@ -9994,6 +10017,9 @@
                     break;
                 case "REMOVE_CONDITIONAL_FORMAT":
                     this.removeConditionalFormatting(cmd.id, cmd.sheetId);
+                    break;
+                case "MOVE_CONDITIONAL_FORMAT":
+                    this.reorderConditionalFormatting(cmd.cfId, cmd.direction, cmd.sheetId);
                     break;
             }
         }
@@ -10092,6 +10118,18 @@
                 currentCF.push(newCF);
             }
             this.history.update("cfRules", sheet, currentCF);
+        }
+        checkValidReordering(cfId, direction, sheetId) {
+            if (!this.cfRules[sheetId])
+                return 21 /* InvalidSheetId */;
+            const ruleIndex = this.cfRules[sheetId].findIndex((cf) => cf.id === cfId);
+            if (ruleIndex === -1)
+                return 54 /* InvalidConditionalFormatId */;
+            const cfIndex2 = direction === "up" ? ruleIndex - 1 : ruleIndex + 1;
+            if (cfIndex2 < 0 || cfIndex2 >= this.cfRules[sheetId].length) {
+                return 54 /* InvalidConditionalFormatId */;
+            }
+            return 0 /* Success */;
         }
         checkEmptyRange(cmd) {
             return cmd.target.length ? 0 /* Success */ : 19 /* EmptyRange */;
@@ -10238,6 +10276,19 @@
                 this.history.update("cfRules", sheet, currentCF);
             }
         }
+        reorderConditionalFormatting(cfId, direction, sheetId) {
+            const cfIndex1 = this.cfRules[sheetId].findIndex((s) => s.id === cfId);
+            const cfIndex2 = direction === "up" ? cfIndex1 - 1 : cfIndex1 + 1;
+            if (cfIndex2 < 0 || cfIndex2 >= this.cfRules[sheetId].length)
+                return;
+            if (cfIndex1 !== -1 && cfIndex2 !== -1) {
+                const currentCF = [...this.cfRules[sheetId]];
+                const tmp = currentCF[cfIndex1];
+                currentCF[cfIndex1] = currentCF[cfIndex2];
+                currentCF[cfIndex2] = tmp;
+                this.history.update("cfRules", sheetId, currentCF);
+            }
+        }
     }
     ConditionalFormatPlugin.getters = ["getConditionalFormats", "getRulesSelection", "getRulesByCell"];
 
@@ -10249,6 +10300,15 @@
         // ---------------------------------------------------------------------------
         // Command Handling
         // ---------------------------------------------------------------------------
+        allowDispatch(cmd) {
+            switch (cmd.type) {
+                case "UPDATE_FIGURE":
+                case "DELETE_FIGURE":
+                    return this.checkFigureExists(cmd.sheetId, cmd.id);
+                default:
+                    return 0 /* Success */;
+            }
+        }
         handle(cmd) {
             switch (cmd.type) {
                 case "CREATE_SHEET":
@@ -10299,6 +10359,13 @@
         }
         removeFigure(id, sheetId) {
             this.history.update("figures", sheetId, id, undefined);
+        }
+        checkFigureExists(sheetId, figureId) {
+            var _a;
+            if (((_a = this.figures[sheetId]) === null || _a === void 0 ? void 0 : _a[figureId]) === undefined) {
+                return 53 /* FigureDoesNotExist */;
+            }
+            return 0 /* Success */;
         }
         // ---------------------------------------------------------------------------
         // Getters
@@ -10874,11 +10941,12 @@
             }
             for (let sheetData of data.sheets) {
                 const name = sheetData.name || _t("Sheet") + (Object.keys(this.sheets).length + 1);
+                const { colNumber, rowNumber } = this.getImportedSheetSize(sheetData);
                 const sheet = {
                     id: sheetData.id,
                     name: name,
-                    cols: createCols(sheetData.cols || {}, sheetData.colNumber),
-                    rows: createRows(sheetData.rows || {}, sheetData.rowNumber),
+                    cols: createCols(sheetData.cols || {}, colNumber),
+                    rows: createRows(sheetData.rows || {}, rowNumber),
                     hiddenColsGroups: [],
                     hiddenRowsGroups: [],
                     areGridLinesVisible: sheetData.areGridLinesVisible === undefined ? true : sheetData.areGridLinesVisible,
@@ -11550,6 +11618,13 @@
                 });
             }
             this.history.update("sheets", sheet.id, "rows", rows);
+        }
+        getImportedSheetSize(data) {
+            const positions = Object.keys(data.cells).map(toCartesian);
+            return {
+                rowNumber: Math.max(data.rowNumber, ...positions.map(([col, row]) => row + 1)),
+                colNumber: Math.max(data.colNumber, ...positions.map(([col, row]) => col + 1)),
+            };
         }
         // ----------------------------------------------------
         //  HIDE / SHOW
@@ -12258,7 +12333,8 @@
     }
     function inverseRemoveColumnsRows(cmd) {
         const commands = [];
-        for (let group of groupConsecutive(cmd.elements.sort((a, b) => a - b))) {
+        const elements = [...cmd.elements].sort((a, b) => a - b);
+        for (let group of groupConsecutive(elements)) {
             const column = group[0] === 0 ? 0 : group[0] - 1;
             const position = group[0] === 0 ? "before" : "after";
             commands.push({
@@ -12488,6 +12564,9 @@
     // Grid manipulations
     //------------------------------------------------------------------------------
     const DELETE_CONTENT_ROWS_NAME = (env) => {
+        if (env.model.getters.getSelectedZones().length > 1) {
+            return _lt("Clear rows");
+        }
         let first;
         let last;
         const activesRows = env.model.getters.getActiveRows();
@@ -12514,6 +12593,9 @@
         });
     };
     const DELETE_CONTENT_COLUMNS_NAME = (env) => {
+        if (env.model.getters.getSelectedZones().length > 1) {
+            return _lt("Clear columns");
+        }
         let first;
         let last;
         const activeCols = env.model.getters.getActiveCols();
@@ -12540,6 +12622,9 @@
         });
     };
     const REMOVE_ROWS_NAME = (env) => {
+        if (env.model.getters.getSelectedZones().length > 1) {
+            return _lt("Delete rows");
+        }
         let first;
         let last;
         const activesRows = env.model.getters.getActiveRows();
@@ -12572,6 +12657,9 @@
         });
     };
     const REMOVE_COLUMNS_NAME = (env) => {
+        if (env.model.getters.getSelectedZones().length > 1) {
+            return _lt("Delete columns");
+        }
         let first;
         let last;
         const activeCols = env.model.getters.getActiveCols();
@@ -13964,18 +14052,22 @@
      *  http://fontawesome.io/
      *  https://fontawesome.com/license
      */
-    const TRASH = '<svg xmlns ="http://www.w3.org/2000/svg" class="o-cf-icon trash" viewBox = "0 0 448 512" > <path fill="currentColor" d = "M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z" > </path></svg >';
-    const REFRESH = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon refresh" viewBox="0 0 512 512"><path fill="currentColor" d="M440.65 12.57l4 82.77A247.16 247.16 0 0 0 255.83 8C134.73 8 33.91 94.92 12.29 209.82A12 12 0 0 0 24.09 224h49.05a12 12 0 0 0 11.67-9.26 175.91 175.91 0 0 1 317-56.94l-101.46-4.86a12 12 0 0 0-12.57 12v47.41a12 12 0 0 0 12 12H500a12 12 0 0 0 12-12V12a12 12 0 0 0-12-12h-47.37a12 12 0 0 0-11.98 12.57zM255.83 432a175.61 175.61 0 0 1-146-77.8l101.8 4.87a12 12 0 0 0 12.57-12v-47.4a12 12 0 0 0-12-12H12a12 12 0 0 0-12 12V500a12 12 0 0 0 12 12h47.35a12 12 0 0 0 12-12.6l-4.15-82.57A247.17 247.17 0 0 0 255.83 504c121.11 0 221.93-86.92 243.55-201.82a12 12 0 0 0-11.8-14.18h-49.05a12 12 0 0 0-11.67 9.26A175.86 175.86 0 0 1 255.83 432z"></path></svg>';
-    const ARROW_DOWN = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon arrow-down" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#DC6965" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>';
-    const ARROW_UP = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#00A04A" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>';
-    const ARROW_RIGHT = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon arrow-right" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#F0AD4E" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>';
-    const SMILE = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon smile" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#00A04A" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>';
-    const MEH = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon meh" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#F0AD4E" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"></path></svg>';
-    const FROWN = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon frown" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#DC6965" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"></path></svg>';
-    const GREEN_DOT = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon green-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#00A04A" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    const YELLOW_DOT = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon yellow-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#F0AD4E" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    const RED_DOT = '<svg xmlns="http://www.w3.org/2000/svg" class="o-cf-icon red-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#DC6965" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const CARET_UP = '<svg class="caret-up" viewBox="0 0 320 512"><path fill="currentColor" d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"></path></svg>';
+    const CARET_DOWN = '<svg class="caret-down"  viewBox="0 0 320 512"><path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path></svg>';
+    const TRASH = '<svg class="o-cf-icon trash" viewBox = "0 0 448 512" > <path fill="currentColor" d = "M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z" > </path></svg >';
+    const REFRESH = '<svg class="o-cf-icon refresh" viewBox="0 0 512 512"><path fill="currentColor" d="M440.65 12.57l4 82.77A247.16 247.16 0 0 0 255.83 8C134.73 8 33.91 94.92 12.29 209.82A12 12 0 0 0 24.09 224h49.05a12 12 0 0 0 11.67-9.26 175.91 175.91 0 0 1 317-56.94l-101.46-4.86a12 12 0 0 0-12.57 12v47.41a12 12 0 0 0 12 12H500a12 12 0 0 0 12-12V12a12 12 0 0 0-12-12h-47.37a12 12 0 0 0-11.98 12.57zM255.83 432a175.61 175.61 0 0 1-146-77.8l101.8 4.87a12 12 0 0 0 12.57-12v-47.4a12 12 0 0 0-12-12H12a12 12 0 0 0-12 12V500a12 12 0 0 0 12 12h47.35a12 12 0 0 0 12-12.6l-4.15-82.57A247.17 247.17 0 0 0 255.83 504c121.11 0 221.93-86.92 243.55-201.82a12 12 0 0 0-11.8-14.18h-49.05a12 12 0 0 0-11.67 9.26A175.86 175.86 0 0 1 255.83 432z"></path></svg>';
+    const ARROW_DOWN = '<svg class="o-cf-icon arrow-down" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#DC6965" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>';
+    const ARROW_UP = '<svg class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#00A04A" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>';
+    const ARROW_RIGHT = '<svg class="o-cf-icon arrow-right" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#F0AD4E" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>';
+    const SMILE = '<svg class="o-cf-icon smile" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#00A04A" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>';
+    const MEH = '<svg class="o-cf-icon meh" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#F0AD4E" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"></path></svg>';
+    const FROWN = '<svg class="o-cf-icon frown" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#DC6965" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"></path></svg>';
+    const GREEN_DOT = '<svg class="o-cf-icon green-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#00A04A" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const YELLOW_DOT = '<svg class="o-cf-icon yellow-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#F0AD4E" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const RED_DOT = '<svg class="o-cf-icon red-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#DC6965" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
     function loadIconImage(svg) {
+        /** We have to add xmlns, as it's not added by owl in the canvas */
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" ${svg.slice(4)}`;
         const image = new Image();
         image.src = "data:image/svg+xml; charset=utf8, " + encodeURIComponent(svg);
         return image;
@@ -14274,6 +14366,8 @@
         ColorScale: _lt("Color scale"),
         IconSet: _lt("Icon set"),
         newRule: _lt("Add another rule"),
+        reorderRules: _lt("Reorder rules"),
+        exitReorderMode: _lt("Stop reordering rules"),
         FixedNumber: _lt("Number"),
         Percentage: _lt("Percentage"),
         Percentile: _lt("Percentile"),
@@ -14910,7 +15004,7 @@
       <t t-call="${INFLECTION_POINTS_TEMPLATE}"/>
       <div class="btn btn-link o_refresh_measures o-cf-iconset-reverse" t-on-click="reverseIcons">
         <div class="mr-1 d-inline-block">
-          <t t-out="reverseIcon"/>
+          ${REFRESH}
         </div>
         <t t-esc="env._t('${iconSetRule.ReverseIcons}')"/>
       </div>
@@ -14918,7 +15012,7 @@
 
     // TODO vsc: add ordering of rules
     const PREVIEW_TEMPLATE = owl.xml /* xml */ `
-<div class="o-cf-preview">
+<div class="o-cf-preview" t-att-class="{ 'o-cf-cursor-ptr': state.mode !== 'reorder' }">
   <t t-if="cf.rule.type==='IconSetRule'">
     <div class="o-cf-preview-icon">
       <t t-out="icons[cf.rule.icons.upper].svg"/>
@@ -14935,35 +15029,60 @@
     <div class="o-cf-preview-ruletype">
       <div class="o-cf-preview-description-rule">
         <t t-esc="getDescription(cf)" />
-      </div>
-      <div class="o-cf-preview-description-values">
-      <t t-if="cf.rule.values">
-        <t t-esc="cf.rule.values[0]" />
-        <t t-if="cf.rule.values[1]">
-        <t t-esc="' ' + env._t('${GenericWords.And}')"/> <t t-esc="cf.rule.values[1]"/>
+        <t t-if="cf.rule.values">
+          <t t-esc="' ' + cf.rule.values[0]" />
+          <t t-if="cf.rule.values[1]">
+            <t t-esc="' ' + env._t('${GenericWords.And}')"/> <t t-esc="cf.rule.values[1]"/>
+          </t>
         </t>
-      </t>
       </div>
     </div>
     <div class="o-cf-preview-range" t-esc="cf.ranges"/>
   </div>
-  <div class="o-cf-delete">
-    <div class="o-cf-delete-button" t-on-click.stop="(ev) => this.deleteConditionalFormat(cf, ev)" aria-label="Remove rule">
-    <t t-out="trashIcon"/>
+  <t t-if="state.mode === 'reorder'">
+    <div class="o-cf-reorder">
+      <t t-if="!cf_first">
+        <div class="o-cf-reorder-button-up o-cf-reorder-button" t-on-click="(ev) => this.reorderRule(cf, 'up', ev)">
+          ${CARET_UP}
+        </div>
+      </t>
+      <t t-if="!cf_last">
+        <div class="o-cf-reorder-button-down o-cf-reorder-button" t-on-click="(ev) => this.reorderRule(cf, 'down', ev)">
+          ${CARET_DOWN}
+        </div>
+      </t>
     </div>
-  </div>
-</div>`;
+  </t>
+  <t t-else="">
+    <div class="o-cf-delete">
+      <div class="o-cf-delete-button" t-on-click.stop="(ev) => this.deleteConditionalFormat(cf, ev)" aria-label="Remove rule">
+        ${TRASH}
+      </div>
+    </div>
+  </t>
+</div>
+`;
     const TEMPLATE$l = owl.xml /* xml */ `
   <div class="o-cf">
-    <t t-if="state.mode === 'list'">
+    <t t-if="state.mode === 'list' || state.mode === 'reorder'">
       <div class="o-cf-preview-list" >
         <div t-on-click="(ev) => this.editConditionalFormat(cf, ev)" t-foreach="conditionalFormats" t-as="cf" t-key="cf.id">
             <t t-call="${PREVIEW_TEMPLATE}"/>
         </div>
       </div>
-      <div class="btn btn-link o-cf-add" t-on-click.prevent.stop="addConditionalFormat">
-        <t t-esc="'+ ' + env._t('${conditionalFormattingTerms.newRule}')"/>
-      </div>
+      <t t-if="state.mode === 'list'">
+        <div class="btn btn-link o-cf-btn-link o-cf-add" t-on-click.prevent.stop="addConditionalFormat">
+          <t t-esc="'+ ' + env._t('${conditionalFormattingTerms.newRule}')"/>
+        </div>
+        <div class="btn btn-link o-cf-btn-link o-cf-reorder" t-on-click="reorderConditionalFormats">
+          <t t-esc="env._t('${conditionalFormattingTerms.reorderRules}')"/>
+        </div>
+      </t>
+      <t t-if="state.mode === 'reorder'">
+        <div class="btn btn-link o-cf-btn-link o-cf-exit-reorder" t-on-click="switchToList">
+            <t t-esc="env._t('${conditionalFormattingTerms.exitReorderMode}')"/>
+        </div>
+      </t>
     </t>
     <t t-if="state.mode === 'edit' || state.mode === 'add'" t-key="state.currentCF.id">
         <div class="o-cf-ruleEditor">
@@ -15061,10 +15180,12 @@
     .o-cf-title-text:first-child {
       margin-top: 0px;
     }
+    .o-cf-cursor-ptr {
+      cursor: pointer;
+    }
     .o-cf-preview {
       background-color: #fff;
       border-bottom: 1px solid #ccc;
-      cursor: pointer;
       display: flex;
       height: 60px;
       padding: 10px;
@@ -15080,6 +15201,7 @@
         height: 50px;
         line-height: 50px;
         margin-right: 15px;
+        margin-top: 3px;
         position: absolute;
         text-align: center;
         width: 50px;
@@ -15090,6 +15212,7 @@
         height: 50px;
         line-height: 50px;
         margin-right: 15px;
+        margin-top: 3px;
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -15104,9 +15227,11 @@
         .o-cf-preview-description-rule {
           margin-bottom: 4px;
           overflow: hidden;
-        }
-        .o-cf-preview-description-values {
-          overflow: hidden;
+          text-overflow: ellipsis;
+          font-weight: 600;
+          color: #303030;
+          max-height: 2.8em;
+          line-height: 1.4em;
         }
         .o-cf-preview-range {
           text-overflow: ellipsis;
@@ -15118,6 +15243,31 @@
         color: dimgrey;
         left: 90%;
         top: 39%;
+        position: absolute;
+      }
+      .o-cf-reorder {
+        color: gray;
+        left: 90%;
+        position: absolute;
+        height: 100%;
+        width: 10%;
+      }
+      .o-cf-reorder-button:hover {
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      .o-cf-reorder-button-up {
+        width: 15px;
+        height: 20px;
+        padding: 5px;
+        padding-top: 0px;
+      }
+      .o-cf-reorder-button-down {
+        width: 15px;
+        height: 20px;
+        bottom: 20px;
+        padding: 5px;
+        padding-top: 0px;
         position: absolute;
       }
     }
@@ -15202,14 +15352,14 @@
         line-height: 35px;
       }
     }
-    .o-cf-add {
+    .o-cf-btn-link {
       font-size: 14px;
       padding: 20px 24px 11px 24px;
       height: 44px;
       cursor: pointer;
       text-decoration: none;
     }
-    .o-cf-add:hover {
+    .o-cf-btn-link:hover {
       color: #003a39;
       text-decoration: none;
     }
@@ -15341,8 +15491,6 @@
             super(...arguments);
             this.icons = ICONS;
             this.iconSets = ICON_SETS;
-            this.reverseIcon = owl.markup(REFRESH);
-            this.trashIcon = owl.markup(TRASH);
             this.cellIsOperators = cellIsOperators;
             this.getTextDecoration = getTextDecoration;
             this.colorNumberString = colorNumberString;
@@ -15534,9 +15682,11 @@
             });
         }
         /**
-         * Edit an existing CF
+         * Edit an existing CF. Return without doing anything in reorder mode.
          */
         editConditionalFormat(cf) {
+            if (this.state.mode === "reorder")
+                return;
             this.state.mode = "edit";
             this.state.currentCF = cf;
             this.state.currentCFType = cf.rule.type;
@@ -15551,6 +15701,19 @@
                     this.state.rules.iconSet = cf.rule;
                     break;
             }
+        }
+        /**
+         * Reorder existing CFs
+         */
+        reorderConditionalFormats() {
+            this.state.mode = "reorder";
+        }
+        reorderRule(cf, direction) {
+            this.env.model.dispatch("MOVE_CONDITIONAL_FORMAT", {
+                cfId: cf.id,
+                direction: direction,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+            });
         }
         changeRuleType(ruleType) {
             if (this.state.currentCFType === ruleType || !this.state.rules) {
@@ -15907,7 +16070,18 @@
         Body: FindAndReplacePanel,
     });
 
-    const topbarComponentRegistry = new Registry();
+    class TopBarComponentRegistry extends Registry {
+        constructor() {
+            super(...arguments);
+            this.mapping = {};
+            this.uuidGenerator = new UuidGenerator();
+        }
+        add(name, value) {
+            const component = { ...value, id: this.uuidGenerator.uuidv4() };
+            return super.add(name, component);
+        }
+    }
+    const topbarComponentRegistry = new TopBarComponentRegistry();
 
     /**
      * UI plugins handle any transient data required to display a spreadsheet.
@@ -17027,7 +17201,15 @@
             const { sheetId, col, row } = target;
             const targetCell = this.getters.getCell(sheetId, col, row);
             if (pasteOption !== "onlyValue") {
-                this.dispatch("SET_BORDER", { sheetId, col, row, border: origin.border });
+                const targetBorders = this.getters.getCellBorder(sheetId, col, row);
+                const originBorders = origin.border;
+                const border = {
+                    top: (targetBorders === null || targetBorders === void 0 ? void 0 : targetBorders.top) || (originBorders === null || originBorders === void 0 ? void 0 : originBorders.top),
+                    bottom: (targetBorders === null || targetBorders === void 0 ? void 0 : targetBorders.bottom) || (originBorders === null || originBorders === void 0 ? void 0 : originBorders.bottom),
+                    left: (targetBorders === null || targetBorders === void 0 ? void 0 : targetBorders.left) || (originBorders === null || originBorders === void 0 ? void 0 : originBorders.left),
+                    right: (targetBorders === null || targetBorders === void 0 ? void 0 : targetBorders.right) || (originBorders === null || originBorders === void 0 ? void 0 : originBorders.right),
+                };
+                this.dispatch("SET_BORDER", { sheetId, col, row, border });
             }
             if (origin.cell) {
                 if (pasteOption === "onlyFormat") {
@@ -17474,7 +17656,12 @@
          * @private
          */
         startEdition(str, selection) {
+            var _a;
             const cell = this.getters.getActiveCell();
+            if (str && ((_a = cell === null || cell === void 0 ? void 0 : cell.format) === null || _a === void 0 ? void 0 : _a.includes("%")) && isNumber(str)) {
+                selection = selection || { start: str.length, end: str.length };
+                str = `${str}%`;
+            }
             this.initialContent = (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
             this.mode = "editing";
             const [col, row] = this.getters.getPosition();
@@ -17506,7 +17693,7 @@
                         const right = this.currentTokens.filter((t) => t.type === "RIGHT_PAREN").length;
                         const missing = left - right;
                         if (missing > 0) {
-                            content += new Array(missing).fill(")").join("");
+                            content += concat(new Array(missing).fill(")"));
                         }
                     }
                     else if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
@@ -17941,10 +18128,8 @@
          */
         evaluateAllSheets() {
             for (const sheetId of this.getters.getVisibleSheets()) {
-                if (!this.isUpToDate.has(sheetId)) {
-                    this.evaluate(sheetId);
-                    this.isUpToDate.add(sheetId);
-                }
+                this.evaluate(sheetId);
+                this.isUpToDate.add(sheetId);
             }
         }
     }
@@ -18423,6 +18608,7 @@
                 case "REDO":
                 case "DELETE_CELL":
                 case "INSERT_CELL":
+                case "MOVE_CONDITIONAL_FORMAT":
                     this.isStale = true;
                     break;
             }
@@ -18471,7 +18657,7 @@
             this.computedStyles[activeSheetId] = {};
             this.computedIcons[activeSheetId] = {};
             const computedStyle = this.computedStyles[activeSheetId];
-            for (let cf of this.getters.getConditionalFormats(activeSheetId)) {
+            for (let cf of this.getters.getConditionalFormats(activeSheetId).reverse()) {
                 try {
                     switch (cf.rule.type) {
                         case "ColorScaleRule":
@@ -19010,7 +19196,7 @@
              * In order to avoid superposing the same color layer and modifying the final
              * opacity, we filter highlights to remove duplicates.
              */
-            for (let h of this.getHighlights().filter((highlight, index) =>
+            for (let h of this.getHighlights().filter((highlight, index) => 
             // For every highlight in the sheet, deduplicated by zone
             this.getHighlights().findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheet === sheetId) === index)) {
                 const [x, y, width, height] = this.getters.getRect(h.zone, viewport);
@@ -19064,20 +19250,20 @@
          * Return the index of a column given an offset x and a visible left col index.
          * It returns -1 if no column is found.
          */
-        getColIndex(x, left, sheet) {
+        getColIndex(x, offsetLeft, sheet) {
             if (x < HEADER_WIDTH) {
                 return -1;
             }
             const cols = (sheet || this.getters.getActiveSheet()).cols;
-            const adjustedX = x - HEADER_WIDTH + cols[left].start + 1;
+            const adjustedX = x - HEADER_WIDTH + offsetLeft + 1;
             return searchIndex(cols, adjustedX);
         }
-        getRowIndex(y, top, sheet) {
+        getRowIndex(y, offsetTop, sheet) {
             if (y < HEADER_HEIGHT) {
                 return -1;
             }
             const rows = (sheet || this.getters.getActiveSheet()).rows;
-            const adjustedY = y - HEADER_HEIGHT + rows[top].start + 1;
+            const adjustedY = y - HEADER_HEIGHT + offsetTop + 1;
             return searchIndex(rows, adjustedY);
         }
         getRect(zone, viewport) {
@@ -19103,7 +19289,7 @@
             let delay = 0;
             const { width } = this.getters.getViewportDimensionWithHeaders();
             const { width: gridWidth } = this.getters.getMaxViewportSize(this.getters.getActiveSheet());
-            const { left, offsetX } = this.getters.getActiveSnappedViewport();
+            const { left, offsetX } = this.getters.getActiveViewport();
             if (x < HEADER_WIDTH && left > 0) {
                 canEdgeScroll = true;
                 direction = -1;
@@ -19122,7 +19308,7 @@
             let delay = 0;
             const { height } = this.getters.getViewportDimensionWithHeaders();
             const { height: gridHeight } = this.getters.getMaxViewportSize(this.getters.getActiveSheet());
-            const { top, offsetY } = this.getters.getActiveSnappedViewport();
+            const { top, offsetY } = this.getters.getActiveViewport();
             if (y < HEADER_HEIGHT && top > 0) {
                 canEdgeScroll = true;
                 direction = -1;
@@ -19388,6 +19574,11 @@
                 ctx.moveTo(0, row.end - offsetY);
                 ctx.lineTo(HEADER_WIDTH, row.end - offsetY);
             }
+            ctx.stroke();
+            // draw over the text for the top-left rectangle
+            ctx.beginPath();
+            ctx.fillStyle = BACKGROUND_HEADER_COLOR;
+            ctx.fillRect(0, 0, HEADER_WIDTH, HEADER_HEIGHT);
             ctx.stroke();
         }
         hasContent(col, row) {
@@ -19911,7 +20102,7 @@
             const sheetId = this.getters.getActiveSheetId();
             const result = [];
             const figures = this.getters.getFigures(sheetId);
-            const { offsetX, offsetY } = this.getters.getActiveSnappedViewport();
+            const { offsetX, offsetY } = this.getters.getActiveViewport();
             const { width, height } = this.getters.getViewportDimensionWithHeaders();
             for (let figure of figures) {
                 if (figure.x >= offsetX + width || figure.x + figure.width <= offsetX) {
@@ -20800,7 +20991,7 @@
                     break;
                 case "REVISION_REDONE": {
                     this.waitingAck = false;
-                    this.revisions.redo(message.redoneRevisionId, message.nextRevisionId);
+                    this.revisions.redo(message.redoneRevisionId, message.nextRevisionId, message.serverRevisionId);
                     this.trigger("revision-redone", {
                         revisionId: message.redoneRevisionId,
                         commands: this.revisions.get(message.redoneRevisionId).commands,
@@ -20809,7 +21000,7 @@
                 }
                 case "REVISION_UNDONE":
                     this.waitingAck = false;
-                    this.revisions.undo(message.undoneRevisionId, message.nextRevisionId);
+                    this.revisions.undo(message.undoneRevisionId, message.nextRevisionId, message.serverRevisionId);
                     this.trigger("revision-undone", {
                         revisionId: message.undoneRevisionId,
                         commands: this.revisions.get(message.undoneRevisionId).commands,
@@ -20878,12 +21069,28 @@
             this.waitingAck = true;
             this.sendPendingMessage();
         }
+        /**
+         * Send the next pending message
+         */
         sendPendingMessage() {
             let message = this.pendingMessages[0];
             if (!message)
                 return;
             if (message.type === "REMOTE_REVISION") {
                 const revision = this.revisions.get(message.nextRevisionId);
+                if (revision.commands.length === 0) {
+                    /**
+                     * The command is empty, we have to drop all the next local revisions
+                     * to avoid issues with undo/redo
+                     */
+                    this.revisions.drop(revision.id);
+                    const revisionIds = this.pendingMessages
+                        .filter((message) => message.type === "REMOTE_REVISION")
+                        .map((message) => message.nextRevisionId);
+                    this.trigger("pending-revisions-dropped", { revisionIds });
+                    this.pendingMessages = [];
+                    return;
+                }
                 message = {
                     ...message,
                     clientId: revision.clientId,
@@ -21156,18 +21363,14 @@
      *
      * This plugin manages all things related to all viewport states.
      *
-     * There are two types of viewports :
-     *  1. The viewport related to the scrollbar absolute position
-     *  2. The snappedViewport which represents the previous one but but 'snapped' to
-     *     the col/row structure, so, the offsets are correct for computations necessary
-     *     to align elements to the grid.
+     * The viewport is a representation of the current visible cells
+     * via a Zone and the the scrollbar absolute position (defined as offsetX and offsetY)
+     *
      */
     class ViewportPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
             this.viewports = {};
-            this.snappedViewports = {};
-            this.updateSnap = false;
             /**
              * The viewport dimensions are usually set by one of the components
              * (i.e. when grid component is mounted) to properly reflect its state in the DOM.
@@ -21199,18 +21402,20 @@
                 case "AlterZoneCorner":
                     break;
                 case "ZonesSelected":
+                    const sheetId = this.getters.getActiveSheetId();
                     if (event.mode === "updateAnchor") {
                         // altering a zone should not move the viewport
-                        const [col, row] = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone, this.getActiveSnappedViewport());
-                        this.refreshViewport(this.getters.getActiveSheetId(), { col, row });
+                        const [col, row] = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone);
+                        this.refreshViewport(sheetId, { col, row });
                     }
                     else {
-                        this.refreshViewport(this.getters.getActiveSheetId());
+                        this.refreshViewport(sheetId);
                     }
                     break;
             }
         }
         handle(cmd) {
+            const sheetId = this.getters.getActiveSheetId();
             switch (cmd.type) {
                 case "START":
                     this.selection.observe(this, {
@@ -21221,23 +21426,30 @@
                 case "REDO":
                     this.cleanViewports();
                     this.resetViewports();
+                    this._scroll(sheetId);
                     break;
                 case "RESIZE_VIEWPORT":
                     this.cleanViewports();
                     this.resizeViewport(cmd.height, cmd.width);
+                    this._scroll(sheetId);
                     break;
                 case "SET_VIEWPORT_OFFSET":
                     this.setViewportOffset(cmd.offsetX, cmd.offsetY);
                     break;
                 case "SHIFT_VIEWPORT_DOWN":
+                    const { maxOffsetY } = this.getMaximumViewportOffset(this.getters.getActiveSheet());
                     const topRow = this.getActiveTopRow();
-                    const shiftedOffsetY = topRow.start + this.viewportHeight;
-                    this.shiftVertically(shiftedOffsetY);
+                    const shiftedOffsetY = Math.min(maxOffsetY, topRow.start + this.viewportHeight);
+                    const newRowIndex = this.getters.getRowIndex(shiftedOffsetY + HEADER_HEIGHT, 0);
+                    this.shiftVertically(this.getters.getRow(sheetId, newRowIndex).start);
+                    this._scroll(sheetId);
                     break;
                 case "SHIFT_VIEWPORT_UP": {
                     const topRow = this.getActiveTopRow();
-                    const shiftedOffsetY = topRow.end - this.viewportHeight;
-                    this.shiftVertically(shiftedOffsetY);
+                    const shiftedOffsetY = Math.max(topRow.end - this.viewportHeight, 0);
+                    const newRowIndex = this.getters.getRowIndex(shiftedOffsetY + HEADER_HEIGHT, 0);
+                    this.shiftVertically(this.getters.getRow(sheetId, newRowIndex).start);
+                    this._scroll(sheetId);
                     break;
                 }
                 case "REMOVE_COLUMNS_ROWS":
@@ -21249,6 +21461,7 @@
                     else {
                         this.adjustViewportOffsetY(cmd.sheetId, this.getViewport(cmd.sheetId));
                     }
+                    this._scroll(sheetId);
                     break;
                 case "ADD_COLUMNS_ROWS":
                 case "UNHIDE_COLUMNS_ROWS":
@@ -21258,16 +21471,12 @@
                     else {
                         this.adjustViewportZoneY(cmd.sheetId, this.getViewport(cmd.sheetId));
                     }
+                    this._scroll(sheetId);
                     break;
                 case "ACTIVATE_SHEET":
                     this.refreshViewport(cmd.sheetIdTo);
+                    this._scroll(sheetId);
                     break;
-            }
-        }
-        finalize() {
-            if (this.updateSnap) {
-                this.snapViewportToCell(this.getters.getActiveSheetId());
-                this.updateSnap = false;
             }
         }
         // ---------------------------------------------------------------------------
@@ -21282,10 +21491,6 @@
         getActiveViewport() {
             const sheetId = this.getters.getActiveSheetId();
             return this.getViewport(sheetId);
-        }
-        getActiveSnappedViewport() {
-            const sheetId = this.getters.getActiveSheetId();
-            return this.getSnappedViewport(sheetId);
         }
         /**
          * Return the maximum viewport size. That is the sheet dimension
@@ -21314,19 +21519,27 @@
         // ---------------------------------------------------------------------------
         // Private
         // ---------------------------------------------------------------------------
+        /**
+         * Broadcasts the expected viewport scroll value following the alteration of a sheet structure.
+         * Meant to be caught by the rendering side to synchronize.
+         */
+        _scroll(sheetId) {
+            const { offsetX, offsetY } = this.getViewport(sheetId);
+            this.ui.notifyUI({ type: "SCROLL", offsetX, offsetY });
+        }
         checkOffsetValidity(offsetX, offsetY) {
-            if (offsetX !== this.clipOffsetX(offsetX) || offsetY !== this.clipOffsetY(offsetY)) {
+            const sheet = this.getters.getActiveSheet();
+            const { maxOffsetX, maxOffsetY } = this.getMaximumViewportOffset(sheet);
+            if (offsetX < 0 || offsetY < 0 || offsetY > maxOffsetY || offsetX > maxOffsetX) {
                 return 51 /* InvalidOffset */;
             }
             return 0 /* Success */;
         }
-        getSnappedViewport(sheetId) {
-            this.snapViewportToCell(sheetId);
-            return this.snappedViewports[sheetId];
-        }
         getViewport(sheetId) {
             if (!this.viewports[sheetId]) {
-                return this.generateViewportState(sheetId);
+                const viewport = this.generateViewportState(sheetId);
+                this.adjustViewportZone(sheetId, viewport);
+                this.adjustViewportsPosition(sheetId);
             }
             return this.viewports[sheetId];
         }
@@ -21348,7 +21561,7 @@
             }
         }
         /** Corrects the viewport's horizontal offset based on the current structure
-         *  To make sure that at least on column is visible inside the viewport.
+         *  To make sure that at least one column is visible inside the viewport.
          */
         adjustViewportOffsetX(sheetId, viewport) {
             const { offsetX } = viewport;
@@ -21360,7 +21573,7 @@
             this.adjustViewportZoneX(sheetId, viewport);
         }
         /** Corrects the viewport's vertical offset based on the current structure
-         *  To make sure that at least on row is visible inside the viewport.
+         *  To make sure that at least one row is visible inside the viewport.
          */
         adjustViewportOffsetY(sheetId, viewport) {
             const { offsetY } = viewport;
@@ -21383,35 +21596,11 @@
             }
         }
         setViewportOffset(offsetX, offsetY) {
-            offsetY = this.clipOffsetY(offsetY);
-            offsetX = this.clipOffsetX(offsetX);
             const sheetId = this.getters.getActiveSheetId();
             this.getActiveViewport();
             this.viewports[sheetId].offsetX = offsetX;
             this.viewports[sheetId].offsetY = offsetY;
             this.adjustViewportZone(sheetId, this.viewports[sheetId]);
-        }
-        /**
-         * Clip the vertical offset within the allowed range.
-         * Not above the sheet, nor below the sheet.
-         */
-        clipOffsetY(offsetY) {
-            const { height } = this.getters.getMaxViewportSize(this.getters.getActiveSheet());
-            const maxOffset = height - this.viewportHeight;
-            offsetY = Math.min(offsetY, maxOffset);
-            offsetY = Math.max(offsetY, 0);
-            return offsetY;
-        }
-        /**
-         * Clip the horizontal offset within the allowed range.
-         * Not before the first column, nor after the last.
-         */
-        clipOffsetX(offsetX) {
-            const { width } = this.getters.getMaxViewportSize(this.getters.getActiveSheet());
-            const maxOffset = width - this.viewportWidth;
-            offsetX = Math.min(offsetX, maxOffset);
-            offsetX = Math.max(offsetX, 0);
-            return offsetX;
         }
         generateViewportState(sheetId) {
             this.viewports[sheetId] = {
@@ -21449,7 +21638,6 @@
                     break;
                 }
             }
-            this.updateSnap = true;
         }
         /** Updates the viewport zone based on its vertical offset (will find Top) and its width (will find Bottom) */
         adjustViewportZoneY(sheetId, viewport) {
@@ -21464,19 +21652,16 @@
                     break;
                 }
             }
-            this.updateSnap = true;
         }
         /**
          * This function will make sure that the provided cell position (or current selected position) is part of
-         * the viewport that is actually displayed on the client, that is, the snapped one. We therefore adjust
-         * the offset of the snapped viewport until it contains the cell completely.
-         * In order to keep the coherence of both viewports, it is also necessary to update the standard viewport
-         * if the zones of both viewports don't match.
+         * the viewport that is actually displayed on the client. We therefore adjust
+         * the offset of the viewport until it contains the cell completely.
          */
         adjustViewportsPosition(sheetId, position) {
             const sheet = this.getters.getSheet(sheetId);
             const { cols, rows } = sheet;
-            const adjustedViewport = this.getSnappedViewport(sheetId);
+            const adjustedViewport = this.getViewport(sheetId);
             if (!position) {
                 const sheetPosition = this.getters.getSheetPosition(sheetId);
                 position = { col: sheetPosition[0], row: sheetPosition[1] };
@@ -21508,24 +21693,6 @@
                 adjustedViewport.offsetY = rows[adjustedViewport.top - 1 - step].start;
                 this.adjustViewportZoneY(sheetId, adjustedViewport);
             }
-            // cast the new snappedViewport in the standard viewport
-            const { top, left } = this.viewports[sheetId];
-            if (top !== adjustedViewport.top || left !== adjustedViewport.left)
-                this.viewports[sheetId] = adjustedViewport;
-            this.updateSnap = false;
-        }
-        /** Will update the snapped viewport based on the "standard" viewport to ensure its
-         * offsets match the start of the viewport left (resp. top) column (resp. row). */
-        snapViewportToCell(sheetId) {
-            const { cols, rows } = this.getters.getSheet(sheetId);
-            const viewport = this.getViewport(sheetId);
-            const adjustedViewport = Object.assign({}, viewport);
-            this.adjustViewportOffsetX(sheetId, adjustedViewport);
-            this.adjustViewportOffsetY(sheetId, adjustedViewport);
-            adjustedViewport.offsetX = cols[adjustedViewport.left].start;
-            adjustedViewport.offsetY = rows[adjustedViewport.top].start;
-            this.adjustViewportZone(sheetId, adjustedViewport);
-            this.snappedViewports[sheetId] = adjustedViewport;
         }
         /**
          * Shift the viewport vertically and move the selection anchor
@@ -21533,24 +21700,23 @@
          * viewport top.
          */
         shiftVertically(offset) {
-            const { top, offsetX } = this.getActiveSnappedViewport();
+            const { top, offsetX } = this.getActiveViewport();
             this.setViewportOffset(offsetX, offset);
             const { anchor } = this.getters.getSelection();
-            const deltaRow = this.getActiveSnappedViewport().top - top;
+            const deltaRow = this.getActiveViewport().top - top;
             this.selection.selectCell(anchor[0], anchor[1] + deltaRow);
         }
         /**
          * Return the row at the viewport's top
          */
         getActiveTopRow() {
-            const { top } = this.getActiveSnappedViewport();
+            const { top } = this.getActiveViewport();
             const sheet = this.getters.getActiveSheet();
             return this.getters.getRow(sheet.id, top);
         }
     }
     ViewportPlugin.getters = [
         "getActiveViewport",
-        "getActiveSnappedViewport",
         "getViewportDimensionWithHeaders",
         "getMaxViewportSize",
         "getMaximumViewportOffset",
@@ -22192,24 +22358,24 @@
             const offsetY = currentEv.clientY - position.top;
             const edgeScrollInfoX = env.model.getters.getEdgeScrollCol(offsetX);
             const edgeScrollInfoY = env.model.getters.getEdgeScrollRow(offsetY);
-            const { top, left, bottom, right } = env.model.getters.getActiveSnappedViewport();
+            const { top, left, bottom, right, offsetX: viewportOffsetX, offsetY: viewportOffsetY, } = env.model.getters.getActiveViewport();
             let colIndex;
             if (edgeScrollInfoX.canEdgeScroll) {
                 colIndex = edgeScrollInfoX.direction > 0 ? right : left - 1;
             }
             else {
-                colIndex = env.model.getters.getColIndex(offsetX, left);
+                colIndex = env.model.getters.getColIndex(offsetX, viewportOffsetX);
             }
             let rowIndex;
             if (edgeScrollInfoY.canEdgeScroll) {
                 rowIndex = edgeScrollInfoY.direction > 0 ? bottom : top - 1;
             }
             else {
-                rowIndex = env.model.getters.getRowIndex(offsetY, top);
+                rowIndex = env.model.getters.getRowIndex(offsetY, viewportOffsetY);
             }
             cbMouseMove(colIndex, rowIndex);
             if (edgeScrollInfoX.canEdgeScroll) {
-                const { left, offsetY } = env.model.getters.getActiveSnappedViewport();
+                const { left, offsetY } = env.model.getters.getActiveViewport();
                 const { cols } = env.model.getters.getActiveSheet();
                 const offsetX = cols[left + edgeScrollInfoX.direction].start;
                 env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
@@ -22219,7 +22385,7 @@
                 }, Math.round(edgeScrollInfoX.delay));
             }
             if (edgeScrollInfoY.canEdgeScroll) {
-                const { top, offsetX } = env.model.getters.getActiveSnappedViewport();
+                const { top, offsetX } = env.model.getters.getActiveViewport();
                 const { rows } = env.model.getters.getActiveSheet();
                 const offsetY = rows[top + edgeScrollInfoY.direction].start;
                 env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
@@ -22307,7 +22473,7 @@
         onMouseDown(ev) {
             this.state.handler = true;
             this.state.position = { left: 0, top: 0 };
-            const { offsetY, offsetX } = this.env.model.getters.getActiveSnappedViewport();
+            const { offsetY, offsetX } = this.env.model.getters.getActiveViewport();
             const start = {
                 left: ev.clientX + offsetX,
                 top: ev.clientY + offsetY,
@@ -22320,7 +22486,7 @@
             };
             const onMouseMove = (ev) => {
                 const position = this.props.getGridBoundingClientRect();
-                const { top: viewportTop, left: viewportLeft, offsetY, offsetX, } = this.env.model.getters.getActiveSnappedViewport();
+                const { top: viewportTop, left: viewportLeft, offsetY, offsetX, } = this.env.model.getters.getActiveViewport();
                 this.state.position = {
                     left: ev.clientX - start.left + offsetX,
                     top: ev.clientY - start.top + offsetY,
@@ -22372,7 +22538,7 @@
     class ClientTag extends owl.Component {
         get tagStyle() {
             const { col, row, color } = this.props;
-            const viewport = this.env.model.getters.getActiveSnappedViewport();
+            const viewport = this.env.model.getters.getActiveViewport();
             const { height } = this.env.model.getters.getViewportDimensionWithHeaders();
             const [x, y, ,] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
             return `bottom: ${height - y + 15}px;left: ${x - 1}px;border: 1px solid ${color};background-color: ${color};${this.props.active ? "opacity:1 !important" : ""}`;
@@ -22925,14 +23091,12 @@
         }
         setup() {
             owl.onMounted(() => {
-                DEBUG.composer = this;
                 const el = this.composerRef.el;
                 this.contentHelper.updateEl(el);
                 this.processContent();
             });
             owl.onWillUnmount(() => {
                 var _a, _b;
-                delete DEBUG.composer;
                 (_b = (_a = this.props).onComposerUnmounted) === null || _b === void 0 ? void 0 : _b.call(_a);
             });
             owl.onPatched(() => {
@@ -22947,8 +23111,10 @@
         processArrowKeys(ev) {
             if (this.env.model.getters.isSelectingForComposer()) {
                 this.functionDescriptionState.showDescription = false;
-                // let the event bubble to the grid. Arrows are supposed
-                // to select cells
+                // Prevent the default content editable behavior which moves the cursor
+                // but don't stop the event and let it bubble to the grid which will
+                // update the selection accordingly
+                ev.preventDefault();
                 return;
             }
             // only for arrow up and down
@@ -23011,23 +23177,17 @@
             this.processContent();
         }
         onKeydown(ev) {
-            var _a, _b;
             let handler = this.keyMapping[ev.key];
-            let isStopped = false;
             if (handler) {
                 handler.call(this, ev);
             }
             else {
-                isStopped = true;
                 ev.stopPropagation();
             }
             const { start, end } = this.contentHelper.getCurrentSelection();
             if (!this.env.model.getters.isSelectingForComposer()) {
                 this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", { start, end });
                 this.isKeyStillDown = true;
-            }
-            if (!isStopped) {
-                (_b = (_a = this.props).onKeyDown) === null || _b === void 0 ? void 0 : _b.call(_a, ev);
             }
         }
         /*
@@ -23278,13 +23438,13 @@
       rect = "composerState.rect"
       delimitation = "composerState.delimitation"
       onComposerUnmounted="props.onComposerUnmounted"
-      onKeyDown="(ev) => this.onKeyDown(ev)"
+      onComposerContentFocused="props.onComposerContentFocused"
     />
   </div>
 `;
     const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
     css /* scss */ `
-  .o-grid-composer {
+  div.o-grid-composer {
     z-index: 5;
     box-sizing: border-box;
     position: absolute;
@@ -23309,7 +23469,7 @@
                 top: row,
                 bottom: row,
             });
-            this.rect = this.env.model.getters.getRect(this.zone, this.env.model.getters.getActiveSnappedViewport());
+            this.rect = this.env.model.getters.getRect(this.zone, this.env.model.getters.getActiveViewport());
             owl.onMounted(() => {
                 const el = this.gridComposerRef.el;
                 //TODO Should be more correct to have a props that give the parent's clientHeight and clientWidth
@@ -23367,19 +23527,12 @@
       overflow: hidden;
     `;
         }
-        onKeyDown(ev) {
-            // In selecting mode, arrows should not move the cursor but it should
-            // select adjacent cells on the grid.
-            if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
-                ev.preventDefault();
-            }
-        }
     }
     GridComposer.template = TEMPLATE$b;
     GridComposer.components = { Composer };
 
     const TEMPLATE$a = owl.xml /* xml */ `
-    <div class="o-error-tooltip">
+    <div class="o-error-tooltip"> 
       <t t-esc="props.text"/>
     </div>
 `;
@@ -23549,21 +23702,22 @@
                  t-att-class="{active: info.isSelected, 'o-dragging': info.id === dnd.figureId}"
                  t-att-style="getDims(info)"
                  tabindex="0"
-                 t-on-keydown.stop="(ev) => this.onKeyDown(info.figure, ev)">
+                 t-on-keydown.stop="(ev) => this.onKeyDown(info.figure, ev)"
+                 t-on-keyup.stop="">
                 <t t-component="figureRegistry.get(info.figure.tag).Component"
                    t-key="info.id"
                    sidePanelIsOpen="props.sidePanelIsOpen"
                    onFigureDeleted="props.onFigureDeleted"
                    figure="info.figure"/>
                 <t t-if="info.isSelected">
-                    <div class="o-anchor o-top" t-on-mousedown.stop="(ev) => resize(info.figure, 0,-1, ev)"/>
-                    <div class="o-anchor o-topRight" t-on-mousedown.stop="(ev) => resize(info.figure, 1,-1, ev)"/>
-                    <div class="o-anchor o-right" t-on-mousedown.stop="(ev) => resize(info.figure, 1,0, ev)"/>
-                    <div class="o-anchor o-bottomRight" t-on-mousedown.stop="(ev) => resize(info.figure, 1,1, ev)"/>
-                    <div class="o-anchor o-bottom" t-on-mousedown.stop="(ev) => resize(info.figure, 0,1, ev)"/>
-                    <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="(ev) => resize(info.figure, -1,1, ev)"/>
-                    <div class="o-anchor o-left" t-on-mousedown.stop="(ev) => resize(info.figure, -1,0, ev)"/>
-                    <div class="o-anchor o-topLeft" t-on-mousedown.stop="(ev) => resize(info.figure, -1,-1, ev)"/>
+                    <div class="o-anchor o-top" t-on-mousedown.stop="(ev) => this.resize(info.figure, 0,-1, ev)"/>
+                    <div class="o-anchor o-topRight" t-on-mousedown.stop="(ev) => this.resize(info.figure, 1,-1, ev)"/>
+                    <div class="o-anchor o-right" t-on-mousedown.stop="(ev) => this.resize(info.figure, 1,0, ev)"/>
+                    <div class="o-anchor o-bottomRight" t-on-mousedown.stop="(ev) => this.resize(info.figure, 1,1, ev)"/>
+                    <div class="o-anchor o-bottom" t-on-mousedown.stop="(ev) => this.resize(info.figure, 0,1, ev)"/>
+                    <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="(ev) => this.resize(info.figure, -1,1, ev)"/>
+                    <div class="o-anchor o-left" t-on-mousedown.stop="(ev) => this.resize(info.figure, -1,0, ev)"/>
+                    <div class="o-anchor o-topLeft" t-on-mousedown.stop="(ev) => this.resize(info.figure, -1,-1, ev)"/>
                 </t>
             </div>
         </div>
@@ -23582,7 +23736,7 @@
     overflow: hidden;
   }
 
-  .o-figure {
+  div.o-figure {
     border: 1px solid black;
     box-sizing: border-box;
     position: absolute;
@@ -23679,7 +23833,7 @@
         }
         getStyle(info) {
             const { figure, isSelected } = info;
-            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
             const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
             const { width, height } = target;
             let x = target.x - offsetX + HEADER_WIDTH - 1;
@@ -23857,7 +24011,7 @@
             const topValue = isTop ? top : bottom;
             const widthValue = isHorizontal ? right - left : lineWidth;
             const heightValue = isVertical ? bottom - top : lineWidth;
-            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
             return `
         left:${leftValue + HEADER_WIDTH - offsetX}px;
         top:${topValue + HEADER_HEIGHT - offsetY}px;
@@ -23915,7 +24069,7 @@
             this.isLeft = this.props.orientation[1] === "w";
         }
         get style() {
-            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
             const s = this.env.model.getters.getActiveSheet();
             const z = this.props.zone;
             const leftValue = this.isLeft ? s.cols[z.left].start : s.cols[z.right].end;
@@ -24003,9 +24157,10 @@
             const parent = this.highlightRef.el.parentElement;
             const position = parent.getBoundingClientRect();
             const activeSheet = this.env.model.getters.getActiveSheet();
-            const { top: viewportTop, left: viewportLeft } = this.env.model.getters.getActiveSnappedViewport();
-            const initCol = this.env.model.getters.getColIndex(clientX - position.left, viewportLeft);
-            const initRow = this.env.model.getters.getRowIndex(clientY - position.top, viewportTop);
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            // TODO: probably false, should be offsetX and offsetY from viewport
+            const initCol = this.env.model.getters.getColIndex(clientX - position.left, offsetX);
+            const initRow = this.env.model.getters.getRowIndex(clientY - position.top, offsetY);
             const deltaColMin = -z.left;
             const deltaColMax = activeSheet.cols.length - z.right - 1;
             const deltaRowMin = -z.top;
@@ -24330,9 +24485,6 @@
     LinkEditor.template = TEMPLATE$3;
     LinkEditor.components = { Menu };
 
-    // -----------------------------------------------------------------------------
-    // Resizer component
-    // -----------------------------------------------------------------------------
     class AbstractResizer extends owl.Component {
         constructor() {
             super(...arguments);
@@ -24638,16 +24790,16 @@
             return ev.offsetX + HEADER_WIDTH;
         }
         _getStateOffset() {
-            return this.env.model.getters.getActiveSnappedViewport().offsetX - HEADER_WIDTH;
+            return this.env.model.getters.getActiveViewport().offsetX - HEADER_WIDTH;
         }
         _getViewportOffset() {
-            return this.env.model.getters.getActiveSnappedViewport().left;
+            return this.env.model.getters.getActiveViewport().left;
         }
         _getClientPosition(ev) {
             return ev.clientX;
         }
         _getElementIndex(index) {
-            return this.env.model.getters.getColIndex(index, this.env.model.getters.getActiveSnappedViewport().left);
+            return this.env.model.getters.getColIndex(index, this.env.model.getters.getActiveViewport().offsetX);
         }
         _getSelectedZoneStart() {
             return this.env.model.getters.getSelectedZone().left;
@@ -24659,7 +24811,7 @@
             return this.env.model.getters.getEdgeScrollCol(position);
         }
         _getBoundaries() {
-            const { left, right } = this.env.model.getters.getActiveSnappedViewport();
+            const { left, right } = this.env.model.getters.getActiveViewport();
             return { first: left, last: right };
         }
         _getElement(index) {
@@ -24709,10 +24861,10 @@
             this.env.model.selection.selectColumn(index, "updateAnchor");
         }
         _adjustViewport(direction) {
-            const { left, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const { left, offsetY } = this.env.model.getters.getActiveViewport();
             const { cols } = this.env.model.getters.getActiveSheet();
             const offsetX = cols[left + direction].start;
-            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+            this.props.onSetScrollbarValue(offsetX, offsetY);
         }
         _fitElementSize(index) {
             const cols = this.env.model.getters.getActiveCols();
@@ -24849,16 +25001,16 @@
             return ev.offsetY + HEADER_HEIGHT;
         }
         _getStateOffset() {
-            return this.env.model.getters.getActiveSnappedViewport().offsetY - HEADER_HEIGHT;
+            return this.env.model.getters.getActiveViewport().offsetY - HEADER_HEIGHT;
         }
         _getViewportOffset() {
-            return this.env.model.getters.getActiveSnappedViewport().top;
+            return this.env.model.getters.getActiveViewport().top;
         }
         _getClientPosition(ev) {
             return ev.clientY;
         }
         _getElementIndex(index) {
-            return this.env.model.getters.getRowIndex(index, this.env.model.getters.getActiveSnappedViewport().top);
+            return this.env.model.getters.getRowIndex(index, this.env.model.getters.getActiveViewport().offsetY);
         }
         _getSelectedZoneStart() {
             return this.env.model.getters.getSelectedZone().top;
@@ -24870,7 +25022,7 @@
             return this.env.model.getters.getEdgeScrollRow(position);
         }
         _getBoundaries() {
-            const { top, bottom } = this.env.model.getters.getActiveSnappedViewport();
+            const { top, bottom } = this.env.model.getters.getActiveViewport();
             return { first: top, last: bottom };
         }
         _getElement(index) {
@@ -24917,10 +25069,10 @@
             this.env.model.selection.selectRow(index, "updateAnchor");
         }
         _adjustViewport(direction) {
-            const { top, offsetX } = this.env.model.getters.getActiveSnappedViewport();
+            const { top, offsetX } = this.env.model.getters.getActiveViewport();
             const { rows } = this.env.model.getters.getActiveSheet();
             const offsetY = rows[top + direction].start;
-            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+            this.props.onSetScrollbarValue(offsetX, offsetY);
         }
         _fitElementSize(index) {
             const rows = this.env.model.getters.getActiveRows();
@@ -25002,8 +25154,8 @@
     }
     Overlay.template = owl.xml /* xml */ `
     <div class="o-overlay">
-      <ColResizer onOpenContextMenu="props.onOpenContextMenu" />
-      <RowResizer onOpenContextMenu="props.onOpenContextMenu" />
+      <ColResizer onOpenContextMenu="props.onOpenContextMenu" onSetScrollbarValue="props.onSetScrollbarValue"/>
+      <RowResizer onOpenContextMenu="props.onOpenContextMenu" onSetScrollbarValue="props.onSetScrollbarValue"/>
       <div class="all" t-on-mousedown.self="selectAll"/>
     </div>`;
     Overlay.components = { ColResizer, RowResizer };
@@ -25048,9 +25200,9 @@
         let lastMoved = 0;
         let interval;
         function getPosition() {
-            const viewport = getViewPort();
-            const col = env.model.getters.getColIndex(x, viewport.left);
-            const row = env.model.getters.getRowIndex(y, viewport.top);
+            const { offsetX, offsetY } = getViewPort();
+            const col = env.model.getters.getColIndex(x, offsetX);
+            const row = env.model.getters.getRowIndex(y, offsetY);
             return [col, row];
         }
         function checkTiming() {
@@ -25083,7 +25235,7 @@
         });
         return hoveredPosition;
     }
-    function useTouchMove(handler, canMoveUp) {
+    function useTouchMove(handler, canMoveUp, getters) {
         const canvasRef = owl.useRef("canvas");
         let x = null;
         let y = null;
@@ -25109,7 +25261,8 @@
             }
             const currentX = ev.touches[0].clientX;
             const currentY = ev.touches[0].clientY;
-            handler(x - currentX, y - currentY);
+            const { offsetX, offsetY } = getters.getActiveViewport();
+            handler({ offsetX: offsetX + x - currentX, offsetY: offsetY + y - currentY });
             x = currentX;
             y = currentY;
         }
@@ -25132,6 +25285,7 @@
     <t t-if="env.model.getters.getEditionMode() !== 'inactive'">
       <GridComposer
         onComposerUnmounted="() => this.focus()"
+        onComposerContentFocused="props.onComposerContentFocused"
         focus="props.focusComposer"
         />
     </t>
@@ -25184,11 +25338,11 @@
         </t>
       </t>
     </t>
-    <Overlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)" />
+    <Overlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)" onSetScrollbarValue="(offsetX, offsetY) => this.setScrollbarValue(offsetX, offsetY)" />
     <Menu t-if="menuState.isOpen"
       menuItems="menuState.menuItems"
       position="menuState.position"
-      onClose="() => this.menuState.isOpen=false"/>
+      onClose="() => this.closeMenu()"/>
     <t t-set="gridSize" t-value="env.model.getters.getMaxViewportSize(env.model.getters.getActiveSheet())"/>
     <FiguresContainer model="props.model" sidePanelIsOpen="props.sidePanelIsOpen" onFigureDeleted="() => this.focus()" />
     <div class="o-scrollbar vertical" t-on-scroll="onScroll" t-ref="vscrollbar">
@@ -25363,12 +25517,13 @@
             this.clickedCol = 0;
             this.clickedRow = 0;
             this.clipBoardString = "";
-            this.hoveredCell = useCellHovered(this.env, () => this.env.model.getters.getActiveSnappedViewport());
+            this.hoveredCell = useCellHovered(this.env, () => this.env.model.getters.getActiveViewport());
             owl.useExternalListener(document.body, "cut", this.copy.bind(this, true));
             owl.useExternalListener(document.body, "copy", this.copy.bind(this, false));
             owl.useExternalListener(document.body, "paste", this.paste);
-            useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0);
+            useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0, this.env.model.getters);
             owl.onMounted(() => this.initGrid());
+            owl.onWillUnmount(() => this.env.model.off("notify-ui", this));
             owl.onPatched(() => {
                 this.drawGrid();
                 this.resizeGrid();
@@ -25378,9 +25533,17 @@
         initGrid() {
             this.vScrollbar.el = this.vScrollbarRef.el;
             this.hScrollbar.el = this.hScrollbarRef.el;
+            this.env.model.on("notify-ui", this, this.onNotifyUI);
             this.focus();
             this.resizeGrid();
             this.drawGrid();
+        }
+        onNotifyUI(payload) {
+            switch (payload.type) {
+                case "SCROLL":
+                    this.moveCanvas({ offsetX: payload.offsetX, offsetY: payload.offsetY });
+                    break;
+            }
         }
         get errorTooltip() {
             const { col, row } = this.hoveredCell;
@@ -25391,7 +25554,7 @@
             const [mainCol, mainRow] = this.env.model.getters.getMainCell(sheetId, col, row);
             const cell = this.env.model.getters.getCell(sheetId, mainCol, mainRow);
             if (cell && cell.evaluated.type === CellValueType.error) {
-                const viewport = this.env.model.getters.getActiveSnappedViewport();
+                const viewport = this.env.model.getters.getActiveViewport();
                 const [x, y, width] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
                 return {
                     isOpen: true,
@@ -25408,7 +25571,7 @@
         get shouldDisplayLink() {
             const sheetId = this.env.model.getters.getActiveSheetId();
             const { col, row } = this.activeCellPosition;
-            const viewport = this.env.model.getters.getActiveSnappedViewport();
+            const viewport = this.env.model.getters.getActiveViewport();
             const cell = this.env.model.getters.getCell(sheetId, col, row);
             return (this.env.model.getters.isVisibleInViewport(col, row, viewport) &&
                 !!cell &&
@@ -25423,7 +25586,7 @@
          */
         get popoverPosition() {
             const [col, row] = this.env.model.getters.getBottomLeftCell(this.env.model.getters.getActiveSheetId(), ...this.env.model.getters.getPosition());
-            const viewport = this.env.model.getters.getActiveSnappedViewport();
+            const viewport = this.env.model.getters.getActiveViewport();
             const [x, y, width, height] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
             return {
                 position: { x, y: y + height + TOPBAR_HEIGHT },
@@ -25465,6 +25628,9 @@
                     offsetY: Math.min(this.vScrollbar.scroll, maxOffsetY),
                 });
             }
+            else {
+                this.render();
+            }
         }
         checkSheetChanges() {
             const currentSheet = this.env.model.getters.getActiveSheetId();
@@ -25476,17 +25642,13 @@
         getAutofillPosition() {
             const zone = this.env.model.getters.getSelectedZone();
             const sheet = this.env.model.getters.getActiveSheet();
-            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
             return {
                 left: sheet.cols[zone.right].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
                 top: sheet.rows[zone.bottom].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
             };
         }
         drawGrid() {
-            //reposition scrollbar
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            this.hScrollbar.scroll = offsetX;
-            this.vScrollbar.scroll = offsetY;
             // check for position changes
             this.checkSheetChanges();
             // drawing grid on canvas
@@ -25510,13 +25672,9 @@
             ctx.scale(dpr, dpr);
             this.env.model.drawGrid(renderingContext);
         }
-        moveCanvas(deltaX, deltaY) {
-            this.vScrollbar.scroll = this.vScrollbar.scroll + deltaY;
-            this.hScrollbar.scroll = this.hScrollbar.scroll + deltaX;
-            this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
-                offsetX: this.hScrollbar.scroll,
-                offsetY: this.vScrollbar.scroll,
-            });
+        moveCanvas(ev) {
+            this.hScrollbar.scroll = ev.offsetX;
+            this.vScrollbar.scroll = ev.offsetY;
         }
         getClientPositionKey(client) {
             var _a, _b, _c;
@@ -25531,7 +25689,10 @@
             }
             const deltaX = ev.shiftKey ? ev.deltaY : ev.deltaX;
             const deltaY = ev.shiftKey ? ev.deltaX : ev.deltaY;
-            this.moveCanvas(normalize(deltaX), normalize(deltaY));
+            this.moveCanvas({
+                offsetX: this.hScrollbar.scroll + normalize(deltaX),
+                offsetY: this.vScrollbar.scroll + normalize(deltaY),
+            });
         }
         isCellHovered(col, row) {
             return this.hoveredCell.col === col && this.hoveredCell.row === row;
@@ -25550,9 +25711,9 @@
         }
         getCartesianCoordinates(ev) {
             const [x, y] = this.getCoordinates(ev);
-            const { left, top } = this.env.model.getters.getActiveSnappedViewport();
-            const colIndex = this.env.model.getters.getColIndex(x, left);
-            const rowIndex = this.env.model.getters.getRowIndex(y, top);
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const colIndex = this.env.model.getters.getColIndex(x, offsetX);
+            const rowIndex = this.env.model.getters.getRowIndex(y, offsetY);
             return [colIndex, rowIndex];
         }
         onMouseDown(ev) {
@@ -25602,20 +25763,20 @@
                 timeoutDelay = 0;
                 const colEdgeScroll = this.env.model.getters.getEdgeScrollCol(x);
                 const rowEdgeScroll = this.env.model.getters.getEdgeScrollRow(y);
-                const { left, right, top, bottom } = this.env.model.getters.getActiveSnappedViewport();
+                const { left, right, top, bottom, offsetX, offsetY } = this.env.model.getters.getActiveViewport();
                 let col, row;
                 if (colEdgeScroll.canEdgeScroll) {
                     col = colEdgeScroll.direction > 0 ? right : left - 1;
                 }
                 else {
-                    col = this.env.model.getters.getColIndex(x, left);
+                    col = this.env.model.getters.getColIndex(x, offsetX);
                     col = col === -1 ? prevCol : col;
                 }
                 if (rowEdgeScroll.canEdgeScroll) {
                     row = rowEdgeScroll.direction > 0 ? bottom : top - 1;
                 }
                 else {
-                    row = this.env.model.getters.getRowIndex(y, top);
+                    row = this.env.model.getters.getRowIndex(y, offsetY);
                     row = row === -1 ? prevRow : row;
                 }
                 isEdgeScrolling = colEdgeScroll.canEdgeScroll || rowEdgeScroll.canEdgeScroll;
@@ -25628,7 +25789,7 @@
                 if (isEdgeScrolling) {
                     const offsetX = sheet.cols[left + colEdgeScroll.direction].start;
                     const offsetY = sheet.rows[top + rowEdgeScroll.direction].start;
-                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+                    this.moveCanvas({ offsetX, offsetY });
                     timeOutId = setTimeout(() => {
                         timeOutId = null;
                         onMouseMove(currentEv);
@@ -25677,17 +25838,14 @@
                 const oldZone = this.env.model.getters.getSelectedZone();
                 this.env.model.selection.resizeAnchorZone(delta[0], delta[1]);
                 const newZone = this.env.model.getters.getSelectedZone();
-                const viewport = this.env.model.getters.getActiveSnappedViewport();
+                const viewport = this.env.model.getters.getActiveViewport();
                 const sheet = this.env.model.getters.getActiveSheet();
-                const [col, row] = findCellInNewZone(oldZone, newZone, viewport);
+                const [col, row] = findCellInNewZone(oldZone, newZone);
                 const { left, right, top, bottom, offsetX, offsetY } = viewport;
                 const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
                 const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
                 if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
-                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
-                        offsetX: newOffsetX,
-                        offsetY: newOffsetY,
-                    });
+                    this.moveCanvas({ offsetX: newOffsetX, offsetY: newOffsetY });
                 }
             }
             else {
@@ -25758,6 +25916,9 @@
             }
             this.toggleContextMenu(type, ev.offsetX, ev.offsetY);
         }
+        setScrollbarValue(offsetX, offsetY) {
+            this.moveCanvas({ offsetX, offsetY });
+        }
         toggleContextMenu(type, x, y) {
             this.closeLinkEditor();
             this.menuState.isOpen = true;
@@ -25801,6 +25962,10 @@
                     });
                 }
             }
+        }
+        closeMenu() {
+            this.menuState.isOpen = false;
+            this.focus();
         }
     }
     Grid.template = TEMPLATE$2;
@@ -26351,7 +26516,7 @@
                 onClose="() => this.state.menuState.isOpen=false"/>
         </div>
         <div class="o-topbar-topright">
-          <div t-foreach="topbarComponents" t-as="comp" t-key="comp_index">
+          <div t-foreach="topbarComponents" t-as="comp" t-key="comp.id">
             <t t-component="comp.component"/>
           </div>
         </div>
@@ -26463,9 +26628,9 @@
       onComposerContentFocused="() => this.onGridComposerContentFocused()"
       onGridComposerCellFocused="(content, selection) => this.onGridComposerCellFocused(content, selection)"/>
     <SidePanel t-if="sidePanel.isOpen"
-           onCloseSidePanel="() => this.sidePanel.isOpen = false"
-           component="sidePanel.component"
-           panelProps="sidePanel.panelProps"/>
+      onCloseSidePanel="() => this.closeSidePanel()"
+      component="sidePanel.component"
+      panelProps="sidePanel.panelProps"/>
     <BottomBar onClick="() => this.focusGrid()"/>
   </div>`;
     css /* scss */ `
@@ -26531,7 +26696,6 @@
             owl.useExternalListener(window, "beforeunload", this.unbindModelEvents.bind(this));
             owl.onMounted(() => this.bindModelEvents());
             owl.onWillUnmount(() => this.unbindModelEvents());
-            owl.onWillDestroy(() => this.model.destroy());
         }
         get focusTopBarComposer() {
             return this.model.getters.getEditionMode() === "inactive"
@@ -26562,6 +26726,10 @@
             this.sidePanel.component = panel;
             this.sidePanel.panelProps = panelProps;
             this.sidePanel.isOpen = true;
+        }
+        closeSidePanel() {
+            this.sidePanel.isOpen = false;
+            this.focusGrid();
         }
         openLinkEditor() {
             this.linkEditor.isOpen = true;
@@ -26673,6 +26841,8 @@
             this.registry.add(key, value);
             const debouncedLoaded = debounce(() => this.trigger("data-loaded", { id: key }), 0);
             value.on("data-loaded", this, () => debouncedLoaded());
+            value.on("metadata-loaded", this, () => this.trigger("metadata-loaded"));
+            value.on("error-caught", this, (data) => this.trigger("error-caught", { id: key, data }));
             value.loadMetadata();
             return this;
         }
@@ -26689,11 +26859,19 @@
             return this.registry.getAll();
         }
         /**
+         * Get a list of all elements in the registry
+         */
+        getKeys() {
+            return this.registry.getKeys();
+        }
+        /**
          * Remove an item from the registry
          */
         remove(key) {
             const value = this.get(key);
             value.off("data-loaded", this);
+            value.off("metadata-loaded", this);
+            value.off("error-caught", this);
             this.registry.remove(key);
         }
         /**
@@ -26732,6 +26910,7 @@
             if (!this.metadataPromise) {
                 this.metadataPromise = this._fetchMetadata().then((metadata) => {
                     this.metadata = metadata;
+                    this.trigger("metadata-loaded");
                     return metadata;
                 });
             }
@@ -27052,10 +27231,11 @@
         const field = executed.dimension === "COL" ? "col" : "row";
         let base = cmd[field];
         if (executed.type === "REMOVE_COLUMNS_ROWS") {
-            if (executed.elements.includes(base)) {
+            const elements = [...executed.elements].sort((a, b) => b - a);
+            if (elements.includes(base)) {
                 return "IGNORE_COMMAND";
             }
-            for (let removedElement of executed.elements) {
+            for (let removedElement of elements) {
                 if (base >= removedElement) {
                     base--;
                 }
@@ -27173,7 +27353,13 @@
             this.operations.push(operation);
         }
         /**
-         * Create and return a copy of this branch, starting at the given operationId
+         * Append operations in the given branch to this branch.
+         */
+        appendBranch(branch) {
+            this.operations = this.operations.concat(branch.operations);
+        }
+        /**
+         * Create and return a copy of this branch, starting after the given operationId
          */
         fork(operationId) {
             const { after } = this.locateOperation(operationId);
@@ -27183,7 +27369,21 @@
          * Transform all the operations in this branch with the given transformation
          */
         transform(transformation) {
-            this.operations = this.operations.map((operation) => operation.transformed(transformation, false));
+            this.operations = this.operations.map((operation) => operation.transformed(transformation));
+        }
+        /**
+         * Cut the branch before the operation, meaning the operation
+         * and all following operations are dropped.
+         */
+        cutBefore(operationId) {
+            this.operations = this.locateOperation(operationId).before;
+        }
+        /**
+         * Cut the branch after the operation, meaning all following operations are dropped.
+         */
+        cutAfter(operationId) {
+            const { before, operation } = this.locateOperation(operationId);
+            this.operations = before.concat([operation]);
         }
         /**
          * Find an operation in this branch based on its id.
@@ -27214,13 +27414,12 @@
      * to revert it).
      */
     class Operation {
-        constructor(id, data, isOriginal = true) {
+        constructor(id, data) {
             this.id = id;
             this.data = data;
-            this.isOriginal = isOriginal;
         }
-        transformed(transformation, isOriginal) {
-            return new Operation(this.id, transformation(this.data), isOriginal !== undefined ? isOriginal : this.isOriginal);
+        transformed(transformation) {
+            return new Operation(this.id, transformation(this.data));
         }
     }
 
@@ -27437,6 +27636,17 @@
             }
         }
         /**
+         * Drop the operation and all following operations in every
+         * branch
+         */
+        drop(operationId) {
+            for (const branch of this.branches) {
+                if (branch.contains(operationId)) {
+                    branch.cutBefore(operationId);
+                }
+            }
+        }
+        /**
          * Find the operation in the execution path.
          */
         findOperation(branch, operationId) {
@@ -27446,22 +27656,6 @@
                 }
             }
             throw new Error(`Operation ${operationId} not found`);
-        }
-        /**
-         * Find the branch in which the operation was first inserted.
-         */
-        findOriginBranch(branch, operationId) {
-            let currentBranch = branch;
-            while (currentBranch) {
-                if (currentBranch.getOperation(operationId).isOriginal) {
-                    return currentBranch;
-                }
-                currentBranch = this.previousBranch(currentBranch);
-            }
-            if (!currentBranch) {
-                throw new Error("Branch not found");
-            }
-            return currentBranch;
         }
         /**
          * Rebuild transformed operations of this branch based on the upper branch.
@@ -27545,7 +27739,7 @@
         getTransformedOperation(branch, branchingId, operation) {
             const branchingOperation = branch.getOperation(branchingId);
             const branchingTransformation = this.buildTransformation.without(branchingOperation.data);
-            return operation.transformed(branchingTransformation, false);
+            return operation.transformed(branchingTransformation);
         }
         /**
          * Check if this branch should execute the given operation.
@@ -27572,8 +27766,11 @@
             if (!previousBranch || !branchingOperation)
                 return;
             const transformation = this.buildTransformation.with(branchingOperation.data);
-            const operationToInsert = newOperation.transformed(transformation, false);
-            previousBranch.insert(operationToInsert, insertAfter);
+            const branchTail = branch.fork(insertAfter);
+            branchTail.transform(transformation);
+            previousBranch.cutAfter(insertAfter);
+            previousBranch.appendBranch(branchTail);
+            const operationToInsert = newOperation.transformed(transformation);
             this.insertPrevious(previousBranch, operationToInsert, insertAfter);
         }
         findPreviousBranchingOperation(branch) {
@@ -27710,32 +27907,36 @@
         insert(operationId, data, insertAfter) {
             const operation = new Operation(operationId, data);
             this.revertTo(insertAfter);
-            // insert to branch where it first was executed!
-            const branch = this.tree.findOriginBranch(this.HEAD_BRANCH, insertAfter);
-            this.tree.insertOperationAfter(branch, operation, insertAfter);
+            this.tree.insertOperationAfter(this.HEAD_BRANCH, operation, insertAfter);
             this.fastForward();
         }
         /**
          * @param operationId operation to undo
          * @param undoId the id of the "undo operation"
+         * @param insertAfter the id of the operation after which to insert the undo
          */
-        undo(operationId, undoId) {
+        undo(operationId, undoId, insertAfter) {
             const { branch, operation } = this.tree.findOperation(this.HEAD_BRANCH, operationId);
             this.revertBefore(operationId);
             this.tree.undo(branch, operation);
             this.fastForward();
-            this.append(undoId, this.buildEmpty(undoId));
+            this.insert(undoId, this.buildEmpty(undoId), insertAfter);
         }
         /**
          * @param operationId operation to redo
          * @param redoId the if of the "redo operation"
+         * @param insertAfter the id of the operation after which to insert the redo
          */
-        redo(operationId, redoId) {
+        redo(operationId, redoId, insertAfter) {
             const { branch } = this.tree.findOperation(this.HEAD_BRANCH, operationId);
             this.revertBefore(operationId);
             this.tree.redo(branch);
             this.fastForward();
-            this.append(redoId, this.buildEmpty(redoId));
+            this.insert(redoId, this.buildEmpty(redoId), insertAfter);
+        }
+        drop(operationId) {
+            this.revertBefore(operationId);
+            this.tree.drop(operationId);
         }
         /**
          * Revert the state as it was *before* the given operation was executed.
@@ -27863,6 +28064,7 @@
             this.session.on("new-local-state-update", this, this.onNewLocalStateUpdate);
             this.session.on("revision-undone", this, ({ commands }) => this.selectiveUndo(commands));
             this.session.on("revision-redone", this, ({ commands }) => this.selectiveRedo(commands));
+            this.session.on("pending-revisions-dropped", this, ({ revisionIds }) => this.drop(revisionIds));
             this.session.on("snapshot", this, () => {
                 this.undoStack = [];
                 this.redoStack = [];
@@ -27919,6 +28121,11 @@
         }
         canRedo() {
             return this.redoStack.length > 0;
+        }
+        drop(revisionIds) {
+            this.undoStack = this.undoStack.filter((id) => !revisionIds.includes(id));
+            this.redoStack = [];
+            this.isWaitingForUndoRedo = false;
         }
         onNewLocalStateUpdate({ id }) {
             this.undoStack.push(id);
@@ -28546,7 +28753,7 @@
             if (prefixSheet && !sheetName) {
                 return INCORRECT_RANGE_STRING;
             }
-            let ref = Array(9);
+            let ref = Array(9).fill("");
             ref[0] = range.parts && range.parts[0].colFixed ? "$" : "";
             ref[1] = numberToLetters(range.zone.left);
             ref[2] = range.parts && range.parts[0].rowFixed ? "$" : "";
@@ -28566,7 +28773,7 @@
                     ref[8] = String(range.zone.bottom + 1);
                 }
             }
-            return `${prefixSheet ? sheetName + "!" : ""}${ref.join("")}`;
+            return `${prefixSheet ? sheetName + "!" : ""}${concat(ref)}`;
         }
         // ---------------------------------------------------------------------------
         // Private
@@ -29503,7 +29710,7 @@
             const value = expressions[i] instanceof XMLString ? expressions[i] : xmlEscape(expressions[i]);
             str.push(value + strings[i + 1]);
         }
-        return new XMLString(str.join(""));
+        return new XMLString(concat(str));
     }
 
     /**
@@ -30855,7 +31062,6 @@
                 this.status = previousStatus;
                 return DispatchResult.Success;
             };
-            DEBUG.model = this;
             const workbookData = load(data);
             this.state = new StateObserver();
             this.uuidGenerator = uuidGenerator;
@@ -30914,9 +31120,6 @@
         }
         leaveSession() {
             this.session.leave();
-        }
-        destroy() {
-            delete DEBUG.model;
         }
         setupUiPlugin(Plugin) {
             if (Plugin.modes.includes(this.config.mode)) {
@@ -30980,6 +31183,7 @@
             };
             const transportService = config.transportService || new LocalTransportService();
             return {
+                ...config,
                 mode: config.mode || "normal",
                 evalContext: config.evalContext || {},
                 transportService,
@@ -31029,7 +31233,7 @@
          * canvas and need to draw the grid on it.  This is then done by calling this
          * method, which will dispatch the call to all registered plugins.
          *
-         * Note that nothing prevent multiple grid components from calling this method
+         * Note that nothing prevents multiple grid components from calling this method
          * each, or one grid component calling it multiple times with a different
          * context. This is probably the way we should do if we want to be able to
          * freeze a part of the grid (so, we would need to render different zones)
@@ -31037,7 +31241,6 @@
         drawGrid(context) {
             // we make sure here that the viewport is properly positioned: the offsets
             // correspond exactly to a cell
-            context.viewport = this.getters.getActiveSnappedViewport(); //snaped one
             for (let [renderer, layer] of this.renderers) {
                 context.ctx.save();
                 renderer.drawGrid(context, layer);
@@ -31169,7 +31372,6 @@
     exports.SPREADSHEET_DIMENSIONS = SPREADSHEET_DIMENSIONS;
     exports.Spreadsheet = Spreadsheet;
     exports.UIPlugin = UIPlugin;
-    exports.__DEBUG__ = DEBUG;
     exports.__info__ = __info__;
     exports.astToFormula = astToFormula;
     exports.cellTypes = cellTypes;
@@ -31187,8 +31389,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-02-15T12:50:39.802Z';
-    exports.__info__.hash = 'd979317';
+    exports.__info__.date = '2022-03-02T14:00:02.488Z';
+    exports.__info__.hash = 'abcb367';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

@@ -3,6 +3,10 @@
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 const { inverseCommandRegistry, otRegistry } = spreadsheet.registries;
 
+function identity(cmd) {
+  return [cmd];
+}
+
 otRegistry.addTransformation(
   "REMOVE_GLOBAL_FILTER",
   ["EDIT_GLOBAL_FILTER"],
@@ -11,6 +15,7 @@ otRegistry.addTransformation(
 );
 
 inverseCommandRegistry
+  .add("EDIT_GLOBAL_FILTER", identity)
   .add("ADD_GLOBAL_FILTER", (cmd) => {
     return [
       {

@@ -87,6 +87,9 @@ class DataCleaningModel(models.Model):
         existing_rows = self._cr.fetchall()
 
         records = self.env[self.res_model_name].search([(field, 'not in', [False, ''])])
+        records = records.with_context(prefetch_fields=False)
+        # Avoids multiple select queries when reading fields in _get_country_id and record[field].
+        records.read([fname for fname in ['country_id', 'company_id'] if fname in records] + [field])
         field_id = actions[field]['field_id']
         rule_ids = actions[field]['rule_ids']
         result = []

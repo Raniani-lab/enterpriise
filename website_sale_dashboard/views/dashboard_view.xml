@@ -61,7 +61,7 @@
                 </xpath>
 
                 <xpath expr="//filter[@name='confirmed']" position="after">
-                    <filter string="Unpaid Orders" name="unpaid" domain="['&amp;', ('state', '=', 'sent'), ('invoice_status', '=', 'to invoice')]"/>
+                    <filter string="Unpaid Orders" name="unpaid" domain="[('state', '=', 'sent')]"/>
                     <filter string="Abandoned Carts" name="abandoned" domain="[('is_abandoned_cart', '=', True)]"/>
                 </xpath>
             </field>

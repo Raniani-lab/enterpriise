@@ -122,8 +122,13 @@ const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
             }
         }
         const rows = this._super(params);
-        // always move an empty row to the head
+        // always move an empty row to the head and sort rows alphabetically
         if (groupedBy && groupedBy.length && rows.length > 1 && rows[0].resId) {
+            rows.sort((curr, next) => {
+                if (curr.resId && !next.resId) return 1;
+                if (!curr.resId && next.resId) return -1;
+                return curr.name.toLowerCase() > next.name.toLowerCase() ? 1 : -1;
+            });
             this._reorderEmptyRow(rows);
         }
         return rows;

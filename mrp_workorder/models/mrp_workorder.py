@@ -510,7 +510,7 @@ class MrpProductionWorkcenterLine(models.Model):
             else:
                 index = list(self.production_id.workorder_ids).index(self)
                 backorder = (self.production_id.procurement_group_id.mrp_production_ids - self.production_id).filtered(
-                    lambda p: p.workorder_ids[index].state not in ('cancel', 'done')
+                    lambda p: index < len(p.workorder_ids) and p.workorder_ids[index].state not in ('cancel', 'done')
                 )[:1]
 
         # One a piece is produced, you can launch the next work order

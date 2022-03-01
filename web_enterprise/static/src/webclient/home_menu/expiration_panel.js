@@ -281,8 +281,9 @@ export class ExpirationPanel extends LegacyComponent {
             // Same remark as above (we just want to show clear button)
             this.state.diffDays = this._computeDiffDays(expirationDate);
         } else {
-            const params = enterpriseCode ? { contract: enterpriseCode } : {};
-            this.env.services.navigate("https://www.odoo.com/odoo-enterprise/renew", params);
+            const url = "https://www.odoo.com/odoo-enterprise/renew";
+            const contractQueryString = enterpriseCode ? `?contract=${enterpriseCode}` : "";
+            browser.location = `${url}${contractQueryString}`;
         }
     }
 

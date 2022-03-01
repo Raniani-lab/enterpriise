@@ -785,6 +785,87 @@ QUnit.module("web_enterprise", {}, function () {
         assert.hasClass(panel.el, "alert-info", "Color should be grey");
     });
 
+    QUnit.test("One app installed, navigation to renewal page", async function (assert) {
+        assert.expect(15);
+
+        patchDate(2019, 11, 10, 0, 0, 0);
+
+        let callToGetParamCount = 0;
+
+        const panel = await createExpirationPanel({
+            enterprise: {
+                expirationDate: "2019-10-20 12:00:00",
+                expirationReason: "renewal",
+                isMailInstalled: true,
+                warning: "admin",
+            },
+            cookie: {
+                setCookie() {
+                    assert.step("setCookie");
+                },
+            },
+            ui: {
+                block() {
+                    assert.step("blockUI");
+                },
+                unblock() {
+                    assert.step("unblockUI");
+                },
+            },
+            mockRPC(route, args) {
+                if (args.method === "get_param") {
+                    assert.step("get_param");
+                    callToGetParamCount++;
+                    if (callToGetParamCount === 1) {
+                        return "2019-10-20 12:00:00";
+                    } else if (callToGetParamCount === 2) {
+                        assert.strictEqual(args.args[0], "database.expiration_date");
+                        return "2019-11-09 12:00:00";
+                    } else {
+                        assert.strictEqual(args.args[0], "database.enterprise_code");
+                        return "ABC";
+                    }
+                }
+                if (args.method === "update_notification") {
+                    assert.step("update_notification");
+                }
+                return true;
+            },
+        });
+
+        assert.strictEqual(
+            panel.el.querySelector(".oe_instance_register").innerText,
+            "This database has expired. Renew your subscription"
+        );
+
+        assert.hasClass(panel.el, "alert-danger");
+        assert.containsOnce(panel.el, ".oe_instance_renew", "Part 'Register your subscription'");
+        assert.containsOnce(
+            panel.el,
+            "a.check_enterprise_status",
+            "there should be a button for status checking"
+        );
+
+        assert.containsNone(panel.el, ".oe_instance_register_form");
+
+        // Click on 'Renew your subscription'
+        await click(panel.el.querySelector(".oe_instance_renew"));
+
+        assert.strictEqual(
+            browser.location,
+            "https://www.odoo.com/odoo-enterprise/renew?contract=ABC"
+        );
+
+        assert.verifySteps([
+            "blockUI",
+            "get_param",
+            "setCookie",
+            "update_notification",
+            "get_param",
+            "get_param",
+        ]);
+    });
+
     QUnit.test("One app installed, different locale (arabic)", async function (assert) {
         assert.expect(1);
 

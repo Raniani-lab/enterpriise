@@ -398,6 +398,9 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
                 records: { }
             };
             for (const record of row.records) {
+                if (!this._shouldRenderRecordConnectors(record)) {
+                    continue;
+                }
                 const recordElementSelector = `${this._connectorsCssSelectors.pill}[data-id="${record.id}"]`;
                 const pillElement = rowElement.querySelector(recordElementSelector);
                 this._rowsAndRecordsDict.rows[row.id].records[record.id] = {
@@ -963,6 +966,16 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
      */
     _shouldRenderConnectors() {
         return this._isInDom && !this.state.isSample && !device.isMobile && this.state.groupedBy.length <= 1;
+    },
+    /**
+     * Returns whether connectors should be rendered on particular records or not.
+     * This method is intended to be overridden in particular modules in order to set particular record's condition.
+     *
+     * @return {boolean}
+     * @private
+     */
+    _shouldRenderRecordConnectors(record) {
+        return true;
     },
     /**
      * Toggles popover visibility.

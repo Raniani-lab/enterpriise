@@ -86,6 +86,13 @@ export default GanttRenderer.extend({
         await this._super(...arguments);
         this.el.classList.add('o_project_gantt');
     },
+    /**
+     * @private
+     * @override
+     */
+    _shouldRenderRecordConnectors(record) {
+        return record.allow_task_dependencies && this._super(...arguments);
+    },
 
     //--------------------------------------------------------------------------
     // Public

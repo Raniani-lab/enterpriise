@@ -395,6 +395,95 @@ QUnit.test('Connectors are correctly computed and rendered.', async function (as
     assert.equal(gantt.el.querySelectorAll(CSS.SELECTOR.CONNECTOR).length, Object.keys(tests).length, 'All connectors should be rendered.');
 });
 
+QUnit.test('Connectors are rendered according to _shouldRenderRecordConnectors.', async function (assert) {
+    /**
+     * This test checks that _shouldRenderRecordConnectors effectively allows to prevent connectors to be rendered
+     * for records the function would return false for.
+     */
+
+    assert.expect(1);
+
+    testUtils.mock.patch(TestGanttRenderer, {
+        _shouldRenderRecordConnectors(record) {
+            return record.id !== 1;
+        },
+    });
+
+    ganttViewParams.data = {
+        'project.task': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+                planned_date_begin: { string: 'Start Date', type: 'datetime' },
+                planned_date_end: { string: 'Stop Date', type: 'datetime' },
+                project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
+                user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
+                allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
+                depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
+            },
+            records: [
+                {
+                    id: 1,
+                    name: 'Task 1',
+                    planned_date_begin: '2021-10-11 18:30:00',
+                    planned_date_end: '2021-10-11 19:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [],
+                },
+                {
+                    id: 2,
+                    name: 'Task 2',
+                    planned_date_begin: '2021-10-12 11:30:00',
+                    planned_date_end: '2021-10-12 12:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [1],
+                },
+                {
+                    id: 3,
+                    name: 'Task 3',
+                    planned_date_begin: '2021-10-13 06:30:00',
+                    planned_date_end: '2021-10-13 07:29:59',
+                    project_id: 1,
+                    user_ids: [],
+                    depend_on_ids: [1,2],
+                },
+            ],
+        },
+        'project.project': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'Project 1' },
+            ],
+        },
+        'res.users': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'User 1' },
+                { id: 2, name: 'User 2' },
+                { id: 3, name: 'User 3' },
+                { id: 4, name: 'User 4' },
+            ],
+        },
+    };
+
+    const gantt = await createView({ ...ganttViewParams, groupBy: ['user_ids'] });
+    registerCleanup(gantt.destroy);
+    await testPromise;
+
+    const connectorsDict = getConnectorsDict(gantt);
+    assert.deepEqual(Object.keys(connectorsDict), ['2|1|3|0'], 'The only rendered connector should be the one from task_id 2 to task_id 3');
+
+    testUtils.mock.unpatch(TestGanttRenderer);
+});
+
 QUnit.test('Connectors are correctly computed and rendered when collapse_first_level is active.', async function (assert) {
     /**
      * This test checks that the connectors are correctly drew when collapse_first_level is active.

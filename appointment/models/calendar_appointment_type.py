@@ -251,7 +251,7 @@ class CalendarAppointmentType(models.Model):
                  for staff_user in available_users_tz
                  if self._slot_availability_is_user_available(
                     slot,
-                    staff_user.with_context(tz=staff_user.tz),
+                    staff_user,
                     availability_values
                  )),
                 False)
@@ -281,8 +281,17 @@ class CalendarAppointmentType(models.Model):
 
         if slot['slot'].restrict_to_user_ids and staff_user not in slot['slot'].restrict_to_user_ids:
             return False
-        if not staff_user.partner_id.calendar_verify_availability(slot_start_dt_utc, slot_end_dt_utc):
-            return False
+
+        partner_to_events = availability_values.get('partner_to_events') or {}
+        if partner_to_events.get(staff_user.partner_id):
+            for day_dt in rrule.rrule(freq=rrule.DAILY,
+                                      dtstart=slot_start_dt_utc,
+                                      until=slot_end_dt_utc,
+                                      interval=1):
+                day_events = partner_to_events[staff_user.partner_id].get(day_dt.date()) or []
+                if any(event.allday or (event.start < slot_end_dt_utc and event.stop > slot_start_dt_utc) for event in day_events):
+                    return False
+
         return True
 
     @api.model
@@ -306,10 +315,69 @@ class CalendarAppointmentType(models.Model):
 
         :return: dict containing main values for computation, formatted like
           {
-            'key': user-based dict used in ``_slot_availability_is_user_available``
+            'partner_to_events': meetings (not declined), based on user_partner_id
+              (see ``_slot_availability_prepare_values_meetings()``);
           }
         """
-        return {}
+        return self._slot_availability_prepare_values_meetings(staff_users, start_dt, end_dt)
+
+    def _slot_availability_prepare_values_meetings(self, staff_users, start_dt, end_dt):
+        """ This method computes meetings of users between start_dt and end_dt
+        of appointment check.
+
+        :param <res.users> staff_users: prepare values to check availability
+          of those users against given appointment boundaries. At this point
+          timezone should be correctly set in context of those users;
+        :param datetime start_dt: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt: end of appointment check boundary. Timezoned to UTC;
+
+        :return: dict containing main values for computation, formatted like
+          {
+            'partner_to_events': meetings (not declined), formatted as a dict
+              {
+                'user_partner_id': dict of day-based meetings: {
+                  'date in UTC': calendar events;
+                  'date in UTC': calendar events;
+                  ...
+              },
+              { ... }
+          }
+        """
+        related_partners = staff_users.partner_id
+
+        # perform a search based on start / end being set to day min / day max
+        # in order to include day-long events without having to include conditions
+        # on start_date and allday
+        all_events = self.env['calendar.event']
+        if related_partners:
+            all_events = self.env['calendar.event'].search(
+                ['&',
+                 ('partner_ids', 'in', related_partners.ids),
+                 '&',
+                 ('stop', '>', datetime.combine(start_dt, time.min)),
+                 ('start', '<', datetime.combine(end_dt, time.max)),
+                ],
+                order='start asc',
+            )
+
+        partner_to_events = {}
+        for event in all_events:
+            for attendee in event.attendee_ids.filtered_domain(
+                    [('state', '!=', 'declined'),
+                     ('partner_id', 'in', related_partners.ids)]
+                ):
+                for day_dt in rrule.rrule(freq=rrule.DAILY,
+                                          dtstart=event.start,
+                                          until=event.stop,
+                                          interval=1):
+                    partner_events = partner_to_events.setdefault(attendee.partner_id, {})
+                    date_date = day_dt.date()  # map per day, not per hour
+                    if partner_events.get(date_date):
+                        partner_events[date_date] += event
+                    else:
+                        partner_events[date_date] = event
+
+        return {'partner_to_events': partner_to_events}
 
     def _get_appointment_slots(self, timezone, staff_user=None, reference_date=None):
         """ Fetch available slots to book an appointment.

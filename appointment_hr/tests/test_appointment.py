@@ -207,7 +207,7 @@ class AppointmentHrTest(AppointmentHrCommon):
                 (self.reference_monday + timedelta(days=8)).date(): [
                     {'end': 9, 'start': 8},
                     {'end': 10, 'start': 9},
-                    # {'end': 11, 'start': 10},  # should be valid as declined
+                    {'end': 12, 'start': 11},
                 ],  # meetings 9-10 and 12-14
              },
              'slots_start_hours': [8, 9, 10, 11, 13],  # based on appointment type start hours of slots but 12 is pause midi

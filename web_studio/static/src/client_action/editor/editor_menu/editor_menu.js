@@ -114,62 +114,62 @@ EditorMenu.viewTypes = [
     {
         title: _lt("Form"),
         type: "form",
-        faclass: "fa-address-card",
+        iconClasses: "fa fa-address-card",
     },
     {
         title: _lt("List"),
         type: "list",
-        faclass: "fa-list-ul",
+        iconClasses: "oi oi-view-list",
     },
     {
         title: _lt("Kanban"),
         type: "kanban",
-        faclass: "fa-th-large",
+        iconClasses: "oi oi-view-kanban",
     },
     {
         title: _lt("Map"),
         type: "map",
-        faclass: "fa-map-marker",
+        iconClasses: "fa fa-map-marker",
     },
     {
         title: _lt("Calendar"),
         type: "calendar",
-        faclass: "fa-calendar-o",
+        iconClasses: "fa fa-calendar",
     },
     {
         title: _lt("Graph"),
         type: "graph",
-        faclass: "fa-bar-chart",
+        iconClasses: "fa fa-area-chart",
     },
     {
         title: _lt("Pivot"),
         type: "pivot",
-        faclass: "fa-table",
+        iconClasses: "oi oi-view-pivot",
     },
     {
         title: _lt("Gantt"),
         type: "gantt",
-        faclass: "fa-tasks",
+        iconClasses: "fa fa-tasks",
     },
     {
         title: _lt("Dashboard"),
         type: "dashboard",
-        faclass: "fa-tachometer",
+        iconClasses: "fa fa-tachometer",
     },
     {
         title: _lt("Cohort"),
         type: "cohort",
-        faclass: "fa-signal",
+        iconClasses: "oi oi-view-cohort",
     },
     {
         title: _lt("Activity"),
         type: "activity",
-        faclass: "fa-th",
+        iconClasses: "fa fa-clock-o",
     },
     {
         title: _lt("Search"),
         type: "search",
-        faclass: "fa-search",
+        iconClasses: "oi oi-search",
     },
 ];
 

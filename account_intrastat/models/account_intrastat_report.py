@@ -194,7 +194,7 @@ class IntrastatReport(models.AbstractModel):
                 AND inv.move_type IN %(invoice_types)s
                 AND NOT inv_line.exclude_from_invoice_tab
                 '''
-        order = 'inv.invoice_date DESC'
+        order = 'inv.invoice_date DESC, inv_line.id'
         params = {
             'company_id': self.env.company.id,
             'import_merchandise_code': _merchandise_import_code.get(self.env.company.country_id.code, '29'),

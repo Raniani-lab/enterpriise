@@ -53,16 +53,20 @@ class CalendarAppointmentType(models.Model):
         not be considered available if the slot is not entirely comprised in its
         working schedule (using a certain tolerance).
         """
+        slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
         is_available = super()._slot_availability_is_user_available(slot, staff_user, availability_values)
-        if not self.work_hours_activated:
+        if not is_available or not self.work_hours_activated:
             return is_available
 
-        slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
-        if is_available and staff_user.sudo().employee_id:
-            # The user is free but he has a configured employee, let's check if the slot fits into his working schedule
-            return self._slot_availability_is_user_working(slot_start_dt_utc, slot_end_dt_utc, availability_values['work_schedules'].get(staff_user.id, False))
-        else:
-            return is_available
+        workhours = availability_values.get('work_schedules')
+        if workhours and workhours.get(staff_user.partner_id):
+            is_available = self._slot_availability_is_user_working(
+                slot_start_dt_utc,
+                slot_end_dt_utc,
+                workhours[staff_user.partner_id]
+            )
+
+        return is_available
 
     def _slot_availability_is_user_working(self, start_dt, end_dt, intervals):
         """ Check if the slot is contained in the given work hours (defined by
@@ -112,25 +116,62 @@ class CalendarAppointmentType(models.Model):
                     return False
         return False
 
-    @api.model
-    def _prepare_availability_additional_values(self, available_staff_users, first_day, last_day):
-        """ This method computes the work intervals of available_staff_users between first_day and last_day,
-            only if they have a linked employee, using the work hours of the latter. Returns the dictionary
-            values, adding a dictionary (user.id, work intervals) with key 'work_schedules'. See parent docstring
-            for more explanations about this hook.
+    def _slot_availability_prepare_values(self, staff_users, start_dt, end_dt):
+        """ Override to add batch-fetch of working hours information.
+
+        :return: update ``super()`` values with work hours for computation, formatted like
+          {
+            'work_schedules': dict giving working hours based on user_partner_id
+              (see ``_slot_availability_prepare_values_workhours()``);
+          }
         """
-        values = super(CalendarAppointmentType, self)._prepare_availability_additional_values(available_staff_users, first_day, last_day)
-        work_schedules = {}
-        # Compute work schedules for users having employees
-        for staff_user in available_staff_users.sudo().filtered('employee_id'):
-            staff_user = staff_user.with_context(tz=staff_user.tz)
-            staff_user_resource_id = staff_user.employee_id.resource_id
-            work_schedules[staff_user.id] = [
-                (interval[0].astimezone(pytz.UTC).replace(tzinfo=None),
-                    interval[1].astimezone(pytz.UTC).replace(tzinfo=None))
-                for interval in staff_user_resource_id.calendar_id.sudo()._work_intervals_batch(
-                    first_day, last_day, resources=staff_user_resource_id
-                )[staff_user_resource_id.id]
-            ]
-        values['work_schedules'] = work_schedules
+        values = super()._slot_availability_prepare_values(staff_users, start_dt, end_dt)
+        values.update(
+            self._slot_availability_prepare_values_workhours(staff_users, start_dt, end_dt)
+        )
         return values
+
+    @api.model
+    def _slot_availability_prepare_values_workhours(self, staff_users, start_dt, end_dt):
+        """ This method computes the work intervals of staff users between start_dt
+        and end_dt of slot. This means they have an employee using working hours.
+
+        :param <res.users> staff_users: prepare values to check availability
+          of those users against given appointment boundaries. At this point
+          timezone should be correctly set in context of those users;
+        :param datetime start_dt: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt: end of appointment check boundary. Timezoned to UTC;
+
+        :return: dict with unique key 'work_schedules' being a dict of working
+          intervals based on employee partners:
+          {
+            'user_partner_id.id': [tuple(work interval), tuple(work_interval), ...],
+            'user_partner_id.id': work_intervals,
+            ...
+          }
+          Calendar field is required on resource and therefore on employee so each
+          employee should be correctly taken into account;
+        """
+        work_schedules = {}
+
+        # Compute work schedules for users having employees with a resource.calendar
+        available_employees_tz = [
+            user.employee_id.with_context(tz=user.tz)
+            for user in staff_users.sudo()
+            if user.employee_id and user.employee_id.resource_id.calendar_id
+        ]
+
+        for employee in available_employees_tz:
+            employee_resource_id = employee.resource_id
+
+            work_schedules[employee.user_partner_id] = [
+                (interval[0].astimezone(pytz.UTC).replace(tzinfo=None),
+                 interval[1].astimezone(pytz.UTC).replace(tzinfo=None)
+                )
+                for interval in employee_resource_id.calendar_id._work_intervals_batch(
+                    start_dt, end_dt,
+                    resources=employee_resource_id
+                )[employee_resource_id.id]
+            ]
+
+        return {'work_schedules': work_schedules}

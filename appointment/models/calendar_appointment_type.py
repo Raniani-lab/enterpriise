@@ -231,14 +231,24 @@ class CalendarAppointmentType(models.Model):
         :return: None but instead update ``slots`` adding ``staff_user_id`` key
           containing found available user ID;
         """
-        availabe_staff_users = staff_user or self.staff_user_ids
-        # Shuffle the available users into a random order to avoid having the same one assigned every time
-        availabe_staff_users = availabe_staff_users.sorted(lambda staff_user: random.random())
-        availability_values = self._prepare_availability_additional_values(availabe_staff_users, start_dt, end_dt)
+        # shuffle the available users into a random order to avoid having the same
+        # one assigned every time, force timezone
+        available_users = [
+            user.with_context(tz=user.tz)
+            for user in (staff_user or self.staff_user_ids)
+        ]
+        random.shuffle(available_users)
+        available_users_tz = self.env['res.users'].concat(*available_users)
+
+        # fetch value used for availability in batch
+        availability_values = self._slot_availability_prepare_values(
+            available_users_tz, start_dt, end_dt
+        )
+
         for slot in slots:
             available_staff_user = next(
                 (staff_user
-                 for staff_user in availabe_staff_users
+                 for staff_user in available_users_tz
                  if self._slot_availability_is_user_available(
                     slot,
                     staff_user.with_context(tz=staff_user.tz),
@@ -263,7 +273,7 @@ class CalendarAppointmentType(models.Model):
         :param <res.users> staff_user: user to check against slot boundaries.
           At this point timezone should be correctly set in context;
         :param dict availability_values: dict of data used for availability check.
-          See ``_prepare_availability_additional_values()`` for more details;
+          See ``_slot_availability_prepare_values()`` for more details;
 
         :return: boolean: is user available for an appointment for given slot
         """
@@ -277,11 +287,28 @@ class CalendarAppointmentType(models.Model):
 
     @api.model
     def _prepare_availability_additional_values(self, available_staff_users, first_day, last_day):
-        """ Hook method used to add additional useful values in the computation of availability of slots.
-            Datetimes are in UTC. This will be typically used in the hr module to also prepare working schedule of each
-            user in available_staff_users. We prepare values instead of fetching the working schedule
-            in "_is_staff_user_available" because doing that in a loop would be highly inefficient in terms of performances,
-            this hook allows fetching the working schedule of employees only once for the whole "_slots_available" method."""
+        # remove me in master
+        return self._slot_availability_prepare_values(available_staff_users, first_day, last_day)
+
+    def _slot_availability_prepare_values(self, staff_users, start_dt, end_dt):
+        """ Hook method used to prepare useful values in the computation of slots
+        availability. Purpose is to prepare values (event meetings notably)
+        in batch instead of doing it in a loop in ``_slots_available``.
+
+        Can be overridden to add custom values preparation to be used in custom
+        overrides of ``_slot_availability_is_user_available()``.
+
+        :param <res.users> staff_users: prepare values to check availability
+          of those users against given appointment boundaries. At this point
+          timezone should be correctly set in context of those users;
+        :param datetime start_dt: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt: end of appointment check boundary. Timezoned to UTC;
+
+        :return: dict containing main values for computation, formatted like
+          {
+            'key': user-based dict used in ``_slot_availability_is_user_available``
+          }
+        """
         return {}
 
     def _get_appointment_slots(self, timezone, staff_user=None, reference_date=None):

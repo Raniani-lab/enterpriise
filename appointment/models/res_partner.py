@@ -9,7 +9,10 @@ class Partner(models.Model):
     _inherit = "res.partner"
 
     def calendar_verify_availability(self, date_start, date_end):
-        """ verify availability of the partner(s) between 2 datetimes on their calendar
+        """ Verify availability of the partner(s) between 2 datetimes on their calendar.
+
+        :param datetime date_start: beginning of slot boundary. Not timezoned UTC;
+        :param datetime date_end: end of slot boundary. Not timezoned UTC;
         """
         if bool(self.env['calendar.event'].search_count([
             ('partner_ids', 'in', self.ids),

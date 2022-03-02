@@ -44,20 +44,25 @@ class CalendarAppointmentType(models.Model):
                 if self.search_count(appointment_domain) > 0:
                     raise ValidationError(_("Only one work hours appointment type is allowed for a specific employee."))
 
-    def _is_staff_user_available(self, staff_user, slot, availability_additional_values):
-        """ This method verifies if the staff_user is available on the given slot, or has calendar events clashing.
-            In addition, it checks conflicts with the working schedule of the employee linked to the user,
-            if such an employee exists in the current company. An employee will not be considered available if the
-            slot is not entirely comprised in its working schedule. (using a certain tolerance)"""
-        is_calendar_free = super()._is_staff_user_available(staff_user, slot, availability_additional_values)
-        if not self.work_hours_activated:
-            return is_calendar_free
+    def _slot_availability_is_user_available(self, slot, staff_user, availability_values):
+        """ This method verifies if the employee is available on the given slot.
 
-        if is_calendar_free and staff_user.sudo().employee_id:
+        In addition to checks done in ``super()`` it checks whether the slot has
+        conflicts with the working schedule of the employee linked to the user
+        (if such an employee exists in the current company). An employee will
+        not be considered available if the slot is not entirely comprised in its
+        working schedule (using a certain tolerance).
+        """
+        is_available = super()._slot_availability_is_user_available(slot, staff_user, availability_values)
+        if not self.work_hours_activated:
+            return is_available
+
+        slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
+        if is_available and staff_user.sudo().employee_id:
             # The user is free but he has a configured employee, let's check if the slot fits into his working schedule
-            return self._slot_availability_is_user_working(slot['UTC'][0], slot['UTC'][1], availability_additional_values['work_schedules'].get(staff_user.id, False))
+            return self._slot_availability_is_user_working(slot_start_dt_utc, slot_end_dt_utc, availability_values['work_schedules'].get(staff_user.id, False))
         else:
-            return is_calendar_free
+            return is_available
 
     def _slot_availability_is_user_working(self, start_dt, end_dt, intervals):
         """ Check if the slot is contained in the given work hours (defined by

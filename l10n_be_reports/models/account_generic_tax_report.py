@@ -72,7 +72,7 @@ class AccountGenericTaxReport(models.AbstractModel):
                         'city': address.city or "",
                         'country_code': address.country_id and address.country_id.code or "",
                         'email': address.email or "",
-                        'phone': address.phone.replace('.', '').replace('/', '').replace('(', '').replace(')', '').replace(' ', ''),
+                        'phone': self._raw_phonenumber(address.phone),
                         'send_ref': send_ref,
                         'quarter': quarter,
                         'month': starting_month,

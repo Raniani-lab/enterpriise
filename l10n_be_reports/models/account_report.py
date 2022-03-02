@@ -32,7 +32,7 @@ class AccountReport(models.AbstractModel):
                 'city': representative.city,
                 'country_code': (country or representative.country_id).code,
                 'email': representative.email,
-                'phone': phone and re.sub(r'[./()\s]', '', phone),  # Exclude what's not a number
+                'phone': self._raw_phonenumber(phone)
             }
 
             missing_fields = [k for k, v in node_values.items() if not v or v == ' ']
@@ -64,3 +64,6 @@ class AccountReport(models.AbstractModel):
     </ns2:Representative>""") % node_values
 
         return markupsafe.Markup()
+
+    def _raw_phonenumber(self, phonenumber):
+        return re.sub("[^+0-9]", "", phonenumber)[:20]

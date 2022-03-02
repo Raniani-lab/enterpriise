@@ -145,7 +145,7 @@ class ECSalesReport(models.AbstractModel):
         addr = company.partner_id.address_get(['invoice'])
         if addr.get('invoice', False):
             ads = self.env['res.partner'].browse([addr['invoice']])[0]
-            phone = ads.phone and ads.phone.replace(' ', '') or ''
+            phone = ads.phone and self._raw_phonenumber(ads.phone)
             email = ads.email or ''
             city = ads.city or ''
             post_code = ads.zip or ''
@@ -192,7 +192,7 @@ class ECSalesReport(models.AbstractModel):
             'post_code': post_code,
             'country': country,
             'email': email,
-            'phone': phone.replace('/', '').replace('.', '').replace('(', '').replace(')', '').replace(' ', ''),
+            'phone': self._raw_phonenumber(phone),
             'year': date_from[0:4],
             'month': month,
             'quarter': quarter,

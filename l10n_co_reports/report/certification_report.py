@@ -81,7 +81,7 @@ class ReportCertificationReport(models.AbstractModel):
     def _get_domain(self, options):
         common_domain = [('partner_id', '!=', False), ('parent_state', 'not in', ('draft', 'cancel'))]
         if options.get('partner_id'):
-            common_domain += [('partner_id.id', '=', options.get('partner_id'))]
+            common_domain += [('partner_id', '=', options.get('partner_id'))]
         if options.get('date'):
             common_domain += [('date', '>=', options['date'].get('date_from')),
                               ('date', '<=', options['date'].get('date_to'))]
@@ -138,7 +138,7 @@ class ReportCertificationReport(models.AbstractModel):
         if line_id:
             partner_id = re.search('partner_(.+)', line_id).group(1)
             if partner_id:
-                domain += [('partner_id.id', '=', partner_id)]
+                domain += [('partner_id', '=', partner_id)]
 
         amls = self.env['account.move.line'].search(domain, order='partner_id, id')
         previous_partner_id = self.env['res.partner']

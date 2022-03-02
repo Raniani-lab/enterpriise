@@ -49,7 +49,7 @@ class ConsolidationPeriod(models.Model):
         """
         Section = self.env['consolidation.group']
         for record in self:
-            domain = [('period_id.id', '=', record.id), ('group_id.show_on_dashboard', '=', True)]
+            domain = [('period_id', '=', record.id), ('group_id.show_on_dashboard', '=', True)]
             rfields = ['group_id.id', 'total:sum(amount)']
             group_by = ['group_id']
             grouped_res = self.env['consolidation.journal.line']._read_group(domain, rfields, group_by)
@@ -97,7 +97,7 @@ class ConsolidationPeriod(models.Model):
             company_ids = tuple(record_companies.intersection(user_companies))
 
             domain = [
-                ('company_id.id', 'in', company_ids),
+                ('company_id', 'in', company_ids),
                 ('consolidation_account_chart_filtered_ids', '=', False),
                 ('used', '=', True)
             ]
@@ -479,7 +479,7 @@ class ConsolidationPeriodComposition(models.Model):
         self.ensure_one()
         domain = [
             ('account_id.used_in_ids', '=', consolidation_account.id),
-            ('period_id.id', '=', self.composed_period_id.id)
+            ('period_id', '=', self.composed_period_id.id)
         ]
         amounts = self.env['consolidation.journal.line'].sudo()._read_group(domain, ['amount:sum(amount)'], [])
         amount = amounts[0]['amount'] or 0.0

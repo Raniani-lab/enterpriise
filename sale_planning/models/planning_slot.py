@@ -440,7 +440,7 @@ class PlanningSlot(models.Model):
             cache[priority] = [res['id'] for res in search]
         elif priority == 'roles':
             search = self.env['hr.employee'].search_read([
-                ('planning_role_ids.id', '=', self.role_id.id),
+                ('planning_role_ids', '=', self.role_id.id),
                 ('id', 'not in', employee_ids_to_exclude),
             ], ['id'])
             cache[priority] = [res['id'] for res in search]

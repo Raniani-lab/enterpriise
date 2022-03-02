@@ -47,7 +47,7 @@ class ReportPartnerLedger(models.AbstractModel):
             domain += ['&', ('full_reconcile_id', '=', False), ('balance', '!=', '0')]
         exch_code = self.env['res.company'].browse(self.env.context.get('company_ids')).mapped('currency_exchange_journal_id')
         if exch_code:
-            domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id.id', 'in', exch_code.ids)]
+            domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id', 'in', exch_code.ids)]
         return domain
 
     @api.model

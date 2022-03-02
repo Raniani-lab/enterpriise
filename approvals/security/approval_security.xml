@@ -32,7 +32,7 @@
             <field name="perm_write" eval="1"/>
             <field name="perm_create" eval="1"/>
             <field name="perm_unlink" eval="0"/>
-            <field name="domain_force">[('request_owner_id.id','=', user.id)]</field>
+            <field name="domain_force">[('request_owner_id','=', user.id)]</field>
         </record>
 
         <record id="approval_request_request_approver_rule" model="ir.rule">
@@ -44,11 +44,11 @@
             <field name="perm_create" eval="1"/>
             <field name="perm_unlink" eval="0"/>
             <field name="domain_force">['|', '|',
-                                        ('request_owner_id.id', '=', user.id),
-                                        ('approver_ids.user_id.id','=', user.id),
+                                        ('request_owner_id', '=', user.id),
+                                        ('approver_ids.user_id','=', user.id),
                                         '&amp;',
                                         ('category_id.manager_approval', 'in', ['approver', 'required']),
-                                        ('request_owner_id.parent_id.user_id.id', '=', user.id)]</field>
+                                        ('request_owner_id.parent_id.user_id', '=', user.id)]</field>
         </record>
 
         <record id="approval_request_unlink_request_owner_rule" model="ir.rule">
@@ -59,7 +59,7 @@
             <field name="perm_write" eval="0"/>
             <field name="perm_create" eval="0"/>
             <field name="perm_unlink" eval="1"/>
-            <field name="domain_force">[('request_owner_id.id', '=', user.id), ('request_status', 'in', ['cancel', 'new'])]</field>
+            <field name="domain_force">[('request_owner_id', '=', user.id), ('request_status', 'in', ['cancel', 'new'])]</field>
         </record>
 
         <record id="approval_request_approvers_rule" model="ir.rule">
@@ -70,7 +70,7 @@
             <field name="perm_write" eval="0"/>
             <field name="perm_create" eval="0"/>
             <field name="perm_unlink" eval="0"/>
-            <field name="domain_force">[('approver_ids.user_id.id','=', user.id)]</field>
+            <field name="domain_force">[('approver_ids.user_id','=', user.id)]</field>
         </record>
 
         <record id="approval_request_user" model="ir.rule">

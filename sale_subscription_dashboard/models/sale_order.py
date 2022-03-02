@@ -70,7 +70,7 @@ class SaleOrder(models.Model):
     def _get_salesperson_mrr(self, user_id, start_date, end_date):
         contract_modifications = []
         domain = [
-            ('order_id.user_id.id', '=', user_id),
+            ('order_id.user_id', '=', user_id),
             ('event_date', '>=', start_date),
             ('event_date', '<=', end_date),
             ('event_type', '!=', '3_transfer')

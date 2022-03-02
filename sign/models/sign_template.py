@@ -243,7 +243,7 @@ class SignTemplate(models.Model):
             "name": _("Sign requests"),
             "res_model": "sign.request",
             "res_id": self.id,
-            "domain": [["template_id.id", "in", self.ids]],
+            "domain": [["template_id", "in", self.ids]],
             "views": [[False, 'kanban'], [False, "form"]],
             "context": {'search_default_signed': True}
         }

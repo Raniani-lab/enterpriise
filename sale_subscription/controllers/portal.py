@@ -21,7 +21,7 @@ class CustomerPortal(portal.CustomerPortal):
 
     def _get_subscription_domain(self, partner):
         return [
-            ('partner_id.id', 'in', [partner.id, partner.commercial_partner_id.id]),
+            ('partner_id', 'in', [partner.id, partner.commercial_partner_id.id]),
             ('stage_category', 'in', ['progress', 'closed']),
             ('is_subscription', '=', True)
         ]

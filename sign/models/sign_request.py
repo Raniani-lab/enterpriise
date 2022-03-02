@@ -115,7 +115,7 @@ class SignRequest(models.Model):
         if operator not in ['=', '!='] or not isinstance(value, bool):
             return []
         domain_operator = 'not in' if (operator == '=') ^ value else 'in'
-        documents_ids = self.env['sign.request.item'].search([('partner_id.id', '=', my_partner_id.id), ('state', '=', 'sent')]).mapped('sign_request_id').ids
+        documents_ids = self.env['sign.request.item'].search([('partner_id', '=', my_partner_id.id), ('state', '=', 'sent')]).mapped('sign_request_id').ids
         return [('id', domain_operator, documents_ids)]
 
     @api.depends('request_item_ids.state')
@@ -711,7 +711,7 @@ class SignRequestItem(models.Model):
             request_items_reassigned.sign_request_id.message_subscribe(partner_ids=[vals.get('partner_id')])
             # add new activities for internal users
             new_sign_user = self.env['res.users'].search([
-                ('partner_id.id', '=', vals.get('partner_id')),
+                ('partner_id', '=', vals.get('partner_id')),
                 ('groups_id', 'in', [self.env.ref('sign.group_sign_employee').id])
             ], limit=1)
             if new_sign_user:

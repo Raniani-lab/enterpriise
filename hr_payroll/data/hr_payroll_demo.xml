@@ -244,12 +244,50 @@
             <value eval="(DateTime.today() + relativedelta(day=31))"/>
         </function>
 
+        <!-- Payslip batch Year -1 -->
+        <record id="hr_payslip_batch_year_1" model="hr.payslip.run">
+            <field name="name" eval="'Late batch salary ' + (DateTime.today() - relativedelta(years=1, month=1, day=1)).strftime('%B %Y')"/>
+            <field name="date_start" eval="(DateTime.today() - relativedelta(years=1, month=1, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_end" eval="(DateTime.today() - relativedelta(years=1, month=2, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
 
-        <!-- Payslip batch -->
+        <!-- Payslip batch Year -2 -->
+        <record id="hr_payslip_batch_year_2" model="hr.payslip.run">
+            <field name="name" eval="(DateTime.today() - relativedelta(years=2, month=1, day=1)).strftime('%B %Y') + ' batch'"/>
+            <field name="date_start" eval="(DateTime.today() - relativedelta(years=2) + relativedelta(day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_end" eval="(DateTime.today() - relativedelta(years=2) + relativedelta(months=12, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Payslip batch Month 0-->
         <record id="hr_payslip_batch_latest" model="hr.payslip.run">
-            <field name="name" eval="time.strftime('%B %Y')"/>
+            <field name="name" eval="'Batch for ' + time.strftime('%B %Y')"/>
             <field name="date_start" eval="time.strftime('%Y-%m-1')"/>
             <field name="date_end" eval="(DateTime.today() + relativedelta(months=1, day=1) - relativedelta(days=1)).strftime('%Y-%m-%d')"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="hr_payslip_batch_new_batch" model="hr.payslip.run">
+            <field name="name" eval="'Correction batch for ' + (DateTime.today() - relativedelta(day=1)).strftime('%B %Y')"></field>
+            <field name="date_start" eval="(DateTime.today() - relativedelta(day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_end" eval="(DateTime.today() + relativedelta(months=1, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Payslips Batch Month - 1 -->
+        <record id="hr_payslip_batch_month_1" model="hr.payslip.run">
+            <field name="name" eval="(DateTime.today() - relativedelta(months=1, day=1)).strftime('%B %Y')"/>
+            <field name="date_start" eval="(DateTime.today() - relativedelta(months=1, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_end" eval="(DateTime.today() - relativedelta(day=1)).strftime('%Y-%m-%d')"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Payslip Batch Month - 2 -->
+        <record id="hr_payslip_batch_month_2" model="hr.payslip.run">
+            <field name="name" eval="'Pay of the month ' + (DateTime.today() - relativedelta(months=2, day=1)).strftime('%B %Y')"/>
+            <field name="date_start" eval="(DateTime.today() - relativedelta(months=2, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_end" eval="(DateTime.today() - relativedelta(months=1, day=1)).strftime('%Y-%m-%d')"/>
             <field name="company_id" ref="base.main_company"/>
         </record>
 
@@ -278,6 +316,42 @@
             <field name="company_id" ref="base.main_company"/>
         </record>
 
+        <record id="hr_payslip_admin_month_1" model="hr.payslip">
+            <field name="name" eval="'Mitchell Admin ' + (DateTime.today() - relativedelta(months=1, day=1)).strftime('%B %Y')"/>
+            <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
+            <field name="date_from" eval="(DateTime.today() - relativedelta(months=1, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_to" eval="(DateTime.today() - relativedelta(day=1)).strftime('%Y-%m-%d')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="number">SLIP1004</field>
+            <field name="payslip_run_id" ref="hr_payslip_batch_month_1"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="hr_payslip_admin_month_1_1" model="hr.payslip">
+            <field name="name" eval="'Mitchell Admin ' + (DateTime.today() - relativedelta(months=1, day=1)).strftime('%B %Y')"/>
+            <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
+            <field name="date_from" eval="(DateTime.today() - relativedelta(months=1, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_to" eval="(DateTime.today() - relativedelta(day=1)).strftime('%Y-%m-%d')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="number">SLIP1005</field>
+            <field name="payslip_run_id" ref="hr_payslip_batch_month_1"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="hr_payslip_admin_month_2" model="hr.payslip">
+            <field name="name" eval="'Mitchell Admin ' + (DateTime.today() - relativedelta(months=2, day=1)).strftime('%B %Y')"/>
+            <field name="contract_id" ref="hr_contract.hr_contract_qdp"/>
+            <field name="date_from" eval="(DateTime.today() - relativedelta(months=2, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_to" eval="(DateTime.today() - relativedelta(months=1, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="number">SLIP1006</field>
+            <field name="payslip_run_id" ref="hr_payslip_batch_month_2"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
         <!-- Payslip Demo  -->
         <record id="hr_payslip_demo_latest" model="hr.payslip">
             <field name="name" eval="'Marc Demo ' + time.strftime('%B %Y')"/>
@@ -291,18 +365,57 @@
             <field name="company_id" ref="base.main_company"/>
         </record>
 
+        <!-- Year Payslips -->
+        <record id="hr_payslip_admin_year_1" model="hr.payslip">
+            <field name="name">Mitchell Admin Long Payslip</field>
+            <field name="contract_id" ref="hr_contract.hr_contract_admin_new"/>
+            <field name="date_from" eval="(DateTime.today() - relativedelta(years=1, month=1, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_to" eval="(DateTime.today() - relativedelta(years=1, month=2, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="employee_id" ref="hr.employee_admin"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="number">SLIP1007</field>
+            <field name="payslip_run_id" ref="hr_payslip_batch_year_1"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="hr_payslip_demo_year_2" model="hr.payslip">
+            <field name="name">Marc Demo Long Payslip</field>
+            <field name="contract_id" ref="hr_contract.hr_contract_admin_new"/>
+            <field name="date_from" eval="(DateTime.today() - relativedelta(years=2) + relativedelta(day=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_to" eval="(DateTime.today() - relativedelta(years=2) + relativedelta(months=1, day=1)).strftime('%Y-%m-%d')"/>
+            <field name="employee_id" ref="hr.employee_qdp"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="number">SLIP1008</field>
+            <field name="payslip_run_id" ref="hr_payslip_batch_year_2"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
         <!-- Compute Sheets -->
         <function model="hr.payslip" name="compute_sheet">
-            <value model="hr.payslip" eval="[ref('hr_payslip_admin_latest_0'), ref('hr_payslip_admin_latest_1'), ref('hr_payslip_demo_latest')]"/>
+            <value model="hr.payslip" eval="[
+                ref('hr_payslip_admin_latest_0'),
+                ref('hr_payslip_admin_latest_1'),
+                ref('hr_payslip_demo_latest'),
+                ref('hr_payslip_admin_month_1'),
+                ref('hr_payslip_admin_month_2'),
+                ref('hr_payslip_admin_month_1_1'),
+                ref('hr_payslip_admin_year_1'),
+                ref('hr_payslip_demo_year_2')
+                ]"/>
         </function>
 
         <!-- Validate Batch -->
         <function model="hr.payslip.run" name="action_open">
-            <value model="hr.payslip.run" eval="[ref('hr_payslip_batch_latest')]"/>
+            <value model="hr.payslip.run" eval="[ref('hr_payslip_batch_latest'), ref('hr_payslip_batch_month_1'), ref('hr_payslip_batch_month_2')]"/>
         </function>
 
         <function model="hr.payslip.run" name="action_validate">
-            <value model="hr.payslip.run" eval="[ref('hr_payslip_batch_latest')]"/>
+            <value model="hr.payslip.run" eval="[ref('hr_payslip_batch_month_1'), ref('hr_payslip_batch_month_2')]"/>
+        </function>
+
+        <!-- Set batch to paid -->
+        <function model="hr.payslip.run" name="action_paid">
+            <value model="hr.payslip.run" eval="[ref('hr_payslip_batch_month_2')]"/>
         </function>
 
 </odoo>

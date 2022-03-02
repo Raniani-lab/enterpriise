@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, _
+from odoo import api, fields, models, _
 
 
 class ResCompany(models.Model):
@@ -16,10 +16,13 @@ class ResCompany(models.Model):
             company_payroll_users = payroll_users.filtered(lambda u: company in u.company_ids)
             if not company_payroll_users:
                 continue
+            memo_template = self.env.ref('hr_payroll.hr_payroll_note_demo_content')
             self.env['note.note'].sudo().create({
                 'tag_ids': [(4, dashboard_note_tag.id)],
                 'company_id': company.id,
-                'name': _('Useful Links'),
+                'name': _('Note'),
+                'memo': self.env['ir.qweb']._render(memo_template, {
+                    'date_today': fields.Date.today().strftime(self.env['res.lang']._lang_get(self.env.user.lang).date_format)})
             })
 
     @api.model_create_multi

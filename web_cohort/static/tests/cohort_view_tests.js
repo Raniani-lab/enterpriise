@@ -780,13 +780,16 @@ QUnit.module("Views", (hooks) => {
             useSampleModel: true,
         });
 
-        assert.hasClass(target.querySelector(".o_cohort_view"), "o_view_sample_data");
+        assert.hasClass(target.querySelector(".o_cohort_view .o_content"), "o_view_sample_data");
         assert.containsOnce(target, ".o_view_nocontent .abc");
         assert.containsOnce(target, "table.o_sample_data_disabled");
 
         await removeFacet(target);
 
-        assert.doesNotHaveClass(target, "o_view_sample_data");
+        assert.doesNotHaveClass(
+            target.querySelector(".o_cohort_view .o_content"),
+            "o_view_sample_data"
+        );
         assert.containsNone(target, ".o_view_nocontent .abc");
         assert.containsOnce(target, "table");
         assert.doesNotHaveClass(target.querySelector("table"), "o_sample_data_disabled");

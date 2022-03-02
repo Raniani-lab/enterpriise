@@ -7,7 +7,7 @@ import { useService } from "@web/core/utils/hooks";
 import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
 import { useSetupView } from "@web/views/helpers/view_hook";
-import { Layout } from "@web/views/layout";
+import { Layout } from "@web/search/layout";
 import { usePager } from "@web/search/pager_hook";
 import { MapArchParser } from "./map_arch_parser";
 import { MapModel } from "./map_model";

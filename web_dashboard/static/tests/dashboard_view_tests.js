@@ -3987,7 +3987,7 @@ QUnit.module("Views", (hooks) => {
             noContentHelp: markup(`<p class="abc">click to add a foo</p>`),
         });
 
-        assert.hasClass(target.querySelector(".o_dashboard_view"), "o_view_sample_data");
+        assert.hasClass(target.querySelector(".o_dashboard_view .o_content"), "o_view_sample_data");
         assert.containsOnce(target, ".o_subview[type=graph] canvas");
         assert.containsOnce(target, ".o_subview[type=pivot] table");
         assert.containsOnce(target, ".o_view_nocontent .abc");
@@ -3996,7 +3996,10 @@ QUnit.module("Views", (hooks) => {
         await toggleMenuItem(target, "noId");
         await toggleMenuItem(target, "noId_2");
 
-        assert.doesNotHaveClass(target, "o_view_sample_data");
+        assert.doesNotHaveClass(
+            target.querySelector(".o_dashboard_view .o_content"),
+            "o_view_sample_data"
+        );
         assert.containsOnce(target, ".o_subview[type=graph] canvas");
         assert.containsOnce(target, ".o_subview[type=pivot] .o_view_nocontent");
         assert.containsNone(target, ".o_subview[type=pivot] .o_view_nocontent .abc");

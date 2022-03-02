@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="web_map.MapView" owl="1">
-        <Layout viewType="'map'" className="props.className">
+        <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''">
             <t t-set-slot="control-panel-bottom-left">
                 <t t-call="{{ constructor.buttonTemplate }}"/>
             </t>

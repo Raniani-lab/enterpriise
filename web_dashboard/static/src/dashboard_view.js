@@ -3,10 +3,10 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { capitalize, sprintf } from "@web/core/utils/strings";
+import { Layout } from "@web/search/layout";
 import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
 import { useSetupView, useViewArch } from "@web/views/helpers/view_hook";
-import { Layout } from "@web/views/layout";
 import { OnboardingBanner } from "@web/views/onboarding_banner";
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 import { DashboardArchParser } from "./dashboard_arch_parser";

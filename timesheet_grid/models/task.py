@@ -12,8 +12,10 @@ class Task(models.Model):
 
     display_timer_start_secondary = fields.Boolean(compute='_compute_display_timer_buttons')
 
+    @api.depends_context('uid')
     @api.depends('display_timesheet_timer', 'timer_start', 'timer_pause', 'total_hours_spent')
     def _compute_display_timer_buttons(self):
+        user_has_employee_or_only_one = None
         for task in self:
             if not task.display_timesheet_timer:
                 task.update({
@@ -32,7 +34,13 @@ class Task(models.Model):
                         'display_timer_pause': False,
                         'display_timer_resume': False,
                     })
-                    if not task.total_hours_spent:
+                    if user_has_employee_or_only_one is None:
+                        user_has_employee_or_only_one = bool(self.env.user.employee_id)\
+                                                     or self.env['hr.employee'].sudo().search_count([('user_id', '=', self.env.uid)]) == 1
+                    if not user_has_employee_or_only_one:
+                        task.display_timer_start_primary = False
+                        task.display_timer_start_secondary = False
+                    elif not task.total_hours_spent:
                         task.display_timer_start_secondary = False
                     else:
                         task.display_timer_start_primary = False

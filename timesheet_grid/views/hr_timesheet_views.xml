@@ -514,7 +514,6 @@
             <field name="view_mode">grid,tree,form</field>
             <field name="context">{
                 'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'),
-                'grid_range': 'week',
                 'my_timesheet_display_timer': True,
                 'group_expand': True,
             }</field>
@@ -600,7 +599,6 @@
             <field name="view_mode">grid,tree,kanban</field>
             <field name="context">{
                 'group_expand': True,
-                'grid_range': 'week',
             }</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

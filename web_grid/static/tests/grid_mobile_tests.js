@@ -96,5 +96,30 @@ QUnit.module('Views', {
 
         grid.destroy();
     });
+
+    QUnit.test('grid view should open in day range for mobile', async function (assert) {
+        assert.expect(1);
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">
+                    <field name="project_id" type="row"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="day" string="Day" span="day" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_time"/>
+                </grid>`,
+            currentDate: "2017-01-25",
+        });
+
+        const btnRangeDay = grid.$buttons[0].querySelector('button[data-name=day]');
+        assert.hasClass(btnRangeDay, "active", "Grid view should be open in day range for mobile");
+
+        grid.destroy();
+    });
 });
 });

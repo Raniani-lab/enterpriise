@@ -59,7 +59,13 @@ var GridView = AbstractView.extend({
 
         // model
         this.loadParams.ranges = ranges;
-        var contextRangeName = params.context.grid_range;
+        let default_range_name = config.device.isMobile ? 'day' : '';
+        ranges.forEach(range => {
+            if (range['name'] === 'week' && !config.device.isMobile) {
+                default_range_name = range['name'];
+            }
+        })
+        let contextRangeName = params.context.grid_range || default_range_name;
         var contextRange = contextRangeName && _.findWhere(ranges, {name: contextRangeName});
         this.loadParams.fields = this.fields;
         this.loadParams.currentRange = contextRange || ranges[0];

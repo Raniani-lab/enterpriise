@@ -53,11 +53,11 @@
                             </a>
                         </td>
                         <td t-attf-class="{{demo_class}} o_dashboard_action p-0" title="My Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_high_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="p">
-                            <a href="#" t-attf-class="btn w-100 h-100 p-2 text-capitalize font-weight-normal {{widget.values['my_high']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="position-relative btn w-100 h-100 p-2 text-capitalize font-weight-normal {{widget.values['my_high']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <h2 class="mb-0" t-out="widget.values['my_high']['count']"/>
                                 High Priority
                                 <small
-                                    class="d-block"
+                                    class="position-absolute top-0 end-0 justify-content-end flex-lg-column flex-xl-row d-none d-sm-flex p-2"
                                     title="Two stars, with a maximum of three"
                                     role="img"
                                     aria-label="Two stars, with a maximum of three"
@@ -68,11 +68,11 @@
                             </a>
                         </td>
                         <td t-attf-class="{{demo_class}} o_dashboard_action p-0" title="My Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_urgent_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="u">
-                            <a href="#" t-attf-class="btn w-100 h-100 p-2 text-capitalize font-weight-normal {{widget.values['my_urgent']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="position-relative btn w-100 h-100 p-2 text-capitalize font-weight-normal {{widget.values['my_urgent']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <h2 class="mb-0" t-out="widget.values['my_urgent']['count']"/>
                                 Urgent
                                 <small
-                                    class="d-block"
+                                    class="position-absolute top-0 end-0 justify-content-end flex-lg-column flex-xl-row d-none d-sm-flex p-2 small"
                                     title="Three stars, maximum score"
                                     role="img"
                                     aria-label="Three stars, maximum score"

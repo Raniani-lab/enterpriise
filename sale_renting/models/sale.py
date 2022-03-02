@@ -194,14 +194,17 @@ class RentalOrderLine(models.Model):
         return res
 
     def _get_rental_order_line_description(self):
-        if self.start_date and self.next_invoice_date and self.start_date.replace(tzinfo=UTC).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None).date()\
-             == self.return_date.replace(tzinfo=UTC).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None).date():
+        tz = self._get_tz()
+        if self.start_date and self.next_invoice_date\
+           and self.start_date.replace(tzinfo=UTC).astimezone(timezone(tz)).date()\
+               == self.return_date.replace(tzinfo=UTC).astimezone(timezone(tz)).date():
             # If return day is the same as pickup day, don't display return_date Y/M/D in description.
-            return_date_part = format_time(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, time_format=False)
+            return_date_part = format_time(self.with_context(use_babel=True).env, self.return_date, tz=tz, time_format=False)
         else:
-            return_date_part = format_datetime(self.with_context(use_babel=True).env, self.next_invoice_date, tz=self.env.user.tz, dt_format=False)
+            return_date_part = format_datetime(self.with_context(use_babel=True).env, self.next_invoice_date, tz=tz, dt_format=False)
+
         return "\n%s %s %s" % (
-            format_datetime(self.with_context(use_babel=True).env, self.start_date, tz=self.env.user.tz, dt_format=False),
+            format_datetime(self.with_context(use_babel=True).env, self.start_date, tz=tz, dt_format=False),
             _("to"),
             return_date_part,
         )
@@ -283,18 +286,22 @@ class RentalOrderLine(models.Model):
 
     def _get_delay_line_description(self):
         # Shouldn't tz be taken from self.order_id.user_id.tz ?
+        tz = self._get_tz()
         return "%s\n%s: %s\n%s: %s" % (
             self.product_id.name,
             _("Expected"),
-            format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=self.env.user.tz, dt_format=False),
+            format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=tz, dt_format=False),
             _("Returned"),
-            format_datetime(self.with_context(use_babel=True).env, fields.Datetime.now(), tz=self.env.user.tz, dt_format=False)
+            format_datetime(self.with_context(use_babel=True).env, fields.Datetime.now(), tz=tz, dt_format=False)
         )
 
     def _get_clean_up_values(self):
         values = super()._get_clean_up_values()
         values.update({'return_date': False})
         return values
+
+    def _get_tz(self):
+        return self.env.context.get('tz') or self.env.user.tz or 'UTC'
 
     #=== PRICE COMPUTING HOOKS ===#
 

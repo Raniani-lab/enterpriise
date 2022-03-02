@@ -106,7 +106,7 @@ var PushPreviewButton = Widget.extend({
             try {
                 window.atob(recordImage);
                 return 'data:image/png;base64, ' + recordImage;
-            } catch (e) {
+            } catch (_e) {
                 return '/web/image/social.post/' + this.record.data.id + '/push_notification_image';
             }
         }

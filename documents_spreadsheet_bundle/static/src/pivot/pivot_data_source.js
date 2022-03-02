@@ -84,7 +84,7 @@ export default class PivotDataSource extends BasicDataSource {
                 args: [parseInt(value, 10)],
             });
             label = rpc;
-        } catch (e) {
+        } catch (_e) {
             label = new Error(_.str.sprintf(_t("Unable to fetch the label of %s of model %s"), value, model));
         }
         if (this.data) {

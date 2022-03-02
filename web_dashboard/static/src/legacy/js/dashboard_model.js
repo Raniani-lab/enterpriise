@@ -77,7 +77,7 @@ var DashboardModel = BasicModel.extend({
                 if (!isFinite(dataPoint.data[formulaID])) {
                     dataPoint.data[formulaID] = NaN;
                 }
-            } catch (e) {
+            } catch (_e) {
                 dataPoint.data[formulaID] = NaN;
             }
             if (dataPoint.compare) {
@@ -88,7 +88,7 @@ var DashboardModel = BasicModel.extend({
                     if (!isFinite(dataPoint.comparisonData[formulaID])) {
                         dataPoint.comparisonData[formulaID] = NaN;
                     }
-                } catch (e) {
+                } catch (_e) {
                     dataPoint.comparisonData[formulaID] = NaN;
                 }
             }

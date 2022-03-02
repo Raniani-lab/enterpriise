@@ -169,7 +169,7 @@ const FSMProductQty = FieldInteger.extend({
         try {
             this._parseValue(this.$input.val());
             this.removeInvalidClass();
-        } catch (e) {
+        } catch (_e) {
             this.setInvalidClass();
         }
         

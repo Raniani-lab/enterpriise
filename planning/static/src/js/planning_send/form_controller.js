@@ -47,7 +47,7 @@ export default FormController.extend({
                 await this._displayDialogWhenEmployeeNoEmail(result);
             }
             return _super.apply(this, arguments);
-        } catch (error) {
+        } catch (_error) {
             return;
         }
     },

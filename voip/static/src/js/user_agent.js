@@ -373,7 +373,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         try {
             return new window.SIP.UA(this._getUaConfig(params));
-        } catch (err) {
+        } catch (_err) {
             this._triggerError(
                 _t("The server configuration could be wrong. Please check your configuration."));
             return false;

@@ -222,7 +222,7 @@ export class DashboardModel extends Model {
                     if (isFinite(value)) {
                         data[name].values[i] = value;
                     }
-                } catch (e) {
+                } catch (_e) {
                     // pass
                 }
             }

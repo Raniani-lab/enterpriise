@@ -540,7 +540,7 @@ export class MapModel extends Model {
                     }
                     data.fetchingCoordinates = i < partnersList.length - 1;
                     this._notifyFetchedCoordinate(metaData, data);
-                } catch (e) {
+                } catch (_e) {
                     for (const partner of data.partners) {
                         partner.fetchingCoordinate = false;
                     }

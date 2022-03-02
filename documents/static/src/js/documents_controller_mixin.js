@@ -890,7 +890,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
                 method: 'toggle_lock',
                 args: [ev.data.resId],
             });
-        } catch (err) {
+        } catch (_err) {
             // silently ignore RPC errors
         }
         await this.reload();
@@ -924,7 +924,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
                 method: 'get_formview_id',
                 args: [ev.data.resId],
             });
-        } catch (err) {
+        } catch (_err) {
             // ignores error
         }
         this.do_action({

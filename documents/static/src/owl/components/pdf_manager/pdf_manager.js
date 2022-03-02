@@ -301,7 +301,7 @@ class PdfManager extends LegacyComponent {
         let asset;
         try {
             asset = await ajax.loadAsset('documents.pdf_js_assets');
-        } catch (error) {
+        } catch (_error) {
             asset = await ajax.loadAsset('web.pdf_js_lib');
         } finally {
             await ajax.loadLibs(asset);

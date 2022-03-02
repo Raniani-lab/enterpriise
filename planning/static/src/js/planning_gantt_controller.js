@@ -139,7 +139,7 @@ const PlanningGanttController = GanttController.extend(PlanningControllerMixin, 
                         await this._displayDialogWhenEmployeeNoEmail(result);
                         self.trigger_up('execute_action', event_data);
                         setTimeout(() => self.dialog.destroy(), 100);
-                    } catch (err) {
+                    } catch (_err) {
                         self.dialog.$footer.find('button').removeAttr('disabled');
                     }
                 }

@@ -1189,7 +1189,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             try {
                 // the value might have been stringified
                 optionValue = JSON.parse(optionValue);
-            } catch (e) {}
+            } catch (_e) {}
 
             newOptions[optionName] = optionValue;
         }

@@ -241,14 +241,14 @@ class TestDeliveryUPS(TransactionCase):
         out01 = so.picking_ids - pick01
 
         # First step with 2 x Product A
-        pick01.move_lines.filtered(lambda m: m.product_id == product_a).quantity_done = 2
+        pick01.move_ids.filtered(lambda m: m.product_id == product_a).quantity_done = 2
         process_picking(pick01)
         # First step with 2 x Product B
         pick02 = pick01.backorder_ids
         process_picking(pick02)
 
         # Second step with 1 x Product A
-        out01.move_lines.filtered(lambda m: m.product_id == product_a).quantity_done = 1
+        out01.move_ids.filtered(lambda m: m.product_id == product_a).quantity_done = 1
         process_picking(out01)
         out02 = out01.backorder_ids
         self.assertTrue(out01.carrier_tracking_ref)

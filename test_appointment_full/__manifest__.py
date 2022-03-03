@@ -13,6 +13,7 @@ Take into account the working schedule (sick leaves, part time, ...) of employee
 --------------------------------------------------------------------------------------------------------------
 """,
     'depends': [
+        'appointment_crm',
         'appointment_hr',
         'website_appointment',
     ],

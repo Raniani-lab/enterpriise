@@ -47,7 +47,6 @@ const DialingPanel = Widget.extend({
         'sip_bye': '_onSipBye',
         'sip_cancel_incoming': '_onSipCancelIncoming',
         'sip_cancel_outgoing': '_onSipCancelOutgoing',
-        'sip_customer_unavailable': '_onSipCustomerUnavailable',
         'sip_error': '_onSipError',
         'sip_error_resolved': '_onSipErrorResolved',
         'sip_incoming_call': '_onSipIncomingCall',
@@ -854,12 +853,6 @@ const DialingPanel = Widget.extend({
     _onSipCancelOutgoing() {
         this._cancelCall();
         this._activeTab.onCancelOutgoingCall();
-    },
-    /**
-     * @private
-     */
-    _onSipCustomerUnavailable() {
-        this.displayNotification({ message: _t("Customer unavailable. Please try later.") });
     },
     /**
      * @private

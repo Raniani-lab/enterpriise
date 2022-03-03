@@ -44,6 +44,7 @@ class SignTemplate(models.Model):
 
     authorized_ids = fields.Many2many('res.users', string="Authorized Users", relation="sign_template_authorized_users_rel", default=_default_favorited_ids)
     group_ids = fields.Many2many("res.groups", string="Authorized Groups")
+    has_sign_requests = fields.Boolean(compute="_compute_has_sign_requests", compute_sudo=True, store=True)
 
     is_sharing = fields.Boolean(compute='_compute_is_sharing', help='Checked if this template has created a shared document for you')
 
@@ -68,6 +69,11 @@ class SignTemplate(models.Model):
     def _compute_responsible_count(self):
         for template in self:
             template.responsible_count = len(template.sign_item_ids.mapped('responsible_id'))
+
+    @api.depends('sign_request_ids')
+    def _compute_has_sign_requests(self):
+        for template in self:
+            template.has_sign_requests = bool(template.with_context(active_test=False).sign_request_ids)
 
     def _compute_signed_in_progress_template(self):
         sign_requests = self.env['sign.request'].read_group([('state', '!=', 'canceled')], ['state', 'template_id'], ['state', 'template_id'], lazy=False)
@@ -158,7 +164,7 @@ class SignTemplate(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_existing_signature(self):
-        if self.filtered(lambda template: template.sign_request_ids):
+        if self.filtered(lambda template: template.has_sign_requests):
             raise UserError(_(
                 "You can't delete a template for which signature requests "
                 "exist but you can archive it instead."))
@@ -182,7 +188,7 @@ class SignTemplate(models.Model):
         :return: dict new_id_to_item_id_map: {negative itemId(transaction_id) in pdfviewer (str): positive id in database (int)}
         """
         self.ensure_one()
-        if len(self.sign_request_ids) > 0:
+        if self.has_sign_requests:
             return False
         if sign_items is None:
             sign_items = {}
@@ -227,7 +233,7 @@ class SignTemplate(models.Model):
     @api.model
     def rotate_pdf(self, template_id=None):
         template = self.browse(template_id)
-        if len(template.sign_request_ids) > 0:
+        if template.has_sign_requests:
             return False
 
         template.datas = base64.b64encode(pdf.rotate_pdf(base64.b64decode(template.datas)))
@@ -271,7 +277,7 @@ class SignTemplate(models.Model):
     def _copy_sign_items_to(self, new_template):
         """ copy all sign items of the self template to the new_template """
         self.ensure_one()
-        if len(new_template.sign_request_ids) > 0:
+        if new_template.has_sign_requests:
             raise UserError(_("Somebody is already filling a document which uses this template"))
         item_id_map = {}
         for sign_item in self.sign_item_ids:

@@ -15,7 +15,6 @@ import { sign_utils } from "@sign/js/backend/utils";
 import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
 import {
   FormFieldMany2ManyTags,
-  FieldSelection as FormFieldSelection
 } from "web.relational_fields";
 import { multiFileUpload } from "@sign/js/backend/multi_file_upload";
 
@@ -800,7 +799,7 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
     const defTemplates = this._rpc({
       model: "sign.template",
       method: "read",
-      args: [[this.templateID]],
+      args: [[this.templateID], ['id', 'attachment_id', 'has_sign_requests', 'responsible_count', 'display_name']],
     }).then(function prepare_template(template) {
       if (template.length === 0) {
         self.templateID = undefined;
@@ -812,7 +811,7 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
       }
       template = template[0];
       self.sign_template = template;
-      self.has_sign_requests = template.sign_request_ids.length > 0;
+      self.has_sign_requests = template.has_sign_requests;
 
       const defSignItems = self
         ._rpc({

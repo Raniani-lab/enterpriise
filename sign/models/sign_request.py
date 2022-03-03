@@ -757,7 +757,7 @@ class SignRequestItem(models.Model):
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': signer.sign_request_id.reference},
-                {'model_description': 'signature', 'company': signer.create_uid.company_id},
+                {'model_description': 'signature', 'company': self.env.company},
                 {'email_from': signer.create_uid.email_formatted,
                  'author_id': signer.create_uid.partner_id.id,
                  'email_to': formataddr((signer.partner_id.name, signer.signer_email)),

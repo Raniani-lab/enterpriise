@@ -152,7 +152,7 @@ class CalendarAppointmentType(models.Model):
           Calendar field is required on resource and therefore on employee so each
           employee should be correctly taken into account;
         """
-        work_schedules = {}
+        calendar_to_employees = {}
 
         # Compute work schedules for users having employees with a resource.calendar
         available_employees_tz = [
@@ -162,16 +162,28 @@ class CalendarAppointmentType(models.Model):
         ]
 
         for employee in available_employees_tz:
-            employee_resource_id = employee.resource_id
+            calendar = employee.resource_id.calendar_id
+            if calendar not in calendar_to_employees:
+                calendar_to_employees[calendar] = employee
+            else:
+                calendar_to_employees[calendar] += employee
 
-            work_schedules[employee.user_partner_id] = [
-                (interval[0].astimezone(pytz.UTC).replace(tzinfo=None),
-                 interval[1].astimezone(pytz.UTC).replace(tzinfo=None)
+        # Compute work schedules for users having employees
+        work_schedules = {}
+        for calendar, employees in calendar_to_employees.items():
+            work_intervals = calendar._work_intervals_batch(
+                start_dt, end_dt,
+                resources=employees.resource_id
+            )
+            work_schedules.update(dict(
+                (employee.user_partner_id,
+                 [(interval[0].astimezone(pytz.UTC).replace(tzinfo=None),
+                   interval[1].astimezone(pytz.UTC).replace(tzinfo=None)
+                  )
+                  for interval in work_intervals[employee.resource_id.id]
+                 ]
                 )
-                for interval in employee_resource_id.calendar_id._work_intervals_batch(
-                    start_dt, end_dt,
-                    resources=employee_resource_id
-                )[employee_resource_id.id]
-            ]
+                for employee in employees
+            ))
 
         return {'work_schedules': work_schedules}

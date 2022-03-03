@@ -152,7 +152,7 @@ class CalendarAppointmentType(models.Model):
           Calendar field is required on resource and therefore on employee so each
           employee should be correctly taken into account;
         """
-        if self.category == 'custom':
+        if self.category == 'custom' or not self.work_hours_activated:
             return {'work_schedules': {}}
 
         calendar_to_employees = {}

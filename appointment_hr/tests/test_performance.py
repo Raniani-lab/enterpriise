@@ -167,7 +167,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
                      self._mock_cal_work_intervals.call_count)
         # Time before optimization: ~0.45
         # Method count before optimization: 480 - 480 - 480 - 1
-        # Method count after optimization: 1 - 0 - 0 - 1
+        # Method count after optimization: 1 - 0 - 0 - 0
 
         global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 2)  # last day of last week of May
@@ -232,7 +232,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
                      self._mock_cal_work_intervals.call_count)
         # Time before optimization: ~0.48
         # Method count before optimization: 480 - 480 - 480 - 1
-        # Method count after optimization: 1 - 0 - 240 - 1
+        # Method count after optimization: 1 - 0 - 0 - 0
 
         global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 2)  # last day of last week of May
@@ -260,7 +260,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
 
         # with self.profile(collectors=['sql']) as profile:
         with self.mockAppointmentCalls(), \
-             self.assertQueryCount(staff_user_bxls=514):  # apt only: 56
+             self.assertQueryCount(staff_user_bxls=514):  # apt only: 47
             t0 = time.time()
             res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
             t1 = time.time()
@@ -276,7 +276,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
                      self._mock_cal_work_intervals.call_count)
         # Time before optimization: ~1.0
         # Method count before optimization: 402 - 402 - 402 - 20
-        # Method count after optimization: 1 - 0 - 0 - 1
+        # Method count after optimization: 1 - 0 - 0 - 0
 
         global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 30)  # last day of last week of April

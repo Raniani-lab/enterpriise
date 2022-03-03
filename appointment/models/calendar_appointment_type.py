@@ -194,29 +194,26 @@ class CalendarAppointmentType(models.Model):
             # Custom appointment type, we use "unique" slots here that have a defined start/end datetime
             unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique' and slot.end_datetime > reference_date)
 
-            staff_user = self.staff_user_ids[0]  # There is only 1 staff_user in this case
             for slot in unique_slots:
                 start = slot.start_datetime.astimezone(tz=None)
                 end = slot.end_datetime.astimezone(tz=None)
                 startUTC = start.astimezone(pytz.UTC).replace(tzinfo=None)
                 endUTC = end.astimezone(pytz.UTC).replace(tzinfo=None)
-                if staff_user.partner_id.calendar_verify_availability(startUTC, endUTC):
-                    slots.append({
-                        self.appointment_tz: (
-                            start.astimezone(appt_tz),
-                            end.astimezone(appt_tz),
-                        ),
-                        timezone: (
-                            start.astimezone(requested_tz),
-                            end.astimezone(requested_tz),
-                        ),
-                        'UTC': (
-                            startUTC,
-                            endUTC,
-                        ),
-                        'slot': slot,
-                        'staff_user_id': staff_user,
-                    })
+                slots.append({
+                    self.appointment_tz: (
+                        start.astimezone(appt_tz),
+                        end.astimezone(appt_tz),
+                    ),
+                    timezone: (
+                        start.astimezone(requested_tz),
+                        end.astimezone(requested_tz),
+                    ),
+                    'UTC': (
+                        startUTC,
+                        endUTC,
+                    ),
+                    'slot': slot,
+                })
         return slots
 
     def _slots_available(self, slots, start_dt, end_dt, staff_user=None):

@@ -61,8 +61,8 @@
                             </t>
                         </t>
                         <t t-if="display['top-right']">
-                            <button type="button" class="o_enable_searchview btn btn-link oi oi-large"
-                                t-att-class="state.showSearchBar ? 'oi-arrow--left' : 'oi-search'"
+                            <button type="button" class="o_enable_searchview btn btn-link oi-large"
+                                t-att-class="state.showSearchBar ? 'fa fa-arrow-left' : 'oi oi-search'"
                                 t-on-click="() => state.showSearchBar = !state.showSearchBar"
                             />
                             <t t-if="state.showSearchBar">

@@ -4,7 +4,7 @@
 <t t-name="voip.SystrayItem" owl="1">
     <div>
         <a href="#" title="Display Dialing Panel" t-on-click.prevent="onClick">
-            <i aria-label="Display Dialing Panel" class="oi oi-large oi-phone--application" role="img"/>
+            <i aria-label="Display Dialing Panel" class="oi oi-large oi-voip" role="img"/>
         </a>
     </div>
 </t>

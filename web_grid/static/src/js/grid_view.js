@@ -17,7 +17,7 @@ var _lt = core._lt;
 var GridView = AbstractView.extend({
     display_name: _lt('Grid'),
     mobile_friendly: true,
-    icon: 'oi-table--split',
+    icon: 'fa fa-th',
     config: _.extend({}, AbstractView.prototype.config, {
         Model: GridModel,
         Controller: GridController,

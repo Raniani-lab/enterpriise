@@ -56,9 +56,9 @@
                     >
                     <div t-if="props.withSearchBar" class="o_searchview" role="search" aria-autocomplete="list">
                         <t t-if="!state.showMobileSearch">
-                            <button type="button" class="o_enable_searchview btn btn-link oi oi-large"
+                            <button type="button" class="o_enable_searchview btn btn-link oi-large"
                                 t-if="props.withBreadcrumbs"
-                                t-att-class="state.showSearchBar ? 'oi-arrow--left' : 'oi-search'"
+                                t-att-class="state.showSearchBar ? 'fa fa-arrow-left' : 'oi oi-search'"
                                 t-on-click="() => state.showSearchBar = !state.showSearchBar"
                             />
                             <t t-if="state.showSearchBar or !props.withBreadcrumbs">

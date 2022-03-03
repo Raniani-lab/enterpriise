@@ -311,7 +311,7 @@ DashboardView.Banner = OnboardingBanner;
 
 DashboardView.type = "dashboard";
 DashboardView.display_name = "dashboard";
-DashboardView.icon = "oi-dashboard";
+DashboardView.icon = "fa fa-tachometer";
 DashboardView.multiRecord = true;
 
 DashboardView.searchMenuTypes = ["filter", "comparison", "favorite"];

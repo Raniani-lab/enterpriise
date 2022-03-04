@@ -272,37 +272,10 @@ class AccountMove(models.Model):
         return self.env['account.move'].create(move_vals)
 
     def open_asset_view(self):
-        ret = {
-            'name': _('Asset'),
-            'view_mode': 'form',
-            'res_model': 'account.asset',
-            'view_id': [v[0] for v in self.env['account.asset']._get_views(self.asset_asset_type) if v[1] == 'form'][0],
-            'type': 'ir.actions.act_window',
-            'res_id': self.asset_id.id,
-            'context': dict(self._context, create=False),
-        }
-        if self.asset_asset_type == 'sale':
-            ret['name'] = _('Deferred Revenue')
-        elif self.asset_asset_type == 'expense':
-            ret['name'] = _('Deferred Expense')
-        return ret
+        return self.asset_id.open_asset(['form'])
 
     def action_open_asset_ids(self):
-        ret = {
-            'name': _('Assets'),
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'account.asset',
-            'view_id': False,
-            'type': 'ir.actions.act_window',
-            'domain': [('id', 'in', self.asset_ids.ids)],
-            'views': self.env['account.asset']._get_views(self.asset_ids[0].asset_type),
-        }
-        if self.asset_ids[0].asset_type == 'sale':
-            ret['name'] = _('Deferred Revenues')
-        elif self.asset_ids[0].asset_type == 'expense':
-            ret['name'] = _('Deferred Expenses')
-        return ret
+        return self.asset_ids.open_asset(['tree', 'form'])
 
     def _delete_reversed_entry_assets(self):
         ReverseKey = namedtuple('ReverseKey', ['product_id', 'price_unit', 'quantity'])

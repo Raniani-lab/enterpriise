@@ -40,7 +40,7 @@ class AccountAsset(models.Model):
             "You can manually close an asset when the depreciation is over.\n"
             "By cancelling an asset, all depreciation entries will be reversed")
     active = fields.Boolean(default=True)
-    asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], compute='_compute_asset_type', store=True, index=True)
+    asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], compute='_compute_asset_type', store=True, index=True, copy=True)
 
     # Depreciation params
     method = fields.Selection([('linear', 'Straight Line'), ('degressive', 'Declining'), ('degressive_then_linear', 'Declining then Straight Line')], string='Method', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default='linear',
@@ -896,3 +896,25 @@ class AccountAsset(models.Model):
         for vid, view_type in self._get_views(self.asset_type):
             if view_type == 'form':
                 return vid
+
+    def open_asset(self, view_mode):
+        asset_type = self.asset_type if len(self) == 1 else self[0].asset_type
+        views = [v for v in self._get_views(asset_type) if v[1] in view_mode]
+        action = {
+            'name': _('Asset'),
+            'view_mode': ','.join(view_mode),
+            'type': 'ir.actions.act_window',
+            'res_id': self.id if 'tree' not in view_mode else False,
+            'res_model': 'account.asset',
+            'views': views,
+            'domain': [('id', 'in', self.ids)],
+            'context': dict(self._context,
+                asset_type=asset_type,
+                default_asset_type=asset_type)
+        }
+        if asset_type == 'sale':
+            action['name'] = _('Deferred Revenue')
+        elif asset_type == 'expense':
+            action['name'] = _('Deferred Expense')
+
+        return action

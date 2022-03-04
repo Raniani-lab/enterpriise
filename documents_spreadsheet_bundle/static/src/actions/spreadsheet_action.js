@@ -1,4 +1,5 @@
 /** @odoo-module **/
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { download } from "@web/core/network/download";
 import { useService } from "@web/core/utils/hooks";
@@ -10,9 +11,10 @@ import { SpreadsheetControlPanel } from "./control_panel/spreadsheet_control_pan
 import { SpreadsheetName } from "./control_panel/spreadsheet_name";
 
 import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants";
-import { createEmptySpreadsheet } from "../o_spreadsheet/helpers";
+import  spreadsheet  from "./o_spreadsheet_extended";
 
 const { Component, useState } = owl;
+const { createEmptyWorkbookData } = spreadsheet.helpers;
 
 export class SpreadsheetAction extends AbstractSpreadsheetAction {
   setup() {
@@ -125,7 +127,13 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
    * Create a new sheet and display it
    */
   async _onNewSpreadsheet() {
-    const id = await createEmptySpreadsheet(this.orm);
+    const data = {
+      name: UNTITLED_SPREADSHEET_NAME,
+      mimetype: "application/o-spreadsheet",
+      raw: JSON.stringify(createEmptyWorkbookData(`${_t("Sheet")}1`)),
+      handler: "spreadsheet",
+    };
+    const id = await this.orm.create("documents.document", data);
     this._openSpreadsheet(id);
   }
 

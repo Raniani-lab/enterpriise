@@ -29,8 +29,8 @@ uiPluginRegistry.add("odooListStructurePlugin", ListStructurePlugin);
 uiPluginRegistry.add("odooListAutofillPlugin", ListAutofillPlugin);
 
 
-coreTypes.add("ADD_ODOO_LIST");
-coreTypes.add("ADD_ODOO_LIST_FORMULA");
+coreTypes.add("INSERT_ODOO_LIST");
+coreTypes.add("RE_INSERT_ODOO_LIST");
 
 readonlyAllowedCommands.add("ADD_LIST_DOMAIN");
 

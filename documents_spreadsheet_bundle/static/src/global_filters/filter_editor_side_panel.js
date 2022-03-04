@@ -111,7 +111,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                 Object.values(this.getters.getSpreadsheetPivotModel(pivotId).getFields())
             );
             const lists = this.listIds.map((listId) =>
-                Object.values(this.getters.getListFields(listId))
+                Object.values(this.getters.getSpreadsheetListModel(listId).getFields())
             );
             const all = pivots.concat(lists);
             return [
@@ -182,7 +182,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                     : undefined;
             }
             for (const listId of this.listIds) {
-                const [field, fieldDesc] = this._findRelation(this.getters.getListFields(listId));
+                const [field, fieldDesc] = this._findRelation(this.getters.getSpreadsheetListModel(listId).getFields());
                 this.state.listFields[listId] = field ? { field, type: fieldDesc.type } : undefined;
             }
         }
@@ -233,7 +233,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
 
         onSelectedListField(listId, chain) {
             const fieldName = chain[0];
-            const field = this.getters.getListField(listId, fieldName);
+            const field = this.getters.getSpreadsheetListModel(listId).getField(fieldName);
             if (field) {
                 this.state.listFields[listId] = {
                     field: fieldName,

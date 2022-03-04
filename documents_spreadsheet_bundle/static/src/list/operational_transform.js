@@ -9,15 +9,11 @@ function identity(cmd) {
 
 otRegistry
 
-    .addTransformation("ADD_ODOO_LIST", ["ADD_ODOO_LIST_FORMULA"], (toTransform) => ({
+    .addTransformation("INSERT_ODOO_LIST", ["INSERT_ODOO_LIST"], (toTransform) => ({
         ...toTransform,
-        args: [toTransform.args[0] + 1, ...toTransform.args.slice(1)],
+        id: toTransform.id + 1,
     }))
-    .addTransformation("ADD_ODOO_LIST", ["ADD_ODOO_LIST"], (toTransform) => ({
-        ...toTransform,
-        list: { ...toTransform.list, id: toTransform.list.id + 1 },
-    }));
 
 inverseCommandRegistry
-    .add("ADD_ODOO_LIST", identity)
-    .add("ADD_ODOO_LIST_FORMULA", identity);
+    .add("INSERT_ODOO_LIST", identity)
+    .add("RE_INSERT_ODOO_LIST", identity);

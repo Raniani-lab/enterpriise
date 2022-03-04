@@ -1,12 +1,9 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import { UNTITLED_SPREADSHEET_NAME } from "./constants";
 import  spreadsheet  from "./o_spreadsheet_extended";
 import { OdooViewsModels } from "./odoo_views_models";
 import { MetadataRepository } from "./metadata_repository";
-
-const { createEmptyWorkbookData } = spreadsheet.helpers;
 
 const Model = spreadsheet.Model;
 
@@ -21,38 +18,6 @@ const Model = spreadsheet.Model;
  */
 export function intersect(a, b) {
   return a.filter((x) => b.includes(x));
-}
-
-/**
- * Create a new empty spreadsheet
- *
- * @param {Function} rpc RPC function
- *
- * @private
- * @returns ID of the newly created spreadsheet
- */
-export async function createEmptySpreadsheet(rpc) {
-  let callRPC;
-  if (rpc && rpc.constructor.name === "ORM") {
-    callRPC = legacyRPC(rpc);
-  } else {
-    callRPC = rpc;
-  }
-  if (!callRPC) {
-    throw new Error("rpc cannot be undefined");
-  }
-  return callRPC({
-    model: "documents.document",
-    method: "create",
-    args: [
-      {
-        name: UNTITLED_SPREADSHEET_NAME,
-        mimetype: "application/o-spreadsheet",
-        handler: "spreadsheet",
-        raw: JSON.stringify(createEmptyWorkbookData(`${_t("Sheet")}1`)),
-      },
-    ],
-  });
 }
 
 /**
@@ -74,38 +39,6 @@ export function getMaxObjectId(o) {
   return max;
 }
 
-/**
- * Compatibility layer between the ORM service
- * and the legacy RPC API.
- * The returned function has the same API as the legacy RPC.
- *
- * Notes:
- *    - the compatibility is incomplete and only covers what's currently
- *      needed for spreadsheet
- *    - remove when views and helpers are converted to wowl.
- * @param {Object} orm
- */
-export function legacyRPC(orm) {
-  return (params) => {
-    params = { ...params };
-    const model = params.model;
-    delete params.model;
-    const method = params.method;
-    delete params.method;
-    if (params.groupBy) {
-      params.groupby = params.groupBy;
-      delete params.groupBy;
-    }
-    if (params.orderBy) {
-      params.order = params.orderBy
-        .map((order) => order.name + (order.asc !== false ? " ASC" : " DESC"))
-        .join(", ");
-      delete params.orderBy;
-    }
-    const { args, ...kwargs } = params;
-    return orm.call(model, method, args || [], kwargs);
-  };
-}
 
 /**
  * see https://stackoverflow.com/a/30106551
@@ -174,17 +107,8 @@ export async function getDataFromTemplate(env, orm, templateId) {
   data = base64ToJson(data);
   const metadataRepository = new MetadataRepository(orm);
 
-  const rpc = legacyRPC(orm);
-  const cacheRPC = new CachedRPC(rpc);
-
   const model = new Model(data, {
     mode: "headless",
-    evalContext: {
-      env: {
-        delayedRPC: cacheRPC.delayedRPC.bind(cacheRPC),
-        services: { rpc },
-      },
-    },
     odooViewsModels: new OdooViewsModels(env, orm, metadataRepository),
   });
   await model.waitForIdle();

@@ -140,11 +140,11 @@
                 </t>
             </div>
             <div t-foreach="listIds" t-as="listId" t-key="listId" t-att-class="missingListField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
-                <div><t t-esc="getters.getListModelDisplayName(listId)"/> <span class="o_pivot_model_technical_name text-muted">(List #<t t-esc="listId"/>)</span></div>
+                <div><t t-esc="getters.getSpreadsheetListModel(listId).getModelLabel()"/> <span class="o_pivot_model_technical_name text-muted">(List #<t t-esc="listId"/>)</span></div>
                 <FieldSelectorAdapter
                     Component="FieldSelectorWidget"
-                    model="getters.getListModel(listId)"
-                    fields="getters.getListFields(listId)"
+                    model="getters.getListDefinition(listId).model"
+                    fields="getters.getSpreadsheetListModel(listId).getFields()"
                     type="state.type"
                     relatedModel="state.relation.relatedModelName"
                     selected="state.listFields[listId]"

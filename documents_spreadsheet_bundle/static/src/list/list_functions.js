@@ -16,7 +16,7 @@ functionRegistry.add("LIST", {
         const id = toString(listId);
         const position = toNumber(index) - 1;
         const field = toString(fieldName);
-        return this.getters.getListValue(id, position, field);
+        return this.getters.getListCellValue(id, position, field);
     },
     args: args(`
         list_id (string) ${_t("ID of the list.")}
@@ -31,7 +31,7 @@ functionRegistry.add("LIST.HEADER", {
     compute: function (listId, fieldName) {
         const id = toString(listId);
         const field = toString(fieldName);
-        return this.getters.getListHeader(id, field);
+        return this.getters.getListHeaderValue(id, field);
     },
     args: args(`
         list_id (string) ${_t("ID of the list.")}

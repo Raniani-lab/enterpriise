@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { getBasicData, getBasicServerData } from "../utils/spreadsheet_test_data";
+import { getBasicServerData } from "../utils/spreadsheet_test_data";
 import { getCellContent, getCellFormula, getCellValue } from "../utils/getters_helpers";
 import {
     addGlobalFilter,
@@ -8,9 +8,11 @@ import {
     setCellContent,
     setGlobalFilterValue,
 } from "../utils/commands_helpers";
-import { setupCollaborativeEnv, setupCollaborativeEnvForList } from "../utils/collaborative_helpers";
+import { setupCollaborativeEnv } from "../utils/collaborative_helpers";
 import { waitForEvaluation } from "../spreadsheet_test_utils";
 import PivotDataSource from "@documents_spreadsheet_bundle/pivot/pivot_data_source";
+
+let dataSourceId = 0;
 
 /**
  * Get a pivot definition, a data source and a pivot model (already loaded)
@@ -89,21 +91,35 @@ async function insertPivot(model) {
     })
 }
 
-function getList(id) {
-    return {
-        model: "partner",
-        domain: [],
-        orderBy: [],
-        context: {},
-        columns: ["foo", "probability"],
+function insertList(model, id, anchor=[0, 0]) {
+    const { definition, columns } = getListPayload();
+    return model.dispatch("INSERT_ODOO_LIST", {
+        sheetId: model.getters.getActiveSheetId(),
+        col: anchor[0],
+        row: anchor[1],
         id,
-    };
+        definition,
+        dataSourceId: dataSourceId++,
+        columns,
+        linesNumber: 5,
+    })
 }
 
-function getListTypes() {
+function getListPayload() {
     return {
-        foo: "integer",
-        probability: "integer",
+        definition: {
+            metaData: {
+                model: "partner",
+                columns: ["foo", "probability"],
+            },
+            searchParams: {
+                domain: [],
+                context: {},
+                orderBy: [],
+            },
+            limit: 5,
+        },
+        columns: [{ name: "foo", type: "integer" }, { name: "probability", type: "integer" }],
     };
 }
 
@@ -391,7 +407,7 @@ QUnit.test("Remove a filter and edit another concurrently", async (assert) => {
 
 QUnit.module("documents_spreadsheet > collaborative > list", {
     async beforeEach() {
-        const env = setupCollaborativeEnvForList(getBasicData());
+        const env = await setupCollaborativeEnv(getBasicServerData());
         alice = env.alice;
         bob = env.bob;
         charlie = env.charlie;
@@ -401,15 +417,7 @@ QUnit.module("documents_spreadsheet > collaborative > list", {
 
 QUnit.test("Add a list", async (assert) => {
     assert.expect(1);
-    const sheetId = alice.getters.getActiveSheetId();
-    const list = getList(1);
-    alice.dispatch("BUILD_ODOO_LIST", {
-        sheetId,
-        list,
-        anchor: [0, 0],
-        linesNumber: 5,
-        types: getListTypes(),
-    });
+    insertList(alice, 1)
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => user.getters.getListIds().length,
@@ -419,24 +427,9 @@ QUnit.test("Add a list", async (assert) => {
 
 QUnit.test("Add two lists concurrently", async (assert) => {
     assert.expect(6);
-    const sheetId = alice.getters.getActiveSheetId();
-    const list1 = getList(1);
-    const list2 = getList(1);
     await network.concurrent(() => {
-        alice.dispatch("BUILD_ODOO_LIST", {
-            sheetId,
-            list: list1,
-            anchor: [0, 0],
-            linesNumber: 5,
-            types: getListTypes(),
-        });
-        bob.dispatch("BUILD_ODOO_LIST", {
-            sheetId,
-            list: list2,
-            anchor: [0, 25],
-            linesNumber: 5,
-            types: getListTypes(),
-        });
+        insertList(alice, 1);
+        insertList(bob, 1, [0, 25]);
     });
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => user.getters.getListIds(), [
         "1",
@@ -469,18 +462,10 @@ QUnit.test("Add two lists concurrently", async (assert) => {
     );
 });
 
-QUnit.test("Can undo a command before a BUILD_ODOO_LIST", async (assert) => {
+QUnit.test("Can undo a command before a INSERT_ODOO_LIST", async (assert) => {
     assert.expect(1);
     setCellContent(bob, "A10", "Hello Alice");
-    const list = getList(1);
-    const sheetId = alice.getters.getActiveSheetId();
-    alice.dispatch("BUILD_ODOO_LIST", {
-        sheetId,
-        list,
-        anchor: [0, 0],
-        linesNumber: 5,
-        types: getListTypes(),
-    });
+    insertList(alice, 1);
     setCellContent(charlie, "A11", "Hello all");
     bob.dispatch("REQUEST_UNDO");
     assert.spreadsheetIsSynchronized(

@@ -165,18 +165,18 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
             arch: getBasicListArch(),
             session: { user_has_group: async () => true },
         });
-        const list = listView._getListForSpreadsheet();
+        const { list, fields } = listView._getListForSpreadsheet();
         listView.destroy();
         const { model } = await createSpreadsheetFromList();
-        const callback = await insertList.bind({ isEmptySpreadsheet: false })({
-            list: list.list,
+        const callback = insertList.bind({ isEmptySpreadsheet: false })({
+            list: list,
             threshold: 10,
-            fields: list.fields,
+            fields: fields,
         });
         model.dispatch("CREATE_SHEET", { sheetId: "42", position: 1 });
         const activeSheetId = model.getters.getActiveSheetId();
         assert.deepEqual(model.getters.getVisibleSheets(), [activeSheetId, "42"]);
-        callback(model);
+        await callback(model);
         assert.strictEqual(model.getters.getSheets().length, 3);
         assert.deepEqual(model.getters.getVisibleSheets()[0], activeSheetId);
         assert.deepEqual(model.getters.getVisibleSheets()[1], "42");
@@ -202,11 +202,16 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         assert.strictEqual(getCell(model, "A2").format, "#,##0.00");
         assert.strictEqual(getCell(model, "B2").format, undefined);
         await waitForEvaluation(model);
-        model.dispatch("REBUILD_ODOO_LIST", {
-            listId: "1",
-            anchor: [0, 10],
+        const listModel = await model.getters.getAsyncSpreadsheetListModel("1");
+        const list = model.getters.getListDefinition("1");
+        const columns = list.columns.map((name) => ({ name, type: listModel.getField(name).type}));
+        model.dispatch("RE_INSERT_ODOO_LIST", {
             sheetId: model.getters.getActiveSheetId(),
+            col: 0,
+            row: 10,
+            id: "1",
             linesNumber: 10,
+            columns,
         });
         assert.strictEqual(getCell(model, "A12").format, "#,##0.00");
         assert.strictEqual(getCell(model, "B12").format, undefined);
@@ -314,14 +319,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
                 },
             },
             mockRPC: async function (route, args, performRPC) {
-                if (args.method === "fields_get" && args.model === "partner") {
-                    // simulate that user cannot read the forbidden field
-                    const result = await performRPC(route, args);
-                    delete result[forbiddenFieldName];
-                    return result;
-                } else if (args.method === "join_spreadsheet_session") {
-                    spreadsheetLoaded = true;
-                } else if (
+                if (
                     spreadsheetLoaded &&
                     args.method === "search_read" &&
                     args.model === "partner" &&
@@ -336,11 +334,15 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
                 }
             },
         });
+        const listId = model.getters.getListIds()[0];
+        // remove forbidden field from the fields of the list.
+        delete model.getters.getSpreadsheetListModel(listId).getFields()[forbiddenFieldName];
+        spreadsheetLoaded = true;
+        model.dispatch("REFRESH_ALL_DATA_SOURCES");
         setCellContent(model, "A1", `=LIST.HEADER("1", "${forbiddenFieldName}")`);
         setCellContent(model, "A2", `=LIST("1","1","${forbiddenFieldName}")`);
 
-        const listId = model.getters.getListIds()[0];
-        assert.equal(model.getters.getListFields(listId)[forbiddenFieldName], undefined);
+        assert.equal(model.getters.getSpreadsheetListModel(listId).getFields()[forbiddenFieldName], undefined);
         assert.strictEqual(getCellValue(model, "A1"), forbiddenFieldName);
         const A2 = getCell(model, "A2");
         assert.equal(A2.evaluated.type, "error");

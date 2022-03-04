@@ -8,8 +8,6 @@ import { ormService } from "@web/core/orm_service";
 import { uiService } from "@web/core/ui/ui_service";
 import { registry } from "@web/core/registry";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
-import MockServer from "web.MockServer";
-import makeTestEnvironment from "web.test_env";
 import { MetadataRepository } from "../../src/o_spreadsheet/metadata_repository";
 
 const { Model } = spreadsheet;
@@ -64,30 +62,6 @@ export async function setupCollaborativeEnv(serverData) {
     });
     const charlie = new Model(model.exportData(), {
         odooViewsModels,
-        evalContext: { env },
-        transportService: network,
-        client: { id: "charlie", name: "Charlie" },
-    });
-    return { network, alice, bob, charlie, rpc: env.services.rpc };
-}
-
-export function setupCollaborativeEnvForList(data) {
-    const mockServer = new MockServer(data, {});
-    const env = makeTestEnvironment({}, mockServer.performRpc.bind(mockServer));
-    env.delayedRPC = env.services.rpc;
-    const network = new MockSpreadsheetCollaborativeChannel();
-    const model = new Model();
-    const alice = new Model(model.exportData(), {
-        evalContext: { env },
-        transportService: network,
-        client: { id: "alice", name: "Alice" },
-    });
-    const bob = new Model(model.exportData(), {
-        evalContext: { env },
-        transportService: network,
-        client: { id: "bob", name: "Bob" },
-    });
-    const charlie = new Model(model.exportData(), {
         evalContext: { env },
         transportService: network,
         client: { id: "charlie", name: "Charlie" },

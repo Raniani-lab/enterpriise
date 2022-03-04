@@ -50,7 +50,7 @@ ListController.include({
             .filter((col) => col.tag === "field")
             .filter((col) => col.attrs.widget !== "handle")
             .filter((col) => fields[col.attrs.name].type !== "binary")
-            .map((col) => col.attrs.name);
+            .map((col) => ({name: col.attrs.name, type: fields[col.attrs.name].type}));
     },
 
     /**
@@ -58,19 +58,18 @@ ListController.include({
      *
      * @private
      *
-     * @returns {SpreadsheetListForRPC}
      */
     _getListForSpreadsheet() {
         const data = this.model.get(this.handle);
-        const columns = this._getColumnsForSpreadsheet();
         return {
             list: {
                 model: data.model,
                 domain: data.domain,
                 orderBy: data.orderedBy,
-                context: removeContextUserInfo(data.getContext()),
-                columns,
-            }, fields: this.model.get(this.handle).fields
+                context: removeContextUserInfo(data.context),
+                columns: this._getColumnsForSpreadsheet(),
+            },
+            fields: data.fields,
         };
     },
 
@@ -81,7 +80,7 @@ ListController.include({
      * @private
      *
      * @param {Object} params
-     * @param {object} params.spreadsheet details of the selected document 
+     * @param {object} params.spreadsheet details of the selected document
      *                                  in which the pivot should be inserted. undefined if
      *                                  it's a new sheet. Might be null is no spreadsheet was selected
      * @param {number} params.spreadsheet.id the id of the selected spreadsheet
@@ -90,10 +89,10 @@ ListController.include({
      */
     async _insertInSpreadsheet({ id: spreadsheet, threshold }) {
         let notificationMessage;
-        const list = this._getListForSpreadsheet();
+        const { list, fields } = this._getListForSpreadsheet();
         const actionOptions = {
-            preProcessingAction: "insertList",
-            preProcessingActionData: { list: list.list, threshold, fields: list.fields }
+            preProcessingAsyncAction: "insertList",
+            preProcessingAsyncActionData: { list, threshold, fields }
         };
 
         if (!spreadsheet) {

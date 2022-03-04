@@ -17,22 +17,23 @@ export class ListingDetailsSidePanel extends Component {
 
     get listDefinition() {
         const listId = this.props.listId;
+        const def = this.getters.getListDefinition(listId);
         return {
-            model: this.getters.getListModel(listId),
-            modelDisplayName: this.getters.getListModelDisplayName(listId),
-            domain: this.getters.getListDomain(listId),
-            orderBy: this.getters.getListOrderBy(listId),
+            model: def.model,
+            modelDisplayName: this.getters.getSpreadsheetListModel(listId).getModelLabel(),
+            domain: def.domain,
+            orderBy: def.orderBy,
         };
     }
 
     formatSort(sort) {
-        return `${this.getters.getListFieldName(this.props.listId, sort.name)} (${
+        return `${this.getters.getSpreadsheetListModel(this.props.listId).getListHeaderValue(sort.name)} (${
             sort.asc ? _t("ascending") : _t("descending")
         })`;
     }
 
     getLastUpdate() {
-        const lastUpdate = this.getters.getListLastUpdate(this.props.listId);
+        const lastUpdate = this.getters.getSpreadsheetListDataSource(this.props.listId).getLastUpdate();
         if (lastUpdate) {
             return time_to_str(new Date(lastUpdate));
         }

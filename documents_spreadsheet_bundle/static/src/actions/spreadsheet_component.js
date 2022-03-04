@@ -8,8 +8,7 @@ import { useService } from "@web/core/utils/hooks";
 import { DEFAULT_LINES_NUMBER } from "../o_spreadsheet/constants";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import CachedRPC from "../o_spreadsheet/cached_rpc";
-import { legacyRPC, jsonToBase64 } from "../o_spreadsheet/helpers";
+import { jsonToBase64 } from "../o_spreadsheet/helpers";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 import { OdooViewsModels } from "../o_spreadsheet/odoo_views_models";
 import { MetadataRepository } from "../o_spreadsheet/metadata_repository";
@@ -25,8 +24,6 @@ export default class SpreadsheetComponent extends LegacyComponent {
         const user = useService("user");
         this.ui = useService("ui");
 
-        const rpc = legacyRPC(this.orm);
-        this.cacheRPC = new CachedRPC(rpc);
         this.props.exposeSpreadsheet(this);
 
         useSubEnv({
@@ -34,7 +31,6 @@ export default class SpreadsheetComponent extends LegacyComponent {
             saveAsTemplate: this._saveAsTemplate.bind(this),
             makeCopy: this.makeCopy.bind(this),
             download: this._download.bind(this),
-            delayedRPC: this.cacheRPC.delayedRPC.bind(this.cacheRPC),
             getLinesNumber: this._getLinesNumber.bind(this),
             notifyUser: this.notifyUser.bind(this),
             editText: this.editText.bind(this),

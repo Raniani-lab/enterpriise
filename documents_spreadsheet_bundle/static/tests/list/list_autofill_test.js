@@ -110,7 +110,7 @@ QUnit.module("documents_spreadsheet > list_autofill", {}, () => {
         assert.expect(2);
         const { model } = await createSpreadsheetFromList({ linesNumber: 1 });
         autofill(model, "A2", "A3");
-        assert.strictEqual(getCellValue(model, "A3"), undefined);
+        assert.strictEqual(getCellValue(model, "A3"), "Loading...");
         await waitForEvaluation(model);
         assert.strictEqual(getCellValue(model, "A3"), 1);
     });

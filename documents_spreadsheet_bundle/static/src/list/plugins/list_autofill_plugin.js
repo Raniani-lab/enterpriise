@@ -32,7 +32,7 @@ export default class ListAutofillPlugin extends spreadsheet.UIPlugin {
             .map(astToFormula)
             .map((arg) => this.getters.evaluateFormula(arg));
         const listId = evaluatedArgs[0];
-        const columns = this.getters.getListColumns(listId);
+        const columns = this.getters.getListDefinition(listId).columns;
         if (functionName === "LIST") {
             const position = parseInt(evaluatedArgs[1], 10);
             const field = evaluatedArgs[2];
@@ -92,7 +92,7 @@ export default class ListAutofillPlugin extends spreadsheet.UIPlugin {
             .map((arg) => this.getters.evaluateFormula(arg));
         if (isColumn || functionName === "LIST.HEADER") {
             const fieldName = functionName === "LIST" ? evaluatedArgs[2] : evaluatedArgs[1];
-            return this.getters.getListFieldName(evaluatedArgs[0], fieldName);
+            return this.getters.getSpreadsheetListModel(evaluatedArgs[0]).getListHeaderValue(fieldName);
         }
         return _t("Record #") + evaluatedArgs[1];
     }

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
-from datetime import datetime
+from datetime import datetime, time
+from freezegun import freeze_time
 import pytz
 
 from odoo.addons.resource.models.resource import Intervals
@@ -134,3 +135,33 @@ class TestPlanningHr(TestCommonPlanning):
                          "Work hours for the employee Jules should be 8h as its a Thursday.")
         self.assertEqual(4, planning_hours_info[joseph_resource_id.id]['value'],
                          "Planned hours for the employee Jules should be 4h as its a Thursday and hours are computed on a forecast slot (allocated_percentage = 50).")
+
+    def test_archive_employee(self):
+        with freeze_time("2020-04-22"):
+            slot_1, slot_2, slot_3 = self.env['planning.slot'].create([
+                {
+                    'resource_id': self.resource_bert.id,
+                    'start_datetime': datetime(2020, 4, 20, 8, 0),
+                    'end_datetime': datetime(2020, 4, 24, 17, 0),
+                },
+                {
+                    'resource_id': self.resource_bert.id,
+                    'start_datetime': datetime(2020, 4, 20, 8, 0),
+                    'end_datetime': datetime(2020, 4, 21, 17, 0),
+                },
+                {
+                    'resource_id': self.resource_bert.id,
+                    'start_datetime': datetime(2020, 4, 23, 8, 0),
+                    'end_datetime': datetime(2020, 4, 24, 17, 0),
+                },
+            ])
+
+            slot1_initial_end_date = slot_1.end_datetime
+            slot2_initial_end_date = slot_2.end_datetime
+
+            self.resource_bert.employee_id.action_archive()
+
+            self.assertEqual(slot_1.end_datetime, datetime.combine(datetime.today(), time.max), 'End date of the splited shift should be today')
+            self.assertNotEqual(slot_1.end_datetime, slot1_initial_end_date, 'End date should be updated')
+            self.assertEqual(slot_2.end_datetime, slot2_initial_end_date, 'End date should be the same')
+            self.assertFalse(slot_3.resource_id, 'Resource should be the False for archeived resource shifts')

@@ -3,6 +3,7 @@
 import logging
 import uuid
 
+from datetime import datetime, time
 from odoo import fields, models, _, api
 
 _logger = logging.getLogger(__name__)
@@ -76,6 +77,36 @@ class Employee(models.Model):
             self.env.add_to_compute(self._fields['planning_role_ids'], self)
 
         return res
+
+    def action_archive(self):
+        res = super().action_archive()
+        departure_date = datetime.combine(fields.Date.today(), time.max)
+        planning_slots = self.env['planning.slot'].sudo().search([
+            ('resource_id', 'in', self.resource_id.ids),
+            ('end_datetime', '>=', departure_date),
+        ])
+        self._manage_archived_employee_shifts(planning_slots, departure_date)
+        return res
+
+    def _manage_archived_employee_shifts(self, planning_slots, departure_date):
+        shift_vals_list = []
+        shift_ids_to_remove_resource = []
+        for slot in planning_slots:
+            if (slot.start_datetime < departure_date) and (slot.end_datetime > departure_date):
+                shift_vals_list.append({
+                    'start_datetime': departure_date,
+                    'end_datetime': slot.end_datetime,
+                    'role_id': slot.role_id.id,
+                    'company_id': slot.company_id.id,
+                    'tag_ids': slot.tag_ids.ids,
+                })
+                slot.write({'end_datetime': departure_date})
+            elif slot.start_datetime >= departure_date:
+                shift_ids_to_remove_resource.append(slot.id)
+        if shift_vals_list:
+            self.env['planning.slot'].sudo().create(shift_vals_list)
+        if shift_ids_to_remove_resource:
+            self.env['planning.slot'].sudo().browse(shift_ids_to_remove_resource).write({'resource_id': False})
 
 class HrEmployeeBase(models.AbstractModel):
     _inherit = "hr.employee.base"

@@ -7,6 +7,7 @@ from odoo.exceptions import AccessError
 from odoo.fields import Command
 
 from datetime import datetime
+from freezegun import freeze_time
 from dateutil.relativedelta import relativedelta
 
 
@@ -352,3 +353,45 @@ class TestUserAccess(TransactionCase):
         send.start_datetime = datetime(2019, 7, 25, 8, 0, 0)
 
         self.assertNotIn(slot, send.slot_ids, "User should not be able to send planning to users from other companies")
+
+    def test_user_can_archive_another_employee(self):
+        """
+        Test user may archive another employee with no access right to planning.
+            Test Case:
+            =========
+            - Create user with no access planning access
+            - Create employee
+            - Create 2 slots
+            - Archive employee
+        """
+        hr_officer = new_test_user(
+            self.env, login='hr_user', groups='hr.group_hr_user',
+            name='HR Officer', email='hro@example.com')
+
+        employee_eren = self.env['hr.employee'].with_user(hr_officer).create({
+            'name': 'bert',
+            'work_email': 'bert@a.be',
+            'tz': 'UTC',
+            'employee_type': 'freelance',
+        })
+
+        with freeze_time("2020-04-22"):
+            slot_1, slot_2 = self.env['planning.slot'].create([
+                {
+                    'resource_id': employee_eren.resource_id.id,
+                    'start_datetime': datetime(2020, 4, 20, 8, 0),
+                    'end_datetime': datetime(2020, 4, 24, 17, 0),
+                },
+                {
+                    'resource_id': employee_eren.resource_id.id,
+                    'start_datetime': datetime(2020, 4, 23, 8, 0),
+                    'end_datetime': datetime(2020, 4, 24, 17, 0),
+                },
+            ])
+
+            initial_end_date = slot_1.end_datetime
+
+            employee_eren.with_user(hr_officer).action_archive()
+
+            self.assertNotEqual(slot_1.end_datetime, initial_end_date, 'End date should be updated')
+            self.assertFalse(slot_2.resource_id, 'Resource should be the False for archeived resource shifts')

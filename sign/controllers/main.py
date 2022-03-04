@@ -86,7 +86,7 @@ class Sign(http.Controller):
             'token': token,
             'nbComments': len(sign_request.message_ids.filtered(lambda m: m.message_type == 'comment')),
             'isPDF': (sign_request.template_id.attachment_id.mimetype.find('pdf') > -1),
-            'webimage': re.match('image.*(gif|jpe|jpg|png)', sign_request.template_id.attachment_id.mimetype),
+            'webimage': re.match('image.*(gif|jpe|jpg|png|webp)', sign_request.template_id.attachment_id.mimetype),
             'hasItems': len(sign_request.template_id.sign_item_ids) > 0,
             'sign_items': sign_request.template_id.sign_item_ids,
             'item_values': item_values,

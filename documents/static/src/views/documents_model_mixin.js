@@ -143,6 +143,7 @@ export const DocumentsRecordMixin = (component) => class extends component {
                 "image/svg+xml",
                 "image/tiff",
                 "image/x-icon",
+                "image/webp",
                 "application/javascript",
                 "application/json",
                 "text/css",

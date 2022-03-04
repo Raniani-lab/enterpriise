@@ -240,7 +240,7 @@ export class DocumentsInspector extends Component {
     getRecordAdditionalData(record) {
         const additionalData = {
             isGif: new RegExp("image.*(gif)").test(record.data.mimetype),
-            isImage: new RegExp("image.*(jpeg|jpg|png)").test(record.data.mimetype),
+            isImage: new RegExp("image.*(jpeg|jpg|png|webp)").test(record.data.mimetype),
             isYoutubeVideo: false,
             youtubeToken: undefined,
             url_preview_image: record.data.url_preview_image,

@@ -84,7 +84,7 @@
                             <t t-set="fileRequest" t-value="record.type.raw_value === 'empty'"/>
                             <div class="o_kanban_image" t-attf-class="#{fileRequest ? 'o_request_image' : ''}">
                                 <t t-set="isPdf" t-value="['application/pdf', 'application/pdf;base64'].includes(record.mimetype.value)"/>
-                                <t t-set="hasThumbnail" t-value="(isPdf &amp;&amp; record.thumbnail_status.raw_value === 'present') || new RegExp('image.*(gif|jpeg|jpg|png)').test(record.mimetype.value)"/>
+                                <t t-set="hasThumbnail" t-value="(isPdf &amp;&amp; record.thumbnail_status.raw_value === 'present') || new RegExp('image.*(gif|jpeg|jpg|png|webp)').test(record.mimetype.value)"/>
                                 <!-- should be made more generic if we support different websites for videos -->
                                 <t t-set="youtubeUrlMatch" t-value="record.url.raw_value ? record.url.raw_value.match('youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]{11})') : false"/>
                                 <t t-set="youtubeVideoToken" t-value="youtubeUrlMatch ? youtubeUrlMatch.length > 1 ? youtubeUrlMatch[1] : false : false"/>

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { PdfViewerField } from '@web/views/fields/pdf_viewer/pdf_viewer_field';
-import { ImageField } from '@web/views/fields/image/image_field';
+import { ImageField, fileTypeMagicWordMap } from '@web/views/fields/image/image_field';
 import { SlidesViewer } from "@mrp/views/fields/google_slides_viewer";
 
 const { Component, useEffect, useRef } = owl;
@@ -11,10 +11,7 @@ class DocumentViewer extends Component {
     setup() {
         this.magicNumbers = {
             'JVBER': 'pdf',
-            '/': 'jpg',
-            'R': 'gif',
-            'i': 'png',
-            'P': 'svg+xml',
+            ...fileTypeMagicWordMap,
         };
         this.pdfIFrame = useRef('pdf_viewer');
         this.slideIFrame = useRef('slide_viewer');

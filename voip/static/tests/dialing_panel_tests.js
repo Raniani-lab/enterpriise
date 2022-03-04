@@ -286,12 +286,10 @@ QUnit.test('autocall flow', async function (assert) {
         "avoid to much call to get_next_activities_list, would be great to lower this counter");
 
     const incomingCallParams = {
-        data: {
-            number: "123-456-789"
-        }
+        number: "123-456-789",
     };
     // simulate an incoming call
-    await dialingPanel._onIncomingCall(incomingCallParams);
+    await dialingPanel._onIncomingCall({ detail: incomingCallParams });
     // Accept call
     await testUtils.dom.click(dialingPanel.$('.o_dial_accept_button'));
     assert.ok(
@@ -309,7 +307,7 @@ QUnit.test('autocall flow', async function (assert) {
         "Details should be visible");
 
     // simulate an incoming call
-    await dialingPanel._onIncomingCall(incomingCallParams);
+    await dialingPanel._onIncomingCall({ detail: incomingCallParams });
     await testUtils.dom.click(dialingPanel.$('.o_dial_reject_button'));
     assert.notOk(dialingPanel._isInCall);
     assert.containsOnce(

@@ -169,7 +169,7 @@ class Providerdhl(models.Model):
                     shipping_charge = charge
                     shipping_currency = q.find('CurrencyCode') or False
                     shipping_currency = shipping_currency and shipping_currency.text
-                    break;
+                    break
                 else:
                     available_product_code.append(global_product_code)
         else:

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, _
-from odoo.exceptions import UserError
+from odoo import fields, models
 
 
 class MrpProduction(models.Model):
@@ -12,8 +11,8 @@ class MrpProduction(models.Model):
 
     check_ids = fields.One2many('quality.check', 'production_id', string="Checks")
 
-    def _split_productions(self, amounts=False, cancel_remaning_qty=False):
-        productions = super()._split_productions(amounts=amounts, cancel_remaning_qty=cancel_remaning_qty)
+    def _split_productions(self, amounts=False, cancel_remaining_qty=False, set_consumed_qty=False):
+        productions = super()._split_productions(amounts=amounts, cancel_remaining_qty=cancel_remaining_qty, set_consumed_qty=set_consumed_qty)
         backorders = productions[1:]
         if not backorders:
             return productions

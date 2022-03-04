@@ -82,3 +82,15 @@ class CurrencyTestCase(TransactionCase):
         self.assertEqual(pen.rate_ids[-1].rate, 1.0)
         self.assertEqual(len(usd.rate_ids), usd_rates_count + 1)
         self.assertLess(usd.rate_ids[-1].rate, 1)
+
+    def test_live_currency_update_tcmb(self):
+        ytl = self.env.ref('base.TRY')
+        ytl.active = True
+        self.test_company.write({
+            'currency_provider': 'tcmb',
+            'currency_id': ytl.id
+        })
+        rates_count = len(ytl.rate_ids)
+        res = self.test_company.update_currency_rates()
+        self.assertTrue(res)
+        self.assertEqual(len(ytl.rate_ids), rates_count + 1)

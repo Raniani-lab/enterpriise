@@ -131,6 +131,7 @@ class ResCompany(models.Model):
         ('mindicador', 'Chilean mindicador.cl'),
         ('bcrp', 'Bank of Peru'),
         ('cbuae', 'UAE Central Bank'),
+        ('tcmb', 'Turkey Republic Central Bank'),
     ], default='ecb', string='Service Provider')
 
     @api.model_create_multi
@@ -156,6 +157,7 @@ class ResCompany(models.Model):
             'CL': 'mindicador',
             'PE': 'bcrp',
             'AE': 'cbuae',
+            'TR': 'tcmb',
         }
         for company in all_companies:
             company.currency_provider = currency_providers.get(company.country_id.code, 'ecb')
@@ -590,6 +592,36 @@ class ResCompany(models.Model):
             date = data_json['serie'][0]['fecha'][:10]
             rate = data_json['serie'][0]['valor']
             rslt[index] = (1.0 / rate,  date)
+        return rslt
+
+    def _parse_tcmb_data(self, available_currencies):
+        """Parse function for Turkish Central bank provider
+        * The webservice returns the following currency rates:
+        - USD, AUD, DKK, EUR, GBP, CHF, SEK, CAD, KWD, NOK, SAR,
+        - JPY, BGN, RON, RUB, IRR, CNY, PKR, QAR, KRW, AZN, AED
+        """
+        server_url = 'https://www.tcmb.gov.tr/kurlar/today.xml'
+        available_currency_names = set(available_currencies.mapped('name'))
+
+        try:
+            res = requests.get(server_url, timeout=30)
+            res.raise_for_status()
+        except Exception:
+            return False
+
+        try:
+            root = etree.fromstring(res.text.encode())
+            rate_date = fields.Date.to_string(datetime.datetime.strptime(root.attrib['Date'], '%d/%m/%Y'))
+            rslt = {
+                currency.attrib['Kod']: (2 / (float(currency.find('ForexBuying').text) + float(currency.find('ForexSelling').text)), rate_date)
+                for currency in root
+                if currency.attrib['Kod'] in available_currency_names
+            }
+            rslt['TRY'] = (1.0, rate_date)
+        except Exception as e:
+            _logger.warning('Unable to parse data from TCMB provider, the format may have been changed: %s', e)
+            return False
+
         return rslt
 
     @api.model

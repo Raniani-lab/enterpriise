@@ -60,9 +60,10 @@ class L10nLuGenerateXML(models.TransientModel):
 
         options = self.env.context.get('tax_report_options')
         filename = self.env['account.report'].get_report_filename(options)
-        vat = agent.vat if agent else self._get_export_vat()
-        if vat and vat.startswith("LU"):  # Remove LU prefix in the XML
-            vat = vat[2:]
+        agent_vat = agent.vat if agent else self._get_export_vat()
+        company_vat = self._get_export_vat()
+        agent_vat = agent_vat[2:] if agent_vat and agent_vat.startswith("LU") else agent_vat
+        company_vat = company_vat[2:] if company_vat and company_vat.startswith("LU") else company_vat
         language = self.env.context.get('lang', '').split('_')[0].upper()
         language = language in ('EN', 'FR', 'DE') and language or 'EN'
         if self.env.context.get('report_generation_options'):
@@ -71,7 +72,7 @@ class L10nLuGenerateXML(models.TransientModel):
             'filename': filename,
             'lang': language,
             'interface': 'MODL5',
-            'agent_vat': vat or "NE",
+            'agent_vat': agent_vat or "NE",
             'agent_matr_number': agent.l10n_lu_agent_matr_number or company.matr_number or "NE",
             'agent_rcs_number': agent.l10n_lu_agent_rcs_number or company.company_registry or "NE",
             'declarations': []
@@ -97,7 +98,7 @@ class L10nLuGenerateXML(models.TransientModel):
             )
 
         declaration_template_values = {
-            'vat_number': vat or "NE",
+            'vat_number': company_vat or "NE",
             'matr_number': company.matr_number or "NE",
             'rcs_number': company.company_registry or "NE",
         }

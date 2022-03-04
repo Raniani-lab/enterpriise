@@ -539,7 +539,7 @@ class AnalyticLine(models.Model):
         day = column_value.split('/')[0]
         if len(line) > 1:  # copy the last line as adjustment
             line[0].copy({
-                'name': _('Timesheet Adjustment'),
+                'name': '/',
                 column_field: day,
                 cell_field: change
             })
@@ -549,7 +549,7 @@ class AnalyticLine(models.Model):
             })
         else:  # create new one
             self.search(row_domain, limit=1).copy({
-                'name': _('Timesheet Adjustment'),
+                'name': '/',
                 column_field: day,
                 cell_field: change,
             })

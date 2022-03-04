@@ -73,8 +73,8 @@
                     <button class="btn_start_timer btn btn-odoo text-uppercase" t-on-click="_onClickStartTimer" t-ref="startButton"><i class="fa fa-play"></i> Start</button>
                 </div>
                 <div class="p-2">
-                    <span t-if="timerMode"><span class="text-muted">use a hot key to</span> add <t t-esc="props.stepTimer"/> min</span>
-                    <t t-elif="!isMobile"><span class="text-muted">press </span><span>Enter</span><span class="text-muted"> or use a </span><span>hot key</span></t>
+                    <span t-if="timerMode">press Shift + a letter shortcut<span class="text-muted"> to add </span><t t-esc="props.stepTimer"/> min</span>
+                    <t t-elif="!isMobile"><span class="text-muted">press </span><span>Enter</span><span class="text-muted"> or a </span><span>letter shortcut</span></t>
                 </div>
             </div>
         </t>

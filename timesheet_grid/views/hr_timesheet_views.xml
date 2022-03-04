@@ -115,7 +115,7 @@
                     </div>
                     <span class="mx-1 o_kanban_timer_start" attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '=', False)] }">
                         <span class="o_time_duration mt-2">
-                            <field name="duration_unit_amount" widget="timesheet_uom_hours" decoration-danger="duration_unit_amount &gt; 24"/>
+                            <field name="duration_unit_amount" widget="timesheet_uom_hours" decoration-danger="duration_unit_amount &gt; 24 or unit_amount &lt; 0"/>
                         </span>
                         <span class="o_kanban_timer_toggle">
                             <field name="is_timer_running" widget="timer_toggle_button"/>

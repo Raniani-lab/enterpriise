@@ -319,9 +319,9 @@ class HelpdeskTicket(models.Model):
             self.env.cr.execute("""
                 SELECT ticket_id, COUNT(id) AS reached_late_count
                 FROM helpdesk_sla_status
-                WHERE ticket_id IN %s AND deadline < reached_datetime
+                WHERE ticket_id IN %s AND deadline < reached_datetime OR deadline < %s
                 GROUP BY ticket_id
-            """, (tuple(self.ids),))
+            """, (tuple(self.ids), fields.Datetime.now()))
             mapping = dict(self.env.cr.fetchall())
 
         for ticket in self:

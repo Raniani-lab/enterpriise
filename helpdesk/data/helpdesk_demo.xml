@@ -110,6 +110,7 @@
         <field name="stage_id" ref="helpdesk.stage_new"/>
         <field name="kanban_state">blocked</field>
         <field name="description" type="html">
+        <field name="sla_reached_late" eval="True"/>
 <p>Hello,<br/><br/>
 I would like to know what kind of warranties you are offering for your products.<br/>
 Here is my contact number: 123456789<br/><br/>

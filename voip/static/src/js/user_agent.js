@@ -95,13 +95,15 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._timerAcceptedTimeout = undefined;
         this._userAgent = undefined;
 
-
-        this._rpc({
-            model: 'voip.configurator',
-            method: 'get_pbx_config',
-            args: [],
-            kwargs: {},
-        }).then(result => this._initUserAgent(result));
+        owl.Component.env.services.messaging.get().then((messaging) => {
+            this._messaging = messaging;
+            this._rpc({
+                model: 'voip.configurator',
+                method: 'get_pbx_config',
+                args: [],
+                kwargs: {},
+            }).then(result => this._initUserAgent(result));
+        });
 
         window.onbeforeunload = function (event) {
             if (self._callState !== CALL_STATE.NO_CALL) {
@@ -197,7 +199,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * Reject an incoming Call
      */
     rejectIncomingCall() {
-        this.trigger_up('sip_rejected', this._currentCallParams);
+        this._messaging.messagingBus.trigger('sip_rejected', this._currentCallParams);
         this._audioIncomingRingtone.pause();
         this._sipSession = false;
         this._updateCallState(CALL_STATE.NO_CALL);
@@ -232,7 +234,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     transfer(number) {
         if (this._mode === 'demo') {
             this._updateCallState(CALL_STATE.NO_CALL);
-            this.trigger_up('sip_bye');
+            this._messaging.messagingBus.trigger('sip_bye');
             return;
         }
         if (this._callState !== CALL_STATE.ONGOING_CALL) {
@@ -269,7 +271,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
 
         if (this._mode === 'demo') {
             this._updateCallState(CALL_STATE.ONGOING_CALL);
-            this.trigger_up('sip_incoming_call', this._currentCallParams);
+            this._messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
             return;
         }
         if (!inviteSession) {
@@ -285,7 +287,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         inviteSession.accept(callOptions);
         this._isOutgoing = false;
         this._sipSession = inviteSession;
-        this.trigger_up('sip_error', {
+        this._messaging.messagingBus.trigger('sip_error', {
             isConnecting: true,
             message: _t("Please accept the use of the microphone."),
         });
@@ -299,7 +301,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _cancelEstablishingSession() {
         this._stopRingtones();
         this._updateCallState(CALL_STATE.NO_CALL);
-        this.trigger_up('sip_cancel_outgoing');
+        this._messaging.messagingBus.trigger('sip_cancel_outgoing');
         if (this._sipSession) {
             this._sipSession.cancel();
             this._sipSession = false;
@@ -475,7 +477,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this.infoPbxConfiguration = result;
         this._mode = result.mode;
         if (this._mode === 'prod') {
-            this.trigger_up('sip_error', {
+            this._messaging.messagingBus.trigger('sip_error', {
                 isConnecting: true,
                 message: _t("Connecting..."),
             });
@@ -544,7 +546,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             });
             this._isOutgoing = true;
             this._updateCallState(CALL_STATE.RINGING_CALL);
-            this.trigger_up('sip_error', {
+            this._messaging.messagingBus.trigger('sip_error', {
                 isConnecting: true,
                 message: _t("Please accept the use of the microphone."),
             });
@@ -628,7 +630,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._sipSession = false;
         this._cleanRemoteAudio();
         this._updateCallState(CALL_STATE.NO_CALL);
-        this.trigger_up('sip_bye');
+        this._messaging.messagingBus.trigger('sip_bye');
     },
     /**
      * Triggers up an error.
@@ -639,7 +641,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {boolean} [param1.isTemporary] if the message can be discarded or not
      */
     _triggerError(message, { isTemporary }={}) {
-        this.trigger_up('sip_error', {
+        this._messaging.messagingBus.trigger('sip_error', {
             isTemporary,
             message,
         });
@@ -688,7 +690,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._sipSession = false;
         this._cleanRemoteAudio();
         this._updateCallState(CALL_STATE.NO_CALL);
-        this.trigger_up('sip_bye');
+        this._messaging.messagingBus.trigger('sip_bye');
     },
     /**
      * Triggered when the transport transitions from connected state.
@@ -732,13 +734,13 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onGetUserMediaSuccess(stream) {
         if (this._isOutgoing) {
-            this.trigger_up('sip_error_resolved');
+            this._messaging.messagingBus.trigger('sip_error_resolved');
             if (this.PLAY_MEDIA) {
                 this._audioDialRingtone.play().catch(() => {});
             }
         } else {
             this._updateCallState(CALL_STATE.ONGOING_CALL);
-            this.trigger_up('sip_incoming_call', this._currentCallParams);
+            this._messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
         }
     },
     /**
@@ -756,7 +758,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this._notification = undefined;
         }
         this._currentInviteSession.reject({ statusCode: 487 });
-        this.trigger_up('sip_cancel_incoming', this._currentCallParams);
+        this._messaging.messagingBus.trigger('sip_cancel_incoming', this._currentCallParams);
         this._sipSession = false;
         this._updateCallState(CALL_STATE.NO_CALL);
     },
@@ -883,7 +885,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         this._notification = this._sendNotification('Odoo', content);
         this._currentCallParams = incomingCallParams;
-        this.trigger_up('incomingCall', incomingCallParams);
+        this._messaging.messagingBus.trigger('incomingCall', incomingCallParams);
 
         if (!window.Notifcation || !window.Notification.requestPermission) {
            this._onWindowNotificationPermissionRequested({ content, inviteSession });
@@ -913,7 +915,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         if (this._mode === 'prod' && this._alwaysTransfer && this._currentNumber) {
             this.transfer(this._currentNumber);
         } else {
-            this.trigger_up('sip_accepted');
+            this._messaging.messagingBus.trigger('sip_accepted');
         }
     },
     /**
@@ -937,7 +939,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             if (this.PLAY_MEDIA) {
                 this._audioRingbackTone.play().catch(() => {});
             }
-            this.trigger_up('changeStatus');
+            this._messaging.messagingBus.trigger('changeStatus');
         }
     },
     /**
@@ -978,7 +980,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             }
         })();
         this._triggerError(errorMessage, { isTemporary: true });
-        this.trigger_up('sip_cancel_outgoing');
+        this._messaging.messagingBus.trigger('sip_cancel_outgoing');
     },
     /**
      * Triggered when receiving a response with status code 2xx to the REFER
@@ -997,7 +999,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onRegistererStateChange(newState) {
         if (newState === window.SIP.RegistererState.Registered) {
-            this.trigger_up('sip_error_resolved');
+            this._messaging.messagingBus.trigger('sip_error_resolved');
         }
     },
     /**
@@ -1009,7 +1011,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * REGISTER request.
      */
     _onRegistrationAccepted(response) {
-        this.trigger_up('sip_error_resolved');
+        this._messaging.messagingBus.trigger('sip_error_resolved');
     },
     /**
      * Triggered when receiving a response with status code 4xx, 5xx, or 6xx to

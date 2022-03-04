@@ -37,21 +37,10 @@ const DialingPanel = Widget.extend({
         'keyup .o_dial_keypad_input': '_onKeyupKeypadInput',
     },
     custom_events: {
-        'changeStatus': '_onChangeStatus',
         'fold_panel': '_onFoldPanel',
-        'incomingCall': '_onIncomingCall',
         'muteCall': '_onMuteCall',
         'resetMissedCalls': '_resetMissedCalls',
         'showHangupButton': '_onShowHangupButton',
-        'sip_accepted': '_onSipAccepted',
-        'sip_bye': '_onSipBye',
-        'sip_cancel_incoming': '_onSipCancelIncoming',
-        'sip_cancel_outgoing': '_onSipCancelOutgoing',
-        'sip_customer_unavailable': '_onSipCustomerUnavailable',
-        'sip_error': '_onSipError',
-        'sip_error_resolved': '_onSipErrorResolved',
-        'sip_incoming_call': '_onSipIncomingCall',
-        'sip_rejected': '_onSipRejected',
         'switch_keypad': '_onSwitchKeypad',
         'unmuteCall': '_onUnmuteCall',
     },
@@ -79,6 +68,19 @@ const DialingPanel = Widget.extend({
         };
         this._userAgent = new UserAgent(this);
         this._missedCounter = 0; // amount of missed call
+        this._onChangeStatus = this._onChangeStatus.bind(this);
+        this._onIncomingCall = this._onIncomingCall.bind(this);
+        this._onSipAccepted = this._onSipAccepted.bind(this);
+        this._onSipBye = this._onSipBye.bind(this);
+        this._onSipCancelIncoming = this._onSipCancelIncoming.bind(this);
+        this._onSipCancelOutgoing = this._onSipCancelOutgoing.bind(this);
+        this._onSipError = this._onSipError.bind(this);
+        this._onSipErrorResolved = this._onSipErrorResolved.bind(this);
+        this._onSipIncomingCall = this._onSipIncomingCall.bind(this);
+        this._onSipRejected = this._onSipRejected.bind(this);
+    },
+    async willStart() {
+        this._messaging = await owl.Component.env.services.messaging.get();
     },
     /**
      * @override
@@ -108,6 +110,16 @@ const DialingPanel = Widget.extend({
         this._$incomingCallButtons.hide();
         this._$keypad.hide();
 
+        this._messaging.messagingBus.addEventListener('changeStatus', this._onChangeStatus);
+        this._messaging.messagingBus.addEventListener('incomingCall', this._onIncomingCall);
+        this._messaging.messagingBus.addEventListener('sip_accepted', this._onSipAccepted);
+        this._messaging.messagingBus.addEventListener('sip_bye', this._onSipBye);
+        this._messaging.messagingBus.addEventListener('sip_cancel_incoming', this._onSipCancelIncoming);
+        this._messaging.messagingBus.addEventListener('sip_cancel_outgoing', this._onSipCancelOutgoing);
+        this._messaging.messagingBus.addEventListener('sip_error', this._onSipError);
+        this._messaging.messagingBus.addEventListener('sip_error_resolved', this._onSipErrorResolved);
+        this._messaging.messagingBus.addEventListener('sip_incoming_call', this._onSipIncomingCall);
+        this._messaging.messagingBus.addEventListener('sip_rejected', this._onSipRejected);
         core.bus.on('transfer_call', this, this._onTransferCall);
         core.bus.on('voip_onToggleDisplay', this,  function () {
             this._resetMissedCalls();
@@ -121,6 +133,18 @@ const DialingPanel = Widget.extend({
             tab.on('hidePanelHeader', this, () => this._hideHeader());
             tab.on('showPanelHeader', this, () => this._showHeader());
         }
+    },
+    destroy() {
+        this._messaging.messagingBus.removeEventListener('changeStatus', this._onChangeStatus);
+        this._messaging.messagingBus.removeEventListener('incomingCall', this._onIncomingCall);
+        this._messaging.messagingBus.removeEventListener('sip_accepted', this._onSipAccepted);
+        this._messaging.messagingBus.removeEventListener('sip_bye', this._onSipBye);
+        this._messaging.messagingBus.removeEventListener('sip_cancel_incoming', this._onSipCancelIncoming);
+        this._messaging.messagingBus.removeEventListener('sip_cancel_outgoing', this._onSipCancelOutgoing);
+        this._messaging.messagingBus.removeEventListener('sip_error', this._onSipError);
+        this._messaging.messagingBus.removeEventListener('sip_error_resolved', this._onSipErrorResolved);
+        this._messaging.messagingBus.removeEventListener('sip_incoming_call', this._onSipIncomingCall);
+        this._messaging.messagingBus.removeEventListener('sip_rejected', this._onSipRejected);
     },
 
     //--------------------------------------------------------------------------
@@ -709,13 +733,12 @@ const DialingPanel = Widget.extend({
     },
     /**
      * @private
-     * @param {OdooEvent} ev
-     * @param {Object} ev.data contains the number and the partnerId of the caller.
-     * @param {string} ev.data.number
-     * @param {integer} ev.data.partnerId
+     * @param {Object} detail contains the number and the partnerId of the caller.
+     * @param {string} detail.number
+     * @param {integer} detail.partnerId
      * @return {Promise}
      */
-    async _onIncomingCall(ev) {
+    async _onIncomingCall({ detail }) {
         this._isFoldedBeforeCall = this._isShow ? this._isFolded : true;
         await this._showWidget();
         this._$keypad.hide();
@@ -730,7 +753,7 @@ const DialingPanel = Widget.extend({
         ).addClass('active');
         this.$el.css('zIndex', 1051);
         this._activeTab = this._tabs.recent;
-        await this._activeTab.onIncomingCall(ev.data);
+        await this._activeTab.onIncomingCall(detail);
         this._$mainButtons.hide();
         this._$incomingCallButtons.show();
     },
@@ -821,13 +844,12 @@ const DialingPanel = Widget.extend({
     },
     /**
      * @private
-     * @param {OdooEvent} ev
-     * @param {OdooEvent} ev.data contains the number and the partnerId of the caller
-     * @param {string} ev.data.number
-     * @param {integer} ev.data.partnerId
+     * @param {Object} detail contains the number and the partnerId of the caller
+     * @param {string} detail.number
+     * @param {integer} detail.partnerId
      * @return {Promise}
      */
-    _onSipCancelIncoming(ev) {
+    _onSipCancelIncoming({ detail }) {
         this._isInCall = false;
         this._isPostpone = false;
         this._missedCounter = this._missedCounter + 1;
@@ -835,7 +857,7 @@ const DialingPanel = Widget.extend({
         this.$el.css('zIndex', '');
 
         if (this._isFoldedBeforeCall) {
-            this._activeTab.onMissedCall(ev.data);
+            this._activeTab.onMissedCall(detail);
             this.$('.o_dial_tab.active, .tab-pane.active').removeClass('active');
             this.$('.o_dial_recent_tab .o_dial_tab, .tab-pane.o_dial_recent').addClass('active');
             this._activeTab = this._tabs.recent;
@@ -845,7 +867,7 @@ const DialingPanel = Widget.extend({
             this._hidePostponeButton();
             this._showCallButton();
             this._resetMainButton();
-            return this._activeTab.onMissedCall(ev.data, true);
+            return this._activeTab.onMissedCall(detail, true);
         }
     },
     /**
@@ -857,28 +879,22 @@ const DialingPanel = Widget.extend({
     },
     /**
      * @private
-     */
-    _onSipCustomerUnavailable() {
-        this.displayNotification({ message: _t("Customer unavailable. Please try later.") });
-    },
-    /**
-     * @private
-     * @param {OdooEvent} ev
-     * @param {boolean} [ev.data.isConnecting] is true if voip is trying to
+     * @param {Object} detail
+     * @param {boolean} [detail.isConnecting] is true if voip is trying to
      *   connect and the error message must not disappear
-     * @param {Object} ev.data.isTemporary it we want to block voip temporarly
+     * @param {Object} detail.isTemporary it we want to block voip temporarly
      *   to display an error message
-     * @param {Object} ev.data.message contains the message to display on the
+     * @param {Object} detail.message contains the message to display on the
      *   gray overlay
      */
-    _onSipError(ev) {
-        const message = ev.data.message;
+    _onSipError({ detail }) {
+        const message = detail.message;
         this._isInCall = false;
         this._isPostpone = false;
         this._hidePostponeButton();
-        if (ev.data.isConnecting) {
+        if (detail.isConnecting) {
             this._blockOverlay(message);
-        } else if (ev.data.isTemporary) {
+        } else if (detail.isTemporary) {
             this._blockOverlay(message);
             this.$('.blockOverlay').on('click', () => this._onSipErrorResolved());
             this.$('.blockOverlay').attr('title', _t("Click to unblock"));
@@ -894,13 +910,12 @@ const DialingPanel = Widget.extend({
     },
     /**
      * @private
-     * @param {OdooEvent} ev
-     * @param {OdooEvent} ev.data contains the number and the partnerId of the caller
-     * @param {string} ev.data.number
-     * @param {integer} ev.data.partnerId
+     * @param {Object} detail contains the number and the partnerId of the caller
+     * @param {string} detail.number
+     * @param {integer} detail.partnerId
      * @return {Promise}
      */
-    async _onSipIncomingCall(ev) {
+    async _onSipIncomingCall({ detail }) {
         this._onSipErrorResolved();
         if (this._isInCall) {
             return;
@@ -916,20 +931,19 @@ const DialingPanel = Widget.extend({
         ).addClass('active');
         this.$el.css('zIndex', 1051);
         this._activeTab = this._tabs.recent;
-        await this._activeTab.onIncomingCallAccepted(ev.data);
+        await this._activeTab.onIncomingCallAccepted(detail);
         this._showHangupButton();
     },
     /**
      * @private
-     * @param {OdooEvent} ev
-     * @param {Object} ev.data contains the number and the partnerId of the caller.
-     * @param {string} ev.data.number
-     * @param {integer} ev.data.partnerId
+     * @param {Object} detail contains the number and the partnerId of the caller.
+     * @param {string} detail.number
+     * @param {integer} detail.partnerId
      * @return {Promise}
      */
-    _onSipRejected(ev) {
+    _onSipRejected({ detail }) {
         this._cancelCall();
-        return this._activeTab.onRejectedCall(ev.data);
+        return this._activeTab.onRejectedCall(detail);
     },
     /**
      * @private

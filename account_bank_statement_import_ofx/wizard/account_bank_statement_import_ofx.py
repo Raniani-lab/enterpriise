@@ -27,46 +27,46 @@ class PatchedOfxParser(OfxParserClass):
     """
 
     @classmethod
-    def decimal_separator_cleanup(cls_, tag):
+    def decimal_separator_cleanup(cls, tag):
         if hasattr(tag, "contents"):
             tag.string = tag.contents[0].replace(',', '.')
 
     @classmethod
-    def parseStatement(cls_, stmt_ofx):
+    def parseStatement(cls, stmt_ofx):
         ledger_bal_tag = stmt_ofx.find('ledgerbal')
         if hasattr(ledger_bal_tag, "contents"):
             balamt_tag = ledger_bal_tag.find('balamt')
-            cls_.decimal_separator_cleanup(balamt_tag)
+            cls.decimal_separator_cleanup(balamt_tag)
         avail_bal_tag = stmt_ofx.find('availbal')
         if hasattr(avail_bal_tag, "contents"):
             balamt_tag = avail_bal_tag.find('balamt')
-            cls_.decimal_separator_cleanup(balamt_tag)
-        return super(PatchedOfxParser, cls_).parseStatement(stmt_ofx)
+            cls.decimal_separator_cleanup(balamt_tag)
+        return super(PatchedOfxParser, cls).parseStatement(stmt_ofx)
 
     @classmethod
-    def parseTransaction(cls_, txn_ofx):
+    def parseTransaction(cls, txn_ofx):
         amt_tag = txn_ofx.find('trnamt')
-        cls_.decimal_separator_cleanup(amt_tag)
-        return super(PatchedOfxParser, cls_).parseTransaction(txn_ofx)
+        cls.decimal_separator_cleanup(amt_tag)
+        return super(PatchedOfxParser, cls).parseTransaction(txn_ofx)
 
     @classmethod
-    def parseInvestmentPosition(cls_, ofx):
+    def parseInvestmentPosition(cls, ofx):
         tag = ofx.find('units')
-        cls_.decimal_separator_cleanup(tag)
+        cls.decimal_separator_cleanup(tag)
         tag = ofx.find('unitprice')
-        cls_.decimal_separator_cleanup(tag)
-        return super(PatchedOfxParser, cls_).parseInvestmentPosition(ofx)
+        cls.decimal_separator_cleanup(tag)
+        return super(PatchedOfxParser, cls).parseInvestmentPosition(ofx)
 
     @classmethod
-    def parseInvestmentTransaction(cls_, ofx):
+    def parseInvestmentTransaction(cls, ofx):
         tag = ofx.find('units')
-        cls_.decimal_separator_cleanup(tag)
+        cls.decimal_separator_cleanup(tag)
         tag = ofx.find('unitprice')
-        cls_.decimal_separator_cleanup(tag)
-        return super(PatchedOfxParser, cls_).parseInvestmentTransaction(ofx)
+        cls.decimal_separator_cleanup(tag)
+        return super(PatchedOfxParser, cls).parseInvestmentTransaction(ofx)
 
     @classmethod
-    def parseOfxDateTime(cls_, ofxDateTime):
+    def parseOfxDateTime(cls, ofxDateTime):
         res = re.search("^[0-9]*\.([0-9]{0,5})", ofxDateTime)
         if res:
             msec = datetime.timedelta(seconds=float("0." + res.group(1)))

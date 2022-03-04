@@ -125,13 +125,13 @@ class IrAttachment(models.Model):
                 response = requests.get(url, timeout=10)
                 response.raise_for_status()
             except requests.exceptions.HTTPError as httpe:
-                _logger.warning('HTTP error %s with the given URL: %s' % (httpe, url))
+                _logger.warning('HTTP error %s with the given URL: %s', httpe, url)
                 return
             except requests.exceptions.ConnectionError as error:
-                _logger.warning('ConnectionError: %s with the given URL: %s' % (error, url))
+                _logger.warning('ConnectionError: %s with the given URL: %s', error, url)
                 return
             except requests.exceptions.ReadTimeout as error:
-                _logger.warning('ReadTimeout: %s with the given URL: %s', (error, url))
+                _logger.warning('ReadTimeout: %s with the given URL: %s', error, url)
                 return
             if values['file_url'].split('.')[1] == 'zip':
                 try:

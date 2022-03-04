@@ -10,7 +10,7 @@ class ProductTemplate(models.Model):
 
     allow_worksheets = fields.Boolean(related='project_id.allow_worksheets', readonly=True)
     worksheet_template_id = fields.Many2one(
-        'worksheet.template', string="Worksheet Template", company_dependent=True)
+        'worksheet.template', string="Worksheet Template", company_dependent=True, domain="[('res_model', '=', 'project.task')]")
 
     def _compute_worksheet_template_id(self, keep_template=False):
         for template in self:

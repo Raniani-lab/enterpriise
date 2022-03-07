@@ -16,12 +16,11 @@ class ResCompany(models.Model):
             company_payroll_users = payroll_users.filtered(lambda u: company in u.company_ids)
             if not company_payroll_users:
                 continue
-            note = self.env['note.note'].sudo().create({
+            self.env['note.note'].sudo().create({
                 'tag_ids': [(4, dashboard_note_tag.id)],
                 'company_id': company.id,
                 'name': _('Useful Links'),
             })
-            note.message_subscribe(partner_ids=company_payroll_users.partner_id.ids)
 
     @api.model_create_multi
     def create(self, vals_list):

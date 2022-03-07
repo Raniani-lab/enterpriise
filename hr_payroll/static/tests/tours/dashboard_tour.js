@@ -69,20 +69,21 @@ tour.register('payroll_dashboard_ui_tour', {
         trigger: 'div.o_hr_payroll_todo_create',
     },
     {
+        content: "Select created note",
+        trigger: 'div.o_hr_payroll_todo_tab:contains("Untitled")'
+    },
+    {
+        content: "Enter edit mode by double-clicking",
+        trigger: 'div.o_hr_payroll_todo_tab:contains("Untitled")',
+        run: 'dblclick'
+    },
+    {
         content: "Set a name",
-        trigger: 'input[name="name"]',
-        run: 'text Dashboard Todo List',
-    },
-    {
-        content: "Save the note",
-        trigger: 'footer button[special="save"]',
-    },
-    {
-        content: "Click on new note",
-        trigger: "div.o_hr_payroll_todo_tab:contains('Dashboard Todo List')",
+        trigger: 'div.o_hr_payroll_todo_tab input',
+        run: 'text Dashboard Todo List'
     },
     {
         content: "Edit the note in dashboard view",
-        trigger: 'div.o_hr_payroll_todo_value',
-    },
+        trigger: 'div.o_hr_payroll_todo_value'
+    }
 ]);

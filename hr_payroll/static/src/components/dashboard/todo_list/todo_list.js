@@ -2,10 +2,12 @@
 
 import { ComponentAdapter } from 'web.OwlCompatibility';
 import FieldHtml from 'web_editor.field.html';
-import { useService } from "@web/core/utils/hooks";
+import { useService, useAutofocus } from "@web/core/utils/hooks";
 import { session } from '@web/session';
+import Dialog from 'web.Dialog';
+import { _t } from 'web.core';
 
-const { Component, onMounted, onPatched, onWillUnmount, useState } = owl;
+const { Component, onMounted, onPatched, onWillUnmount, useState, useExternalListener } = owl;
 
 class PayrollDashboardTodoAdapter extends ComponentAdapter {
     setup() {
@@ -51,11 +53,13 @@ class PayrollDashboardTodoAdapter extends ComponentAdapter {
 export class PayrollDashboardTodo extends Component {
     setup() {
         this.actionService = useService("action");
+        this.orm = useService("orm");
         this.FieldHtml = FieldHtml;
         this.state = useState({
             activeNoteId: this.props.notes.length ? this.props.notes[0]['id'] : -1,
             mode: this.props.notes.length ? 'readonly' : '',
         });
+        useAutofocus();
         onWillUnmount(() => {
             if (this.state.mode === 'edit') {
                 this.saveNote()
@@ -67,6 +71,12 @@ export class PayrollDashboardTodo extends Component {
                 this.state.activeNoteId = this.props.notes[0]['id'];
             }
         });
+
+        useExternalListener(window, 'beforeunload', (e) => {
+            if (this.state.mode === 'edit') {
+                this.saveNote();
+            }
+        })
     }
 
     /**
@@ -84,6 +94,13 @@ export class PayrollDashboardTodo extends Component {
     }
 
     /**
+     * @returns { Number } id of the session user
+     */
+    get userId() {
+        return session.user_id[0];
+    }
+
+    /**
      * @returns {Array} The widgetargs to start the html field with
      */
     get noteWidgetArgs() {
@@ -95,7 +112,7 @@ export class PayrollDashboardTodo extends Component {
                 attrs: {
                     options: {
                         collaborative: true,
-                        height: 400,
+                        height: 600,
                     },
                 },
             },
@@ -105,20 +122,14 @@ export class PayrollDashboardTodo extends Component {
     /**
      * Opens the form view for either a new or an existing note.
      *
-     * @param {number} noteId note's id for editing existing note
      */
-    openNoteForm(noteId=false) {
-        const options = {
-            additionalContext: {
-                default_tag_ids: [[4, this.payrollTagId]],
-                default_company_id: owl.Component.env.session.user_context.allowed_company_ids[0],
-            },
-            onClose: () => this.props.reloadNotes(),
-        }
-        if (noteId) {
-            options.props = { resId: noteId };
-        }
-        this.actionService.doAction('hr_payroll.note_note_hr_payroll_action', options);
+    async createNoteForm() {
+        await this.orm.create('note.note', {
+            'name': 'Untitled',
+            'tag_ids': [[4, this.payrollTagId]],
+            'company_id': owl.Component.env.session.user_context.allowed_company_ids[0],
+        });
+        this.props.reloadNotes();
     }
 
     /**
@@ -127,19 +138,124 @@ export class PayrollDashboardTodo extends Component {
      * @param { Number } noteId ID of the tab's note record
      */
     onClickNoteTab(noteId) {
+        if (noteId == this.state.activeNoteId) {
+            return;
+        }
         if (this.state.mode === 'edit') {
             this.saveNote();
         }
         this.state.mode = 'readonly';
+        this.activeNoteData.isEditable = false;
         this.state.activeNoteId = noteId;
     }
 
     /**
-     * Opens the configuration for the clicked note
-     * @param { Number } noteId
+     * On double-click, the note name should become editable
+     * @param { Number } noteId 
      */
     onDoubleClickNoteTab(noteId) {
-        this.openNoteForm(noteId);
+        this.activeNoteData.isEditable = true;
+        this.bufferedText = this.activeNoteData.name;
+    }
+
+    /**
+     * On input, update buffer
+     * @param { Event } ev 
+     */
+    onInputNoteNameInput(ev) {
+        this.bufferedText = ev.target.value;
+    }
+
+    /**
+     * If enter/escape is pressed either save changes or discard them
+     * @param { Event } ev 
+     */
+    onKeyDownNoteNameInput(ev) {
+        switch (ev.key) {
+            case 'Enter':
+                this._applyNoteRename();
+                break;
+            case 'Escape':
+                this.activeNoteData.isEditable = false;
+                break;
+        }
+    }
+
+    /**
+     * Handles mouse entering a note title
+     * @param { Event } ev 
+     * @param { Number } noteId 
+     */
+    onMouseEnter(ev, noteId) {
+        if (noteId === this.state.activeNoteId) {
+            this.isMouseOnActiveNoteName = true;
+        }
+    }
+
+    /**
+     * Handles mouse leaving a note title
+     * @param { Event } ev 
+     * @param { Number } noteId 
+     */
+    onMouseLeave(ev, noteId) {
+        if (noteId === this.state.activeNoteId) {
+            this.isMouseOnActiveNoteName = false;
+        }
+    }
+
+    /**
+     * Renames the active note with the text saved in the buffer
+     */
+    async _applyNoteRename() {
+        if (this.bufferedText !== this.activeNoteData.name) {
+            this.activeNoteData.name = this.bufferedText;
+            await this.orm.write('note.note', [this.state.activeNoteId], {
+                'name': this.activeNoteData.name
+            });
+        }
+        this.activeNoteData.isEditable = false;
+    }
+
+    /**
+     * Handler when delete button is clicked
+     */
+    async onNoteDelete() {
+        const message = _t('Are you sure you want to delete this note?');
+        Dialog.confirm(this, message, {
+            confirm_callback: (e) => {
+                this._deleteNote(this.state.activeNoteId);
+            },
+        });
+    }
+
+    /**
+     * Deletes the specified note
+     * @param {*} noteId 
+     */
+    async _deleteNote(noteId) {
+        await this.orm.unlink("note.note", [
+            noteId,
+        ]);
+        this.props.reloadNotes();
+    }
+
+    /**
+     * Sets the cursor position to the end
+     * @param { Event } ev
+     */
+    handleFocus(ev) {
+        ev.currentTarget.setSelectionRange(
+            ev.currentTarget.value.length,
+            ev.currentTarget.value.length
+        );
+    }
+
+    /**
+     * When the input loses focus, save the changes
+     * @param {*} ev 
+     */
+    handleBlur(ev) {
+        this._applyNoteRename();
     }
 
     /**
@@ -149,27 +265,17 @@ export class PayrollDashboardTodo extends Component {
         if (this.state.mode === 'edit') {
             this.saveNote(false, false);
         }
-        this.openNoteForm();
+        this.createNoteForm();
     }
 
     /**
      * Switches the component to edit mode, creating an editor instead of simply displaying the note.
      */
     onClickEdit() {
-        if (this.state.mode === 'edit') {
+        if (this.state.mode === 'edit' || this.state.activeNoteId < 0) {
             return;
         }
         this.state.mode = 'edit';
-    }
-
-    /**
-     * Saves the local changes onto the database, notes are then reloaded from database and the component is re-rendered.
-     */
-    async onClickSave() {
-        if (this.state.mode === 'readonly') {
-            return;
-        }
-        await this.saveNote(true);
     }
 
     /**

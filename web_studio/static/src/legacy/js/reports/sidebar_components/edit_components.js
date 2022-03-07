@@ -814,7 +814,7 @@ var TIf = AbstractEditComponent.extend({
     _isSameValue(value) {
         const currentValue = this.node.attrs['t-if'];
         const newValue = value['t-if'];
-        if (currentValue === false || newValue === false || typeof newValue !== "string") {
+        if (!currentValue || !newValue || typeof newValue !== "string") {
             return currentValue === newValue;
         }
         function normalizeValue(value) {

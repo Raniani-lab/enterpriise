@@ -122,7 +122,7 @@ QUnit.module("Views", (hooks) => {
             arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />',
         });
 
-        assert.hasClass(target.querySelector(".o_cohort_view"), "o_action o_view_controller");
+        assert.hasClass(target.querySelector(".o_cohort_view"), "o_view_controller");
         assert.containsOnce(target, ".table", "should have a table");
         assert.containsOnce(
             target,

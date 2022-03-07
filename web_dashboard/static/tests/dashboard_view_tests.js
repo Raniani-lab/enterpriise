@@ -189,7 +189,7 @@ QUnit.module("Views", (hooks) => {
                 </dashboard>
             `,
         });
-        assert.hasClass(target.querySelector(".o_dashboard_view"), "o_action o_view_controller");
+        assert.hasClass(target.querySelector(".o_dashboard_view"), "o_view_controller");
         assert.containsN(target, ".o_group", 2, "should have rendered two groups");
         assert.hasClass(
             target.querySelector(".o_group .o_group"),

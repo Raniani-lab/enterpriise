@@ -2,12 +2,14 @@
 <templates xml:space="preserve">
 
     <t t-name="web_map.MapView" owl="1">
-        <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''">
-            <t t-set-slot="control-panel-bottom-left">
-                <t t-call="{{ constructor.buttonTemplate }}"/>
-            </t>
-            <t t-component="constructor.Renderer" t-props="rendererProps" />
-        </Layout>
+        <div t-att-class="props.className">
+            <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''">
+                <t t-set-slot="control-panel-bottom-left">
+                    <t t-call="{{ constructor.buttonTemplate }}"/>
+                </t>
+                <t t-component="constructor.Renderer" t-props="rendererProps" />
+            </Layout>
+        </div>
     </t>
 
     <t t-name="web_map.MapView.Buttons"  owl="1">

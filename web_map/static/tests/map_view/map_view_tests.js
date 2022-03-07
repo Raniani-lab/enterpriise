@@ -1145,7 +1145,7 @@ QUnit.module("Views", (hooks) => {
         });
         assert.notOk(map.model.metaData.resPartnerField, "the resPartnerField should not be set");
 
-        assert.hasClass(target.querySelector(".o_map_view"), "o_action o_view_controller");
+        assert.hasClass(target.querySelector(".o_map_view"), "o_view_controller");
         assert.containsOnce(target, ".leaflet-map-pane", "If the map exists this div should exist");
         assert.ok(
             target.querySelector(".leaflet-pane .leaflet-tile-pane").children.length,

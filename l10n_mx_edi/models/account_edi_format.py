@@ -245,6 +245,9 @@ class AccountEdiFormat(models.Model):
             else:
                 return None
 
+        def filter_void_tax_line(inv_line):
+            return inv_line.discount != 100.0
+
         def filter_tax_transferred(tax_values):
             return tax_values['tax_id'].amount >= 0.0
 
@@ -253,7 +256,7 @@ class AccountEdiFormat(models.Model):
 
         compute_mode = 'tax_details' if invoice.company_id.tax_calculation_rounding_method == 'round_globally' else 'compute_all'
 
-        tax_details_transferred = invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_transferred, compute_mode=compute_mode)
+        tax_details_transferred = invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_transferred, compute_mode=compute_mode, filter_invl_to_apply=filter_void_tax_line)
         for tax_detail_transferred in (list(tax_details_transferred['invoice_line_tax_details'].values())
                                        + [tax_details_transferred]):
             for tax_detail_vals in tax_detail_transferred['tax_details'].values():
@@ -268,7 +271,7 @@ class AccountEdiFormat(models.Model):
         cfdi_values.update({
             'get_tax_cfdi_name': get_tax_cfdi_name,
             'tax_details_transferred': tax_details_transferred,
-            'tax_details_withholding': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_withholding, compute_mode=compute_mode),
+            'tax_details_withholding': invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_withholding, compute_mode=compute_mode, filter_invl_to_apply=filter_void_tax_line),
         })
 
         cfdi_values.update({

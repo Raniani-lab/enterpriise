@@ -31,7 +31,7 @@
                     <group col="2">
                         <field name="figure_ids">
                             <tree editable="bottom">
-                                <field name="type"/>
+                                <field name="type" required="1"/>
                                 <field name="operator_id"/>
                                 <field name="part_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': [('type', '=', '01')]}"/>
                             </tree>

@@ -858,14 +858,13 @@ class AccountMove(models.Model):
         for i, line_val in enumerate(vals_invoice_lines, start=len(move_form.invoice_line_ids)):
             with move_form.invoice_line_ids.new() as line:
                 line.name = line_val['name']
-                line.price_unit = line_val['price_unit']
-                line.quantity = line_val['quantity']
-
                 if not line.account_id:
                     raise ValidationError(_("The OCR module is not able to generate the invoice lines because the default accounts are not correctly set on the %s journal.", move_form.journal_id.name_get()[0][1]))
 
-            move_form.save()  # We save to trigger the re-computation of the taxes on the line
+            # We close and re-open the line to let account_predictive_bills do the predictions based on the label
             with move_form.invoice_line_ids.edit(i) as line:
+                line.price_unit = line_val['price_unit']
+                line.quantity = line_val['quantity']
                 taxes_dict = {}
                 for tax in line.tax_ids:
                     taxes_dict[(tax.amount, tax.amount_type, tax.price_include)] = {

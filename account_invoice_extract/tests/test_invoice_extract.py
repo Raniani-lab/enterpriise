@@ -119,6 +119,51 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
                 self.assertEqual(invoice_line.price_subtotal, extract_response['results'][0]['invoice_lines'][i]['subtotal']['selected_value']['content'])
                 self.assertEqual(invoice_line.price_total, extract_response['results'][0]['invoice_lines'][i]['total']['selected_value']['content'])
 
+    def test_included_default_tax(self):
+        # test that a default purchase included tax is not removed from the lines even if it's not detected
+        tax_10_included = self.env['account.tax'].create({
+            'name': 'Tax 10% included',
+            'amount': 10,
+            'type_tax_use': 'purchase',
+            'price_include': True,
+        })
+        self.env.company.account_purchase_tax_id = tax_10_included
+
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
+        extract_response = self.get_default_extract_response()
+        extract_response['results'][0]['total']['selected_value']['content'] = 300
+        extract_response['results'][0]['global_taxes'][0]['selected_value']['content'] = 0
+        extract_response['results'][0]['global_taxes_amount']['selected_value']['content'] = 0
+        for line in extract_response['results'][0]['invoice_lines']:
+            line['total'] = line['subtotal']
+            line['taxes']['selected_values'] = []
+
+        with self.mock_iap_extract(extract_response, {}):
+            invoice._check_status()
+
+        self.assertEqual(invoice.amount_total, 300)
+        for line in invoice.invoice_line_ids:
+            self.assertEqual(line.tax_ids[0], tax_10_included)
+
+        # test that the default purchase included tax is the only tax used if it matches the detected tax
+        tax_15_included = self.env['account.tax'].create({
+            'name': 'Tax 15% included',
+            'amount': 15,
+            'type_tax_use': 'purchase',
+            'price_include': True,
+        })
+        self.env.company.account_purchase_tax_id = tax_15_included
+
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
+        extract_response = self.get_default_extract_response()
+
+        with self.mock_iap_extract(extract_response, {}):
+            invoice._check_status()
+
+        self.assertEqual(invoice.amount_total, 330)
+        for line in invoice.invoice_line_ids:
+            self.assertEqual(line.tax_ids[0], tax_15_included)
+
     def test_merge_check_status(self):
         # test check_status with lines merging
         for move_type in ('in_invoice', 'out_invoice'):

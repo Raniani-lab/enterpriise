@@ -40,4 +40,3 @@ class TestACL(TransactionCaseWithUserDemo):
             .fields_view_get(False, 'gantt')
         view_arch = etree.fromstring(company_view['arch'])
         self.assertIsNone(view_arch.get('delete'))
-

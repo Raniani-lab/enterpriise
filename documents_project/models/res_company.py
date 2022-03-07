@@ -16,4 +16,3 @@ class ResCompany(models.Model):
                                      default=lambda self: self.env.ref('documents.documents_internal_folder',
                                                                        raise_if_not_found=False))
     project_tags = fields.Many2many('documents.tag', 'project_tags_table')
-

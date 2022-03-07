@@ -21,4 +21,3 @@ class PurchaseOrder(models.Model):
                 order.date_planned_mps = min_date.date()
             else:
                 order.date_planned_mps = order.date_order.date()
-

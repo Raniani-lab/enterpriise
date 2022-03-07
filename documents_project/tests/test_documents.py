@@ -90,4 +90,3 @@ class TestCaseDocumentsBridgeProject(TransactionCase):
 
         self.assertEqual(txt_doc.folder_id, folder_test, 'the text test document have a folder')
         self.assertEqual(gif_doc.folder_id, folder_test, 'the gif test document have a folder')
-

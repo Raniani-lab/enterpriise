@@ -20,4 +20,3 @@ def post_init(cr, registry):
                 "worksheet_template_id": template_id.id,
             }
         )
-

@@ -16,5 +16,3 @@ class Website(models.Model):
         if self.env.user.has_group('sales_team.group_sale_salesman'):
             return self.env["ir.actions.actions"]._for_xml_id("website_sale_dashboard.sale_dashboard")
         return super(Website, self).action_dashboard_redirect()
-
-

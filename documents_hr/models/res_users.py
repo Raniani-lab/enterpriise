@@ -19,4 +19,3 @@ class Users(models.Model):
     @property
     def SELF_READABLE_FIELDS(self):
         return super().SELF_READABLE_FIELDS + ['document_count']
-

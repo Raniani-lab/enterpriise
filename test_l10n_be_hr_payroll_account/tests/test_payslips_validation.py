@@ -495,8 +495,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                 'amount': 2000,
             })]
         })
-        cls.january_2019.action_refresh_from_work_entries()
-        cls.january_2019.action_payslip_done()
 
         # Février 2019: Salary
         cls.february_2019 = cls.env['hr.payslip'].create({
@@ -510,8 +508,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.february_2019.action_refresh_from_work_entries()
-        cls.february_2019.action_payslip_done()
 
         # Mars 2019: Salary (10 unpaid days)
         cls.march_2019 = cls.env['hr.payslip'].create({
@@ -525,8 +521,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.march_2019.action_refresh_from_work_entries()
-        cls.march_2019.action_payslip_done()
 
         # Avril 2019: Salary + Warrants (2 payslips)
         cls.april_2019 = cls.env['hr.payslip'].create({
@@ -540,8 +534,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.april_2019.action_refresh_from_work_entries()
-        cls.april_2019.action_payslip_done()
 
         cls.warrant_2019 = cls.env['hr.payslip'].create({
             'name': 'Payslip Warrant 2019',
@@ -554,8 +546,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.warrant_2019.action_refresh_from_work_entries()
-        cls.warrant_2019.action_payslip_done()
 
         # Mai 2019: Salary (20 legal days)
         cls.may_2019 = cls.env['hr.payslip'].create({
@@ -569,8 +559,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.may_2019.action_refresh_from_work_entries()
-        cls.may_2019.action_payslip_done()
 
         # Juin 2019: Salary + Double Holiday Pay (2 payslips)
         cls.june_2019 = cls.env['hr.payslip'].create({
@@ -584,8 +572,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.june_2019.action_refresh_from_work_entries()
-        cls.june_2019.action_payslip_done()
 
         cls.double_2019 = cls.env['hr.payslip'].create({
             'name': 'Payslip Double 2019',
@@ -598,8 +584,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.double_2019.action_refresh_from_work_entries()
-        cls.double_2019.action_payslip_done()
 
         # Juillet 2019: Salary + Commissions
         cls.july_2019 = cls.env['hr.payslip'].create({
@@ -617,8 +601,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                 'amount': 2000,
             })]
         })
-        cls.july_2019.action_refresh_from_work_entries()
-        cls.july_2019.action_payslip_done()
 
         # Aout 2019: Salary
         cls.august_2019 = cls.env['hr.payslip'].create({
@@ -632,8 +614,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.august_2019.action_refresh_from_work_entries()
-        cls.august_2019.action_payslip_done()
 
         # Septembre 2019: Salary
         cls.september_2019 = cls.env['hr.payslip'].create({
@@ -647,8 +627,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.september_2019.action_refresh_from_work_entries()
-        cls.september_2019.action_payslip_done()
 
         # Octobre 2019: Salary + Commissions
         cls.october_2019 = cls.env['hr.payslip'].create({
@@ -666,8 +644,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                 'amount': 2000,
             })]
         })
-        cls.october_2019.action_refresh_from_work_entries()
-        cls.october_2019.action_payslip_done()
 
         # Novembre 2019: Salary
         cls.november_2019 = cls.env['hr.payslip'].create({
@@ -681,8 +657,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.november_2019.action_refresh_from_work_entries()
-        cls.november_2019.action_payslip_done()
 
         # Décembre 2019: Salary + 13eme mois (2 payslips)
         cls.december_2019 = cls.env['hr.payslip'].create({
@@ -696,8 +670,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.december_2019.action_refresh_from_work_entries()
-        cls.december_2019.action_payslip_done()
 
         cls.thirteen_2019 = cls.env['hr.payslip'].create({
             'name': 'Payslip Thirteen Month 2019',
@@ -710,8 +682,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.thirteen_2019.action_refresh_from_work_entries()
-        cls.thirteen_2019.action_payslip_done()
 
         # Janvier 2020: Salary + Commissions (5 legal days)
         cls.january_2020 = cls.env['hr.payslip'].create({
@@ -729,8 +699,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                 'amount': 2000,
             })]
         })
-        cls.january_2020.action_refresh_from_work_entries()
-        cls.january_2020.action_payslip_done()
 
         # Février 2020: Salary
         cls.february_2020 = cls.env['hr.payslip'].create({
@@ -744,8 +712,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.february_2020.action_refresh_from_work_entries()
-        cls.february_2020.action_payslip_done()
 
         # Mars 2020: Salary
         cls.march_2020 = cls.env['hr.payslip'].create({
@@ -759,8 +725,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.march_2020.action_refresh_from_work_entries()
-        cls.march_2020.action_payslip_done()
 
         # Avril: Fired without notice period on the 15th of April (4 payslips):
         # - Termination Fees
@@ -773,11 +737,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'notice_respect': 'without',
             'departure_description': 'foo',
         })
-        termination_payslip_id = cls.departure_notice.compute_termination_fee()['res_id']
-        cls.termination_fees = cls.env['hr.payslip'].browse(termination_payslip_id)
-        cls.termination_fees.payslip_run_id = cls.batch
-        cls.termination_fees.compute_sheet()
-        cls.termination_fees.action_payslip_done()
 
         # - April Payslip
         cls.april_2020 = cls.env['hr.payslip'].create({
@@ -791,8 +750,20 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
         })
-        cls.april_2020.action_refresh_from_work_entries()
-        cls.april_2020.action_payslip_done()
+
+        all_payslips = cls.january_2019 + cls.february_2019 + cls.march_2019 + cls.april_2019 + \
+                       cls.warrant_2019 + cls.may_2019 + cls.june_2019 + cls.double_2019 + \
+                       cls.july_2019 + cls.august_2019 + cls.september_2019 + cls.october_2019 + \
+                       cls.november_2019 + cls.december_2019 + cls.thirteen_2019 + \
+                       cls.january_2020 + cls.february_2020 + cls.march_2020 + cls.april_2020
+        all_payslips.action_refresh_from_work_entries()
+        all_payslips.action_payslip_done()
+
+        termination_payslip_id = cls.departure_notice.compute_termination_fee()['res_id']
+        cls.termination_fees = cls.env['hr.payslip'].browse(termination_payslip_id)
+        cls.termination_fees.compute_sheet()
+        cls.termination_fees.action_payslip_done()
+        cls.termination_fees.payslip_run_id = cls.batch
 
     def _validate_payslip(self, payslip, results):
         error = []

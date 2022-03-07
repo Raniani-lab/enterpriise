@@ -771,10 +771,16 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         for code, value in results.items():
             payslip_line_value = line_values[code][payslip.id]['total']
             if float_compare(payslip_line_value, value, 2):
-                error.append("Computed line %s should have an amount = %s instead of %s" % (code, value, payslip_line_value))
+                error.append("Code: %s - Expected: %s - Reality: %s" % (code, value, payslip_line_value))
         for line in payslip.line_ids:
             if line.code not in results:
-                error.append("'%s': %s," % (line.code, line_values[line.code][payslip.id]['total']))
+                error.append("Missing Line: '%s' - %s," % (line.code, line_values[line.code][payslip.id]['total']))
+        if error:
+            error.append("Payslip Actual Values: ")
+            error.append("{")
+            for line in payslip.line_ids:
+                error.append("    '%s': %s," % (line.code, line_values[line.code][payslip.id]['total']))
+            error.append("}")
         self.assertEqual(len(error), 0, '\n' + '\n'.join(error))
 
     def _validate_move_lines(self, lines, results):

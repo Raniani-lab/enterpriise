@@ -195,8 +195,8 @@ class AppointmentTest(AppointmentCommon):
                 (self.reference_monday + timedelta(days=8)).date(): [
                     {'end': 9, 'start': 8},
                     {'end': 10, 'start': 9},
+                    {'end': 12, 'start': 11},
                     {'end': 13, 'start': 12},
-                    # {'end': 11, 'start': 10},  # should be valid as declined
                 ],  # meetings 9-10 and 12-14
              },
              'slots_start_hours': [8, 9, 10, 11, 12, 13],  # based on appointment type start hours of slots, no work hours / no meetings / no leaves

@@ -27,25 +27,25 @@
     </record>
 
     <record id="social_post_rule_social_user_read_write" model="ir.rule">
-        <field name="name">Social: user: read and edit all posts</field>
+        <field name="name">Social: user: read/create/write all posts</field>
         <field name="model_id" ref="social.model_social_post"/>
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="groups" eval="[(4, ref('group_social_user'))]"/>
         <field name="perm_unlink" eval="0"/>
         <field name="perm_write" eval="1"/>
         <field name="perm_read" eval="1"/>
-        <field name="perm_create" eval="0"/>
+        <field name="perm_create" eval="1"/>
     </record>
 
     <record id="social_post_rule_social_user_cwu" model="ir.rule">
-        <field name="name">Social: user: create/unlink own posts only</field>
+        <field name="name">Social: user: unlink own posts only</field>
         <field name="model_id" ref="social.model_social_post"/>
         <field name="domain_force">[('create_uid', '=', user.id)]</field>
         <field name="groups" eval="[(4, ref('group_social_user'))]"/>
         <field name="perm_unlink" eval="1"/>
-        <field name="perm_write" eval="1"/>
-        <field name="perm_read" eval="1"/>
-        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_create" eval="0"/>
     </record>
 
     <record id="social_live_post_rule_social_manager" model="ir.rule">

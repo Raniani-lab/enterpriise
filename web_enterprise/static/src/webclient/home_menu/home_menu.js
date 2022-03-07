@@ -4,7 +4,6 @@ import { isIosApp, isMacOS } from "@web/core/browser/feature_detection";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { useService } from "@web/core/utils/hooks";
 import { ExpirationPanel } from "./expiration_panel";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 
 const {
     Component,
@@ -33,7 +32,7 @@ FooterComponent.template = xml`
  * available applications and menus.
  * @extends Component
  */
-export class HomeMenu extends LegacyComponent {
+export class HomeMenu extends Component {
     /**
      * @param {Object} props
      * @param {Object[]} props.apps application icons

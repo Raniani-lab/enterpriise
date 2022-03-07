@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="web_grid.GridRenderer" owl="1">
-        <div class="o_grid_view"
-            t-on-grid-cell-focus="_onFocusComponent"
-            t-on-grid-cell-update="_onUpdateValue">
+        <div class="o_grid_view" t-ref="root">
             <div t-if="showNoContentHelp" class="o_view_nocontent">
                 <div class="o_nocontent_help">
                     <t t-out="props.noContentHelp"/>
@@ -70,6 +68,8 @@
                                 }">
                                 <t t-if="hasComponent">
                                     <t t-component="component"
+                                        onCellFocused.bind="_onFocusComponent"
+                                        onCellUpdated.bind="_onUpdateValue"
                                         hasBarChartTotal="props.hasBarChartTotal"
                                         cellHeight="props.hasBarChartTotal ? totalHeight : 0"
                                         cellValue="total_cells.value"
@@ -99,6 +99,8 @@
                                 }">
                                 <t t-if="hasComponent">
                                     <t t-component="component"
+                                        onCellFocused.bind="_onFocusComponent"
+                                        onCellUpdated.bind="_onUpdateValue"
                                         cellValue="gridTotal.value"
                                         readonly="cellReadOnly"
                                         isInput="state.editMode and state.currentPath===cellPath"
@@ -135,6 +137,8 @@
                             }">
                             <t t-if="hasComponent">
                                 <t t-component="component"
+                                    onCellFocused.bind="_onFocusComponent"
+                                    onCellUpdated.bind="_onUpdateValue"
                                     cellValue="grid.totals.columns[column_index]"
                                     readonly="true"
                                     isInput="false"
@@ -153,6 +157,8 @@
                                 }">
                             <t t-if="hasComponent">
                                 <t t-component="component"
+                                    onCellFocused.bind="_onFocusComponent"
+                                    onCellUpdated.bind="_onUpdateValue"
                                     cellValue="grid.totals.super"
                                     readonly="true"
                                     isInput="false"
@@ -227,6 +233,8 @@
                         }">
                         <t t-if="hasComponent">
                             <t t-component="component"
+                                onCellFocused.bind="_onFocusComponent"
+                                onCellUpdated.bind="_onUpdateValue"
                                 cellValue="groupTotals.rows[rowlabel_index]"
                                 readonly="true"
                                 isInput="false"
@@ -259,6 +267,8 @@
     <t t-name="web_grid.CellValue" owl="1">
         <t t-if="hasComponent">
             <t t-component="component"
+                onCellFocused.bind="_onFocusComponent"
+                onCellUpdated.bind="_onUpdateValue"
                 cellValue="cell.value"
                 readonly="cellReadOnly"
                 isInput="state.editMode and state.currentPath===cellPath"

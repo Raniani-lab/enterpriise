@@ -65,16 +65,15 @@ export class Editor extends Component {
         this.initialAction = await this.getStudioAction();
     }
 
-    switchView(ev) {
-        const { viewType } = ev.detail;
+    switchView({ viewType }) {
         this.studio.setParams({ viewType, editorTab: "views" });
     }
     switchViewLegacy(ev) {
         this.studio.setParams({ viewType: ev.detail.view_type });
     }
 
-    onSwitchTab(ev) {
-        this.studio.setParams({ editorTab: ev.detail.tab });
+    switchTab({ tab }) {
+        this.studio.setParams({ editorTab: tab });
     }
 
     async getStudioAction() {

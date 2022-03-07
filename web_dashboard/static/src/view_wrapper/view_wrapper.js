@@ -1,9 +1,8 @@
 /** @odoo-module **/
 
 import { View } from "@web/views/view";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { useEffect, useChildSubEnv } = owl;
+const { Component, useRef, useEffect, useChildSubEnv } = owl;
 
 /**
  * This file defines the ViewWrapper component, used to wrap sub views in the
@@ -14,17 +13,19 @@ const { useEffect, useChildSubEnv } = owl;
  * Moreover, it adds a button to open sub views in fullscreen, and changes some
  * classNames on control panel buttons to slightly change their style.
  */
-export class ViewWrapper extends LegacyComponent {
+export class ViewWrapper extends Component {
     setup() {
+        this.root = useRef("root");
+
         useChildSubEnv(this.props.callbackRecorders);
         useEffect(() => {
-            const btns = this.el.querySelectorAll(".btn-primary, .btn-secondary");
+            const btns = this.root.el.querySelectorAll(".btn-primary, .btn-secondary");
             btns.forEach((btn) => {
                 btn.classList.remove("btn-primary", "btn-secondary");
                 btn.classList.add("btn-outline-secondary");
             });
             if (this.props.type === "cohort") {
-                this.el
+                this.root.el
                     .querySelectorAll("[class*=interval_button]")
                     .forEach((el) => el.classList.add("text-muted"));
             }

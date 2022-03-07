@@ -4,7 +4,6 @@ import { ActionSwiper } from "@web_enterprise/core/action_swiper/action_swiper";
 import { registry } from "@web/core/registry";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 
 import {
     mount,
@@ -14,7 +13,7 @@ import {
     mockTimeout,
 } from "@web/../tests/helpers/utils";
 
-const { xml } = owl;
+const { Component, xml } = owl;
 const serviceRegistry = registry.category("services");
 
 let env;
@@ -32,7 +31,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
     // TouchEvent by default. It might be an option to activate on some browser.
 
     QUnit.test("render only its target if no props is given", async (assert) => {
-        class Parent extends LegacyComponent {}
+        class Parent extends Component {}
         Parent.components = { ActionSwiper };
         Parent.template = xml`
             <div class="d-flex">
@@ -41,9 +40,9 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 </ActionSwiper>
             </div>
         `;
-        const parent = await mount(Parent, target, { env });
-        assert.containsNone(parent, "div.o_actionswiper");
-        assert.containsOnce(parent, "div.target-component");
+        await mount(Parent, target, { env });
+        assert.containsNone(target, "div.o_actionswiper");
+        assert.containsOnce(target, "div.target-component");
     });
 
     QUnit.test("only render the necessary divs", async (assert) => {
@@ -75,7 +74,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
 
     QUnit.test("render with the height of its content", async (assert) => {
         assert.expect(2);
-        class Parent extends LegacyComponent {
+        class Parent extends Component {
             onRightSwipe() {
                 assert.step("onRightSwipe");
             }
@@ -93,14 +92,15 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 </ActionSwiper>
             </div>
         `;
-        const parent = await mount(Parent, target, { env });
+        await mount(Parent, target, { env });
         assert.ok(
-            parent.el.querySelector(".o_actionswiper").scrollHeight ===
-                parent.el.querySelector(".target-component").scrollHeight,
+            target.querySelector(".o_actionswiper").scrollHeight ===
+                target.querySelector(".target-component").scrollHeight,
             "the swiper has the height of its content"
         );
         assert.ok(
-            parent.el.scrollHeight > parent.el.clientHeight,
+            target.querySelector(".o_actionswiper").scrollHeight >
+                target.querySelector(".o_actionswiper").clientHeight,
             "the height of the swiper must make the parent div scrollable"
         );
     });
@@ -110,7 +110,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(5);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends LegacyComponent {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -127,26 +127,26 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     </ActionSwiper>
                 </div>
             `;
-            const parent = await mount(Parent, target, { env });
-            const swiper = parent.el.querySelector(".o_actionswiper");
-            const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
-            await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
+            await mount(Parent, target, { env });
+            const swiper = target.querySelector(".o_actionswiper");
+            const targetContainer = target.querySelector(".o_actionswiper_target_container");
+            await triggerEvent(target, ".o_actionswiper", "touchstart", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: 0,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: (3 * swiper.clientWidth) / 4,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
@@ -156,17 +156,17 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 "target has translateX"
             );
             // Touch ends before the half of the distance has been reached
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: swiper.clientWidth / 2 - 1,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             assert.ok(
@@ -174,27 +174,27 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 "target does not have a translate value"
             );
             // Touch ends once the half of the distance has been crossed
-            await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
+            await triggerEvent(target, ".o_actionswiper", "touchstart", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: swiper.clientWidth / 2,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: swiper.clientWidth + 1,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             // The action is performed AND the component is reset
@@ -211,7 +211,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(7);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends LegacyComponent {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -237,26 +237,26 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     </ActionSwiper>
                 </div>
             `;
-            const parent = await mount(Parent, target, { env });
-            const swiper = parent.el.querySelector(".o_actionswiper");
-            const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
-            await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
+            await mount(Parent, target, { env });
+            const swiper = target.querySelector(".o_actionswiper");
+            const targetContainer = target.querySelector(".o_actionswiper_target_container");
+            await triggerEvent(target, ".o_actionswiper", "touchstart", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: 0,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: (3 * swiper.clientWidth) / 4,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
@@ -266,17 +266,17 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 "target has translateX"
             );
             // Touch ends before the half of the distance has been reached to the left
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: -swiper.clientWidth / 2 + 1,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             assert.ok(
@@ -284,52 +284,52 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 "target does not have a translate value"
             );
             // Touch ends once the half of the distance has been crossed to the left
-            await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
+            await triggerEvent(target, ".o_actionswiper", "touchstart", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: swiper.clientWidth / 2,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: -swiper.clientWidth - 1,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             assert.verifySteps(["onLeftSwipe"], "the onLeftSwipe props action has been performed");
             // Touch ends once the half of the distance has been crossed to the right
-            await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
+            await triggerEvent(target, ".o_actionswiper", "touchstart", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: swiper.clientWidth / 2,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: swiper.clientWidth + 1,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             assert.ok(
@@ -348,7 +348,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(7);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends LegacyComponent {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -375,26 +375,26 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 </div>
             `;
             serviceRegistry.add("localization", makeFakeLocalizationService({ direction: "rtl" }));
-            const parent = await mount(Parent, target, { env });
-            const swiper = parent.el.querySelector(".o_actionswiper");
-            const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
-            await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
+            await mount(Parent, target, { env });
+            const swiper = target.querySelector(".o_actionswiper");
+            const targetContainer = target.querySelector(".o_actionswiper_target_container");
+            await triggerEvent(target, ".o_actionswiper", "touchstart", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: 0,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: (3 * swiper.clientWidth) / 4,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
@@ -404,17 +404,17 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 "target has translateX"
             );
             // Touch ends before the half of the distance has been reached to the left
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: -swiper.clientWidth / 2 + 1,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             assert.ok(
@@ -422,27 +422,27 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 "target does not have a translate value"
             );
             // Touch ends once the half of the distance has been crossed to the left
-            await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
+            await triggerEvent(target, ".o_actionswiper", "touchstart", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: swiper.clientWidth / 2,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: -swiper.clientWidth - 1,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             // In rtl languages, actions are permuted
@@ -450,27 +450,27 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 ["onRightSwipe"],
                 "the onRightSwipe props action has been performed"
             );
-            await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
+            await triggerEvent(target, ".o_actionswiper", "touchstart", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: swiper.clientWidth / 2,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: swiper.clientWidth + 1,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             assert.ok(
@@ -487,7 +487,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(9);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends LegacyComponent {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -519,29 +519,29 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     </ActionSwiper>
                 </div>
             `;
-            const parent = await mount(Parent, target, { env });
-            const swiper = parent.el.querySelector(".o_actionswiper");
-            const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
-            const scrollable = parent.el.querySelector(".large-content");
+            await mount(Parent, target, { env });
+            const swiper = target.querySelector(".o_actionswiper");
+            const targetContainer = target.querySelector(".o_actionswiper_target_container");
+            const scrollable = target.querySelector(".large-content");
             // The scrollable element is set as scrollable
             scrollable.scrollLeft = 100;
-            await triggerEvent(parent.el, ".o_actionswiper", "touchstart", {
+            await triggerEvent(target, ".o_actionswiper", "touchstart", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: 0,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
-            await triggerEvent(parent.el, ".o_actionswiper", "touchmove", {
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
                 touches: [
                     {
                         identifier: 0,
                         clientX: (3 * swiper.clientWidth) / 4,
                         clientY: 0,
-                        target: parent.el,
+                        target: target,
                     },
                 ],
             });
@@ -610,7 +610,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 targetContainer.style.transform.includes("translateX"),
                 "the swiper has swiped to the right because the scrollable element couldn't scroll anymore to the left"
             );
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             assert.verifySteps(
@@ -676,7 +676,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 targetContainer.style.transform.includes("translateX"),
                 "the swiper has swiped to the left because the scrollable element couldn't scroll anymore to the right"
             );
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             assert.verifySteps(["onLeftSwipe"], "the onLeftSwipe props action has been performed");
@@ -688,7 +688,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         async (assert) => {
             assert.expect(8);
             const execRegisteredTimeouts = mockTimeout();
-            class Parent extends LegacyComponent {
+            class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
                 }
@@ -721,9 +721,9 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 </div>
             `;
             serviceRegistry.add("localization", makeFakeLocalizationService({ direction: "rtl" }));
-            const parent = await mount(Parent, target, { env });
-            const targetContainer = parent.el.querySelector(".o_actionswiper_target_container");
-            const scrollable = parent.el.querySelector(".large-content");
+            await mount(Parent, target, { env });
+            const targetContainer = target.querySelector(".o_actionswiper_target_container");
+            const scrollable = target.querySelector(".large-content");
             // The scrollable element is set as scrollable
             scrollable.scrollLeft = 100;
             await triggerEvent(scrollable, ".large-text", "touchstart", {
@@ -786,7 +786,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 targetContainer.style.transform.includes("translateX"),
                 "the swiper has swiped to the right because the scrollable element couldn't scroll anymore to the left"
             );
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             // In rtl languages, actions are permuted
@@ -850,7 +850,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                 targetContainer.style.transform.includes("translateX"),
                 "the swiper has swiped to the left because the scrollable element couldn't scroll anymore to the right"
             );
-            await triggerEvent(parent.el, ".o_actionswiper", "touchend", {});
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             execRegisteredTimeouts();
             await nextTick();
             // In rtl languages, actions are permuted

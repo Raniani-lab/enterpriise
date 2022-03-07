@@ -23,10 +23,12 @@ import { getActionManagerServerData, loadState } from "@web/../tests/webclient/h
 import { companyService } from "@web/webclient/company_service";
 
 const serviceRegistry = registry.category("services");
+let target;
 
 QUnit.module("Studio > Navbar", (hooks) => {
     let baseConfig;
     hooks.beforeEach(() => {
+        target = getFixture();
         registerStudioDependencies();
         serviceRegistry.add("action", actionService);
         serviceRegistry.add("dialog", makeFakeDialogService());
@@ -71,61 +73,60 @@ QUnit.module("Studio > Navbar", (hooks) => {
             },
         });
         // Force the parent width, to make this test independent of screen size
-        const target = getFixture();
         target.style.width = "100%";
 
         // Set menu and mount
         env.services.menu.setCurrentMenu(1);
-        const navbar = await mount(MyStudioNavbar, target, { env });
+        await mount(MyStudioNavbar, target, { env });
         await nextTick();
 
         assert.containsN(
-            navbar.el,
+            target,
             ".o_menu_sections > *:not(.o_menu_sections_more):not(.d-none)",
             3,
             "should have 3 menu sections displayed (that are not the 'more' menu)"
         );
-        assert.containsNone(navbar.el, ".o_menu_sections_more", "the 'more' menu should not exist");
+        assert.containsNone(target, ".o_menu_sections_more", "the 'more' menu should not exist");
         assert.containsN(
-            navbar.el,
+            target,
             ".o-studio--menu > *",
             2,
             "should have 2 studio menu elements displayed"
         );
         assert.deepEqual(
-            [...navbar.el.querySelectorAll(".o-studio--menu > *")].map((el) => el.innerText),
+            [...target.querySelectorAll(".o-studio--menu > *")].map((el) => el.innerText),
             ["Edit Menu", "New Model"]
         );
 
         // Force minimal width and dispatch window resize event
-        navbar.el.style.width = "0%";
+        target.style.width = "0%";
         window.dispatchEvent(new Event("resize"));
         await nextTick();
         assert.containsOnce(
-            navbar.el,
+            target,
             ".o_menu_sections > *:not(.d-none)",
             "only one menu section should be displayed"
         );
         assert.containsOnce(
-            navbar.el,
+            target,
             ".o_menu_sections_more:not(.d-none)",
             "the displayed menu section should be the 'more' menu"
         );
         assert.containsN(
-            navbar.el,
+            target,
             ".o-studio--menu > *",
             2,
             "should have 2 studio menu elements displayed"
         );
         assert.deepEqual(
-            [...navbar.el.querySelectorAll(".o-studio--menu > *")].map((el) => el.innerText),
+            [...target.querySelectorAll(".o-studio--menu > *")].map((el) => el.innerText),
             ["Edit Menu", "New Model"]
         );
 
         // Open the more menu
-        await click(navbar.el, ".o_menu_sections_more .dropdown-toggle");
+        await click(target, ".o_menu_sections_more .dropdown-toggle");
         assert.deepEqual(
-            [...navbar.el.querySelectorAll(".dropdown-menu > *")].map((el) => el.textContent),
+            [...target.querySelectorAll(".dropdown-menu > *")].map((el) => el.textContent),
             ["Section 10", "Section 11", "Section 12", "Section 120", "Section 121", "Section 122"],
             "'more' menu should contain all hidden sections in correct order"
         );
@@ -158,25 +159,31 @@ QUnit.module("Studio > Navbar", (hooks) => {
         const target = getFixture();
 
         // Set menu and mount
-        const navbar = await mount(StudioNavbar, target, { env });
+        await mount(StudioNavbar, target, { env });
         await nextTick();
 
-        assert.containsOnce(navbar.el, ".o_studio_navbar");
-        assert.containsOnce(navbar.el, ".o_web_studio_home_studio_menu");
+        assert.containsOnce(target, ".o_studio_navbar");
+        assert.containsOnce(target, ".o_web_studio_home_studio_menu");
 
-        await click(navbar.el.querySelector(".o_web_studio_home_studio_menu .dropdown-toggle"));
+        await click(target.querySelector(".o_web_studio_home_studio_menu .dropdown-toggle"));
 
-        assert.containsOnce(navbar.el, ".o_web_studio_change_background");
-        assert.strictEqual(navbar.el.querySelector(".o_web_studio_change_background input").accept, "image/*", "Input should now only accept images");
+        assert.containsOnce(target, ".o_web_studio_change_background");
+        assert.strictEqual(
+            target.querySelector(".o_web_studio_change_background input").accept,
+            "image/*",
+            "Input should now only accept images"
+        );
 
-        assert.containsOnce(navbar.el, ".o_web_studio_import");
-        assert.containsOnce(navbar.el, ".o_web_studio_export");
+        assert.containsOnce(target, ".o_web_studio_import");
+        assert.containsOnce(target, ".o_web_studio_export");
     });
 });
 
 QUnit.module("Studio > navbar coordination", (hooks) => {
     let serverData;
+    let target;
     hooks.beforeEach(() => {
+        target = getFixture();
         serverData = getActionManagerServerData();
         registerStudioDependencies();
         serviceRegistry.add("company", companyService);
@@ -189,8 +196,6 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
             setTimeout: (handler, delay, ...args) => handler(...args),
             clearTimeout: () => {},
         });
-
-        const target = getFixture();
         target.style.width = "1080px";
 
         serverData.menus[1].actionID = 1;
@@ -289,7 +294,6 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
     QUnit.test("adapt navbar when refreshing studio (loadState)", async (assert) => {
         assert.expect(7);
 
-        const target = getFixture();
         target.style.width = "1080px";
 
         const adapted = [];

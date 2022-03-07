@@ -16,6 +16,7 @@ import { makeFakeEnterpriseService } from "../mocks";
 const { App, EventBus } = owl;
 const patchDate = testUtils.mock.patchDate;
 const serviceRegistry = registry.category("services");
+let target;
 
 // -----------------------------------------------------------------------------
 // Helpers
@@ -23,7 +24,6 @@ const serviceRegistry = registry.category("services");
 
 async function createHomeMenu(homeMenuProps) {
     const env = await makeTestEnv();
-    const target = getFixture();
     const app = new App(HomeMenu, {
         env,
         props: homeMenuProps,
@@ -35,12 +35,12 @@ async function createHomeMenu(homeMenuProps) {
     return homeMenu;
 }
 
-async function walkOn(assert, homeMenu, path) {
+async function walkOn(assert, path) {
     for (const step of path) {
         triggerHotkey(`${step.shiftKey ? "shift+" : ""}${step.key}`);
         await nextTick();
         assert.hasClass(
-            homeMenu.el.querySelectorAll(".o_menuitem")[step.index],
+            target.querySelectorAll(".o_menuitem")[step.index],
             "o_focused",
             `step ${step.number}`
         );
@@ -121,6 +121,8 @@ QUnit.module(
             serviceRegistry.add(fakeEnterpriseService.name, fakeEnterpriseService);
             serviceRegistry.add(fakeHomeMenuService.name, fakeHomeMenuService);
             serviceRegistry.add(fakeMenuService.name, fakeMenuService);
+
+            target = getFixture();
         },
     },
     function () {
@@ -139,9 +141,9 @@ QUnit.module(
             bus.on("selectMenu", null, (menuId) => {
                 assert.step(`selectMenu ${menuId}`);
             });
-            const homeMenu = await createHomeMenu(homeMenuProps);
+            await createHomeMenu(homeMenuProps);
 
-            await testUtils.dom.click(homeMenu.el.querySelectorAll(".o_menuitem")[0]);
+            await testUtils.dom.click(target.querySelectorAll(".o_menuitem")[0]);
             assert.verifySteps(["selectMenu 1"]);
         });
 
@@ -181,21 +183,20 @@ QUnit.module(
             serviceRegistry.add(mockedCookieService.name, mockedCookieService);
             serviceRegistry.add("orm", ormService);
 
-            const homeMenu = await createHomeMenu(homeMenuProps);
+            await createHomeMenu(homeMenuProps);
 
-            assert.containsOnce(homeMenu.el, ".database_expiration_panel");
+            assert.containsOnce(target, ".database_expiration_panel");
             assert.strictEqual(
-                homeMenu.el.querySelector(".database_expiration_panel .oe_instance_register")
-                    .innerText,
+                target.querySelector(".database_expiration_panel .oe_instance_register").innerText,
                 "You will be able to register your database once you have installed your first app.",
                 "There should be an expiration panel displayed"
             );
 
             // Close the expiration panel
             await testUtils.dom.click(
-                homeMenu.el.querySelector(".database_expiration_panel .oe_instance_hide_panel")
+                target.querySelector(".database_expiration_panel .oe_instance_hide_panel")
             );
-            assert.containsNone(homeMenu.el, ".database_expiration_panel");
+            assert.containsNone(target, ".database_expiration_panel");
         });
 
         QUnit.test("Navigation (only apps, only one line)", async function (assert) {
@@ -214,7 +215,7 @@ QUnit.module(
                     };
                 }),
             };
-            const homeMenu = await createHomeMenu(homeMenuProps);
+            await createHomeMenu(homeMenuProps);
 
             const path = [
                 { number: 0, key: "ArrowDown", index: 0 },
@@ -227,7 +228,7 @@ QUnit.module(
                 { number: 7, key: "ArrowUp", index: 1 },
             ];
 
-            await walkOn(assert, homeMenu, path);
+            await walkOn(assert, path);
         });
 
         QUnit.test("Navigation (only apps, two lines, one incomplete)", async function (assert) {
@@ -246,7 +247,7 @@ QUnit.module(
                     };
                 }),
             };
-            const homeMenu = await createHomeMenu(homeMenuProps);
+            await createHomeMenu(homeMenuProps);
 
             const path = [
                 { number: 1, key: "ArrowRight", index: 0 },
@@ -270,7 +271,7 @@ QUnit.module(
                 { number: 19, key: "ArrowRight", index: 0 },
             ];
 
-            await walkOn(assert, homeMenu, path);
+            await walkOn(assert, path);
         });
 
         QUnit.test("Navigation and open an app in the home menu", async function (assert) {
@@ -279,7 +280,7 @@ QUnit.module(
             bus.on("selectMenu", null, (menuId) => {
                 assert.step(`selectMenu ${menuId}`);
             });
-            const homeMenu = await createHomeMenu(homeMenuProps);
+            await createHomeMenu(homeMenuProps);
 
             // No app selected so nothing to open
             await testUtils.dom.triggerEvent(window, "keydown", { key: "Enter" });
@@ -292,7 +293,7 @@ QUnit.module(
                 { number: 3, key: "shift+Tab", index: 1 },
             ];
 
-            await walkOn(assert, homeMenu, path);
+            await walkOn(assert, path);
 
             // open first app (Calendar)
             await testUtils.dom.triggerEvent(window, "keydown", { key: "Enter" });
@@ -305,7 +306,7 @@ QUnit.module(
             async function (assert) {
                 const target = getFixture();
                 const homeMenu = await createHomeMenu(homeMenuProps);
-                const input = homeMenu.el.querySelector(".o_search_hidden");
+                const input = target.querySelector(".o_search_hidden");
                 assert.strictEqual(document.activeElement, input);
 
                 const activeElement = document.createElement("div");

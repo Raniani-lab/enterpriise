@@ -2,7 +2,7 @@
 <templates>
 
     <t t-name="web_dashboard.ViewWrapper" owl="1">
-        <div class="o-web-dashboard-view-wrapper o_subview" t-att-type="props.type">
+        <div class="o-web-dashboard-view-wrapper o_subview" t-att-type="props.type" t-ref="root">
             <button class="btn btn-outline-secondary fa fa-arrows-alt o-web-dashboard-view-wrapper--switch-button" t-on-click="props.switchView" data-tooltip="Full Screen View"/>
             <View t-props="props.viewProps"/>
         </div>

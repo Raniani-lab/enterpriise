@@ -14,6 +14,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
         setup() {
             super.setup();
             
+            this.root = useRef("root");
             this.state = useState({
                 editMode: false,
                 currentPath: "",
@@ -269,11 +270,11 @@ odoo.define('web_grid.GridRenderer', function (require) {
         }
         /**
          * @private
-         * @param {OwlEvent} ev
+         * @param {string} path
          */
-        _onFocusComponent(ev) {
+        _onFocusComponent(path) {
             this.state.editMode = true;
-            this.state.currentPath = ev.detail.path;
+            this.state.currentPath = path;
         }
         /**
          * @private
@@ -308,13 +309,10 @@ odoo.define('web_grid.GridRenderer', function (require) {
         }
         /**
          * @private
-         * @param {CustomEvent} ev
+         * @param {Object}
          */
-        _onUpdateValue(ev) {
+        _onUpdateValue({ path, value, doneCallback }) {
             this.state.editMode = false;
-            const value = ev.detail.value;
-            const doneCallback = ev.detail.doneCallback;
-            const path = ev.detail.path;
             if (value !== undefined) {
                 this._cellEdited(path, value, doneCallback);
             }
@@ -329,7 +327,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
             const cellParent = ev.target.closest('td,th');
             const rowParent = ev.target.closest('tr');
             const index = [...rowParent.children].indexOf(cellParent) + 1;
-            this.el.querySelectorAll(`td:nth-child(${index}), th:nth-child(${index})`)
+            this.root.el.querySelectorAll(`td:nth-child(${index}), th:nth-child(${index})`)
                 .forEach(el => {
                     if (cellParent.querySelector('.o_grid_total_title')) {
                         el.classList.add('o_cell_highlight');
@@ -343,7 +341,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
          * @private
          */
         _onMouseLeave() {
-            this.el.querySelectorAll('.o_cell_hover')
+            this.root.el.querySelectorAll('.o_cell_hover')
                 .forEach(el => el.classList.remove('o_cell_hover', 'o_cell_highlight'));
         }
     }

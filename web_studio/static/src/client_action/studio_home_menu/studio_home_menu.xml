@@ -2,6 +2,9 @@
 <templates>
 
 <t t-name="web_studio.StudioHomeMenu" t-inherit="web_enterprise.HomeMenu" t-inherit-mode="primary" owl="1" t-translation="off">
+    <xpath expr="//div[hasclass('o_home_menu')]" position="attributes">
+        <attribute name="class" add="o_studio_home_menu" separator=" " />
+    </xpath>
     <!-- New App button -->
     <xpath expr="//div[hasclass('o_apps')]/a[hasclass('o_app')][hasclass('o_menuitem')]" position="attributes">
         <attribute name="t-att-class">{

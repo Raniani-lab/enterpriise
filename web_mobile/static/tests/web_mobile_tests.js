@@ -27,8 +27,7 @@ odoo.define("web_mobile.tests", function (require) {
         getFixture,
         destroy,
     } = require("@web/../tests/helpers/utils");
-    const { LegacyComponent } = require("@web/legacy/legacy_component");
-    const { useState, xml } = owl;
+    const { Component, useState, xml } = owl;
 
     const { createParent, createView, mock } = testUtils;
 
@@ -280,7 +279,7 @@ odoo.define("web_mobile.tests", function (require) {
                     },
                 });
 
-                class DummyComponent extends LegacyComponent {
+                class DummyComponent extends Component {
                     setup() {
                         this._backButtonHandler = useBackButton(this._onBackButton);
                     }
@@ -319,7 +318,7 @@ odoo.define("web_mobile.tests", function (require) {
                         },
                     });
 
-                    class DummyComponent extends LegacyComponent {
+                    class DummyComponent extends Component {
                         setup() {
                             this._backButtonHandler = useBackButton(this._onBackButton);
                         }
@@ -373,7 +372,7 @@ odoo.define("web_mobile.tests", function (require) {
                         },
                     });
 
-                    class DummyComponent extends LegacyComponent {
+                    class DummyComponent extends Component {
                         setup() {
                             this._backButtonHandler = useBackButton(
                                 this._onBackButton,
@@ -396,7 +395,7 @@ odoo.define("web_mobile.tests", function (require) {
                             assert.step(`${ev.type} event`);
                         }
                     }
-                    DummyComponent.template = xml`<button t-esc="state.show" t-on-click="toggle"/>`;
+                    DummyComponent.template = xml`<button class="dummy" t-esc="state.show" t-on-click="toggle"/>`;
 
                     const target = getFixture();
                     const env = makeTestEnv();
@@ -404,10 +403,10 @@ odoo.define("web_mobile.tests", function (require) {
                     const dummy = await mount(DummyComponent, target, { props: { show: false }, env });
 
                     assert.verifySteps([], "shouldn't have enabled backbutton mount");
-                    await testUtils.dom.click(dummy.el);
+                    await testUtils.dom.click(target.querySelector(".dummy"));
                     // simulate 'backbutton' event triggered by the app
                     await testUtils.dom.triggerEvent(document, "backbutton");
-                    await testUtils.dom.click(dummy.el);
+                    await testUtils.dom.click(target.querySelector(".dummy"));
                     assert.verifySteps(
                         [
                             "overrideBackButton: true",
@@ -506,7 +505,7 @@ odoo.define("web_mobile.tests", function (require) {
                     },
                 });
 
-                class Parent extends LegacyComponent {
+                class Parent extends Component {
                     setup() {
                         this.state = useState({ display: true });
                     }
@@ -552,7 +551,7 @@ odoo.define("web_mobile.tests", function (require) {
                     },
                 });
 
-                class Parent extends LegacyComponent {}
+                class Parent extends Component {}
 
                 Parent.components = { Popover };
                 Parent.template = xml`

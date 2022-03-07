@@ -4,12 +4,11 @@ odoo.define('web_grid.components', function (require) {
     const fieldUtils = require('web.field_utils');
     const utils = require('web.utils');
     const { debounce } = require("@web/core/utils/timing");
-    const { LegacyComponent } = require("@web/legacy/legacy_component");
 
-    const { onPatched, onWillUpdateProps, useRef, useState } = owl;
+    const { Component, onPatched, onWillUpdateProps, useRef, useState } = owl;
 
 
-    class BaseGridComponent extends LegacyComponent {
+    class BaseGridComponent extends Component {
         setup() {
             this.currentInput = useRef("currentInput");
             this.state = useState({
@@ -95,7 +94,7 @@ odoo.define('web_grid.components', function (require) {
             } catch (_) {
                 this.state.error = ev.target.value;
             } finally {
-                this.trigger('grid-cell-update', {
+                this.props.onCellUpdated({
                     path: this.props.path,
                     value
                 });
@@ -107,9 +106,7 @@ odoo.define('web_grid.components', function (require) {
          * @private
          */
         _onFocusCell() {
-            this.trigger('grid-cell-focus', {
-                path: this.props.path
-            });
+            this.props.onCellFocused(this.props.path);
         }
     }
     BaseGridComponent.defaultProps = {
@@ -118,7 +115,9 @@ odoo.define('web_grid.components', function (require) {
         hasBarChartTotal: false,
         readonly: false,
         isTotal: false,
-        nodeOptions: {}
+        nodeOptions: {},
+        onCellFocused: () => {},
+        onCellUpdated: () => {},
     };
     BaseGridComponent.props = {
         cellHeight: {
@@ -137,6 +136,14 @@ odoo.define('web_grid.components', function (require) {
         isInput: Boolean,
         nodeOptions: {
             type: Object,
+            optional: true,
+        },
+        onCellFocused: {
+            type: Function,
+            optional: true,
+        },
+        onCellUpdated: {
+            type: Function,
             optional: true,
         },
         path: {
@@ -236,7 +243,7 @@ odoo.define('web_grid.components', function (require) {
             const nextIndex = closestIndex + 1 < range.length ? closestIndex + 1 : 0;
             this.state.value = this._parse(fieldUtils.format.float(range[nextIndex]));
             this.state.disabled = true;
-            this.trigger('grid-cell-update', {
+            this.props.onCellUpdated({
                 path: this.props.path,
                 value: this.state.value,
                 doneCallback: () => {

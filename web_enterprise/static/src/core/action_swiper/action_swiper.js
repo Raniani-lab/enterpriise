@@ -2,9 +2,8 @@
 import { browser } from "@web/core/browser/browser";
 import { localization } from "@web/core/l10n/localization";
 import { clamp } from "@web/core/utils/numbers";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { onMounted, onWillUnmount, useEffect, useRef, useState } = owl;
+const { Component, onMounted, onWillUnmount, useEffect, useRef, useState } = owl;
 
 const isScrollSwipable = (scrollables) => {
     return {
@@ -24,7 +23,7 @@ const isScrollSwipable = (scrollables) => {
  * to allow the swipe interaction conditionnally.
  * @extends Component
  */
-export class ActionSwiper extends LegacyComponent {
+export class ActionSwiper extends Component {
     setup() {
         this.actionTimeoutId = null;
         this.resetTimeoutId = null;
@@ -34,6 +33,7 @@ export class ActionSwiper extends LegacyComponent {
             startX: undefined,
             width: undefined,
         };
+        this.root = useRef("root");
         this.targetContainer = useRef("targetContainer");
         this.scrollables = undefined;
         this.state = useState({ ...this.defaultState });
@@ -52,11 +52,11 @@ export class ActionSwiper extends LegacyComponent {
         // strictly necessary
         useEffect(() => {
             if (this.props.onLeftSwipe || this.props.onRightSwipe) {
-                const classes = new Set(this.el.classList);
+                const classes = new Set(this.root.el.classList);
                 classes.delete("o_actionswiper");
                 for (const className of classes) {
                     this.targetContainer.el.firstChild.classList.add(className);
-                    this.el.classList.remove(className);
+                    this.root.el.classList.remove(className);
                 }
             }
         });

@@ -4,7 +4,7 @@ import { useService } from "@web/core/utils/hooks";
 import { NotEditableActionError } from "../../studio_service";
 import { IconCreatorDialog } from "./icon_creator_dialog/icon_creator_dialog";
 
-const { onMounted } = owl;
+const { onMounted, useRef } = owl;
 const NEW_APP_BUTTON = {
     isNewAppButton: true,
     label: "New App",
@@ -40,10 +40,10 @@ export class StudioHomeMenu extends HomeMenu {
         this.studio = useService("studio");
         this.notifications = useService("notification");
         this.dialog = useService("dialog");
+        this.root = useRef("root");
 
         onMounted(() => {
             this.canEditIcons = true;
-            this.el.classList.add("o_studio_home_menu");
         });
     }
 

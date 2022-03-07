@@ -3,9 +3,8 @@ import { browser } from "@web/core/browser/browser";
 import { formatDate, deserializeDateTime, serializeDate } from "@web/core/l10n/dates";
 import { useService } from "@web/core/utils/hooks";
 import { Transition } from "@web/core/transition";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { useState, useRef, onMounted } = owl;
+const { Component, useState, useRef, onMounted } = owl;
 const { DateTime } = luxon;
 
 /**
@@ -16,7 +15,7 @@ const { DateTime } = luxon;
  * user to buy/renew its subscription.
  * @extends Component
  */
-export class ExpirationPanel extends LegacyComponent {
+export class ExpirationPanel extends Component {
     setup() {
         this.enterprise = useService("enterprise");
 

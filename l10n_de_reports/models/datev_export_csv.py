@@ -351,9 +351,6 @@ class DatevExportCSV(models.AbstractModel):
             move_ids = [l.get('move_id') for l in self.env.cr.dictfetchall()]
             moves = self.env['account.move'].browse(move_ids)
         for m in moves:
-            total_aml_balance_per_key = defaultdict(float)  # key: BalanceKey
-            total_aml_balance_per_tax_line = defaultdict(float)  # key: Model<account.move.line>
-            total_aml_balance_per_key_per_tax_line = defaultdict(lambda: defaultdict(float))
             line_values = {}  # key: BalanceKey
 
             payment_account = 0  # Used for non-reconciled payments
@@ -370,62 +367,23 @@ class DatevExportCSV(models.AbstractModel):
                 if aml.tax_line_id:
                     continue
 
-                amount = abs(aml.balance)
-                # Finding back the amount with tax included from the move can be tricky
-                # The line with the tax contains the tax_base_amount which is the gross value
-                # However if we have 2 product lines with the same tax, we will have a move like this
-                # Debit   Credit   Tax_line_id   Tax_ids   Tax_base_amount   Account_id
-                #  10        0        false       false            0          Receivable
-                #  0         3         1          false            7          Tax
-                #  0        3,5       false        [1]             0          Income Account
-                #  0        3,5       false        [1]             0          Income Account
-                #
-                # What we want to export for his move in datev is something like this:
-                # Account             CounterAccount   Amount
-                # Income Account      Receivable        10
-                #
-                # So when we are on an "Income Account" line linked to a tax, we try to find back
-                # the line representing the tax and we use as amount the tax line balance + base_amount
-                # This means that in the case we happen to have another line with same tax and income account,
-                # (as described above), We have to skip it.
-                # A Problem that might happen since tax are grouped is: if we have a line
-                # with tax 1 and 2 specified on the line, and another line with only tax 1
-                # specified on the line. This will result in a case where we can't easily get
-                # back the gross amount for both lines. This case is not supported by this export
-                # function and will result in incorrect exported lines for datev.
-                code_correction = ''
-                if aml.balance > 0:
-                    letter = 's'
-                elif aml.balance < 0:
-                    letter = 'h'
+                if aml.price_total != 0:
+                    line_amount = aml.price_total
                 else:
-                    if aml.move_id.move_type in ('out_invoice', 'in_refund',):
-                        letter = 'h'
-                    else:
-                        letter = 's'
-                tax_amls = self.env['account.move.line']
+                    line_amount = aml.balance
+
+                code_correction = ''
+                if aml.move_id.is_inbound():
+                    letter = 'h'
+                elif aml.move_id.is_outbound():
+                    letter = 's'
+                else:
+                    letter = 's'
                 if aml.tax_ids:
-                    tax_balance_sum = 0
                     codes = set(aml.tax_ids.mapped('l10n_de_datev_code'))
                     if len(codes) == 1:
                         # there should only be one max, else skip code
                         code_correction = codes.pop()
-                    for tax in aml.tax_ids:
-                        # Find tax line in the move and get it's tax_base_amount
-                        if tax.amount:
-                            tax_lines = m.line_ids.filtered(lambda l: l.tax_line_id == tax and l.partner_id == aml.partner_id)
-                            tax_balance_sum += sum(tax_lines.mapped('balance'))
-                            tax_amls |= tax_lines
-
-                    if tax_balance_sum > 0:
-                        letter = 's'
-                    elif tax_balance_sum < 0:
-                        letter = 'h'
-                    else:
-                        if aml.move_id.move_type in ('out_invoice', 'in_refund',):
-                            letter = 'h'
-                        else:
-                            letter = 's'
 
                 # account and counterpart account
                 to_account_code = str(self._find_partner_account(aml.move_id.l10n_de_datev_main_account_id, aml.partner_id))
@@ -445,13 +403,9 @@ class DatevExportCSV(models.AbstractModel):
                 # group lines by account, to_account & partner
                 match_key = BalanceKey(from_code=account_code, to_code=to_account_code, partner_id=aml.partner_id)
 
-                for tl in tax_amls:
-                    total_aml_balance_per_tax_line[tl] += amount
-                    total_aml_balance_per_key_per_tax_line[match_key][tl] += amount
-
-                total_aml_balance_per_key[match_key] += amount
                 if match_key in line_values:
                     # values already in line_values
+                    line_values[match_key]['line_amount'] += line_amount
                     continue
 
                 # reference
@@ -476,23 +430,23 @@ class DatevExportCSV(models.AbstractModel):
                     'konto': account_code or '',
                     'kurs': str(currency.rate).replace('.', ','),
                     'buchungstext': receipt1,
+                    'line_amount': line_amount
                 }
 
             for match_key, line_value in line_values.items():
-                amount = total_aml_balance_per_key[match_key]
-                for tax_line in total_aml_balance_per_key_per_tax_line.get(match_key, []):
-                    # avoid division by zero
-                    if total_aml_balance_per_tax_line[tax_line]:
-                        # add ponderated tax
-                        amount += abs(tax_line.balance) * (
-                            total_aml_balance_per_key_per_tax_line[match_key][tax_line]
-                            / total_aml_balance_per_tax_line[tax_line]
-                        )
+                # For DateV, we can't have negative amount on a line, so we need to inverse the amount and inverse the
+                # credit/debit symbol.
+                if line_value['line_amount'] < 0:
+                    line_value['line_amount'] = -line_value['line_amount']
+                    if line_value['sollhaben'] == 'h':
+                        line_value['sollhaben'] = 's'
+                    else:
+                        line_value['sollhaben'] = 'h'
 
                 # Idiotic program needs to have a line with 116 elements ordered in a given fashion as it
                 # does not take into account the header and non mandatory fields
                 array = ['' for x in range(116)]
-                array[0] = float_repr(amount, aml.company_id.currency_id.decimal_places).replace('.', ',')
+                array[0] = float_repr(line_value['line_amount'], aml.company_id.currency_id.decimal_places).replace('.', ',')
                 array[1] = line_value.get('sollhaben')
                 array[2] = line_value.get('waehrung')
                 array[6] = line_value.get('konto')

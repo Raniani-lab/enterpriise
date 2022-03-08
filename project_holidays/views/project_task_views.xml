@@ -8,7 +8,7 @@
             <xpath expr="//div[@role='alert']" position="attributes">
                 <attribute name="attrs">{'invisible': [('planning_overlap', '=', 0), '|', ('leave_warning', '=', False), ('user_ids', '=', False)]}</attribute>
             </xpath>
-            <xpath expr="//button[@name='action_fsm_view_overlapping_tasks']" position="before">
+            <xpath expr="//span[@name='planning_overlap']" position="before">
                 <p class="align-middle mb-0" attrs="{'invisible': ['|', ('leave_warning', '=', False), ('user_ids', '=', False)]}">
                     <field name="leave_warning" nolabel="1"/>
                 </p>

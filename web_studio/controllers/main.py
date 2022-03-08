@@ -602,6 +602,7 @@ class WebStudioController(http.Controller):
             char_op['target']['tag'] = 'field'
             char_op['target']['attrs'] = {'name': bin_file_field_name}
             char_op['target']['position'] = 'after'
+            char_op['position'] = 'after'
 
             _operations.append(char_op)
 

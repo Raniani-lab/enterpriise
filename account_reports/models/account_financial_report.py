@@ -934,7 +934,7 @@ class ReportAccountFinancialReport(models.Model):
 class AccountFinancialReportLine(models.Model):
     _name = "account.financial.html.report.line"
     _description = "Account Report (HTML Line)"
-    _order = "sequence"
+    _order = "sequence, id"
     _parent_store = True
 
     name = fields.Char('Section Name', translate=True)

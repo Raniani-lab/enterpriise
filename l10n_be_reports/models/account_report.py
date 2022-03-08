@@ -52,8 +52,7 @@ class AccountReport(models.AbstractModel):
                 additional_context = {'required_fields': missing_fields}
                 raise RedirectWarning(message, action, button_text, additional_context)
 
-            return str(markupsafe.Markup("""
-    <ns2:Representative>
+            return markupsafe.Markup("""<ns2:Representative>
         <RepresentativeID identificationType="NVAT" issuedBy="%(country_code)s">%(vat)s</RepresentativeID>
         <Name>%(name)s</Name>
         <Street>%(street)s</Street>
@@ -62,7 +61,6 @@ class AccountReport(models.AbstractModel):
         <CountryCode>%(country_code)s</CountryCode>
         <EmailAddress>%(email)s</EmailAddress>
         <Phone>%(phone)s</Phone>
-    </ns2:Representative>
-            """) % node_values)
+    </ns2:Representative>""") % node_values
 
-        return ""
+        return markupsafe.Markup()

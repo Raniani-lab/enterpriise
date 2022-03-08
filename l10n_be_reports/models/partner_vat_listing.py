@@ -5,6 +5,7 @@ from odoo import api, models, _
 from odoo.tools.misc import formatLang
 from odoo.exceptions import UserError
 from itertools import groupby
+from markupsafe import Markup
 
 
 class ReportL10nBePartnerVatListing(models.AbstractModel):
@@ -175,39 +176,6 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
             if ads.country_id:
                 country = ads.country_id.code
 
-        annual_listing_data = {
-            'issued_by': issued_by,
-            'company_vat': company_vat,
-            'comp_name': company.name,
-            'street': street,
-            'zip': zip,
-            'city': city,
-            'country': country,
-            'email': email,
-            'phone': phone,
-            'SenderId': SenderId,
-            'period': options['date'].get('date_from')[0:4],
-            'comments': self._get_report_manager(options).summary or '',
-        }
-
-        data_file = """<?xml version="1.0" encoding="ISO-8859-1"?>
-  <ns2:ClientListingConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/ClientListingConsignment" ClientListingsNbr="1">
-  """ + self._get_belgian_xml_export_representative_node()
-
-        data_comp = """
-        <ns2:Declarant>
-            <VATNumber>%(SenderId)s</VATNumber>
-            <Name>%(comp_name)s</Name>
-            <Street>%(street)s</Street>
-            <PostCode>%(zip)s</PostCode>
-            <City>%(city)s</City>
-            <CountryCode>%(country)s</CountryCode>
-            <EmailAddress>%(email)s</EmailAddress>
-            <Phone>%(phone)s</Phone>
-        </ns2:Declarant>
-        <ns2:Period>%(period)s</ns2:Period>
-        """ % annual_listing_data
-
         # Turnover and Farmer tags are not included
         ctx = self._set_context(options)
         ctx.update({'no_format': True, 'date_from': ctx['date_from'][0:4] + '-01-01', 'date_to': ctx['date_from'][0:4] + '-12-31'})
@@ -231,29 +199,53 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
                 'turnover': turnover,
                 'vat_amount': tax,
             }
-            data_client_info += """
+            data_client_info += Markup("""
         <ns2:Client SequenceNumber="%(seq)s">
             <ns2:CompanyVATNumber issuedBy="BE">%(only_vat)s</ns2:CompanyVATNumber>
             <ns2:TurnOver>%(turnover).2f</ns2:TurnOver>
             <ns2:VATAmount>%(vat_amount).2f</ns2:VATAmount>
-        </ns2:Client>""" % amount_data
+        </ns2:Client>""") % amount_data
 
-        amount_data_begin = {
+        annual_listing_data = {
+            'issued_by': issued_by,
+            'company_vat': company_vat,
+            'comp_name': company.name,
+            'street': street,
+            'zip': zip,
+            'city': city,
+            'country': country,
+            'email': email,
+            'phone': phone,
+            'SenderId': SenderId,
+            'period': options['date'].get('date_from')[0:4],
+            'comments': self._get_report_manager(options).summary or '',
             'seq': str(seq),
             'dnum': dnum,
             'sum_turnover': sum_turnover,
             'sum_tax': sum_tax,
+            'representative_node': self._get_belgian_xml_export_representative_node(),
         }
-        data_begin = """
+
+        data_begin = Markup("""<?xml version="1.0" encoding="ISO-8859-1"?>
+<ns2:ClientListingConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/ClientListingConsignment" ClientListingsNbr="1">
     <ns2:ClientListing SequenceNumber="1" ClientsNbr="%(seq)s" DeclarantReference="%(dnum)s"
         TurnOverSum="%(sum_turnover).2f" VATAmountSum="%(sum_tax).2f">
-  """ % amount_data_begin
+        %(representative_node)s
+        <ns2:Declarant>
+            <VATNumber>%(SenderId)s</VATNumber>
+            <Name>%(comp_name)s</Name>
+            <Street>%(street)s</Street>
+            <PostCode>%(zip)s</PostCode>
+            <City>%(city)s</City>
+            <CountryCode>%(country)s</CountryCode>
+            <EmailAddress>%(email)s</EmailAddress>
+            <Phone>%(phone)s</Phone>
+        </ns2:Declarant>
+        <ns2:Period>%(period)s</ns2:Period>""") % annual_listing_data
 
-        data_end = """
-
+        data_end = Markup("""
         <ns2:Comment>%(comments)s</ns2:Comment>
     </ns2:ClientListing>
-  </ns2:ClientListingConsignment>
-  """ % annual_listing_data
+</ns2:ClientListingConsignment>""") % annual_listing_data
 
-        return (data_file + data_begin + data_comp + data_client_info + data_end).encode('ISO-8859-1', 'ignore')
+        return (data_begin + data_client_info + data_end).encode('ISO-8859-1', 'ignore')

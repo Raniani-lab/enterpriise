@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
 import time
 from odoo import models, fields, api, _
 from odoo.tools.misc import formatLang
@@ -198,19 +199,28 @@ class ECSalesReport(models.AbstractModel):
             'comments': self._get_report_manager(options).summary or '',
             'issued_by': issued_by,
             'dnum': dnum,
+            'representative_node': self._get_belgian_xml_export_representative_node(),
         })
 
-        data_head = """<?xml version="1.0" encoding="ISO-8859-1"?>
-<ns2:IntraConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/IntraConsignment" IntraListingsNbr="1">
-""" + self._get_belgian_xml_export_representative_node()
-        data_comp_period = '\n\t\t<ns2:Declarant>\n\t\t\t<VATNumber>%(vatnum)s</VATNumber>\n\t\t\t<Name>%(company_name)s</Name>\n\t\t\t<Street>%(street)s</Street>\n\t\t\t<PostCode>%(post_code)s</PostCode>\n\t\t\t<City>%(city)s</City>\n\t\t\t<CountryCode>%(country)s</CountryCode>\n\t\t\t<EmailAddress>%(email)s</EmailAddress>\n\t\t\t<Phone>%(phone)s</Phone>\n\t\t</ns2:Declarant>'
-        data_comp_period += '\n\t\t<ns2:Period>\n'
-        if month:
-            data_comp_period += '\t\t\t<ns2:Month>%(month)s</ns2:Month>\n'
-        elif quarter:
-            data_comp_period += '\t\t\t<ns2:Quarter>%(quarter)s</ns2:Quarter>\n'
-        data_comp_period += '\t\t\t<ns2:Year>%(year)s</ns2:Year>\n\t\t</ns2:Period>'
-        data_comp_period %= xml_data
+        data_head = Markup(f"""<?xml version="1.0" encoding="ISO-8859-1"?>
+    <ns2:IntraConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/IntraConsignment" IntraListingsNbr="1">
+        <ns2:IntraListing SequenceNumber="1" ClientsNbr="%(clientnbr)s" DeclarantReference="%(dnum)s" AmountSum="%(amountsum).2f">
+        %(representative_node)s
+        <ns2:Declarant>
+            <VATNumber>%(vatnum)s</VATNumber>
+            <Name>%(company_name)s</Name>
+            <Street>%(street)s</Street>
+            <PostCode>%(post_code)s</PostCode>
+            <City>%(city)s</City>
+            <CountryCode>%(country)s</CountryCode>
+            <EmailAddress>%(email)s</EmailAddress>
+            <Phone>%(phone)s</Phone>
+        </ns2:Declarant>
+        <ns2:Period>
+            {"<ns2:Month>%(month)s</ns2:Month>" if month else ""}
+            {"<ns2:Quarter>%(quarter)s</ns2:Quarter>" if quarter else ""}
+            <ns2:Year>%(year)s</ns2:Year>
+        </ns2:Period>""") % xml_data
 
         data_clientinfo = ''
         seq = 0
@@ -227,9 +237,14 @@ class ECSalesReport(models.AbstractModel):
                 'code': line['columns'][1].get('name', ''),
                 'seq': seq,
             }
-            data_clientinfo += '\n\t\t<ns2:IntraClient SequenceNumber="%(seq)s">\n\t\t\t<ns2:CompanyVATNumber issuedBy="%(country)s">%(vatnum)s</ns2:CompanyVATNumber>\n\t\t\t<ns2:Code>%(code)s</ns2:Code>\n\t\t\t<ns2:Amount>%(amount).2f</ns2:Amount>\n\t\t</ns2:IntraClient>' % (client)
+            data_clientinfo += Markup("""
+        <ns2:IntraClient SequenceNumber="%(seq)s">
+            <ns2:CompanyVATNumber issuedBy="%(country)s">%(vatnum)s</ns2:CompanyVATNumber>
+            <ns2:Code>%(code)s</ns2:Code>
+            <ns2:Amount>%(amount).2f</ns2:Amount>
+        </ns2:IntraClient>""") % client
 
-        data_decl = '\n\t<ns2:IntraListing SequenceNumber="1" ClientsNbr="%(clientnbr)s" DeclarantReference="%(dnum)s" AmountSum="%(amountsum).2f">' % (xml_data)
-
-        data_rslt = data_head + data_decl + data_comp_period + data_clientinfo + '\n\t\t</ns2:IntraListing>\n</ns2:IntraConsignment>' % (xml_data)
+        data_rslt = data_head + data_clientinfo + Markup("""
+        </ns2:IntraListing>
+</ns2:IntraConsignment>""")
         return data_rslt.encode('ISO-8859-1', 'ignore')

@@ -42,7 +42,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
             <ns2:VATDeclaration SequenceNumber="1" DeclarantReference="%s">
                 <ns2:Declarant>
                     <VATNumber xmlns="http://www.minfin.fgov.be/InputCommon">0477472701</VATNumber>
-                    <Name>company 1 data</Name>
+                    <Name>company_1_data</Name>
                     <Street></Street>
                     <PostCode></PostCode>
                     <City></City>
@@ -109,7 +109,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
                 <ns2:VATDeclaration SequenceNumber="1" DeclarantReference="%s">
                     <ns2:Declarant>
                         <VATNumber xmlns="http://www.minfin.fgov.be/InputCommon">0477472701</VATNumber>
-                        <Name>company 1 data</Name>
+                        <Name>company_1_data</Name>
                         <Street></Street>
                         <PostCode></PostCode>
                         <City></City>
@@ -121,13 +121,13 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
                         <ns2:Month>11</ns2:Month>
                         <ns2:Year>2019</ns2:Year>
                     </ns2:Period>
-                    <ns2:Data>	
+                    <ns2:Data>
                         <ns2:Amount GridNumber="71">0.00</ns2:Amount>
                     </ns2:Data>
                     <ns2:ClientListingNihil>NO</ns2:ClientListingNihil>
                     <ns2:Ask Restitution="NO" Payment="NO"/>
                     <ns2:Comment></ns2:Comment>
-                </ns2:VATDeclaration> 
+                </ns2:VATDeclaration>
             </ns2:VATConsignment>
             """ % ref
 
@@ -177,7 +177,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
             <ns2:VATDeclaration SequenceNumber="1" DeclarantReference="%s">
                 <ns2:Declarant>
                     <VATNumber xmlns="http://www.minfin.fgov.be/InputCommon">0477472701</VATNumber>
-                    <Name>company 1 data</Name>
+                    <Name>company_1_data</Name>
                     <Street></Street>
                     <PostCode></PostCode>
                     <City></City>

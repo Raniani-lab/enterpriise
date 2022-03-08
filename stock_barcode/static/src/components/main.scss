@@ -93,6 +93,8 @@
                 background-color: white;
                 border: 1px solid $o-brand-secondary;
                 z-index: 1;
+                max-height: 50vh;
+                overflow: auto;
 
                 @include media-breakpoint-down(xs) {
                     width: 100%;

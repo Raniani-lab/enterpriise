@@ -119,6 +119,32 @@ class Project(models.Model):
         basic_projects = self.filtered(lambda project: not project.is_fsm)
         super(Project, basic_projects)._compute_partner_id()
 
+    def _get_profitability_sale_order_items_domain(self, domain=None):
+        quotation_projects = self.filtered('allow_quotations')
+        if quotation_projects:
+            include_additional_sale_orders = [('order_id', 'in', quotation_projects._get_additional_quotations([('state', 'in', ['sale', 'done'])]).ids)]
+            domain = include_additional_sale_orders \
+                if domain is None \
+                else expression.OR([domain, include_additional_sale_orders])
+        return super()._get_profitability_sale_order_items_domain(domain)
+
+    def _get_additional_quotations_query(self, domain=None):
+        if domain is None:
+            domain = []
+        SaleOrder = self.env['sale.order']
+        query = SaleOrder._where_calc(expression.AND([domain, [('task_id', '!=', False)]]))
+        SaleOrder._apply_ir_rules(query, 'read')
+        query.join(
+            SaleOrder._table, 'task_id',
+            'project_task', 'id',
+            'task_id',
+            '{rhs}."project_id" in (%s)', (','.join(map(str, self.ids)),),
+        )
+        return query
+
+    def _get_additional_quotations(self, domain=None):
+        return self.env['sale.order'].browse(self._get_additional_quotations_query(domain))
+
     def _get_sale_order_items_query(self, domain_per_model=None):
         basic_project_domain = [('is_fsm', '=', False)]  # when the project is a fsm one, no SOL is linked to that project.
         employee_mapping_domain = [('project_id.is_fsm', '=', False)]

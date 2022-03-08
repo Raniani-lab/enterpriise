@@ -259,7 +259,9 @@ class DatevExportCSV(models.AbstractModel):
         preheader = ['EXTF', 510, 16, 'Debitoren/Kreditoren', 4, None, None, '', '', '', datev_info[0], datev_info[1], fy, 8,
             '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         header = ['Konto', 'Name (AdressatentypUnternehmen)', 'Name (Adressatentypnatürl. Person)', '', '', '', 'Adressatentyp']
-        move_line_ids = self.with_context(self._set_context(options), print_mode=True, aml_only=True)._get_lines(options)
+
+        # if we do _get_lines with some unfolded lines, only those will be returned, but we want all of them
+        move_line_ids = self.with_context(self._set_context(options), print_mode=True, aml_only=True)._get_lines({**options, 'unfolded_lines': []})
         lines = [preheader, header]
 
         if len(move_line_ids):
@@ -341,7 +343,8 @@ class DatevExportCSV(models.AbstractModel):
             date_from, date_to, '', '', '', '', 0, 'EUR', '', '', '', '', '', '', '', '', '']
         header = ['Umsatz (ohne Soll/Haben-Kz)', 'Soll/Haben-Kennzeichen', 'WKZ Umsatz', 'Kurs', 'Basis-Umsatz', 'WKZ Basis-Umsatz', 'Konto', 'Gegenkonto (ohne BU-Schlüssel)', 'BU-Schlüssel', 'Belegdatum', 'Belegfeld 1', 'Belegfeld 2', 'Skonto', 'Buchungstext']
 
-        move_line_ids = self.with_context(self._set_context(options), print_mode=True, aml_only=True)._get_lines(options)
+        # if we do _get_lines with some unfolded lines, only those will be returned, but we want all of them
+        move_line_ids = self.with_context(self._set_context(options), print_mode=True, aml_only=True)._get_lines({**options, 'unfolded_lines': []})
         lines = [preheader, header]
 
         moves = move_line_ids

@@ -11,7 +11,7 @@ import { SpreadsheetControlPanel } from "./control_panel/spreadsheet_control_pan
 import { SpreadsheetName } from "./control_panel/spreadsheet_name";
 
 import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants";
-import  spreadsheet  from "./o_spreadsheet_extended";
+import  spreadsheet  from "../o_spreadsheet/o_spreadsheet_extended";
 
 const { Component, useState } = owl;
 const { createEmptyWorkbookData } = spreadsheet.helpers;

@@ -39,7 +39,7 @@ export default class PivotDetailsSidePanel extends Component {
     getLastUpdate() {
         const lastUpdate = this.env.model.getters
             .getSpreadsheetPivotDataSource(this.props.pivotId)
-            .getLastUpdate();
+            .lastUpdate;
         if (lastUpdate) {
             return time_to_str(new Date(lastUpdate));
         }

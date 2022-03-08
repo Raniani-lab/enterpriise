@@ -5,6 +5,7 @@ import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelector
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
+import { removeContextUserInfo } from "../helpers";
 
 const { onWillStart } = owl;
 
@@ -52,7 +53,10 @@ patch(PivotView.prototype, "pivot_spreadsheet", {
             preProcessingAsyncActionData: {
                 data: this.model.data,
                 metaData: this.model.metaData,
-                searchParams: this.model.searchParams
+                searchParams: {
+                    ...this.model.searchParams,
+                    context: removeContextUserInfo(this.model.searchParams.context),
+                },
             }
         };
 

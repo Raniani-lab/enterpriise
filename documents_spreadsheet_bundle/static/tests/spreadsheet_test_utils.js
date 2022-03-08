@@ -11,6 +11,9 @@ import {
     getSpreadsheetActionModel,
     prepareWebClientForSpreadsheet,
 } from "./utils/webclient_helpers";
+import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
+import { DataSources } from "@documents_spreadsheet_bundle/o_spreadsheet/data_sources/data_sources";
+const { Model } = spreadsheet;
 
 /**
  * Open a spreadsheet action
@@ -178,7 +181,24 @@ export async function waitForEvaluation(model) {
      * The first one to resolve the name_get that could be triggered by the evaluation
      * The second one to resolve the debounce method of the evaluation
      */
-    await model.waitForIdle();
+    await model.config.dataSources.waitForAllLoaded();
     await nextTick();
     await nextTick();
+}
+
+export function setupDataSourceEvaluation(model) {
+    model.config.dataSources.addEventListener("data-source-updated", () => {
+        const sheetId = model.getters.getActiveSheetId();
+        model.dispatch("EVALUATE_CELLS", { sheetId });
+    });
+}
+
+export function createModelWithDataSource(orm = {}) {
+    const withSilent = {
+        ...orm,
+        silent: orm,
+    }
+    const model = new Model({}, { dataSources: new DataSources(withSilent)});
+    setupDataSourceEvaluation(model);
+    return model;
 }

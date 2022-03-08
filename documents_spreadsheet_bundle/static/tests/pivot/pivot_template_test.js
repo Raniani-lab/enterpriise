@@ -42,7 +42,7 @@ async function convertFormula(config) {
     //reload the model in headless mode, with the conversion plugin
     const model = new Model(m1.exportData(), {
         mode: "headless",
-        odooViewsModels: m1.config.odooViewsModels,
+        dataSources: m1.config.dataSources,
         evalContext: { env },
     });
 
@@ -160,7 +160,7 @@ module(
             const model = new Model(m1.exportData(), {
                 mode: "headless",
                 evalContext: { env },
-                odooViewsModels: m1.config.odooViewsModels,
+                dataSources: m1.config.dataSources,
             });
             assert.deepEqual(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE").reasons, [
                 CommandResult.PivotCacheNotLoaded,

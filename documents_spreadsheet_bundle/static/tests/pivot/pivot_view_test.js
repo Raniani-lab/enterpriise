@@ -440,17 +440,6 @@ test("user context is combined with pivot context to fetch data", async function
                 return;
             }
             switch (method) {
-                case "search_read":
-                    assert.step("search_read");
-                    assert.deepEqual(
-                        kwargs.context,
-                        {
-                            ...expectedFetchContext,
-                            active_test: false,
-                        },
-                        "search_read"
-                    );
-                    break;
                 case "read_group":
                     assert.step("read_group");
                     assert.deepEqual(kwargs.context, expectedFetchContext, "read_group");
@@ -458,7 +447,7 @@ test("user context is combined with pivot context to fetch data", async function
             }
         },
     });
-    assert.verifySteps(["read_group", "search_read", "search_read"]);
+    assert.verifySteps(["read_group", "read_group", "read_group", "read_group"]);
 });
 
 test("groupby week is sorted", async (assert) => {

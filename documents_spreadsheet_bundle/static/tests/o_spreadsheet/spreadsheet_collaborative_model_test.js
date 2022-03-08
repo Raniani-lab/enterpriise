@@ -32,11 +32,10 @@ async function getPivotReady(model) {
             orderBy: [],
         },
     }
-    const dataSource = new PivotDataSource({
-        odooViewsModels: model.config.odooViewsModels,
-        definition,
-    });
-    const pivotModel = await dataSource.get();
+    const dataSource = model.config.dataSources.create(PivotDataSource, definition);
+    await dataSource.loadModel();
+    const pivotModel = dataSource.model;
+    await dataSource.load();
     return { definition, dataSource, pivotModel };
 }
 
@@ -52,7 +51,7 @@ async function getPivotReady(model) {
  */
 function insertPreloadedPivot(model, params) {
     const { definition, dataSource, pivotModel } = params;
-    const structure = pivotModel.getSpreadsheetStructure();
+    const structure = pivotModel.getTableStructure();
     const sheetId = model.getters.getActiveSheetId();
     const { cols, rows, measures } = structure.export();
     const table = {
@@ -61,7 +60,7 @@ function insertPreloadedPivot(model, params) {
         measures,
     };
     const dataSourceId = params.dataSourceId || "data";
-    model.config.dataSources.add(dataSourceId, dataSource);
+    model.config.dataSources._dataSources[dataSourceId] = dataSource;
     model.dispatch("INSERT_PIVOT", {
         sheetId,
         col: params.anchor ? params.anchor[0] : 0,
@@ -109,7 +108,7 @@ function getListPayload() {
     return {
         definition: {
             metaData: {
-                model: "partner",
+                resModel: "partner",
                 columns: ["foo", "probability"],
             },
             searchParams: {
@@ -216,7 +215,7 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
     );
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
-        (user) => user.config.dataSources.getAll().length,
+        (user) => Object.keys(user.config.dataSources._dataSources).length,
         2
     );
 });
@@ -457,7 +456,7 @@ QUnit.test("Add two lists concurrently", async (assert) => {
     );
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
-        (user) => user.config.dataSources.getAll().length,
+        (user) => Object.keys(user.config.dataSources._dataSources).length,
         2
     );
 });

@@ -145,7 +145,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             const proms = [];
             proms.push(this.fetchModelFromName());
             for (const pivotId of this.getters.getPivotIds()) {
-                proms.push(this.getters.getSpreadsheetPivotDataSource(pivotId).loadMetadata());
+                proms.push(this.getters.getSpreadsheetPivotDataSource(pivotId).loadModel());
             }
             await Promise.all(proms);
         }

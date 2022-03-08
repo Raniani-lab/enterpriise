@@ -20,7 +20,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
                 this.selectedPivotId = cmd.pivotId;
                 break;
             case "ADD_PIVOT_DOMAIN":
-                this._addDomain(cmd.id, cmd.domain, cmd.refresh);
+                this._addDomain(cmd.id, cmd.domain);
                 break;
             case "REFRESH_PIVOT":
                 this._refreshOdooPivot(cmd.id);
@@ -75,7 +75,6 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     getPivotHeaderValue(pivotId, domain) {
         const model = this.getters.getSpreadsheetPivotModel(pivotId);
         if (!model) {
-            this.getters.getAsyncSpreadsheetPivotModel(pivotId);
             return _t("Loading...");
         }
         model.markAsHeaderUsed(domain);
@@ -100,7 +99,6 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     getPivotCellValue(pivotId, measure, domain) {
         const model = this.getters.getSpreadsheetPivotModel(pivotId);
         if (!model) {
-            this.getters.getAsyncSpreadsheetPivotModel(pivotId);
             return _t("Loading...");
         }
         model.markAsValueUsed(domain, measure);
@@ -121,7 +119,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
         if (model) {
             model.clearUsedValues();
         }
-        this.getters.getSpreadsheetPivotDataSource(pivotId).get({ forceFetch: true });
+        this.getters.getSpreadsheetPivotDataSource(pivotId).load({ reload: true });
     }
 
     /**
@@ -140,13 +138,9 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      *
      * @param {string} pivotId pivot id
      * @param {Array<Array<any>>} domain
-     * @param {boolean} refresh whether the cache should be reloaded or not
      */
-    _addDomain(pivotId, domain, refresh = true) {
+    _addDomain(pivotId, domain) {
         this.getters.getSpreadsheetPivotDataSource(pivotId).addDomain(domain);
-        if (refresh) {
-            this._refreshOdooPivot(pivotId);
-        }
     }
 
 }

@@ -81,7 +81,7 @@ export class SpreadsheetPivotTable {
     /**
      * @returns {Column[][]}
      */
-    getCols() {
+    getColHeaders() {
         return this._cols;
     }
 
@@ -89,7 +89,7 @@ export class SpreadsheetPivotTable {
      * Get the last row of the columns (i.e. the one with the measures)
      * @returns {Column[]}
      */
-    getMeasureRow() {
+    getMeasureHeaders() {
         return this._cols[this._cols.length - 1];
     }
 
@@ -112,7 +112,7 @@ export class SpreadsheetPivotTable {
     /**
      * @returns {Row[]}
      */
-    getRows() {
+    getRowHeaders() {
         return this._rows;
     }
 
@@ -127,7 +127,7 @@ export class SpreadsheetPivotTable {
 
     getCellFromMeasureRowWithDomain(values) {
         const vals = JSON.stringify(values).slice(0, -1); //Remove the last "]"
-        return this.getMeasureRow().find((cell) =>
+        return this.getMeasureHeaders().find((cell) =>
             JSON.stringify(cell.values.map((val) => val.toString())).startsWith(vals)
         );
     }
@@ -140,7 +140,7 @@ export class SpreadsheetPivotTable {
      */
     getColMeasureIndex(values) {
         const vals = JSON.stringify(values);
-        return this.getMeasureRow().findIndex(
+        return this.getMeasureHeaders().findIndex(
             (cell) => JSON.stringify(cell.values.map((val) => val.toString())) === vals
         );
     }
@@ -153,10 +153,10 @@ export class SpreadsheetPivotTable {
     }
 
     getCellFromMeasureRowAtIndex(index) {
-        return this.getMeasureRow()[index];
+        return this.getMeasureHeaders()[index];
     }
 
-    getCellFromRowAtIndex(index) {
+    getCellsFromRowAtIndex(index) {
         return this._rows[index];
     }
 

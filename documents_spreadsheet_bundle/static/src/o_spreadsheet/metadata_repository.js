@@ -16,7 +16,7 @@ const { EventBus } = owl;
  *
  * Implementation note:
  * For the labels, when someone is asking for a label which is not loaded yet,
- * the proxy returns directly ("Loading...") and a request for a name_get will
+ * the proxy returns directly (undefined) and a request for a name_get will
  * be triggered. All the requests created are batched and send, with only one
  * request per model, after a clock cycle.
  * At the end of this process, an event is triggered (labels-fetched)

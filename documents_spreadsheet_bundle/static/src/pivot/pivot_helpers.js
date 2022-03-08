@@ -1,7 +1,6 @@
 /** @odoo-module alias=documents_spreadsheet.pivot_utils default=0 **/
 
 import { _t } from "web.core";
-import { removeContextUserInfo } from "@documents_spreadsheet/helpers";
 import { formats } from "../o_spreadsheet/constants";
 import { getOdooFunctions } from "../o_spreadsheet/odoo_functions_helpers";
 

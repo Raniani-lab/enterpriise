@@ -199,13 +199,13 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             const domain = this._getComputedDomain((filterId) =>
                 this.getters.getGlobalFilterFieldPivot(filterId, pivotId)
             );
-            this.dispatch("ADD_PIVOT_DOMAIN", { id: pivotId, domain, refresh: true });
+            this.dispatch("ADD_PIVOT_DOMAIN", { id: pivotId, domain });
         }
         for (const listId of this.getters.getListIds()) {
             const domain = this._getComputedDomain((filterId) =>
                 this.getters.getGlobalFilterFieldList(filterId, listId)
             );
-            this.dispatch("ADD_LIST_DOMAIN", { id: listId, domain, refresh: true });
+            this.dispatch("ADD_LIST_DOMAIN", { id: listId, domain });
         }
     }
 

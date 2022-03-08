@@ -11,7 +11,7 @@ import { TOP_LEVEL_STYLE } from "../../o_spreadsheet/constants";
 const { astToFormula } = spreadsheet;
 
 /**
- * @typedef {Object} SpreadsheetList
+ * @typedef {Object} ListDefinition
  * @property {Array<string>} columns
  * @property {Object} context
  * @property {Array<Array<string>>} domain
@@ -23,8 +23,9 @@ const { astToFormula } = spreadsheet;
 export default class ListPlugin extends spreadsheet.CorePlugin {
     constructor(getters, history, range, dispatch, config, uuidGenerator) {
         super(getters, history, range, dispatch, config, uuidGenerator);
-        this.odooViewsModels = config.odooViewsModels;
         this.dataSources = config.dataSources;
+
+        /** @type {Object.<number, Pivot>} */
         this.lists = {};
     }
 
@@ -66,23 +67,40 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
     // Getters
     // -------------------------------------------------------------------------
 
+    /**
+     * @param {number} id
+     * @returns {import("../list_model").SpreadsheetListModel|undefined}
+     */
     getSpreadsheetListModel(id) {
         const dataSourceId = this.lists[id].dataSourceId;
-        return this.dataSources.get(dataSourceId).getListModel();
+        return this.dataSources.getDataSourceModel(dataSourceId);
     }
 
+    /**
+     * @param {number} id
+     * @returns {import("../list_data_source").ListDataSource|undefined}
+     */
     getSpreadsheetListDataSource(id) {
         const dataSourceId = this.lists[id].dataSourceId;
         return this.dataSources.get(dataSourceId);
     }
 
+    /**
+     * @param {number} id
+     * @returns {string}
+     */
     getListDisplayName(id) {
         return `(#${id}) ${this.getSpreadsheetListModel(id).getModelLabel()}`;
     }
 
+    /**
+     * @param {number} id
+     * @returns {Promise<import("../list_data_source").ListDataSource>}
+     */
     async getAsyncSpreadsheetListModel(id) {
         const dataSourceId = this.lists[id].dataSourceId;
-        return this.dataSources.get(dataSourceId).get();
+        await this.dataSources.load(dataSourceId);
+        return this.dataSources.getDataSourceModel(dataSourceId);
     }
 
     /**
@@ -126,12 +144,16 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
         return (getMaxObjectId(this.lists) + 1).toString();
     }
 
+    /**
+     * @param {number} id
+     * @returns {ListDefinition}
+     */
     getListDefinition(id) {
         const def = this.lists[id].definition;
         return {
             columns: [...def.metaData.columns],
             domain: [...def.searchParams.domain],
-            model: def.metaData.model,
+            model: def.metaData.resModel,
             context: {...def.searchParams.context},
             orderBy: [...def.searchParams.orderBy],
             id,
@@ -153,11 +175,9 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
         if (!this.dataSources.contains(dataSourceId)) {
             this.dataSources.add(
                 dataSourceId,
-                new ListDataSource({
-                    odooViewsModels: this.odooViewsModels,
-                    definition,
-                })
-            )
+                ListDataSource,
+                definition,
+            );
         }
         this.history.update("lists", lists);
     }
@@ -286,7 +306,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
             for (const [id, list] of Object.entries(data.lists)) {
                 const definition = {
                     metaData: {
-                        model: list.model,
+                        resModel: list.model,
                         columns: list.columns,
                     },
                     searchParams: {

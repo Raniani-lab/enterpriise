@@ -5,7 +5,7 @@ import testUtils from "web.test_utils";
 import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import CommandResult from "@documents_spreadsheet_bundle/o_spreadsheet/cancelled_reason";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
-import { createSpreadsheetWithPivotAndList, waitForEvaluation } from "../spreadsheet_test_utils";
+import { createModelWithDataSource, createSpreadsheetWithPivotAndList, setupDataSourceEvaluation, waitForEvaluation } from "../spreadsheet_test_utils";
 
 import { getCellFormula, getCellValue } from "../utils/getters_helpers";
 import {
@@ -18,6 +18,7 @@ import {
 } from "../utils/commands_helpers";
 import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
 import { getBasicData } from "../utils/spreadsheet_test_data";
+import { DataSources } from "@documents_spreadsheet_bundle/o_spreadsheet/data_sources/data_sources";
 
 const { Model, DispatchResult } = spreadsheet;
 const { cellMenuRegistry } = spreadsheet.registries;
@@ -468,7 +469,7 @@ module("documents_spreadsheet > global_filters",
         await addGlobalFilter(model, LAST_YEAR_FILTER);
         const newModel = new Model(model.exportData(), {
             evalContext: { env },
-            odooViewsModels: model.config.odooViewsModels,
+            dataSources: model.config.dataSources,
         });
         assert.equal(newModel.getters.getGlobalFilters().length, 1);
         const [filter] = newModel.getters.getGlobalFilters();
@@ -514,7 +515,7 @@ module("documents_spreadsheet > global_filters",
     test("Get active filters with multiple filters", async function (assert) {
         assert.expect(2);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -549,7 +550,7 @@ module("documents_spreadsheet > global_filters",
     test("Get active filters with text filter enabled", async function (assert) {
         assert.expect(2);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -569,7 +570,7 @@ module("documents_spreadsheet > global_filters",
     test("Get active filters with relation filter enabled", async function (assert) {
         assert.expect(2);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -589,7 +590,7 @@ module("documents_spreadsheet > global_filters",
     test("Get active filters with date filter enabled", async function (assert) {
         assert.expect(4);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -629,7 +630,7 @@ module("documents_spreadsheet > global_filters",
     test("FILTER.VALUE text filter", async function (assert) {
         assert.expect(3);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         setCellContent(model, "A10", `=FILTER.VALUE("Text Filter")`);
         await nextTick();
         assert.equal(getCellValue(model, "A10"), "#ERROR");
@@ -660,7 +661,7 @@ module("documents_spreadsheet > global_filters",
     test("FILTER.VALUE date filter", async function (assert) {
         assert.expect(4);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         setCellContent(model, "A10", `=FILTER.VALUE("Date Filter")`);
         await nextTick();
         await addGlobalFilter(model, {
@@ -719,26 +720,21 @@ module("documents_spreadsheet > global_filters",
     test("FILTER.VALUE relation filter", async function (assert) {
         assert.expect(6);
 
-        const model = new Model(
-            {},
-            {
-                evalContext: {
-                    env: {
-                        services: {
-                            orm: {
-                                call: async (model, method, args) => {
-                                    const resId = args[0][0];
-                                    assert.step(`name_get_${resId}`);
-                                    return resId === 1
-                                        ? [[1, "Jean-Jacques"]]
-                                        : [[2, "Raoul Grosbedon"]];
-                                },
-                            },
-                        },
-                    },
-                },
-            }
-        );
+
+        const orm = {
+            call: async (model, method, args) => {
+                const resId = args[0][0];
+                assert.step(`name_get_${resId}`);
+                return resId === 1
+                    ? [[1, "Jean-Jacques"]]
+                    : [[2, "Raoul Grosbedon"]];
+            },
+        }
+        const model = new Model({}, {
+            dataSources: new DataSources({...orm, silent: orm}),
+            evalContext: { env: { services: { orm } }},
+        })
+        setupDataSourceEvaluation(model);
         setCellContent(model, "A10", `=FILTER.VALUE("Relation Filter")`);
         await nextTick();
         await addGlobalFilter(model, {
@@ -782,7 +778,7 @@ module("documents_spreadsheet > global_filters",
     test("FILTER.VALUE formulas are updated when filter label is changed", async function (assert) {
         assert.expect(1);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -818,7 +814,7 @@ module("documents_spreadsheet > global_filters",
     test("Exporting data does not remove value from model", async function (assert) {
         assert.expect(2);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -881,7 +877,7 @@ module("documents_spreadsheet > global_filters",
     test("Can undo-redo a ADD_GLOBAL_FILTER", async function (assert) {
         assert.expect(3);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -905,7 +901,7 @@ module("documents_spreadsheet > global_filters",
     test("Can undo-redo a REMOVE_GLOBAL_FILTER", async function (assert) {
         assert.expect(3);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -930,7 +926,7 @@ module("documents_spreadsheet > global_filters",
     test("Can undo-redo a EDIT_GLOBAL_FILTER", async function (assert) {
         assert.expect(3);
 
-        const model = new Model();
+        const model = createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",

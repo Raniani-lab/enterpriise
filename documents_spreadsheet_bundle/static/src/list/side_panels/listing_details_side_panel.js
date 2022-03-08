@@ -33,7 +33,7 @@ export class ListingDetailsSidePanel extends Component {
     }
 
     getLastUpdate() {
-        const lastUpdate = this.getters.getSpreadsheetListDataSource(this.props.listId).getLastUpdate();
+        const lastUpdate = this.getters.getSpreadsheetListDataSource(this.props.listId).lastUpdate;
         if (lastUpdate) {
             return time_to_str(new Date(lastUpdate));
         }

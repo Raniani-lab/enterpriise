@@ -2,13 +2,13 @@
 
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { OdooViewsModels } from "@documents_spreadsheet_bundle/o_spreadsheet/odoo_views_models";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
 import { ormService } from "@web/core/orm_service";
 import { uiService } from "@web/core/ui/ui_service";
 import { registry } from "@web/core/registry";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
-import { MetadataRepository } from "../../src/o_spreadsheet/metadata_repository";
+import { DataSources } from "@documents_spreadsheet_bundle/o_spreadsheet/data_sources/data_sources";
+import { setupDataSourceEvaluation } from "../spreadsheet_test_utils";
 
 const { Model } = spreadsheet;
 const serviceRegistry = registry.category("services");
@@ -45,27 +45,28 @@ export async function setupCollaborativeEnv(serverData) {
     const env = await makeTestEnv({ serverData });
 
     const network = new MockSpreadsheetCollaborativeChannel();
-    const metadataRepository = new MetadataRepository(env.services.orm);
-    const odooViewsModels = new OdooViewsModels(env, env.services.orm, metadataRepository);
     const model = new Model();
     const alice = new Model(model.exportData(), {
-        odooViewsModels,
+        dataSources: new DataSources(env.services.orm),
         evalContext: { env },
         transportService: network,
         client: { id: "alice", name: "Alice" },
     });
     const bob = new Model(model.exportData(), {
-        odooViewsModels,
+        dataSources: new DataSources(env.services.orm),
         evalContext: { env },
         transportService: network,
         client: { id: "bob", name: "Bob" },
     });
     const charlie = new Model(model.exportData(), {
-        odooViewsModels,
+        dataSources: new DataSources(env.services.orm),
         evalContext: { env },
         transportService: network,
         client: { id: "charlie", name: "Charlie" },
     });
+    setupDataSourceEvaluation(alice);
+    setupDataSourceEvaluation(bob);
+    setupDataSourceEvaluation(charlie);
     return { network, alice, bob, charlie, rpc: env.services.rpc };
 }
 

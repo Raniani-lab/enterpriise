@@ -48,7 +48,7 @@ export class PivotDialog extends Dialog {
         this.size = "large";
         this.pivotModel = this.props.getters.getSpreadsheetPivotModel(this.props.pivotId);
 
-        const table = this.pivotModel.getSpreadsheetStructure();
+        const table = this.pivotModel.getTableStructure();
         const id = this.props.pivotId;
         this.data = {
             columns: this._buildColHeaders(id, table),
@@ -107,7 +107,7 @@ export class PivotDialog extends Dialog {
      * @returns {Array<number>}
      */
     _addRecursiveRow(index) {
-        const rows = this.pivotModel.getSpreadsheetStructure().getRows();
+        const rows = this.pivotModel.getTableStructure().getRowHeaders();
         const row = [...rows[index].values]
         if (row.length <= 1) {
             return [index];
@@ -280,7 +280,7 @@ export class PivotDialog extends Dialog {
      */
     _buildColHeaders(id, table) {
         const headers = [];
-        for (const row of table.getCols()) {
+        for (const row of table.getColHeaders()) {
             const current = [];
             for (const cell of row) {
                 const domain = [];
@@ -317,7 +317,7 @@ export class PivotDialog extends Dialog {
      */
     _buildRowHeaders(id, table) {
         const headers = [];
-        for (const row of table.getRows()) {
+        for (const row of table.getRowHeaders()) {
             const domain = [];
             for (let i = 0; i < row.fields.length; i++) {
                 domain.push(row.fields[i]);
@@ -347,10 +347,10 @@ export class PivotDialog extends Dialog {
      */
     _buildValues(id, table) {
         const values = [];
-        for (const col of table.getMeasureRow()) {
+        for (const col of table.getMeasureHeaders()) {
             const current = [];
             const measure = col.values[col.values.length - 1];
-            for (const row of table.getRows()) {
+            for (const row of table.getRowHeaders()) {
                 const domain = [];
                 for (let i = 0; i < row.fields.length; i++) {
                     domain.push(row.fields[i]);

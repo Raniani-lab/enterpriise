@@ -11,7 +11,6 @@ import { _t } from "@web/core/l10n/translation";
 export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     constructor(getters, history, dispatch, config) {
         super(getters, history, dispatch, config);
-        this.dataSources = config.dataSources;
         /** @type {string} */
         this.selectedListId = undefined;
     }
@@ -26,7 +25,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
                 this._selectList(cmd.listId);
                 break;
             case "ADD_LIST_DOMAIN":
-                this._addDomain(cmd.id, cmd.domain, cmd.refresh);
+                this._addDomain(cmd.id, cmd.domain);
                 break;
             case "REFRESH_ODOO_LIST":
                 this._refreshOdooList(cmd.listId);
@@ -49,13 +48,9 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      *
      * @param {string} listId pivot id
      * @param {Array<Array<any>>} domain
-     * @param {boolean} refresh whether the cache should be reloaded or not
      */
-    _addDomain(listId, domain, refresh = true) {
+    _addDomain(listId, domain) {
         this.getters.getSpreadsheetListDataSource(listId).addDomain(domain);
-        if (refresh) {
-            this._refreshOdooList(listId);
-        }
     }
 
     /**
@@ -63,7 +58,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      * @param {string} listId Id of the list
      */
     _refreshOdooList(listId) {
-        this.getters.getSpreadsheetListDataSource(listId).get({ forceFetch: true });
+        this.getters.getSpreadsheetListDataSource(listId).load({ reload: true });
     }
 
     /**
@@ -107,7 +102,6 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     getListHeaderValue(listId, fieldName) {
         const model = this.getters.getSpreadsheetListModel(listId);
         if (!model) {
-            this.getters.getAsyncSpreadsheetListModel(listId);
             return _t("Loading...");
         }
         return model.getListHeaderValue(fieldName);
@@ -124,7 +118,6 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     getListCellValue(listId, position, fieldName) {
         const model = this.getters.getSpreadsheetListModel(listId);
         if (!model) {
-            this.getters.getAsyncSpreadsheetListModel(listId);
             return _t("Loading...");
         }
         return model.getListCellValue(position, fieldName);

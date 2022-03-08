@@ -3,13 +3,33 @@
 import { _t } from "@web/core/l10n/translation";
 const { EventBus } = owl;
 
+/**
+ * @typedef {Object} ListMetaData
+ * @property {Array<string>} columns
+ * @property {string} resModel
+ *
+ * @typedef {Object} ListSearchParams
+ * @property {Array<string>} orderBy
+ * @property {Object} domain
+ * @property {Object} context
+ */
+
 export class SpreadsheetListModel extends EventBus {
+    /**
+     * @param {Object} params
+     * @param {number} params.limit
+     * @param {ListMetaData} params.metaData
+     * @param {ListSearchParams} params.searchParams
+     * @param {Object} services
+     * @param {any} services.orm
+     * @param {import("../o_spreadsheet/metadata_repository").MetadataRepository} services.metadataRepository
+     */
     constructor(params, services) {
         super();
         this.orm = services.orm;
-        this.metaData = params.definition.metaData;
+        this.metadataRepository = services.metadataRepository;
+        this.metaData = params.metaData;
         this.limit = params.limit;
-        this.metadataRepository = params.metadataRepository;
         this._fetchingPromise = undefined;
     }
 
@@ -19,7 +39,7 @@ export class SpreadsheetListModel extends EventBus {
             return;
         }
         this.data = await this.orm.searchRead(
-            this.metaData.model,
+            this.metaData.resModel,
             searchParams.domain,
             this.metaData.columns.filter(f => this.getField(f)),
             {

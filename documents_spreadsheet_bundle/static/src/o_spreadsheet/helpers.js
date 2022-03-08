@@ -1,9 +1,7 @@
 /** @odoo-module */
 
-import { _t } from "@web/core/l10n/translation";
 import  spreadsheet  from "./o_spreadsheet_extended";
-import { OdooViewsModels } from "./odoo_views_models";
-import { MetadataRepository } from "./metadata_repository";
+import { DataSources } from "./data_sources/data_sources";
 
 const Model = spreadsheet.Model;
 
@@ -105,13 +103,12 @@ export async function getDataFromTemplate(env, orm, templateId) {
     ["data"]
   );
   data = base64ToJson(data);
-  const metadataRepository = new MetadataRepository(orm);
 
   const model = new Model(data, {
     mode: "headless",
-    odooViewsModels: new OdooViewsModels(env, orm, metadataRepository),
+    dataSources: new DataSources(orm),
   });
-  await model.waitForIdle();
+  await model.config.dataSources.waitForAllLoaded();
   const proms = [];
   for (const pivotId of model.getters.getPivotIds()) {
     proms.push(model.getters.getSpreadsheetPivotModel(pivotId).prepareForTemplateGeneration());

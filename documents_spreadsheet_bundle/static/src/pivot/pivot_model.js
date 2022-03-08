@@ -12,10 +12,34 @@ import { SpreadsheetPivotTable } from "./pivot_table";
 const { toString, toNumber, toBoolean } = spreadsheet.helpers;
 
 /**
+ * @typedef {Object} PivotMetaData
+ * @property {Array<string>} colGroupBys
+ * @property {Array<string>} rowGroupBys
+ * @property {Array<string>} activeMeasures
+ * @property {string} resModel
+ * @property {Object|undefined} fields
+ * @property {string|undefined} modelLabel
+ *
+ * @typedef {Object} PivotSearchParams
+ * @property {Array<string>} groupBy
+ * @property {Array<string>} orderBy
+ * @property {Object} domain
+ * @property {Object} context
+ */
+
+/**
  * This class is an extension of PivotModel with some additional information
  * that we need in spreadsheet (name_get, isUsedInSheet, ...)
  */
 export class SpreadsheetPivotModel extends PivotModel {
+
+    /**
+     * @param {Object} params
+     * @param {PivotMetaData} params.metaData
+     * @param {PivotSearchParams} params.searchParams
+     * @param {Object} services
+     * @param {import("../o_spreadsheet/metadata_repository").MetadataRepository} services.metadataRepository
+     */
     setup(params, services) {
         // fieldAttrs is required, but not needed in Spreadsheet, so we define it as empty
         params.metaData.fieldAttrs = {},
@@ -261,6 +285,9 @@ export class SpreadsheetPivotModel extends PivotModel {
             return formatDate(field, value);
         }
         if (fieldDesc.relation) {
+            if (value === "false") {
+                return undef;
+            }
             const label = this.metadataRepository.getRecordDisplayName(fieldDesc.relation, toNumber(value));
             if (label === undefined) {
                 return undef;
@@ -291,7 +318,7 @@ export class SpreadsheetPivotModel extends PivotModel {
     /**
      * @returns {SpreadsheetPivotTable}
      */
-    getSpreadsheetStructure() {
+    getTableStructure() {
         const cols = this._getSpreadsheetCols();
         const rows = this._getSpreadsheetRows(this.data.rowGroupTree);
         rows.push(rows.shift()); //Put the Total row at the end.

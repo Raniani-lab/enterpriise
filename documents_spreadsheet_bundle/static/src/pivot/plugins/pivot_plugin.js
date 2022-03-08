@@ -3,13 +3,17 @@
 /**
  * @typedef {Object} PivotDefinition
  * @property {Array<string>} colGroupBys
- * @property {Object} context
- * @property {Array} domain
- * @property {string} id
+ * @property {Array<string>} rowGroupBys
  * @property {Array<string>} measures
  * @property {string} model
- * @property {Array<string>} rowGroupBys
+ * @property {Array} domain
+ * @property {Object} context
+ * @property {string} id
  *
+ * @typedef {Object} Pivot
+ * @property {number} id
+ * @property {string} dataSourceId
+ * @property {PivotDefinition} definition
  */
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import { getFirstPivotFunction } from "../pivot_helpers";
@@ -23,8 +27,9 @@ const { astToFormula } = spreadsheet;
 export default class PivotPlugin extends spreadsheet.CorePlugin {
     constructor(getters, history, range, dispatch, config, uuidGenerator) {
         super(getters, history, range, dispatch, config, uuidGenerator);
-        this.odooViewsModels = config.odooViewsModels;
         this.dataSources = config.dataSources;
+
+        /** @type {Object.<number, Pivot>} */
         this.pivots = {};
     }
 
@@ -59,23 +64,40 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     // Getters
     // -------------------------------------------------------------------------
 
+    /**
+     * @param {number} id
+     * @returns {import("../pivot_model").SpreadsheetPivotModel|undefined}
+     */
     getSpreadsheetPivotModel(id) {
         const dataSourceId = this.pivots[id].dataSourceId;
-        return this.dataSources.get(dataSourceId).getPivotModel();
+        return this.dataSources.getDataSourceModel(dataSourceId);
     }
 
+    /**
+     * @param {number} id
+     * @returns {import("../pivot_data_source").PivotDataSource|undefined}
+     */
     getSpreadsheetPivotDataSource(id) {
         const dataSourceId = this.pivots[id].dataSourceId;
         return this.dataSources.get(dataSourceId);
     }
 
+    /**
+     * @param {number} id
+     * @returns {string}
+     */
     getPivotDisplayName(id) {
         return `(#${id}) ${this.getSpreadsheetPivotModel(id).getModelLabel()}`;
     }
 
+    /**
+     * @param {number} id
+     * @returns {Promise<import("../pivot_data_source").PivotDataSource>}
+     */
     async getAsyncSpreadsheetPivotModel(id) {
         const dataSourceId = this.pivots[id].dataSourceId;
-        return this.dataSources.get(dataSourceId).get();
+        await this.dataSources.load(dataSourceId);
+        return this.dataSources.getDataSourceModel(dataSourceId);
     }
 
     /**
@@ -130,7 +152,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     /**
      * Retrieve all the pivot ids
      *
-     * @returns {Array<string>}
+     * @returns {Array<number>}
      */
     getPivotIds() {
         return Object.keys(this.pivots);
@@ -139,7 +161,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     /**
      * Check if an id is an id of an existing pivot
      *
-     * @param {string} pivotId Id of the pivot
+     * @param {number} pivotId Id of the pivot
      *
      * @returns {boolean}
      */
@@ -151,6 +173,11 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     // Private
     // -------------------------------------------------------------------------
 
+    /**
+     * @param {number} id
+     * @param {PivotDefinition} definition
+     * @param {string} dataSourceId
+     */
     _addPivot(id, definition, dataSourceId) {
         const pivots = { ...this.pivots };
         pivots[id] = {
@@ -162,15 +189,19 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
         if (!this.dataSources.contains(dataSourceId)) {
             this.dataSources.add(
                 dataSourceId,
-                new PivotDataSource({
-                    odooViewsModels: this.odooViewsModels,
-                    definition,
-                })
+                PivotDataSource,
+                definition,
             );
         }
         this.history.update("pivots", pivots);
     }
 
+    /**
+     * @param {string} sheetId
+     * @param {[number, number]} anchor
+     * @param {number} id
+     * @param {SpreadsheetPivotTable} table
+     */
     _insertPivot(sheetId, anchor, id, table) {
         this._resizeSheet(sheetId, anchor, table);
         this._insertColumns(sheetId, anchor, id, table);
@@ -187,7 +218,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     _insertColumns(sheetId, anchor, id, table) {
         let anchorLeft = anchor[0] + 1;
         let anchorTop = anchor[1];
-        for (const _row of table.getCols()) {
+        for (const _row of table.getColHeaders()) {
             anchorLeft = anchor[0] + 1;
             for (const cell of _row) {
                 const args = [id];
@@ -286,7 +317,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     _insertRows(sheetId, anchor, id, table) {
         let y = anchor[1] + table.getColHeight();
         const x = anchor[0];
-        for (const row of table.getRows()) {
+        for (const row of table.getRowHeaders()) {
             const args = [id];
             for (let i = 0; i < row.fields.length; i++) {
                 args.push(row.fields[i]);
@@ -310,10 +341,10 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
      */
     _insertBody(sheetId, anchor, id, table) {
         let x = anchor[0] + 1;
-        for (const col of table.getMeasureRow()) {
+        for (const col of table.getMeasureHeaders()) {
             let y = anchor[1] + table.getColHeight();
             const measure = col.values[col.values.length - 1];
-            for (const row of table.getRows()) {
+            for (const row of table.getRowHeaders()) {
                 const args = [id, measure];
                 for (let i = 0; i < row.fields.length; i++) {
                     args.push(row.fields[i]);
@@ -337,6 +368,13 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
         this.dispatch("SET_FORMATTING", { sheetId, target: [bodyZone], format: "#,##0.00" });
     }
 
+    /**
+     * @param {string} sheetId
+     * @param {number} col
+     * @param {number} row
+     * @param {string} formula
+     * @param {Array<string>} args
+     */
     _addPivotFormula(sheetId, col, row, formula, args) {
         this.dispatch("UPDATE_CELL", {
             sheetId,

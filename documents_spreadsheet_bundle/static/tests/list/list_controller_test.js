@@ -361,14 +361,6 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
             lang: "FR",
             uid: 4,
         };
-        const testSession = {
-            uid: 4,
-            user_companies: {
-                allowed_companies: { 15: { id: 15, name: "Hermit" } },
-                current_company: 15,
-            },
-            user_context: context,
-        };
         const controller = await createView({
             View: ListView,
             arch: `
@@ -379,7 +371,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
                 `,
             data: getBasicData(),
             model: "partner",
-            session: testSession,
+            context,
         });
         const { list } = controller._getListForSpreadsheet();
         assert.deepEqual(

@@ -16,11 +16,14 @@ export function insertPivot(pivotData) {
         searchParams: { ...pivotData.searchParams},
     }
     return async (model) => {
-        const dataSource = new PivotDataSource({
-            odooViewsModels: model.config.odooViewsModels,
-            definition,
-        })
-        const pivotModel = await dataSource.get();
+        const dataSourceId = uuidGenerator.uuidv4();
+        model.config.dataSources.add(
+            dataSourceId,
+            PivotDataSource,
+            definition
+        );
+        await model.config.dataSources.load(dataSourceId);
+        const pivotModel = model.config.dataSources.getDataSourceModel(dataSourceId);
         // Add an empty sheet in the case of an existing spreadsheet.
         if (!this.isEmptySpreadsheet) {
             const sheetId = uuidGenerator.uuidv4();
@@ -31,11 +34,9 @@ export function insertPivot(pivotData) {
             });
             model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo: sheetId });
         }
-        const structure = pivotModel.getSpreadsheetStructure();
+        const structure = pivotModel.getTableStructure();
         const table = structure.export();
         const sheetId = model.getters.getActiveSheetId();
-        const dataSourceId = uuidGenerator.uuidv4();
-        model.config.dataSources.add(dataSourceId, dataSource);
 
         const defWithoutFields = JSON.parse(JSON.stringify(definition));
         defWithoutFields.metaData.fields = undefined;

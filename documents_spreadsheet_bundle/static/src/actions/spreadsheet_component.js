@@ -10,8 +10,7 @@ import { DEFAULT_LINES_NUMBER } from "../o_spreadsheet/constants";
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import { jsonToBase64 } from "../o_spreadsheet/helpers";
 import { LegacyComponent } from "@web/legacy/legacy_component";
-import { OdooViewsModels } from "../o_spreadsheet/odoo_views_models";
-import { MetadataRepository } from "../o_spreadsheet/metadata_repository";
+import { DataSources } from "../o_spreadsheet/data_sources/data_sources";
 
 const { onMounted, onWillUnmount, useExternalListener, useState, useSubEnv, onWillStart } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -56,9 +55,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
             },
         });
 
-        const metadataRepository = new MetadataRepository(this.orm);
-
-        const odooViewsModels = new OdooViewsModels(this.env, this.orm, metadataRepository);
+        const dataSources = new DataSources(this.orm);
 
         this.model = new Model(
             this.props.data,
@@ -72,8 +69,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
                 },
                 isReadonly: this.props.isReadonly,
                 snapshotRequested: this.props.snapshotRequested,
-                odooViewsModels,
-
+                dataSources,
             },
             this.props.stateUpdateMessages
         );
@@ -88,7 +84,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
                 this.props.onUnexpectedRevisionId();
             }
         });
-        metadataRepository.addEventListener("labels-fetched", () => {
+        dataSources.addEventListener("data-source-updated", () => {
             const sheetId = this.model.getters.getActiveSheetId();
             this.model.dispatch("EVALUATE_CELLS", { sheetId });
         });
@@ -286,7 +282,8 @@ export default class SpreadsheetComponent extends LegacyComponent {
     async _download() {
         this.ui.block();
         try {
-            const { files } = await this.model.exportXLSX();
+            await this.model.config.dataSources.waitForAllLoaded();
+            const { files } = this.model.exportXLSX();
             this.props.onDownload({
                 name: this.props.name,
                 files,
@@ -304,9 +301,9 @@ export default class SpreadsheetComponent extends LegacyComponent {
         const model = new Model(this.model.exportData(), {
             mode: "headless",
             evalContext: { env: this.env },
-            odooViewsModels: this.model.config.odooViewsModels,
+            dataSources: this.model.config.dataSources,
         });
-        await model.waitForIdle();
+        await model.config.dataSources.waitForAllLoaded();
         const proms = [];
         for (const pivotId of model.getters.getPivotIds()) {
             proms.push(model.getters.getSpreadsheetPivotModel(pivotId).prepareForTemplateGeneration());

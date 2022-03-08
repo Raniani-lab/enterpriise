@@ -2,7 +2,6 @@
 
 import { _t } from "@web/core/l10n/translation";
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import { SpreadsheetPivotModel } from "./pivot_model";
 import { PivotDialog } from "./spreadsheet_pivot_dialog";
 
 const { createFullMenuItem } = spreadsheet.helpers;
@@ -14,10 +13,8 @@ export const REINSERT_PIVOT_CHILDREN = (env) =>
       sequence: index,
       action: async (env) => {
         const dataSource = env.model.getters.getSpreadsheetPivotDataSource(pivotId);
-        const definition = dataSource.definition;
-        const model = env.model.config.odooViewsModels.createModel(SpreadsheetPivotModel, definition);
-        await model.load(definition.searchParams);
-        const table = model.getSpreadsheetStructure().export();
+        const model = await dataSource.copyModelWithOriginalDomain();
+        const table = model.getTableStructure().export();
         const zone = env.model.getters.getSelectedZone();
         env.model.dispatch("RE_INSERT_PIVOT", {
           id: pivotId,
@@ -40,7 +37,6 @@ export const INSERT_PIVOT_CELL_CHILDREN = (env) =>
         env.model.dispatch("REFRESH_PIVOT", { id: pivotId });
         const sheetId = env.model.getters.getActiveSheetId();
         await env.model.getters.getAsyncSpreadsheetPivotModel(pivotId);
-        env.model.dispatch("EVALUATE_CELLS", { sheetId });
         const [col, row] = env.model.getters.getMainCell(
           sheetId,
           ...env.model.getters.getPosition()

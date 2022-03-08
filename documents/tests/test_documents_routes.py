@@ -36,3 +36,16 @@ class TestDocumentsRoutes(HttpCase):
         self.assertEqual(response.status_code, 200)
         with io.BytesIO(response.content) as buffer, zipfile.ZipFile(buffer) as zipfile_obj:
             self.assertEqual(zipfile_obj.read(self.document_txt.name), b'TEST')
+
+    def test_documents_from_web(self):
+        self.authenticate('admin', 'admin')
+        raw_gif = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
+        document_gif = self.env['documents.document'].create({
+            'raw': raw_gif,
+            'name': 'file.gif',
+            'mimetype': 'image/gif',
+            'folder_id': self.folder_a.id,
+        })
+        response = self.url_open('/web/image/%s?model=documents.document' % document_gif.id)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, raw_gif)

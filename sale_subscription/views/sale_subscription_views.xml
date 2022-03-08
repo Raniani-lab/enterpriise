@@ -680,7 +680,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                       <button name="run_cron_manually" string="Trigger Now" type="object" class="btn-primary"/>
+                       <button name="run_cron_manually" string="Trigger Now" type="object" class="btn-primary"
+                       confirm="This will trigger the action on all linked subsccriptions, regardless of possible timed conditions. Are you sure you want to proceed?"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

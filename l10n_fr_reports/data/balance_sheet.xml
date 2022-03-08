@@ -97,7 +97,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_0_2_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Frais de recherche et de développement - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Frais de recherche et de développement - Amort.</field>
                                                         <field name="code">FRAIS_DEVELOPEMENT_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -126,7 +126,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_0_3_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Concessions, brevets, licences, marques, droits et valeurs similaires - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Concessions, brevets, licences, marques, droits et valeurs similaires - Amort.</field>
                                                         <field name="code">CONCESSION_SIMILAIRES_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -157,7 +157,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_0_4_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Fonds commercial - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Fonds commercial - Amort.</field>
                                                         <field name="code">AUTRES_INCORPO_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -189,7 +189,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_0_5_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Autres - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Autres - Amort.</field>
                                                         <field name="code">FONDS_COMMERCIAL_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -219,7 +219,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_0_6_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Immobilisations incorporelles en cours - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Immobilisations incorporelles en cours - Amort.</field>
                                                         <field name="code">IMMOBILIS_COURS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -248,7 +248,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_0_7_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Avances et acomptes - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Avances et acomptes - Amort.</field>
                                                         <field name="code">AVANCES_ACOMPTES_INCORPORE_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -285,7 +285,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_1_1_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Terrains - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Terrains - Amort.</field>
                                                         <field name="code">TERRAINS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -317,7 +317,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_1_2_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Constructions - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Constructions - Amort.</field>
                                                         <field name="code">CONSTRUCTIONS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -347,7 +347,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_1_3_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Installations techniques,matériel et outillage - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Installations techniques,matériel et outillage - Amort.</field>
                                                         <field name="code">INSTALLATION_OUTILLAGE_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -376,7 +376,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_1_4_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Autres - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Autres - Amort.</field>
                                                         <field name="code">AUTRES_CORPORE_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -411,7 +411,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_1_5_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Immobilisations corporelles en cours - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Immobilisations corporelles en cours - Amort.</field>
                                                         <field name="code">IMMOBILLIS_COURS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -440,7 +440,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_1_6_amor_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Avances et acomptes - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Avances et acomptes - Amort.</field>
                                                         <field name="code">AVANCES_ACOMPTES_CORP_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -478,7 +478,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_2_1a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Participations - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Participations - Amort.</field>
                                                         <field name="code">PARTICIPATIONS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -508,7 +508,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_2_2a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Créances rattachées à des participations - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Créances rattachées à des participations - Amort.</field>
                                                         <field name="code">CREANCES_PARTICIPATIONS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -537,7 +537,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_2_3a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Titres immobilisés de l'activité de portefeuille - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Titres immobilisés de l'activité de portefeuille - Amort.</field>
                                                         <field name="code">TITRES_PORTEFEUILLE_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -569,7 +569,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_2_4a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Autres titres immobilisés - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Autres titres immobilisés - Amort.</field>
                                                         <field name="code">AUTRES_IMMOBILISES_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -600,7 +600,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_2_5a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Prêts - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Prêts - Amort.</field>
                                                         <field name="code">PRETS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -633,7 +633,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_2_6a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Autres - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Autres - Amort.</field>
                                                         <field name="code">AUTRES_FINANCIAL_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -685,7 +685,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_3_1a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Matières premières et autres approvisionnements - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Matières premières et autres approvisionnements - Amort.</field>
                                                         <field name="code">MATIERES_APPROVI_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -716,7 +716,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_3_2a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">En-cours de production [biens et services] - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">En-cours de production [biens et services] - Amort.</field>
                                                         <field name="code">EN_COURS_PRODUCTION_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -746,7 +746,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_3_3as_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Produits intermédiaires et finis - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Produits intermédiaires et finis - Amort.</field>
                                                         <field name="code">PRODUITS_FINIS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -784,7 +784,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_3_4a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Marchandises - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Marchandises - Amort.</field>
                                                         <field name="code">MARCHANDISES_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -844,7 +844,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_4_1a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Clients et comptes rattachés - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Clients et comptes rattachés - Amort.</field>
                                                         <field name="code">CREANCES_RATTACHES_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -889,7 +889,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_4_2a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Autres créances - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Autres créances - Amort.</field>
                                                         <field name="code">AUTRES_CREANCES_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -936,7 +936,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_5_1a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Actions propres - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Actions propres - Amort.</field>
                                                         <field name="code">ACTIONS_PROPRES_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
@@ -967,7 +967,7 @@
                                                         <field name="hide_if_zero" eval="True"/>
                                                     </record>
                                                     <record id="account_financial_report_line_03_5_2a_fr_bilan_actif" model="account.financial.html.report.line">
-                                                        <field name="name">Autres titres - Amortissements et provisions (à déduire)</field>
+                                                        <field name="name">Autres titres - Amort.</field>
                                                         <field name="code">AUTRES_TITRES_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>

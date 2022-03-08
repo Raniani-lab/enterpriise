@@ -21,7 +21,7 @@ class AnalyticLine(models.Model):
             return
         sale_man_group = self.user_has_groups('sales_team.group_sale_salesman')
         for timesheet in self:
-            timesheet.has_so_access = sale_man_group and timesheet.order_id.user_id == self.env.user
+            timesheet.has_so_access = sale_man_group and timesheet.order_id.sudo().user_id == self.env.user
 
     def _get_adjust_grid_domain(self, column_value):
         """ Don't adjust already invoiced timesheet """

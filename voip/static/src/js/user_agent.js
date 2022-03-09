@@ -4,13 +4,13 @@ odoo.define('voip.UserAgent', function (require) {
 const Class = require('web.Class');
 const concurrency = require('web.concurrency');
 const core = require('web.core');
+const { escape, sprintf } = require('@web/core/utils/strings');
 const mixins = require('web.mixins');
 const mobile = require('web_mobile.core');
 const ServicesMixin = require('web.ServicesMixin');
-const { sprintf } = require("@web/core/utils/strings");
+const { Markup } = require('web.utils');
 
 const _t = core._t;
-const { escape } = owl;
 
 /**
  * @param {string} number
@@ -1025,8 +1025,8 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         const errorMessage = sprintf(
             "Registration rejected: %(statusCode)s %(reasonPhrase)s.",
             {
-                statusCode: escape(response.message.statusCode),
-                reasonPhrase: escape(response.message.reasonPhrase),
+                statusCode: response.message.statusCode,
+                reasonPhrase: response.message.reasonPhrase,
             },
         );
         const help = (() => {
@@ -1039,7 +1039,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                     return _t("Please try again later. If the problem persists, you may want to ask an administrator to check the configuration.");
             }
         })();
-        this._triggerError(`${errorMessage}</br></br>${help}`);
+        this._triggerError(Markup`${errorMessage}</br></br>${help}`);
     },
     /**
      * @private

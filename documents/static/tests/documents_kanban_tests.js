@@ -225,7 +225,17 @@ QUnit.module('documents_kanban_tests.js', {
         this.data['res.partner'].records.push(
             { id: 11, display_name: 'Hazard' },
             { id: 12, display_name: 'Lukaku' },
-            { id: 13, display_name: 'De Bruyne' }
+            { id: 13, display_name: 'De Bruyne' },
+            {
+                email: 'raoul@grosbedon.fr',
+                id: 14,
+                name: 'Raoul Grosbedon'
+            },
+            {
+                email: 'raoulette@grosbedon.fr',
+                id: 15,
+                name: 'Raoulette Grosbedon'
+            },
         );
         this.data['res.users'].records.push(
             { id: 11, display_name: 'Hazard', partner_id: 11 },
@@ -2193,7 +2203,7 @@ QUnit.module('documents_kanban_tests.js', {
                 email: 'raoul@grosbedon.fr',
                 id: 301,
                 name: 'Raoul Grosbedon',
-                partner_id: 31,
+                partner_id: 14,
                 res_id: 1,
                 res_model: 'documents.document',
             },
@@ -2201,7 +2211,7 @@ QUnit.module('documents_kanban_tests.js', {
                 email: 'raoulette@grosbedon.fr',
                 id: 302,
                 name: 'Raoulette Grosbedon',
-                partner_id: 32,
+                partner_id: 15,
                 res_id: 1,
                 res_model: 'documents.document',
             },

@@ -26,12 +26,4 @@
     ],
     'auto_install': True,
     'license': 'OEEL-1',
-    'assets': {
-        'web.assets_backend': [
-            'sale_timesheet_enterprise/static/src/js/**/*',
-        ],
-        'web.assets_qweb': [
-            'sale_timesheet_enterprise/static/src/xml/**/*',
-        ],
-    }
 }

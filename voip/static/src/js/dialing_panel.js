@@ -66,7 +66,6 @@ const DialingPanel = Widget.extend({
             nextActivities: new PhoneCallActivitiesTab(this),
             recent: new PhoneCallRecentTab(this),
         };
-        this._userAgent = new UserAgent(this);
         this._missedCounter = 0; // amount of missed call
         this._onChangeStatus = this._onChangeStatus.bind(this);
         this._onIncomingCall = this._onIncomingCall.bind(this);
@@ -120,6 +119,12 @@ const DialingPanel = Widget.extend({
         this._messaging.messagingBus.addEventListener('sip_error_resolved', this._onSipErrorResolved);
         this._messaging.messagingBus.addEventListener('sip_incoming_call', this._onSipIncomingCall);
         this._messaging.messagingBus.addEventListener('sip_rejected', this._onSipRejected);
+        /**
+         * UserAgent must be created after the event listeners have been added
+         * so that errors triggered during the initialization of the user agent
+         * using sip_error are caught.
+         */
+        this._userAgent = new UserAgent(this);
         core.bus.on('transfer_call', this, this._onTransferCall);
         core.bus.on('voip_onToggleDisplay', this,  function () {
             this._resetMissedCalls();

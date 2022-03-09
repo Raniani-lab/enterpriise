@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _, _lt
-from odoo.exceptions import UserError
+from odoo import api, fields, models, _, _lt, Command
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 from odoo.tools.misc import formatLang
 from dateutil.relativedelta import relativedelta
@@ -14,25 +14,92 @@ class AccountMove(models.Model):
 
     asset_id = fields.Many2one('account.asset', string='Asset', index=True, ondelete='cascade', copy=False, domain="[('company_id', '=', company_id)]")
     asset_asset_type = fields.Selection(related='asset_id.asset_type')
-    asset_remaining_value = fields.Monetary(string='Depreciable Value', copy=False)
-    asset_depreciated_value = fields.Monetary(string='Cumulative Depreciation', copy=False)
-    # has a depreciation line been manually modified. It is used to recompute the depreciation table of an asset/deferred revenue.')
-    asset_manually_modified = fields.Boolean(copy=False)
+    asset_remaining_value = fields.Monetary(string='Depreciable Value', compute='_compute_depreciation_cumulative_value')
+    asset_depreciated_value = fields.Monetary(string='Cumulative Depreciation', compute='_compute_depreciation_cumulative_value')
     # true when this move is the result of the changing of value of an asset
     asset_value_change = fields.Boolean()
+    #  how many days of depreciation this entry corresponds to
+    asset_number_days = fields.Integer(string="Number of days", copy=False)
+    asset_depreciation_beginning_date = fields.Date(string="Date of the beginning of the depreciation", copy=False) # technical field stating when the depreciation associated with this entry has begun
+    depreciation_value = fields.Monetary(
+        string="Depreciation",
+        compute="_compute_depreciation_value", inverse="_inverse_depreciation_value", store=True,
+    )
 
     asset_ids = fields.One2many('account.asset', string='Assets', compute="_compute_asset_ids")
-    asset_ids_display_name = fields.Char(compute="_compute_asset_ids")  # just a button label. That's to avoid a plethora of different buttons defined in xml
+    linked_asset_type = fields.Char(compute="_compute_asset_ids")  # just a button label. That's to avoid a plethora of different buttons defined in xml
     asset_id_display_name = fields.Char(compute="_compute_asset_ids")   # just a button label. That's to avoid a plethora of different buttons defined in xml
     number_asset_ids = fields.Integer(compute="_compute_asset_ids")
     draft_asset_ids = fields.Boolean(compute="_compute_asset_ids")
 
-    # reversed_entry_id is set on the reversal move but there is no way of knowing is a move has been reversed without this
-    reversal_move_id = fields.One2many('account.move', 'reversed_entry_id')
+    # -------------------------------------------------------------------------
+    # COMPUTE METHODS
+    # -------------------------------------------------------------------------
+    @api.depends('asset_id', 'depreciation_value', 'asset_id.total_depreciable_value', 'asset_id.already_depreciated_amount_import')
+    def _compute_depreciation_cumulative_value(self):
+        for asset in self.asset_id:
+            depreciated = 0
+            remaining = asset.total_depreciable_value - asset.already_depreciated_amount_import
+            for move in asset.depreciation_move_ids.sorted(lambda mv: (mv.date, mv._origin.id)):
+                remaining -= move.depreciation_value
+                depreciated += move.depreciation_value
+                move.asset_remaining_value = remaining
+                move.asset_depreciated_value = depreciated
 
-    @api.onchange('amount_total')
-    def _onchange_amount(self):
-        self.asset_manually_modified = True
+    @api.depends('line_ids.balance')
+    def _compute_depreciation_value(self):
+        for move in self:
+            asset = move.asset_id or move.reversed_entry_id.asset_id  # reversed moves are created before being assigned to the asset
+            if asset:
+                account = asset.account_depreciation_expense_id if asset.asset_type != 'sale' else asset.account_depreciation_id
+                asset_depreciation = sum(
+                    move.line_ids.filtered(lambda l: l.account_id == account).mapped('balance')
+                )
+                if asset.asset_type == 'sale':
+                    asset_depreciation *= -1
+                # Special case of closing entry - only disposed assets of type 'purchase' should match this condition
+                if any(
+                    (line.account_id, -line.balance) == (asset.account_asset_id, asset.original_value)
+                    for line in move.line_ids
+                ):
+                    account = asset.account_depreciation_id
+                    asset_depreciation = (
+                        asset.original_value
+                        - asset.salvage_value
+                        - sum(
+                            move.line_ids.filtered(lambda l: l.account_id == account).mapped(
+                                'debit' if asset.original_value > 0 else 'credit'
+                            )
+                        ) * (asset.original_value / abs(asset.original_value))
+                    )
+            else:
+                asset_depreciation = 0
+            move.depreciation_value = asset_depreciation
+
+    # -------------------------------------------------------------------------
+    # INVERSE METHODS
+    # -------------------------------------------------------------------------
+    def _inverse_depreciation_value(self):
+        for move in self:
+            asset = move.asset_id
+            amount = abs(move.depreciation_value)
+            account = asset.account_depreciation_expense_id if asset.asset_type != 'sale' else asset.account_depreciation_id
+            move.write({'line_ids': [
+                Command.update(line.id, {
+                    'balance': amount if line.account_id == account else -amount,
+                })
+                for line in move.line_ids
+            ]})
+
+    # -------------------------------------------------------------------------
+    # CONSTRAINT METHODS
+    # -------------------------------------------------------------------------
+    @api.constrains('state', 'asset_id')
+    def _constrains_check_asset_state(self):
+        for move in self.filtered(lambda mv: mv.asset_id):
+            asset_id = move.asset_id
+            if asset_id.state == 'draft' and move.state == 'posted':
+                raise ValidationError(_("You can't post an entry related to a draft asset. Please post the asset before."))
 
     def _post(self, soft=True):
         # OVERRIDE
@@ -53,18 +120,17 @@ class AccountMove(models.Model):
         return posted
 
     def _reverse_moves(self, default_values_list=None, cancel=False):
-        for move in self:
+        if default_values_list is None:
+            default_values_list = [{} for _i in self]
+        for move, default_values in zip(self, default_values_list):
             # Report the value of this move to the next draft move or create a new one
             if move.asset_id:
                 # Recompute the status of the asset for all depreciations posted after the reversed entry
-                for later_posted in move.asset_id.depreciation_move_ids.filtered(lambda m: m.date >= move.date and m.state == 'posted'):
-                    later_posted.asset_depreciated_value -= move.amount_total
-                    later_posted.asset_remaining_value += move.amount_total
+
                 first_draft = min(move.asset_id.depreciation_move_ids.filtered(lambda m: m.state == 'draft'), key=lambda m: m.date, default=None)
                 if first_draft:
                     # If there is a draft, simply move/add the depreciation amount here
-                    # The depreciated and remaining values don't need to change
-                    first_draft.amount_total += move.amount_total
+                    first_draft.depreciation_value += move.depreciation_value
                 else:
                     # If there was no draft move left, create one
                     last_date = max(move.asset_id.depreciation_move_ids.mapped('date'))
@@ -72,15 +138,16 @@ class AccountMove(models.Model):
 
                     self.create(self._prepare_move_for_asset_depreciation({
                         'asset_id': move.asset_id,
-                        'move_ref': _('Report of reversal for {name}').format(name=move.asset_id.name),
-                        'amount': move.amount_total,
+                        'amount': move.depreciation_value,
+                        'depreciation_beginning_date': last_date + (relativedelta(months=1) if method_period == "1" else relativedelta(years=1)),
                         'date': last_date + (relativedelta(months=1) if method_period == "1" else relativedelta(years=1)),
-                        'asset_depreciated_value': move.amount_total + max(move.asset_id.depreciation_move_ids.mapped('asset_depreciated_value')),
-                        'asset_remaining_value': 0,
+                        'asset_number_days': 0
                     }))
 
-                msg = _('Depreciation entry %s reversed (%s)') % (move.name, formatLang(self.env, move.amount_total, currency_obj=move.company_id.currency_id))
+                msg = _('Depreciation entry %s reversed (%s)') % (move.name, formatLang(self.env, move.depreciation_value, currency_obj=move.company_id.currency_id))
                 move.asset_id.message_post(body=msg)
+                default_values['asset_id'] = move.asset_id.id
+                default_values['asset_number_days'] = -move.asset_number_days
 
         return super(AccountMove, self)._reverse_moves(default_values_list, cancel)
 
@@ -101,7 +168,7 @@ class AccountMove(models.Model):
     def _log_depreciation_asset(self):
         for move in self.filtered(lambda m: m.asset_id):
             asset = move.asset_id
-            msg = _('Depreciation entry %s posted (%s)') % (move.name, formatLang(self.env, move.amount_total, currency_obj=move.company_id.currency_id))
+            msg = _('Depreciation entry %s posted (%s)') % (move.name, formatLang(self.env, move.depreciation_value, currency_obj=move.company_id.currency_id))
             asset.message_post(body=msg)
 
     def _auto_create_asset(self):
@@ -117,7 +184,6 @@ class AccountMove(models.Model):
                     move_line.account_id
                     and (move_line.account_id.can_create_asset)
                     and move_line.account_id.create_asset != "no"
-                    and not move.reversed_entry_id
                     and not (move_line.currency_id or move.currency_id).is_zero(move_line.price_total)
                     and not move_line.asset_ids
                     and not move_line.tax_line_id
@@ -138,6 +204,7 @@ class AccountMove(models.Model):
                         'analytic_distribution': move_line.analytic_distribution,
                         'original_move_line_ids': [(6, False, move_line.ids)],
                         'state': 'draft',
+                        'acquisition_date': move.invoice_date,
                     }
                     model_id = move_line.account_id.asset_model
                     if model_id:
@@ -169,7 +236,7 @@ class AccountMove(models.Model):
 
     @api.model
     def _prepare_move_for_asset_depreciation(self, vals):
-        missing_fields = set(['asset_id', 'move_ref', 'amount', 'asset_remaining_value', 'asset_depreciated_value']) - set(vals)
+        missing_fields = set(['asset_id', 'amount', 'depreciation_beginning_date', 'date', 'asset_number_days']) - set(vals)
         if missing_fields:
             raise UserError(_('Some fields are missing {}').format(', '.join(missing_fields)))
         asset = vals['asset_id']
@@ -183,9 +250,6 @@ class AccountMove(models.Model):
         # Keep the partner on the original invoice if there is only one
         partner = asset.original_move_line_ids.mapped('partner_id')
         partner = partner[:1] if len(partner) <= 1 else self.env['res.partner']
-        if asset.original_move_line_ids and asset.original_move_line_ids[0].move_id.move_type in ['in_refund', 'out_refund']:
-            amount = -amount
-            amount_currency = -amount_currency
         move_line_1 = {
             'name': asset.name,
             'partner_id': partner.id,
@@ -207,15 +271,14 @@ class AccountMove(models.Model):
             'amount_currency': amount_currency,
         }
         move_vals = {
-            'ref': vals['move_ref'],
             'partner_id': partner.id,
             'date': depreciation_date,
             'journal_id': asset.journal_id.id,
             'line_ids': [(0, 0, move_line_1), (0, 0, move_line_2)],
             'asset_id': asset.id,
-            'asset_remaining_value': vals['asset_remaining_value'],
-            'asset_depreciated_value': vals['asset_depreciated_value'],
-            'amount_total': amount,
+            'ref': _("%s: Depreciation", asset.name),
+            'asset_depreciation_beginning_date': vals['depreciation_beginning_date'],
+            'asset_number_days': vals['asset_number_days'],
             'name': '/',
             'asset_value_change': vals.get('asset_value_change', False),
             'move_type': 'entry',
@@ -223,53 +286,14 @@ class AccountMove(models.Model):
         }
         return move_vals
 
-    def _get_depreciation(self):
-        asset = self.asset_id
-        if asset:
-            account = asset.account_depreciation_expense_id if asset.asset_type == 'sale' else asset.account_depreciation_id
-            field = 'debit' if asset.asset_type == 'sale' or\
-                any(move.move_type == 'in_refund' for move in asset.original_move_line_ids.move_id) else 'credit'
-            asset_depreciation = sum(
-                self.line_ids.filtered(lambda l: l.account_id == account).mapped(field)
-            )
-            # Special case of closing entry
-            if any(
-                (line.account_id, line[field]) == (asset.account_asset_id, asset.original_value)
-                for line in self.line_ids
-            ):
-                rfield = 'debit' if asset.asset_type != 'sale' else 'credit'
-                asset_depreciation = (
-                    asset.original_value
-                    - asset.salvage_value
-                    - sum(
-                        self.line_ids.filtered(lambda l: l.account_id == account).mapped(rfield)
-                    )
-                )
-        else:
-            asset_depreciation = 0
-        return asset_depreciation
-
     @api.depends('line_ids.asset_ids')
     def _compute_asset_ids(self):
         for record in self:
-            record.asset_ids = record.mapped('line_ids.asset_ids')
+            record.asset_ids = record.line_ids.asset_ids
             record.number_asset_ids = len(record.asset_ids)
-            if record.number_asset_ids:
-                asset_type = {
-                    'sale': _('Deferred Revenue(s)'),
-                    'purchase': _('Asset(s)'),
-                    'expense': _('Deferred Expense(s)')
-                }
-                record.asset_ids_display_name = '%s %s' % (len(record.asset_ids), asset_type.get(record.asset_ids[0].asset_type))
-            else:
-                record.asset_ids_display_name = ''
+            record.linked_asset_type = record.asset_ids[:1].asset_type
             record.asset_id_display_name = {'sale': _('Revenue'), 'purchase': _('Asset'), 'expense': _('Expense')}.get(record.asset_id.asset_type)
             record.draft_asset_ids = bool(record.asset_ids.filtered(lambda x: x.state == "draft"))
-
-    @api.model
-    def create_asset_move(self, vals):
-        move_vals = self._prepare_move_for_asset_depreciation(vals)
-        return self.env['account.move'].create(move_vals)
 
     def open_asset_view(self):
         return self.asset_id.open_asset(['form'])

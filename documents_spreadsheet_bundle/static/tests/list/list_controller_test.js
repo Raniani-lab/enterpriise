@@ -274,6 +274,19 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         assert.notOk(root.isVisible(env));
     });
 
+    QUnit.test("Re-insert a list correctly ask for lines number", async function (assert) {
+        assert.expect(2);
+        const { model, env } = await createSpreadsheetFromList();
+        selectCell(model, "Z26");
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_list");
+        const reinsertList = cellMenuRegistry.getChildren(root, env)[0];
+        await reinsertList.action(env);
+        await nextTick();
+        const input = document.body.querySelector(".modal-body input");
+        assert.ok(input);
+        assert.strictEqual(input.type, "number")
+    });
+
     QUnit.test("Referencing non-existing fields does not crash", async function (assert) {
         assert.expect(4);
         const forbiddenFieldName = "product_id";

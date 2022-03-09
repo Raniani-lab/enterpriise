@@ -15,10 +15,12 @@
             <t t-if="state.dialog.isEditText">
                 <input type="text" class="form-control" t-model="state.inputContent" />
                 <span t-if="state.dialog.errorText" class="o_dialog_error_text text-danger" t-esc="state.dialog.errorText" />
+            </t>
+            <t t-if="state.dialog.isEditInteger">
                 <input t-if="state.dialog.isEditInteger" type="number" class="form-control" t-model="state.dialog.inputIntegerContent" />
             </t>
             <t t-set-slot="buttons">
-                <t t-if="state.dialog.isEditText">
+                <t t-if="state.dialog.isEditText or state.dialog.isEditInteger">
                     <button class="btn btn-primary" t-on-click="confirmDialog">Confirm</button>
                     <button class="btn btn-secondary" t-on-click="closeDialog">Cancel</button>
                 </t>

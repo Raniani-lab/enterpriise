@@ -2045,3 +2045,117 @@ class TestTaxReport(TestAccountReportsCommon):
                 ('Purchase tax',          400),
             ],
         )
+
+    def test_invoice_like_entry_reverse_caba_report(self):
+        """ Cancelling the reconciliation of an invoice using cash basis taxes should reverse the cash basis move
+        in such a way that the original cash basis move lines' impact falls down to 0.
+        """
+        tax_report = self.env['account.tax.report'].create({
+            'name': 'CABA test',
+            'country_id': self.fiscal_country.id,
+        })
+        report_line_invoice_base = self._create_tax_report_line('Invoice base', tax_report, sequence=1, tag_name='caba_invoice_base')
+        report_line_invoice_tax = self._create_tax_report_line('Invoice tax', tax_report, sequence=2, tag_name='caba_invoice_tax')
+        report_line_refund_base = self._create_tax_report_line('Refund base', tax_report, sequence=3, tag_name='caba_refund_base')
+        report_line_refund_tax = self._create_tax_report_line('Refund tax', tax_report, sequence=4, tag_name='caba_refund_tax')
+
+        tax = self.env['account.tax'].create({
+            'name': 'The Tax Who Says Ni',
+            'type_tax_use': 'sale',
+            'amount': 42,
+            'tax_exigibility': 'on_payment',
+            'invoice_repartition_line_ids': [
+                (0, 0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'tag_ids': [(6, 0, report_line_invoice_base.tag_ids.filtered(lambda x: not x.tax_negate).ids)],
+                }),
+                (0, 0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'tag_ids': [(6, 0, report_line_invoice_tax.tag_ids.filtered(lambda x: not x.tax_negate).ids)],
+                }),
+            ],
+            'refund_repartition_line_ids': [
+                (0, 0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'tag_ids': [(6, 0, report_line_refund_base.tag_ids.filtered(lambda x: not x.tax_negate).ids)],
+                }),
+                (0, 0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'tag_ids': [(6, 0, report_line_refund_tax.tag_ids.filtered(lambda x: not x.tax_negate).ids)],
+                }),
+            ],
+        })
+
+        move_form = Form(self.env['account.move'] \
+                    .with_company(self.company_data['company']) \
+                    .with_context(default_move_type='entry', account_predictive_bills_disable_prediction=True))
+        move_form.date = fields.Date.today()
+        with move_form.line_ids.new() as base_line_form:
+            base_line_form.name = "Base line"
+            base_line_form.account_id = self.company_data['default_account_revenue']
+            base_line_form.credit = 100
+            base_line_form.tax_ids.clear()
+            base_line_form.tax_ids.add(tax)
+
+        with move_form.line_ids.new() as receivable_line_form:
+            receivable_line_form.name = "Receivable line"
+            receivable_line_form.account_id = self.company_data['default_account_receivable']
+            receivable_line_form.debit = 142
+        move = move_form.save()
+        move.action_post()
+        # make payment
+        payment = self.env['account.payment'].create({
+            'payment_type': 'inbound',
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+            'partner_type': 'customer',
+            'partner_id': self.partner_a.id,
+            'amount': 142,
+            'date': move.date,
+            'journal_id': self.company_data['default_journal_bank'].id,
+        })
+        payment.action_post()
+
+        report_options = self._init_options(self.env['account.generic.tax.report'], move.date, move.date, {'tax_report': tax_report.id})
+        self.assertLinesValues(
+            self.env['account.generic.tax.report']._get_lines(report_options),
+            #   Name                                      Balance
+            [   0,                                              1],
+            [
+                ('Invoice base',                                0),
+                ('Invoice tax',                                 0),
+                ('Refund base',                                 0),
+                ('Refund tax',                                  0),
+            ],
+        )
+
+        # Reconcile the move with a payment
+        (payment.move_id + move).line_ids.filtered(lambda x: x.account_id == self.company_data['default_account_receivable']).reconcile()
+        self.assertLinesValues(
+            self.env['account.generic.tax.report']._get_lines(report_options),
+            #   Name                                      Balance
+            [   0,                                              1],
+            [
+                ('Invoice base',                              100),
+                ('Invoice tax',                                42),
+                ('Refund base',                                 0),
+                ('Refund tax',                                  0),
+            ],
+        )
+
+        # Unreconcile the moves
+        move.line_ids.remove_move_reconcile()
+        self.assertLinesValues(
+            self.env['account.generic.tax.report']._get_lines(report_options),
+            #   Name                                      Balance
+            [   0,                                              1],
+            [
+                ('Invoice base',                                0),
+                ('Invoice tax',                                 0),
+                ('Refund base',                                 0),
+                ('Refund tax',                                  0),
+            ],
+        )

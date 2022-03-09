@@ -888,3 +888,9 @@ class AccountAsset(models.Model):
         for record in self:
             if record.state == 'open' and record.depreciation_move_ids and not record.currency_id.is_zero(record.depreciation_move_ids.filtered(lambda x: not x.reversal_move_id).sorted(lambda x: (x.date, x.id))[-1].asset_remaining_value):
                 raise UserError(_("The remaining value on the last depreciation line must be 0"))
+
+    def get_formview_id(self, access_uid=None):
+        """ Overriding this method to redirect user to correct form view based on asset type """
+        for vid, view_type in self._get_views(self.asset_type):
+            if view_type == 'form':
+                return vid

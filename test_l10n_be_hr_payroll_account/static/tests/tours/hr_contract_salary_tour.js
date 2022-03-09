@@ -611,9 +611,18 @@ Tour.register('hr_contract_salary_tour', {
             }
         },
         {
+            content: 'Set 0 Disabled Children',
+            trigger: 'input[name=disabled_children_number]',
+            extra_trigger: 'input[name="Net"][value="2663.69"]',
+            run: function (actions) {
+                actions.text('0', this.$anchor);
+                this.$anchor.trigger('blur')
+            }
+        },
+        {
             content: 'Uncheck Disabled Children',
             trigger: 'input[name=disabled_children_bool]',
-            extra_trigger: 'input[name="Net"][value="2663.69"]',
+            extra_trigger: 'input[name="Net"][value="2444.69"]',
             run: function (actions) {
                 actions.click(this.$anchor);
                 this.$anchor.trigger('blur');

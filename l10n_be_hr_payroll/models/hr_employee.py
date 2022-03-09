@@ -79,6 +79,26 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
         string='Previous Occupations', groups="hr_payroll.group_hr_payroll_user")
     sdworx_code = fields.Char("SDWorx code", groups="hr.group_hr_user")
 
+    @api.constrains('children', 'disabled_children_number',
+                    'other_senior_dependent', 'other_disabled_senior_dependent',
+                    'other_juniors_dependent', 'other_disabled_juniors_dependent',
+                    'l10n_be_dependent_children_attachment')
+    def _check_dependent(self):
+        validation_error_message = []
+        for employee in self:
+            if (employee.children < 0 or employee.disabled_children_number < 0 or
+               employee.other_senior_dependent < 0 or employee.other_disabled_senior_dependent < 0 or
+               employee.other_juniors_dependent < 0 or employee.other_disabled_juniors_dependent < 0 or
+               employee.l10n_be_dependent_children_attachment < 0):
+                validation_error_message.append(_("Count of dependent people/children or disabled dependent people/children must be positive."))
+            if ((employee.disabled_children_number > 0 and employee.disabled_children_number > employee.children) or
+               (employee.other_disabled_senior_dependent > 0 and employee.other_disabled_senior_dependent > employee.other_senior_dependent) or
+               (employee.other_disabled_juniors_dependent > 0 and employee.other_disabled_juniors_dependent > employee.other_juniors_dependent) or
+               (employee.l10n_be_dependent_children_attachment > 0 and employee.l10n_be_dependent_children_attachment > employee.children)):
+                validation_error_message.append(_("Count of disabled dependent people/children must be less or equal to the number of dependent people/children."))
+            if validation_error_message:
+                raise ValidationError("\n".join(validation_error_message))
+
     @api.constrains('sdworx_code')
     def _check_sdworx_code(self):
         if self.sdworx_code and len(self.sdworx_code) != 7:

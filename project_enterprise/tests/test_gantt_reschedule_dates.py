@@ -315,7 +315,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_begin': new_task_6_planned_date_begin,
             'planned_date_end': new_task_6_planned_date_begin + (self.task_6_planned_date_end - self.task_6_planned_date_begin),
         })
-        with self.assertQueryCount(35):
+        with self.assertQueryCount(36):
             self.ProjectTask.invalidate_cache()
             self.gantt_reschedule_backward(self.task_5, self.task_6)
         failed_message = "The auto shift date feature should handle correctly dependencies cascades."

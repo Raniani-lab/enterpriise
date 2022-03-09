@@ -13,7 +13,6 @@ class AccountFinancialReportXMLReportExport(models.TransientModel):
             'ask_restitution': self.ask_restitution,
             'ask_payment': self.ask_payment,
             'client_nihil': self.client_nihil,
-            'grid91': self.grid91,
         }
 
         move_ids = self.env['account.move'].browse(self.env.context['l10n_be_action_resume_post_move_ids'])

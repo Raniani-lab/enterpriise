@@ -1210,11 +1210,6 @@ msgid "Get 281.50 report as XML."
 msgstr ""
 
 #. module: l10n_be_reports
-#: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__grid91
-msgid "Grid 91"
-msgstr ""
-
-#. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_account_generic_tax_report__id
 #: model:ir.model.fields,field_description:l10n_be_reports.field_account_report__id
 #: model:ir.model.fields,field_description:l10n_be_reports.field_account_reports_export_wizard__id
@@ -1251,14 +1246,6 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_reports_281_50_wizard
 msgid "L10n BE 281.50 Form Wizard"
-msgstr ""
-
-#. module: l10n_be_reports
-#: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__grid91
-msgid ""
-"La grille 91 ne concerne que les assujettis tenus au dépôt de déclarations "
-"mensuelles. Cette grille ne peut être complétée que pour la déclaration "
-"relative aux opérations du mois de décembre."
 msgstr ""
 
 #. module: l10n_be_reports

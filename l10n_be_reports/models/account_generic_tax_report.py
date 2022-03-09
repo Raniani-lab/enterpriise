@@ -132,9 +132,6 @@ class AccountGenericTaxReport(models.AbstractModel):
                                    line['columns'][0].get('carryover_bounds', False),
                                    line.get('tax_report_line', False)))
 
-        if options.get('grid91') and not currency_id.is_zero(options['grid91']):
-            grids_list.append(('91', options['grid91'], False, None))
-
         # We are ignoring all grids that have 0 as values, but the belgian government always require a value at
         # least in either the grid 71 or 72. So in the case where both are set to 0, we are adding the grid 71 in the
         # xml with 0 as a value.

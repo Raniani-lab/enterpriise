@@ -501,12 +501,15 @@ class FetchmailServer(models.Model):
             price_unit = float(dte_line.findtext(
                 './/ns0:PrcItem', default=dte_line.findtext('.//ns0:MontoItem', namespaces=XML_NAMESPACES),
                 namespaces=XML_NAMESPACES))
+            discount = float(dte_line.findtext('.//ns0:DescuentoPct', default=0, namespaces=XML_NAMESPACES))\
+                       or (float(dte_line.findtext('.//ns0:DescuentoMonto', default=0, namespaces=XML_NAMESPACES)) / (price_unit * quantity) * 100
+                           if price_unit * quantity != 0 else 0)
             values = {
                 'product': product,
                 'name': product.name if product else dte_line.findtext('.//ns0:NmbItem', namespaces=XML_NAMESPACES),
                 'quantity': quantity,
                 'price_unit': price_unit,
-                'discount': float(dte_line.findtext('.//ns0:DescuentoPct', default=0, namespaces=XML_NAMESPACES)),
+                'discount': discount,
                 'default_tax': False
             }
             if (dte_xml.findtext('.//ns0:TasaIVA', namespaces=XML_NAMESPACES) is not None and

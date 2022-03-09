@@ -10,7 +10,7 @@ from odoo.tests.common import Form, tagged
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 
 
-@freeze_time('2021-05-12')
+@freeze_time('2021-07-01')
 @tagged('post_install', '-at_install')
 class TestAccountAsset(TestAccountReportsCommon):
 
@@ -25,7 +25,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'journal_id': cls.company_data['default_journal_misc'].id,
             'asset_type': 'purchase',
             'name': 'truck',
-            'acquisition_date': today + relativedelta(years=-6, month=1, day=1),
+            'acquisition_date': today + relativedelta(years=-6, months=-6),
             'original_value': 10000,
             'salvage_value': 2500,
             'method_number': 10,
@@ -72,6 +72,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'model_id': self.account_asset_model_fixedassets.id,
         })
         CEO_car._onchange_model_id()
+        CEO_car.prorata_computation_type = 'constant_periods'
         CEO_car.method_number = 5
 
         # In order to test the process of Account Asset, I perform a action to confirm Account Asset.
@@ -89,7 +90,7 @@ class TestAccountAsset(TestAccountReportsCommon):
                          'Asset should be in Open state')
 
         # I compute depreciation lines for asset of CEOs Car.
-        self.assertEqual(CEO_car.method_number, len(CEO_car.depreciation_move_ids),
+        self.assertEqual(CEO_car.method_number + 1, len(CEO_car.depreciation_move_ids),
                          'Depreciation lines not created correctly')
 
         # Check that auto_post is set on the entries, in the future, and we cannot post them.
@@ -108,26 +109,26 @@ class TestAccountAsset(TestAccountReportsCommon):
             'value_residual': 0,
             'salvage_value': 2000,
         }])
+
         self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: l.date), [{
-            'amount_total': 2000,
-            'asset_remaining_value': 8000,
+            'amount_total': 1000,
+            'asset_remaining_value': 9000,
         }, {
             'amount_total': 2000,
-            'asset_remaining_value': 6000,
+            'asset_remaining_value': 7000,
         }, {
             'amount_total': 2000,
-            'asset_remaining_value': 4000,
+            'asset_remaining_value': 5000,
         }, {
             'amount_total': 2000,
-            'asset_remaining_value': 2000,
+            'asset_remaining_value': 3000,
         }, {
             'amount_total': 2000,
+            'asset_remaining_value': 1000,
+        }, {
+            'amount_total': 1000,
             'asset_remaining_value': 0,
         }])
-
-        # Try to close while there are still posted entries.
-        with self.assertRaises(UserError, msg="You shouldn't be able to close if there are posted entries in the future"):
-            CEO_car.set_to_close(self.closing_invoice.invoice_line_ids)
 
         # Revert posted entries in order to be able to close
         CEO_car.depreciation_move_ids._reverse_moves(cancel=True)
@@ -137,16 +138,61 @@ class TestAccountAsset(TestAccountReportsCommon):
             'value_residual': 10000,
             'salvage_value': 2000,
         }])
-        reversed__moves_values = [{
+        reversed_moves_values = [{
+            'amount_total': 1000,
+            'asset_remaining_value': 11000,
+            'state': 'posted',
+        }, {
             'amount_total': 2000,
+            'asset_remaining_value': 13000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 15000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 17000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 19000,
+            'state': 'posted',
+        }, {
+            'amount_total': 1000,
+            'asset_remaining_value': 20000,
+            'state': 'posted',
+        }, {
+            'amount_total': 1000,
+            'asset_remaining_value': 19000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 17000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 15000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 13000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 11000,
+            'state': 'posted',
+        }, {
+            'amount_total': 1000,
             'asset_remaining_value': 10000,
             'state': 'posted',
-        }] * 5
-        self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: l.date), reversed__moves_values + [{
+        }, {
             'amount_total': 10000,
             'asset_remaining_value': 0,
             'state': 'draft',
-        }])
+        }]
+
+        self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: l.date), reversed_moves_values)
         self.assertRecordValues(CEO_car.depreciation_move_ids.filtered(lambda l: l.state == 'draft').line_ids, [{
             'debit': 0,
             'credit': 10000,
@@ -158,18 +204,66 @@ class TestAccountAsset(TestAccountReportsCommon):
         }])
 
         # Close
-        CEO_car.set_to_close(self.closing_invoice.invoice_line_ids)
+        CEO_car.set_to_close(self.closing_invoice.invoice_line_ids, date=fields.Date.today() + relativedelta(days=-1))
         self.assertRecordValues(CEO_car, [{
             'original_value': 12000,
             'book_value': 12000,
             'value_residual': 10000,
             'salvage_value': 2000,
         }])
-        self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: l.date), [{
+        self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: (l.date, l.id)), [{
             'amount_total': 12000,
             'asset_remaining_value': 0,
             'state': 'draft',
-        }] + reversed__moves_values)
+        }, {
+            'amount_total': 1000,
+            'asset_remaining_value': 1000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 3000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 5000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 7000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 9000,
+            'state': 'posted',
+        }, {
+            'amount_total': 1000,
+            'asset_remaining_value': 10000,
+            'state': 'posted',
+        }, {
+            'amount_total': 1000,
+            'asset_remaining_value': 9000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 7000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 5000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 3000,
+            'state': 'posted',
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 1000,
+            'state': 'posted',
+        }, {
+            'amount_total': 1000,
+            'asset_remaining_value': 0,
+            'state': 'posted',
+        }])
         closing_move = CEO_car.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
         self.assertRecordValues(closing_move.line_ids, [{
             'debit': 0,
@@ -196,6 +290,103 @@ class TestAccountAsset(TestAccountReportsCommon):
             'salvage_value': 2000,
         }])
 
+    def test_00_account_asset_new(self):
+        """Test the lifecycle of an asset"""
+        CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({
+            'salvage_value': 2000.0,
+            'state': 'open',
+            'method_period': '12',
+            'method_number': 5,
+            'name': "CEO's Car",
+            'original_value': 12000.0,
+            'model_id': self.account_asset_model_fixedassets.id,
+        })
+        CEO_car._onchange_model_id()
+        CEO_car.prorata_computation_type = 'constant_periods'
+        CEO_car.method_number = 5
+
+        # In order to test the process of Account Asset, I perform a action to confirm Account Asset.
+        CEO_car.validate()
+
+        # I Check that After creating all the moves of depreciation lines the state of the asset is "Running".
+        CEO_car.depreciation_move_ids.write({'auto_post': 'no'})
+        CEO_car.depreciation_move_ids.action_post()
+        self.assertEqual(CEO_car.state, 'open',
+                         'State of the asset should be running')
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 2000,
+            'value_residual': 0,
+            'salvage_value': 2000,
+        }])
+        self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: l.date), [{
+            'amount_total': 1000,
+            'asset_remaining_value': 9000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 7000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 5000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 3000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': 1000,
+        }, {
+            'amount_total': 1000,
+            'asset_remaining_value': 0,
+        }])
+
+        # Close
+        CEO_car.set_to_close(self.closing_invoice.invoice_line_ids, date=fields.Date.today() + relativedelta(days=30))
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 12000,
+            'value_residual': 10000,
+            'salvage_value': 2000,
+        }])
+        self.assertRecordValues(CEO_car.depreciation_move_ids.sorted(lambda l: (l.date, l.id)), [{
+            'amount_total': 166.67,
+            'asset_remaining_value': 9833.33,
+            'state': 'draft',
+        }, {
+            'amount_total': 12000,
+            'asset_remaining_value': 0,
+            'state': 'draft',
+        }])
+        closing_move = max(CEO_car.depreciation_move_ids, key=lambda m: (m.date, m.id))
+        self.assertRecordValues(closing_move, [{
+            'date': fields.Date.today() + relativedelta(days=30),
+        }])
+        self.assertRecordValues(closing_move.line_ids, [{
+            'debit': 0,
+            'credit': 12000,
+            'account_id': CEO_car.account_asset_id.id,
+        }, {
+            'debit': 166.67,
+            'credit': 0,
+            'account_id': CEO_car.account_depreciation_id.id,
+        }, {
+            'debit': 100,
+            'credit': 0,
+            'account_id': self.closing_invoice.invoice_line_ids.account_id.id,
+        }, {
+            'debit': 11733.33,
+            'credit': 0,
+            'account_id': self.env.company.loss_account_id.id,
+        }])
+        CEO_car.depreciation_move_ids.auto_post = 'no'
+        CEO_car.depreciation_move_ids.action_post()
+        self.assertRecordValues(CEO_car, [{
+            'original_value': 12000,
+            'book_value': 2000,
+            'value_residual': 0,
+            'salvage_value': 2000,
+            'state': 'close',
+        }])
+
     def test_01_account_asset(self):
         """ Test if an an asset is created when an invoice is validated with an
         item on an account for generating entries.
@@ -207,8 +398,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'name': 'Maintenance Contract - 3 Years',
             'method_number': 3,
             'method_period': '12',
-            'prorata': True,
-            'prorata_date': time.strftime('%Y-01-01'),
+            'prorata_computation_type': 'daily_computation',
             'asset_type': 'sale',
             'state': 'model',
         })
@@ -264,8 +454,6 @@ class TestAccountAsset(TestAccountReportsCommon):
             'model_id': self.account_asset_model_fixedassets.id,
             'acquisition_date': '2010-01-31',
             'already_depreciated_amount_import': 10000.0,
-            'depreciation_number_import': 5,
-            'first_depreciation_date_import': '2010-01-31',
         })
         CEO_car._onchange_model_id()
 
@@ -322,8 +510,6 @@ class TestAccountAsset(TestAccountReportsCommon):
             'model_id': self.account_asset_model_fixedassets.id,
             'acquisition_date': '2010-01-31',
             'already_depreciated_amount_import': 12000.0,
-            'depreciation_number_import': 5,
-            'first_depreciation_date_import': '2010-01-31',
         })
         CEO_car._onchange_model_id()
 
@@ -378,10 +564,8 @@ class TestAccountAsset(TestAccountReportsCommon):
             'name': "CEO's Car",
             'original_value': 800.0,
             'model_id': self.account_asset_model_fixedassets.id,
-            'acquisition_date': '2021-05-31',
+            'acquisition_date': '2021-01-01',
             'already_depreciated_amount_import': 300.0,
-            'depreciation_number_import': 3,
-            'first_depreciation_date_import': '2021-07-31',
         })
         CEO_car._onchange_model_id()
         CEO_car.method_number = 5
@@ -393,8 +577,8 @@ class TestAccountAsset(TestAccountReportsCommon):
             'value_residual': 500,
             'salvage_value': 0,
         }])
-        self.assertEqual(len(CEO_car.depreciation_move_ids), 5)
-        CEO_car.set_to_close(self.closing_invoice.invoice_line_ids)
+        self.assertEqual(len(CEO_car.depreciation_move_ids), 4)
+        CEO_car.set_to_close(self.closing_invoice.invoice_line_ids, date=fields.Date.today() + relativedelta(months=-6, days=-1))
         self.assertRecordValues(CEO_car, [{
             'original_value': 800,
             'book_value': 500,
@@ -437,7 +621,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'name': "CEO's Car",
             'original_value': 1000.0,
             'model_id': self.account_asset_model_fixedassets.id,
-            'acquisition_date': '2020-12-31',
+            'acquisition_date': '2020-01-01',
         })
         CEO_car._onchange_model_id()
         CEO_car.method_number = 5
@@ -451,11 +635,11 @@ class TestAccountAsset(TestAccountReportsCommon):
             'salvage_value': 0,
         }])
         self.assertEqual(len(CEO_car.depreciation_move_ids), 5)
-        CEO_car.set_to_close(self.env['account.move.line'])
+        CEO_car.set_to_close(self.env['account.move.line'], date=fields.Date.today() + relativedelta(days=-1))
         self.assertRecordValues(CEO_car, [{
             'original_value': 1000,
-            'book_value': 800,
-            'value_residual': 800,
+            'book_value': 700,
+            'value_residual': 700,
             'salvage_value': 0,
         }])
         closing_move = CEO_car.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
@@ -464,11 +648,11 @@ class TestAccountAsset(TestAccountReportsCommon):
             'credit': 1000,
             'account_id': CEO_car.account_asset_id.id,
         }, {
-            'debit': 200,
+            'debit': 300,
             'credit': 0,
             'account_id': CEO_car.account_depreciation_id.id,
         }, {
-            'debit': 800,
+            'debit': 700,
             'credit': 0,
             'account_id': CEO_car.company_id.loss_account_id.id,
         }])
@@ -551,6 +735,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'original_value': 12000.0,
             'method_number': 5,
             'name': "Hashed Car",
+            'journal_id': CEO_car.journal_id.copy().id,
         })
         Hashed_car.journal_id.restrict_mode_hash_table = True
         Hashed_car.validate()
@@ -562,7 +747,7 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         self.assertEqual(Hashed_car.state, 'cancelled')
         for i in range(0, 2):
-            self.assertTrue(Hashed_car.depreciation_move_ids[i].reversal_move_id.id > 0)
+            self.assertTrue(Hashed_car.depreciation_move_ids[i].reversal_move_id.id > 0 or Hashed_car.depreciation_move_ids[i].reversed_entry_id.id > 0)
 
         # The depreciation schedule report should not contain cancelled assets
         report = self.env.ref('account_asset.assets_report')
@@ -573,18 +758,28 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertNotIn(CEO_car.name, assets_in_report)
         self.assertNotIn(Hashed_car.name, assets_in_report)
 
-        # When a lock date is applied, the asset can not be cancelled.
+        # When a lock date is applied, only the moves before the date are reversed, others are deleted
         Locked_car = CEO_car.copy()
         Locked_car.write({
             'original_value': 12000.0,
-            'method_number': 5,
+            'method_number': 10,
             'name': "Locked Car",
         })
         Locked_car.validate()
         Locked_car.company_id.fiscalyear_lock_date = today + relativedelta(years=-1)
 
-        with self.assertRaises(UserError):
-            Locked_car.set_to_cancelled()
+        self.assertEqual(len(Locked_car.depreciation_move_ids), 10)
+        Locked_car.set_to_cancelled()
+        self.assertRecordValues(Locked_car, [{
+            'state': 'cancelled',
+            'book_value': 12000.0,
+            'value_residual': 10000,
+            'salvage_value': 2000,
+        }])
+        self.assertEqual(len(Locked_car.depreciation_move_ids), 4)
+        for depreciation in Locked_car.depreciation_move_ids:
+            self.assertTrue(depreciation.reversal_move_id or depreciation.reversed_entry_id)
+
 
     def test_asset_form(self):
         """Test the form view of assets"""
@@ -607,15 +802,15 @@ class TestAccountAsset(TestAccountReportsCommon):
         with self.assertRaises(UserError):
             with self.cr.savepoint():
                 with asset_form.depreciation_move_ids.edit(4) as line_edit:
-                    line_edit.amount_total = 1000.0
+                    line_edit.depreciation_value = 1000.0
                 asset_form.save()
 
         # ... but we can with a zero remaining value on the last line.
         asset_form = Form(asset)
         with asset_form.depreciation_move_ids.edit(4) as line_edit:
-            line_edit.amount_total = 1000.0
+            line_edit.depreciation_value = 1000.0
         with asset_form.depreciation_move_ids.edit(3) as line_edit:
-            line_edit.amount_total = 3000.0
+            line_edit.depreciation_value = 3000.0
         self.update_form_values(asset_form)
         asset_form.save()
 
@@ -677,15 +872,17 @@ class TestAccountAsset(TestAccountReportsCommon):
         }
         self.assertRecordValues(self.truck, [values])
 
+        self.assertEqual(10, len(self.truck.depreciation_move_ids))
         self.env['asset.modify'].create({
             'asset_id': self.truck.id,
             'name': 'Test reason',
-            'method_number': 10.0,
+            'method_number': 20.0,
+            'date':  fields.Date.today() + relativedelta(months=-6, days=-1),
             "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
 
         # I check the proper depreciation lines created.
-        self.assertEqual(10, len(self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')))
+        self.assertEqual(14, len(self.truck.depreciation_move_ids)) # a part of the amount has been depreciated too early, there is a hole in the dates
         # Check if the future deprecation moves are set to be auto posted
         self.assertTrue(all([move.auto_post != 'no' for move in self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')]))
         # The values are unchanged
@@ -703,18 +900,19 @@ class TestAccountAsset(TestAccountReportsCommon):
             'asset_id': self.truck.id,
             'value_residual': 4000,
             'salvage_value': 3000,
+            'date':  fields.Date.today() + relativedelta(months=-6, days=-1),
             "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.assertEqual(self.truck.value_residual, 3000)
         self.assertEqual(self.truck.salvage_value, 2500)
-        self.assertEqual(self.truck.children_ids.value_residual, 1000)
+        self.assertEqual(self.truck.children_ids.value_residual, 400)
         self.assertEqual(self.truck.children_ids.salvage_value, 500)
 
     def test_asset_modify_value_01(self):
         "Decrease the residual value, decrease the salvage value"
         self.env['asset.modify'].create({
             'name': "Accident :'(",
-            'date': fields.Date.today(),
+            'date':  fields.Date.today() + relativedelta(months=-6, days=-1),
             'asset_id': self.truck.id,
             'value_residual': 1000,
             'salvage_value': 2000,
@@ -724,13 +922,14 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(self.truck.salvage_value, 2000)
         self.assertEqual(self.truck.children_ids.value_residual, 0)
         self.assertEqual(self.truck.children_ids.salvage_value, 0)
-        self.assertEqual(max(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted'), key=lambda m: m.date).amount_total, 2500)
+        self.assertEqual(max(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted'), key=lambda m: (m.date, m.id)).amount_total, 2500)
 
     def test_asset_modify_value_02(self):
         "Decrease the residual value, increase the salvage value; same book value"
         self.env['asset.modify'].create({
             'name': "Don't wanna depreciate all of it",
             'asset_id': self.truck.id,
+            'date':  fields.Date.today() + relativedelta(months=-6, days=-1),
             'value_residual': 1000,
             'salvage_value': 4500,
             "account_asset_counterpart_id": self.assert_counterpart_account_id,
@@ -745,6 +944,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.env['asset.modify'].create({
             'name': "Some aliens did something to my truck",
             'asset_id': self.truck.id,
+            'date':  fields.Date.today() + relativedelta(months=-6, days=-1),
             'value_residual': 1000,
             'salvage_value': 6000,
             "account_asset_counterpart_id": self.assert_counterpart_account_id,
@@ -759,13 +959,14 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.env['asset.modify'].create({
             'name': 'GODZILA IS REAL!',
             'asset_id': self.truck.id,
+            'date':  fields.Date.today() + relativedelta(months=-6, days=-1),
             'value_residual': 4000,
             'salvage_value': 2000,
             "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
         self.assertEqual(self.truck.value_residual, 3500)
         self.assertEqual(self.truck.salvage_value, 2000)
-        self.assertEqual(self.truck.children_ids.value_residual, 500)
+        self.assertEqual(self.truck.children_ids.value_residual, 200)
         self.assertEqual(self.truck.children_ids.salvage_value, 0)
 
     def test_asset_modify_report(self):
@@ -821,30 +1022,32 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.env['asset.modify'].create({
             'name': 'New beautiful sticker :D',
             'asset_id': self.truck.id,
+            'date': fields.Date.today() + relativedelta(months=-6, days=-1),
             'value_residual': 4000,
             'salvage_value': 3000,
             "account_asset_counterpart_id": self.assert_counterpart_account_id,
         }).modify()
-        self.assertEqual(self.truck.value_residual + sum(self.truck.children_ids.mapped('value_residual')), 4000)
+
+        self.assertEqual(self.truck.value_residual + sum(self.truck.children_ids.mapped('value_residual')), 3400)
         self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)
 
         # look at all period, with unposted entries
-        options = self._generate_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        options = self._generate_options(report, today + relativedelta(years=-6, months=-6), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
-        self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
+        self.assertListEqual([0.0, 11500.0, 0.0, 11500.0, 0.0, 8500.0, 0.0, 8500.0, 3000.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
         self.assertEqual('10 y', lines[1]['columns'][3]['name'], 'Depreciation Rate = 10%')
 
         # look only at this period
         options = self._generate_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
-        self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  1000.0,     0.0,  5500.0,  6000.0],
+        self.assertListEqual([11500.0, 0.0, 0.0, 11500.0, 5100.0, 850.0, 0.0, 5950.0, 5550.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # test value decrease
         self.env['asset.modify'].create({
             'name': "Huge scratch on beautiful sticker :'( It is ruined",
-            'date': fields.Date.today(),
+            'date': fields.Date.today() + relativedelta(months=-6, days=-1),
             'asset_id': self.truck.children_ids.id,
             'value_residual': 0,
             'salvage_value': 500,
@@ -852,7 +1055,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         }).modify()
         self.env['asset.modify'].create({
             'name': "Huge scratch on beautiful sticker :'( It went through...",
-            'date': fields.Date.today(),
+            'date': fields.Date.today() + relativedelta(months=-6, days=-1),
             'asset_id': self.truck.id,
             'value_residual': 1000,
             'salvage_value': 2500,
@@ -864,13 +1067,13 @@ class TestAccountAsset(TestAccountReportsCommon):
         # look at all period, with unposted entries
         options = self._generate_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
-        self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
+        self.assertListEqual([0.0, 11500.0, 0.0, 11500.0, 0.0, 8500.0, 0.0, 8500.0, 3000.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
 
-        # look only at this period
-        options = self._generate_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        # look only at previous period
+        options = self._generate_options(report, today + relativedelta(years=-1, month=1, day=1), today + relativedelta(years=-1, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
-        self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  3250.0,     0.0,  7750.0,  3750.0],
+        self.assertListEqual([11500.0, 0.0, 0.0, 11500.0, 4250.0, 3250.0, 0.0, 7500.0, 4000.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
 
     def test_asset_pause_resume(self):
@@ -878,7 +1081,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         today = fields.Date.today()
         self.assertEqual(len(self.truck.depreciation_move_ids.filtered(lambda e: e.state == 'draft')), 4)
         self.env['asset.modify'].create({
-            'date': fields.Date.today(),
+            'date': fields.Date.today() + relativedelta(days=-1),
             'asset_id': self.truck.id,
         }).pause()
         self.assertEqual(len(self.truck.depreciation_move_ids.filtered(lambda e: e.state == 'draft')), 0)
@@ -890,7 +1093,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             self.assertEqual(len(self.truck.depreciation_move_ids.filtered(lambda e: e.state == 'posted')), 7)
             self.assertEqual(
                 self.truck.depreciation_move_ids.filtered(lambda e: e.state == 'draft').mapped('amount_total'),
-                [750.0, 750.0, 750.0])
+                [375.0, 750.0, 750.0, 750.0])
 
     def test_asset_modify_sell_profit(self):
         """Test that a credit is realised in the gain account when selling an asset for a sum greater than book value"""
@@ -900,9 +1103,11 @@ class TestAccountAsset(TestAccountReportsCommon):
         })
         self.env['asset.modify'].create({
             'asset_id': self.truck.id,
-            'invoice_id': closing_invoice.id,
+            'invoice_line_ids': closing_invoice.invoice_line_ids,
+            'date': fields.Date.today() + relativedelta(months=-6, days=-1),
             'modify_action': 'sell',
         }).sell_dispose()
+
         closing_move = self.truck.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
         self.assertRecordValues(closing_move.line_ids, [{
             'debit': 0,
@@ -930,10 +1135,12 @@ class TestAccountAsset(TestAccountReportsCommon):
         })
         self.env['asset.modify'].create({
             'asset_id': self.truck.id,
-            'invoice_id': closing_invoice.id,
+            'invoice_line_ids': closing_invoice.invoice_line_ids,
+            'date': fields.Date.today() + relativedelta(months=-6, days=-1),
             'modify_action': 'sell',
         }).sell_dispose()
         closing_move = self.truck.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
+
         self.assertRecordValues(closing_move.line_ids, [{
             'debit': 0,
             'credit': 10000,
@@ -956,6 +1163,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         """Test the loss of the remaining book_value when an asset is disposed using the wizard"""
         self.env['asset.modify'].create({
             'asset_id': self.truck.id,
+            'date': fields.Date.today() + relativedelta(months=-6, days=-1),
             'modify_action': 'dispose',
         }).sell_dispose()
         closing_move = self.truck.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
@@ -976,26 +1184,21 @@ class TestAccountAsset(TestAccountReportsCommon):
     def test_asset_reverse_depreciation(self):
         """Test the reversal of a depreciation move"""
 
-        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted').mapped('amount_total')), 4500)
-        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft').mapped('amount_total')), 3000)
+        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted').mapped('depreciation_value')), 4500)
+        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft').mapped('depreciation_value')), 3000)
         self.assertEqual(max(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted'), key=lambda m: m.date).asset_remaining_value, 3000)
 
         move_to_reverse = self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted').sorted(lambda m: m.date)[-1]
-        move_to_reverse._reverse_moves()
-
-        # Check that we removed the depreciation in the table for the reversed move
-        max_date_posted_before = max(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted' and m.date < move_to_reverse.date), key=lambda m: m.date)
-        self.assertEqual(move_to_reverse.asset_remaining_value, max_date_posted_before.asset_remaining_value)
-        self.assertEqual(move_to_reverse.asset_depreciated_value, max_date_posted_before.asset_depreciated_value)
+        reversed_move = move_to_reverse._reverse_moves()
 
         # Check that the depreciation has been reported on the next move
-        min_date_draft = min(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft' and m.date > move_to_reverse.date), key=lambda m: m.date)
-        self.assertEqual(move_to_reverse.asset_remaining_value - min_date_draft.amount_total, min_date_draft.asset_remaining_value)
-        self.assertEqual(move_to_reverse.asset_depreciated_value + min_date_draft.amount_total, min_date_draft.asset_depreciated_value)
+        min_date_draft = min(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft' and m.date > reversed_move.date), key=lambda m: m.date)
+        self.assertEqual(move_to_reverse.asset_remaining_value - min_date_draft.depreciation_value - reversed_move.depreciation_value, min_date_draft.asset_remaining_value)
+        self.assertEqual(move_to_reverse.asset_depreciated_value + min_date_draft.depreciation_value + reversed_move.depreciation_value, min_date_draft.asset_depreciated_value)
 
         # The amount is still there, it only has been reversed. But it has been added on the next draft move to complete the depreciation table
-        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted').mapped('amount_total')), 4500)
-        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft').mapped('amount_total')), 3750)
+        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'posted').mapped('depreciation_value')), 4500)
+        self.assertEqual(sum(self.truck.depreciation_move_ids.filtered(lambda m: m.state == 'draft').mapped('depreciation_value')), 3000)
 
         # Check that the table shows fully depreciated at the end
         self.assertEqual(max(self.truck.depreciation_move_ids, key=lambda m: m.date).asset_remaining_value, 0)
@@ -1123,7 +1326,8 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         invoice = self.env['account.move'].create({
             'move_type': 'in_refund',
-            'invoice_date': '2020-12-31',
+            'invoice_date': '2020-01-01',
+            'date': '2020-01-01',
             'partner_id': self.ref("base.res_partner_12"),
             'invoice_line_ids': [(0, 0, {
                 'name': 'Refund Insurance claim',
@@ -1172,7 +1376,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'name': 'Maintenance Contract - 3 Years',
             'method_number': 3,
             'method_period': '12',
-            'prorata': False,
+            'prorata_computation_type': 'none',
             'asset_type': 'purchase',
             'state': 'model',
         })
@@ -1195,7 +1399,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         })
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
-            'invoice_date': '2020-12-31',
+            'invoice_date': '2020-01-01',
             'partner_id': self.ref("base.res_partner_12"),
             'invoice_line_ids': [
                 (0, 0, {
@@ -1304,7 +1508,7 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         vendor_bill_auto = self.env['account.move'].create({
             'move_type': 'in_invoice',
-            'invoice_date': '2020-12-31',
+            'invoice_date': '2020-01-01',
             'partner_id': self.ref("base.res_partner_12"),
             'invoice_line_ids': [Command.create({
                 'account_id': asset_account.id,
@@ -1328,7 +1532,7 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         vendor_bill_manu = self.env['account.move'].create({
             'move_type': 'in_invoice',
-            'invoice_date': '2020-12-31',
+            'invoice_date': '2020-01-01',
             'partner_id': self.ref("base.res_partner_12"),
             'invoice_line_ids': [
                 Command.create({
@@ -1397,6 +1601,260 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertTrue(all(m.state == 'posted' for m in asset.depreciation_move_ids))
         self.assertEqual(asset.state, 'close')
 
+    def test_asset_degressive_01(self):
+        """ Check the computation of an asset with degressive method,
+            start at middle of the year
+        """
+        asset = self.env['account.asset'].create({
+            'account_asset_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'asset_type': 'expense',
+            'name': 'Degressive',
+            'acquisition_date': '2021-07-01',
+            'prorata_computation_type': 'constant_periods',
+            'original_value': 10000,
+            'method_number': 5,
+            'method_period': '12',
+            'method': 'degressive',
+            'method_progress_factor': 0.5,
+        })
+
+        asset.validate()
+
+        self.assertEqual(asset.method_number + 1, len(asset.depreciation_move_ids))
+
+        self.assertRecordValues(asset.depreciation_move_ids.sorted(lambda l: (l.date, l.id)), [{
+            'amount_total': 2500,
+            'asset_remaining_value': 7500,
+        }, {
+            'amount_total': 3750,
+            'asset_remaining_value': 3750,
+        }, {
+            'amount_total': 1875,
+            'asset_remaining_value': 1875,
+        }, {
+            'amount_total': 937.5,
+            'asset_remaining_value': 937.5,
+        }, {
+            'amount_total': 468.75,
+            'asset_remaining_value': 468.75,
+        }, {
+            'amount_total': 468.75,
+            'asset_remaining_value': 0,
+        }])
+
+    def test_asset_degressive_02(self):
+        """ Check the computation of an asset with degressive method,
+            start at beginning of the year.
+        """
+        asset = self.env['account.asset'].create({
+            'account_asset_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'asset_type': 'expense',
+            'name': 'Degressive',
+            'acquisition_date': '2021-01-01',
+            'original_value': 10000,
+            'method_number': 5,
+            'method_period': '12',
+            'method': 'degressive',
+            'method_progress_factor': 0.5,
+        })
+
+        asset.validate()
+
+        self.assertEqual(asset.method_number, len(asset.depreciation_move_ids))
+
+        self.assertRecordValues(asset.depreciation_move_ids.sorted(lambda l: (l.date, l.id)), [{
+            'amount_total': 5000,
+            'asset_remaining_value': 5000,
+        }, {
+            'amount_total': 2500,
+            'asset_remaining_value': 2500,
+        }, {
+            'amount_total': 1250,
+            'asset_remaining_value': 1250,
+        }, {
+            'amount_total': 625,
+            'asset_remaining_value': 625,
+        }, {
+            'amount_total': 625,
+            'asset_remaining_value': 0,
+        }])
+
+    def test_asset_degressive_linear_01(self):
+        """ Check the computation of an asset with degressive-linear method,
+            start at middle of the year
+        """
+        asset = self.env['account.asset'].create({
+            'account_asset_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'asset_type': 'expense',
+            'name': 'Degressive Linear',
+            'acquisition_date': '2021-07-01',
+            'prorata_computation_type': 'constant_periods',
+            'original_value': 10000,
+            'method_number': 5,
+            'method_period': '12',
+            'method': 'degressive_then_linear',
+            'method_progress_factor': 0.5,
+        })
+
+        asset.validate()
+
+        self.assertEqual(asset.method_number + 1, len(asset.depreciation_move_ids))
+
+        self.assertRecordValues(asset.depreciation_move_ids.sorted(lambda l: (l.date, l.id)), [{
+            'amount_total': 2500,
+            'asset_remaining_value': 7500,
+        }, {
+            'amount_total': 3750,
+            'asset_remaining_value': 3750,
+        }, {
+            'amount_total': 1875,
+            'asset_remaining_value': 1875,
+        }, {
+            'amount_total': 937.5,
+            'asset_remaining_value': 937.5,
+        }, {
+            'amount_total': 625.0,
+            'asset_remaining_value': 312.5,
+        }, {
+            'amount_total': 312.5,
+            'asset_remaining_value': 0,
+        }])
+
+    def test_asset_degressive_linear_02(self):
+        """ Check the computation of an asset with degressive-linear method,
+            start at middle of the year, monthly depreciations
+        """
+        asset = self.env['account.asset'].create({
+            'account_asset_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'asset_type': 'expense',
+            'name': 'Degressive Linear',
+            'acquisition_date': '2021-07-01',
+            'prorata_computation_type': 'constant_periods',
+            'original_value': 10000,
+            'method_number': 54,
+            'method_period': '1',
+            'method': 'degressive_then_linear',
+            'method_progress_factor': 0.6,
+        })
+
+        asset.validate()
+
+        self.assertEqual(asset.method_number, len(asset.depreciation_move_ids))
+
+        depreciation_entries = asset.depreciation_move_ids.sorted(lambda l: (l.date, l.id))
+
+        # first year
+        self.assertEqual(depreciation_entries[0]['amount_total'], 500)
+        self.assertEqual(depreciation_entries[5]['amount_total'], 500)
+
+        # second year
+        self.assertEqual(depreciation_entries[6]['amount_total'], 350)
+        self.assertEqual(depreciation_entries[17]['amount_total'], 350)
+
+        # third year
+        self.assertEqual(depreciation_entries[18]['amount_total'], 140)
+        self.assertEqual(depreciation_entries[29]['amount_total'], 140)
+
+        # fourth year
+        self.assertEqual(depreciation_entries[30]['amount_total'], 56)
+        self.assertEqual(depreciation_entries[41]['amount_total'], 56)
+
+        # fifth year
+        self.assertEqual(depreciation_entries[42]['amount_total'], 37.33)
+        self.assertEqual(depreciation_entries[43]['amount_total'], 37.33)
+
+        self.assertEqual(depreciation_entries[-1]['asset_remaining_value'], 0)
+
+    def test_asset_negative_01(self):
+        """ Check the computation of an asset with negative value. """
+        asset = self.env['account.asset'].create({
+            'account_asset_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'asset_type': 'expense',
+            'name': 'Degressive Linear',
+            'acquisition_date': '2021-07-01',
+            'original_value': -10000,
+            'method_number': 5,
+            'method_period': '12',
+            'method': 'linear',
+        })
+        asset.prorata_computation_type = 'constant_periods'
+
+        asset.validate()
+
+        self.assertRecordValues(asset.depreciation_move_ids.sorted(lambda l: (l.date, l.id)), [{
+            'amount_total': 1000,
+            'asset_remaining_value': -9000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': -7000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': -5000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': -3000,
+        }, {
+            'amount_total': 2000,
+            'asset_remaining_value': -1000,
+        }, {
+            'amount_total': 1000,
+            'asset_remaining_value': 0,
+        }])
+
+    def test_asset_daily_computation_01(self):
+        """ Check the computation of an asset with daily_computation. """
+        asset = self.env['account.asset'].create({
+            'account_asset_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'asset_type': 'expense',
+            'name': 'Degressive Linear',
+            'acquisition_date': '2021-07-01',
+            'prorata_computation_type': 'daily_computation',
+            'original_value': 10000,
+            'method_number': 5,
+            'method_period': '12',
+            'method': 'linear',
+        })
+
+        asset.validate()
+
+        self.assertRecordValues(asset.depreciation_move_ids.sorted(lambda l: (l.date, l.id)), [{
+            'amount_total': 1007.67,
+            'asset_remaining_value': 8992.33,
+        }, {
+            'amount_total': 1998.90,
+            'asset_remaining_value': 6993.43,
+        }, {
+            'amount_total': 1998.91,
+            'asset_remaining_value': 4994.52,
+        }, {
+            'amount_total': 2004.38,
+            'asset_remaining_value': 2990.14,
+        }, {
+            'amount_total': 1998.90,
+            'asset_remaining_value': 991.24,
+        }, {
+            'amount_total': 991.24,
+            'asset_remaining_value': 0,
+        }])
+
     def test_decrement_book_value_with_negative_asset(self):
         """
         Test the computation of book value and remaining value
@@ -1411,7 +1869,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'method': 'linear',
             'method_number': 5,
             'method_period': '1',
-            'prorata': False,
+            'prorata_computation_type': 'constant_periods',
             'account_asset_id': self.company_data['default_account_expense'].id,
             'account_depreciation_id': depreciation_account.id,
             'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
@@ -1425,9 +1883,9 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         refund = self.env['account.move'].create({
             'move_type': 'in_refund',
-            'partner_id': self.ref("base.res_partner_12"),
-            'invoice_date': fields.Date.today() - relativedelta(months=1),
-            'invoice_line_ids': [(0, 0, {'name': 'refund', 'account_id': depreciation_account.id, 'price_unit': 500, 'tax_ids': False})],
+            'partner_id': self.partner_a.id,
+            'invoice_date': '2021-06-01',
+            'invoice_line_ids': [Command.create({'name': 'refund', 'account_id': depreciation_account.id, 'price_unit': 500, 'tax_ids': False})],
         })
         refund.action_post()
 
@@ -1435,14 +1893,14 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         asset = refund.asset_ids
 
-        self.assertEqual(asset.book_value, refund.amount_total)
-        self.assertEqual(asset.value_residual, refund.amount_total)
+        self.assertEqual(asset.book_value, -refund.amount_total)
+        self.assertEqual(asset.value_residual, -refund.amount_total)
 
         asset.validate()
 
         self.assertEqual(len(asset.depreciation_move_ids.filtered(lambda m: m.state == 'posted')), 1)
-        self.assertEqual(asset.book_value, 400.0)
-        self.assertEqual(asset.value_residual, 400.0)
+        self.assertEqual(asset.book_value, -400.0)
+        self.assertEqual(asset.value_residual, -400.0)
 
     def test_depreciation_schedule_report_with_negative_asset(self):
         """
@@ -1458,7 +1916,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'method': 'linear',
             'method_number': 5,
             'method_period': '1',
-            'prorata': False,
+            'prorata_computation_type': 'none',
             'account_asset_id': depreciation_account.id,
             'account_depreciation_id': depreciation_account.id,
             'account_depreciation_expense_id': depreciation_account.copy().id,
@@ -1485,7 +1943,7 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         report = self.env.ref('account_asset.assets_report')
 
-        options = self._generate_options(report, fields.Date.today() + relativedelta(years=0, months=-4, days=-11), fields.Date.today() + relativedelta(years=0, months=7, days=19))
+        options = self._generate_options(report, fields.Date.today() + relativedelta(months=-7, day=1), fields.Date.today() + relativedelta(months=-6, day=31))
 
         expected_values_open_asset = [
             ("refund", "", "", 500.0, -500.0, "", "", 100.0, -100.0, -400.0),
@@ -1509,7 +1967,7 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         res_move = self.env['asset.modify'].create({
             'asset_id': asset.id,
-            'invoice_id': invoice.id,
+            'invoice_ids': [Command.set(invoice.ids)],
             'modify_action': 'sell',
             'gain_account_id': self.company_data['default_account_receivable'].id,
         }).sell_dispose()
@@ -1517,7 +1975,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.env['account.move'].search(res_move['domain']).action_post()
 
         expected_values_closed_asset = [
-            ("refund", "", 500.0, 500.0, "", "", 100.0, 100.0, "", ""),
+            ("refund", "", 500.0, 500.0, "", "", 500.0, 500.0, "", ""),
         ]
-
+        options = self._generate_options(report, fields.Date.today() + relativedelta(months=-7, day=1), fields.Date.today())
         self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_closed_asset)

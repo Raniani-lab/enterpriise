@@ -94,7 +94,9 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
         report = self.env.ref('account_asset.assets_report')
         # Assets must be in a state different from draft in order to be reported
         for asset in move.asset_ids:
-            asset.state = 'open'
+            asset.account_depreciation_id = self.company_data['default_account_expense']
+            asset.account_depreciation_expense_id = self.company_data['default_account_assets']
+            asset.validate()
         report, options = self._get_report_and_options(report, datetime.today() - relativedelta(days=365), datetime.today())
         data = report.l10n_lu_asset_report_get_xml_2_0_report_values(options)['forms'][0]['tables'][0]
 

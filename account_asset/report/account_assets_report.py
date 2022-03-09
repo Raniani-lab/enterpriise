@@ -157,112 +157,87 @@ class AssetReportCustomHandler(models.AbstractModel):
 
         return report.with_context(company2code2account=company2code2account)
 
-    def _get_rate_cached(self, from_currency, to_currency, company, date, cache):
-        if from_currency == to_currency:
-            return 1
-        key = (from_currency, to_currency, company, date)
-        if key not in cache:
-            cache[key] = self.env['res.currency']._get_conversion_rate(*key)
-        return cache[key]
-
     def _query_lines(self, options):
         """
         Returns a list of tuples: [(asset_id, account_id, [{expression_label: value}])]
         """
         lines = []
         asset_lines = self._query_values(options)
-        curr_cache = {}
 
-        for company_id, company_asset_lines in groupby(asset_lines, key=lambda x: x['company_id']):
-            parent_lines = []
-            children_lines = defaultdict(list)
-            company = self.env['res.company'].browse(company_id)
-            company_currency = company.currency_id
-            for al in company_asset_lines:
-                if al['parent_id']:
-                    children_lines[al['parent_id']] += [al]
-                else:
-                    parent_lines += [al]
-            for al in parent_lines:
-                if al['asset_method'] == 'linear' and al['asset_method_number']:  # some assets might have 0 depreciations because they dont lose value
-                    total_months = int(al['asset_method_number']) * int(al['asset_method_period'])
-                    months = total_months % 12
-                    years = total_months // 12
-                    asset_depreciation_rate = " ".join(part for part in [
-                        years and _("%s y", years),
-                        months and _("%s m", months),
-                    ] if part)
-                elif al['asset_method'] == 'linear':
-                    asset_depreciation_rate = '0.00 %'
-                else:
-                    asset_depreciation_rate = ('{:.2f} %').format(float(al['asset_method_progress_factor']) * 100)
+        # Assign the gross increases sub assets to their main asset (parent)
+        parent_lines = []
+        children_lines = defaultdict(list)
+        for al in asset_lines:
+            if al['parent_id']:
+                children_lines[al['parent_id']] += [al]
+            else:
+                parent_lines += [al]
 
-                al_currency = self.env['res.currency'].browse(al['asset_currency_id'])
-                al_rate = self._get_rate_cached(al_currency, company_currency, company, al['asset_acquisition_date'], curr_cache)
+        for al in parent_lines:
+            # Compute the depreciation rate string
+            if al['asset_method'] == 'linear' and al['asset_method_number']:  # some assets might have 0 depreciations because they dont lose value
+                total_months = int(al['asset_method_number']) * int(al['asset_method_period'])
+                months = total_months % 12
+                years = total_months // 12
+                asset_depreciation_rate = " ".join(part for part in [
+                    years and _("%s y", years),
+                    months and _("%s m", months),
+                ] if part)
+            elif al['asset_method'] == 'linear':
+                asset_depreciation_rate = '0.00 %'
+            else:
+                asset_depreciation_rate = ('{:.2f} %').format(float(al['asset_method_progress_factor']) * 100)
 
-                depreciation_opening = company_currency.round(al['depreciated_start'] * al_rate) - company_currency.round(al['depreciation'] * al_rate)
-                depreciation_closing = company_currency.round(al['depreciated_end'] * al_rate)
-                depreciation_minus = 0.0
+            # Manage the opening of the asset
+            opening = (al['asset_acquisition_date'] or al['asset_date']) < fields.Date.to_date(options['date']['date_from'])
 
-                opening = (al['asset_acquisition_date'] or al['asset_date']) < fields.Date.to_date(options['date']['date_from'])
-                asset_opening = company_currency.round(al['asset_original_value'] * al_rate) if opening else 0.0
-                asset_add = 0.0 if opening else company_currency.round(al['asset_original_value'] * al_rate)
-                asset_minus = 0.0
+            # Get the main values of the board for the asset
+            depreciation_opening = al['depreciated_before']
+            depreciation_add = al['depreciated_during']
+            depreciation_minus = 0.0
 
-                if al['import_depreciated']:
-                    asset_opening += asset_add
-                    asset_add = 0
-                    depreciation_opening += al['import_depreciated']
-                    depreciation_closing += al['import_depreciated']
+            asset_opening = al['asset_original_value'] if opening else 0.0
+            asset_add = 0.0 if opening else al['asset_original_value']
+            asset_minus = 0.0
 
-                for child in children_lines[al['asset_id']]:
-                    child_currency = self.env['res.currency'].browse(child['asset_currency_id'])
-                    child_rate = self._get_rate_cached(child_currency, company_currency, company, child['asset_acquisition_date'], curr_cache)
+            # Add the main values of the board for all the sub assets (gross increases)
+            for child in children_lines[al['asset_id']]:
+                depreciation_opening += child['depreciated_before']
+                depreciation_add += child['depreciated_during']
 
-                    depreciation_opening += company_currency.round(child['depreciated_start'] * child_rate) - company_currency.round(child['depreciation'] * child_rate)
-                    depreciation_closing += company_currency.round(child['depreciated_end'] * child_rate)
+                opening = (child['asset_acquisition_date'] or child['asset_date']) < fields.Date.to_date(options['date']['date_from'])
+                asset_opening += child['asset_original_value'] if opening else 0.0
+                asset_add += 0.0 if opening else child['asset_original_value']
 
-                    opening = (child['asset_acquisition_date'] or child['asset_date']) < fields.Date.to_date(options['date']['date_from'])
-                    asset_opening += company_currency.round(child['asset_original_value'] * child_rate) if opening else 0.0
-                    asset_add += 0.0 if opening else company_currency.round(child['asset_original_value'] * child_rate)
+            # Compute the closing values
+            asset_closing = asset_opening + asset_add - asset_minus
+            depreciation_closing = depreciation_opening + depreciation_add - depreciation_minus
 
-                depreciation_add = depreciation_closing - depreciation_opening
-                asset_closing = asset_opening + asset_add
+            # Manage the closing of the asset
+            if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] <= fields.Date.to_date(options['date']['date_to']):
+                depreciation_minus += depreciation_closing
+                depreciation_closing = 0.0
+                asset_minus += asset_closing
+                asset_closing = 0.0
 
-                if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] <= fields.Date.to_date(options['date']['date_to']):
-                    depreciation_minus = depreciation_closing
-                    # depreciation_opening and depreciation_add are computed from first_move (assuming it is a depreciation move),
-                    # but when previous condition is True and first_move and last_move are the same record, then first_move is not a
-                    # depreciation move.
-                    # In that case, depreciation_opening and depreciation_add must be corrected.
-                    if al['first_move_id'] == al['last_move_id']:
-                        depreciation_opening = depreciation_closing
-                        depreciation_add = 0
-                    depreciation_closing = 0.0
-                    asset_minus = asset_closing
-                    asset_closing = 0.0
+            # Manage negative assets (credit notes)
+            if al['asset_original_value'] < 0:
+                asset_add, asset_minus = -asset_minus, -asset_add
+                depreciation_add, depreciation_minus = -depreciation_minus, -depreciation_add
 
-                asset = self.env['account.asset'].browse(al['asset_id'])
-                is_negative_asset = any(move.move_type == 'in_refund' for move in asset.original_move_line_ids.move_id)
-
-                if is_negative_asset:
-                    asset_add, asset_minus = asset_minus, asset_add
-                    depreciation_add, depreciation_minus = depreciation_minus, depreciation_add
-                    asset_closing, depreciation_closing = -asset_closing, -depreciation_closing
-
-                asset_gross = asset_closing - depreciation_closing
-
-                current_values = [asset_opening, asset_add, asset_minus, asset_closing, depreciation_opening,
-                                  depreciation_add, depreciation_minus, depreciation_closing, asset_gross]
-
-                columns_by_expr_label = {
-                    options['columns'][0]['expression_label']: al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '',  # Characteristics
-                    options['columns'][1]['expression_label']: al['asset_date'] and format_date(self.env, al['asset_date']) or '',
-                    options['columns'][2]['expression_label']: (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'),
-                    options['columns'][3]['expression_label']: asset_depreciation_rate}
-                for val, idx in zip(current_values, range(4, 13)):
-                    columns_by_expr_label.update({options['columns'][idx]['expression_label']: val})
-                lines.append((al['account_id'], al['asset_id'], columns_by_expr_label))
+            # Format the data
+            columns_by_expr_label = {
+                options['columns'][0]['expression_label']: al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '',  # Characteristics
+                options['columns'][1]['expression_label']: al['asset_date'] and format_date(self.env, al['asset_date']) or '',
+                options['columns'][2]['expression_label']: (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'),
+                options['columns'][3]['expression_label']: asset_depreciation_rate}
+            for idx, val in enumerate([
+                asset_opening, asset_add, asset_minus, asset_closing,
+                depreciation_opening, depreciation_add, depreciation_minus, depreciation_closing,
+                asset_closing - depreciation_closing,
+            ], start=4):
+                columns_by_expr_label.update({options['columns'][idx]['expression_label']: val})
+            lines.append((al['account_id'], al['asset_id'], columns_by_expr_label))
         return lines
 
     def _group_by_account(self, report, lines, options):
@@ -333,103 +308,42 @@ class AssetReportCustomHandler(models.AbstractModel):
         self.env['account.move.line'].check_access_rights('read')
         self.env['account.asset'].check_access_rights('read')
 
-        where_account_move = " AND state != 'cancel'"
-        if not options.get('all_entries'):
-            where_account_move = " AND state = 'posted'"
-
-        sql = """
-                -- remove all the moves that have been reversed from the search
-                CREATE TEMPORARY TABLE IF NOT EXISTS temp_account_move () INHERITS (account_move) ON COMMIT DROP;
-                INSERT INTO temp_account_move SELECT move.*
-                FROM ONLY account_move move
-                LEFT JOIN ONLY account_move reversal ON reversal.reversed_entry_id = move.id
-                WHERE reversal.id IS NULL AND move.asset_id IS NOT NULL AND move.company_id in %(company_ids)s;
-
-                SELECT asset.id as asset_id,
-                       asset.parent_id as parent_id,
-                       asset.name as asset_name,
-                       asset.original_value as asset_original_value,
-                       asset.currency_id as asset_currency_id,
-                       COALESCE(asset.first_depreciation_date_import, asset.first_depreciation_date) as asset_date,
-                       asset.already_depreciated_amount_import as import_depreciated,
-                       asset.disposal_date as asset_disposal_date,
-                       asset.acquisition_date as asset_acquisition_date,
-                       asset.method as asset_method,
-                       (
-                           COALESCE(account_move_count.count, 0)
-                           + COALESCE(asset.depreciation_number_import, 0)
-                           - CASE WHEN asset.prorata THEN 1 ELSE 0 END
-                       ) as asset_method_number,
-                       asset.method_period as asset_method_period,
-                       asset.method_progress_factor as asset_method_progress_factor,
-                       asset.state as asset_state,
-                       account.code as account_code,
-                       account.name as account_name,
-                       account.id as account_id,
-                       account.company_id as company_id,
-                       COALESCE(first_move.asset_depreciated_value, move_before.asset_depreciated_value, 0.0) as depreciated_start,
-                       COALESCE(first_move.asset_remaining_value, move_before.asset_remaining_value, 0.0) as remaining_start,
-                       COALESCE(last_move.asset_depreciated_value, move_before.asset_depreciated_value, 0.0) as depreciated_end,
-                       COALESCE(last_move.asset_remaining_value, move_before.asset_remaining_value, 0.0) as remaining_end,
-                       COALESCE(first_move.amount_total, 0.0) as depreciation,
-                       COALESCE(first_move.id, move_before.id) as first_move_id,
-                       COALESCE(last_move.id, move_before.id) as last_move_id
-                FROM account_asset as asset
-                LEFT JOIN account_account as account ON asset.account_asset_id = account.id
-                LEFT JOIN (
-                    SELECT
-                        COUNT(*) as count,
-                        asset_id
-                    FROM temp_account_move
-                    WHERE asset_value_change != 't'
-                    GROUP BY asset_id
-                ) account_move_count ON asset.id = account_move_count.asset_id
-
-                LEFT OUTER JOIN (
-                    SELECT DISTINCT ON (asset_id)
-                        id,
-                        asset_depreciated_value,
-                        asset_remaining_value,
-                        amount_total,
-                        asset_id
-                    FROM temp_account_move m
-                    WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move}
-                    ORDER BY asset_id, date, id DESC
-                ) first_move ON first_move.asset_id = asset.id
-
-                LEFT OUTER JOIN (
-                    SELECT DISTINCT ON (asset_id)
-                        id,
-                        asset_depreciated_value,
-                        asset_remaining_value,
-                        amount_total,
-                        asset_id
-                    FROM temp_account_move m
-                    WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move}
-                    ORDER BY asset_id, date DESC, id DESC
-                ) last_move ON last_move.asset_id = asset.id
-
-                LEFT OUTER JOIN (
-                    SELECT DISTINCT ON (asset_id)
-                        id,
-                        asset_depreciated_value,
-                        asset_remaining_value,
-                        amount_total,
-                        asset_id
-                    FROM temp_account_move m
-                    WHERE date <= %(date_from)s {where_account_move}
-                    ORDER BY asset_id, date DESC, id DESC
-                ) move_before ON move_before.asset_id = asset.id
-
-                WHERE asset.company_id in %(company_ids)s
-                AND asset.acquisition_date <= %(date_to)s
-                AND (asset.disposal_date >= %(date_from)s OR asset.disposal_date IS NULL)
-                AND asset.state not in ('model', 'draft', 'cancelled')
-                AND asset.asset_type = 'purchase'
-                AND asset.active = 't'
-
-                ORDER BY account.code, asset.acquisition_date;
-            """.format(where_account_move=where_account_move)
+        sql = f"""
+            SELECT asset.id AS asset_id,
+                   asset.parent_id AS parent_id,
+                   asset.name AS asset_name,
+                   asset.original_value AS asset_original_value,
+                   asset.currency_id AS asset_currency_id,
+                   asset.acquisition_date AS asset_date,
+                   asset.disposal_date AS asset_disposal_date,
+                   asset.acquisition_date AS asset_acquisition_date,
+                   asset.method AS asset_method,
+                   asset.method_number AS asset_method_number,
+                   asset.method_period AS asset_method_period,
+                   asset.method_progress_factor AS asset_method_progress_factor,
+                   asset.state AS asset_state,
+                   account.code AS account_code,
+                   account.name AS account_name,
+                   account.id AS account_id,
+                   account.company_id AS company_id,
+                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date < %(date_from)s), 0) + COALESCE(asset.already_depreciated_amount_import, 0) AS depreciated_before,
+                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date BETWEEN %(date_from)s AND %(date_to)s), 0) AS depreciated_during,
+                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date > %(date_to)s), 0) AS remaining
+              FROM account_asset AS asset
+         LEFT JOIN account_account AS account ON asset.account_asset_id = account.id
+         LEFT JOIN account_move move ON move.asset_id = asset.id
+         LEFT JOIN account_move reversal ON reversal.reversed_entry_id = move.id
+             WHERE asset.company_id in %(company_ids)s
+               AND (asset.acquisition_date <= %(date_to)s OR move.date <= %(date_to)s)
+               AND (asset.disposal_date >= %(date_from)s OR asset.disposal_date IS NULL)
+               AND asset.state not in ('model', 'draft', 'cancelled')
+               AND asset.asset_type = 'purchase'
+               AND asset.active = 't'
+               AND move.state {"!= 'cancel'" if options.get('all_entries') else "= 'posted'"}
+               AND reversal.id IS NULL
+          GROUP BY asset.id, account.id
+          ORDER BY account.code, asset.acquisition_date;
+        """
 
         if options.get('multi_company', False):
             company_ids = tuple(self.env.companies.ids)
@@ -442,7 +356,6 @@ class AssetReportCustomHandler(models.AbstractModel):
             'company_ids': company_ids,
         })
         results = self._cr.dictfetchall()
-        self._cr.execute("DROP TABLE temp_account_move")  # Because tests are run in the same transaction, we need to clean here the SQL INHERITS
         return results
 
 

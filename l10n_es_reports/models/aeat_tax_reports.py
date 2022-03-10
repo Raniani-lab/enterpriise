@@ -763,14 +763,14 @@ class AEATAccountFinancialReport(models.Model):
         self = self.with_context(self._set_context(boe_report_options))
 
         rslt = self._mod347_write_type2_header_record(current_company, boe_wizard, boe_report_options, year=year)
-        seguros_required_b = self._mod347_get_required_partner_ids_for_boe('insurance', year+'-01-01', year+'-12-31', boe_wizard, 'B', 'seguros')
-        rslt += self._call_on_sublines(boe_report_options, 'l10n_es_reports.mod_347_operations_insurance_bought', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'B', manual_parameters_map=manual_params, insurance=True), required_ids_set=seguros_required_b)
+        seguros_required_b = self._mod347_get_required_partner_ids_for_boe('insurance', year+'-01-01', year+'-12-31', boe_wizard, 'A', 'seguros')
+        rslt += self._call_on_sublines(boe_report_options, 'l10n_es_reports.mod_347_operations_insurance_bought', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'A', manual_parameters_map=manual_params, insurance=True), required_ids_set=seguros_required_b)
 
-        otras_required_a = self._mod347_get_required_partner_ids_for_boe('regular', year+'-01-01', year+'-12-31', boe_wizard, 'A', 'otras')
-        rslt += self._call_on_sublines(boe_report_options, 'l10n_es_reports.mod_347_operations_regular_sold', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'A', manual_parameters_map=manual_params), required_ids_set=otras_required_a)
+        otras_required_a = self._mod347_get_required_partner_ids_for_boe('regular', year+'-01-01', year+'-12-31', boe_wizard, 'B', 'otras')
+        rslt += self._call_on_sublines(boe_report_options, 'l10n_es_reports.mod_347_operations_regular_sold', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'B', manual_parameters_map=manual_params), required_ids_set=otras_required_a)
 
-        otras_required_b = self._mod347_get_required_partner_ids_for_boe('regular', year+'-01-01', year+'-12-31', boe_wizard, 'B', 'otras')
-        rslt += self._call_on_sublines(boe_report_options, 'l10n_es_reports.mod_347_operations_regular_bought', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'B', manual_parameters_map=manual_params), required_ids_set=otras_required_b)
+        otras_required_b = self._mod347_get_required_partner_ids_for_boe('regular', year+'-01-01', year+'-12-31', boe_wizard, 'A', 'otras')
+        rslt += self._call_on_sublines(boe_report_options, 'l10n_es_reports.mod_347_operations_regular_bought', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'A', manual_parameters_map=manual_params), required_ids_set=otras_required_b)
 
         return rslt
 
@@ -790,7 +790,7 @@ class AEATAccountFinancialReport(models.Model):
         cash_basis_manual_data = boe_wizard.cash_basis_mod347_data.filtered(lambda x: x.operation_key == operation_key and x.operation_class == operation_class)
         all_partners = cash_basis_manual_data.mapped('partner_id')
 
-        if operation_key == 'A': # Only for perceived amounts
+        if operation_key == 'B': # Only for perceived amounts
             # If invoice is not in the current period but cash payment is,
             # we need to inject the partner into BOE so that this cash amount is reported
             cash_payments_aml = self.env['account.partial.reconcile'].search([('credit_move_id.date', '<=' ,date_to),
@@ -899,8 +899,8 @@ class AEATAccountFinancialReport(models.Model):
                 current_invoice_type = domain_tuple[2]
                 break
 
-        user_type_id = operation_key == 'A' and self.env.ref('account.data_account_type_receivable').id or self.env.ref('account.data_account_type_payable').id
-        matching_field = operation_key == 'A' and 'debit' or 'credit'
+        user_type_id = operation_key == 'B' and self.env.ref('account.data_account_type_receivable').id or self.env.ref('account.data_account_type_payable').id
+        matching_field = operation_key == 'B' and 'debit' or 'credit'
         cash_payments_lines_in_period = self.env['account.move.line'].search([('date','<=',year+'-12-31'), ('date','>=',year+'-01-01'), ('journal_id.type','=','cash'), ('payment_id','!=',False), ('partner_id','=',line_partner.id), ('account_id.user_type_id','=',user_type_id), ('company_id','=',current_company.id)])
         metalico_amount = 0
         for cash_payment_aml in cash_payments_lines_in_period:

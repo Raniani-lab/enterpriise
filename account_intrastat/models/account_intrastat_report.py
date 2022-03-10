@@ -4,6 +4,9 @@
 from odoo import api, models, _
 from .supplementary_unit_codes import SUPPLEMENTARY_UNITS_TO_COMMODITY_CODES as SUPP_TO_COMMODITY
 
+from datetime import datetime
+from collections import defaultdict
+
 _merchandise_export_code = {
     'BE': '29',
     'FR': '21',
@@ -178,6 +181,19 @@ class IntrastatReport(models.Model):
                 'class': 'number' if expression_label in number_values else '',
             })
 
+        errors = (
+            ('expired_trans', 'invoice_id'),
+            ('premature_trans', 'invoice_id'),
+            ('expired_comm', 'product_id'),
+            ('premature_comm', 'product_id'),
+            ('expired_categ_comm', 'template_categ'),
+            ('premature_categ_comm', 'template_categ'),
+        )
+        for column_group in options['column_groups']:
+            for error, val_key in errors:
+                if line_vals.get(column_group) and line_vals[column_group].get(error):
+                    options.setdefault('intrastat_warnings', defaultdict(list))
+                    options['intrastat_warnings'][error].append(line_vals[column_group][val_key])
         return {
             'id': self._get_generic_line_id('account.move.line', line_id),
             'caret_options': 'account.move',
@@ -280,7 +296,13 @@ class IntrastatReport(models.Model):
                 CASE WHEN partner.vat IS NOT NULL THEN partner.vat
                      WHEN partner.vat IS NULL AND partner.is_company IS FALSE THEN %s
                      ELSE 'QV999999999999'
-                END AS partner_vat
+                END AS partner_vat,
+                transaction.expiry_date <= account_move.invoice_date AS expired_trans,
+                transaction.start_date > account_move.invoice_date AS premature_trans,
+                code.expiry_date <= account_move.invoice_date AS expired_comm,
+                code.start_date > account_move.invoice_date AS premature_comm,
+                prod.id AS product_id,
+                prodt.categ_id AS template_categ
         """
         from_ = f"""
             FROM
@@ -346,7 +368,6 @@ class IntrastatReport(models.Model):
     def _intrastat_fill_missing_values(self, vals_list):
         """ Some values are too complex to be retrieved in the SQL query.
         Then, this method is used to compute the missing values fetched from the database.
-
         :param vals_list:    A dictionary created by the dictfetchall method.
         """
         # Prefetch data before looping
@@ -358,18 +379,27 @@ class IntrastatReport(models.Model):
             # If missing, retrieve the commodity code by looking in the product category recursively.
             if not vals['commodity_code']:
                 category_id = self.env['product.category'].browse(vals['category_id'])
-                vals['commodity_code'] = category_id.search_intrastat_code().code
+                categ_commodity_code = category_id.search_intrastat_code()
+                vals['commodity_code'] = categ_commodity_code.code
+                if categ_commodity_code:
+                    # if vals now has a commodity_code, it's from it's product category
+                    if categ_commodity_code.expiry_date and categ_commodity_code.expiry_date <= vals['invoice_date']:
+                        vals['expired_categ_comm'] = True
+                    if categ_commodity_code.start_date and categ_commodity_code.start_date > vals['invoice_date']:
+                        vals['premature_categ_comm'] = True
 
             # set transaction_code default value if none (this is overridden in account_intrastat_expiry)
             if not vals['transaction_code']:
-                vals['transaction_code'] = 1
+                vals['transaction_code'] = 1 if vals['invoice_date'] < datetime.strptime('2022-01-01', '%Y-%m-%d').date() else 11
 
             # Check the currency.
             currency_id = self.env['res.currency'].browse(vals['invoice_currency_id'])
             company_currency_id = self.env.company.currency_id
             if currency_id != company_currency_id:
                 vals['value'] = currency_id._convert(vals['value'], company_currency_id, self.env.company, vals['invoice_date'])
+
         return vals_list
+
 
     def _intrastat_fill_supplementary_units(self, query_results):
         """ Although the default measurement provided is the weight in kg, some commodities require a supplementary unit
@@ -421,3 +451,52 @@ class IntrastatReport(models.Model):
                     vals['supplementary_units'] = None
 
         return query_results
+
+    ####################################################
+    # ACTIONS
+    ####################################################
+
+    def action_invalid_code_moves(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invalid transaction intrastat code entries.'),
+            'res_model': 'account.move',
+            'views': [(False, 'list'), (False, 'form')],
+            'domain': [('id', 'in', options['warnings'][params['option_key']])],
+            'context': {'create': False, 'delete': False},
+        }
+
+    def action_invalid_code_products(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invalid commodity intrastat code products.'),
+            'res_model': 'product.product',
+            'views': [(
+                self.env.ref('account_intrasta.product_product_tree_view_account_intrastat').id,
+                'list',
+            ), (False, 'form')],
+            'domain': [('id', 'in', options['warnings'][params['option_key']])],
+            'context': {
+                'create': False,
+                'delete': False,
+                'expand': True,
+            },
+        }
+
+    def action_invalid_code_product_categories(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invalid commodity intrastat code product categories.'),
+            'res_model': 'product.category',
+            'views': [(
+                self.env.ref('account_intrastat.product_category_tree_view_account_intrastat').id,
+                'list',
+            ), (False, 'form')],
+            'domain': [('id', 'in', options['warnings'][params['option_key']])],
+            'context': {
+                'create': False,
+                'delete': False,
+                'search_default_group_by_intrastat_id': True,
+                'expand': True,
+            },
+        }

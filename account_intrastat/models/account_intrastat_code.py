@@ -31,6 +31,14 @@ class AccountIntrastatCode(models.Model):
             * transaction: A movement of goods.
             * region: A sub-part of the country.
         ''')
+    expiry_date = fields.Date(
+        string='Expiry Date',
+        help='Date at which a code must not be used anymore.',
+    )
+    start_date = fields.Date(
+        string='Usage start date',
+        help='Date from which a code may be used.',
+    )
 
     def name_get(self):
         result = []

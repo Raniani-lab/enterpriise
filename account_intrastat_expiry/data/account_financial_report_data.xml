@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data>
-        <record id="account_intrastat.intrastat_report" model="account.report">
-            <field name="main_template">account_intrastat_expiry.account_intrastat_expiry_main_template</field>
-        </record>
-    </data>
-</odoo>

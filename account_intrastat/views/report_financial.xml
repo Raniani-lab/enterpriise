@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<template id="account_intrastat_expiry_main_template" inherit_id="account_reports.main_template" primary="True">
+<template id="account_intrastat_main_template" inherit_id="account_reports.main_template" primary="True">
     <xpath expr="//div[hasclass('o_account_reports_body')]" position="before">
         <t t-if="options.get('intrastat_warnings')">
             <div class="alert alert-warning text-center mb-0 no_print" t-if="options['intrastat_warnings'].get('expired_trans')">

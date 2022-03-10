@@ -10,6 +10,8 @@
                     <field name="code"/>
                     <field name="description"/>
                     <field name="country_id"/>
+                    <field name="start_date" width="1" optional="hide"/>
+                    <field name="expiry_date" width="1" optional="hide"/>
                 </tree>
             </field>
         </record>
@@ -22,6 +24,14 @@
                     <field name="description"/>
                     <field name="code"/>
                     <field name="country_id"/>
+                    <filter string="Active" domain="[
+                        '|',
+                        ('expiry_date', '&gt;', context_today().strftime('%Y-%m-%d')),
+                        ('expiry_date', '=', None),
+                        '|',
+                        ('start_date', '&lt;=', context_today().strftime('%Y-%m-%d')),
+                        ('start_date', '=', None)
+                    ]" name="in_use"/>
                     <filter string="Commodity" domain="[('type','=','commodity')]" name="type_commodity"/>
                     <filter string="Transport" domain="[('type','=','transport')]" name="type_transport"/>
                     <filter string="Transaction" domain="[('type','=','transaction')]" name="type_transaction"/>
@@ -82,6 +92,8 @@
                             <field name="code"/>
                             <field name="type"/>
                             <field name="country_id" attrs="{'invisible': [('type', '!=', 'region')], 'required': [('type', '=', 'region')]}" options="{'no_create': True}"/>
+                            <field name="start_date" attrs="{'invisible':[('type', 'not in', ('transaction','commodity'))]}"/>
+                            <field name="expiry_date" attrs="{'invisible':[('type', 'not in', ('transaction','commodity'))]}"/>
                             <field name="description"/>
                         </group>
                     </sheet>
@@ -108,11 +120,11 @@
             <field name="name">Intrastat Code</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">account.intrastat.code</field>
-            <field name="context">{'search_default_group_by_type': 1}</field>
+            <field name="context">{'search_default_group_by_type': 1, 'search_default_in_use':1}</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="action_report_intrastat_code_tree" id="menu_report_intrastat_code" 
+        <menuitem action="action_report_intrastat_code_tree" id="menu_report_intrastat_code"
                   parent="account.account_invoicing_menu" sequence="4" groups="account.group_account_manager"/>
     </data>
 </odoo>

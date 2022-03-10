@@ -103,6 +103,7 @@ class SignRequest(models.Model):
 
     need_my_signature = fields.Boolean(compute='_compute_need_my_signature', search='_search_need_my_signature')
 
+    @api.depends_context('uid')
     def _compute_need_my_signature(self):
         my_partner_id = self.env.user.partner_id
         for sign_request in self:

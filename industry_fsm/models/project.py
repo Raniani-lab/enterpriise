@@ -146,7 +146,6 @@ class Task(models.Model):
                                               'fsm_done',
                                               'partner_phone',
                                               'partner_city',
-                                              'worksheet_signature',  # [XBO] TODO: remove me in master
                                               'has_complete_partner_address'}
 
     @api.depends(

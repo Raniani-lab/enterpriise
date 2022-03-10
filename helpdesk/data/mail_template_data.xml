@@ -117,7 +117,7 @@
         </td></tr>
         <tr><td valign="top" style="font-size: 14px;">
             We appreciate your feedback. It helps us to improve continuously.
-            <br/><span style="margin: 0px 0px 0px 0px; font-size: 12px; opacity: 0.5; color: #454748;">This customer survey has been sent because your ticket has been moved to the stage <b t-out="object.stage_id.name or ''">In Progress</b></span>
+            <br/><br/><span style="margin: 0px 0px 0px 0px; font-size: 12px; opacity: 0.5; color: #454748;">This customer survey has been sent because your ticket has been moved to the stage <b t-out="object.stage_id.name or ''">In Progress</b></span>
         </td></tr>
     </tbody>
     </table>

@@ -148,7 +148,6 @@ class Task(models.Model):
     display_sign_report_secondary = fields.Boolean(compute='_compute_display_sign_report_buttons')
     display_send_report_primary = fields.Boolean(compute='_compute_display_send_report_buttons')
     display_send_report_secondary = fields.Boolean(compute='_compute_display_send_report_buttons')
-    has_complete_partner_address = fields.Boolean(compute='_compute_has_complete_partner_address')
     worksheet_signature = fields.Binary('Signature', help='Signature received through the portal.', copy=False, attachment=True)
     worksheet_signed_by = fields.Char('Signed By', help='Name of the person that signed the task.', copy=False)
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
@@ -162,8 +161,7 @@ class Task(models.Model):
                                               'planned_date_end',
                                               'fsm_done',
                                               'partner_phone',
-                                              'partner_city',
-                                              'has_complete_partner_address'}
+                                              'partner_city',}
 
     @api.depends(
         'fsm_done', 'is_fsm', 'timer_start',
@@ -253,11 +251,6 @@ class Task(models.Model):
                 'display_send_report_primary': send_p,
                 'display_send_report_secondary': send_s,
             })
-
-    @api.depends('partner_id')
-    def _compute_has_complete_partner_address(self):
-        for task in self:
-            task.has_complete_partner_address = task.partner_id.city and task.partner_id.country_id
 
     @api.model
     def _search_is_fsm(self, operator, value):
@@ -435,14 +428,17 @@ class Task(models.Model):
         return result
 
     def action_fsm_navigate(self):
-        if not self.partner_id.partner_latitude and not self.partner_id.partner_longitude:
-            self.partner_id.geo_localize()
-        url = "https://www.google.com/maps/dir/?api=1&destination=%s,%s" % (self.partner_id.partner_latitude, self.partner_id.partner_longitude)
-        return {
-            'type': 'ir.actions.act_url',
-            'url': url,
-            'target': 'new'
-        }
+        if not self.partner_id.city or not self.partner_id.country_id:
+            return {
+                'name': _('Customer'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'res.partner',
+                'res_id': self.partner_id.id,
+                'view_mode': 'form',
+                'view_id': self.env.ref('industry_fsm.view_partner_address_form_industry_fsm').id,
+                'target': 'new',
+            }
+        return self.partner_id.action_partner_navigate()
 
     def action_preview_worksheet(self):
         self.ensure_one()

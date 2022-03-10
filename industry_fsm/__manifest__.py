@@ -33,6 +33,7 @@ Adds the following options:
         'views/hr_timesheet_views.xml',
         'views/fsm_views.xml',
         'views/project_task_views.xml',
+        'views/res_partner_views.xml',
         'views/project_sharing_views.xml',
         'views/project_portal_templates.xml',
         'wizard/task_stop_timer_wizard_views.xml'

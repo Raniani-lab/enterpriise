@@ -309,10 +309,13 @@ class Task(models.Model):
                 'default_invoice_policy': 'delivery',
             },
             'help': _("""<p class="o_view_nocontent_smiling_face">
-                            Create a new product
+                            No products found. Let's create one!
                         </p><p>
-                            You must define a product for everything you sell or purchase,
-                            whether it's a storable product, a consumable or a service.
+                            Keep track of the products you are using to complete your tasks, and invoice your customers for the goods.
+                            Tip: using kits, you can add multiple products at once.
+                        </p><p>
+                            When your task is marked as done, your stock will be updated automatically. Simply choose a warehouse
+                            in your profile from where to draw stock.
                         </p>""")
         }
 

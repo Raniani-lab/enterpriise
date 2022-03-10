@@ -17,8 +17,8 @@ class PlanningTemplate(models.Model):
     name = fields.Char('Hours', compute="_compute_name")
     sequence = fields.Integer('Sequence', index=True)
     role_id = fields.Many2one('planning.role', string="Role")
-    start_time = fields.Float('Start Hour', default=0, group_operator=None)
-    duration = fields.Float('Duration (Hours)', default=0, group_operator=None)
+    start_time = fields.Float('Start Hour', default=0, group_operator=None, default_export_compatible=True)
+    duration = fields.Float('Duration (Hours)', default=0, group_operator=None, default_export_compatible=True)
 
     _sql_constraints = [
         ('check_start_time_lower_than_24', 'CHECK(start_time <= 24)', 'The start hour cannot be greater than 24.'),

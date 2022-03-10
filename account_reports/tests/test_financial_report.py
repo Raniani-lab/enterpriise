@@ -542,3 +542,91 @@ class TestFinancialReport(TestAccountReportsCommon):
             report_line.control_domain = "[('account_id', '!=', False)]"
             lines = self.report._get_table(options)[1]
             check_missing_exceeding(lines, {line_id_current_assets, line_id_unaffected_earnings}, {line_id_unaffected_earnings})
+
+    def test_financial_report_sum_if_x_groupby(self):
+        account1 = self.env['account.account'].create({
+            'name': "test_financial_report_sum_if_x_groupby1",
+            'code': "42241",
+            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id,
+        })
+        account2 = self.env['account.account'].create({
+            'name': "test_financial_report_sum_if_x_groupby2",
+            'code': "42242",
+            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id,
+        })
+
+        move = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2019-01-01',
+            'line_ids': [
+                # pylint: disable=C0326
+                (0, 0, {'debit': 1000.0,    'credit': 0.0,          'account_id': account1.id}),
+                (0, 0, {'debit': 0.0,       'credit': 10000.0,      'account_id': account1.id}),
+
+                (0, 0, {'debit': 50000.0,   'credit': 0.0,          'account_id': account2.id}),
+                (0, 0, {'debit': 0.0,       'credit': 5000.0,       'account_id': account2.id}),
+
+                (0, 0, {'debit': 0.0,       'credit': 36000.0,      'account_id': self.company_data['default_account_revenue'].id}),
+            ],
+        })
+        move.action_post()
+
+        report = self.env["account.financial.html.report"].create({
+            'name': "test_financial_report_sum_if_x_groupby",
+            'unfold_all_filter': True,
+            'line_ids': [
+                (0, 0, {
+                    'name': "report_line_1",
+                    'code': 'TEST_L1',
+                    'level': 1,
+                    'domain': [('account_id', 'in', (account1 + account2).ids)],
+                    'groupby': 'account_id',
+                    'formulas': 'sum_if_pos_groupby',
+                }),
+                (0, 0, {
+                    'name': "report_line_2",
+                    'code': 'TEST_L2',
+                    'level': 1,
+                    'domain': [('account_id', 'in', (account1 + account2).ids)],
+                    'groupby': 'account_id',
+                    'formulas': '-sum_if_neg_groupby',
+                }),
+                (0, 0, {
+                    'name': "report_line_3",
+                    'code': 'TEST_L3',
+                    'level': 1,
+                    'domain': [('account_id', 'in', (account1 + account2).ids)],
+                    'groupby': 'account_id',
+                    'formulas': 'sum_if_pos',
+                }),
+                (0, 0, {
+                    'name': "report_line_4",
+                    'code': 'TEST_L4',
+                    'level': 1,
+                    'domain': [('account_id', 'in', (account1 + account2).ids)],
+                    'groupby': 'account_id',
+                    'formulas': '-sum_if_neg',
+                }),
+            ],
+        })
+        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-01'))
+        options['unfold_all'] = True
+
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            report._get_table(options)[1],
+            [   0,                          1],
+            [
+                ("report_line_1",           45000.0),
+                (account2.display_name,     45000.0),
+                ("Total report_line_1",     45000.0),
+                ("report_line_2",           9000.0),
+                (account1.display_name,     9000.0),
+                ("Total report_line_2",     9000.0),
+                ("report_line_3",           36000.0),
+                (account1.display_name,     -9000.0),
+                (account2.display_name,     45000.0),
+                ("Total report_line_3",     36000.0),
+                ("report_line_4",           ''),
+            ],
+        )

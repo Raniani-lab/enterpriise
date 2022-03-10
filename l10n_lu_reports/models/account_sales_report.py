@@ -335,12 +335,12 @@ class ECSalesReport(models.AbstractModel):
         return corrections, original_declarations
 
     # Comparison methods
-    def _get_data_from_xml(self, string, company_matr):
+    def _get_data_from_xml(self, xml_file_string, company_matr):
         """
         Gets the EC Sales declarations data from an ecdf-compliant formatted xml declaration,
         for the company with the indicated Matr. number.
 
-        :param xml_file: the file to be parsed
+        :param xml_file_string: the file to be parsed
         :param company_matr
         :return: a data dictionary with:
             - 'original': lines originally declared in the declaration
@@ -349,13 +349,13 @@ class ECSalesReport(models.AbstractModel):
             Each line a dictionary with keys: type, year, period, acquirer, triangular
         """
         fields_map = {
-            ('03', '07', '14'): 'amount', ('07', '15'): 'triangular', ('01', '05', '09'): 'acquirer_country',
-            ('02', '06', '10'): 'acquirer_vat', ('11'): 'year', ('12', '18'): 'period',
-            ('12'): 'quarterly', ('18'): 'monthly',
+            '03': ('amount',), '07': ('amount', 'triangular'), '14': ('amount',), '15': ('triangular',), '01': ('acquirer_country',),
+            '05': ('acquirer_country',), '09': ('acquirer_country',), '02': ('acquirer_vat',), '06': ('acquirer_vat',),
+            '10': ('acquirer_vat',), '11': ('year',), '12': ('quarterly', 'period'), '18': ('monthly', 'period'),
         }
         prfx = '{http://www.ctie.etat.lu/2011/ecdf}'
         try:
-            root = objectify.fromstring(string)
+            root = objectify.fromstring(xml_file_string)
         except (etree.XMLSyntaxError):
             raise ValidationError(_("The provided comparison file is not a properly formatted XML."))
         data = {'original': [], 'corrective': [], 'declared': []}
@@ -378,10 +378,10 @@ class ECSalesReport(models.AbstractModel):
                 tables = [table for table in decl.FormData.iterchildren(tag=prfx + 'Table')]
                 for line in [line for table in tables for line in table.iterchildren(tag=prfx + 'Line')]:
                     line_data = {}
-                    for field_type in ('TextField', 'NumericField'):
-                        for field in line.iterchildren(tag=prfx + field_type):
-                            for key in [key for key in fields_map if field.attrib['id'] in key]:
-                                line_data[fields_map[key]] = field.text
+                    for field in line.iterchildren(prfx + 'TextField', prfx + 'NumericField'):
+                        if field.attrib['id'] in fields_map:
+                            for field_name in fields_map[field.attrib['id']]:
+                                line_data[field_name] = field.text
                     corrective = 'year' in line_data
                     line_data['triangular'] = bool(line_data.get('triangular', False))
                     if not corrective:
@@ -390,11 +390,12 @@ class ECSalesReport(models.AbstractModel):
                         line_data['type'] = dtype
                     else:
                         line_data['type'] = dtype[:-1] + ('T' if line_data.get('quarterly', False) else 'M')
-                    line_processed = {k: line_data[k] for k in ('type', 'year', 'period', 'acquirer_country', 'acquirer_vat', 'triangular', 'amount')}
+                    for field_name in {'quarterly', 'monthly'}:
+                        line_data.pop(field_name, None)
                     if corrective:
-                        data['corrective'].append(line_processed)
+                        data['corrective'].append(line_data)
                     else:
-                        data['original'].append(line_processed)
+                        data['original'].append(line_data)
                 data['declared'].append({'year': year, 'period': period, 'type': dtype})
         except:
             raise ValidationError(_("The provided comparison file is not a proper eCDF XML declaration!"))

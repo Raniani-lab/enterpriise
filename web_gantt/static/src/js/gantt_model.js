@@ -135,7 +135,7 @@ export default AbstractModel.extend({
      * @param {string} params.dateStartField
      * @param {string} params.dateStopField
      * @param {string[]} params.decorationFields
-     * @param {string[]} params.defaultGroupBy
+     * @param {string} params.defaultGroupBy
      * @param {boolean} params.displayUnavailability
      * @param {Array[]} params.domain
      * @param {Object} params.fields
@@ -161,7 +161,7 @@ export default AbstractModel.extend({
         this.SCALES = params.SCALES;
         this.progressBarFields = params.progressBarFields ? params.progressBarFields.split(",") : false;
 
-        this.defaultGroupBy = params.defaultGroupBy ? [params.defaultGroupBy] : [];
+        this.defaultGroupBy = params.defaultGroupBy ? params.defaultGroupBy.split(',') : [];
         let groupedBy = params.groupedBy;
         if (!groupedBy || !groupedBy.length) {
             groupedBy = this.defaultGroupBy;

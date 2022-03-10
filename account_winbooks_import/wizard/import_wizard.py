@@ -71,6 +71,7 @@ class WinbooksImportWizard(models.TransientModel):
         ResPartner = self.env['res.partner']
         ResPartnerBank = self.env['res.partner.bank']
         partner_data_dict = {}
+        partners_by_iban = collections.defaultdict(set)
         for rec in dbf_records:
             if not rec.get('NUMBER'):
                 continue
@@ -96,8 +97,8 @@ class WinbooksImportWizard(models.TransientModel):
                     'title': civility_data.get(rec.get('CIVNAME1'), False),
                     'category_id': [(6, 0, [category_data.get(rec.get('CATEGORY'))])] if category_data.get(rec.get('CATEGORY')) else False
                 }
-                if partner_data_dict.get(rec.get('IBANAUTO') or 'num' + rec.get('NUMBER')):
-                    for key, value in partner_data_dict[rec.get('IBANAUTO') or 'num' + rec.get('NUMBER')].items():
+                if partner_data_dict.get(rec.get('NUMBER')):
+                    for key, value in partner_data_dict[rec.get('NUMBER')].items():
                         if value:  # Winbooks has different partners for customer/supplier. Here we merge the data of the 2
                             data[key] = value
                 if rec.get('NAME2'):
@@ -105,7 +106,8 @@ class WinbooksImportWizard(models.TransientModel):
                         'child_ids': [(0, 0, {'name': rec.get('NAME2'), 'title': civility_data.get(rec.get('CIVNAME2'), False)})]
                     })
                 # manage the bank account of the partner
-                if rec.get('IBANAUTO'):
+                partners_by_iban[rec.get('IBANAUTO')].add((rec.get('NUMBER'), rec.get('NAME1')))
+                if rec.get('IBANAUTO') and len(partners_by_iban[rec.get('IBANAUTO')]) == 1:
                     partner_bank = ResPartnerBank.search([('acc_number', '=', rec.get('IBANAUTO'))], limit=1)
                     if partner_bank:
                         data['bank_ids'] = [(4, partner_bank.id)]
@@ -126,10 +128,31 @@ class WinbooksImportWizard(models.TransientModel):
                     else:
                         data['property_account_payable_id'] = account_data[rec.get('CENTRAL')]
 
-                partner_data_dict[rec.get('IBANAUTO') or 'num' + rec.get('NUMBER')] = data
+                partner_data_dict[rec.get('NUMBER')] = data
                 if len(partner_data_dict) % 100 == 0:
                     _logger.info("Advancement: %s", len(partner_data_dict))
 
+        shared_iban = {
+            iban: partners
+            for iban, partners in partners_by_iban.items()
+            if len(partners) > 1 and iban
+        }
+        if shared_iban:
+            message = _(
+                "The following banks were used for multiple partners in Winbooks, which is "
+                "not allowed in Odoo. The bank number has been only set on one of each group:\n%s",
+                "\n".join(
+                    "%(bank)s : %(partners)s" % {
+                        'bank': iban,
+                        'partners': ', '.join("[%s] %s" % p for p in partners),
+                    }
+                    for iban, partners in shared_iban.items()
+                )
+            )
+            if self.env.context.get('winbooks_import_hard_fail', True):
+                raise UserError(message)
+            else:
+                _logger.info(message)
         partner_ids = ResPartner.create(partner_data_dict.values())
         for partner in partner_ids:
             partner_data[partner.ref] = partner.id

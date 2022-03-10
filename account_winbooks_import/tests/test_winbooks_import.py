@@ -39,6 +39,7 @@ class TestWinbooksImport(common.TransactionCase):
             'zip_file': attachment.datas,
         })
         before = self.env['account.move'].search_count([('company_id', '=', test_company.id)])
-        wizard.with_company(test_company).import_winbooks_file()
+        wizard.with_company(test_company).with_context(winbooks_import_hard_fail=False).import_winbooks_file()
+        wizard.flush()  # be sure to trigger SQL constraints
         after = self.env['account.move'].search_count([('company_id', '=', test_company.id)])
         self.assertGreater(after, before)

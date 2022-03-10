@@ -31,13 +31,26 @@ msgid "Journal Entry"
 msgstr ""
 
 #. module: account_intrastat_expiry
-#: code:addons/account_intrastat_expiry/models/account_move.py:0
-#, python-format
-msgid "Some intrastat codes are expired at this invoice's date:%s"
+#: model_terms:ir.ui.view,arch_db:account_intrastat_expiry.account_intrastat_expiry_main_template
+msgid "have expired intrastat transaction codes on their lines."
 msgstr ""
 
 #. module: account_intrastat_expiry
-#: code:addons/account_intrastat_expiry/models/account_move.py:0
-#, python-format
-msgid "Some intrastat codes are not in use at this invoice's date:%s"
+#: model_terms:ir.ui.view,arch_db:account_intrastat_expiry.account_intrastat_expiry_main_template
+msgid "have premature intrastat transaction codes on their lines."
+msgstr ""
+
+#. module: account_intrastat_expiry
+#: model_terms:ir.ui.view,arch_db:account_intrastat_expiry.account_intrastat_expiry_main_template
+msgid "invoices"
+msgstr ""
+
+#. module: account_intrastat_expiry
+#: model_terms:ir.ui.view,arch_db:account_intrastat_expiry.account_intrastat_expiry_main_template
+msgid "product categorie's commodity codes"
+msgstr ""
+
+#. module: account_intrastat_expiry
+#: model_terms:ir.ui.view,arch_db:account_intrastat_expiry.account_intrastat_expiry_main_template
+msgid "product's commodity codes"
 msgstr ""

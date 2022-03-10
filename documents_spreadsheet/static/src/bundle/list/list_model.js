@@ -110,6 +110,17 @@ export class SpreadsheetListModel extends EventBus {
         return field ? field.string : fieldName;
     }
 
+    /**
+     * Get the id of the record at the given position in the list
+     *
+     * @param {number} position Position in the data (start at 0)
+     * @returns {number|undefined}
+     */
+    getIdFromPosition(position) {
+        const record = this.data[position];
+        return record ? record.id : undefined;
+    }
+
     //--------------------------------------------------------------------------
     // Metadata getters
     //--------------------------------------------------------------------------

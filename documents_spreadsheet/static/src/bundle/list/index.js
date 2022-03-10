@@ -17,7 +17,8 @@ import ListingAllSidePanel from "./side_panels/listing_all_side_panel";
 import ListAutofillPlugin from "./plugins/list_autofill_plugin";
 
 import { insertList } from "./list_init_callback";
-import { REINSERT_LIST_CHILDREN } from "./list_actions"
+import { REINSERT_LIST_CHILDREN, SEE_RECORD_LIST } from "./list_actions"
+import { getNumberOfListFormulas } from "./list_helpers";
 
 
 const { coreTypes, readonlyAllowedCommands } = spreadsheet;
@@ -58,9 +59,22 @@ cellMenuRegistry
             return env.model.getters.getListIdFromPosition(sheetId, col, row) !== undefined;
         },
     })
+    .add("list_see_record", {
+        name: _lt("See record"),
+        sequence: 200,
+        action: SEE_RECORD_LIST,
+        isVisible: (env) => {
+            const cell = env.model.getters.getActiveCell();
+            return (
+                cell &&
+                cell.evaluated.value !== "" &&
+                getNumberOfListFormulas(cell.content) === 1
+            );
+        },
+    })
     .add("reinsert_list", {
         name: _lt("Re-insert list"),
-        sequence: 195,
+        sequence: 210,
         children: REINSERT_LIST_CHILDREN,
         isVisible: (env) => env.model.getters.getListIds().length,
         separator: true,

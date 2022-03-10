@@ -461,4 +461,51 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         });
         assert.verifySteps(["search_read"]);
     });
+
+    QUnit.test("Can see record of a list", async function (assert) {
+        const { webClient, model} = await createSpreadsheetFromList();
+        const listId = model.getters.getListIds()[0];
+        const listModel = model.getters.getSpreadsheetListModel(listId);
+        const env = {
+            ...webClient.env,
+            model,
+            services: {
+                ...model.config.evalContext.env.services,
+                action: {
+                    doAction: (params) => {
+                        assert.step(params.res_model);
+                        assert.step(params.res_id.toString());
+                    }
+                }
+            }
+        };
+        selectCell(model, "A2");
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
+        await root.action(env);
+        assert.verifySteps(["partner", listModel.getIdFromPosition(0).toString()]);
+
+        selectCell(model, "A3");
+        await root.action(env);
+        assert.verifySteps(["partner", listModel.getIdFromPosition(1).toString()]);
+    });
+
+    QUnit.test("See record of list is only displayed on list formula with only one list formula", async function (assert) {
+        const { webClient, model} = await createSpreadsheetFromList();
+        const env = {
+            ...webClient.env,
+            model,
+            services: model.config.evalContext.env.services,
+        };
+        setCellContent(model, "A1", "test");
+        setCellContent(model, "A2", `=LIST("1","1","foo")`);
+        setCellContent(model, "A3", `=LIST("1","1","foo")+LIST("1","1","foo")`);
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
+
+        selectCell(model, "A1");
+        assert.strictEqual(root.isVisible(env), false);
+        selectCell(model, "A2");
+        assert.strictEqual(root.isVisible(env), true);
+        selectCell(model, "A3");
+        assert.strictEqual(root.isVisible(env), false);
+    });
 });

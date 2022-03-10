@@ -232,6 +232,8 @@ $grid-pill-height: 3rem;
         outline: 0;
         border: 0;
         box-shadow: none;
+        line-height: 1;
+        padding: 0px;
     }
 
     @media print {

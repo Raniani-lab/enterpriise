@@ -12,6 +12,7 @@ import fieldUtils from 'web.field_utils';
             this._super(...arguments);
             this.allocated_hours = fieldUtils.format.float_time(this.event.extendedProps.record.allocated_hours);
             this.allocated_percentage = fieldUtils.format.float(this.event.extendedProps.record.allocated_percentage);
+            this.resource_type = this.event.extendedProps.record.resource_type;
         },
 
         willStart() {

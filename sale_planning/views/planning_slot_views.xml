@@ -147,9 +147,8 @@
         <field name="inherit_id" ref="planning.planning_view_kanban"/>
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <xpath expr="//span[@name='role']" position="after">
-                <br/>
-                <field name="sale_line_id"/>
+            <xpath expr="//span[@name='tags']" position="before">
+                <div><field name="sale_line_id"/></div>
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_record_title')]" position="attributes">
                 <attribute name="attrs">{'invisible': [('start_datetime', '=', False)]}</attribute>

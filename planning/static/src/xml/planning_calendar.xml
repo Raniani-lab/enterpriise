@@ -6,7 +6,7 @@
             <small t-if="widget.allocated_hours">
                 <b t-esc="_.str.sprintf('(%s)', widget.allocated_hours)"/>
             </small>
-            <small t-if="widget.allocated_percentage">
+            <small t-if="widget.allocated_percentage and widget.resource_type == 'user'">
                 <b t-esc="_.str.sprintf('(%s %s)', widget.allocated_percentage, '%')"/>
             </small>
             <small t-if="widget.eventTime.duration and !(widget.allocated_hours or widget.allocated_percentage)">

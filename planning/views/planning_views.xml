@@ -8,13 +8,14 @@
             <tree string="Shift List" multi_edit="1" sample="1" editable="top">
                 <field name="resource_id" groups="planning.group_planning_user" widget="many2one_avatar_resource" optional="show"
                     attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'show_job_title': True}"/>
-                <field name="role_id" optional="show"/>
-                <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="resource_type" invisible="1"/>
+                <field name="role_id" optional="show" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
+                <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
                 <field name="start_datetime" widget="daterange" options="{'related_end_date': 'end_datetime'}"/>
                 <field name="end_datetime" widget="daterange" options="{'related_start_date': 'start_datetime'}"/>
                 <field name="allocated_hours" widget="float_time" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>
-                <field name="allocated_percentage" readonly="1" optional="hide" decoration-danger="allocated_percentage &gt; 100"/>
+                <field name="allocated_percentage" readonly="1" optional="hide" decoration-danger="allocated_percentage &gt; 100" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
                 <field name="name" optional="hide" />
                 <field name="state" decoration-success="state == 'published'" widget="badge" optional="hide" groups="planning.group_planning_manager" readonly="1"/>
             </tree>
@@ -132,6 +133,7 @@
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="resource_id"/>
+                <field name="resource_type"/>
                 <field name="role_id"/>
                 <field name="tag_ids"/>
                 <field name="company_id" groups="base.group_multi_company"/>
@@ -152,8 +154,10 @@
                                             <field name="end_datetime"/>
                                             <span class="d-inline-block">
                                                 (<field name="allocated_hours" widget="float_time"/>)
+                                                <t t-if="record.resource_type.raw_value == 'user'">
+                                                    (<field name="allocated_percentage"/>%)
+                                                </t>
                                             </span>
-                                            (<field name="allocated_percentage"/>%)
                                         </em>
                                     </div>
                                 </div>
@@ -168,7 +172,12 @@
                                 </div>
                             </div>
                             <div>
-                                <span name="role"><field name="role_id"/></span>
+                                <t t-if="record.resource_type.raw_value == 'user'">
+                                    <span name="role"><field name="role_id"/></span>
+                                </t>
+                                <t t-elif="record.resource_type.raw_value == 'material'">
+                                    <span name="resource"><field name="resource_id"/></span>
+                                </t>
                                 <span name="tags"><field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/></span>
                             </div>
                             <div class="o_kanban_record_bottom">
@@ -296,7 +305,8 @@
                 <field name="resource_id" avatar_field="avatar_128" widget="many2one_avatar_resource"/>
                 <field name="resource_type" invisible="1"/>
                 <field name="is_hatched" invisible="1" />
-                <field name="role_id" filters="1" color="color"/>
+                <field name="resource_type" invisible="1"/>
+                <field name="role_id" filters="1" color="color" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
                 <field name="allocated_hours" invisible="1"/>
                 <field name="allocated_percentage" invisible="1"/>
                 <field name="state" invisible="1"/>
@@ -313,7 +323,7 @@
                 <field name="name"/>
                 <field name="resource_id" avatar_field="avatar_128" widget="many2one_avatar_resource"/>
                 <field name="resource_type" invisible="1"/>
-                <field name="role_id" filters="1" color="color"/>
+                <field name="role_id" filters="1" color="color" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
                 <field name="allocated_hours" invisible="1"/>
                 <field name="allocated_percentage" invisible="1"/>
                 <field name="state" invisible="1"/>
@@ -351,12 +361,13 @@
                 <field name="publication_warning"/>
                 <field name="employee_id"/>
                 <field name="resource_id"/>
+                <field name="resource_type"/>
                 <field name="overlap_slot_count"/>
                 <field name="allocated_percentage"/>
                 <field name="name"/>
                 <templates>
                     <div t-name="gantt-popover">
-                        <div id="allocated_hours"><strong>Allocated Time — </strong> <t t-esc="allocatedHoursFormatted"/> (<t t-esc="allocatedPercentageFormatted"/>%)</div>
+                        <div id="allocated_hours"><strong>Allocated Time — </strong> <t t-esc="allocatedHoursFormatted"/> <t t-if="resource_type == 'user'"> (<t t-esc="allocatedPercentageFormatted"/>%)</t></div>
                         <div><t t-esc="userTimezoneStartDate.format('l LT ')"/><i class="fa fa-long-arrow-right" title="Arrow"/><t t-esc="userTimezoneStopDate.format(' l LT')"/></div>
                         <p class="mt-2 mb-0" t-if="name"><t t-esc="name.slice(0, 200) + (name.length > 200?'…':'')" /></p>
                         <p t-if="publication_warning and !overlap_slot_count" class="text-warning mt-2 mb-0">

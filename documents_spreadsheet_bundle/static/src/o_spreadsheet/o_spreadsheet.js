@@ -1229,7 +1229,6 @@
         "STOP_SELECTION_INPUT",
         "RESIZE_VIEWPORT",
         "SET_VIEWPORT_OFFSET",
-        "MOVE_POSITION",
         "SELECT_SEARCH_NEXT_MATCH",
         "SELECT_SEARCH_PREVIOUS_MATCH",
         "REFRESH_SEARCH",
@@ -2791,6 +2790,22 @@
         }
         return output;
     }
+    /**
+     * Lazy value computed by the provided function.
+     */
+    function lazy(fn) {
+        let isMemoized = false;
+        let memo;
+        const lazyValue = () => {
+            if (!isMemoized) {
+                memo = fn();
+                isMemoized = true;
+            }
+            return memo;
+        };
+        lazyValue.map = (callback) => lazy(() => callback(lazyValue()));
+        return lazyValue;
+    }
 
     const colors$1 = [
         "#eb6d00",
@@ -3506,7 +3521,7 @@
      * This function will compare the modifications of selection to determine
      * a cell that is part of the new zone and not the previous one.
      */
-    function findCellInNewZone(oldZone, currentZone) {
+    function findCellInNewZone(oldZone, currentZone, viewport) {
         let col, row;
         const { left: oldLeft, right: oldRight, top: oldTop, bottom: oldBottom } = oldZone;
         const { left, right, top, bottom } = currentZone;
@@ -3517,7 +3532,7 @@
             col = right;
         }
         else {
-            col = left;
+            col = viewport.left;
         }
         if (top != oldTop) {
             row = top;
@@ -3526,7 +3541,7 @@
             row = bottom;
         }
         else {
-            row = top;
+            row = viewport.top;
         }
         return [col, row];
     }
@@ -15549,6 +15564,7 @@
             this.state.currentCF = undefined;
             this.state.currentCFType = undefined;
             this.state.errors = [];
+            this.state.rules = this.getDefaultRules();
         }
         getStyle(rule) {
             if (rule.type === "CellIsRule") {
@@ -19250,20 +19266,20 @@
          * Return the index of a column given an offset x and a visible left col index.
          * It returns -1 if no column is found.
          */
-        getColIndex(x, offsetLeft, sheet) {
+        getColIndex(x, left, sheet) {
             if (x < HEADER_WIDTH) {
                 return -1;
             }
             const cols = (sheet || this.getters.getActiveSheet()).cols;
-            const adjustedX = x - HEADER_WIDTH + offsetLeft + 1;
+            const adjustedX = x - HEADER_WIDTH + cols[left].start + 1;
             return searchIndex(cols, adjustedX);
         }
-        getRowIndex(y, offsetTop, sheet) {
+        getRowIndex(y, top, sheet) {
             if (y < HEADER_HEIGHT) {
                 return -1;
             }
             const rows = (sheet || this.getters.getActiveSheet()).rows;
-            const adjustedY = y - HEADER_HEIGHT + offsetTop + 1;
+            const adjustedY = y - HEADER_HEIGHT + rows[top].start + 1;
             return searchIndex(rows, adjustedY);
         }
         getRect(zone, viewport) {
@@ -19289,7 +19305,7 @@
             let delay = 0;
             const { width } = this.getters.getViewportDimensionWithHeaders();
             const { width: gridWidth } = this.getters.getMaxViewportSize(this.getters.getActiveSheet());
-            const { left, offsetX } = this.getters.getActiveViewport();
+            const { left, offsetX } = this.getters.getActiveSnappedViewport();
             if (x < HEADER_WIDTH && left > 0) {
                 canEdgeScroll = true;
                 direction = -1;
@@ -19308,7 +19324,7 @@
             let delay = 0;
             const { height } = this.getters.getViewportDimensionWithHeaders();
             const { height: gridHeight } = this.getters.getMaxViewportSize(this.getters.getActiveSheet());
-            const { top, offsetY } = this.getters.getActiveViewport();
+            const { top, offsetY } = this.getters.getActiveSnappedViewport();
             if (y < HEADER_HEIGHT && top > 0) {
                 canEdgeScroll = true;
                 direction = -1;
@@ -19574,11 +19590,6 @@
                 ctx.moveTo(0, row.end - offsetY);
                 ctx.lineTo(HEADER_WIDTH, row.end - offsetY);
             }
-            ctx.stroke();
-            // draw over the text for the top-left rectangle
-            ctx.beginPath();
-            ctx.fillStyle = BACKGROUND_HEADER_COLOR;
-            ctx.fillRect(0, 0, HEADER_WIDTH, HEADER_HEIGHT);
             ctx.stroke();
         }
         hasContent(col, row) {
@@ -20102,7 +20113,7 @@
             const sheetId = this.getters.getActiveSheetId();
             const result = [];
             const figures = this.getters.getFigures(sheetId);
-            const { offsetX, offsetY } = this.getters.getActiveViewport();
+            const { offsetX, offsetY } = this.getters.getActiveSnappedViewport();
             const { width, height } = this.getters.getViewportDimensionWithHeaders();
             for (let figure of figures) {
                 if (figure.x >= offsetX + width || figure.x + figure.width <= offsetX) {
@@ -21363,14 +21374,18 @@
      *
      * This plugin manages all things related to all viewport states.
      *
-     * The viewport is a representation of the current visible cells
-     * via a Zone and the the scrollbar absolute position (defined as offsetX and offsetY)
-     *
+     * There are two types of viewports :
+     *  1. The viewport related to the scrollbar absolute position
+     *  2. The snappedViewport which represents the previous one but but 'snapped' to
+     *     the col/row structure, so, the offsets are correct for computations necessary
+     *     to align elements to the grid.
      */
     class ViewportPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
             this.viewports = {};
+            this.snappedViewports = {};
+            this.updateSnap = false;
             /**
              * The viewport dimensions are usually set by one of the components
              * (i.e. when grid component is mounted) to properly reflect its state in the DOM.
@@ -21402,20 +21417,18 @@
                 case "AlterZoneCorner":
                     break;
                 case "ZonesSelected":
-                    const sheetId = this.getters.getActiveSheetId();
                     if (event.mode === "updateAnchor") {
                         // altering a zone should not move the viewport
-                        const [col, row] = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone);
-                        this.refreshViewport(sheetId, { col, row });
+                        const [col, row] = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone, this.getActiveSnappedViewport());
+                        this.refreshViewport(this.getters.getActiveSheetId(), { col, row });
                     }
                     else {
-                        this.refreshViewport(sheetId);
+                        this.refreshViewport(this.getters.getActiveSheetId());
                     }
                     break;
             }
         }
         handle(cmd) {
-            const sheetId = this.getters.getActiveSheetId();
             switch (cmd.type) {
                 case "START":
                     this.selection.observe(this, {
@@ -21426,30 +21439,23 @@
                 case "REDO":
                     this.cleanViewports();
                     this.resetViewports();
-                    this._scroll(sheetId);
                     break;
                 case "RESIZE_VIEWPORT":
                     this.cleanViewports();
                     this.resizeViewport(cmd.height, cmd.width);
-                    this._scroll(sheetId);
                     break;
                 case "SET_VIEWPORT_OFFSET":
                     this.setViewportOffset(cmd.offsetX, cmd.offsetY);
                     break;
                 case "SHIFT_VIEWPORT_DOWN":
-                    const { maxOffsetY } = this.getMaximumViewportOffset(this.getters.getActiveSheet());
                     const topRow = this.getActiveTopRow();
-                    const shiftedOffsetY = Math.min(maxOffsetY, topRow.start + this.viewportHeight);
-                    const newRowIndex = this.getters.getRowIndex(shiftedOffsetY + HEADER_HEIGHT, 0);
-                    this.shiftVertically(this.getters.getRow(sheetId, newRowIndex).start);
-                    this._scroll(sheetId);
+                    const shiftedOffsetY = this.clipOffsetY(topRow.start + this.viewportHeight);
+                    this.shiftVertically(shiftedOffsetY);
                     break;
                 case "SHIFT_VIEWPORT_UP": {
                     const topRow = this.getActiveTopRow();
-                    const shiftedOffsetY = Math.max(topRow.end - this.viewportHeight, 0);
-                    const newRowIndex = this.getters.getRowIndex(shiftedOffsetY + HEADER_HEIGHT, 0);
-                    this.shiftVertically(this.getters.getRow(sheetId, newRowIndex).start);
-                    this._scroll(sheetId);
+                    const shiftedOffsetY = this.clipOffsetY(topRow.end - this.viewportHeight);
+                    this.shiftVertically(shiftedOffsetY);
                     break;
                 }
                 case "REMOVE_COLUMNS_ROWS":
@@ -21461,7 +21467,6 @@
                     else {
                         this.adjustViewportOffsetY(cmd.sheetId, this.getViewport(cmd.sheetId));
                     }
-                    this._scroll(sheetId);
                     break;
                 case "ADD_COLUMNS_ROWS":
                 case "UNHIDE_COLUMNS_ROWS":
@@ -21471,12 +21476,16 @@
                     else {
                         this.adjustViewportZoneY(cmd.sheetId, this.getViewport(cmd.sheetId));
                     }
-                    this._scroll(sheetId);
                     break;
                 case "ACTIVATE_SHEET":
                     this.refreshViewport(cmd.sheetIdTo);
-                    this._scroll(sheetId);
                     break;
+            }
+        }
+        finalize() {
+            if (this.updateSnap) {
+                this.snapViewportToCell(this.getters.getActiveSheetId());
+                this.updateSnap = false;
             }
         }
         // ---------------------------------------------------------------------------
@@ -21491,6 +21500,10 @@
         getActiveViewport() {
             const sheetId = this.getters.getActiveSheetId();
             return this.getViewport(sheetId);
+        }
+        getActiveSnappedViewport() {
+            const sheetId = this.getters.getActiveSheetId();
+            return this.getSnappedViewport(sheetId);
         }
         /**
          * Return the maximum viewport size. That is the sheet dimension
@@ -21519,14 +21532,6 @@
         // ---------------------------------------------------------------------------
         // Private
         // ---------------------------------------------------------------------------
-        /**
-         * Broadcasts the expected viewport scroll value following the alteration of a sheet structure.
-         * Meant to be caught by the rendering side to synchronize.
-         */
-        _scroll(sheetId) {
-            const { offsetX, offsetY } = this.getViewport(sheetId);
-            this.ui.notifyUI({ type: "SCROLL", offsetX, offsetY });
-        }
         checkOffsetValidity(offsetX, offsetY) {
             const sheet = this.getters.getActiveSheet();
             const { maxOffsetX, maxOffsetY } = this.getMaximumViewportOffset(sheet);
@@ -21535,11 +21540,13 @@
             }
             return 0 /* Success */;
         }
+        getSnappedViewport(sheetId) {
+            this.snapViewportToCell(sheetId);
+            return this.snappedViewports[sheetId];
+        }
         getViewport(sheetId) {
             if (!this.viewports[sheetId]) {
-                const viewport = this.generateViewportState(sheetId);
-                this.adjustViewportZone(sheetId, viewport);
-                this.adjustViewportsPosition(sheetId);
+                return this.generateViewportState(sheetId);
             }
             return this.viewports[sheetId];
         }
@@ -21561,7 +21568,7 @@
             }
         }
         /** Corrects the viewport's horizontal offset based on the current structure
-         *  To make sure that at least one column is visible inside the viewport.
+         *  To make sure that at least on column is visible inside the viewport.
          */
         adjustViewportOffsetX(sheetId, viewport) {
             const { offsetX } = viewport;
@@ -21573,7 +21580,7 @@
             this.adjustViewportZoneX(sheetId, viewport);
         }
         /** Corrects the viewport's vertical offset based on the current structure
-         *  To make sure that at least one row is visible inside the viewport.
+         *  To make sure that at least on row is visible inside the viewport.
          */
         adjustViewportOffsetY(sheetId, viewport) {
             const { offsetY } = viewport;
@@ -21601,6 +21608,17 @@
             this.viewports[sheetId].offsetX = offsetX;
             this.viewports[sheetId].offsetY = offsetY;
             this.adjustViewportZone(sheetId, this.viewports[sheetId]);
+        }
+        /**
+         * Clip the vertical offset within the allowed range.
+         * Not above the sheet, nor below the sheet.
+         */
+        clipOffsetY(offsetY) {
+            const { height } = this.getters.getMaxViewportSize(this.getters.getActiveSheet());
+            const maxOffset = height - this.viewportHeight;
+            offsetY = Math.min(offsetY, maxOffset);
+            offsetY = Math.max(offsetY, 0);
+            return offsetY;
         }
         generateViewportState(sheetId) {
             this.viewports[sheetId] = {
@@ -21638,6 +21656,7 @@
                     break;
                 }
             }
+            this.updateSnap = true;
         }
         /** Updates the viewport zone based on its vertical offset (will find Top) and its width (will find Bottom) */
         adjustViewportZoneY(sheetId, viewport) {
@@ -21652,16 +21671,19 @@
                     break;
                 }
             }
+            this.updateSnap = true;
         }
         /**
          * This function will make sure that the provided cell position (or current selected position) is part of
-         * the viewport that is actually displayed on the client. We therefore adjust
-         * the offset of the viewport until it contains the cell completely.
+         * the viewport that is actually displayed on the client, that is, the snapped one. We therefore adjust
+         * the offset of the snapped viewport until it contains the cell completely.
+         * In order to keep the coherence of both viewports, it is also necessary to update the standard viewport
+         * if the zones of both viewports don't match.
          */
         adjustViewportsPosition(sheetId, position) {
             const sheet = this.getters.getSheet(sheetId);
             const { cols, rows } = sheet;
-            const adjustedViewport = this.getViewport(sheetId);
+            const adjustedViewport = this.getSnappedViewport(sheetId);
             if (!position) {
                 const sheetPosition = this.getters.getSheetPosition(sheetId);
                 position = { col: sheetPosition[0], row: sheetPosition[1] };
@@ -21693,6 +21715,24 @@
                 adjustedViewport.offsetY = rows[adjustedViewport.top - 1 - step].start;
                 this.adjustViewportZoneY(sheetId, adjustedViewport);
             }
+            // cast the new snappedViewport in the standard viewport
+            const { top, left } = this.viewports[sheetId];
+            if (top !== adjustedViewport.top || left !== adjustedViewport.left)
+                this.viewports[sheetId] = adjustedViewport;
+            this.updateSnap = false;
+        }
+        /** Will update the snapped viewport based on the "standard" viewport to ensure its
+         * offsets match the start of the viewport left (resp. top) column (resp. row). */
+        snapViewportToCell(sheetId) {
+            const { cols, rows } = this.getters.getSheet(sheetId);
+            const viewport = this.getViewport(sheetId);
+            const adjustedViewport = Object.assign({}, viewport);
+            this.adjustViewportOffsetX(sheetId, adjustedViewport);
+            this.adjustViewportOffsetY(sheetId, adjustedViewport);
+            adjustedViewport.offsetX = cols[adjustedViewport.left].start;
+            adjustedViewport.offsetY = rows[adjustedViewport.top].start;
+            this.adjustViewportZone(sheetId, adjustedViewport);
+            this.snappedViewports[sheetId] = adjustedViewport;
         }
         /**
          * Shift the viewport vertically and move the selection anchor
@@ -21700,23 +21740,24 @@
          * viewport top.
          */
         shiftVertically(offset) {
-            const { top, offsetX } = this.getActiveViewport();
+            const { top, offsetX } = this.getActiveSnappedViewport();
             this.setViewportOffset(offsetX, offset);
             const { anchor } = this.getters.getSelection();
-            const deltaRow = this.getActiveViewport().top - top;
+            const deltaRow = this.getActiveSnappedViewport().top - top;
             this.selection.selectCell(anchor[0], anchor[1] + deltaRow);
         }
         /**
          * Return the row at the viewport's top
          */
         getActiveTopRow() {
-            const { top } = this.getActiveViewport();
+            const { top } = this.getActiveSnappedViewport();
             const sheet = this.getters.getActiveSheet();
             return this.getters.getRow(sheet.id, top);
         }
     }
     ViewportPlugin.getters = [
         "getActiveViewport",
+        "getActiveSnappedViewport",
         "getViewportDimensionWithHeaders",
         "getMaxViewportSize",
         "getMaximumViewportOffset",
@@ -22358,24 +22399,24 @@
             const offsetY = currentEv.clientY - position.top;
             const edgeScrollInfoX = env.model.getters.getEdgeScrollCol(offsetX);
             const edgeScrollInfoY = env.model.getters.getEdgeScrollRow(offsetY);
-            const { top, left, bottom, right, offsetX: viewportOffsetX, offsetY: viewportOffsetY, } = env.model.getters.getActiveViewport();
+            const { top, left, bottom, right } = env.model.getters.getActiveSnappedViewport();
             let colIndex;
             if (edgeScrollInfoX.canEdgeScroll) {
                 colIndex = edgeScrollInfoX.direction > 0 ? right : left - 1;
             }
             else {
-                colIndex = env.model.getters.getColIndex(offsetX, viewportOffsetX);
+                colIndex = env.model.getters.getColIndex(offsetX, left);
             }
             let rowIndex;
             if (edgeScrollInfoY.canEdgeScroll) {
                 rowIndex = edgeScrollInfoY.direction > 0 ? bottom : top - 1;
             }
             else {
-                rowIndex = env.model.getters.getRowIndex(offsetY, viewportOffsetY);
+                rowIndex = env.model.getters.getRowIndex(offsetY, top);
             }
             cbMouseMove(colIndex, rowIndex);
             if (edgeScrollInfoX.canEdgeScroll) {
-                const { left, offsetY } = env.model.getters.getActiveViewport();
+                const { left, offsetY } = env.model.getters.getActiveSnappedViewport();
                 const { cols } = env.model.getters.getActiveSheet();
                 const offsetX = cols[left + edgeScrollInfoX.direction].start;
                 env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
@@ -22385,7 +22426,7 @@
                 }, Math.round(edgeScrollInfoX.delay));
             }
             if (edgeScrollInfoY.canEdgeScroll) {
-                const { top, offsetX } = env.model.getters.getActiveViewport();
+                const { top, offsetX } = env.model.getters.getActiveSnappedViewport();
                 const { rows } = env.model.getters.getActiveSheet();
                 const offsetY = rows[top + edgeScrollInfoY.direction].start;
                 env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
@@ -22473,7 +22514,7 @@
         onMouseDown(ev) {
             this.state.handler = true;
             this.state.position = { left: 0, top: 0 };
-            const { offsetY, offsetX } = this.env.model.getters.getActiveViewport();
+            const { offsetY, offsetX } = this.env.model.getters.getActiveSnappedViewport();
             const start = {
                 left: ev.clientX + offsetX,
                 top: ev.clientY + offsetY,
@@ -22486,7 +22527,7 @@
             };
             const onMouseMove = (ev) => {
                 const position = this.props.getGridBoundingClientRect();
-                const { top: viewportTop, left: viewportLeft, offsetY, offsetX, } = this.env.model.getters.getActiveViewport();
+                const { top: viewportTop, left: viewportLeft, offsetY, offsetX, } = this.env.model.getters.getActiveSnappedViewport();
                 this.state.position = {
                     left: ev.clientX - start.left + offsetX,
                     top: ev.clientY - start.top + offsetY,
@@ -22538,7 +22579,7 @@
     class ClientTag extends owl.Component {
         get tagStyle() {
             const { col, row, color } = this.props;
-            const viewport = this.env.model.getters.getActiveViewport();
+            const viewport = this.env.model.getters.getActiveSnappedViewport();
             const { height } = this.env.model.getters.getViewportDimensionWithHeaders();
             const [x, y, ,] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
             return `bottom: ${height - y + 15}px;left: ${x - 1}px;border: 1px solid ${color};background-color: ${color};${this.props.active ? "opacity:1 !important" : ""}`;
@@ -23151,9 +23192,9 @@
                 // todo: check if this can be removed someday
                 this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
             }
-            const deltaCol = ev.shiftKey ? -1 : 1;
+            const direction = ev.shiftKey ? "left" : "right";
             this.env.model.dispatch("STOP_EDITION");
-            this.env.model.selection.moveAnchorCell(deltaCol, 0);
+            this.env.model.selection.moveAnchorCell(direction, "one");
         }
         processEnterKey(ev) {
             ev.preventDefault();
@@ -23167,7 +23208,8 @@
                 }
             }
             this.env.model.dispatch("STOP_EDITION");
-            this.env.model.selection.moveAnchorCell(0, ev.shiftKey ? -1 : 1);
+            const direction = ev.shiftKey ? "up" : "down";
+            this.env.model.selection.moveAnchorCell(direction, "one");
         }
         processEscapeKey() {
             this.env.model.dispatch("STOP_EDITION", { cancel: true });
@@ -23469,7 +23511,7 @@
                 top: row,
                 bottom: row,
             });
-            this.rect = this.env.model.getters.getRect(this.zone, this.env.model.getters.getActiveViewport());
+            this.rect = this.env.model.getters.getRect(this.zone, this.env.model.getters.getActiveSnappedViewport());
             owl.onMounted(() => {
                 const el = this.gridComposerRef.el;
                 //TODO Should be more correct to have a props that give the parent's clientHeight and clientWidth
@@ -23833,7 +23875,7 @@
         }
         getStyle(info) {
             const { figure, isSelected } = info;
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
             const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
             const { width, height } = target;
             let x = target.x - offsetX + HEADER_WIDTH - 1;
@@ -24011,7 +24053,7 @@
             const topValue = isTop ? top : bottom;
             const widthValue = isHorizontal ? right - left : lineWidth;
             const heightValue = isVertical ? bottom - top : lineWidth;
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
             return `
         left:${leftValue + HEADER_WIDTH - offsetX}px;
         top:${topValue + HEADER_HEIGHT - offsetY}px;
@@ -24069,7 +24111,7 @@
             this.isLeft = this.props.orientation[1] === "w";
         }
         get style() {
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
             const s = this.env.model.getters.getActiveSheet();
             const z = this.props.zone;
             const leftValue = this.isLeft ? s.cols[z.left].start : s.cols[z.right].end;
@@ -24157,10 +24199,9 @@
             const parent = this.highlightRef.el.parentElement;
             const position = parent.getBoundingClientRect();
             const activeSheet = this.env.model.getters.getActiveSheet();
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            // TODO: probably false, should be offsetX and offsetY from viewport
-            const initCol = this.env.model.getters.getColIndex(clientX - position.left, offsetX);
-            const initRow = this.env.model.getters.getRowIndex(clientY - position.top, offsetY);
+            const { top: viewportTop, left: viewportLeft } = this.env.model.getters.getActiveSnappedViewport();
+            const initCol = this.env.model.getters.getColIndex(clientX - position.left, viewportLeft);
+            const initRow = this.env.model.getters.getRowIndex(clientY - position.top, viewportTop);
             const deltaColMin = -z.left;
             const deltaColMax = activeSheet.cols.length - z.right - 1;
             const deltaRowMin = -z.top;
@@ -24485,6 +24526,9 @@
     LinkEditor.template = TEMPLATE$3;
     LinkEditor.components = { Menu };
 
+    // -----------------------------------------------------------------------------
+    // Resizer component
+    // -----------------------------------------------------------------------------
     class AbstractResizer extends owl.Component {
         constructor() {
             super(...arguments);
@@ -24790,16 +24834,16 @@
             return ev.offsetX + HEADER_WIDTH;
         }
         _getStateOffset() {
-            return this.env.model.getters.getActiveViewport().offsetX - HEADER_WIDTH;
+            return this.env.model.getters.getActiveSnappedViewport().offsetX - HEADER_WIDTH;
         }
         _getViewportOffset() {
-            return this.env.model.getters.getActiveViewport().left;
+            return this.env.model.getters.getActiveSnappedViewport().left;
         }
         _getClientPosition(ev) {
             return ev.clientX;
         }
         _getElementIndex(index) {
-            return this.env.model.getters.getColIndex(index, this.env.model.getters.getActiveViewport().offsetX);
+            return this.env.model.getters.getColIndex(index, this.env.model.getters.getActiveSnappedViewport().left);
         }
         _getSelectedZoneStart() {
             return this.env.model.getters.getSelectedZone().left;
@@ -24811,7 +24855,7 @@
             return this.env.model.getters.getEdgeScrollCol(position);
         }
         _getBoundaries() {
-            const { left, right } = this.env.model.getters.getActiveViewport();
+            const { left, right } = this.env.model.getters.getActiveSnappedViewport();
             return { first: left, last: right };
         }
         _getElement(index) {
@@ -24861,10 +24905,10 @@
             this.env.model.selection.selectColumn(index, "updateAnchor");
         }
         _adjustViewport(direction) {
-            const { left, offsetY } = this.env.model.getters.getActiveViewport();
+            const { left, offsetY } = this.env.model.getters.getActiveSnappedViewport();
             const { cols } = this.env.model.getters.getActiveSheet();
             const offsetX = cols[left + direction].start;
-            this.props.onSetScrollbarValue(offsetX, offsetY);
+            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
         }
         _fitElementSize(index) {
             const cols = this.env.model.getters.getActiveCols();
@@ -25001,16 +25045,16 @@
             return ev.offsetY + HEADER_HEIGHT;
         }
         _getStateOffset() {
-            return this.env.model.getters.getActiveViewport().offsetY - HEADER_HEIGHT;
+            return this.env.model.getters.getActiveSnappedViewport().offsetY - HEADER_HEIGHT;
         }
         _getViewportOffset() {
-            return this.env.model.getters.getActiveViewport().top;
+            return this.env.model.getters.getActiveSnappedViewport().top;
         }
         _getClientPosition(ev) {
             return ev.clientY;
         }
         _getElementIndex(index) {
-            return this.env.model.getters.getRowIndex(index, this.env.model.getters.getActiveViewport().offsetY);
+            return this.env.model.getters.getRowIndex(index, this.env.model.getters.getActiveSnappedViewport().top);
         }
         _getSelectedZoneStart() {
             return this.env.model.getters.getSelectedZone().top;
@@ -25022,7 +25066,7 @@
             return this.env.model.getters.getEdgeScrollRow(position);
         }
         _getBoundaries() {
-            const { top, bottom } = this.env.model.getters.getActiveViewport();
+            const { top, bottom } = this.env.model.getters.getActiveSnappedViewport();
             return { first: top, last: bottom };
         }
         _getElement(index) {
@@ -25069,10 +25113,10 @@
             this.env.model.selection.selectRow(index, "updateAnchor");
         }
         _adjustViewport(direction) {
-            const { top, offsetX } = this.env.model.getters.getActiveViewport();
+            const { top, offsetX } = this.env.model.getters.getActiveSnappedViewport();
             const { rows } = this.env.model.getters.getActiveSheet();
             const offsetY = rows[top + direction].start;
-            this.props.onSetScrollbarValue(offsetX, offsetY);
+            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
         }
         _fitElementSize(index) {
             const rows = this.env.model.getters.getActiveRows();
@@ -25154,8 +25198,8 @@
     }
     Overlay.template = owl.xml /* xml */ `
     <div class="o-overlay">
-      <ColResizer onOpenContextMenu="props.onOpenContextMenu" onSetScrollbarValue="props.onSetScrollbarValue"/>
-      <RowResizer onOpenContextMenu="props.onOpenContextMenu" onSetScrollbarValue="props.onSetScrollbarValue"/>
+      <ColResizer onOpenContextMenu="props.onOpenContextMenu" />
+      <RowResizer onOpenContextMenu="props.onOpenContextMenu" />
       <div class="all" t-on-mousedown.self="selectAll"/>
     </div>`;
     Overlay.components = { ColResizer, RowResizer };
@@ -25200,9 +25244,9 @@
         let lastMoved = 0;
         let interval;
         function getPosition() {
-            const { offsetX, offsetY } = getViewPort();
-            const col = env.model.getters.getColIndex(x, offsetX);
-            const row = env.model.getters.getRowIndex(y, offsetY);
+            const viewport = getViewPort();
+            const col = env.model.getters.getColIndex(x, viewport.left);
+            const row = env.model.getters.getRowIndex(y, viewport.top);
             return [col, row];
         }
         function checkTiming() {
@@ -25235,7 +25279,7 @@
         });
         return hoveredPosition;
     }
-    function useTouchMove(handler, canMoveUp, getters) {
+    function useTouchMove(handler, canMoveUp) {
         const canvasRef = owl.useRef("canvas");
         let x = null;
         let y = null;
@@ -25261,8 +25305,7 @@
             }
             const currentX = ev.touches[0].clientX;
             const currentY = ev.touches[0].clientY;
-            const { offsetX, offsetY } = getters.getActiveViewport();
-            handler({ offsetX: offsetX + x - currentX, offsetY: offsetY + y - currentY });
+            handler(x - currentX, y - currentY);
             x = currentX;
             y = currentY;
         }
@@ -25338,7 +25381,7 @@
         </t>
       </t>
     </t>
-    <Overlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)" onSetScrollbarValue="(offsetX, offsetY) => this.setScrollbarValue(offsetX, offsetY)" />
+    <Overlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)" />
     <Menu t-if="menuState.isOpen"
       menuItems="menuState.menuItems"
       position="menuState.position"
@@ -25405,8 +25448,8 @@
                         ? this.props.onGridComposerCellFocused()
                         : this.props.onComposerContentFocused();
                 },
-                TAB: () => this.env.model.selection.moveAnchorCell(1, 0),
-                "SHIFT+TAB": () => this.env.model.selection.moveAnchorCell(-1, 0),
+                TAB: () => this.env.model.selection.moveAnchorCell("right", "one"),
+                "SHIFT+TAB": () => this.env.model.selection.moveAnchorCell("left", "one"),
                 F2: () => {
                     const cell = this.env.model.getters.getActiveCell();
                     !cell || cell.isEmpty()
@@ -25517,13 +25560,12 @@
             this.clickedCol = 0;
             this.clickedRow = 0;
             this.clipBoardString = "";
-            this.hoveredCell = useCellHovered(this.env, () => this.env.model.getters.getActiveViewport());
+            this.hoveredCell = useCellHovered(this.env, () => this.env.model.getters.getActiveSnappedViewport());
             owl.useExternalListener(document.body, "cut", this.copy.bind(this, true));
             owl.useExternalListener(document.body, "copy", this.copy.bind(this, false));
             owl.useExternalListener(document.body, "paste", this.paste);
-            useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0, this.env.model.getters);
+            useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0);
             owl.onMounted(() => this.initGrid());
-            owl.onWillUnmount(() => this.env.model.off("notify-ui", this));
             owl.onPatched(() => {
                 this.drawGrid();
                 this.resizeGrid();
@@ -25533,17 +25575,9 @@
         initGrid() {
             this.vScrollbar.el = this.vScrollbarRef.el;
             this.hScrollbar.el = this.hScrollbarRef.el;
-            this.env.model.on("notify-ui", this, this.onNotifyUI);
             this.focus();
             this.resizeGrid();
             this.drawGrid();
-        }
-        onNotifyUI(payload) {
-            switch (payload.type) {
-                case "SCROLL":
-                    this.moveCanvas({ offsetX: payload.offsetX, offsetY: payload.offsetY });
-                    break;
-            }
         }
         get errorTooltip() {
             const { col, row } = this.hoveredCell;
@@ -25554,7 +25588,7 @@
             const [mainCol, mainRow] = this.env.model.getters.getMainCell(sheetId, col, row);
             const cell = this.env.model.getters.getCell(sheetId, mainCol, mainRow);
             if (cell && cell.evaluated.type === CellValueType.error) {
-                const viewport = this.env.model.getters.getActiveViewport();
+                const viewport = this.env.model.getters.getActiveSnappedViewport();
                 const [x, y, width] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
                 return {
                     isOpen: true,
@@ -25571,7 +25605,7 @@
         get shouldDisplayLink() {
             const sheetId = this.env.model.getters.getActiveSheetId();
             const { col, row } = this.activeCellPosition;
-            const viewport = this.env.model.getters.getActiveViewport();
+            const viewport = this.env.model.getters.getActiveSnappedViewport();
             const cell = this.env.model.getters.getCell(sheetId, col, row);
             return (this.env.model.getters.isVisibleInViewport(col, row, viewport) &&
                 !!cell &&
@@ -25586,7 +25620,7 @@
          */
         get popoverPosition() {
             const [col, row] = this.env.model.getters.getBottomLeftCell(this.env.model.getters.getActiveSheetId(), ...this.env.model.getters.getPosition());
-            const viewport = this.env.model.getters.getActiveViewport();
+            const viewport = this.env.model.getters.getActiveSnappedViewport();
             const [x, y, width, height] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
             return {
                 position: { x, y: y + height + TOPBAR_HEIGHT },
@@ -25628,9 +25662,6 @@
                     offsetY: Math.min(this.vScrollbar.scroll, maxOffsetY),
                 });
             }
-            else {
-                this.render();
-            }
         }
         checkSheetChanges() {
             const currentSheet = this.env.model.getters.getActiveSheetId();
@@ -25642,13 +25673,17 @@
         getAutofillPosition() {
             const zone = this.env.model.getters.getSelectedZone();
             const sheet = this.env.model.getters.getActiveSheet();
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
             return {
                 left: sheet.cols[zone.right].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
                 top: sheet.rows[zone.bottom].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
             };
         }
         drawGrid() {
+            //reposition scrollbar
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            this.hScrollbar.scroll = offsetX;
+            this.vScrollbar.scroll = offsetY;
             // check for position changes
             this.checkSheetChanges();
             // drawing grid on canvas
@@ -25672,9 +25707,13 @@
             ctx.scale(dpr, dpr);
             this.env.model.drawGrid(renderingContext);
         }
-        moveCanvas(ev) {
-            this.hScrollbar.scroll = ev.offsetX;
-            this.vScrollbar.scroll = ev.offsetY;
+        moveCanvas(deltaX, deltaY) {
+            this.vScrollbar.scroll = this.vScrollbar.scroll + deltaY;
+            this.hScrollbar.scroll = this.hScrollbar.scroll + deltaX;
+            this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
+                offsetX: this.hScrollbar.scroll,
+                offsetY: this.vScrollbar.scroll,
+            });
         }
         getClientPositionKey(client) {
             var _a, _b, _c;
@@ -25689,10 +25728,7 @@
             }
             const deltaX = ev.shiftKey ? ev.deltaY : ev.deltaX;
             const deltaY = ev.shiftKey ? ev.deltaX : ev.deltaY;
-            this.moveCanvas({
-                offsetX: this.hScrollbar.scroll + normalize(deltaX),
-                offsetY: this.vScrollbar.scroll + normalize(deltaY),
-            });
+            this.moveCanvas(normalize(deltaX), normalize(deltaY));
         }
         isCellHovered(col, row) {
             return this.hoveredCell.col === col && this.hoveredCell.row === row;
@@ -25711,9 +25747,9 @@
         }
         getCartesianCoordinates(ev) {
             const [x, y] = this.getCoordinates(ev);
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            const colIndex = this.env.model.getters.getColIndex(x, offsetX);
-            const rowIndex = this.env.model.getters.getRowIndex(y, offsetY);
+            const { left, top } = this.env.model.getters.getActiveSnappedViewport();
+            const colIndex = this.env.model.getters.getColIndex(x, left);
+            const rowIndex = this.env.model.getters.getRowIndex(y, top);
             return [colIndex, rowIndex];
         }
         onMouseDown(ev) {
@@ -25763,20 +25799,20 @@
                 timeoutDelay = 0;
                 const colEdgeScroll = this.env.model.getters.getEdgeScrollCol(x);
                 const rowEdgeScroll = this.env.model.getters.getEdgeScrollRow(y);
-                const { left, right, top, bottom, offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+                const { left, right, top, bottom } = this.env.model.getters.getActiveSnappedViewport();
                 let col, row;
                 if (colEdgeScroll.canEdgeScroll) {
                     col = colEdgeScroll.direction > 0 ? right : left - 1;
                 }
                 else {
-                    col = this.env.model.getters.getColIndex(x, offsetX);
+                    col = this.env.model.getters.getColIndex(x, left);
                     col = col === -1 ? prevCol : col;
                 }
                 if (rowEdgeScroll.canEdgeScroll) {
                     row = rowEdgeScroll.direction > 0 ? bottom : top - 1;
                 }
                 else {
-                    row = this.env.model.getters.getRowIndex(y, offsetY);
+                    row = this.env.model.getters.getRowIndex(y, top);
                     row = row === -1 ? prevRow : row;
                 }
                 isEdgeScrolling = colEdgeScroll.canEdgeScroll || rowEdgeScroll.canEdgeScroll;
@@ -25789,7 +25825,7 @@
                 if (isEdgeScrolling) {
                     const offsetX = sheet.cols[left + colEdgeScroll.direction].start;
                     const offsetY = sheet.rows[top + rowEdgeScroll.direction].start;
-                    this.moveCanvas({ offsetX, offsetY });
+                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
                     timeOutId = setTimeout(() => {
                         timeOutId = null;
                         onMouseMove(currentEv);
@@ -25827,29 +25863,32 @@
             ev.preventDefault();
             ev.stopPropagation();
             this.closeLinkEditor();
-            const deltaMap = {
-                ArrowDown: [0, 1],
-                ArrowLeft: [-1, 0],
-                ArrowRight: [1, 0],
-                ArrowUp: [0, -1],
+            const arrowMap = {
+                ArrowDown: { direction: "down", delta: [0, 1] },
+                ArrowLeft: { direction: "left", delta: [-1, 0] },
+                ArrowRight: { direction: "right", delta: [1, 0] },
+                ArrowUp: { direction: "up", delta: [0, -1] },
             };
-            const delta = deltaMap[ev.key];
+            const { direction, delta } = arrowMap[ev.key];
             if (ev.shiftKey) {
                 const oldZone = this.env.model.getters.getSelectedZone();
-                this.env.model.selection.resizeAnchorZone(delta[0], delta[1]);
+                this.env.model.selection.resizeAnchorZone(direction, ev.ctrlKey ? "end" : "one");
                 const newZone = this.env.model.getters.getSelectedZone();
-                const viewport = this.env.model.getters.getActiveViewport();
+                const viewport = this.env.model.getters.getActiveSnappedViewport();
                 const sheet = this.env.model.getters.getActiveSheet();
-                const [col, row] = findCellInNewZone(oldZone, newZone);
+                const [col, row] = findCellInNewZone(oldZone, newZone, viewport);
                 const { left, right, top, bottom, offsetX, offsetY } = viewport;
                 const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
                 const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
                 if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
-                    this.moveCanvas({ offsetX: newOffsetX, offsetY: newOffsetY });
+                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
+                        offsetX: newOffsetX,
+                        offsetY: newOffsetY,
+                    });
                 }
             }
             else {
-                this.env.model.selection.moveAnchorCell(delta[0], delta[1]);
+                this.env.model.selection.moveAnchorCell(direction, ev.ctrlKey ? "end" : "one");
             }
             if (this.env.model.getters.isPaintingFormat()) {
                 this.env.model.dispatch("PASTE", {
@@ -25915,9 +25954,6 @@
                 }
             }
             this.toggleContextMenu(type, ev.offsetX, ev.offsetY);
-        }
-        setScrollbarValue(offsetX, offsetY) {
-            this.moveCanvas({ offsetX, offsetY });
         }
         toggleContextMenu(type, x, y) {
             this.closeLinkEditor();
@@ -26394,9 +26430,6 @@
             this.openedEl = null;
         }
         updateCellState() {
-            this.style = this.env.model.getters.getCurrentStyle();
-            this.fillColor = this.style.fillColor || "white";
-            this.textColor = this.style.textColor || "black";
             const zones = this.env.model.getters.getSelectedZones();
             const { top, left, right, bottom } = zones[0];
             this.cannotMerge = zones.length > 1 || (top === bottom && left === right);
@@ -26422,6 +26455,10 @@
             else {
                 this.currentFormat = "general";
             }
+            this.style = { ...this.env.model.getters.getCurrentStyle() };
+            this.style.align = this.style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign);
+            this.fillColor = this.style.fillColor || "white";
+            this.textColor = this.style.textColor || "black";
             this.menus = topbarMenuRegistry
                 .getAll()
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
@@ -27419,7 +27456,19 @@
             this.data = data;
         }
         transformed(transformation) {
-            return new Operation(this.id, transformation(this.data));
+            return new LazyOperation(this.id, lazy(() => transformation(this.data)));
+        }
+    }
+    class LazyOperation {
+        constructor(id, lazyData) {
+            this.id = id;
+            this.lazyData = lazyData;
+        }
+        get data() {
+            return this.lazyData();
+        }
+        transformed(transformation) {
+            return new LazyOperation(this.id, this.lazyData.map(transformation));
         }
     }
 
@@ -28937,8 +28986,8 @@
         /**
          * Set the selection to one of the cells adjacent to the current anchor cell.
          */
-        moveAnchorCell(deltaCol, deltaRow) {
-            const { col, row } = this.getNextAvailablePosition(deltaCol, deltaRow);
+        moveAnchorCell(direction, step = "one") {
+            const { col, row } = this.getNextAvailablePosition(direction, step);
             return this.selectCell(col, row);
         }
         /**
@@ -28980,11 +29029,16 @@
          * The anchor cell remains where it is. It's the opposite side
          * of the anchor zone which moves.
          */
-        resizeAnchorZone(deltaCol, deltaRow) {
+        resizeAnchorZone(direction, step = "one") {
             const sheet = this.getters.getActiveSheet();
             const anchor = this.anchor;
             const { col: anchorCol, row: anchorRow } = anchor.cell;
             const { left, right, top, bottom } = anchor.zone;
+            const starting = this.getStartingPosition(direction);
+            let [deltaCol, deltaRow] = this.deltaToTarget(starting, direction, step);
+            if (deltaCol === 0 && deltaRow === 0) {
+                return DispatchResult.Success;
+            }
             let result = anchor.zone;
             const expand = (z) => {
                 z = organizeZone(z);
@@ -29141,11 +29195,12 @@
          * by crossing through merges and skipping hidden cells.
          * Note that the resulting position might be out of the sheet, it needs to be validated.
          */
-        getNextAvailablePosition(deltaX, deltaY) {
+        getNextAvailablePosition(direction, step = "one") {
             const { col, row } = this.anchor.cell;
+            const delta = this.deltaToTarget({ col, row }, direction, step);
             return {
-                col: this.getNextAvailableCol(deltaX, col, row),
-                row: this.getNextAvailableRow(deltaY, col, row),
+                col: this.getNextAvailableCol(delta[0], col, row),
+                row: this.getNextAvailableRow(delta[1], col, row),
             };
         }
         getNextAvailableCol(delta, colIndex, rowIndex) {
@@ -29161,30 +29216,22 @@
             return this.getNextAvailableHeader(delta, rows, rowIndex, position, isInPositionMerge);
         }
         getNextAvailableHeader(delta, headers, startingHeaderIndex, position, isInPositionMerge) {
-            var _a, _b, _c;
-            const sheetId = this.getters.getActiveSheetId();
-            const { col, row } = position;
+            var _a;
             if (delta === 0) {
                 return startingHeaderIndex;
             }
+            const step = Math.sign(delta);
             let header = startingHeaderIndex + delta;
-            if (this.getters.isInMerge(sheetId, col, row)) {
-                while (isInPositionMerge(header)) {
-                    header += delta;
-                }
-                while ((_a = headers[header]) === null || _a === void 0 ? void 0 : _a.isHidden) {
-                    header += delta;
-                }
+            while (isInPositionMerge(header)) {
+                header += step;
             }
-            else if ((_b = headers[header]) === null || _b === void 0 ? void 0 : _b.isHidden) {
-                while ((_c = headers[header]) === null || _c === void 0 ? void 0 : _c.isHidden) {
-                    header += delta;
-                }
+            while ((_a = headers[header]) === null || _a === void 0 ? void 0 : _a.isHidden) {
+                header += step;
             }
             const outOfBound = header < 0 || header > headers.length - 1;
             if (outOfBound) {
                 if (headers[startingHeaderIndex].isHidden) {
-                    return this.getNextAvailableHeader(-delta, headers, startingHeaderIndex, position, isInPositionMerge);
+                    return this.getNextAvailableHeader(-step, headers, startingHeaderIndex, position, isInPositionMerge);
                 }
                 else {
                     return startingHeaderIndex;
@@ -29210,6 +29257,104 @@
                     ? findVisibleHeader(sheet, "rows", range(top, bottom + 1)) || anchorRow
                     : anchorRow,
             };
+        }
+        deltaToTarget(position, direction, step) {
+            switch (direction) {
+                case "up":
+                    return step === "one"
+                        ? [0, -1]
+                        : [0, this.getEndOfCluster(position, "rows", -1) - position.row];
+                case "down":
+                    return step === "one"
+                        ? [0, 1]
+                        : [0, this.getEndOfCluster(position, "rows", 1) - position.row];
+                case "left":
+                    return step === "one"
+                        ? [-1, 0]
+                        : [this.getEndOfCluster(position, "cols", -1) - position.col, 0];
+                case "right":
+                    return step === "one"
+                        ? [1, 0]
+                        : [this.getEndOfCluster(position, "cols", 1) - position.col, 0];
+            }
+        }
+        // TODO rename this
+        getStartingPosition(direction) {
+            let [col, row] = this.getPosition();
+            const zone = this.anchor.zone;
+            switch (direction) {
+                case "down":
+                case "up":
+                    row = row === zone.top ? zone.bottom : zone.top;
+                    break;
+                case "left":
+                case "right":
+                    col = col === zone.right ? zone.left : zone.right;
+                    break;
+            }
+            return { col, row };
+        }
+        /**
+         * Given a starting position, compute the end of the cluster containing the position in the given
+         * direction or the start of the next cluster. We define cluster here as side-by-side cells that
+         * all have a content.
+         *
+         * We will return the end of the cluster if the given cell is inside a cluster, and the start of the
+         * next cluster if the given cell is outside a cluster or at the border of a cluster in the given direction.
+         */
+        getEndOfCluster(startPosition, dim, dir) {
+            const sheet = this.getters.getActiveSheet();
+            let currentPosition = startPosition;
+            // If both the current cell and the next cell are not empty, we want to go to the end of the cluster
+            const nextCellPosition = this.getNextCellPosition(startPosition, dim, dir);
+            let mode = !this.isCellEmpty(currentPosition, sheet.id) && !this.isCellEmpty(nextCellPosition, sheet.id)
+                ? "endOfCluster"
+                : "nextCluster";
+            while (true) {
+                const nextCellPosition = this.getNextCellPosition(currentPosition, dim, dir);
+                // Break if nextPosition == currentPosition, which happens if there's no next valid position
+                if (currentPosition.col === nextCellPosition.col &&
+                    currentPosition.row === nextCellPosition.row) {
+                    break;
+                }
+                const isNextCellEmpty = this.isCellEmpty(nextCellPosition, sheet.id);
+                if (mode === "endOfCluster" && isNextCellEmpty) {
+                    break;
+                }
+                else if (mode === "nextCluster" && !isNextCellEmpty) {
+                    // We want to return the start of the next cluster, not the end of the empty zone
+                    currentPosition = nextCellPosition;
+                    break;
+                }
+                currentPosition = nextCellPosition;
+            }
+            return dim === "cols" ? currentPosition.col : currentPosition.row;
+        }
+        /**
+         * Check if a cell is empty or undefined in the model. If the cell is part of a merge,
+         * check if the merge containing the cell is empty.
+         */
+        isCellEmpty({ col, row }, sheetId) {
+            const cell = this.getters.getCell(sheetId, ...this.getters.getMainCell(sheetId, col, row));
+            return !cell || cell.isEmpty();
+        }
+        /** Computes the next cell position in the given direction by crossing through merges and skipping hidden cells.
+         *
+         * This has the same behaviour as getNextAvailablePosition() for certains arguments, but use this method instead
+         * inside directionToDelta(), which is called in getNextAvailablePosition(), to avoid possible infinite
+         * recursion.
+         */
+        getNextCellPosition(currentPosition, dimension, direction) {
+            const dimOfInterest = dimension === "cols" ? "col" : "row";
+            const startingPosition = { ...currentPosition };
+            const nextCoord = dimension === "cols"
+                ? this.getNextAvailableCol(direction, startingPosition.col, startingPosition.row)
+                : this.getNextAvailableRow(direction, startingPosition.col, startingPosition.row);
+            startingPosition[dimOfInterest] = nextCoord;
+            return { col: startingPosition.col, row: startingPosition.row };
+        }
+        getPosition() {
+            return [this.anchor.cell.col, this.anchor.cell.row];
         }
     }
 
@@ -29458,11 +29603,20 @@
     //            CF HELPERS
     // -------------------------------------
     /**
-     * Forces the first char of a string to lowerCase
-     * e.g. BeginWith --> beginWith
+     * Convert the conditional formatting o-spreadsheet operator to
+     * the corresponding excel operator.
      * */
     function convertOperator(operator) {
-        return operator.charAt(0).toLowerCase() + operator.slice(1);
+        switch (operator) {
+            case "IsNotEmpty":
+                return "notContainsBlanks";
+            case "IsEmpty":
+                return "containsBlanks";
+            case "NotContains":
+                return "notContainsBlanks";
+            default:
+                return operator.charAt(0).toLowerCase() + operator.slice(1);
+        }
     }
     // -------------------------------------
     //        WORKSHEET HELPERS
@@ -30224,12 +30378,18 @@
     // ----------------------
     function addCellIsRule(cf, rule, dxfs) {
         const ruleAttributes = commonCfAttributes(cf);
-        ruleAttributes.push(["type", "cellIs"], ["operator", convertOperator(rule.operator)]);
-        const formulas = rule.values.map((value) => escapeXml /*xml*/ `<formula>${value}</formula>`);
-        const dxf = {};
-        if (rule.style.textColor) {
-            dxf.font = { color: rule.style.textColor };
-        }
+        const operator = convertOperator(rule.operator);
+        ruleAttributes.push(...cellRuleTypeAttributes(rule), ["operator", operator]);
+        const formulas = cellRuleFormula(cf.ranges, rule).map((formula) => escapeXml /*xml*/ `<formula>${formula}</formula>`);
+        const dxf = {
+            font: {
+                color: rule.style.textColor,
+                bold: rule.style.bold,
+                italic: rule.style.italic,
+                strike: rule.style.strikethrough,
+                underline: rule.style.underline,
+            },
+        };
         if (rule.style.fillColor) {
             dxf.fill = { fgColor: rule.style.fillColor };
         }
@@ -30242,6 +30402,59 @@
       </cfRule>
     </conditionalFormatting>
   `;
+    }
+    function cellRuleFormula(ranges, rule) {
+        const firstCell = ranges[0].split(":")[0];
+        const values = rule.values;
+        switch (rule.operator) {
+            case "ContainsText":
+                return [`NOT(ISERROR(SEARCH("${values[0]}",${firstCell})))`];
+            case "NotContains":
+                return [`ISERROR(SEARCH("${values[0]}",${firstCell}))`];
+            case "BeginsWith":
+                return [`LEFT(${firstCell},LEN("${values[0]}"))="${values[0]}"`];
+            case "EndsWith":
+                return [`RIGHT(${firstCell},LEN("${values[0]}"))="${values[0]}"`];
+            case "IsEmpty":
+                return [`LEN(TRIM(${firstCell}))=0`];
+            case "IsNotEmpty":
+                return [`LEN(TRIM(${firstCell}))>0`];
+            case "Equal":
+            case "NotEqual":
+            case "GreaterThan":
+            case "GreaterThanOrEqual":
+            case "LessThan":
+            case "LessThanOrEqual":
+                return [values[0]];
+            case "Between":
+            case "NotBetween":
+                return [values[0], values[1]];
+        }
+    }
+    function cellRuleTypeAttributes(rule) {
+        const operator = convertOperator(rule.operator);
+        switch (rule.operator) {
+            case "ContainsText":
+            case "NotContains":
+            case "BeginsWith":
+            case "EndsWith":
+                return [
+                    ["type", operator],
+                    ["text", rule.values[0]],
+                ];
+            case "IsEmpty":
+            case "IsNotEmpty":
+                return [["type", operator]];
+            case "Equal":
+            case "NotEqual":
+            case "GreaterThan":
+            case "GreaterThanOrEqual":
+            case "LessThan":
+            case "LessThanOrEqual":
+            case "Between":
+            case "NotBetween":
+                return [["type", "cellIs"]];
+        }
     }
     function addColorScaleRule(cf, rule) {
         const ruleAttributes = commonCfAttributes(cf);
@@ -30506,24 +30719,26 @@
     </numFmts>
   `;
     }
-    function addFonts(fonts) {
-        const fontNodes = [];
-        for (let font of Object.values(fonts)) {
-            fontNodes.push(escapeXml /*xml*/ `
-      <font>
-        ${font.bold ? escapeXml /*xml*/ `<b />` : ""}
-        ${font.italic ? escapeXml /*xml*/ `<i />` : ""}
-        ${font.underline ? escapeXml /*xml*/ `<u />` : ""}
-        ${font.strike ? escapeXml /*xml*/ `<strike />` : ""}
-        <sz val="${font.size}" />
-        <color rgb="${toHex6(font.color)}" />
-        <name val="${font.name}" />
-      </font>
-    `);
+    function addFont(font) {
+        if (Object.values(font).filter(isDefined).length === 0) {
+            return escapeXml /*xml*/ ``;
         }
         return escapeXml /*xml*/ `
+    <font>
+      ${font.bold ? escapeXml /*xml*/ `<b />` : ""}
+      ${font.italic ? escapeXml /*xml*/ `<i />` : ""}
+      ${font.underline ? escapeXml /*xml*/ `<u />` : ""}
+      ${font.strike ? escapeXml /*xml*/ `<strike />` : ""}
+      ${font.size ? escapeXml /*xml*/ `<sz val="${font.size}" />` : ""}
+      ${font.color ? escapeXml /*xml*/ `<color rgb="${toHex6(font.color)}" />` : ""}
+      ${font.name ? escapeXml /*xml*/ `<name val="${font.name}" />` : ""}
+    </font>
+  `;
+    }
+    function addFonts(fonts) {
+        return escapeXml /*xml*/ `
     <fonts count="${fonts.length}">
-      ${joinXmlNodes(fontNodes)}
+      ${joinXmlNodes(Object.values(fonts).map(addFont))}
     </fonts>
   `;
     }
@@ -30616,14 +30831,11 @@
      */
     function addCellWiseConditionalFormatting(dxfs // cell-wise CF
     ) {
-        var _a;
         const dxfNodes = [];
         for (const dxf of dxfs) {
             let fontNode = escapeXml ``;
-            if ((_a = dxf.font) === null || _a === void 0 ? void 0 : _a.color) {
-                fontNode = escapeXml /*xml*/ `
-        <font rgb="${toHex6(dxf.font.color)}" />
-      `;
+            if (dxf.font) {
+                fontNode = addFont(dxf.font);
             }
             let fillNode = escapeXml ``;
             if (dxf.fill) {
@@ -30736,8 +30948,9 @@
                 if (isMarkdownSheetLink(content)) {
                     const sheetId = parseSheetLink(url);
                     const sheet = data.sheets.find((sheet) => sheet.id === sheetId);
+                    const location = sheet ? `${sheet.name}!A1` : INCORRECT_RANGE_STRING;
                     linkNodes.push(escapeXml /*xml*/ `
-          <hyperlink display="${label}" location="${sheet.name}!A1" ref="${xc}"/>
+          <hyperlink display="${label}" location="${location}" ref="${xc}"/>
         `);
                 }
                 else {
@@ -31233,7 +31446,7 @@
          * canvas and need to draw the grid on it.  This is then done by calling this
          * method, which will dispatch the call to all registered plugins.
          *
-         * Note that nothing prevents multiple grid components from calling this method
+         * Note that nothing prevent multiple grid components from calling this method
          * each, or one grid component calling it multiple times with a different
          * context. This is probably the way we should do if we want to be able to
          * freeze a part of the grid (so, we would need to render different zones)
@@ -31241,6 +31454,7 @@
         drawGrid(context) {
             // we make sure here that the viewport is properly positioned: the offsets
             // correspond exactly to a cell
+            context.viewport = this.getters.getActiveSnappedViewport(); //snaped one
             for (let [renderer, layer] of this.renderers) {
                 context.ctx.save();
                 renderer.drawGrid(context, layer);
@@ -31389,8 +31603,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-03-02T14:00:02.488Z';
-    exports.__info__.hash = 'abcb367';
+    exports.__info__.date = '2022-03-10T13:24:33.771Z';
+    exports.__info__.hash = 'd95e50b';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

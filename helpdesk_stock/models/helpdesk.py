@@ -22,6 +22,7 @@ class HelpdeskTicket(models.Model):
     @api.depends('partner_id')
     def _compute_suitable_product_ids(self):
         sale_data = self.env['sale.order.line']._read_group([
+            ('product_id', '!=', False),
             ('order_id.state', '=', 'sale'),
             ('order_partner_id', 'in', self.mapped('partner_id').ids)
         ], ['order_partner_id', 'product_id:array_agg(product_id)'], ['order_partner_id'], lazy=False)

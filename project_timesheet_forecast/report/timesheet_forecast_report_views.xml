@@ -102,7 +102,7 @@
     <menuitem id="menu_project_timesheet_forecast_report_analysis"
         name="Timesheets and Planning Analysis"
         sequence="15"
-        parent="project.menu_project_report"
+        parent="hr_timesheet.menu_timesheets_reports"
         action="project_timesheet_forecast_report_action"/>
 
 </odoo>

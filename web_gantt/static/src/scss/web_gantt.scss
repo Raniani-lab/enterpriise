@@ -267,13 +267,8 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
                 z-index: 2;  // other pills show not hide these ones
             }
 
-            &.o_gantt_progress {
-                @include o-gantt-hoverable-colors(nth($o-colors-complete, 1));
-                background-repeat: no-repeat;
-
-                &.decoration-info {
-                    @include gantt-gradient-decorations(nth($o-colors-complete, 1));
-                }
+            &.decoration-info {
+                @include gantt-gradient-decorations(nth($o-colors-complete, 1));
             }
 
             .ui-resizable-e, .ui-resizable-w {
@@ -304,8 +299,9 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
 
                     @include o-gantt-hoverable-colors($gantt-color);
 
-                    &.o_gantt_progress {
-                        @include o-gantt-hoverable-colors($gantt-color);
+                    .o_gantt_progress {
+                        opacity: 0.2;
+                        background-color: darken($gantt-color, 30%);
                     }
 
                     &.decoration-info {

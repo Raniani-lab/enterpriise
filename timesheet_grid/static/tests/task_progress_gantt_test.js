@@ -7,7 +7,7 @@ const actualDate = new Date(2020, 5, 22, 8, 0, 0);
 const initialDate = new Date(actualDate.getTime() - actualDate.getTimezoneOffset() * 60 * 1000);
 
 const ganttViewParams = {
-    arch: `<gantt date_start="start" date_stop="stop"/>`,
+    arch: `<gantt date_start="start" date_stop="stop" progress="progress"/>`,
     model: "task",
     View: TaskGanttView,
     viewOptions: { initialDate },

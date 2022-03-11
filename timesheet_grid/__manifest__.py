@@ -35,7 +35,6 @@
     'assets': {
         'web.assets_backend': [
             'timesheet_grid/static/src/scss/timesheet_grid.scss',
-            'timesheet_grid/static/src/scss/task_progress_gantt.scss',
             'timesheet_grid/static/src/js/timesheet_uom.js',
             'timesheet_grid/static/src/js/timesheet_uom_timer.js',
             'timesheet_grid/static/src/js/timesheet_config_mixin.js',

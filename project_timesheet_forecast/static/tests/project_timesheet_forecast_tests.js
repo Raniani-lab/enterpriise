@@ -23,6 +23,7 @@ odoo.define("project_timesheet_forecast.project_timesheet_forecast_tests", funct
                         effective_hours: {string: "Effective Hours", type: "float"},
                         planned_hours: {string: "Initially Planned Hours", type: "float"},
                         allocated_hours: {string: "Allocated Hours", type: "float"},
+                        percentage_hours: {string: "Progress", type: "float"},
                         project_id: {string: 'Project', type: 'many2one', relation: 'projects'},
                         task_id: {string: 'Task', type: 'many2one', relation: 'stuffs'},
                         employee_id: {
@@ -36,13 +37,13 @@ odoo.define("project_timesheet_forecast.project_timesheet_forecast_tests", funct
                     },
                     records: [
                         {id: 1, name: 'Do what you gotta do', start: '2020-06-10 08:30:00', stop: '2020-06-10 12:30:00', 
-                        project_id: 1, employee_id: 100, allocated_hours: 5, effective_hours: 0, planned_hours: 3, task_id: 1},
+                        project_id: 1, employee_id: 100, allocated_hours: 5, effective_hours: 0, percentage_hours: 0.0, planned_hours: 3, task_id: 1},
                         {id: 2, name: 'Or not', start: '2020-06-20 08:30:00', stop: '2020-06-20 10:30:00', 
-                        project_id: 2, employee_id: 200, allocated_hours: 10, effective_hours: 2, planned_hours: 5, task_id: 2},
+                        project_id: 2, employee_id: 200, allocated_hours: 10, effective_hours: 2, percentage_hours: 20.0, planned_hours: 5, task_id: 2},
                         {id: 3, name: "Ain't Your Mama", start: '2020-06-21 08:30:00', stop: '2020-06-21 10:30:00',
-                        project_id: 2, employee_id: 200, allocated_hours: 10, effective_hours: 0, planned_hours: 5},
+                        project_id: 2, employee_id: 200, allocated_hours: 10, effective_hours: 0, percentage_hours: 0.0, planned_hours: 5},
                         {id: 4, name: "...", start: '2020-06-20 08:30:00', stop: '2020-06-20 10:30:00',
-                        project_id: 2, employee_id: 200, effective_hours: 2, planned_hours: 5, task_id: 2},
+                        project_id: 2, employee_id: 200, effective_hours: 2, percentage_hours: 0.0, planned_hours: 5, task_id: 2},
                     ],
                 },
                 employee: {
@@ -88,7 +89,7 @@ odoo.define("project_timesheet_forecast.project_timesheet_forecast_tests", funct
                 View: ForecastTimesheetGanttView,
                 model: 'tasks',
                 data: this.data,
-                arch: '<gantt date_start="start" date_stop="stop" sample="0"/>',
+                arch: '<gantt date_start="start" date_stop="stop" sample="0" progress="percentage_hours"/>',
                 viewOptions: {
                     initialDate: initialDate,
                 },
@@ -115,6 +116,7 @@ odoo.define("project_timesheet_forecast.project_timesheet_forecast_tests", funct
                             <field name="planned_hours"/>
                             <field name="effective_hours"/>
                             <field name="task_id"/>
+                            <field name="percentage_hours"/>
                         </form>`,
                 },
             });

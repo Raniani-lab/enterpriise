@@ -33,7 +33,7 @@ class Forecast(models.Model):
     def _compute_percentage_hours(self):
         for forecast in self:
             if forecast.allocated_hours:
-                forecast.percentage_hours = forecast.effective_hours / forecast.allocated_hours
+                forecast.percentage_hours = forecast.effective_hours / forecast.allocated_hours * 100
             else:
                 forecast.percentage_hours = 0
 

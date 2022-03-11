@@ -15,9 +15,9 @@
             </t>
         </xpath>
 
-        <xpath expr="//span[@t-field='o.partner_id.vat']" position="after">
+        <div t-field="o.partner_id" position="after">
             <span t-if="is_cfdi_signed and o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc"><span>XML VAT: </span><span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"></span></span>
-        </xpath>
+        </div>
 
         <xpath expr="//div[@name='customer_code']" position="after">
             <t t-if="is_cfdi_signed">

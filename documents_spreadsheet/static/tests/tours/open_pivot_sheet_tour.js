@@ -69,8 +69,7 @@ odoo.define('documents_spreadsheet.open_pivot_sheet_tour', function (require) {
         },
         {
             trigger: '.o_document_spreadsheet:first',
-            content: 'Reopen the sheet',
-            run: 'click'
+            content: 'Sheet is visible in Documents',
         },
     ]);
 });

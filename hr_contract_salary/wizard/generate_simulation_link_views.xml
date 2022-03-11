@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="generate_simulation_link_view_form" model="ir.ui.view">
-          <field name="name">generate.simulation.link.form</field>
-          <field name="model">generate.simulation.link</field>
-          <field name="arch" type="xml">
+        <field name="name">generate.simulation.link.form</field>
+        <field name="model">generate.simulation.link</field>
+        <field name="arch" type="xml">
             <form string="Generate a Simulation Link">
                 <group>
                     <field name="contract_id"/>
                     <field name="job_title" />
                     <field name="employee_job_id" />
+                    <field name="display_warning_message" invisible="1"/>
+                </group>
+                <div class="alert alert-warning" role="alert" attrs="{'invisible':[('display_warning_message', '=', False)]}">
+                    This job position does not have any contract template related and the advantages will be related to the current employee contract instead of the new job position.
+                </div>
+                <group>
                     <field name="department_id" />
                     <field name="contract_start_date"/>
                     <field name="company_id" invisible="1" />
@@ -38,7 +44,7 @@
                     <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
                 </footer>
             </form>
-          </field>
+        </field>
     </record>
 
     <record id="generate_simulation_link_action" model="ir.actions.act_window">

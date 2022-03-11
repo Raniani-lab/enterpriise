@@ -206,11 +206,16 @@ class HrContractSalary(http.Controller):
 
         if kw.get('employee_contract_id'):
             employee_contract = request.env['hr.contract'].sudo().browse(int(kw.get('employee_contract_id')))
+            # do not recreate a new employee if the salary configurator is launched with a new
+            # type of contract (in the event that the employee changes jobs) since the contract
+            # is a template without an employee
+            if not contract.employee_id and employee_contract.employee_id:
+                contract.employee_id = employee_contract.employee_id
             if not request.env.user.has_group('hr_contract.group_hr_contract_manager') and employee_contract.employee_id \
                     and employee_contract.employee_id.user_id != request.env.user:
                 raise NotFound()
 
-        if not contract.employee_id:
+        if not contract.employee_id or not employee_contract:
             contract_country = contract.company_id.country_id
             address_home_id = request.env['res.partner'].with_context(
                 tracking_disable=True
@@ -408,8 +413,8 @@ class HrContractSalary(http.Controller):
         contract_vals = {
             'active': False,
             'name': contract.name if contract.state == 'draft' else "Package Simulation",
-            'job_id': employee.job_id.id or contract.job_id.id,
-            'department_id': employee.department_id.id,
+            'job_id': contract.job_id.id or employee.job_id.id,
+            'department_id': contract.department_id.id or employee.department_id.id,
             'company_id': contract.company_id.id,
             'currency_id': contract.company_id.currency_id.id,
             'employee_id': employee.id,
@@ -819,7 +824,6 @@ class HrContractSalary(http.Controller):
                 kw['employee'] = contract.employee_id
         kw['package_submit'] = True
         new_contract, contract_diff = self.create_new_contract(contract, advantages, no_write=True, **kw)
-
 
         if isinstance(new_contract, dict) and new_contract.get('error'):
             return new_contract

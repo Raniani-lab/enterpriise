@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="mail_enterprise.ChatterContainer" t-inherit="mail.ChatterContainer" t-inherit-mode="extension" owl="1">
         <xpath expr="//div[hasclass('o_ChatterContainer')]" position="attributes">
-            <attribute name="t-att-class">{ 'o-isInFormSheetBg': props.isInFormSheetBg }</attribute>
+            <attribute name="t-att-class">{ 'o-isInFormSheetBg mx-auto': props.isInFormSheetBg }</attribute>
         </xpath>
     </t>
 

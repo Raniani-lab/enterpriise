@@ -5,27 +5,28 @@ from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
-from odoo.tests import HttpCase, tagged
-from odoo.tests.common import SingleTransactionCase
+from odoo.tools import float_compare
+from odoo.tests import HttpCase, tagged, TransactionCase
 
 
-class TestRentalCommon(SingleTransactionCase):
+class TestRentalCommon(TransactionCase):
 
-    def setUp(self):
-        super(TestRentalCommon, self).setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        self.product_id = self.env['product.product'].create({
+        cls.product_id = cls.env['product.product'].create({
             'name': 'Projector',
-            'categ_id': self.env.ref('product.product_category_all').id,
+            'categ_id': cls.env.ref('product.product_category_all').id,
             'type': 'consu',
             'rent_ok': True,
             'extra_hourly': 7.0,
             'extra_daily': 30.0,
         })
 
-        self.product_template_id = self.product_id.product_tmpl_id
+        cls.product_template_id = cls.product_id.product_tmpl_id
 
-        self.product_template_id.product_pricing_ids.unlink()
+        cls.product_template_id.product_pricing_ids.unlink()
         # blank the demo pricings
 
         PRICINGS = [
@@ -49,12 +50,11 @@ class TestRentalCommon(SingleTransactionCase):
         ]
 
         for pricing in PRICINGS:
-            pricing.update(product_template_id=self.product_template_id.id)
-            pricing = self.env['product.pricing'].create(pricing)
+            pricing.update(product_template_id=cls.product_template_id.id)
+            cls.env['product.pricing'].create(pricing)
 
-    def test_availability(self):
-        # Pickup, return some, check different periods
-        return
+        cls.tax_included = cls.env['account.tax'].create({'name': 'Tax Incl', 'amount': 10, 'price_include': True})
+        cls.tax_excluded = cls.env['account.tax'].create({'name': 'Tax Excl', 'amount': 10, 'price_include': False})
 
     def test_pricing(self):
         # check pricing returned = expected
@@ -354,6 +354,234 @@ class TestRentalCommon(SingleTransactionCase):
             pricelist=pricelist_A.id
         )._get_contextual_price()
         self.assertEqual(price, 7, "Contextual price should take pickup and return date into account")
+
+    def test_renting_taxes_inc2ex(self):
+
+        fiscal_position_inc2ex = self.env['account.fiscal.position'].create({'name': 'inc2ex'})
+        self.env['account.fiscal.position.tax'].create({
+            'position_id': fiscal_position_inc2ex.id,
+            'tax_src_id': self.tax_included.id,
+            'tax_dest_id': self.tax_excluded.id
+        })
+        self.product_id.taxes_id = self.tax_included
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.env['res.partner'].create({'name': 'A partner'}).id,
+            'fiscal_position_id': fiscal_position_inc2ex.id
+        })
+
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'order_id': sale_order.id,
+        })
+
+        wizard_sol = self.env['rental.wizard'].create({
+            'rental_order_line_id': sol.id,
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_sol.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_sol.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_sol.unit_price, 60/1.1, precision_rounding=2), 'Price with 10% taxes should be equal to basic pricing')
+
+        wizard_context = self.env['rental.wizard'].with_context({
+            'default_tax_ids': [self.tax_excluded.id]
+        }).create({
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_context.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_context.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_context.unit_price, 60/1.1, precision_rounding=2), 'Price with 10% taxes should be equal to basic pricing')
+
+    def test_renting_taxes_ex2inc(self):
+        fiscal_position_ex2inc = self.env['account.fiscal.position'].create({'name': 'ex2inc'})
+        self.env['account.fiscal.position.tax'].create({
+            'position_id': fiscal_position_ex2inc.id,
+            'tax_src_id': self.tax_excluded.id,
+            'tax_dest_id': self.tax_included.id
+        })
+        self.product_id.taxes_id = self.tax_excluded
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.env['res.partner'].create({'name': 'A partner'}).id,
+            'fiscal_position_id': fiscal_position_ex2inc.id
+        })
+
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'order_id': sale_order.id,
+        })
+
+        wizard_sol = self.env['rental.wizard'].create({
+            'rental_order_line_id': sol.id,
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_sol.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_sol.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_sol.unit_price, 60*1.1, precision_rounding=2),
+                        'Price with included taxes should be equal to basic pricing(tax excluded) + 10% taxes')
+
+        wizard_context = self.env['rental.wizard'].with_context({
+            'default_tax_ids': [self.tax_included.id]
+        }).create({
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_context.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_context.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_context.unit_price, 60*1.1, precision_rounding=2),
+                        'Price with included taxes should be equal to basic pricing(tax excluded) + 10% taxes')
+
+    def test_renting_taxes_included(self):
+        self.product_id.taxes_id = self.tax_included
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.env['res.partner'].create({'name': 'A partner'}).id,
+        })
+
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'order_id': sale_order.id,
+        })
+
+        wizard_sol = self.env['rental.wizard'].create({
+            'rental_order_line_id': sol.id,
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_sol.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_sol.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_sol.unit_price, 60*1.1, precision_rounding=2),
+                        'Price in wizard should be equal to basic pricing + 10% (tax included)')
+
+        wizard_context = self.env['rental.wizard'].with_context({
+            'default_tax_ids': [self.tax_included.id]
+        }).create({
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_context.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_context.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_context.unit_price, 60*1.1, precision_rounding=2),
+                        'Price in wizard should be equal to basic pricing + 10% (tax included)')
+
+    def test_renting_taxes_excluded(self):
+        self.product_id.taxes_id = self.tax_excluded
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.env['res.partner'].create({'name': 'A partner'}).id,
+        })
+
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'order_id': sale_order.id,
+        })
+
+        wizard_sol = self.env['rental.wizard'].create({
+            'rental_order_line_id': sol.id,
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_sol.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_sol.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_sol.unit_price, 60, precision_rounding=2),
+                        'Price in wizard should be equal to basic pricing (without tax excluded)')
+
+        wizard_context = self.env['rental.wizard'].with_context({
+            'default_tax_ids': [self.tax_excluded.id]
+        }).create({
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_context.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_context.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_context.unit_price, 60, precision_rounding=2),
+                        'Price in wizard should be equal to basic pricing (without tax excluded)')
+
+    def test_renting_taxes_ex_inc(self):
+        self.product_id.taxes_id = self.tax_excluded + self.tax_included
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.env['res.partner'].create({'name': 'A partner'}).id,
+        })
+
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'order_id': sale_order.id,
+        })
+
+        wizard_sol = self.env['rental.wizard'].create({
+            'rental_order_line_id': sol.id,
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_sol.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_sol.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_sol.unit_price, 60*1.1, precision_rounding=2),
+                        'Price in wizard should be equal to basic pricing + 10% (tax included)')
+
+        wizard_context = self.env['rental.wizard'].with_context({
+            'default_tax_ids': [self.tax_included.id, self.tax_excluded.id]
+        }).create({
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_context.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_context.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_context.unit_price, 60*1.1, precision_rounding=2),
+                        'Price in wizard should be equal to basic pricing + 10% (tax included)')
+
+    def test_renting_taxes_included_multicompany(self):
+
+        company2 = self.env['res.company'].create({'name': 'Company 2'})
+        self.tax_included.company_id = company2
+
+        self.product_id.taxes_id = self.tax_included
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': self.env['res.partner'].create({'name': 'A partner'}).id,
+        })
+
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'order_id': sale_order.id,
+        })
+
+        wizard_sol = self.env['rental.wizard'].create({
+            'rental_order_line_id': sol.id,
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_sol.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_sol.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_sol.unit_price, 60, precision_rounding=2),
+                        'Included tax related to another company should not apply')
+
+        wizard_context = self.env['rental.wizard'].with_context({
+            'default_tax_ids': [self.tax_included.id]
+        }).create({
+            'product_id': self.product_id.id
+        })
+
+        self.assertEqual(wizard_context.duration, 1, 'Default wizard duration should be one day')
+        self.assertEqual(wizard_context.duration_unit, 'day', 'Default wizard duration should be one day')
+
+        self.assertTrue(float_compare(wizard_context.unit_price, 60, precision_rounding=2),
+                        'Included tax related to another company should not apply')
+
 
 @tagged('post_install', '-at_install')
 class TestUi(HttpCase):

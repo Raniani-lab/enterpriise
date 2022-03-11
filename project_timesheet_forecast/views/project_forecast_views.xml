@@ -81,8 +81,8 @@
     </record>
 
     <record id="planning_view_gantt" model="ir.ui.view">
-        <field name="name">planning.slot.gantt.inherit.timesheet</field>
-        <field name="inherit_id" ref="planning.planning_view_gantt_group_by_role"/>
+        <field name="name">planning.slot.gantt</field>
+        <field name="inherit_id" ref="project_forecast.planning_view_gantt"/>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <gantt position="attributes">
@@ -126,7 +126,7 @@
         <record id="planning_menu_schedule_by_role" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">gantt</field>
-            <field name="view_id" ref="planning_view_gantt"/>
+            <field name="view_id" ref="planning.planning_view_gantt_group_by_role"/>
             <field name="act_window_id" ref="project_timesheet_action_schedule_by_role"/>
         </record>
 

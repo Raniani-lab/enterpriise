@@ -371,8 +371,8 @@
     </record>
 
     <record id="planning_view_gantt_group_by_role" model="ir.ui.view">
-        <field name="name">planning.slot.gantt</field>
-        <field name="inherit_id" ref="planning_view_gantt"/>
+        <field name="name">planning.slot.gantt.inherit.group.role</field>
+        <field name="inherit_id" ref="planning.planning_view_gantt"/>
         <field name="model">planning.slot</field>
         <field name="mode">primary</field>
         <field name="arch" type="xml">

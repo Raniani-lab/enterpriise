@@ -120,12 +120,11 @@
     <record id="planning_view_gantt" model="ir.ui.view">
         <field name="name">planning.slot.gantt</field>
         <field name="model">planning.slot</field>
-        <field name="inherit_id" ref="planning.planning_view_gantt_group_by_role"/>
-        <field name="mode">primary</field>
+        <field name="inherit_id" ref="planning.planning_view_gantt"/>
+        <field name="mode">extension</field>
         <field name="arch" type="xml">
             <xpath expr="/gantt" position="attributes">
                 <attribute name="js_class">forecast_gantt</attribute>
-                <attribute name="default_group_by">resource_id</attribute>
             </xpath>
         </field>
     </record>

@@ -9,7 +9,6 @@
         This module follow the implementation guidelines issued by the European Payment Council.
         For more information about the SEPA standards : http://www.iso20022.org/ and http://www.europeanpaymentscouncil.eu/
     """,
-    'category': 'Accounting/Accounting',
     'version': '1.0',
     'depends': ['account_batch_payment', 'base_iban'],
     'data': [

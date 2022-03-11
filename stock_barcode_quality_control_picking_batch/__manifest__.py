@@ -13,7 +13,6 @@
     ],
     'application': False,
     'auto_install': True,
-    'category': 'Hidden',
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [

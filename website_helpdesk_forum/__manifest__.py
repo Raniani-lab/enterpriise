@@ -25,9 +25,9 @@ Website Forum integration for the helpdesk module
         'wizards/helpdesk_ticket_select_forum.xml',
     ],
     'demo': [
+        'data/helpdesk_demo.xml',
         'data/website_helpdesk_forum_demo.xml',
     ],
-    'demo': ['data/helpdesk_demo.xml'],
     'auto_install': True,
     'license': 'OEEL-1',
 }

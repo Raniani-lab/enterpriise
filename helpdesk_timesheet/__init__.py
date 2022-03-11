@@ -13,5 +13,5 @@ def _helpdesk_timesheet_post_init(cr, registry):
     teams = env['helpdesk.team'].search([('use_helpdesk_timesheet', '=', True), ('project_id', '=', False), ('use_helpdesk_sale_timesheet', '=', False)])
 
     for team in teams:
-        team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True, 'allow_timesheets': True})
+        team.project_id = team._create_project(team.name, team.use_helpdesk_sale_timesheet, {'allow_timesheets': True})
         env['helpdesk.ticket'].search([('team_id', '=', team.id), ('project_id', '=', False)]).write({'project_id': team.project_id.id})

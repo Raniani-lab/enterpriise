@@ -19,8 +19,8 @@
         <t t-jquery='.o_calendar_sidebar_container' t-operation="append">
             <t t-if="widget.is_manager" class="o_planning_legend">
                 <h5>Legend</h5>
-                <img src="/hr/static/src/img/icons/plain.svg" width="30px"/><span>Published</span><br/>
-                <img src="/hr/static/src/img/icons/hatched.svg" width="30px"/><span>Draft</span><br/>
+                <img src="/hr/static/src/img/icons/plain.svg" width="30px" class="mb-1"/><span>Published</span><br/>
+                <img src="/hr/static/src/img/icons/hatched.svg" width="30px" class="mb-1"/><span>Draft</span><br/>
             </t>
         </t>
     </t>

@@ -69,6 +69,8 @@
             <field name="role_id" ref="planning_role_consultant"/>
             <field name="publication_warning" eval="False"/>
             <field name="state">draft</field>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_1'))]"/>
+            <field name="task_id" ref="sale_timesheet.project_agr_task_3"/>
         </record>
         <record id="sale_forecast_slot_012" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>
@@ -376,6 +378,8 @@
             <field name="role_id" ref="planning_role_junior_architect"/>
             <field name="publication_warning" eval="False"/>
             <field name="state">draft</field>
+            <field name="project_id" ref="project.project_project_2"/>
+            <field name="task_id" ref="project.project_2_task_6"/>
         </record>
 
         <!-- Week 2 -->
@@ -444,6 +448,8 @@
             <field name="role_id" ref="planning_role_senior_architect"/>
             <field name="publication_warning" eval="False"/>
             <field name="state">draft</field>
+            <field name="project_id" ref="project.project_project_2"/>
+            <field name="task_id" ref="project.project_2_task_6"/>
         </record>
         <record id="sale_forecast_slot_212" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>
@@ -605,6 +611,34 @@
             <field name="publication_warning" eval="False"/>
             <field name="state">draft</field>
             <field name="sale_line_id" ref="sale_timesheet.sale_line_13"/>
+        </record>
+
+        <!-- Timesheets -->
+        <record id="sale_forecast_slot_011_account_analytic_line_1" model="account.analytic.line">
+            <field name="name">Quality analysis</field>
+            <field name="employee_id" ref="hr.employee_fpi"/>
+            <field name="date" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d')"/>
+            <field name="unit_amount">2</field>
+            <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_1'))]"/>
+            <field name="task_id" ref="sale_timesheet.project_agr_task_3"/>
+        </record>
+
+        <record id="sale_forecast_slot_142_account_analytic_line_1" model="account.analytic.line">
+            <field name="name">Quality analysis</field>
+            <field name="employee_id" ref="hr.employee_jve"/>
+            <field name="date" eval="(datetime.today() - timedelta(days=datetime.today().weekday() - 4)).strftime('%Y-%m-%d')"/>
+            <field name="unit_amount">2</field>
+            <field name="project_id" ref="project.project_project_2"/>
+            <field name="task_id" ref="project.project_2_task_6"/>
+        </record>
+
+        <record id="sale_forecast_slot_211_account_analytic_line_1" model="account.analytic.line">
+            <field name="name">Quality analysis</field>
+            <field name="employee_id" ref="hr.employee_fme"/>
+            <field name="date" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d')"/>
+            <field name="unit_amount">3</field>
+            <field name="project_id" ref="project.project_project_2"/>
+            <field name="task_id" ref="project.project_2_task_6"/>
         </record>
 
     </data>

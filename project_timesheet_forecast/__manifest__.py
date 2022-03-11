@@ -21,6 +21,9 @@ Better plan your future schedules by considering time effectively spent on old p
         'data/project_timesheet_forecast_data.xml',
         'views/project_forecast_views.xml',
         ],
+    'demo': [
+        'demo/project_timesheet_forecast_demo.xml',
+    ],
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {

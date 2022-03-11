@@ -196,7 +196,9 @@ def _is_sent_by_amazon(mws_error):
     """
     if 700 <= mws_error.response.status_code <= 799:  # Custom Odoo proxy error
         _logger.exception(
-            f"proxy responded with status code {mws_error.response.status_code} to: {mws_error}"
+            "proxy responded with status code %s to: %s",
+            mws_error.response.status_code,
+            mws_error
         )
         if mws_error.response.status_code == 730:  # Forbidden
             raise exceptions.UserError(

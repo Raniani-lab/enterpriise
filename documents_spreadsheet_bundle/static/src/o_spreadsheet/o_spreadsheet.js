@@ -11637,8 +11637,8 @@
         getImportedSheetSize(data) {
             const positions = Object.keys(data.cells).map(toCartesian);
             return {
-                rowNumber: Math.max(data.rowNumber, ...positions.map(([col, row]) => row + 1)),
-                colNumber: Math.max(data.colNumber, ...positions.map(([col, row]) => col + 1)),
+                rowNumber: Math.max(data.rowNumber, ...new Set(positions.map(([col, row]) => row + 1))),
+                colNumber: Math.max(data.colNumber, ...new Set(positions.map(([col, row]) => col + 1))),
             };
         }
         // ----------------------------------------------------
@@ -31603,8 +31603,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-03-10T13:24:33.771Z';
-    exports.__info__.hash = 'd95e50b';
+    exports.__info__.date = '2022-03-11T11:14:04.804Z';
+    exports.__info__.hash = '9014d42';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

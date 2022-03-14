@@ -3,6 +3,7 @@
 
 import json
 import pytz
+import re
 
 from babel.dates import format_datetime, format_date
 from datetime import datetime, date
@@ -220,26 +221,27 @@ class Appointment(http.Controller):
                 'lang': request.lang.code,
             })
 
-        # Reporting Data : recover user inputs to questions, if any, asked on the appointment.
-        # The question answer inputs are created in _prepare_calendar_values
+        # partner_inputs dictionary structures all answer inputs received on the appointment submission: key is question id, value
+        # is answer id (as string) for choice questions, text input for text questions, array of ids for multiple choice questions.
+        partner_inputs = {}
+        appointment_question_ids = appointment_type.question_ids.ids
+        for k_key, k_value in [item for item in kwargs.items() if item[1]]:
+            question_id_str = re.match(r"\bquestion_([0-9]+)\b", k_key)
+            if question_id_str and int(question_id_str.group(1)) in appointment_question_ids:
+                partner_inputs[int(question_id_str.group(1))] = k_value
+                continue
+            checkbox_ids_str = re.match(r"\bquestion_([0-9]+)_answer_([0-9]+)\b", k_key)
+            if checkbox_ids_str:
+                question_id, answer_id = [int(checkbox_ids_str.group(1)), int(checkbox_ids_str.group(2))]
+                if question_id in appointment_question_ids:
+                    partner_inputs[question_id] = partner_inputs.get(question_id, []) + [answer_id]
+
+        # The answer inputs will be created in _prepare_calendar_values from the values in question_answer_inputs
         question_answer_inputs = []
-        for question in appointment_type.question_ids:
-            question_key = f'question_{question.id}'
-            if question.question_type == 'checkbox':
-                question_answer_inputs += [{
-                    'question_id': question.id,
-                    'value_answer_id': answer.id
-                } for answer in question.answer_ids.filtered(lambda answer: (f'{question_key}_answer_{answer.id}') in kwargs)]
-            elif kwargs.get(question_key) and question.question_type in ['char', 'text']:
-                question_answer_inputs.append({'question_id': question.id, 'value_text_box': kwargs.get(question_key).strip()})
-            elif kwargs.get(question_key) and question.question_type in ['select', 'radio']:
-                selected_answer = question.answer_ids.filtered(lambda answer: answer.id == int(kwargs.get(question_key)))
-                if selected_answer:
-                    question_answer_inputs.append({'question_id': question.id, 'value_answer_id': selected_answer.id})
-
-        for question_answer_input in question_answer_inputs:
-            question_answer_input.update({'appointment_type_id': appointment_type.id, 'partner_id': Partner.id})
-
+        base_answer_input_vals = {
+            'appointment_type_id': appointment_type.id,
+            'partner_id': Partner.id,
+        }
         description_bits = []
         description = ''
 
@@ -248,20 +250,30 @@ class Appointment(http.Controller):
         if email:
             description_bits.append(_('Email: %s', email))
 
-        for question in appointment_type.question_ids:
-            key = 'question_' + str(question.id)
+        for question in appointment_type.question_ids.filtered(lambda question: question.id in partner_inputs.keys()):
             if question.question_type == 'checkbox':
-                answers = question.answer_ids.filtered(lambda x: (key + '_answer_' + str(x.id)) in kwargs)
-                if answers:
-                    description_bits.append('%s: %s' % (question.name, ', '.join(answers.mapped('name'))))
-            elif question.question_type == 'text' and kwargs.get(key):
-                answers = [line for line in kwargs[key].split('\n') if line.strip()]
-                description_bits.append('%s:<br/>%s' % (question.name, plaintext2html(kwargs.get(key).strip())))
-            elif question.question_type in ['select', 'radio'] and kwargs.get(key):
-                selected_answer = question.answer_ids.filtered(lambda answer: answer.id == int(kwargs.get(key)))
+                answers = question.answer_ids.filtered(lambda answer: answer.id in partner_inputs[question.id])
+                question_answer_inputs.extend([
+                    dict(base_answer_input_vals, question_id=question.id, value_answer_id=answer.id) for answer in answers
+                ])
+                description_bits.append('%s: %s' % (question.name, ', '.join(answers.mapped('name'))))
+            elif question.question_type in ['select', 'radio']:
+                question_answer_inputs.append(
+                    dict(base_answer_input_vals, question_id=question.id, value_answer_id=int(partner_inputs[question.id]))
+                )
+                selected_answer = question.answer_ids.filtered(lambda answer: answer.id == int(partner_inputs[question.id]))
                 description_bits.append('%s: %s' % (question.name, selected_answer.name))
-            elif kwargs.get(key):
-                description_bits.append('%s: %s' % (question.name, kwargs.get(key).strip()))
+            elif question.question_type == 'char':
+                question_answer_inputs.append(
+                    dict(base_answer_input_vals, question_id=question.id, value_text_box=partner_inputs[question.id].strip())
+                )
+                description_bits.append('%s: %s' % (question.name, partner_inputs[question.id].strip()))
+            elif question.question_type == 'text':
+                question_answer_inputs.append(
+                    dict(base_answer_input_vals, question_id=question.id, value_text_box=partner_inputs[question.id].strip())
+                )
+                description_bits.append('%s:<br/>%s' % (question.name, plaintext2html(partner_inputs[question.id].strip())))
+
         if description_bits:
             description = '<ul>' + ''.join(['<li>%s</li>' % bit for bit in description_bits]) + '</ul>'
 

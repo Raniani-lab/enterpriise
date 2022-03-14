@@ -189,10 +189,18 @@ var db = {
         fields: {
             id: {string: 'id', type: 'integer'},
             display_name: {string: 'display_name', type: 'char'},
+            company_id: {string: 'id', type: 'integer'},
         },
         records: [
-            {id: 1, display_name: 'Come together'},
-            {id: 2, display_name: 'Right now'},
+            {id: 1, display_name: 'Come together', company_id: false},
+            {id: 2, display_name: 'Right now', company_id: false},
+            {id: 3, display_name: 'Tag-3', company_id: false},
+            {id: 4, display_name: 'Tag-4', company_id: false},
+            {id: 5, display_name: 'Tag-5', company_id: false},
+            {id: 6, display_name: 'Tag-6', company_id: false},
+            {id: 7, display_name: 'Tag-7', company_id: false},
+            {id: 8, display_name: 'Tag-8', company_id: false},
+            {id: 9, display_name: 'Tag-9', company_id: false},
         ],
     },
     'account.bank.statement': {
@@ -2229,6 +2237,72 @@ QUnit.module('account', {
         await testUtilsDom.click(widget.$('.create_analytic_tag_ids .o_field_many2manytags .badge a.o_delete:first()'));
 
         await testUtilsDom.click(widget.$('.o_reconcile:visible'));
+
+        clientAction.destroy();
+    });
+
+    QUnit.test('Reconciliation Models: display analytic tags with Search More - Checkboxes', async function (assert) {
+        assert.expect(4);
+
+        const clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
+        const env = await testUtils.mock.addMockEnvironment(clientAction, {
+            data: this.params.data,
+            mockRPC: function (route, args) {
+                if (args.method === "name_search" && args.model ==='account.analytic.tag') {
+                    return Promise.resolve(this.data[args.model].records.map(record => [record.id, record.display_name]));
+                }
+                return this._super(route, args);
+            },
+            session: {
+                currencies: {
+                    3: {
+                        digits: [69, 2],
+                        position: "before",
+                        symbol: "$"
+                    }
+                },
+                user_has_group: function (group) {
+                    const groups = [
+                        'analytic.group_analytic_tags',
+                        'analytic.group_analytic_accounting',
+                        'base.group_allow_export',
+                    ];
+                    if (groups.includes(group)) {
+                        return Promise.resolve(true);
+                    }
+                    return this._super.apply(this, arguments);
+                },
+            },
+            archs: {
+                'account.bank.statement.line,false,search': '<search string="Statement Line"><field name="display_name"/></search>',
+                'account.analytic.tag,false,search': '<search string="Analytic Tags"><field name="display_name"/></search>',
+                'account.analytic.tag,false,list': '<list string="Analytic Tags"><field name="display_name"/></list>',
+            },
+        });
+
+        const target = env.debug ? $(document.body) : $('#qunit-fixture');
+        await clientAction.appendTo(target);
+        await testUtils.nextTick();
+
+        // The first reconciliation "line" is where it happens
+        const widget = clientAction.widgets[0];
+
+        await testUtils.dom.click(widget.$('.o_notebook .nav-link[href*="notebook_page_create"]'));
+        await testUtils.fields.many2one.clickOpenDropdown('analytic_tag_ids');
+        await testUtils.fields.many2one.clickItem('analytic_tag_ids', 'Search More');
+        await testUtils.nextTick();
+        assert.equal($('.modal-title').text(), "Search: analytic_tag_ids");
+
+        await testUtils.dom.click($('.modal-body input[type="checkbox"]').eq(1));
+        await testUtils.dom.click($('.modal-body input[type="checkbox"]').eq(2));
+        await testUtils.dom.click($('.modal-footer .o_select_button'));
+
+        assert.containsN(widget, '.create_analytic_tag_ids .o_field_many2manytags .badge', 2,
+            'Two tags are loaded');
+        assert.containsOnce(widget, '.create_analytic_tag_ids .o_field_many2manytags .badge:contains("Come together")',
+            'Tags should have a name');
+        assert.containsOnce(widget, '.create_analytic_tag_ids .o_field_many2manytags .badge:contains("Right now")',
+            'Tags should have a name');
 
         clientAction.destroy();
     });

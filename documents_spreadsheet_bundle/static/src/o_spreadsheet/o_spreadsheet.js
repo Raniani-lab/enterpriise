@@ -6206,7 +6206,8 @@
     `),
         returns: ["NUMBER"],
         compute: function (cellReference) {
-            cellReference = cellReference || this.__originCellXC;
+            var _a;
+            cellReference = cellReference || ((_a = this.__originCellXC) === null || _a === void 0 ? void 0 : _a.call(this));
             assert(() => !!cellReference, "In this context, the function [[FUNCTION_NAME]] needs to have a cell or range in parameter.");
             const zone = toZone(cellReference);
             return zone.left + 1;
@@ -6332,7 +6333,8 @@
         args: args(`cell_reference (meta, default=${_lt("The cell in which the formula is entered by default")}) ${_lt("The cell whose row number will be returned.")}`),
         returns: ["NUMBER"],
         compute: function (cellReference) {
-            cellReference = cellReference || this.__originCellXC;
+            var _a;
+            cellReference = cellReference || ((_a = this.__originCellXC) === null || _a === void 0 ? void 0 : _a.call(this));
             assert(() => !!cellReference, "In this context, the function [[FUNCTION_NAME]] needs to have a cell or range in parameter.");
             const zone = toZone(cellReference);
             return zone.top + 1;
@@ -14343,19 +14345,11 @@
     }
     SelectionInput.template = TEMPLATE$n;
 
-    const conditionalFormattingTerms = {
-        CF_TITLE: _lt("Format rules"),
-        IS_RULE: _lt("Format cells if..."),
-        FORMATTING_STYLE: _lt("Formatting style"),
-        BOLD: _lt("Bold"),
-        ITALIC: _lt("Italic"),
-        UNDERLINE: _lt("Underline"),
-        STRIKE_THROUGH: _lt("Strikethrough"),
-        TEXT_COLOR: _lt("Text Color"),
-        FILL_COLOR: _lt("Fill Color"),
-        CANCEL: _lt("Cancel"),
-        SAVE: _lt("Save"),
-        PREVIEW_TEXT: _lt("Preview text"),
+    const CfTerms = {
+        CfTitle: _lt("Format rules"),
+        IsRule: _lt("Format cells if..."),
+        FormattingStyle: _lt("Formatting style"),
+        PreviewText: _lt("Preview text"),
         Errors: {
             [20 /* InvalidRange */]: _lt("The range is invalid"),
             [34 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
@@ -14375,20 +14369,21 @@
             [44 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
             [45 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
             [19 /* EmptyRange */]: _lt("A range needs to be defined"),
-            unexpected: _lt("The rule is invalid for an unknown reason"),
+            Unexpected: _lt("The rule is invalid for an unknown reason"),
         },
         SingleColor: _lt("Single color"),
         ColorScale: _lt("Color scale"),
         IconSet: _lt("Icon set"),
-        newRule: _lt("Add another rule"),
-        reorderRules: _lt("Reorder rules"),
-        exitReorderMode: _lt("Stop reordering rules"),
+        NewRule: _lt("Add another rule"),
+        ReorderRules: _lt("Reorder rules"),
+        ExitReorderMode: _lt("Stop reordering rules"),
         FixedNumber: _lt("Number"),
         Percentage: _lt("Percentage"),
         Percentile: _lt("Percentile"),
         Formula: _lt("Formula"),
+        ApplyToRange: _lt("Apply to range"),
     };
-    const colorScale = {
+    const ColorScale = {
         CellValues: _lt("Cell values"),
         None: _lt("None"),
         Preview: _lt("Preview"),
@@ -14396,15 +14391,14 @@
         MaxPoint: _lt("Maxpoint"),
         MidPoint: _lt("Midpoint"),
     };
-    const iconSetRule = {
+    const IconSetRule = {
         WhenValueIs: _lt("When value is"),
         Else: _lt("Else"),
         ReverseIcons: _lt("Reverse icons"),
         Icons: _lt("Icons"),
         Type: _lt("Type"),
-        Value: _lt("Value"),
     };
-    const cellIsOperators = {
+    const CellIsOperators = {
         IsEmpty: _lt("Is empty"),
         IsNotEmpty: _lt("Is not empty"),
         ContainsText: _lt("Contains"),
@@ -14420,7 +14414,7 @@
         Between: _lt("Is between"),
         NotBetween: _lt("Is not between"),
     };
-    const chartTerms = {
+    const ChartTerms = {
         ChartType: _lt("Chart type"),
         Line: _lt("Line"),
         Bar: _lt("Bar"),
@@ -14451,7 +14445,7 @@
             [25 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
             [26 /* InvalidDataSet */]: _lt("The dataset is invalid"),
             [27 /* InvalidLabelRange */]: _lt("Labels are invalid"),
-            unexpected: _lt("The chart definition is invalid for an unknown reason"),
+            Unexpected: _lt("The chart definition is invalid for an unknown reason"),
         },
     };
     const FindAndReplaceTerms = {
@@ -14468,10 +14462,36 @@
     const LinkEditorTerms = {
         Text: _lt("Text"),
         Link: _lt("Link"),
-        Confirm: _lt("Confirm"),
-        Cancel: _lt("Cancel"),
         Edit: _lt("Edit link"),
         Remove: _lt("Remove link"),
+    };
+    const TopBarTerms = {
+        ReadonlyAccess: _lt("Readonly Access"),
+        PaintFormat: _lt("Paint Format"),
+        ClearFormat: _lt("Clear Format"),
+        FormatPercent: _lt("Format as percent"),
+        DecreaseDecimal: _lt("Decrease decimal places"),
+        IncreaseDecimal: _lt("Increase decimal places"),
+        MoreFormat: _lt("More formats"),
+        FontSize: _lt("Font Size"),
+        Borders: _lt("Borders"),
+        MergeCells: _lt("Merge Cells"),
+        HorizontalAlign: _lt("Horizontal align"),
+    };
+    const GenericTerms = {
+        Undo: _lt("Undo"),
+        Redo: _lt("Redo"),
+        Bold: _lt("Bold"),
+        Italic: _lt("Italic"),
+        Strikethrough: _lt("Strikethrough"),
+        Underline: _lt("Underline"),
+        FillColor: _lt("Fill Color"),
+        TextColor: _lt("Text Color"),
+        Cancel: _lt("Cancel"),
+        Save: _lt("Save"),
+        Confirm: _lt("Confirm"),
+        Value: _lt("Value"),
+        AndValue: _lt("and value"),
     };
     const GenericWords = {
         And: _lt("and"),
@@ -14480,31 +14500,31 @@
     const CONFIGURATION_TEMPLATE = owl.xml /* xml */ `
 <div>
   <div class="o-section">
-    <div class="o-section-title" t-esc="env._t('${chartTerms.ChartType}')"/>
+    <div class="o-section-title" t-esc="env._t('${ChartTerms.ChartType}')"/>
     <select t-model="state.chart.type" class="o-input o-type-selector" t-on-change="(ev) => this.updateSelect('type', ev)">
-      <option value="bar" t-esc="env._t('${chartTerms.Bar}')"/>
-      <option value="line" t-esc="env._t('${chartTerms.Line}')"/>
-      <option value="pie" t-esc="env._t('${chartTerms.Pie}')"/>
+      <option value="bar" t-esc="env._t('${ChartTerms.Bar}')"/>
+      <option value="line" t-esc="env._t('${ChartTerms.Line}')"/>
+      <option value="pie" t-esc="env._t('${ChartTerms.Pie}')"/>
     </select>
     <t t-if="state.chart.type === 'bar'">
       <div class="o_checkbox">
         <input type="checkbox" name="stackedBar" t-model="state.chart.stackedBar" t-on-change="updateStacked"/>
-        <t t-esc="env._t('${chartTerms.StackedBar}')"/>
+        <t t-esc="env._t('${ChartTerms.StackedBar}')"/>
       </div>
     </t>
   </div>
   <div class="o-section o-data-series">
-    <div class="o-section-title" t-esc="env._t('${chartTerms.DataSeries}')"/>
+    <div class="o-section-title" t-esc="env._t('${ChartTerms.DataSeries}')"/>
     <SelectionInput t-key="getKey('dataSets')"
                     ranges="state.chart.dataSets"
                     isInvalid="isDatasetInvalid"
                     required="true"
                     onSelectionChanged="(ranges) => this.onSeriesChanged(ranges)"
                     onSelectionConfirmed="() => this.updateDataSet()" />
-    <input type="checkbox" t-model="state.chart.dataSetsHaveTitle" t-on-change="() => this.updateDataSet()"/><t t-esc="env._t('${chartTerms.MyDataHasTitle}')"/>
+    <input type="checkbox" t-model="state.chart.dataSetsHaveTitle" t-on-change="() => this.updateDataSet()"/><t t-esc="env._t('${ChartTerms.MyDataHasTitle}')"/>
   </div>
   <div class="o-section o-data-labels">
-    <div class="o-section-title" t-esc="env._t('${chartTerms.DataCategories}')"/>
+    <div class="o-section-title" t-esc="env._t('${ChartTerms.DataCategories}')"/>
     <SelectionInput t-key="getKey('label')"
                     ranges="[state.chart.labelRange || '']"
                     isInvalid="isLabelInvalid"
@@ -14522,32 +14542,32 @@
     const DESIGN_TEMPLATE = owl.xml /* xml */ `
 <div>
   <div class="o-section o-chart-title">
-    <div class="o-section-title" t-esc="env._t('${chartTerms.BackgroundColor}')"/>
+    <div class="o-section-title" t-esc="env._t('${ChartTerms.BackgroundColor}')"/>
     <div class="o-with-color-picker">
-      <t t-esc="env._t('${chartTerms.SelectColor}')"/>
+      <t t-esc="env._t('${ChartTerms.SelectColor}')"/>
       <span t-attf-style="border-color:{{state.chart.background}}"
             t-on-click.stop="toggleColorPicker">${FILL_COLOR_ICON}</span>
       <ColorPicker t-if="state.fillColorTool" onColorPicked="(color) => this.setColor(color)" t-key="backgroundColor"/>
     </div>
   </div>
   <div class="o-section o-chart-title">
-    <div class="o-section-title" t-esc="env._t('${chartTerms.Title}')"/>
-    <input type="text" t-model="state.chart.title" t-on-change="updateTitle" class="o-input" t-att-placeholder="env._t('${chartTerms.TitlePlaceholder}')"/>
+    <div class="o-section-title" t-esc="env._t('${ChartTerms.Title}')"/>
+    <input type="text" t-model="state.chart.title" t-on-change="updateTitle" class="o-input" placeholder="${ChartTerms.TitlePlaceholder}"/>
   </div>
   <div class="o-section">
-    <div class="o-section-title"><t t-esc="env._t('${chartTerms.VerticalAxisPosition}')"/></div>
+    <div class="o-section-title"><t t-esc="env._t('${ChartTerms.VerticalAxisPosition}')"/></div>
     <select t-model="state.chart.verticalAxisPosition" class="o-input o-type-selector" t-on-change="(ev) => this.updateSelect('verticalAxisPosition', ev)">
-      <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
-      <option value="right" t-esc="env._t('${chartTerms.Right}')"/>
+      <option value="left" t-esc="env._t('${ChartTerms.Left}')"/>
+      <option value="right" t-esc="env._t('${ChartTerms.Right}')"/>
     </select>
   </div>
   <div class="o-section">
-    <div class="o-section-title"><t t-esc="env._t('${chartTerms.LegendPosition}')"/></div>
+    <div class="o-section-title"><t t-esc="env._t('${ChartTerms.LegendPosition}')"/></div>
     <select t-model="state.chart.legendPosition" class="o-input o-type-selector" t-on-change="(ev) => this.updateSelect('legendPosition', ev)">
-      <option value="top" t-esc="env._t('${chartTerms.Top}')"/>
-      <option value="bottom" t-esc="env._t('${chartTerms.Bottom}')"/>
-      <option value="left" t-esc="env._t('${chartTerms.Left}')"/>
-      <option value="right" t-esc="env._t('${chartTerms.Right}')"/>
+      <option value="top" t-esc="env._t('${ChartTerms.Top}')"/>
+      <option value="bottom" t-esc="env._t('${ChartTerms.Bottom}')"/>
+      <option value="left" t-esc="env._t('${ChartTerms.Left}')"/>
+      <option value="right" t-esc="env._t('${ChartTerms.Right}')"/>
     </select>
   </div>
 </div>
@@ -14632,7 +14652,7 @@
                 ...(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || []),
                 ...(((_b = this.state.labelsDispatchResult) === null || _b === void 0 ? void 0 : _b.reasons) || []),
             ];
-            return cancelledReasons.map((error) => this.env._t(chartTerms.Errors[error] || chartTerms.Errors.unexpected));
+            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
         }
         get isDatasetInvalid() {
             var _a, _b;
@@ -14772,11 +14792,11 @@
                        color:{{currentStyle.textColor}};
                        border-radius: 4px;
                        background-color:{{currentStyle.fillColor}};"
-         t-esc="previewText || env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')" />
+         t-esc="previewText || env._t('${CfTerms.PreviewText}')" />
 `;
     const TEMPLATE_CELL_IS_RULE_EDITOR = owl.xml /* xml */ `
 <div class="o-cf-cell-is-rule">
-    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.IS_RULE}')"></div>
+    <div class="o-cf-title-text" t-esc="env._t('${CfTerms.IsRule}')"></div>
     <select t-model="rule.operator" class="o-input o-cell-is-operator">
         <t t-foreach="Object.keys(cellIsOperators)" t-as="op" t-key="op_index">
             <option t-att-value="op" t-esc="cellIsOperators[op]"/>
@@ -14784,38 +14804,38 @@
     </select>
     <t t-if="rule.operator !== 'IsEmpty' and rule.operator !== 'IsNotEmpty'">
       <input type="text"
-             placeholder="Value"
+             placeholder="${GenericTerms.Value}"
              t-model="rule.values[0]"
              t-att-class="{ 'o-invalid': isValue1Invalid }"
              class="o-input o-cell-is-value o-required"/>
       <t t-if="rule.operator === 'Between' || rule.operator === 'NotBetween'">
           <input type="text"
-                 placeholder="and value"
+                 placeholder="${GenericTerms.AndValue}"
                  t-model="rule.values[1]"
                  t-att-class="{ 'o-invalid': isValue2Invalid }"
                  class="o-input o-cell-is-value o-required"/>
       </t>
     </t>
-    <div class="o-cf-title-text" t-esc="env._t('${conditionalFormattingTerms.FORMATTING_STYLE}')"></div>
+    <div class="o-cf-title-text" t-esc="env._t('${CfTerms.FormattingStyle}')"></div>
 
     <t t-call="${PREVIEW_TEMPLATE$2}">
         <t t-set="currentStyle" t-value="rule.style"/>
     </t>
     <div class="o-tools">
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.BOLD}')" t-att-class="{active:rule.style.bold}" t-on-click="() => this.toggleStyle('bold')">
+        <div class="o-tool" title="${GenericTerms.Bold}" t-att-class="{active:rule.style.bold}" t-on-click="() => this.toggleStyle('bold')">
             ${BOLD_ICON}
         </div>
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.ITALIC}')" t-att-class="{active:rule.style.italic}" t-on-click="() => this.toggleStyle('italic')">
+        <div class="o-tool" title="${GenericTerms.Italic}" t-att-class="{active:rule.style.italic}" t-on-click="() => this.toggleStyle('italic')">
             ${ITALIC_ICON}
         </div>
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.UNDERLINE}')" t-att-class="{active:rule.style.underline}"
+        <div class="o-tool" title="${GenericTerms.Underline}" t-att-class="{active:rule.style.underline}"
              t-on-click="(ev) => this.toggleStyle('underline', ev)">${UNDERLINE_ICON}
         </div>
-        <div class="o-tool" t-att-title="env._t('${conditionalFormattingTerms.STRIKE_THROUGH}')" t-att-class="{active:rule.style.strikethrough}"
+        <div class="o-tool" title="${GenericTerms.Strikethrough}" t-att-class="{active:rule.style.strikethrough}"
              t-on-click="(ev) => this.toggleStyle('strikethrough', ev)">${STRIKE_ICON}
         </div>
         <div class="o-tool o-dropdown o-with-color">
-              <span t-att-title="env._t('${conditionalFormattingTerms.TEXT_COLOR}')" t-attf-style="border-color:{{rule.style.textColor}}"
+              <span title="${GenericTerms.TextColor}" t-attf-style="border-color:{{rule.style.textColor}}"
                     t-on-click.stop="(ev) => this.toggleMenu('cellIsRule-textColor', ev)">
                     ${TEXT_COLOR_ICON}
               </span>
@@ -14823,7 +14843,7 @@
         </div>
         <div class="o-divider"/>
         <div class="o-tool o-dropdown o-with-color">
-          <span t-att-title="env._t('${conditionalFormattingTerms.FILL_COLOR}')" t-attf-style="border-color:{{rule.style.fillColor}}"
+          <span title="${GenericTerms.FillColor}" t-attf-style="border-color:{{rule.style.fillColor}}"
                 t-on-click.stop="(ev) => this.toggleMenu('cellIsRule-fillColor', ev)">
                 ${FILL_COLOR_ICON}
           </span>
@@ -14835,7 +14855,7 @@
 
     const PREVIEW_TEMPLATE$1 = owl.xml /* xml */ `
   <div class="o-cf-preview-gradient" t-attf-style="{{getPreviewGradient()}}">
-    <t t-esc="env._t('${conditionalFormattingTerms.PREVIEW_TEXT}')"/>
+    <t t-esc="env._t('${CfTerms.PreviewText}')"/>
   </div>
 `;
     const THRESHOLD_TEMPLATE = owl.xml /* xml */ `
@@ -14843,20 +14863,20 @@
       <t t-if="thresholdType === 'midpoint'">
         <t t-set="type" t-value="threshold and threshold.type"/>
         <select class="o-input" name="valueType" t-on-change="onMidpointChange" t-on-click="closeMenus">
-          <option value="none" t-esc="env._t('${colorScale.None}')" t-att-selected="threshold === undefined"/>
-          <option value="number" t-esc="env._t('${conditionalFormattingTerms.FixedNumber}')" t-att-selected="type === 'number'"/>
-          <option value="percentage" t-esc="env._t('${conditionalFormattingTerms.Percentage}')" t-att-selected="type === 'percentage'"/>
-          <option value="percentile" t-esc="env._t('${conditionalFormattingTerms.Percentile}')" t-att-selected="type === 'percentile'"/>
-          <option value="formula" t-esc="env._t('${conditionalFormattingTerms.Formula}')" t-att-selected="type === 'formula'"/>
+          <option value="none" t-esc="env._t('${ColorScale.None}')" t-att-selected="threshold === undefined"/>
+          <option value="number" t-esc="env._t('${CfTerms.FixedNumber}')" t-att-selected="type === 'number'"/>
+          <option value="percentage" t-esc="env._t('${CfTerms.Percentage}')" t-att-selected="type === 'percentage'"/>
+          <option value="percentile" t-esc="env._t('${CfTerms.Percentile}')" t-att-selected="type === 'percentile'"/>
+          <option value="formula" t-esc="env._t('${CfTerms.Formula}')" t-att-selected="type === 'formula'"/>
         </select>
       </t>
       <t t-else="">
         <select class="o-input" name="valueType" t-model="threshold.type" t-on-click="closeMenus">
-          <option value="value" t-esc="env._t('${colorScale.CellValues}')"/>
-          <option value="number" t-esc="env._t('${conditionalFormattingTerms.FixedNumber}')"/>
-          <option value="percentage" t-esc="env._t('${conditionalFormattingTerms.Percentage}')"/>
-          <option value="percentile" t-esc="env._t('${conditionalFormattingTerms.Percentile}')"/>
-          <option value="formula" t-esc="env._t('${conditionalFormattingTerms.Formula}')"/>
+          <option value="value" t-esc="env._t('${ColorScale.CellValues}')"/>
+          <option value="number" t-esc="env._t('${CfTerms.FixedNumber}')"/>
+          <option value="percentage" t-esc="env._t('${CfTerms.Percentage}')"/>
+          <option value="percentile" t-esc="env._t('${CfTerms.Percentile}')"/>
+          <option value="formula" t-esc="env._t('${CfTerms.Formula}')"/>
         </select>
       </t>
       <input type="text" class="o-input o-threshold-value o-required"
@@ -14878,25 +14898,25 @@
     const TEMPLATE_COLOR_SCALE_EDITOR = owl.xml /* xml */ `
   <div class="o-cf-color-scale-editor">
       <div class="o-cf-title-text">
-        <t t-esc="env._t('${colorScale.Preview}')"/>
+        <t t-esc="env._t('${ColorScale.Preview}')"/>
       </div>
       <t t-call="${PREVIEW_TEMPLATE$1}"/>
       <div class="o-cf-title-text">
-        <t t-esc="env._t('${colorScale.Minpoint}')"/>
+        <t t-esc="env._t('${ColorScale.Minpoint}')"/>
       </div>
       <t t-call="${THRESHOLD_TEMPLATE}">
           <t t-set="threshold" t-value="rule.minimum" ></t>
           <t t-set="thresholdType" t-value="'minimum'" ></t>
       </t>
       <div class="o-cf-title-text">
-        <t t-esc="env._t('${colorScale.MidPoint}')"/>
+        <t t-esc="env._t('${ColorScale.MidPoint}')"/>
       </div>
       <t t-call="${THRESHOLD_TEMPLATE}">
           <t t-set="threshold" t-value="rule.midpoint" ></t>
           <t t-set="thresholdType" t-value="'midpoint'" ></t>
       </t>
       <div class="o-cf-title-text">
-        <t t-esc="env._t('${colorScale.MaxPoint}')"/>
+        <t t-esc="env._t('${ColorScale.MaxPoint}')"/>
       </div>
       <t t-call="${THRESHOLD_TEMPLATE}">
           <t t-set="threshold" t-value="rule.maximum" ></t>
@@ -14907,7 +14927,7 @@
     const ICON_SETS_TEMPLATE = owl.xml /* xml */ `
   <div>
   <div class="o-cf-title-text">
-    <t t-esc="env._t('${iconSetRule.Icons}')"/>
+    <t t-esc="env._t('${IconSetRule.Icons}')"/>
   </div>
     <div class="o-cf-iconsets">
       <div class="o-cf-iconset" t-foreach="['arrows', 'smiley', 'dots']" t-as="iconSet" t-key="iconSet" t-on-click="(ev) => this.setIconSet(iconSet, ev)">
@@ -14935,7 +14955,7 @@
       <IconPicker t-if="state.openedMenu === 'iconSet-'+icon+'Icon'" onIconPicked="(i) => this.setIcon(icon, i)"/>
     </td>
     <td>
-      <t t-esc="env._t('${iconSetRule.WhenValueIs}')"/>
+      <t t-esc="env._t('${IconSetRule.WhenValueIs}')"/>
     </td>
     <td>
       <select class="o-input" name="valueType" t-model="inflectionPointValue.operator">
@@ -14956,16 +14976,16 @@
     <td>
       <select class="o-input" name="valueType" t-model="inflectionPointValue.type">
       <option value="number">
-        <t t-esc="env._t('${conditionalFormattingTerms.FixedNumber}')"/>
+        <t t-esc="env._t('${CfTerms.FixedNumber}')"/>
       </option>
       <option value="percentage">
-        <t t-esc="env._t('${conditionalFormattingTerms.Percentage}')"/>
+        <t t-esc="env._t('${CfTerms.Percentage}')"/>
       </option>
       <option value="percentile">
-        <t t-esc="env._t('${conditionalFormattingTerms.Percentile}')"/>
+        <t t-esc="env._t('${CfTerms.Percentile}')"/>
       </option>
       <option value="formula">
-        <t t-esc="env._t('${conditionalFormattingTerms.Formula}')"/>
+        <t t-esc="env._t('${CfTerms.Formula}')"/>
       </option>
       </select>
     </td>
@@ -14979,10 +14999,10 @@
       <th class="o-cf-iconset-text"></th>
       <th class="o-cf-iconset-operator"></th>
       <th class="o-cf-iconset-value">
-      <t t-esc="env._t('${iconSetRule.Value}')"/>
+      <t t-esc="env._t('${GenericTerms.Value}')"/>
       </th>
       <th class="o-cf-iconset-type">
-      <t t-esc="env._t('${iconSetRule.Type}')"/>
+      <t t-esc="env._t('${IconSetRule.Type}')"/>
       </th>
     </tr>
     <t t-call="${INFLECTION_POINTS_TEMPLATE_ROW}">
@@ -15006,7 +15026,7 @@
         </div>
         <IconPicker t-if="state.openedMenu === 'iconSet-lowerIcon'" onIconPicked="(icon) => setIcon('lower', icon)"/>
       </td>
-      <td><t t-esc="env._t('${iconSetRule.Else}')"/></td>
+      <td><t t-esc="env._t('${IconSetRule.Else}')"/></td>
       <td></td>
       <td></td>
       <td></td>
@@ -15021,7 +15041,7 @@
         <div class="mr-1 d-inline-block">
           ${REFRESH}
         </div>
-        <t t-esc="env._t('${iconSetRule.ReverseIcons}')"/>
+        <t t-esc="env._t('${IconSetRule.ReverseIcons}')"/>
       </div>
   </div>`;
 
@@ -15087,22 +15107,22 @@
       </div>
       <t t-if="state.mode === 'list'">
         <div class="btn btn-link o-cf-btn-link o-cf-add" t-on-click.prevent.stop="addConditionalFormat">
-          <t t-esc="'+ ' + env._t('${conditionalFormattingTerms.newRule}')"/>
+          <t t-esc="'+ ' + env._t('${CfTerms.NewRule}')"/>
         </div>
         <div class="btn btn-link o-cf-btn-link o-cf-reorder" t-on-click="reorderConditionalFormats">
-          <t t-esc="env._t('${conditionalFormattingTerms.reorderRules}')"/>
+          <t t-esc="env._t('${CfTerms.ReorderRules}')"/>
         </div>
       </t>
       <t t-if="state.mode === 'reorder'">
         <div class="btn btn-link o-cf-btn-link o-cf-exit-reorder" t-on-click="switchToList">
-            <t t-esc="env._t('${conditionalFormattingTerms.exitReorderMode}')"/>
+            <t t-esc="env._t('${CfTerms.ExitReorderMode}')"/>
         </div>
       </t>
     </t>
     <t t-if="state.mode === 'edit' || state.mode === 'add'" t-key="state.currentCF.id">
         <div class="o-cf-ruleEditor">
             <div class="o-section o-cf-range">
-              <div class="o-section-title">Apply to range</div>
+              <div class="o-section-title" t-esc="env._t('${CfTerms.ApplyToRange}')"></div>
               <div class="o-selection-cf">
                 <SelectionInput
                   ranges="state.currentCF.ranges"
@@ -15111,25 +15131,25 @@
                   onSelectionChanged="(ranges) => this.onRangesChanged(ranges)"
                   required="true"/>
               </div>
-              <div class="o-section-title" t-esc="env._t('${conditionalFormattingTerms.CF_TITLE}')"></div>
+              <div class="o-section-title" t-esc="env._t('${CfTerms.CfTitle}')"></div>
               <div class="o_field_radio o_horizontal o_field_widget o-cf-type-selector">
                 <div class="custom-control custom-radio o_cf_radio_item" t-on-click="() => this.changeRuleType('CellIsRule')">
                   <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'CellIsRule'}}" type="radio" id="cellIsRule" name="ruleType" value="CellIsRule"/>
                   <label for="cellIsRule" class="custom-control-label o_form_label">
-                    <t t-esc="env._t('${conditionalFormattingTerms.SingleColor}')"/>
+                    <t t-esc="env._t('${CfTerms.SingleColor}')"/>
                   </label>
                 </div>
                 <div class="custom-control custom-radio o_cf_radio_item" t-on-click="() => this.changeRuleType('ColorScaleRule')">
                   <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'ColorScaleRule'}}" type="radio" id="colorScaleRule" name="ruleType" value="ColorScaleRule"/>
                   <label for="colorScaleRule" class="custom-control-label o_form_label">
-                  <t t-esc="env._t('${conditionalFormattingTerms.ColorScale}')"/>
+                  <t t-esc="env._t('${CfTerms.ColorScale}')"/>
                   </label>
                 </div>
 
                 <div class="custom-control custom-radio o_cf_radio_item" t-on-click="() => this.changeRuleType('IconSetRule')">
                   <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'IconSetRule'}}" type="radio" id="iconSetRule" name="ruleType" value="IconSetRule"/>
                   <label for="iconSetRule" class="custom-control-label o_form_label">
-                  <t t-esc="env._t('${conditionalFormattingTerms.IconSet}')"/>
+                  <t t-esc="env._t('${CfTerms.IconSet}')"/>
                   </label>
                 </div>
               </div>
@@ -15148,8 +15168,14 @@
                 <t t-set="rule" t-value="state.rules.iconSet"/>
               </t>
               <div class="o-sidePanelButtons">
-                <button t-on-click="switchToList" class="o-sidePanelButton o-cf-cancel" t-esc="env._t('${conditionalFormattingTerms.CANCEL}')"></button>
-                <button t-on-click="saveConditionalFormat" class="o-sidePanelButton o-cf-save" t-esc="env._t('${conditionalFormattingTerms.SAVE}')"></button>
+                <button
+                  t-on-click="switchToList"
+                  class="o-sidePanelButton o-cf-cancel"
+                  t-esc="env._t('${GenericTerms.Cancel}')"></button>
+                <button
+                  t-on-click="saveConditionalFormat"
+                  class="o-sidePanelButton o-cf-save"
+                  t-esc="env._t('${GenericTerms.Save}')"></button>
               </div>
             </div>
             <div class="o-section">
@@ -15505,8 +15531,8 @@
         constructor() {
             super(...arguments);
             this.icons = ICONS;
+            this.cellIsOperators = CellIsOperators;
             this.iconSets = ICON_SETS;
-            this.cellIsOperators = cellIsOperators;
             this.getTextDecoration = getTextDecoration;
             this.colorNumberString = colorNumberString;
         }
@@ -15554,7 +15580,7 @@
             return this.state.errors.includes(19 /* EmptyRange */);
         }
         errorMessage(error) {
-            return this.env._t(conditionalFormattingTerms.Errors[error] || conditionalFormattingTerms.Errors.unexpected);
+            return CfTerms.Errors[error] || CfTerms.Errors.Unexpected;
         }
         /**
          * Switch to the list view
@@ -15593,11 +15619,11 @@
         getDescription(cf) {
             switch (cf.rule.type) {
                 case "CellIsRule":
-                    return cellIsOperators[cf.rule.operator];
+                    return CellIsOperators[cf.rule.operator];
                 case "ColorScaleRule":
-                    return this.env._t("Color scale");
+                    return CfTerms.ColorScale;
                 case "IconSetRule":
-                    return this.env._t("Icon Set");
+                    return CfTerms.IconSet;
                 default:
                     return "";
             }
@@ -16837,6 +16863,15 @@
                     this.paste(state, paste);
                     break;
                 }
+                case "ADD_COLUMNS_ROWS": {
+                    // If we add a col/row inside a cut clipped area, we invalidate the clipboard
+                    const isClipboardDirty = this.isAddRowColDirtyingClipboard(cmd.base, cmd.position, cmd.dimension);
+                    if (this.state && this.state.operation == "CUT" && isClipboardDirty) {
+                        this.state = undefined;
+                    }
+                    this.status = "invisible";
+                    break;
+                }
                 case "PASTE_FROM_OS_CLIPBOARD":
                     this.pasteFromClipboard(cmd.target, cmd.text);
                     break;
@@ -17290,6 +17325,31 @@
          */
         isZoneOverlapClippedZone(zones, zone) {
             return zones.some((clippedZone) => overlap(zone, clippedZone));
+        }
+        /**
+         * Check if a ADD_COLUMNS_ROWS command is affecting an area inside the clipboard
+         */
+        isAddRowColDirtyingClipboard(base, position, dimension) {
+            if (!this.state || !this.state.zones)
+                return false;
+            const sheet = this.getters.getActiveSheet();
+            const affectedZone = {
+                top: 0,
+                bottom: sheet.rows.length - 1,
+                left: 0,
+                right: sheet.cols.length - 1,
+            };
+            if (dimension === "COL") {
+                const affectedCol = position === "before" ? base - 1 : base + 1;
+                affectedZone.left = affectedCol;
+                affectedZone.right = affectedCol;
+            }
+            else {
+                const affectedRow = position === "before" ? base - 1 : base + 1;
+                affectedZone.top = affectedRow;
+                affectedZone.bottom = affectedRow;
+            }
+            return this.isZoneOverlapClippedZone(this.state.zones, affectedZone);
         }
         // ---------------------------------------------------------------------------
         // Grid rendering
@@ -18024,18 +18084,20 @@
                 if (!cell.isFormula()) {
                     return;
                 }
-                const position = params[2].getters.getCellPosition(cell.id);
-                const xc = toXC(position.col, position.row);
-                visited[sheetId] = visited[sheetId] || {};
-                if (xc in visited[sheetId]) {
-                    if (visited[sheetId][xc] === null) {
+                const cellId = cell.id;
+                if (cellId in visited) {
+                    if (visited[cellId] === null) {
                         cell.assignError("#CYCLE", _lt("Circular reference"));
                     }
                     return;
                 }
-                visited[sheetId][xc] = null;
+                visited[cellId] = null;
                 try {
-                    params[2].__originCellXC = xc;
+                    params[2].__originCellXC = () => {
+                        // compute the value lazily for performance reasons
+                        const position = params[2].getters.getCellPosition(cellId);
+                        return toXC(position.col, position.row);
+                    };
                     cell.assignValue(cell.compiledFormula.execute(cell.dependencies, sheetId, ...params));
                     if (Array.isArray(cell.evaluated.value)) {
                         // if a value returns an array (like =A1:A3)
@@ -18045,7 +18107,7 @@
                 catch (e) {
                     handleError(e, cell);
                 }
-                visited[sheetId][xc] = true;
+                visited[cellId] = true;
             }
         }
         /**
@@ -18478,10 +18540,10 @@
                     label =
                         cell && labelRange
                             ? this.truncateLabel(cell.formattedValue)
-                            : (label = `${chartTerms.Series} ${parseInt(dsIndex) + 1}`);
+                            : (label = `${ChartTerms.Series} ${parseInt(dsIndex) + 1}`);
                 }
                 else {
-                    label = label = `${chartTerms.Series} ${parseInt(dsIndex) + 1}`;
+                    label = label = `${ChartTerms.Series} ${parseInt(dsIndex) + 1}`;
                 }
                 const color = definition.type !== "pie" ? colors.next() : "#FFFFFF"; // white border for pie chart
                 const dataset = {
@@ -24368,8 +24430,8 @@
         onMenuClicked="(ev) => this.onSpecialLink(ev)"
         onClose="() => this.menu.isOpen=false"/>
       <div class="o-buttons">
-        <button t-on-click="cancel" class="o-button o-cancel" t-esc="env._t('${LinkEditorTerms.Cancel}')"></button>
-        <button t-on-click="save" class="o-button o-save" t-esc="env._t('${LinkEditorTerms.Confirm}')" t-att-disabled="!state.link.url" ></button>
+        <button t-on-click="cancel" class="o-button o-cancel" t-esc="env._t('${GenericTerms.Cancel}')"></button>
+        <button t-on-click="save" class="o-button o-save" t-esc="env._t('${GenericTerms.Confirm}')" t-att-disabled="!state.link.url" ></button>
       </div>
     </div>`;
     css /* scss */ `
@@ -26563,19 +26625,19 @@
         <!-- Toolbar -->
         <div t-if="env.model.getters.isReadonly()" class="o-readonly-toolbar text-muted">
           <span>
-            <i class="fa fa-eye" /> <t t-esc="env._t('Readonly Access')" />
+            <i class="fa fa-eye" /> <t t-esc="env._t('${TopBarTerms.ReadonlyAccess}')" />
           </span>
         </div>
         <div t-else="" class="o-toolbar-tools">
-          <div class="o-tool" title="Undo" t-att-class="{'o-disabled': !undoTool}" t-on-click="undo" >${UNDO_ICON}</div>
-          <div class="o-tool" t-att-class="{'o-disabled': !redoTool}" title="Redo"  t-on-click="redo">${REDO_ICON}</div>
-          <div class="o-tool" title="Paint Format" t-att-class="{active:paintFormatTool}" t-on-click="paintFormat">${PAINT_FORMAT_ICON}</div>
-          <div class="o-tool" title="Clear Format" t-on-click="clearFormatting">${CLEAR_FORMAT_ICON}</div>
+          <div class="o-tool" title="${GenericTerms.Undo}" t-att-class="{'o-disabled': !undoTool}" t-on-click="undo" >${UNDO_ICON}</div>
+          <div class="o-tool" t-att-class="{'o-disabled': !redoTool}" title="${GenericTerms.Redo}"  t-on-click="redo">${REDO_ICON}</div>
+          <div class="o-tool" title="${TopBarTerms.PaintFormat}" t-att-class="{active:paintFormatTool}" t-on-click="paintFormat">${PAINT_FORMAT_ICON}</div>
+          <div class="o-tool" title="${TopBarTerms.ClearFormat}" t-on-click="clearFormatting">${CLEAR_FORMAT_ICON}</div>
           <div class="o-divider"/>
-          <div class="o-tool" title="Format as percent" t-on-click="(ev) => this.toogleFormat('percent', ev)">%</div>
-          <div class="o-tool" title="Decrease decimal places" t-on-click="(ev) => this.setDecimal(-1, ev)">.0</div>
-          <div class="o-tool" title="Increase decimal places" t-on-click="(ev) => this.setDecimal(+1, ev)">.00</div>
-          <div class="o-tool o-dropdown" title="More formats" t-on-click="(ev) => this.toggleDropdownTool('formatTool', ev)">
+          <div class="o-tool" title="${TopBarTerms.FormatPercent}" t-on-click="(ev) => this.toogleFormat('percent', ev)">%</div>
+          <div class="o-tool" title="${TopBarTerms.DecreaseDecimal}" t-on-click="(ev) => this.setDecimal(-1, ev)">.0</div>
+          <div class="o-tool" title="${TopBarTerms.IncreaseDecimal}" t-on-click="(ev) => this.setDecimal(+1, ev)">.00</div>
+          <div class="o-tool o-dropdown" title="${TopBarTerms.MoreFormat}" t-on-click="(ev) => this.toggleDropdownTool('formatTool', ev)">
             <div class="o-text-icon">123${TRIANGLE_DOWN_ICON}</div>
             <div class="o-dropdown-content o-text-options  o-format-tool "  t-if="state.activeTool === 'formatTool'" t-on-click="setFormat">
               <t t-foreach="formats" t-as="format" t-key="format.name">
@@ -26585,7 +26647,7 @@
           </div>
           <div class="o-divider"/>
           <!-- <div class="o-tool" title="Font"><span>Roboto</span> ${TRIANGLE_DOWN_ICON}</div> -->
-          <div class="o-tool o-dropdown" title="Font Size" t-on-click="(ev) => this.toggleDropdownTool('fontSizeTool', ev)">
+          <div class="o-tool o-dropdown" title="${TopBarTerms.FontSize}" t-on-click="(ev) => this.toggleDropdownTool('fontSizeTool', ev)">
             <div class="o-text-icon"><t t-esc="style.fontSize || ${DEFAULT_FONT_SIZE}"/> ${TRIANGLE_DOWN_ICON}</div>
             <div class="o-dropdown-content o-text-options "  t-if="state.activeTool === 'fontSizeTool'" t-on-click="setSize">
               <t t-foreach="fontSizes" t-as="font" t-key="font_index">
@@ -26594,20 +26656,20 @@
             </div>
           </div>
           <div class="o-divider"/>
-          <div class="o-tool" title="Bold" t-att-class="{active:style.bold}" t-on-click="(ev) => this.toogleStyle('bold', ev)">${BOLD_ICON}</div>
-          <div class="o-tool" title="Italic" t-att-class="{active:style.italic}" t-on-click="(ev) => this.toogleStyle('italic', ev)">${ITALIC_ICON}</div>
-          <div class="o-tool" title="Strikethrough"  t-att-class="{active:style.strikethrough}" t-on-click="(ev) => this.toogleStyle('strikethrough', ev)">${STRIKE_ICON}</div>
+          <div class="o-tool" title="${GenericTerms.Bold}" t-att-class="{active:style.bold}" t-on-click="(ev) => this.toogleStyle('bold', ev)">${BOLD_ICON}</div>
+          <div class="o-tool" title="${GenericTerms.Italic}" t-att-class="{active:style.italic}" t-on-click="(ev) => this.toogleStyle('italic', ev)">${ITALIC_ICON}</div>
+          <div class="o-tool" title="${GenericTerms.Strikethrough}"  t-att-class="{active:style.strikethrough}" t-on-click="(ev) => this.toogleStyle('strikethrough', ev)">${STRIKE_ICON}</div>
           <div class="o-tool o-dropdown o-with-color">
-            <span t-attf-style="border-color:{{textColor}}" title="Text Color" t-on-click="(ev) => this.toggleDropdownTool('textColorTool', ev)">${TEXT_COLOR_ICON}</span>
+            <span t-attf-style="border-color:{{textColor}}" title="${GenericTerms.TextColor}" t-on-click="(ev) => this.toggleDropdownTool('textColorTool', ev)">${TEXT_COLOR_ICON}</span>
             <ColorPicker t-if="state.activeTool === 'textColorTool'" onColorPicked="(color) => this.setColor('textColor', color)" t-key="textColor"/>
           </div>
           <div class="o-divider"/>
           <div class="o-tool  o-dropdown o-with-color">
-            <span t-attf-style="border-color:{{fillColor}}" title="Fill Color" t-on-click="(ev) => this.toggleDropdownTool('fillColorTool', ev)">${FILL_COLOR_ICON}</span>
+            <span t-attf-style="border-color:{{fillColor}}" title="${GenericTerms.FillColor}" t-on-click="(ev) => this.toggleDropdownTool('fillColorTool', ev)">${FILL_COLOR_ICON}</span>
             <ColorPicker t-if="state.activeTool === 'fillColorTool'" onColorPicked="(color) => this.setColor('fillColor', color)" t-key="fillColor"/>
           </div>
           <div class="o-tool o-dropdown">
-            <span title="Borders" t-on-click="(ev) => this.toggleDropdownTool('borderTool', ev)">${BORDERS_ICON}</span>
+            <span title="${TopBarTerms.Borders}" t-on-click="(ev) => this.toggleDropdownTool('borderTool', ev)">${BORDERS_ICON}</span>
             <div class="o-dropdown-content o-border" t-if="state.activeTool === 'borderTool'">
               <div class="o-dropdown-line">
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('all', ev)">${BORDERS_ICON}</span>
@@ -26625,9 +26687,9 @@
               </div>
             </div>
           </div>
-          <div class="o-tool o-merge-tool" title="Merge Cells"  t-att-class="{active:inMerge, 'o-disabled': cannotMerge}" t-on-click="toggleMerge">${MERGE_CELL_ICON}</div>
+          <div class="o-tool o-merge-tool" title="${TopBarTerms.MergeCells}"  t-att-class="{active:inMerge, 'o-disabled': cannotMerge}" t-on-click="toggleMerge">${MERGE_CELL_ICON}</div>
           <div class="o-divider"/>
-          <div class="o-tool o-dropdown" title="Horizontal align" t-on-click="(ev) => this.toggleDropdownTool('alignTool', ev)">
+          <div class="o-tool o-dropdown" title="${TopBarTerms.HorizontalAlign}" t-on-click="(ev) => this.toggleDropdownTool('alignTool', ev)">
             <span>
               <t t-if="style.align === 'right'">${ALIGN_RIGHT_ICON}</t>
               <t t-elif="style.align === 'center'">${ALIGN_CENTER_ICON}</t>
@@ -31603,8 +31665,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-03-11T11:14:04.804Z';
-    exports.__info__.hash = '9014d42';
+    exports.__info__.date = '2022-03-14T10:15:04.791Z';
+    exports.__info__.hash = '75a7cac';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

@@ -16,39 +16,49 @@
     </template>
 
     <template id="search_result" name="Knowledge Base: Slides Search Result">
-        <div class="pb8 w-100">
-            <p class="mb-1 font-weight-bold text-800"><i class="fa fa-fw fa-mortar-board" title="eLearning" /> <a t-att-href="url" class="text-800"><t t-out="record.name" /></a></p>
-            <div class="text-o-color-2" t-if="record.description and (record.is_preview or record.channel_id.is_member)"><t t-out="record.description" /></div>
-            <p class="mb-1">
-                <t t-foreach="record.tag_ids" t-as="tag">
-                    <a t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" class="btn btn-outline-secondary btn-sm" t-out="tag.name"/>
-                </t>
+        <div class="d-flex w-100 py-4 border-top">
+            <p class="mt-1 text-400">
+                <i class="fa fa-2x fa-mortar-board" title="eLearning"/>
             </p>
-            <p class="mb-1 text-o-color-2">
-                <time t-field="record.date_published" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="font-weight-bold"><t t-out="record.user_id.name" /></a>
+            <div class="w-100 ml-3">
+                <h5>
+                    <a t-att-href="url" t-out="record.name" class="font-weight-bold"/>
+                </h5>
+                <small>
+                    <time t-field="record.date_published" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="font-weight-bold" t-out="record.user_id.name"/>
 
-                | <t t-out="record.total_views" /> Views
-                | <t t-out="record.likes" /> Likes
-                | <t t-out="record.comments_count" /> Comments
-                | <i class="fa fa-folder-open-o" /> <a class="font-weight-bold" t-attf-href="{{record.channel_id.website_url}}" t-out="record.channel_id.name" />
-            </p>
+                    | <t t-out="record.total_views"/> Views
+                    | <t t-out="record.likes"/> Likes
+                    | <t t-out="record.comments_count"/> Comments
+                    | <i class="fa fa-folder-open-o"/> <a class="font-weight-bold" t-attf-href="{{record.channel_id.website_url}}" t-out="record.channel_id.name"/>
+                </small>
+                <div class="whelpdesk_search_description mt-3 text-break text-muted overflow-hidden" t-if="record.description and (record.is_preview or record.channel_id.is_member)" t-out="record.description"/>
+                <p class="mt-3 mb-0" t-if="record.tag_ids">
+                    <a t-foreach="record.tag_ids" t-as="tag" t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" class="btn btn-sm btn-outline-secondary" t-out="tag.name"/>
+                </p>
+            </div>
         </div>
     </template>
 
     <template id="channel_search_result" name="Knowledge Base: Slide Channel Search Result">
-        <div class="pb8 w-100">
-            <p class="mb-1 font-weight-bold text-800"><i class="fa fa-fw fa-mortar-board" title="eLearning Course" /> <a t-att-href="url" class="text-800"><t t-out="record.name" /></a></p>
-            <div class="whelpdesk_search_description text-o-color-2 text-break overflow-hidden" t-if="record.description"><t t-out="record.description" /></div>
-            <p class="mb-1">
-                <t t-foreach="record.tag_ids" t-as="tag">
-                    <a t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" class="btn btn-outline-secondary btn-sm" t-out="tag.name"/>
-                </t>
+        <div class="d-flex w-100 py-4 border-top">
+            <p class="mt-1 text-400">
+                <i class="fa fa-2x fa-mortar-board" title="eLearning Course"/>
             </p>
-            <p class="mb-1 text-o-color-2">
-                <time t-field="record.slide_last_update" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="font-weight-bold"><t t-out="record.user_id.name" /></a>
-                | <t t-out="record.members_count"/> Members
-                | <t t-out="record.rating_count"/> Reviews
-            </p>
+            <div class="w-100 ml-3">
+                <h5>
+                    <a t-att-href="url" t-out="record.name" class="font-weight-bold"/>
+                </h5>
+                <small>
+                    <time t-field="record.slide_last_update" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/profile/user/{{record.user_id.id}}" class="font-weight-bold" t-out="record.user_id.name"/>
+                    | <t t-out="record.members_count"/> Members
+                    | <t t-out="record.rating_count"/> Reviews
+                </small>
+                <div class="whelpdesk_search_description mt-3 text-break text-muted overflow-hidden" t-if="record.description" t-out="record.description"/>
+                <p class="mt-3 mb-0" t-if="record.tag_ids">
+                    <a t-foreach="record.tag_ids" t-as="tag" t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" class="btn btn-sm btn-outline-secondary" t-out="tag.name"/>
+                </p> 
+            </div>
         </div>
     </template>
 </odoo>

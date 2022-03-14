@@ -54,7 +54,6 @@ class TestL10AccountMoveReversal(TestL10nClEdiCommon):
             active_model='account.move', active_ids=self.invoice.ids).create({
                 'reason': 'Test Partial Refund',
                 'refund_method': 'refund',
-                'reason': 'Partial Refund',
                 'l10n_cl_is_text_correction': True,
                 'l10n_cl_edi_reference_doc_code': '2',
                 'l10n_cl_original_text': 'Test Original Text',

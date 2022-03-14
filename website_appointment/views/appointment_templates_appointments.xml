@@ -70,7 +70,7 @@
 
     <!-- Enable the customize option for the 2 layouts (cards and list)-->
     <template id="website_calendar_index" name="Online Appointment"/>
-    <template id="opt_appointments_list_cards" inherit_id="website_appointment.website_calendar_index" active="True" customize_show="True" name="Card Design"/>
+    <template id="opt_appointments_list_cards" inherit_id="website_appointment.website_calendar_index" active="True" name="Card Design"/>
 
     <template id="website_calendar_index_topbar" name="Topbar">
         <nav class="navbar navbar-light border-top shadow-sm d-print-none">

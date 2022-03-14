@@ -16,6 +16,7 @@
         'views/helpdesk_views.xml',
         'views/helpdesk_templates.xml',
         'security/website_helpdesk_security.xml',
+        'views/snippets.xml',
     ],
     'license': 'OEEL-1',
     'post_init_hook': 'post_install_hook_ensure_team_forms',

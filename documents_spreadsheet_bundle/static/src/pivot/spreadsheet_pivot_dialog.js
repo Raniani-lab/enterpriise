@@ -8,7 +8,7 @@ import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
 const { onWillStart, useState } = owl;
-const formatDecimal = spreadsheet.helpers.formatDecimal;
+const formatValue = spreadsheet.helpers.formatValue;
 
 /**
  * @typedef {Object} PivotDialogColumn
@@ -464,7 +464,7 @@ export class PivotDialog extends Dialog {
         if (!value) {
             return "";
         }
-        return formatDecimal(value, 2);
+        return formatValue(value, "0.00");
     }
     /**
      * Get the label of a pivot formula based on the args formula

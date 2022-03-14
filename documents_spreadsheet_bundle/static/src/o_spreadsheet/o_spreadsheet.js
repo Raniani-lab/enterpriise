@@ -119,9 +119,9 @@
     // -----------------------------------------------------------------------------
     // Parsing
     // -----------------------------------------------------------------------------
+    const INITIAL_1900_DAY$1 = new Date(1899, 11, 30);
     const CURRENT_MILLENIAL = 2000; // note: don't forget to update this in 2999
     const CURRENT_YEAR = new Date().getFullYear();
-    const INITIAL_1900_DAY$1 = new Date(1899, 11, 30);
     const INITIAL_JS_DAY = new Date(0);
     const DATE_JS_1900_OFFSET = INITIAL_JS_DAY - INITIAL_1900_DAY$1;
     const mdyDateRegexp = /^\d{1,2}(\/|-|\s)\d{1,2}((\/|-|\s)\d{1,4})?$/;
@@ -271,82 +271,6 @@
         date.setSeconds(seconds);
         return date;
     }
-    // -----------------------------------------------------------------------------
-    // Formatting
-    // -----------------------------------------------------------------------------
-    function formatDateTime(internalDate) {
-        // TODO: unify the format functions for date and datetime
-        // This requires some code to 'parse' or 'tokenize' the format, keep it in a
-        // cache, and use it in a single mapping, that recognizes the special list
-        // of tokens dd,d,m,y,h, ... and preserves the rest
-        const dateTimeFormat = internalDate.format;
-        const jsDate = internalDate.jsDate || numberToJsDate(internalDate.value);
-        const indexH = dateTimeFormat.indexOf("h");
-        let strDate = "";
-        let strTime = "";
-        if (indexH > 0) {
-            strDate = formatJSDate(jsDate, dateTimeFormat.substring(0, indexH - 1));
-            strTime = formatJSTime(jsDate, dateTimeFormat.substring(indexH));
-        }
-        else if (indexH === 0) {
-            strTime = formatJSTime(jsDate, dateTimeFormat);
-        }
-        else if (indexH < 0) {
-            strDate = formatJSDate(jsDate, dateTimeFormat);
-        }
-        return strDate + (strDate && strTime ? " " : "") + strTime;
-    }
-    function formatJSDate(jsDate, format) {
-        const sep = format.match(/\/|-|\s/)[0];
-        const parts = format.split(sep);
-        return parts
-            .map((p) => {
-            switch (p) {
-                case "d":
-                    return jsDate.getDate();
-                case "dd":
-                    return jsDate.getDate().toString().padStart(2, "0");
-                case "m":
-                    return jsDate.getMonth() + 1;
-                case "mm":
-                    return String(jsDate.getMonth() + 1).padStart(2, "0");
-                case "yyyy":
-                    return jsDate.getFullYear();
-                default:
-                    throw new Error(`invalid format: ${format}`);
-            }
-        })
-            .join(sep);
-    }
-    function formatJSTime(jsDate, format) {
-        let parts = format.split(/:|\s/);
-        const dateHours = jsDate.getHours();
-        const isMeridian = parts[parts.length - 1] === "a";
-        let hours = dateHours;
-        let meridian = "";
-        if (isMeridian) {
-            hours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-            meridian = dateHours >= 12 ? " PM" : " AM";
-            parts.pop();
-        }
-        return (parts
-            .map((p) => {
-            switch (p) {
-                case "hhhh":
-                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY$1) / (60 * 60 * 1000));
-                    return helapsedHours.toString();
-                case "hh":
-                    return hours.toString().padStart(2, "0");
-                case "mm":
-                    return jsDate.getMinutes().toString().padStart(2, "0");
-                case "ss":
-                    return jsDate.getSeconds().toString().padStart(2, "0");
-                default:
-                    throw new Error(`invalid format: ${format}`);
-            }
-        })
-            .join(":") + meridian);
-    }
 
     /**
      * This regexp is supposed to be as close as possible as the numberRegexp, but
@@ -358,7 +282,18 @@
      *   formula, commas are used to separate arguments
      */
     const formulaNumberRegexp = /^-?\d+(\.?\d*(e\d+)?)?(\s*%)?|^-?\.\d+(\s*%)?/;
-    const numberRegexp = /^-?\d+(,\d+)*(\.?\d*(e\d+)?)?(\s*%)?$|^-?\.\d+(\s*%)?$/;
+    const pIntegerAndDecimals = "(\\d+(,\\d{3,})*(\\.\\d*)?)"; // pattern that match integer number with or without decimal digits
+    const pOnlyDecimals = "(\\.\\d+)"; // pattern that match only expression with decimal digits
+    const pScientificFormat = "(e(\\+|-)?\\d+)?"; // pattern that match scientific format between zero and one time (should be placed before pPercentFormat)
+    const pPercentFormat = "(\\s*%)?"; // pattern that match percent symbol between zero and one time
+    const pNumber = "(\\s*" + pIntegerAndDecimals + "|" + pOnlyDecimals + ")" + pScientificFormat + pPercentFormat;
+    const pMinus = "(\\s*-)?"; // pattern that match negative symbol between zero and one time
+    const pCurrencyFormat = "(\\s*[\\$€])?";
+    const p1 = pMinus + pCurrencyFormat + pNumber;
+    const p2 = pMinus + pNumber + pCurrencyFormat;
+    const p3 = pCurrencyFormat + pMinus + pNumber;
+    const pNumberExp = "^((" + [p1, p2, p3].join(")|(") + "))$";
+    const numberRegexp = new RegExp(pNumberExp, "i");
     /**
      * Return true if the argument is a "number string".
      *
@@ -368,7 +303,7 @@
         // TO DO: add regexp for DATE string format (ex match: "28 02 2020")
         return numberRegexp.test(value.trim());
     }
-    const commaRegexp = /,/g;
+    const invaluableSymbolsRegexp = /[,\$€]+/g;
     /**
      * Convert a string into a number. It assumes that the string actually represents
      * a number (as determined by the isNumber function)
@@ -377,7 +312,9 @@
      * number from the point of view of the isNumber function.
      */
     function parseNumber(str) {
-        let n = Number(str.replace(commaRegexp, ""));
+        // remove invaluable characters
+        str = str.replace(invaluableSymbolsRegexp, "");
+        let n = Number(str);
         if (isNaN(n) && str.includes("%")) {
             n = Number(str.split("%")[0]);
             if (!isNaN(n)) {
@@ -385,69 +322,6 @@
             }
         }
         return n;
-    }
-    const decimalStandardRepresentation = new Intl.NumberFormat("en-US", {
-        useGrouping: false,
-        maximumFractionDigits: 10,
-    });
-    function formatStandardNumber(n) {
-        if (Number.isInteger(n)) {
-            return n.toString();
-        }
-        return decimalStandardRepresentation.format(n);
-    }
-    // this is a cache than can contains decimal representation formats
-    // from 0 (minimum) to 20 (maximum) digits after the decimal point
-    let decimalRepresentations = [];
-    const maximumDecimalPlaces = 20;
-    function formatDecimal(n, decimals, sep = "") {
-        if (n < 0) {
-            return "-" + formatDecimal(-n, decimals);
-        }
-        const maxDecimals = decimals >= maximumDecimalPlaces ? maximumDecimalPlaces : decimals;
-        let formatter = decimalRepresentations[maxDecimals];
-        if (!formatter) {
-            formatter = new Intl.NumberFormat("en-US", {
-                minimumFractionDigits: maxDecimals,
-                maximumFractionDigits: maxDecimals,
-                useGrouping: false,
-            });
-            decimalRepresentations[maxDecimals] = formatter;
-        }
-        let result = formatter.format(n);
-        if (sep) {
-            let p = result.indexOf(".");
-            result = result.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, (m, i) => p < 0 || i < p ? `${m}${sep}` : m);
-        }
-        return result;
-    }
-    function formatNumber(value, format) {
-        const parts = format.split(";");
-        const l = parts.length;
-        if (value < 0) {
-            if (l > 1) {
-                return _formatValue(-value, parts[1]);
-            }
-            else {
-                return "-" + _formatValue(-value, parts[0]);
-            }
-        }
-        const index = l === 3 && value === 0 ? 2 : 0;
-        return _formatValue(value, parts[index]);
-    }
-    function _formatValue(value, format) {
-        const parts = format.split(".");
-        const decimals = parts.length === 1 ? 0 : parts[1].match(/0/g).length;
-        const separator = parts[0].includes(",") ? "," : "";
-        const isPercent = format.includes("%");
-        if (isPercent) {
-            value = value * 100;
-        }
-        const rawNumber = formatDecimal(value, decimals, separator);
-        if (isPercent) {
-            return rawNumber + "%";
-        }
-        return rawNumber;
     }
 
     // HELPERS
@@ -2967,6 +2841,353 @@
     function scrollDelay(value) {
         // decreasing exponential from MAX_DELAY to MIN_DELAY
         return MIN_DELAY + (MAX_DELAY - MIN_DELAY) * Math.exp(-ACCELERATION * (value - 1));
+    }
+
+    /**
+     *  Constant used to indicate the maximum of digits that is possible to display
+     *  in a cell with standard size.
+     */
+    const MAX_DECIMAL_PLACES = 20;
+    //from https://stackoverflow.com/questions/721304/insert-commas-into-number-string @Thomas/Alan Moore
+    const thousandsGroupsRegexp = /(\d+?)(?=(\d{3})+(?!\d)|$)/g;
+    const zeroRegexp = /0/g;
+    // -----------------------------------------------------------------------------
+    // FORMAT REPRESENTATION CACHE
+    // -----------------------------------------------------------------------------
+    const internalFormatByFormatString = {};
+    function parseFormat(formatString) {
+        let internalFormat = internalFormatByFormatString[formatString];
+        if (internalFormat === undefined) {
+            internalFormat = convertFormatToInternalFormat(formatString);
+            internalFormatByFormatString[formatString] = internalFormat;
+        }
+        return internalFormat;
+    }
+    // -----------------------------------------------------------------------------
+    // APPLY FORMAT
+    // -----------------------------------------------------------------------------
+    /**
+     * Formats a cell value with its format.
+     */
+    function formatValue(value, format) {
+        switch (typeof value) {
+            case "string":
+                return value;
+            case "boolean":
+                return value ? "TRUE" : "FALSE";
+            case "number":
+                // transform to internalNumberFormat
+                if (!format) {
+                    format = createDefaultFormat(value);
+                }
+                const internalFormat = parseFormat(format);
+                return applyInternalFormat(value, internalFormat);
+            case "object":
+                return "0";
+        }
+    }
+    function applyInternalFormat(value, internalFormat) {
+        if (internalFormat[0].type === "DATE") {
+            return applyDateTimeFormat(value, internalFormat[0].format);
+        }
+        let formattedValue = value < 0 ? "-" : "";
+        for (let part of internalFormat) {
+            switch (part.type) {
+                case "NUMBER":
+                    formattedValue += applyInternalNumberFormat(Math.abs(value), part.format);
+                    break;
+                case "CURRENCY":
+                    formattedValue += part.format;
+                    break;
+            }
+        }
+        return formattedValue;
+    }
+    function applyInternalNumberFormat(value, format) {
+        if (format.isPercent) {
+            value = value * 100;
+        }
+        let maxDecimals = 0;
+        if (format.decimalPart !== undefined) {
+            maxDecimals = format.decimalPart.length;
+        }
+        const { integerDigits, decimalDigits } = splitNumber(value, maxDecimals);
+        let formattedValue = applyIntegerFormat(integerDigits, format.integerPart, format.thousandsSeparator);
+        if (format.decimalPart !== undefined) {
+            formattedValue += "." + applyDecimalFormat(decimalDigits || "", format.decimalPart);
+        }
+        if (format.isPercent) {
+            formattedValue += "%";
+        }
+        return formattedValue;
+    }
+    function applyIntegerFormat(integerDigits, integerFormat, hasSeparator) {
+        var _a;
+        const _integerDigits = integerDigits === "0" ? "" : integerDigits;
+        let formattedInteger = _integerDigits;
+        const delta = integerFormat.length - _integerDigits.length;
+        if (delta > 0) {
+            // ex: format = "0#000000" and integerDigit: "123"
+            const restIntegerFormat = integerFormat.substring(0, delta); // restIntegerFormat = "0#00"
+            const countZero = (restIntegerFormat.match(zeroRegexp) || []).length; // countZero = 3
+            formattedInteger = "0".repeat(countZero) + formattedInteger; // return "000123"
+        }
+        if (hasSeparator) {
+            formattedInteger = ((_a = formattedInteger.match(thousandsGroupsRegexp)) === null || _a === void 0 ? void 0 : _a.join(",")) || formattedInteger;
+        }
+        return formattedInteger;
+    }
+    function applyDecimalFormat(decimalDigits, decimalFormat) {
+        // assume the format is valid (no commas)
+        let formattedDecimals = decimalDigits;
+        if (decimalFormat.length - decimalDigits.length > 0) {
+            const restDecimalFormat = decimalFormat.substring(decimalDigits.length, decimalFormat.length + 1);
+            const countZero = (restDecimalFormat.match(zeroRegexp) || []).length;
+            formattedDecimals = formattedDecimals + "0".repeat(countZero);
+        }
+        return formattedDecimals;
+    }
+    /**
+     * this is a cache that can contains number representation formats
+     * from 0 (minimum) to 20 (maximum) digits after the decimal point
+     */
+    const numberRepresentation = [];
+    /** split a number into two strings that contain respectively:
+     * - all digit stored in the integer part of the number
+     * - all digit stored in the decimal part of the number
+     *
+     * The 'maxDecimal' parameter allows to indicate the number of digits to not
+     * exceed in the decimal part, in which case digits are rounded
+     *
+     * Intl.Numberformat is used to properly handle all the roundings.
+     * e.g. 1234.7  with format ### (<> maxDecimals=0) should become 1235, not 1234
+     **/
+    function splitNumber(value, maxDecimals = MAX_DECIMAL_PLACES) {
+        let formatter = numberRepresentation[maxDecimals];
+        if (!formatter) {
+            formatter = new Intl.NumberFormat("en-US", {
+                maximumFractionDigits: maxDecimals,
+                useGrouping: false,
+            });
+            numberRepresentation[maxDecimals] = formatter;
+        }
+        const [integerDigits, decimalDigits] = formatter.format(value).split(".");
+        return { integerDigits, decimalDigits };
+    }
+    function applyDateTimeFormat(value, format) {
+        // TODO: unify the format functions for date and datetime
+        // This requires some code to 'parse' or 'tokenize' the format, keep it in a
+        // cache, and use it in a single mapping, that recognizes the special list
+        // of tokens dd,d,m,y,h, ... and preserves the rest
+        const jsDate = numberToJsDate(value);
+        const indexH = format.indexOf("h");
+        let strDate = "";
+        let strTime = "";
+        if (indexH > 0) {
+            strDate = formatJSDate(jsDate, format.substring(0, indexH - 1));
+            strTime = formatJSTime(jsDate, format.substring(indexH));
+        }
+        else if (indexH === 0) {
+            strTime = formatJSTime(jsDate, format);
+        }
+        else if (indexH < 0) {
+            strDate = formatJSDate(jsDate, format);
+        }
+        return strDate + (strDate && strTime ? " " : "") + strTime;
+    }
+    function formatJSDate(jsDate, format) {
+        const sep = format.match(/\/|-|\s/)[0];
+        const parts = format.split(sep);
+        return parts
+            .map((p) => {
+            switch (p) {
+                case "d":
+                    return jsDate.getDate();
+                case "dd":
+                    return jsDate.getDate().toString().padStart(2, "0");
+                case "m":
+                    return jsDate.getMonth() + 1;
+                case "mm":
+                    return String(jsDate.getMonth() + 1).padStart(2, "0");
+                case "yyyy":
+                    return jsDate.getFullYear();
+                default:
+                    throw new Error(`invalid format: ${format}`);
+            }
+        })
+            .join(sep);
+    }
+    function formatJSTime(jsDate, format) {
+        let parts = format.split(/:|\s/);
+        const dateHours = jsDate.getHours();
+        const isMeridian = parts[parts.length - 1] === "a";
+        let hours = dateHours;
+        let meridian = "";
+        if (isMeridian) {
+            hours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+            meridian = dateHours >= 12 ? " PM" : " AM";
+            parts.pop();
+        }
+        return (parts
+            .map((p) => {
+            switch (p) {
+                case "hhhh":
+                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY$1) / (60 * 60 * 1000));
+                    return helapsedHours.toString();
+                case "hh":
+                    return hours.toString().padStart(2, "0");
+                case "mm":
+                    return jsDate.getMinutes().toString().padStart(2, "0");
+                case "ss":
+                    return jsDate.getSeconds().toString().padStart(2, "0");
+                default:
+                    throw new Error(`invalid format: ${format}`);
+            }
+        })
+            .join(":") + meridian);
+    }
+    // -----------------------------------------------------------------------------
+    // CREATE / MODIFY FORMAT
+    // -----------------------------------------------------------------------------
+    function createDefaultFormat(value) {
+        let { decimalDigits } = splitNumber(value, 10);
+        return decimalDigits ? "0." + "0".repeat(decimalDigits.length) : "0";
+    }
+    function changeDecimalPlaces(format, step) {
+        const internalFormat = parseFormat(format);
+        const newInternalFormat = internalFormat.map((intFmt) => {
+            if (intFmt.type === "NUMBER") {
+                return { ...intFmt, format: changeInternalNumberFormatDecimalPlaces(intFmt.format, step) };
+            }
+            else {
+                return intFmt;
+            }
+        });
+        const newFormat = convertInternalFormatToFormat(newInternalFormat);
+        internalFormatByFormatString[newFormat] = newInternalFormat;
+        return newFormat;
+    }
+    function changeInternalNumberFormatDecimalPlaces(format, step) {
+        var _a;
+        const _format = { ...format };
+        const sign = Math.sign(step);
+        const decimalLength = ((_a = _format.decimalPart) === null || _a === void 0 ? void 0 : _a.length) || 0;
+        const countZero = Math.min(Math.max(0, decimalLength + sign), MAX_DECIMAL_PLACES);
+        _format.decimalPart = "0".repeat(countZero);
+        if (_format.decimalPart === "") {
+            delete _format.decimalPart;
+        }
+        return _format;
+    }
+    // -----------------------------------------------------------------------------
+    // MANAGING FORMAT
+    // -----------------------------------------------------------------------------
+    /**
+     * Validates the provided format string and returns an InternalFormat Object.
+     */
+    function convertFormatToInternalFormat(format) {
+        if (format === "") {
+            throw new Error("A format cannot be empty");
+        }
+        let currentIndex = 0;
+        let result = [];
+        while (currentIndex < format.length) {
+            let closingIndex;
+            if (format.charAt(currentIndex) === "[") {
+                if (format.charAt(currentIndex + 1) !== "$") {
+                    throw new Error(`Currency formats have to be prefixed by a $: ${format}`);
+                }
+                // manage brackets/customStrings
+                closingIndex = format.substring(currentIndex).lastIndexOf("]") + currentIndex + 1;
+                if (closingIndex === 0) {
+                    throw new Error(`Invalid currency brackets format: ${format}`);
+                }
+                result.push({
+                    type: "CURRENCY",
+                    format: format.substring(currentIndex + 2, closingIndex - 1),
+                }); // remove leading "[$"" and ending "]".
+            }
+            else {
+                // rest of the time
+                const nextPartIndex = format.substring(currentIndex).indexOf("[");
+                closingIndex = nextPartIndex > -1 ? nextPartIndex + currentIndex : format.length;
+                const subFormat = format.substring(currentIndex, closingIndex);
+                if (subFormat.match(DATETIME_FORMAT)) {
+                    result.push({ type: "DATE", format: subFormat });
+                }
+                else {
+                    result.push({
+                        type: "NUMBER",
+                        format: convertToInternalNumberFormat(subFormat),
+                    });
+                }
+            }
+            currentIndex = closingIndex;
+        }
+        return result;
+    }
+    /**
+     * @param format a formatString that is only applicable to numbers. I.e. composed of characters 0 # , . %
+     */
+    function convertToInternalNumberFormat(format) {
+        const isPercent = format.includes("%");
+        const thousandsSeparator = format.includes(",");
+        if (format.match(/\..*,/)) {
+            throw new Error("A format can't contain ',' symbol in the decimal part");
+        }
+        const _format = format.replace("%", "").replace(",", "");
+        const extraSigns = _format.match(/[\%|,]/);
+        if (extraSigns) {
+            throw new Error(`A format can only contain a single '${extraSigns[0]}' symbol`);
+        }
+        const [integerPart, decimalPart] = _format.split(".");
+        if (decimalPart && decimalPart.length > 20) {
+            throw new Error("A format can't contain more than 20 decimal places");
+        }
+        if (decimalPart !== undefined) {
+            return {
+                integerPart,
+                isPercent,
+                thousandsSeparator,
+                decimalPart,
+            };
+        }
+        else {
+            return {
+                integerPart,
+                isPercent,
+                thousandsSeparator,
+            };
+        }
+    }
+    function convertInternalFormatToFormat(internalFormat) {
+        let format = "";
+        for (let part of internalFormat) {
+            let currentFormat;
+            switch (part.type) {
+                case "NUMBER":
+                    const fmt = part.format;
+                    currentFormat = fmt.integerPart;
+                    if (fmt.thousandsSeparator) {
+                        currentFormat = currentFormat.slice(0, -3) + "," + currentFormat.slice(-3);
+                    }
+                    if (fmt.decimalPart !== undefined) {
+                        currentFormat += "." + fmt.decimalPart;
+                    }
+                    if (fmt.isPercent) {
+                        currentFormat += "%";
+                    }
+                    break;
+                case "CURRENCY":
+                    currentFormat = `[$${part.format}]`;
+                    break;
+                case "DATE":
+                    currentFormat = part.format;
+                    break;
+            }
+            format += currentFormat;
+        }
+        return format;
     }
 
     function createDefaultCols(colNumber) {
@@ -8009,45 +8230,6 @@
     const cellRegistry = new Registry();
 
     /**
-     * Format a cell value with its format.
-     */
-    function formatValue(value, format) {
-        switch (typeof value) {
-            case "string":
-                return value;
-            case "boolean":
-                return value ? "TRUE" : "FALSE";
-            case "number":
-                if (format === null || format === void 0 ? void 0 : format.match(DATETIME_FORMAT)) {
-                    return formatDateTime({ value, format: format });
-                }
-                return format ? formatNumber(value, format) : formatStandardNumber(value);
-            case "object":
-                return "0";
-        }
-    }
-    /**
-     * Parse a string representing a primitive cell value
-     */
-    function parsePrimitiveContent(content) {
-        if (content === "") {
-            return "";
-        }
-        else if (isNumber(content)) {
-            return parseNumber(content);
-        }
-        else if (isBoolean(content)) {
-            return content.toUpperCase() === "TRUE" ? true : false;
-        }
-        else if (isDateTime(content)) {
-            return parseDateTime(content).value;
-        }
-        else {
-            return content;
-        }
-    }
-
-    /**
      * Abstract base implementation of a cell.
      * Concrete cell classes are responsible to build the raw cell `content` based on
      * whatever data they have (formula, string, ...).
@@ -8125,7 +8307,7 @@
     class NumberCell extends AbstractCell {
         constructor(id, value, properties = {}) {
             super(id, { value: value, type: CellValueType.number }, properties);
-            this.content = formatStandardNumber(this.evaluated.value);
+            this.content = formatValue(this.evaluated.value);
         }
         get composerContent() {
             var _a;
@@ -8157,7 +8339,7 @@
             this.format = properties.format;
         }
         get composerContent() {
-            return formatDateTime({ value: this.evaluated.value, format: this.format });
+            return formatValue(this.evaluated.value, this.format);
         }
     }
     class LinkCell extends AbstractCell {
@@ -8327,8 +8509,8 @@
         sequence: 30,
         match: (content) => isNumber(content),
         createCell: (id, content, properties) => {
-            if (!properties.format && content.includes("%")) {
-                properties.format = content.includes(".") ? "0.00%" : "0%";
+            if (!properties.format) {
+                properties.format = detectNumberFormat(content);
             }
             return new NumberCell(id, parseNumber(content), properties);
         },
@@ -8394,6 +8576,43 @@
                 return new BadExpressionCell(id, content, error.message || DEFAULT_ERROR_MESSAGE, properties);
             }
         };
+    }
+    function detectNumberFormat(content) {
+        const digitBase = content.includes(".") ? "0.00" : "0";
+        const matchedCurrencies = content.match(/[\$€]/);
+        if (matchedCurrencies) {
+            const matchedFirstDigit = content.match(/[\d]/);
+            const currency = "[$" + matchedCurrencies.values().next().value + "]";
+            if (matchedFirstDigit.index < matchedCurrencies.index) {
+                return "#,##" + digitBase + currency;
+            }
+            return currency + "#,##" + digitBase;
+        }
+        if (content.includes("%")) {
+            return digitBase + "%";
+        }
+        return undefined;
+    }
+
+    /**
+     * Parse a string representing a primitive cell value
+     */
+    function parsePrimitiveContent(content) {
+        if (content === "") {
+            return "";
+        }
+        else if (isNumber(content)) {
+            return parseNumber(content);
+        }
+        else if (isBoolean(content)) {
+            return content.toUpperCase() === "TRUE" ? true : false;
+        }
+        else if (isDateTime(content)) {
+            return parseDateTime(content).value;
+        }
+        else {
+            return content;
+        }
     }
 
     /**
@@ -9101,7 +9320,7 @@
             if (numberFormat !== undefined) {
                 // Depending on the step sign, increase or decrease the decimal representation
                 // of the format
-                const newFormat = this.changeDecimalFormat(numberFormat, step);
+                const newFormat = changeDecimalPlaces(numberFormat, step);
                 // Apply the new format on the whole zone
                 this.setFormatter(sheetId, zones, newFormat);
             }
@@ -9120,109 +9339,12 @@
                         if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number &&
                             !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT)) // reject dates
                         ) {
-                            return cell.format || this.setDefaultNumberFormat(cell.evaluated.value);
+                            return cell.format || createDefaultFormat(cell.evaluated.value);
                         }
                     }
                 }
             }
             return undefined;
-        }
-        /**
-         * Function used to give the default format of a cell with a number for value.
-         * It is considered that the default format of a number is 0 followed by as many
-         * 0 as there are decimal places.
-         *
-         * Example:
-         * - 1 --> '0'
-         * - 123 --> '0'
-         * - 12345 --> '0'
-         * - 42.1 --> '0.0'
-         * - 456.0001 --> '0.0000'
-         */
-        setDefaultNumberFormat(cellValue) {
-            const strValue = cellValue.toString();
-            const parts = strValue.split(".");
-            if (parts.length === 1) {
-                return "0";
-            }
-            return "0." + Array(parts[1].length + 1).join("0");
-        }
-        /**
-         * This function take a cell format representation and return a new format representation
-         * with more or less decimal places.
-         *
-         * If the format doesn't look like a digital format (means that not contain '0')
-         * or if this one cannot be increased or decreased, the returned format will be
-         * the same.
-         *
-         * This function aims to work with all possible formats as well as custom formats.
-         *
-         * Examples of format changed by this function:
-         * - "0" (step = 1) --> "0.0"
-         * - "0.000%" (step = 1) --> "0.0000%"
-         * - "0.00" (step = -1) --> "0.0"
-         * - "0%" (step = -1) --> "0%"
-         * - "#,##0.0" (step = -1) --> "#,##0"
-         * - "#,##0;0.0%;0.000" (step = 1) --> "#,##0.0;0.00%;0.0000"
-         */
-        changeDecimalFormat(format, step) {
-            const sign = Math.sign(step);
-            // According to the representation of the cell format. A format can contain
-            // up to 4 sub-formats which can be applied depending on the value of the cell
-            // (among positive / negative / zero / text), each of these sub-format is separated
-            // by ';' in the format. We need to make the change on each sub-format.
-            const subFormats = format.split(";");
-            let newSubFormats = [];
-            for (let subFormat of subFormats) {
-                const decimalPointPosition = subFormat.indexOf(".");
-                const exponentPosition = subFormat.toUpperCase().indexOf("E");
-                let newSubFormat;
-                // the 1st step is to find the part of the zeros located before the
-                // exponent (when existed)
-                const subPart = exponentPosition > -1 ? subFormat.slice(0, exponentPosition) : subFormat;
-                const zerosAfterDecimal = decimalPointPosition > -1 ? subPart.slice(decimalPointPosition).match(/0/g).length : 0;
-                // the 2nd step is to add (or remove) zero after the last zeros obtained in
-                // step 1
-                const lastZeroPosition = subPart.lastIndexOf("0");
-                if (lastZeroPosition > -1) {
-                    if (sign > 0) {
-                        // in this case we want to add decimal information
-                        if (zerosAfterDecimal < maximumDecimalPlaces) {
-                            newSubFormat =
-                                subFormat.slice(0, lastZeroPosition + 1) +
-                                    (zerosAfterDecimal === 0 ? ".0" : "0") +
-                                    subFormat.slice(lastZeroPosition + 1);
-                        }
-                        else {
-                            newSubFormat = subFormat;
-                        }
-                    }
-                    else {
-                        // in this case we want to remove decimal information
-                        if (zerosAfterDecimal > 0) {
-                            // remove last zero
-                            newSubFormat =
-                                subFormat.slice(0, lastZeroPosition) + subFormat.slice(lastZeroPosition + 1);
-                            // if a zero always exist after decimal point else remove decimal point
-                            if (zerosAfterDecimal === 1) {
-                                newSubFormat =
-                                    newSubFormat.slice(0, decimalPointPosition) +
-                                        newSubFormat.slice(decimalPointPosition + 1);
-                            }
-                        }
-                        else {
-                            // zero after decimal isn't present, we can't remove zero
-                            newSubFormat = subFormat;
-                        }
-                    }
-                }
-                else {
-                    // no zeros are present in this format, we do nothing
-                    newSubFormat = subFormat;
-                }
-                newSubFormats.push(newSubFormat);
-            }
-            return newSubFormats.join(";");
         }
         /**
          * Clear the styles of zones
@@ -11912,7 +12034,6 @@
         checkExpandedValues(sheet, z) {
             const expandedZone = this.expand(sheet, z);
             const sheetId = sheet.id;
-            let line = [];
             let cell;
             if (this.getters.doesIntersectMerge(sheetId, expandedZone)) {
                 const { left, right, top, bottom } = expandedZone;
@@ -11920,16 +12041,20 @@
                     for (let r = top; r <= bottom; r++) {
                         const [mainCellCol, mainCellRow] = this.getters.getMainCell(sheetId, c, r);
                         cell = this.getters.getCell(sheetId, mainCellCol, mainCellRow);
-                        line.push((cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "");
+                        if (cell === null || cell === void 0 ? void 0 : cell.formattedValue) {
+                            return true;
+                        }
                     }
                 }
             }
             else {
-                line = this.getters
-                    .getCellsInZone(sheetId, expandedZone)
-                    .map((cell) => (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "");
+                for (let cell of this.getters.getCellsInZone(sheetId, expandedZone)) {
+                    if (cell === null || cell === void 0 ? void 0 : cell.formattedValue) {
+                        return true;
+                    }
+                }
             }
-            return line.some((item) => item !== "");
+            return false;
         }
         /**
          * This function will expand the provided zone in directions (top, bottom, left, right) for which there
@@ -12292,6 +12417,12 @@
         },
         sequence: 40,
     });
+
+    /**
+     * Registry intended to support usual currencies. It is mainly used to create
+     * currency formats that can be selected or modified when customizing formats.
+     */
+    const currenciesRegistry = new Registry();
 
     const figureRegistry = new Registry();
 
@@ -13011,6 +13142,8 @@
     const FORMAT_GENERAL_ACTION = (env) => setFormatter(env, "");
     const FORMAT_NUMBER_ACTION = (env) => setFormatter(env, "#,##0.00");
     const FORMAT_PERCENT_ACTION = (env) => setFormatter(env, "0.00%");
+    const FORMAT_CURRENCY_ACTION = (env) => setFormatter(env, "[$$]#,##0.00");
+    const FORMAT_CURRENCY_ROUNDED_ACTION = (env) => setFormatter(env, "[$$]#,##0");
     const FORMAT_DATE_ACTION = (env) => setFormatter(env, "m/d/yyyy");
     const FORMAT_TIME_ACTION = (env) => setFormatter(env, "hh:mm:ss a");
     const FORMAT_DATE_TIME_ACTION = (env) => setFormatter(env, "m/d/yyyy hh:mm:ss");
@@ -13027,6 +13160,9 @@
     };
     const OPEN_FAR_SIDEPANEL_ACTION = (env) => {
         env.openSidePanel("FindAndReplace", {});
+    };
+    const OPEN_CUSTOM_CURRENCY_SIDEPANEL_ACTION = (env) => {
+        env.openSidePanel("CustomCurrency", {});
     };
     const INSERT_LINK = (env) => {
         env.openLinkEditor();
@@ -13476,6 +13612,179 @@
         }),
     });
 
+    const CfTerms = {
+        CfTitle: _lt("Format rules"),
+        IsRule: _lt("Format cells if..."),
+        FormattingStyle: _lt("Formatting style"),
+        PreviewText: _lt("Preview text"),
+        Errors: {
+            [20 /* InvalidRange */]: _lt("The range is invalid"),
+            [34 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
+            [35 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
+            [36 /* MinNaN */]: _lt("The minpoint must be a number"),
+            [37 /* MidNaN */]: _lt("The midpoint must be a number"),
+            [38 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [39 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
+            [40 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
+            [30 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
+            [33 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [32 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [31 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
+            [41 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [43 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [42 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [44 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
+            [45 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
+            [19 /* EmptyRange */]: _lt("A range needs to be defined"),
+            Unexpected: _lt("The rule is invalid for an unknown reason"),
+        },
+        SingleColor: _lt("Single color"),
+        ColorScale: _lt("Color scale"),
+        IconSet: _lt("Icon set"),
+        NewRule: _lt("Add another rule"),
+        ReorderRules: _lt("Reorder rules"),
+        ExitReorderMode: _lt("Stop reordering rules"),
+        FixedNumber: _lt("Number"),
+        Percentage: _lt("Percentage"),
+        Percentile: _lt("Percentile"),
+        Formula: _lt("Formula"),
+        ApplyToRange: _lt("Apply to range"),
+    };
+    const ColorScale = {
+        CellValues: _lt("Cell values"),
+        None: _lt("None"),
+        Preview: _lt("Preview"),
+        Minpoint: _lt("Minpoint"),
+        MaxPoint: _lt("Maxpoint"),
+        MidPoint: _lt("Midpoint"),
+    };
+    const IconSetRule = {
+        WhenValueIs: _lt("When value is"),
+        Else: _lt("Else"),
+        ReverseIcons: _lt("Reverse icons"),
+        Icons: _lt("Icons"),
+        Type: _lt("Type"),
+    };
+    const CellIsOperators = {
+        IsEmpty: _lt("Is empty"),
+        IsNotEmpty: _lt("Is not empty"),
+        ContainsText: _lt("Contains"),
+        NotContains: _lt("Does not contain"),
+        BeginsWith: _lt("Starts with"),
+        EndsWith: _lt("Ends with"),
+        Equal: _lt("Is equal to"),
+        NotEqual: _lt("Is not equal to"),
+        GreaterThan: _lt("Is greater than"),
+        GreaterThanOrEqual: _lt("Is greater than or equal to"),
+        LessThan: _lt("Is less than"),
+        LessThanOrEqual: _lt("Is less than or equal to"),
+        Between: _lt("Is between"),
+        NotBetween: _lt("Is not between"),
+    };
+    const ChartTerms = {
+        ChartType: _lt("Chart type"),
+        Line: _lt("Line"),
+        Bar: _lt("Bar"),
+        Pie: _lt("Pie"),
+        StackedBar: _lt("Stacked barchart"),
+        Title: _lt("Title"),
+        Series: _lt("Series"),
+        DataSeries: _lt("Data Series"),
+        MyDataHasTitle: _lt("Data series include title"),
+        DataCategories: _lt("Categories / Labels"),
+        UpdateChart: _lt("Update chart"),
+        CreateChart: _lt("Create chart"),
+        TitlePlaceholder: _lt("New Chart"),
+        BackgroundColor: _lt("Background color"),
+        SelectColor: _lt("Select a color..."),
+        VerticalAxisPosition: _lt("Vertical axis position"),
+        LegendPosition: _lt("Legend position"),
+        Left: _lt("Left"),
+        Right: _lt("Right"),
+        None: _lt("None"),
+        Top: _lt("Top"),
+        Bottom: _lt("Bottom"),
+        Center: _lt("Center"),
+        Linear: _lt("Linear"),
+        Exponential: _lt("Exponential"),
+        Logarithmic: _lt("Logarithmic"),
+        Errors: {
+            [25 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
+            [26 /* InvalidDataSet */]: _lt("The dataset is invalid"),
+            [27 /* InvalidLabelRange */]: _lt("Labels are invalid"),
+            Unexpected: _lt("The chart definition is invalid for an unknown reason"),
+        },
+    };
+    const FindAndReplaceTerms = {
+        Search: _lt("Search"),
+        Replace: _lt("Replace"),
+        Next: _lt("Next"),
+        Previous: _lt("Previous"),
+        MatchCase: _lt("Match case"),
+        ExactMatch: _lt("Match entire cell content"),
+        SearchFormulas: _lt("Search in formulas"),
+        ReplaceAll: _lt("Replace all"),
+        ReplaceFormulas: _lt("Also modify formulas"),
+    };
+    const LinkEditorTerms = {
+        Text: _lt("Text"),
+        Link: _lt("Link"),
+        Edit: _lt("Edit link"),
+        Remove: _lt("Remove link"),
+    };
+    const TopBarTerms = {
+        ReadonlyAccess: _lt("Readonly Access"),
+        PaintFormat: _lt("Paint Format"),
+        ClearFormat: _lt("Clear Format"),
+        FormatPercent: _lt("Format as percent"),
+        DecreaseDecimal: _lt("Decrease decimal places"),
+        IncreaseDecimal: _lt("Increase decimal places"),
+        MoreFormat: _lt("More formats"),
+        FontSize: _lt("Font Size"),
+        Borders: _lt("Borders"),
+        MergeCells: _lt("Merge Cells"),
+        HorizontalAlign: _lt("Horizontal align"),
+    };
+    const NumberFormatTerms = {
+        General: _lt("General"),
+        NoSpecificFormat: _lt("no specific format"),
+        Number: _lt("Number"),
+        Percent: _lt("Percent"),
+        Currency: _lt("Currency"),
+        CurrencyRounded: _lt("Currency rounded"),
+        Date: _lt("Date"),
+        Time: _lt("Time"),
+        DateTime: _lt("Date time"),
+        Duration: _lt("Duration"),
+        CustomCurrency: _lt("Custom currency"),
+    };
+    const GenericTerms = {
+        Undo: _lt("Undo"),
+        Redo: _lt("Redo"),
+        Bold: _lt("Bold"),
+        Italic: _lt("Italic"),
+        Strikethrough: _lt("Strikethrough"),
+        Underline: _lt("Underline"),
+        FillColor: _lt("Fill Color"),
+        TextColor: _lt("Text Color"),
+        Cancel: _lt("Cancel"),
+        Save: _lt("Save"),
+        Confirm: _lt("Confirm"),
+        Value: _lt("Value"),
+        AndValue: _lt("and value"),
+    };
+    const GenericWords = {
+        And: _lt("and"),
+    };
+    const CustomCurrencyTerms = {
+        Currency: _lt("Currency"),
+        Custom: _lt("Custom"),
+        Symbol: _lt("Symbol"),
+        Code: _lt("Code"),
+        Format: _lt("Format"),
+        Apply: _lt("Apply"),
+    };
+
     const topbarMenuRegistry = new MenuItemRegistry();
     topbarMenuRegistry
         .add("file", { name: _lt("File"), sequence: 10 })
@@ -13672,39 +13981,55 @@
         separator: true,
     })
         .addChild("format_number_general", ["format", "format_number"], {
-        name: _lt("General"),
+        name: `${NumberFormatTerms.General} (${NumberFormatTerms.NoSpecificFormat})`,
         sequence: 10,
         separator: true,
         action: FORMAT_GENERAL_ACTION,
     })
         .addChild("format_number_number", ["format", "format_number"], {
-        name: _lt("Number (1,000.12)"),
+        name: `${NumberFormatTerms.Number} (1,000.12)`,
         sequence: 20,
         action: FORMAT_NUMBER_ACTION,
     })
         .addChild("format_number_percent", ["format", "format_number"], {
-        name: _lt("Percent (10.12%)"),
+        name: `${NumberFormatTerms.Percent} (10.12%)`,
         sequence: 30,
         separator: true,
         action: FORMAT_PERCENT_ACTION,
     })
+        .addChild("format_number_currency", ["format", "format_number"], {
+        name: `${NumberFormatTerms.Currency} ($1,000.12)`,
+        sequence: 37,
+        action: FORMAT_CURRENCY_ACTION,
+    })
+        .addChild("format_number_currency_rounded", ["format", "format_number"], {
+        name: `${NumberFormatTerms.CurrencyRounded} ($1,000)`,
+        sequence: 38,
+        action: FORMAT_CURRENCY_ROUNDED_ACTION,
+    })
+        .addChild("format_custom_currency", ["format", "format_number"], {
+        name: NumberFormatTerms.CustomCurrency,
+        sequence: 39,
+        separator: true,
+        action: OPEN_CUSTOM_CURRENCY_SIDEPANEL_ACTION,
+    })
         .addChild("format_number_date", ["format", "format_number"], {
-        name: _lt("Date (9/26/2008)"),
+        name: `${NumberFormatTerms.Date} (9/26/2008)`,
         sequence: 40,
         action: FORMAT_DATE_ACTION,
     })
         .addChild("format_number_time", ["format", "format_number"], {
-        name: _lt("Time (10:43:00 PM)"),
+        name: `${NumberFormatTerms.Time} (10:43:00 PM)`,
         sequence: 50,
         action: FORMAT_TIME_ACTION,
     })
         .addChild("format_number_date_time", ["format", "format_number"], {
-        name: _lt("Date time (9/26/2008 22:43:00)"),
+        name: `${NumberFormatTerms.DateTime} (9/26/2008 22:43:00)`,
         sequence: 60,
         action: FORMAT_DATE_TIME_ACTION,
     })
         .addChild("format_number_duration", ["format", "format_number"], {
-        name: _lt("Duration (27:51:38)"),
+        name: `${NumberFormatTerms.Duration} (27:51:38)`,
         sequence: 70,
         separator: true,
         action: FORMAT_DURATION_ACTION,
@@ -14146,7 +14471,7 @@
     };
 
     const uuidGenerator$1 = new UuidGenerator();
-    const TEMPLATE$n = owl.xml /* xml */ `
+    const TEMPLATE$o = owl.xml /* xml */ `
   <div class="o-selection">
     <div t-foreach="ranges" t-as="range" t-key="range.id" class="o-selection-input" t-att-class="props.class">
       <input
@@ -14343,159 +14668,7 @@
             (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
         }
     }
-    SelectionInput.template = TEMPLATE$n;
-
-    const CfTerms = {
-        CfTitle: _lt("Format rules"),
-        IsRule: _lt("Format cells if..."),
-        FormattingStyle: _lt("Formatting style"),
-        PreviewText: _lt("Preview text"),
-        Errors: {
-            [20 /* InvalidRange */]: _lt("The range is invalid"),
-            [34 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
-            [35 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
-            [36 /* MinNaN */]: _lt("The minpoint must be a number"),
-            [37 /* MidNaN */]: _lt("The midpoint must be a number"),
-            [38 /* MaxNaN */]: _lt("The maxpoint must be a number"),
-            [39 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
-            [40 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
-            [30 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [33 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [32 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [31 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
-            [41 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [43 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [42 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [44 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
-            [45 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
-            [19 /* EmptyRange */]: _lt("A range needs to be defined"),
-            Unexpected: _lt("The rule is invalid for an unknown reason"),
-        },
-        SingleColor: _lt("Single color"),
-        ColorScale: _lt("Color scale"),
-        IconSet: _lt("Icon set"),
-        NewRule: _lt("Add another rule"),
-        ReorderRules: _lt("Reorder rules"),
-        ExitReorderMode: _lt("Stop reordering rules"),
-        FixedNumber: _lt("Number"),
-        Percentage: _lt("Percentage"),
-        Percentile: _lt("Percentile"),
-        Formula: _lt("Formula"),
-        ApplyToRange: _lt("Apply to range"),
-    };
-    const ColorScale = {
-        CellValues: _lt("Cell values"),
-        None: _lt("None"),
-        Preview: _lt("Preview"),
-        Minpoint: _lt("Minpoint"),
-        MaxPoint: _lt("Maxpoint"),
-        MidPoint: _lt("Midpoint"),
-    };
-    const IconSetRule = {
-        WhenValueIs: _lt("When value is"),
-        Else: _lt("Else"),
-        ReverseIcons: _lt("Reverse icons"),
-        Icons: _lt("Icons"),
-        Type: _lt("Type"),
-    };
-    const CellIsOperators = {
-        IsEmpty: _lt("Is empty"),
-        IsNotEmpty: _lt("Is not empty"),
-        ContainsText: _lt("Contains"),
-        NotContains: _lt("Does not contain"),
-        BeginsWith: _lt("Starts with"),
-        EndsWith: _lt("Ends with"),
-        Equal: _lt("Is equal to"),
-        NotEqual: _lt("Is not equal to"),
-        GreaterThan: _lt("Is greater than"),
-        GreaterThanOrEqual: _lt("Is greater than or equal to"),
-        LessThan: _lt("Is less than"),
-        LessThanOrEqual: _lt("Is less than or equal to"),
-        Between: _lt("Is between"),
-        NotBetween: _lt("Is not between"),
-    };
-    const ChartTerms = {
-        ChartType: _lt("Chart type"),
-        Line: _lt("Line"),
-        Bar: _lt("Bar"),
-        Pie: _lt("Pie"),
-        StackedBar: _lt("Stacked barchart"),
-        Title: _lt("Title"),
-        Series: _lt("Series"),
-        DataSeries: _lt("Data Series"),
-        MyDataHasTitle: _lt("Data series include title"),
-        DataCategories: _lt("Categories / Labels"),
-        UpdateChart: _lt("Update chart"),
-        CreateChart: _lt("Create chart"),
-        TitlePlaceholder: _lt("New Chart"),
-        BackgroundColor: _lt("Background color"),
-        SelectColor: _lt("Select a color..."),
-        VerticalAxisPosition: _lt("Vertical axis position"),
-        LegendPosition: _lt("Legend position"),
-        Left: _lt("Left"),
-        Right: _lt("Right"),
-        None: _lt("None"),
-        Top: _lt("Top"),
-        Bottom: _lt("Bottom"),
-        Center: _lt("Center"),
-        Linear: _lt("Linear"),
-        Exponential: _lt("Exponential"),
-        Logarithmic: _lt("Logarithmic"),
-        Errors: {
-            [25 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
-            [26 /* InvalidDataSet */]: _lt("The dataset is invalid"),
-            [27 /* InvalidLabelRange */]: _lt("Labels are invalid"),
-            Unexpected: _lt("The chart definition is invalid for an unknown reason"),
-        },
-    };
-    const FindAndReplaceTerms = {
-        Search: _lt("Search"),
-        Replace: _lt("Replace"),
-        Next: _lt("Next"),
-        Previous: _lt("Previous"),
-        MatchCase: _lt("Match case"),
-        ExactMatch: _lt("Match entire cell content"),
-        SearchFormulas: _lt("Search in formulas"),
-        ReplaceAll: _lt("Replace all"),
-        ReplaceFormulas: _lt("Also modify formulas"),
-    };
-    const LinkEditorTerms = {
-        Text: _lt("Text"),
-        Link: _lt("Link"),
-        Edit: _lt("Edit link"),
-        Remove: _lt("Remove link"),
-    };
-    const TopBarTerms = {
-        ReadonlyAccess: _lt("Readonly Access"),
-        PaintFormat: _lt("Paint Format"),
-        ClearFormat: _lt("Clear Format"),
-        FormatPercent: _lt("Format as percent"),
-        DecreaseDecimal: _lt("Decrease decimal places"),
-        IncreaseDecimal: _lt("Increase decimal places"),
-        MoreFormat: _lt("More formats"),
-        FontSize: _lt("Font Size"),
-        Borders: _lt("Borders"),
-        MergeCells: _lt("Merge Cells"),
-        HorizontalAlign: _lt("Horizontal align"),
-    };
-    const GenericTerms = {
-        Undo: _lt("Undo"),
-        Redo: _lt("Redo"),
-        Bold: _lt("Bold"),
-        Italic: _lt("Italic"),
-        Strikethrough: _lt("Strikethrough"),
-        Underline: _lt("Underline"),
-        FillColor: _lt("Fill Color"),
-        TextColor: _lt("Text Color"),
-        Cancel: _lt("Cancel"),
-        Save: _lt("Save"),
-        Confirm: _lt("Confirm"),
-        Value: _lt("Value"),
-        AndValue: _lt("and value"),
-    };
-    const GenericWords = {
-        And: _lt("and"),
-    };
+    SelectionInput.template = TEMPLATE$o;
 
     const CONFIGURATION_TEMPLATE = owl.xml /* xml */ `
 <div>
@@ -14572,7 +14745,7 @@
   </div>
 </div>
 `;
-    const TEMPLATE$m = owl.xml /* xml */ `
+    const TEMPLATE$n = owl.xml /* xml */ `
   <div class="o-chart">
     <div class="o-panel">
       <div class="o-panel-element"
@@ -14718,7 +14891,7 @@
             };
         }
     }
-    ChartPanel.template = TEMPLATE$m;
+    ChartPanel.template = TEMPLATE$n;
     ChartPanel.components = { SelectionInput, ColorPicker };
 
     /**
@@ -14796,7 +14969,7 @@
 `;
     const TEMPLATE_CELL_IS_RULE_EDITOR = owl.xml /* xml */ `
 <div class="o-cf-cell-is-rule">
-    <div class="o-cf-title-text" t-esc="env._t('${CfTerms.IsRule}')"></div>
+    <div class="o-section-subtitle" t-esc="env._t('${CfTerms.IsRule}')"></div>
     <select t-model="rule.operator" class="o-input o-cell-is-operator">
         <t t-foreach="Object.keys(cellIsOperators)" t-as="op" t-key="op_index">
             <option t-att-value="op" t-esc="cellIsOperators[op]"/>
@@ -14816,7 +14989,7 @@
                  class="o-input o-cell-is-value o-required"/>
       </t>
     </t>
-    <div class="o-cf-title-text" t-esc="env._t('${CfTerms.FormattingStyle}')"></div>
+    <div class="o-section-subtitle" t-esc="env._t('${CfTerms.FormattingStyle}')"></div>
 
     <t t-call="${PREVIEW_TEMPLATE$2}">
         <t t-set="currentStyle" t-value="rule.style"/>
@@ -14897,25 +15070,25 @@
   </div>`;
     const TEMPLATE_COLOR_SCALE_EDITOR = owl.xml /* xml */ `
   <div class="o-cf-color-scale-editor">
-      <div class="o-cf-title-text">
+      <div class="o-section-subtitle">
         <t t-esc="env._t('${ColorScale.Preview}')"/>
       </div>
       <t t-call="${PREVIEW_TEMPLATE$1}"/>
-      <div class="o-cf-title-text">
+      <div class="o-section-subtitle">
         <t t-esc="env._t('${ColorScale.Minpoint}')"/>
       </div>
       <t t-call="${THRESHOLD_TEMPLATE}">
           <t t-set="threshold" t-value="rule.minimum" ></t>
           <t t-set="thresholdType" t-value="'minimum'" ></t>
       </t>
-      <div class="o-cf-title-text">
+      <div class="o-section-subtitle">
         <t t-esc="env._t('${ColorScale.MidPoint}')"/>
       </div>
       <t t-call="${THRESHOLD_TEMPLATE}">
           <t t-set="threshold" t-value="rule.midpoint" ></t>
           <t t-set="thresholdType" t-value="'midpoint'" ></t>
       </t>
-      <div class="o-cf-title-text">
+      <div class="o-section-subtitle">
         <t t-esc="env._t('${ColorScale.MaxPoint}')"/>
       </div>
       <t t-call="${THRESHOLD_TEMPLATE}">
@@ -14926,7 +15099,7 @@
 
     const ICON_SETS_TEMPLATE = owl.xml /* xml */ `
   <div>
-  <div class="o-cf-title-text">
+  <div class="o-section-subtitle">
     <t t-esc="env._t('${IconSetRule.Icons}')"/>
   </div>
     <div class="o-cf-iconsets">
@@ -15097,7 +15270,7 @@
   </t>
 </div>
 `;
-    const TEMPLATE$l = owl.xml /* xml */ `
+    const TEMPLATE$m = owl.xml /* xml */ `
   <div class="o-cf">
     <t t-if="state.mode === 'list' || state.mode === 'reorder'">
       <div class="o-cf-preview-list" >
@@ -15212,13 +15385,7 @@
       margin-top: 10px;
       display: flex;
     }
-    .o-cf-title-text {
-      color: gray;
-      font-size: 12px;
-      line-height: 14px;
-      margin: 8px 0 4px 0;
-    }
-    .o-cf-title-text:first-child {
+    .o-section-subtitle:first-child {
       margin-top: 0px;
     }
     .o-cf-cursor-ptr {
@@ -15894,8 +16061,203 @@
             this.state.rules.iconSet.icons[target] = icon;
         }
     }
-    ConditionalFormattingPanel.template = TEMPLATE$l;
+    ConditionalFormattingPanel.template = TEMPLATE$m;
     ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
+
+    const TEMPLATE$l = owl.xml /* xml */ `
+<div class="o-custom-currency">
+    <div class="o-section" t-if="availableCurrencies.length > 1">
+        <div class="o-section-title" t-esc="env._t('${CustomCurrencyTerms.Currency}')"/>
+        <select class="o-input o-available-currencies" t-on-change="(ev) => this.updateSelectCurrency(ev)">
+            <t t-foreach="availableCurrencies" t-as="currency" t-key="currency_index">
+                <option
+                  t-att-value="currency_index"
+                  t-esc="currencyDisplayName(currency)"
+                  t-att-selected="currency_index === state.selectedCurrencyIndex"
+                />
+            </t>
+        </select>
+    </div>
+    <div class="o-section">
+        <div class="o-subsection-left">
+            <div class="o-section-title" t-esc="env._t('${CustomCurrencyTerms.Code}')"/>
+            <input
+              type="text"
+              class="o-input"
+              t-model="state.currencyCode"
+              t-on-input="(ev) => this.updateCode(ev)"
+            />
+        </div>
+        <div class="o-subsection-right">
+            <div class="o-section-title" t-esc="env._t('${CustomCurrencyTerms.Symbol}')"/>
+            <input
+              type="text"
+              class="o-input"
+              t-model="state.currencySymbol"
+              t-on-input="(ev) => this.updateSymbol(ev)"
+            />
+        </div>
+    </div>
+    <div class="o-section">
+        <div class="o-section-title" t-esc="env._t('${CustomCurrencyTerms.Format}')"/>
+        <select
+          class="o-input o-format-proposals"
+          t-on-change="(ev) => this.updateSelectFormat(ev)"
+          t-att-disabled="!formatProposals.length"
+        >
+            <t t-foreach="formatProposals" t-as="proposal" t-key="proposal_index">
+                <option
+                  t-att-value="proposal_index"
+                  t-esc="proposal.example"
+                  t-att-selected="proposal_index === state.selectedFormatIndex"
+                />
+            </t>
+        </select>
+    </div>
+    <div class="o-sidePanelButtons">
+        <button
+          class="o-sidePanelButton"
+          t-on-click="() => this.apply()"
+          t-esc="env._t('${CustomCurrencyTerms.Apply}')"
+          t-att-disabled="!formatProposals.length || isSameFormat"
+        />
+    </div>
+</div>
+`;
+    css /* scss */ `
+  .o-custom-currency {
+    .o-format-proposals {
+      color: black;
+    }
+  }
+`;
+    class CustomCurrencyPanel extends owl.Component {
+        setup() {
+            this.availableCurrencies = [];
+            this.state = owl.useState({
+                selectedCurrencyIndex: 0,
+                currencyCode: "",
+                currencySymbol: "",
+                selectedFormatIndex: 0,
+            });
+            owl.onWillStart(() => this.updateAvailableCurrencies());
+        }
+        get formatProposals() {
+            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
+            const proposalBases = this.initProposalBases(currency.decimalPlaces);
+            const firstPosition = currency.position;
+            const secondPosition = currency.position === "before" ? "after" : "before";
+            const symbol = this.state.currencySymbol.trim() ? this.state.currencySymbol : "";
+            const code = this.state.currencyCode.trim() ? this.state.currencyCode : "";
+            return code || symbol
+                ? [
+                    ...this.createFormatProposals(proposalBases, symbol, code, firstPosition),
+                    ...this.createFormatProposals(proposalBases, symbol, code, secondPosition),
+                ]
+                : [];
+        }
+        get isSameFormat() {
+            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
+            return selectedFormat ? selectedFormat.format === this.getCommonFormat() : false;
+        }
+        async updateAvailableCurrencies() {
+            var _a, _b;
+            if (currenciesRegistry.getAll().length === 0) {
+                const currencies = (await ((_b = (_a = this.env).loadCurrencies) === null || _b === void 0 ? void 0 : _b.call(_a))) || [];
+                currencies.forEach((currency, index) => {
+                    currenciesRegistry.add(index.toString(), currency);
+                });
+            }
+            const emptyCurrency = {
+                name: this.env._t(CustomCurrencyTerms.Custom),
+                code: "",
+                symbol: "",
+                decimalPlaces: 2,
+                position: "after",
+            };
+            this.availableCurrencies = [emptyCurrency, ...currenciesRegistry.getAll()];
+        }
+        updateSelectCurrency(ev) {
+            this.state.selectedCurrencyIndex = ev.target.value;
+            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
+            this.state.currencyCode = currency.code;
+            this.state.currencySymbol = currency.symbol;
+        }
+        updateCode(ev) {
+            this.state.currencyCode = ev.target.value;
+            this.initAvailableCurrencies();
+        }
+        updateSymbol(ev) {
+            this.state.currencySymbol = ev.target.value;
+            this.initAvailableCurrencies();
+        }
+        updateSelectFormat(ev) {
+            this.state.selectedFormatIndex = ev.target.value;
+        }
+        apply() {
+            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
+            this.env.model.dispatch("SET_FORMATTING", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                target: this.env.model.getters.getSelectedZones(),
+                format: selectedFormat.format,
+            });
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        initAvailableCurrencies() {
+            this.state.selectedCurrencyIndex = 0;
+        }
+        initProposalBases(decimalPlaces) {
+            const result = [{ format: "#,##0", example: "1,000" }];
+            const decimalRepresentation = decimalPlaces ? "." + "0".repeat(decimalPlaces) : "";
+            if (decimalRepresentation) {
+                result.push({
+                    format: "#,##0" + decimalRepresentation,
+                    example: "1,000" + decimalRepresentation,
+                });
+            }
+            return result;
+        }
+        createFormatProposals(proposalBases, symbol, code, position) {
+            let formatProposals = [];
+            // 1 - add proposal with symbol and without code
+            if (symbol) {
+                for (let base of proposalBases) {
+                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, symbol));
+                }
+            }
+            // 2 - if code exist --> add more proposal with symbol and with code
+            if (code) {
+                for (let base of proposalBases) {
+                    const expression = (position === "after" ? " " : "") + code + " " + symbol;
+                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, expression));
+                }
+            }
+            return formatProposals;
+        }
+        createFormatProposal(position, baseExample, formatBase, expression) {
+            const formatExpression = "[$" + expression + "]";
+            return {
+                example: position === "before" ? expression + baseExample : baseExample + expression,
+                format: position === "before" ? formatExpression + formatBase : formatBase + formatExpression,
+            };
+        }
+        getCommonFormat() {
+            var _a;
+            const selectedZones = this.env.model.getters.getSelectedZones();
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const cells = selectedZones
+                .map((zone) => this.env.model.getters.getCellsInZone(sheetId, zone))
+                .flat();
+            const firstFormat = (_a = cells[0]) === null || _a === void 0 ? void 0 : _a.format;
+            return cells.every((cell) => (cell === null || cell === void 0 ? void 0 : cell.format) === firstFormat) ? firstFormat : undefined;
+        }
+        currencyDisplayName(currency) {
+            return currency.name + (currency.code ? ` (${currency.code})` : "");
+        }
+    }
+    CustomCurrencyPanel.template = TEMPLATE$l;
 
     const TEMPLATE$k = owl.xml /* xml */ `
 <div class="o-find-and-replace" tabindex="0" t-on-focusin="onFocusSidePanel" t-ref="findAndReplace">
@@ -16110,6 +16472,10 @@
     sidePanelRegistry.add("FindAndReplace", {
         title: _lt("Find and Replace"),
         Body: FindAndReplacePanel,
+    });
+    sidePanelRegistry.add("CustomCurrency", {
+        title: _lt("Custom currency format"),
+        Body: CustomCurrencyPanel,
     });
 
     class TopBarComponentRegistry extends Registry {
@@ -20166,7 +20532,7 @@
                     aggregate += cell.evaluated.value;
                 }
             }
-            return n < 2 ? null : formatStandardNumber(aggregate);
+            return n < 2 ? null : formatValue(aggregate);
         }
         isSelected(zone) {
             return !!this.getters.getSelectedZones().find((z) => isEqual(z, zone));
@@ -22417,7 +22783,7 @@
             this.openContextMenu(target.offsetLeft + target.offsetWidth, target.offsetTop, registry);
         }
         getComposedFnName(fnName, fnValue) {
-            return fnName + ": " + (fnValue !== undefined ? formatStandardNumber(fnValue) : "__");
+            return fnName + ": " + (fnValue !== undefined ? formatValue(fnValue) : "__");
         }
     }
     BottomBar.template = TEMPLATE$h;
@@ -26138,6 +26504,25 @@
           color: dimgrey;
           margin-bottom: 5px;
         }
+
+        .o-section-subtitle {
+          color: gray;
+          font-size: 12px;
+          line-height: 14px;
+          margin: 8px 0 4px 0;
+        }
+
+        .o-subsection-left {
+          display: inline-block;
+          width: 47%;
+          margin-right: 3%;
+        }
+
+        .o-subsection-right {
+          display: inline-block;
+          width: 47%;
+          margin-left: 3%;
+        }
       }
     }
 
@@ -26149,27 +26534,29 @@
     .o-sidePanelButtons {
       padding: 16px;
       text-align: right;
-      .o-sidePanelButton {
-        border: 1px solid lightgrey;
-        padding: 0px 20px 0px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        font-size: 14px;
-        height: 30px;
-        line-height: 16px;
-        background: white;
-        margin-right: 8px;
-        &:hover:enabled {
-          background-color: rgba(0, 0, 0, 0.08);
-        }
-      }
-      .o-sidePanelButton:enabled {
-        cursor: pointer;
-      }
-      .o-sidePanelButton:last-child {
-        margin-right: 0px;
+    }
+
+    .o-sidePanelButton {
+      border: 1px solid lightgrey;
+      padding: 0px 20px 0px 20px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 14px;
+      height: 30px;
+      line-height: 16px;
+      background: white;
+      margin-right: 8px;
+      &:hover:enabled {
+        background-color: rgba(0, 0, 0, 0.08);
       }
     }
+    .o-sidePanelButton:enabled {
+      cursor: pointer;
+    }
+    .o-sidePanelButton:last-child {
+      margin-right: 0px;
+    }
+
     .o-input {
       color: #666666;
       border-radius: 4px;
@@ -26210,13 +26597,26 @@
     SidePanel.template = TEMPLATE$1;
 
     const FORMATS = [
-        { name: "general", text: "General (no specific format)" },
-        { name: "number", text: "Number (1,000.12)", value: "#,##0.00" },
-        { name: "percent", text: "Percent (10.12%)", value: "0.00%" },
-        { name: "date", text: "Date (9/26/2008)", value: "m/d/yyyy" },
-        { name: "time", text: "Time (10:43:00 PM)", value: "hh:mm:ss a" },
-        { name: "datetime", text: "Date time (9/26/2008 22:43:00)", value: "m/d/yyyy hh:mm:ss" },
-        { name: "duration", text: "Duration (27:51:38)", value: "hhhh:mm:ss" },
+        { name: "general", text: `${NumberFormatTerms.General} (${NumberFormatTerms.NoSpecificFormat})` },
+        { name: "number", text: `${NumberFormatTerms.Number} (1,000.12)`, value: "#,##0.00" },
+        { name: "percent", text: `${NumberFormatTerms.Percent} (10.12%)`, value: "0.00%" },
+        { name: "currency", text: `${NumberFormatTerms.Currency} ($1,000.12)`, value: "[$$]#,##0.00" },
+        {
+            name: "currency_rounded",
+            text: `${NumberFormatTerms.CurrencyRounded} ($1,000)`,
+            value: "[$$]#,##0",
+        },
+        { name: "date", text: `${NumberFormatTerms.Date} (9/26/2008)`, value: "m/d/yyyy" },
+        { name: "time", text: `${NumberFormatTerms.Time} (10:43:00 PM)`, value: "hh:mm:ss a" },
+        {
+            name: "datetime",
+            text: `${NumberFormatTerms.DateTime} (9/26/2008 22:43:00)`,
+            value: "m/d/yyyy hh:mm:ss",
+        },
+        { name: "duration", text: `${NumberFormatTerms.Duration} (27:51:38)`, value: "hhhh:mm:ss" },
+    ];
+    const CUSTOM_FORMATS = [
+        { name: "custom_currency", text: NumberFormatTerms.CustomCurrency, sidePanel: "CustomCurrency" },
     ];
     // -----------------------------------------------------------------------------
     // TopBar
@@ -26411,6 +26811,7 @@
         constructor() {
             super(...arguments);
             this.formats = FORMATS;
+            this.customFormats = CUSTOM_FORMATS;
             this.currentFormat = "general";
             this.fontSizes = fontSizes;
             this.style = {};
@@ -26454,8 +26855,8 @@
         toogleStyle(style) {
             setStyle(this.env, { [style]: !this.style[style] });
         }
-        toogleFormat(format) {
-            const formatter = FORMATS.find((f) => f.name === format);
+        toogleFormat(formatName) {
+            const formatter = FORMATS.find((f) => f.name === formatName);
             const value = (formatter && formatter.value) || "";
             setFormatter(this.env, value);
         }
@@ -26560,7 +26961,17 @@
             const format = ev.target.dataset.format;
             if (format) {
                 this.toogleFormat(format);
+                return;
             }
+            const custom = ev.target.dataset.custom;
+            if (custom) {
+                this.openCustomFormatSidePanel(custom);
+            }
+        }
+        openCustomFormatSidePanel(custom) {
+            const customFormatter = CUSTOM_FORMATS.find((c) => c.name === custom);
+            const sidePanel = (customFormatter && customFormatter.sidePanel) || "";
+            this.env.openSidePanel(sidePanel);
         }
         setDecimal(step) {
             this.env.model.dispatch("SET_DECIMAL", {
@@ -26642,6 +27053,9 @@
             <div class="o-dropdown-content o-text-options  o-format-tool "  t-if="state.activeTool === 'formatTool'" t-on-click="setFormat">
               <t t-foreach="formats" t-as="format" t-key="format.name">
                 <div t-att-data-format="format.name" t-att-class="{active: currentFormat === format.name}"><t t-esc="format.text"/></div>
+              </t>
+              <t t-foreach="customFormats" t-as="customFormat" t-key="customFormat.name">
+                <div t-att-data-custom="customFormat.name"><t t-esc="customFormat.text"/></div>
               </t>
             </div>
           </div>
@@ -29470,7 +29884,6 @@
     }
 
     const XLSX_FORMAT_MAP = {
-        General: 0,
         "0": 1,
         "0.00": 2,
         "#,#00": 3,
@@ -30404,7 +30817,7 @@
             }
             return {
                 ...ast,
-                value: formatDateTime({ value: internalDate.value, format: format.join(" ") }),
+                value: formatValue(internalDate.value, format.join(" ")),
             };
         }
         else {
@@ -31631,7 +32044,7 @@
         numberToLetters,
         createFullMenuItem,
         UuidGenerator,
-        formatDecimal,
+        formatValue,
         computeTextWidth,
         isMarkdownLink,
         parseMarkdownLink,
@@ -31665,8 +32078,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-03-14T10:15:04.791Z';
-    exports.__info__.hash = '75a7cac';
+    exports.__info__.date = '2022-03-14T12:43:01.230Z';
+    exports.__info__.hash = '6e508a8';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

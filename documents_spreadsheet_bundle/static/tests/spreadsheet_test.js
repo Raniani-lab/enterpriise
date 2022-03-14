@@ -1902,4 +1902,24 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.equal(document.querySelectorAll(".modal-footer button").length, 1, "NotifyUser have 1 button")
     });
 
+    test("Lazy load currencies", async function (assert) {
+        assert.expect(3);
+        const { env } = await createSpreadsheet({
+            spreadsheetId: 1,
+            mockRPC: async function (route, args) {
+                if (args.method === "search_read" && args.model === "res.currency") {
+                    console.log("dedans")
+                    assert.step('currencies-loaded')
+                    return [];
+                }
+            },
+        });
+        assert.verifySteps([]);
+        const root = topbarMenuRegistry.getAll().find((item) => item.id === "format");
+        const numbers = topbarMenuRegistry.getChildren(root, env).find((item) => item.id === "format_number");
+        const customCurrencies = topbarMenuRegistry.getChildren(numbers, env).find((item) => item.id === "format_custom_currency");
+        await customCurrencies.action(env);
+        await nextTick();
+        assert.verifySteps(["currencies-loaded"]);
+    });
 });

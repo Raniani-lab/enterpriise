@@ -37,6 +37,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
             notifyUser: this.notifyUser.bind(this),
             editText: this.editText.bind(this),
             askConfirmation: this.askConfirmation.bind(this),
+            loadCurrencies: this.loadCurrencies.bind(this),
         });
 
         useSetupAction({
@@ -185,6 +186,30 @@ export default class SpreadsheetComponent extends LegacyComponent {
         this.state.dialog.isEditText = false;
         this.state.dialog.isEditInteger = false;
         document.querySelector("canvas").focus();
+    }
+
+    /**
+     * Load currencies from database
+     */
+    async loadCurrencies() {
+        const odooCurrencies = await this.orm.searchRead(
+            "res.currency", // model
+            [], // domain
+            ["symbol", "full_name", "position", "name", "decimal_places"], // fields
+            { // opts
+                order: "active DESC, full_name ASC"
+            },
+            { active_test: false } // ctx
+        )
+        return odooCurrencies.map((currency) => {
+            return {
+                code: currency.name,
+                symbol: currency.symbol,
+                position: currency.position || "after",
+                name: currency.full_name || _t("Currency"),
+                decimalPlaces: currency.decimal_places || 2,
+            }
+        });
     }
 
     /**

@@ -107,6 +107,15 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         assert.strictEqual(getCellValue(model, "B5"), "FALSE");
     });
 
+    QUnit.test("Can display a field which is not in the columns", async function (assert) {
+        assert.expect(2);
+        const { model } = await createSpreadsheetFromList();
+        setCellContent(model, "A1", `=LIST("1","1","active")`);
+        assert.strictEqual(getCellValue(model, "A1"), undefined);
+        await waitForEvaluation(model);
+        assert.strictEqual(getCellValue(model, "A1"), true);
+    });
+
     QUnit.test("Open list properties properties", async function (assert) {
         assert.expect(10);
 

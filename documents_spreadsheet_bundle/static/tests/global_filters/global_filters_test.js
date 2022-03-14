@@ -120,6 +120,7 @@ module("documents_spreadsheet > global_filters",
         assert.equal(year.length, 4);
 
         await testUtils.fields.editAndTrigger(month, "october", ["change"]);
+        await nextTick();
         assert.equal(year.length, 3);
 
         await testUtils.fields.editAndTrigger(year, "this_year", ["change"]);

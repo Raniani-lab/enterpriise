@@ -7,7 +7,9 @@
     <field name="inherit_id" ref="product.product_template_search_view"/>
     <field name="arch" type="xml">
         <xpath expr="//filter[@name='categ_id']" position="after">
-            <filter string="Intrastat" name="group_by_intrastat_id" context="{'group_by':'intrastat_id'}"/>
+            <!-- Group by 'intrastat_id' not possible in 15.0 as field not stored anymore. But view can not be removed in stable.
+                 TODO: Remove this record in master -->
+            <!--  <filter string="Intrastat" name="group_by_intrastat_id" context="{'group_by':'intrastat_id'}"/> -->
         </xpath>
     </field>
 </record>

@@ -67,7 +67,6 @@ class IntrastatExpiryReport(models.AbstractModel):
             'context': {
                 'create': False,
                 'delete': False,
-                'search_default_group_by_intrastat_id': True,
                 'expand': True,
             },
         }

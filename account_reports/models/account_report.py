@@ -1208,7 +1208,8 @@ class AccountReport(models.AbstractModel):
     def tax_tag_template_open_aml(self, options, params=None):
         active_id = self._parse_line_id(params.get('id'))[-1][2]
         tag_template = self.env['account.tax.report.line'].browse(active_id)
-        domain = [('tax_tag_ids', 'in', tag_template.tag_ids.ids)] + self.env['account.move.line']._get_tax_exigible_domain()
+        company_ids = [comp_opt['id'] for comp_opt in options.get('multi_company', [])] or self.env.company.ids
+        domain = [('tag_ids', 'in', tag_template.tag_ids.ids), ('tax_exigible', '=', True), ('company_id', 'in', company_ids)] + self.env['account.move.line']._get_tax_exigible_domain()
         return self.open_action(options, domain)
 
     def open_tax_report_line(self, options, params=None):

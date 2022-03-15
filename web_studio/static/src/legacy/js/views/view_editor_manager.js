@@ -134,6 +134,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             'group': ['name'],
             'div': ['name'],
             'filter': ['name'],
+            'button': ['name'],
         };
     },
     /**
@@ -1718,7 +1719,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
         var position = event.data.position || 'after';
         var xpath_info;
         if (node) {
-            xpath_info = findParentsPositions(this.view.arch, node);
+            const arch = Editors[this.view_type].prototype.preprocessArch(this.view.arch);
+            xpath_info = findParentsPositions(arch, node);
         }
         switch (structure) {
             case 'text':

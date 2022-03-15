@@ -449,6 +449,111 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('new field before a button_group', async function (assert) {
+        assert.expect(3);
+
+        let fieldsView;
+        const arch = `<tree>
+            <button name="action_1" type="object"/>
+            <button name="action_2" type="object"/>
+            <field name='display_name'/>
+        </tree>`;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch,
+            debug: 1,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].type, 'add');
+                    assert.strictEqual(args.operations[0].position, 'before');
+                    assert.deepEqual(args.operations[0].target, {
+                        "tag": "button",
+                        "attrs": {
+                            "name": "action_1"
+                        },
+                        "xpath_info": [
+                            {
+                                "tag": "tree",
+                                "indice": 1
+                            },
+                            {
+                                "tag": "button",
+                                "indice": 1
+                            }
+                        ]
+                    });
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            list: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        fieldsView = Object.assign({}, vem.fields_view);
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'),
+            $('.o_web_studio_hook')[0]);
+
+        vem.destroy();
+    });
+
+    QUnit.test('new field after a button_group', async function (assert) {
+        assert.expect(3);
+
+        let fieldsView;
+        const arch = `<tree>
+            <field name='display_name'/>
+            <button name="action_1" type="object"/>
+            <button name="action_2" type="object"/>
+        </tree>`;
+        const vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].type, 'add');
+                    assert.strictEqual(args.operations[0].position, 'after');
+                    assert.deepEqual(args.operations[0].target, {
+                        "tag": "button",
+                        "attrs": {
+                            "name": "action_2"
+                        },
+                        "xpath_info": [
+                            {
+                                "tag": "tree",
+                                "indice": 1
+                            },
+                            {
+                                "tag": "button",
+                                "indice": 2
+                            }
+                        ]
+                    });
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            list: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        fieldsView = Object.assign({}, vem.fields_view);
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'),
+            $('.o_web_studio_hook')[2]);
+
+        vem.destroy();
+    });
+
     QUnit.test('invisible field in list editor', async function (assert) {
         assert.expect(3);
 

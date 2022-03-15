@@ -3,6 +3,7 @@
 import PlanningGanttController from '@planning/js/planning_gantt_controller';
 import { SalePlanningControllerMixin } from './sale_planning_mixin';
 import { _t } from 'web.core';
+import { Domain } from '@web/core/domain';
 
 PlanningGanttController.include(SalePlanningControllerMixin);
 
@@ -41,19 +42,17 @@ PlanningGanttController.include({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-
     /**
      * @override
      * @param {Object} state
      * @returns {Array[]}
      */
     _getPlanDialogDomain(state) {
-        return [
-            '|',
-                [state.dateStartField, '=', false],
-                [state.dateStopField, '=', false],
-            ['sale_line_id', '!=', false]
-        ]
+        const domain = this._super(state);
+        return Domain.and([
+            domain,
+            [['sale_line_id', '!=', false]],
+        ]).toList({});
     },
 
     //--------------------------------------------------------------------------

@@ -41,6 +41,9 @@
         'web.assets_tests': [
             'sale_planning/static/tests/tours/*',
         ],
+        'web.qunit_suite_tests': [
+            'sale_planning/static/tests/*',
+        ]
     },
     'auto_install': True,
     'license': 'OEEL-1',

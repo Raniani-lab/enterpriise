@@ -18,7 +18,7 @@ screen devices.
         'mail.assets_discuss_public': [
             'web_enterprise/static/src/webclient/webclient.scss',
             'mail_enterprise/static/src/components/*/*',
-            'mail_enterprise/static/src/models/*/*.js',
+            'mail_enterprise/static/src/models/*.js',
             'web_enterprise/static/src/core/action_swiper/*',
             'web_mobile/static/src/js/core/mixins.js',
             'web_mobile/static/src/js/core/session.js',
@@ -26,7 +26,7 @@ screen devices.
         ],
         'web.assets_backend': [
             'mail_enterprise/static/src/components/*/*.js',
-            'mail_enterprise/static/src/models/*/*.js',
+            'mail_enterprise/static/src/models/*.js',
             'mail_enterprise/static/src/js/attachment_viewer.js',
             'mail_enterprise/static/src/scss/mail_enterprise.scss',
             'mail_enterprise/static/src/components/*/*.scss',

@@ -3,7 +3,7 @@
 import { attr } from '@mail/model/model_field';
 import { addFields } from '@mail/model/model_core';
 // ensure that the model definition is loaded before the patch
-import '@mail/models/chatter/chatter';
+import '@mail/models/chatter';
 
 addFields('Chatter', {
     /**

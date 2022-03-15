@@ -27,10 +27,10 @@ Features:
     'license': 'OEEL-1',
     'assets': {
         'mail.assets_discuss_public': [
-            'website_helpdesk_livechat/static/src/models/*/*.js',
+            'website_helpdesk_livechat/static/src/models/*.js',
         ],
         'web.assets_backend': [
-            'website_helpdesk_livechat/static/src/models/*/*.js',
+            'website_helpdesk_livechat/static/src/models/*.js',
         ],
         'web.qunit_suite_tests': [
             'website_helpdesk_livechat/static/src/components/*/tests/*.js',

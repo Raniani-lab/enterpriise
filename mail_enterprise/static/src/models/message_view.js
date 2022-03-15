@@ -3,26 +3,36 @@
 import { one } from '@mail/model/model_field';
 import { clear, insertAndReplace } from '@mail/model/model_field_command';
 import { addFields, addRecordMethods } from '@mail/model/model_core';
-import '@mail/models/notification_group_view/notification_group_view'; // ensure the model definition is loaded before the patch
+// ensure the model definition is loaded before the patch
+import '@mail/models/message_view';
 
-addFields('NotificationGroupView', {
+addFields('MessageView', {
     /**
      * Determines whether this message should have the swiper feature, and if so
      * contains the component managing this feature.
      */
     swiperView: one('SwiperView', {
         compute: '_computeSwiperView',
-        inverse: 'notificationGroupViewOwner',
+        inverse: 'messageViewOwner',
         isCausal: true,
     }),
 });
 
-addRecordMethods('NotificationGroupView', {
+addRecordMethods('MessageView', {
     /**
      * @private
      * @returns {FieldCommand}
      */
     _computeSwiperView() {
-        return (this.messaging.device.isMobile && this.notificationGroup.notifications.length) > 0 ? insertAndReplace() : clear();
+        return (
+            this.messaging &&
+            this.messaging.device &&
+            this.messaging.device.isMobile &&
+            this.message &&
+            this.message.isNeedaction &&
+            this.threadView &&
+            this.threadView.thread &&
+            this.threadView.thread === this.messaging.inbox
+        ) ? insertAndReplace() : clear();
     },
 });

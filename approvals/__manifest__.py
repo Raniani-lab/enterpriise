@@ -40,12 +40,12 @@ creates next activities for the related approvers.
     'assets': {
         'mail.assets_discuss_public': [
             'approvals/static/src/components/*/*',
-            'approvals/static/src/models/*/*.js',
+            'approvals/static/src/models/*.js',
         ],
         'web.assets_backend': [
             'approvals/static/src/components/*/*.js',
             'approvals/static/src/components/*/*.scss',
-            'approvals/static/src/models/*/*.js',
+            'approvals/static/src/models/*.js',
             'approvals/static/src/widgets/*/*.js',
         ],
         'web.assets_tests': [

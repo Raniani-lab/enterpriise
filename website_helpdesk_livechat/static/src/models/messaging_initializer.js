@@ -3,7 +3,7 @@
 import { patchRecordMethods } from '@mail/model/model_core';
 import { insert } from '@mail/model/model_field_command';
 // ensure that the model definition is loaded before the patch
-import '@mail/models/messaging_initializer/messaging_initializer';
+import '@mail/models/messaging_initializer';
 
 patchRecordMethods('MessagingInitializer', {
     /**

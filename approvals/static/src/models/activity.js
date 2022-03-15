@@ -4,7 +4,7 @@ import { addFields, patchModelMethods } from '@mail/model/model_core';
 import { one } from '@mail/model/model_field';
 import { insert, unlinkAll } from '@mail/model/model_field_command';
 // ensure that the model definition is loaded before the patch
-import '@mail/models/activity/activity';
+import '@mail/models/activity';
 
 patchModelMethods('Activity', {
     /**

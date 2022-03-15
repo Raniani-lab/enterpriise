@@ -3,7 +3,7 @@
 import { addFields, addLifecycleHooks, addRecordMethods, patchModelMethods } from '@mail/model/model_core';
 import { attr } from '@mail/model/model_field';
 // ensure that the model definition is loaded before the patch
-import '@mail/models/activity/activity';
+import '@mail/models/activity';
 
 patchModelMethods('Activity', {
     /**

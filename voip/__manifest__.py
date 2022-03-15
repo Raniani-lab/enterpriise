@@ -31,7 +31,7 @@ Allows to make call from next activities or with click-to-dial.
     'assets': {
         'mail.assets_discuss_public': [
             'voip/static/src/components/*/*',
-            'voip/static/src/models/*/*.js',
+            'voip/static/src/models/*.js',
         ],
         'web.assets_backend': [
             'voip/static/lib/sip.js',
@@ -49,7 +49,7 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/src/js/voip_systray_item.js',
             'voip/static/src/js/legacy_compatibility.js',
             'voip/static/src/js/user_agent.js',
-            'voip/static/src/models/*/*.js',
+            'voip/static/src/models/*.js',
             'voip/static/src/scss/call_center_field.scss',
             'voip/static/src/scss/voip.scss',
             'voip/static/src/voip_service.js',

@@ -596,18 +596,41 @@ var accountReportsWidget = AbstractAction.extend({
         _.each(this.$searchview_buttons.find('.js_account_report_choice_filter'), function(k) {
             $(k).toggleClass('selected', (_.filter(self.report_options[$(k).data('filter')], function(el){return ''+el.id == ''+$(k).data('id') && el.selected === true;})).length > 0);
         });
-        $('.js_account_report_group_choice_filter', this.$searchview_buttons).each(function (i, el) {
+        _.each(this.$searchview_buttons.find('.js_account_report_journal_choice_filter'), function(el) {
             var $el = $(el);
-            var ids = $el.data('member-ids');
-            $el.toggleClass('selected', _.every(self.report_options[$el.data('filter')], function (member) {
-                // only look for actual ids, discard separators and section titles
-                if(typeof member.id == 'number'){
-                  // true if selected and member or non member and non selected
-                  return member.selected === (ids.indexOf(member.id) > -1);
-                } else {
-                  return true;
+            var options = _.filter(self.report_options.journals, function(item){
+                return item.model == $el.data('model') && item.id.toString() == $el.data('id');
+            });
+            if(options.length > 0){
+                let option = options[0];
+                if(option.selected){
+                    el.classList.add('selected');
+                }else{
+                    el.classList.remove('selected');
                 }
-            }));
+            }
+        });
+        $('.js_account_report_journal_choice_filter', this.$searchview_buttons).click(function () {
+            var $el = $(this);
+
+            // Change the corresponding element in option.
+            var options = _.filter(self.report_options.journals, function(item){
+                return item.model == $el.data('model') && item.id.toString() == $el.data('id');
+            });
+            if(options.length > 0){
+                let option = options[0];
+                option.selected = !option.selected;
+            }
+
+            // Specify which group has been clicked.
+            if($el.data('model') == 'account.journal.group'){
+                if($el.hasClass('selected')){
+                    self.report_options.__journal_group_action = {'action': 'remove', 'id': parseInt($el.data('id'))};
+                }else{
+                    self.report_options.__journal_group_action = {'action': 'add', 'id': parseInt($el.data('id'))};
+                }
+            }
+            self.reload();
         });
         _.each(this.$searchview_buttons.find('.js_account_reports_one_choice_filter'), function(k) {
             $(k).toggleClass('selected', ''+self.report_options[$(k).data('filter')] === ''+$(k).data('id'));
@@ -647,16 +670,7 @@ var accountReportsWidget = AbstractAction.extend({
             }
             self.reload();
         });
-        $('.js_account_report_group_choice_filter', this.$searchview_buttons).click(function () {
-            var option_value = $(this).data('filter');
-            var option_member_ids = $(this).data('member-ids') || [];
-            var is_selected = $(this).hasClass('selected');
-            _.each(self.report_options[option_value], function (el) {
-                // if group was selected, we want to uncheck all
-                el.selected = !is_selected && (option_member_ids.indexOf(Number(el.id)) > -1);
-            });
-            self.reload();
-        });
+
         this.$searchview_buttons.find('.js_account_report_choice_filter').click(function (event) {
             var option_value = $(this).data('filter');
             var option_id = $(this).data('id');

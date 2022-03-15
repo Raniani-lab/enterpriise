@@ -131,20 +131,25 @@
             <t t-foreach="options['journals']" t-as="j">
                 <t t-if="j.get('id') == 'divider'">
                     <div role="separator" class="dropdown-divider"/>
-                    <b role="menuitem" class="ml4 dropdown-item-text"><t t-esc="j.get('name')"/></b>
+                    <b role="menuitem" class="ml4 dropdown-item-text" t-esc="j.get('name')"/>
                     <div role="separator" class="dropdown-divider"/>
                 </t>
-                <t t-if="j.get('id') != 'divider'">
-                    <t t-if="j.get('id') == 'group'">
-                        <a role="menuitem" class="dropdown-item js_account_report_group_choice_filter" data-filter="journals" t-att-data-id="j.get('id')" t-att-data-member-ids="j.get('ids')">
-                            <t t-esc="j.get('name')"/>
-                        </a>
-                    </t>
-                    <t t-else="">
-                        <a role="menuitem" class="dropdown-item js_account_report_choice_filter" t-att-title="j.get('name')+ '-' + j.get('code')" t-att-data-id="j.get('id')" data-filter="journals">
-                            <t t-esc="j.get('name')"/>
-                        </a>
-                    </t>
+                <t t-if="j.get('model') == 'account.journal.group'">
+                    <a role="menuitem"
+                       class="dropdown-item js_account_report_journal_choice_filter"
+                       data-filter="journals"
+                       t-att-data-id="j['id']"
+                       t-att-data-model="j['model']"
+                       t-esc="j['name']"/>
+                </t>
+                <t t-if="j.get('model') == 'account.journal'">
+                    <a role="menuitem"
+                       class="dropdown-item js_account_report_journal_choice_filter"
+                       data-filter="journals"
+                       t-att-title="j['title']"
+                       t-att-data-id="j['id']"
+                       t-att-data-model="j['model']"
+                       t-esc="j['name']"/>
                 </t>
             </t>
         </div>

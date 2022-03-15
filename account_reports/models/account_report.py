@@ -90,7 +90,7 @@ class AccountReport(models.AbstractModel):
     @api.model
     def _get_filter_journals(self):
         return self.env['account.journal'].with_context(active_test=False).search([
-            ('company_id', 'in', self.env.user.company_ids.ids or [self.env.company.id])
+            ('company_id', 'in', self.env.companies.ids)
         ], order="company_id, name")
 
     @api.model
@@ -107,63 +107,167 @@ class AccountReport(models.AbstractModel):
     def _init_filter_journals(self, options, previous_options=None):
         if self.filter_journals is None:
             return
-        all_journal_groups = self._get_filter_journal_groups()
-        all_journals = self._get_filter_journals()
-        journals_sel = []
-        options['journals'] = []
-        group_selected = False
-        if previous_options and previous_options.get('journals'):
-            for journal in previous_options['journals']:
-                if isinstance(journal.get('id'), int) and journal.get('id') in all_journals.ids and journal.get('selected'):
-                    journals_sel.append(journal)
-        # In case no previous_options exist, the default behaviour is to select the first Journal Group that exists.
-        elif all_journal_groups:
-            selected_journals = all_journals - all_journal_groups[0].excluded_journal_ids
-            for journal in selected_journals:
-                journals_sel.append({
-                    'id': journal.id,
-                    'name': journal.name,
-                    'code': journal.code,
-                    'type': journal.type,
-                    'selected': True,
-                })
-        # Create the dropdown menu
-        if all_journal_groups:
-            options['journals'].append({'id': 'divider', 'name': _('Journal Groups')})
-            for group in all_journal_groups:
-                group_journal_ids = (all_journals.filtered(lambda x: x.company_id == group.company_id) - group.excluded_journal_ids).ids
-                if not group_selected and journals_sel \
-                        and len(journals_sel) == len(group_journal_ids) \
-                        and all(journal_opt['id'] in group_journal_ids for journal_opt in journals_sel):
-                    group_selected = group
-                options['journals'].append({'id': 'group', 'name': group.name, 'ids': group_journal_ids})
 
-        previous_company = False
-        journals_selection = {opt['id'] for opt in journals_sel}
-        for journal in all_journals:
-            if journal.company_id != previous_company:
-                options['journals'].append({'id': 'divider', 'name': journal.company_id.name})
-                previous_company = journal.company_id
-            options['journals'].append({
-                'id': journal.id,
-                'name': journal.name,
-                'code': journal.code,
-                'type': journal.type,
-                'selected': journal.id in journals_selection,
+        # Collect all stuff and split them by company.
+        all_journals = self._get_filter_journals()
+        all_journal_groups = self._get_filter_journal_groups()
+        all_journal_ids = set(all_journals.ids)
+
+        per_company_map = {}
+        for company in self.env.companies:
+            per_company_map[company] = ({
+                'available_journals': self.env['account.journal'],
+                'available_journal_groups': self.env['account.journal.group'],
+                'selected_journals': self.env['account.journal'],
+                'selected_journal_groups': self.env['account.journal.group'],
             })
 
-        # Compute the displayed option name
-        if group_selected:
-            options['name_journal_group'] = group_selected.name
-        elif len(journals_sel) == 0 or len(journals_sel) == len(all_journals):
-            options['name_journal_group'] = _("All Journals")
-        elif len(journals_sel) <= 5:
-            options['name_journal_group'] = ', '.join(jrnl['code'] for jrnl in journals_sel)
-        elif len(journals_sel) == 6:
-            options['name_journal_group'] = ', '.join(jrnl['code'] for jrnl in journals_sel) + _(" and one other")
+        for journal in all_journals:
+            per_company_map[journal.company_id]['available_journals'] |= journal
+        for journal_group in all_journal_groups:
+            per_company_map[journal_group.company_id]['available_journal_groups'] |= journal_group
+
+        # Adapt the code from previous options.
+        journal_group_action = None
+        if previous_options:
+            # Reload from previous options.
+            if previous_options.get('journals'):
+                for journal_opt in previous_options['journals']:
+                    if journal_opt.get('model') == 'account.journal' and journal_opt.get('selected'):
+                        journal_id = int(journal_opt['id'])
+                        if journal_id in all_journal_ids:
+                            journal = self.env['account.journal'].browse(journal_id)
+                            per_company_map[journal.company_id]['selected_journals'] |= journal
+
+            # Process the action performed by the user js-side.
+            journal_group_action = previous_options.get('__journal_group_action', None)
+            if journal_group_action:
+                action = journal_group_action['action']
+                group = self.env['account.journal.group'].browse(journal_group_action['id'])
+                company_vals = per_company_map[group.company_id]
+                if action == 'add':
+                    remaining_journals = company_vals['available_journals'] - group.excluded_journal_ids
+                    company_vals['selected_journals'] = remaining_journals
+                elif action == 'remove':
+                    has_selected_journal_in_other_company = False
+                    for company, other_company_vals in per_company_map.items():
+                        if company == group.company_id:
+                            continue
+
+                        if other_company_vals['selected_journals']:
+                            has_selected_journal_in_other_company = True
+                            break
+
+                    if has_selected_journal_in_other_company:
+                        company_vals['selected_journals'] = company_vals['available_journals']
+                    else:
+                        company_vals['selected_journals'] = self.env['account.journal']
+
+                    # When removing the last selected group in multi-company, make sure there is no selected journal left.
+                    # For example, suppose company1 having j1, j2 as journals and group1 excluding j2, company2 having j3, j4.
+                    # Suppose group1, j1, j3, j4 selected. If group1 is removed, we need to unselect j3 and j4 as well.
+                    if all(x['selected_journals'] == x['available_journals'] for x in per_company_map.values()):
+                        for company_vals in per_company_map.values():
+                            company_vals['selected_journals'] = self.env['account.journal']
+
         else:
-            options['name_journal_group'] = ', '.join(jrnl['code'] for jrnl in journals_sel[:5]) + _(" and %s others",
-                                                                                                     len(journals_sel) - 5)
+
+            # Select the first available group if nothing selected.
+            has_selected_at_least_one_group = False
+            for company in self.env.companies:
+                company_vals = per_company_map[company]
+                if not company_vals['selected_journals'] and company_vals['available_journal_groups']:
+                    first_group = company_vals['available_journal_groups'][0]
+                    remaining_journals = company_vals['available_journals'] - first_group.excluded_journal_ids
+                    company_vals['selected_journals'] = remaining_journals
+                    has_selected_at_least_one_group = True
+
+            # Select all journals in others groups.
+            if has_selected_at_least_one_group:
+                for company, company_vals in per_company_map.items():
+                    if not company_vals['selected_journals']:
+                        company_vals['selected_journals'] = company_vals['available_journals']
+
+        # Build the options.
+        journal_groups_options = []
+        journal_options_per_company = defaultdict(list)
+        for company, company_vals in per_company_map.items():
+            company_vals = per_company_map[company]
+
+            # Groups.
+            for group in company_vals['available_journal_groups']:
+                remaining_journals = company_vals['available_journals'] - company_vals['selected_journals']
+                selected = remaining_journals == group.excluded_journal_ids
+                journal_groups_options.append({
+                    'id': group.id,
+                    'model': group._name,
+                    'name': group.display_name,
+                    'selected': selected,
+                })
+                if selected:
+                    company_vals['selected_journal_groups'] |= group
+
+            # Journals.
+            for journal in company_vals['available_journals']:
+                journal_options_per_company[journal.company_id].append({
+                    'id': journal.id,
+                    'model': journal._name,
+                    'name': journal.display_name,
+                    'title': f"{journal.name} - {journal.code}",
+                    'selected': journal in company_vals['selected_journals'],
+                    'type': journal.type,
+                })
+
+        # Build the final options.
+        options['journals'] = []
+        if journal_groups_options:
+            options['journals'].append({
+                'id': 'divider',
+                'name': _("Journal Groups"),
+            })
+            options['journals'] += journal_groups_options
+        for company, journal_options in journal_options_per_company.items():
+            if len(journal_options_per_company) > 1 or journal_groups_options:
+                options['journals'].append({
+                    'id': 'divider',
+                    'model': company._name,
+                    'name': company.display_name,
+                })
+            options['journals'] += journal_options
+
+        # Compute the name to display on the widget.
+        names_to_display = []
+
+        has_globally_selected_groups = False
+        has_selected_all_journals = True
+        for company, journal_options in per_company_map.items():
+            for journal_group in journal_options['selected_journal_groups']:
+                names_to_display.append(journal_group.display_name)
+                has_globally_selected_groups = True
+            if journal_options['selected_journals'] != journal_options['available_journals']:
+                has_selected_all_journals = False
+
+        for company, journal_options in per_company_map.items():
+            has_selected_groups = bool(journal_options['selected_journal_groups'])
+            if not has_selected_groups and (not has_selected_all_journals or has_globally_selected_groups):
+                for journal in journal_options['selected_journals']:
+                    names_to_display.append(journal.code)
+
+        if not names_to_display:
+            names_to_display.append(_("All Journals"))
+            for journal_option in options['journals']:
+                if journal_option.get('model') == 'account.journal':
+                    journal_option['selected'] = False
+
+        # Abbreviate the name
+        max_nb_journals_displayed = 5
+        nb_remaining = len(names_to_display) - max_nb_journals_displayed
+        if nb_remaining == 1:
+            options['name_journal_group'] = ', '.join(names_to_display[:max_nb_journals_displayed]) + _(" and one other")
+        elif nb_remaining > 1:
+            options['name_journal_group'] = ', '.join(names_to_display[:max_nb_journals_displayed]) + _(" and %s others", nb_remaining)
+        else:
+            options['name_journal_group'] = ', '.join(names_to_display)
 
     @api.model
     def _get_options_journals(self, options):

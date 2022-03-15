@@ -506,10 +506,13 @@ class PlanningSlot(models.Model):
         assert self.env.context.get('start_date') and self.env.context.get('stop_date'), "`start_date` and `stop_date` attributes should be in the context"
         new_view_domain = []
         for clause in view_domain:
-            # remove clauses on start_datetime and end_datetime
             if isinstance(clause, str) or clause[0] not in ['start_datetime', 'end_datetime']:
                 new_view_domain.append(clause)
-        domain = expression.AND([new_view_domain, [('start_datetime', '=', False), ('sale_line_id', '!=', False)]])
+            elif clause[0] in ['start_datetime', 'end_datetime']:
+                new_view_domain.append([clause[0], '=', False])
+        if not view_domain:
+            new_view_domain = [('start_datetime', '=', False)]
+        domain = expression.AND([new_view_domain, [('sale_line_id', '!=', False)]])
         if self.env.context.get('planning_gantt_active_sale_order_id'):
             domain = expression.AND([domain, [('sale_order_id', '=', self.env.context.get('planning_gantt_active_sale_order_id'))]])
         slots_to_assign = self._get_ordered_slots_to_assign(domain)

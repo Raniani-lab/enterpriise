@@ -3,7 +3,7 @@
 
 <t t-extend="res_config_edition">
     <t t-jquery=".user-heading h3" t-operation="replace">
-        <h3>
+        <h3 class="px-0">
             Odoo <t t-esc="widget.server_version"/> (Enterprise Edition)
         </h3>
     </t>

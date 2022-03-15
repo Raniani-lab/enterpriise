@@ -38,6 +38,38 @@ class AppointmentTest(AppointmentCommon):
             })
 
     @users('apt_manager')
+    def test_appointment_slot_start_end_hour_auto_correction(self):
+        """ Test the autocorrection of invalid intervals [start_hour, end_hour]. """
+        apt_type = self.env['calendar.appointment.type'].create({
+            'category': 'website',
+            'name': 'Schedule a demo',
+            'appointment_duration': 1,
+        })
+        slot = self.env['calendar.appointment.slot'].create({
+            'appointment_type_id': apt_type.id,
+            'start_hour': 9,
+            'end_hour': 17,
+        })
+
+        # invalid interval, no adaptation because start_hour is not changed
+        with self.assertRaises(ValidationError):
+            slot.end_hour = 8
+
+        # invalid interval, adapted because start_hour is changed
+        slot.start_hour = 18
+        self.assertEqual(slot.start_hour, 18)
+        self.assertEqual(slot.end_hour, 19)
+
+        # empty interval, adapted because start_hour is changed
+        slot.start_hour = 19
+        self.assertEqual(slot.start_hour, 19)
+        self.assertEqual(slot.end_hour, 20)
+
+        # invalid interval, end_hour not adapted [23.5, 19] because it will exceed 24
+        with self.assertRaises(ValidationError):
+            slot.start_hour = 23.5
+
+    @users('apt_manager')
     def test_generate_slots_recurring(self):
         """ Generates recurring slots, check begin and end slot boundaries. """
         apt_type = self.apt_type_bxls_2days.with_user(self.env.user)

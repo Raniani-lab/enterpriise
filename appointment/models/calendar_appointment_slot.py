@@ -36,7 +36,8 @@ class CalendarAppointmentSlot(models.Model):
         ('7', 'Sunday'),
     ], string='Week Day', required=True, default='1')
     start_hour = fields.Float('Starting Hour', required=True, default=8.0)
-    end_hour = fields.Float('Ending Hour', required=True, default=17.0)
+    end_hour = fields.Float('Ending Hour', required=True, default=17.0, compute='_compute_end_hour', readonly=False,
+                            store=True)
     # Real time slot
     start_datetime = fields.Datetime('From', help="Start datetime for unique slot type management")
     end_datetime = fields.Datetime('To', help="End datetime for unique slot type management")
@@ -56,6 +57,14 @@ class CalendarAppointmentSlot(models.Model):
         for slot in self:
             slot.slot_type = 'unique' if slot.appointment_type_id.category == 'custom' else 'recurring'
 
+    @api.depends('start_hour')
+    def _compute_end_hour(self):
+        """ Try to adapt end_hour if the interval end_hour < start_hour """
+        for record in self:
+            duration = record.appointment_type_id.appointment_duration
+            if duration > 0 and record.end_hour <= record.start_hour and record.start_hour + duration < 24:
+                record.end_hour = record.start_hour + duration
+
     @api.constrains('start_hour')
     def _check_hour(self):
         if any(slot.start_hour < 0.00 or slot.start_hour >= 24.00 for slot in self):
@@ -65,7 +74,7 @@ class CalendarAppointmentSlot(models.Model):
     def _check_delta_hours(self):
         if any(self.filtered(lambda slot: slot.start_hour >= slot.end_hour and slot.slot_type != 'unique')):
             raise ValidationError(_(
-                "At least one slot duration from start to end is invalid: a slot should end after start"
+                "At least one slot has a start time that is not anterior to its end time."
             ))
         if any(self.filtered(lambda slot: slot.start_hour + slot.appointment_type_id.appointment_duration > slot.end_hour and slot.slot_type != 'unique')):
             raise ValidationError(_(

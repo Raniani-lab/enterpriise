@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import {
-    afterEach,
     afterNextRender,
     beforeEach,
     nextAnimationFrame,
@@ -82,7 +81,6 @@ QUnit.module('invoice_extract_form_view_tests.js', {
     },
     afterEach: function () {
         testUtils.mock.unpatch(FormRenderer);
-        afterEach(this);
     },
 }, function () {
 

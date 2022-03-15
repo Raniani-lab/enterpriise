@@ -3,13 +3,12 @@
 import { link } from '@mail/model/model_field_command';
 
 import {
-    afterEach,
     afterNextRender,
     beforeEach,
     start,
 } from '@mail/utils/test_utils';
 
-import { mock } from 'web.test_utils';
+import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import { methods } from 'web_mobile.core';
 
@@ -22,16 +21,12 @@ QUnit.module('attachment_tests.js', {
 
         this.start = async params => {
             const res = await start({ ...params, data: this.data });
-            const { afterEvent, apps, env, widget } = res;
+            const { afterEvent, env, widget } = res;
             this.afterEvent = afterEvent;
-            this.apps = apps;
             this.env = env;
             this.widget = widget;
             return res;
         };
-    },
-    afterEach() {
-        afterEach(this);
     },
 });
 
@@ -39,7 +34,8 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
     assert.expect(1);
 
     // simulate the feature is available on the current device
-    mock.patch(methods, {
+    // component must and will be destroyed before the overrideBackButton is unpatched
+    patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {},
     });
 
@@ -76,17 +72,14 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
         '.o_Dialog',
         "attachment viewer should be closed after receiving the backbutton event"
     );
-
-    // component must be destroyed before the overrideBackButton is unpatched
-    afterEach(this);
-    mock.unpatch(methods);
 });
 
 QUnit.test('[technical] attachment viewer should properly override the back button', async function (assert) {
     assert.expect(4);
 
     // simulate the feature is available on the current device
-    mock.patch(methods, {
+    // component must and will be destroyed before the overrideBackButton is unpatched
+    patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {
             assert.step(`overrideBackButton: ${enabled}`);
         },
@@ -127,10 +120,6 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
         ['overrideBackButton: false'],
         "the overrideBackButton method should be called with false when the attachment viewer is unmounted"
     );
-
-    // component must be destroyed before the overrideBackButton is unpatched
-    afterEach(this);
-    mock.unpatch(methods);
 });
 
 });

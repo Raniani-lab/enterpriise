@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { afterEach, beforeEach, start } from '@mail/utils/test_utils';
+import { beforeEach, start } from '@mail/utils/test_utils';
 
 import mobile from 'web_mobile.core';
 import DialingPanel from 'voip.DialingPanel';
@@ -82,7 +82,6 @@ QUnit.module('DialingPanel', {
     },
     afterEach() {
         testUtils.mock.unpatch(UserAgent);
-        afterEach(this);
     },
 }, function () {
 

@@ -5,7 +5,7 @@ const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const DocumentsListView = require('documents.DocumentsListView');
 const { createDocumentsView } = require('documents.test_utils');
 
-const { afterEach, beforeEach } = require('@mail/utils/test_utils');
+const { beforeEach } = require('@mail/utils/test_utils');
 
 const { dom, nextTick } = require('web.test_utils');
 
@@ -65,9 +65,6 @@ QUnit.module('documents_kanban_mobile_tests.js', {
                 ],
             },
         });
-    },
-    afterEach() {
-        afterEach(this);
     },
 }, function () {
     QUnit.module('DocumentsKanbanViewMobile', function () {

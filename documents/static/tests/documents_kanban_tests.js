@@ -9,7 +9,6 @@ const { createDocumentsView } = require('documents.test_utils');
 const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 
 const {
-    afterEach,
     afterNextRender,
     beforeEach,
 } = require('@mail/utils/test_utils');
@@ -249,7 +248,6 @@ QUnit.module('documents_kanban_tests.js', {
     },
     afterEach() {
         DocumentsKanbanController.prototype._createXHR = this.ORIGINAL_CREATE_XHR;
-        afterEach(this);
     },
 }, function () {
     QUnit.test('kanban basic rendering', async function (assert) {

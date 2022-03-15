@@ -1,7 +1,7 @@
 odoo.define('web_studio.ViewEditorManager_tests', function (require) {
 "use strict";
 
-const { afterEach, beforeEach, start } = require('@mail/utils/test_utils');
+const { beforeEach, start } = require('@mail/utils/test_utils');
 
 var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');
@@ -194,9 +194,6 @@ QUnit.module('ViewEditorManager', {
         serverData.views["coucou,false,search"] = `<search></search>`;
 
         target = getFixture();
-    },
-    afterEach() {
-        afterEach(this);
     },
 }, function () {
 

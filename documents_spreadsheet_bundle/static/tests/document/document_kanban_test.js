@@ -3,7 +3,7 @@
 import { nextTick, dom } from "web.test_utils";
 import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
 import { createDocumentsView } from "documents.test_utils";
-import { afterEach, beforeEach } from "@mail/utils/test_utils";
+import { beforeEach } from "@mail/utils/test_utils";
 import { getBasicData } from "../utils/spreadsheet_test_data";
 const { module, test } = QUnit;
 
@@ -14,9 +14,6 @@ module("documents_spreadsheet kanban", {
             ...this.data,
             ...getBasicData(),
         };
-    },
-    afterEach: function () {
-        afterEach(this);
     },
 });
 

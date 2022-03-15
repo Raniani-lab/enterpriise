@@ -1,13 +1,12 @@
 /** @odoo-module **/
 
 import {
-    afterEach,
     afterNextRender,
     beforeEach,
     start,
 } from '@mail/utils/test_utils';
 
-import { mock } from 'web.test_utils';
+import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import { methods } from 'web_mobile.core';
 
@@ -28,16 +27,14 @@ QUnit.module('chat_window_manager_tests.js', {
             ));
         };
     },
-    afterEach() {
-        afterEach(this);
-    },
 });
 
 QUnit.test("'backbutton' event should close chat window", async function (assert) {
     assert.expect(1);
 
     // simulate the feature is available on the current device
-    mock.patch(methods, {
+    // component must and will be destroyed before the overrideBackButton is unpatched
+    patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {},
     });
 
@@ -57,17 +54,14 @@ QUnit.test("'backbutton' event should close chat window", async function (assert
         '.o_ChatWindow',
         "chat window should be closed after receiving the backbutton event"
     );
-
-    // component must be destroyed before the overrideBackButton is unpatched
-    afterEach(this);
-    mock.unpatch(methods);
 });
 
 QUnit.test('[technical] chat window should properly override the back button', async function (assert) {
     assert.expect(4);
 
     // simulate the feature is available on the current device
-    mock.patch(methods, {
+    // component must and will be destroyed before the overrideBackButton is unpatched
+    patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {
             assert.step(`overrideBackButton: ${enabled}`);
         },
@@ -104,10 +98,6 @@ QUnit.test('[technical] chat window should properly override the back button', a
         ['overrideBackButton: false'],
         "the overrideBackButton method should be called with false when the chat window is unmounted"
     );
-
-    // component must be destroyed before the overrideBackButton is unpatched
-    afterEach(this);
-    mock.unpatch(methods);
 });
 
 });

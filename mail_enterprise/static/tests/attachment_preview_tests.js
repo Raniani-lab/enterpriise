@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import {
-    afterEach,
     afterNextRender,
     beforeEach,
     start,
@@ -40,9 +39,6 @@ QUnit.module('attachment_preview_tests.js', {
                 }],
             },
         });
-    },
-    afterEach() {
-        afterEach(this);
     },
 }, function () {
 

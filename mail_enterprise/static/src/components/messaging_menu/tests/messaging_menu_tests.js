@@ -1,13 +1,12 @@
 /** @odoo-module **/
 
 import {
-    afterEach,
     afterNextRender,
     beforeEach,
     start,
 } from '@mail/utils/test_utils';
 
-import { mock } from 'web.test_utils';
+import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import { methods } from 'web_mobile.core';
 
@@ -25,16 +24,14 @@ QUnit.module('messaging_menu_tests.js', {
             ));
         };
     },
-    afterEach() {
-        afterEach(this);
-    },
 });
 
 QUnit.test("'backbutton' event should close messaging menu", async function (assert) {
     assert.expect(1);
 
     // simulate the feature is available on the current device
-    mock.patch(methods, {
+    // component must and will be destroyed before the overrideBackButton is unpatched
+    patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {},
     });
     const { createMessagingMenuComponent } = await this.start();
@@ -51,17 +48,14 @@ QUnit.test("'backbutton' event should close messaging menu", async function (ass
         'show',
         "messaging menu should be closed after receiving the backbutton event"
     );
-
-    // component must be destroyed before the overrideBackButton is unpatched
-    afterEach(this);
-    mock.unpatch(methods);
 });
 
 QUnit.test('[technical] messaging menu should properly override the back button', async function (assert) {
     assert.expect(4);
 
     // simulate the feature is available on the current device
-    mock.patch(methods, {
+    // component must and will be destroyed before the overrideBackButton is unpatched
+    patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {
             assert.step(`overrideBackButton: ${enabled}`);
         },
@@ -90,10 +84,6 @@ QUnit.test('[technical] messaging menu should properly override the back button'
         ['overrideBackButton: false'],
         "the overrideBackButton method should be called with false when the menu is closed"
     );
-
-    // component must be destroyed before the overrideBackButton is unpatched
-    afterEach(this);
-    mock.unpatch(methods);
 });
 
 });

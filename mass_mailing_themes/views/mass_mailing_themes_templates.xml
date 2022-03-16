@@ -3,22 +3,22 @@
     <!-- Add themes in editor -->
     <template id="email_designer_snippets" inherit_id="mass_mailing.email_designer_snippets">
         <xpath expr="//div[@id='email_designer_themes']" position="inside">
-            <div data-name="newsletter" data-img="/mass_mailing_themes/static/src/img/theme_imgs/newsletter_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
+            <div data-name="newsletter" title="Event Promo" data-img="/mass_mailing_themes/static/src/img/theme_imgs/newsletter_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
                 <t t-call="mass_mailing_themes.theme_newsletter_template"/>
             </div>
-            <div data-name="tech" data-img="/mass_mailing_themes/static/src/img/theme_imgs/tech_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
+            <div data-name="tech" title="Blogging" data-img="/mass_mailing_themes/static/src/img/theme_imgs/tech_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
                 <t t-call="mass_mailing_themes.theme_tech_template"/>
             </div>
-            <div data-name="vip" data-img="/mass_mailing_themes/static/src/img/theme_imgs/vip_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
+            <div data-name="vip" title="Coupon Code" data-img="/mass_mailing_themes/static/src/img/theme_imgs/vip_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
                 <t t-call="mass_mailing_themes.theme_vip_template"/>
             </div>
-            <div data-name="bold" data-img="/mass_mailing_themes/static/src/img/theme_imgs/bold_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
+            <div data-name="bold" title="Newsletter" data-img="/mass_mailing_themes/static/src/img/theme_imgs/bold_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
                 <t t-call="mass_mailing_themes.theme_bold_template"/>
             </div>
-            <div data-name="bignews" data-img="/mass_mailing_themes/static/src/img/theme_imgs/bignews_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
+            <div data-name="bignews" title="Big News" data-img="/mass_mailing_themes/static/src/img/theme_imgs/bignews_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
                 <t t-call="mass_mailing_themes.theme_bignews_template"/>
             </div>
-            <div data-name="solar" data-img="/mass_mailing_themes/static/src/img/theme_imgs/solar_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
+            <div data-name="solar" title="Promotion Program" data-img="/mass_mailing_themes/static/src/img/theme_imgs/solar_thumb" data-images-info='{"logo": {"format": "png"}, "all": {"module": "mass_mailing_themes"}}'>
                 <t t-call="mass_mailing_themes.theme_solar_template"/>
             </div>
         </xpath>

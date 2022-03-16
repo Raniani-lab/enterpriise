@@ -26,7 +26,7 @@
         <field name="name">planning.slot.form</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <form>
+            <form js_class="planning_form">
                 <header>
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary"
                         close="1" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q"/>

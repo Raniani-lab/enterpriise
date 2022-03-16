@@ -15,25 +15,6 @@ class AccountGenericTaxReport(models.AbstractModel):
 
         lines = self.with_context(self._set_context(options))._get_lines(options)
 
-        values = {}
-        for line in lines:
-            # tax report's `code` would contain alpha-numeric string like `LUTAX_XXX` where characters
-            # at last three positions will be digits, hence we split `code` with `_` and build dictionary
-            # having `code` as dictionary key
-            split_line_code = line.get('line_code') and line['line_code'].split('_') or []
-            if len(split_line_code) > 1 and split_line_code[1].isdigit():
-                balance = "{:.2f}".format(line['columns'][0]['no_format']).replace('.', ',')
-                values[split_line_code[1]] = {'value': balance, 'field_type': 'number'}
-
-        on_payment = self.env['account.tax'].search([
-            ('company_id', 'in', self.get_report_company_ids(options)),
-            ('tax_exigibility', '=', 'on_payment')
-        ], limit=1)
-        values['204'] = {'value': on_payment and '0' or '1', 'field_type': 'boolean'}
-        values['205'] = {'value': on_payment and '1' or '0', 'field_type': 'boolean'}
-        values['403'] = {'value': 0, 'field_type': 'number'}
-        values['042'] = {'value': 0, 'field_type': 'float'}
-
         date_from = fields.Date.from_string(options['date'].get('date_from'))
         date_to = fields.Date.from_string(options['date'].get('date_to'))
 
@@ -54,6 +35,28 @@ class AccountGenericTaxReport(models.AbstractModel):
             declaration_type = 'TVA_DECA'
         else:
             raise UserError(_('The selected period is not supported for the selected declaration type.'))
+
+        values = {}
+        for line in lines:
+            # tax report's `code` would contain alpha-numeric string like `LUTAX_XXX` where characters
+            # at last three positions will be digits, hence we split `code` with `_` and build dictionary
+            # having `code` as dictionary key
+            split_line_code = line.get('line_code') and line['line_code'].split('_') or []
+            if len(split_line_code) > 1 and split_line_code[1].isdigit():
+                balance = "{:.2f}".format(line['columns'][0]['no_format']).replace('.', ',')
+                values[split_line_code[1]] = {'value': balance, 'field_type': 'number'}
+
+        on_payment = self.env['account.tax'].search([
+            ('company_id', 'in', self.get_report_company_ids(options)),
+            ('tax_exigibility', '=', 'on_payment')
+        ], limit=1)
+        values['204'] = {'value': on_payment and '0' or '1', 'field_type': 'boolean'}
+        values['205'] = {'value': on_payment and '1' or '0', 'field_type': 'boolean'}
+        for code, field_type in (('403', 'number'), ('418', 'number'), ('453', 'number')):
+            values[code] = {'value': 0, 'field_type': field_type}
+        if declaration_type == 'TVA_DECA':
+            for code, field_type in (('042', 'float'), ('416', 'float'), ('417', 'float'), ('451', 'float'), ('452', 'float')):
+                values[code] = {'value': 0, 'field_type': field_type}
 
         lu_template_values.update({
             'forms': [{

@@ -49,52 +49,6 @@ class L10nLuGenerateTaxReport(models.TransientModel):
             options = self.env['account.generic.tax.report']._get_options(previous_options={'tax_report': self.env.ref('l10n_lu.tax_report').id})
         return self.env['account.report'].get_vat_for_export(options)
 
-    def open_repartition_model(self):
-        """
-        Opens the l10n_lu.yearly.tax.report.manual for the current company and year.
-        This is needed because Odoo's taxes and tags for LU are built from the monthly tax report,
-        the yearly tax report is however more precise and requires further repartitions,
-        which are to be filled in manually using l10n_lu.yearly.tax.report.manual.
-        """
-        def get_amount(decl, field):
-            val = str(decl['field_values'].get(field, {}).get('value', '0.00'))
-            return float(val.replace(',', '.'))
-
-        options = self.env.context['tax_report_options']
-        decl = self.env['account.generic.tax.report']._get_lu_electronic_report_values(options)['forms'][0]
-
-        yearly_tax_report_manual = self.env['l10n_lu.yearly.tax.report.manual'].search(
-            [('company_id', '=', self.env.company.id), ('year', '=', str(decl['year']))],
-            limit=1)
-        if not yearly_tax_report_manual:
-            yearly_tax_report_manual = self.env['l10n_lu.yearly.tax.report.manual'].create({
-                'year': str(decl['year']),
-                'company_id': self.env.company.id,
-            })
-
-        yearly_tax_report_manual.report_section_472 = get_amount(decl, '472')
-        yearly_tax_report_manual.report_section_455 = get_amount(decl, '455')
-        yearly_tax_report_manual.report_section_456 = get_amount(decl, '456')
-        yearly_tax_report_manual.report_section_457 = get_amount(decl, '457')
-        yearly_tax_report_manual.report_section_458 = get_amount(decl, '458')
-        yearly_tax_report_manual.report_section_459 = get_amount(decl, '459')
-        yearly_tax_report_manual.report_section_460 = get_amount(decl, '460')
-        yearly_tax_report_manual.report_section_461 = get_amount(decl, '461')
-
-        context = self.env.context.copy()
-        context['calling_wizard_id'] = self.id
-        view_id = self.env.ref('l10n_lu_reports.view_l10n_lu_yearly_tax_report_manual_export').id
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Tax Report Data'),
-            'view_mode': 'form',
-            'res_model': 'l10n_lu.yearly.tax.report.manual',
-            'target': 'new',
-            'res_id': yearly_tax_report_manual.id,
-            'views': [[view_id, 'form']],
-            'context': context,
-        }
-
     def _lu_get_declarations(self, declaration_template_values):
         """
         Gets the formatted values for LU's tax report.
@@ -113,10 +67,7 @@ class L10nLuGenerateTaxReport(models.TransientModel):
             date_from = fields.Date.from_string(options['date'].get('date_from'))
             date_to = fields.Date.from_string(options['date'].get('date_to'))
             self._adapt_to_annual_report(form, date_from, date_to)
-            if self.simplified_declaration:  # adapt to simplified annual declaration
-                self._adapt_to_simplified_annual_declaration(form)
-            else:  # adapt to annual declaration
-                self._adapt_to_full_annual_declaration(form)
+            self._adapt_to_simplified_annual_declaration(form)
 
         form['model'] = 1
         declaration = {'declaration_singles': {'forms': [form]}, 'declaration_groups': []}
@@ -124,73 +75,116 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         return {'declarations': [declaration]}
 
     def _add_yearly_fields(self, data, form):
-        numeric_fields = {
-            '001': data.report_section_001, '002': data.report_section_002, '003': data.report_section_003,
-            '004': data.report_section_004, '005': data.report_section_005, '007': data.report_section_007,
-            '008': data.report_section_008, '009': data.report_section_009, '010': data.report_section_010,
-            # field 010 reports to the annex
-            '389': data.report_section_010, '388': data.report_section_010, '011': data.report_section_011,
-            '013': data.report_section_013, '202': data.report_section_202, '077': data.report_section_077,
-            '078': data.report_section_078, '079': data.report_section_079, '404': data.report_section_404,
-            '081': data.report_section_081, '082': data.report_section_082, '083': data.report_section_083,
-            '405': data.report_section_405, '085': data.report_section_085, '086': data.report_section_086,
-            '087': data.report_section_087, '406': data.report_section_406
+        form_fields = list(filter(lambda x: x.startswith('report_section'), data.fields_get().keys()))
+        # add numeric fields
+        for field in form_fields:
+            code = field.split('_')[2]
+            val = data[f"report_section_{code}"]
+            if val or code in VAT_MANDATORY_FIELDS and isinstance(val, float):
+                form['field_values'][code] = {'value': data[f"report_section_{code}"], 'field_type': 'float'}
+
+        char_fields = {
+            '206': ['007'],
+            '229': ['100'],
+            '264': ['265', '266', '267', '268'],
+            '273': ['274', '275', '276', '277'],
+            '278': ['279', '280', '281', '282'],
+            '318': ['319', '320'],
+            '321': ['322', '323'],
+            '357': ['358', '359'],
+            '387': ['388'],
         }
-        for k, v in numeric_fields.items():
-            if v != 0.00 or k == '013':  # field 013 is mandatory
-                form['field_values'][k] = {'value': v, 'field_type': 'float'}
+        for field in char_fields:
+            if data[f"report_section_{field}"] and any(data[f"report_section_{related_fields}"] for related_fields in char_fields[field]):
+                form['field_values'][field] = {'value': data[f"report_section_{field}"], 'field_type': 'char'}
+            else:
+                form['field_values'].pop(field, None)
+
+        if data.report_section_389 and not data.report_section_010:
+            raise ValidationError(_("The field 010 in 'Other Assimilated Supplies' is mandatory if you fill in the field 389 in 'Appendix B'. Field 010 must be equal to field 389"))
+        if data.report_section_369 or data.report_section_368:
+            if data.report_section_368 < data.report_section_369:
+                raise ValidationError(_("The field 369 must be smaller than field 368 (Appendix B)."))
+            elif not data.report_section_369 or not data.report_section_368:
+                raise ValidationError(_("Both fields 369 and 368 must be either filled in or left empty (Appendix B)."))
+        if data.report_section_388 and not data.report_section_387:
+            raise ValidationError(_("The field 387 must be filled in if field 388 is filled in (Appendix B)."))
+        if data.report_section_387 and not data.report_section_388:
+            raise ValidationError(_("The field 388 must be filled in if field 387 is filled in (Appendix B)."))
+
+        if data.report_section_163 and data.report_section_165 and not data.report_section_164:
+            form['field_values']['164'] = {'value': data.report_section_163 - data.report_section_165, 'field_type': 'float'}
+        elif data.report_section_163 and data.report_section_164 and not data.report_section_165:
+            form['field_values']['165'] = {'value': data.report_section_163 - data.report_section_164, 'field_type': 'float'}
+        elif data.report_section_163:
+            raise ValidationError(_("Fields 164 and 165 are mandatory when 163 is filled in and must add up to field 163 (Appendix E)."))
+
+        if '361' not in form['field_values']:
+            form['field_values']['361'] = form['field_values']['414']
+        if '362' not in form['field_values']:
+            form['field_values']['362'] = form['field_values']['415']
+        if float_compare(form['field_values']['361']['value'], 0.0, 2) == 0 and '192' not in form['field_values']:
+            form['field_values']['192'] = form['field_values']['361']
+        if float_compare(form['field_values']['362']['value'], 0.0, 2) == 0 and '193' not in form['field_values']:
+            form['field_values']['193'] = form['field_values']['362']
+
+        # Add appendix to operational expenditures
+        expenditures_table = list()
+        for appendix in data.appendix_ids:
+            report_line = {}
+            report_line['411'] = {'value': appendix.report_section_411, 'field_type': 'char'}
+            report_line['412'] = {'value': appendix.report_section_412, 'field_type': 'float'}
+            report_line['413'] = {'value': appendix.report_section_413, 'field_type': 'float'}
+            expenditures_table.append(report_line)
+        if expenditures_table:
+            form['tables'] = [expenditures_table]
 
         return form
 
-    def _adapt_to_full_annual_declaration(self, form, report_id=None):
+    def _adapt_to_full_annual_declaration(self, form, report_id):
         """
         Adapts the report to the annual format, comprising additional fields and apppendices.
         (https://ecdf-developer.b2g.etat.lu/ecdf/forms/popup/TVA_DECA_TYPE/2020/en/1/preview)
         """
-        if report_id:
-            # if the function is called from the manual report itself, we don't have tax_report_data_id in the context and have to pass the id
-            data = self.env['l10n_lu.yearly.tax.report.manual'].browse(report_id)
-        else:
-            data = self.env['l10n_lu.yearly.tax.report.manual'].browse(self.env.context['tax_report_data_id'])
         # Check the correct allocation of monthly fields
         allocation_dict = {
-            '472': data.report_section_472_rest,
-            '455': data.report_section_455_rest,
-            '456': data.report_section_456_rest,
-            '457': data.report_section_457_rest,
-            '458': data.report_section_458_rest,
-            '459': data.report_section_459_rest,
-            '460': data.report_section_460_rest,
-            '461': data.report_section_461_rest
+            '472': report_id.report_section_472_rest,
+            '455': report_id.report_section_455_rest,
+            '456': report_id.report_section_456_rest,
+            '457': report_id.report_section_457_rest,
+            '458': report_id.report_section_458_rest,
+            '459': report_id.report_section_459_rest,
+            '460': report_id.report_section_460_rest,
+            '461': report_id.report_section_461_rest
         }
         rest = [k for k, v in allocation_dict.items() if float_compare(v, 0.0, 2) != 0]
         if rest:
             raise ValidationError(_("The following monthly fields haven't been completely allocated yet: ") + str(rest))
 
-        if data.phone_number:
-            form['field_values']['237'] = {'value': data.phone_number, 'field_type': 'char'}
-        if data.books_records_documents:
-            form['field_values']['238'] = {'value': data.books_records_documents, 'field_type': 'char'}
-        if data.avg_nb_employees_with_salary:
-            form['field_values']['108'] = {'value': data.avg_nb_employees_with_salary, 'field_type': 'float'}
-        if data.avg_nb_employees_with_no_salary:
-            form['field_values']['109'] = {'value': data.avg_nb_employees_with_no_salary, 'field_type': 'float'}
-        if data.avg_nb_employees:
-            form['field_values']['110'] = {'value': data.avg_nb_employees, 'field_type': 'float'}
+        if report_id.phone_number:
+            form['field_values']['237'] = {'value': report_id.phone_number, 'field_type': 'char'}
+        if report_id.books_records_documents:
+            form['field_values']['238'] = {'value': report_id.books_records_documents, 'field_type': 'char'}
+        if report_id.avg_nb_employees_with_salary:
+            form['field_values']['108'] = {'value': report_id.avg_nb_employees_with_salary, 'field_type': 'float'}
+        if report_id.avg_nb_employees_with_no_salary:
+            form['field_values']['109'] = {'value': report_id.avg_nb_employees_with_no_salary, 'field_type': 'float'}
+        if report_id.avg_nb_employees:
+            form['field_values']['110'] = {'value': report_id.avg_nb_employees, 'field_type': 'float'}
 
-        form = self._add_yearly_fields(data, form)
+        form = self._add_yearly_fields(report_id, form)
         # Character fields
-        if data.report_section_007:
+        if report_id.report_section_007:
             # Only fill in field 206 (additional Total Sales/Receipts line), which specifies what field
             # 007 refers to, if 007 has something to report
-            form['field_values']['206'] = {'value': data.report_section_206, 'field_type': 'char'}
+            form['field_values']['206'] = {'value': report_id.report_section_206, 'field_type': 'char'}
         # Field 010 (use of goods considered business assets for purposes other than those of the business) is specified
         # in the annex part B: we put everything in "Other assets" (field 388) and specify that in the detail line (field 387)
-        if data.report_section_010:
+        if report_id.report_section_010:
             form['field_values']['387'] = {'value': 'Report from 010', 'field_type': 'char'}
         # Appendix part F: Names and addresses to be specified (accountant/lessor)
-        for k, v in {'397': data.report_section_397, '398': data.report_section_398, '399': data.report_section_399,
-                     '400': data.report_section_400, '401': data.report_section_401, '402': data.report_section_402}.items():
+        for k, v in {'397': report_id.report_section_397, '398': report_id.report_section_398, '399': report_id.report_section_399,
+                     '400': report_id.report_section_400, '401': report_id.report_section_401, '402': report_id.report_section_402}.items():
             if v:
                 form['field_values'][k] = {'value': v, 'field_type': 'char'}
 
@@ -203,8 +197,8 @@ class L10nLuGenerateTaxReport(models.TransientModel):
                 sum([form['field_values'].get(a) and float(str(form['field_values'][a]['value']).replace(',', '.')) or 0.00 for a in f.get('add', [])]) -
                 sum([form['field_values'].get(a) and float(str(form['field_values'][a]['value']).replace(',', '.')) or 0.00 for a in f.get('subtract', [])])),
                                            'field_type': 'float'}
-        form['field_values']['998'] = {'value': '1' if data.submitted_rcs else '0', 'field_type': 'boolean'}
-        form['field_values']['999'] = {'value': '0' if data.submitted_rcs else '1', 'field_type': 'boolean'}
+        form['field_values']['998'] = {'value': '1' if report_id.submitted_rcs else '0', 'field_type': 'boolean'}
+        form['field_values']['999'] = {'value': '0' if report_id.submitted_rcs else '1', 'field_type': 'boolean'}
         # Add annex
         if self.env.context.get('tax_report_options'):
             annex_fields, expenditures_table = self._add_annex(self.env.context['tax_report_options'])
@@ -231,13 +225,15 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         form['field_values'] = {k: v for k, v in form['field_values'].items() if k in YEARLY_SIMPLIFIED_FIELDS}
 
     def _get_account_code(self, ln):
-        if ln.get('caret_options') == 'account.account':
-            account_code = self.env['account.account'].browse(ln['id']).mapped('code')[0]
+        model, active_id = self.env['account.report']._get_model_info_from_id(ln['id'])
+        if model == 'account.account':
+            account_code = self.env['account.account'].browse(active_id).code
             return account_code
         return False
 
     def _get_account_name(self, ln):
-        return self.env['account.account'].browse(ln['id']).name
+        _, active_id = self.env['account.report']._get_model_info_from_id(ln['id'])
+        return self.env['account.account'].browse(active_id).name
 
     def _get_annex_data_from_lines(self, lines):
         # Initialize data dictionary
@@ -268,13 +264,15 @@ class L10nLuGenerateTaxReport(models.TransientModel):
                         annex_lines[code]['detailed_lines'] = annex_lines[code].get('detailed_lines', []) + [detail_line]
         return annex_lines
 
-    def _add_expenditures(self, data, lu_annual_report=False):
+    def _add_expenditures(self, data, lu_annual_report):
         expenditures = []
         for data_dict in data.get('detailed_lines', []):
-            report_line = {}
-            report_line['411'] = {'value': data_dict['detail'], 'field_type': 'char'}
-            report_line['412'] = {'value': data_dict['bus_base_amount'], 'field_type': 'float'}
-            report_line['413'] = {'value': data_dict['bus_VAT'], 'field_type': 'float'}
+            report_line = {
+                'report_id': lu_annual_report.id,
+                'report_section_411': data_dict['detail'],
+                'report_section_412': data_dict['bus_base_amount'],
+                'report_section_413': data_dict['bus_VAT'],
+            }
             expenditures.append(report_line)
         return expenditures
 

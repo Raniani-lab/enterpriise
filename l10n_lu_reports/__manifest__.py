@@ -26,11 +26,16 @@ Accounting reports for Luxembourg
         'views/l10n_lu_stored_sales_report_views.xml',
         'views/l10n_lu_yearly_tax_report_manual_views.xml',
         'wizard/l10n_lu_generate_accounts_report.xml',
-        'wizard/l10n_lu_generate_tax_report.xml',
         'wizard/l10n_lu_generate_sales_report.xml',
         'security/ir.model.access.csv',
+        'security/l10n_lu_yearly_tax_report_manual_security.xml',
     ],
     'demo': ['demo/demo_company.xml'],
     'auto_install': ['l10n_lu', 'account_reports'],
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'l10n_lu_reports/static/src/scss/tax_fields_views.scss',
+        ],
+    },
 }

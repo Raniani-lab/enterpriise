@@ -13,3 +13,4 @@ from . import l10n_lu_yearly_tax_report_manual
 from . import l10n_lu_tax_report_data
 from . import account_assets_report
 from . import account_general_ledger
+from . import l10n_lu_yearly_tax_report_appendix

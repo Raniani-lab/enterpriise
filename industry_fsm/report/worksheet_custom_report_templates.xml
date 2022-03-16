@@ -67,8 +67,8 @@
                                 <div t-attf-class="#{'col-auto' if report_type != 'html' else 'col-sm-2'}">
                                     <table class="table table-sm">
                                         <tr class="border-black o_total">
-                                            <td colspan="3"><strong>Total</strong></td>
-                                            <td class="text-right">
+                                            <td colspan="4" class="text-right">
+                                                <strong class="mr-2">Total</strong>
                                                 <t t-if="is_uom_day">
                                                     <t t-out="line._convert_hours_to_days(doc.effective_hours)"/>
                                                 </t>

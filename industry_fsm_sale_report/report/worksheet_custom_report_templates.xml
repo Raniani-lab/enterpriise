@@ -124,18 +124,18 @@
                     </div>
 
                     <div class="container_subtotal" name="so_total_summary">
-                        <div id="total" class="row justify-content-end" name="total">
-                            <div t-attf-class="#{'col-auto' if report_type != 'html' else 'col-sm-2'}">
+                        <div id="total" class="row" name="total">
+                            <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-2'} ml-auto">
                                 <table t-if="final_subtotal != 0 or is_any_total_discount_line" class="table table-sm">
                                     <tr t-if="final_tax" class="border-black o_subtotal" style="">
                                         <td><strong>Untaxed amount</strong></td>
-                                        <td class="text-right">
+                                        <td class="text-right o_price_total">
                                             <span t-esc="final_subtotal" t-options='{"widget": "monetary", "display_currency": doc.sale_order_id.pricelist_id.currency_id}'/>
                                         </td>
                                     </tr>
                                     <tr t-if="final_tax">
                                         <td><strong>Taxes</strong></td>
-                                        <td class="text-right">
+                                        <td class="text-right o_price_total">
                                             <span t-esc="final_tax" t-options='{"widget": "monetary", "display_currency": doc.sale_order_id.pricelist_id.currency_id}'/>
                                         </td>
                                     </tr>

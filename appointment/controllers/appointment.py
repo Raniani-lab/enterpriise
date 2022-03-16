@@ -193,7 +193,7 @@ class Appointment(http.Controller):
         """
         timezone = request.session['timezone'] or appointment_type.appointment_tz
         tz_session = pytz.timezone(timezone)
-        date_start = tz_session.localize(fields.Datetime.from_string(datetime_str)).astimezone(pytz.utc)
+        date_start = tz_session.localize(fields.Datetime.from_string(datetime_str)).astimezone(pytz.utc).replace(tzinfo=None)
         duration = float(duration_str)
         date_end = date_start + relativedelta(hours=duration)
 

@@ -9,6 +9,7 @@ from odoo import fields, Command
 from odoo.exceptions import AccessError
 
 from odoo.addons.payment.tests.common import PaymentCommon
+from odoo.addons.sale_subscription.controllers.portal import PaymentPortal
 from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSubscriptionCommon
 from odoo.tests import tagged
 
@@ -242,3 +243,14 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
         ) as patched:
             self.subscription._do_payment(self.create_token(), self.invoice)
             patched.assert_called_once()
+
+    def test_compute_show_tokenize_input_on_sale_order_with_subscription(self):
+        self.subscription_tmpl.payment_mode = 'success_payment'
+        show_tokenize_input = PaymentPortal._compute_show_tokenize_input_mapping(
+            self.acquirer, logged_in=True, sale_order_id=self.subscription.id
+        )
+        self.assertEqual(
+            show_tokenize_input, {self.acquirer.id: False},
+            "The save payment details checkbox should be hidden if the sale order contains a "
+            "subscription product that is not already linked to a subscription."
+        )

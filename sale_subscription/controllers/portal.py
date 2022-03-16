@@ -171,7 +171,9 @@ class CustomerPortal(portal.CustomerPortal):
             'tokens': tokens,
             'default_token_id': order_sudo.payment_token_id.id,
             'fees_by_acquirer': fees_by_acquirer,
-            'show_tokenize_input': False,  # Tokenization is always performed for subscriptions
+            'show_tokenize_input': self._compute_show_tokenize_input_mapping(
+                acquirers_sudo, logged_in=logged_in, sale_order_id=order_sudo.id
+            ),
             'amount': None,  # Determined by the generated invoice
             'currency': order_sudo.pricelist_id.currency_id,
             'partner_id': order_sudo.partner_id.id,

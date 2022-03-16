@@ -93,9 +93,13 @@ export const studioService = {
                 state.editorTab = currentHash[URL_TAB_KEY] || null;
 
                 const editedActionId = currentHash[URL_ACTION_KEY];
+                const additionalContext = {};
                 if (state.studioMode === MODES.EDITOR) {
+                    if (currentHash.active_id) {
+                        additionalContext.active_id = currentHash.active_id
+                    }
                     if (editedActionId) {
-                        state.editedAction = await env.services.action.loadAction(editedActionId);
+                        state.editedAction = await env.services.action.loadAction(editedActionId, additionalContext);
                     } else {
                         state.editedAction = null;
                     }
@@ -231,6 +235,9 @@ export const studioService = {
                 hash[URL_ACTION_KEY] = JSON.stringify(state.editedAction.id);
                 hash[URL_VIEW_KEY] = state.editedViewType || undefined;
                 hash[URL_TAB_KEY] = state.editorTab;
+            }
+            if (state.editedAction && state.editedAction.context && state.editedAction.context.active_id) {
+                hash.active_id = state.editedAction.context.active_id;
             }
             env.services.router.pushState(hash, { replace: true });
         }

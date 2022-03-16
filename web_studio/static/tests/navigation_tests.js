@@ -205,6 +205,44 @@ QUnit.module("Studio", (hooks) => {
         );
     });
 
+    QUnit.test("reload the studio view", async function (assert) {
+        assert.expect(5);
+
+        const webClient = await createEnterpriseWebClient({ serverData });
+
+        // open app Partners (act window action), sub menu Partners (action 3)
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await legacyExtraNextTick();
+        assert.strictEqual(
+            $(target).find(".o_kanban_record:contains(yop)").length,
+            1,
+            "the first partner should be displayed"
+        );
+
+        await click(target.querySelector(".o_kanban_record")); // open a record
+        await legacyExtraNextTick();
+        assert.containsOnce(target, ".o_form_view");
+        assert.strictEqual(
+            $(target).find(".o_form_view span:contains(yop)").length,
+            1,
+            "should have open the same record"
+        );
+
+        await openStudio(target);
+        await webClient.env.services.studio.reload();
+
+        assert.containsOnce(
+            target,
+            ".o_web_studio_client_action .o_web_studio_form_view_editor",
+            "the studio view should be opened after reloading"
+        );
+        assert.strictEqual(
+            $(target).find(".o_legacy_form_view span:contains(yop)").length,
+            1,
+            "should have open the same record"
+        );
+    });
+
     QUnit.test("switch view and close Studio", async function (assert) {
         assert.expect(6);
 

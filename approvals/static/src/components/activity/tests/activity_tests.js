@@ -8,14 +8,6 @@ QUnit.module('activity', {}, function () {
 QUnit.module('activity_tests.js', {
     async beforeEach() {
         await beforeEach(this);
-
-        this.start = async params => {
-            const res = await start({ ...params, data: this.data });
-            const { env, widget } = res;
-            this.env = env;
-            this.widget = widget;
-            return res;
-        };
     },
 });
 
@@ -38,7 +30,7 @@ QUnit.test('activity with approval to be made by logged user', async function (a
         res_model: 'approval.request',
         user_id: this.data.currentUserId,
     });
-    const { createChatterContainerComponent } = await this.start();
+    const { createChatterContainerComponent } = await start({ data: this.data });
     await createChatterContainerComponent({
         threadId: 100,
         threadModel: 'approval.request',
@@ -135,7 +127,7 @@ QUnit.test('activity with approval to be made by another user', async function (
         res_model: 'approval.request',
         user_id: 11,
     });
-    const { createChatterContainerComponent } = await this.start();
+    const { createChatterContainerComponent } = await start({ data: this.data });
     await createChatterContainerComponent({
         threadId: 100,
         threadModel: 'approval.request',
@@ -242,7 +234,8 @@ QUnit.test('approve approval', async function (assert) {
         res_model: 'approval.request',
         user_id: this.data.currentUserId,
     });
-    const { createChatterContainerComponent } = await this.start({
+    const { createChatterContainerComponent } = await start({
+        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'action_approve') {
                 assert.strictEqual(args.args.length, 1);
@@ -292,7 +285,8 @@ QUnit.test('refuse approval', async function (assert) {
         res_model: 'approval.request',
         user_id: this.data.currentUserId,
     });
-    const { createChatterContainerComponent } = await this.start({
+    const { createChatterContainerComponent } = await start({
+        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'action_refuse') {
                 assert.strictEqual(args.args.length, 1);

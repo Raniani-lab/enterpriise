@@ -13,15 +13,6 @@ QUnit.module('thread_view', {}, function () {
 QUnit.module('thread_view_tests.js', {
     async beforeEach() {
         await beforeEach(this);
-
-        this.start = async params => {
-            const res = await start({ ...params, data: this.data });
-            const { afterEvent, env, widget } = res;
-            this.afterEvent = afterEvent;
-            this.env = env;
-            this.widget = widget;
-            return res;
-        };
     },
 });
 
@@ -36,7 +27,8 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
         seen_message_id: 10,
         name: "General",
     }];
-    const { createThreadViewComponent } = await this.start({
+    const { createThreadViewComponent, messaging } = await start({
+        data: this.data,
         mockRPC(route, { model, method, kwargs }) {
             if (model === 'mail.channel' && method === 'execute_command_helpdesk') {
                 assert.step(`execute command helpdesk. body: ${kwargs.body}`);
@@ -45,11 +37,11 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
             return this._super(...arguments);
         }
     });
-    const thread = this.messaging.models['Thread'].findFromIdentifyingData({
+    const thread = messaging.models['Thread'].findFromIdentifyingData({
         id: 20,
         model: 'mail.channel'
     });
-    const threadViewer = this.messaging.models['ThreadViewer'].create({
+    const threadViewer = messaging.models['ThreadViewer'].create({
         hasThreadView: true,
         qunitTest: insertAndReplace(),
         thread: link(thread),

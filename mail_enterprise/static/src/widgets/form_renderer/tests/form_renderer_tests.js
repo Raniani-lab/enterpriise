@@ -34,10 +34,7 @@ QUnit.module('form_renderer_tests.js', {
                 },
                 viewParams,
             );
-            const { afterEvent, env, widget } = await start(viewArgs, ...args);
-            this.afterEvent = afterEvent;
-            this.env = env;
-            this.widget = widget;
+            return start(viewArgs, ...args);
         };
     },
 });
@@ -58,7 +55,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
             res_id: 11,
         });
     }
-    await this.createView({
+    const { afterEvent } = await this.createView({
         data: this.data,
         hasView: true,
         // View params
@@ -109,7 +106,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
 
     const allMessages = document.querySelectorAll('.o_MessageList_message');
     const lastMessage = allMessages[allMessages.length - 1];
-    await this.afterEvent({
+    await afterEvent({
         eventName: 'o-thread-view-hint-processed',
         func: () => {
             const messageList = document.querySelector('.o_Chatter_scrollPanel');
@@ -135,7 +132,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
         'The RPC to load new messages should be done when scrolling to the bottom'
     );
 
-    await this.afterEvent({
+    await afterEvent({
         eventName: 'o-thread-view-hint-processed',
         func: () => {
             const messageList = document.querySelector('.o_Chatter_scrollPanel');
@@ -175,7 +172,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             res_id: 11,
         });
     }
-    await this.createView({
+    const { afterEvent } = await this.createView({
         data: this.data,
         hasView: true,
         // View params
@@ -241,7 +238,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
         "The controller container should not be scrolled"
     );
 
-    await this.afterEvent({
+    await afterEvent({
         eventName: 'o-thread-view-hint-processed',
         func: () => {
             const messageList = document.querySelector('.o_Chatter_scrollPanel');
@@ -256,7 +253,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             );
         },
     });
-    await this.afterEvent({
+    await afterEvent({
         eventName: 'o-component-message-list-scrolled',
         func: () => {
             const messageList = document.querySelector('.o_Chatter_scrollPanel');

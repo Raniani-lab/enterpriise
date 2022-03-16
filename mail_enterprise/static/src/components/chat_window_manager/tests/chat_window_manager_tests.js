@@ -16,16 +16,6 @@ QUnit.module('chat_window_manager', {}, function () {
 QUnit.module('chat_window_manager_tests.js', {
     async beforeEach() {
         await beforeEach(this);
-
-        this.start = async params => {
-            return start(Object.assign(
-                {
-                    data: this.data,
-                    hasChatWindow: true,
-                },
-                params,
-            ));
-        };
     },
 });
 
@@ -43,7 +33,7 @@ QUnit.test("'backbutton' event should close chat window", async function (assert
         is_minimized: true,
         state: 'open',
     });
-    await this.start();
+    await start({ data: this.data, hasChatWindow: true });
     await afterNextRender(() => {
         // simulate 'backbutton' event triggered by the mobile app
         const backButtonEvent = new Event('backbutton');
@@ -70,12 +60,14 @@ QUnit.test('[technical] chat window should properly override the back button', a
     this.data['mail.channel'].records.push({
         id: 20,
     });
-    const { createMessagingMenuComponent } = await this.start({
+    const { createMessagingMenuComponent } = await start({
+        data: this.data,
         env: {
             device: {
                 isMobile: true,
             },
         },
+        hasChatWindow: true,
     });
     await createMessagingMenuComponent();
     await afterNextRender(() => document.querySelector(`.o_MessagingMenu_toggler`).click());

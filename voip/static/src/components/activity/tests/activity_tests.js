@@ -8,14 +8,6 @@ QUnit.module('activity', {}, function () {
 QUnit.module('activity_tests.js', {
     async beforeEach() {
         await beforeEach(this);
-
-        this.start = async params => {
-            const res = await start({ ...params, data: this.data });
-            const { env, widget } = res;
-            this.env = env;
-            this.widget = widget;
-            return res;
-        };
     },
 });
 
@@ -32,7 +24,7 @@ QUnit.test('activity: rendering - only with mobile number', async function (asse
         res_id: 100,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await this.start();
+    const { createChatterContainerComponent } = await start({ data: this.data });
     await createChatterContainerComponent({
         threadId: 100,
         threadModel: 'res.partner',
@@ -77,7 +69,7 @@ QUnit.test('activity: rendering - only with phone number', async function (asser
         res_id: 100,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await this.start();
+    const { createChatterContainerComponent } = await start({ data: this.data });
     await createChatterContainerComponent({
         threadId: 100,
         threadModel: 'res.partner',
@@ -121,7 +113,7 @@ QUnit.test('activity: rendering - with both mobile and phone number', async func
         res_id: 100,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await this.start();
+    const { createChatterContainerComponent } = await start({ data: this.data });
     await createChatterContainerComponent({
         threadId: 100,
         threadModel: 'res.partner',
@@ -172,7 +164,7 @@ QUnit.test('activity: calling - only with mobile', async function (assert) {
         res_id: 100,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await this.start();
+    const { createChatterContainerComponent } = await start({ data: this.data });
     await createChatterContainerComponent({
         threadId: 100,
         threadModel: 'res.partner',
@@ -213,7 +205,7 @@ QUnit.test('activity: calling - only with phone', async function (assert) {
         res_id: 100,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await this.start();
+    const { createChatterContainerComponent } = await start({ data: this.data });
     await createChatterContainerComponent({
         threadId: 100,
         threadModel: 'res.partner',

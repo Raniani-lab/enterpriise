@@ -18,15 +18,6 @@ QUnit.module('attachment', {}, function () {
 QUnit.module('attachment_tests.js', {
     async beforeEach() {
         await beforeEach(this);
-
-        this.start = async params => {
-            const res = await start({ ...params, data: this.data });
-            const { afterEvent, env, widget } = res;
-            this.afterEvent = afterEvent;
-            this.env = env;
-            this.widget = widget;
-            return res;
-        };
     },
 });
 
@@ -39,7 +30,8 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
         overrideBackButton({ enabled }) {},
     });
 
-    const { createMessageComponent } = await this.start({
+    const { createMessageComponent, messaging } = await start({
+        data: this.data,
         env: {
             device: {
                 isMobile: true,
@@ -47,15 +39,15 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
         },
         hasDialog: true,
     });
-    const attachment = this.messaging.models['Attachment'].create({
+    const attachment = messaging.models['Attachment'].create({
         filename: "test.png",
         id: 750,
         mimetype: 'image/png',
         name: "test.png",
     });
-    const message = this.messaging.models['Message'].create({
+    const message = messaging.models['Message'].create({
         attachments: link(attachment),
-        author: link(this.messaging.currentPartner),
+        author: link(messaging.currentPartner),
         body: "<p>Test</p>",
         id: 100,
     });
@@ -85,7 +77,8 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
         },
     });
 
-    const { createMessageComponent } = await this.start({
+    const { createMessageComponent, messaging } = await start({
+        data: this.data,
         env: {
             device: {
                 isMobile: true,
@@ -93,15 +86,15 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
         },
         hasDialog: true,
     });
-    const attachment = this.messaging.models['Attachment'].create({
+    const attachment = messaging.models['Attachment'].create({
         filename: "test.png",
         id: 750,
         mimetype: 'image/png',
         name: "test.png",
     });
-    const message = this.messaging.models['Message'].create({
+    const message = messaging.models['Message'].create({
         attachments: link(attachment),
-        author: link(this.messaging.currentPartner),
+        author: link(messaging.currentPartner),
         body: "<p>Test</p>",
         id: 100,
     });

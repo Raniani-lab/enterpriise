@@ -8,6 +8,7 @@ from freezegun import freeze_time
 from odoo import fields, Command
 from odoo.osv import expression
 
+from odoo.addons.mail.tests.common import MockEmail
 from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
 from odoo.exceptions import AccessError
 
@@ -18,7 +19,7 @@ except ImportError:
 
 
 @freeze_time(datetime(2021, 4, 1) + timedelta(hours=12, minutes=21))
-class TestTimesheetValidation(TestCommonTimesheet):
+class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
 
     def setUp(self):
         super(TestTimesheetValidation, self).setUp()
@@ -270,3 +271,37 @@ class TestTimesheetValidation(TestCommonTimesheet):
         self.assertEqual(len(result['rows']), 1)
         self.assertEqual(result['rows'][0]['values']['project_id'][0], self.timesheet2.project_id.id)
         self.assertEqual(result['rows'][0]['values']['task_id'][0], self.timesheet2.task_id.id)
+
+    def test_timesheet_manager_reminder(self):
+        """ Reminder mail will be sent to both manager Administrator and User Officer to validate the timesheet """
+        date = datetime(2022, 3, 3, 8, 8, 15)
+        now = datetime(2022, 3, 1, 8, 8, 15)
+        self._test_next_date(now, date, -3, "weeks")
+        user = self.env.ref('base.user_admin')
+
+        with freeze_time(date), self.mock_mail_gateway():
+            self.env['res.company']._cron_timesheet_reminder_manager()
+            self.assertEqual(len(self._new_mails.filtered(lambda x: x.res_id == user.employee_id.id)), 1, "An email sent to the 'Administrator Manager'")
+            self.assertEqual(len(self._new_mails.filtered(lambda x: x.res_id == self.empl_manager.id)), 1, "An email sent to the 'User Empl Officer'")
+
+    def test_timesheet_employee_reminder(self):
+        """ Reminder mail will be sent to each Users' Employee """
+
+        date = datetime(2022, 3, 3, 8, 8, 15)
+
+        Timesheet = self.env['account.analytic.line']
+        timesheet_vals = {
+            'name': "my timesheet",
+            'project_id': self.project_customer.id,
+            'date': datetime(2022, 3, 2, 8, 8, 15),
+            'unit_amount': 8.0,
+        }
+        Timesheet.with_user(self.user_employee).create({**timesheet_vals, 'task_id': self.task2.id})
+        Timesheet.with_user(self.user_employee2).create({**timesheet_vals, 'task_id': self.task1.id})
+
+        self.user_employee.company_id.timesheet_mail_employee_nextdate = date
+
+        with freeze_time(date), self.mock_mail_gateway():
+            self.env['res.company']._cron_timesheet_reminder_employee()
+            self.assertEqual(len(self._new_mails.filtered(lambda x: x.res_id == self.empl_employee.id)), 1, "An email sent to the 'User Empl Employee'")
+            self.assertEqual(len(self._new_mails.filtered(lambda x: x.res_id == self.empl_employee2.id)), 1, "An email sent to the 'User Empl Employee 2'")

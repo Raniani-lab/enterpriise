@@ -59,8 +59,8 @@
             <field name="binding_type">report</field>
         </record>
 
-        <record id="product_product_inherit_form_view_cost_structure" model="ir.ui.view">
-            <field name="name">cost_structure_product_product_inherit</field>
+        <record id="product_template_inherit_form_view_cost_structure" model="ir.ui.view">
+            <field name="name">cost_structure_product_template_inherit</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="mrp.product_template_form_view_bom_button"/>
             <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]"/>
@@ -73,5 +73,22 @@
                 </xpath>
             </field>
         </record>
+
+    <record id="product_product_inherit_form_view_cost_structure" model="ir.ui.view">
+        <field name="name">cost_structure_product_product_inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="mrp.product_product_form_view_bom_button"/>
+        <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_mos']" position="after">
+                <field name="mrp_product_qty" invisible="1"/>
+                <button name="action_cost_structure" type="object"
+                    class="oe_stat_button" icon="fa-dollar" string="Cost Analysis" attrs="{'invisible': [('mrp_product_qty', '=', 0)]}">
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+
 
 </odoo>

@@ -57,7 +57,7 @@ class MrpCostStructure(models.AbstractModel):
                     operations.append([user, op_id, wo_name, duration / 60.0, cost_hour * currency_rate])
 
             # Get the cost of raw material effectively used
-            raw_material_moves = []
+            raw_material_moves = {}
             total_cost_components = 0.0
             query_str = """SELECT
                                 sm.product_id,
@@ -74,15 +74,20 @@ class MrpCostStructure(models.AbstractModel):
             self.env.cr.execute(query_str, (tuple(mos.ids), ))
             for product_id, mo_id, qty, cost, currency_rate in self.env.cr.fetchall():
                 cost *= currency_rate
-                raw_material_moves.append({
+                if product_id in raw_material_moves:
+                    product_moves = raw_material_moves[product_id]
+                    product_moves['cost'] += cost
+                    product_moves['qty'] += qty
+                else:
+                    raw_material_moves[product_id] = {
                     'qty': qty,
                     'cost': cost,
                     'product_id': ProductProduct.browse(product_id),
-                })
+                }
                 total_cost_by_mo[mo_id] += cost
                 component_cost_by_mo[mo_id] += cost
                 total_cost_components += cost
-
+            raw_material_moves = list(raw_material_moves.values())
             # Get the cost of scrapped materials
             scraps = StockMove.search([('production_id', 'in', mos.ids), ('scrapped', '=', True), ('state', '=', 'done')])
 

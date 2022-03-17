@@ -3,7 +3,7 @@
 import { PivotView } from "@web/views/pivot/pivot_view";
 import { registry } from "@web/core/registry";
 
-const { onMounted, onPatched } = owl;
+const { onMounted, onPatched, useRef } = owl;
 
 const viewRegistry = registry.category("views");
 
@@ -12,14 +12,15 @@ class TimesheetPivotView extends PivotView {
         super.setup();
         onMounted(this.bindPlayStoreIcon);
         onPatched(this.bindPlayStoreIcon);
+        this.noContentHelper = useRef("noContentHelper");
     }
 
     /**
      * Bind the event for play store icons
      */
     bindPlayStoreIcon() {
-        const playStore = this.el.querySelector(".o_config_play_store");
-        const appStore = this.el.querySelector(".o_config_app_store");
+        const playStore = this.noContentHelper.el.querySelector(".o_config_play_store");
+        const appStore = this.noContentHelper.el.querySelector(".o_config_app_store");
 
         if (playStore) {
             playStore.onclick = this.onClickAppStoreIcon.bind(this);
@@ -52,5 +53,7 @@ class TimesheetPivotView extends PivotView {
         }
     }
 }
+
+TimesheetPivotView.template = "timesheet_grid.PivotView";
 
 viewRegistry.add("timesheet_pivot_view", TimesheetPivotView);

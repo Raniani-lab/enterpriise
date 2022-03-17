@@ -65,16 +65,6 @@ class ReportSaleDetails(models.AbstractModel):
             data.update(report_update)
         return data
 
-    @api.model
-    def _get_report_values(self, docids, data=None):
-        data = dict(data or {})
-        configs = self.env['pos.config'].browse(data['config_ids'])
-        if 'session_ids' in data:
-            data.update(self.get_sale_details(data['date_start'], data['date_stop'], configs.ids, data['session_ids']))
-        else:
-            data.update(self.get_sale_details(data['date_start'], data['date_stop'], configs.ids))
-        return data
-
 
 class PosConfig(models.Model):
     _inherit = 'pos.config'

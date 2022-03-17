@@ -24,7 +24,7 @@
 
     <record id="pos_daily_report" model="ir.actions.report">
         <field name="name">Daily report</field>
-        <field name="model">report.pos_l10n_se.report_saledetails</field>
+        <field name="model">pos.session</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">point_of_sale.report_saledetails</field>
     </record>

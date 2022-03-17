@@ -16,7 +16,7 @@ class SaleOrder(models.Model):
             if sale_order.task_id:
                 message = _(
                     "Quotation created: %s",
-                    "<a href=# data-oe-model=sale.order data-oe-id=%d>%s</a>" % (sale_order.id, sale_order.display_name))
+                    sale_order._get_html_link())
                 sale_order.task_id.message_post(body=message)
         return orders
 

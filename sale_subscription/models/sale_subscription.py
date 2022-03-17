@@ -754,7 +754,7 @@ class SaleSubscription(models.Model):
         self.ensure_one()
         values = self._prepare_renewal_order_values(discard_product_ids, new_lines_ids)
         order = self.env['sale.order'].create(values[self.id])
-        order.message_post(body=(_("This renewal order has been created from the subscription ") + " <a href=# data-oe-model=sale.subscription data-oe-id=%d>%s</a>" % (self.id, self.display_name)))
+        order.message_post(body=_("This renewal order has been created from the subscription %s.", self._get_html_link()))
         return {
             "type": "ir.actions.act_window",
             "res_model": "sale.order",
@@ -890,11 +890,10 @@ class SaleSubscription(models.Model):
             invoice = tx.invoice_ids[0]
             self.send_success_mail(tx, invoice)
             msg_body = _(
-                "Manual payment succeeded. Payment reference: <a href=# data-oe-model=%(tx_model)s "
-                "data-oe-id=%(tx_id)s>%(tx_ref)s</a>; Amount: %(amount)s. Invoice "
-                "<a href=# data-oe-model=%(inv_model)s data-oe-id=%(inv_id)s>View Invoice</a>.",
-                tx_model=tx._name, tx_id=tx.id, tx_ref=tx.reference, amount=tx.amount,
-                inv_model=invoice._name, inv_id=invoice.id
+                "Manual payment succeeded. Payment reference: %(payment)s; Amount: %(amount)s. Invoice: %(invoice)s",
+                payment=tx._get_html_link(title=tx.reference),
+                amount=tx.amount,
+                invoice=invoice._get_html_link(),
             )
             self.message_post(body=msg_body)
             return True
@@ -1022,7 +1021,12 @@ class SaleSubscription(models.Model):
                                 if auto_commit:
                                     cr.commit()
                                 if tx.renewal_allowed:
-                                    msg_body = _('Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.') % (tx.id, tx.reference, tx.amount, new_invoice.id)
+                                    msg_body = _(
+                                        'Automatic payment succeeded. Payment reference: %s; Amount: %s. Invoice %s.',
+                                        tx._get_html_link(),
+                                        tx.amount,
+                                        new_invoice._get_html_link(),
+                                    )
                                     subscription.message_post(body=msg_body)
                                     # success_payment
                                     if new_invoice.state != 'posted':

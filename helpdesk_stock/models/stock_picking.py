@@ -22,10 +22,12 @@ class StockPicking(models.Model):
             for ticket, pickings in mapped_data.items():
                 if not pickings:
                     continue
-                subtype_id = self.env.ref('helpdesk.mt_ticket_return_' + pickings[0].state, raise_if_not_found=False)
-                if not subtype_id:
+                subtype = self.env.ref('helpdesk.mt_ticket_return_' + pickings[0].state, raise_if_not_found=False)
+                if not subtype:
                     continue
-                body = '</br>'.join(('<a href="#" data-oe-model="stock.picking" data-oe-id="%s">%s</a> %s' % (picking.id, picking.display_name, subtype_id.name))\
-                    for picking in pickings)
-                ticket.message_post(subtype_id=subtype_id.id, body=body)
+                body = '</br>'.join(
+                    (f"{picking._get_html_link()} {subtype.name}")
+                    for picking in pickings
+                )
+                ticket.message_post(subtype_id=subtype.id, body=body)
         return res

@@ -365,8 +365,17 @@ class AccountAsset(models.Model):
     def unlink(self):
         for asset in self:
             for line in asset.original_move_line_ids:
-                body = _('A document linked to %s has been deleted: ') % (line.name or _('this move'))
-                body += '<a href=# data-oe-model=account.asset data-oe-id=%d>%s</a>' % (asset.id, asset.name)
+                if line.name:
+                    body = _(
+                        'A document linked to %s has been deleted: %s',
+                        line.name,
+                        asset._get_html_link(),
+                    )
+                else:
+                    body = _(
+                        'A document linked to this move has been deleted: %s',
+                        asset._get_html_link(),
+                    )
                 line.move_id.message_post(body=body)
         return super(AccountAsset, self).unlink()
 
@@ -583,7 +592,7 @@ class AccountAsset(models.Model):
                 'sale': (_('Deferred revenue created'), _('A deferred revenue has been created for this move:')),
                 'expense': (_('Deferred expense created'), _('A deferred expense has been created for this move:')),
             }[asset.asset_type]
-            msg = asset_name[1] + ' <a href=# data-oe-model=account.asset data-oe-id=%d>%s</a>' % (asset.id, asset.name)
+            msg = asset_name[1] + f' {asset._get_html_link()}'
             asset.message_post(body=asset_name[0], tracking_value_ids=tracking_value_ids)
             for move_id in asset.original_move_line_ids.mapped('move_id'):
                 move_id.message_post(body=msg)

@@ -68,8 +68,7 @@ class MailChannel(models.Model):
                     'partner_id': customer.id if customer else False,
                     'team_id': team_id,
                 })
-                link_ticket = '<a href="#" data-oe-id="%d" data-oe-model="helpdesk.ticket">%s</a>' % (helpdesk_ticket.id, html_escape(helpdesk_ticket.name))
-                msg = _("Created a new ticket and request: %s", link_ticket)
+                msg = _("Created a new ticket and request: %s", helpdesk_ticket._get_html_link())
         return self._send_transient_message(self.env.user.partner_id, msg)
 
     def execute_command_helpdesk_search(self, **kwargs):
@@ -92,8 +91,8 @@ class MailChannel(models.Model):
                         if len(tickets) > 10:
                             break
                 if tickets:
-                    link_tickets = [f'<br/><a href="#" data-oe-id={str(ticket.id)} data-oe-model="helpdesk.ticket">#{html_escape(ticket.name)}</a>' for ticket in tickets]
-                    msg = _('We found some matched ticket(s) related to the search query: %s') % ''.join(link_tickets)
+                    link_tickets = [f'<br/>{ticket._get_html_link()}' for ticket in tickets]
+                    msg = _('We found some matched ticket(s) related to the search query: %s', ''.join(link_tickets))
                 else:
                     msg = _('No tickets found related to the search query. <br> make sure to use the right format: (/helpdesk_search Keyword1 Keyword2 etc...)')
         return self._send_transient_message(partner, msg)

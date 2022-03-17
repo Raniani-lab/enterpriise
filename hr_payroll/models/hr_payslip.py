@@ -227,8 +227,9 @@ class HrPayslip(models.Model):
                     payslip.activity_schedule(
                         'hr_payroll.mail_activity_data_hr_payslip_negative_net',
                         summary=_('Previous Negative Payslip to Report'),
-                        note=_('At least one previous negative net could be reported on this payslip for <a href="#" data-oe-model="%s" data-oe-id="%s">%s</a>') % (
-                            payslip.employee_id._name, payslip.employee_id.id, payslip.employee_id.display_name),
+                        note=_(
+                            'At least one previous negative net could be reported on this payslip for %s',
+                            payslip.employee_id._get_html_link()),
                         user_id=payslip.contract_id.hr_responsible_id.id or self.env.ref('base.user_admin').id)
             else:
                 payslip.negative_net_to_report_display = False

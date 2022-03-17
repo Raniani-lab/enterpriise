@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, _lt
 from odoo.exceptions import UserError
-from odoo.tools import float_compare, float_round
+from odoo.tools import float_compare
 from odoo.tools.misc import formatLang
 from dateutil.relativedelta import relativedelta
 from collections import defaultdict, namedtuple
@@ -157,13 +157,11 @@ class AccountMove(models.Model):
                     asset.validate()
             if invoice:
                 asset_name = {
-                    'purchase': _('Asset'),
-                    'sale': _('Deferred revenue'),
-                    'expense': _('Deferred expense'),
+                    'purchase': _lt('Asset'),
+                    'sale': _lt('Deferred revenue'),
+                    'expense': _lt('Deferred expense'),
                 }[asset.asset_type]
-                msg = _('%s created from invoice') % (asset_name)
-                msg += ': <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>' % (invoice.id, invoice.name)
-                asset.message_post(body=msg)
+                asset.message_post(body=_('%s created from invoice: %s', asset_name, invoice._get_html_link()))
                 asset._post_non_deductible_tax_value()
         return assets
 

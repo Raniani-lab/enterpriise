@@ -45,10 +45,10 @@ class Task(models.Model):
         if 'fsm_done' in vals:
             tracked_tasks = self.filtered(
                 lambda t: t.fsm_done and t.helpdesk_ticket_id.use_fsm and previous_states[t] != t.fsm_done)
-            subtype_id = self.env.ref('helpdesk_fsm.mt_ticket_task_done')
+            subtype = self.env.ref('helpdesk_fsm.mt_ticket_task_done')
             for task in tracked_tasks:
-                body = '<a href="#" data-oe-model="project.task" data-oe-id="%s">%s</a>' % (task.id, task.display_name)
-                task.helpdesk_ticket_id.sudo().message_post(subtype_id=subtype_id.id, body=body)
+                task.helpdesk_ticket_id.sudo().message_post(
+                    subtype_id=subtype.id, body=task._get_html_link())
         return res
 
     @api.model_create_multi

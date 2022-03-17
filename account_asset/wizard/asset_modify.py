@@ -200,7 +200,7 @@ class AssetModify(models.TransientModel):
             })
             asset_increase.validate()
 
-            subject = _('A gross increase has been created') + ': <a href=# data-oe-model=account.asset data-oe-id=%d>%s</a>' % (asset_increase.id, asset_increase.name)
+            subject = _('A gross increase has been created: %s', asset_increase._get_html_link())
             self.asset_id.message_post(body=subject)
         if increase < 0:
             if self.env['account.move'].search([('asset_id', '=', self.asset_id.id), ('state', '=', 'draft'), ('date', '<=', self.date)]):

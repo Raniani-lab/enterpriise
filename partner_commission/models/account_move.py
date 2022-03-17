@@ -130,9 +130,14 @@ class AccountMove(models.Model):
             if move.move_type in ['out_invoice', 'in_invoice']:
                 # link the purchase order line to the invoice
                 move.commission_po_line_id = line
-                msg_body = 'New commission. Invoice: <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>. Amount: %s.' % (move.id, move.name, formatLang(self.env, total, currency_obj=move.currency_id))
+                msg_body = 'New commission. Invoice: %s. Amount: %s.' % (
+                    move._get_html_link(),
+                    formatLang(self.env, total, currency_obj=move.currency_id),
+                )
             else:
-                msg_body = 'Commission refunded. Invoice: <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>. Amount: %s.' % (move.id, move.name, formatLang(self.env, total, currency_obj=move.currency_id))
+                msg_body = 'Commission refunded. Invoice: %s. Amount: %s.' % (
+                    move._get_html_link(),
+                    formatLang(self.env, total, currency_obj=move.currency_id))
             purchase.message_post(body=msg_body)
 
     def _refund_commission(self):

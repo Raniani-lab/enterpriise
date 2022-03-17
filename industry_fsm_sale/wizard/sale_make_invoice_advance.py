@@ -15,8 +15,8 @@ class SaleAdvancePaymentInv(models.TransientModel):
                 for so in invoice.line_ids.sale_line_ids.order_id:
                     for task_id in so_task_mapping[str(so.id)]:
                         message = _(
-                            "An %sinvoice%s has been created.",
-                            "<a href=# data-oe-model=account.move data-oe-id=%d>" % invoice.id,
-                            "</a>")
+                            "An invoice has been created: %s",
+                            invoice._get_html_link(),
+                        )
                         self.env['project.task'].browse(task_id).message_post(body=message)
         return invoices

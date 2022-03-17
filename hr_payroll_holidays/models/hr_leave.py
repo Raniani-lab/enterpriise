@@ -92,8 +92,9 @@ class HrLeave(models.Model):
             leave.activity_schedule(
                 'hr_payroll_holidays.mail_activity_data_hr_leave_to_defer',
                 summary=_('Validated Time Off to Defer'),
-                note=_('Please create manually the work entry for <a href="#" data-oe-model="%s" data-oe-id="%s">%s</a>') % (
-                    leave.employee_id._name, leave.employee_id.id, leave.employee_id.display_name),
+                note=_(
+                    'Please create manually the work entry for %s',
+                    leave.employee_id._get_html_link()),
                 user_id=leave.employee_id.company_id.deferred_time_off_manager.id or self.env.ref('base.user_admin').id)
         return super(HrLeave, self - leaves_to_defer)._cancel_work_entry_conflict()
 

@@ -242,8 +242,10 @@ class HrAppraisal(models.Model):
                     appraisal.activity_schedule(
                         'mail.mail_activity_data_todo', appraisal.date_close,
                         summary=_('Appraisal Form to Fill'),
-                        note=_('Fill appraisal for <a href="#" data-oe-model="%s" data-oe-id="%s">%s</a>') % (
-                            appraisal.employee_id._name, appraisal.employee_id.id, appraisal.employee_id.display_name),
+                        note=_(
+                            'Fill appraisal for %s',
+                            appraisal.employee_id._get_html_link(),
+                        ),
                         user_id=employee.user_id.id)
 
     def action_cancel(self):

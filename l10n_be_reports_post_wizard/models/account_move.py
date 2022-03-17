@@ -35,12 +35,12 @@ class AccountMove(models.Model):
 
         return super().action_post()
 
-    def _compute_vat_period_date(self):
+    def _get_report_options_from_tax_closing_entry(self):
         """This override retrieves the generation options that were inserted in
            the context by the wizard opened by `action_post` overridden by this module,
            and merges them in the computed options.
         """
-        options = super()._compute_vat_period_date()
+        options = super()._get_report_options_from_tax_closing_entry()
 
         l10n_be_options = self.env.context.get('l10n_be_reports_generation_options', False)
         if l10n_be_options:

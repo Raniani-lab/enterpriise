@@ -50,6 +50,7 @@ class IntrastatReport(models.AbstractModel):
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
+        query_res = self._fill_missing_values(query_res)
         line_map = dict((l.id, l) for l in self.env['account.move.line'].browse(res['id'] for res in query_res))
 
         # Create csv file content.
@@ -159,7 +160,7 @@ class IntrastatReport(models.AbstractModel):
                 ' ',                                                            # Correction items      length=1
                 '000',                                                          # Preference            length=3
                 ''.ljust(7),                                                    # Reserve               length=7
-                res['transaction_code'] or '11' if new_codes else '',           # Transaction (new)     length=2
+                str(res['transaction_code']) or '11' if new_codes else '',      # Transaction (new)     length=2
                 (res.get('partner_vat') or 'QV999999999999').ljust(17) if \
                 new_codes else '',                                              # PartnerID (VAT No.)   length=17
             ]) + '\n'

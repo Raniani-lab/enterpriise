@@ -692,7 +692,7 @@ class Task(models.Model):
         action['view_mode'] = 'tree,form,kanban,calendar,pivot,graph,gantt,activity,map'
         return action
 
-    def _web_gantt_progress_bar_user_ids(self, res_ids, start, stop):
+    def _gantt_progress_bar_user_ids(self, res_ids, start, stop):
         start_naive, stop_naive = start.replace(tzinfo=None), stop.replace(tzinfo=None)
         users = self.env['res.users'].search([('id', 'in', res_ids)])
         self.env['project.task'].check_access_rights('read')
@@ -734,10 +734,10 @@ class Task(models.Model):
             for user in users
         }
 
-    def _web_gantt_progress_bar(self, field, res_ids, start, stop):
+    def _gantt_progress_bar(self, field, res_ids, start, stop):
         if field == 'user_ids':
             return dict(
-                self._web_gantt_progress_bar_user_ids(res_ids, start, stop),
+                self._gantt_progress_bar_user_ids(res_ids, start, stop),
                 warning=_("This user isn't expected to have task during this period. Planned hours :"),
             )
         raise NotImplementedError("This Progress Bar is not implemented.")
@@ -750,6 +750,6 @@ class Task(models.Model):
 
         progress_bars = {}
         for field in fields:
-            progress_bars[field] = self._web_gantt_progress_bar(field, res_ids[field], start_utc, stop_utc)
+            progress_bars[field] = self._gantt_progress_bar(field, res_ids[field], start_utc, stop_utc)
 
         return progress_bars

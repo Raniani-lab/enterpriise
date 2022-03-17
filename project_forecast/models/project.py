@@ -94,7 +94,8 @@ class Task(models.Model):
         if first_slot:
             action_context.update({'initialDate': first_slot.start_datetime})
         else:
-            min_date = min(allowed_tasks.mapped('planned_date_begin'))
+            planned_tasks = allowed_tasks.filtered('planned_date_begin')
+            min_date = min(planned_tasks.mapped('planned_date_begin')) if planned_tasks else False
             if min_date and min_date > datetime.datetime.now():
                 action_context.update({'initialDate': min_date})
         action['context'] = action_context

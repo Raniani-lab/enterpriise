@@ -13,16 +13,13 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
         # give the test team ability to create credit note
         self.test_team.use_credit_notes = True
         # create a sale order and invoice
-        partner = self.env['res.partner'].create({
-            'name': 'Customer Credee'
-        })
         product = self.env['product.product'].create({
             'name': 'product 1',
             'type': 'consu',
             'invoice_policy': 'order',
         })
         so = self.env['sale.order'].create({
-            'partner_id': partner.id,
+            'partner_id': self.partner.id,
         })
         self.env['sale.order.line'].create({
             'product_id': product.id,
@@ -36,7 +33,7 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
         # helpdesk.ticket access rights
         ticket = self.env['helpdesk.ticket'].create({
             'name': 'test',
-            'partner_id': partner.id,
+            'partner_id': self.partner.id,
             'team_id': self.test_team.id,
             'sale_order_id': so.id,
         })
@@ -60,3 +57,10 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
             "The ticket should be linked to a credit note")
         self.assertEqual(refund[0].id, ticket.invoice_ids[0].id,
             "The correct credit note should be referenced in the ticket")
+
+        refund.action_post()
+        last_message = str(ticket.message_ids[0].body)
+        refund_text = self.env.ref("helpdesk.mt_ticket_refund_posted").name
+
+        self.assertTrue(refund.display_name in last_message and refund_text in last_message,
+            'Refund Post should be logged on the ticket')

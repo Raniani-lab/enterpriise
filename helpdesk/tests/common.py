@@ -17,6 +17,10 @@ class HelpdeskCommon(TransactionCase):
         # we create a helpdesk user and a manager
         Users = cls.env['res.users'].with_context(tracking_disable=True)
         cls.main_company_id = cls.env.ref('base.main_company').id
+        cls.partner = cls.env['res.partner'].create({
+            'name': 'Customer Credee'
+        })
+
         cls.helpdesk_manager = Users.create({
             'company_id': cls.main_company_id,
             'name': 'Helpdesk Manager',
@@ -35,6 +39,7 @@ class HelpdeskCommon(TransactionCase):
         })
         # the manager defines a team for our tests (the .sudo() at the end is to avoid potential uid problems)
         cls.test_team = cls.env['helpdesk.team'].with_user(cls.helpdesk_manager).create({'name': 'Test Team'}).sudo()
+        cls.test_team.stage_ids = False
         # He then defines its stages
         stage_as_manager = cls.env['helpdesk.stage'].with_user(cls.helpdesk_manager)
         cls.stage_new = stage_as_manager.create({

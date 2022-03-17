@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
 
 from .common import HelpdeskCommon
-from odoo import fields
 from odoo.exceptions import AccessError
 
 
@@ -14,6 +15,7 @@ class TestHelpdeskFlow(HelpdeskCommon):
         - test_assign_close_dates: tests the assignation and closing time get computed correctly
         - test_ticket_partners: tests the number of tickets of a partner is computed correctly
         - test_team_assignation_[method]: tests the team assignation method work as expected
+        - test_automatic_ticket_closing: tests automatic ticket closing after set number of days
     """
 
     def setUp(self):
@@ -323,3 +325,49 @@ Content-Transfer-Encoding: quoted-printable
         self.assertTrue(sla not in ticket_3.sla_status_ids.mapped('sla_id'))
         #sla policy must be applied
         self.assertTrue(sla in ticket_2.sla_status_ids.mapped('sla_id'))
+
+    def test_automatic_ticket_closing(self):
+        self.test_team.write({
+            'auto_close_ticket': True,
+            'auto_close_day': 7,
+            'to_stage_id': self.stage_cancel.id,
+        })
+
+        create_ticket = lambda stage_id: self.env['helpdesk.ticket'].create({
+            'name': 'Ticket 1',
+            'team_id': self.test_team.id,
+            'stage_id': stage_id,
+        })
+
+        ticket_1 = create_ticket(self.stage_new.id)
+        ticket_2 = create_ticket(self.stage_progress.id)
+        ticket_3 = create_ticket(self.stage_done.id)
+
+        with freeze_time(datetime.now() + relativedelta(days=10)):
+            self.test_team._cron_auto_close_tickets()
+
+        # With no from_stage_ids, all tickets from non closing stages should be moved
+        self.assertEqual(ticket_1.stage_id, self.stage_cancel)
+        self.assertEqual(ticket_2.stage_id, self.stage_cancel)
+        self.assertEqual(ticket_3.stage_id, self.stage_done)
+
+        self.test_team.from_stage_ids |= self.stage_progress
+        ticket_4 = create_ticket(self.stage_new.id)
+        ticket_5 = create_ticket(self.stage_progress.id)
+        ticket_6 = create_ticket(self.stage_done.id)
+
+        with freeze_time(datetime.now() + relativedelta(days=10)):
+            self.test_team._cron_auto_close_tickets()
+
+        # Only tasks in the stages in from_stage_ids should be moved
+        self.assertEqual(ticket_4.stage_id, self.stage_new)
+        self.assertEqual(ticket_5.stage_id, self.stage_cancel)
+        self.assertEqual(ticket_6.stage_id, self.stage_done)
+
+        ticket_7 = create_ticket(self.stage_progress.id)
+
+        with freeze_time(datetime.now() + relativedelta(days=5)):
+            self.test_team._cron_auto_close_tickets()
+
+        # Tickets under the threshold should not be moved (5 < 7)
+        self.assertEqual(ticket_7.stage_id, self.stage_progress)

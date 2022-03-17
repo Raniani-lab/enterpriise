@@ -14,16 +14,13 @@ class TestHelpdeskStock(common.HelpdeskCommon):
         # give the test team ability to create coupons
         self.test_team.use_product_returns = True
 
-        partner = self.env['res.partner'].create({
-            'name': 'Customer Credee'
-        })
         product = self.env['product.product'].create({
             'name': 'product 1',
             'type': 'product',
             'invoice_policy': 'order',
         })
         so = self.env['sale.order'].create({
-            'partner_id': partner.id,
+            'partner_id': self.partner.id,
         })
         self.env['sale.order.line'].create({
             'product_id': product.id,
@@ -39,7 +36,7 @@ class TestHelpdeskStock(common.HelpdeskCommon):
         so.picking_ids[0]._action_done()
         ticket = self.env['helpdesk.ticket'].create({
             'name': 'test',
-            'partner_id': partner.id,
+            'partner_id': self.partner.id,
             'team_id': self.test_team.id,
             'sale_order_id': so.id,
         })
@@ -59,7 +56,7 @@ class TestHelpdeskStock(common.HelpdeskCommon):
         return_picking.create_returns()
 
         return_picking = self.env['stock.picking'].search([
-            ('partner_id', '=', partner.id),
+            ('partner_id', '=', self.partner.id),
             ('picking_type_code', '=', 'incoming'),
         ])
 
@@ -69,3 +66,14 @@ class TestHelpdeskStock(common.HelpdeskCommon):
             "The ticket should be linked to a return")
         self.assertEqual(return_picking.id, ticket.picking_ids[0].id,
             "The correct return should be referenced in the ticket")
+
+        return_picking.move_ids[0].quantity_done = 1
+        return_picking.button_validate()
+        # Trigger _compute_state
+        return_picking.state
+
+        last_message = str(ticket.message_ids[0].body)
+        return_text = self.env.ref("helpdesk.mt_ticket_return_done").name
+
+        self.assertTrue(return_picking.display_name in last_message and return_text in last_message,
+            'Return validation should be logged on the ticket')

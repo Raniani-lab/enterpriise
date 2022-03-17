@@ -13,12 +13,9 @@ class TestHelpdeskSaleCoupon(common.HelpdeskCommon):
         # give the test team ability to create coupons
         self.test_team.use_coupons = True
 
-        partner = self.env['res.partner'].create({
-            'name': 'Customer Credee'
-        })
         ticket = self.env['helpdesk.ticket'].create({
             'name': 'test',
-            'partner_id': partner.id,
+            'partner_id': self.partner.id,
             'team_id': self.test_team.id,
         })
         program = self.env['loyalty.program'].create({
@@ -43,7 +40,7 @@ class TestHelpdeskSaleCoupon(common.HelpdeskCommon):
         sale_coupon.generate_coupon()
 
         coupon = self.env['loyalty.card'].search([
-            ('partner_id', '=', partner.id),
+            ('partner_id', '=', self.partner.id),
             ('program_id', '=', program.id)
         ])
 

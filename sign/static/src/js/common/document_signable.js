@@ -424,7 +424,12 @@ const SignItemNavigator = Widget.extend({
       self.getParent().refreshSignItems();
       $item.focus();
       if (["signature", "initial"].includes(type.item_type)) {
-        $item.data("has-focus") ? $item.click() : $item.data("has-focus", true);
+        if ($item.data('has-focus')) {
+          // items with isEditMode have a different html structure
+          $item.data('isEditMode') ? $item.find('.o_sign_item_display').click() : $item.click();
+        } else {
+          $item.data("has-focus", true);
+        }
       }
       self.isScrolling = false;
     });

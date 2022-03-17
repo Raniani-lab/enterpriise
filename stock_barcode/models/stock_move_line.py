@@ -14,6 +14,7 @@ class StockMoveLine(models.Model):
     product_stock_quant_ids = fields.One2many('stock.quant', compute='_compute_product_stock_quant_ids')
     product_packaging_id = fields.Many2one(related='move_id.product_packaging_id')
     product_packaging_uom_qty = fields.Float('Packaging Quantity', compute='_compute_product_packaging_uom_qty', help="Quantity of the Packaging in the UoM of the Stock Move Line.")
+    is_completed = fields.Boolean(compute='_compute_is_completed', help="Check if the quantity done matches the demand")
 
     @api.depends('product_id', 'product_id.stock_quant_ids')
     def _compute_product_stock_quant_ids(self):
@@ -26,6 +27,11 @@ class StockMoveLine(models.Model):
     def _compute_product_packaging_uom_qty(self):
         for sml in self:
             sml.product_packaging_uom_qty = sml.product_packaging_id.product_uom_id._compute_quantity(sml.product_packaging_id.qty, sml.product_uom_id)
+
+    @api.depends('qty_done')
+    def _compute_is_completed(self):
+        for line in self:
+            line.is_completed = line.qty_done == line.reserved_uom_qty
 
     def _inverse_dummy_id(self):
         pass

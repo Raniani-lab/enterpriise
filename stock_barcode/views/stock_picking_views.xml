@@ -51,12 +51,30 @@
                     <field name="owner_id" readonly="1" attrs="{'invisible': [('owner_id', '=', False)]}" groups="stock.group_tracking_owner"/>
                     <field name="company_id" readonly="1" groups="base.group_multi_company"/>
                     <field name="move_ids" readonly="1" attrs="{'invisible': [('move_ids', '=', False)]}">
-                        <tree>
-                            <field name="product_id"/>
-                            <field name="description_picking" string="Description"/>
-                            <field name="product_uom_qty"/>
-                            <field name="state"/>
-                        </tree>
+                        <kanban>
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <div class="oe_kanban_global_click">
+                                        <div class="row">
+                                            <div class="col-6 o_kanban_record_title">
+                                                <field name="product_id"/>
+                                            </div>
+                                            <div class="col-6 text-right">
+                                                <field name="product_uom_qty"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <field name="description_picking"/>
+                                            </div>
+                                            <div class="col-6 text-right">
+                                                <field name="state"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
                     </field>
                     <field name="note" readonly="1" attrs="{'invisible': [('note', '=', False)]}"/>
                 </group>

@@ -4,20 +4,23 @@
     <t t-name="stock_barcode.LineComponent" owl="1">
         <div t-name="LineComponent" owl="1" t-on-click="select"
             class="o_barcode_line list-group-item d-flex flex-row flex-nowrap"
-            t-att-data-barcode="line.product_id.barcode" t-attf-class="
-                {{isComplete ? 'o_line_completed' : ''}}
-                {{env.model.lineIsFaulty(line) ? 'o_faulty' : ''}}
-                {{isSelected ? 'o_selected o_highlight' : ''}}
-            ">
+            t-att-data-barcode="line.product_id.barcode" t-attf-class="{{componentClasses}}">
             <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
                 <!-- Hides product's name if it's a subline, as it is already on the parent line. -->
                 <t t-if="!props.subline">
-                    <t t-if="line.product_id.default_code">
+                    <t t-if="line.product_id.default_code or line.product_id.code">
                         <div class="o_barcode_line_title">
                             <i class="fa fa-fw fa-tags"/>
-                            <span class="o_barcode_product_ref">
-                                <b>[<t t-esc="line.product_id.default_code"/>]</b>
-                            </span>
+                            <t t-if="line.product_id.default_code">
+                                <span class="h5">
+                                    <b>[<t t-esc="line.product_id.default_code"/>]</b>
+                                </span>
+                            </t>
+                            <t t-if="line.product_id.code != line.product_id.default_code">
+                                <span class="h5 text-muted">
+                                   <t t-esc="' [' + line.product_id.code + ']'"/>
+                                </span>
+                            </t>
                         </div>
                         <div>
                             <i class="fa fa-fw"/>

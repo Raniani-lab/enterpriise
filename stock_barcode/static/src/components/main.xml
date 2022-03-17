@@ -36,6 +36,8 @@
                     t-attf-class="{{displayHeaderInfoAsColumn ? 'flex-column justify-content-center align-items-center' : 'justify-content-between'}}">
                     <div t-if="displayLocations" class="col-12 col-md-8">
                         <div class="o_barcode_locations">
+                            <span class="o_barcode_move_number mr-1 font-weight-bold"
+                                t-esc="currentPageIndex + '/' + numberOfPages"/>
                             <t t-if="displaySourceLocation">
                                 <span t-if="isTransfer" class="o_barcode_location_label">From </span>
                                 <span t-if="sourceLocations" t-on-click="toggleSourceSelection"
@@ -50,7 +52,7 @@
                                 </span>
                             </t>
                             <br t-if="displaySourceLocation &amp;&amp; displayDestinationLocation" class="d-md-none"/>
-                            <span t-if="displayDestinationLocation" class="text-truncate d-block d-md-inline mb-2">
+                            <span t-if="displayDestinationLocation" class="text-truncate mb-2">
                                 <span class="o_barcode_location_label"> To </span>
                                 <span t-if="destinationLocations" t-on-click="toggleDestinationSelection"
                                     class="o_barcode_summary_location_dest o_clickable o_barcode_summary_location_highlight"
@@ -64,8 +66,6 @@
                                 </span>
                             </span>
                         </div>
-                        <div class="o_barcode_move_number font-weight-bold"
-                            t-esc="currentPageIndex + '/' + numberOfPages"/>
                     </div>
                     <div t-if="info.warning" class="o_barcode_pic position-relative text-center mt-2 mb-1">
                         <i class="fa fa-5x fa-exclamation-triangle"/>

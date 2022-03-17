@@ -44,11 +44,15 @@
     }
 
     &.o_line_completed {
-        background: #F5F5F5;
+        background: #befdcc;
+    }
+
+    &.o_line_not_completed {
+        background: #fcf9f2;
     }
 
     &.o_selected {
-        box-shadow: inset 0px 0px 0px 3px $o-brand-secondary;
+        box-shadow: inset 0px 0px 0px 3px $o-enterprise-primary-color;
     }
 
     .o_barcode_scanner_qty {
@@ -63,10 +67,6 @@
         .qty-done, .inventory_quantity {
             min-width: 20px;
         }
-    }
-
-    .o_barcode_product_ref {
-        font-size: 1.1em;
     }
 
     .o_line_buttons {

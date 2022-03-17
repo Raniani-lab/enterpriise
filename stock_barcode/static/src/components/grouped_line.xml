@@ -4,11 +4,7 @@
     <t t-name="stock_barcode.GroupedLineComponent" owl="1">
         <div t-name="GroupedLineComponent" t-on-click="select"
             class="o_barcode_line list-group-item d-flex flex-row flex-wrap"
-            t-att-data-barcode="line.product_id.barcode" t-attf-class="
-                {{isComplete ? 'o_line_completed' : ''}}
-                {{env.model.lineIsFaulty(line) ? 'o_faulty' : ''}}
-                {{isSelected ? 'o_selected o_highlight' : ''}}
-            ">
+            t-att-data-barcode="line.product_id.barcode" t-attf-class="{{componentClasses}}">
             <div class="o_barcode_line_summary d-flex flex-grow-1">
                 <div class="o_barcode_line_details flex-grow-1">
                     <t t-if="line.product_id.default_code">

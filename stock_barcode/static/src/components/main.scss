@@ -171,6 +171,9 @@
             &.o_form_nosheet {
                 padding-bottom: 80px;
             }
+            .o_kanban_record {
+                font-size: 1em;
+            }
         }
     }
 
@@ -262,6 +265,14 @@
                 @include media-breakpoint-up(sm) {
                     min-width: 0;
                 }
+            }
+
+            .o_qty_done_field_completed{
+                background: #f6fdf6;
+            }
+
+            .o_qty_done_field_not_completed{
+                background: #fcf9f2;
             }
 
             & > div {

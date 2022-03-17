@@ -206,9 +206,9 @@ class Planning(models.Model):
         # If allocated hours have to be recomputed, the allocated percentage have to keep its current value.
         # Hence, we stop the computation of allocated percentage if allocated hours have to be recomputed.
         allocated_hours_field = self._fields['allocated_hours']
-        if allocated_hours_field in self.env.fields_to_compute():
-            return
         for slot in self:
+            if self.env.is_to_compute(allocated_hours_field, slot):
+                continue
             if slot.start_datetime and slot.end_datetime and slot.start_datetime != slot.end_datetime:
                 if slot.allocation_type == 'planning':
                     slot.allocated_percentage = 100 * slot.allocated_hours / slot._get_slot_duration()

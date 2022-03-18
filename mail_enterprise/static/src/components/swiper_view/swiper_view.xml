@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="mail_enterprise.SwiperView" owl="1">
-        <div class="o_SwiperView" t-attf-class="{{ className }}" t-ref="root">
-            <t t-if="swiperView">
+        <t t-if="swiperView">
+            <div class="o_SwiperView" t-attf-class="{{ className }}" t-ref="root">
                 <ActionSwiper
                     onLeftSwipe="swiperView.hasLeftSwipe ? { action: swiperView.onLeftSwipe, bgColor: swiperView.leftSwipeBackgroundColor, icon: swiperView.leftSwipeIcon } : undefined"
                     onRightSwipe="swiperView.hasRightSwipe ? { action: swiperView.onRightSwipe, bgColor: swiperView.rightSwipeBackgroundColor, icon: swiperView.rightSwipeIcon } : undefined"
@@ -15,7 +15,7 @@
                         />
                     </t>
                 </ActionSwiper>
-            </t>
-        </div>
+            </div>
+        </t>
     </t>
 </templates>

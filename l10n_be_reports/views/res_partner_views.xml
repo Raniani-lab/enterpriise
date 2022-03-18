@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="res_partner_view_form" model="ir.ui.view">
             <field name="name">res.partner.view.form</field>
             <field name="model">res.partner</field>
@@ -38,15 +37,17 @@
             </field>
         </record>
 
-        <record id="view_partner_28150_required_fields" model="ir.ui.view">
+        <record id="view_partner_281_50_required_fields" model="ir.ui.view">
             <field name="name">res.partner.tree</field>
             <field name="model">res.partner</field>
             <field name="arch" type="xml">
                 <tree string="Partner with missing information" multi_edit="1">
+                    <field name="name" required="1"/>
                     <field name="is_company" invisible="1"/>
-                    <field name="street"/>
-                    <field name="zip"/>
-                    <field name="country_id"/>
+                    <field name="street" required="1"/>
+                    <field name="zip" required="1"/>
+                    <field name="country_id" required="1"/>
+                    <field name="phone" invisible="'phone' not in context.get('required_fields', [])" required="'phone' in context.get('required_fields', [])"/>
                     <field name="vat" attrs="{'required': [('is_company', '=', True)], }"/>
                     <field name="citizen_identification" attrs="{'required': [('is_company', '!=', True)], 'invisible': [('is_company', '=', True)], }"/>
                 </tree>
@@ -75,8 +76,10 @@
                 <xpath expr="//field[@name='citizen_identification']" position="attributes">
                     <attribute name="attrs">{'required': [('is_company', '!=', True)]}</attribute>
                 </xpath>
+                <xpath expr="//field[@name='phone']" position="attributes">
+                    <attribute name="required">'phone' in context.get('required_fields', [])</attribute>
+                </xpath>
             </field>
         </record>
-
     </data>
 </odoo>

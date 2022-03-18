@@ -5,20 +5,21 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <t t-foreach="docs" t-as="o">
+                        <t t-set="form" t-value="o"/>
                         <div class="page">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="row border border-dark border-bottom-0">
                                         <div class="col-12">
                                             <p class="text-center font-weight-bold">
-                                                FORM N° 281.50 (commissions, brokerage, etc) - YEAR <span t-esc="data['V0002']"/>
+                                                FORM N° 281.50 (commissions, brokerage, etc) - YEAR <span t-out="form.reference_year"/>
                                             </p>
                                         </div>
                                     </div>
                                     <div class="row border border-dark border-bottom-0">
                                         <div class="col-12" style="padding-top: 1%; padding-bottom: 1%;">
                                             <p class="text-left">
-                                                1. N° <t t-esc="data['F2009']"/>
+                                                1. N° <t t-out="form.official_id"/>
                                             </p>
                                         </div>
                                     </div>
@@ -29,15 +30,15 @@
                                             </p>
                                             <br/>
                                             <p class="text-left border border-dark" style="padding-left: 2%">
-                                                <span t-esc="data['V0014']"/> <!-- Company name -->
+                                                <span t-out="form.form_325_id.sender_name"/> <!-- Company name -->
                                                 <br/>
-                                                <span t-esc="data['V0015']"/> <!-- Company Address -->
+                                                <span t-out="form.form_325_id.sender_address"/> <!-- Company Address -->
                                                 <br/>
-                                                <span t-esc="data['V0016']"/> <span t-esc="data['V0017']"/> <!-- Company ZIP & City -->
+                                                <span t-out="form.form_325_id.sender_zip"/> <span t-out="form.form_325_id.sender_city"/> <!-- Company ZIP & City -->
                                             </p>
                                             <br/>
                                             <p class="text-left">
-                                                Enterprise N°: <span t-esc="data['A1005']"/>
+                                                Enterprise N°: <span t-out="form.income_debtor_bce_number"/>
                                             </p>
                                         </div>
                                         <div class="col-6" style="padding-top: 1%; padding-bottom: 1%;">
@@ -46,28 +47,23 @@
                                             </p>
                                             <br/>
                                             <p class="text-left border border-dark" style="padding-left: 2%">
-                                                <span t-esc="data['F2013']"/> <!-- Partner name -->
+                                                <span t-out="form.partner_name"/> <!-- Partner name -->
                                                 <br/>
-                                                <span t-esc="data['F2015']"/> <!-- Partner Address -->
+                                                <span t-out="form.partner_address"/> <!-- Partner Address -->
                                                 <br/>
-                                                <t t-if="data['F2016']">
-                                                    <span t-esc="data['F2016']"/>
-                                                </t>
-                                                <t t-else="">
-                                                    <span t-esc="data['F2112']"/>
-                                                </t>
-                                                <span t-esc="data['F2017']"/> <!-- Partner ZIP & City -->
+                                                <span t-out="form.partner_zip"/>
+                                                <span t-out="form.partner_city"/> <!-- Partner ZIP & City -->
                                                 <br/>
-                                                <span t-esc="data['F2018_display']"/> <!-- Partner Country name -->
+                                                <span t-out="form.country_id.name"/> <!-- Partner Country name -->
                                             </p>
                                             <br/>
-                                            <p class="text-left" t-if="data['F50_2030'] == '2'">
+                                            <p class="text-left" t-if="not form.partner_is_natural_person">
                                                 Enterprise N°:
-                                                <span t-esc="data['F50_2110_display']"/>
+                                                <span t-out="form.partner_bce_number"/>
                                             </p>
-                                            <p class="text-left" t-if="data['F50_2030'] == '1'">
+                                            <p class="text-left" t-if="form.partner_is_natural_person">
                                                 Profession:
-                                                <span t-esc="data['F50_2107']"/>
+                                                <span t-out="form.partner_job_position"/>
                                             </p>
                                         </div>
                                     </div>
@@ -99,15 +95,15 @@
                                         </div>
                                         <div class="col-4" style="padding-top: 1%; padding-bottom: 1%;">
                                             <p class="text-right">
-                                                <span t-esc="data['F50_2060']"/>
+                                                <span t-out="form.commissions" t-options="{'widget': 'float', 'precision': 2}"/>
                                                 <br/>
-                                                <span t-esc="data['F50_2061']"/>
+                                                <span t-out="form.fees" t-options="{'widget': 'float', 'precision': 2}"/>
                                                 <br/>
-                                                <span t-esc="data['F50_2062']"/>
+                                                <span t-out="form.atn" t-options="{'widget': 'float', 'precision': 2}"/>
                                                 <br/>
-                                                <span t-esc="data['F50_2063']"/>
+                                                <span t-out="form.exposed_expenses" t-options="{'widget': 'float', 'precision': 2}"/>
                                                 <br/>
-                                                <span t-esc="data['F50_2064']"/>
+                                                <span t-out="form.total_remuneration" t-options="{'widget': 'float', 'precision': 2}"/>
                                                 <br/>
                                             </p>
                                         </div>
@@ -125,9 +121,11 @@
                                         <div class="col-4" style="padding-top: 1%; padding-bottom: 1%;">
                                             <p class="text-right">
                                                 <br/><br/>
-                                                <span t-esc="data['F50_2066']"/>
+                                                <!-- irrelevant: sport remuneration -->
+                                                0.00
                                                 <br/><br/>
-                                                <span t-esc="data['F50_2067']"/>
+                                                <!-- irrelevant: manager remuneration -->
+                                                0.00
                                                 <br/><br/>
                                             </p>
                                         </div>
@@ -136,23 +134,23 @@
                                         <div class="col-8" style="padding-top: 1%; padding-bottom: 1%;">
                                             <p class="text-left">
                                                 g) If the amount indicated in item e above does not coincide with
-                                                the amount actually paid
-                                                <span t-esc="data['V0002']"/>,
-                                                enter the amount actually paid in
-                                                <span t-esc="data['V0002']"/>
-                                                (including amounts that related to other taxable periods):
+                                                the amount actually paid in <span t-out="form.reference_year"/>,
+                                                enter the amount actually paid in <span t-out="form.reference_year"/>
+                                                (including amounts that are related to other taxable periods):
                                             </p>
                                         </div>
                                         <div class="col-4" style="padding-top: 1%; padding-bottom: 1%;">
                                             <p class="text-right">
-                                                <t t-esc="data['F50_2065_display']"/>
+                                                <t t-if="form.paid_amount == 0">NÉANT</t>
+                                                <t t-elif="form.paid_amount == form.total_remuneration">0.00</t>
+                                                <t t-else=""><span t-out="form.paid_amount" t-options="{'widget': 'float', 'precision': 2}"/></t>
                                             </p>
                                         </div>
                                     </div>
                                     <div class="row border border-dark">
                                         <div class="col-12" style="padding-top: 1%; padding-bottom: 1%;">
                                             <p class="text-left">
-                                                4. Comments: <span t-esc="data['F50_2099']"/>
+                                                4. Comments:
                                             </p>
                                         </div>
                                     </div>

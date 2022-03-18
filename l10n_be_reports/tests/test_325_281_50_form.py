@@ -2,9 +2,10 @@
 
 from freezegun import freeze_time
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.addons.l10n_be_reports.models.res_partner import format_if_float
+
+from odoo import Command, fields
+from odoo.exceptions import UserError
 from odoo.tests import tagged
-from odoo import fields, Command
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
@@ -38,32 +39,35 @@ class TestResPartner(AccountTestInvoicingCommon):
             'category_id': [Command.link(cls.env.ref('l10n_be_reports.res_partner_tag_281_50').id)]
         })
 
-        cls.wizard_values = {
-            'reference_year': '2000',
-            'is_test': False,
-            'type_sending': '0',
-            'type_treatment': '0',
-        }
-
         cls.tag_281_50_commissions = cls.env.ref('l10n_be_reports.account_tag_281_50_commissions')
         cls.tag_281_50_fees = cls.env.ref('l10n_be_reports.account_tag_281_50_fees')
         cls.tag_281_50_atn = cls.env.ref('l10n_be_reports.account_tag_281_50_atn')
         cls.tag_281_50_exposed_expenses = cls.env.ref('l10n_be_reports.account_tag_281_50_exposed_expenses')
 
-        cls.env.company.vat = 'BE0477472701'
-        cls.env.company.phone = '+3222903490'
-        cls.env.company.street = 'Rue du Laid Burniat 5'
-        cls.env.company.zip = '1348'
-        cls.env.company.city = 'Ottignies-Louvain-la-Neuve '
-        cls.env.company.country_id = cls.env.ref('base.be').id
+        (cls.company_data['company'] + cls.company_data_2['company']).write({
+            'vat': 'BE0477472701',
+            'phone': '+3222903490',
+            'street': 'Rue du Laid Burniat 5',
+            'zip': '1348',
+            'city': 'Ottignies-Louvain-la-Neuve ',
+            'country_id': cls.env.ref('base.be').id,
+        })
 
         cls.product_a.property_account_expense_id.tag_ids |= cls.tag_281_50_commissions
         cls.product_b.property_account_expense_id.tag_ids |= cls.tag_281_50_fees
 
-        cls.move_a = cls.create_and_post_bill(cls.partner_a, cls.product_a, 1000.0, '2000-05-12')
+        cls.move_a = cls.create_and_post_bill(partner_id=cls.partner_a, product_id=cls.product_a, amount=1000.0, date='2000-05-12')
 
         cls.debtor = cls.env.company.partner_id
         cls.sender = cls.env.company.partner_id
+
+        cls.wizard_values = {
+            'sender_id': cls.sender.id,
+            'reference_year': 2000,
+            'is_test': False,
+            'sending_type': '0',
+            'treatment_type': '0',
+        }
 
     @classmethod
     def create_and_post_bill(cls, partner_id, product_id, amount, date):
@@ -107,12 +111,77 @@ class TestResPartner(AccountTestInvoicingCommon):
         bill_payable_move_lines += payment.line_ids.filtered(lambda x: x.account_internal_type == 'payable')
         bill_payable_move_lines.reconcile()
 
+    def create_325_form(self, ref_year=2000, state='generated'):
+        form_325 = self.env['l10n_be.form.325'].create({
+            'company_id': self.company_data['company'].id,
+            'sender_id': self.sender.id,
+            'debtor_id': self.debtor.id,
+            'reference_year': ref_year,
+            'is_test': False,
+            'sending_type': '0',
+            'treatment_type': '0',
+            'state': 'draft',
+        })
+        form_325._generate_form_281_50()
+
+        if state == 'generated':
+            form_325._validate_form()
+        return form_325
+
+    def create_form28150(self, ref_year=None, form_type='0', company=None, partner=None, commission=0.0, fees=0.0, atn=0.0, exposed_expenses=0.0, paid_amount=0.0, state='generated'):
+        if not company:
+            company = self.company_data['company']
+        if not partner:
+            partner = self.partner_a
+
+        form325 = self.env['l10n_be.form.325'].create({
+            'company_id': company.id,
+            'sender_id': company.partner_id.id,
+            'debtor_id': company.partner_id.id,
+            'reference_year': ref_year,
+            'treatment_type': form_type,
+            'is_test': False,
+            'state': state,
+        })
+
+        return self.env['l10n_be.form.281.50'].create({
+            'form_325_id': form325.id,
+            'company_id': company.id,
+            'income_debtor_bce_number': self.debtor._get_bce_number(),
+            'partner_id': partner.id,
+            'partner_name': partner.name,
+            'partner_job_position': '' if partner.is_company else self.function,
+            'partner_citizen_identification': '' if partner.is_company else partner.citizen_identification,
+            'partner_bce_number': partner.commercial_partner_id._get_bce_number() if partner.is_company else '',
+            'partner_address': ", ".join(street for street in [partner.street, partner.street2] if street),
+            'partner_zip': partner.zip,
+            'partner_city': partner.city,
+            'commissions': commission,
+            'fees': fees,
+            'atn': atn,
+            'exposed_expenses': exposed_expenses,
+            'paid_amount': paid_amount,
+        })
+
+    def create_tagged_accounts(self):
+        account_ids = [
+            self.env['account.account'].with_company(self.company_data['company']).create({
+                'name': f"Test account {index}",
+                'code': f"6000{index}",
+                'user_type_id': self.env.ref('account.data_account_type_expenses').id,
+                'tag_ids': [Command.link(tag.id)],
+            })
+            for index, tag in enumerate((self.tag_281_50_commissions, self.tag_281_50_atn, self.tag_281_50_fees,
+                                         self.tag_281_50_exposed_expenses))
+        ]
+        return account_ids
+
     def test_281_50_xml_generation_1_partner_eligible_no_payment(self):
         """check the values generated and injected in the xml are as expected
         Simple case: 1 partner, invoice for 1.000,00 currency in an account tagged as commission, no payment
         """
-        partner_325_form = self.partner_a._generate_form_325_values(self.debtor, self.sender, self.wizard_values)
-        resulting_xml = self.debtor._generate_325_form_xml(partner_325_form)
+        form_325 = self.create_325_form()
+        resulting_xml = form_325._generate_325_form_xml()
         expected_281_50_xml = b"""<?xml version='1.0' encoding='utf-8'?>
                     <Verzendingen>
                         <Verzending>
@@ -201,8 +270,8 @@ class TestResPartner(AccountTestInvoicingCommon):
         # make a payment to the vendor partner_a and reconcile it with the bill
         self.pay_bill(bill=self.move_a, amount=1000, date='2000-05-12')
 
-        partner_325_form = self.partner_a._generate_form_325_values(self.debtor, self.sender, self.wizard_values)
-        resulting_xml = self.debtor._generate_325_form_xml(partner_325_form)
+        form_325 = self.create_325_form()
+        resulting_xml = form_325._generate_325_form_xml()
         expected_281_50_xml = b"""<?xml version='1.0' encoding='utf-8'?>
                     <Verzendingen>
                         <Verzending>
@@ -295,9 +364,8 @@ class TestResPartner(AccountTestInvoicingCommon):
         # make a payment to the vendor partner_a and reconcile it with the bill
         self.pay_bill(bill=self.move_a, amount=1000, date='2000-05-12')
 
-        partners = self.partner_a + self.partner_b
-        partner_325_form = partners._generate_form_325_values(self.debtor, self.sender, self.wizard_values)
-        resulting_xml = self.debtor._generate_325_form_xml(partner_325_form)
+        form_325 = self.create_325_form()
+        resulting_xml = form_325._generate_325_form_xml()
         expected_281_50_xml = b"""<?xml version='1.0' encoding='utf-8'?>
                     <Verzendingen>
                         <Verzending>
@@ -411,7 +479,7 @@ class TestResPartner(AccountTestInvoicingCommon):
             self.get_xml_tree_from_string(expected_281_50_xml),
         )
 
-    def test_281_50_partner_remuneration_should_include_amount_directly_put_as_expense(self):
+    def test_281_50_partner_remuneration_should_include_amount_directly_put_in_expense_without_invoice(self):
         expense_account_atn_281_50 = self.copy_account(self.company_data['default_account_expense'])
         expense_account_atn_281_50.tag_ids = self.tag_281_50_atn
 
@@ -436,32 +504,342 @@ class TestResPartner(AccountTestInvoicingCommon):
             'name': "Payment sent without any invoice for atn reason",
         }])
 
-        partner_325_form = self.partner_b._generate_form_325_values(self.debtor, self.sender, self.wizard_values)
-        atn_calculated_amount = partner_325_form.get('Fiches28150')[0].get('F50_2062')
-        paid_amount_to_this_partner = partner_325_form.get('Fiches28150')[0].get('F50_2065')
+        form_325 = self.create_325_form()
+        form_281_50 = form_325.form_281_50_ids
 
-        self.assertEqual(atn_calculated_amount, 1000.0)
-        self.assertEqual(paid_amount_to_this_partner, 1000.0)
+        self.assertRecordValues(form_325.form_281_50_ids, [
+            # pylint: disable=C0326
+            {'partner_id': self.partner_b.id, 'commissions':    0.0, 'fees': 0.0, 'atn': 1000.0, 'exposed_expenses': 0.0, 'total_remuneration': 1000.0, 'paid_amount': 1000.0, },
+            {'partner_id': self.partner_a.id, 'commissions': 1000.0, 'fees': 0.0, 'atn':    0.0, 'exposed_expenses': 0.0, 'total_remuneration': 1000.0, 'paid_amount':    0.0, },
+        ])
+        self.assertRecordValues(form_325, [
+            {
+                'form_281_50_total_amount': 2000.0,
+                'form_281_50_ids': form_281_50.ids,
+            }
+        ])
 
-    def test_281_50_partner_remuneration_shouldnt_include_commission_from_previous_year(self):
+    def test_281_50_partner_remuneration_should_not_include_commission_from_previous_year(self):
         previous_year_bill = self.create_and_post_bill(self.partner_b, self.product_b, 500.0, '1999-05-12')
         self.pay_bill(bill=previous_year_bill, amount=250, date='1999-05-12')
-
         # make a payment to the vendor partner_b and reconcile it with the bill for the previous year
         self.pay_bill(bill=previous_year_bill, amount=250, date='2000-05-12')
+        form_325 = self.create_325_form()
+        form_281_50 = form_325.form_281_50_ids
+        self.assertRecordValues(form_325.form_281_50_ids, [
+            # pylint: disable=C0326
+            {'partner_id': self.partner_b.id, 'commissions':    0.0, 'fees': 0.0, 'atn': 0.0, 'exposed_expenses': 0.0, 'total_remuneration':    0.0, 'paid_amount': 250.0, },
+            {'partner_id': self.partner_a.id, 'commissions': 1000.0, 'fees': 0.0, 'atn': 0.0, 'exposed_expenses': 0.0, 'total_remuneration': 1000.0, 'paid_amount':   0.0, },
+        ])
+        self.assertRecordValues(form_325, [
+            {
+                'form_281_50_total_amount': 1000.0,
+                'form_281_50_ids': form_281_50.ids,
+            }
+        ])
 
-        partner_325_form = self.partner_b._generate_form_325_values(self.debtor, self.sender, self.wizard_values)
-        commission_calculated_amount = partner_325_form.get('Fiches28150')[0].get('F50_2060')
-        paid_amount_to_this_partner = partner_325_form.get('Fiches28150')[0].get('F50_2065')
+    def test_325_50_wizard_should_return_325_form_view(self):
+        action = self.env['l10n_be.form.325.wizard']\
+            .with_company(self.company_data['company'])\
+            .create(self.wizard_values)\
+            .action_generate_325_form()
+        form_325 = self.env['l10n_be.form.325'].search([('company_id', '=', self.company_data['company'].id)])
+        self.assertEqual({
+            "name": "325 - 2000",
+            "type": "ir.actions.act_window",
+            "res_model": "l10n_be.form.325",
+            "res_id": form_325.id,
+            "views": [[False, "form"]],
+            "target": "main",
+        }, action)
 
-        self.assertEqual(commission_calculated_amount, 0.0)
-        self.assertEqual(paid_amount_to_this_partner, 250.0)
+    def test_action_generate_281_50_form_xml_generate_325_50_xml_file_should_create_xml_attachment(self):
+        form_325 = self.create_325_form(ref_year=2000)
+        action_create_xml = form_325.action_generate_281_50_form_xml()
+        self.assertEqual({'type': 'ir.actions.client', 'tag': 'reload'}, action_create_xml)
+        attachment = self.env['ir.attachment'].search([
+            ('company_id', '=', form_325.company_id.id),
+            ('res_model', '=', form_325._name),
+            ('res_id', '=', form_325.id),
+        ])
+        self.assertTrue(len(attachment), 1)
+        self.assertEqual(attachment.name, "2000-325.50.xml")
 
-    def test_281_50_wizard_should_return_action_to_download_file(self):
-        # press button "both pdf and xml"
-        action = self.env['l10n_be_reports.281_50_wizard'].create(self.wizard_values).action_generate_281_50_form()
+    def test_action_generate_281_50_form_pdf_flow_should_create_pdf_attachment(self):
+        form_325 = self.create_325_form(ref_year=2000)
+        action_create_all_pdf = form_325.action_generate_281_50_form_pdf()
+        self.assertEqual({'type': 'ir.actions.client', 'tag': 'reload'}, action_create_all_pdf)
+        attachment = self.env['ir.attachment'].search([
+            ('company_id', '=', form_325.company_id.id),
+            ('res_model', '=', form_325._name),
+            ('res_id', '=', form_325.id),
+        ])
+        self.assertTrue(len(attachment), 1)
+        self.assertEqual(attachment.name, form_325.form_281_50_ids._get_pdf_file_name())
+
+    def test_action_download_281_50_individual_pdf_flow_should_work_smoothly(self):
+        form_325 = self.create_325_form(ref_year=2000)
+        form_281_50 = form_325.form_281_50_ids
+        action_download_single_pdf = form_281_50.action_download_281_50_individual_pdf()
         self.assertEqual({
             'type': 'ir.actions.act_url',
-            'name': 'Download 281.50 Form',
-            'url': f"/web/content/res.partner/{self.debtor.id}/form_file/281_50_forms_2000.zip?download=true"
-        }, action)
+            'name': "Download 281.50 Form PDF",
+            'url': f"/web/content/res.partner/{self.partner_a.id}/form_file/{form_281_50._get_pdf_file_name()}?download=true"
+        }, action_download_single_pdf)
+
+    def test_action_generate_325_form_pdf_flow_should_work_smoothly(self):
+        form_325 = self.create_325_form(ref_year=2000)
+        action_create_325_pdf = form_325.action_generate_325_form_pdf()
+        self.assertEqual({'type': 'ir.actions.client', 'tag': 'reload'}, action_create_325_pdf)
+        attachment = self.env['ir.attachment'].search([
+            ('company_id', '=', form_325.company_id.id),
+            ('res_model', '=', form_325._name),
+            ('res_id', '=', form_325.id),
+        ])
+        self.assertTrue(len(attachment), 1)
+        self.assertEqual(attachment.name, f"{form_325.reference_year}_325_form.pdf")
+
+    def test_325_50_invoicing_and_paying_subpartner_should_impact_commercial_partner(self):
+        parent_partner = self.env['res.partner'].create({
+            'name': 'parent partner',
+            'is_company': True,
+            'street': "Rue des Bourlottes 9",
+            'zip': "1367",
+            'city': "Ramillies",
+            'vat': 'BE0477472701',
+            'country_id': self.env.ref('base.be').id,
+            'category_id': [Command.link(self.env.ref('l10n_be_reports.res_partner_tag_281_50').id)]
+        })
+        child_partner = self.env['res.partner'].create({
+            'name': 'child partner',
+            'is_company': False,
+            'street': "Rue du doudou",
+            'street2': "3",
+            'zip': "7000",
+            'city': "Mons",
+            'citizen_identification': '12345612345',
+            'country_id': self.env.ref('base.be').id,
+            'parent_id': parent_partner.id,
+            'category_id': [Command.link(self.env.ref('l10n_be_reports.res_partner_tag_281_50').id)],
+        })
+        bill = self.create_and_post_bill(partner_id=child_partner, product_id=self.product_a, amount=1000.0, date='2000-05-12')
+        self.pay_bill(bill=bill, amount=1000.0, date='2000-05-12')
+        form_325 = self.create_325_form(ref_year=2000)
+        form_281_50_from_form_325_ids = form_325.form_281_50_ids
+        self.assertRecordValues(form_325.form_281_50_ids, [
+            # pylint: disable=C0326
+            {'partner_id': parent_partner.id, 'commissions': 1000.0, 'fees': 0.0, 'atn': 0.0, 'exposed_expenses': 0.0, 'total_remuneration': 1000.0, 'paid_amount': 1000.0, 'partner_is_natural_person': False, },
+            {'partner_id': self.partner_a.id, 'commissions': 1000.0, 'fees': 0.0, 'atn': 0.0, 'exposed_expenses': 0.0, 'total_remuneration': 1000.0, 'paid_amount':    0.0, 'partner_is_natural_person': False, }
+        ])
+        self.assertRecordValues(form_325, [{
+            'form_281_50_total_amount': 2000.0,
+            'form_281_50_ids': form_281_50_from_form_325_ids.ids,
+        }])
+
+    def test_281_50_should_have_basic_sequence(self):
+        """Ensure 281_50 gets a sequence assigned and that it is multi_company_safe"""
+        form = self.create_form28150(ref_year=2020)
+        self.assertEqual(form.official_id, '1')
+        form_2 = self.create_form28150(ref_year=2020)
+        self.assertEqual(form_2.official_id, '2')
+
+    def test_281_50_sequence_should_be_company_dependent(self):
+        """Ensure 281_50 gets a sequence assigned and that it is multi_company_safe"""
+        form_company_a = self.create_form28150(ref_year=2020)
+        self.assertEqual(form_company_a.official_id, '1')
+        company_b = self.company_data_2['company']
+        form_company_b = self.create_form28150(ref_year=2020, company=company_b)
+        self.assertEqual(form_company_b.official_id, '1')
+
+    def test_281_50_sequence_should_reset_on_different_year(self):
+        """Ensure 281_50 gets its sequence reset when created on another year"""
+        form_year_1 = self.create_form28150(ref_year=2020)
+        self.assertEqual(form_year_1.official_id, '1')
+        form_year_2 = self.create_form28150(ref_year=2021)
+        self.assertEqual(form_year_2.official_id, '1')
+
+    def test_281_50_shouldnt_have_any_sequence_while_state_is_draft(self):
+        form = self.create_form28150(ref_year=2020, state='draft')
+        self.assertEqual(form.official_id, False)
+        form_2 = self.create_form28150(ref_year=2020, state='draft')
+        self.assertEqual(form_2.official_id, False)
+
+    def test_281_50_partner_relation(self):
+        """Ensure Many2one and One2many are working as expected"""
+        form = self.create_form28150(ref_year=2020)
+        self.assertEqual(self.partner_a.forms_281_50, form)
+        form_2 = self.create_form28150(ref_year=2020, partner=self.partner_b)
+        self.assertEqual(self.partner_b.forms_281_50, form_2)
+        form_3 = self.create_form28150(ref_year=2020)
+
+        self.assertEqual(len(self.partner_a.forms_281_50), 2)
+        self.assertIn(form, self.partner_a.forms_281_50)
+        self.assertIn(form_3, self.partner_a.forms_281_50)
+        self.assertNotIn(form_2, self.partner_a.forms_281_50)
+
+    def test_325_and_281_50_should_raise_error_when_unlink_and_state_is_generated(self):
+        form = self.create_form28150(ref_year=2020)
+        with self.assertRaises(UserError):
+            form.form_325_id.unlink()
+        with self.assertRaises(UserError):
+            form.unlink()
+
+    def test_281_50_fields_should_remain_the_same_even_if_partner_info_changed(self):
+        partner = self.partner_a
+        form = self.create_form28150(ref_year=2020, commission=1000.0, fees=2000.0, atn=3000.0, exposed_expenses=4000.0, paid_amount=10000.0)
+
+        self.assertRecordValues(form, [{
+            'commissions': 1000.0,
+            'fees': 2000.0,
+            'atn': 3000.0,
+            'exposed_expenses': 4000.0,
+            'total_remuneration': 10000.0,
+            'paid_amount': 10000.0,
+        }])
+        self.assertRecordValues(form, [{
+            'partner_name': 'partner_a',
+            'partner_address': 'Rue du Jacobet, 9',
+            'partner_zip': '7100',
+            'partner_city': 'La Louvière',
+            'partner_job_position': '',
+            'partner_citizen_identification': '',
+            'partner_bce_number': '0475646428',
+        }])
+        partner.write({
+            'street': 'changed',
+            'zip': '6666',
+            'city': 'woot',
+        })
+        self.assertRecordValues(form, [{
+            'partner_name': 'partner_a',
+            'partner_address': 'Rue du Jacobet, 9',
+            'partner_zip': '7100',
+            'partner_city': 'La Louvière',
+            'partner_job_position': '',
+            'partner_citizen_identification': '',
+            'partner_bce_number': '0475646428',
+        }])
+
+    def test_281_50_should_know_partner_is_natural_person(self):
+        self.partner_a.write({'is_company': False})
+        form_325 = self.create_325_form(ref_year=2000)
+        self.assertRecordValues(form_325.form_281_50_ids, [
+                {
+                    'partner_id': self.partner_a.id,
+                    'partner_is_natural_person': True,
+                }
+        ])
+
+    def test_325_form_should_update_data_when_generating(self):
+        form_325 = self.create_325_form(state='draft', ref_year=2000)
+        # Change values
+        self.sender = form_325.sender_id = self.partner_b
+        self.sender.write({'name': 'Brad'})
+        self.debtor.write({'name': 'George'})
+        self.assertRecordValues(form_325, [{
+            'state': 'draft',
+            'sender_name': 'Brad',
+            'debtor_name': 'George',
+        }])
+        # Validate the form
+        form_325._validate_form()
+        self.sender.write({'name': 'Jean'})
+        self.debtor.write({'name': 'Léon'})
+        self.assertRecordValues(form_325, [{
+            'state': 'generated',
+            'sender_name': 'Brad',
+            'debtor_name': 'George',
+        }])
+
+    def test_281_50_bill_with_4_lines_tagged_with_1_payment(self):
+        """ This test should create a bill with 4 lines
+            Each line has to have a tag (commission, atn, fee, exposed_expense)
+            Generate one payment for the entire bill
+        """
+        bill = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.partner_b.id,
+            'invoice_date': fields.Date.from_string('2000-06-01'),
+            'currency_id': self.currency_data['currency'].id,
+            'invoice_line_ids': [
+                Command.create({
+                    'name': f"{account_id.name} - Test invoice line",
+                    'account_id': account_id.id,
+                    'partner_id': self.partner_b.id,
+                    'quantity': 1.0,
+                    'price_unit': 1000.0,
+                    'debit': 1000.0,
+                    'credit': 0.0,
+                })
+                for account_id in self.create_tagged_accounts()
+            ],
+        })
+        bill.action_post()
+        self.pay_bill(bill, 4000.0, '2000-06-01')
+        form_325 = self.create_325_form(ref_year=2000)
+        self.assertRecordValues(form_325.form_281_50_ids.filtered(lambda x: x.partner_id.id == self.partner_b.id), [
+            {
+                'partner_id': self.partner_b.id,
+                'commissions': 1000.0,
+                'atn': 1000.0,
+                'fees': 1000.0,
+                'exposed_expenses': 1000.0,
+                'total_remuneration': 4000.0,
+                'paid_amount': 4000.0,
+            }
+        ])
+
+    def test_281_50_bill_with_4_lines_tagged_with_multiple_payments(self):
+        """ This test should create a bill with 4 lines
+            Each line has to have a tag (commission, atn, fee, exposed_expense)
+            Generate 6 payments for the bill
+        """
+        bill = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.partner_b.id,
+            'invoice_date': fields.Date.from_string('2000-06-01'),
+            'currency_id': self.currency_data['currency'].id,
+            'invoice_line_ids': [
+                Command.create({
+                    'name': f"{account_id.name} - Test invoice line",
+                    'account_id': account_id.id,
+                    'partner_id': self.partner_b.id,
+                    'quantity': 1.0,
+                    'price_unit': 1500.0,
+                    'debit': 1500.0,
+                    'credit': 0.0,
+                })
+                for account_id in self.create_tagged_accounts()
+            ],
+        })
+        bill.action_post()
+        payments = self.env['account.payment']
+        for date in ['2000-06-01', '2000-07-02', '2000-08-03', '2001-06-04', '2001-07-05', '2001-08-06']:
+            payments |= self.env['account.payment'].create({
+                'payment_type': 'outbound',
+                'amount': 1000.0,
+                'currency_id': bill.currency_id.id,
+                'journal_id': self.company_data['default_journal_bank'].id,
+                'date': fields.Date.from_string(date),
+                'partner_id': bill.partner_id.id,
+                'payment_method_id': self.env.ref('account.account_payment_method_manual_out').id,
+                'partner_type': 'supplier',
+            })
+
+        payments.action_post()
+        bill_payable_move_lines = bill.line_ids.filtered(lambda x: x.account_internal_type == 'payable')
+        bill_payable_move_lines += payments.line_ids.filtered(lambda x: x.account_internal_type == 'payable')
+        bill_payable_move_lines.reconcile()
+
+        form_325 = self.create_325_form(ref_year=2000)
+        self.assertRecordValues(form_325.form_281_50_ids.filtered(lambda x: x.partner_id.id == self.partner_b.id), [
+            {
+                'partner_id': self.partner_b.id,
+                'commissions': 1500.0,
+                'atn': 1500.0,
+                'fees': 1500.0,
+                'exposed_expenses': 1500.0,
+                'total_remuneration': 6000.0,
+                'paid_amount': 3000.0,
+            }
+        ])

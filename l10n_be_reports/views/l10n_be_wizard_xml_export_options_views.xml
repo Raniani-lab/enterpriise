@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="view_account_financial_report_export" model="ir.ui.view">
             <field name="name">l10n_be_reports.periodic.vat.xml.export.form</field>
             <field name="model">l10n_be_reports.periodic.vat.xml.export</field>

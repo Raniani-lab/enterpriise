@@ -81,8 +81,8 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
 
             code_list = [
                 'BASIC', 'COMMISSION', 'ATN.INT', 'ATN.MOB', 'ATN.LAP', 'BASIC', 'BASIC', 'BASIC',
-                'D.P', 'EU.LEAVE.DEDUC', 'ATN.CAR', 'PAY_SIMPLE', 'PAY DOUBLE',
-                'PAY DOUBLE COMPLEMENTARY', 'SALARY', 'SALARY', 'ONSSTOTAL', 'ONSSTOTAL', 'ONSS1',
+                'D.P', 'EU.LEAVE.DEDUC', 'ATN.CAR', 'PAY_SIMPLE', 'PAY DOUBLE', 'PUB.TRANS',
+                'PAY DOUBLE COMPLEMENTARY', 'SALARY', 'SALARY', 'ONSSTOTAL', 'ONSSEMPLOYER', 'ONSS1',
                 'ONSS2', 'ONSS', 'ONSS', 'ONSS', 'REP.FEES', 'REP.FEES.VOLATILE', 'CAR.PRIV', 'P.P', 'M.ONSS',
                 'ATTACH_SALARY', 'ATN.CAR.2', 'ATN.MOB.2', 'ATN.INT.2', 'ATN.LAP.2', 'MEAL_V_EMP',
                 'IMPULSION25', 'IMPULSION12', 'ASSIG_SALARY', 'ADVANCE', 'NET', 'P.P.DED']
@@ -101,7 +101,7 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             other_exempted_amount = _get_total(holiday_slips, all_values, ['PAY DOUBLE COMPLEMENTARY'])
             thirteen_month_gross = _get_total(thirteen_slips, all_values, ['SALARY'])
             double_gross = _get_total(double_slips, all_values, ['SALARY'])
-            subtotal_gross = total_gross_before_onss + atn_without_onss + early_holiday_pay + holiday_pay_supplement + other_exempted_amount + student + thirteen_month_gross + double_gross
+            subtotal_gross = total_gross_before_onss + atn_without_onss + early_holiday_pay + holiday_pay_supplement + other_exempted_amount + double_gross
             onss_cotisation = _get_total(monthly_slips, all_values, ['ONSSTOTAL'])
             onss_cotisation_termination_fees = _get_total(termination_slips, all_values, ['ONSSTOTAL'])
             anticipated_holiday_pay_retenue = _get_total(holiday_slips, all_values, ['ONSS1'])
@@ -111,6 +111,7 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             onss_student = _get_total(student_slips, all_values, ['ONSS'])
             representation_fees = _get_total(monthly_slips, all_values, ['REP.FEES', 'REP.FEES.VOLATILE'])
             private_car = _get_total(monthly_slips + student_slips, all_values, ['CAR.PRIV'])
+            public_transport = _get_total(monthly_slips + student_slips, all_values, ['PUB.TRANS'])
             atn_car = atn_without_onss
             withholding_taxes = _get_total(aggregate_payslips, all_values, ['P.P'])
             misc_onss = _get_total(aggregate_payslips, all_values, ['M.ONSS'])
@@ -130,7 +131,7 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             ffe_rate = self.company_id._get_ffe_contribution_rate(worker_count) + 0.0014
             # Cotisation patronnale de base =
             # FFE + Special FFE + CPAE + Modération Salariale + Chomage temporaire
-            global_rate = 0.3810 + 0.0023 + (0.0169 if worker_count >= 10 else 0) + 0.0010
+            global_rate = 0.3810 + 0.0023 + (0.0169 if worker_count >= 10 else 0) + 0.0010 - 0.1307
             emp_onss = basis * global_rate
             emp_termination_onss = basis_termination * global_rate
             closure_fund = (basis + basis_termination) * ffe_rate
@@ -185,6 +186,7 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
                 'gift_in_kind': 0,
                 'representation_fees': representation_fees,
                 'private_car': private_car,
+                'public_transport': public_transport,
                 'atn_car': atn_car,
                 'withholding_taxes': withholding_taxes,
                 'misc_onss': misc_onss,

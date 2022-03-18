@@ -108,21 +108,9 @@
                                   <td></td>
                                 </tr>
                                 <tr>
-                                  <th>Thirteen Month Gross</th>
-                                  <td><t t-esc="round(aggregate_data['thirteen_month_gross'], 2)"/></td>
-                                  <td><t t-esc="round(aggregate_data['thirteen_month_gross'], 2)"/></td>
-                                  <td></td>
-                                </tr>
-                                <tr>
                                   <th>Double Holiday Gross</th>
                                   <td><t t-esc="round(aggregate_data['double_gross'], 2)"/></td>
                                   <td><t t-esc="round(aggregate_data['double_gross'], 2)"/></td>
-                                  <td></td>
-                                </tr>
-                                <tr>
-                                  <th>Students</th>
-                                  <td><t t-esc="round(aggregate_data['student'], 2)"/></td>
-                                  <td><t t-esc="round(aggregate_data['student'], 2)"/></td>
                                   <td></td>
                                 </tr>
                                 <tr style="color:#875A7B;">
@@ -201,6 +189,12 @@
                                   <th>Private Car</th>
                                   <td><t t-esc="round(aggregate_data['private_car'], 2)"/></td>
                                   <td><t t-esc="round(aggregate_data['private_car'], 2)"/></td>
+                                  <td></td>
+                                </tr>
+                                <tr>
+                                  <th>Public Transportation</th>
+                                  <td><t t-esc="round(aggregate_data['public_transport'], 2)"/></td>
+                                  <td><t t-esc="round(aggregate_data['public_transport'], 2)"/></td>
                                   <td></td>
                                 </tr>
                                 <tr>

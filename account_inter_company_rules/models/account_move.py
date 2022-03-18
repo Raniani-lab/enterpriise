@@ -13,14 +13,14 @@ class AccountMove(models.Model):
         invoices_map = {}
         posted = super()._post(soft)
         for invoice in posted.filtered(lambda move: move.is_invoice()):
-            company = self.env['res.company']._find_company_from_partner(invoice.partner_id.id)
-            if company and company.rule_type == 'invoice_and_refund' and not invoice.auto_generated:
-                invoices_map.setdefault(company, self.env['account.move'])
-                invoices_map[company] += invoice
-        for company, invoices in invoices_map.items():
-            context = dict(self.env.context, default_company_id=company.id)
+            company_sudo = self.env['res.company'].sudo()._find_company_from_partner(invoice.partner_id.id)
+            if company_sudo and company_sudo.rule_type == 'invoice_and_refund' and not invoice.auto_generated:
+                invoices_map.setdefault(company_sudo, self.env['account.move'])
+                invoices_map[company_sudo] += invoice
+        for company_sudo, invoices in invoices_map.items():
+            context = dict(self.env.context, default_company_id=company_sudo.id)
             context.pop('default_journal_id', None)
-            invoices.with_user(company.intercompany_user_id).with_context(context).with_company(company)._inter_company_create_invoices()
+            invoices.with_user(company_sudo.intercompany_user_id.id).with_context(context).with_company(company_sudo.id)._inter_company_create_invoices()
         return posted
 
     def _inter_company_create_invoices(self):
@@ -121,5 +121,4 @@ class AccountMoveLine(models.Model):
             'price_unit': self.price_unit,
             'analytic_distribution': analytic_distribution,
         }
-
         return vals

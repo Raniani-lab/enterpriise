@@ -23,7 +23,7 @@
             h (<t t-esc="widget.progressBar.percentage"/>)
         </t>
         <t t-jquery="div[t-if='widget.showEmployeeAvatar']" t-operation="before">
-            <div t-if="widget.isResourceMaterial" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource">
+            <div t-if="widget.isResourceMaterial" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource o_cursor_default">
                 <i class="fa fa-wrench"/>
             </div>
         </t>
@@ -35,7 +35,7 @@
         </t>
         <t t-else="">
             <div class="o_m2o_avatar">
-                <span t-if="value" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource" t-att-title="value">
+                <span t-if="value" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource o_cursor_default" t-att-title="value">
                     <i class="fa fa-wrench"/>
                 </span>
                 <span t-elif="widget.mode === 'edit'" class="o_m2o_avatar_empty"></span>

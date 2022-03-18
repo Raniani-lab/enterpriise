@@ -97,7 +97,6 @@
         font-size: 0.8em;
         text-transform: uppercase;
         line-height: 1;
-        cursor: default;
         font-weight: bold;
         color: $o-web-studio-text-inactive;
 
@@ -128,7 +127,6 @@
 
     > button {
       padding-left: 0;
-      cursor: default;
       background-color: $o-web-studio-bg-medium;
       color: $o-web-studio-text-disabled;
       outline: none;

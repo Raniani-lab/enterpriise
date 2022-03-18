@@ -13,7 +13,7 @@
                     <div class="ribbon ribbon-top-right">
                         <span class="o_recruitment_purple">Sample</span>
                     </div>
-                    <t t-set="demo_class" t-value="' o_demo '"/>
+                    <t t-set="demo_class" t-value="' o_demo o_cursor_default '"/>
 
                     <t t-set="widget.values['my_all']['count']" t-value="10"/>
                     <t t-set="widget.values['my_high']['count']" t-value="3"/>
@@ -47,19 +47,19 @@
                             Open Tickets
                         </td>
                         <td t-attf-class="{{demo_class}} {{widget.values['my_all']['count'] > 0 ? 'o_main': 'o_secondary'}} o_dashboard_action" title="My Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="t">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <span class="o_highlight"><t t-esc="widget.values['my_all']['count']"/></span><br/>
                                 Tickets
                             </a>
                         </td>
                         <td t-attf-class="{{demo_class}} {{widget.values['my_high']['count'] > 0 ? 'o_main': 'o_secondary'}} o_dashboard_action" title="My Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_high_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="p">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <span class="o_highlight"><t t-esc="widget.values['my_high']['count']"/></span><br/>
                                 High Priority (<span title="Two stars, with a maximum of three" role="img" aria-label="Two stars, with a maximum of three"><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/></span>)
                             </a>
                         </td>
                         <td t-attf-class="{{demo_class}} {{widget.values['my_urgent']['count'] > 0 ? 'o_main': 'o_secondary'}} o_dashboard_action" title="My Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_urgent_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="u">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <span class="o_highlight"><t t-esc="widget.values['my_urgent']['count']"/></span><br/>
                                 Urgent (<span title="Three stars, maximum score" role="img" aria-label="Three stars, maximum score"><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/></span>)
                             </a>
@@ -68,15 +68,15 @@
                     <tr>
                         <td class="o_text">Avg Open Hours</td>
                         <td title="Tickets Analysis"  t-att-class="demo_class + ' o_secondary o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_dashboard" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="a">
-                            <a href="#"><t t-esc="widget._format_time(widget.values['my_all']['hours'])"/></a>
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#"><t t-esc="widget._format_time(widget.values['my_all']['hours'])"/></a>
                         </td>
                         <td title="Tickets Analysis" t-att-class="demo_class + ' o_secondary o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_dashboard" context="{'search_default_high_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="b">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <t t-esc="widget._format_time(widget.values['my_high']['hours'])"/>
                             </a>
                         </td>
                         <td title="Tickets Analysis" t-att-class="demo_class + ' o_secondary o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_dashboard" context="{'search_default_urgent_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="y">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <t t-esc="widget._format_time(widget.values['my_urgent']['hours'])"/>
                             </a>
                         </td>
@@ -84,17 +84,17 @@
                     <tr>
                         <td class="o_text" t-if="widget.success_rate_enable">Failed Tickets</td>
                         <td t-if="widget.success_rate_enable" t-att-class="demo_class + (widget.values['my_all']['failed'] ? 'o_warning' : 'o_secondary') + ' o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_sla" title="My Tickets" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="d">
-                            <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_sla" data-extra="overdue" t-attr-show_demo="{{widget.show_demo}}">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_sla" data-extra="overdue" t-attr-show_demo="{{widget.show_demo}}">
                                 <t t-esc="widget.values['my_all']['failed']"/>
                             </a>
                         </td>
                         <td t-if="widget.success_rate_enable" t-att-class="demo_class + (widget.values['my_high']['failed'] ? 'o_warning' : 'o_secondary') + ' o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_sla" title="My Tickets" context="{'search_default_high_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="e">
-                            <a href="#" data-extra="overdue">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#" data-extra="overdue">
                                 <t t-esc="widget.values['my_high']['failed']"/>
                             </a>
                         </td>
                         <td t-if="widget.success_rate_enable" t-att-class="demo_class + (widget.values['my_urgent']['failed'] ? 'o_warning' : 'o_secondary') + ' o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_sla" title="My Tickets" context="{'search_default_urgent_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="f">
-                            <a href="#" data-extra="overdue">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#" data-extra="overdue">
                                 <t t-esc="widget.values['my_urgent']['failed']"/>
                             </a>
                         </td>
@@ -112,7 +112,7 @@
                             t-attf-class="o_dashboard_action {{demo_class}} {{widget.values and widget.values['helpdesk_target_closed'] and widget.values['today']['count'] >= widget.values['helpdesk_target_closed'] ? 'o_main': 'o_secondary'}} {{!widget.success_rate_enable and !widget.rating_enable ? 'w-50': ''}}"
                             name="helpdesk.helpdesk_ticket_action_close_analysis"
                             t-attr-show_demo="{{widget.show_demo}}" data-hotkey="i">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <span class="o_highlight">
                                     <t t-esc="widget.values['today']['count']"/>
                                 </span><br/>
@@ -125,7 +125,7 @@
                             t-att-class="'o_dashboard_action ' + demo_class + ((widget.values and widget.values['helpdesk_target_success'] and widget.values['helpdesk_target_success'] &lt;= widget.values['today']['success'])?'o_main':'o_secondary')"
                             name="helpdesk.helpdesk_ticket_action_success"
                             t-attr-show_demo="{{widget.show_demo}}" data-hotkey="k">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <span class="o_highlight">
                                     <t t-esc="widget._format_float(widget.values['today']['success'])"/>%
                                 </span><br/>
@@ -138,7 +138,7 @@
                             name="action_view_rating_today"
                             type="object"
                             t-attr-show_demo="{{widget.show_demo}}" data-hotkey="j">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <span class="o_highlight">
                                     <t t-esc="widget._format_float(widget.values['today']['rating'])"/> %
                                 </span><br/>
@@ -149,17 +149,17 @@
                     <tr>
                         <td class="o_text">Avg Last 7 days</td>
                         <td title="Tickets Analysis" t-attf-class="{{demo_class}} {{!widget.success_rate_enable and !widget.rating_enable ? 'w-50': ''}} o_secondary o_dashboard_action" name="helpdesk.helpdesk_ticket_action_7days_analysis" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="l">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <t t-esc="widget.values['7days']['count']"/>
                             </a>
                         </td>
                         <td t-if="widget.success_rate_enable" data-action-title="Tickets Analysis" title="Percentage of tickets that were closed without failing any SLAs." t-att-class="demo_class + 'o_secondary o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_7dayssuccess" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="n">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <t t-esc="widget._format_float(widget.values['7days']['success'])"/>%
                             </a>
                         </td>
                         <td t-if="widget.rating_enable" title="Avg 7 Days Customer Satisfaction" t-att-class="demo_class + 'o_secondary o_dashboard_action'" name="action_view_rating_7days" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="m">
-                            <a href="#">
+                            <a t-att-class="demo_class != ' ' ? 'o_cursor_default' : ''" href="#">
                                 <t t-esc="widget._format_float(widget.values['7days']['rating'])"/>%
                             </a>
                         </td>

@@ -101,13 +101,6 @@
                         text-decoration: none;
                     }
 
-                    &.o_demo{
-                        cursor: default;
-                        a {
-                            cursor: default;
-                        }
-                    }
-
                     &.o_main {
                         background-color: $o-brand-primary;
                         &:hover {

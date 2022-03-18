@@ -73,10 +73,10 @@
     </t>
 
     <t t-name="web_map.legacy.MapRenderer.PinList" owl="1">
-        <ol t-if="props.numbering" class="o_pin_list_details">
+        <ol t-if="props.numbering" class="o_pin_list_details o_cursor_default">
             <t t-call="web_map.legacy.MapRenderer.PinListItems"/>
         </ol>
-        <ul t-else="" class="o_pin_list_details">
+        <ul t-else="" class="o_pin_list_details o_cursor_default">
             <t t-call="web_map.legacy.MapRenderer.PinListItems"/>
         </ul>
     </t>

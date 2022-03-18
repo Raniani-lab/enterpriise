@@ -14,7 +14,6 @@ import { methods } from 'web_mobile.core';
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('components', {}, function () {
-QUnit.module('attachment', {}, function () {
 QUnit.module('attachment_tests.js', {
     async beforeEach() {
         await beforeEach(this);
@@ -115,6 +114,5 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
     );
 });
 
-});
 });
 });

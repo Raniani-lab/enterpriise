@@ -55,7 +55,7 @@ creates next activities for the related approvers.
             'approvals/static/tests/helpers/**/*',
         ],
         'web.qunit_suite_tests': [
-            'approvals/static/src/components/*/tests/*.js',
+            'approvals/static/tests/qunit_suite_tests/**/*.js',
         ],
         'web.assets_qweb': [
             'approvals/static/src/components/*/*.xml',

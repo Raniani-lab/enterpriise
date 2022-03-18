@@ -33,7 +33,7 @@ Features:
             'website_helpdesk_livechat/static/src/models/*.js',
         ],
         'web.qunit_suite_tests': [
-            'website_helpdesk_livechat/static/src/components/*/tests/*.js',
+            'website_helpdesk_livechat/static/tests/qunit_suite_tests/**/*.js',
         ],
     },
 }

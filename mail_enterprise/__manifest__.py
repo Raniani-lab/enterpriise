@@ -38,9 +38,7 @@ screen devices.
             'mail_enterprise/static/tests/tours/**/*',
         ],
         'web.qunit_suite_tests': [
-            'mail_enterprise/static/src/components/*/tests/*.js',
-            'mail_enterprise/static/src/widgets/*/tests/*.js',
-            'mail_enterprise/static/tests/attachment_preview_tests.js',
+            'mail_enterprise/static/tests/qunit_suite_tests/**/*.js',
         ],
         'web.assets_qweb': [
             'mail_enterprise/static/src/components/*/*.xml',

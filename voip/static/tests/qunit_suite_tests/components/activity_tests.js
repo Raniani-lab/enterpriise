@@ -4,7 +4,6 @@ import { beforeEach, start } from '@mail/utils/test_utils';
 
 QUnit.module('voip', {}, function () {
 QUnit.module('components', {}, function () {
-QUnit.module('activity', {}, function () {
 QUnit.module('activity_tests.js', {
     async beforeEach() {
         await beforeEach(this);
@@ -233,6 +232,5 @@ QUnit.test('activity: calling - only with phone', async function (assert) {
     document.removeEventListener('voip_activity_call', onVoipActivityCallPhone);
 });
 
-});
 });
 });

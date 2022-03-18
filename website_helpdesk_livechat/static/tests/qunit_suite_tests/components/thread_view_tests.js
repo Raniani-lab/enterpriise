@@ -9,7 +9,6 @@ import {
 
 QUnit.module('website_helpdesk_livechat', {}, function () {
 QUnit.module('components', {}, function () {
-QUnit.module('thread_view', {}, function () {
 QUnit.module('thread_view_tests.js', {
     async beforeEach() {
         await beforeEach(this);
@@ -56,6 +55,5 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
     ]);
 });
 
-});
 });
 });

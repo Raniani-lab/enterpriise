@@ -12,14 +12,13 @@ import { methods } from 'web_mobile.core';
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('components', {}, function () {
-QUnit.module('messaging_menu', {}, function () {
-QUnit.module('messaging_menu_tests.js', {
+QUnit.module('chat_window_manager_tests.js', {
     async beforeEach() {
         await beforeEach(this);
     },
 });
 
-QUnit.test("'backbutton' event should close messaging menu", async function (assert) {
+QUnit.test("'backbutton' event should close chat window", async function (assert) {
     assert.expect(1);
 
     // simulate the feature is available on the current device
@@ -27,23 +26,26 @@ QUnit.test("'backbutton' event should close messaging menu", async function (ass
     patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {},
     });
-    const { createMessagingMenuComponent } = await start({ data: this.data });
-    await createMessagingMenuComponent();
-    await afterNextRender(() => document.querySelector('.o_MessagingMenu_toggler').click());
 
+    this.data['mail.channel'].records.push({
+        id: 20,
+        is_minimized: true,
+        state: 'open',
+    });
+    await start({ data: this.data, hasChatWindow: true });
     await afterNextRender(() => {
         // simulate 'backbutton' event triggered by the mobile app
         const backButtonEvent = new Event('backbutton');
         document.dispatchEvent(backButtonEvent);
     });
-    assert.doesNotHaveClass(
-        document.querySelector('.o_MessagingMenu'),
-        'show',
-        "messaging menu should be closed after receiving the backbutton event"
+    assert.containsNone(
+        document.body,
+        '.o_ChatWindow',
+        "chat window should be closed after receiving the backbutton event"
     );
 });
 
-QUnit.test('[technical] messaging menu should properly override the back button', async function (assert) {
+QUnit.test('[technical] chat window should properly override the back button', async function (assert) {
     assert.expect(4);
 
     // simulate the feature is available on the current device
@@ -53,6 +55,10 @@ QUnit.test('[technical] messaging menu should properly override the back button'
             assert.step(`overrideBackButton: ${enabled}`);
         },
     });
+
+    this.data['mail.channel'].records.push({
+        id: 20,
+    });
     const { createMessagingMenuComponent } = await start({
         data: this.data,
         env: {
@@ -60,26 +66,30 @@ QUnit.test('[technical] messaging menu should properly override the back button'
                 isMobile: true,
             },
         },
+        hasChatWindow: true,
     });
     await createMessagingMenuComponent();
-
+    await afterNextRender(() => document.querySelector(`.o_MessagingMenu_toggler`).click());
     await afterNextRender(() =>
-        document.querySelector('.o_MessagingMenu_toggler').click()
+        document.querySelector(`.o_MessagingMenu_dropdownMenu .o_NotificationList_preview`).click()
     );
     assert.verifySteps(
         ['overrideBackButton: true'],
-        "the overrideBackButton method should be called with true when the menu is opened"
+        "the overrideBackButton method should be called with true when the chat window is mounted"
     );
 
     await afterNextRender(() =>
-        document.querySelector('.o_MessagingMenu_toggler').click()
+        document.querySelector('.o_ChatWindowHeader_commandBack').click()
     );
+    // The messaging menu is re-open when a chat window is closed,
+    // so we need to close it because it overrides the back button too.
+    // As long as something overrides the back button, it can't be disabled.
+    await afterNextRender(() => document.querySelector(`.o_MessagingMenu_toggler`).click());
     assert.verifySteps(
         ['overrideBackButton: false'],
-        "the overrideBackButton method should be called with false when the menu is closed"
+        "the overrideBackButton method should be called with false when the chat window is unmounted"
     );
 });
 
-});
 });
 });

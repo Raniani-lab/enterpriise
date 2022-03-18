@@ -13,7 +13,6 @@ const { editInput } = fields;
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('widgets', {}, function () {
-QUnit.module('form_renderer', {}, function () {
 QUnit.module('form_renderer_tests.js', {
     async beforeEach() {
         await beforeEach(this);
@@ -294,7 +293,6 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
     assert.strictEqual(document.querySelector('.o_ThreadView_messageList').scrollTop, 0,
         "The top of the message list should be visible after sending a message"
     );
-});
 });
 });
 });

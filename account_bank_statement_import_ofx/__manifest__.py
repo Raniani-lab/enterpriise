@@ -17,7 +17,6 @@ Bank Statements may be generated containing a subset of the OFX information (onl
 creation of the Financial Accounting records).
     """,
     'data': [
-        'wizard/account_bank_statement_import_views.xml',
     ],
     'installable': True,
     'auto_install': True,

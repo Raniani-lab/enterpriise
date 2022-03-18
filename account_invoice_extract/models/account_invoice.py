@@ -177,7 +177,7 @@ class AccountMove(models.Model):
             )
         )
 
-    def _ocr_create_invoice_from_attachment(self, attachment):
+    def _ocr_create_document_from_attachment(self, attachment):
         invoice = self.env['account.move'].create({})
         invoice.message_main_attachment_id = attachment
         invoice.retry_ocr()
@@ -187,11 +187,11 @@ class AccountMove(models.Model):
         invoice.retry_ocr()
         return invoice
 
-    def _get_create_invoice_from_attachment_decoders(self):
+    def _get_create_document_from_attachment_decoders(self):
         # OVERRIDE
-        res = super()._get_create_invoice_from_attachment_decoders()
+        res = super()._get_create_document_from_attachment_decoders()
         if self._check_digitalization_mode(self.env.company, self._context.get('default_move_type'), 'auto_send'):
-            res.append((20, self._ocr_create_invoice_from_attachment))
+            res.append((20, self._ocr_create_document_from_attachment))
         return res
 
     def _get_update_invoice_from_attachment_decoders(self, invoice):

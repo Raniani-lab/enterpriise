@@ -2,9 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
+from odoo.tools import file_open
 from odoo.modules.module import get_module_resource
-
-import base64
 
 
 @tagged('post_install', '-at_install')
@@ -31,14 +30,13 @@ class TestAccountBankStatementImportOFX(AccountTestInvoicingCommon):
         })
 
         # Get OFX file content
-        ofx_file_path = get_module_resource('account_bank_statement_import_ofx', 'static/ofx', 'test_ofx.ofx')
-        ofx_file = base64.b64encode(open(ofx_file_path, 'rb').read())
-
-        # Use an import wizard to process the file
-        self.env['account.bank.statement.import']\
-            .with_context(journal_id=bank_journal.id)\
-            .create({'attachment_ids': [(0, 0, {'name': 'test_ofx.ofx', 'datas': ofx_file})]})\
-            .import_file()
+        ofx_file_path = 'account_bank_statement_import_ofx/static/ofx/test_ofx.ofx'
+        with file_open(ofx_file_path, 'rb') as ofx_file:
+            bank_journal.create_document_from_attachment(self.env['ir.attachment'].create({
+                'mimetype': 'application/xml',
+                'name': 'test_ofx.ofx',
+                'raw': ofx_file.read(),
+            }).ids)
 
         # Check the imported bank statement
         imported_statement = self.env['account.bank.statement'].search([('company_id', '=', self.env.company.id)])

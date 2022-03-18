@@ -71,7 +71,7 @@
         </t>
     </p>
     <t t-if="props.context &amp;&amp; props.context.active_model">
-        <p t-if="props.context['active_model'] === 'account.journal' || props.context['active_model'] === 'account.bank.statement' || props.context['active_model'] === 'account.bank.statement.import'" class="actions_buttons">
+        <p t-if="props.context['active_model'] === 'account.journal' || props.context['active_model'] === 'account.bank.statement'" class="actions_buttons">
             <t t-if="props.context.journal_id">
                 <button t-on-click="() => props.onButtonBackToStatementClicked(props.context.journal_id)" class="button_back_to_statement btn btn-secondary">Go to bank statement(s)</button>
             </t>

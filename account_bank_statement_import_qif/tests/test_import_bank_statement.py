@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
+from odoo.tools import file_open
 from odoo.modules.module import get_module_resource
 
 import base64
@@ -19,13 +20,13 @@ class TestAccountBankStatementImportQIF(AccountTestInvoicingCommon):
             'currency_id': self.env.ref('base.USD').id,
         })
 
-        qif_file_path = get_module_resource('account_bank_statement_import_qif', 'static/qif', 'test_qif.qif')
-        qif_file = base64.b64encode(open(qif_file_path, 'rb').read())
-
-        self.env['account.bank.statement.import']\
-            .with_context(journal_id=bank_journal.id)\
-            .create({'attachment_ids': [(0, 0, {'name': 'test file', 'datas': qif_file})]})\
-            .import_file()
+        qif_file_path = 'account_bank_statement_import_qif/static/qif/test_qif.qif'
+        with file_open(qif_file_path, 'rb') as qif_file:
+            bank_journal.create_document_from_attachment(self.env['ir.attachment'].create({
+                'mimetype': 'application/text',
+                'name': 'test_qif.qif',
+                'raw': qif_file.read(),
+            }).ids)
 
         imported_statement = self.env['account.bank.statement'].search([('company_id', '=', self.env.company.id)])
         self.assertRecordValues(imported_statement, [{

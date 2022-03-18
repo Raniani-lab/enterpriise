@@ -28,15 +28,4 @@
             </field>
         </record>
 
-        <record id="account_bank_statement_import_coda" model="ir.ui.view">
-            <field name="name">Upload Bank Statements CODA</field>
-            <field name="model">account.bank.statement.import</field>
-            <field name="inherit_id" ref="account_bank_statement_import.account_bank_statement_import_view"/>
-            <field name="arch" type="xml">
-                <xpath expr="//ul[@id='statement_format']" position="inside">
-                    <li>Belgium Coded Statement of Account (CODA) <span class="ml-4"><field name="split_transactions"/>Split collective payments</span></li>
-                </xpath>
-            </field>
-        </record>
-
 </odoo>

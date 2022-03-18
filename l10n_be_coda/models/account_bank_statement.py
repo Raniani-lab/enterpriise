@@ -10,12 +10,3 @@ class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
 
     coda_note = fields.Text('CODA Notes')
-
-
-class AccountBankStatementImport(models.TransientModel):
-    _inherit = 'account.bank.statement.import'
-
-    def _check_journal_bank_account(self, journal, account_number):
-        if journal.bank_account_id.acc_type == 'iban' and journal.bank_account_id.get_bban() == account_number:
-            return True
-        return super(AccountBankStatementImport, self)._check_journal_bank_account(journal, account_number)

@@ -79,7 +79,7 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         att_name = 'incoming_invoice_33.xml'
         from_address = 'incoming_dte@test.com'
         att_content = misc.file_open(os.path.join('l10n_cl_edi', 'tests', 'fetchmail_dtes', att_name)).read()
-        moves = self.env['fetchmail.server']._create_invoice_from_attachment(
+        moves = self.env['fetchmail.server']._create_document_from_attachment(
             att_content, att_name, from_address, self.company_data['company'].id)
 
         self.assertEqual(len(moves), 1)
@@ -128,7 +128,7 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         # access both company 1 (which is associated with the invoice) and company 2
         # (which is associated with the partner we just created) to trigger the
         # issue
-        moves = self.env['fetchmail.server'].sudo()._create_invoice_from_attachment(
+        moves = self.env['fetchmail.server'].sudo()._create_document_from_attachment(
             att_content, att_name, from_address, self.company_data['company'].id)
 
         self.assertEqual(len(moves), 1)
@@ -174,7 +174,7 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         # access both company 1 (which is associated with the invoice and
         # one of the partners we created) and company 2 (which is associated with
         # the other partner we created) to trigger the issue
-        moves = self.env['fetchmail.server'].sudo()._create_invoice_from_attachment(
+        moves = self.env['fetchmail.server'].sudo()._create_document_from_attachment(
             att_content, att_name, from_address, self.company_data['company'].id)
 
         self.assertEqual(len(moves), 1)
@@ -187,7 +187,7 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         att_name = 'incoming_invoice_34.xml'
         from_address = 'incoming_dte@test.com'
         att_content = misc.file_open(os.path.join('l10n_cl_edi', 'tests', 'fetchmail_dtes', att_name)).read()
-        moves = self.env['fetchmail.server']._create_invoice_from_attachment(
+        moves = self.env['fetchmail.server']._create_document_from_attachment(
             att_content, att_name, from_address, self.company_data['company'].id)
 
         self.assertEqual(len(moves), 1)
@@ -217,7 +217,7 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         att_name = 'incoming_invoice_33_with_holding_taxes.xml'
         from_address = 'incoming_dte@test.com'
         att_content = misc.file_open(os.path.join('l10n_cl_edi', 'tests', 'fetchmail_dtes', att_name)).read()
-        moves = self.env['fetchmail.server']._create_invoice_from_attachment(
+        moves = self.env['fetchmail.server']._create_document_from_attachment(
             att_content, att_name, from_address, self.company_data['company'].id)
 
         self.assertEqual(len(moves), 1)
@@ -241,7 +241,7 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         att_name = 'incoming_invoice_34_unknown_product.xml'
         from_address = 'incoming_dte@test.com'
         att_content = misc.file_open(os.path.join('l10n_cl_edi', 'tests', 'fetchmail_dtes', att_name)).read()
-        moves = self.env['fetchmail.server']._create_invoice_from_attachment(
+        moves = self.env['fetchmail.server']._create_document_from_attachment(
             att_content, att_name, from_address, self.company_data['company'].id)
 
         self.assertEqual(len(moves), 1)
@@ -270,7 +270,7 @@ class TestFetchmailServer(TestL10nClEdiCommon):
         att_name = 'incoming_invoice_33.xml'
         from_address = 'incoming_dte@test.com'
         att_content = misc.file_open(os.path.join('l10n_cl_edi', 'tests', 'fetchmail_dtes', att_name)).read()
-        moves = self.env['fetchmail.server']._create_invoice_from_attachment(
+        moves = self.env['fetchmail.server']._create_document_from_attachment(
             att_content, att_name, from_address, self.company_data['company'].id)
 
         self.assertEqual(len(moves), 1)

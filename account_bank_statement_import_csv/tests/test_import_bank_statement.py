@@ -3,6 +3,7 @@
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo import fields
 from odoo.tests import tagged
+from odoo.tools import file_open
 from odoo.modules.module import get_module_resource
 
 
@@ -10,10 +11,6 @@ from odoo.modules.module import get_module_resource
 class TestAccountBankStatementImportCSV(AccountTestInvoicingCommon):
 
     def test_csv_file_import(self):
-        # Get OFX file content
-        csv_file_path = get_module_resource('account_bank_statement_import_csv', 'test_csv_file', 'test_csv.csv')
-        csv_file = open(csv_file_path, 'rb').read()
-
         # Create a bank account and journal corresponding to the CSV file (same currency and account number)
         bank_journal = self.env['account.journal'].create({
             'name': 'Bank 123456',
@@ -24,12 +21,14 @@ class TestAccountBankStatementImportCSV(AccountTestInvoicingCommon):
         })
 
         # Use an import wizard to process the file
-        import_wizard = self.env['base_import.import'].create({
-            'res_model': 'account.bank.statement.line',
-            'file': csv_file,
-            'file_name': 'test_csv.csv',
-            'file_type': 'text/csv',
-        })
+        csv_file_path = 'account_bank_statement_import_csv/test_csv_file/test_csv.csv'
+        with file_open(csv_file_path, 'rb') as csv_file:
+            import_wizard = self.env['base_import.import'].create({
+                'res_model': 'account.bank.statement.line',
+                'file': csv_file.read(),
+                'file_name': 'test_csv.csv',
+                'file_type': 'text/csv',
+            })
         import_wizard_options = {
             'date_format': '%m %d %y',
             'keep_matches': False,

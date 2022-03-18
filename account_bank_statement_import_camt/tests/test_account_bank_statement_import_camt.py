@@ -2,11 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
+from odoo.tools import file_open
 from odoo.exceptions import UserError
 from odoo.modules.module import get_module_resource
-from odoo.addons.account_bank_statement_import_camt.wizard.account_bank_statement_import_camt import _logger as camt_wizard_logger
-
-import base64
+from odoo.addons.account_bank_statement_import_camt.models.account_journal import _logger as camt_wizard_logger
 
 
 @tagged('post_install', '-at_install')
@@ -34,18 +33,13 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         })
 
         # Get CAMT file content
-        camt_file_path = get_module_resource(
-            'account_bank_statement_import_camt',
-            'test_camt_file',
-            'test_camt.xml',
-        )
-        camt_file = base64.b64encode(open(camt_file_path, 'rb').read())
-
-        # Use an import wizard to process the file
-        self.env['account.bank.statement.import']\
-            .with_context(journal_id=bank_journal.id)\
-            .create({'attachment_ids': [(0, 0, {'name': 'test file', 'datas': camt_file})]})\
-            .import_file()
+        camt_file_path = 'account_bank_statement_import_camt/test_camt_file/test_camt.xml'
+        with file_open(camt_file_path, 'rb') as camt_file:
+            bank_journal.create_document_from_attachment(self.env['ir.attachment'].create({
+                'mimetype': 'application/xml',
+                'name': 'test_camt.xml',
+                'raw': camt_file.read(),
+            }).ids)
 
         # Check the imported bank statement
         imported_statement = self.env['account.bank.statement'].search([('company_id', '=', self.env.company.id)])
@@ -176,16 +170,13 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         )
 
         # Use an import wizard to process the file
-        camt_file_path = get_module_resource(
-            'account_bank_statement_import_camt',
-            'test_camt_file',
-            camt_file_name,
-        )
-        camt_file = base64.b64encode(open(camt_file_path, 'rb').read())
-        self.env['account.bank.statement.import']\
-            .with_context(journal_id=bank_journal.id)\
-            .create({'attachment_ids': [(0, 0, {'name': 'test file', 'datas': camt_file})]})\
-            .import_file()
+        camt_file_path = f'account_bank_statement_import_camt/test_camt_file/{camt_file_name}'
+        with file_open(camt_file_path, 'rb') as camt_file:
+            bank_journal.create_document_from_attachment(self.env['ir.attachment'].create({
+                'mimetype': 'application/xml',
+                'name': 'test_camt.xml',
+                'raw': camt_file.read(),
+            }).ids)
 
     def _test_minimal_camt_file_import(self, camt_file_name, currency, start_balance=1000, end_balance=1500):
         # Create a bank account and journal corresponding to the CAMT
@@ -246,19 +237,14 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         })
 
         # Use an import wizard to process the file
-        camt_file_path = get_module_resource(
-            'account_bank_statement_import_camt',
-            'test_camt_file',
-            'camt_053_several_ibans.xml',
-        )
-        camt_file = base64.b64encode(open(camt_file_path, 'rb').read())
-
-        wizard = self.env['account.bank.statement.import']\
-            .with_context(journal_id=bank_journal.id)\
-            .create({'attachment_ids': [(0, 0, {'name': 'test file', 'datas': camt_file})]})
-
-        with self.assertLogs(level="WARNING") as log_catcher:
-            wizard.import_file()
+        camt_file_path = 'account_bank_statement_import_camt/test_camt_file/camt_053_several_ibans.xml'
+        with file_open(camt_file_path, 'rb') as camt_file:
+            with self.assertLogs(level="WARNING") as log_catcher:
+                bank_journal.create_document_from_attachment(self.env['ir.attachment'].create({
+                    'mimetype': 'application/xml',
+                    'name': 'test_camt.xml',
+                    'raw': camt_file.read(),
+                }).ids)
         self.assertEqual(len(log_catcher.output), 1, "Exactly one warning should be logged")
         self.assertIn(
             "The following statements will not be imported",
@@ -287,20 +273,15 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         })
 
         # Use an import wizard to process the file
-        camt_file_path = get_module_resource(
-            'account_bank_statement_import_camt',
-            'test_camt_file',
-            'camt_053_several_ibans.xml',
-        )
-        camt_file = base64.b64encode(open(camt_file_path, 'rb').read())
-
-        wizard = self.env['account.bank.statement.import']\
-            .with_context(journal_id=bank_journal.id)\
-            .create({'attachment_ids': [(0, 0, {'name': 'test file', 'datas': camt_file})]})
-
-        with self.assertLogs(camt_wizard_logger, level="WARNING") as log_catcher:
-            with self.assertRaises(UserError) as error_catcher:
-                wizard.import_file()
+        camt_file_path = 'account_bank_statement_import_camt/test_camt_file/camt_053_several_ibans.xml'
+        with file_open(camt_file_path, 'rb') as camt_file:
+            with self.assertLogs(camt_wizard_logger, level="WARNING") as log_catcher:
+                with self.assertRaises(UserError) as error_catcher:
+                    bank_journal.create_document_from_attachment(self.env['ir.attachment'].create({
+                        'mimetype': 'application/xml',
+                        'name': 'test_camt.xml',
+                        'raw': camt_file.read(),
+                    }).ids)
 
         self.assertEqual(len(log_catcher.output), 1, "Exactly one warning should be logged")
         self.assertIn(

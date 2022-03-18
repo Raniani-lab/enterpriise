@@ -59,6 +59,7 @@ If required, you can manually adjust the descriptions via the CODA configuration
     'depends': ['account_accountant', 'l10n_be', 'account_bank_statement_import', 'base_iban'],
     'data': [
         'views/account_bank_statement_views.xml',
+        'views/account_journal_views.xml',
     ],
     'auto_install': True,
     'website': 'https://www.odoo.com/app/accounting',

@@ -132,7 +132,7 @@ class FetchmailServer(models.Model):
         This could be called from a button if there is a need to be processed manually
         """
         if origin_type == 'incoming_supplier_document':
-            for move in self._create_invoice_from_attachment(att_content, att_name, from_address, company_id):
+            for move in self._create_document_from_attachment(att_content, att_name, from_address, company_id):
                 if move.partner_id:
                     try:
                         move._l10n_cl_send_receipt_acknowledgment()
@@ -222,7 +222,7 @@ class FetchmailServer(models.Model):
                       x.l10n_latam_document_number.lstrip('0') == document_number.lstrip('0')
         )) > 0
 
-    def _create_invoice_from_attachment(self, att_content, att_name, from_address, company_id):
+    def _create_document_from_attachment(self, att_content, att_name, from_address, company_id):
         moves = []
         xml_content = etree.fromstring(att_content)
         for dte_xml in xml_content.xpath('//ns0:DTE', namespaces=XML_NAMESPACES):

@@ -503,7 +503,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             'datas': base64.b64encode(b'My attachment'),
         })
         with self.mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
-            action = self.env['account.journal'].with_context(default_move_type='out_invoice').create_invoice_from_attachment(test_attachment.id)
+            action = self.env['account.journal'].with_context(default_move_type='out_invoice').create_document_from_attachment(test_attachment.id)
 
         self.assertEqual(self.env['account.move'].browse(action['res_id']).extract_state, 'waiting_extraction')
 

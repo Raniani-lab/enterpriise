@@ -2,9 +2,11 @@
 <templates xml:space="preserve">
 
     <t t-name="sign.SignRequest" owl="1">
-        <button class="o_Activity_toolButton o_Activity_markDoneButton btn btn-link" t-attf-class="{{ className }}" title="Request Signature" t-on-click="_onClickRequestSign" t-ref="root">
-            <i class="fa fa-pencil-square-o"/> Request Signature
-        </button>
+        <t t-if="activity">
+            <button class="o_Activity_toolButton o_Activity_markDoneButton btn btn-link" t-attf-class="{{ className }}" title="Request Signature" t-on-click="_onClickRequestSign" t-ref="root">
+                <i class="fa fa-pencil-square-o"/> Request Signature
+            </button>
+        </t>
     </t>
 
 </templates>

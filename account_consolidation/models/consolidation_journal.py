@@ -105,14 +105,14 @@ class ConsolidationJournal(models.Model):
         Re(generate) all the journals of the recordset. It won't affect journals linked to closed analysis periods.
         """
         self.check_access_rule('write')
+        self.check_access_rights('write')
         for record in self:
             if record.state == 'closed':
                 continue
-            # Since he has the rights to be here, we can go sudo from here
-            record = record.sudo()
             record.line_ids.with_context(allow_unlink=True).unlink()
             origin = record.company_period_id or record.composition_id
-            journal_line_values = origin.get_journal_lines_values()
+            # compute journal lines in sudo since it needs to browse several companies
+            journal_line_values = origin.sudo()._get_journal_lines_values()
             record.write({'line_ids': [(0, 0, value) for value in journal_line_values]})
 
 

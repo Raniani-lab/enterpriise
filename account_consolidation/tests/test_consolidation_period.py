@@ -373,7 +373,7 @@ class TestConsolidationPeriodComposition(AccountConsolidationTestCase):
         return_value=False)
     def test_generate_journal(self, patched_ap_action_generate_journals):
         AccountJournal = self.env['consolidation.journal']
-        self.compo.generate_journal()
+        self.compo._generate_journal()
         # Checking that the journal generation of this composition triggers the generations of
         # the composed analysis period
         patched_ap_action_generate_journals.assert_called_once()
@@ -385,11 +385,11 @@ class TestConsolidationPeriodComposition(AccountConsolidationTestCase):
         self.assertEqual(last_journal.period_id, self.compo.using_period_id)
         self.assertEqual(len(last_journal.line_ids), 1)
         amount_of_journals = AccountJournal.search_count([])
-        self.compo.generate_journal()
+        self.compo._generate_journal()
         self.assertEqual(amount_of_journals, AccountJournal.search_count([]), 'Old journal has been deleted')
 
     def test__get_journal_lines_values(self):
-        jl_values = self.compo.get_journal_lines_values()
+        jl_values = self.compo._get_journal_lines_values()
         self.assertEqual(len(jl_values), 1)
         jl_value = jl_values[0]
         self.assertEqual(jl_value['account_id'], self.super_account.id)
@@ -478,7 +478,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
 
         ap = self._create_analysis_period()
         cp = self._create_company_period(period=ap, rate_consolidation=10, company=self.default_company)
-        cp.generate_journal()
+        cp._generate_journal()
         journals = Journal.search([('company_period_id', '=', cp.id)])
         self.assertEqual(1, len(journals), "Company period should only have one Journal")
         journal = journals[0]
@@ -520,7 +520,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
             'move_line_ids': [(6, 0, patch_get_total_balance.return_value[1])]}
         ]
         for cp in cps:
-            result = cp.get_journal_lines_values()
+            result = cp._get_journal_lines_values()
             self.assertListEqual(expected, result)
 
     def test__apply_historical_rates(self):

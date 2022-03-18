@@ -364,7 +364,7 @@ class ConsolidationPeriod(models.Model):
         """
         self.ensure_one()
         for company_period in self.company_period_ids:
-            company_period.generate_journal()
+            company_period._generate_journal()
 
     def _generate_consolidations_journals(self):
         """
@@ -373,7 +373,7 @@ class ConsolidationPeriod(models.Model):
         """
         self.ensure_one()
         for consolidation_composition in self.using_composition_ids:
-            consolidation_composition.generate_journal()
+            consolidation_composition._generate_journal()
 
     def _format_value(self, value, currency=False):
         """
@@ -426,7 +426,7 @@ class ConsolidationPeriodComposition(models.Model):
             result.append((record.id, record.composed_period_id.display_name))
         return result
 
-    def generate_journal(self):
+    def _generate_journal(self):
         """
         (Re)generate the journal representing this analysis period composition. Also (re)generate subsequent non-locked
         period journals.
@@ -440,7 +440,7 @@ class ConsolidationPeriodComposition(models.Model):
         journals.unlink()
         # update composed analysis period journals (recursive)
         self.composed_period_id.action_generate_journals()
-        journal_lines_values = self.get_journal_lines_values()
+        journal_lines_values = self._get_journal_lines_values()
         self.env['consolidation.journal'].create({
             'name': self.composed_period_id.chart_name,
             'auto_generated': True,
@@ -450,7 +450,7 @@ class ConsolidationPeriodComposition(models.Model):
             'line_ids': [(0, 0, value) for value in journal_lines_values]
         })
 
-    def get_journal_lines_values(self):
+    def _get_journal_lines_values(self):
         """
         Get all the journal line values in order to create them.
         :return: a list of dict containing values for journal lines creation
@@ -569,12 +569,12 @@ class ConsolidationCompanyPeriod(models.Model):
             result.append((record.id, record._get_display_name()))
         return result
 
-    def generate_journal(self):
+    def _generate_journal(self):
         """
         Generate the journal representing this company_period.
         """
         self.ensure_one()
-        journal_lines_values = self.get_journal_lines_values()
+        journal_lines_values = self._get_journal_lines_values()
         self.env['consolidation.journal'].create({
             'name': _("%s Consolidated Accounting", self.company_name),
             'auto_generated': True,
@@ -584,7 +584,7 @@ class ConsolidationCompanyPeriod(models.Model):
             'chart_id': self.chart_id.id,
         })
 
-    def get_journal_lines_values(self):
+    def _get_journal_lines_values(self):
         """
         Get all the journal line values in order to create them.
         :return: a list of dict containing values for journal lines creation

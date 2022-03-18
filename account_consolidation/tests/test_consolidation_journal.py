@@ -38,9 +38,9 @@ class TestAccountConsolidationJournal(AccountConsolidationTestCase):
         self.assertAlmostEqual(journal.balance, amount * count)
 
     @patch(
-        'odoo.addons.account_consolidation.models.consolidation_period.ConsolidationPeriodComposition.get_journal_lines_values')
+        'odoo.addons.account_consolidation.models.consolidation_period.ConsolidationPeriodComposition._get_journal_lines_values')
     @patch(
-        'odoo.addons.account_consolidation.models.consolidation_period.ConsolidationCompanyPeriod.get_journal_lines_values')
+        'odoo.addons.account_consolidation.models.consolidation_period.ConsolidationCompanyPeriod._get_journal_lines_values')
     def test_action_generate_journal_lines_when_origin_is_company_period(self, patched_company_period_method,
                                                                          patched_conso_method):
         Journal = self.env['consolidation.journal']
@@ -76,9 +76,9 @@ class TestAccountConsolidationJournal(AccountConsolidationTestCase):
         self.assertRecordValues(journals[0].line_ids, expected)
 
     @patch(
-        'odoo.addons.account_consolidation.models.consolidation_period.ConsolidationPeriodComposition.get_journal_lines_values')
+        'odoo.addons.account_consolidation.models.consolidation_period.ConsolidationPeriodComposition._get_journal_lines_values')
     @patch(
-        'odoo.addons.account_consolidation.models.consolidation_period.ConsolidationCompanyPeriod.get_journal_lines_values')
+        'odoo.addons.account_consolidation.models.consolidation_period.ConsolidationCompanyPeriod._get_journal_lines_values')
     def test_action_generate_journal_lines_when_origin_is_composition(self, patched_company_period_method,
                                                                       patched_conso_method):
 

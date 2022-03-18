@@ -657,7 +657,7 @@ module("documents_spreadsheet > global_filters",
     });
 
     test("FILTER.VALUE date filter", async function (assert) {
-        assert.expect(2);
+        assert.expect(4);
 
         const model = new Model();
         setCellContent(model, "A10", `=FILTER.VALUE("Date Filter")`);
@@ -696,6 +696,23 @@ module("documents_spreadsheet > global_filters",
         });
         await nextTick();
         assert.equal(getCellValue(model, "A10"), `${moment().year()}`);
+        await setGlobalFilterValue(model, {
+            id: filter.id,
+            rangeType: "year",
+            value: {
+                period: "january",
+                year: "this_year",
+            },
+        });
+        await testUtils.nextTick();
+        assert.equal(getCellValue(model, "A10"), `01/${moment().year()}`);
+        await setGlobalFilterValue(model, {
+            id: filter.id,
+            rangeType: "year",
+            value: {},
+        });
+        await testUtils.nextTick();
+        assert.equal(getCellValue(model, "A10"), ``);
     });
 
     test("FILTER.VALUE relation filter", async function (assert) {

@@ -149,10 +149,18 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             case "text":
                 return value || "";
             case "date":
-                return getPeriodOptions(moment())
-                    .filter(({ id }) => value && [value.year, value.period].includes(id))
-                    .map((period) => period.description)
-                    .join(" ");
+                if(!value || !value.year) return ""
+                const periodOptions = getPeriodOptions(moment());
+                const year = periodOptions.find(({ id }) => value.year === id).description;
+                const period = periodOptions.find(({ id }) => value.period === id);
+                let periodStr = period && period.description;
+                // Named months aren't in getPeriodOptions
+                if(!period){
+                    periodStr = MONTHS[value.period] && String(MONTHS[value.period].value + 1).padStart(2, "0");
+                }
+                // Use format "Q4 2022" instead of "Q2/2022" to not introduce possibly breaking changes in this version
+                const separator = period && period.id.endsWith("quarter") ? " " : "/";
+                return periodStr ? periodStr + separator + year : year;
             case "relation":
                 if (!value || !this.orm) return "";
                 if (!this.recordsDisplayName[filter.id]) {

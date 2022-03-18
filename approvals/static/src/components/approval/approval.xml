@@ -2,8 +2,8 @@
 <templates xml:space="preserve">
 
     <t t-name="approvals.Approval" owl="1">
-        <div class="o_Approval" t-attf-class="{{ className }}" t-ref="root">
-            <t t-if="approval">
+        <t t-if="approval">
+            <div class="o_Approval" t-attf-class="{{ className }}" t-ref="root">
                 <t t-if="approval.status === 'pending'">
                     <t t-if="approval.isCurrentPartnerApprover">
                         <button class="o_Approval_toolButton o_Approval_approveButton btn btn-success btn-link" t-on-click="_onClickApprove">
@@ -19,8 +19,8 @@
                         </span>
                     </t>
                 </t>
-            </t>
-        </div>
+            </div>
+        </t>
     </t>
 
 </templates>

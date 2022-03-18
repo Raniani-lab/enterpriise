@@ -19,6 +19,8 @@ class TimesheetPivotView extends PivotView {
      * Bind the event for play store icons
      */
     bindPlayStoreIcon() {
+        if (!this.noContentHelper.el) return;
+
         const playStore = this.noContentHelper.el.querySelector(".o_config_play_store");
         const appStore = this.noContentHelper.el.querySelector(".o_config_app_store");
 

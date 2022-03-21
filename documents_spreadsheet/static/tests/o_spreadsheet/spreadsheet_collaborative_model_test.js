@@ -13,6 +13,7 @@ import {
 } from "../utils/commands_helpers";
 import { setupCollaborativeEnv } from "../utils/collaborative_helpers";
 import PivotDataSource from "@documents_spreadsheet/bundle/pivot/pivot_data_source";
+import ListDataSource from "@documents_spreadsheet/bundle/list/list_data_source";
 
 let dataSourceId = 0;
 
@@ -227,7 +228,7 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
     );
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
-        (user) => Object.keys(user.config.dataSources._dataSources).length,
+        (user) => Object.values(user.config.dataSources._dataSources).filter(ds => ds instanceof PivotDataSource).length,
         2
     );
 });
@@ -502,7 +503,7 @@ QUnit.test("Add two lists concurrently", async (assert) => {
     );
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
-        (user) => Object.keys(user.config.dataSources._dataSources).length,
+        (user) => Object.values(user.config.dataSources._dataSources).filter(ds => ds instanceof ListDataSource).length,
         2
     );
 });

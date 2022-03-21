@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from . import common
+from . import test_currency_rate
 from . import test_spreadsheet_bus
 from . import test_spreadsheet_collaborative
 from . import test_spreadsheet_create_empty_sheet

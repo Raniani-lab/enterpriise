@@ -9,7 +9,7 @@ import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";
 import * as BusService from "bus.BusService";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
-import { getFixture, mockDownload } from "@web/../tests/helpers/utils";
+import { click, getFixture, mockDownload } from "@web/../tests/helpers/utils";
 import * as AbstractStorageService from "web.AbstractStorageService";
 import { fields, nextTick, dom } from "web.test_utils";
 import { createSpreadsheet, waitForEvaluation } from "./spreadsheet_test_utils";
@@ -1905,12 +1905,10 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     test("Lazy load currencies", async function (assert) {
         assert.expect(3);
         const { env } = await createSpreadsheet({
-            spreadsheetId: 1,
             mockRPC: async function (route, args) {
                 if (args.method === "search_read" && args.model === "res.currency") {
-                    console.log("dedans")
-                    assert.step('currencies-loaded')
-                    return [];
+                    assert.step('currencies-loaded');
+                    return [{ decimalPlaces: 2, name: "Euro", code: "EUR", symbol: "€", position: "after" }];
                 }
             },
         });
@@ -1918,6 +1916,9 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const root = topbarMenuRegistry.getAll().find((item) => item.id === "format");
         const numbers = topbarMenuRegistry.getChildren(root, env).find((item) => item.id === "format_number");
         const customCurrencies = topbarMenuRegistry.getChildren(numbers, env).find((item) => item.id === "format_custom_currency");
+        await customCurrencies.action(env);
+        await nextTick();
+        await click(document.querySelector(".o-sidePanelClose"));
         await customCurrencies.action(env);
         await nextTick();
         assert.verifySteps(["currencies-loaded"]);

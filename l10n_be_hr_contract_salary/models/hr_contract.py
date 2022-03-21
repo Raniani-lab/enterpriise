@@ -38,12 +38,6 @@ class HrContract(models.Model):
     def _compute_l10n_be_is_below_scale(self):
         super()._compute_l10n_be_is_below_scale()
 
-    def _get_salary_costs_factor(self):
-        res = super()._get_salary_costs_factor()
-        if self.structure_type_id == self.env.ref('hr_contract.structure_type_employee_cp200'):
-            return 13.92 + 13.0 * EMPLOYER_ONSS
-        return res
-
     def _compute_double_holiday_wage(self):
         for contract in self:
             contract.double_holiday_wage = contract.wage_with_holidays * 0.92

@@ -6,3 +6,4 @@ from . import test_helpdesk_sla
 from . import test_helpdesk_rating
 from . import test_ui
 from . import test_doc_links
+from . import test_helpdesk_team_privacy_visibility

@@ -88,8 +88,7 @@
                     <div name="worksheet_map" t-if="doc.comment" style="page-break-inside: avoid">
                         <h2>Worksheet</h2>
                         <div class="row mb-2 col-12" style="page-break-inside: avoid">
-                            <div class="col-4 font-weight-bold">Comments</div>
-                            <div class="col-8">
+                            <div class="col-12">
                                 <t t-out="doc.comment"/>
                             </div>
                         </div><br/>

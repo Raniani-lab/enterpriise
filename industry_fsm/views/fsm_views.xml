@@ -228,7 +228,6 @@
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
             'fsm_mode': True,
-            'show_address': True,
             'search_default_my_tasks': True,
             'search_default_planned_future': True,
             'search_default_planned_today': True,

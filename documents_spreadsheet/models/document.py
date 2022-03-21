@@ -155,7 +155,6 @@ class Document(models.Model):
         """
         self.ensure_one()
 
-        message = dict(message, id=self.id)
         if message["type"] in ["REMOTE_REVISION", "REVISION_UNDONE", "REVISION_REDONE"]:
             self._check_collaborative_spreadsheet_access("write")
             is_accepted = self._save_concurrent_revision(
@@ -288,7 +287,7 @@ class Document(models.Model):
     def _broadcast_spreadsheet_message(self, message: CollaborationMessage):
         """Send the message to the spreadsheet channel"""
         self.ensure_one()
-        self.env["bus.bus"]._sendone(self, 'spreadsheet', message)
+        self.env["bus.bus"]._sendone(self, 'spreadsheet', dict(message, id=self.id))
 
     def _delete_spreadsheet_revisions(self):
         """Delete spreadsheet revisions"""

@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { useUpdate } from '@mail/component_hooks/use_update/use_update';
+import { useUpdate } from '@mail/component_hooks/use_update';
 import { registerMessagingComponent } from '@mail/utils/messaging_component';
 
 import { ActionSwiper } from "@web_enterprise/core/action_swiper/action_swiper";

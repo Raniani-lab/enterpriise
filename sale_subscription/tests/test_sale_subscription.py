@@ -10,6 +10,37 @@ from odoo import fields
 
 class TestSubscription(TestSubscriptionCommon):
 
+
+    def test_subscription_invoice_shipping_address(self):
+        """Test to check that subscription invoice first try to use partner_shipping_id and partner_id from
+        subscription"""
+        self.company = self.env.company
+
+        self.partner = self.env['res.partner'].create(
+            {'name': 'Stevie Nicks',
+             'email': 'sti@fleetwood.mac',
+             'company_id': self.company.id})
+
+        self.partner2 = self.env['res.partner'].create(
+            {'name': 'Partner 2',
+             'email': 'sti@fleetwood.mac',
+             'company_id': self.company.id})
+
+
+        invoice_id = self.subscription._recurring_create_invoice()
+        addr = self.subscription.partner_id.address_get(['delivery', 'invoice'])
+        self.assertEqual(invoice_id.partner_shipping_id.id, addr['invoice'])
+        self.assertEqual(invoice_id.partner_id.id, addr['delivery'])
+
+        self.subscription.write({
+            'partner_id': self.partner.id,
+            'partner_shipping_id': self.partner2.id,
+        })
+
+        invoice_id = self.subscription._recurring_create_invoice()
+        self.assertEqual(invoice_id.partner_shipping_id.id, self.partner2.id)
+        self.assertEqual(invoice_id.partner_id.id, self.partner.id)
+
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.models')
     def test_01_template(self):
         """ Test behaviour of on_change_template """

@@ -5,7 +5,7 @@ $o-dms-p: $o-horizontal-padding;
 $o-dms-p-small: $o-horizontal-padding*0.5;
 $o-dms-p-tiny: $o-dms-p-small*0.5;
 
-$o-dms-color-tag: $o-searchpanel-filter-default-color;
+$o-dms-color-tag: $o-brand-primary;
 $o-dms-color-model: #338FFC;
 $o-dms-color-action: $o-brand-primary;
 $o-dms-color-history: #3bb97b;
@@ -36,9 +36,14 @@ $o-dms-inspector-width-model-button: 30px;
 .o_search_panel > .o_search_panel_section {
     .o_drag_over_selector {
         &.o_search_panel_filter_value, > header {
-            background-color: $o-searchpanel-active-bg;
-            font-weight: bold;
-            padding-left: 20px;
+            background-color: $component-active-bg;
+            font-weight: $font-weight-bold;
+            color: $gray-900;
+
+            .o_search_panel_label_title {
+                padding-left: map-get($spacers, 2);
+            }
+
             /* Firefox firing dragleave when dragging over text
             https://bugzilla.mozilla.org/show_bug.cgi?id=1478562 */
             .o_search_panel_label {

@@ -162,9 +162,9 @@ QUnit.module('documents_kanban_tests.js', {
                     </div>
                 </t></templates></kanban>`,
         });
-        assert.strictEqual(target.querySelector('header.active > label > span').textContent.trim(), 'Workspace1',
+        assert.strictEqual(target.querySelector('header.active > .o_search_panel_label .o_search_panel_label_title').textContent.trim(), 'Workspace1',
             "the first selected record should be the first folder");
-        assert.strictEqual(target.querySelector('header.active > span').textContent.trim(), '5',
+        assert.strictEqual(target.querySelector('header.active > .o_search_panel_counter').textContent.trim(), '5',
             "the first folder should have 5 as counter");
         assert.containsOnce(target, '.o_search_panel_category_value:contains(All) header',
             "Should only have a single all selector");

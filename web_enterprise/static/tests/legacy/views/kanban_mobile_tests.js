@@ -87,7 +87,7 @@ QUnit.module('LegacyViews', {
 
         let $sp = kanban.$(".o_search_panel");
 
-        assert.containsOnce(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsOnce(kanban, ".o_search_panel.o_search_panel_summary");
         assert.containsNone(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
         assert.verifySteps([
             "search_panel_select_range",
@@ -101,7 +101,7 @@ QUnit.module('LegacyViews', {
         await dom.click($sp);
         $sp = $(".o_search_panel");
 
-        assert.containsNone(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsNone(kanban, ".o_search_panel.o_search_panel_summary");
         assert.containsOnce(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
 
         assert.containsOnce($sp, ".o_mobile_search_header > button:contains(FILTER)");
@@ -133,7 +133,7 @@ QUnit.module('LegacyViews', {
         await dom.click($sp.find(".o_mobile_search_header button"));
         $sp = $(".o_search_panel");
 
-        assert.containsOnce(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsOnce(kanban, ".o_search_panel.o_search_panel_summary");
         assert.containsNone(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
 
         // selection is kept when closed
@@ -149,13 +149,13 @@ QUnit.module('LegacyViews', {
         assert.containsOnce($sp, ".o_search_panel_category_value > header.active:contains(hello)");
         assert.containsOnce($sp, ".o_search_panel_filter_value:contains(DEF) input:checked");
 
-        assert.containsNone(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsNone(kanban, ".o_search_panel.o_search_panel_summary");
         assert.containsOnce(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
 
         // close with bottom button
         await dom.click($sp.find("button.o_mobile_search_footer"));
 
-        assert.containsOnce(kanban, "div.o_search_panel.o_search_panel_summary");
+        assert.containsOnce(kanban, ".o_search_panel.o_search_panel_summary");
         assert.containsNone(document.body, "div.o_search_panel.o_searchview.o_mobile_search");
 
         kanban.destroy();

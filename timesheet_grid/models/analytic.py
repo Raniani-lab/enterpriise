@@ -270,7 +270,12 @@ class AnalyticLine(models.Model):
             for section_id, rows in rows_dict.items():
                 res = result
                 rows = rows.values()
-                rows = sorted(rows, key=lambda l: [l['values'][field][1] if l['values'][field] else " " for field in row_fields[0:2]])
+                rows = sorted(rows, key=lambda l: [
+                    l['values'][field]
+                    if field not in self._fields or self._fields[field].type != 'many2one'
+                    else l['values'][field][1] if l['values'][field] else " "
+                    for field in row_fields[0:2]
+                ])
                 # _grid_make_empty_cell return a dict, in this dictionary,
                 # we need to check if the cell is in the current date,
                 # then, we add a key 'is_current' into this dictionary

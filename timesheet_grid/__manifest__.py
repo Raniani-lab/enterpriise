@@ -42,6 +42,7 @@
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller_mixin.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_model.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller.js',
+            'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_group_by_no_date_mixin.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_renderer.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_view.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_timer_grid_model.js',

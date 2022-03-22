@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="group_hr_recruitment_referral_user" model="res.groups">
-        <field name="name">Referral User</field>
+        <field name="name">User : Referral only</field>
         <field name="category_id" ref="base.module_category_human_resources_recruitment"/>
         <field name="users" eval="[(4, ref('base.group_user'))]"/>
     </record>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="hr_appraisal.group_hr_appraisal_user" model="res.groups">
-        <field name="name">Access all appraisals</field>
+        <field name="name">Officer : Access all appraisals</field>
         <field name="category_id" ref="base.module_category_human_resources_appraisals"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>

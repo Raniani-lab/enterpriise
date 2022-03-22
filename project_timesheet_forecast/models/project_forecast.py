@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import pytz
 from collections import defaultdict
 from datetime import datetime
 
@@ -140,16 +141,27 @@ class Forecast(models.Model):
             interval_per_employee[slot.employee_id] = (start_datetime, end_datetime)
 
         work_data_per_employee_id = {}
-        min_date, max_date = today.date(), None
+        min_date, max_date = pytz.utc.localize(today), None
         for employee, (start_datetime, end_datetime) in interval_per_employee.items():
-            work_data = employee.list_work_time_per_day(
-                start_datetime,
-                end_datetime,
+            employee_resource = employee.resource_id
+            calendar = employee_resource.calendar_id or employee.company_id.resource_calendar_id
+            resource_work_intervals, calendar_work_intervals = employee_resource._get_valid_work_intervals(
+                start_datetime.replace(tzinfo=pytz.UTC),
+                end_datetime.replace(tzinfo=pytz.UTC),
+                calendars=calendar
             )
-            work_data_per_employee_id[employee.id] = work_data
-            if work_data:
-                start_date = work_data[0][0]
-                end_date = work_data[-1][0]
+            if resource_work_intervals[employee_resource.id]:
+                working_intervals = resource_work_intervals[employee_resource.id]
+            else:
+                working_intervals = calendar_work_intervals[employee.company_id.resource_calendar_id.id]
+
+            result = defaultdict(float)
+            for start, stop, dummy in working_intervals:
+                result[start.date()] += (stop - start).total_seconds() / 3600
+            work_data_per_employee_id[employee.id] = sorted(result.items())
+            if working_intervals:
+                start_date = working_intervals._items[0][0]
+                end_date = working_intervals._items[-1][0]
                 if start_date < min_date:
                     min_date = start_date
                 if not max_date or end_date > max_date:
@@ -194,7 +206,7 @@ class Forecast(models.Model):
             'project_id': self.project_id.id,
             'task_id': self.task_id.id,
             'account_id': self.project_id.analytic_account_id.id,
-            'unit_amount': work_hours_count * ratio,
+            'unit_amount': round(work_hours_count * ratio, 2),
             'user_id': self.user_id.id,
             'slot_id': self.id,
             'date': day_date,

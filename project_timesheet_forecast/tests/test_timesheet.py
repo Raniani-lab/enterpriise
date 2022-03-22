@@ -14,6 +14,10 @@ class TestPlanningTimesheet(TestCommonForecast):
 
         cls.setUpEmployees()
         cls.setUpProjects()
+        cls.employee_bert.write({
+            'employee_type': 'freelance',
+            'create_date': datetime(2019, 5, 6, 8, 0, 0),
+        })
 
     def test_no_auto_genertaed_timesheet_in_future(self):
         with self._patch_now('2019-06-06 18:00:00'):

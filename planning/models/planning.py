@@ -161,7 +161,7 @@ class Planning(models.Model):
     @api.depends('resource_id.employee_id', 'resource_type')
     def _compute_employee_id(self):
         for slot in self:
-            slot.employee_id = slot.resource_id.employee_id if slot.resource_type == 'user' else False
+            slot.employee_id = slot.resource_id.with_context(active_test=False).employee_id if slot.resource_type == 'user' else False
 
     @api.depends('employee_id', 'template_id')
     def _compute_role_id(self):

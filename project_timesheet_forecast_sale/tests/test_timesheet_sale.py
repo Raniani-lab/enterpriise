@@ -9,6 +9,15 @@ from odoo.tests import tagged
 @tagged('-at_install', 'post_install')
 class TestPlanningTimesheetSale(TestCommonSaleTimesheet):
 
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+
+        cls.manager_company_B._write({
+            'employee_type': 'employee',
+            'create_date': datetime(2019, 5, 5, 8, 0, 0),
+        })
+
     def test_generate_slot_timesheet_for_non_billable_project(self):
         self.assertFalse(self.project_non_billable.allow_billable, "Project should be non billable")
 

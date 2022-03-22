@@ -146,7 +146,7 @@ class SignLog(models.Model):
         # We should forcely use the GeoIP ones only if the the request_item is 'completed'/'refused'
         latitude = 0.0
         longitude = 0.0
-        if request:
+        if request and 'geoip' in request.session:
             latitude = request.session['geoip'].get('latitude', 0.0) if request_item.state != 'sent' else request_item.latitude
             longitude = request.session['geoip'].get('longitude', 0.0) if request_item.state != 'sent' else request_item.longitude
         return dict(
@@ -163,7 +163,7 @@ class SignLog(models.Model):
         return dict(
             sign_request_id=sign_request.id,
             request_state=sign_request.state,
-            latitude=request.session['geoip'].get('latitude', 0.0) if request else 0.0,
-            longitude=request.session['geoip'].get('latitude', 0.0) if request else 0.0,
+            latitude=request.session['geoip'].get('latitude', 0.0) if request and 'geoip' in request.session else 0.0,
+            longitude=request.session['geoip'].get('latitude', 0.0) if request and 'geoip' in request.session else 0.0,
             partner_id=self.env.user.partner_id.id if not self.env.user._is_public() else None,
         )

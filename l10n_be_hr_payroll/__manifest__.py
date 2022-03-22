@@ -98,6 +98,7 @@ Belgian Payroll Rules.
         'wizard/l10n_be_double_pay_recovery_wizard_views.xml',
         'wizard/l10n_be_hr_payroll_employee_lang_views.xml',
         'views/hr_payslip_views.xml',
+        'views/hr_payslip_run_views.xml',
     ],
     'demo':[
         'data/l10n_be_hr_payroll_demo.xml'

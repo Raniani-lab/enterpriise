@@ -545,10 +545,6 @@ class Payslip(models.Model):
         return super()._get_negative_net_input_type()
 
     def action_payslip_done(self):
-        regular_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')
-        invalid_payslips = self.filtered(lambda p: p.struct_id == regular_pay and not p.worked_days_line_ids)
-        if invalid_payslips:
-            raise UserError(_("The regular pay for these employees don't have any worked day lines:\n%s"), '\n'.join(invalid_payslips.mapped('employee_id.name')))
         if self._is_active_belgian_languages():
             bad_language_slips = self.filtered(
                 lambda p: p.struct_id.country_id.code == "BE" and p.employee_id.sudo().address_home_id.lang not in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])

@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 from odoo import api, fields, models, _
 
 
@@ -30,9 +31,16 @@ class HrPayslip(models.Model):
             ('payment_mode', '=', 'own_account'),
             ('refund_in_payslip', '=', True),
             ('payslip_id', '=', False)])
+        # group by employee
+        sheets_by_employee = defaultdict(lambda: self.env['hr.expense.sheet'])
+        for sheet in sheets:
+            sheets_by_employee[sheet.employee_id] |= sheet
         for slip in draft_slips:
-            payslip_sheets = sheets.filtered(lambda s: s.employee_id == slip.employee_id)
-            slip.expense_sheet_ids = [(5, 0, 0)] + [(4, s.id, False) for s in payslip_sheets]
+            payslip_sheets = sheets_by_employee[slip.employee_id]
+            if slip.expense_sheet_ids:
+                slip.expense_sheet_ids = [(6, 0, payslip_sheets.ids)]
+            elif payslip_sheets:
+                slip.expense_sheet_ids = [(4, sheet.id, 0) for sheet in payslip_sheets]
         return payslips
 
     def write(self, vals):

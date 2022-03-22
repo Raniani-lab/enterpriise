@@ -27204,7 +27204,7 @@
                 _t: Spreadsheet._t,
                 clipboard: navigator.clipboard,
             });
-            owl.useExternalListener(window, "resize", this.render);
+            owl.useExternalListener(window, "resize", () => this.render(true));
             owl.useExternalListener(document.body, "keyup", this.onKeyup.bind(this));
             owl.useExternalListener(window, "beforeunload", this.unbindModelEvents.bind(this));
             owl.onMounted(() => this.bindModelEvents());
@@ -27221,7 +27221,7 @@
                 : this.composer.gridFocusMode;
         }
         bindModelEvents() {
-            this.model.on("update", this, this.render);
+            this.model.on("update", this, () => this.render(true));
             this.model.on("notify-ui", this, this.onNotifyUI);
         }
         unbindModelEvents() {
@@ -32078,8 +32078,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-03-14T12:43:01.230Z';
-    exports.__info__.hash = '6e508a8';
+    exports.__info__.date = '2022-03-22T09:33:22.955Z';
+    exports.__info__.hash = '8627134';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

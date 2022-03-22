@@ -11,7 +11,7 @@
                         <field name="oldest_contract_id"/>
                     </group>
                     <group>
-                        <field name="leaving_type_id" widget="radio"/>
+                        <field name="leaving_type_id" options="{'no_open': True, 'no_create': True}"/>
                         <field name="departure_description" widget="text"/>
                         <field name="salary_visibility" invisible="1"/>
                     </group>

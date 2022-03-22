@@ -3216,12 +3216,12 @@ msgstr "Mitarbeiterabreise - Urlaubs-Attest"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_payslip_employee_depature_notice__notice_respect__with
-msgid "Employee will leave after notice period"
+msgid "Employee works during his notice period"
 msgstr "Mitarbeiter geht nach Kündigungsfrist"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_payslip_employee_depature_notice__notice_respect__without
-msgid "Employee will leave before notice period"
+msgid "Employee doesn't work during his notice period"
 msgstr "Mitarbeiter geht vor Kündigungsfrist"
 
 #. module: l10n_be_hr_payroll

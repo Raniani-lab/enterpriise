@@ -3291,13 +3291,13 @@ msgstr "Départ de l'employé - Attestations de vacances"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_payslip_employee_depature_notice__notice_respect__with
-msgid "Employee will leave after notice period"
-msgstr "L'employé partira après la période de préavis"
+msgid "Employee works during his notice period"
+msgstr "L'employé preste son préavis"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_payslip_employee_depature_notice__notice_respect__without
-msgid "Employee will leave before notice period"
-msgstr "L'employé partira avant la période de préavis"
+msgid "Employee doesn't work during his notice period"
+msgstr "L'employé ne preste pas son préavis"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__wage

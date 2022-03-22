@@ -39,9 +39,10 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
     notice_duration_week_after_2014 = fields.Integer('Notice Duration in weeks', compute='_notice_duration')
 
     notice_respect = fields.Selection([
-        ('with', 'Employee will leave after notice period'),
-        ('without', 'Employee will leave before notice period')
-        ], string='Respect of the notice period', required=True, default='with')
+        ('with', 'Employee works during his notice period'),
+        ('without', "Employee doesn't work during his notice period")
+        ], string='Respect of the notice period', required=True, default='with',
+        help='Decides whether the employee will still work during his notice period or not.')
 
     @api.depends('employee_id')
     def _compute_oldest_contract_id(self):

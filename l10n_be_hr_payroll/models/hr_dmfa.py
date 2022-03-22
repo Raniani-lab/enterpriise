@@ -8,7 +8,6 @@ import re
 from collections import defaultdict
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import rrule, WEEKLY, MO
 from lxml import etree
 
 from odoo import api, fields, models, _
@@ -359,11 +358,11 @@ class DMFAWorker(DMFANode):
         # as they should be declared together
         # Put termination fees in it's own occupation
         occupation_data = contracts._get_occupation_dates()
+        termination_occupations = []
         for data in occupation_data:
             occupation_contracts, date_from, date_to = data
             payslips = self.payslips.filtered(lambda p: p.contract_id in occupation_contracts)
             termination_payslips = payslips.filtered(lambda p: p.struct_id.code == 'CP200TERM')
-            termination_occupations = []
             if termination_payslips:
                 # YTI TODO master: Store the supposed notice period even for termination fees
                 # Le salaire et les données relatives aux prestations se rapportant à une indemnité
@@ -399,19 +398,9 @@ class DMFAWorker(DMFANode):
                 # mensuellement (entreprises en difficulté), les indemnités doivent toujours être
                 # reprises intégralement sur la déclaration du trimestre au cours duquel le contrat
                 # de travail a été rompu.
-                next_monday = rrule(freq=WEEKLY, dtstart=date_to, byweekday=MO, count=1)[0].date()
-                termination_wizard = self.env['hr.payslip.employee.depature.notice'].new({
-                    'employee_id': termination_payslips.employee_id.id,
-                    'leaving_type_id': self.env.ref('hr.departure_fired').id,
-                    'start_notice_period': next_monday,
-                    'notice_respect': 'with'
-                })
-                termination_wizard._compute_oldest_contract_id()
-                termination_wizard._onchange_notice_duration()
-                termination_from = date_to + relativedelta(days=1)
-                termination_to = termination_wizard.end_notice_period
-                if termination_to < termination_from:
-                    termination_to = termination_from
+                employee = termination_payslips.employee_id
+                if not employee.start_notice_period or not employee.end_notice_period:
+                    raise UserError(_('No start/end notice period defined for %s', termination_payslips.employee_id.name))
                 # YTI Check Termination fees
                 # Les indemnités considérées comme de la rémunération sont déclarées
                 # en DmfA, avec le code rémunération 3 et en mentionnant, pour la période correspondante
@@ -427,7 +416,8 @@ class DMFAWorker(DMFANode):
                 #   <RemunCode>003</RemunCode>
                 #   <RemunAmount>00000400546</RemunAmount>
                 # </Remun>
-                termination_periods = _split_termination_period(termination_from, termination_to)
+                termination_periods = _split_termination_period(
+                    employee.start_notice_period, employee.end_notice_period)
                 termination_remuneration = termination_payslips._get_line_values(['BASIC'])['BASIC'][termination_payslips.id]['total']
 
                 period_remuneration = termination_remuneration / len(termination_periods)

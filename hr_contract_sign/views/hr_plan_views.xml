@@ -1,72 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="hr_plan_view_form" model="ir.ui.view">
-        <field name="name">hr.plan.view.form</field>
+    <record id="hr_plan_activity_type_view_form" model="ir.ui.view">
+        <field name="model">hr.plan.activity.type</field>
+        <field name="inherit_id" ref="hr.hr_plan_activity_type_view_form"/>
+        <field name="arch" type="xml">
+            <field name="activity_type_id" position="after">
+                <field name="is_signature_request" invisible="1"/>
+                <field name="sign_template_responsible_ids" invisible="1"/>
+                <field name="sign_template_id" attrs="{'invisible': [('is_signature_request', '=', False)], 'required': [('is_signature_request', '=', True)]}"/>
+                <field name="employee_role_id" options="{'no_create': True}" attrs="{'invisible': [('is_signature_request', '=', False)], 'required': [('is_signature_request', '=', True)]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_plan_view_form_inherit" model="ir.ui.view">
         <field name="model">hr.plan</field>
         <field name="inherit_id" ref="hr.hr_plan_view_form"/>
         <field name="arch" type="xml">
-            <field name="plan_activity_type_ids" position="after">
-                <label string="Signature Requests" for="plan_signature_request_ids"/>
-                <field name="plan_signature_request_ids" nolabel="1">
-                    <tree editable="bottom">
-                        <field name="company_id" invisible="1"/>
-                        <field name="sign_template_id"/>
-                        <field name="sign_template_responsible_ids" invisible="1"/>
-                        <field name="employee_role_id"/>
-                        <field name="responsible_signer"/>
-                        <field name="responsible_id" string="Name" attrs="{'invisible': [('responsible_signer', '!=', 'other')]}"/>
-                    </tree>
-                </field>
+            <field name="responsible_id" position="after">
+                <field name="sign_template_id" optional="hidden"/>
             </field>
         </field>
     </record>
-
-    <record id="hr_plan_view_tree" model="ir.ui.view">
-        <field name="name">hr.plan.view.tree</field>
-        <field name="model">hr.plan</field>
-        <field name="inherit_id" ref="hr.hr_plan_view_tree"/>
-        <field name="arch" type="xml">
-            <field name="company_id" position="after">
-                <field name="plan_signature_request_ids" optional="hide"/>
-            </field>
-        </field>
-    </record>
-
-    <record id="hr_plan_signature_request_view_form" model="ir.ui.view">
-        <field name="name">hr.plan.signature.request.view.form</field>
-        <field name="model">hr.plan.signature.request</field>
-        <field name="arch" type="xml">
-            <form string="Signature Request">
-                <sheet>
-                    <group>
-                        <field name="company_id" groups="base.group_multi_company" invisible="1"/>
-                        <field name="sign_template_id"/>
-                        <field name="employee_role_id"/>
-                        <field name="responsible_signer"/>
-                        <field name="responsible_id" string="Name" attrs="{'invisible': [('responsible_signer', '!=', 'other')]}"/>
-                        <field name="sign_template_responsible_ids" invisible="1"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="hr_plan_signature_request_action" model="ir.actions.act_window">
-        <field name="name">Signature Requests</field>
-        <field name="res_model">hr.plan.signature.request</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Add a new signature request
-            </p>
-        </field>
-    </record>
-
-    <menuitem
-        id="menu_config_signature_request"
-        name="Signature Requests"
-        action="hr_plan_signature_request_action"
-        parent="hr.menu_config_plan"
-        groups="base.group_no_one"
-        sequence="99"/>
 </odoo>

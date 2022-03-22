@@ -279,6 +279,30 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.assertEqual(action.get('type'), 'ir.actions.act_window', "It should redirect to the tracking wizard")
         self.assertEqual(action.get('res_model'), 'fsm.stock.tracking', "It should redirect to the tracking wizard")
 
+
+    def test_set_quantity_with_no_so(self):
+        self.task.partner_id = self.partner_1
+        product = self.product_ordered.with_context(fsm_task_id=self.task.id)
+        self.assertFalse(self.task.sale_order_id)
+        product.fsm_add_quantity()
+        self.assertEqual(product.fsm_quantity, 1)
+        order_line = self.task.sale_order_id.order_line
+        self.assertEqual(order_line.product_id.id, product.id)
+        self.assertEqual(order_line.product_uom_qty, 1)
+        self.assertEqual(order_line.qty_delivered, 0)
+
+        product.set_fsm_quantity(5)
+        self.assertEqual(product.fsm_quantity, 5)
+        self.assertEqual(order_line.product_id.id, product.id)
+        self.assertEqual(order_line.product_uom_qty, 5)
+        self.assertEqual(order_line.qty_delivered, 0)
+
+        product.set_fsm_quantity(3)
+        self.assertEqual(product.fsm_quantity, 3)
+        self.assertEqual(order_line.product_id.id, product.id)
+        self.assertEqual(order_line.product_uom_qty, 3)
+        self.assertEqual(order_line.qty_delivered, 0)
+
     def test_set_quantity_with_done_so(self):
         self.task.write({'partner_id': self.partner_1.id})
         product = self.product_ordered.with_context({'fsm_task_id': self.task.id})

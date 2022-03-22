@@ -52,7 +52,7 @@ class ProductProduct(models.Model):
                         vals = {
                             'product_uom_qty': all_editable_lines[0].product_uom_qty + diff_qty,
                         }
-                        if product.service_type == 'manual':
+                        if all_editable_lines[0].qty_delivered_method == 'manual':
                             vals['qty_delivered'] = all_editable_lines[0].product_uom_qty + diff_qty
                         all_editable_lines[0].with_context(fsm_no_message_post=True).write(vals)
                         continue
@@ -63,7 +63,7 @@ class ProductProduct(models.Model):
                         vals = {
                             'product_uom_qty': new_line_qty
                         }
-                        if product.service_type == 'manual':
+                        if line.qty_delivered_method == 'manual':
                             vals['qty_delivered'] = new_line_qty
                         line.with_context(fsm_no_message_post=True).write(vals)
                         if diff_qty == 0:
@@ -82,6 +82,8 @@ class ProductProduct(models.Model):
                     sol = SaleOrderLine_sudo.create(vals)
                     if task.sale_order_id.pricelist_id.discount_policy != 'without_discount':
                         sol.discount = 0.0
+                    if not sol.qty_delivered_method == 'manual':
+                        sol.qty_delivered = 0
 
     @api.model
     def _search_fsm_quantity(self, operator, value):

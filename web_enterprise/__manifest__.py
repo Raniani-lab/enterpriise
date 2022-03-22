@@ -42,12 +42,12 @@ This module modifies the web addon to provide Enterprise design and responsivene
             ('replace', 'web/static/src/webclient/webclient_extra.scss', 'web_enterprise/static/src/webclient/webclient.scss'),
             ('replace', 'web/static/src/webclient/webclient_layout.scss', 'web_enterprise/static/src/webclient/webclient_layout.scss'),
 
-            ('replace', 'web/static/src/legacy/scss/dropdown_extra.scss', 'web_enterprise/static/src/legacy/scss/dropdown.scss'),
             ('replace', 'web/static/src/legacy/scss/fields_extra.scss', 'web_enterprise/static/src/legacy/scss/fields.scss'),
             ('replace', 'web/static/src/legacy/scss/form_view_extra.scss', 'web_enterprise/static/src/legacy/scss/form_view.scss'),
             ('replace', 'web/static/src/legacy/scss/list_view_extra.scss', 'web_enterprise/static/src/legacy/scss/list_view.scss'),
             ('replace', 'web/static/src/search/search_panel/search_view_extra.scss', 'web_enterprise/static/src/legacy/scss/search_view.scss'),
 
+            'web_enterprise/static/src/legacy/scss/dropdown.scss',
             'web_enterprise/static/src/legacy/scss/base_settings_mobile.scss',
             'web_enterprise/static/src/legacy/scss/search_panel_mobile.scss',
             'web_enterprise/static/src/legacy/scss/control_panel_layout.scss',

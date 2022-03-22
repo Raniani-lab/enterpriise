@@ -317,7 +317,6 @@
         id="approvals_menu_manager"
         parent="approvals_menu_root"
         name="Manager"
-        groups="group_approval_user"
         sequence="20"/>
 
     <menuitem

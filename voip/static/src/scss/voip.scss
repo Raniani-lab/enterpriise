@@ -42,11 +42,6 @@
 
     }
     .o_dial_fold {
-        cursor: pointer;
-        background-color: $o-brand-odoo;
-        color: #fff;
-        border-radius: 3px 3px 0 0;
-        position: relative;
         flex: 0 0 auto;
 
         .o_dial_unfold {
@@ -55,41 +50,10 @@
             margin-left: auto;
         }
 
-        .fa {
-            margin-top: 1%;
-        }
-
-        .fa_mt {
-            margin-top: -1%;
-        }
-
         .o_dial_window_title {
-            font-size: 12px;
-            display: inline-flex;
-            color: white;
-            margin-left: 5px;
-            margin-top: 5px;
-            width: 97%;
             @include media-breakpoint-down(sm) {
                 height: $o-navbar-height;
-                padding-top: 10px;
                 font-size: 15px;
-            }
-            .o_dial_text {
-                font-size: 12px;
-                @include media-breakpoint-down(sm) {
-                    font-size: 15px;
-                }
-            }
-        }
-
-        .o_dial_window_close {
-            color: white;
-            margin-right: 1%;
-            margin-left: auto;
-            display: flex;
-            &:hover {
-                background-color: darken($o-brand-odoo, 10%);
             }
         }
     }

@@ -18,9 +18,9 @@
         o_in_home_menu"
     t-name="voip.DialingPanel">
     <div
-        class="o_dial_fold">
+        class="o_dial_fold position-relative rounded-lg-top overflow-hidden bg-odoo">
         <div
-            class="o_dial_window_title">
+            class="o_dial_window_title d-flex align-items-center justify-content-between o_cursor_pointer">
             <t t-call="voip.DialingPanel.HeaderContent">
                 <a t-set="title" t-value="widget.title"/>
             </t>
@@ -250,11 +250,13 @@
   @param {string} title
 -->
 <t t-name="voip.DialingPanel.HeaderContent">
-    <i class="fa fa-fw fa-phone" role="img"/>
-    <div class="o_dial_text">
+    <i class="oi oi-large oi-voip mx-2" role="img"/>
+    <div class="o_dial_text flex-grow-1 text-left">
         <t t-esc="title"/>
     </div>
-    <a aria-label="Close" class="fa fa-close o_dial_window_close" href="#" title="Close"/>
+    <a aria-label="Close" class="o_dial_window_close btn btn-odoo border-0" href="#" title="Close">
+        <i class="oi oi-large oi-close"/>
+    </a>
 </t>
 
 </templates>

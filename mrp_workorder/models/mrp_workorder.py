@@ -488,10 +488,6 @@ class MrpProductionWorkcenterLine(models.Model):
         if self.production_id.product_id.tracking != 'none' and not self.finished_lot_id and self.move_raw_ids:
             raise UserError(_('You should provide a lot/serial number for the final product'))
 
-        # Suggest a finished lot on the next workorder
-        if self.next_work_order_id and self.product_tracking != 'none' and not self.next_work_order_id.finished_lot_id:
-            self.production_id.lot_producing_id = self.finished_lot_id
-            self.next_work_order_id.finished_lot_id = self.finished_lot_id
         backorder = False
         # Trigger the backorder process if we produce less than expected
         if float_compare(self.qty_producing, self.qty_remaining, precision_rounding=self.product_uom_id.rounding) == -1 and self.is_first_started_wo:
@@ -513,8 +509,6 @@ class MrpProductionWorkcenterLine(models.Model):
                     lambda p: index < len(p.workorder_ids) and p.workorder_ids[index].state not in ('cancel', 'done')
                 )[:1]
 
-        # One a piece is produced, you can launch the next work order
-        self._start_nextworkorder()
         self.button_finish()
 
         if backorder:

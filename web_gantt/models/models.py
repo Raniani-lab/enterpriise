@@ -639,6 +639,8 @@ class Base(models.AbstractModel):
         if new_start_date < datetime.now(timezone.utc):
             return False
 
-        self[start_date_field_name] = new_start_date.astimezone(timezone.utc).replace(tzinfo=None)
-        self[stop_date_field_name] = new_stop_date.astimezone(timezone.utc).replace(tzinfo=None)
+        self.write({
+            start_date_field_name: new_start_date.astimezone(timezone.utc).replace(tzinfo=None),
+            stop_date_field_name: new_stop_date.astimezone(timezone.utc).replace(tzinfo=None)
+        })
         return True

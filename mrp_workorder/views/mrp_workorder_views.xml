@@ -69,6 +69,30 @@
         </field>
     </record>
 
+    <record id="mrp_workorder_view_gantt_dependencies" model="ir.ui.view">
+        <field name="name">mrp.workorder.view.gantt.dependencies</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.mrp_workorder_view_gantt"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="dependency_field">blocked_by_workorder_ids</attribute>
+                <attribute name="dependency_inverted_field">needed_by_workorder_ids</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_mrp_workorder_dependencies_workcenter" model="ir.actions.server">
+        <field name="name">Work Orders Planning</field>
+        <field name="model_id" ref="model_mrp_workorder"/>
+        <field name="state">code</field>
+        <field name="code">
+action = env.ref('mrp.action_mrp_workorder_workcenter').sudo().read()[0]
+if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
+    action['views'] = [(env.ref('mrp_workorder.mrp_workorder_view_gantt_dependencies').id, 'gantt')] + [(id, kind) for id, kind in action['views'] if kind != 'gantt']
+        </field>
+    </record>
+
     <!-- MRP.WORKORDER TABLET VIEW -->
     <record id="mrp_workorder_view_form_tablet" model="ir.ui.view">
         <field name="name">mrp.workorder.view.form.inherit.quality.tablet.new</field>
@@ -88,7 +112,6 @@
                 <field name="is_produced" invisible="1"/>
                 <field name="move_raw_ids" invisible="1"/>
                 <field name="move_finished_ids" invisible="1"/>
-                <field name="next_work_order_id" invisible="1"/>
                 <field name="quality_state" invisible="1"/>
                 <field name="qty_produced" invisible="1"/>
                 <field name="state" invisible="1"/>

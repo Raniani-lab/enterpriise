@@ -57,6 +57,6 @@
     <menuitem id="menu_mrp_workorder_workcenter"
         name="Planning by Workcenter"
         sequence="2"
-        action="mrp.action_mrp_workorder_workcenter"
+        action="mrp_workorder.action_mrp_workorder_dependencies_workcenter"
         parent="mrp_workorder_menu_planning"/>
 </odoo>

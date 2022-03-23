@@ -1273,16 +1273,16 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
 
         workorders = production_table.workorder_ids
 
-        for i in range(len(workorders)-1):
-            self.assertEqual(workorders[i].next_work_order_id, workorders[i+1])
+        for i in range(len(workorders) - 1):
+            self.assertEqual(workorders[i].needed_by_workorder_ids, workorders[i + 1])
 
         production_table.workorder_ids[1].unlink()
 
         self.assertEqual(len(production_table.workorder_ids), 2)
 
         workorders = production_table.workorder_ids
-        for i in range(len(workorders)-1):
-            self.assertEqual(workorders[i].next_work_order_id, workorders[i+1])
+        for i in range(len(workorders) - 1):
+            self.assertEqual(workorders[i].needed_by_workorder_ids, workorders[i + 1])
 
     def test_planning_overlaps_wo(self):
         """ Test that workorder doesn't overlaps between then when plan the MO """
@@ -2060,9 +2060,9 @@ class TestRoutingAndKits(TransactionCase):
         self.assertEqual(ba_wo1.qty_remaining, 6)
         ba_wo1.finished_lot_id = lot1
         ba_wo1.record_production()
-        wo2 = mo.workorder_ids.filtered(lambda wo: wo.state == 'waiting')[0]
+        wo2 = mo.workorder_ids[2]
         wo2.button_start()
-        ba_wo2 = backorder.workorder_ids.filtered(lambda wo: wo.state == 'waiting')[0]
+        ba_wo2 = backorder.workorder_ids[2]
         ba_wo2.button_start()
         self.assertEqual(wo2.qty_producing, 4)
         self.assertEqual(wo2.finished_lot_id, lot1)

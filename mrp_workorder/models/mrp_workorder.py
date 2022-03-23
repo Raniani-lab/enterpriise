@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import ast
+from collections import defaultdict
+from datetime import datetime
+from pytz import utc
 
 from odoo import api, fields, models, _
 from odoo.osv import expression
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_round, float_is_zero
+from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
 
 
 class MrpWorkcenter(models.Model):
@@ -757,3 +760,49 @@ class MrpProductionWorkcenterLine(models.Model):
         if float_is_zero(quantity, precision_rounding=self.product_uom_id.rounding):
             self.check_ids.unlink()
         super()._update_qty_producing(quantity)
+
+    def _web_gantt_progress_bar_workcenter_id(self, res_ids, start, stop):
+        self.env['mrp.workorder'].check_access_rights('read')
+        workcenters = self.env['mrp.workcenter'].search([('id', 'in', res_ids)])
+        workorders = self.env['mrp.workorder'].search([
+            ('workcenter_id', 'in', res_ids),
+            ('state', 'not in', ['done', 'cancel']),
+            ('date_planned_start', '<=', stop.replace(tzinfo=None)),
+            ('date_planned_finished', '>=', start.replace(tzinfo=None)),
+        ])
+        planned_hours = defaultdict(float)
+        workcenters_work_intervals, dummy = workcenters.resource_id._get_valid_work_intervals(start, stop)
+        for workorder in workorders:
+            max_start = max(start, utc.localize(workorder.date_planned_start))
+            min_end = min(stop, utc.localize(workorder.date_planned_finished))
+            interval = Intervals([(max_start, min_end, self.env['resource.calendar.attendance'])])
+            work_intervals = interval & workcenters_work_intervals[workorder.workcenter_id.resource_id.id]
+            planned_hours[workorder.workcenter_id] += sum_intervals(work_intervals)
+        work_hours = {
+            id: sum_intervals(work_intervals) for id, work_intervals in workcenters_work_intervals.items()
+        }
+        return {
+            workcenter.id: {
+                'value': planned_hours[workcenter],
+                'max_value': work_hours.get(workcenter.resource_id.id, 0.0),
+            }
+            for workcenter in workcenters
+        }
+
+    def _web_gantt_progress_bar(self, field, res_ids, start, stop):
+        if field == 'workcenter_id':
+            return dict(
+                self._web_gantt_progress_bar_workcenter_id(res_ids, start, stop),
+                warning=_("This workcenter isn't expected to have open workorders during this period. Work hours :"),
+            )
+        raise NotImplementedError("This Progress Bar is not implemented.")
+
+    @api.model
+    def gantt_progress_bar(self, fields, res_ids, date_start_str, date_stop_str):
+        start_utc, stop_utc = string_to_datetime(date_start_str), string_to_datetime(date_stop_str)
+        today = datetime.now(utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        start_utc = max(start_utc, today)
+        progress_bars = {}
+        for field in fields:
+            progress_bars[field] = self._web_gantt_progress_bar(field, res_ids[field], start_utc, stop_utc)
+        return progress_bars

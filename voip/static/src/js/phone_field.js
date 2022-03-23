@@ -9,9 +9,6 @@ const Phone = basicFields.FieldPhone;
  * Override of FieldPhone to use the DialingPanel to perform calls on clicks.
  */
 Phone.include({
-    events: Object.assign({}, Phone.prototype.events, {
-        'click': '_onClick',
-    }),
 
     //--------------------------------------------------------------------------
     // Private
@@ -57,7 +54,10 @@ Phone.include({
      * @private
      * @param {MouseEvent} ev
      */
-    async _onClick(ev) {
+    async _onClickLink(ev) {
+        if (ev.target.matches("a")) {
+            ev.stopImmediatePropagation();
+        }
         if (this.mode !== 'readonly' || !window.RTCPeerConnection || !window.MediaStream || !navigator.mediaDevices) {
             return;
         }

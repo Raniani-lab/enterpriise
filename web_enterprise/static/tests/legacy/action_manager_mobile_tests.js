@@ -107,7 +107,7 @@ QUnit.test('lazy load mobile-friendly view', async function (assert) {
     assert.verifySteps([
         '/web/webclient/load_menus',
         '/web/action/load',
-        'load_views',
+        'get_views',
         'onchange', // default_get/onchange to open form view
         '/web/dataset/search_read', // search read when coming back to Kanban
     ]);

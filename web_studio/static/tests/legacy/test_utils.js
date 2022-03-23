@@ -152,7 +152,7 @@ async function createViewEditorManager(params) {
     weTestUtils.patch();
     const { mockServer, widget } = await start(params);
     const parent = new StudioEnvironment(widget);
-    const fieldsView = testUtils.mock.fieldsViewGet(mockServer, params);
+    const fieldsView = testUtils.mock.getView(mockServer, params);
     if (params.viewID) {
         fieldsView.view_id = params.viewID;
     }

@@ -726,7 +726,7 @@ QUnit.module("Views", (hooks) => {
             "should have rendered an additional switch button"
         );
 
-        assert.verifySteps(["load_views", "web_read_group"]);
+        assert.verifySteps(["get_views", "web_read_group"]);
     });
 
     QUnit.test("graph tag without aggregate and invisible field", async function (assert) {
@@ -902,7 +902,7 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(target, ".o_subview .o_pivot", "should have rendered a pivot view");
 
-        assert.verifySteps(["load_views", "read_group", "read_group"]);
+        assert.verifySteps(["get_views", "read_group", "read_group"]);
     });
 
     QUnit.test("pivot tag without aggregate and invisible field", async function (assert) {
@@ -1023,7 +1023,7 @@ QUnit.module("Views", (hooks) => {
             "should have rendered a cohort view"
         );
 
-        assert.verifySteps(["load_views", "get_cohort_data"]);
+        assert.verifySteps(["get_views", "get_cohort_data"]);
     });
 
     QUnit.test("cohort tag without aggregate and invisible field", async function (assert) {

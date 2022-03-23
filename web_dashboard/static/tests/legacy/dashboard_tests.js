@@ -475,7 +475,7 @@ QUnit.module('Views', {
         assert.containsN(dashboard, '.o_subview .o_graph_buttons .o_button_switch', 1, "should have rendered an additional switch button");
         assert.containsOnce(dashboard, '.o_subview .o_legacy_graph_renderer');
 
-        assert.verifySteps(['load_views', 'read_group']);
+        assert.verifySteps(['get_views', 'read_group']);
 
         dashboard.destroy();
     });
@@ -638,7 +638,7 @@ QUnit.module('Views', {
         assert.containsOnce(dashboard, '.o_subview .o_legacy_pivot',
             "should have rendered a graph view");
 
-        assert.verifySteps(['load_views', 'read_group', 'read_group']);
+        assert.verifySteps(['get_views', 'read_group', 'read_group']);
 
         dashboard.destroy();
     });
@@ -741,7 +741,7 @@ QUnit.module('Views', {
         assert.containsOnce(dashboard, '.o_subview .o_legacy_cohort_view',
             "should have rendered a graph view");
 
-        assert.verifySteps(['load_views', 'get_cohort_data']);
+        assert.verifySteps(['get_views', 'get_cohort_data']);
 
         dashboard.destroy();
     });

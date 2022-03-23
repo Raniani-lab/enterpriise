@@ -521,11 +521,12 @@ class WebStudioController(http.Controller):
         ViewModel = request.env[view.model]
         fields_view = ViewModel.with_context(studio=True).get_view(view.id, view.type)
         view_type = 'list' if view.type == 'tree' else view.type
+        models = fields_view['models']
 
         return {
-            'fields_views': {view_type: fields_view},
-            'fields': ViewModel.fields_get(),
+            'views': {view_type: fields_view},
             'studio_view_id': studio_view.id,
+            'models': {model: request.env[model].fields_get() for model in models}
         }
 
     @http.route('/web_studio/restore_default_view', type='json', auth='user')
@@ -741,11 +742,10 @@ Are you sure you want to remove the selection values of those records?""") % len
             try:
                 fields_view = ViewModel.with_context(studio=True).get_view(view.id, view.type)
                 view_type = 'list' if view.type == 'tree' else view.type
+                models = fields_view['models']
                 return {
-                    'fields_views': {
-                        view_type: fields_view,
-                    },
-                    'fields': ViewModel.fields_get(),
+                    'views': {view_type: fields_view},
+                    'model_fields': {model: request.env[model].fields_get() for model in models}
                 }
             except Exception:
                 return False

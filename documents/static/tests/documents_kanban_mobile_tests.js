@@ -5,7 +5,7 @@ const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const DocumentsListView = require('documents.DocumentsListView');
 const { createDocumentsView } = require('documents.test_utils');
 
-const { beforeEach } = require('@mail/utils/test_utils');
+const { beforeEach } = require('@mail/../tests/helpers/test_utils');
 
 const { dom, nextTick } = require('web.test_utils');
 

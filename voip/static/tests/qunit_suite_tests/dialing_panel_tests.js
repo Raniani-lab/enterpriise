@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { beforeEach, start } from '@mail/utils/test_utils';
+import { beforeEach, start } from '@mail/../tests/helpers/test_utils';
 
 import mobile from 'web_mobile.core';
 import DialingPanel from 'voip.DialingPanel';

@@ -5,7 +5,7 @@ import {
     beforeEach,
     nextAnimationFrame,
     start,
-} from '@mail/utils/test_utils';
+} from '@mail/../tests/helpers/test_utils';
 
 import FormRenderer from '@account_invoice_extract/js/invoice_extract_form_renderer';
 import FormView from '@account_invoice_extract/js/invoice_extract_form_view';

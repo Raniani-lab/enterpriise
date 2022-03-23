@@ -3,7 +3,7 @@
 
 import { nextTick, dom, fields, createView } from "web.test_utils";
 import { registry } from "@web/core/registry";
-import { beforeEach } from "@mail/utils/test_utils";
+import { beforeEach } from "@mail/../tests/helpers/test_utils";
 
 import { jsonToBase64, base64ToJson } from "@documents_spreadsheet_bundle/o_spreadsheet/helpers";
 import DocumentsKanbanView from "documents_spreadsheet.KanbanView";

@@ -4,7 +4,7 @@ odoo.define('documents.test_utils', function (require) {
 const AbstractStorageService = require('web.AbstractStorageService');
 const RamStorage = require('web.RamStorage');
 
-const { start } = require('@mail/utils/test_utils');
+const { start } = require('@mail/../tests/helpers/test_utils');
 
 async function createDocumentsView(params) {
     params.archs = params.archs || {};

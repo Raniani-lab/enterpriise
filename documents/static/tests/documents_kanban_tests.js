@@ -11,7 +11,7 @@ const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 const {
     afterNextRender,
     beforeEach,
-} = require('@mail/utils/test_utils');
+} = require('@mail/../tests/helpers/test_utils');
 
 const {
     toggleFilterMenu,

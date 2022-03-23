@@ -4,7 +4,7 @@ import {
     afterNextRender,
     beforeEach,
     start,
-} from '@mail/utils/test_utils';
+} from '@mail/../tests/helpers/test_utils';
 
 import testUtils, { file } from 'web.test_utils';
 import config from 'web.config';

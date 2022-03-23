@@ -77,7 +77,12 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
     handle(cmd) {
         switch (cmd.type) {
             case "ADD_GLOBAL_FILTER":
+                this.recordsDisplayName[cmd.filter.id] = cmd.filter.defaultValueDisplayNames;
+                break;
             case "EDIT_GLOBAL_FILTER":
+                if(this.values[cmd.id] && this.values[cmd.id].rangeType !== cmd.filter.rangeType){
+                    delete this.values[cmd.id];
+                }
                 this.recordsDisplayName[cmd.filter.id] = cmd.filter.defaultValueDisplayNames;
                 break;
             case "SET_GLOBAL_FILTER_VALUE":
@@ -86,6 +91,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                 break;
             case "REMOVE_GLOBAL_FILTER":
                 delete this.recordsDisplayName[cmd.id];
+                delete this.values[cmd.id];
                 break;
         }
         switch (cmd.type) {
@@ -111,7 +117,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
      * @returns {string|Array<string>|Object} value Current value to set
      */
     getGlobalFilterValue(id) {
-        return id in this.values ? this.values[id] : this.getters.getGlobalFilterDefaultValue(id);
+        return id in this.values ? this.values[id].value : this.getters.getGlobalFilterDefaultValue(id);
     }
 
     /**
@@ -174,7 +180,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
      * @param {string|Array<string>|Object} value Current value to set
      */
     _setGlobalFilterValue(id, value) {
-        this.values[id] = value;
+        this.values[id] = {value: value, rangeType: this.getters.getGlobalFilter(id).rangeType};
     }
 
     /**

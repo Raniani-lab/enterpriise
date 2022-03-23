@@ -980,6 +980,80 @@ module("documents_spreadsheet > global_filters",
         assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue, {});
     });
 
+    test("Changing the range of a date global filter reset the current value", async function (assert) {
+        const { model } = await createSpreadsheetFromPivot();
+        await addGlobalFilter(model, {
+          filter: {
+            id: "42",
+            type: "date",
+            rangeType: "month",
+            label: "This month",
+            pivotFields: {
+              1: { field: "create_date", type: "datetime" },
+            },
+            defaultValue: {
+              period: "january",
+            },
+          },
+        });
+        const searchIcon = target.querySelector(
+          ".o_topbar_filter_icon"
+        );
+        await testUtils.dom.click(searchIcon);
+
+        // Edit filter value in filters list
+        const optionInFilterList = target.querySelector(
+          ".pivot_filter select"
+        );
+        optionInFilterList
+          .querySelector("select option[selected='1']")
+          .setAttribute("selected", "0");
+        optionInFilterList
+          .querySelector("select option[value='february']")
+          .setAttribute("selected", "1");
+        await testUtils.dom.triggerEvent(optionInFilterList, "change");
+        await testUtils.nextTick();
+        const editFilter = target.querySelector(
+          ".o_side_panel_filter_icon"
+        );
+
+         // Edit filter range and save
+        await testUtils.dom.click(editFilter);
+        const timeRangeOption = target.querySelectorAll(
+          ".o_spreadsheet_filter_editor_side_panel .o_side_panel_section"
+        )[1];
+        timeRangeOption
+          .querySelector("select option[value='quarter']")
+          .setAttribute("selected", "selected");
+        await testUtils.dom.triggerEvent(
+          timeRangeOption.querySelector("select"),
+          "change"
+        );
+        await testUtils.nextTick();
+        const quarterOption = target.querySelectorAll(
+          ".o_spreadsheet_filter_editor_side_panel .o_side_panel_section"
+        )[2];
+        quarterOption
+          .querySelector("select option[value='first_quarter']")
+          .setAttribute("selected", "selected");
+        await testUtils.dom.triggerEvent(
+          quarterOption.querySelector("select"),
+          "change"
+        );
+        await testUtils.nextTick();
+
+        await testUtils.dom.click(
+            target.querySelector(".o_global_filter_save")
+        );
+        await testUtils.nextTick();
+
+        assert.deepEqual(model.getters.getGlobalFilter(42).defaultValue, {
+          period: "first_quarter",
+          year: "this_year",
+        });
+        assert.deepEqual(model.getters.getGlobalFilterValue(42), model.getters.getGlobalFilter(42).defaultValue);
+      });
+
     test("pivot headers won't change when adding a filter ", async function (assert) {
         assert.expect(6);
         const { model } = await createSpreadsheetFromPivot({

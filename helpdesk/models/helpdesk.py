@@ -494,7 +494,7 @@ class HelpdeskTeam(models.Model):
             if ticket['priority'] == '3':
                 add_to(ticket, 'my_urgent')
 
-        dt = fields.Date.today()
+        dt = fields.Date.context_today(self)
         tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
         for ticket in tickets:
             result['today']['count'] += ticket['__count']

@@ -114,6 +114,7 @@ class TestAmazon(TestAmazonCommon):
             self.assertEqual(order.company_id.id, self.account.company_id.id)
             self.assertEqual(order.user_id.id, self.account.user_id.id)
             self.assertEqual(order.team_id.id, self.account.team_id.id)
+            self.assertEqual(order.warehouse_id.id, self.account.location_id.warehouse_id.id)
             self.assertEqual(order.amazon_channel, 'fbm')
 
             order_lines = self.env['sale.order.line'].search([('order_id', '=', order.id)])

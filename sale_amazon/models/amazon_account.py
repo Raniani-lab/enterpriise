@@ -458,7 +458,7 @@ class AmazonAccount(models.Model):
             order_lines_vals = self._process_order_lines(
                 items_data, shipping_code, shipping_product, currency, fiscal_position,
                 marketplace_api_ref)
-            order = self.env['sale.order'].with_context(mail_create_nosubscribe=True).create({
+            order_vals = {
                 'origin': 'Amazon Order %s' % amazon_order_ref,
                 'state': state,
                 'date_order': purchase_date,
@@ -475,7 +475,12 @@ class AmazonAccount(models.Model):
                 'team_id': self.team_id.id,
                 'amazon_order_ref': amazon_order_ref,
                 'amazon_channel': 'fba' if fulfillment_channel == 'AFN' else 'fbm',
-            })
+            }
+            if self.location_id.warehouse_id:
+                order_vals['warehouse_id'] = self.location_id.warehouse_id.id
+            order = self.env['sale.order'].with_context(mail_create_nosubscribe=True).create(
+                order_vals
+            )
         return order, order_found, status
 
     def _process_order_lines(

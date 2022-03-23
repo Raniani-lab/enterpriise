@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="appointment.Calendar.calendar_link_buttons" t-inherit-mode="extension">
+        <xpath expr="//div[@id='message_text']/p" position="attributes">
+            <attribute name="t-if">!opportunity_name</attribute>
+        </xpath>
+        <xpath expr="//div[@id='message_text']" position="inside">
+            <p class="mx-2" t-if="opportunity_name">
+                Click in your calendar to pick meeting time proposals for <b t-out="opportunity_name"/>.
+            </p>
+        </xpath>
+    </t>
+
+</templates>

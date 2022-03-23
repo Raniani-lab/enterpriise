@@ -22,4 +22,12 @@ Allow to generate lead from Scheduled Appointments through your Website
     'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'appointment_crm/static/src/js/calendar_renderer.js',
+        ],
+        'web.assets_qweb': [
+            'appointment_crm/static/src/xml/**/*',
+        ],
+    },
 }

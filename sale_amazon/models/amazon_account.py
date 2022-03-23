@@ -315,8 +315,8 @@ class AmazonAccount(models.Model):
                         amazon_order_ref, rate_limit_reached, sync_failure = account._process_order(
                                 order_data, orders_api)
                         if sync_failure:
-                            account._handle_order_sync_failure(amazon_order_ref)
                             self.env.cr.rollback()
+                            account._handle_order_sync_failure(amazon_order_ref)
                             continue
                         if rate_limit_reached:
                             _logger.warning(

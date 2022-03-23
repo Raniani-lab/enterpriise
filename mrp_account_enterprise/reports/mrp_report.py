@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class MrpReport(models.Model):
@@ -193,3 +193,25 @@ class MrpReport(models.Model):
         """
 
         return group_by_str
+
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        """
+            overrides the default read_group in order to calculate the average Cost per unit produced in each MO.
+        """
+        additional_fields = [field
+                             for field in ['unit_cost', 'unit_component_cost', 'unit_operation_cost', 'unit_duration']
+                             if ('%s:avg' % field) in fields]
+        if additional_fields:
+            fields.extend(['aggregated_qty_produced:array_agg(qty_produced)'])
+            fields.extend(['aggregated_%s:array_agg(%s)' % (field, field) for field in additional_fields])
+        res = super().read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+        if additional_fields:
+            qties = 'aggregated_qty_produced'
+            for data in res:
+                for field in additional_fields:
+                    special_field = 'aggregated_%s' % field
+                    data[field] = sum([float(value) * float(qty) for value, qty in zip(data[special_field], data[qties])]) / sum(float(qty) for qty in data[qties])
+                    del data[special_field]
+                del data[qties]
+        return res

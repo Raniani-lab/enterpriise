@@ -161,7 +161,7 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
         if (this.dependencyEnabled) {
             this._connectorContainerComponent = new ComponentWrapper(this, ConnectorContainer, this._getConnectorContainerProps());
             this._throttledReRender = _.throttle(async () => {
-                await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
+                await this.updateConnectorContainerComponent();
             }, 100);
         }
     },
@@ -172,7 +172,7 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
       */
     async update() {
         if (this.dependencyEnabled) {
-            await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
+            await this.updateConnectorContainerComponent();
         }
         await this._super(...arguments);
     },
@@ -242,15 +242,18 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
                 });
                 await this._connectorContainerComponent.update(this._getConnectorContainerProps());
             }
-            if (this._rowsAndRecordsDict) {
-                for (const pill of Object.values(this._rowsAndRecordsDict.records[connectorCreatorInfo.pill.dataset.id].rowsInfo).map((rowInfo) => rowInfo.pillElement)) {
-                    const tempConnectorCreatorInfo = this._getConnectorCreatorInfo(pill);
-                    if (highlighted || !this._isConnectorCreatorDragged(tempConnectorCreatorInfo)) {
-                        tempConnectorCreatorInfo.pill.classList.toggle('highlight', highlighted);
-                        if (connectorCreatorInfo.pill === tempConnectorCreatorInfo.pill) {
-                            for (const connectorCreator of tempConnectorCreatorInfo.connectorCreators) {
-                                connectorCreator.classList.toggle('invisible', !highlighted);
-                            }
+
+            if (!(this._rowsAndRecordsDict
+                && this._rowsAndRecordsDict.records[connectorCreatorInfo.pill.dataset.id]
+                && this._rowsAndRecordsDict.records[connectorCreatorInfo.pill.dataset.id].rowsInfo)) return;
+
+            for (const pill of Object.values(this._rowsAndRecordsDict.records[connectorCreatorInfo.pill.dataset.id].rowsInfo).map((rowInfo) => rowInfo.pillElement)) {
+                const tempConnectorCreatorInfo = this._getConnectorCreatorInfo(pill);
+                if (highlighted || !this._isConnectorCreatorDragged(tempConnectorCreatorInfo)) {
+                    tempConnectorCreatorInfo.pill.classList.toggle('highlight', highlighted);
+                    if (connectorCreatorInfo.pill === tempConnectorCreatorInfo.pill) {
+                        for (const connectorCreator of tempConnectorCreatorInfo.connectorCreators) {
+                            connectorCreator.classList.toggle('invisible', !highlighted);
                         }
                     }
                 }
@@ -287,7 +290,17 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
             if (!this.disableDragdrop) {
                 this._setRowsDroppable();
             }
+            if (this.dependencyEnabled && this._shouldRenderConnectors()) {
+                this.updateConnectorContainerComponent();
+            }
         });
+    },
+    /**
+     * Update the ConnectorContainer component with updated connectors.
+     * @returns {Promise}
+     */
+    async updateConnectorContainerComponent() {
+        await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
     },
 
     //--------------------------------------------------------------------------
@@ -375,9 +388,12 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
             rows: { },
         };
         for (const row of this.state.rows) {
-            // We need to escape '"' & '\' from the row.id before calling the querySelector
-            const rowElementSelector = `${this._connectorsCssSelectors.groupByNoGroup}[data-row-id="${row.id.replace(/["\\]/g, '\\$&')}"]`;
+            // We need to remove the closing "}]" from the row.id in order to ensure that things works
+            // smoothly when collapse_first_level option is activated. Then we need to escape '"' &
+            // '\' from the row.id before calling the querySelector.
+            const rowElementSelector = `${this._connectorsCssSelectors.groupByNoGroup}[data-row-id^="${row.id.replace("}]", "").replace(/["\\]/g, '\\$&')}"]`;
             const rowElement = this.el.querySelector(rowElementSelector);
+            if (!rowElement) continue;
             this._rowsAndRecordsDict.rows[row.id] = {
                 records: { }
             };
@@ -424,7 +440,9 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
         for (const masterId of slaveRecord[this.dependencyField]) {
             if (masterId in this._rowsAndRecordsDict.records) {
                 let connectors = [];
+                if (!this._rowsAndRecordsDict.records[slaveRecord.id]) continue;
                 for (const slaveRowId in this._rowsAndRecordsDict.records[slaveRecord.id].rowsInfo) {
+                    if (!this._rowsAndRecordsDict.records[masterId]) continue;
                     for (const masterRowId in this._rowsAndRecordsDict.records[masterId].rowsInfo) {
                         /**
                          *   Having:
@@ -739,7 +757,7 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
             await this._connectorContainerComponent.unmount();
         }
         await this._connectorContainerComponent.mount(this.el);
-        await this._connectorContainerComponent.update(this._generateAndGetConnectorContainerProps());
+        await this.updateConnectorContainerComponent();
     },
     /**
      * Prepare view info which is used by GanttRow widget

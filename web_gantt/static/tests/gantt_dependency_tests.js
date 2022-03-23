@@ -17,9 +17,9 @@ const TestGanttRenderer = GanttRenderer.extend({
     /**
      * @override
     */
-    async _mountConnectorContainer() {
+    async updateConnectorContainerComponent() {
         await this._super(...arguments);
-        testPromise.resolve();
+        return testPromise.resolve();
     }
 });
 const TestGanttView = GanttView.extend({
@@ -393,6 +393,220 @@ QUnit.test('Connectors are correctly computed and rendered.', async function (as
 
     assert.notOk(Object.keys(connectorsDictCopy).length, 'There should not be more connectors than expected.');
     assert.equal(gantt.el.querySelectorAll(CSS.SELECTOR.CONNECTOR).length, Object.keys(tests).length, 'All connectors should be rendered.');
+});
+
+QUnit.test('Connectors are correctly computed and rendered when collapse_first_level is active.', async function (assert) {
+    /**
+     * This test checks that the connectors are correctly drew when collapse_first_level is active.
+     */
+
+    assert.expect(9);
+
+    ganttViewParams.data = {
+        'project.task': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+                planned_date_begin: { string: 'Start Date', type: 'datetime' },
+                planned_date_end: { string: 'Stop Date', type: 'datetime' },
+                project_id: { string: 'Project', type: 'many2one', relation: 'project.project' },
+                user_ids: { string: 'Assignees', type: 'many2many', relation: 'res.users' },
+                allow_task_dependencies: { string: 'Allow Task Dependencies', type: "boolean", default: true },
+                depend_on_ids: { string: 'Depends on', type: 'one2many', relation: 'project.task' },
+            },
+            records: [
+                {
+                    id: 1,
+                    name: 'Task 1',
+                    planned_date_begin: '2021-10-11 18:30:00',
+                    planned_date_end: '2021-10-11 19:29:59',
+                    project_id: 1,
+                    user_ids: [1],
+                    depend_on_ids: [],
+                },
+                {
+                    id: 2,
+                    name: 'Task 2',
+                    planned_date_begin: '2021-10-12 11:30:00',
+                    planned_date_end: '2021-10-12 12:29:59',
+                    project_id: 1,
+                    user_ids: [1, 3],
+                    depend_on_ids: [1],
+                },
+                {
+                    id: 3,
+                    name: 'Task 3',
+                    planned_date_begin: '2021-10-13 06:30:00',
+                    planned_date_end: '2021-10-13 07:29:59',
+                    project_id: 1,
+                    user_ids: [],
+                    depend_on_ids: [2],
+                },
+                {
+                    id: 4,
+                    name: 'Task 4',
+                    planned_date_begin: '2021-10-14 22:30:00',
+                    planned_date_end: '2021-10-14 23:29:59',
+                    project_id: 1,
+                    user_ids: [2, 3],
+                    depend_on_ids: [2],
+                },
+                {
+                    id: 5,
+                    name: 'Task 5',
+                    planned_date_begin: '2021-10-15 01:53:10',
+                    planned_date_end: '2021-10-15 02:34:34',
+                    project_id: 1,
+                    user_ids: [],
+                    depend_on_ids: [],
+                },
+                {
+                    id: 6,
+                    name: 'Task 6',
+                    planned_date_begin: '2021-10-16 23:00:00',
+                    planned_date_end: '2021-10-16 23:21:01',
+                    project_id: 1,
+                    user_ids: [1, 3],
+                    depend_on_ids: [4, 5],
+                },
+                {
+                    id: 7,
+                    name: 'Task 7',
+                    planned_date_begin: '2021-10-17 10:30:12',
+                    planned_date_end: '2021-10-17 11:29:59',
+                    project_id: 1,
+                    user_ids: [1, 2, 3],
+                    depend_on_ids: [6],
+                },
+                {
+                    id: 8,
+                    name: 'Task 8',
+                    planned_date_begin: '2021-10-18 06:30:12',
+                    planned_date_end: '2021-10-18 07:29:59',
+                    project_id: 1,
+                    user_ids: [1, 3],
+                    depend_on_ids: [7],
+                },
+                {
+                    id: 9,
+                    name: 'Task 9',
+                    planned_date_begin: '2021-10-19 06:30:12',
+                    planned_date_end: '2021-10-19 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [8],
+                },
+                {
+                    id: 10,
+                    name: 'Task 10',
+                    planned_date_begin: '2021-10-19 06:30:12',
+                    planned_date_end: '2021-10-19 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [],
+                },
+                {
+                    id: 11,
+                    name: 'Task 11',
+                    planned_date_begin: '2021-10-18 06:30:12',
+                    planned_date_end: '2021-10-18 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [10],
+                },
+                {
+                    id: 12,
+                    name: 'Task 12',
+                    planned_date_begin: '2021-10-18 06:30:12',
+                    planned_date_end: '2021-10-19 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [],
+                },
+                {
+                    id: 13,
+                    name: 'Task 13',
+                    planned_date_begin: '2021-10-18 07:29:59',
+                    planned_date_end: '2021-10-20 07:29:59',
+                    project_id: 1,
+                    user_ids: [2],
+                    depend_on_ids: [12],
+                },
+            ],
+        },
+        'project.project': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'Project 1' },
+            ],
+        },
+        'res.users': {
+            fields: {
+                id: { string: 'ID', type: 'integer' },
+                name: { string: 'Name', type: 'char' },
+            },
+            records: [
+                { id: 1, name: 'User 1' },
+                { id: 2, name: 'User 2' },
+                { id: 3, name: 'User 3' },
+                { id: 4, name: 'User 4' },
+            ],
+        },
+    };
+
+    ganttViewParams.arch = ganttViewParams.arch.replace('/>', ' collapse_first_level="1"/>');
+    const gantt = await createView({ ...ganttViewParams, groupBy: ['user_ids'] });
+    registerCleanup(gantt.destroy);
+    await testPromise;
+
+    assert.equal(gantt.el.querySelectorAll('.o_gantt_row_group.open').length, 4, '`collapse_first_level` is activated.')
+
+    function getConnectorCounts() {
+        return gantt.el.querySelectorAll('.o_connector').length;
+    }
+
+    let connectorsCount = getConnectorCounts();
+    assert.equal(connectorsCount, 22, 'All connectors are drawn.');
+
+    testPromise = testUtils.makeTestPromise();
+    gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":[1,\\"User 1\\"]}]"]').click();
+    await testPromise;
+    connectorsCount = getConnectorCounts();
+    assert.ok(gantt.el.querySelector('.o_gantt_row_group:not(.open)[data-row-id^="[{\\"user_ids\\":[1,\\"User 1\\"]}]"]'), 'Group has been closed.')
+    assert.equal(connectorsCount, 13, 'Only connectors between open groups are drawn.')
+
+    testPromise = testUtils.makeTestPromise();
+    gantt.el.querySelector('.o_gantt_row_group:not(.open)[data-row-id^="[{\\"user_ids\\":[1,\\"User 1\\"]}]"]').click();
+    await testPromise;
+    connectorsCount = getConnectorCounts();
+    assert.equal(connectorsCount, 22, 'All connectors are drawn after having reopen the only closed group.');
+
+    testPromise = testUtils.makeTestPromise();
+    gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":[1,\\"User 1\\"]}]"]').click();
+    await testPromise;
+    connectorsCount = getConnectorCounts();
+    assert.equal(connectorsCount, 13, 'Only connectors between open groups are drawn.')
+
+    testPromise = testUtils.makeTestPromise();
+    gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":[2,\\"User 2\\"]}]"]').click();
+    await testPromise;
+    connectorsCount = getConnectorCounts();
+    assert.equal(connectorsCount, 6, 'Only connectors between open groups are drawn.')
+
+    testPromise = testUtils.makeTestPromise();
+    gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":false}]"]').click();
+    await testPromise;
+    connectorsCount = getConnectorCounts();
+    assert.equal(connectorsCount, 4, 'Only connectors between open groups are drawn.')
+
+    testPromise = testUtils.makeTestPromise();
+    gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":[3,\\"User 3\\"]}]"]').click();
+    await testPromise;
+    connectorsCount = getConnectorCounts();
+    assert.equal(connectorsCount, 0, 'Only connectors between open groups are drawn.')
 });
 
 QUnit.test('Connector hovered state is triggered and color is set accordingly.', async function (assert) {

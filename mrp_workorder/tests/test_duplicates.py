@@ -10,7 +10,7 @@ class TestDuplicateProducts(common.TransactionCase):
         super(TestDuplicateProducts, cls).setUpClass()
         cls.workcenter_1 = cls.env['mrp.workcenter'].create({
             'name': 'Nuclear Workcenter',
-            'capacity': 2,
+            'default_capacity': 2,
             'time_start': 10,
             'time_stop': 5,
             'time_efficiency': 80,

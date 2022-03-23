@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
+from odoo import Command
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase
 from odoo.addons.mrp.tests.common import TestMrpCommon
@@ -19,14 +20,14 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
         # setting up alternative workcenters
         cls.wc_alt_1 = cls.env['mrp.workcenter'].create({
             'name': 'Nuclear Workcenter bis',
-            'capacity': 3,
+            'default_capacity': 3,
             'time_start': 9,
             'time_stop': 5,
             'time_efficiency': 80,
         })
         cls.wc_alt_2 = cls.env['mrp.workcenter'].create({
             'name': 'Nuclear Workcenter ter',
-            'capacity': 1,
+            'default_capacity': 1,
             'time_start': 10,
             'time_stop': 5,
             'time_efficiency': 85,
@@ -696,7 +697,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
 
         # Update capacity, start time, stop time, and time efficiency.
         # ------------------------------------------------------------
-        self.workcenter_1.write({'capacity': 1, 'time_start': 0, 'time_stop': 0, 'time_efficiency': 100})
+        self.workcenter_1.write({'default_capacity': 1, 'time_start': 0, 'time_stop': 0, 'time_efficiency': 100})
 
         # Set manual time cycle 20 and 10.
         # --------------------------------
@@ -1593,7 +1594,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
     def test_planning_7(self):
         """ set the workcenter capacity to 10. Produce a dozen of product tracked by
         SN. The production should be done in two batches"""
-        self.workcenter_1.capacity = 10
+        self.workcenter_1.default_capacity = 10
         self.workcenter_1.time_efficiency = 100
         self.workcenter_1.time_start = 0
         self.workcenter_1.time_stop = 0
@@ -1609,6 +1610,29 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         mo.button_plan()
         wo = mo.workorder_ids
         self.assertEqual(wo.duration_expected, 120)
+
+    def test_planning_7_with_product_capacity(self):
+        """ Set the workcenter capacity to 10 by default and 12 on product.
+        Produce a dozen of product tracked by SN.
+        The production should be done in only 1 batch
+        -> Reproduce test_planning_7 with specific product capacity
+        """
+        self.workcenter_1.default_capacity = 10
+        self.workcenter_1.capacity_ids = [Command.create({'product_id': self.product_4.id, 'capacity': 12})]
+        self.workcenter_1.time_efficiency = 100
+        self.workcenter_1.time_start = 0
+        self.workcenter_1.time_stop = 0
+        self.planning_bom.operation_ids.time_cycle = 60
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = self.product_4
+        mo_form.bom_id = self.planning_bom
+        mo_form.product_uom_id = self.uom_dozen
+        mo_form.product_qty = 1
+        mo = mo_form.save()
+        mo.action_confirm()
+        mo.button_plan()
+        wo = mo.workorder_ids
+        self.assertEqual(wo.duration_expected, 60)
 
     def test_plan_unplan_date(self):
         """ Testing planning a workorder then cancel it and then plan it again.

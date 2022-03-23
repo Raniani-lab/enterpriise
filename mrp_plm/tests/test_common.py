@@ -31,7 +31,7 @@ class TestPlmCommon(common.TransactionCase):
 
         cls.workcenter_1 = cls.env['mrp.workcenter'].create({
             'name': 'Workcenter',
-            'capacity': 2,
+            'default_capacity': 2,
             'time_start': 10,
             'time_stop': 5,
             'time_efficiency': 80,
@@ -39,7 +39,7 @@ class TestPlmCommon(common.TransactionCase):
 
         cls.workcenter_2 = cls.env['mrp.workcenter'].create({
             'name': 'Nuclear Workcenter',
-            'capacity': 2,
+            'default_capacity': 2,
             'time_start': 10,
             'time_stop': 5,
             'time_efficiency': 80,
@@ -47,7 +47,7 @@ class TestPlmCommon(common.TransactionCase):
 
         cls.workcenter_3 = cls.env['mrp.workcenter'].create({
             'name': 'Nuclear Weapon Workcenter',
-            'capacity': 2,
+            'default_capacity': 2,
             'time_start': 10,
             'time_stop': 5,
             'time_efficiency': 80,

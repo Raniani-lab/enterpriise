@@ -1151,10 +1151,6 @@ const SignableDocument = Document.extend({
         isSignItemEditable,
         update = true
       ) {
-        // jQuery.data parse 0 as integer, but 0 is not considered falsy for signature item
-        if (value === 0) {
-          value = "0";
-        }
         const $signatureItem = this._super.apply(this, arguments);
         const readonly =
           this.readonlyFields ||

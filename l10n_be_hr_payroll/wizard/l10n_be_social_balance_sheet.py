@@ -48,12 +48,15 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
         date_from = self.date_from + relativedelta(day=1)
         date_to = self.date_to + relativedelta(day=31)
 
+        cip = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cip')
+
         payslips = self.env['hr.payslip'].search([
             ('state', 'in', ['done', 'paid']),
             ('struct_id', '=', self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id),
             ('company_id', '=', self.company_id.id),
             ('date_from', '>=', date_from),
-            ('date_to', '<=', date_to)])
+            ('date_to', '<=', date_to),
+            ('contract_id.contract_type_id', '!=', cip.id)])
 
         # SECTION 100
         # Calculated as the average of number of workers entered in the personnel register at
@@ -173,10 +176,10 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
         workers_data = collections.defaultdict(lambda: dict(full=0, part=0, fte=0))
 
         end_contracts = self.env['hr.employee']._get_all_contracts(self.date_to, self.date_to, states=['open', 'close'])
+        end_contracts = end_contracts.filtered(lambda c: c.contract_type_id != cip)
 
         cdi = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdi')
         cdd = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdd')
-        cip = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cip', raise_if_not_found=False)
         replacement = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdd')
         defined_work = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_clearly_defined_work')
         mapped_types = {
@@ -184,7 +187,6 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
             cdd: '111',
             defined_work: '112',
             replacement: '113',
-            cip: '-1',
         }
 
         mapped_certificates = {

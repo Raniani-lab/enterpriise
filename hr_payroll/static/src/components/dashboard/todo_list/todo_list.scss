@@ -58,10 +58,6 @@
                     width: 3px;
                 }
 
-                .active {
-                    border-bottom: 1px solid white;
-                }
-
                 @include o-kanban-record-color;
             }
 
@@ -83,6 +79,17 @@
                     color: #6c757d;
                     margin-top: 4px;
                 }
+
+                &.active  {
+                    background-color: $o-enterprise-color;
+                    h3 {
+                        color: white;
+                    }
+                }
+                &:not(.active):not(.o_hr_payroll_todo_create) {
+                    background-color: $o-gray-100;
+                }
+
             }
 
             .o_hr_payroll_todo_value {

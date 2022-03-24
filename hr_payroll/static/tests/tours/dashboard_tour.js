@@ -69,15 +69,6 @@ tour.register('payroll_dashboard_ui_tour', {
         trigger: 'div.o_hr_payroll_todo_create',
     },
     {
-        content: "Select created note",
-        trigger: 'div.o_hr_payroll_todo_tab:contains("Untitled")'
-    },
-    {
-        content: "Enter edit mode by double-clicking",
-        trigger: 'div.o_hr_payroll_todo_tab:contains("Untitled")',
-        run: 'dblclick'
-    },
-    {
         content: "Set a name",
         trigger: 'div.o_hr_payroll_todo_tab input',
         run: 'text Dashboard Todo List'

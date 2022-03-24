@@ -59,6 +59,7 @@ export class PayrollDashboardTodo extends Component {
             activeNoteId: this.props.notes.length ? this.props.notes[0]['id'] : -1,
             mode: this.props.notes.length ? 'readonly' : '',
         });
+        this.recentlyCreatedNote = false;
         useAutofocus();
         onWillUnmount(() => {
             if (this.state.mode === 'edit') {
@@ -69,6 +70,12 @@ export class PayrollDashboardTodo extends Component {
             if (this.state.mode === '' && this.props.notes.length > 0) {
                 this.state.mode = 'readonly';
                 this.state.activeNoteId = this.props.notes[0]['id'];
+            }
+
+            if (this.recentlyCreatedNote) {
+                this.onClickNoteTab(this.recentlyCreatedNote);
+                this.onDoubleClickNoteTab();
+                this.recentlyCreatedNote = false;
             }
         });
 
@@ -120,15 +127,16 @@ export class PayrollDashboardTodo extends Component {
     }
 
     /**
-     * Opens the form view for either a new or an existing note.
+     * Creates a note.
      *
      */
     async createNoteForm() {
-        await this.orm.create('note.note', {
+        const createdNote = await this.orm.create('note.note', {
             'name': 'Untitled',
             'tag_ids': [[4, this.payrollTagId]],
             'company_id': owl.Component.env.session.user_context.allowed_company_ids[0],
         });
+        this.recentlyCreatedNote = createdNote;
         this.props.reloadNotes();
     }
 
@@ -259,7 +267,7 @@ export class PayrollDashboardTodo extends Component {
     }
 
     /**
-     * Opens a form view to create a new note.
+     * Handles the click on the create note button
      */
     onClickCreateNote() {
         if (this.state.mode === 'edit') {

@@ -98,6 +98,11 @@ class Payslip(models.Model):
                 ('day', '<=', max(self.mapped('date_to'))),
                 ('day', '>=', min(self.mapped('date_from')))], ['day', 'employee_id', 'benefit_name'])
 
+            work_entries_benefits_rights_by_employee = defaultdict(list)
+            for work_entries_benefits_right in work_entries_benefits_rights:
+                employee_id = work_entries_benefits_right['employee_id'][0]
+                work_entries_benefits_rights_by_employee[employee_id].append(work_entries_benefits_right)
+
             # {(calendar, date_from, date_to): resources}
             mapped_resources = defaultdict(lambda: self.env['resource.resource'])
             for payslip in self:
@@ -119,9 +124,10 @@ class Payslip(models.Model):
                 date_from = max(payslip.date_from, contract.date_start)
                 date_to = min(payslip.date_to, contract.date_end or payslip.date_to)
                 for work_entries_benefits_right in (
-                        work_entries_benefits_right for work_entries_benefits_right in work_entries_benefits_rights
+                        work_entries_benefits_right
+                        for work_entries_benefits_right in work_entries_benefits_rights_by_employee[payslip.employee_id.id]
                         if date_from <= work_entries_benefits_right['day'] <= date_to
-                        and payslip.employee_id.id == work_entries_benefits_right['employee_id'][0]):
+                    ):
                     if work_entries_benefits_right['benefit_name'] not in benefits:
                         benefits[work_entries_benefits_right['benefit_name']] = 1
                     else:
@@ -341,8 +347,8 @@ class Payslip(models.Model):
             for vals in worked_days_line_values:
                 vals['is_credit_time'] = False
             credit_time_line_values = self._get_credit_time_lines()
-            return [(5, 0, 0)] + [(0, 0, vals) for vals in worked_days_line_values + credit_time_line_values]
-        return [(5, False, False)]
+            return [(0, 0, vals) for vals in worked_days_line_values + credit_time_line_values]
+        return []
 
     def _get_base_local_dict(self):
         res = super()._get_base_local_dict()

@@ -132,7 +132,9 @@ class HrContract(models.Model):
 
     @api.model
     def _advantage_black_list(self):
-        return set(MAGIC_COLUMNS + ['wage_with_holidays', 'wage_on_signature', 'active'])
+        return set(MAGIC_COLUMNS + [
+            'wage_with_holidays', 'wage_on_signature', 'active',
+            'date_generated_from', 'date_generated_to'])
 
     @api.model
     def _advantage_white_list(self):

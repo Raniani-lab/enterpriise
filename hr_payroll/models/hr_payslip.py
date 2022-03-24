@@ -13,7 +13,7 @@ from odoo import api, Command, fields, models, _
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv.expression import AND
-from odoo.tools import float_round, date_utils, convert_file, html2plaintext
+from odoo.tools import float_round, date_utils, convert_file, html2plaintext, is_html_empty
 from odoo.tools.float_utils import float_compare
 from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
@@ -625,7 +625,6 @@ class HrPayslip(models.Model):
 
             blacklisted_rule_ids = self.env.context.get('prevent_payslip_computation_line_ids', [])
 
-
             result = {}
             for rule in sorted(payslip.struct_id.rule_ids, key=lambda x: x.sequence):
                 if rule.id in blacklisted_rule_ids:
@@ -676,7 +675,7 @@ class HrPayslip(models.Model):
                         'sequence': rule.sequence,
                         'code': rule.code,
                         'name': rule_name,
-                        'note': html2plaintext(rule.note),
+                        'note': html2plaintext(rule.note) if not is_html_empty(rule.note) else '',
                         'salary_rule_id': rule.id,
                         'contract_id': localdict['contract'].id,
                         'employee_id': localdict['employee'].id,
@@ -742,8 +741,7 @@ class HrPayslip(models.Model):
             return
         valid_slips = self.filtered(lambda p: p.employee_id and p.date_from and p.date_to and p.contract_id and p.struct_id)
         # Make sure to reset invalid payslip's worked days line
-        invalid_slips = self - valid_slips
-        invalid_slips.worked_days_line_ids = [(5, False, False)]
+        self.worked_days_line_ids.unlink()
         # Ensure work entries are generated for all contracts
         generate_from = min(p.date_from for p in self)
         current_month_end = date_utils.end_of(fields.Date.today(), 'month')
@@ -751,12 +749,15 @@ class HrPayslip(models.Model):
         self.mapped('contract_id')._generate_work_entries(generate_from, generate_to)
 
         for slip in valid_slips:
+            if not slip.struct_id.use_worked_day_lines:
+                continue
+            # YTI Note: We can't use a batched create here as the payslip may not exist
             slip.write({'worked_days_line_ids': slip._get_new_worked_days_lines()})
 
     def _get_new_worked_days_lines(self):
         if self.struct_id.use_worked_day_lines:
-            return [(5, 0, 0)] + [(0, 0, vals) for vals in self._get_worked_day_lines()]
-        return [(5, False, False)]
+            return [(0, 0, vals) for vals in self._get_worked_day_lines()]
+        return []
 
     def _get_salary_line_total(self, code):
         _logger.warning('The method _get_salary_line_total is deprecated in favor of _get_line_values')

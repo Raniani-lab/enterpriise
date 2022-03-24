@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 from functools import reduce
 
 from odoo import api, fields, models, _
@@ -112,8 +113,12 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
             ('state', 'in', ['done', 'paid']),
         ])
         line_values = payslips._get_line_values(['HolPayRecN', 'HolPayRecN1'])
+        payslips_by_employee = defaultdict(lambda: self.env['hr.payslip'])
+        for payslip in payslips:
+            payslips_by_employee[payslip.employee_id] |= payslip
+
         for employee in self:
-            employee_payslips = payslips.filtered(lambda p: p.employee_id == employee)
+            employee_payslips = payslips_by_employee[employee]
             employee.l10n_be_holiday_pay_recovered_n = - sum(line_values['HolPayRecN'][p.id]['total'] for p in employee_payslips)
             employee.l10n_be_holiday_pay_recovered_n1 = - sum(line_values['HolPayRecN1'][p.id]['total'] for p in employee_payslips)
 

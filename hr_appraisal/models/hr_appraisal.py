@@ -308,7 +308,7 @@ class HrAppraisal(models.Model):
         dates = self.employee_id.sudo()._upcoming_appraisal_creation_date()
         for appraisal in self:
             # The only ongoing appraisal is the current one
-            if not appraisal.appraisal_plan_posted and appraisal.company_id.appraisal_plan and appraisal.employee_id.ongoing_appraisal_count == 1:
+            if not appraisal.appraisal_plan_posted and appraisal.company_id.appraisal_plan and appraisal.employee_id.sudo().ongoing_appraisal_count == 1:
                 date = dates[appraisal.employee_id.id]
                 formated_date = format_date(self.env, date, date_format="MMM d y")
                 body = _('Thanks to your Appraisal Plan, without any new manual Appraisal, the new Appraisal will be automatically created on %s.', formated_date)

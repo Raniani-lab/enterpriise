@@ -5,7 +5,7 @@
 import core from "web.core";
 import session from "web.session";
 import { DocumentAction } from "@sign/js/backend/document";
-import { multiFileUpload } from "@sign/js/common/multi_file_upload";
+import { multiFileUpload } from "@sign/js/backend/multi_file_upload";
 import { sprintf } from "@web/core/utils/strings";
 
 const { _t } = core;

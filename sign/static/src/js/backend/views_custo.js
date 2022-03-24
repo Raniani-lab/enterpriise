@@ -11,7 +11,7 @@ import KanbanRecord from "web.KanbanRecord";
 import ListController from "web.ListController";
 import utils from "web.utils";
 import session from "web.session";
-import { multiFileUpload } from "@sign/js/common/multi_file_upload";
+import { multiFileUpload } from "@sign/js/backend/multi_file_upload";
 
 const { _t } = core;
 

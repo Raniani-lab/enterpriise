@@ -14,7 +14,6 @@ import { NameAndSignature } from "web.name_and_signature";
 import session from "web.session";
 import Widget from "web.Widget";
 import time from "web.time";
-import { multiFileUpload } from "@sign/js/common/multi_file_upload";
 
 const _t = core._t;
 
@@ -750,6 +749,13 @@ const ThankYouDialog = Dialog.extend({
           window.location.replace(RedirectURL);
         },
       });
+    } else {
+      const openDocumentButton = {
+        text: _t("View Document"),
+        classes: "btn-primary",
+        click: this.viewDocument,
+      };
+      options.buttons.push(openDocumentButton);
     }
     this.options = options;
     this.has_next_document = false;
@@ -759,7 +765,6 @@ const ThankYouDialog = Dialog.extend({
 
     this._super(parent, options);
 
-    this.on("closed", this, this.on_closed);
     this._rpc({
       route: "/sign/encrypted/" + requestID,
     }).then((response) => {
@@ -767,111 +772,6 @@ const ThankYouDialog = Dialog.extend({
         new (this.get_passworddialog_class())(this, requestID).open();
       }
     });
-  },
-  //TODO find a better strategy dealing with buttons
-  start: async function () {
-    let result = false;
-    const nextTemplate = multiFileUpload.getNext();
-    const canReadRequestItem = await session.user_has_group(
-      "sign.group_sign_user"
-    );
-    if (canReadRequestItem) {
-      result = await this._rpc({
-        model: "sign.request.item",
-        method: "search_read",
-        domain: [
-          "&",
-          "&",
-          ["partner_id", "=", session.partner_id],
-          ["state", "=", "sent"],
-          ["id", "!=", this.requestID],
-        ],
-        fields: ["sign_request_id"],
-        orderBy: [{ name: "create_date", desc: true }],
-      });
-    }
-
-    const openDocumentButton = {
-      text: _t("View Document"),
-      click: (e) => {
-        if (canReadRequestItem) {
-          this._rpc({
-            model: "sign.request",
-            method: "go_to_document",
-            args: [this.requestID],
-          }).then((action) => {
-            this.do_action(action, { clear_breadcrumbs: true });
-          });
-        } else {
-          const protocol = window.location.protocol;
-          const port = window.location.port;
-          const hostname = window.location.hostname;
-          const address = `${protocol}//${hostname}:${port}/sign/document/${this.requestID}/${this.accessToken}`;
-          window.location.replace(address);
-        }
-      },
-    };
-
-    if (nextTemplate && nextTemplate.template) {
-      openDocumentButton.classes = "btn-secondary";
-      this.options.buttons.push(openDocumentButton);
-
-      this.options.buttons.push({
-        text: _t("Next Document"),
-        classes: "btn-primary",
-        click: (e) => {
-          multiFileUpload.removeFile(nextTemplate.template);
-          this.do_action(
-            {
-              type: "ir.actions.client",
-              tag: "sign.Template",
-              name: sprintf(_t(`Template "%s"`), nextTemplate.name),
-              context: {
-                sign_edit_call: "sign_send_request",
-                id: nextTemplate.template,
-                sign_directly_without_mail: false,
-              },
-            },
-            { clear_breadcrumbs: true }
-          );
-        },
-      });
-    } else if (result && result.length) {
-      this.has_next_document = true;
-
-      openDocumentButton.classes = "btn-secondary";
-      this.options.buttons.push(openDocumentButton);
-
-      this.next_document = result.reduce((prev, curr) => {
-        return Math.abs(curr.sign_request_id[0] - this.requestID) <=
-          Math.abs(prev.sign_request_id[0] - this.requestID)
-          ? curr
-          : prev;
-      });
-      this.options.buttons.push({
-        text: _t("Sign Next Document"),
-        classes: "btn-primary",
-        click: (e) => {
-          this._rpc({
-            model: "sign.request",
-            method: "go_to_document",
-            args: [this.next_document.sign_request_id[0]],
-          }).then((action) => {
-            this.do_action(action, { clear_breadcrumbs: true });
-          });
-        },
-      });
-    } else {
-      openDocumentButton.classes = "btn-primary";
-      if (!this.RedirectURL) {
-        this.options.buttons.push(openDocumentButton);
-      }
-    }
-    this.setElement(
-      $(core.qweb.render("sign.thank_you_dialog", { widget: this }))
-    );
-    this.set_buttons(this.options.buttons);
-    await this.renderElement();
   },
 
   /**
@@ -885,9 +785,13 @@ const ThankYouDialog = Dialog.extend({
     this.$modal.find(".modal-header .o_subtitle").before("<br/>");
   },
 
-  on_closed: function () {
-    window.location.reload();
-  },
+  viewDocument: function () {
+    const protocol = window.location.protocol;
+    const port = window.location.port;
+    const hostname = window.location.hostname;
+    const address = `${protocol}//${hostname}:${port}/sign/document/${this.requestID}/${this.accessToken}`;
+    window.location.replace(address);
+  }
 });
 
 const NextDirectSignDialog = Dialog.extend({

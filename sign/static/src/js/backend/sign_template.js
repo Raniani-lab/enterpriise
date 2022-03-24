@@ -17,7 +17,7 @@ import {
   FormFieldMany2ManyTags,
   FieldSelection as FormFieldSelection
 } from "web.relational_fields";
-import { multiFileUpload } from "@sign/js/common/multi_file_upload";
+import { multiFileUpload } from "@sign/js/backend/multi_file_upload";
 
 const { _t } = core;
 

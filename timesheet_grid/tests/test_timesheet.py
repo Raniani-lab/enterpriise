@@ -17,7 +17,7 @@ except ImportError:
     from mock import patch
 
 
-@freeze_time(datetime(2022, 4, 1) + timedelta(hours=12, minutes=21))
+@freeze_time(datetime(2021, 4, 1) + timedelta(hours=12, minutes=21))
 class TestTimesheetValidation(TestCommonTimesheet):
 
     def setUp(self):

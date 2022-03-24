@@ -41,7 +41,7 @@
             <t t-if="!props.model.metaData.hideTitle">
                 <div class="o-map-renderer--pin-list-header o_pin_list_header">
                     <header>
-                        <i class="fa fa-list"/>
+                        <i class="fa fa-list text-odoo"/>
                         <span t-esc="props.model.metaData.panelTitle"/>
                     </header>
                 </div>

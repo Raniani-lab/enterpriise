@@ -5,12 +5,6 @@ $o-ma-border-color: gray($o-ma-border-color-gray-value);
 // ------------------------------------------------------------------
 
 .o_marketing_automation_campaign_kanban {
-    .o_text_brand {
-        color: $o-brand-odoo;
-    }
-    .o_badge_brand {
-        background: $o-brand-odoo;
-    }
     .o_ma_campaign_header {
         padding-bottom: 8px;
         border-bottom: 1px solid $o-ma-border-color;
@@ -348,9 +342,6 @@ $o-ma-border-color: gray($o-ma-border-color-gray-value);
 .o_ma_text_error {
     @extend .text-muted;
 }
-.o_ma_text_scheduled {
-    color: $o-brand-odoo;
-}
 .o_ma_processed {
     background-color: $o-brand-primary;
 }
@@ -362,7 +353,4 @@ $o-ma-border-color: gray($o-ma-border-color-gray-value);
 }
 .o_ma_error {
     background-color: #8F8F8F;
-}
-.o_ma_scheduled {
-    background-color: $o-brand-odoo;
 }

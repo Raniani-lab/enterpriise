@@ -61,7 +61,7 @@
                     <div t-att-class="'form-group' if advantage.name else ''">
                         <div class="row">
                             <label class="col-md-3 col-form-label" t-att-for="advantage.field">
-                                <i t-att-class="(advantage.icon or '') + ' fa-1x fa-fw'"/> <t t-esc="advantage.name"/>
+                                <i t-att-class="(advantage.icon or '') + ' fa-1x fa-fw bg-odoo'"/> <t t-esc="advantage.name"/>
                             </label>
                             <div class="col-md-7">
                                 <t t-if="advantage.folded">
@@ -197,12 +197,12 @@
         <div id="hr_cs_sidebar" class="col-lg-3 offset-xl-1">
             <t t-if="redirect_to_job">
                 <a t-att-href="'https://www.odoo.com/jobs/detail/' + redirect_to_job" target="_new">
-                    <button type="button" id="apply_now" class="hr_cs_btn_submit btn">Apply Now</button>
+                    <button type="button" id="apply_now" class="hr_cs_btn_submit btn btn-odoo">Apply Now</button>
                 </a>
             </t>
             <div name="salary_package_resume"/>
             <t t-if="submit">
-                <button type="button" id="hr_cs_submit" class="btn hr_cs_btn_submit" name="submit1">Review Contract &amp; Sign</button>
+                <button type="button" id="hr_cs_submit" class="btn btn-odoo hr_cs_btn_submit" name="submit1">Review Contract &amp; Sign</button>
             </t>
         </div>
     </template>
@@ -228,7 +228,7 @@
                         <t t-foreach="mapped_personal_infos[0]" t-as="personal_info_type">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h2 t-if="personal_info_type"><t t-esc="personal_info_type"/></h2>
+                                    <h2 class="text-odoo" t-if="personal_info_type"><t t-esc="personal_info_type"/></h2>
                                 </div>
                                 <t t-foreach="mapped_personal_infos[0][personal_info_type]" t-as="personal_info">
                                     <t t-if="not personal_info.parent_id">
@@ -394,7 +394,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 mb8">
-                        <a t-att-href="'https://www.odoo.com/jobs/detail/' + redirect_to_job" target="_new"><button type="button" id="apply_now" class="hr_cs_btn_submit btn">Apply Now</button></a>
+                        <a t-att-href="'https://www.odoo.com/jobs/detail/' + redirect_to_job" target="_new"><button type="button" id="apply_now" class="hr_cs_btn_submit btn btn-odoo">Apply Now</button></a>
                     </div>
                 </div>
             </div>
@@ -403,7 +403,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3">
-                        <button type="button" id="hr_cs_submit" class="hr_cs_btn_submit btn" name="submit2">Review Contract &amp; Sign</button>
+                        <button type="button" id="hr_cs_submit" class="hr_cs_btn_submit btn btn-odoo" name="submit2">Review Contract &amp; Sign</button>
                     </div>
                 </div>
             </div>

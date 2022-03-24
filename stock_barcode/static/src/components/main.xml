@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <div t-name="stock_barcode.MainComponent" class="o_content o_barcode_client_action" owl="1">
-        <div class="o_barcode_header">
+        <div class="o_barcode_header bg-odoo">
             <div class="navbar navbar-expand navbar-dark">
                 <nav class="navbar-nav mr-auto">
                     <button t-on-click="exit" class="o_exit btn nav-link mr-4">

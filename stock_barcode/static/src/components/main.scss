@@ -12,7 +12,6 @@
     // =====================================
     .o_barcode_header {
         flex: 0 0 46px;
-        background-color: $o-brand-odoo;
         color: white;
 
         .nav-link {
@@ -43,7 +42,6 @@
     // =====================================
     .o_barcode_lines_header {
         font-size: 16px;
-        background-color: $o-brand-odoo;
         color: white;
 
         @include media-breakpoint-down(sm) {

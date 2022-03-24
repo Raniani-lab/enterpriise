@@ -483,7 +483,7 @@
                     <group>
                         <label string="Shared" for="folder_id"/>
                         <div class="o_documents_content d-flex align-items-baseline">
-                            <i class="fa fa fa-folder o_documents_folder_color mr-2" title="Workspace"/>
+                            <i class="fa fa fa-folder text-odoo mr-2" title="Workspace"/>
                             <field name="folder_id" readonly="1" options="{'no_open': True}" class="w-100"/>
                             <i class="fa fa-tag o_documents_tag_color ml-2" attrs="{'invisible': [('tag_ids', '=', [])]}" title="Tags"/>
                             <field name="tag_ids" readonly="1" widget="many2many_tags"/>

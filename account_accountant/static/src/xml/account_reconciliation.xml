@@ -11,7 +11,7 @@
 </div>
 
 <t t-name="reconciliation.control.pager">
-    <div class="progress progress-reconciliation">
+    <div class="progress progress-reconciliation bg-odoo">
         <div aria-valuemin="0" t-att-aria-valuenow="widget._initialState.valuenow" t-att-aria-valuemax="widget._initialState.valuemax" class="progress-bar" role="progressbar" style="width: 0%;"><span class="valuenow"><t t-esc="widget._initialState.valuenow"/></span> / <span class="valuemax"><t t-esc="widget._initialState.valuemax"/></span></div>
     </div>
 </t>

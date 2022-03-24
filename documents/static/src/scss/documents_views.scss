@@ -9,7 +9,6 @@ $o-dms-color-tag: $o-searchpanel-filter-default-color;
 $o-dms-color-model: #338FFC;
 $o-dms-color-action: $o-brand-primary;
 $o-dms-color-history: #3bb97b;
-$o-dms-color-folder: $o-enterprise-color;
 
 $o-dms-btn-to-activate: #427a1c;
 $o-dms-btn-to-delete: #963535;
@@ -99,10 +98,6 @@ $o-dms-inspector-width-model-button: 30px;
 
     .o_documents_model_color {
         color: $o-dms-color-model;
-    }
-
-    .o_documents_folder_color {
-        color: $o-dms-color-folder;
     }
 
     .o_documents_tag_color {

@@ -70,7 +70,7 @@
         <t t-else="">
             <div class="d-flex col-sm-12 pl-0 align-items-center">
                 <div class="my-2 pr-2" id="start">
-                    <button class="btn btn_start_timer" t-on-click="_onClickStartTimer" t-ref="startButton"><i class="fa fa-play"></i> Start</button>
+                    <button class="btn_start_timer btn btn-odoo text-uppercase" t-on-click="_onClickStartTimer" t-ref="startButton"><i class="fa fa-play"></i> Start</button>
                 </div>
                 <div class="p-2">
                     <span t-if="timerMode"><span class="text-muted">use a hot key to</span> add <t t-esc="props.stepTimer"/> min</span>

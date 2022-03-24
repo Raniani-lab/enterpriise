@@ -11,7 +11,7 @@
                 <t t-set="demo_class" t-value="' '"/>
                 <t t-if="widget.show_demo" >
                     <div class="ribbon ribbon-top-right mt-n4">
-                        <span class="o_recruitment_purple h-auto ms-3 p-2 bg-secondary">Sample</span>
+                        <span class="o_recruitment_purple h-auto ms-3 p-2 bg-odoo">Sample</span>
                     </div>
                     <t t-set="demo_class" t-value="' o_demo o_debounce_disabled o_cursor_default '"/>
 

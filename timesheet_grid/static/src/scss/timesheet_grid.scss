@@ -32,10 +32,6 @@ table > tbody.o_grid_section > tr {
     background-color: white;
     border-bottom: 1px solid #cccccc;
 
-    button.btn_start_timer {
-        @include button-variant($o-brand-odoo, $o-brand-odoo);
-        text-transform: uppercase;
-    }
     .input_timer {
         width: 100px;
         text-align: center;

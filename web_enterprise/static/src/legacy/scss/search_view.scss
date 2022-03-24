@@ -18,15 +18,6 @@
             flex-flow: row wrap;
         }
 
-        .o_facet_values {
-            border: 1px solid $o-brand-odoo;
-            border-left-width: 0;
-        }
-
-        .o_searchview_facet_label {
-            background-color: $o-brand-odoo;
-        }
-
         .o_facet_remove {
             @include o-hover-text-color($text-muted, $o-brand-odoo);
         }

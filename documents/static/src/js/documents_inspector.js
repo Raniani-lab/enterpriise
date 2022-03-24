@@ -276,7 +276,7 @@ const DocumentsInspector = Widget.extend({
         if (this.records.length > 0) {
             proms.push(this._renderField('owner_id', options));
             proms.push(this._renderField('folder_id', {
-                icon: 'fa fa-folder o_documents_folder_color',
+                icon: 'fa fa-folder text-odoo',
                 mode: 'edit',
             }));
         }

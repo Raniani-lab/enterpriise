@@ -108,7 +108,7 @@
                         <button t-att-data-id="partner.id" class="btn btn-primary js_account_report_save_email_subject">Save</button>
                 </div>
                 <div class="o_account_reports_summary">
-                    <i class="fa fa-fw fa-pencil o_account_reports_edit_summary_pencil" role="img" aria-label="Edit Summary" title="Edit Summary"></i>
+                    <i class="fa fa-fw fa-pencil o_account_reports_edit_summary_pencil" t-if="not context.get('print_mode')" role="img" aria-label="Edit Summary" title="Edit Summary"></i>
                     <div class="o_account_report_summary" role="alert">
                         <span class="o_account_report_summary_content" t-att-style="'' if report.get('summary') else 'display: none;'">
                             <t t-esc="report.get('summary','')" t-options="{'widget': 'text'}"/>

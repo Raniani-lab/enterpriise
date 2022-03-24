@@ -409,6 +409,21 @@ class AccountMove(models.Model):
             customer_rfc = move.l10n_mx_edi_cfdi_customer_rfc
             total = float_repr(move.l10n_mx_edi_cfdi_amount, precision_digits=move.currency_id.decimal_places)
             uuid = move.l10n_mx_edi_cfdi_uuid
+
+            # If the CFDI attachment was unlinked from the edi_document (e.g. when canceling the invoice),
+            # the l10n_mx_edi_cfdi_uuid, ... fields will have been set to False.
+            # However, the attachment might still be there, so try to retrieve it.
+            cfdi_doc = move.edi_document_ids.filtered(lambda document: document.edi_format_id == self.env.ref('l10n_mx_edi.edi_cfdi_3_3'))
+            if cfdi_doc and not cfdi_doc.attachment_id:
+                attachment = self.env['ir.attachment'].search([('name', 'like', '%-MX-Invoice-3.3.xml'), ('res_model', '=', 'account.move'), ('res_id', '=', move.id)], limit=1, order='create_date desc')
+                if attachment:
+                    cfdi_data = base64.decodebytes(attachment.with_context(bin_size=False).datas)
+                    cfdi_infos = move._l10n_mx_edi_decode_cfdi(cfdi_data=cfdi_data)
+                    uuid = cfdi_infos['uuid']
+                    supplier_rfc = cfdi_infos['supplier_rfc']
+                    customer_rfc = cfdi_infos['customer_rfc']
+                    total = cfdi_infos['amount_total']
+
             try:
                 status = self.env['account.edi.format']._l10n_mx_edi_get_sat_status(supplier_rfc, customer_rfc, total, uuid)
             except Exception as e:

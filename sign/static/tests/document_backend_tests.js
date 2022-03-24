@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.document_backend_tests **/
+/** @odoo-module **/
 
 "use strict";
 

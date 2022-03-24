@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.document_signing **/
+/** @odoo-module **/
 
 // Signing part
 "use strict";
@@ -719,7 +719,7 @@ const EncryptedDialog = Dialog.extend({
   },
 });
 
-const ThankYouDialog = Dialog.extend({
+export const ThankYouDialog = Dialog.extend({
   template: "sign.thank_you_dialog",
   events: {
     "click .o_go_to_document": "on_closed",
@@ -949,7 +949,7 @@ const InputBottomSheet = Widget.extend({
   },
 });
 
-const SignableDocument = Document.extend({
+export const SignableDocument = Document.extend({
   events: {
     "pdfToComplete .o_sign_pdf_iframe": function (e) {
       this.$validateBanner.hide().css("opacity", 0);
@@ -1713,7 +1713,7 @@ const SignableDocument = Document.extend({
   },
 });
 
-function initDocumentToSign(parent) {
+export function initDocumentToSign(parent) {
   return session.is_bound.then(function () {
     // Manually add 'sign' to module list and load the
     // translations.
@@ -1741,14 +1741,3 @@ function initDocumentToSign(parent) {
     });
   });
 }
-
-export const document_signable = {
-  EncryptedDialog,
-  ThankYouDialog,
-  initDocumentToSign,
-  SignableDocument,
-  SignNameAndSignature,
-  SMSSignerDialog,
-};
-
-export default document_signable;

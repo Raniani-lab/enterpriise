@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.Document **/
+/** @odoo-module **/
 
 "use strict";
 

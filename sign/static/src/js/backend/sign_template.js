@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.template **/
+/** @odoo-module **/
 
 "use strict";
 

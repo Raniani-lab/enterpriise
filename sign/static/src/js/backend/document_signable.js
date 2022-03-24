@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.document_signing_backend **/
+/** @odoo-module **/
 
 "use strict";
 
@@ -7,12 +7,12 @@ import config from "web.config";
 import session from "web.session";
 import { sprintf } from "@web/core/utils/strings";
 import { DocumentAction } from "@sign/js/backend/document";
-import { document_signable } from "@sign/js/common/document_signable";
+import { SignableDocument, ThankYouDialog } from "@sign/js/common/document_signable";
 import { multiFileUpload } from "@sign/js/backend/multi_file_upload";
 
 const { _t } = core;
 
-document_signable.ThankYouDialog.include({
+ThankYouDialog.include({
   init: function (parent, RedirectURL, RedirectURLText, requestID, accessToken, options) {
     this._super.apply(this, arguments);
     const nextTemplate = multiFileUpload.getNext();
@@ -99,7 +99,7 @@ document_signable.ThankYouDialog.include({
   },
 });
 
-document_signable.SignableDocument.include({
+SignableDocument.include({
   init: function () {
     this._super.apply(this, arguments);
     this.events = Object.assign(this.events || {}, {
@@ -173,7 +173,7 @@ document_signable.SignableDocument.include({
 
 const SignableDocumentAction = DocumentAction.extend({
   get_document_class: function () {
-    return document_signable.SignableDocument;
+    return SignableDocument;
   },
 });
 

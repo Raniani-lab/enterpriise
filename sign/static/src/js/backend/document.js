@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.DocumentAction **/
+/** @odoo-module **/
 
 "use strict";
 import AbstractAction from "web.AbstractAction";

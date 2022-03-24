@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.tour **/
+/** @odoo-module **/
 
 "use strict";
 

@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.PDFIframeBackend **/
+/** @odoo-module **/
 
 "use strict";
 

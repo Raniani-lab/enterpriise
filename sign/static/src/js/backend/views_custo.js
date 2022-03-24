@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.views_custo **/
+/** @odoo-module **/
 
 "use strict";
 

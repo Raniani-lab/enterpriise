@@ -1,4 +1,4 @@
-/** @odoo-module alias=sign.multiFileUpload **/
+/** @odoo-module **/
 
 "use strict";
 

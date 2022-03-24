@@ -775,7 +775,10 @@ class AccountMove(models.Model):
                                 break
                     if partner_vat:
                         move_form.partner_id = partner_vat
-
+                if self.move_type in {'in_invoice', 'in_refund'} and not move_form.partner_id and iban_ocr:
+                    bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr)])
+                    if len(bank_account) == 1:
+                        move_form.partner_id = bank_account.partner_id
                 if not move_form.partner_id:
                     partner_id = self.find_partner_id_with_name(client_ocr if self.is_sale_document() else supplier_ocr)
                     if partner_id != 0:

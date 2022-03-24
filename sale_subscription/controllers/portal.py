@@ -26,12 +26,11 @@ class CustomerPortal(portal.CustomerPortal):
         """ Add subscription details to main account page """
         values = super()._prepare_home_portal_values(counters)
         if 'subscription_count' in counters:
-            partner = request.env.user.partner_id
-            values['subscription_count'] = (
-                request.env['sale.subscription'].search_count(self._get_subscription_domain(partner))
-                if request.env['sale.subscription'].check_access_rights('read', raise_exception=False)
-                else 0
-            )
+            if request.env['sale.subscription'].check_access_rights('read', raise_exception=False):
+                partner = request.env.user.partner_id
+                values['subscription_count'] = request.env['sale.subscription'].sudo().search_count(self._get_subscription_domain(partner))
+            else:
+                values['subscription_count'] = 0
         return values
 
     @http.route(['/my/subscription', '/my/subscription/page/<int:page>'], type='http', auth="user", website=True)

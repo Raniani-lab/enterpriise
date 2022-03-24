@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api, exceptions
+from odoo import Command, fields, models
 
 
 class WorkflowActionRuleTask(models.Model):
@@ -10,7 +10,7 @@ class WorkflowActionRuleTask(models.Model):
     def create_record(self, documents=None):
         rv = super(WorkflowActionRuleTask, self).create_record(documents=documents)
         if self.create_model == 'project.task':
-            new_obj = self.env[self.create_model].create({'name': "new task from Documents"})
+            new_obj = self.env[self.create_model].create({'name': "new task from Documents", 'user_ids': [Command.set(self.env.user.ids)]})
             task_action = {
                 'type': 'ir.actions.act_window',
                 'res_model': self.create_model,

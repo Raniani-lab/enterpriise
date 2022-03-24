@@ -140,7 +140,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                     }
                 case "UNARY_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._relativeToAbsolute(ast.right),
+                        operand: this._relativeToAbsolute(ast.operand),
                     });
                 case "BIN_OPERATION":
                     return Object.assign({}, ast, {
@@ -183,7 +183,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                     }
                 case "UNARY_OPERATION":
                     return Object.assign({}, ast, {
-                        right: this._absoluteToRelative(ast.right),
+                        operand: this._absoluteToRelative(ast.operand),
                     });
                 case "BIN_OPERATION":
                     return Object.assign({}, ast, {

@@ -280,8 +280,9 @@
      *   only needs to find the number at the start of a string
      * - it does not accept "," as thousand separator, because when we tokenize a
      *   formula, commas are used to separate arguments
+     * - it does not support % symbol, in formulas % is an operator
      */
-    const formulaNumberRegexp = /^-?\d+(\.?\d*(e\d+)?)?(\s*%)?|^-?\.\d+(\s*%)?/;
+    const formulaNumberRegexp = /^-?\d+(\.?\d*(e\d+)?)?|^-?\.\d+/;
     const pIntegerAndDecimals = "(\\d+(,\\d{3,})*(\\.\\d*)?)"; // pattern that match integer number with or without decimal digits
     const pOnlyDecimals = "(\\.\\d+)"; // pattern that match only expression with decimal digits
     const pScientificFormat = "(e(\\+|-)?\\d+)?"; // pattern that match scientific format between zero and one time (should be placed before pPercentFormat)
@@ -7244,7 +7245,8 @@
      * formulas.
      */
     const functions$3 = functionRegistry.content;
-    const OPERATORS = "+,-,*,/,:,=,<>,>=,>,<=,<,%,^,&".split(",");
+    const POSTFIX_UNARY_OPERATORS = ["%"];
+    const OPERATORS = "+,-,*,/,:,=,<>,>=,>,<=,<,^,&".split(",").concat(POSTFIX_UNARY_OPERATORS);
     function tokenize(str) {
         const chars = str.split("");
         const result = [];
@@ -7410,10 +7412,12 @@
         return null;
     }
 
-    const UNARY_OPERATORS = ["-", "+"];
+    const UNARY_OPERATORS_PREFIX = ["-", "+"];
+    const UNARY_OPERATORS_POSTFIX = ["%"];
     const ASSOCIATIVE_OPERATORS = ["*", "+", "&"];
     const OP_PRIORITY = {
         "^": 30,
+        "%": 30,
         "*": 20,
         "/": 20,
         "+": 15,
@@ -7520,11 +7524,11 @@
                 tokens.shift();
                 return result;
             default:
-                if (current.type === "OPERATOR" && UNARY_OPERATORS.includes(current.value)) {
+                if (current.type === "OPERATOR" && UNARY_OPERATORS_PREFIX.includes(current.value)) {
                     return {
                         type: "UNARY_OPERATION",
                         value: current.value,
-                        right: parseExpression(tokens, OP_PRIORITY[current.value]),
+                        operand: parseExpression(tokens, OP_PRIORITY[current.value]),
                     };
                 }
                 throw new Error(_lt("Unexpected token: %s", current.value));
@@ -7533,13 +7537,23 @@
     function parseInfix(left, current, tokens) {
         if (current.type === "OPERATOR") {
             const bp = bindingPower(current);
-            const right = parseExpression(tokens, bp);
-            return {
-                type: "BIN_OPERATION",
-                value: current.value,
-                left,
-                right,
-            };
+            if (UNARY_OPERATORS_POSTFIX.includes(current.value)) {
+                return {
+                    type: "UNARY_OPERATION",
+                    value: current.value,
+                    operand: left,
+                    postfix: true,
+                };
+            }
+            else {
+                const right = parseExpression(tokens, bp);
+                return {
+                    type: "BIN_OPERATION",
+                    value: current.value,
+                    left,
+                    right,
+                };
+            }
         }
         throw new Error(DEFAULT_ERROR_MESSAGE);
     }
@@ -7599,7 +7613,7 @@
             case "UNARY_OPERATION":
                 return {
                     ...ast,
-                    right: convertAstNodes(ast.right, type, fn),
+                    operand: convertAstNodes(ast.operand, type, fn),
                 };
             case "BIN_OPERATION":
                 return {
@@ -7628,7 +7642,9 @@
             case "BOOLEAN":
                 return ast.value ? "TRUE" : "FALSE";
             case "UNARY_OPERATION":
-                return ast.value + rightOperandToFormula(ast);
+                return ast.postfix
+                    ? leftOperandToFormula(ast) + ast.value
+                    : ast.value + rightOperandToFormula(ast);
             case "BIN_OPERATION":
                 return leftOperandToFormula(ast) + ast.value + rightOperandToFormula(ast);
             default:
@@ -7639,9 +7655,9 @@
      * Convert the left operand of a binary operation to the corresponding string
      * and enclose the result inside parenthesis if necessary.
      */
-    function leftOperandToFormula(binaryOperationAST) {
-        const mainOperator = binaryOperationAST.value;
-        const leftOperation = binaryOperationAST.left;
+    function leftOperandToFormula(operationAST) {
+        const mainOperator = operationAST.value;
+        const leftOperation = "left" in operationAST ? operationAST.left : operationAST.operand;
         const leftOperator = leftOperation.value;
         const needParenthesis = leftOperation.type === "BIN_OPERATION" && OP_PRIORITY[leftOperator] < OP_PRIORITY[mainOperator];
         return needParenthesis ? `(${astToFormula(leftOperation)})` : astToFormula(leftOperation);
@@ -7650,9 +7666,9 @@
      * Convert the right operand of a binary or unary operation to the corresponding string
      * and enclose the result inside parenthesis if necessary.
      */
-    function rightOperandToFormula(binaryOperationAST) {
-        const mainOperator = binaryOperationAST.value;
-        const rightOperation = binaryOperationAST.right;
+    function rightOperandToFormula(operationAST) {
+        const mainOperator = operationAST.value;
+        const rightOperation = "right" in operationAST ? operationAST.right : operationAST.operand;
         const rightPriority = OP_PRIORITY[rightOperation.value];
         const mainPriority = OP_PRIORITY[mainOperator];
         let needParenthesis = false;
@@ -7785,6 +7801,7 @@
     const UNARY_OPERATOR_MAP = {
         "-": "UMINUS",
         "+": "UPLUS",
+        "%": "UNARY.PERCENT",
     };
     /**
      * Takes a list of strings that might be single or multiline
@@ -7961,12 +7978,12 @@
                     case "UNARY_OPERATION": {
                         id = nextId++;
                         fnName = UNARY_OPERATOR_MAP[ast.value];
-                        const right = compileAST(ast.right, false, false, false, {
+                        const operand = compileAST(ast.operand, false, false, false, {
                             functionName: fnName,
                         });
-                        codeBlocks.push(right.code);
+                        codeBlocks.push(operand.code);
                         codeBlocks.push(`ctx.__lastFnCalled = '${fnName}';`);
-                        statement = `ctx['${fnName}']( ${right.id})`;
+                        statement = `ctx['${fnName}']( ${operand.id})`;
                         break;
                     }
                     case "BIN_OPERATION": {
@@ -8036,7 +8053,7 @@
                         }
                         break;
                     case "UNARY_OPERATION":
-                        return formatAST(ast.right);
+                        return formatAST(ast.operand);
                     case "BIN_OPERATION":
                         // the BIN_OPERATION ast is the only function case where we will look
                         // at the following argument when the current argument has't format.
@@ -18291,7 +18308,7 @@
         /**
          * Function used to determine when composer selection can start.
          * Three conditions are necessary:
-         * - the previous token is among ["COMMA", "LEFT_PAREN", "OPERATOR"]
+         * - the previous token is among ["COMMA", "LEFT_PAREN", "OPERATOR"], and is not a postfix unary operator
          * - the next token is missing or is among ["COMMA", "RIGHT_PAREN", "OPERATOR"]
          * - Previous and next tokens can be separated by spaces
          */
@@ -18305,7 +18322,8 @@
                 let count = tokenIdex;
                 let currentToken = tokenAtCursor;
                 // check previous token
-                while (!["COMMA", "LEFT_PAREN", "OPERATOR"].includes(currentToken.type)) {
+                while (!["COMMA", "LEFT_PAREN", "OPERATOR"].includes(currentToken.type) ||
+                    POSTFIX_UNARY_OPERATORS.includes(currentToken.value)) {
                     if (currentToken.type !== "SPACE" || count < 1) {
                         return false;
                     }
@@ -32078,8 +32096,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-03-22T09:33:22.955Z';
-    exports.__info__.hash = '8627134';
+    exports.__info__.date = '2022-03-24T14:18:54.760Z';
+    exports.__info__.hash = 'c2a9bba';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

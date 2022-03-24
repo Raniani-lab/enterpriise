@@ -42,7 +42,7 @@ export function getOdooFunctions(formula, matcher) {
 function _getOdooFunctionsFromAST(ast, matcher) {
     switch (ast.type) {
         case "UNARY_OPERATION":
-            return _getOdooFunctionsFromAST(ast.right, matcher);
+            return _getOdooFunctionsFromAST(ast.operand, matcher);
         case "BIN_OPERATION": {
             return _getOdooFunctionsFromAST(ast.left, matcher).concat(_getOdooFunctionsFromAST(ast.right, matcher));
         }

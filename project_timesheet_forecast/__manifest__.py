@@ -27,6 +27,7 @@ Better plan your future schedules by considering time effectively spent on old p
     ],
     'auto_install': True,
     'license': 'OEEL-1',
+    'uninstall_hook': '_uninstall_hook',
     'assets': {
         'web.assets_backend': [
             'project_timesheet_forecast/static/src/js/forecast_timesheet_gantt.js',

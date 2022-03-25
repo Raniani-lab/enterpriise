@@ -880,7 +880,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._isOutgoing = false;
         this._updateCallState(CALL_STATE.RINGING_CALL);
         this._audioIncomingRingtone.currentTime = 0;
-        if (this.PLAY_MEDIA) {
+        if (this.PLAY_MEDIA && this.call('bus_service', 'isMasterTab')) {
             this._audioIncomingRingtone.play().catch(() => {});
         }
         this._notification = this._sendNotification('Odoo', content);

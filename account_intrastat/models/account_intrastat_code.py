@@ -16,6 +16,7 @@ class AccountIntrastatCode(models.Model):
     _description = 'Intrastat Code'
     _translate = False
     _order = "code"
+    _rec_names_search = ['code', 'name', 'description']
 
     name = fields.Char(string='Name')
     code = fields.Char(string='Code', required=True)
@@ -37,15 +38,6 @@ class AccountIntrastatCode(models.Model):
             text = r.name or r.description
             result.append((r.id, text and '%s %s' % (r.code, text) or r.code))
         return result
-
-    @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = args or []
-        if operator == 'ilike' and not (name or '').strip():
-            domain = []
-        else:
-            domain = ['|', '|', ('code', operator, name), ('name', operator, name), ('description', operator, name)]
-        return self._search(expression.AND([args, domain]), limit=limit, access_rights_uid=name_get_uid)
 
     _sql_constraints = [
         ('intrastat_region_code_unique', 'UNIQUE (code, type, country_id)', 'Triplet code/type/country_id must be unique.'),

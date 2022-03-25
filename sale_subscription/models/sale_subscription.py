@@ -34,6 +34,7 @@ class SaleSubscription(models.Model):
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'rating.mixin', 'utm.mixin']
     _check_company_auto = True
     _mail_post_access = 'read'
+    _rec_names_search = ['code', 'name', 'partner_id.name']
 
     def _get_default_pricelist(self):
         return self.env['product.pricelist'].search([('currency_id', '=', self.env.company.currency_id.id)], limit=1).id
@@ -783,15 +784,6 @@ class SaleSubscription(models.Model):
                 })
             subscription.write(new_values)
 
-    @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = args or []
-        if operator == 'ilike' and not (name or '').strip():
-            domain = []
-        else:
-            domain = ['|', '|', ('code', operator, name), ('name', operator, name), ('partner_id.name', operator, name)]
-        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-
     def wipe(self):
         """Wipe a subscription clean by deleting all its lines."""
         lines = self.mapped('recurring_invoice_line_ids')
@@ -1363,6 +1355,7 @@ class SaleSubscriptionTemplate(models.Model):
     _description = "Subscription Template"
     _inherit = "mail.thread"
     _check_company_auto = True
+    _rec_names_search = ['code', 'name']
 
     active = fields.Boolean(default=True)
     name = fields.Char(required=True)
@@ -1437,16 +1430,6 @@ class SaleSubscriptionTemplate(models.Model):
         result = dict((data['subscription_template_id'][0], data['subscription_template_id_count']) for data in product_data)
         for template in self:
             template.product_count = result.get(template.id, 0)
-
-    @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = args or []
-        if operator == 'ilike' and not (name or '').strip():
-            domain = []
-        else:
-            connector = '&' if operator in expression.NEGATIVE_TERM_OPERATORS else '|'
-            domain = [connector, ('code', operator, name), ('name', operator, name)]
-        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
 
     def name_get(self):
         res = []

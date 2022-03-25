@@ -529,7 +529,7 @@ class IrModel(models.Model):
 
     def _get_default_view(self, view_type, view_id=False, create=True):
         """Get the default view for a given model.
-        
+
         By default, create a view if one does not exist.
         """
         self.ensure_one()
@@ -591,6 +591,12 @@ class IrModelField(models.Model):
     _name = 'ir.model.fields'
     _inherit = ['studio.mixin', 'ir.model.fields']
 
+    @property
+    def _rec_names_search(self):
+        if self._context.get('studio'):
+            return ['name', 'field_description', 'model', 'model_id.name']
+        return ['field_description']
+
     def name_get(self):
         if self.env.context.get('studio'):
             return [(field.id, "%s (%s)" % (field.field_description, field.model_id.name)) for field in self]
@@ -601,18 +607,6 @@ class IrModelField(models.Model):
         for field in self:
             if '__' in field.name:
                 raise ValidationError(_("Custom field names cannot contain double underscores."))
-
-    @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = args or []
-        if operator == 'ilike' and not (name or '').strip():
-            domain = []
-        # To search records based on Field name, Field technical name, Model name and Model technical name
-        elif name and self._context.get('studio') :
-            domain = ['|', '|', '|', ('name', operator, name), ('field_description', operator, name), ('model', operator, name), ('model_id.name', operator, name)]
-        else:
-            domain = [('field_description', operator, name)]
-        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
 
     @api.model
     def _get_next_relation(self, model_name, comodel_name):

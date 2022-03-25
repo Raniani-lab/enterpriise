@@ -13,6 +13,7 @@ class ConsolidationPeriod(models.Model):
     _description = "Consolidation Period"
     _order = 'date_analysis_end desc, date_analysis_begin desc, id desc'
     _inherit = ['mail.thread']
+    _rec_name = 'chart_name'
 
     def _get_default_date_analysis_begin(self):
         company = self.env.company
@@ -122,25 +123,12 @@ class ConsolidationPeriod(models.Model):
                 self.company_period_ids = [(0, 0, value) for value in company_period_values]
 
     # ORM OVERRIDES
-    def name_get(self):
-        result = []
-        for record in self:
-            result.append((record.id, '%s (%s)' % (record.chart_name, record.display_dates)))
-        return result
 
     def copy(self, default=None):
         default = dict(default or {})
         default['date_analysis_begin'] = self.date_analysis_end + datetime.timedelta(days=1)
         default['date_analysis_end'] = None
         return super().copy(default)
-
-    @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = args or []
-        domain = []
-        if name:
-            domain = [('chart_name', operator, name)]
-        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
 
     # ACTIONS
 

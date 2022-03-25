@@ -27,6 +27,7 @@ class ProductCode(models.Model):
     """
     _name = 'product.unspsc.code'
     _description = "Product and UOM Codes from UNSPSC"
+    _rec_names_get = ['name', 'code']
 
     code = fields.Char('Code', required=True)
     name = fields.Char('Name', required=True)
@@ -39,12 +40,3 @@ class ProductCode(models.Model):
         for prod in self:
             result.append((prod.id, "%s %s" % (prod.code, prod.name or '')))
         return result
-
-    @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = args or []
-        if operator == 'ilike' and not (name or '').strip():
-            domain = []
-        else:
-            domain = ['|', ('name', 'ilike', name), ('code', 'ilike', name)]
-        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)

@@ -7,6 +7,7 @@ from odoo.osv import expression
 class CompanyActivities(models.Model):
     _description = 'SII Company Economical Activities'
     _name = 'l10n_cl.company.activities'
+    _rec_names_search = ['name', 'code']
 
     code = fields.Char('Activity Code', required=True)
     name = fields.Char('Complete Name', required=True)
@@ -29,13 +30,3 @@ class CompanyActivities(models.Model):
             name = '(%s) %s' % (record.code, record.name)
             result.append((record.id, name))
         return result
-
-    @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = args or []
-        if operator == 'ilike' and not(name or '').strip():
-            domain = []
-        else:
-            domain = ['|', ('name', operator, name), ('code', operator, name)]
-        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
-

@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 class Vehicle(models.Model):
     _name = 'l10n_mx_edi.vehicle'
     _description = 'MX EDI Vehicle'
-    _rec_name = 'name'
+    _rec_names_search = ['name', 'vehicle_licence']
 
     def _default_intermediary(self):
         return [(0, 0, {'type': '01'})]
@@ -107,13 +107,6 @@ class Vehicle(models.Model):
 
     def name_get(self):
         return [(vehicle.id, '[%s] %s' % (vehicle.vehicle_licence, vehicle.name)) for vehicle in self]
-
-    @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = list(args or [])
-        if name:
-            args += ['|', (self._rec_name, operator, name), ('vehicle_licence', operator, name)]
-        return self._search(args, limit=limit, access_rights_uid=name_get_uid)
 
     @api.constrains('figure_ids')
     def _check_figures(self):

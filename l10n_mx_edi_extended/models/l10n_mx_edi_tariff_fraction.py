@@ -7,6 +7,7 @@ from odoo.osv import expression
 class L10nMXEdiTariffFraction(models.Model):
     _name = 'l10n_mx_edi.tariff.fraction'
     _description = "Mexican EDI Tariff Fraction"
+    _rec_names_search = ['name', 'code']
 
     code = fields.Char(
         help="Code defined in the SAT to this record.")
@@ -21,13 +22,3 @@ class L10nMXEdiTariffFraction(models.Model):
     def name_get(self):
         # OVERRIDE
         return [(tariff.id, "%s %s" % (tariff.code, tariff.name or '')) for tariff in self]
-
-    @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        # OVERRIDE
-        args = args or []
-        if operator == 'ilike' and not (name or '').strip():
-            domain = []
-        else:
-            domain = ['|', ('name', 'ilike', name), ('code', 'ilike', name)]
-        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)

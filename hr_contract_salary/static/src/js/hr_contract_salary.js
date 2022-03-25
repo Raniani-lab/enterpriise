@@ -13,9 +13,9 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     ],
 
     events: {
-        "blur .advantage_input": "onchangeAdvantage",
+        "change .advantage_input": "onchangeAdvantage",
         "change input.folded": "onchangeFolded",
-        "blur .personal_info": "onchangePersonalInfo",
+        "change .personal_info": "onchangePersonalInfo",
         "click #hr_cs_submit": "submitSalaryPackage",
         "click a[name='recompute']": "recompute",
         "click button[name='toggle_personal_information']": "togglePersonalInformation",

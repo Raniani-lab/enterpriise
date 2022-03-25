@@ -241,9 +241,7 @@ class TestReports(TestAr, TestAccountReportsCommon):
         for _key, inv in cls.demo_bills.items():
             inv.action_post()
 
-        cls.options = cls._init_options(
-            cls, cls.report, fields.Date.from_string('2021-03-01'), fields.Date.from_string('2021-03-31')
-        )
+        cls.options = cls._init_options(cls.report, fields.Date.from_string('2021-03-01'), fields.Date.from_string('2021-03-31'))
 
     def _test_txt_file(self, filename):
         filetype = 1 if 'IVA' in filename else 0

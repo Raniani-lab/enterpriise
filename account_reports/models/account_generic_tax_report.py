@@ -525,6 +525,9 @@ class AccountGenericTaxReport(models.AbstractModel):
             res.append({'name': _('Closing Entry'), 'action': 'periodic_vat_entries', 'sequence': 8})
         return res
 
+    def _get_vat_closing_entry_additional_domain(self):
+        return []
+
     def _compute_vat_closing_entry(self, company, options):
         """Compute the VAT closing entry.
 
@@ -563,7 +566,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         new_options['date']['date_from'] = fields.Date.to_string(period_start)
         new_options['date']['date_to'] = fields.Date.to_string(period_end)
 
-        tables, where_clause, where_params = self._query_get(new_options)
+        tables, where_clause, where_params = self._query_get(new_options, self._get_vat_closing_entry_additional_domain())
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
         results = self.env.cr.dictfetchall()

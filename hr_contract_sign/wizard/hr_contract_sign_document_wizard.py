@@ -118,18 +118,24 @@ class HrContractSignDocumentWizard(models.TransientModel):
 
     def validate_signature(self):
         self.ensure_one()
-        no_partner_employees = self.employee_ids.filtered(lambda e: not e.user_id.partner_id)
-        if no_partner_employees:
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'message': _("The following employees must be linked to an user to send a sign request: %s",
-                        ', '.join(no_partner_employees.mapped('name'))),
-                    'sticky': False,
-                    'type': 'danger',
-                }
-            }
+        # Partner by employee
+        partner_by_employee = dict()
+        for employee in self.employee_ids:
+            if employee.user_id.partner_id:
+                partner_by_employee[employee] = employee.user_id.partner_id
+            else:
+                if not employee.work_email:
+                    return {
+                        'type': 'ir.actions.client',
+                        'tag': 'display_notification',
+                        'params': {
+                            'message': _("%s does not have a work email set.", employee.name),
+                            'sticky': False,
+                            'type': 'danger',
+                        }
+                    }
+                partner_by_employee[employee] = self.env['mail.thread']._mail_find_partner_from_emails(
+                    [employee.work_email], records=self, force_create=True)[0]
 
         sign_request = self.env['sign.request']
         if not self.check_access_rights('create', raise_exception=False):
@@ -143,14 +149,14 @@ class HrContractSignDocumentWizard(models.TransientModel):
                 sign_values.append((
                     sign_template_id, employee,
                     [{'role_id': self.employee_role_id.id,
-                    'partner_id': employee.user_id.partner_id.id,}]
+                    'partner_id': partner_by_employee[employee].id}]
                 ))
             for sign_template_id in sign_templates_both_ids:
                 second_role = sign_template_id.sign_item_ids.responsible_id - self.employee_role_id
                 sign_values.append((
                     sign_template_id, employee,
                     [{'role_id': self.employee_role_id.id,
-                    'partner_id': employee.user_id.partner_id.id},
+                    'partner_id': partner_by_employee[employee].id},
                     {'role_id': second_role.id,
                     'partner_id': self.responsible_id.partner_id.id}]
                 ))

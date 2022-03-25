@@ -49,6 +49,23 @@ class SocialAccountLinkedin(models.Model):
             # store statistics
             account.write(all_stats_dict)
 
+    def _linkedin_fetch_followers_count(self):
+        """Fetch number of followers from the LinkedIn API."""
+        self.ensure_one()
+        endpoint = url_join(self.env['social.media']._LINKEDIN_ENDPOINT, 'networkSizes/urn:li:organization:%s' % self.linkedin_account_id)
+        # removing X-Restli-Protocol-Version header for this endpoint as it is not required according to LinkedIn Doc.
+        # using this header with an endpoint that doesn't support it will cause the request to fail
+        headers = self._linkedin_bearer_headers()
+        headers.pop('X-Restli-Protocol-Version', None)
+        response = requests.get(
+            endpoint,
+            params={'edgeType': 'CompanyFollowedByMember'},
+            headers=headers,
+            timeout=3)
+        if response.status_code != 200:
+            return 0
+        return response.json().get('firstDegreeSize', 0)
+
     def _compute_statistics_linkedin(self, last_30d=False):
         """Fetch statistics from the LinkedIn API.
 
@@ -88,7 +105,7 @@ class SocialAccountLinkedin(models.Model):
         data = response.json().get('elements', [{}])[0].get('totalShareStatistics', {})
 
         return {
-            'audience': data.get('uniqueImpressionsCount', 0),
+            'audience': self._linkedin_fetch_followers_count(),
             'engagement': data.get('clickCount', 0) + data.get('likeCount', 0) + data.get('commentCount', 0),
             'stories': data.get('shareCount', 0) + data.get('shareMentionsCount', 0),
         }

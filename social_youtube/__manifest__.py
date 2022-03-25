@@ -5,7 +5,7 @@
     'name': 'Social YouTube',
     'category': 'Marketing/Social Marketing',
     'summary': 'Manage your YouTube videos and schedule video uploads',
-    'version': '1.0',
+    'version': '1.1',
     'description': """Manage your YouTube videos and schedule video uploads""",
     'depends': ['social', 'iap'],
     'data': [
@@ -24,6 +24,7 @@
             'social_youtube/static/src/js/social_youtube_upload_field.js',
             'social_youtube/static/src/js/stream_post_youtube_comments.js',
             'social_youtube/static/src/js/stream_post_kanban_controller.js',
+            'social_youtube/static/src/js/stream_post_kanban_renderer.js',
             ('after', 'social/static/src/js/social_post_formatter_mixin.js', 'social_youtube/static/src/js/social_post_formatter_mixin.js'),
         ],
         'web.assets_qweb': [

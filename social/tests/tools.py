@@ -104,8 +104,7 @@ def mock_void_external_calls_twitter():
 @contextmanager
 def mock_void_external_calls_youtube():
     if is_youtube_module_installed:
-        with patch.object(SocialAccountYoutube, '_compute_statistics', lambda x: None), \
-             patch.object(SocialAccountYoutube, '_create_default_stream_youtube', lambda *args, **kwargs: None), \
+        with patch.object(SocialAccountYoutube, '_create_default_stream_youtube', lambda *args, **kwargs: None), \
              patch.object(SocialLivePostYoutube, '_post_youtube', lambda x: None), \
              patch.object(SocialStreamYoutube, '_fetch_stream_data', lambda x: None):
             yield

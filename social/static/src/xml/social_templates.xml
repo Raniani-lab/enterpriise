@@ -376,7 +376,8 @@
 
             <div class="d-flex flex-nowrap flex-grow-1 px-4 pt-2 pb-3">
                 <t t-set="audience_content">Number of Followers of your channel</t>
-                <div class="d-flex align-items-center flex-grow-1 pr-3"
+                <div t-if="widget._hasAudience(socialAccount)"
+                    class="d-flex align-items-center flex-grow-1 pr-3"
                     data-toggle="popover" title="Audience"
                     t-att-data-content="audience_content">
                     <t t-call="social.AccountsStatsValue">
@@ -386,7 +387,8 @@
                     </t>
                 </div>
                 <t t-set="engagement_content">Number of times people have engaged with your posts (likes, comments, shares,...)</t>
-                <div t-attf-class="d-flex align-items-center justify-content-center flex-grow-1 #{widget._hasStories(socialAccount) ? 'px-3' : 'pl-3'}"
+                <div t-if="widget._hasEngagement(socialAccount)"
+                    t-attf-class="d-flex align-items-center justify-content-center flex-grow-1 #{widget._hasStories(socialAccount) ? 'px-3' : 'pl-3'}"
                     data-toggle="popover" title="Engagement"
                     t-att-data-content="engagement_content">
                     <t t-call="social.AccountsStatsValue">

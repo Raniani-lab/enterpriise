@@ -183,6 +183,28 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
     },
 
     /**
+     * Defines whether the social account has audience or not.
+     * True by default and can be overridden to add specific behavior.
+     *
+     * @param {Object} socialAccount social.account search_read data
+     * @private
+     */
+    _hasAudience: function (socialAccount) {
+        return true;
+    },
+
+    /**
+     * Defines whether the social account has engagement or not.
+     * True by default and can be overridden to add specific behavior.
+     *
+     * @param {Object} socialAccount social.account search_read data
+     * @private
+     */
+    _hasEngagement: function (socialAccount) {
+        return true;
+    },
+
+    /**
      * Defines whether the social account has stories or not.
      * True by default and can be overridden to add specific behavior.
      *

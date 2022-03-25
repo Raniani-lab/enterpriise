@@ -30,33 +30,6 @@ class SocialAccountYoutube(models.Model):
         for account in youtube_accounts:
             account.stats_link = "https://studio.youtube.com/channel/%s/analytics/tab-overview" % account.youtube_channel_id
 
-    def _compute_statistics(self):
-        youtube_accounts = self._filter_by_media_types(['youtube'])
-        super(SocialAccountYoutube, (self - youtube_accounts))._compute_statistics()
-        endpoint_url = url_join(self.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/channels")
-
-        for account in youtube_accounts:
-            account._refresh_youtube_token()
-
-            stats_response = requests.get(endpoint_url,
-                params={
-                    'access_token': account.youtube_access_token,
-                    'id': account.youtube_channel_id,
-                    'part': 'statistics',
-                },
-                timeout=5
-            ).json()
-
-            if stats_response.get('error'):
-                account._action_disconnect_accounts(stats_response)
-            else:
-                stats = stats_response.get('items', [{}])[0].get('statistics', {})
-                account.write({
-                    'audience': stats.get('subscriberCount', 0),
-                    'engagement': stats.get('viewCount', 0),
-                    'stories': stats.get('commentCount', 0),
-                })
-
     @api.model_create_multi
     def create(self, vals_list):
         res = super(SocialAccountYoutube, self).create(vals_list)

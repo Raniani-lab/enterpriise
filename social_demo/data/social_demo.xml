@@ -92,9 +92,6 @@
     <record id="social_account_youtube" model="social.account">
         <field name="name">My Company</field>
         <field name="image" type="base64" file="base/static/img/res_partner_2-image.png"/>
-        <field name="audience">4578</field>
-        <field name="engagement">4587</field>
-        <field name="stories">88164</field>
         <field name="has_trends" eval="False" />
         <field name="media_id" ref="social_youtube.social_media_youtube"/>
         <field name="linkedin_account_urn">urn:li:organization:31337</field>

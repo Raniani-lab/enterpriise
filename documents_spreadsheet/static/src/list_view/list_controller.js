@@ -5,6 +5,7 @@ import { _t } from "web.core";
 import { sprintf } from "@web/core/utils/strings";
 
 import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
+import { removeContextUserInfo } from "../helpers";
 export const MAXIMUM_CELLS_TO_INSERT = 20000;
 
 
@@ -67,7 +68,7 @@ ListController.include({
                 model: data.model,
                 domain: data.domain,
                 orderBy: data.orderedBy,
-                context: data.context,
+                context: removeContextUserInfo(data.getContext()),
                 columns,
             }, fields: this.model.get(this.handle).fields
         };

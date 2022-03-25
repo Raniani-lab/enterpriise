@@ -2,10 +2,11 @@
 
 import { getBasicData, getBasicServerData } from "../utils/spreadsheet_test_data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { click, nextTick, legacyExtraNextTick, getFixture } from "@web/../tests/helpers/utils";
+import { click, nextTick, legacyExtraNextTick, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView } from "@web/../tests/views/helpers";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
+import { session } from "@web/session";
 import {
     toggleMenu,
     toggleMenuItem,
@@ -29,7 +30,7 @@ import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
 
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
-import { waitForEvaluation } from "../spreadsheet_test_utils";
+import { createSpreadsheet, waitForEvaluation } from "../spreadsheet_test_utils";
 const { cellMenuRegistry } = spreadsheet.registries;
 
 const { module, test } = QUnit;
@@ -1144,6 +1145,121 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
     });
     // 72 products * 1 groups + 1 row header + 1 total col + 1 extra empty col at the end
     assert.strictEqual(model.getters.getActiveSheet().cols.length, 76);
+});
+
+test("user related context is not saved in the spreadsheet", async function (assert) {
+    const context = {
+        allowed_company_ids: [15],
+        default_stage_id: 5,
+        search_default_stage_id: 5,
+        tz: "bx",
+        lang: "FR",
+        uid: 4,
+    };
+    const testSession = {
+        uid: 4,
+        user_companies: {
+            allowed_companies: { 15: { id: 15, name: "Hermit" } },
+            current_company: 15,
+        },
+        user_context: context,
+    };
+    patchWithCleanup(session, testSession);
+    const { model, env } = await createSpreadsheetFromPivot();
+    assert.deepEqual(env.services.user.context, context, "context is used for spreadsheet action");
+    assert.deepEqual(
+        model.exportData().pivots[1].context,
+        {
+            default_stage_id: 5,
+            search_default_stage_id: 5,
+        },
+        "user related context is not stored in context"
+    );
+});
+
+test("user context is combined with pivot context to fetch data", async function (assert) {
+    const context = {
+        allowed_company_ids: [15],
+        default_stage_id: 5,
+        search_default_stage_id: 5,
+        tz: "bx",
+        lang: "FR",
+        uid: 4,
+    };
+    const testSession = {
+        uid: 4,
+        user_companies: {
+            allowed_companies: {
+                15: { id: 15, name: "Hermit" },
+                16: { id: 16, name: "Craft" },
+            },
+            current_company: 15,
+        },
+        user_context: context,
+    };
+    const spreadsheetData = {
+        pivots: {
+            1: {
+                id: 1,
+                colGroupBys: ["foo"],
+                domain: [],
+                measures: [{ field: "probability", operator: "avg" }],
+                model: "partner",
+                rowGroupBys: ["bar"],
+                context: {
+                    allowed_company_ids: [16],
+                    default_stage_id: 9,
+                    search_default_stage_id: 90,
+                    tz: "nz",
+                    lang: "EN",
+                    uid: 40,
+                },
+            },
+        },
+    };
+    const serverData = getBasicServerData();
+    serverData.models["documents.document"].records.push({
+        id: 45,
+        raw: JSON.stringify(spreadsheetData),
+        name: "Spreadsheet",
+        handler: "spreadsheet",
+    });
+    const expectedFetchContext = {
+        allowed_company_ids: [15],
+        default_stage_id: 9,
+        search_default_stage_id: 90,
+        tz: "bx",
+        lang: "FR",
+        uid: 4,
+    };
+    patchWithCleanup(session, testSession);
+    await createSpreadsheet({
+        serverData,
+        spreadsheetId: 45,
+        mockRPC: function (route, { model, method, kwargs }) {
+            if (model !== "partner") {
+                return;
+            }
+            switch (method) {
+                case "search_read":
+                    assert.step("search_read");
+                    assert.deepEqual(
+                        kwargs.context,
+                        {
+                            ...expectedFetchContext,
+                            active_test: false,
+                        },
+                        "search_read"
+                    );
+                    break;
+                case "read_group":
+                    assert.step("read_group");
+                    assert.deepEqual(kwargs.context, expectedFetchContext, "read_group");
+                    break;
+            }
+        },
+    });
+    assert.verifySteps(["read_group", "search_read", "search_read"]);
 });
 
 test("groupby week is sorted", async (assert) => {

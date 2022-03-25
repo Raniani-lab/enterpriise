@@ -4,7 +4,7 @@
 import ListView from "web.ListView";
 import spreadsheet from "@documents_spreadsheet_bundle/o_spreadsheet/o_spreadsheet_extended";
 import { createView } from "web.test_utils";
-import { getBasicData, getBasicListArch } from "../utils/spreadsheet_test_data";
+import { getBasicData, getBasicListArch, getBasicServerData } from "../utils/spreadsheet_test_data";
 import { insertList } from "../../src/list/list_init_callback";
 import {
     getCell,
@@ -15,8 +15,9 @@ import {
 } from "../utils/getters_helpers";
 import { selectCell, setCellContent } from "../utils/commands_helpers";
 import { createSpreadsheetFromList } from "../utils/list_helpers";
-import { nextTick, getFixture } from "@web/../tests/helpers/utils";
-import { waitForEvaluation } from "../spreadsheet_test_utils";
+import { nextTick, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { session } from "@web/session";
+import { createSpreadsheet, waitForEvaluation } from "../spreadsheet_test_utils";
 
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 
@@ -347,5 +348,123 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
             A2.evaluated.error,
             `The field ${forbiddenFieldName} does not exist or you do not have access to that field`
         );
+    });
+
+    QUnit.test("user related context is not saved in the spreadsheet", async function (assert) {
+        const context = {
+            allowed_company_ids: [15],
+            default_stage_id: 5,
+            search_default_stage_id: 5,
+            tz: "bx",
+            lang: "FR",
+            uid: 4,
+        };
+        const testSession = {
+            uid: 4,
+            user_companies: {
+                allowed_companies: { 15: { id: 15, name: "Hermit" } },
+                current_company: 15,
+            },
+            user_context: context,
+        };
+        const controller = await createView({
+            View: ListView,
+            arch: `
+                    <tree string="Partners">
+                        <field name="bar"/>
+                        <field name="product_id"/>
+                    </tree>
+                `,
+            data: getBasicData(),
+            model: "partner",
+            session: testSession,
+        });
+        const { list } = controller._getListForSpreadsheet();
+        assert.deepEqual(
+            list.context,
+            {
+                default_stage_id: 5,
+                search_default_stage_id: 5,
+            },
+            "user related context is not stored in context"
+        );
+        controller.destroy();
+    });
+
+    QUnit.test("user context is combined with list context to fetch data", async function (assert) {
+        const context = {
+            allowed_company_ids: [15],
+            default_stage_id: 5,
+            search_default_stage_id: 5,
+            tz: "bx",
+            lang: "FR",
+            uid: 4,
+        };
+        const testSession = {
+            uid: 4,
+            user_companies: {
+                allowed_companies: {
+                    15: { id: 15, name: "Hermit" },
+                    16: { id: 16, name: "Craft" },
+                },
+                current_company: 15,
+            },
+            user_context: context,
+        };
+        const spreadsheetData = {
+            lists: {
+                1: {
+                    id: 1,
+                    columns: ['name', 'contact_name'],
+                    domain: [],
+                    model: "partner",
+                    orderBy: [],
+                    context: {
+                        allowed_company_ids: [16],
+                        default_stage_id: 9,
+                        search_default_stage_id: 90,
+                        tz: "nz",
+                        lang: "EN",
+                        uid: 40,
+                    },
+                },
+            },
+        };
+        const serverData = getBasicServerData();
+        serverData.models["documents.document"].records.push({
+            id: 45,
+            raw: JSON.stringify(spreadsheetData),
+            name: "Spreadsheet",
+            handler: "spreadsheet",
+        });
+        const expectedFetchContext = {
+            allowed_company_ids: [15],
+            default_stage_id: 9,
+            search_default_stage_id: 90,
+            tz: "bx",
+            lang: "FR",
+            uid: 4,
+        };
+        patchWithCleanup(session, testSession);
+        await createSpreadsheet({
+            serverData,
+            spreadsheetId: 45,
+            mockRPC: function (route, { model, method, kwargs }) {
+                if (model !== "partner") {
+                    return;
+                }
+                switch (method) {
+                    case "search_read":
+                        assert.step("search_read");
+                        assert.deepEqual(
+                            kwargs.context,
+                            expectedFetchContext,
+                            "search_read context"
+                        );
+                        break;
+                }
+            },
+        });
+        assert.verifySteps(["search_read"]);
     });
 });

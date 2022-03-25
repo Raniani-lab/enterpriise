@@ -2,6 +2,7 @@
 
 import { BasicDataSource } from "../o_spreadsheet/basic_data_source";
 import { _t } from "web.core";
+import { removeContextUserInfo } from "@documents_spreadsheet/helpers";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -33,7 +34,7 @@ export default class ListDataSource extends BasicDataSource {
         const data = await this.rpc({
             model: this.definition.model,
             method: "search_read",
-            context: this.definition.context,
+            context: removeContextUserInfo(this.definition.context),
             domain: this.computedDomain,
             fields: this.definition.columns.filter(f => this.getField(f)),
             orderBy: this.definition.orderBy,

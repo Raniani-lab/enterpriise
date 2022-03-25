@@ -9,6 +9,7 @@ import { formats } from "../o_spreadsheet/constants";
 
 import PivotCache from "./pivot_cache";
 import { intersect } from "../o_spreadsheet/helpers";
+import { removeContextUserInfo } from "@documents_spreadsheet/helpers";
 
 
 /**
@@ -25,6 +26,7 @@ export default class PivotDataSource extends BasicDataSource {
         super(params);
         this.definition = params.definition;
         this.computedDomain = this.definition.domain;
+        this.context = removeContextUserInfo(this.definition.context);
     }
     /**
      * @override
@@ -36,7 +38,7 @@ export default class PivotDataSource extends BasicDataSource {
         const result = await this.rpc({
             model: this.definition.model,
             method: "read_group",
-            context: this.definition.context,
+            context: this.context,
             domain: params.initialDomain ? this.definition.domain : this.computedDomain,
             fields: this.definition.measures.map((elt) =>
                 elt.field === "__count" ? elt.field : elt.field + ":" + elt.operator
@@ -205,11 +207,10 @@ export default class PivotDataSource extends BasicDataSource {
      *
      * @param {Object} params rpc params
      * @param {string} params.model model name
-     * @param {Object} params.context
      * @param {Object} groupBys
      * @returns {Promise<Object>}
      */
-    async _getOrderedValues({ model, context, domain }, groupBys) {
+    async _getOrderedValues({ model, domain }, groupBys) {
         return Object.fromEntries(
             await Promise.all(
                 Object.entries(groupBys).map(async ([groupBy, measures]) => {
@@ -222,7 +223,7 @@ export default class PivotDataSource extends BasicDataSource {
                               values.filter((value) => value !== "false"),
                               aggregationFunction
                           )
-                        : await this._orderValues(values, fieldName, field, model, domain, context);
+                        : await this._orderValues(values, fieldName, field, model, domain);
                     if (hasUndefined && field.type !== "boolean") {
                         values.push("false");
                     }
@@ -255,10 +256,9 @@ export default class PivotDataSource extends BasicDataSource {
      * @param {Field} field
      * @param {string} model
      * @param {Array} domain
-     * @param {Object} context
      * @returns {Promise<Array>}
      */
-    async _orderValues(values, fieldName, field, model, baseDomain, context) {
+    async _orderValues(values, fieldName, field, model, baseDomain) {
         const requestField = field.relation ? "id" : fieldName;
         values = ["boolean", "many2one", "many2many", "integer", "float"].includes(field.type)
             ? values.map((value) => JSON.parse(value))
@@ -267,7 +267,7 @@ export default class PivotDataSource extends BasicDataSource {
         const records = await this.rpc({
             model: field.relation ? field.relation : model,
             domain,
-            context: Object.assign({}, context, { active_test: false }),
+            context: { ...this.context, active_test: false },
             method: "search_read",
             fields: [requestField],
             // orderby is omitted for relational fields on purpose to have the default order of the model

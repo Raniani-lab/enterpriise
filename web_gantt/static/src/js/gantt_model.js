@@ -1,7 +1,7 @@
 /** @odoo-module alias=web_gantt.GanttModel */
 
 import AbstractModel from 'web.AbstractModel';
-import { Commands } from '@web/core/orm_service';
+import { x2ManyCommands } from '@web/core/orm_service';
 import concurrency from 'web.concurrency';
 import core from 'web.core';
 import fieldUtils from 'web.field_utils';
@@ -67,7 +67,7 @@ export default AbstractModel.extend({
     async createDependency(masterId, slaveId) {
         return this.mutex.exec(() => {
             const writeCommand = {};
-            writeCommand[this.dependencyField] = [Commands.linkTo(masterId)];
+            writeCommand[this.dependencyField] = [x2ManyCommands.linkTo(masterId)];
             return this._rpc({
                 model: this.modelName,
                 method: 'write',
@@ -249,7 +249,7 @@ export default AbstractModel.extend({
     async removeDependency(masterId, slaveId) {
         return this.mutex.exec(() => {
             const writeCommand = {};
-            writeCommand[this.dependencyField] = [Commands.forget(masterId)];
+            writeCommand[this.dependencyField] = [x2ManyCommands.forget(masterId)];
             return this._rpc({
                 model: this.modelName,
                 method: 'write',

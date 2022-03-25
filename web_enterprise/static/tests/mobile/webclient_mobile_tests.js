@@ -2,7 +2,8 @@
 
 import { getActionManagerServerData, doAction } from "@web/../tests/webclient/helpers";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
-import { makeFakeEnterpriseService } from "../mocks";
+import { ormService } from "@web/core/orm_service";
+import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { registry } from "@web/core/registry";
 import { createEnterpriseWebClient } from "../helpers";
 import { click, legacyExtraNextTick, getFixture } from "@web/../tests/helpers/utils";
@@ -14,8 +15,8 @@ QUnit.module("WebClient Mobile", (hooks) => {
     hooks.beforeEach(() => {
         serverData = getActionManagerServerData();
         serviceRegistry.add("home_menu", homeMenuService);
-        const fakeEnterpriseService = makeFakeEnterpriseService();
-        serviceRegistry.add("enterprise", fakeEnterpriseService);
+        serviceRegistry.add("orm", ormService);
+        serviceRegistry.add("enterprise_subscription", enterpriseSubscriptionService);
     });
 
     QUnit.test("scroll position is kept", async (assert) => {

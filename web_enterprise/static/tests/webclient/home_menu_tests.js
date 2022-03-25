@@ -3,7 +3,7 @@
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
-import { getFixture, nextTick, triggerHotkey } from "@web/../tests/helpers/utils";
+import { getFixture, nextTick, triggerHotkey, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { commandService } from "@web/core/commands/command_service";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
 import { ormService } from "@web/core/orm_service";
@@ -11,7 +11,8 @@ import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { HomeMenu } from "@web_enterprise/webclient/home_menu/home_menu";
 import testUtils from "web.test_utils";
-import { makeFakeEnterpriseService } from "../mocks";
+import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
+import { session } from "@web/session";
 
 const { App, EventBus } = owl;
 const patchDate = testUtils.mock.patchDate;
@@ -89,7 +90,6 @@ QUnit.module(
                 ],
             };
 
-            const fakeEnterpriseService = makeFakeEnterpriseService();
             bus = new EventBus();
             const fakeHomeMenuService = {
                 name: "home_menu",
@@ -118,7 +118,8 @@ QUnit.module(
             serviceRegistry.add("hotkey", hotkeyService);
             serviceRegistry.add("command", commandService);
             serviceRegistry.add("localization", makeFakeLocalizationService());
-            serviceRegistry.add(fakeEnterpriseService.name, fakeEnterpriseService);
+            serviceRegistry.add("orm", ormService);
+            serviceRegistry.add(enterpriseSubscriptionService.name, enterpriseSubscriptionService);
             serviceRegistry.add(fakeHomeMenuService.name, fakeHomeMenuService);
             serviceRegistry.add(fakeMenuService.name, fakeMenuService);
 
@@ -151,17 +152,12 @@ QUnit.module(
             const unpatchDate = patchDate(2019, 9, 10, 0, 0, 0);
             registerCleanup(unpatchDate);
 
-            const mockedEnterpriseService = {
-                name: "enterprise",
-                start() {
-                    return {
-                        expirationDate: "2019-11-01 12:00:00",
-                        expirationReason: "",
-                        isMailInstalled: false,
-                        warning: "admin",
-                    };
-                },
-            };
+            patchWithCleanup(session, {
+                expiration_date: "2019-11-01 12:00:00",
+                expiration_reason: "",
+                isMailInstalled: false,
+                warning: "admin",
+            });
             let cookie = false;
             const mockedCookieService = {
                 name: "cookie",
@@ -177,11 +173,7 @@ QUnit.module(
                 },
             };
 
-            serviceRegistry.add(mockedEnterpriseService.name, mockedEnterpriseService, {
-                force: true,
-            });
             serviceRegistry.add(mockedCookieService.name, mockedCookieService);
-            serviceRegistry.add("orm", ormService);
 
             await createHomeMenu(homeMenuProps);
 

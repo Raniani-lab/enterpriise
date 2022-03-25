@@ -3,15 +3,16 @@ import { legacyExtraNextTick, click } from "@web/../tests/helpers/utils";
 import { registry } from "@web/core/registry";
 
 import { systrayItem } from "@web_studio/systray_item/systray_item";
-import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
+import { ormService } from "@web/core/orm_service";
+import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import { studioService } from "@web_studio/studio_service";
 
 export function registerStudioDependencies() {
     const serviceRegistry = registry.category("services");
     registry.category("systray").add("StudioSystrayItem", systrayItem);
-    const fakeEnterpriseService = makeFakeEnterpriseService();
-    serviceRegistry.add("enterprise", fakeEnterpriseService);
+    serviceRegistry.add("orm", ormService);
+    serviceRegistry.add("enterprise_subscription", enterpriseSubscriptionService);
     serviceRegistry.add("home_menu", homeMenuService);
     serviceRegistry.add("studio", studioService);
 }

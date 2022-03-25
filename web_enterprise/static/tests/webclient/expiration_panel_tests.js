@@ -1,17 +1,16 @@
 /** @odoo-module **/
 
-import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { registry } from "@web/core/registry";
-import { makeTestEnv } from "@web/../tests/helpers/mock_env";
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { click, getFixture, patchDate, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
 import { browser } from "@web/core/browser/browser";
 import { ormService } from "@web/core/orm_service";
 import testUtils from "web.test_utils";
-import { ExpirationPanel } from "@web_enterprise/webclient/home_menu/expiration_panel";
-import { makeFakeEnterpriseService } from "../mocks";
-import { uiService } from "@web/core/ui/ui_service";
+import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
+import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
+import { session } from "@web/session";
 
-const { App } = owl;
 const serviceRegistry = registry.category("services");
 
 let target;
@@ -22,7 +21,7 @@ async function createExpirationPanel(params = {}) {
         start() {
             return Object.assign(
                 {
-                    current: "",
+                    current: {},
                     setCookie() {},
                     deleteCookie() {},
                 },
@@ -32,34 +31,21 @@ async function createExpirationPanel(params = {}) {
     };
 
     serviceRegistry.add(mockedCookieService.name, mockedCookieService);
-    serviceRegistry.add("ui", uiService);
     serviceRegistry.add("orm", ormService);
-    const mockedEnterpriseService = makeFakeEnterpriseService(params.enterprise);
-    serviceRegistry.add(mockedEnterpriseService.name, mockedEnterpriseService);
-    patchWithCleanup(browser, Object.assign({ location: "" }, params.browser));
+    serviceRegistry.add("home_menu", homeMenuService);
+    serviceRegistry.add(
+        "notification",
+        makeFakeNotificationService(params.mockNotification || (() => {}))
+    );
+    patchWithCleanup(session, { ...params.session });
+    serviceRegistry.add("enterprise_subscription", enterpriseSubscriptionService);
+    patchWithCleanup(browser, params.browser);
 
-    const env = await makeTestEnv({
+    const webclient = await createWebClient({
         mockRPC: params.mockRPC,
     });
-
-    if (params.ui) {
-        if (params.ui.block) {
-            env.services.ui.bus.on("BLOCK", null, params.ui.block);
-        }
-        if (params.ui.unblock) {
-            env.services.ui.bus.on("UNBLOCK", null, params.ui.unblock);
-        }
-    }
-
-    const target = getFixture();
-    const app = new App(ExpirationPanel, {
-        env,
-        templates: window.__OWL_TEMPLATES__,
-        test: true,
-    });
-    const panel = await app.mount(target);
-    registerCleanup(() => app.destroy());
-    return panel;
+    await doAction(webclient, "menu");
+    return webclient;
 }
 
 QUnit.module("web_enterprise", function ({ beforeEach }) {
@@ -75,10 +61,10 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
         patchDate(2019, 9, 10, 12, 0, 0);
 
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-11-09 12:00:00",
-                expirationReason: "",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-11-09 12:00:00",
+                expiration_reason: "",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
             },
         });
@@ -103,10 +89,10 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
         patchDate(2019, 9, 10, 12, 0, 0);
 
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-10-24 12:00:00",
-                expirationReason: "demo",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-10-24 12:00:00",
+                expiration_reason: "demo",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
             },
             mockRPC(route) {
@@ -150,42 +136,32 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
     QUnit.test(
         "Expiration Panel one app installed, try several times to register subscription",
         async function (assert) {
-            assert.expect(47);
+            assert.expect(44);
 
             patchDate(2019, 9, 10, 12, 0, 0);
 
             let callToGetParamCount = 0;
 
             await createExpirationPanel({
-                enterprise: {
-                    expirationDate: "2019-10-15 12:00:00",
-                    expirationReason: "trial",
-                    isMailInstalled: true,
+                session: {
+                    expiration_date: "2019-10-15 12:00:00",
+                    expiration_reason: "trial",
+                    notification_type: true, // used by subscription service to know whether mail is installed
                     warning: "admin",
                 },
-                cookie: {
-                    setCookie() {
-                        assert.step("setCookie");
-                    },
+                mockNotification(message, options) {
+                    assert.step(JSON.stringify({ message, options }));
                 },
-                ui: {
-                    block() {
-                        assert.step("blockUI");
-                    },
-                    unblock() {
-                        assert.step("unblockUI");
-                    },
-                },
-                mockRPC(route, args) {
+                mockRPC(route, { args }) {
                     if (route === "/web/dataset/call_kw/ir.config_parameter/get_param") {
                         assert.step("get_param");
-                        if (args.args[0] === "database.already_linked_subscription_url") {
+                        if (args[0] === "database.already_linked_subscription_url") {
                             return false;
                         }
-                        if (args.args[0] === "database.already_linked_email") {
+                        if (args[0] === "database.already_linked_email") {
                             return "super_company_admin@gmail.com";
                         }
-                        assert.strictEqual(args.args[0], "database.expiration_date");
+                        assert.strictEqual(args[0], "database.expiration_date");
                         callToGetParamCount++;
                         if (callToGetParamCount <= 3) {
                             return "2019-10-15 12:00:00";
@@ -195,11 +171,11 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
                     }
                     if (route === "/web/dataset/call_kw/ir.config_parameter/set_param") {
                         assert.step("set_param");
-                        assert.strictEqual(args.args[0], "database.enterprise_code");
+                        assert.strictEqual(args[0], "database.enterprise_code");
                         if (callToGetParamCount === 1) {
-                            assert.strictEqual(args.args[1], "ABCDEF");
+                            assert.strictEqual(args[1], "ABCDEF");
                         } else {
-                            assert.strictEqual(args.args[1], "ABC");
+                            assert.strictEqual(args[1], "ABC");
                         }
                         return true;
                     }
@@ -208,7 +184,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
                         "/web/dataset/call_kw/publisher_warranty.contract/update_notification"
                     ) {
                         assert.step("update_notification");
-                        assert.ok(args.args[0] instanceof Array && args.args[0].length === 0);
+                        assert.ok(args[0] instanceof Array && args[0].length === 0);
                         return true;
                     }
                 },
@@ -269,7 +245,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             );
             assert.containsOnce(
                 target,
-                '.oe_instance_register_form input[placeholder="Your subscription code"]',
+                '.oe_instance_register_form input[placeholder="Paste code here"]',
                 "with an input with place holder 'Paste code here'"
             );
             assert.containsOnce(
@@ -301,7 +277,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             );
             assert.containsOnce(
                 target,
-                '.oe_instance_register_form input[placeholder="Your subscription code"]',
+                '.oe_instance_register_form input[placeholder="Paste code here"]',
                 "with an input with place holder 'Paste code here'"
             );
             assert.containsOnce(
@@ -320,16 +296,11 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             );
             await click(target.querySelector(".oe_instance_register_form button"));
 
-            assert.strictEqual(
-                target.querySelector(".oe_instance_register.oe_instance_success").innerText,
-                "Thank you, your registration was successful! Your database is valid until November 15, 2019."
+            assert.containsNone(
+                target,
+                ".database_expiration_panel",
+                "expiration panel should be gone"
             );
-            assert.hasClass(
-                target.querySelector(".database_expiration_panel"),
-                "alert-success",
-                "Color should be green"
-            );
-            assert.containsNone(target, ".oe_instance_register_form button");
 
             assert.verifySteps([
                 // second try to submit
@@ -337,7 +308,6 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
                 "set_param",
                 "get_param",
                 "get_param",
-                "setCookie",
                 "update_notification",
                 "get_param",
                 // third try
@@ -345,9 +315,9 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
                 "set_param",
                 "get_param",
                 "get_param",
-                "setCookie",
                 "update_notification",
                 "get_param",
+                `{"message":"Thank you, your registration was successful! Your database is valid until November 15, 2019.","options":{"type":"success"}}`,
             ]);
         }
     );
@@ -355,7 +325,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
     QUnit.test(
         "Expiration Panel one app installed, subscription already linked",
         async function (assert) {
-            assert.expect(13);
+            assert.expect(12);
 
             patchDate(2019, 9, 10, 12, 0, 0);
 
@@ -371,34 +341,24 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             let getExpirationDateCount = 0;
 
             await createExpirationPanel({
-                enterprise: {
-                    expirationDate: "2019-10-15 12:00:00",
-                    expirationReason: "trial",
-                    isMailInstalled: true,
+                session: {
+                    expiration_date: "2019-10-15 12:00:00",
+                    expiration_reason: "trial",
+                    notification_type: true, // used by subscription service to know whether mail is installed
                     warning: "admin",
                 },
-                cookie: {
-                    setCookie() {
-                        assert.step("setCookie");
-                    },
-                },
-                ui: {
-                    block() {
-                        assert.step("blockUI");
-                    },
-                    unblock() {
-                        assert.step("unblockUI");
-                    },
-                },
-                mockRPC(route, args) {
+                mockRPC(route, { method, args }) {
+                    if (route === "/web/webclient/load_menus") {
+                        return;
+                    }
                     if (route === "/already/linked/send/mail/url") {
                         return {
                             result: false,
                             reason: "By design",
                         };
                     }
-                    assert.step(args.method);
-                    if (args.args[0] === "database.expiration_date") {
+                    assert.step(method);
+                    if (args[0] === "database.expiration_date") {
                         getExpirationDateCount++;
                         if (getExpirationDateCount === 1) {
                             return "2019-10-15 12:00:00";
@@ -406,13 +366,13 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
                             return "2019-11-17 12:00:00";
                         }
                     }
-                    if (args.args[0] === "database.already_linked_subscription_url") {
+                    if (args[0] === "database.already_linked_subscription_url") {
                         return "www.super_company.com";
                     }
-                    if (args.args[0] === "database.already_linked_send_mail_url") {
+                    if (args[0] === "database.already_linked_send_mail_url") {
                         return "/already/linked/send/mail/url";
                     }
-                    if (args.args[0] === "database.already_linked_email") {
+                    if (args[0] === "database.already_linked_email") {
                         return "super_company_admin@gmail.com";
                     }
                     return true;
@@ -440,8 +400,8 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
                 formatWhiteSpaces(
                     `Your subscription is already linked to a database.
                 To unlink it you can either:
-                - Login to your Odoo.com dashboard then unlink your previous database: www.super_company.com
-                - Click here to send an email to the subscription owner (email: super_company_admin@gmail.com) with the instructions to follow`
+                Login to your Odoo.com dashboard then unlink your previous database: www.super_company.com
+                Click here to send an email to the subscription owner (email: super_company_admin@gmail.com) with the instructions to follow`
                 )
             );
 
@@ -461,8 +421,8 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
                 formatWhiteSpaces(
                     `Your subscription is already linked to a database.
                 To unlink it you can either:
-                - Login to your Odoo.com dashboard then unlink your previous database: www.super_company.com
-                - Click here to send an email to the subscription owner (email: super_company_admin@gmail.com) with the instructions to follow
+                Login to your Odoo.com dashboard then unlink your previous database: www.super_company.com
+                Click here to send an email to the subscription owner (email: super_company_admin@gmail.com) with the instructions to follow
                 Unable to send the instructions by email, please contact the Odoo Support
                 Error reason: By design`
                 )
@@ -473,7 +433,6 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
                 "set_param",
                 "get_param",
                 "get_param",
-                "setCookie",
                 "update_notification",
                 "get_param",
                 "get_param",
@@ -482,38 +441,25 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
     );
 
     QUnit.test("One app installed, database expired", async function (assert) {
-        assert.expect(13);
+        assert.expect(8);
 
         patchDate(2019, 9, 10, 12, 0, 0);
 
         let callToGetParamCount = 0;
 
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-10-08 12:00:00",
-                expirationReason: "trial",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-10-08 12:00:00",
+                expiration_reason: "trial",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
             },
-            cookie: {
-                setCookie() {
-                    assert.step("setCookie");
-                    assert.strictEqual(arguments[0], "oe_instance_hide_panel");
-                    assert.strictEqual(arguments[1], "");
-                    assert.strictEqual(arguments[2], -1);
-                },
-            },
-            ui: {
-                block() {
-                    assert.step("blockUI");
-                },
-                unblock() {
-                    assert.step("unblockUI");
-                },
-            },
-            mockRPC(route, args) {
-                if (args.method === "get_param") {
-                    if (args.args[0] === "database.already_linked_subscription_url") {
+            mockRPC(route, { args, method }) {
+                if (route === "/web/webclient/load_menus") {
+                    return;
+                }
+                if (method === "get_param") {
+                    if (args[0] === "database.already_linked_subscription_url") {
                         return false;
                     }
                     callToGetParamCount++;
@@ -531,6 +477,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             target.querySelector(".oe_instance_register").innerText,
             "This database has expired. Register your subscription or buy a subscription."
         );
+        assert.containsOnce(target, ".o_blockUI", "UI should be blocked");
 
         assert.hasClass(
             target.querySelector(".database_expiration_panel"),
@@ -558,53 +505,29 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             target.querySelector(".oe_instance_register").innerText,
             "Thank you, your registration was successful! Your database is valid until November 9, 2019."
         );
-
-        assert.verifySteps(["blockUI", "setCookie", "unblockUI"]);
+        assert.containsNone(target, ".o_blockUI", "UI should no longer be blocked");
     });
 
-    QUnit.test("One app installed, renew with success", async function (assert) {
-        assert.expect(14);
+    QUnit.test("One app installed, renew", async function (assert) {
+        assert.expect(8);
 
         patchDate(2019, 9, 10, 12, 0, 0);
 
-        let callToGetParamCount = 0;
-
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-10-20 12:00:00",
-                expirationReason: "renewal",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-10-20 12:00:00",
+                expiration_reason: "renewal",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
             },
-            cookie: {
-                setCookie() {
-                    assert.step("setCookie");
-                },
-            },
-            ui: {
-                block() {
-                    assert.step("blockUI");
-                },
-                unblock() {
-                    assert.step("unblockUI");
-                },
-            },
-            mockRPC(route, args) {
-                if (args.method === "get_param") {
-                    assert.step("get_param");
-                    callToGetParamCount++;
-                    if (callToGetParamCount === 1) {
-                        return "2019-10-20 12:00:00";
-                    } else if (callToGetParamCount === 2) {
-                        assert.strictEqual(args.args[0], "database.expiration_date");
-                        return "2019-11-09 12:00:00";
-                    } else {
-                        assert.strictEqual(args.args[0], "database.enterprise_code");
-                        return "ABC";
-                    }
+            mockRPC(route, { args, method }) {
+                if (route === "/web/webclient/load_menus") {
+                    return;
                 }
-                if (args.method === "update_notification") {
-                    assert.step("update_notification");
+                if (method === "get_param") {
+                    assert.step("get_param");
+                    assert.strictEqual(args[0], "database.enterprise_code");
+                    return "ABC";
                 }
                 return true;
             },
@@ -612,7 +535,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
 
         assert.strictEqual(
             target.querySelector(".oe_instance_register").innerText,
-            "This database will expire in 10 days. Renew your subscription"
+            "This database will expire in 10 days. Renew your subscription "
         );
 
         assert.hasClass(
@@ -632,54 +555,31 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
         // Click on 'Renew your subscription'
         await click(target.querySelector(".oe_instance_renew"));
 
-        assert.strictEqual(
-            target.querySelector(".oe_instance_register.oe_instance_success").innerText,
-            "Thank you, your registration was successful! Your database is valid until November 9, 2019."
-        );
-
-        assert.verifySteps([
-            "get_param",
-            "setCookie",
-            "update_notification",
-            "get_param",
-            "get_param",
-        ]);
+        assert.verifySteps(["get_param"]);
     });
 
     QUnit.test("One app installed, check status and get success", async function (assert) {
-        assert.expect(8);
+        assert.expect(6);
 
         patchDate(2019, 9, 10, 12, 0, 0);
 
-        let callToGetParamCount = 0;
-
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-10-20 12:00:00",
-                expirationReason: "renewal",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-10-20 12:00:00",
+                expiration_reason: "renewal",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
             },
-            ui: {
-                block() {
-                    assert.step("blockUI");
-                },
-                unblock() {
-                    assert.step("unblockUI");
-                },
-            },
-            mockRPC(route, args) {
-                if (args.method === "get_param") {
-                    assert.step("get_param");
-                    assert.strictEqual(args.args[0], "database.expiration_date");
-                    callToGetParamCount++;
-                    if (callToGetParamCount === 1) {
-                        return "2019-10-20 12:00:00";
-                    } else {
-                        return "2019-10-24 12:00:00";
-                    }
+            mockRPC(route, { args, method }) {
+                if (route === "/web/webclient/load_menus") {
+                    return;
                 }
-                if (args.method === "update_notification") {
+                if (method === "get_param") {
+                    assert.step("get_param");
+                    assert.strictEqual(args[0], "database.expiration_date");
+                    return "2019-10-24 12:00:00";
+                }
+                if (method === "update_notification") {
                     assert.step("update_notification");
                 }
                 return true;
@@ -696,40 +596,31 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             "Your subscription was updated and is valid until October 24, 2019."
         );
 
-        assert.verifySteps(["get_param", "update_notification", "get_param"]);
+        assert.verifySteps(["update_notification", "get_param"]);
     });
 
-    QUnit.test("One app installed, check status and get page reload", async function (assert) {
-        assert.expect(5);
+    // Why would we want to reload the page when we check the status and it hasn't changed?
+    QUnit.skip("One app installed, check status and get page reload", async function (assert) {
+        assert.expect(4);
 
         patchDate(2019, 9, 10, 12, 0, 0);
 
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-10-20 12:00:00",
-                expirationReason: "renewal",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-10-20 12:00:00",
+                expiration_reason: "renewal",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
             },
-            browser: {
-                location: {
-                    reload: () => assert.step("reloadPage"),
-                },
-            },
-            ui: {
-                block() {
-                    assert.step("blockUI");
-                },
-                unblock() {
-                    assert.step("unblockUI");
-                },
-            },
-            mockRPC(route, args) {
-                if (args.method === "get_param") {
+            mockRPC(route, { method }) {
+                if (route === "/web/webclient/load_menus") {
+                    return;
+                }
+                if (method === "get_param") {
                     assert.step("get_param");
                     return "2019-10-20 12:00:00";
                 }
-                if (args.method === "update_notification") {
+                if (method === "update_notification") {
                     assert.step("update_notification");
                 }
                 return true;
@@ -739,7 +630,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
         // click on "Refresh subscription status"
         await click(target.querySelector("a.check_enterprise_status"));
 
-        assert.verifySteps(["get_param", "update_notification", "get_param", "reloadPage"]);
+        assert.verifySteps(["update_notification", "get_param", "reloadPage"]);
     });
 
     QUnit.test("One app installed, upgrade database", async function (assert) {
@@ -748,32 +639,22 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
         patchDate(2019, 9, 10, 12, 0, 0);
 
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-10-20 12:00:00",
-                expirationReason: "upsell",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-10-20 12:00:00",
+                expiration_reason: "upsell",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
             },
-            browser: {
-                location: {
-                    reload: () => assert.step("reloadPage"),
-                },
-            },
-            ui: {
-                block() {
-                    assert.step("blockUI");
-                },
-                unblock() {
-                    assert.step("unblockUI");
-                },
-            },
-            mockRPC(route, args) {
-                if (args.method === "get_param") {
+            mockRPC(route, { args, method }) {
+                if (route === "/web/webclient/load_menus") {
+                    return;
+                }
+                if (method === "get_param") {
                     assert.step("get_param");
-                    assert.strictEqual(args.args[0], "database.enterprise_code");
+                    assert.strictEqual(args[0], "database.enterprise_code");
                     return "ABC";
                 }
-                if (args.method === "search_count") {
+                if (method === "search_count") {
                     assert.step("search_count");
                     return 13;
                 }
@@ -784,7 +665,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
         assert.strictEqual(
             target.querySelector(".oe_instance_register").innerText,
             "This database will expire in 10 days. You have more users or more apps installed than your subscription allows.\n" +
-                "Upgrade your subscription"
+                "Upgrade your subscription "
         );
 
         // click on "Upgrade your subscription"
@@ -803,10 +684,10 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
         patchDate(2019, 9, 10, 12, 0, 0);
 
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-11-08 12:00:00",
-                expirationReason: "",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-11-08 12:00:00",
+                expiration_reason: "",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "user",
             },
         });
@@ -824,47 +705,27 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
     });
 
     QUnit.test("One app installed, navigation to renewal page", async function (assert) {
-        assert.expect(15);
+        assert.expect(9);
 
         patchDate(2019, 11, 10, 0, 0, 0);
 
-        let callToGetParamCount = 0;
-
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-10-20 12:00:00",
-                expirationReason: "renewal",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-10-20 12:00:00",
+                expiration_reason: "renewal",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
             },
-            cookie: {
-                setCookie() {
-                    assert.step("setCookie");
-                },
-            },
-            ui: {
-                block() {
-                    assert.step("blockUI");
-                },
-                unblock() {
-                    assert.step("unblockUI");
-                },
-            },
-            mockRPC(route, args) {
-                if (args.method === "get_param") {
-                    assert.step("get_param");
-                    callToGetParamCount++;
-                    if (callToGetParamCount === 1) {
-                        return "2019-10-20 12:00:00";
-                    } else if (callToGetParamCount === 2) {
-                        assert.strictEqual(args.args[0], "database.expiration_date");
-                        return "2019-11-09 12:00:00";
-                    } else {
-                        assert.strictEqual(args.args[0], "database.enterprise_code");
-                        return "ABC";
-                    }
+            mockRPC(route, { args, method }) {
+                if (route === "/web/webclient/load_menus") {
+                    return;
                 }
-                if (args.method === "update_notification") {
+                if (method === "get_param") {
+                    assert.step("get_param");
+                    assert.strictEqual(args[0], "database.enterprise_code");
+                    return "ABC";
+                }
+                if (method === "update_notification") {
                     assert.step("update_notification");
                 }
                 return true;
@@ -873,7 +734,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
 
         assert.strictEqual(
             target.querySelector(".oe_instance_register").innerText,
-            "This database has expired. Renew your subscription"
+            "This database has expired. Renew your subscription "
         );
 
         assert.hasClass(target.querySelector(".database_expiration_panel"), "alert-danger");
@@ -894,14 +755,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             "https://www.odoo.com/odoo-enterprise/renew?contract=ABC"
         );
 
-        assert.verifySteps([
-            "blockUI",
-            "get_param",
-            "setCookie",
-            "update_notification",
-            "get_param",
-            "get_param",
-        ]);
+        assert.verifySteps(["get_param"]);
     });
 
     QUnit.test("One app installed, different locale (arabic)", async function (assert) {
@@ -913,34 +767,29 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             defaultNumberingSystem: "arab",
         });
 
-        let callToGetParamCount = 0;
-
-        const target = getFixture();
         await createExpirationPanel({
-            enterprise: {
-                expirationDate: "2019-10-20 12:00:00",
-                expirationReason: "renewal",
-                isMailInstalled: true,
+            session: {
+                expiration_date: "2019-10-20 12:00:00",
+                expiration_reason: "renewal",
+                notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
             },
             async mockRPC(route, { method }) {
+                if (route === "/web/webclient/load_menus") {
+                    return;
+                }
                 if (method === "get_param") {
-                    callToGetParamCount++;
-                    if (callToGetParamCount === 1) {
-                        return "2019-10-20 12:00:00";
-                    } else if (callToGetParamCount === 2) {
-                        return "2019-11-09 12:00:00";
-                    }
+                    return "2019-11-09 12:00:00";
                 }
                 return true;
             },
         });
 
-        await click(target, ".oe_instance_renew");
+        await click(target, ".check_enterprise_status");
 
         assert.strictEqual(
             target.querySelector(".oe_instance_register").innerText,
-            "Thank you, your registration was successful! Your database is valid until ٩ نوفمبر ٢٠١٩."
+            "Your subscription was updated and is valid until ٩ نوفمبر ٢٠١٩."
         );
     });
 });

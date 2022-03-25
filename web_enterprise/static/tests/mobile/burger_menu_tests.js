@@ -6,7 +6,8 @@ import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { EnterpriseBurgerMenu } from "@web_enterprise/webclient/burger_menu/burger_menu";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import { companyService } from "@web/webclient/company_service";
-import { makeFakeEnterpriseService } from "../mocks";
+import { ormService } from "@web/core/orm_service";
+import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 
 /**
  * Note: The asserts are all based on document.body (instead of getFixture() by example) because
@@ -21,7 +22,8 @@ QUnit.module("Burger Menu Enterprise", {
     beforeEach() {
         serverData = getActionManagerServerData();
 
-        serviceRegistry.add("enterprise", makeFakeEnterpriseService());
+        serviceRegistry.add("enterprise_subscription", enterpriseSubscriptionService);
+        serviceRegistry.add("orm", ormService);
         serviceRegistry.add("company", companyService);
         serviceRegistry.add("home_menu", homeMenuService);
 

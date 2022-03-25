@@ -13,7 +13,8 @@ import { editView } from "@web/views/debug_items";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import testUtils from "web.test_utils";
-import { makeFakeEnterpriseService } from "../mocks";
+import { ormService } from "@web/core/orm_service";
+import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { errorService } from "@web/core/errors/error_service";
 import { browser } from "@web/core/browser/browser";
@@ -31,8 +32,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         serverData = getActionManagerServerData();
         fixture = getFixture();
         serviceRegistry.add("home_menu", homeMenuService);
-        const fakeEnterpriseService = makeFakeEnterpriseService();
-        serviceRegistry.add("enterprise", fakeEnterpriseService);
+        serviceRegistry.add("orm", ormService);
+        serviceRegistry.add("enterprise_subscription", enterpriseSubscriptionService);
     });
 
     QUnit.module("basic flow with home menu", (hooks) => {

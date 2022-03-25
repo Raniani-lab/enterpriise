@@ -4,7 +4,8 @@ import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator
 import { StudioHomeMenu } from "@web_studio/client_action/studio_home_menu/studio_home_menu";
 import { MODES } from "@web_studio/studio_service";
 
-import { makeFakeEnterpriseService } from "@web_enterprise/../tests/mocks";
+import { ormService } from "@web/core/orm_service";
+import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 
 import {
     fakeCommandService,
@@ -100,7 +101,6 @@ QUnit.module("Studio", (hooks) => {
 
         bus = new EventBus();
 
-        const fakeEnterpriseService = makeFakeEnterpriseService();
         const fakeNotificationService = makeFakeNotificationService();
         const fakeHomeMenuService = {
             start() {
@@ -140,7 +140,8 @@ QUnit.module("Studio", (hooks) => {
             },
         };
 
-        serviceRegistry.add("enterprise", fakeEnterpriseService);
+        serviceRegistry.add("orm", ormService);
+        serviceRegistry.add("enterprise_subscription", enterpriseSubscriptionService);
         serviceRegistry.add("home_menu", fakeHomeMenuService);
         serviceRegistry.add("http", fakeHTTPService);
         serviceRegistry.add("menu", fakeMenuService);

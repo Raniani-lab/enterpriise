@@ -17,7 +17,7 @@
                 t-att-Certificado="certificate_key"
                 t-att-CondicionesDePago="format_string(record.invoice_payment_term_id.name, 1000)"
                 t-att-SubTotal="format_float(total_price_subtotal_before_discount, currency_precision)"
-                t-att-Descuento="format_float(total_price_discount, currency_precision) if total_price_discount else None"
+                t-att-Descuento="format_float(total_price_discount, currency_precision) if not record.currency_id.is_zero(total_price_discount) else None"
                 t-att-Moneda="currency_name"
                 t-att-TipoCambio="format_float(currency_conversion_rate, 6)"
                 t-att-Total="format_float(record.amount_total, currency_precision)"
@@ -52,7 +52,7 @@
                             t-att-Descripcion="format_string(line.name, 1000)"
                             t-att-ValorUnitario="format_float(line_vals['gross_price_total_unit'], currency_precision)"
                             t-att-Importe="format_float(line_vals['price_subtotal_before_discount'], currency_precision)"
-                            t-att-Descuento="format_float(line_vals['price_discount'], currency_precision) if line_vals['price_discount'] else None">
+                            t-att-Descuento="format_float(line_vals['price_discount'], currency_precision) if not record.currency_id.is_zero(line_vals['price_discount']) else None">
                             <t t-set="tax_detail_transferred" t-value="tax_details_transferred['invoice_line_tax_details'][line]"/>
                             <t t-set="tax_detail_withholding" t-value="tax_details_withholding['invoice_line_tax_details'][line]"/>
                             <t t-if="tax_detail_transferred['tax_details'] or tax_detail_withholding['tax_details']">

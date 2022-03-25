@@ -421,7 +421,7 @@ class TestEdiResults(TestMxEdiCommon):
                     <xpath expr="//Comprobante" position="attributes">
                         <attribute name="Moneda">MXN</attribute>
                         <attribute name="Folio">2</attribute>
-                        <attribute name="Descuento">0.00</attribute>
+                        <attribute name="Descuento"/>
                         <attribute name="SubTotal">1251.77</attribute>
                         <attribute name="Total">1452.00</attribute>
                         <attribute name="TipoCambio" delete="true"/>
@@ -432,7 +432,6 @@ class TestEdiResults(TestMxEdiCommon):
                             ClaveProdServ="01010101"
                             Descripcion="product_mx"
                             Importe="398.28"
-                            Descuento="0.00"
                             ValorUnitario="398.28">
                             <Impuestos>
                                 <Traslados>
@@ -481,7 +480,6 @@ class TestEdiResults(TestMxEdiCommon):
                             ClaveProdServ="01010101"
                             Descripcion="product_mx"
                             Importe="31.90"
-                            Descuento="0.00"
                             ValorUnitario="31.90">
                             <Impuestos>
                                 <Traslados>

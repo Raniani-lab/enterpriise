@@ -19,6 +19,7 @@ class L10nBeScheduleChangeAllocation(models.Model):
         required=True,
         ondelete='cascade',
     )
+    maximum_days = fields.Float()
     current_resource_calendar_id = fields.Many2one(
         'resource.calendar',
         required=True,
@@ -35,9 +36,10 @@ class L10nBeScheduleChangeAllocation(models.Model):
             # Avoid updating the number of days if the contract has been cancelled
             # Contrat may not be open already, it depends on another cron
             if record.contract_id.state in ['draft', 'open']:
-                number_of_days = self.env['l10n_be.hr.payroll.schedule.change.wizard']._compute_new_allocation(
-                    record.leave_allocation_id, record.current_resource_calendar_id,
-                    record.new_resource_calendar_id,
+                number_of_days = self.env['l10n_be.hr.payroll.schedule.change.wizard']\
+                    .with_company(record.contract_id.company_id)._compute_new_allocation(
+                        record.leave_allocation_id, record.current_resource_calendar_id,
+                        record.new_resource_calendar_id, record.effective_date,
                 )
                 record.leave_allocation_id.write({
                     'number_of_days': number_of_days,

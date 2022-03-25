@@ -21,7 +21,6 @@ class TestPayrollAllocatingPaidTimeOff(TestPayrollCommon):
             'year': today.year - 1,
             'holiday_status_id': self.paid_time_off_type.id
         })
-        self.wizard._onchange_struct_id()
         self.wizard.alloc_employee_ids = self.wizard.alloc_employee_ids.filtered(lambda alloc_employee: alloc_employee.employee_id.id in [self.employee_georges.id, self.employee_john.id])
 
     def test_allocating_paid_time_off(self):

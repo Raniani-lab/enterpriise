@@ -23,7 +23,6 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'year': today.year - 1,
             'holiday_status_id': cls.paid_time_off_type.id
         })
-        cls.wizard._onchange_struct_id()
         cls.wizard.alloc_employee_ids = cls.wizard.alloc_employee_ids.filtered(lambda alloc_employee: alloc_employee.employee_id.id in [cls.employee_georges.id, cls.employee_john.id, cls.employee_a.id])
 
         view = cls.wizard.generate_allocation()
@@ -54,13 +53,13 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'leave_type_id': self.paid_time_off_type.id,
             'part_time': True,
         })
-        self.assertEqual(wizard.time_off_allocation, 9)
+        self.assertEqual(wizard.time_off_allocation, 10)
         self.assertAlmostEqual(wizard.work_time_rate, 50, 2)
         self.assertEqual(wizard.leave_allocation_id.id, georges_allocation.id)
         view = wizard.with_context(force_schedule=True).action_validate()
         # Apply allocation changes directly
         self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(date(current_year, 2, 1))
-        self.assertEqual(georges_allocation.number_of_days, 9)
+        self.assertEqual(georges_allocation.number_of_days, 10)
 
         # Apply allocation changes directly - Credit time exit
         full_time_contract = self.env['hr.contract'].search(view['domain']).filtered(lambda contract: not contract.time_credit and contract.id != georges_current_contract.id)
@@ -86,13 +85,13 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'leave_type_id': self.paid_time_off_type.id,
             'part_time': True,
         })
-        self.assertEqual(wizard.time_off_allocation, 18) # 4*4*1 full days + 4*1*.5 half days
+        self.assertEqual(wizard.time_off_allocation, 16) # John may have 88% of 20 days this year -> ~17.5
         self.assertAlmostEqual(wizard.work_time_rate, 90, 2)
         self.assertEqual(wizard.leave_allocation_id.id, john_allocation.id)
         view = wizard.with_context(force_schedule=True).action_validate()
         # Apply allocation changes directly
         self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(date(current_year, 2, 1))
-        self.assertEqual(john_allocation.number_of_days, 18)
+        self.assertEqual(john_allocation.number_of_days, 16)
 
         # Apply allocation changes directly - Credit time exit
         continuation_date = date(current_year, 5, 1)
@@ -157,6 +156,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
         leave.action_validate()
 
         # Credit time
+        # import pdb; pdb.set_trace()
         wizard = self.env['l10n_be.hr.payroll.schedule.change.wizard'].with_context(allowed_company_ids=self.belgian_company.ids, active_id=a_current_contract.id).new({
             'date_start': date(today.year, 6, 1),
             'date_end': date(today.year, 8, 31),
@@ -164,7 +164,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'leave_type_id': self.paid_time_off_type.id,
             'part_time': True,
         })
-        self.assertEqual(wizard.time_off_allocation, 17) #11 + 6 leaves taken
+        self.assertEqual(wizard.time_off_allocation, 16) # 16 max
         self.assertAlmostEqual(wizard.work_time_rate, 80, 2)
         view = wizard.with_context(force_schedule=True).action_validate()
 
@@ -186,7 +186,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
         full_time_contract = self.env['hr.contract'].search(view['domain']).filtered(lambda contract: not contract.time_credit and contract.id != a_current_contract.id)
         self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(full_time_contract.date_start)
         self.assertEqual(full_time_contract.time_credit, False)
-        self.assertEqual(a_allocation.number_of_days, 18, "6 remained paid time offs and 12 days has been taken by the employee this current year")
+        self.assertEqual(a_allocation.number_of_days, 20, "6 remained paid time offs and 12 days has been taken by the employee this current year")
 
         # Credit time
         wizard = self.env['l10n_be.hr.payroll.schedule.change.wizard'].with_context(allowed_company_ids=self.belgian_company.ids, active_id=full_time_contract.id).new({
@@ -196,7 +196,7 @@ class TestPayrollCreditTime(TestPayrollCommon):
             'leave_type_id': self.paid_time_off_type.id,
             'part_time': True,
         })
-        self.assertEqual(wizard.time_off_allocation, 15)
+        self.assertEqual(wizard.time_off_allocation, 12) # Should be 10 but since the employee has already taken 12 days, it's 12
         self.assertAlmostEqual(wizard.work_time_rate, 50, 2)
         view = wizard.with_context(force_schedule=True).action_validate()
         # Apply allocation changes directly

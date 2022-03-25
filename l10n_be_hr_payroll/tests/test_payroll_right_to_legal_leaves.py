@@ -84,7 +84,6 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'year': 2017,
             'holiday_status_id': self.paid_time_off_type.id
         })
-        wizard._onchange_struct_id()
         wizard.alloc_employee_ids = wizard.alloc_employee_ids.filtered(lambda alloc_employee: alloc_employee.employee_id.id == self.employee_test.id)
         self.assertEqual(wizard.alloc_employee_ids.paid_time_off, 20, "Employee Test should have 20 days for 2018")
 
@@ -105,10 +104,10 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_30_hours_per_week.id,
             'leave_type_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, 15.5)
+        self.assertEqual(wizard.time_off_allocation, 16)
         view = wizard.with_context(force_schedule=True).action_validate()
         self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(date(2018, 4, 1))
-        self.assertEqual(allocation.number_of_days, 15.5)
+        self.assertEqual(allocation.number_of_days, 16)
 
     def test_credit_time_for_employee_test_example2(self):
         """
@@ -125,7 +124,6 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'year': 2017,
             'holiday_status_id': self.paid_time_off_type.id
         })
-        wizard._onchange_struct_id()
         wizard.alloc_employee_ids = wizard.alloc_employee_ids.filtered(lambda alloc_employee: alloc_employee.employee_id.id == self.employee_test.id)
         self.assertEqual(wizard.alloc_employee_ids.paid_time_off, 20, "Employee Test should have 20 days for 2018")
 
@@ -157,10 +155,10 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_30_hours_per_week.id,
             'leave_type_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, 16.5)
+        self.assertEqual(wizard.time_off_allocation, 16)
         view = wizard.with_context(force_schedule=True).action_validate()
         self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(date(2018, 4, 1))
-        self.assertEqual(allocation.number_of_days, 16.5, "15 days left becomes 11.5 (15 * .78, rounded down) + 5 for the days already taken.")
+        self.assertEqual(allocation.number_of_days, 16, "15 days left becomes 11.5 (15 * .78, rounded down) + 5 for the days already taken.")
 
     def test_credit_time_for_employee_test_example3(self):
         """
@@ -216,7 +214,6 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'year': 2017,
             'holiday_status_id': self.paid_time_off_type.id
         })
-        wizard._onchange_struct_id()
         wizard.alloc_employee_ids = wizard.alloc_employee_ids.filtered(lambda alloc_employee: alloc_employee.employee_id.id == self.employee_test.id)
         self.assertEqual(wizard.alloc_employee_ids.paid_time_off, 15)
         self.assertEqual(wizard.alloc_employee_ids.paid_time_off_to_allocate, 10, "10 days is equal to 20 half days")
@@ -247,7 +244,7 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'resource_calendar_id': self.resource_calendar_24_hours_per_week_4_days_per_week.id,
             'leave_type_id': self.paid_time_off_type.id
         })
-        self.assertEqual(wizard.time_off_allocation, 10 + allocation.leaves_taken) #Effectively allocation.number_of_days * 24/20 + leaves_taken
+        self.assertEqual(wizard.time_off_allocation, 12.5)
         view = wizard.with_context(force_schedule=True).action_validate()
         self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(date(2018, 4, 1))
-        self.assertEqual(allocation.number_of_days, 10 + allocation.leaves_taken, "10 days allocated by the credit + the number of leaves taken")
+        self.assertEqual(allocation.number_of_days, 12.5, "10 days allocated by the credit")

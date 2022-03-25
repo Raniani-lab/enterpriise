@@ -79,32 +79,37 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
         })
 
     @api.model
-    def _compute_new_allocation(self, leave_allocation, current_calendar, new_calendar):
+    def _compute_new_allocation(self, leave_allocation, current_calendar, new_calendar, date_start):
         if current_calendar.hours_per_week == 0 or not leave_allocation:
             return 0
-        remaining_days = leave_allocation.number_of_days - leave_allocation.leaves_taken
-        #It might seem weird to round two times but this is to prevent rounding errors
-        # basically we want to floor to nearest .5 but .9 should count as 1 not .5
-        #First rounding was added after having the case that 2.99999999.. would round to 2.5
-        # and giving a half day less on the allocation
-        new_allocation = float_round(
-            remaining_days * (new_calendar.work_time_rate / current_calendar.work_time_rate),
-            precision_rounding=0.25
-        )
-        new_allocation = float_round(new_allocation, precision_rounding=0.5, rounding_method='DOWN')
+
+        # Simulate the start of year allocation to have an accurate value
+        paid_leave_wizard = self.env['hr.payroll.alloc.paid.leave']\
+            .with_company(leave_allocation.employee_company_id).with_context(forced_calendar=new_calendar).new({
+                'year': str(date_start.year - 1),
+                'holiday_status_id': leave_allocation.holiday_status_id.id,
+                'employee_ids': leave_allocation.employee_id,
+        })
+        if paid_leave_wizard.alloc_employee_ids:
+            new_allocation = max(0, paid_leave_wizard.alloc_employee_ids[0].paid_time_off_to_allocate - leave_allocation.leaves_taken)
+        else:
+            new_allocation = 0
+
         #There is a maximum that we should never pass, in theory we should never pass that limit
         # since we round down, but since the payroll officer will not be able to modify this values
         # it is good to have that limit
-        max_allocation = (len(new_calendar.attendance_ids) * 4) / 2 if not new_calendar.two_weeks_calendar\
-            else (len(new_calendar.attendance_ids) * 2 / 2)
-        return min(new_allocation, max_allocation) + leave_allocation.leaves_taken
+        max_allocation = ((len(new_calendar.attendance_ids) * 4) / 2 if not new_calendar.two_weeks_calendar\
+            else (len(new_calendar.attendance_ids) * 2 / 2)) - leave_allocation.leaves_taken
+
+        # An allocation's number of days may never be below the number of leaves taken
+        return max(min(new_allocation, max_allocation) + leave_allocation.leaves_taken, leave_allocation.leaves_taken)
 
     @api.depends('leave_allocation_id', 'resource_calendar_id')
     def _compute_time_off_allocation(self):
         for wizard in self:
             wizard.time_off_allocation = self._compute_new_allocation(
                 wizard.leave_allocation_id, wizard.current_resource_calendar_id,
-                wizard.resource_calendar_id,
+                wizard.resource_calendar_id, wizard.date_start,
             )
 
     @api.depends('leave_type_id')
@@ -150,7 +155,7 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
             'part_time': False,
         })
 
-    def _update_allocation_or_schedule(self, date, contract, current, new):
+    def _update_allocation_or_schedule(self, date, contract, current, new, max_days):
         self.ensure_one()
         if not self.leave_allocation_id:
             return
@@ -162,6 +167,7 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
                 'current_resource_calendar_id': current.id,
                 'new_resource_calendar_id': new.id,
                 'leave_allocation_id': self.leave_allocation_id.id,
+                'maximum_days': max_days
             })
         else:
             # NOTE: for now we don't check the period but since creating a part time contract for a
@@ -190,9 +196,9 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
             self.part_time = False
 
         if self.part_time:
-            name = _('%s - Part Time %.0f%%') % (self.employee_id.name, self.work_time_rate)
+            name = _('%s - Part Time %s') % (self.employee_id.name, self.resource_calendar_id.name)
         else:
-            name = _('%s - %.0f%% Work Schedule') % (self.employee_id.name, self.work_time_rate)
+            name = _('%s - %s') % (self.employee_id.name, self.resource_calendar_id.name)
 
         new_contracts = self.contract_id.copy({
             'name': name,
@@ -213,11 +219,13 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
 
         # Process allocation changes
         if self.leave_allocation_id:
+            original_allocated_days = self.leave_allocation_id.number_of_days - self.leave_allocation_id.leaves_taken
             self._update_allocation_or_schedule(
                 self.date_start,
                 new_contracts[0],
                 self.current_resource_calendar_id,
                 self.resource_calendar_id,
+                self.full_time_off_allocation,
             )
 
         if self.date_end and (
@@ -240,6 +248,7 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
                     post_contract,
                     self.resource_calendar_id,
                     self.current_resource_calendar_id,
+                    original_allocated_days,
                 )
 
         # Set a closing date on the current contract

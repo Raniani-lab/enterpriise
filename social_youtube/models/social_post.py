@@ -87,6 +87,18 @@ class SocialPostYoutube(models.Model):
             if not social_post.youtube_video_id and 'youtube' in social_post.media_ids.mapped('media_type'):
                 raise UserError(_("You have to upload a video when posting on YouTube."))
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        """The names of the UTM sources are generated based on the content of _rec_name.
+
+        But for Youtube, the message field is not required, so we should use the title
+        of the video instead.
+        """
+        for values in vals_list:
+            if not values.get('message') and not values.get('name') and values.get('youtube_title'):
+                values['name'] = self.env['utm.source']._generate_name(self, values.get('youtube_title'))
+        return super().create(vals_list)
+
     def _get_stream_post_domain(self):
         domain = super(SocialPostYoutube, self)._get_stream_post_domain()
         youtube_video_ids = [youtube_video_id for youtube_video_id in self.mapped('youtube_video_id') if youtube_video_id]

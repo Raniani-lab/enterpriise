@@ -31,7 +31,7 @@
                         <br/>
                         <span>To provide our application services, note that we store the following data from your YouTube account:
                             <ul>
-                                <li>Your videos metadata including title, duration and view counts (but never the video itself)</li>
+                                <li>Your videos metadata including title and view counts (but never the video itself)</li>
                                 <li>Your channel name and picture</li>
                             </ul>
                         </span>

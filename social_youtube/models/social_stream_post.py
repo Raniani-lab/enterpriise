@@ -18,7 +18,6 @@ class SocialStreamPostYoutube(models.Model):
     youtube_likes_ratio = fields.Integer('YouTube Likes Ratio', compute='_compute_youtube_likes_ratio')
     youtube_comments_count = fields.Integer('YouTube Comments Count')
     youtube_views_count = fields.Integer('YouTube Views')
-    youtube_video_duration = fields.Float('YouTube Video Duration')  # in minutes
     youtube_thumbnail_url = fields.Char('Youtube Thumbnail Url', compute="_compute_youtube_thumbnail_url")
 
     def _compute_author_link(self):

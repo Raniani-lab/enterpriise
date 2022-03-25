@@ -24,8 +24,8 @@ class SocialPostYoutube(models.Model):
         compute='_compute_youtube_accounts_count')
     youtube_accounts_other_count = fields.Integer('Selected Other Accounts',
         compute='_compute_youtube_accounts_count')
-    youtube_video_url = fields.Char('Youtube Video Url', compute="_compute_youtube_video_url")
-    youtube_thumbnail_url = fields.Char('Youtube Thumbnail Url', compute="_compute_youtube_thumbnail_url")
+    youtube_video_url = fields.Char('YouTube Video Url', compute="_compute_youtube_video_url")
+    youtube_thumbnail_url = fields.Char('YouTube Thumbnail Url', compute="_compute_youtube_thumbnail_url")
 
     @api.constrains('message')
     def _check_message_not_empty(self):

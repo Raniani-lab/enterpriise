@@ -54,9 +54,9 @@
                         %
                     </b>
                 </div>
-                <div class="o_social_subtle_btn_disabled pl-3">
-                    <i class="fa fa-eye" title="Views"/>
-                    <b t-esc="originalPost.youtubeViewsCount"/>
+                <div class="o_social_subtle_btn_disabled pl-3 font-weight-bold">
+                    Views
+                    <t t-esc="originalPost.youtubeViewsCount"/>
                 </div>
             </div>
         </t>

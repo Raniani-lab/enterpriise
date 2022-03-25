@@ -8,9 +8,13 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='click_count']" position="after">
                 <field name="youtube_title"/>
+                <field name="youtube_description"/>
                 <field name="youtube_video_id"/>
                 <field name="youtube_thumbnail_url"/>
                 <field name="youtube_video_url"/>
+            </xpath>
+            <xpath expr="//div[@name='o_social_stream_post_message_text']" position="inside">
+                <field name="youtube_description" t-if="record.youtube_description.raw_value"/>
             </xpath>
             <xpath expr="//div[@name='o_social_stream_post_message_text']" position="after">
                 <div class="text-center">
@@ -65,7 +69,7 @@
                 <field name="youtube_access_token" invisible="1"/>
                 <field name="youtube_title" string="Video Title" options="{'onchange_on_keydown': true}"
                     placeholder="e.g. Odoo Social Tutorial"
-                    attrs="{'invisible': [('youtube_accounts_count', '!=', 1)], 'readonly': [('state', '!=', 'draft')], 'required': [('youtube_video_id', '!=', False)]}"/>
+                    attrs="{'invisible': [('youtube_accounts_count', '!=', 1)], 'readonly': [('state', '!=', 'draft')], 'required': [('youtube_accounts_count', '!=', 0)]}"/>
                 <field name="youtube_description" string="Video Description" options="{'onchange_on_keydown': true}"
                     widget="text_emojis" placeholder="e.g. Engage your entire community with a single app! https://www.odoo.com/trial"
                     attrs="{'invisible': [('youtube_accounts_count', '!=', 1)], 'readonly': [('state', '!=', 'draft')], 'required': [('youtube_video_id', '!=', False)]}"/>

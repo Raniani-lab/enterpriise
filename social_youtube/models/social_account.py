@@ -11,14 +11,14 @@ from odoo import api, fields, models
 class SocialAccountYoutube(models.Model):
     _inherit = 'social.account'
 
-    youtube_channel_id = fields.Char('Youtube Channel ID', readonly=True,
+    youtube_channel_id = fields.Char('YouTube Channel ID', readonly=True,
         help="YouTube Channel ID provided by the YouTube API, this should never be set manually.")
     youtube_access_token = fields.Char('Google Access Token', readonly=True,
         help="Access token provided by the YouTube API, this should never be set manually.")
     youtube_refresh_token = fields.Char('Google Refresh Token', readonly=True,
         help="Refresh token provided by the YouTube API, this should never be set manually.")
     youtube_token_expiration_date = fields.Datetime('Token expiration date', readonly=True,
-        help="Expiration date of the Access Token provided by the Youtube API, this should never be set manually.")
+        help="Expiration date of the Access Token provided by the YouTube API, this should never be set manually.")
     youtube_upload_playlist_id = fields.Char('YouTube Upload Playlist ID', readonly=True,
          help="'Uploads' Playlist ID provided by the YouTube API, this should never be set manually.")
 

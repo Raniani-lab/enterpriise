@@ -77,9 +77,9 @@
                     </div>
 
                     <div class="flex-grow-1 text-right text-muted">
-                        <div class="o_social_subtle_btn_disabled pr-2 d-inline-block">
-                            <i class="fa fa-eye" title="Views"/>
-                            <b t-esc="record.youtube_views_count.value"/>
+                        <div class="o_social_subtle_btn_disabled pr-2 d-inline-block font-weight-bold">
+                            Views
+                            <t t-esc="record.youtube_views_count.value"/>
                         </div>
                     </div>
                 </div>

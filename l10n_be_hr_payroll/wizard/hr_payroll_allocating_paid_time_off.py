@@ -28,7 +28,9 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
     year = fields.Selection(string='Reference Period', selection='_get_range_of_years', required=True, help="Year of the period to consider", default=lambda self: fields.Date.today().year)
     structure_type_id = fields.Many2one('hr.payroll.structure.type', string="Structure Type")
 
-    alloc_employee_ids = fields.One2many('hr.payroll.alloc.employee', 'alloc_paid_leave_id')
+    employee_ids = fields.Many2many('hr.employee', string='Employees', help="Use this to limit the employees to compute")
+    alloc_employee_ids = fields.One2many('hr.payroll.alloc.employee', 'alloc_paid_leave_id',
+        compute='_compute_alloc_employee_ids', readonly=False)
 
     holiday_status_id = fields.Many2one(
         "hr.leave.type", string="Time Off Type", required=True,
@@ -38,8 +40,8 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
         'res.company', string='Company', required=True, default=lambda self: self.env.company)
     department_id = fields.Many2one('hr.department', 'Department', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
-    @api.onchange('structure_type_id', 'year', 'holiday_status_id', 'department_id')
-    def _onchange_struct_id(self):
+    @api.depends('structure_type_id', 'year', 'holiday_status_id', 'department_id')
+    def _compute_alloc_employee_ids(self):
         if not self.env.user.has_group('hr_payroll.group_hr_payroll_user'):
             raise UserError(_("You don't have the right to do this. Please contact your administrator!"))
         self.alloc_employee_ids = False
@@ -54,39 +56,45 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
         period_work_days_count = len(list(rrule(DAILY, dtstart=period_start, until=period_end, byweekday=[0, 1, 2, 3, 4, 5])))
 
         if self.structure_type_id:
-            structure = "structure_type_id = %(structure)s AND"
+            structure = "AND c.structure_type_id = %(structure)s"
         else:
             structure = ""
 
-        employee_in_department = ""
+        employee_check = ""
         if self.department_id:
-            employee_in_department = "AND employee_id IN (SELECT id FROM hr_employee WHERE department_id = %(department)s)"
+            employee_check = "AND e.department_id = %(department)s) "
+
+        if self.employee_ids:
+            employee_check += "AND e.id in %(employee_ids)s "
 
         query = """
             SELECT contract_id, employee_id, date_start, date_end, resource_calendar_id
             FROM (
                 SELECT contract.id as contract_id, contract.employee_id as employee_id, resource_calendar_id, contract.date_start, contract.date_end
                 FROM
-                    (SELECT id, employee_id, resource_calendar_id, date_start, date_end FROM hr_contract
-                        WHERE
+                    (SELECT c.id, c.employee_id, c.resource_calendar_id, c.date_start, c.date_end FROM hr_contract c
+                        JOIN hr_employee e
+                          ON e.id = c.employee_id
+                        WHERE 1=1
                             {where_structure}
-                            employee_id IN (SELECT id FROM hr_employee WHERE active IS TRUE)
-                            AND state IN ('open', 'pending', 'close')
-                            AND date_start <= %(stop)s
-                            AND (date_end IS NULL OR date_end >= %(start)s)
-                            AND company_id IN %(company)s
+                            AND c.state IN ('open', 'pending', 'close')
+                            AND c.date_start <= %(stop)s
+                            AND (c.date_end IS NULL OR c.date_end >= %(start)s)
+                            AND e.active IS TRUE
+                            AND c.company_id IN %(company)s
                             {where_employee_in_department}
                     ) contract
                 LEFT JOIN resource_calendar calendar ON (contract.resource_calendar_id = calendar.id)
             ) payslip
-        """.format(where_structure=structure, where_employee_in_department=employee_in_department)
+        """.format(where_structure=structure, where_employee_in_department=employee_check)
 
         self.env.cr.execute(query, {
             'start': fields.Date.to_string(period_start),
             'stop': fields.Date.to_string(period_end),
             'structure': self.structure_type_id.id,
             'company': tuple(self.env.companies.ids),
-            'department': self.department_id.id
+            'department': self.department_id.id,
+            'employee_ids': tuple(self.employee_ids.ids),
         })
 
         alloc_employees = defaultdict(lambda: (0, None))  # key = employee_id and value contains paid_time_off and contract_id in Tuple
@@ -140,7 +148,7 @@ class HrPayrollAllocPaidLeave(models.TransientModel):
                 contract_next_period = self.env['hr.contract'].browse(contract_next_period)
 
             if contract_next_period.id:
-                calendar = contract_next_period.resource_calendar_id
+                calendar = self.env.context.get('forced_calendar', contract_next_period.resource_calendar_id)
                 allocation_hours = max_hours_to_allocate
                 # An employee should never have more than 4 weeks of annual time off.
                 allocation_hours = min(max_hours_to_allocate, 4 * calendar.hours_per_week)

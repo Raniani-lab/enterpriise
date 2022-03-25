@@ -49,11 +49,10 @@
                 t-if="originalPost.mediaType === 'youtube'">
                 <div class="o_social_subtle_btn_disabled pl-2">
                     <i class="fa fa-thumbs-up" title="Likes"/>
-                    <b class="o_social_kanban_likes_count" t-esc="originalPost.youtubeLikesCount"/>
-                </div>
-                <div class="o_social_subtle_btn_disabled pl-2">
-                    <i class="fa fa-thumbs-down" title="Dislikes"/>
-                    <b class="o_social_kanban_likes_count" t-esc="originalPost.youtubeDislikesCount"/>
+                    <b>
+                        <t t-esc="originalPost.youtubeLikesRatio"/>
+                        %
+                    </b>
                 </div>
                 <div class="o_social_subtle_btn_disabled pl-3">
                     <i class="fa fa-eye" title="Views"/>

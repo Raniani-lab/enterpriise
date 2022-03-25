@@ -15,6 +15,7 @@ class SocialStreamPostYoutube(models.Model):
     youtube_video_id = fields.Char('YouTube Video ID', index=True)
     youtube_likes_count = fields.Integer('YouTube Likes')
     youtube_dislikes_count = fields.Integer('YouTube Dislikes')
+    youtube_likes_ratio = fields.Integer('YouTube Likes Ratio', compute='_compute_youtube_likes_ratio')
     youtube_comments_count = fields.Integer('YouTube Comments Count')
     youtube_views_count = fields.Integer('YouTube Views')
     youtube_video_duration = fields.Float('YouTube Video Duration')  # in minutes
@@ -38,6 +39,17 @@ class SocialStreamPostYoutube(models.Model):
     def _compute_youtube_thumbnail_url(self):
         for post in self:
             post.youtube_thumbnail_url = "http://i3.ytimg.com/vi/%s/hqdefault.jpg" % post.youtube_video_id
+
+    @api.depends('youtube_likes_count', 'youtube_dislikes_count')
+    def _compute_youtube_likes_ratio(self):
+        for post in self:
+            if not post.youtube_likes_count and not post.youtube_dislikes_count:
+                post.youtube_likes_ratio = 0
+            else:
+                post.youtube_likes_ratio = int(
+                    100 * post.youtube_likes_count
+                    / (post.youtube_likes_count + post.youtube_dislikes_count)
+                )
 
     # ========================================================
     # COMMENTS / LIKES

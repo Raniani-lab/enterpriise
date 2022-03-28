@@ -13,7 +13,13 @@ class ResourceResource(models.Model):
         return randint(1, 11)
 
     color = fields.Integer(default=_default_color)
-    avatar_128 = fields.Image(related='employee_id.avatar_128')
+    avatar_128 = fields.Image(compute='_compute_avatar_128')
+
+    @api.depends('employee_id')
+    def _compute_avatar_128(self):
+        for resource in self:
+            employees = resource.with_context(active_test=False).employee_id
+            resource.avatar_128 = employees[0].avatar_128 if employees else False
 
     def get_formview_id(self, access_uid=None):
         if self.env.context.get('from_planning'):

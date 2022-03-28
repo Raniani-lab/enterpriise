@@ -144,7 +144,7 @@ class IntrastatReport(models.AbstractModel):
                 '0',                                                            # Container             length=1
                 '00',                                                           # Traffic region/port   length=2
                 '00',                                                           # Statistical procedure length=2
-                ' ' if new_codes else res['transaction_code'] or '1',           # Transaction (old)     length=1
+                ' ' if new_codes else str(res['transaction_code']) or '1',      # Transaction (old)     length=1
                 (res['commodity_code'] or '')[:8].ljust(8),                     # Commodity code        length=8
                 '00',                                                           # Taric                 length=2
                 mass >= 0 and '+' or '-',                                       # Mass sign             length=1

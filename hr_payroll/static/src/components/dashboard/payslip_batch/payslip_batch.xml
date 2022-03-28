@@ -10,8 +10,8 @@
                 </div>
             </div>
             <t t-foreach="props.batches" t-as="batch" t-key="batch.id">
-                <div class="row w-100">
-                     <div class="col col-3 btn text-left">
+                <div class="row w-100 align-items-center">
+                     <div class="col col-3 text-left">
                         <span t-att-class="'badge badge-pill text-left o_field_badge o_readonly_modifier o_required_modifier o_field_widget ' + this.getColorFromState(batch.state)">
                             <t t-esc="batch.state"/>
                         </span>

@@ -21,4 +21,16 @@
                 </xpath>
         </field>
     </record>
+
+    <record id="payroll_hr_employee_view_tree_employee_trends" model="ir.ui.view">
+    <field name="name">payroll.hr.employee.view.tree.inherit</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr_contract.view_employee_tree"/>
+    <field name="priority" eval="100" />
+    <field name="arch" type="xml">
+        <field name="first_contract_date" position="attributes">
+            <attribute name="optional">show</attribute>
+        </field>
+    </field>
+    </record>
 </odoo>

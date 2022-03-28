@@ -1161,11 +1161,14 @@ class HrPayslip(models.Model):
         if new_contracts_without_past_contract:
             new_contracts_str = _('New Employees')
             employees_from_new_contracts = new_contracts_without_past_contract.mapped('employee_id')
-            result.append({
+            new_employees = {
                 'string': new_contracts_str,
                 'count': len(employees_from_new_contracts),
                 'action': self._dashboard_default_action(new_contracts_str, 'hr.employee', employees_from_new_contracts.ids),
-            })
+            }
+            new_employees['action']['views'][0] = [self.env.ref('hr_payroll.payroll_hr_employee_view_tree_employee_trends').id, 'list']
+            result.append(new_employees)
+
 
         gone_employees = self.env['hr.employee'].with_context(active_test=False).search([
             ('departure_date', '>=', today + relativedelta(months=-1, day=1)),

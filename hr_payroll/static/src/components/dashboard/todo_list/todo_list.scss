@@ -93,7 +93,8 @@
             }
 
             .o_hr_payroll_todo_value {
-                height: inherit;
+                height: calc(100% - 30px);
+                overflow: auto;
             }
 
             .o_hr_payroll_todo_value >:not(.note-editable){

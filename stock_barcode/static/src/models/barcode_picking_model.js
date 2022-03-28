@@ -303,6 +303,15 @@ export default class BarcodePickingModel extends BarcodeModel {
         this.highlightDestinationLocation = false;
     }
 
+    async _closeValidate(ev) {
+        const record = await this.orm.read(this.params.model, [this.record.id], ["state"])
+        if (record[0].state === 'done') {
+            // If all is OK, displays a notification and goes back to the previous page.
+            this.notification.add(this.validateMessage, { type: 'success' });
+            this.trigger('history-back');
+        }
+    }
+
     _convertDataToFieldsParams(args) {
         const params = {
             lot_name: args.lotName,

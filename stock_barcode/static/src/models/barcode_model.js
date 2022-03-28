@@ -640,13 +640,7 @@ export default class BarcodeModel extends EventBus {
             [this.recordIds]
         );
         const options = {
-            on_close: ev => {
-                if (ev === undefined) {
-                    // If all is OK, displays a notification and goes back to the previous page.
-                    this.notification.add(this.validateMessage, { type: 'success' });
-                    this.trigger('history-back');
-                }
-            },
+            on_close: ev => this._closeValidate(ev)
         };
         if (action && action.res_model) {
             return this.trigger('do-action', { action, options });
@@ -676,6 +670,14 @@ export default class BarcodeModel extends EventBus {
         this.scannedLinesVirtualId = [];
         this.lastScannedPackage = false;
         await this.save();
+    }
+
+    async _closeValidate(ev) {
+        if (ev === undefined) {
+            // If all is OK, displays a notification and goes back to the previous page.
+            this.notification.add(this.validateMessage, { type: 'success' });
+            this.trigger('history-back');
+        }
     }
 
     _convertDataToFieldsParams(args) {

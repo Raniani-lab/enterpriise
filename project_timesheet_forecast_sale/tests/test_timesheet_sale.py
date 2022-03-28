@@ -17,6 +17,8 @@ class TestPlanningTimesheetSale(TestCommonSaleTimesheet):
             'project_id': self.project_non_billable.id,
         })
 
+        self.assertEqual(self.manager_company_B.tz, self.manager_company_B.resource_calendar_id.tz)
+
         planning_shift = self.env['planning.slot'].create({
             'project_id': self.project_non_billable.id,
             'task_id': non_billable_task.id,
@@ -31,7 +33,7 @@ class TestPlanningTimesheetSale(TestCommonSaleTimesheet):
         self.assertFalse(planning_shift.timesheet_ids, "There should be no timesheet linked with current shift")
         planning_shift._action_generate_timesheet()
         self.assertEqual(len(planning_shift.timesheet_ids), 1, "One timesheet should be generated for non billable project")
-        self.assertEqual(planning_shift.timesheet_ids.unit_amount, 8, "Timesheet should be generated for the 8 working hours of the employee")
+        self.assertEqual(planning_shift.timesheet_ids.unit_amount, 6, "Timesheet should be generated for the 8 working hours of the employee")
 
     def test_generate_slot_timesheet_for_billable_project(self):
         self.assertTrue(self.project_global.allow_billable, "Project should be billable")

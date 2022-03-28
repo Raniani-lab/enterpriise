@@ -691,11 +691,12 @@ class HelpdeskTeam(models.Model):
         action = self._action_view_rating()
         # Before this changes if some tickets are archived in the helpdesk team, we count the ratings of them + the active tickets.
         # Do we really want to count the ratings of the archived tickets?
-        rating_count = self.env['rating.rating'].search_count(action['domain'])
-        if rating_count == 1:
+        ratings = self.env['rating.rating'].search(action['domain'])
+        if len(ratings) == 1:
             action.update({
                 'view_mode': 'form',
                 'views': [(False, 'form')],
+                'res_id': ratings.id
             })
         else:
             action['context'] = {'search_default_rating_last_30_days': 1}

@@ -10,12 +10,14 @@
     'depends': ['social', 'iap'],
     'data': [
         'data/social_media_data.xml',
+        'security/ir.model.access.csv',
         'views/res_config_settings_views.xml',
         'views/social_account_views.xml',
         'views/social_post_views.xml',
         'views/social_post_template_views.xml',
         'views/social_stream_post_views.xml',
         'views/social_youtube_templates.xml',
+        'wizard/social_account_revoke_youtube_views.xml',
     ],
     'auto_install': True,
     'assets': {

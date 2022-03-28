@@ -6,6 +6,11 @@
         <field name="model">social.account</field>
         <field name="inherit_id" ref="social.social_account_view_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_youtube_revoke" type="object" string="Revoke"
+                    groups="social.group_social_manager"
+                    attrs="{'invisible': [('media_type', '!=', 'youtube')]}"/>
+            </xpath>
             <xpath expr="//group[@name='social_account_global']" position="after">
                 <group name="youtube_disclaimer" class="o_social_disclaimer_group">
                     <field name="media_type" invisible="1"/>

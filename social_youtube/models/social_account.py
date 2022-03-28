@@ -5,7 +5,8 @@ import requests
 from datetime import timedelta
 from werkzeug.urls import url_join
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class SocialAccountYoutube(models.Model):
@@ -35,6 +36,25 @@ class SocialAccountYoutube(models.Model):
         res = super(SocialAccountYoutube, self).create(vals_list)
         res.filtered(lambda account: account.media_type == 'youtube')._create_default_stream_youtube()
         return res
+
+    def action_youtube_revoke(self):
+        """Open the "social account revoke youtube" wizard in order to revoke the access token of this account."""
+        self.ensure_one()
+
+        if self.media_type != 'youtube':
+            raise UserError(_('Revoking access tokens is currently limited to YouTube accounts only.'))
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Revoke Account'),
+            'res_model': 'social.account.revoke.youtube',
+            'target': 'new',
+            'view_mode': 'form',
+            'views': [[False, 'form']],
+            'context': {
+                'default_account_id': self.id,
+            }
+        }
 
     def _create_default_stream_youtube(self):
         """ This will create a stream to show the account video for each created account.

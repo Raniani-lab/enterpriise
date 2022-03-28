@@ -115,8 +115,8 @@ class AccountMoveLine(models.Model):
             'quantity': self.quantity,
             'discount': self.discount,
             'price_unit': self.price_unit,
-            'analytic_account_id': self.analytic_account_id.id,
-            'analytic_tag_ids': [(6, 0, self.analytic_tag_ids.ids)],
+            'analytic_account_id': not self.analytic_account_id.company_id and self.analytic_account_id.id,
+            'analytic_tag_ids': [(6, 0, self.analytic_tag_ids.filtered(lambda r: not r.company_id).ids)],
         }
         # Ensure no account will be set at creation
         if self.display_type:

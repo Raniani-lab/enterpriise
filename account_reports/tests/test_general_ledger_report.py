@@ -298,7 +298,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
         # Init options.
         report = self.env['account.general.ledger']
         options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['filter_accounts'] = '4000'
+        options['filter_accounts'] = '40'
         self.assertLinesValues(
             report._get_lines(options),
             #   Name                                    Debit           Credit          Balance

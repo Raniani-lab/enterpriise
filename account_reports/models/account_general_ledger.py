@@ -248,8 +248,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 account_code_label = '%s.%s' % (prefix, account_code_label)
             return [
                 '|',
-                (account_name_label, 'ilike', options['filter_accounts']),
-                (account_code_label, 'ilike', options['filter_accounts'])
+                (account_name_label, '=ilike', options['filter_accounts'] + '%'),
+                (account_code_label, '=ilike', options['filter_accounts'] + '%')
             ]
         return []
 

@@ -29,14 +29,16 @@ const { toString, toNumber, toBoolean } = spreadsheet.helpers;
  */
 
 /**
- * Parses the field and operator string of pivot group.
+ * Parses the positional char (#), the field and operator string of pivot group.
  * e.g. "create_date:month"
  * @param {object} allFields
  * @param {string} groupFieldString
- * @returns {{field: object, aggregateOperator: string}}
+ * @returns {{field: object, aggregateOperator: string, isPositional: boolean}}
  */
 function parseGroupField(allFields, groupFieldString) {
     let [fieldName, aggregateOperator] = groupFieldString.split(":");
+    const isPositional = fieldName.startsWith("#");
+    fieldName = isPositional ? fieldName.substring(1) : fieldName;
     const field = allFields[fieldName];
     if (field === undefined) {
         throw new Error(sprintf(_t("Field %s does not exist"), fieldName));
@@ -45,12 +47,14 @@ function parseGroupField(allFields, groupFieldString) {
         aggregateOperator = aggregateOperator || "month";
     }
     return {
+        isPositional,
         field,
         aggregateOperator,
     }
 }
 
 const UNSUPPORTED_FIELD_TYPES = ["one2many", "many2many", "binary", "html"];
+const NO_RECORD_AT_THIS_POSITION = Symbol("NO_RECORD_AT_THIS_POSITION");
 
 function isNotSupported(fieldType) {
     return UNSUPPORTED_FIELD_TYPES.includes(fieldType);
@@ -71,7 +75,7 @@ function throwUnsupportedFieldError(field) {
  * e.g. given the following formula PIVOT("1", "stage_id", "42", "status", "won"),
  * the two group values are "42" and "won".
  * @param {object} field
- * @param {string} groupValueString
+ * @param {number | boolean | string} groupValueString
  * @returns {number | boolean | string}
  */
 export function parsePivotFormulaFieldValue(field, groupValueString) {
@@ -149,6 +153,34 @@ export class SpreadsheetPivotModel extends PivotModel {
     //--------------------------------------------------------------------------
     // Metadata getters
     //--------------------------------------------------------------------------
+
+    /**
+     * Return true if the given field name is part of the col group bys
+     * @param {string} fieldName
+     * @returns {boolean}
+     */
+    isColumnGroupBy(fieldName) {
+        try {
+            const { field } = this.parseGroupField(fieldName);
+            return this._isCol(field);
+        } catch (_) {
+            false;
+        }
+    }
+
+    /**
+     * Return true if the given field name is part of the row group bys
+     * @param {string} fieldName
+     * @returns {boolean}
+     */
+    isRowGroupBy(fieldName) {
+        try {
+            const { field } = this.parseGroupField(fieldName);
+            return this._isRow(field);
+        } catch (_) {
+            return false;
+        }
+    }
 
     /**
      * @returns {string} Display name of the model
@@ -340,10 +372,18 @@ export class SpreadsheetPivotModel extends PivotModel {
         return (values && values[0][measure]) || "";
     }
 
+
     /**
      * Get the label the given field-value
+     *
+     * @param {string} groupFieldString Name of the field
+     * @param {string} groupValueString Value of the group by
+     * @returns {string}
      */
-    getPivotHeaderValue(groupFieldString, groupValueString) {
+    getGroupByDisplayLabel(groupFieldString, groupValueString) {
+        if (groupValueString === NO_RECORD_AT_THIS_POSITION) {
+            return "";
+        }
         if (groupFieldString === "measure") {
             if (groupValueString === "__count") {
                 return _t("Count");
@@ -358,9 +398,6 @@ export class SpreadsheetPivotModel extends PivotModel {
             return formatDate(aggregateOperator, value);
         }
         if (field.relation) {
-            if (value === false) {
-                return undef;
-            }
             const label = this.metadataRepository.getRecordDisplayName(field.relation, value);
             if (label === undefined) {
                 return undef;
@@ -372,6 +409,26 @@ export class SpreadsheetPivotModel extends PivotModel {
             return undef;
         }
         return label;
+    }
+
+    /**
+     * Get the label of the last group by of the domain
+     *
+     * @param {string[]} domain Domain of the formula
+     */
+    getPivotHeaderValue(domain) {
+        const groupFieldString = domain[domain.length - 2];
+        const groupValueString = domain[domain.length - 1];
+        if (groupFieldString.startsWith("#")) {
+            const { field } = this.parseGroupField(groupFieldString);
+            const { cols, rows } = this._getColsRowsValuesFromDomain(domain);
+            if (this._isCol(field)) {
+                return this.getGroupByDisplayLabel(field.name, cols[cols.length - 1]);
+            } else {
+                return this.getGroupByDisplayLabel(field.name, rows[rows.length - 1]);
+            }
+        }
+        return this.getGroupByDisplayLabel(groupFieldString, groupValueString);
     }
 
     //--------------------------------------------------------------------------
@@ -406,8 +463,13 @@ export class SpreadsheetPivotModel extends PivotModel {
     /**
      * @override
      */
-    async _loadData(config, prune = true) {
+    async _loadData(config) {
         this.parseGroupField = parseGroupField.bind(null, this.metaData.fields);
+        /*
+         * prune is manually set to false in order to expand all the groups
+         * automatically
+         */
+        const prune = false;
         await super._loadData(config, prune);
 
         const metadataRepository = this.metadataRepository;
@@ -489,7 +551,43 @@ export class SpreadsheetPivotModel extends PivotModel {
     }
 
     /**
+     * Get the value of a field-value for a positional group by
+     *
+     * @param {object} field Field of the group by
+     * @param {unknown} groupValueString Value of the group by
+     * @param {(number | boolean | string)[]} rows Values for the previous row group bys
+     * @param {(number | boolean | string)[]} cols Values for the previous col group bys
+     *
+     * @private
+     * @returns {number | boolean | string}
+     */
+    _parsePivotFormulaWithPosition(field, groupValueString, cols, rows) {
+        const position = toNumber(groupValueString) - 1;
+        let tree;
+        if (this._isCol(field)) {
+            tree = this.data.colGroupTree;
+            for (const col of cols) {
+                tree = tree && tree.directSubTrees.get(col);
+            }
+        } else {
+            tree = this.data.rowGroupTree;
+            for (const row of rows) {
+                tree = tree && tree.directSubTrees.get(row);
+            }
+        }
+        if (tree) {
+            const record = [...tree.directSubTrees][position]
+            return record ? record[0] : NO_RECORD_AT_THIS_POSITION;
+        }
+        return NO_RECORD_AT_THIS_POSITION;
+    }
+
+    /**
      * Transform the given domain in the structure used in this class
+     *
+     * @param {(number | boolean | string)[]} domain Domain
+     *
+     * @private
      */
     _getColsRowsValuesFromDomain(domain) {
         const rows = [];
@@ -498,8 +596,14 @@ export class SpreadsheetPivotModel extends PivotModel {
         while (i < domain.length) {
             const groupFieldString = domain[i];
             const groupValueString = domain[i + 1];
-            const { field } = this.parseGroupField(groupFieldString);
-            const value = parsePivotFormulaFieldValue(field, groupValueString)
+            const { field, isPositional } = this.parseGroupField(groupFieldString);
+            let value;
+            if (isPositional) {
+                value = this._parsePivotFormulaWithPosition(field, groupValueString, cols, rows);
+            }
+            else {
+                value = parsePivotFormulaFieldValue(field, groupValueString)
+            }
             if (this._isCol(field)) {
                 cols.push(value);
             } else if (this._isRow(field)) {

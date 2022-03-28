@@ -86,9 +86,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
         if (len === 0) {
             return _t("Total");
         }
-        const field = domain[len - 2];
-        const value = domain[len - 1];
-        return model.getPivotHeaderValue(field, value);
+        return model.getPivotHeaderValue(domain);
     }
 
     /**

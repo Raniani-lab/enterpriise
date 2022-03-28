@@ -2,7 +2,7 @@
 
 import { parsePivotFormulaFieldValue } from "../../src/bundle/pivot/pivot_model";
 
-QUnit.module("spreadsheet pivot formula", {}, () => {
+QUnit.module("documents_spreadsheet > pivot formula", {}, () => {
     QUnit.test("parse values of a selection, char or text field", (assert) => {
         for (const fieldType of ["selection", "text", "char"]) {
             const field = {

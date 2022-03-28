@@ -256,7 +256,7 @@ export class PivotDialog extends Component {
         }
         const field = domain[len - 2];
         const value = domain[len - 1];
-        return this.pivotModel.getPivotHeaderValue(field, value);
+        return this.pivotModel.getGroupByDisplayLabel(field, value);
     }
 
     // ---------------------------------------------------------------------

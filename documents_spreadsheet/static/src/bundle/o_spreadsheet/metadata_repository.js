@@ -122,7 +122,7 @@ const { EventBus } = owl;
    */
   getLabel(model, field, value) {
       return (
-          this._labels[model] && this._labels[model][field] && this._labels[model][field][value]
+        this._labels[model] && this._labels[model][field] && this._labels[model][field][value]
       );
   }
 

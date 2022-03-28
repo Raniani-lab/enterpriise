@@ -129,6 +129,48 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
         );
     });
 
+    QUnit.test("Autofill with pivot positions", async function (assert) {
+        const { model } = await createSpreadsheetFromPivot();
+        setCellContent(model, "C3", `=PIVOT("1","probability","#bar","1","#foo","1")`);
+        assert.strictEqual(
+          getPivotAutofillValue(model, "C3", { direction: "left", steps: 1 }),
+          `=PIVOT("1","probability","#bar","1","#foo","0")`
+        );
+        /** Would be negative => just copy the value */
+        assert.strictEqual(
+          getPivotAutofillValue(model, "C3", { direction: "left", steps: 2 }),
+          `=PIVOT("1","probability","#bar","1","#foo","1")`
+        );
+        assert.strictEqual(
+          getPivotAutofillValue(model, "C3", { direction: "right", steps: 1 }),
+          `=PIVOT("1","probability","#bar","1","#foo","2")`
+        );
+        assert.strictEqual(
+          getPivotAutofillValue(model, "C3", { direction: "right", steps: 10 }),
+          `=PIVOT("1","probability","#bar","1","#foo","11")`
+        );
+        assert.strictEqual(
+          getPivotAutofillValue(model, "C3", { direction: "top", steps: 1 }),
+          `=PIVOT("1","probability","#bar","0","#foo","1")`
+        );
+        /** Would be negative => just copy the value */
+        assert.strictEqual(
+          getPivotAutofillValue(model, "C3", { direction: "top", steps: 2 }),
+          `=PIVOT("1","probability","#bar","1","#foo","1")`
+        );
+        assert.strictEqual(
+          getPivotAutofillValue(model, "C3", { direction: "bottom", steps: 1 }),
+          `=PIVOT("1","probability","#bar","2","#foo","1")`
+        );
+        assert.strictEqual(
+          getPivotAutofillValue(model, "C3", {
+            direction: "bottom",
+            steps: 10,
+          }),
+          `=PIVOT("1","probability","#bar","11","#foo","1")`
+        );
+    })
+
     test("Autofill pivot values with date in rows", async function (assert) {
         assert.expect(6);
 

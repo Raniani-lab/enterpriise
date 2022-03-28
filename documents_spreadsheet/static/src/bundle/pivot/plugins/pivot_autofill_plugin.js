@@ -47,6 +47,27 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             .map(astToFormula)
             .map((arg) => this.getters.evaluateFormula(arg));
         const pivotId = evaluatedArgs[0];
+        const model = this.getters.getSpreadsheetPivotModel(pivotId);
+        for (let i = evaluatedArgs.length - 1; i > 0; i--) {
+            const fieldName = evaluatedArgs[i].toString();
+            if (
+              fieldName.startsWith("#") &&
+              ((isColumn && model.isColumnGroupBy(fieldName)) ||
+                (!isColumn && model.isRowGroupBy(fieldName)))
+            ) {
+              evaluatedArgs[i + 1] =
+                parseInt(evaluatedArgs[i + 1], 10) + increment;
+              if (evaluatedArgs[i + 1] < 0) {
+                return formula;
+              }
+              if (functionName === "PIVOT") {
+                return this._buildValueFormula(evaluatedArgs);
+              } else if (functionName === "PIVOT.HEADER") {
+                return this._buildHeaderFormula(evaluatedArgs);
+              }
+              return formula;
+            }
+        }
         let builder;
         if (functionName === "PIVOT") {
             builder = this._autofillPivotValue.bind(this);
@@ -522,20 +543,18 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         const definition = this.getters.getPivotDefinition(pivotId);
         const model = this.getters.getSpreadsheetPivotModel(pivotId);
         const values = this._parseArgs(args.slice(2));
-        for (let [field, value] of Object.entries(values)) {
+        for (let [fieldName, value] of Object.entries(values)) {
             if (
-                (definition.colGroupBys.includes(field) && isColumn) ||
-                (definition.rowGroupBys.includes(field) && !isColumn)
+                (isColumn && model.isColumnGroupBy(fieldName)) ||
+                (!isColumn && model.isRowGroupBy(fieldName))
             ) {
-                tooltips.push({
-                    value: model.getPivotHeaderValue(field, value),
-                });
+                tooltips.push({ value: model.getPivotHeaderValue([fieldName, value])});
             }
         }
         if (definition.measures.length !== 1 && isColumn) {
             const measure = args[1];
             tooltips.push({
-                value: model.getPivotHeaderValue("measure", measure),
+                value: model.getGroupByDisplayLabel("measure", measure),
             });
         }
         return tooltips;
@@ -557,10 +576,8 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         if (Object.keys(values).length === 0) {
             return [{ value: _t("Total") }];
         }
-        for (let [field, value] of Object.entries(values)) {
-            tooltips.push({
-                value: model.getPivotHeaderValue(field, value)
-            });
+        for (let [fieldName, value] of Object.entries(values)) {
+            tooltips.push({ value: model.getPivotHeaderValue([fieldName, value])});
         }
         return tooltips;
     }

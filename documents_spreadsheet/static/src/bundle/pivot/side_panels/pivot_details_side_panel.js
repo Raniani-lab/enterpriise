@@ -25,7 +25,7 @@ export default class PivotDetailsSidePanel extends Component {
                 domain: definition.domain,
                 dimensions: [...definition.rowGroupBys, ...definition.colGroupBys],
                 measures: definition.measures.map((measure) =>
-                    this.spreadsheetModel.getPivotHeaderValue("measure", measure)
+                    this.spreadsheetModel.getGroupByDisplayLabel("measure", measure)
                 ),
             };
         });

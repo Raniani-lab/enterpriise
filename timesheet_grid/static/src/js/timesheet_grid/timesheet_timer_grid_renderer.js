@@ -5,6 +5,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
     const GridRenderer = require('web_grid.GridRenderer');
     const TimerHeaderComponent = require('timesheet_grid.TimerHeaderComponent');
     const TimerStartComponent = require('timesheet_grid.TimerStartComponent');
+    const { useListener } = require("@web/core/utils/hooks");
 
     const { EventBus, onMounted, onWillUpdateProps, useState, useExternalListener } = owl;
 
@@ -17,6 +18,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
             this._bus = new EventBus;
             this.initialGridAnchor = this.props.context.grid_anchor;
             this.initialGroupBy = this.props.groupBy;
+            this.hoveredButton = false;
 
             this.stateTimer = useState({
                 taskId: undefined,
@@ -28,11 +30,14 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
                 startSeconds: 0,
                 timerRunning: false,
                 indexRunning: -1,
+                indexHovered: -1,
                 readOnly: false,
                 projectWarning: false,
             });
             this.timesheetId = false;
             this._onChangeProjectTaskDebounce = _.debounce(this._setProjectTask.bind(this), 500);
+            useListener('mouseover', '.o_grid_view', this._onMouseOver);
+            useListener('mouseout', '.o_grid_view', this._onMouseOut);
 
             onMounted(() => {
                 if (this.formatType === 'float_time') {
@@ -316,6 +321,40 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
             if (ev.key === 'Shift' && !this.state.editMode) {
                 this.stateTimer.addTimeMode = false;
             }
+        }
+        _onMouseOut(ev) {
+            ev.stopPropagation();
+            if (!this.hoveredButton) {
+                // If buttonHovered is not set it means that we are not in a timer button. So ignore it.
+                return;
+            }
+            let relatedTarget = ev.relatedTarget;
+            while (relatedTarget) {
+                // Go up the parent chain
+                if (relatedTarget === this.hoveredButton) {
+                    // Check that we are still inside hoveredButton.
+                    // If so it means it is a transition between child elements so ignore it.
+                    return;
+                }
+                relatedTarget = relatedTarget.parentElement;
+            }
+            this.hoveredButton = false;
+            this.stateTimer.indexHovered = -1;
+        }
+        _onMouseOver(ev) {
+            ev.stopPropagation();
+            if (this.hoveredButton) {
+                // As mouseout is call prior to mouseover, if hoveredButton is set this means
+                // that we haven't left it. So it's a mouseover inside it.
+                return;
+            }
+            let target = ev.target.closest('button.btn_timer_line');
+            if (!target) {
+                // We are not into a timer button si ignore.
+                return;
+            }
+            this.hoveredButton = target;
+            this.stateTimer.indexHovered = parseInt(target.dataset.index);
         }
     }
 

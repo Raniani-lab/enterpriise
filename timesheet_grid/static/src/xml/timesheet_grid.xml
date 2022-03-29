@@ -101,7 +101,8 @@
                 <t t-set="timesheet" t-value="grid.rows[rowlabel_index].timesheet" />
                 <t t-set="pathrow" t-value="path.concat([rowlabel_index]).join('.')"/>
                 <TimerStartComponent path="pathrow" index="rowlabel_index" runningIndex="stateTimer.indexRunning"
-                    addTimeMode="stateTimer.addTimeMode" onTimerStartedFromLine.bind="_onClickStartTimerFromLine"/>
+                    addTimeMode="stateTimer.addTimeMode" onTimerStartedFromLine.bind="_onClickStartTimerFromLine"
+                    hovered="stateTimer.indexHovered === rowlabel_index"/>
             </th>
         </xpath>
         <xpath expr="//div[@t-att-title='label']/t[@t-if='label']" position="replace">
@@ -123,8 +124,9 @@
     </t>
 
     <span t-name="timesheet_grid.start_timer" class="d-inline-flex" owl="1" t-on-timer-started-from-line="props.onTimerStartedFromLine">
-        <button type="button" t-on-click="_onClickTimer" class="btn_timer_line" t-att-class="iconClass">
-            <span t-esc="letter"/>
+        <button type="button" t-on-click="_onClickTimer" class="btn_timer_line" t-att-class="iconClass"
+                t-att-data-index="props.index">
+            <span t-esc="letter" t-if="!props.hovered || props.addTimeMode"/>
         </button>
     </span>
 

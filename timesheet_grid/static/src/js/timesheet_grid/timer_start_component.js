@@ -18,15 +18,26 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
             }
         }
         get iconClass() {
+            let classNames = [];
             if (this.props.runningIndex === this.props.index) {
-                return 'fa fa-play primary-green';
-            } else if (this.props.index < 26 && !this.env.device.isMobile) {
-                return '';
-            } else if (this.props.addTimeMode) {
-                return 'fa fa-plus';
-            } else {
-                return 'fa fa-play';
+                classNames = ['fa', 'fa-play', 'primary-green']
+            } else if (this.props.index >= 26 || this.env.device.isMobile) {
+                if (this.props.addTimeMode) {
+                    classNames = ['fa', 'fa-plus'];
+                } else {
+                    classNames = ['fa', 'fa-play'];
+                }
             }
+            if (this.props.hovered && !this.env.device.isMobile) {
+                if (this.props.runningIndex === this.props.index) {
+                    classNames = ['fa', 'fa-stop', 'primary-danger']
+                } else if (this.props.addTimeMode) {
+                    classNames.push('primary-green');
+                } else {
+                    classNames = ['fa', 'fa-play', 'primary-green']
+                }
+            }
+            return Array.from(new Set(classNames)).join(' ');
         }
 
         //--------------------------------------------------------------------------
@@ -56,6 +67,10 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
         addTimeMode: Boolean,
         onTimerStartedFromLine: {
             type: Function,
+            optional: true
+        },
+        hovered: {
+            type: Boolean,
             optional: true
         },
     };

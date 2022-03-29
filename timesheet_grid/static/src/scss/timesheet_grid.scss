@@ -74,6 +74,11 @@ table > tbody.o_grid_section > tr {
             background-color: $o-enterprise-primary-color;
             color: white;
         }
+        &.primary-danger {
+            border: 1px solid $danger;
+            background-color: $danger;
+            color: white;
+        }
     }
     .o_grid_timer_header {
         padding-left: 32px;

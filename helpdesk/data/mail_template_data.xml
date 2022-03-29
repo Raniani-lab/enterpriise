@@ -62,13 +62,13 @@
         <field name="name">Ticket: Rating Request (requires rating enabled on team)</field>
         <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
         <field name="subject">{{ object.company_id.name or object.user_id.company_id.name or 'Helpdesk' }}: Service Rating Request</field>
-        <field name="email_from">{{ object.rating_get_rated_partner_id().email_formatted }}</field>
+        <field name="email_from">{{ object._rating_get_operator().email_formatted }}</field>
         <field name="email_to">{{ (object.partner_email if not object.sudo().partner_id.email or object.sudo().partner_id.email != object.partner_email else '') }}</field>
         <field name="partner_to">{{ object.partner_id.id if object.sudo().partner_id.email and object.sudo().partner_id.email == object.partner_email else '' }}</field>
         <field name="body_html" type="html">
 <div>
-    <t t-set="access_token" t-value="object.rating_get_access_token()"/>
-    <t t-set="partner" t-value="object.rating_get_partner_id()"/>
+    <t t-set="access_token" t-value="object._rating_get_access_token()"/>
+    <t t-set="partner" t-value="object._rating_get_partner()"/>
     <table border="0" cellpadding="0" cellspacing="0" style="width:100%; margin:0;">
     <tbody>
         <tr><td valign="top" style="font-size: 14px;">
@@ -79,8 +79,8 @@
                 Hello,<br/>
             </t>
             Please take a moment to rate our services related to the ticket "<strong t-out="object.name or ''">Table legs are unbalanced</strong>"
-            <t t-if="object.rating_get_rated_partner_id().name">
-                assigned to <strong t-out="object.rating_get_rated_partner_id().name or ''">Mitchell Admin</strong>.<br/>
+            <t t-if="object._rating_get_operator().name">
+                assigned to <strong t-out="object._rating_get_operator().name or ''">Mitchell Admin</strong>.<br/>
             </t>
             <t t-else="">
                 .<br/>

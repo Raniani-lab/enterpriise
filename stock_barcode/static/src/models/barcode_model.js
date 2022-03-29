@@ -322,7 +322,7 @@ export default class BarcodeModel extends EventBus {
         // If we show entire package, we don't return lines with package (they
         // will be treated as "package lines").
         if (this.record.picking_type_entire_packs) {
-            lines = lines.filter(line => !line.package_id);
+            lines = lines.filter(line => !(line.package_id && line.result_package_id));
         }
         return this._sortLine(lines);
     }
@@ -332,7 +332,7 @@ export default class BarcodeModel extends EventBus {
             return [];
         }
         const lines = this.page.lines;
-        const linesWithPackage = lines.filter(line => line.package_id);
+        const linesWithPackage = lines.filter(line => line.package_id && line.result_package_id);
         // Groups lines by package.
         const groupedLines = {};
         for (const line of linesWithPackage) {

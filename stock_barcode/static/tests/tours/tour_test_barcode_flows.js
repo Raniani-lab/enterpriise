@@ -4142,4 +4142,64 @@ tour.register('test_inventory_using_buttons', {test: true}, [
     { trigger: '.o_notification.border-success' }
 ]);
 
+tour.register('test_show_entire_package', {test: true}, [
+    { trigger: 'button.button_operations' },
+    { trigger: '.o_kanban_record:contains(Delivery Orders)' },
+
+    // Opens picking with the package level.
+    { trigger: '.o_kanban_record:contains(Delivery with Package Level)' },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            helper.assertLinesCount(1);
+            helper.assertScanMessage('scan_product');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(true);
+            const $line = $('.o_barcode_line');
+            helper.assertLineIsHighlighted($line, false);
+            helper.assert(
+                $line.find('.o_line_button.o_package_content').length, 1,
+                "Line for package level => the button to inspect package content should be visible"
+            );
+            helper.assert($line.find('.o_barcode_line_details > div:contains(package)').text(), "package001package001");
+            helper.assert($line.find('div[name=quantity]').text(), '0/ 1');
+        },
+    },
+    { trigger: '.o_line_button.o_package_content' },
+    {
+        trigger: '.o_barcode_generic_view .o_kanban_record',
+        run: function () {
+            const records = document.querySelectorAll('.o_kanban_record:not(.o_kanban_ghost)');
+            helper.assert(records.length, 1);
+        },
+    },
+    { trigger: 'button.o_close' },
+    {
+        trigger: 'button.o_exit',
+        extra_trigger: '.o_barcode_lines',
+    },
+
+    // Opens picking with the move.
+    { trigger: '.o_kanban_record:contains(Delivery with Stock Move)' },
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            helper.assertLinesCount(1);
+            helper.assertScanMessage('scan_product');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(true);
+            const $line = $('.o_barcode_line');
+            helper.assertLineIsHighlighted($line, false);
+            helper.assert(
+                $line.find('.o_line_button.o_package_content').length, 0,
+                "Line for move with package => should have no button to inspect package content"
+            );
+            helper.assert($line.find('.o_barcode_line_details > div:contains(package)').text(), "package002");
+            helper.assertLineQuantityOnReservedQty(0, '0 / 2');
+        },
+    },
+]);
+
 });

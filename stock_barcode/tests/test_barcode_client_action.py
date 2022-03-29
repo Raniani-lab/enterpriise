@@ -1613,6 +1613,63 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_receipt_delete_button', login='admin', timeout=180)
         self.assertEqual(len(receipt_picking.move_line_ids), 2, "2 lines expected: product1 + product2")
 
+    def test_show_entire_package(self):
+        """ Enables 'Move Entire Packages' for delivery and then creates two deliveries:
+          - One where we use package level;
+          - One where we use move without package.
+        Then, checks it's the right type of line who is shown in the Barcode App."""
+        clean_access_rights(self.env)
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+        self.picking_type_out.show_entire_packs = True
+        package1 = self.env['stock.quant.package'].create({'name': 'package001'})
+        package2 = self.env['stock.quant.package'].create({'name': 'package002'})
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 4, package_id=package1)
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 4, package_id=package2)
+
+        delivery_with_package_level = self.env['stock.picking'].create({
+            'name': "Delivery with Package Level",
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'picking_type_id': self.picking_type_out.id,
+        })
+        self.env['stock.package_level'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'package_id': package1.id,
+            'is_done': False,
+            'picking_id': delivery_with_package_level.id,
+            'company_id': self.env.company.id,
+        })
+        delivery_with_package_level.action_confirm()
+        delivery_with_package_level.action_assign()
+
+        delivery_with_move = self.env['stock.picking'].create({
+            'name': "Delivery with Stock Move",
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'picking_type_id': self.picking_type_out.id,
+        })
+        self.env['stock.move'].create({
+            'name': 'test_show_entire_package',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 2,
+            'picking_id': delivery_with_move.id,
+        })
+        delivery_with_move.action_confirm()
+        delivery_with_move.action_assign()
+
+        action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_action_main_menu")
+        url = '/web#action=%s' % action['id']
+        delivery_with_package_level.action_confirm()
+        delivery_with_package_level.action_assign()
+
+        self.start_tour(url, 'test_show_entire_package', login='admin', timeout=180)
+
     def test_gs1_reserved_delivery(self):
         """ Process a delivery by scanning multiple quantity multiple times.
         """

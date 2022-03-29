@@ -820,8 +820,9 @@ class ReportAccountFinancialReport(models.Model):
             default = {}
         default.update({'name': self._get_copied_name()})
         copied_report_id = super(ReportAccountFinancialReport, self).copy(default=default)
+        code_mapping = {}
         for line in self.line_ids:
-            line._copy_hierarchy(report_id=self, copied_report_id=copied_report_id)
+            line._copy_hierarchy(report_id=self, copied_report_id=copied_report_id, code_mapping=code_mapping)
         return copied_report_id
 
     # -------------------------------------------------------------------------

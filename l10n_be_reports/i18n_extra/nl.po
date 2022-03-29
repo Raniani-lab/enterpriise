@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-29 12:05+0000\n"
-"PO-Revision-Date: 2022-03-29 12:05+0000\n"
+"PO-Revision-Date: 2022-03-29 13:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -240,7 +240,7 @@ msgstr "20 - Overige oprichtingskosten"
 #: code:addons/l10n_be_reports/models/assets_report.py:0
 #, python-format
 msgid "20 Frais d’établissement"
-msgstr ""
+msgstr "20 Overige oprichtingskosten"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_actif_imm0
@@ -256,7 +256,7 @@ msgstr "21 - Immateriële vaste activa"
 #: code:addons/l10n_be_reports/models/assets_report.py:0
 #, python-format
 msgid "21 Immobilisations incorporelles"
-msgstr ""
+msgstr "21 Immateriële vaste activa"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_terrains0
@@ -267,7 +267,7 @@ msgstr "22 - Terreinen en gebouwen"
 #: code:addons/l10n_be_reports/models/assets_report.py:0
 #, python-format
 msgid "22 Terrains et constructions"
-msgstr ""
+msgstr "22 Terreinen en gebouwen"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_actif_imm_corporelles0
@@ -278,7 +278,7 @@ msgstr "22/27 - Materiële vaste activa"
 #: code:addons/l10n_be_reports/models/assets_report.py:0
 #, python-format
 msgid "22/27 Immobilisations corporelles"
-msgstr ""
+msgstr "22/27 Materiële vaste activa"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_machines0
@@ -289,7 +289,7 @@ msgstr "23 - Installaties, machines en gereedschap"
 #: code:addons/l10n_be_reports/models/assets_report.py:0
 #, python-format
 msgid "23 Installations, machines et outillage"
-msgstr ""
+msgstr "23 Installaties, machines en gereedschap"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_mobilier0
@@ -300,7 +300,7 @@ msgstr "24 - Meubilair en rollend materiaal"
 #: code:addons/l10n_be_reports/models/assets_report.py:0
 #, python-format
 msgid "24 Mobilier et matériel roulant 24"
-msgstr ""
+msgstr "24 Meubilair en rollend materiaal"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_location_financement0
@@ -312,7 +312,7 @@ msgstr "25 - Leasing en soortgelijke rechten"
 #, python-format
 msgid ""
 "25 Immobilisations détenues en location-financement et droits similaires"
-msgstr ""
+msgstr "25 Activa gehouden onder leasing en soortgelijke rechten"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_autres_corp0
@@ -323,7 +323,7 @@ msgstr "26 - Andere materiële vaste activa"
 #: code:addons/l10n_be_reports/models/assets_report.py:0
 #, python-format
 msgid "26 Autres immobilisations corporelles"
-msgstr ""
+msgstr "26 Andere materiële vaste activa"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_imm_en_cours0
@@ -334,7 +334,7 @@ msgstr "27 - Activa in aanbouw en vooruitbetalingen"
 #: code:addons/l10n_be_reports/models/assets_report.py:0
 #, python-format
 msgid "27 Immobilisations corporelles en cours et acomptes versés"
-msgstr ""
+msgstr "27 Materiële vaste activa in aanbouw en vooruitbetalingen"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_imm_financieres0
@@ -345,7 +345,7 @@ msgstr "28 - Financiële vaste activa"
 #: code:addons/l10n_be_reports/models/assets_report.py:0
 #, python-format
 msgid "28 Immobilisations financières"
-msgstr ""
+msgstr "28 Financiële vaste activa"
 
 #. module: l10n_be_reports
 #: model:res.partner.category,name:l10n_be_reports.res_partner_tag_281_50
@@ -1273,7 +1273,7 @@ msgstr "Interne referentie naar de volgende 281.50 tags ontbreekt:\n"
 #: code:addons/l10n_be_reports/models/partner_vat_intra.py:0
 #, python-format
 msgid "Intra Code"
-msgstr ""
+msgstr "Intra code"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_281_50_wizard__is_test
@@ -1347,7 +1347,7 @@ msgstr "Modificatie"
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "No VAT number associated with your company."
-msgstr ""
+msgstr "Geen BTW-nummer geassocieerd met het bedrijf."
 
 #. module: l10n_be_reports
 #: code:addons/l10n_be_reports/models/account_generic_tax_report.py:0
@@ -1355,7 +1355,7 @@ msgstr ""
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "No email address associated with the company."
-msgstr ""
+msgstr "Geen emailadres geassocieerd met het bedrijf."
 
 #. module: l10n_be_reports
 #: code:addons/l10n_be_reports/models/account_tax_report.py:0
@@ -1369,13 +1369,13 @@ msgstr "Geen negatief getal"
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "No phone associated with the company."
-msgstr ""
+msgstr "Geen telefoonnummer geassocieerd met het bedrijf."
 
 #. module: l10n_be_reports
 #: code:addons/l10n_be_reports/models/partner_vat_intra.py:0
 #, python-format
 msgid "No vat number defined for %s."
-msgstr ""
+msgstr "Geen BTW nummer gedefinieerd voor %s."
 
 #. module: l10n_be_reports
 #: code:addons/l10n_be_reports/models/res_partner.py:0
@@ -1553,20 +1553,20 @@ msgstr "Behandeltype"
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "Turnover"
-msgstr ""
+msgstr "Omzet"
 
 #. module: l10n_be_reports
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "VAT Amount"
-msgstr ""
+msgstr "BTW-bedrag"
 
 #. module: l10n_be_reports
 #: code:addons/l10n_be_reports/models/partner_vat_intra.py:0
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "VAT Number"
-msgstr ""
+msgstr "BTW-nummer"
 
 #. module: l10n_be_reports
 #: model:account.financial.html.report.line,name:l10n_be_reports.account_financial_report_be_produits0

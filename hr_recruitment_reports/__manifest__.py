@@ -14,6 +14,10 @@ Add a dynamic report about recruitment.
         'security/ir.model.access.csv',
         'security/hr_recruitment_reports_security.xml',
         'report/hr_recruitment_report_views.xml',
+        'report/hr_recruitment_stage_report_views.xml',
+    ],
+    'demo': [
+        'data/hr_recruitment_reports_demo.xml',
     ],
     'installable': True,
     'auto_install': True,

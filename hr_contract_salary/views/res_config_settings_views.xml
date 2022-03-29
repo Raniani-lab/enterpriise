@@ -14,7 +14,7 @@
                             Validity duration for salary package requests for new applicants 
                         </div>
                         <div class="content-group">
-                            <field name="access_token_validity"/>
+                            <field name="access_token_validity" class="col-1"/> days
                         </div>
                     </div>
                 </div>

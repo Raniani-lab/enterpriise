@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import tools
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class HrRecruitmentReport(models.Model):
@@ -15,6 +15,12 @@ class HrRecruitmentReport(models.Model):
     count = fields.Integer('# New Applicant', group_operator="sum", readonly=True)
     refused = fields.Integer('# Refused', group_operator="sum", readonly=True)
     hired = fields.Integer('# Hired', group_operator="sum", readonly=True)
+
+    state = fields.Selection([
+        ('hired', 'Hired'),
+        ('progress', 'In Progress'),
+        ('refused', 'Refused'),
+    ], readonly=True)
 
     create_date = fields.Date('Start Date', readonly=True)
     date_closed = fields.Date('End Date', readonly=True)
@@ -38,6 +44,11 @@ class HrRecruitmentReport(models.Model):
                 a.job_id,
                 a.refuse_reason_id,
                 a.medium_id,
+                CASE
+                    WHEN a.active IS FALSE THEN 'refused'
+                    WHEN a.date_closed IS NOT NULL THEN 'hired'
+                    ELSE 'progress'
+                END AS state,
                 CASE WHEN a.partner_name IS NOT NULL THEN a.partner_name ELSE a.name END as name,
                 CASE WHEN a.active IS FALSE THEN 1 ELSE 0 END as refused,
                 CASE WHEN a.date_closed IS NOT NULL THEN 1 ELSE 0 END as hired,

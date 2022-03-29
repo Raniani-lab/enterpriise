@@ -5,7 +5,7 @@
         <field name="model">hr.job</field>
         <field name="inherit_id" ref="hr.view_hr_job_form"/>
         <field name="arch" type="xml">
-            <page name="recruitment_page" position="after">
+            <page name="job_description_page" position="after">
                 <page string="Payroll" groups="hr_payroll.group_hr_payroll_user"
                     attrs="{'invisible': [('display_l10n_be_scale', '=', False)]}">
                     <group>

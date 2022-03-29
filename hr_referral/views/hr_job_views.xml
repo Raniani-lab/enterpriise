@@ -7,7 +7,6 @@
             <kanban create="false" class="oe_background_grey o_kanban_dashboard o_kanban_referral o_kanban_referral_job" js_class="employee_referral_dashboard">
                 <field name="name"/>
                 <field name="department_id"/>
-                <field name="state"/>
                 <field name="website_url"/>
                 <field name="max_points"/>
                 <field name="description"/>
@@ -85,7 +84,7 @@
         <field name="res_model">hr.job</field>
         <field name="view_mode">kanban,form</field>
         <field name="view_id" ref="hr_referral.view_hr_job_employee_referral_kanban"/>
-        <field name="domain">[('is_published', '=', True), ('state', '=', 'recruit')]</field>
+        <field name="domain">[('is_published', '=', True)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_referral_job_kanban">
                 No job positions are available to share.

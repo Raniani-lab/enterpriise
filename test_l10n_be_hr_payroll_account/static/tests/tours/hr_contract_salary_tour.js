@@ -33,13 +33,8 @@ Tour.register('hr_contract_salary_tour', {
             run: 'click',
         },
         {
-            content: "Configuration",
-            trigger: 'button[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
-            run: 'click',
-        },
-        {
-            content: "Jobs",
-            trigger: '.dropdown-item[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+            content: "Jobs list view",
+            trigger: '.o_switch_view.o_list',
             run: 'click',
         },
         {
@@ -710,13 +705,8 @@ Tour.register('hr_contract_salary_tour_hr_sign', {
         run: 'click',
     },
     {
-        content: "Configuration",
-        trigger: 'button[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
-        run: 'click',
-    },
-    {
-        content: "Jobs",
-        trigger: '.dropdown-item[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+        content: "Jobs list view",
+        trigger: '.o_switch_view.o_list',
         run: 'click',
     },
     {
@@ -793,13 +783,8 @@ Tour.register('hr_contract_salary_tour_2', {
             run: 'click',
         },
         {
-            content: "Configuration",
-            trigger: 'button[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_configuration"]',
-            run: 'click',
-        },
-        {
-            content: "Jobs",
-            trigger: '.dropdown-item[data-menu-xmlid="hr_recruitment.menu_hr_job_position_config"]',
+            content: "Jobs list view",
+            trigger: '.o_switch_view.o_list',
             run: 'click',
         },
         {

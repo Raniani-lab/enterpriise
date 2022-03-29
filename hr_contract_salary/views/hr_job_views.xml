@@ -5,9 +5,9 @@
         <field name="model">hr.job</field>
         <field name="inherit_id" ref="hr_recruitment.hr_job_survey"/>
         <field name="arch" type="xml">
-            <field name="no_of_recruitment" position="after">
+            <xpath expr="//div[@name='recruitment_target']" position="after">
                 <field name="default_contract_id"/>
-            </field>
+            </xpath>
         </field>
     </record>
 </odoo>

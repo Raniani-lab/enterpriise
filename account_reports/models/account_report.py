@@ -1209,7 +1209,7 @@ class AccountReport(models.AbstractModel):
         active_id = self._parse_line_id(params.get('id'))[-1][2]
         tag_template = self.env['account.tax.report.line'].browse(active_id)
         company_ids = [comp_opt['id'] for comp_opt in options.get('multi_company', [])] or self.env.company.ids
-        domain = [('tag_ids', 'in', tag_template.tag_ids.ids), ('tax_exigible', '=', True), ('company_id', 'in', company_ids)] + self.env['account.move.line']._get_tax_exigible_domain()
+        domain = [('tax_tag_ids', 'in', tag_template.tag_ids.ids), ('company_id', 'in', company_ids)] + self.env['account.move.line']._get_tax_exigible_domain()
         return self.open_action(options, domain)
 
     def open_tax_report_line(self, options, params=None):

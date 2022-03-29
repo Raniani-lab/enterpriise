@@ -6,10 +6,10 @@ from dateutil.relativedelta import relativedelta
 from random import randint
 
 from odoo import api, Command, fields, models, tools, _
-from odoo.addons.iap.tools import iap_tools
-from odoo.addons.web.controllers.main import clean_action
-from odoo.osv import expression
 from odoo.exceptions import AccessError
+from odoo.osv import expression
+from odoo.addons.iap.tools import iap_tools
+from odoo.addons.web.controllers.utils import clean_action
 
 TICKET_PRIORITY = [
     ('0', 'Low priority'),

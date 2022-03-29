@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from odoo.addons.web.controllers.main import clean_action
+from odoo.addons.web.controllers.utils import clean_action
 
 
 class analytic_report(models.AbstractModel):

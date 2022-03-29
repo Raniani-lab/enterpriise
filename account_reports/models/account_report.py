@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import ast
 import copy
@@ -16,12 +15,12 @@ from dateutil.relativedelta import relativedelta
 from markupsafe import Markup
 
 from odoo import models, fields, api, _
-from odoo.addons.web.controllers.main import clean_action
 from odoo.exceptions import RedirectWarning
 from odoo.osv import expression
 from odoo.tools import config, date_utils, get_lang
 from odoo.tools.misc import formatLang, format_date
 from odoo.tools.misc import xlsxwriter
+from odoo.addons.web.controllers.utils import clean_action
 
 _logger = logging.getLogger(__name__)
 

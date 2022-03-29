@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
@@ -10,8 +9,7 @@ import re
 from PyPDF2 import PdfFileReader
 
 from odoo import http, models, tools, Command, _
-from odoo.http import request
-from odoo.addons.web.controllers.main import content_disposition
+from odoo.http import request, content_disposition
 from odoo.addons.iap.tools import iap_tools
 
 _logger = logging.getLogger()

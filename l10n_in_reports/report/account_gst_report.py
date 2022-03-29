@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import ast
@@ -6,7 +5,7 @@ import json
 from itertools import groupby
 from collections import OrderedDict
 from odoo import api, models, _
-from odoo.addons.web.controllers.main import clean_action
+from odoo.addons.web.controllers.utils import clean_action
 
 
 class L10nInReportAccount(models.AbstractModel):
@@ -22,13 +21,13 @@ class L10nInReportAccount(models.AbstractModel):
         return self.env.ref('base.in')
 
     def _get_options(self, previous_options=None):
-        options = super(L10nInReportAccount, self)._get_options(previous_options)
+        options = super()._get_options(previous_options)
         options['gst_return_type'] = 'gstr1'
         options['gst_section'] = self.env.context.get('gst_section')
         return options
 
     def _set_context(self, options):
-        ctx = super(L10nInReportAccount, self)._set_context(options)
+        ctx = super()._set_context(options)
         if options.get('gst_return_type'):
             ctx['gst_return_type'] = options['gst_return_type']
         if options.get('gst_section'):

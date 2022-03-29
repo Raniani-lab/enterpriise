@@ -10,7 +10,6 @@ from pytz import timezone
 import requests
 
 from odoo import api, fields, models
-from odoo.addons.web.controllers.main import xml2json_from_elementtree
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
@@ -83,6 +82,34 @@ CBUAE_CURRENCIES = {
 }
 
 _logger = logging.getLogger(__name__)
+
+
+def xml2json_from_elementtree(el, preserve_whitespaces=False):
+    """ xml2json-direct
+    Simple and straightforward XML-to-JSON converter in Python
+    New BSD Licensed
+    http://code.google.com/p/xml2json-direct/
+    """
+    res = {}
+    if el.tag[0] == "{":
+        ns, name = el.tag.rsplit("}", 1)
+        res["tag"] = name
+        res["namespace"] = ns[1:]
+    else:
+        res["tag"] = el.tag
+    res["attrs"] = {}
+    for k, v in el.items():
+        res["attrs"][k] = v
+    kids = []
+    if el.text and (preserve_whitespaces or el.text.strip() != ''):
+        kids.append(el.text)
+    for kid in el:
+        kids.append(xml2json_from_elementtree(kid, preserve_whitespaces))
+        if kid.tail and (preserve_whitespaces or kid.tail.strip() != ''):
+            kids.append(kid.tail)
+    res["children"] = kids
+    return res
+
 
 class ResCompany(models.Model):
     _inherit = 'res.company'

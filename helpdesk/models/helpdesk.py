@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import ast
@@ -8,12 +7,12 @@ from dateutil import relativedelta
 from collections import defaultdict
 from pytz import timezone
 from odoo import api, Command, fields, models, _
-from odoo.tools import float_round
 from odoo.exceptions import ValidationError
+from odoo.osv import expression
+from odoo.tools import float_round
 from odoo.addons.helpdesk.models.helpdesk_ticket import TICKET_PRIORITY
 from odoo.addons.rating.models.rating_data import RATING_LIMIT_MIN
-from odoo.addons.web.controllers.main import clean_action
-from odoo.osv import expression
+from odoo.addons.web.controllers.utils import clean_action
 
 
 class HelpdeskTeam(models.Model):

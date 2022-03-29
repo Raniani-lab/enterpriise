@@ -3,3 +3,52 @@
 .o_appointment_index {
     min-height: calc(98vh - 56px);
 }
+
+.o_wappointment_appointment_list_columns {
+    .card {
+        header {
+            min-height: 150px;
+            height: 25vh;
+        }
+        .card-body {
+            padding: 1.25rem 1.5rem;
+            h2 {
+                font-size: 28px;
+            }
+            .o_wappointment_card_location, .o_wappointment_card_staff_users {
+                .fa {
+                    width: 2.75rem;
+                }
+                .fa::before {
+                    width: 1.5rem;
+                    display: block;
+                }
+            }
+            .o_wappointment_card_staff_users {
+                .o_wappointment_user_avatars {
+                    height: 32px;
+                    .o_wappointment_user_avatar {
+                        margin-left: -9px;
+                        height: 32px;
+                        width: 32px;
+                        object-fit: cover;
+                        border: 2px solid #FFFFFF;
+                        &:first-child {
+                            margin-left: 0.25rem;
+                        }
+                        &:only-child {
+                            margin-right: 0.5rem;
+                        }
+                    }
+                }
+            }
+            .navbar-brand {
+                bottom: 10px;
+                left: 1.5rem;
+                &:hover {
+                    color: darken($o-brand-primary, 10%) !important;
+                }
+            }
+        }
+    }
+}

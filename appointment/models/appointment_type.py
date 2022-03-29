@@ -87,6 +87,12 @@ class AppointmentType(models.Model):
         '# Appointments in the last 30 days', compute='_compute_appointment_count_report')
     appointment_invite_ids = fields.Many2many('appointment.invite', string='Invitation Links')
 
+    avatars_display = fields.Selection(
+        [('hide', 'No Avatars'), ('show', 'Avatars')],
+        string='Front-End Display', compute='_compute_avatars_display', readonly=False, store=True,
+        help="""This option toggles the display of avatars of the staff members during the frontend appointment process.
+        When choosing amongst several users, a selection screen will also be used, if website is installed.""")
+
     @api.depends('meeting_ids')
     def _compute_appointment_count(self):
         meeting_data = self.env['calendar.event']._read_group([('appointment_type_id', 'in', self.ids)], ['appointment_type_id'], ['appointment_type_id'])
@@ -111,6 +117,15 @@ class AppointmentType(models.Model):
         for record in self:
             record.appointment_duration_formatted = self.env['ir.qweb.field.duration'].value_to_html(
                 record.appointment_duration * 3600, {})
+
+    @api.depends('category')
+    def _compute_avatars_display(self):
+        """ By default, enable avatars for custom appointment types and hide them for website-category ones."""
+        for record in self:
+            if record.category != 'website':
+                record.avatars_display = 'show'
+            elif not record.avatars_display:
+                record.avatars_display = 'hide'
 
     @api.depends('location_id')
     def _compute_location(self):

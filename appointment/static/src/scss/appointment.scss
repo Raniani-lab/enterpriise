@@ -183,6 +183,9 @@
 }
 
 .o_appointment, .o_appointment_choice, {
+    .o_appointment_avatar_background {
+        background: mix(map-get($theme-colors, 'primary'), $body-bg, 20%);
+    }
     // Class used to adapt the color of the svg picture to the chosen theme's color
     .o_appointment_svg_fill_color_1 {
         fill: o-color("o-color-1");

@@ -210,6 +210,27 @@ class Appointment(http.Controller):
             'month_first_available': month_first_available,
         })
 
+    # Staff User tools
+    # ------------------------------------------------------------
+
+    @http.route('/appointment/<int:appointment_type_id>/avatar', type='http', auth="public", cors="*")
+    def appointment_staff_user_avatar(self, appointment_type_id, user_id=False, avatar_size=512):
+        """
+        Route used to bypass complicated access rights like 'website_published'. We consider we can display the avatar
+        of the user of id user_id if it belongs to the appointment_type_id and if the option avatars_display is set to 'show'
+        for that appointment type. In that case we consider that the avatars can be made public. Default field is avatar_512.
+        Another avatar_size corresponding to an existing avatar field on res.users can be given as route parameter.
+        """
+        user = request.env['res.users'].sudo().browse(int(user_id))
+        appointment_type = request.env['appointment.type'].sudo().browse(appointment_type_id)
+
+        user = user if appointment_type.avatars_display == 'show' and user in appointment_type.staff_user_ids else request.env['res.users']
+        return request.env['ir.binary']._get_image_stream_from(
+            user,
+            field_name='avatar_%s' % (avatar_size if int(avatar_size) in [128, 256, 512, 1024, 1920] else 512),
+            placeholder='mail/static/src/img/smiley/avatar.jpg',
+        ).get_response()
+
     # Tools / Data preparation
     # ------------------------------------------------------------
 

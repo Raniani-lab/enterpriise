@@ -13,6 +13,7 @@
         </field>
         <field name="reminder_ids" eval="[(6, 0, [ref('calendar.alarm_notif_1')])]"/>
         <field name="staff_user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        <field name="avatars_display">show</field>
     </record>
 
     <record id="appointment_type_1_slot_1" model="appointment.slot">
@@ -50,6 +51,7 @@
         <field name="max_schedule_days">45</field>
         <field name="staff_user_ids" eval="[(6, 0, [ref('base.user_admin'), ref('base.user_demo')])]"/>
         <field name="assign_method">chosen</field>
+        <field name="avatars_display">show</field>
     </record>
 
     <record id="appointment_type_2_slot_1" model="appointment.slot">

@@ -222,6 +222,7 @@
                         </group>
                         <group name="right_details">
                             <field name="assign_method" attrs="{'invisible': [('category', '!=', 'website')]}" widget="radio" options="{'horizontal': true}"/>
+                            <field name="avatars_display" widget="radio" options="{'horizontal': true}" required="1"/>
                             <field name="staff_user_ids" widget="many2many_tags_avatar" attrs="{'readonly': [('category', '!=', 'website')]}" options="{'no_open': False}"/>
                         </group>
                     </group>

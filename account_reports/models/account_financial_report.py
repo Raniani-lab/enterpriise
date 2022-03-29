@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import ast
 import json
+import re
 
 from .formula import FormulaSolver, PROTECTED_KEYWORDS
 from dateutil.relativedelta import relativedelta
@@ -1398,12 +1399,10 @@ class AccountFinancialReportLine(models.Model):
             line._copy_hierarchy(parent_id=copy_line_id, code_mapping=code_mapping)
         # Update formulas
         if self.formulas:
-            copied_formulas = self.formulas
-            for k, v in code_mapping.items():
-                for field in ('debit', 'credit', 'balance'):
-                    suffix = '.' + field
-                    copied_formulas = copied_formulas.replace(k + suffix, v + suffix)
-            copy_line_id.formulas = copied_formulas
+            copied_formulas = f" {self.formulas} " # Add spaces so that the lookahead/lookbehind of the regex can work (we can't do a | in those)
+            for old_code, new_code in code_mapping.items():
+                copied_formulas = re.sub(f"(?<=\\W){old_code}(?=\\W)", new_code, copied_formulas)
+            copy_line_id.formulas = copied_formulas.strip() # Remove the spaces introduced for lookahead/lookbehind
 
     def action_view_journal_entries(self, options, calling_financial_report_id):
         ''' Action when clicking on the "View Journal Items" in the debug info popup.

@@ -803,36 +803,56 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
     return - max(withholding_tax_amount, 0.0)
 
 def compute_special_social_cotisations(payslip, categories, worked_days, inputs):
+    def find_rate(x, rates):
+        for low, high, rate, basis, min_amount, max_amount in rates:
+            if low <= x <= high:
+                return low, high, rate, basis, min_amount, max_amount
+        return 0, 0, 0, 0, 0, 0
+
     employee = payslip.contract_id.employee_id
     wage = categories.BASIC
-    result = 0.0
-    if not wage:
-        return result
-    if employee.resident_bool:
-        result = 0.0
-    elif employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income'):
-        if 0.01 <= wage <= 1095.09:
-            result = 0.0
-        elif 1095.10 <= wage <= 1945.38:
-            result = 0.0
-        elif 1945.39 <= wage <= 2190.18:
-            result = -min((wage - 1945.38) * 0.076, 18.60)
-        elif 2190.19 <= wage <= 6038.82:
-            result = -min(18.60 + (wage - 2190.18) * 0.011, 60.94)
-        else:
-            result = -60.94
-    elif employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status != 'without_income':
-        if 0.01 <= wage <= 1095.09:
-            result = 0.0
-        elif 1095.10 <= wage <= 1945.38:
-            result = -9.30
-        elif 1945.39 <= wage <= 2190.18:
-            result = -min(max((wage - 1945.38) * 0.076, 9.30), 18.60)
-        elif 2190.19 <= wage <= 6038.82:
-            result = -min(18.60 + (wage - 2190.18) * 0.011, 51.64)
-        else:
-            result = -51.64
-    return result
+    if not wage or employee.resident_bool:
+        return 0.0
+
+    RuleParameters = payslip.dict.env['hr.rule.parameter']
+    if employee.marital in ['divorced', 'single', 'widower'] or (employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status == 'without_income'):
+        # YTI TODO: could be dropped in master in favor to
+        # rates = payslip.rule_parameter('cp200_monss_isolated')
+        rates = RuleParameters._get_parameter_from_code(
+            'cp200_monss_isolated', payslip.dict.date_to, raise_if_not_found=False)
+        if not rates:
+            rates = [
+                (0.00, 1945.38, 0.00, 0.00, 0.00, 0.00),
+                (1945.39, 2190.18, 0.076, 0.00, 0.00, 18.60),
+                (2190.19, 6038.82, 0.011, 18.60, 0.00, 60.94),
+                (6038.83, 999999999.00, 1.000, 60.94, 0.00, 60.94),
+            ]
+        low, dummy, rate, basis, min_amount, max_amount = find_rate(wage, rates)
+        return -min(max(basis + (wage - low + 0.01) * rate, min_amount), max_amount)
+
+    if employee.marital in ['married', 'cohabitant'] and employee.spouse_fiscal_status != 'without_income':
+        # YTI TODO: could be dropped in master in favor to
+        # rates = payslip.rule_parameter('cp200_monss_couple')
+        rates = RuleParameters._get_parameter_from_code(
+            'cp200_monss_couple', payslip.dict.date_to, raise_if_not_found=False)
+        if not rates:
+            rates = [
+                (0.00, 1095.09, 0.00, 0.00, 0.00, 0.00),
+                (1095.10, 1945.38, 0.00, 9.30, 9.30, 9.30),
+                (1945.39, 2190.18, 0.076, 0.00, 9.30, 18.60),
+                (2190.19, 6038.82, 0.011, 18.60, 0.00, 51.64),
+                (6038.83, 999999999.00, 1.000, 51.64, 51.64, 51.64),
+            ]
+        low, dummy, rate, basis, min_amount, max_amount = find_rate(wage, rates)
+        if isinstance(max_amount, tuple):
+            if employee.spouse_fiscal_status in ['high_income', 'low_income']:
+                # conjoint avec revenus professionnels
+                max_amount = max_amount[0]
+            else:
+                # conjoint sans revenus professionnels
+                max_amount = max_amount[1]
+        return -min(max(basis + (wage - low + 0.01) * rate, min_amount), max_amount)
+    return 0.0
 
 def compute_ip(payslip, categories, worked_days, inputs):
     contract = payslip.contract_id

@@ -904,6 +904,66 @@
             <field name="rule_parameter_id" ref="rule_parameter_cp200_seizable_amount_child"/>
             <field name="date_from" eval="datetime(2021, 1, 1).date()"/>
         </record>
-    </data>
 
+        <record id="rule_parameter_cp200_special_social_cotisation_isolated" model="hr.rule.parameter">
+            <field name="name">CP200: Special Social Cotisation (Isolated or Couple with unique revenue)</field>
+            <field name="code">cp200_monss_isolated</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_special_social_cotisation_isolated_2016" model="hr.rule.parameter.value">
+            <!-- low, high, rate, basic, min_amount, max_amount -->
+            <field name="parameter_value">
+[
+    (   0.00,      1945.38,    0.00,  0.00,  0.00,  0.00),
+    (1945.39,      2190.18,   0.076,  0.00,  0.00, 18.60),
+    (2190.19,      6038.82,   0.011, 18.60,  0.00, 60.94),
+    (6038.83, 999999999.00,   1.000, 60.94,  0.00, 60.94),
+]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_special_social_cotisation_isolated"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_cp200_special_social_cotisation_isolated_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">
+[
+    (   0.00,      1945.38,    0.00,   0.00,  0.00,  0.00),
+    (1945.39,      2190.18,  0.0422,   0.00,  0.00, 10.33),
+    (2190.19,      3737.00,  0.0110,  10.33,  0.00, 27.35),
+    (3737.01,      4100.00,  0.0338,  27.35,  0.00, 39.61),
+    (4100.01,      6038.82,  0.0110,  39.61,  0.00, 60.94),
+    (6038.83, 999999999.00,   1.000,  60.94,  0.00, 60.94),
+]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_special_social_cotisation_isolated"/>
+            <field name="date_from" eval="datetime(2022, 4, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_cp200_special_social_cotisation_couple" model="hr.rule.parameter">
+            <field name="name">CP200: Special Social Cotisation (Couple with both revenues)</field>
+            <field name="code">cp200_monss_couple</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_special_social_cotisation_couple_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">
+[
+    (   0.00,      1095.09,    0.00,  0.00,  0.00, 0.00),
+    (1095.10,      1945.38,    0.00,  9.30,  9.30, 9.30),
+    (1945.39,      2190.18,   0.076,  0.00,  9.30, 18.60),
+    (2190.19,      6038.82,   0.011, 18.60,  0.00, 51.64),
+    (6038.83, 999999999.00,   1.000, 51.64, 51.64, 51.64),
+]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_special_social_cotisation_couple"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_cp200_special_social_cotisation_couple_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">
+[
+    (   0.00,      1095.09,    0.00,  0.00,  0.00, 0.00),
+    (1095.10,      1945.38,    0.00,  5.15,  5.15, 5.15),
+    (1945.39,      2190.18,   0.059,  0.00,  5.15, 14.44),
+    (2190.19, 999999999.00,   0.011, 14.44,  0.00, (51.64, 60.94)),
+]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_special_social_cotisation_couple"/>
+            <field name="date_from" eval="datetime(2022, 4, 1).date()"/>
+        </record>
+
+    </data>
 </odoo>

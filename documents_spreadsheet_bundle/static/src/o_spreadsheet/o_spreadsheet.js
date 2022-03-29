@@ -1602,9 +1602,9 @@
     const COUNTIFS = {
         description: _lt("Count values depending on multiple criteria."),
         args: args(`
-    criteria_range (range) ${_lt("The range to check against criterion1.")}
-    criterion (string) ${_lt("The pattern or test to apply to criteria_range1.")}
-    additional_values (any, range, optional, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
+    criteria_range1 (range) ${_lt("The range to check against criterion1.")}
+    criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
+    criteria_range2 (any, range, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
     criterion2 (string, repeating) ${_lt("Additional criteria to check.")}
   `),
         returns: ["NUMBER"],
@@ -1652,7 +1652,7 @@
     range (range) ${_lt("The range of cells from which the number of unique values will be counted.")}
     criteria_range1 (range) ${_lt("The range of cells over which to evaluate criterion1.")}
     criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
-    additional_values (any, range, optional, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
+    criteria_range2 (any, range, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
     criterion2 (string, repeating) ${_lt("The pattern or test to apply to criteria_range2.")}
   `),
         returns: ["NUMBER"],
@@ -2215,7 +2215,7 @@
         args: args(`
       criteria_range (range) ${_lt("The range which is tested against criterion.")}
       criterion (string) ${_lt("The pattern or test to apply to range.")}
-      sum_range (range, optional, default=criteria_range) ${_lt("The range to be summed, if different from range.")}
+      sum_range (range, default=criteria_range) ${_lt("The range to be summed, if different from range.")}
     `),
         returns: ["NUMBER"],
         compute: function (criteriaRange, criterion, sumRange = undefined) {
@@ -2242,7 +2242,8 @@
       sum_range (range) ${_lt("The range to sum.")}
       criteria_range1 (range) ${_lt("The range to check against criterion1.")}
       criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
-      additional_values (any, range, optional, repeating) ${_lt("Additional criteria to check.")}
+      criteria_range2 (any, range, repeating) ${_lt("Additional ranges to check.")}
+      criterion2 (string, repeating) ${_lt("Additional criteria to check.")}
     `),
         returns: ["NUMBER"],
         compute: function (sumRange, ...criters) {
@@ -3993,7 +3994,7 @@
         args: args(`
       criteria_range (range) ${_lt("The range to check against criterion.")}
       criterion (string) ${_lt("The pattern or test to apply to criteria_range.")}
-      average_range (range, optional, default=criteria_range) ${_lt("The range to average. If not included, criteria_range is used for the average instead.")}
+      average_range (range, default=criteria_range) ${_lt("The range to average. If not included, criteria_range is used for the average instead.")}
     `),
         returns: ["NUMBER"],
         compute: function (criteriaRange, criterion, averageRange = undefined) {
@@ -4023,7 +4024,8 @@
       average_range (range) ${_lt("The range to average.")}
       criteria_range1 (range) ${_lt("The range to check against criterion1.")}
       criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1.")}
-      additional_values (any, range, optional, repeating) ${_lt("Additional criteria_range and criterion to check.")}
+      criteria_range2 (any, range, repeating) ${_lt("Additional criteria_range and criterion to check.")}
+      criterion2 (string, repeating) ${_lt("The pattern or test to apply to criteria_range2.")}
     `),
         returns: ["NUMBER"],
         compute: function (averageRange, ...values) {
@@ -4191,7 +4193,7 @@
         description: _lt("Maximum numeric value in a dataset."),
         args: args(`
       value1 (any, range) ${_lt("The first value or range to consider when calculating the maximum value.")}
-      value2 (any, range, optional, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
+      value2 (any, range, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
     `),
         returns: ["NUMBER"],
         returnFormat: ReturnFormatType.FormatFromArgument,
@@ -4212,7 +4214,7 @@
       range (range) ${_lt("The range of cells from which the maximum will be determined.")}
       criteria_range1 (range) ${_lt("The range of cells over which to evaluate criterion1.")}
       criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
-      additional_values (any, range, optional, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
+      criteria_range2 (any, range, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
       criterion2 (string, repeating) ${_lt("The pattern or test to apply to criteria_range2.")}
     `),
         returns: ["NUMBER"],
@@ -4293,7 +4295,7 @@
       range (range) ${_lt("The range of cells from which the minimum will be determined.")}
       criteria_range1 (range) ${_lt("The range of cells over which to evaluate criterion1.")}
       criterion1 (string) ${_lt("The pattern or test to apply to criteria_range1, such that each cell that evaluates to TRUE will be included in the filtered set.")}
-      additional_values (any, range, optional, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
+      criteria_range2 (any, range, repeating) ${_lt("Additional ranges over which to evaluate the additional criteria. The filtered set will be the intersection of the sets produced by each criterion-range pair.")}
       criterion2 (string, repeating) ${_lt("The pattern or test to apply to criteria_range2.")}
     `),
         returns: ["NUMBER"],
@@ -4943,9 +4945,9 @@
     const DATE = {
         description: _lt("Converts year/month/day into a date."),
         args: args(`
-    year (number) ${_lt("The year component of the date.")}")}
-    month (number) ${_lt("The month component of the date.")}")}
-    day (number) ${_lt("The day component of the date.")}")}
+    year (number) ${_lt("The year component of the date.")}
+    month (number) ${_lt("The month component of the date.")}
+    day (number) ${_lt("The day component of the date.")}
     `),
         returns: ["DATE"],
         returnFormat: { specificFormat: "m/d/yyyy" },
@@ -7195,6 +7197,7 @@
         text,
         engineering,
     };
+    const functionNameRegex = /^[A-Z0-9\.]+$/;
     //------------------------------------------------------------------------------
     // Function registry
     //------------------------------------------------------------------------------
@@ -7204,7 +7207,10 @@
             this.mapping = {};
         }
         add(name, addDescr) {
-            name = name.toUpperCase().replace("_", ".");
+            name = name.toUpperCase();
+            if (!name.match(functionNameRegex)) {
+                throw new Error(_lt("Invalid function name %s. Function names can exclusively contain alphanumerical values separated by dots (.)", name));
+            }
             const descr = addMetaInfoFromArg(addDescr);
             validateArguments(descr.args);
             this.mapping[name] = descr.compute;
@@ -7218,6 +7224,7 @@
         for (let name in fns) {
             const addDescr = fns[name];
             addDescr.category = category;
+            name = name.replace("_", ".");
             functionRegistry.add(name, { isExported: false, ...addDescr });
         }
     }
@@ -8630,6 +8637,376 @@
         else {
             return content;
         }
+    }
+
+    /**
+     * parses a formula (as a string) into the same formula,
+     * but with the references to other cells extracted
+     *
+     * =sum(a3:b1) + c3 --> =sum(|0|) + |1|
+     *
+     * @param formula
+     */
+    function normalizeV9(formula) {
+        const tokens = rangeTokenize(formula);
+        let dependencies = [];
+        let noRefFormula = "".concat(...tokens.map((token) => {
+            if (token.type === "REFERENCE" && cellReference.test(token.value)) {
+                const value = token.value.trim();
+                if (!dependencies.includes(value)) {
+                    dependencies.push(value);
+                }
+                return `${FORMULA_REF_IDENTIFIER}${dependencies.indexOf(value)}${FORMULA_REF_IDENTIFIER}`;
+            }
+            else {
+                return token.value;
+            }
+        }));
+        return { text: noRefFormula, dependencies };
+    }
+
+    /**
+     * This is the current state version number. It should be incremented each time
+     * a breaking change is made in the way the state is handled, and an upgrade
+     * function should be defined
+     */
+    const CURRENT_VERSION = 11;
+    const INITIAL_SHEET_ID = "Sheet1";
+    /**
+     * This function tries to load anything that could look like a valid
+     * workbookData object. It applies any migrations, if needed, and return a
+     * current, complete workbookData object.
+     *
+     * It also ensures that there is at least one sheet.
+     */
+    function load(data) {
+        if (!data) {
+            return createEmptyWorkbookData();
+        }
+        data = JSON.parse(JSON.stringify(data));
+        // apply migrations, if needed
+        if ("version" in data) {
+            if (data.version < CURRENT_VERSION) {
+                data = migrate(data);
+            }
+        }
+        // sanity check: try to fix missing fields/corrupted state by providing
+        // sensible default values
+        data = Object.assign(createEmptyWorkbookData(), data, { version: CURRENT_VERSION });
+        data.sheets = data.sheets.map((s, i) => Object.assign(createEmptySheet(`Sheet${i + 1}`, `Sheet${i + 1}`), s));
+        if (data.sheets.length === 0) {
+            data.sheets.push(createEmptySheet(INITIAL_SHEET_ID, "Sheet1"));
+        }
+        return data;
+    }
+    function migrate(data) {
+        const index = MIGRATIONS.findIndex((m) => m.from === data.version);
+        for (let i = index; i < MIGRATIONS.length; i++) {
+            data = MIGRATIONS[i].applyMigration(data);
+        }
+        return data;
+    }
+    const MIGRATIONS = [
+        {
+            description: "add the `activeSheet` field on data",
+            from: 1,
+            to: 2,
+            applyMigration(data) {
+                if (data.sheets && data.sheets[0]) {
+                    data.activeSheet = data.sheets[0].name;
+                }
+                return data;
+            },
+        },
+        {
+            description: "add an id field in each sheet",
+            from: 2,
+            to: 3,
+            applyMigration(data) {
+                if (data.sheets && data.sheets.length) {
+                    for (let sheet of data.sheets) {
+                        sheet.id = sheet.id || sheet.name;
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "activeSheet is now an id, not the name of a sheet",
+            from: 3,
+            to: 4,
+            applyMigration(data) {
+                if (data.sheets && data.activeSheet) {
+                    const activeSheet = data.sheets.find((s) => s.name === data.activeSheet);
+                    data.activeSheet = activeSheet.id;
+                }
+                return data;
+            },
+        },
+        {
+            description: "add figures object in each sheets",
+            from: 4,
+            to: 5,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    sheet.figures = sheet.figures || [];
+                }
+                return data;
+            },
+        },
+        {
+            description: "normalize the content of the cell if it is a formula to avoid parsing all the formula that vary only by the cells they use",
+            from: 5,
+            to: 6,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    for (let xc in sheet.cells || []) {
+                        const cell = sheet.cells[xc];
+                        if (cell.content && cell.content.startsWith("=")) {
+                            cell.formula = normalizeV9(cell.content);
+                        }
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "transform chart data structure",
+            from: 6,
+            to: 7,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    for (let f in sheet.figures || []) {
+                        const { dataSets, ...newData } = sheet.figures[f].data;
+                        const newDataSets = [];
+                        for (let ds of dataSets) {
+                            if (ds.labelCell) {
+                                const dataRange = toZone(ds.dataRange);
+                                const newRange = ds.labelCell + ":" + toXC(dataRange.right, dataRange.bottom);
+                                newDataSets.push(newRange);
+                            }
+                            else {
+                                newDataSets.push(ds.dataRange);
+                            }
+                        }
+                        newData.dataSetsHaveTitle = Boolean(dataSets[0].labelCell);
+                        newData.dataSets = newDataSets;
+                        sheet.figures[f].data = newData;
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "remove single quotes in sheet names",
+            from: 7,
+            to: 8,
+            applyMigration(data) {
+                var _a;
+                const namesTaken = [];
+                const globalForbiddenInExcel = new RegExp(FORBIDDEN_IN_EXCEL_REGEX, "g");
+                for (let sheet of data.sheets || []) {
+                    if (!sheet.name) {
+                        continue;
+                    }
+                    const oldName = sheet.name;
+                    const escapedName = oldName.replace(globalForbiddenInExcel, "_");
+                    let i = 1;
+                    let newName = escapedName;
+                    while (namesTaken.includes(newName)) {
+                        newName = `${escapedName}${i}`;
+                        i++;
+                    }
+                    sheet.name = newName;
+                    namesTaken.push(newName);
+                    const replaceName = (str) => {
+                        if (str === undefined) {
+                            return str;
+                        }
+                        // replaceAll is only available in next Typescript version
+                        let newString = str.replace(oldName, newName);
+                        let currentString = str;
+                        while (currentString !== newString) {
+                            currentString = newString;
+                            newString = currentString.replace(oldName, newName);
+                        }
+                        return currentString;
+                    };
+                    //cells
+                    for (let xc in sheet.cells) {
+                        const cell = sheet.cells[xc];
+                        if (cell.formula) {
+                            cell.formula.dependencies = cell.formula.dependencies.map(replaceName);
+                        }
+                    }
+                    //charts
+                    for (let figure of sheet.figures || []) {
+                        if (figure.type === "chart") {
+                            const dataSets = figure.data.dataSets.map(replaceName);
+                            const labelRange = replaceName(figure.data.labelRange);
+                            figure.data = { ...figure.data, dataSets, labelRange };
+                        }
+                    }
+                    //ConditionalFormats
+                    for (let cf of sheet.conditionalFormats || []) {
+                        cf.ranges = cf.ranges.map(replaceName);
+                        for (const thresholdName of [
+                            "minimum",
+                            "maximum",
+                            "midpoint",
+                            "upperInflectionPoint",
+                            "lowerInflectionPoint",
+                        ]) {
+                            if (((_a = cf.rule[thresholdName]) === null || _a === void 0 ? void 0 : _a.type) === "formula") {
+                                cf.rule[thresholdName].value = replaceName(cf.rule[thresholdName].value);
+                            }
+                        }
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "transform chart data structure with design attributes",
+            from: 8,
+            to: 9,
+            applyMigration(data) {
+                for (const sheet of data.sheets || []) {
+                    for (const chart of sheet.figures || []) {
+                        chart.data.background = BACKGROUND_CHART_COLOR;
+                        chart.data.verticalAxisPosition = "left";
+                        chart.data.legendPosition = "top";
+                        chart.data.stackedBar = false;
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "de-normalize formula to reduce exported json size (~30%)",
+            from: 9,
+            to: 10,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    for (let xc in sheet.cells || []) {
+                        const cell = sheet.cells[xc];
+                        if (cell.formula) {
+                            let { text, dependencies } = cell.formula;
+                            for (let [index, d] of Object.entries(dependencies)) {
+                                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}${index}\\${FORMULA_REF_IDENTIFIER}`;
+                                text = text.replace(new RegExp(stringPosition, "g"), d);
+                            }
+                            cell.content = text;
+                            delete cell.formula;
+                        }
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            description: "normalize the formats of the cells",
+            from: 10,
+            to: 11,
+            applyMigration(data) {
+                const formats = {};
+                for (let sheet of data.sheets || []) {
+                    for (let xc in sheet.cells || []) {
+                        const cell = sheet.cells[xc];
+                        if (cell.format) {
+                            cell.format = getItemId(cell.format, formats);
+                        }
+                    }
+                }
+                data.formats = formats;
+                return data;
+            },
+        },
+    ];
+    /**
+     * The goal of this function is to repair corrupted/wrong initial messages caused by
+     * a bug.
+     * The bug should obviously be fixed, but it's too late for existing spreadsheet.
+     */
+    function repairInitialMessages(data, initialMessages) {
+        initialMessages = fixTranslatedSheetIds(data, initialMessages);
+        return initialMessages;
+    }
+    /**
+     * When the workbook data is originally empty, a new one is generated on-the-fly.
+     * A bug caused the sheet id to be non-deterministic. The sheet id was propagated in
+     * commands.
+     * This function repairs initial commands with a wrong sheetId.
+     */
+    function fixTranslatedSheetIds(data, initialMessages) {
+        // the fix is only needed when the workbook is generated on-the-fly
+        if (Object.keys(data).length !== 0) {
+            return initialMessages;
+        }
+        const sheetIds = [];
+        const messages = [];
+        const fixSheetId = (cmd) => {
+            if (cmd.type === "CREATE_SHEET") {
+                sheetIds.push(cmd.sheetId);
+            }
+            else if ("sheetId" in cmd && !sheetIds.includes(cmd.sheetId)) {
+                return { ...cmd, sheetId: INITIAL_SHEET_ID };
+            }
+            return cmd;
+        };
+        for (const message of initialMessages) {
+            if (message.type === "REMOTE_REVISION") {
+                messages.push({
+                    ...message,
+                    commands: message.commands.map(fixSheetId),
+                });
+            }
+            else {
+                messages.push(message);
+            }
+        }
+        return messages;
+    }
+    // -----------------------------------------------------------------------------
+    // Helpers
+    // -----------------------------------------------------------------------------
+    function createEmptySheet(sheetId, name) {
+        return {
+            id: sheetId,
+            name,
+            colNumber: 26,
+            rowNumber: 100,
+            cells: {},
+            cols: {},
+            rows: {},
+            merges: [],
+            conditionalFormats: [],
+            figures: [],
+        };
+    }
+    function createEmptyWorkbookData(sheetName = "Sheet1") {
+        const data = {
+            version: CURRENT_VERSION,
+            sheets: [createEmptySheet(INITIAL_SHEET_ID, sheetName)],
+            entities: {},
+            styles: {},
+            formats: {},
+            borders: {},
+            revisionId: DEFAULT_REVISION_ID,
+        };
+        return data;
+    }
+    function createEmptyExcelSheet(sheetId, name) {
+        return {
+            ...createEmptySheet(sheetId, name),
+            charts: [],
+        };
+    }
+    function createEmptyExcelWorkbookData() {
+        return {
+            ...createEmptyWorkbookData(),
+            sheets: [createEmptyExcelSheet(INITIAL_SHEET_ID, "Sheet1")],
+        };
     }
 
     /**
@@ -10980,11 +11357,7 @@
             }
             switch (cmd.type) {
                 case "CREATE_SHEET": {
-                    const { visibleSheets } = this;
-                    if (cmd.position > visibleSheets.length || cmd.position < 0) {
-                        return 13 /* WrongSheetPosition */;
-                    }
-                    return 0 /* Success */;
+                    return this.checkValidations(cmd, this.checkSheetName, this.checkSheetPosition);
                 }
                 case "MOVE_SHEET":
                     const currentIndex = this.visibleSheets.findIndex((id) => id === cmd.sheetId);
@@ -11025,7 +11398,7 @@
                     this.clearZones(cmd.sheetId, cmd.target);
                     break;
                 case "CREATE_SHEET":
-                    const sheet = this.createSheet(cmd.sheetId, this.generateSheetName(), cmd.cols || 26, cmd.rows || 100, cmd.position);
+                    const sheet = this.createSheet(cmd.sheetId, cmd.name || this.getNextSheetName(), cmd.cols || 26, cmd.rows || 100, cmd.position);
                     this.history.update("sheetIds", sheet.name, sheet.id);
                     break;
                 case "RESIZE_COLUMNS_ROWS":
@@ -11268,6 +11641,16 @@
         getNumberRows(sheetId) {
             return this.getSheet(sheetId).rows.length;
         }
+        getNextSheetName(baseName = "Sheet") {
+            let i = 1;
+            const names = this.getSheets().map((s) => s.name);
+            let name = `${baseName}${i}`;
+            while (names.includes(name)) {
+                name = `${baseName}${i}`;
+                i++;
+            }
+            return name;
+        }
         // ---------------------------------------------------------------------------
         // Row/Col manipulation
         // ---------------------------------------------------------------------------
@@ -11351,17 +11734,6 @@
                 }
             }
         }
-        generateSheetName() {
-            let i = 1;
-            const names = this.getSheets().map((s) => s.name);
-            const baseName = _lt("Sheet");
-            let name = `${baseName}${i}`;
-            while (names.includes(name)) {
-                name = `${baseName}${i}`;
-                i++;
-            }
-            return name;
-        }
         createSheet(id, name, colNumber, rowNumber, position) {
             const sheet = {
                 id,
@@ -11394,6 +11766,13 @@
             }
             if (FORBIDDEN_IN_EXCEL_REGEX.test(name)) {
                 return 11 /* ForbiddenCharactersInSheetName */;
+            }
+            return 0 /* Success */;
+        }
+        checkSheetPosition(cmd) {
+            const { visibleSheets } = this;
+            if (cmd.position > visibleSheets.length || cmd.position < 0) {
+                return 13 /* WrongSheetPosition */;
             }
             return 0 /* Success */;
         }
@@ -11880,6 +12259,7 @@
         "getHiddenColsGroups",
         "getHiddenRowsGroups",
         "getGridLinesVisibility",
+        "getNextSheetName",
         "isEmpty",
     ];
 
@@ -20114,8 +20494,7 @@
             const text = this.getters.getCellText(cell, showFormula);
             const textWidth = this.getters.getTextWidth(cell);
             const contentWidth = iconBoxWidth + textWidth;
-            const isOverflowing = contentWidth > width || fontSizeMap[fontSize] > height;
-            const align = this.computeCellAlignment(cell, isOverflowing);
+            const align = this.computeCellAlignment(cell, contentWidth > width);
             box.content = {
                 text,
                 width: textWidth,
@@ -20126,40 +20505,48 @@
                 box.error = cell.evaluated.error;
             }
             /** ClipRect */
+            const isOverflowing = contentWidth > width || fontSizeMap[fontSize] > height;
             if (cfIcon) {
                 box.clipRect = [box.x + iconBoxWidth, box.y, Math.max(0, width - iconBoxWidth), height];
             }
             else if (isOverflowing) {
+                let nextColIndex, previousColIndex;
+                const isCellInMerge = this.getters.isInMerge(sheetId, colNumber, rowNumber);
+                if (isCellInMerge) {
+                    // Always clip merges
+                    nextColIndex = this.getters.getMerge(sheetId, colNumber, rowNumber).right;
+                    previousColIndex = colNumber;
+                }
+                else {
+                    nextColIndex = this.findNextEmptyCol(colNumber, right, rowNumber);
+                    previousColIndex = this.findPreviousEmptyCol(colNumber, left, rowNumber);
+                }
                 switch (align) {
                     case "left": {
-                        const nextColIndex = this.findNextEmptyCol(colNumber, right, rowNumber);
                         const nextCol = this.getters.getCol(sheetId, nextColIndex);
-                        const width = nextCol.end - col.start;
-                        if (width < textWidth || fontSizePX > row.size) {
-                            box.clipRect = [col.start - offsetX, row.start - offsetY, width, row.size];
+                        const clipWidth = nextCol.end - col.start;
+                        if (clipWidth < textWidth || fontSizePX > row.size) {
+                            box.clipRect = [col.start - offsetX, row.start - offsetY, clipWidth, height];
                         }
                         break;
                     }
                     case "right": {
-                        const previousColIndex = this.findPreviousEmptyCol(colNumber, left, rowNumber);
                         const previousCol = this.getters.getCol(sheetId, previousColIndex);
-                        const width = col.end - previousCol.start;
-                        if (width < textWidth || fontSizePX > row.size) {
-                            box.clipRect = [previousCol.start - offsetX, row.start - offsetY, width, row.size];
+                        const clipWidth = col.end + width - col.size - previousCol.start;
+                        if (clipWidth < textWidth || fontSizePX > row.size) {
+                            box.clipRect = [previousCol.start - offsetX, row.start - offsetY, clipWidth, height];
                         }
                         break;
                     }
                     case "center": {
-                        const previousColIndex = this.findPreviousEmptyCol(colNumber, left, rowNumber);
-                        const nextColIndex = this.findNextEmptyCol(colNumber, right, rowNumber);
                         const previousCol = this.getters.getCol(sheetId, previousColIndex);
                         const nextCol = this.getters.getCol(sheetId, nextColIndex);
-                        const width = nextCol.end - previousCol.start;
-                        if (width < textWidth ||
+                        const clipWidth = nextCol.end - previousCol.start;
+                        if (clipWidth < textWidth ||
                             previousColIndex === colNumber ||
                             nextColIndex === colNumber ||
                             fontSizePX > row.size) {
-                            box.clipRect = [previousCol.start - offsetX, row.start - offsetY, width, row.size];
+                            box.clipRect = [previousCol.start - offsetX, row.start - offsetY, clipWidth, height];
                         }
                         break;
                     }
@@ -20683,9 +21070,9 @@
             const isCol = cmd.dimension === "COL";
             const start = cmd.elements[0];
             const end = cmd.elements[thickness - 1];
-            const isBasedbefore = cmd.base < start;
-            const deltaCol = isBasedbefore && isCol ? thickness : 0;
-            const deltaRow = isBasedbefore && !isCol ? thickness : 0;
+            const isBasedBefore = cmd.base < start;
+            const deltaCol = isBasedBefore && isCol ? thickness : 0;
+            const deltaRow = isBasedBefore && !isCol ? thickness : 0;
             const sheet = this.getters.getSheet(cmd.sheetId);
             this.dispatch("CUT", {
                 target: [
@@ -20707,10 +21094,24 @@
                     },
                 ],
             });
+            const toRemove = isBasedBefore ? cmd.elements.map((el) => el + thickness) : cmd.elements;
+            let currentIndex = cmd.base;
+            for (const element of toRemove) {
+                const size = cmd.dimension === "COL"
+                    ? this.getters.getCol(cmd.sheetId, element).size
+                    : this.getters.getRow(cmd.sheetId, element).size;
+                this.dispatch("RESIZE_COLUMNS_ROWS", {
+                    dimension: cmd.dimension,
+                    sheetId: cmd.sheetId,
+                    size,
+                    elements: [currentIndex],
+                });
+                currentIndex += 1;
+            }
             this.dispatch("REMOVE_COLUMNS_ROWS", {
                 dimension: cmd.dimension,
                 sheetId: cmd.sheetId,
-                elements: isBasedbefore ? cmd.elements.map((el) => el + thickness) : cmd.elements,
+                elements: toRemove,
             });
         }
         isMoveElementAllowed(cmd) {
@@ -22720,7 +23121,8 @@
             const position = this.env.model.getters.getVisibleSheets().findIndex((sheetId) => sheetId === activeSheetId) +
                 1;
             const sheetId = this.env.model.uuidGenerator.uuidv4();
-            this.env.model.dispatch("CREATE_SHEET", { sheetId, position });
+            const name = this.env.model.getters.getNextSheetName(this.env._t("Sheet"));
+            this.env.model.dispatch("CREATE_SHEET", { sheetId, position, name });
             this.env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
         }
         listSheets(ev) {
@@ -23427,10 +23829,10 @@
     const ASSISTANT_WIDTH = 300;
     const FunctionColor = "#4a4e4d";
     const OperatorColor = "#3da4ab";
-    const StringColor = "#f6cd61";
+    const StringColor = "#00a82d";
     const SelectionIndicatorColor = "darkgrey";
     const NumberColor = "#02c39a";
-    const MatchingParenColor = "pink";
+    const MatchingParenColor = "black";
     const SelectionIndicatorClass = "selector-flag";
     const tokenColor = {
         OPERATOR: OperatorColor,
@@ -25675,7 +26077,7 @@
     };
     const LINK_EDITOR_WIDTH = 340;
     const LINK_EDITOR_HEIGHT = 180;
-    const ERROR_TOOLTIP_HEIGHT = 80;
+    const ERROR_TOOLTIP_HEIGHT = 40;
     const ERROR_TOOLTIP_WIDTH = 180;
     // copy and paste are specific events that should not be managed by the keydown event,
     // but they shouldn't be preventDefault and stopped (else copy and paste events will not trigger)
@@ -25795,6 +26197,7 @@
     <Popover
       t-if="errorTooltip.isOpen"
       position="errorTooltip.position"
+      flipHorizontalOffset="errorTooltip.cellWidth"
       childWidth="${ERROR_TOOLTIP_WIDTH}"
       childHeight="${ERROR_TOOLTIP_HEIGHT}">
       <ErrorToolTip text="errorTooltip.text"/>
@@ -26040,6 +26443,7 @@
                     isOpen: true,
                     position: { x: x + width, y: y + TOPBAR_HEIGHT },
                     text: cell.evaluated.error,
+                    cellWidth: width,
                 };
             }
             return { isOpen: false };
@@ -27518,6 +27922,7 @@
     otRegistry.addTransformation("ADD_COLUMNS_ROWS", ["CREATE_CHART", "UPDATE_CHART"], updateChartRangesTransformation);
     otRegistry.addTransformation("REMOVE_COLUMNS_ROWS", ["CREATE_CHART", "UPDATE_CHART"], updateChartRangesTransformation);
     otRegistry.addTransformation("DELETE_FIGURE", ["UPDATE_FIGURE", "UPDATE_CHART"], updateChartFigure);
+    otRegistry.addTransformation("CREATE_SHEET", ["CREATE_SHEET"], createSheetTransformation);
     otRegistry.addTransformation("ADD_MERGE", ["ADD_MERGE", "REMOVE_MERGE"], mergeTransformation);
     otRegistry.addTransformation("ADD_MERGE", ["SORT_CELLS"], sortMergedTransformation);
     otRegistry.addTransformation("REMOVE_MERGE", ["SORT_CELLS"], sortUnMergedTransformation);
@@ -27549,6 +27954,19 @@
                 labelRange: labelZone ? zoneToXc(labelZone) : undefined,
             },
         };
+    }
+    function createSheetTransformation(cmd, executed) {
+        var _a;
+        if (cmd.name === executed.name) {
+            return {
+                ...cmd,
+                name: ((_a = cmd.name) === null || _a === void 0 ? void 0 : _a.match(/\d+/))
+                    ? cmd.name.replace(/\d+/, (n) => (parseInt(n) + 1).toString())
+                    : `${cmd.name}~`,
+                position: cmd.position + 1,
+            };
+        }
+        return cmd;
     }
     function mergeTransformation(cmd, executed) {
         const target = [];
@@ -27681,7 +28099,10 @@
         if (cmd.sheetId === deleteSheet) {
             return "IGNORE_COMMAND";
         }
-        if ("sheetId" in executed && cmd.sheetId !== executed.sheetId) {
+        else if (cmd.type === "CREATE_SHEET" || executed.type === "CREATE_SHEET") {
+            return cmd;
+        }
+        else if ("sheetId" in executed && cmd.sheetId !== executed.sheetId) {
             return "TRANSFORMATION_NOT_NEEDED";
         }
         return cmd;
@@ -28685,331 +29106,6 @@
             this.dispatch("REDO", { commands });
             this.isWaitingForUndoRedo = false;
         }
-    }
-
-    /**
-     * parses a formula (as a string) into the same formula,
-     * but with the references to other cells extracted
-     *
-     * =sum(a3:b1) + c3 --> =sum(|0|) + |1|
-     *
-     * @param formula
-     */
-    function normalizeV9(formula) {
-        const tokens = rangeTokenize(formula);
-        let dependencies = [];
-        let noRefFormula = "".concat(...tokens.map((token) => {
-            if (token.type === "REFERENCE" && cellReference.test(token.value)) {
-                const value = token.value.trim();
-                if (!dependencies.includes(value)) {
-                    dependencies.push(value);
-                }
-                return `${FORMULA_REF_IDENTIFIER}${dependencies.indexOf(value)}${FORMULA_REF_IDENTIFIER}`;
-            }
-            else {
-                return token.value;
-            }
-        }));
-        return { text: noRefFormula, dependencies };
-    }
-
-    /**
-     * This is the current state version number. It should be incremented each time
-     * a breaking change is made in the way the state is handled, and an upgrade
-     * function should be defined
-     */
-    const CURRENT_VERSION = 11;
-    /**
-     * This function tries to load anything that could look like a valid
-     * workbookData object. It applies any migrations, if needed, and return a
-     * current, complete workbookData object.
-     *
-     * It also ensures that there is at least one sheet.
-     */
-    function load(data) {
-        if (!data) {
-            return createEmptyWorkbookData();
-        }
-        data = JSON.parse(JSON.stringify(data));
-        // apply migrations, if needed
-        if ("version" in data) {
-            if (data.version < CURRENT_VERSION) {
-                data = migrate(data);
-            }
-        }
-        // sanity check: try to fix missing fields/corrupted state by providing
-        // sensible default values
-        data = Object.assign(createEmptyWorkbookData(), data, { version: CURRENT_VERSION });
-        data.sheets = data.sheets.map((s, i) => Object.assign(createEmptySheet(`Sheet${i + 1}`), s));
-        if (data.sheets.length === 0) {
-            data.sheets.push(createEmptySheet());
-        }
-        return data;
-    }
-    function migrate(data) {
-        const index = MIGRATIONS.findIndex((m) => m.from === data.version);
-        for (let i = index; i < MIGRATIONS.length; i++) {
-            data = MIGRATIONS[i].applyMigration(data);
-        }
-        return data;
-    }
-    const MIGRATIONS = [
-        {
-            description: "add the `activeSheet` field on data",
-            from: 1,
-            to: 2,
-            applyMigration(data) {
-                if (data.sheets && data.sheets[0]) {
-                    data.activeSheet = data.sheets[0].name;
-                }
-                return data;
-            },
-        },
-        {
-            description: "add an id field in each sheet",
-            from: 2,
-            to: 3,
-            applyMigration(data) {
-                if (data.sheets && data.sheets.length) {
-                    for (let sheet of data.sheets) {
-                        sheet.id = sheet.id || sheet.name;
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "activeSheet is now an id, not the name of a sheet",
-            from: 3,
-            to: 4,
-            applyMigration(data) {
-                if (data.sheets && data.activeSheet) {
-                    const activeSheet = data.sheets.find((s) => s.name === data.activeSheet);
-                    data.activeSheet = activeSheet.id;
-                }
-                return data;
-            },
-        },
-        {
-            description: "add figures object in each sheets",
-            from: 4,
-            to: 5,
-            applyMigration(data) {
-                for (let sheet of data.sheets || []) {
-                    sheet.figures = sheet.figures || [];
-                }
-                return data;
-            },
-        },
-        {
-            description: "normalize the content of the cell if it is a formula to avoid parsing all the formula that vary only by the cells they use",
-            from: 5,
-            to: 6,
-            applyMigration(data) {
-                for (let sheet of data.sheets || []) {
-                    for (let xc in sheet.cells || []) {
-                        const cell = sheet.cells[xc];
-                        if (cell.content && cell.content.startsWith("=")) {
-                            cell.formula = normalizeV9(cell.content);
-                        }
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "transform chart data structure",
-            from: 6,
-            to: 7,
-            applyMigration(data) {
-                for (let sheet of data.sheets || []) {
-                    for (let f in sheet.figures || []) {
-                        const { dataSets, ...newData } = sheet.figures[f].data;
-                        const newDataSets = [];
-                        for (let ds of dataSets) {
-                            if (ds.labelCell) {
-                                const dataRange = toZone(ds.dataRange);
-                                const newRange = ds.labelCell + ":" + toXC(dataRange.right, dataRange.bottom);
-                                newDataSets.push(newRange);
-                            }
-                            else {
-                                newDataSets.push(ds.dataRange);
-                            }
-                        }
-                        newData.dataSetsHaveTitle = Boolean(dataSets[0].labelCell);
-                        newData.dataSets = newDataSets;
-                        sheet.figures[f].data = newData;
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "remove single quotes in sheet names",
-            from: 7,
-            to: 8,
-            applyMigration(data) {
-                var _a;
-                const namesTaken = [];
-                const globalForbiddenInExcel = new RegExp(FORBIDDEN_IN_EXCEL_REGEX, "g");
-                for (let sheet of data.sheets || []) {
-                    if (!sheet.name) {
-                        continue;
-                    }
-                    const oldName = sheet.name;
-                    const escapedName = oldName.replace(globalForbiddenInExcel, "_");
-                    let i = 1;
-                    let newName = escapedName;
-                    while (namesTaken.includes(newName)) {
-                        newName = `${escapedName}${i}`;
-                        i++;
-                    }
-                    sheet.name = newName;
-                    namesTaken.push(newName);
-                    const replaceName = (str) => {
-                        if (str === undefined) {
-                            return str;
-                        }
-                        // replaceAll is only available in next Typescript version
-                        let newString = str.replace(oldName, newName);
-                        let currentString = str;
-                        while (currentString !== newString) {
-                            currentString = newString;
-                            newString = currentString.replace(oldName, newName);
-                        }
-                        return currentString;
-                    };
-                    //cells
-                    for (let xc in sheet.cells) {
-                        const cell = sheet.cells[xc];
-                        if (cell.formula) {
-                            cell.formula.dependencies = cell.formula.dependencies.map(replaceName);
-                        }
-                    }
-                    //charts
-                    for (let figure of sheet.figures || []) {
-                        if (figure.type === "chart") {
-                            const dataSets = figure.data.dataSets.map(replaceName);
-                            const labelRange = replaceName(figure.data.labelRange);
-                            figure.data = { ...figure.data, dataSets, labelRange };
-                        }
-                    }
-                    //ConditionalFormats
-                    for (let cf of sheet.conditionalFormats || []) {
-                        cf.ranges = cf.ranges.map(replaceName);
-                        for (const thresholdName of [
-                            "minimum",
-                            "maximum",
-                            "midpoint",
-                            "upperInflectionPoint",
-                            "lowerInflectionPoint",
-                        ]) {
-                            if (((_a = cf.rule[thresholdName]) === null || _a === void 0 ? void 0 : _a.type) === "formula") {
-                                cf.rule[thresholdName].value = replaceName(cf.rule[thresholdName].value);
-                            }
-                        }
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "transform chart data structure with design attributes",
-            from: 8,
-            to: 9,
-            applyMigration(data) {
-                for (const sheet of data.sheets || []) {
-                    for (const chart of sheet.figures || []) {
-                        chart.data.background = BACKGROUND_CHART_COLOR;
-                        chart.data.verticalAxisPosition = "left";
-                        chart.data.legendPosition = "top";
-                        chart.data.stackedBar = false;
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "de-normalize formula to reduce exported json size (~30%)",
-            from: 9,
-            to: 10,
-            applyMigration(data) {
-                for (let sheet of data.sheets || []) {
-                    for (let xc in sheet.cells || []) {
-                        const cell = sheet.cells[xc];
-                        if (cell.formula) {
-                            let { text, dependencies } = cell.formula;
-                            for (let [index, d] of Object.entries(dependencies)) {
-                                const stringPosition = `\\${FORMULA_REF_IDENTIFIER}${index}\\${FORMULA_REF_IDENTIFIER}`;
-                                text = text.replace(new RegExp(stringPosition, "g"), d);
-                            }
-                            cell.content = text;
-                            delete cell.formula;
-                        }
-                    }
-                }
-                return data;
-            },
-        },
-        {
-            description: "normalize the formats of the cells",
-            from: 10,
-            to: 11,
-            applyMigration(data) {
-                const formats = {};
-                for (let sheet of data.sheets || []) {
-                    for (let xc in sheet.cells || []) {
-                        const cell = sheet.cells[xc];
-                        if (cell.format) {
-                            cell.format = getItemId(cell.format, formats);
-                        }
-                    }
-                }
-                data.formats = formats;
-                return data;
-            },
-        },
-    ];
-    // -----------------------------------------------------------------------------
-    // Helpers
-    // -----------------------------------------------------------------------------
-    function createEmptySheet(name = _t("Sheet") + 1) {
-        return {
-            id: name,
-            name,
-            colNumber: 26,
-            rowNumber: 100,
-            cells: {},
-            cols: {},
-            rows: {},
-            merges: [],
-            conditionalFormats: [],
-            figures: [],
-        };
-    }
-    function createEmptyWorkbookData() {
-        const data = {
-            version: CURRENT_VERSION,
-            sheets: [createEmptySheet(_t("Sheet") + 1)],
-            entities: {},
-            styles: {},
-            formats: {},
-            borders: {},
-            revisionId: DEFAULT_REVISION_ID,
-        };
-        return data;
-    }
-    function createEmptyExcelSheet(name = _t("Sheet") + 1) {
-        return {
-            ...createEmptySheet(name),
-            charts: [],
-        };
-    }
-    function createEmptyExcelWorkbookData() {
-        return {
-            ...createEmptyWorkbookData(),
-            sheets: [createEmptyExcelSheet(_t("Sheet") + 1)],
-        };
     }
 
     class RangeAdapter {
@@ -31768,6 +31864,7 @@
                 this.status = previousStatus;
                 return DispatchResult.Success;
             };
+            stateUpdateMessages = repairInitialMessages(data, stateUpdateMessages);
             const workbookData = load(data);
             this.state = new StateObserver();
             this.uuidGenerator = uuidGenerator;
@@ -32067,6 +32164,7 @@
         isMarkdownLink,
         parseMarkdownLink,
         markdownLink,
+        createEmptyWorkbookData,
     };
 
     exports.CorePlugin = CorePlugin;
@@ -32096,8 +32194,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-03-24T14:18:54.760Z';
-    exports.__info__.hash = 'c2a9bba';
+    exports.__info__.date = '2022-03-29T07:05:53.793Z';
+    exports.__info__.hash = '82a7624';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

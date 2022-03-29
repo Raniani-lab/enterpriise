@@ -10,7 +10,7 @@ const { functionRegistry } = spreadsheet.registries;
 //--------------------------------------------------------------------------
 
 functionRegistry
-    .add("FILTER_VALUE", {
+    .add("FILTER.VALUE", {
         description: _t("Return the current value of a spreadsheet filter."),
         compute: function (filterName) {
             return this.getters.getFilterDisplayValue(filterName);
@@ -37,7 +37,7 @@ functionRegistry
     `),
         returns: ["NUMBER", "STRING"],
     })
-    .add("PIVOT_HEADER", {
+    .add("PIVOT.HEADER", {
         description: _t("Get the header of a pivot."),
         compute: function (pivotId, ...domain) {
             pivotId = toString(pivotId);

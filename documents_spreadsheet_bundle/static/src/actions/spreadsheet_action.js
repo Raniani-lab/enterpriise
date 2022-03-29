@@ -10,6 +10,7 @@ import { SpreadsheetControlPanel } from "./control_panel/spreadsheet_control_pan
 import { SpreadsheetName } from "./control_panel/spreadsheet_name";
 
 import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants";
+import { createEmptySpreadsheet } from "../o_spreadsheet/helpers";
 
 const { Component, useState } = owl;
 
@@ -124,13 +125,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
    * Create a new sheet and display it
    */
   async _onNewSpreadsheet() {
-    const data = {
-      name: UNTITLED_SPREADSHEET_NAME,
-      mimetype: "application/o-spreadsheet",
-      raw: "{}",
-      handler: "spreadsheet",
-    };
-    const id = await this.orm.create("documents.document", data);
+    const id = await createEmptySpreadsheet(this.orm);
     this._openSpreadsheet(id);
   }
 

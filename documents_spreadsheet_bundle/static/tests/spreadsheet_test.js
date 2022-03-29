@@ -27,7 +27,7 @@ import { prepareWebClientForSpreadsheet } from "./utils/webclient_helpers";
 import { createSpreadsheetFromPivot } from "./utils/pivot_helpers";
 
 const { Model } = spreadsheet;
-const { toCartesian } = spreadsheet.helpers;
+const { toCartesian, createEmptyWorkbookData } = spreadsheet.helpers;
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
 
 const { module, test } = QUnit;
@@ -136,6 +136,37 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         });
         assert.containsOnce(target, ".o-spreadsheet", "It should have opened the spreadsheet");
         assert.verifySteps(["spreadsheet-loaded"]);
+    });
+
+    test("open spreadsheet action with spreadsheet creation", async function (assert) {
+        await prepareWebClientForSpreadsheet();
+        const webClient = await createWebClient({
+            serverData: { models: getBasicData() },
+            mockRPC: async function (route, args) {
+                if (args.method === "create" && args.model === "documents.document") {
+                    assert.step("create_sheet");
+                    assert.deepEqual(
+                        JSON.parse(args.args[0].raw),
+                        createEmptyWorkbookData("Sheet1"),
+                        "It should be an empty spreadsheet"
+                    )
+                    assert.equal(
+                        args.args[0].name,
+                        "Untitled spreadsheet",
+                        "It should have the default name"
+                    );
+                }
+            },
+        });
+        await doAction(webClient, {
+            type: "ir.actions.client",
+            tag: "action_open_spreadsheet",
+            params: {
+                alwaysCreate: true,
+                createFromTemplateId: null,
+            },
+        });
+        assert.verifySteps(["create_sheet"]);
     });
 
     test("download spreadsheet with the action param `download`", async function (assert) {
@@ -912,6 +943,34 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const makeCopy = file.children.find((item) => item.id === "make_copy");
         makeCopy.action(env);
         assert.verifySteps(["copy"]);
+    });
+
+    test("Can create a new spreadsheet from File menu", async function (assert) {
+        const serverData = getBasicServerData();
+        const spreadsheet = serverData.models["documents.document"].records[1];
+        const { env } = await createSpreadsheet({
+            spreadsheetId: spreadsheet.id,
+            serverData,
+            mockRPC: async function (route, args) {
+                if (args.method === "create" && args.model === "documents.document") {
+                    assert.step("create");
+                    assert.deepEqual(
+                        JSON.parse(args.args[0].raw),
+                        createEmptyWorkbookData("Sheet1"),
+                        "It should be an empty spreadsheet"
+                    )
+                    assert.equal(
+                        args.args[0].name,
+                        "Untitled spreadsheet",
+                        "It should have the default name"
+                    );
+                }
+            },
+        });
+        const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
+        const newSpreadsheet = file.children.find((item) => item.id === "new_sheet");
+        newSpreadsheet.action(env);
+        assert.verifySteps(["create"]);
     });
 
     test("Check pivot measures with m2o field", async function (assert) {

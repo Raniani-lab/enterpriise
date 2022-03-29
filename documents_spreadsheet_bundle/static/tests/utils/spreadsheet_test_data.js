@@ -162,6 +162,17 @@ export function getBasicData() {
             fields: {},
             records: [],
         },
+        "spreadsheet.template": {
+            fields: {
+                name: { string: "Name", type: "char" },
+                data: { string: "Data", type: "binary" },
+                thumbnail: { string: "Thumbnail", type: "binary" },
+            },
+            records: [
+                { id: 1, name: "Template 1", data: btoa("{}") },
+                { id: 2, name: "Template 2", data: btoa("{}") },
+            ],
+        },
         partner: {
             fields: {
                 foo: {

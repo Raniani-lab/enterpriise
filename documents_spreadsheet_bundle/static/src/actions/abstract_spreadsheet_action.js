@@ -5,9 +5,11 @@ import { useSetupAction } from "@web/webclient/actions/action_hook";
 
 import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants"
 import { getDataFromTemplate } from "../o_spreadsheet/helpers";
-import { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
+import spreadsheet, { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
+
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
+const { createEmptyWorkbookData } = spreadsheet.helpers;
 const { onMounted, onWillStart, useState } = owl;
 
 export class AbstractSpreadsheetAction extends LegacyComponent {
@@ -62,7 +64,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         if (this.params.alwaysCreate) {
             const data = this.params.createFromTemplateId
                 ? await getDataFromTemplate(this.orm, this.params.createFromTemplateId)
-                : {};
+                : createEmptyWorkbookData(`${this.env._t("Sheet")}1`);
             resId = await this.orm.create("documents.document", {
                 name: this.params.createFromTemplateName || UNTITLED_SPREADSHEET_NAME,
                 mimetype: "application/o-spreadsheet",

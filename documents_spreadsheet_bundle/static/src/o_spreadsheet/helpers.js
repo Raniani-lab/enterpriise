@@ -1,8 +1,11 @@
 /** @odoo-module */
 
+import { _t } from "@web/core/l10n/translation";
 import { UNTITLED_SPREADSHEET_NAME } from "./constants";
 import  spreadsheet  from "./o_spreadsheet_extended";
 import  CachedRPC  from "./cached_rpc";
+
+const { createEmptyWorkbookData } = spreadsheet.helpers;
 
 const Model = spreadsheet.Model;
 
@@ -45,7 +48,7 @@ export async function createEmptySpreadsheet(rpc) {
         name: UNTITLED_SPREADSHEET_NAME,
         mimetype: "application/o-spreadsheet",
         handler: "spreadsheet",
-        raw: "{}",
+        raw: JSON.stringify(createEmptyWorkbookData(`${_t("Sheet")}1`)),
       },
     ],
   });

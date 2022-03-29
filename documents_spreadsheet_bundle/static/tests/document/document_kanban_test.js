@@ -101,3 +101,39 @@ test("thumbnail size in document side panel", async function (assert) {
     assert.equal(previews[2].dataset.src, "/documents/image/3/120x75?field=thumbnail&unique=");
     kanban.destroy();
 });
+
+test("Can create a blank spreadsheet from template dialog", async function (assert) {
+    const kanban = await createDocumentsView({
+        View: DocumentsKanbanView,
+        model: "documents.document",
+        data: this.data,
+        arch: `
+            <kanban><templates><t t-name="kanban-box">
+                <field name="name"/>
+            </t></templates></kanban>
+        `,
+        archs: {
+            "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
+        },
+        intercepts: {
+            do_action: function (ev) {
+                assert.step("redirect");
+                assert.equal(ev.data.action.tag, "action_open_spreadsheet");
+                assert.deepEqual(ev.data.action.params, {
+                    alwaysCreate: true,
+                    createFromTemplateId: null,
+                    createFromTemplateName: undefined,
+                });
+            },
+        },
+    });
+
+    await dom.click(".o_documents_kanban_spreadsheet");
+    const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
+
+    // select blank spreadsheet
+    await dom.triggerEvent(dialog.querySelectorAll(".o-template img")[0], "focus");
+    await dom.click(dialog.querySelector(".o-spreadsheet-create"));
+    assert.verifySteps(["redirect"]);
+    kanban.destroy();
+});

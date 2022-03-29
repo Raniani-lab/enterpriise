@@ -26,7 +26,7 @@ functionRegistry.add("LIST", {
     returns: ["NUMBER", "STRING"],
 });
 
-functionRegistry.add("LIST_HEADER", {
+functionRegistry.add("LIST.HEADER", {
     description: _t("Get the header of a list."),
     compute: function (listId, fieldName) {
         const id = toString(listId);

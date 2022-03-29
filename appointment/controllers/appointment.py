@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
@@ -11,12 +10,12 @@ from dateutil.relativedelta import relativedelta
 from werkzeug.exceptions import NotFound
 
 from odoo import http, fields, _
-from odoo.addons.http_routing.models.ir_qweb import keep_query
-from odoo.addons.http_routing.models.ir_http import slug
 from odoo.http import request, route
 from odoo.osv import expression
 from odoo.tools import plaintext2html, DEFAULT_SERVER_DATETIME_FORMAT as dtf
 from odoo.tools.misc import babel_locale_parse, get_lang
+from odoo.addons.base.models.ir_qweb import keep_query
+from odoo.addons.http_routing.models.ir_http import slug
 
 def _formated_weekdays(locale):
     """ Return the weekdays' name for the current locale

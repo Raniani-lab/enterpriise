@@ -557,12 +557,15 @@ QUnit.test('Connectors are correctly computed and rendered when collapse_first_l
         },
     };
 
-    ganttViewParams.arch = ganttViewParams.arch.replace('/>', ' collapse_first_level="1"/>');
-    const gantt = await createView({ ...ganttViewParams, groupBy: ['user_ids'] });
+    const ganttViewParamsWithCollapse = {
+        ...ganttViewParams,
+        ...{ arch: ganttViewParams.arch.replace('/>', ' collapse_first_level="1"/>') }
+    };
+    const gantt = await createView({ ...ganttViewParamsWithCollapse, groupBy: ['user_ids'] });
     registerCleanup(gantt.destroy);
     await testPromise;
 
-    assert.equal(gantt.el.querySelectorAll('.o_gantt_row_group.open').length, 4, '`collapse_first_level` is activated.')
+    assert.equal(gantt.el.querySelectorAll('.o_gantt_row_group.open').length, 4, '`collapse_first_level` is activated.');
 
     function getConnectorCounts() {
         return gantt.el.querySelectorAll('.o_connector').length;
@@ -575,8 +578,8 @@ QUnit.test('Connectors are correctly computed and rendered when collapse_first_l
     gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":[1,\\"User 1\\"]}]"]').click();
     await testPromise;
     connectorsCount = getConnectorCounts();
-    assert.ok(gantt.el.querySelector('.o_gantt_row_group:not(.open)[data-row-id^="[{\\"user_ids\\":[1,\\"User 1\\"]}]"]'), 'Group has been closed.')
-    assert.equal(connectorsCount, 13, 'Only connectors between open groups are drawn.')
+    assert.ok(gantt.el.querySelector('.o_gantt_row_group:not(.open)[data-row-id^="[{\\"user_ids\\":[1,\\"User 1\\"]}]"]'), 'Group has been closed.');
+    assert.equal(connectorsCount, 13, 'Only connectors between open groups are drawn.');
 
     testPromise = testUtils.makeTestPromise();
     gantt.el.querySelector('.o_gantt_row_group:not(.open)[data-row-id^="[{\\"user_ids\\":[1,\\"User 1\\"]}]"]').click();
@@ -588,25 +591,25 @@ QUnit.test('Connectors are correctly computed and rendered when collapse_first_l
     gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":[1,\\"User 1\\"]}]"]').click();
     await testPromise;
     connectorsCount = getConnectorCounts();
-    assert.equal(connectorsCount, 13, 'Only connectors between open groups are drawn.')
+    assert.equal(connectorsCount, 13, 'Only connectors between open groups are drawn.');
 
     testPromise = testUtils.makeTestPromise();
     gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":[2,\\"User 2\\"]}]"]').click();
     await testPromise;
     connectorsCount = getConnectorCounts();
-    assert.equal(connectorsCount, 6, 'Only connectors between open groups are drawn.')
+    assert.equal(connectorsCount, 6, 'Only connectors between open groups are drawn.');
 
     testPromise = testUtils.makeTestPromise();
     gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":false}]"]').click();
     await testPromise;
     connectorsCount = getConnectorCounts();
-    assert.equal(connectorsCount, 4, 'Only connectors between open groups are drawn.')
+    assert.equal(connectorsCount, 4, 'Only connectors between open groups are drawn.');
 
     testPromise = testUtils.makeTestPromise();
     gantt.el.querySelector('.o_gantt_row_group.open[data-row-id^="[{\\"user_ids\\":[3,\\"User 3\\"]}]"]').click();
     await testPromise;
     connectorsCount = getConnectorCounts();
-    assert.equal(connectorsCount, 0, 'Only connectors between open groups are drawn.')
+    assert.equal(connectorsCount, 0, 'Only connectors between open groups are drawn.');
 });
 
 QUnit.test('Connector hovered state is triggered and color is set accordingly.', async function (assert) {
@@ -1049,14 +1052,14 @@ QUnit.test('Hovering a connector should cause the connected pills to get highlig
 
     const connector_stroke = gantt.el.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="1"] ${CSS.SELECTOR.CONNECTOR_STROKE}`);
     let taskPills = gantt.el.querySelectorAll(`${CSS.SELECTOR.PILL}:not(.${CSS.CLASS.PILL_HIGHLIGHT})`);
-    assert.ok(taskPills.length === 2, 'Pills should not be highlighted by default.');
+    assert.equal(taskPills.length, 2, 'Pills should not be highlighted by default.');
 
     await testUtils.dom.triggerMouseEvent(connector_stroke, "mouseover");
     await testUtils.nextTick();
     await testUtils.returnAfterNextAnimationFrame();
 
     taskPills = gantt.el.querySelectorAll(`${CSS.SELECTOR.PILL}.${CSS.CLASS.PILL_HIGHLIGHT}`);
-    assert.ok(taskPills.length === 2, 'Pills should be highlighted when linked connector is hovered.');
+    assert.equal(taskPills.length, 2, 'Pills should be highlighted when linked connector is hovered.');
     // Check that connector creators (little pills antennas) are displayed (and only displayed) on the hovered pills.
     const querySelector = `${CSS.SELECTOR.CONNECTOR_CREATOR_WRAPPER}:not(${CSS.SELECTOR.INVISIBLE})`;
     assert.ok(gantt.el.querySelectorAll(querySelector).length === 0, 'Connector creators should not be displayed if the pill is not hovered.');

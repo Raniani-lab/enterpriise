@@ -347,7 +347,10 @@ export default class BarcodeModel extends EventBus {
             // Check if the package is reserved.
             const reservedPackage = groupedLines[key].every(line => line.reserved_uom_qty);
             groupedLines[key][0].reservedPackage = reservedPackage;
-            packageLines.push(groupedLines[key][0]);
+            const packageLine = Object.assign({}, groupedLines[key][0], {
+                lines: groupedLines[key],
+            });
+            packageLines.push(packageLine);
         }
         return this._sortLine(packageLines);
     }

@@ -1668,7 +1668,9 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         delivery_with_package_level.action_confirm()
         delivery_with_package_level.action_assign()
 
+        self.assertFalse(delivery_with_package_level.package_level_ids.is_done)
         self.start_tour(url, 'test_show_entire_package', login='admin', timeout=180)
+        self.assertTrue(delivery_with_package_level.package_level_ids.is_done)
 
     def test_gs1_reserved_delivery(self):
         """ Process a delivery by scanning multiple quantity multiple times.

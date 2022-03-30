@@ -525,6 +525,20 @@ export default class BarcodePickingModel extends BarcodeModel {
         )) {
             return; // No package, package's type or package's name => Nothing to do.
         }
+        // If move entire package, checks if the scanned package matches a package line.
+        if (this._moveEntirePackage()) {
+            for (const packageLine of this.packageLines) {
+                if (packageLine.package_id.name !== (packageName || recPackage.name)) {
+                    continue;
+                }
+                barcodeData.stopped = true;
+                for (const line of packageLine.lines) {
+                    await this._updateLineQty(line, { qty_done: line.reserved_uom_qty });
+                    this._markLineAsDirty(line);
+                }
+                return this.trigger('update');
+            }
+        }
         // Scanned a package: fetches package's quant and creates a line for
         // each of them, except if the package is already scanned.
         // TODO: can check if quants already in cache to avoid to make a RPC if

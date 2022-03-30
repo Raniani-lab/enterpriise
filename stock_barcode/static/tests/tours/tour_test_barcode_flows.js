@@ -4175,10 +4175,27 @@ tour.register('test_show_entire_package', {test: true}, [
         },
     },
     { trigger: 'button.o_close' },
+    // Scans package001 to be sure no moves will be created but the package line will be done.
+    { trigger: '.o_barcode_lines', run: 'scan package001' },
     {
-        trigger: 'button.o_exit',
-        extra_trigger: '.o_barcode_lines',
+        trigger: '.o_barcode_line:contains("1/ 1")',
+        run: function () {
+            helper.assertLinesCount(1);
+            helper.assertScanMessage('scan_product');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(true);
+            const $line = $('.o_barcode_line');
+            helper.assertLineIsHighlighted($line, false);
+            helper.assert(
+                $line.find('.o_line_button.o_package_content').length, 1,
+                "Line for package level => the button to inspect package content should be visible"
+            );
+            helper.assert($line.find('.o_barcode_line_details > div:contains(package)').text(), "package001package001");
+            helper.assert($line.find('div[name=quantity]').text(), '1/ 1');
+        },
     },
+    { trigger: 'button.o_exit' },
 
     // Opens picking with the move.
     { trigger: '.o_kanban_record:contains(Delivery with Stock Move)' },

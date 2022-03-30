@@ -41,7 +41,7 @@
                                     t-esc="format_float(balance_multiplicator * tax_detail_vals['base_amount_currency'])"/>
                             <cbc:TaxAmount
                                     t-att-currencyID="line.currency_id.name"
-                                    t-esc="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'])"/>
+                                    t-esc="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'] or 0.0)"/>
                             <cbc:BaseUnitMeasure
                                     t-if="tax.tax_group_id.l10n_pe_edi_code == 'ICBPER'"
                                     t-att-unitCode="line.product_uom_id.l10n_pe_edi_measure_unit_code"
@@ -223,7 +223,7 @@
                                     t-esc="format_float(balance_multiplicator * tax_detail_vals['base_amount_currency'])"/>
                             <cbc:TaxAmount
                                     t-att-currencyID="record.currency_id.name"
-                                    t-esc="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'])"/>
+                                    t-esc="format_float(balance_multiplicator * tax_detail_vals['tax_amount_currency'] or 0.0)"/>
                             <cac:TaxCategory>
                                 <cac:TaxScheme>
                                     <cbc:ID t-esc="tax_detail_vals['l10n_pe_edi_tax_code']"/>

@@ -115,9 +115,24 @@ const SignNameAndSignature = NameAndSignature.extend({
   },
 });
 
+// The goal of this override is to make the dialog re-enable the validate button
+// when it is closed by the user
+const SignInfoDialog = Dialog.extend({
+  destroy: function () {
+    if (!this.isDestroyed()) {
+      const parent = this.getParent();
+      if (parent.$validateButton) {
+        const signableDocument = parent;
+        signableDocument.$validateButton.text(signableDocument.validateButtonText).removeAttr("disabled", true);
+      }
+    }
+    this._super.apply(this, arguments);
+  },
+});
+
 // The goal of this dialog is to ask the user a signature request.
 // It uses @see SignNameAndSignature for the name and signature fields.
-const SignatureDialog = Dialog.extend({
+const SignatureDialog = SignInfoDialog.extend({
   template: "sign.signature_dialog",
 
   custom_events: {
@@ -460,7 +475,7 @@ const SignItemNavigator = Widget.extend({
   },
 });
 
-const PublicSignerDialog = Dialog.extend({
+const PublicSignerDialog = SignInfoDialog.extend({
   template: "sign.public_signer_dialog",
   init(parent, requestID, requestToken, RedirectURL, options) {
     options = options || {};
@@ -550,7 +565,7 @@ const PublicSignerDialog = Dialog.extend({
   },
 });
 
-const SMSSignerDialog = Dialog.extend({
+const SMSSignerDialog = SignInfoDialog.extend({
   template: "sign.public_sms_signer",
   events: {
     "click button.o_sign_resend_sms": function (e) {
@@ -563,6 +578,7 @@ const SMSSignerDialog = Dialog.extend({
         : sendButton.removeAttribute("disabled");
     },
   },
+
   sendSMS(phoneNumber, sendButton) {
     const route =
       "/sign/send-sms/" +
@@ -657,7 +673,7 @@ const SMSSignerDialog = Dialog.extend({
   },
 });
 
-const EncryptedDialog = Dialog.extend({
+const EncryptedDialog = SignInfoDialog.extend({
   template: "sign.public_password",
 
   _onValidatePassword: function () {
@@ -1403,7 +1419,6 @@ export const SignableDocument = Document.extend({
   signDocument: async function (e) {
     this.$validateButton.attr("disabled", true);
     this.signInfo = {name: "", mail: ""};
-    this.isSigningRPC = false;
     this.iframeWidget.$(".o_sign_sign_item").each((i, el) => {
       const value = $(el).val();
       if (value && value.indexOf("@") >= 0) {
@@ -1484,22 +1499,15 @@ export const SignableDocument = Document.extend({
       await this._sign();
       return;
     }
-    setTimeout(() => {
-      if (!this.isSigningRPC) {
-        this.$validateButton.text(this.validateButtonText).removeAttr("disabled", true);
-      }
-    }, 2000);
   },
 
   _sign: async function () {
-    this.isSigningRPC = true;
     const route = "/sign/sign/" + this.requestID + "/" + this.accessToken + "/" + this.signInfo.smsToken;
     const params = {
       signature: this.signInfo.signatureValues,
       new_sign_items: this.signInfo.newSignItems,
     };
     return session.rpc(route, params).then((response) => {
-      this.isSigningRPC = false;
       this.$validateButton.text(this.validateButtonText).removeAttr("disabled", true);
       if (response.success) {
         if (response.url) {

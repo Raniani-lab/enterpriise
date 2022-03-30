@@ -46,7 +46,7 @@ class AppointmentType(models.Model):
         super()._compute_website_url()
         for appointment_type in self:
             if appointment_type.id:
-                appointment_type.website_url = '/calendar/%s/appointment' % (slug(appointment_type),)
+                appointment_type.website_url = '/appointment/%s' % appointment_type.id
             else:
                 appointment_type.website_url = False
 

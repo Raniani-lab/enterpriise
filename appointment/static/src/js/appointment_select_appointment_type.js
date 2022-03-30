@@ -33,9 +33,9 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
     _onAppointmentTypeChange: function (ev) {
         var self = this;
         const appointmentTypeID = $(ev.target).val();
-        this.$(".o_website_appointment_form").attr('action', `/calendar/${appointmentTypeID}/appointment`);
+        this.$(".o_website_appointment_form").attr('action', `/appointment/${appointmentTypeID}`);
         this._rpc({
-            route: `/calendar/${appointmentTypeID}/get_message_intro`,
+            route: `/appointment/${appointmentTypeID}/get_message_intro`,
         }).then(function (message_intro) {
             self.$('.o_calendar_intro').empty().append(message_intro);
         });

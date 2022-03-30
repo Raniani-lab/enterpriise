@@ -80,7 +80,7 @@ class AppointmentCalendarView(http.Controller):
 
     def _get_staff_user_appointment_info(self, appointment_type):
         params = {'filter_staff_user_ids': str(request.env.user.ids)}
-        calendar_url = url_join(appointment_type.get_base_url(), '/calendar/')
+        calendar_url = url_join(appointment_type.get_base_url(), '/appointment/')
         appointment_url = url_join(calendar_url, slug(appointment_type))
         appointment_staff_user_url = "%s?%s" % (appointment_url, url_encode(params))
         return {

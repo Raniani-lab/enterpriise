@@ -102,14 +102,14 @@ QUnit.module('appointment_hr.appointment_link', {
                 records: [{
                     id: 1,
                     name: 'Very Interesting Meeting',
-                    website_url: '/calendar/schedule-a-demo-1/appointment',
+                    website_url: '/appointment/1',
                     website_published: true,
                     staff_user_ids: [214],
                     category: 'website',
                 }, {
                     id: 2,
                     name: 'Test Appointment',
-                    website_url: '/calendar/test-appointment-2/appointment',
+                    website_url: '/appointment/2',
                     website_published: true,
                     staff_user_ids: [session.uid],
                     category: 'website',
@@ -222,7 +222,7 @@ QUnit.test('create/search work hours appointment type', async function (assert) 
                 writeText: (value) => {
                     assert.strictEqual(
                         value,
-                        `http://amazing.odoo.com/calendar/3?filter_staff_user_ids=%5B${session.uid}%5D`
+                        `http://amazing.odoo.com/appointment/3?filter_staff_user_ids=%5B${session.uid}%5D`
                     );
                 }
             }

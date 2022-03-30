@@ -8,6 +8,7 @@ from babel.dates import format_datetime, format_date
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from werkzeug.exceptions import NotFound
+from werkzeug.urls import url_encode
 
 from odoo import http, fields, _
 from odoo.http import request, route
@@ -15,7 +16,7 @@ from odoo.osv import expression
 from odoo.tools import plaintext2html, DEFAULT_SERVER_DATETIME_FORMAT as dtf
 from odoo.tools.misc import babel_locale_parse, get_lang
 from odoo.addons.base.models.ir_qweb import keep_query
-from odoo.addons.http_routing.models.ir_http import slug
+from odoo.addons.http_routing.models.ir_http import unslug
 
 def _formated_weekdays(locale):
     """ Return the weekdays' name for the current locale
@@ -39,6 +40,15 @@ class Appointment(http.Controller):
     # ------------------------------------------------------------
 
     @route(['/calendar', '/calendar/page/<int:page>'],
+            type='http', auth="public", website=True, sitemap=True)
+    def appointment_type_index_old(self, page=1, **kwargs):
+        """ For backward compatibility """
+        return request.redirect(
+            '/appointment%s?%s' % ('/page/%s' % page if page != 1 else '', url_encode(kwargs)),
+            code=301,
+        )
+
+    @route(['/appointment', '/appointment/page/<int:page>'],
            type='http', auth="public", website=True, sitemap=True)
     def appointment_type_index(self, page=1, **kwargs):
         """
@@ -83,13 +93,21 @@ class Appointment(http.Controller):
     # APPOINTMENT TYPE PAGE VIEW
     # ------------------------------------------------------------
 
-    @route(['/calendar/<model("appointment.type"):appointment_type>'],
+    @route(['/calendar/<string:appointment_type>'],
+            type='http', auth="public", website=True, sitemap=True)
+    def appointment_type_page_old(self, appointment_type, **kwargs):
+        """ For backward compatibility:
+        appointment_type is transformed from a recordset to a string because we removed the rights for public user.
+        """
+        return request.redirect('/appointment/%s?%s' % (unslug(appointment_type), keep_query('*')), code=301)
+
+    @route(['/appointment/<int:appointment_type_id>'],
            type='http', auth="public", website=True, sitemap=True)
-    def appointment_type(self, appointment_type, filter_staff_user_ids=None, state=False, **kwargs):
+    def appointment_type_page(self, appointment_type_id, filter_staff_user_ids=None, state=False, **kwargs):
         """
         Render the appointment information alongside the calendar for the slot selection
 
-        :param appointment_type: the appointment type we are currently on
+        :param appointment_type_id: the appointment_type_id of the appointment type that we want to access
         :param filter_staff_user_ids: the users that will be displayed for the appointment registration, if not given
             all users set for the appointment type are used
         :param state: the type of message that will be displayed in case of an error/info. Possible values:
@@ -97,7 +115,7 @@ class Appointment(http.Controller):
             - failed-staff-user: Error message displayed when the slot has been taken while doing the registration
             - failed-partner: Info message displayed when the partner has already an event in the time slot selected
         """
-        appointment_type = appointment_type.sudo()
+        appointment_type = request.env['appointment.type'].sudo().browse(int(appointment_type_id))
 
         filtered_staff_user_ids = self._get_filtered_staff_user_ids(appointment_type, filter_staff_user_ids, **kwargs)
 
@@ -131,11 +149,6 @@ class Appointment(http.Controller):
             'month_first_available': month_first_available,
         })
 
-    @http.route(['/calendar/<model("appointment.type"):appointment_type>/appointment'],
-                type='http', auth='public', website=True, sitemap=True)
-    def appointment(self, appointment_type, filter_staff_user_ids=None, timezone=None, failed=False, **kwargs):
-        return request.redirect('/calendar/%s?%s' % (slug(appointment_type), keep_query('*')))
-
     # Tools / Data preparation
     # ------------------------------------------------------------
 
@@ -151,17 +164,19 @@ class Appointment(http.Controller):
     # APPOINTMENT TYPE BOOKING
     # ------------------------------------------------------------
 
-    @http.route(['/calendar/<model("appointment.type"):appointment_type>/info'],
+    @http.route(['/appointment/<int:appointment_type_id>/info'],
                 type='http', auth="public", website=True, sitemap=True)
-    def appointment_form(self, appointment_type, staff_user_id, date_time, duration, **kwargs):
+    def appointment_type_id_form(self, appointment_type_id, staff_user_id, date_time, duration, **kwargs):
         """
         Render the form to get information about the user for the appointment
 
-        :param appointment_type: the appointment type related
+        :param appointment_type_id: the appointment type id related
         :param staff_user_id: the user selected for the appointment
         :param date_time: the slot datetime selected for the appointment
+        :param duration: the duration of the slot
         :param filter_appointment_type_ids: see ``Appointment.appointments()`` route
         """
+        appointment_type = request.env['appointment.type'].sudo().browse(int(appointment_type_id))
         partner = self._get_customer_partner()
         partner_data = partner.read(fields=['name', 'mobile', 'email'])[0] if partner else {}
         day_name = format_datetime(datetime.strptime(date_time, dtf), 'EEE', locale=get_lang(request.env).code)
@@ -178,19 +193,20 @@ class Appointment(http.Controller):
             'timezone': request.session['timezone'] or appointment_type.timezone,  # bw compatibility
         })
 
-    @http.route(['/calendar/<model("appointment.type"):appointment_type>/submit'],
+    @http.route(['/appointment/<int:appointment_type_id>/submit'],
                 type='http', auth="public", website=True, methods=["POST"])
-    def appointment_form_submit(self, appointment_type, datetime_str, duration_str, staff_user_id, name, phone, email, **kwargs):
+    def appointment_form_submit(self, appointment_type_id, datetime_str, duration_str, staff_user_id, name, phone, email, **kwargs):
         """
         Create the event for the appointment and redirect on the validation page with a summary of the appointment.
 
-        :param appointment_type: the appointment type related
+        :param appointment_type_id: the appointment type id related
         :param datetime_str: the string representing the datetime
         :param staff_user_id: the user selected for the appointment
         :param name: the name of the user sets in the form
         :param phone: the phone of the user sets in the form
         :param email: the email of the user sets in the form
         """
+        appointment_type = request.env['appointment.type'].sudo().browse(int(appointment_type_id))
         timezone = request.session['timezone'] or appointment_type.appointment_tz
         tz_session = pytz.timezone(timezone)
         date_start = tz_session.localize(fields.Datetime.from_string(datetime_str)).astimezone(pytz.utc).replace(tzinfo=None)
@@ -202,12 +218,12 @@ class Appointment(http.Controller):
         if staff_user not in appointment_type.sudo().staff_user_ids:
             raise NotFound()
         if staff_user and not staff_user.partner_id.calendar_verify_availability(date_start, date_end):
-            return request.redirect('/calendar/%s/appointment?state=failed-staff-user' % appointment_type.id)
+            return request.redirect('/appointment/%s?state=failed-staff-user' % appointment_type.id)
 
         Partner = self._get_customer_partner() or request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
         if Partner:
             if not Partner.calendar_verify_availability(date_start, date_end):
-                return request.redirect('/calendar/%s/appointment?state=failed-partner' % appointment_type.id)
+                return request.redirect('/appointment/%s?state=failed-partner' % appointment_type.id)
             if not Partner.mobile:
                 Partner.write({'mobile': phone})
             if not Partner.email:
@@ -353,7 +369,7 @@ class Appointment(http.Controller):
     # APPOINTMENT TYPE JSON DATA
     # ------------------------------------------------------------
 
-    @http.route(['/calendar/<int:appointment_type_id>/get_message_intro'],
+    @http.route(['/appointment/<int:appointment_type_id>/get_message_intro'],
                 type="json", auth="public", methods=['POST'], website=True)
     def get_appointment_message_intro(self, appointment_type_id, **kwargs):
         appointment_type = request.env['appointment.type'].browse(int(appointment_type_id)).exists()
@@ -362,7 +378,7 @@ class Appointment(http.Controller):
 
         return appointment_type.message_intro or ''
 
-    @http.route(['/calendar/<int:appointment_type_id>/update_available_slots'],
+    @http.route(['/appointment/<int:appointment_type_id>/update_available_slots'],
                 type="json", auth="public", website=True)
     def appointment_update_available_slots(self, appointment_type_id, staff_user_id=None, timezone=None, **kwargs):
         """

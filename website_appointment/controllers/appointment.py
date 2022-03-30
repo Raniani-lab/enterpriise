@@ -54,7 +54,7 @@ class WebsiteAppointment(Appointment):
         APPOINTMENTS_PER_PAGE = 12
         appointment_count = Appointment.search_count(domain)
         pager = website.pager(
-            url='/calendar',
+            url='/appointment',
             url_args=kwargs,
             total=appointment_count,
             page=page,
@@ -64,7 +64,7 @@ class WebsiteAppointment(Appointment):
 
         appointment_types = Appointment.search(domain, limit=APPOINTMENTS_PER_PAGE, offset=pager['offset'])
         keep = QueryURL(
-            '/calendar',
+            '/appointment',
             search=kwargs.get('search'),
             filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
             filter_staff_user_ids=kwargs.get('filter_staff_user_ids'),

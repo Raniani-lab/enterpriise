@@ -50,7 +50,7 @@ Wysiwyg.include({
                 description: 'Schedule an appointment.',
                 fontawesome: 'fa-calendar',
                 callback: () => {
-                    const link = `<a href="${window.location.origin}/calendar">Our Appointment Types</a>`;
+                    const link = `<a href="${window.location.origin}/appointment">Our Appointment Types</a>`;
                     this.odooEditor.execCommand('insertHTML', link);
                 },
             },

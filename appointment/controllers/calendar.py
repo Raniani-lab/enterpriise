@@ -10,7 +10,6 @@ from werkzeug.urls import url_encode
 from odoo import fields, _
 from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.calendar.controllers.main import CalendarController
-from odoo.addons.http_routing.models.ir_http import slug
 from odoo.http import request, route
 from odoo.tools import html2plaintext, is_html_empty
 from odoo.tools.misc import get_lang
@@ -117,7 +116,7 @@ class AppointmentCalendarController(CalendarController):
         if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + timedelta(hours=event.appointment_type_id.min_cancellation_hours):
             return request.redirect('/calendar/view/' + access_token + '?state=no-cancel&partner_id=%s' % partner_id)
         event.sudo().action_cancel_meeting([int(partner_id)])
-        return request.redirect('/calendar/%s/appointment?%s' % (slug(appointment_type), keep_query('*', state="cancel")))
+        return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state="cancel")))
 
     @route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)
     def appointment_get_ics_file(self, access_token, **kwargs):

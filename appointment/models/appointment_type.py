@@ -200,7 +200,7 @@ class AppointmentType(models.Model):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_url',
-            'url': url_join(self.get_base_url(), '/calendar/%s' % slug(self)),
+            'url': url_join(self.get_base_url(), '/appointment/%s' % self.id),
             'target': 'self',
         }
 

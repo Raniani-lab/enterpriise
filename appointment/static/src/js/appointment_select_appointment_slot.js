@@ -119,7 +119,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             const staffUserID = this.$("#slots_form select[name='staff_user_id']").val();
             const timezone = this.$("select[name='timezone']").val();
             this._rpc({
-                route: `/calendar/${appointmentTypeID}/update_available_slots`,
+                route: `/appointment/${appointmentTypeID}/update_available_slots`,
                 params: {
                     staff_user_id: staffUserID,
                     timezone: timezone,

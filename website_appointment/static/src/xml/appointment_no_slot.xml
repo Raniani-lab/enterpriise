@@ -3,7 +3,7 @@
 
     <t t-extend="Appointment.appointment_info_no_slot">
         <t t-jquery="p" t-operation="append">
-            <a href="/calendar">Go back to Appointment</a> or <a href="/contactus"> contact us</a>.
+            <a href="/appointment">Go back to Appointment</a> or <a href="/contactus"> contact us</a>.
         </t>
     </t>
 

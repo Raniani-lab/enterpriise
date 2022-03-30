@@ -27,7 +27,7 @@ MockServer.include({
             }
             return {
                 id: workHoursAppointmentID,
-                url: `http://amazing.odoo.com/calendar/3?filter_staff_user_ids=%5B${session.uid}%5D`,
+                url: `http://amazing.odoo.com/appointment/3?filter_staff_user_ids=%5B${session.uid}%5D`,
             };
         } else if (route === "/appointment/appointment_type/get_staff_user_appointment_types") {
             /* This route will come before the existing same route from appointment, called below,

@@ -6,7 +6,7 @@
             <t t-foreach="slots" t-as="slot">
                 <div class="col-md-6 col-12 mt-2 px-1">
                     <a class="btn btn-block btn-outline-primary text-black col-12"
-                        t-attf-href="/calendar/#{appointment_type_id}/info?#{slot['url_parameters']}&amp;#{commonUrlParams}"
+                        t-attf-href="/appointment/#{appointment_type_id}/info?#{slot['url_parameters']}&amp;#{commonUrlParams}"
                         t-out="slot['hours']"/>
                 </div>
             </t>

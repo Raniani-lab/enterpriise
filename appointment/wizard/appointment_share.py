@@ -65,7 +65,7 @@ class AppointmentShare(models.TransientModel):
             - filter_appointment_type_ids: which display a selection of appointment types to user from which
             he can choose
         """
-        calendar_url = url_join(self.get_base_url(), '/calendar')
+        calendar_url = url_join(self.get_base_url(), '/appointment')
         for appointment_link in self:
             # If there are multiple appointment types selected, we share the link that will filter the appointments to the user
             url_param = {

@@ -23,7 +23,7 @@
                     </div>
                     <div t-else="" class="pr-0">
                         <form class="form o_website_appointment_form"
-                            t-attf-action="/calendar/#{ slug(appointment_types[0]) }/appointment?#{keep_query('*')}"
+                            t-attf-action="/appointment/#{appointment_types[0].id}?#{keep_query('*')}"
                             method="POST">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <t t-call="appointment.appointment_type_select"/>

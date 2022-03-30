@@ -34,7 +34,7 @@ MockServer.include({
             });
             return {
                 id: customAppointmentTypeID,
-                url: `http://amazing.odoo.com/calendar/3?filter_staff_user_ids=%5B${session.uid}%5D`,
+                url: `http://amazing.odoo.com/appointment/3?filter_staff_user_ids=%5B${session.uid}%5D`,
             };
         } else if (route === "/appointment/appointment_type/get_staff_user_appointment_types") {
             if (session.uid) {

@@ -524,7 +524,7 @@ class AppointmentType(models.Model):
             start_first_slot = unique_slots[0].start_datetime
             first_day_utc = start_first_slot if reference_date > start_first_slot else reference_date
             first_day = requested_tz.fromutc(first_day_utc + relativedelta(hours=self.min_schedule_hours))
-            appointment_duration_days = (unique_slots[-1].end_datetime - reference_date).days
+            appointment_duration_days = (unique_slots[-1].end_datetime.date() - reference_date.date()).days
         else:
             first_day = requested_tz.fromutc(reference_date + relativedelta(hours=self.min_schedule_hours))
 

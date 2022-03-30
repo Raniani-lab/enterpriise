@@ -353,3 +353,61 @@ class AppointmentTest(AppointmentCommon):
              'slots_weekdays_nowork': range(2, 7)  # working hours only on Monday/Tuesday (0, 1)
             }
         )
+
+    @users('apt_manager')
+    def test_unique_slots_availabilities(self):
+        """ Check that the availability of each unique slot is correct.
+        First we test that the 2 unique slots of the custom appointment type
+        are available. Then we check that there is now only 1 availability left
+        after the creation of a meeting which encompasses a slot. """
+        reference_monday = self.reference_monday.replace(microsecond=0)
+        unique_slots = [{
+            'allday': False,
+            'end_datetime': reference_monday + timedelta(hours=1),
+            'start_datetime': reference_monday,
+        }, {
+            'allday': False,
+            'end_datetime': reference_monday + timedelta(hours=3),
+            'start_datetime': reference_monday + timedelta(hours=2),
+        }]
+        apt_type = self.env['appointment.type'].create({
+            'category': 'custom',
+            'name': 'Custom with unique slots',
+            'slot_ids': [(0, 0, {
+                'allday': slot['allday'],
+                'end_datetime': slot['end_datetime'],
+                'slot_type': 'unique',
+                'start_datetime': slot['start_datetime'],
+                }) for slot in unique_slots
+            ],
+        })
+
+        with freeze_time(self.reference_now):
+            slots = apt_type._get_appointment_slots('UTC')
+        # get all monday slots where apt_manager is available
+        available_unique_slots = self._filter_appointment_slots(
+            slots,
+            filter_months=[(2, 2022)],
+            filter_weekdays=[0],
+            filter_users=self.apt_manager)
+        self.assertEqual(len(available_unique_slots), 2)
+
+        # Create a meeting encompassing the first unique slot
+        self._create_meetings(self.apt_manager, [(
+            unique_slots[0]['start_datetime'],
+            unique_slots[0]['end_datetime'],
+            False,
+        )])
+
+        with freeze_time(self.reference_now):
+            slots = apt_type._get_appointment_slots('UTC')
+        available_unique_slots = self._filter_appointment_slots(
+            slots,
+            filter_months=[(2, 2022)],
+            filter_weekdays=[0],
+            filter_users=self.apt_manager)
+        self.assertEqual(len(available_unique_slots), 1)
+        self.assertEqual(
+            available_unique_slots[0]['datetime'],
+            unique_slots[1]['start_datetime'].strftime('%Y-%m-%d %H:%M:%S'),
+        )

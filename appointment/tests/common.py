@@ -119,6 +119,38 @@ class AppointmentCommon(MailCommon, common.HttpCase):
             'appointment_type_ids': self.all_apts.ids,
         })
 
+    def _filter_appointment_slots(self, slots, filter_months=False, filter_weekdays=False, filter_users=False):
+        """ Get all the slots info computed.
+        Can target a part of slots by referencing the expected months or days we want.
+        :param list slots: slots content computed from _get_appointment_slots() method.
+        :param list filter_months: list of tuples representing months we want to check
+            [(2, 2022), ...] where (2, 2022) represents February 2022
+        :param list filter_weekdays: list of integers of the weekdays we want to check 0 = monday and 6 = sunday
+            [0, 1, 3] to filter only monday, tuesday and thursday slots
+        :param recordset filter_users: recordset of users for which we want to get slots when they are available
+        :return list: [{
+            'datetime': '2022-02-14 08:00:00',
+            'duration': '1.0',
+            'staff_user_id': 21,
+            'hours': '08:00 - 09:00',
+        }, ...] """
+        slots_info = []
+        for month in slots:
+            # We use the last day of the first week to be sure that we use the correct month
+            last_day_first_week = month['weeks'][0][-1]['day']
+            month_tuple = (last_day_first_week.month, last_day_first_week.year)
+            if filter_months and month_tuple not in filter_months:
+                continue
+            for week in month['weeks']:
+                for day in week:
+                    if not day['slots'] or (filter_weekdays and day['day'].weekday() not in filter_weekdays):
+                        continue
+                    for slot in day['slots']:
+                        if filter_users and slot.get('staff_user_id') not in filter_users.ids:
+                            continue
+                        slots_info.append(slot)
+        return slots_info
+
     def _flush_tracking(self):
         """ Force the creation of tracking values notably, and ensure tests are
         reproducible. """

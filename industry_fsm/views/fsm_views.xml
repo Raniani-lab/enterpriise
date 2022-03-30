@@ -371,6 +371,7 @@
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('display_project_id', '!=', False)]</field>
         <field name="context">{
+            'fsm_mode': True,
             'search_default_my_tasks': True,
             'search_default_planned_today': True,
             'fsm_task_kanban_whole_date':False,

@@ -933,19 +933,24 @@ class SaleSubscription(models.Model):
             return True
         return False
 
+    def _get_subscription_domain_for_invoicing(self, current_date, tags):
+        """
+        Get the domain for subscriptions to invoice
+        """
+        return [
+            ('tag_ids', 'not in', tags.ids),
+            ('recurring_next_date', '<=', current_date),
+            ('template_id.payment_mode', '!=', 'manual'),
+            '|',
+            ('stage_category', '=', 'progress'),
+            ('to_renew', '=', True),
+        ]
+
     def _recurring_create_invoice(self, automatic=False, batch_size=20):
         auto_commit = self.env.context.get('auto_commit', True)
         cr = self.env.cr
         invoices = self.env['account.move']
         current_date = datetime.date.today()
-
-        domain_search = [
-                ('recurring_next_date', '<=', current_date),
-                ('template_id.payment_mode', '!=', 'manual'),
-                '|',
-                ('stage_category', '=', 'progress'),
-                ('to_renew', '=', True),
-            ]
 
         # To avoid triggering the cron infinitely, we will add a temporary tag that will be removed by the last
         # call of the cron. The domain search will include the subscriptions without the tag.
@@ -960,7 +965,8 @@ class SaleSubscription(models.Model):
                     'model': 'account.analytic.tag',
                     'noupdate': True
                 })
-            domain_search = expression.AND([[('tag_ids', 'not in', invalid_payment_tag.ids)], domain_search])
+
+            domain_search = self._get_subscription_domain_for_invoicing(current_date, invalid_payment_tag)
 
         if len(self) > 0:
             subscriptions = self

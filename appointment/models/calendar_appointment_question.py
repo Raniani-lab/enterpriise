@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 class CalendarAppointmentQuestion(models.Model):
     _name = "calendar.appointment.question"
-    _description = "Online Appointment : Questions"
+    _description = "Appointment Questions"
     _order = "sequence"
 
     sequence = fields.Integer('Sequence')
@@ -19,12 +20,28 @@ class CalendarAppointmentQuestion(models.Model):
         ('select', 'Dropdown (one answer)'),
         ('radio', 'Radio (one answer)'),
         ('checkbox', 'Checkboxes (multiple answers)')], 'Question Type', default='char')
-    answer_ids = fields.Many2many('calendar.appointment.answer', 'calendar_appointment_question_answer_rel', 'question_id', 'answer_id', string='Available Answers')
+    answer_ids = fields.One2many('calendar.appointment.answer', 'question_id', string='Available Answers', copy=True)
+    answer_input_ids = fields.One2many('calendar.appointment.answer.input', 'question_id', string='Submitted Answers')
 
+    @api.constrains('question_type', 'answer_ids')
+    def _check_question_type(self):
+        incomplete_questions = self.filtered(lambda question: question.question_type in ['select', 'radio', 'checkbox'] and not question.answer_ids)
+        if incomplete_questions:
+            raise ValidationError(
+                _('The following question(s) do not have any selectable answers : %s',
+                  ', '.join(incomplete_questions.mapped('name'))
+                  )
+            )
 
-class CalendarAppointmentAnswer(models.Model):
-    _name = "calendar.appointment.answer"
-    _description = "Online Appointment : Answers"
-
-    question_id = fields.Many2many('calendar.appointment.question', 'calendar_appointment_question_answer_rel', 'answer_id', 'question_id', string='Questions')
-    name = fields.Char('Answer', translate=True, required=True)
+    def action_view_question_answer_inputs(self):
+        """ Allow analyzing the answers to a question on an appointment in a convenient way:
+        - A graph view showing counts of each suggested answers for multiple-choice questions:
+        select / radio / checkbox. (Along with secondary pivot and tree views)
+        - A tree view showing textual answers values for char / text_box questions"""
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("appointment.calendar_appointment_answer_input_action_from_question")
+        if self.question_type in ['select', 'radio', 'checkbox']:
+            action['views'] = [(False, 'pivot'), (False, 'graph'), (False, 'tree'), (False, 'form')]
+        elif self.question_type in ['char', 'text_box']:
+            action['views'] = [(False, 'tree'), (False, 'form')]
+        return action

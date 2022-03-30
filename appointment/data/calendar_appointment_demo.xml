@@ -85,5 +85,6 @@
     <record id="calendar_appointment_1_question_1" model="calendar.appointment.question">
         <field name="appointment_type_id" ref="calendar_appointment_1"/>
         <field name="name">Symptoms</field>
+        <field name="sequence">10</field>
     </record>
 </odoo>

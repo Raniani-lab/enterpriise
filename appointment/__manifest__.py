@@ -3,7 +3,7 @@
 
 {
     'name': 'Appointments',
-    'version': '1.1',
+    'version': '1.2',
     'category': 'Marketing/Online Appointment',
     'sequence': 215,
     'summary': 'Allow people to book meetings in your agenda',
@@ -17,6 +17,7 @@
         'data/mail_data.xml',
         'data/mail_template_data.xml',
         'views/calendar_event_views.xml',
+        'views/calendar_appointment_answer_input_views.xml',
         'views/calendar_appointment_question_views.xml',
         'views/calendar_appointment_type_views.xml',
         'views/calendar_appointment_slot_views.xml',

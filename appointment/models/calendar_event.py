@@ -13,6 +13,7 @@ class CalendarEvent(models.Model):
 
     access_token = fields.Char('Access Token', default=_default_access_token, readonly=True)
     appointment_type_id = fields.Many2one('calendar.appointment.type', 'Online Appointment', readonly=True, tracking=True)
+    appointment_answer_input_ids = fields.One2many('calendar.appointment.answer.input', 'calendar_event_id', string="Appointment Answers")
 
     def _get_public_fields(self):
         return super()._get_public_fields() | {'appointment_type_id'}

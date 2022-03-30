@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from . import res_partner
+from . import calendar_appointment_answer
 from . import calendar_appointment_question
 from . import calendar_appointment_slot
 from . import calendar_appointment_type

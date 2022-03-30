@@ -60,7 +60,6 @@ class StockPicking(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("stock_barcode.stock_barcode_picking_client_action")
         action = dict(action, target='fullscreen')
         action['context'] = {'active_id': self.id}
-        action['res_id'] = self.id
         return action
 
     def action_print_barcode_pdf(self):

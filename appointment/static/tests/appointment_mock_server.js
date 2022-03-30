@@ -33,8 +33,8 @@ MockServer.include({
                 slotIDs.push(slotID);
             });
             return {
-                id: customAppointmentTypeID,
-                url: `http://amazing.odoo.com/appointment/3?filter_staff_user_ids=%5B${session.uid}%5D`,
+                appointment_type_id: customAppointmentTypeID,
+                invite_url: `http://amazing.odoo.com/appointment/3?filter_staff_user_ids=%5B${session.uid}%5D`,
             };
         } else if (route === "/appointment/appointment_type/get_staff_user_appointment_types") {
             if (session.uid) {
@@ -50,6 +50,12 @@ MockServer.include({
                 });
             }
             return {};
+        } else if (route === "/appointment/appointment_type/get_book_url") {
+            const appointment_type_id = args.appointment_type_id;
+            return {
+                appointment_type_id: appointment_type_id,
+                invite_url: `http://amazing.odoo.com/appointment/${appointment_type_id}?filter_staff_user_ids=%5B${session.uid}%5D`,
+            }
         }
         return await _super(...arguments);
     },

@@ -15,7 +15,6 @@ from odoo.exceptions import ValidationError
 from odoo.tools import is_html_empty
 from odoo.tools.misc import babel_locale_parse, get_lang
 from odoo.addons.base.models.res_partner import _tz_get
-from odoo.addons.http_routing.models.ir_http import slug
 
 
 class AppointmentType(models.Model):
@@ -37,6 +36,8 @@ class AppointmentType(models.Model):
     sequence = fields.Integer('Sequence', default=10)
     name = fields.Char('Appointment Type', required=True, translate=True)
     active = fields.Boolean(default=True)
+    is_published = fields.Boolean('Is Published',
+        help="Technical field for backward compatibility with previous default published appointment type")
     category = fields.Selection([
         ('website', 'Website'),
         ('custom', 'Custom'),
@@ -83,6 +84,7 @@ class AppointmentType(models.Model):
     appointment_count = fields.Integer('# Appointments', compute='_compute_appointment_count')
     appointment_count_report = fields.Integer(
         '# Appointments in the last 30 days', compute='_compute_appointment_count_report')
+    appointment_invite_ids = fields.Many2many('appointment.invite', string='Invitation Links')
 
     @api.depends('meeting_ids')
     def _compute_appointment_count(self):
@@ -180,19 +182,15 @@ class AppointmentType(models.Model):
         }
         return action
 
-    def action_share(self):
-        self.ensure_one()
-        staff_user_ids = [self.env.user.id] if self.env.user.id in self.staff_user_ids.ids else False
+    def action_share_invite(self):
         return {
             'name': _('Share Link'),
             'type': 'ir.actions.act_window',
-            'res_model': 'appointment.share',
+            'res_model': 'appointment.invite',
             'view_mode': 'form',
             'target': 'new',
             'context': {
                 'default_appointment_type_ids': self.ids,
-                'default_staff_users_choice': 'current_user' if staff_user_ids else 'all_assigned_users',
-                'default_staff_user_ids': staff_user_ids,
             }
         }
 

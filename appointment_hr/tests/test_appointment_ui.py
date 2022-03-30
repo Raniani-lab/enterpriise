@@ -19,8 +19,8 @@ class AppointmentHrUITest(AppointmentUICommon):
             headers={"Content-Type": "application/json"},
         ).json()
         result = request.get('result', {})
-        self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
-        appointment_type = self.env['appointment.type'].browse(result['id'])
+        self.assertTrue(result.get('appointment_type_id'), 'The request returns the id of the custom appointment type')
+        appointment_type = self.env['appointment.type'].browse(result['appointment_type_id'])
         self.assertEqual(appointment_type.category, 'work_hours')
         self.assertEqual(len(appointment_type.slot_ids), 14, "14 slots have been created: (2 / days for 7 days)")
         self.assertTrue(all(slot.slot_type == 'recurring' for slot in appointment_type.slot_ids), "All slots are 'recurring'")

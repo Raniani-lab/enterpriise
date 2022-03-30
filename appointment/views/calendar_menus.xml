@@ -34,4 +34,11 @@
         parent="calendar.calendar_menu_config"
         action="appointment_type_action_custom_and_work_hours"
         groups="base.group_no_one"/>
+
+    <menuitem
+        id="menu_appointment_invite"
+        parent="calendar.calendar_menu_config"
+        action="appointment_invite_action"
+        groups="base.group_no_one"/>
+
 </odoo>

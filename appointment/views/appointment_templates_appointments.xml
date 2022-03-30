@@ -53,6 +53,9 @@
                     </t>
                 </select>
             </div>
+            <input type="hidden" name="invite_token" t-att-value="invite_token"/>
+            <input type="hidden" name="filter_appointment_type_ids" t-att-value="filter_appointment_type_ids"/>
+            <input type="hidden" name="filter_staff_user_ids" t-att-value="filter_staff_user_ids"/>
         </div>
     </template>
 
@@ -102,7 +105,9 @@
                         <form id="slots_form" class="form o_website_appointment_form">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <input type="hidden" name="appointment_type_id" t-att-value="appointment_type.id"/>
+                            <input type="hidden" name="invite_token" t-att-value="invite_token"/>
                             <input type="hidden" name="filter_appointment_type_ids" t-att-value="filter_appointment_type_ids"/>
+                            <input type="hidden" name="filter_staff_user_ids" t-att-value="filter_staff_user_ids"/>
                             <t t-call="appointment.staff_user_select"/>
                         </form>
                     </div>

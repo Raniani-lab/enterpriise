@@ -91,7 +91,7 @@
                             </div>
                             <div class="o_kanban_ungrouped_action_buttons col-12 col-lg-3 py-0 pr-2 pl-md-2 pr-lg-5 my-md-auto my-2 d-none d-md-flex flex-wrap justify-content-lg-end"> <!--justify-content-lg-end-->
                                 <field name="active" invisible="1"/>
-                                <button name="action_share" string="Share" type="object" class="btn btn-secondary border mr-2"
+                                <button name="action_share_invite" string="Share" type="object" class="btn btn-secondary border mr-2"
                                         attrs="{'invisible': [('active', '=', False)]}">
                                     Share
                                 </button>
@@ -129,7 +129,7 @@
                                     <div class="o_appointment_kanban_box o_kanban_primary_bottom bottom_block d-flex position-relative justify-content-center px-0">
                                         <div class="col-6"/>
                                         <div class="col-6">
-                                            <button class="btn btn-link btn-sm py-0 fa fa-lg fa-link" name="action_share" type="object" title="Share"
+                                            <button class="btn btn-link btn-sm py-0 fa fa-lg fa-link" name="action_share_invite" type="object" title="Share"
                                                     attrs="{'invisible': [('active', '=', False)]}"/>
                                         </div>
                                     </div>
@@ -146,7 +146,10 @@
         <field name="name">appointment.type.tree</field>
         <field name="model">appointment.type</field>
         <field name="arch" type="xml">
-            <tree string="Appointment Type" multi_edit="1" sample="1">
+            <tree string="Appointment Type" multi_edit="1" sample="1" js_class="appointment_type_tree_view">
+                <header>
+                    <button name="action_share_invite" type="object" string="Share"/>
+                </header>
                 <field name="sequence" widget="handle"/>
                 <field name="name" readonly="1"/>
                 <field name="location_id"/>
@@ -179,7 +182,8 @@
             <form string="Appointment Type">
                 <field name="active" invisible="1"/>
                 <header>
-                    <button name="action_share" string="Share" type="object" class="btn btn-primary" attrs="{'invisible': [('active', '=', False)]}"/>
+                    <button name="action_share_invite" string="Share" type="object" class="btn btn-primary"
+                        attrs="{'invisible': [('active', '=', False)]}"/>/>
                 </header>
                 <sheet>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger"

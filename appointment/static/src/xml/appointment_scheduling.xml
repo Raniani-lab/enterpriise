@@ -42,7 +42,6 @@
                     <div t-if="appointments.length" role="separator" class="dropdown-divider"/>
                     <t t-foreach="appointments" t-as="appointment">
                         <button t-if="appointment.category == 'website'" t-att-id="appointment.id" t-att-title="appointment.name"
-                            t-attf-data-url="/appointment/#{appointment.id}#{staff_user_id ? '?filter_staff_user_ids=[' + staff_user_id + ']' : ''}"
                             class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold pl-3 o_appointment_button_link o_appointment_appointment_link_clipboard text-truncate">
                             <span class="align-bottom" t-out="appointment.name"/>
                         </button>

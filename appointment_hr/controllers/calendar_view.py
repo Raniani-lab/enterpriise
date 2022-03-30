@@ -42,7 +42,7 @@ class AppointmentHRCalendarView(AppointmentCalendarView):
                 }) for hour in range(2) for day in range(7)],
             })
 
-        return self._get_staff_user_appointment_info(appointment_type)
+        return self._get_staff_user_appointment_invite_info(appointment_type)
 
     @route()
     def appointment_get_user_appointment_types(self):

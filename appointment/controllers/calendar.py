@@ -111,12 +111,17 @@ class AppointmentCalendarController(CalendarController):
         """
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
         appointment_type = event.appointment_type_id
+        appointment_invite = event.appointment_invite_id
         if not event:
             return request.not_found()
         if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + timedelta(hours=event.appointment_type_id.min_cancellation_hours):
             return request.redirect('/calendar/view/' + access_token + '?state=no-cancel&partner_id=%s' % partner_id)
         event.sudo().action_cancel_meeting([int(partner_id)])
-        return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state="cancel")))
+        if appointment_invite:
+            redirect_url = "%s&state=cancel" % appointment_invite.redirect_url
+        else:
+            redirect_url = '/appointment/%s?%s' % (appointment_type.id, keep_query('*', state="cancel"))
+        return request.redirect(redirect_url)
 
     @route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)
     def appointment_get_ics_file(self, access_token, **kwargs):

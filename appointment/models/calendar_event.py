@@ -15,6 +15,7 @@ class CalendarEvent(models.Model):
     alarm_ids = fields.Many2many(compute='_compute_alarm_ids', store=True, readonly=False)
     appointment_type_id = fields.Many2one('appointment.type', 'Online Appointment', readonly=True, tracking=True)
     appointment_answer_input_ids = fields.One2many('appointment.answer.input', 'calendar_event_id', string="Appointment Answers")
+    appointment_invite_id = fields.Many2one('appointment.invite', 'Appointment Invitation', readonly=True, ondelete='set null')
 
     def _get_public_fields(self):
         return super()._get_public_fields() | {'appointment_type_id'}

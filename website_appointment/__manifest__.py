@@ -24,6 +24,7 @@ Allow clients to Schedule Appointments through your Website
         'views/appointment_templates_validation.xml',
         'views/website_templates.xml',
         'security/calendar_security.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [
         'data/appointment_demo.xml',
@@ -31,7 +32,6 @@ Allow clients to Schedule Appointments through your Website
     'installable': True,
     'application': False,
     'auto_install': True,
-    'post_init_hook': '_post_init_website_appointment',
     'license': 'OEEL-1',
     'assets': {
         'website.assets_editor': [

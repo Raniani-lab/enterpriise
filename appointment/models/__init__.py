@@ -3,6 +3,7 @@
 
 from . import res_partner
 from . import appointment_answer
+from . import appointment_invite
 from . import appointment_question
 from . import appointment_slot
 from . import appointment_type

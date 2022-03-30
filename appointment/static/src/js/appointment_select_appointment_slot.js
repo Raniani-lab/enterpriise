@@ -102,10 +102,10 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const commonUrlParams = window.location.search.substring(1);
 
         this.$slotsList.empty().append(qweb.render('appointment.slots_list', {
+            commonUrlParams: commonUrlParams,
             slotDate: moment(slotDate).format("dddd D MMMM"),
             slots: slots,
-            appointment_type_id: appointmentTypeID,
-            commonUrlParams: commonUrlParams,
+            url: `/appointment/${appointmentTypeID}/info`,
         }));
     },
 
@@ -116,11 +116,17 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         if (this.$("#slots_availabilities")[0]) {
             const self = this;
             const appointmentTypeID = this.$("input[name='appointment_type_id']").val();
+            const filterAppointmentTypeIds = this.$("input[name='filter_appointment_type_ids']").val();
+            const filterUserIds = this.$("input[name='filter_staff_user_ids']").val();
+            const inviteToken = this.$("input[name='invite_token']").val();
             const staffUserID = this.$("#slots_form select[name='staff_user_id']").val();
             const timezone = this.$("select[name='timezone']").val();
             this._rpc({
                 route: `/appointment/${appointmentTypeID}/update_available_slots`,
                 params: {
+                    invite_token: inviteToken,
+                    filter_appointment_type_ids: filterAppointmentTypeIds,
+                    filter_staff_user_ids: filterUserIds,
                     staff_user_id: staffUserID,
                     timezone: timezone,
                 },

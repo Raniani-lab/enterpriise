@@ -51,7 +51,8 @@ class AppointmentPortal(portal.CustomerPortal):
                 ], type='http', auth='user', website=True)
     def portal_my_appointments(self, page=1, sortby=None, filterby=None, search=None, search_in='all', groupby='none', **kwargs):
         values = self._prepare_portal_layout_values()
-        Appointment = request.env['calendar.event']
+        # Sudo to access the appointment name and responsible for the groupby
+        Event = request.env['calendar.event'].sudo()
 
         domain = self._get_portal_default_domain()
 
@@ -83,7 +84,7 @@ class AppointmentPortal(portal.CustomerPortal):
         sort_order = searchbar_sortings[sortby]['order']
         groupby_mapping = self._appointment_get_groupby_mapping()
         groupby_field = groupby_mapping.get(groupby, None)
-        if groupby_field is not None and groupby_field not in Appointment._fields:
+        if groupby_field is not None and groupby_field not in Event._fields:
             raise ValueError(_("The field '%s' does not exist in the targeted model", groupby_field))
         order = '%s, %s' % (groupby_field, sort_order) if groupby_field else sort_order
 
@@ -94,7 +95,7 @@ class AppointmentPortal(portal.CustomerPortal):
         if search and search_in:
             domain = AND([domain, self._get_appointment_search_domain(search_in, search)])
 
-        appointment_count = Appointment.search_count(domain)
+        appointment_count = Event.search_count(domain)
         pager = portal_pager(
             url="/my/appointments",
             url_args={'sortby': sortby, 'search_in': search_in, 'search': search, 'groupby': groupby},
@@ -102,13 +103,13 @@ class AppointmentPortal(portal.CustomerPortal):
             page=page,
             step=self._items_per_page
         )
-        appointments = Appointment.search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
+        appointments = Event.search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
 
         grouped_appointments = False
         # If not False, this will contain a list of tuples (record of groupby, recordset of events):
         # [(res.users(2), calendar.event(1, 2)), (...), ...]
         if groupby_field:
-            grouped_appointments = [(g, Appointment.concat(*events)) for g, events in groupbyelem(appointments, itemgetter(groupby_field))]
+            grouped_appointments = [(g, Event.concat(*events)) for g, events in groupbyelem(appointments, itemgetter(groupby_field))]
 
         values.update({
             'appointments': appointments,

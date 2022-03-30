@@ -4,7 +4,6 @@
 from werkzeug.urls import url_encode, url_join
 
 from odoo import http, fields, _
-from odoo.addons.http_routing.models.ir_http import slug
 from odoo.exceptions import AccessError, ValidationError
 from odoo.http import request, route
 
@@ -61,12 +60,23 @@ class AppointmentCalendarView(http.Controller):
             }) for slot in slots],
         })
 
-        return self._get_staff_user_appointment_info(appointment_type)
+        return self._get_staff_user_appointment_invite_info(appointment_type)
+
+    @route('/appointment/appointment_type/get_book_url', type='json', auth='user')
+    def appointment_get_book_url(self, appointment_type_id):
+        """
+        Get the information of the appointment invitation used to share the link
+        of the appointment type selected.
+        """
+        appointment_type = request.env['appointment.type'].browse(int(appointment_type_id)).exists()
+        if not appointment_type:
+            raise ValidationError(_("An appointment type is needed to get the link."))
+        return self._get_staff_user_appointment_invite_info(appointment_type)
 
     @route('/appointment/appointment_type/get_staff_user_appointment_types', type='json', auth='user')
     def appointment_get_user_appointment_types(self):
         appointment_types_info = []
-        domain = self._get_staff_user_appointment_type_domain()
+        domain = [('staff_user_ids', 'in', [request.env.user.id]), ('category', '!=', 'custom')]
         appointment_types_info = request.env['appointment.type'].search_read(domain, ['name', 'category'])
         return {
             'appointment_types_info': appointment_types_info,
@@ -75,15 +85,17 @@ class AppointmentCalendarView(http.Controller):
     # Utility Methods
     # ----------------------------------------------------------
 
-    def _get_staff_user_appointment_type_domain(self):
-        return [('staff_user_ids', 'in', [request.env.user.id]), ('category', '!=', 'custom')]
-
-    def _get_staff_user_appointment_info(self, appointment_type):
-        params = {'filter_staff_user_ids': str(request.env.user.ids)}
-        calendar_url = url_join(appointment_type.get_base_url(), '/appointment/')
-        appointment_url = url_join(calendar_url, slug(appointment_type))
-        appointment_staff_user_url = "%s?%s" % (appointment_url, url_encode(params))
+    def _get_staff_user_appointment_invite_info(self, appointment_type):
+        appointment_invitation = request.env['appointment.invite'].search([
+            ('appointment_type_ids', '=', appointment_type.id),
+            ('staff_user_ids', '=', request.env.user.id),
+        ], limit=1)
+        if not appointment_invitation:
+            appointment_invitation = request.env['appointment.invite'].create({
+                'appointment_type_ids': appointment_type.ids,
+                'staff_user_ids': request.env.user.ids,
+            })
         return {
-            'id': appointment_type.id,
-            'url': appointment_staff_user_url
+            'appointment_type_id': appointment_type.id,
+            'invite_url': appointment_invitation.book_url,
         }

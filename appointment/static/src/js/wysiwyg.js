@@ -14,13 +14,13 @@ Wysiwyg.include({
                 fontawesome: 'fa-calendar',
                 callback: async () => {
                     const dialog = new dialogs.FormViewDialog(this, {
-                        res_model: 'appointment.share',
+                        res_model: 'appointment.invite',
                         res_id: 0,
                         res_ids: [],
                         res_IDs: [],
                         resIDs: [],
                         context: {
-                            form_view_ref: "appointment.appointment_insert_share_view_form",
+                            form_view_ref: "appointment.appointment_invite_view_form_insert_link",
                             default_appointment_type_ids: [],
                             default_staff_user_ids: [],
                         },
@@ -31,14 +31,15 @@ Wysiwyg.include({
                     await dialog.opened();
                     const $dialog = $(dialog.el.closest('.modal-dialog'));
                     dialog.on('dialog_form_loaded', this, () => {
-                        $dialog.find('.o_share_link_save').on('click', () => {
-                            const url = $dialog.find('.o_appointement_share_link').text();
+                        $dialog.find('.o_book_url_save').on('click', async () => {
+                            const url = $dialog.find('.o_appointment_book_url').text();
+                            await dialog._save();
                             dialog.destroy();
                             const link = `<a href="${url}">Schedule an Appointment</a>`;
                             this.focus();
                             this.odooEditor.execCommand('insertHTML', link);
                         });
-                        $dialog.find('.o_share_link_discard').on('click', () => {
+                        $dialog.find('.o_book_url_discard').on('click', () => {
                             dialog.destroy();
                         });
                     });

@@ -459,7 +459,7 @@ QUnit.test('filter works in slots-creation mode', async function (assert) {
 });
 
 QUnit.test('click & copy appointment type url', async function (assert) {
-    assert.expect(1);
+    assert.expect(3);
 
     patchWithCleanup(browser, {
         navigator: {
@@ -492,7 +492,9 @@ QUnit.test('click & copy appointment type url', async function (assert) {
             initialDate: initialDate,
         },
         mockRPC: function (route, args) {
-            if (route === '/microsoft_calendar/sync_data') {
+            if (route === '/appointment/appointment_type/get_book_url') {
+                assert.step(route)
+            } else if (route === '/microsoft_calendar/sync_data') {
                 return Promise.resolve();
             } else if (route === '/web/dataset/call_kw/res.partner/get_attendee_detail') {
                 return Promise.resolve([]);
@@ -506,6 +508,8 @@ QUnit.test('click & copy appointment type url', async function (assert) {
 
     await testUtils.dom.click(calendar.$('#dropdownAppointmentLink'));
     await testUtils.dom.click(calendar.$('.o_appointment_appointment_link_clipboard:first'));
+
+    assert.verifySteps(['/appointment/appointment_type/get_book_url']);
 
     calendar.destroy();
 });

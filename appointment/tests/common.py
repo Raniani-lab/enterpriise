@@ -9,9 +9,10 @@ from odoo.addons.appointment.models.res_partner import Partner
 from odoo.addons.calendar.models.calendar_event import Meeting
 from odoo.addons.resource.models.resource import ResourceCalendar
 from odoo.addons.mail.tests.common import mail_new_test_user, MailCommon
+from odoo.tests import common
 
 
-class AppointmentCommon(MailCommon):
+class AppointmentCommon(MailCommon, common.HttpCase):
 
     @classmethod
     def setUpClass(cls):
@@ -105,6 +106,18 @@ class AppointmentCommon(MailCommon):
             }
             for start, stop, allday in time_info
         ])
+
+    def _create_invite_test_data(self):
+        apt_type_test = self.env['appointment.type'].create({
+            'name': 'Appointment Test',
+        })
+        self.all_apts = self.apt_type_bxls_2days + apt_type_test
+        self.invite_apt_type_bxls_2days = self.env['appointment.invite'].create({
+            'appointment_type_ids': self.apt_type_bxls_2days.ids,
+        })
+        self.invite_all_apts = self.env['appointment.invite'].create({
+            'appointment_type_ids': self.all_apts.ids,
+        })
 
     def _flush_tracking(self):
         """ Force the creation of tracking values notably, and ensure tests are

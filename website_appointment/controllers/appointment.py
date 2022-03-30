@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-
 from odoo import http
 from odoo.http import request
 from odoo.osv import expression
@@ -42,17 +41,26 @@ class WebsiteAppointment(Appointment):
         """
             Compute specific data for the cards layout like the the search bar and the pager.
         """
-        domain = self._appointments_base_domain(kwargs.get('filter_appointment_type_ids'))
+        appointment_type_ids = kwargs.get('filter_appointment_type_ids')
+        domain = self._appointments_base_domain(
+            appointment_type_ids,
+            kwargs.get('search'),
+            kwargs.get('invite_token'),
+        )
 
-        Appointment = request.env['appointment.type']
         website = request.website
 
-        # Add domain related to the search bar
-        if kwargs.get('search'):
-            domain = expression.AND([domain, [('name', 'ilike', kwargs.get('search'))]])
-
         APPOINTMENTS_PER_PAGE = 12
-        appointment_count = Appointment.search_count(domain)
+
+        Appointment = request.env['appointment.type']
+        appointment_types = self._fetch_and_check_private_appointment_types(
+            appointment_type_ids,
+            kwargs.get('filter_staff_user_ids'),
+            kwargs.get('invite_token'),
+            domain=domain
+        )
+        appointment_count = len(appointment_types)
+
         pager = website.pager(
             url='/appointment',
             url_args=kwargs,
@@ -62,19 +70,16 @@ class WebsiteAppointment(Appointment):
             scope=5,
         )
 
-        appointment_types = Appointment.search(domain, limit=APPOINTMENTS_PER_PAGE, offset=pager['offset'])
-        keep = QueryURL(
-            '/appointment',
-            search=kwargs.get('search'),
-            filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
-            filter_staff_user_ids=kwargs.get('filter_staff_user_ids'),
-        )
+        # Use appointment_types to keep the sudo if needed
+        appointment_types = Appointment.sudo().search(domain, limit=APPOINTMENTS_PER_PAGE, offset=pager['offset'])
 
         return {
             'appointment_types': appointment_types,
             'current_search': kwargs.get('search'),
-            'keep': keep,
             'pager': pager,
+            'filter_appointment_type_ids': appointment_type_ids,
+            'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
+            'invite_token': kwargs.get('invite_token'),
         }
 
     def _get_customer_partner(self):

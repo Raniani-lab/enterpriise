@@ -50,9 +50,6 @@
         <field name="model">appointment.type</field>
         <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//header" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_published', '=', False)]}</attribute>
-            </xpath>
             <xpath expr="//button[@name='action_customer_preview']" position="replace">
                 <field name="website_url" invisible="1"/>
                 <field name="is_published" widget="website_redirect_button"/>

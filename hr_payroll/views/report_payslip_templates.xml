@@ -3,19 +3,19 @@
 <template id="report_payslip">
     <t t-call="web.external_layout">
         <div class="page">
-            <h2 t-field="o.name"/>
+            <h2 id="payslip_name" t-field="o.name"/>
             <t t-set="is_invalid" t-value="o._is_invalid()"/>
             <t t-if="is_invalid">
-                <strong><t t-esc="is_invalid"/></strong>
+                <strong id="invalid_warning"><t t-esc="is_invalid"/></strong>
             </t>
-            <table name="employee-infos" class="table table-sm table-bordered">
-                <tr>
+            <table name="employee-infos" id="employee_info_table_1" class="table table-sm table-bordered">
+                <tr id="employee_info_line_1">
                     <td class="w-25"><strong>Employee</strong></td>
                     <td class="w-25"><strong>Marital Status</strong></td>
                     <td class="w-25"><strong>Designation</strong></td>
                     <td class="w-25"><strong>Pay Period</strong></td>
                 </tr>
-                <tr>
+                <tr id="employee_info_line_2">
                     <td><span t-field="o.employee_id"/></td>
                     <td><span t-field="o.employee_id.marital"/></td>
                     <td><span t-field="o.employee_id.job_title"/></td>
@@ -35,31 +35,31 @@
                         </t>
                     </td>
                 </tr>
-                <tr>
+                <tr id="employee_info_line_3">
                     <td><span t-field="o.employee_id.address_home_id.street"/></td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr id="employee_info_line_4">
                     <td><span t-field="o.employee_id.address_home_id.city"/> <span t-field="o.employee_id.address_home_id.zip"/></td>
                     <td><strong>Person in charge</strong></td>
                     <td><strong>Identification</strong></td>
                     <td><strong>Computed on </strong></td>
                 </tr>
-                <tr>
+                <tr id="employee_info_line_5">
                     <td><span t-field="o.employee_id.work_email"/></td>
                     <td name="personne-in-charge"><t t-esc="o.employee_id.children"/></td>
                     <td><span t-field="o.employee_id.identification_id"/></td>
                     <td><span t-field="o.compute_date"/></td>
                 </tr>
-                <tr>
+                <tr id="employee_info_line_6">
                     <td class="w-25"><strong>Contract Start Date</strong></td>
-                    <td class="w-25"><strong>Contract Type </strong></td>
+                    <td class="w-25"><strong>Contract Type</strong></td>
                     <td class="w-25"><strong>Working Schedule</strong></td>
                     <td class="w-25" name="company-car-title"></td>
                 </tr>
-                <tr>
+                <tr id="employee_info_line_7">
                     <td><span t-field="o.employee_id.first_contract_date"/></td>
                     <td><span t-field="o.employee_id.contract_id.contract_type_id"/></td>
                     <td><span t-field="o.employee_id.contract_id.hours_per_week"/></td>
@@ -116,7 +116,7 @@
                                 <t t-set="line_style" t-value="'color:#00A09D;'"/>
                                 <t t-set="line_class" t-value="'o_subtotal o_border_bottom'"/>
                             </t>
-                            <tr t-att-class="line_class" t-att-style="line_style">
+                            <tr t-att-class="line_class" t-att-style="line_style" id="line_display">
                                 <td><span t-field="line.name"/></td>
                                 <td></td>
                                 <td><span t-if="line.quantity > 1" t-esc="line.quantity"/></td>

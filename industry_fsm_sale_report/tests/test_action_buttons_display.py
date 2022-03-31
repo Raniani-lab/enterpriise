@@ -8,8 +8,10 @@ from PIL import Image
 from datetime import datetime
 
 from odoo.addons.industry_fsm_sale.tests.common import TestFsmFlowSaleCommon
+from odoo.tests import tagged
 
 
+@tagged('post_install', '-at_install')
 class TestTimerButtons(TestFsmFlowSaleCommon):
     """ Test visibility of the following buttons:
         - START/STOP/PAUSE/RESUME

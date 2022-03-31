@@ -2,9 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.tests.common import Form
+from odoo.tests.common import Form, tagged
 
 
+@tagged('post_install', '-at_install')
 class TestRepair(AccountTestInvoicingCommon):
     def test_lot_id(self):
         """ This test purpose is to ensure that, if present, the context key default_lot_id is not

@@ -1,14 +1,44 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
 from datetime import datetime
-from odoo.addons.industry_fsm_sale.tests.common import TestFsmFlowSaleCommon
+from odoo.addons.industry_fsm_sale.tests.common import TestFsmFlowCommon
 from odoo.exceptions import UserError
 
 
 # This test class has to be tested at install since the flow is modified in industry_fsm_stock
 # where the SO gets confirmed as soon as a product is added in an FSM task which causes the
 # tests of this class to fail
-class TestFsmFlowSale(TestFsmFlowSaleCommon):
+class TestFsmFlowSale(TestFsmFlowCommon):
+
+    # If the test has to be run at install, it cannot inherit indirectly from accounttestinvoicingcommon.
+    # So we have to setup the test data again here.
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.account_revenue = cls.env['account.account'].create([{'code': '1014040', 'name': 'A', 'user_type_id': cls.env.ref('account.data_account_type_revenue').id}])
+        cls.account_expense = cls.env['account.account'].create([{'code': '101600', 'name': 'C', 'user_type_id': cls.env.ref('account.data_account_type_expenses').id}])
+        cls.tax_sale_a = cls.env['account.tax'].create({
+            'name': "tax_sale_a",
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'amount': 10.0,
+        })
+        cls.tax_purchase_a = cls.env['account.tax'].create({
+            'name': "tax_purchase_a",
+            'amount_type': 'percent',
+            'type_tax_use': 'purchase',
+            'amount': 10.0,
+        })
+        cls.product_a = cls.env['product.product'].create({
+            'name': 'product_a',
+            'uom_id': cls.env.ref('uom.product_uom_unit').id,
+            'lst_price': 1000.0,
+            'standard_price': 800.0,
+            'property_account_income_id': cls.account_revenue.id,
+            'property_account_expense_id': cls.account_expense.id,
+            'taxes_id': [(6, 0, cls.tax_sale_a.ids)],
+            'supplier_taxes_id': [(6, 0, cls.tax_purchase_a.ids)],
+        })
 
     def test_fsm_flow(self):
         # material

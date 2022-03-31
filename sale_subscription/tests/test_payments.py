@@ -10,8 +10,10 @@ from odoo.exceptions import AccessError
 
 from odoo.addons.payment.tests.common import PaymentCommon
 from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSubscriptionCommon
+from odoo.tests import tagged
 
 
+@tagged('post_install', '-at_install')
 class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
 
     # Mocking for 'test_auto_payment_with_token'

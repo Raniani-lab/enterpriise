@@ -2,14 +2,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
 from odoo import Command
+from odoo.tests.common import TransactionCase
 from odoo.addons.sale_timesheet.tests.common import TestCommonSaleTimesheet
 
 
-class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
+class TestFsmFlowCommon(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestFsmFlowSaleCommon, cls).setUpClass()
+        super(TestFsmFlowCommon, cls).setUpClass()
 
         cls.employee_user2 = cls.env['hr.employee'].create({
             'name': 'Employee User 2',
@@ -37,28 +38,6 @@ class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
 
         cls.partner_1 = cls.env['res.partner'].create({'name': 'A Test Partner 1'})
 
-        cls.fsm_project_employee_rate = cls.fsm_project.copy({
-            'partner_id': cls.partner_1.id,
-            'timesheet_product_id': cls.product_order_timesheet2.id,
-            'analytic_account_id': cls.analytic_account_sale.id,
-            'sale_line_employee_ids': [
-                Command.create({
-                    'employee_id': cls.employee_user.id,
-                    'timesheet_product_id': cls.product_order_timesheet1.id,
-                }),
-                Command.create({
-                    'employee_id': cls.employee_user2.id,
-                    'timesheet_product_id': cls.product_delivery_timesheet1.id,
-                }),
-                Command.create({
-                    'employee_id': cls.employee_user3.id,
-                    'timesheet_product_id': cls.product_delivery_timesheet2.id,
-                })
-            ]
-        })
-        # Compute the _compute_price_id, because this one is not trigger because of the _compute_sale_line_id of this same model in this module.
-        cls.fsm_project_employee_rate.sale_line_employee_ids._compute_price_unit()
-
         cls.task = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Fsm task',
             'user_ids': cls.project_user,
@@ -79,3 +58,32 @@ class TestFsmFlowSaleCommon(TestCommonSaleTimesheet):
             'invoice_policy': 'delivery',
             'taxes_id': False,
         })
+
+
+class TestFsmFlowSaleCommon(TestFsmFlowCommon, TestCommonSaleTimesheet):
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestFsmFlowSaleCommon, cls).setUpClass()
+        cls.fsm_project_employee_rate = cls.fsm_project.copy({
+            'partner_id': cls.partner_1.id,
+            'tasks': False,
+            'timesheet_product_id': cls.product_order_timesheet2.id,
+            'analytic_account_id': cls.analytic_account_sale.id,
+            'sale_line_employee_ids': [
+                Command.create({
+                    'employee_id': cls.employee_user.id,
+                    'timesheet_product_id': cls.product_order_timesheet1.id,
+                }),
+                Command.create({
+                    'employee_id': cls.employee_user2.id,
+                    'timesheet_product_id': cls.product_delivery_timesheet1.id,
+                }),
+                Command.create({
+                    'employee_id': cls.employee_user3.id,
+                    'timesheet_product_id': cls.product_delivery_timesheet2.id,
+                })
+            ]
+        })
+        # Compute the _compute_price_id, because this one is not trigger because of the _compute_sale_line_id of this same model in this module.
+        cls.fsm_project_employee_rate.sale_line_employee_ids._compute_price_unit()

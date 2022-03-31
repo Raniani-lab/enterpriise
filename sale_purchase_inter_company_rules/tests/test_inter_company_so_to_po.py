@@ -3,8 +3,10 @@
 
 from .common import TestInterCompanyRulesCommonSOPO
 from odoo.tests import Form
+from odoo.tests import tagged
 
 
+@tagged('post_install', '-at_install')
 class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommonSOPO):
 
     def _generate_draft_sale_order(self, company, partner, user):

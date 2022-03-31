@@ -661,11 +661,12 @@ class Payslip(models.Model):
     @api.model
     def _get_dashboard_stat_employer_cost_codes(self):
         res = super()._get_dashboard_stat_employer_cost_codes()
-        res.update({
-            'PPTOTAL': _('Withholding Taxes'),
-            'ONSSEMPLOYER': _('ONSS: Employee Part'),
-            'IP.DED': _('Intellectual Property Income Deduction'),
-        })
+        if "BE" in self.env.companies.country_id.mapped('code'):
+            res.update({
+                'PPTOTAL': _('Withholding Taxes'),
+                'ONSSEMPLOYER': _('ONSS: Employee Part'),
+                'IP.DED': _('Intellectual Property Income Deduction'),
+            })
         return res
 
 def compute_termination_withholding_rate(payslip, categories, worked_days, inputs):

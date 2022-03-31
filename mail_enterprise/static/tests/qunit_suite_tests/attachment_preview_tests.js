@@ -177,6 +177,104 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             "Display preview attachment");
     });
 
+    QUnit.test('After switching record with the form pager, when using the attachment preview navigation, the attachment should be switched',
+        async function (assert) {
+            assert.expect(4);
+
+            const pyEnv = await startServer();
+
+            const resPartnerId1 = pyEnv['res.partner'].create({
+                display_name: 'first partner',
+                message_attachment_count: 2
+            });
+
+            const irAttachmentId1 = pyEnv['ir.attachment'].create({
+                mimetype: 'image/jpeg',
+                res_id: resPartnerId1,
+                res_model: 'res.partner',
+            });
+            pyEnv['mail.message'].create({
+                attachment_ids: [irAttachmentId1],
+                model: 'res.partner',
+                res_id: resPartnerId1,
+            });
+
+            const irAttachmentId2 = pyEnv['ir.attachment'].create({
+                mimetype: 'application/pdf',
+                res_id: resPartnerId1,
+                res_model: 'res.partner',
+            });
+            pyEnv['mail.message'].create({
+                attachment_ids: [irAttachmentId2],
+                model: 'res.partner',
+                res_id: resPartnerId1,
+            });
+
+            const resPartnerId2 = pyEnv['res.partner'].create({
+                display_name: 'second partner',
+                message_attachment_count: 0
+            });
+
+            const { click, widget: form } = await start({
+                hasView: true,
+                View: FormView,
+                model: 'res.partner',
+                data: this.data,
+                debug: 1,
+                arch: `
+                    <form string="Partners">
+                        <sheet>
+                            <field name="name"/>
+                        </sheet>
+                        <div class="o_attachment_preview" options="{'order':'desc'}"></div>
+                        <div class="oe_chatter">
+                            <field name="message_ids"/>
+                        </div>
+                    </form>`,
+                // FIXME could be removed once task-2248306 is done
+                archs: {
+                    'mail.message,false,list': '<tree/>',
+                },
+                res_id: resPartnerId1,
+                viewOptions: {
+                    ids: [resPartnerId1, resPartnerId2],
+                    index: 0,
+                },
+                config: {
+                    device: {
+                        size_class: config.device.SIZES.XXL,
+                    },
+                },
+                async mockRPC(route, args) {
+                    if (route.includes('/web/static/lib/pdfjs/web/viewer.html')) {
+                        return document.createElement('canvas').toDataURL();
+                    }
+                    if (args.method === 'register_as_main_attachment') {
+                        return true;
+                    }
+                    return this._super(...arguments);
+                },
+            });
+
+            assert.strictEqual($('.o_pager_counter').text(), '1 / 2',
+                'The form view pager should display 1 / 2');
+
+            await click('.o_pager_next');
+            await click('.o_pager_previous');
+            assert.containsN(form, '.arrow', 2,
+                'The attachment preview should contain 2 arrows to navigated between attachments');
+
+            await testUtils.dom.click(form.$('.o_attachment_preview_container .o_move_next'), {allowInvisible: true});
+            assert.containsOnce(form, '.o_attachment_preview_img img',
+                'The second attachment (of type img) should be displayed');
+
+            await testUtils.dom.click(form.$('.o_attachment_preview_container .o_move_previous'), {allowInvisible: true});
+            assert.containsOnce(form, '.o_attachment_preview_container iframe',
+                'The first attachment (of type pdf) should be displayed');
+
+            form.destroy();
+        });
+
     QUnit.test('Attachment on side on new record', async function (assert) {
         assert.expect(3);
 

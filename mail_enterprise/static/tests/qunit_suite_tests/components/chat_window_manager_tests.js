@@ -2,8 +2,8 @@
 
 import {
     afterNextRender,
-    beforeEach,
     start,
+    startServer,
 } from '@mail/../tests/helpers/test_utils';
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
@@ -12,11 +12,7 @@ import { methods } from 'web_mobile.core';
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('components', {}, function () {
-QUnit.module('chat_window_manager_tests.js', {
-    async beforeEach() {
-        await beforeEach(this);
-    },
-});
+QUnit.module('chat_window_manager_tests.js');
 
 QUnit.test("'backbutton' event should close chat window", async function (assert) {
     assert.expect(1);
@@ -27,12 +23,12 @@ QUnit.test("'backbutton' event should close chat window", async function (assert
         overrideBackButton({ enabled }) {},
     });
 
-    this.data['mail.channel'].records.push({
-        id: 20,
+    const pyEnv = await startServer();
+    pyEnv['mail.channel'].create({
         is_minimized: true,
         state: 'open',
     });
-    await start({ data: this.data, hasChatWindow: true });
+    await start({ hasChatWindow: true });
     await afterNextRender(() => {
         // simulate 'backbutton' event triggered by the mobile app
         const backButtonEvent = new Event('backbutton');
@@ -56,11 +52,9 @@ QUnit.test('[technical] chat window should properly override the back button', a
         },
     });
 
-    this.data['mail.channel'].records.push({
-        id: 20,
-    });
+    const pyEnv = await startServer();
+    pyEnv['mail.channel'].create();
     const { createMessagingMenuComponent } = await start({
-        data: this.data,
         env: {
             device: {
                 isMobile: true,

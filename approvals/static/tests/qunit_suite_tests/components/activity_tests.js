@@ -1,38 +1,31 @@
 /** @odoo-module **/
 
-import { beforeEach, start } from '@mail/../tests/helpers/test_utils';
+import { start, startServer } from '@mail/../tests/helpers/test_utils';
 
 QUnit.module('approvals', {}, function () {
 QUnit.module('components', {}, function () {
 QUnit.module('activity', {}, function () {
-QUnit.module('activity_tests.js', {
-    async beforeEach() {
-        await beforeEach(this);
-    },
-});
+QUnit.module('activity_tests.js');
 
 QUnit.test('activity with approval to be made by logged user', async function (assert) {
     assert.expect(14);
 
-    this.data['approval.request'].records.push({
-        activity_ids: [12],
-        id: 100,
-    });
-    this.data['approval.approver'].records.push({
-        request_id: 100,
+    const pyEnv = await startServer();
+    const approvalRequestId1 = pyEnv['approval.request'].create({});
+    pyEnv['approval.approver'].create({
+        request_id: approvalRequestId1,
         status: 'pending',
-        user_id: this.data.currentUserId,
+        user_id: pyEnv.currentUserId,
     });
-    this.data['mail.activity'].records.push({
+    pyEnv['mail.activity'].create({
         can_write: true,
-        id: 12,
-        res_id: 100,
+        res_id: approvalRequestId1,
         res_model: 'approval.request',
-        user_id: this.data.currentUserId,
+        user_id: pyEnv.currentUserId,
     });
-    const { createChatterContainerComponent } = await start({ data: this.data });
+    const { createChatterContainerComponent } = await start();
     await createChatterContainerComponent({
-        threadId: 100,
+        threadId: approvalRequestId1,
         threadModel: 'approval.request',
     });
     assert.containsOnce(
@@ -110,26 +103,23 @@ QUnit.test('activity with approval to be made by logged user', async function (a
 QUnit.test('activity with approval to be made by another user', async function (assert) {
     assert.expect(16);
 
-    this.data['approval.request'].records.push({
-        activity_ids: [12],
-        id: 100,
-    });
-    this.data['res.users'].records.push({ id: 11 });
-    this.data['approval.approver'].records.push({
-        request_id: 100,
+    const pyEnv = await startServer();
+    const approvalRequestId1 = pyEnv['approval.request'].create({});
+    const resUsersId1 = pyEnv['res.users'].create();
+    pyEnv['approval.approver'].create({
+        request_id: approvalRequestId1,
         status: 'pending',
-        user_id: 11,
+        user_id: resUsersId1,
     });
-    this.data['mail.activity'].records.push({
+    pyEnv['mail.activity'].create({
         can_write: true,
-        id: 12,
-        res_id: 100,
+        res_id: approvalRequestId1,
         res_model: 'approval.request',
-        user_id: 11,
+        user_id: resUsersId1,
     });
-    const { createChatterContainerComponent } = await start({ data: this.data });
+    const { createChatterContainerComponent } = await start();
     await createChatterContainerComponent({
-        threadId: 100,
+        threadId: approvalRequestId1,
         threadModel: 'approval.request',
     });
     assert.containsOnce(
@@ -217,37 +207,32 @@ QUnit.test('activity with approval to be made by another user', async function (
 QUnit.test('approve approval', async function (assert) {
     assert.expect(7);
 
-    this.data['approval.request'].records.push({
-        activity_ids: [12],
-        id: 100,
-    });
-    this.data['approval.approver'].records.push({
-        id: 12,
-        request_id: 100,
+    const pyEnv = await startServer();
+    const approvalRequestId1 = pyEnv['approval.request'].create({});
+    pyEnv['approval.approver'].create({
+        request_id: approvalRequestId1,
         status: 'pending',
-        user_id: this.data.currentUserId,
+        user_id: pyEnv.currentUserId,
     });
-    this.data['mail.activity'].records.push({
+    const mailActivityId1 = pyEnv['mail.activity'].create({
         can_write: true,
-        id: 12,
-        res_id: 100,
+        res_id: approvalRequestId1,
         res_model: 'approval.request',
-        user_id: this.data.currentUserId,
+        user_id: pyEnv.currentUserId,
     });
     const { createChatterContainerComponent } = await start({
-        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'action_approve') {
                 assert.strictEqual(args.args.length, 1);
                 assert.strictEqual(args.args[0].length, 1);
-                assert.strictEqual(args.args[0][0], 12);
+                assert.strictEqual(args.args[0][0], approvalRequestId1);
                 assert.step('action_approve');
             }
             return this._super(...arguments);
         },
     });
     await createChatterContainerComponent({
-        threadId: 100,
+        threadId: mailActivityId1,
         threadModel: 'approval.request',
     });
     assert.containsOnce(
@@ -268,37 +253,32 @@ QUnit.test('approve approval', async function (assert) {
 QUnit.test('refuse approval', async function (assert) {
     assert.expect(7);
 
-    this.data['approval.request'].records.push({
-        activity_ids: [12],
-        id: 100,
-    });
-    this.data['approval.approver'].records.push({
-        id: 12,
-        request_id: 100,
+    const pyEnv = await startServer();
+    const approvalRequestId1 = pyEnv['approval.request'].create({});
+    pyEnv['approval.approver'].create({
+        request_id: approvalRequestId1,
         status: 'pending',
-        user_id: this.data.currentUserId,
+        user_id: pyEnv.currentUserId,
     });
-    this.data['mail.activity'].records.push({
+    const mailActivityId1 = pyEnv['mail.activity'].create({
         can_write: true,
-        id: 12,
-        res_id: 100,
+        res_id: approvalRequestId1,
         res_model: 'approval.request',
-        user_id: this.data.currentUserId,
+        user_id: pyEnv.currentUserId,
     });
     const { createChatterContainerComponent } = await start({
-        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'action_refuse') {
                 assert.strictEqual(args.args.length, 1);
                 assert.strictEqual(args.args[0].length, 1);
-                assert.strictEqual(args.args[0][0], 12);
+                assert.strictEqual(args.args[0][0], approvalRequestId1);
                 assert.step('action_refuse');
             }
             return this._super(...arguments);
         },
     });
     await createChatterContainerComponent({
-        threadId: 100,
+        threadId: mailActivityId1,
         threadModel: 'approval.request',
     });
     assert.containsOnce(

@@ -1,31 +1,24 @@
 /** @odoo-module **/
 
-import { beforeEach, start } from '@mail/../tests/helpers/test_utils';
+import { start, startServer } from '@mail/../tests/helpers/test_utils';
 
 QUnit.module('voip', {}, function () {
 QUnit.module('components', {}, function () {
-QUnit.module('activity_tests.js', {
-    async beforeEach() {
-        await beforeEach(this);
-    },
-});
+QUnit.module('activity_tests.js');
 
 QUnit.test('activity: rendering - only with mobile number', async function (assert) {
     assert.expect(5);
 
-    this.data['res.partner'].records.push({
-        activity_ids: [12],
-        id: 100,
-    });
-    this.data['mail.activity'].records.push({
-        id: 12,
+    const pyEnv = await startServer();
+    const resPartnerId1 = pyEnv['res.partner'].create({});
+    pyEnv['mail.activity'].create({
         mobile: '+3212345678',
-        res_id: 100,
+        res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start({ data: this.data });
+    const { createChatterContainerComponent } = await start();
     await createChatterContainerComponent({
-        threadId: 100,
+        threadId: resPartnerId1,
         threadModel: 'res.partner',
     });
     assert.containsOnce(
@@ -58,19 +51,16 @@ QUnit.test('activity: rendering - only with mobile number', async function (asse
 QUnit.test('activity: rendering - only with phone number', async function (assert) {
     assert.expect(5);
 
-    this.data['res.partner'].records.push({
-        id: 100,
-        activity_ids: [12],
-    });
-    this.data['mail.activity'].records.push({
-        id: 12,
+    const pyEnv = await startServer();
+    const resPartnerId1 = pyEnv['res.partner'].create({});
+    pyEnv['mail.activity'].create({
         phone: '+3287654321',
-        res_id: 100,
+        res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start({ data: this.data });
+    const { createChatterContainerComponent } = await start();
     await createChatterContainerComponent({
-        threadId: 100,
+        threadId: resPartnerId1,
         threadModel: 'res.partner',
     });
     assert.containsOnce(
@@ -101,20 +91,17 @@ QUnit.test('activity: rendering - only with phone number', async function (asser
 QUnit.test('activity: rendering - with both mobile and phone number', async function (assert) {
     assert.expect(6);
 
-    this.data['res.partner'].records.push({
-        activity_ids: [12],
-        id: 100,
-    });
-    this.data['mail.activity'].records.push({
-        id: 12,
+    const pyEnv = await startServer();
+    const resPartnerId1 = pyEnv['res.partner'].create({});
+    pyEnv['mail.activity'].create({
         mobile: '+3212345678',
         phone: '+3287654321',
-        res_id: 100,
+        res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start({ data: this.data });
+    const { createChatterContainerComponent } = await start();
     await createChatterContainerComponent({
-        threadId: 100,
+        threadId: resPartnerId1,
         threadModel: 'res.partner',
     });
     assert.containsOnce(
@@ -153,19 +140,16 @@ QUnit.test('activity: rendering - with both mobile and phone number', async func
 QUnit.test('activity: calling - only with mobile', async function (assert) {
     assert.expect(4);
 
-    this.data['res.partner'].records.push({
-        activity_ids: [100],
-        id: 100,
-    });
-    this.data['mail.activity'].records.push({
-        id: 100,
+    const pyEnv = await startServer();
+    const resPartnerId1 = pyEnv['res.partner'].create({});
+    const mailActivityId1 = pyEnv['mail.activity'].create({
         mobile: '+3212345678',
-        res_id: 100,
+        res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start({ data: this.data });
+    const { createChatterContainerComponent } = await start();
     await createChatterContainerComponent({
-        threadId: 100,
+        threadId: resPartnerId1,
         threadModel: 'res.partner',
     });
     const onVoipActivityCallMobile = (ev) => {
@@ -177,7 +161,7 @@ QUnit.test('activity: calling - only with mobile', async function (assert) {
         );
         assert.strictEqual(
             ev.detail.activityId,
-            100,
+            mailActivityId1,
             "Voip call should be triggered with the id of the activity"
         );
     };
@@ -194,19 +178,16 @@ QUnit.test('activity: calling - only with mobile', async function (assert) {
 QUnit.test('activity: calling - only with phone', async function (assert) {
     assert.expect(4);
 
-    this.data['res.partner'].records.push({
-        activity_ids: [100],
-        id: 100,
-    });
-    this.data['mail.activity'].records.push({
-        id: 100,
+    const pyEnv = await startServer();
+    const resPartnerId1 = pyEnv['res.partner'].create({});
+    const mailActivityId1 = pyEnv['mail.activity'].create({
         phone: '+3287654321',
-        res_id: 100,
+        res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start({ data: this.data });
+    const { createChatterContainerComponent } = await start();
     await createChatterContainerComponent({
-        threadId: 100,
+        threadId: resPartnerId1,
         threadModel: 'res.partner',
     });
     const onVoipActivityCallPhone = (ev) => {
@@ -218,7 +199,7 @@ QUnit.test('activity: calling - only with phone', async function (assert) {
         );
         assert.strictEqual(
             ev.detail.activityId,
-            100,
+            mailActivityId1,
             "Voip call should be triggered with the id of the activity"
         );
     };

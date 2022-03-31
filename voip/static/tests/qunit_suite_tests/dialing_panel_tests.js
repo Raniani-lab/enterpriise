@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { beforeEach, start } from '@mail/../tests/helpers/test_utils';
+import { start } from '@mail/../tests/helpers/test_utils';
 
 import mobile from 'web_mobile.core';
 import DialingPanel from 'voip.DialingPanel';
@@ -31,9 +31,7 @@ async function createDialingPanel(params) {
 
 QUnit.module('voip', {}, function () {
 QUnit.module('DialingPanel', {
-    async beforeEach() {
-        await beforeEach(this);
-
+    beforeEach() {
         this.onaccepted = undefined;
         this.recentList = {};
         // generate 3 records
@@ -95,7 +93,6 @@ QUnit.test('autocall flow', async function (assert) {
         dialingPanel,
         parent,
     } = await createDialingPanel({
-        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -341,7 +338,6 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
         dialingPanel,
         parent,
     } = await createDialingPanel({
-        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -462,7 +458,6 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
         dialingPanel,
         parent,
     } = await createDialingPanel({
-        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -561,7 +556,6 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
     });
 
     const { dialingPanel, parent } = await createDialingPanel({
-        data: this.data,
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };

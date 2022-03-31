@@ -4,7 +4,6 @@ import { link } from '@mail/model/model_field_command';
 
 import {
     afterNextRender,
-    beforeEach,
     start,
 } from '@mail/../tests/helpers/test_utils';
 
@@ -14,11 +13,7 @@ import { methods } from 'web_mobile.core';
 
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('components', {}, function () {
-QUnit.module('attachment_tests.js', {
-    async beforeEach() {
-        await beforeEach(this);
-    },
-});
+QUnit.module('attachment_tests.js');
 
 QUnit.test("'backbutton' event should close attachment viewer", async function (assert) {
     assert.expect(1);
@@ -30,7 +25,6 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
     });
 
     const { createMessageComponent, messaging } = await start({
-        data: this.data,
         env: {
             device: {
                 isMobile: true,
@@ -77,7 +71,6 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
     });
 
     const { createMessageComponent, messaging } = await start({
-        data: this.data,
         env: {
             device: {
                 isMobile: true,

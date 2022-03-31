@@ -2,8 +2,8 @@
 
 import {
     afterNextRender,
-    beforeEach,
     start,
+    startServer,
 } from '@mail/../tests/helpers/test_utils';
 
 import testUtils, { file } from 'web.test_utils';
@@ -12,47 +12,19 @@ import FormView from 'web.FormView';
 const { createFile, inputFiles } = file;
 
 QUnit.module('mail_enterprise', {}, function () {
-QUnit.module('attachment_preview_tests.js', {
-    async beforeEach() {
-        await beforeEach(this);
-
-        Object.assign(this.data, {
-            partner: {
-                fields: {
-                    message_attachment_count: { string: 'Attachment count', type: 'integer' },
-                    display_name: { string: "Displayed name", type: "char" },
-                    foo: { string: "Foo", type: "char", default: "My little Foo Value" },
-                    message_ids: { string: "messages", type: "one2many", relation: 'mail.message', relation_field: "res_id" },
-                },
-                records: [{
-                    id: 2,
-                    message_attachment_count: 0,
-                    display_name: "first partner",
-                    foo: "HELLO",
-                    message_ids: [],
-                }, {
-                    id: 10,
-                    message_attachment_count: 0,
-                    display_name: "first partner",
-                    foo: "HELLO",
-                    message_ids: [],
-                }],
-            },
-        });
-    },
-}, function () {
+QUnit.module('attachment_preview_tests.js', {}, function () {
 
     QUnit.test('Should not have attachment preview for still uploading attachment', async function (assert) {
         assert.expect(2);
 
-        this.data['res.partner'].records.push({id: 10 });
-        let form;
+        const pyEnv = await startServer();
+        const resPartnerId1 = pyEnv['res.partner'].create({});
+        let form, env;
         await afterNextRender(async () => { // because of chatter container
-            const { env, widget } = await start({
+            const { env: environment, widget } = await start({
                 hasView: true,
                 View: FormView,
                 model: 'res.partner',
-                data: this.data,
                 arch: '<form string="Partners">' +
                         '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                         '<div class="oe_chatter">' +
@@ -68,7 +40,7 @@ QUnit.module('attachment_preview_tests.js', {
                         size_class: config.device.SIZES.XXL,
                     },
                 },
-                res_id: 10,
+                res_id: resPartnerId1,
                 async mockRPC(route, args) {
                     if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
                         assert.step("pdf viewer");
@@ -83,7 +55,7 @@ QUnit.module('attachment_preview_tests.js', {
                     return res;
                 }
             });
-            this.env = env;
+            env = environment;
             form = widget;
         });
 
@@ -93,7 +65,7 @@ QUnit.module('attachment_preview_tests.js', {
         const files = [
             await createFile({ name: 'invoice.pdf', contentType: 'application/pdf' }),
         ];
-        const messaging = await this.env.services.messaging.get();
+        const messaging = await env.services.messaging.get();
         const chatter = messaging.models['Chatter'].all()[0];
         await afterNextRender(() =>
             inputFiles(chatter.attachmentBoxView.fileUploader.fileInput, files)
@@ -106,29 +78,27 @@ QUnit.module('attachment_preview_tests.js', {
     QUnit.test('Attachment on side', async function (assert) {
         assert.expect(10);
 
-        this.data.partner.records[0].message_ids = [11];
-        this.data['ir.attachment'].records.push({
-            id: 1,
+        const pyEnv = await startServer();
+        const resPartnerId1 = pyEnv['res.partner'].create({});
+        const irAttachmentId1 = pyEnv['ir.attachment'].create({
             mimetype: 'image/jpeg',
-            res_id: 2,
-            res_model: 'partner',
+            res_id: resPartnerId1,
+            res_model: 'res.partner',
         });
-        this.data['mail.message'].records.push({
-            id: 11,
-            attachment_ids: [1],
-            model: 'partner',
-            res_id: 2,
+        pyEnv['mail.message'].create({
+            attachment_ids: [irAttachmentId1],
+            model: 'res.partner',
+            res_id: resPartnerId1,
         });
-        let form;
+        let form, env;
         await afterNextRender(async () => { // because of chatter container
-            const { env, widget } = await start({
+            const { env: environment, widget } = await start({
                 hasView: true,
                 View: FormView,
-                model: 'partner',
-                data: this.data,
+                model: 'res.partner',
                 arch: '<form string="Partners">' +
                         '<sheet>' +
-                            '<field name="foo"/>' +
+                            '<field name="name"/>' +
                         '</sheet>' +
                         '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                         '<div class="oe_chatter">' +
@@ -139,7 +109,7 @@ QUnit.module('attachment_preview_tests.js', {
                 archs: {
                     'mail.message,false,list': '<tree/>',
                 },
-                res_id: 2,
+                res_id: resPartnerId1,
                 config: {
                     device: {
                         size_class: config.device.SIZES.XXL,
@@ -156,7 +126,7 @@ QUnit.module('attachment_preview_tests.js', {
                     return this._super.apply(this, arguments);
                 },
             });
-            this.env = env;
+            env = environment;
             form = widget;
         });
 
@@ -183,7 +153,7 @@ QUnit.module('attachment_preview_tests.js', {
         const files = [
             await createFile({ name: 'invoice.pdf', contentType: 'application/pdf' }),
         ];
-        const messaging = await this.env.services.messaging.get();
+        const messaging = await env.services.messaging.get();
         const chatter = messaging.models['Chatter'].all()[0];
         await afterNextRender(() =>
             inputFiles(chatter.composerView.fileUploader.fileInput, files)
@@ -212,14 +182,13 @@ QUnit.module('attachment_preview_tests.js', {
 
         let form;
         await afterNextRender(async () => { // because of chatter container
-            const { env, widget } = await start({
+            const { widget } = await start({
                 hasView: true,
                 View: FormView,
-                model: 'partner',
-                data: this.data,
+                model: 'res.partner',
                 arch: '<form string="Partners">' +
                         '<sheet>' +
-                            '<field name="foo"/>' +
+                            '<field name="name"/>' +
                         '</sheet>' +
                         '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                         '<div class="oe_chatter">' +
@@ -236,8 +205,6 @@ QUnit.module('attachment_preview_tests.js', {
                     },
                 },
             });
-            this.env = env;
-            this.widget = widget;
             form = widget;
         });
 
@@ -254,29 +221,27 @@ QUnit.module('attachment_preview_tests.js', {
     QUnit.test('Attachment on side not displayed on smaller screens', async function (assert) {
         assert.expect(2);
 
-        this.data.partner.records[0].message_ids = [11];
-        this.data['ir.attachment'].records.push({
-            id: 1,
+        const pyEnv = await startServer();
+        const resPartnerId1 = pyEnv['res.partner'].create({});
+        const irAttachmentId1 = pyEnv['ir.attachment'].create({
             mimetype: 'image/jpeg',
-            res_id: 2,
-            res_model: 'partner',
+            res_id: resPartnerId1,
+            res_model: 'res.partner',
         });
-        this.data['mail.message'].records.push({
-            id: 11,
-            attachment_ids: [1],
-            model: 'partner',
-            res_id: 2,
+        pyEnv['mail.message'].create({
+            attachment_ids: [irAttachmentId1],
+            model: 'res.partner',
+            res_id: resPartnerId1,
         });
         let form;
         await afterNextRender(async () => { // because of chatter container
-            const { env, widget } = await start({
+            const { widget } = await start({
                 hasView: true,
                 View: FormView,
-                model: 'partner',
-                data: this.data,
+                model: 'res.partner',
                 arch: '<form string="Partners">' +
                         '<sheet>' +
-                            '<field name="foo"/>' +
+                            '<field name="name"/>' +
                         '</sheet>' +
                         '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                         '<div class="oe_chatter">' +
@@ -287,15 +252,13 @@ QUnit.module('attachment_preview_tests.js', {
                 archs: {
                     'mail.message,false,list': '<tree/>',
                 },
-                res_id: 2,
+                res_id: resPartnerId1,
                 config: {
                     device: {
                         size_class: config.device.SIZES.XL,
                     },
                 },
             });
-            this.env = env;
-            this.widget = widget;
             form = widget;
         });
         assert.strictEqual(form.$('.o_attachment_preview').children().length, 0,
@@ -309,26 +272,23 @@ QUnit.module('attachment_preview_tests.js', {
     QUnit.test('Attachment triggers list resize', async function (assert) {
         assert.expect(3);
 
-        this.data.partner.fields.yeses = { relation: 'yes', string: "Yeses", type: 'many2many' };
-        this.data.partner.records[0].yeses = [-1720932];
-        this.data.yes = {
-            fields: { the_char: { string: "The Char", type: 'char' } },
-            records: [{ id: -1720932, the_char: new Array(100).fill().map(_ => "yes").join() }],
-        };
-        this.data['ir.attachment'].records.push({
-            id: 1,
+        const pyEnv = await startServer();
+        const mailChannelId1 = pyEnv['mail.channel'].create({
+            name: new Array(100).fill().map(_ => 'name').join(),
+        });
+        const resPartnerId1 = pyEnv['res.partner'].create({ channel_ids: [mailChannelId1] });
+        pyEnv['ir.attachment'].create({
             mimetype: 'image/jpeg',
             name: 'Test Image 1',
-            res_id: 2,
-            res_model: 'partner',
-            url: '/web/content/1?download=true',
+            res_id: resPartnerId1,
+            res_model: 'res.partner',
         });
         const { widget: form } = await start({
             hasView: true,
             arch: `
                 <form string="Whatever">
                     <sheet>
-                        <field name="yeses"/>
+                        <field name="channel_ids"/>
                     </sheet>
                     <div class="o_attachment_preview" options="{ 'order': 'desc' }"/>
                     <div class="oe_chatter">
@@ -338,9 +298,9 @@ QUnit.module('attachment_preview_tests.js', {
             archs: {
                 // FIXME could be removed once task-2248306 is done
                 'mail.message,false,list': '<tree/>',
-                'yes,false,list': `
+                'mail.channel,false,list': `
                     <tree>
-                        <field name="the_char"/>
+                        <field name="name"/>
                     </tree>`,
             },
             async mockRPC(route, { method }) {
@@ -354,9 +314,8 @@ QUnit.module('attachment_preview_tests.js', {
             config: {
                 device: { size_class: config.device.SIZES.XXL },
             },
-            data: this.data,
-            model: 'partner',
-            res_id: 2,
+            model: 'res.partner',
+            res_id: resPartnerId1,
             View: FormView,
         });
 

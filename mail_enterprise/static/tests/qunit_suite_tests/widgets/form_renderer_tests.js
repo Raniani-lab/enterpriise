@@ -2,8 +2,8 @@
 
 import {
     afterNextRender,
-    beforeEach,
     start,
+    startServer,
 } from '@mail/../tests/helpers/test_utils';
 
 import config from 'web.config';
@@ -14,9 +14,7 @@ const { editInput } = fields;
 QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('widgets', {}, function () {
 QUnit.module('form_renderer_tests.js', {
-    async beforeEach() {
-        await beforeEach(this);
-
+    beforeEach() {
         // FIXME archs could be removed once task-2248306 is done
         // The mockServer will try to get the list view
         // of every relational fields present in the main view.
@@ -41,21 +39,19 @@ QUnit.module('form_renderer_tests.js', {
 QUnit.test('Message list loads new messages on scroll', async function (assert) {
     assert.expect(7);
 
-    this.data['res.partner'].records.push({
-        id: 11,
+    const pyEnv = await startServer();
+    const resPartnerId1 = pyEnv['res.partner'].create({
         display_name: "Partner 11",
         description: [...Array(60).keys()].join('\n'),
     });
     for (let i = 0; i < 60; i++) {
-        this.data['mail.message'].records.push({
+        pyEnv['mail.message'].create({
             body: "not empty",
-            id: i + 1,
             model: 'res.partner',
-            res_id: 11,
+            res_id: resPartnerId1,
         });
     }
     const { afterEvent } = await this.createView({
-        data: this.data,
         hasView: true,
         // View params
         View: FormView,
@@ -72,7 +68,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
             </form>
         `,
         viewOptions: {
-            currentId: 11,
+            currentId: resPartnerId1,
         },
         config: {
             device: { size_class: config.device.SIZES.XXL },
@@ -93,7 +89,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
                 return (
                     hint.type === 'messages-loaded' &&
                     threadViewer.thread.model === 'res.partner' &&
-                    threadViewer.thread.id === 11
+                    threadViewer.thread.id === resPartnerId1
                 );
             },
         },
@@ -116,7 +112,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
             return (
                 hint.type === 'more-messages-loaded' &&
                 threadViewer.thread.model === 'res.partner' &&
-                threadViewer.thread.id === 11
+                threadViewer.thread.id === resPartnerId1
             );
         },
     });
@@ -142,7 +138,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
             return (
                 hint.type === 'more-messages-loaded' &&
                 threadViewer.thread.model === 'res.partner' &&
-                threadViewer.thread.id === 11
+                threadViewer.thread.id === resPartnerId1
             );
         },
     });
@@ -155,24 +151,22 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
 QUnit.test('Message list is scrolled to new message after posting a message', async function (assert) {
     assert.expect(10);
 
-    this.data['res.partner'].records.push({
+    const pyEnv = await startServer();
+    const resPartnerId1 = pyEnv['res.partner'].create({
         activity_ids: [],
-        id: 11,
         display_name: "Partner 11",
         description: [...Array(60).keys()].join('\n'),
         message_ids: [],
         message_follower_ids: [],
     });
     for (let i = 0; i < 60; i++) {
-        this.data['mail.message'].records.push({
+        pyEnv['mail.message'].create({
             body: "not empty",
-            id: i + 1,
             model: 'res.partner',
-            res_id: 11,
+            res_id: resPartnerId1,
         });
     }
     const { afterEvent } = await this.createView({
-        data: this.data,
         hasView: true,
         // View params
         View: FormView,
@@ -192,7 +186,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             </form>
         `,
         viewOptions: {
-            currentId: 11,
+            currentId: resPartnerId1,
         },
         config: {
             device: { size_class: config.device.SIZES.XXL },
@@ -213,7 +207,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
                 return (
                     hint.type === 'messages-loaded' &&
                     threadViewer.thread.model === 'res.partner' &&
-                    threadViewer.thread.id === 11
+                    threadViewer.thread.id === resPartnerId1
                 );
             },
         },
@@ -248,7 +242,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             return (
                 hint.type === 'more-messages-loaded' &&
                 threadViewer.thread.model === 'res.partner' &&
-                threadViewer.thread.id === 11
+                threadViewer.thread.id === resPartnerId1
             );
         },
     });
@@ -263,7 +257,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             const messageList = document.querySelector('.o_Chatter_scrollPanel');
             return (
                 threadViewer.thread.model === 'res.partner' &&
-                threadViewer.thread.id === 11 &&
+                threadViewer.thread.id === resPartnerId1 &&
                 scrollTop === messageList.scrollHeight - messageList.clientHeight
             );
         },

@@ -40,11 +40,11 @@ class TestClEightColumnsReport(TestAccountReportsCommon):
             #   Cuenta                                  Debe            Haber   Deudor  Acreedor    Activo  Pasivo  Perdida Ganancia
             [   0,                                      1,              2,      3,      4,          5,      6,      7,      8],
             [
-                ('110310 Clientes',                     1190.0,         0.0,    1190.0, 0.0,        1190.0, 0.0,    0.0,    0.0),
-                ('210710 IVA Débito Fiscal',            0.0,            190.0,  0.0,    190.0,      0.0,    190.0,  0.0,    0.0),
-                ('310110 Ingresos por Consultoría',     0.0,            1000.0, 0.0,    1000.0,     0.0,    0.0,    0.0,    1000.0),
-                ('Subtotal',                            1190.0,         1190.0, 1190.0, 1190.0,     1190.0, 190.0,  0.0,    1000.0),
-                ('Resultado del Ejercicio',             '',             '',     '',     '',         0.0,    1000.0, 1000.0, 0.0),
+                ('110310 Clientes',                     1190.0,         '',     1190.0, '',         1190.0, '',     '',     ''),
+                ('210710 IVA Débito Fiscal',            '',             190.0,  '',     190.0,      '',     190.0,  '',     ''),
+                ('310110 Ingresos por Consultoría',     '',             1000.0, '',     1000.0,     '',     '',     '',     1000.0),
+                ('Subtotal',                            1190.0,         1190.0, 1190.0, 1190.0,     1190.0, 190.0,  '',     1000.0),
+                ('Resultado del Ejercicio',             '',             '',     '',     '',         '',     1000.0, 1000.0, ''),
                 ('Total',                               1190.0,         1190.0, 1190.0, 1190.0,     1190.0, 1190.0, 1000.0, 1000.0),
             ],
         )

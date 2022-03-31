@@ -214,19 +214,19 @@ class assets_report(models.AbstractModel):
                     'name': name,
                     'account_code': al['account_code'],
                     'columns': [
-                        {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format_name': ''},  # Characteristics
-                        {'name': al['asset_date'] and format_date(self.env, al['asset_date']) or '', 'no_format_name': ''},
-                        {'name': (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'), 'no_format_name': ''},
-                        {'name': asset_depreciation_rate, 'no_format_name': ''},
-                        {'name': self.format_value(asset_opening), 'no_format_name': asset_opening},  # Assets
-                        {'name': self.format_value(asset_add), 'no_format_name': asset_add},
-                        {'name': self.format_value(asset_minus), 'no_format_name': asset_minus},
-                        {'name': self.format_value(asset_closing), 'no_format_name': asset_closing},
-                        {'name': self.format_value(depreciation_opening), 'no_format_name': depreciation_opening},  # Depreciation
-                        {'name': self.format_value(depreciation_add), 'no_format_name': depreciation_add},
-                        {'name': self.format_value(depreciation_minus), 'no_format_name': depreciation_minus},
-                        {'name': self.format_value(depreciation_closing), 'no_format_name': depreciation_closing},
-                        {'name': self.format_value(asset_gross), 'no_format_name': asset_gross},  # Gross
+                        {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format': ''},  # Characteristics
+                        {'name': al['asset_date'] and format_date(self.env, al['asset_date']) or '', 'no_format': ''},
+                        {'name': (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'), 'no_format': ''},
+                        {'name': asset_depreciation_rate, 'no_format': ''},
+                        {'name': self.format_value(asset_opening), 'no_format': asset_opening},  # Assets
+                        {'name': self.format_value(asset_add), 'no_format': asset_add},
+                        {'name': self.format_value(asset_minus), 'no_format': asset_minus},
+                        {'name': self.format_value(asset_closing), 'no_format': asset_closing},
+                        {'name': self.format_value(depreciation_opening), 'no_format': depreciation_opening},  # Depreciation
+                        {'name': self.format_value(depreciation_add), 'no_format': depreciation_add},
+                        {'name': self.format_value(depreciation_minus), 'no_format': depreciation_minus},
+                        {'name': self.format_value(depreciation_closing), 'no_format': depreciation_closing},
+                        {'name': self.format_value(asset_gross), 'no_format': asset_gross},  # Gross
                     ],
                     'unfoldable': False,
                     'unfolded': False,

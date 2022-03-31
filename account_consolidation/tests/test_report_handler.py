@@ -222,11 +222,11 @@ class TestShowZeroHandler(AccountConsolidationTestCase):
     def test__line_is_not_zero(self):
         test_lines = [
             ({'columns': []}, False),
-            ({'columns': [{'no_format_name': 0.0}]}, False),
-            ({'columns': [{'no_format_name': 42.42}]}, True),
-            ({'columns': [{'no_format_name': 42.42}, {'no_format_name': 0}]}, True),
-            ({'columns': [{'no_format_name': 0}, {'no_format_name': 42.42}]}, True),
-            ({'columns': [{'no_format_name': -42.424242}, {'no_format_name': 42.424242}]}, False),
+            ({'columns': [{'no_format': 0.0}]}, False),
+            ({'columns': [{'no_format': 42.42}]}, True),
+            ({'columns': [{'no_format': 42.42}, {'no_format': 0}]}, True),
+            ({'columns': [{'no_format': 0}, {'no_format': 42.42}]}, True),
+            ({'columns': [{'no_format': -42.424242}, {'no_format': 42.424242}]}, False),
         ]
         for line in test_lines:
             self.assertEqual(ShowZeroHandler._line_is_not_zero(line[0]), line[1],

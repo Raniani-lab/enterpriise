@@ -325,21 +325,6 @@
         role="button"/>
 </template>
 
-<template id="main_template_with_filter_input_accounts" inherit_id="account_reports.main_template"  primary="True">
-    <xpath expr="//div[hasclass('print_only')]" position="after">
-        <div class="o_reports_filter_input_wrapper no_print">
-            <span class="searchIcon"><i class="fa fa-search" role="img" aria-label="Search" title="Search"></i></span>
-            <input class="o_account_reports_filter_input" type="text" placeholder="Search account" />
-        </div>
-    </xpath>
-</template>
-
-<template id="main_template_with_filter_input_partner" inherit_id="account_reports.main_template_with_filter_input_accounts"  primary="True">
-    <xpath expr="//input[hasclass('o_account_reports_filter_input')]" position="attributes">
-        <attribute name="placeholder">Search partner</attribute>
-    </xpath>
-</template>
-
 <!-- Control domain templates -->
 <!-- Warning (banner) on top, related to control domains -->
 <template id="main_template_control_domain" inherit_id="account_reports.main_template" primary="True">
@@ -409,7 +394,19 @@
 
 <template id="template_aged_partner_balance_report" inherit_id="account_reports.main_template" primary="True">
     <xpath expr="//table" position="attributes">
-        <attribute name="class">o_account_reports_table table-striped table-hover</attribute>
+        <attribute name="class">o_account_reports_table table-striped table-hover table-bold-unfold</attribute>
+    </xpath>
+</template>
+
+<template id="template_partner_ledger_report" inherit_id="account_reports.main_template" primary="True">
+    <xpath expr="//table" position="attributes">
+        <attribute name="class">o_account_reports_table table-hover table-bold-unfold</attribute>
+    </xpath>
+</template>
+
+<template id="template_general_ledger_report" inherit_id="account_reports.main_template" primary="True">
+    <xpath expr="//table" position="attributes">
+        <attribute name="class">o_account_reports_table table-hover table-bold-unfold</attribute>
     </xpath>
 </template>
 

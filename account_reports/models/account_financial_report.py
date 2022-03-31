@@ -188,7 +188,7 @@ class ReportAccountFinancialReport(models.Model):
     # -------------------------------------------------------------------------
 
     @api.model
-    def _format_cell_value(self, financial_line, amount, currency=False, blank_if_zero=False):
+    def _format_cell_value(self, financial_line, amount, currency=False, blank_if_zero=True):
         ''' Format the value to display inside a cell depending the 'figure_type' field in the financial report line.
         :param financial_line:  An account.financial.html.report.line record.
         :param amount:          A number.
@@ -654,7 +654,12 @@ class ReportAccountFinancialReport(models.Model):
         columns = []
         for key in groupby_keys:
             amount = results.get(key, 0.0)
-            columns.append({'name': self._format_cell_value(financial_line, amount), 'no_format': amount, 'class': 'number'})
+
+            columns.append({
+                'name': self._format_cell_value(financial_line, amount),
+                'no_format': amount,
+                'class': 'number',
+            })
 
         # Growth comparison column.
         if self._display_growth_comparison(options):

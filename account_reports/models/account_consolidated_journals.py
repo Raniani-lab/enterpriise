@@ -34,9 +34,9 @@ class report_account_consolidated_journal(models.AbstractModel):
         return columns
 
     def _get_sum(self, results, lambda_filter):
-        sum_debit = self.format_value(sum([r['debit'] for r in results if lambda_filter(r)]))
-        sum_credit = self.format_value(sum([r['credit'] for r in results if lambda_filter(r)]))
-        sum_balance = self.format_value(sum([r['balance'] for r in results if lambda_filter(r)]))
+        sum_debit = sum([r['debit'] for r in results if lambda_filter(r)])
+        sum_credit = sum([r['credit'] for r in results if lambda_filter(r)])
+        sum_balance = sum([r['balance'] for r in results if lambda_filter(r)])
         return [sum_debit, sum_credit, sum_balance]
 
     def _get_journal_line(self, options, current_journal, results, record):
@@ -44,7 +44,7 @@ class report_account_consolidated_journal(models.AbstractModel):
                 'id': 'journal_%s' % current_journal,
                 'name': '%s (%s)' % (record['journal_name'], record['journal_code']),
                 'level': 2,
-                'columns': [{'name': n} for n in self._get_sum(results, lambda x: x['journal_id'] == current_journal)],
+                'columns': [{'name': self.format_value(n), 'no_format': n} for n in self._get_sum(results, lambda x: x['journal_id'] == current_journal)],
                 'unfoldable': True,
                 'unfolded': self._need_to_unfold('journal_%s' % (current_journal,), options),
             }
@@ -54,7 +54,7 @@ class report_account_consolidated_journal(models.AbstractModel):
                 'id': 'account_%s_%s' % (current_account,current_journal),
                 'name': '%s %s' % (record['account_code'], record['account_name']),
                 'level': 3,
-                'columns': [{'name': n} for n in self._get_sum(results, lambda x: x['account_id'] == current_account and x['journal_id'] == current_journal)],
+                'columns': [{'name': self.format_value(n), 'no_format': n} for n in self._get_sum(results, lambda x: x['account_id'] == current_account and x['journal_id'] == current_journal)],
                 'unfoldable': True,
                 'unfolded': self._need_to_unfold('account_%s_%s' % (current_account, current_journal), options),
                 'parent_id': 'journal_%s' % (current_journal),
@@ -68,7 +68,7 @@ class report_account_consolidated_journal(models.AbstractModel):
                     'name': _('Total'),
                     'class': 'total',
                     'level': 1,
-                    'columns': [{'name': n} for n in self._get_sum(results, lambda x: x['company_id'] == current_company)]
+                    'columns': [{'name': self.format_value(n), 'no_format': n} for n in self._get_sum(results, lambda x: x['company_id'] == current_company)]
         })
         lines.append({
                     'id': 'blank_line_after_total_%s' % (current_company),
@@ -89,14 +89,14 @@ class report_account_consolidated_journal(models.AbstractModel):
                         })
             for date in sorted(dates):
                 year, month = date.split('-')
-                sum_debit = self.format_value(sum([r['debit'] for r in results if (r['month'] == month and r['yyyy'] == year) and r['company_id'] == current_company]))
-                sum_credit = self.format_value(sum([r['credit'] for r in results if (r['month'] == month and r['yyyy'] == year) and r['company_id'] == current_company]))
-                sum_balance = self.format_value(sum([r['balance'] for r in results if (r['month'] == month and r['yyyy'] == year) and r['company_id'] == current_company]))
+                sum_debit = sum([r['debit'] for r in results if (r['month'] == month and r['yyyy'] == year) and r['company_id'] == current_company])
+                sum_credit = sum([r['credit'] for r in results if (r['month'] == month and r['yyyy'] == year) and r['company_id'] == current_company])
+                sum_balance = sum([r['balance'] for r in results if (r['month'] == month and r['yyyy'] == year) and r['company_id'] == current_company])
                 vals = {
                         'id': 'Total_month_%s_%s' % (date, current_company),
                         'name': convert_date('%s-01' % (date), {'format': 'MMM yyyy'}),
                         'level': 2,
-                        'columns': [{'name': v} for v in [sum_debit, sum_credit, sum_balance]]
+                        'columns': [{'name': self.format_value(v), 'no_format': v} for v in [sum_debit, sum_credit, sum_balance]]
                 }
                 lines.append(vals)
         return lines
@@ -166,7 +166,7 @@ class report_account_consolidated_journal(models.AbstractModel):
                     'caret_options': True,
                     'level': 4,
                     'parent_id': "account_%s_%s" % (values['account_id'], values['journal_id']),
-                    'columns': [{'name': n} for n in [self.format_value(values['debit']), self.format_value(values['credit']), self.format_value(values['balance'])]],
+                    'columns': [{'name': self.format_value(n), 'no_format': n} for n in [values['debit'], values['credit'], values['balance']]],
                 }
                 lines.append(vals)
 

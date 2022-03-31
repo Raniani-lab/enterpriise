@@ -25,12 +25,13 @@ class ReportPartnerLedger(models.AbstractModel):
 
     filter_unreconciled = False
     filter_partner = True
+    search_partner = True
 
     @api.model
     def _get_templates(self):
         templates = super(ReportPartnerLedger, self)._get_templates()
         templates['line_template'] = 'account_reports.line_template_partner_ledger_report'
-        templates['main_template'] = 'account_reports.main_template_with_filter_input_partner'
+        templates['main_template'] = 'account_reports.template_partner_ledger_report'
         return templates
 
     ####################################################
@@ -452,13 +453,13 @@ class ReportPartnerLedger(models.AbstractModel):
         unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
 
         columns = [
-            {'name': self.format_value(initial_balance), 'class': 'number'},
-            {'name': self.format_value(debit), 'class': 'number'},
-            {'name': self.format_value(credit), 'class': 'number'},
+            {'name': self.format_value(initial_balance), 'no_format': initial_balance, 'class': 'number'},
+            {'name': self.format_value(debit), 'no_format': debit, 'class': 'number'},
+            {'name': self.format_value(credit), 'no_format': credit, 'class': 'number'},
         ]
         if self.user_has_groups('base.group_multi_currency'):
             columns.append({'name': ''})
-        columns.append({'name': self.format_value(balance), 'class': 'number'})
+        columns.append({'name': self.format_value(balance, blank_if_zero=False), 'no_format': balance, 'class': 'number'})
 
         return {
             'id': 'partner_%s' % (partner.id if partner else 0),
@@ -483,22 +484,22 @@ class ReportPartnerLedger(models.AbstractModel):
 
         columns = [
             {'name': aml['journal_code']},
-            {'name': '%s %s' % (aml['account_code'], aml['account_name'])},
+            {'name': aml['account_code']},
             {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'class': 'o_account_report_line_ellipsis'},
             {'name': date_maturity or '', 'class': 'date'},
             {'name': aml['matching_number'] or ''},
-            {'name': self.format_value(cumulated_init_balance), 'class': 'number'},
-            {'name': self.format_value(aml['debit'], blank_if_zero=True), 'class': 'number'},
-            {'name': self.format_value(aml['credit'], blank_if_zero=True), 'class': 'number'},
+            {'name': self.format_value(cumulated_init_balance), 'no_format': cumulated_init_balance, 'class': 'number'},
+            {'name': self.format_value(aml['debit']), 'no_format': aml['debit'], 'class': 'number'},
+            {'name': self.format_value(aml['credit']), 'no_format': aml['credit'], 'class': 'number'},
         ]
         if self.user_has_groups('base.group_multi_currency'):
             if aml['currency_id']:
                 currency = self.env['res.currency'].browse(aml['currency_id'])
-                formatted_amount = self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True)
-                columns.append({'name': formatted_amount, 'class': 'number'})
+                formatted_amount = self.format_value(aml['amount_currency'], currency=currency)
+                columns.append({'name': formatted_amount, 'no_format': aml['amount_currency'], 'class': 'number'})
             else:
                 columns.append({'name': ''})
-        columns.append({'name': self.format_value(cumulated_balance), 'class': 'number'})
+        columns.append({'name': self.format_value(cumulated_balance, blank_if_zero=False), 'no_format': cumulated_balance, 'class': 'number'})
         return {
             'id': aml['id'],
             'parent_id': 'partner_%s' % (partner.id if partner else 0),
@@ -526,13 +527,13 @@ class ReportPartnerLedger(models.AbstractModel):
     @api.model
     def _get_report_line_total(self, options, initial_balance, debit, credit, balance):
         columns = [
-            {'name': self.format_value(initial_balance), 'class': 'number'},
-            {'name': self.format_value(debit), 'class': 'number'},
-            {'name': self.format_value(credit), 'class': 'number'},
+            {'name': self.format_value(initial_balance, blank_if_zero=False), 'no_format': initial_balance, 'class': 'number'},
+            {'name': self.format_value(debit, blank_if_zero=False), 'no_format': debit, 'class': 'number'},
+            {'name': self.format_value(credit, blank_if_zero=False), 'no_format': credit, 'class': 'number'},
         ]
         if self.user_has_groups('base.group_multi_currency'):
             columns.append({'name': ''})
-        columns.append({'name': self.format_value(balance), 'class': 'number'})
+        columns.append({'name': self.format_value(balance, blank_if_zero=False), 'no_format': balance, 'class': 'number'})
         return {
             'id': 'partner_ledger_total_%s' % self.env.company.id,
             'name': _('Total'),

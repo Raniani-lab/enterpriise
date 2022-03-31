@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=C0326
 from odoo.tests import tagged
 from odoo import fields
 
@@ -80,9 +81,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                              4,          5,          6],
             [
                 # Accounts.
-                ('101404 Bank',                 460.0,      0.0,        460.0),
+                ('101404 Bank',                 460.0,      '',         460.0),
                 ('121000 Account Receivable',   460.0,      460.0,      0.0),
-                ('400000 Product Sales',        0.0,        460.0,      -460.0),
+                ('400000 Product Sales',        '',         460.0,      -460.0),
                 # Report Total.
                 ('Total',                       920.0,      920.0,     0.0),
             ],
@@ -100,7 +101,6 @@ class TestAccountReports(TestAccountReportsCommon):
             [
                 # Account.
                 ('121000 Account Receivable',           '',              460.00,        460.00,          0.00),
-                ('Initial Balance',                     '',                0.00,          0.00,          0.00),
                 # Account Move Lines.
                 ('MISC/2016/01/0001',                   '02/01/2016',     69.00,            '',         69.00),
                 ('MISC/2016/01/0001',                   '02/01/2016',    161.00,            '',        230.00),
@@ -130,31 +130,31 @@ class TestAccountReports(TestAccountReportsCommon):
                 ('ASSETS',                                      460.0),
                 ('Current Assets',                              460.0),
                 ('Bank and Cash Accounts',                      460.0),
-                ('Receivables',                                 0.0),
-                ('Current Assets',                              0.0),
-                ('Prepayments',                                 0.0),
+                ('Receivables',                                 ''),
+                ('Current Assets',                              ''),
+                ('Prepayments',                                 ''),
                 ('Total Current Assets',                        460.0),
-                ('Plus Fixed Assets',                           0.0),
-                ('Plus Non-current Assets',                     0.0),
+                ('Plus Fixed Assets',                           ''),
+                ('Plus Non-current Assets',                     ''),
                 ('Total ASSETS',                                460.0),
 
-                ('LIABILITIES',                                 0.0),
-                ('Current Liabilities',                         0.0),
-                ('Current Liabilities',                         0.0),
-                ('Payables',                                    0.0),
-                ('Total Current Liabilities',                   0.0),
-                ('Plus Non-current Liabilities',                0.0),
-                ('Total LIABILITIES',                           0.0),
+                ('LIABILITIES',                                 ''),
+                ('Current Liabilities',                         ''),
+                ('Current Liabilities',                         ''),
+                ('Payables',                                    ''),
+                ('Total Current Liabilities',                   ''),
+                ('Plus Non-current Liabilities',                ''),
+                ('Total LIABILITIES',                           ''),
 
                 ('EQUITY',                                      460.0),
                 ('Unallocated Earnings',                        460.0),
                 ('Current Year Unallocated Earnings',           460.0),
                 ('Current Year Earnings',                       460.0),
-                ('Current Year Allocated Earnings',             0.0),
+                ('Current Year Allocated Earnings',             ''),
                 ('Total Current Year Unallocated Earnings',     460.0),
-                ('Previous Years Unallocated Earnings',         0.0),
+                ('Previous Years Unallocated Earnings',         ''),
                 ('Total Unallocated Earnings',                  460.0),
-                ('Retained Earnings',                           0.0),
+                ('Retained Earnings',                           ''),
                 ('Total EQUITY',                                460.0),
 
                 ('LIABILITIES + EQUITY',                        460.0),

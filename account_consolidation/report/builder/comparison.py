@@ -85,7 +85,7 @@ class ComparisonBuilder(AbstractBuilder):
                 val = copysign(res, -1)
             return {
                 'name': ('%s%%' % val),
-                'no_format_name': val,
+                'no_format': val,
                 'class': ' '.join(classes)
             }
         # res > 0

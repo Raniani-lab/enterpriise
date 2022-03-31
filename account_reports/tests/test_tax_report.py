@@ -803,16 +803,16 @@ class TestTaxReport(TestAccountReportsCommon):
             #   Name                                Balance
             [   0,                                  1],
             [
-                (base_section.name,                 0),
-                (base_42_line.name,                 0),
-                (base_11_line.name,                 0),
-                (tax_section.name,                  0),
-                (tax_42_section.name,               0),
-                (tax_10_5_line.name,                0),
-                (tax_31_5_line.name,                0),
-                (tax_11_line.name,                  0),
-                (tax_neg_10_line.name,              0),
-                (tax_difference_line.name,          0),
+                (base_section.name,                ''),
+                (base_42_line.name,                ''),
+                (base_11_line.name,                ''),
+                (tax_section.name,                 ''),
+                (tax_42_section.name,              ''),
+                (tax_10_5_line.name,               ''),
+                (tax_31_5_line.name,               ''),
+                (tax_11_line.name,                 ''),
+                (tax_neg_10_line.name,             ''),
+                (tax_difference_line.name,         ''),
             ],
         )
 
@@ -1130,8 +1130,8 @@ class TestTaxReport(TestAccountReportsCommon):
             #   Name                      Balance
             [   0,                        1],
             [
-                ('Sale',                     0),
-                ('Purchase',                 0),
+                ('Sale',                  ''),
+                ('Purchase',              ''),
             ]
         )
 
@@ -1359,37 +1359,37 @@ class TestTaxReport(TestAccountReportsCommon):
             [
                 ('%s-invoice-base' % regular_tax.id,          100),
                 ('%s-invoice-100' % regular_tax.id,            42),
-                ('%s-refund-base' % regular_tax.id,             0),
-                ('%s-refund-100' % regular_tax.id,              0),
+                ('%s-refund-base' % regular_tax.id,            ''),
+                ('%s-refund-100' % regular_tax.id,             ''),
 
-                ('%s-invoice-base' % caba_tax.id,               0),
-                ('%s-invoice-100' % caba_tax.id,                0),
-                ('%s-refund-base' % caba_tax.id,                0),
-                ('%s-refund-100' % caba_tax.id,                 0),
+                ('%s-invoice-base' % caba_tax.id,              ''),
+                ('%s-invoice-100' % caba_tax.id,               ''),
+                ('%s-refund-base' % caba_tax.id,               ''),
+                ('%s-refund-100' % caba_tax.id,                ''),
             ],
             # After paying 30%
             [
                 ('%s-invoice-base' % regular_tax.id,          100),
                 ('%s-invoice-100' % regular_tax.id,            42),
-                ('%s-refund-base' % regular_tax.id,             0),
-                ('%s-refund-100' % regular_tax.id,              0),
+                ('%s-refund-base' % regular_tax.id,            ''),
+                ('%s-refund-100' % regular_tax.id,             ''),
 
                 ('%s-invoice-base' % caba_tax.id,              42.6),
                 ('%s-invoice-100' % caba_tax.id,                4.26),
-                ('%s-refund-base' % caba_tax.id,                0),
-                ('%s-refund-100' % caba_tax.id,                 0),
+                ('%s-refund-base' % caba_tax.id,               ''),
+                ('%s-refund-100' % caba_tax.id,                ''),
             ],
             # After full payment
             [
                 ('%s-invoice-base' % regular_tax.id,          100),
                 ('%s-invoice-100' % regular_tax.id,            42),
-                ('%s-refund-base' % regular_tax.id,             0),
-                ('%s-refund-100' % regular_tax.id,              0),
+                ('%s-refund-base' % regular_tax.id,            ''),
+                ('%s-refund-100' % regular_tax.id,             ''),
 
                 ('%s-invoice-base' % caba_tax.id,             142),
                 ('%s-invoice-100' % caba_tax.id,               14.2),
-                ('%s-refund-base' % caba_tax.id,                0),
-                ('%s-refund-100' % caba_tax.id,                 0),
+                ('%s-refund-base' % caba_tax.id,               ''),
+                ('%s-refund-100' % caba_tax.id,                ''),
             ],
         )
 
@@ -1408,37 +1408,37 @@ class TestTaxReport(TestAccountReportsCommon):
             [
                 ('%s-invoice-base' % regular_tax.id,          110),
                 ('%s-invoice-100' % regular_tax.id,            46.2),
-                ('%s-refund-base' % regular_tax.id,             0),
-                ('%s-refund-100' % regular_tax.id,              0),
+                ('%s-refund-base' % regular_tax.id,            ''),
+                ('%s-refund-100' % regular_tax.id,             ''),
 
-                ('%s-invoice-base' % caba_tax.id,               0),
-                ('%s-invoice-100' % caba_tax.id,                0),
-                ('%s-refund-base' % caba_tax.id,                0),
-                ('%s-refund-100' % caba_tax.id,                 0),
+                ('%s-invoice-base' % caba_tax.id,              ''),
+                ('%s-invoice-100' % caba_tax.id,               ''),
+                ('%s-refund-base' % caba_tax.id,               ''),
+                ('%s-refund-100' % caba_tax.id,                ''),
             ],
             # After paying 30%
             [
                 ('%s-invoice-base' % regular_tax.id,          110),
                 ('%s-invoice-100' % regular_tax.id,            46.2),
-                ('%s-refund-base' % regular_tax.id,             0),
-                ('%s-refund-100' % regular_tax.id,              0),
+                ('%s-refund-base' % regular_tax.id,            ''),
+                ('%s-refund-100' % regular_tax.id,             ''),
 
                 ('%s-invoice-base' % caba_tax.id,              30),
                 ('%s-invoice-100' % caba_tax.id,                3),
-                ('%s-refund-base' % caba_tax.id,                0),
-                ('%s-refund-100' % caba_tax.id,                 0),
+                ('%s-refund-base' % caba_tax.id,               ''),
+                ('%s-refund-100' % caba_tax.id,                ''),
             ],
             # After full payment
             [
                 ('%s-invoice-base' % regular_tax.id,          110),
                 ('%s-invoice-100' % regular_tax.id,            46.2),
-                ('%s-refund-base' % regular_tax.id,             0),
-                ('%s-refund-100' % regular_tax.id,              0),
+                ('%s-refund-base' % regular_tax.id,            ''),
+                ('%s-refund-100' % regular_tax.id,             ''),
 
                 ('%s-invoice-base' % caba_tax.id,             100),
                 ('%s-invoice-100' % caba_tax.id,               10),
-                ('%s-refund-base' % caba_tax.id,                0),
-                ('%s-refund-100' % caba_tax.id,                 0),
+                ('%s-refund-base' % caba_tax.id,               ''),
+                ('%s-refund-100' % caba_tax.id,                ''),
             ],
         )
 
@@ -1534,13 +1534,13 @@ class TestTaxReport(TestAccountReportsCommon):
             [
                 ('%s-invoice-base' % regular_tax.id,          200),
                 ('%s-invoice-100' % regular_tax.id,            84),
-                ('%s-refund-base' % regular_tax.id,             0),
-                ('%s-refund-100' % regular_tax.id,              0),
+                ('%s-refund-base' % regular_tax.id,            ''),
+                ('%s-refund-100' % regular_tax.id,             ''),
 
                 ('%s-invoice-base' % caba_tax.id,             242),
                 ('%s-invoice-100' % caba_tax.id,               24.2),
-                ('%s-refund-base' % caba_tax.id,                0),
-                ('%s-refund-100' % caba_tax.id,                 0),
+                ('%s-refund-base' % caba_tax.id,               ''),
+                ('%s-refund-100' % caba_tax.id,                ''),
             ],
         )
 
@@ -1818,22 +1818,22 @@ class TestTaxReport(TestAccountReportsCommon):
                 [   0,                                                            1],
                 [
                     # Company 1
-                    ('%s-invoice-base' % created_taxes[company_1].id,           100 if company_1 in active_companies else 0),
-                    ('%s-invoice-100' % created_taxes[company_1].id,             42 if company_1 in active_companies else 0),
-                    ('%s-refund-base' % created_taxes[company_1].id,              0),
-                    ('%s-refund-100' % created_taxes[company_1].id,               0),
+                    ('%s-invoice-base' % created_taxes[company_1].id,           100 if company_1 in active_companies else ''),
+                    ('%s-invoice-100' % created_taxes[company_1].id,             42 if company_1 in active_companies else ''),
+                    ('%s-refund-base' % created_taxes[company_1].id,             ''),
+                    ('%s-refund-100' % created_taxes[company_1].id,              ''),
 
                     # Company 2
-                    ('%s-invoice-base' % created_taxes[company_2].id,           200 if active_companies == unit_companies or active_companies[0] == company_2 else 0),
-                    ('%s-invoice-100' % created_taxes[company_2].id,             84 if active_companies == unit_companies or active_companies[0] == company_2 else 0),
-                    ('%s-refund-base' % created_taxes[company_2].id,              0),
-                    ('%s-refund-100' % created_taxes[company_2].id,               0),
+                    ('%s-invoice-base' % created_taxes[company_2].id,           200 if active_companies == unit_companies or active_companies[0] == company_2 else ''),
+                    ('%s-invoice-100' % created_taxes[company_2].id,             84 if active_companies == unit_companies or active_companies[0] == company_2 else ''),
+                    ('%s-refund-base' % created_taxes[company_2].id,             ''),
+                    ('%s-refund-100' % created_taxes[company_2].id,              ''),
 
                     # Company 3 (not part of the unit, so always 0 in our cases)
-                    ('%s-invoice-base' % created_taxes[company_3].id,           300 if company_3 == active_companies[0] else 0),
-                    ('%s-invoice-100' % created_taxes[company_3].id,            126 if company_3 == active_companies[0] else 0),
-                    ('%s-refund-base' % created_taxes[company_3].id,              0),
-                    ('%s-refund-100' % created_taxes[company_3].id,               0),
+                    ('%s-invoice-base' % created_taxes[company_3].id,           300 if company_3 == active_companies[0] else ''),
+                    ('%s-invoice-100' % created_taxes[company_3].id,            126 if company_3 == active_companies[0] else ''),
+                    ('%s-refund-base' % created_taxes[company_3].id,             ''),
+                    ('%s-refund-100' % created_taxes[company_3].id,              ''),
                 ],
             )
 
@@ -2125,10 +2125,10 @@ class TestTaxReport(TestAccountReportsCommon):
             #   Name                                      Balance
             [   0,                                              1],
             [
-                ('Invoice base',                                0),
-                ('Invoice tax',                                 0),
-                ('Refund base',                                 0),
-                ('Refund tax',                                  0),
+                ('Invoice base',                               ''),
+                ('Invoice tax',                                ''),
+                ('Refund base',                                ''),
+                ('Refund tax',                                 ''),
             ],
         )
 
@@ -2141,8 +2141,8 @@ class TestTaxReport(TestAccountReportsCommon):
             [
                 ('Invoice base',                              100),
                 ('Invoice tax',                                42),
-                ('Refund base',                                 0),
-                ('Refund tax',                                  0),
+                ('Refund base',                                ''),
+                ('Refund tax',                                 ''),
             ],
         )
 
@@ -2153,9 +2153,9 @@ class TestTaxReport(TestAccountReportsCommon):
             #   Name                                      Balance
             [   0,                                              1],
             [
-                ('Invoice base',                                0),
-                ('Invoice tax',                                 0),
-                ('Refund base',                                 0),
-                ('Refund tax',                                  0),
+                ('Invoice base',                               ''),
+                ('Invoice tax',                                ''),
+                ('Refund base',                                ''),
+                ('Refund tax',                                 ''),
             ],
         )

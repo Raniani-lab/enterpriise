@@ -210,7 +210,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
     def _report_lines_to_matrix(self, lines):
         matrix = []
         for line in lines:
-            matrix_line = [line['name']] + [col['no_format_name'] for col in line['columns']]
+            matrix_line = [line['name']] + [col['no_format'] for col in line['columns']]
             matrix.append(matrix_line)
         return matrix
 

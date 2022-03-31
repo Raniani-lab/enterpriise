@@ -126,7 +126,7 @@ class AssetsReport(models.AbstractModel):
             N_expenditure += 1
             acquisition_date = parse_date(self.env, line['columns'][0]['name']).strftime("%d/%m/%Y")
             name = line['name']
-            acquisition_cost_no_vat = float(line['columns'][4]['no_format_name']) + float(line['columns'][5]['no_format_name'])
+            acquisition_cost_no_vat = float(line['columns'][4]['no_format']) + float(line['columns'][5]['no_format'])
             vat = tax_amounts.get(line['id'])
             value_to_be_depreciated = depreciable_values.get(line['id'])
             expenditures_line = {
@@ -148,13 +148,13 @@ class AssetsReport(models.AbstractModel):
             # Book value at the beginning of the reported accounting period (not reported by super's _get_lines)
             # asset_opening (acquisition price at the beginning of the accounting period)
             #  - depreciation_opening (depreciated value at the beginning of the accounting period)
-            book_value_beginning = float(line['columns'][4]['no_format_name']) - float(line['columns'][8]['no_format_name'])
-            acquisitions = float(line['columns'][5]['no_format_name'])
-            sales = float(line['columns'][6]['no_format_name'])
+            book_value_beginning = float(line['columns'][4]['no_format']) - float(line['columns'][8]['no_format'])
+            acquisitions = float(line['columns'][5]['no_format'])
+            sales = float(line['columns'][6]['no_format'])
             # Depreciation reported from _get_lines divided in value decrease (+) and value increase (-);
             # depreciation is the net difference
-            depreciation = float(line['columns'][9]['no_format_name']) - float(line['columns'][10]['no_format_name'])
-            book_value_end = float(line['columns'][12]['no_format_name'])
+            depreciation = float(line['columns'][9]['no_format']) - float(line['columns'][10]['no_format'])
+            book_value_end = float(line['columns'][12]['no_format'])
             depreciations_line = {
                 '617': {'field_type': 'number', 'value': str(N_expenditure)},
                 '602': {'field_type': 'char', 'value': acquisition_date},

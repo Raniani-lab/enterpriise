@@ -125,7 +125,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             if (
                     model == 'account.tax.report.line'
                     and line_id in lines_grids_map
-                    and not currency_id.is_zero(line['columns'][0]['name'])
+                    and not currency_id.is_zero(line['columns'][0]['no_format'])
             ):
                 grids_list.append((lines_grids_map[line_id],
                                    line['columns'][0]['name'],

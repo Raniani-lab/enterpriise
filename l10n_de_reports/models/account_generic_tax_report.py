@@ -47,13 +47,13 @@ class AccountGenericTaxReport(models.AbstractModel):
         for line in report_lines:
             if line['line_code']:
                 #all "Kz" may be supplied as negative, except "Kz39"
-                if line['columns'][0]['balance'] and (line['line_code'] != "39" or line['columns'][0]['balance'] > 0):
+                if line['columns'][0]['no_format'] and (line['line_code'] != "39" or line['columns'][0]['no_format'] > 0):
                     elem = etree.SubElement(taxes, "Kz" + line['line_code'])
                     #only "kz09" and "kz83" can be supplied with decimals
                     if line['line_code'] in ("09", "83"):
-                        elem.text = float_repr(line['columns'][0]['balance'], self.env.company.currency_id.decimal_places)
+                        elem.text = float_repr(line['columns'][0]['no_format'], self.env.company.currency_id.decimal_places)
                     else:
-                        elem.text = float_repr(int(line['columns'][0]['balance']), 0)
+                        elem.text = float_repr(int(line['columns'][0]['no_format']), 0)
                 #"Kz09" and "kz83" must be supplied with 0.00 if they don't have balance
                 elif line['line_code'] in ["09", "83"]:
                     elem = etree.SubElement(taxes, "Kz" + line['line_code'])

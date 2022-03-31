@@ -18,12 +18,12 @@ class AccountChartOfAccountReport(models.AbstractModel):
     filter_unfold_all = False
     filter_cash_basis = None
     filter_hierarchy = False
+    search_account = True
     MAX_LINES = None
 
     @api.model
     def _get_templates(self):
         templates = super(AccountChartOfAccountReport, self)._get_templates()
-        templates['main_template'] = 'account_reports.main_template_with_filter_input_accounts'
         return templates
 
     @api.model
@@ -106,7 +106,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
                 totals[i] += value
 
                 # Create columns.
-                columns.append({'name': self.format_value(value, blank_if_zero=True), 'class': 'number', 'no_format_name': value})
+                columns.append({'name': self.format_value(value), 'no_format': value, 'class': 'number'})
 
             name = account.name_get()[0][1]
 
@@ -125,7 +125,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
              'id': self._get_generic_line_id(None, None, markup='grouped_accounts_total'),
              'name': _('Total'),
              'class': 'total o_account_coa_column_contrast',
-             'columns': [{'name': self.format_value(total), 'class': 'number'} for total in totals],
+             'columns': [{'name': self.format_value(total, blank_if_zero=False), 'no_format': total, 'class': 'number'} for total in totals],
              'level': 1,
         })
 

@@ -433,9 +433,9 @@ class TestReconciliationReport(TestAccountReportsCommon):
                 #   Name                                                            Date            Amount
                 [   0,                                                              1,              3],
                 [
-                    ('Balance of 101405 Bank',                                      '01/02/2016',   0.0),
+                    ('Balance of 101405 Bank',                                      '01/02/2016',   ''),
 
-                    ('Total Balance of 101405 Bank',                                '01/02/2016',   0.0),
+                    ('Total Balance of 101405 Bank',                                '01/02/2016',   ''),
 
                     ('Outstanding Payments/Receipts',                               '',             -800.0),
 

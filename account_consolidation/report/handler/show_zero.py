@@ -53,7 +53,7 @@ class ShowZeroHandler:
         :rtype: bool
         """
         cols = line.get('columns', [{}])
-        total = sum([col.get('no_format_name', 0) for col in cols])
+        total = sum([col.get('no_format', 0) for col in cols])
         return not float_is_zero(total, 6)
 
     @staticmethod

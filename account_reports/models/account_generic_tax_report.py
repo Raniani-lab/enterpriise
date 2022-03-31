@@ -964,7 +964,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         def assign_active_section(col_nber):
             line_to_assign = active_sections_stack.pop()
             total_balance_col = totals_by_line.get(line_to_assign['id'], [0] * col_nber)
-            line_to_assign['columns'] = [{'name': self.format_value(balance), 'style': 'white-space:nowrap;', 'balance': balance} for balance in total_balance_col]
+            line_to_assign['columns'] = [{'name': self.format_value(balance), 'style': 'white-space:nowrap;', 'no_format': balance} for balance in total_balance_col]
 
             if line_to_assign.get('line_code'):
                 balances_by_code[line_to_assign['line_code']] = total_balance_col
@@ -981,11 +981,11 @@ class AccountGenericTaxReport(models.AbstractModel):
                 active_sections_stack.append(line)
             else:
                 if line.get('line_code'):
-                    balances_by_code[line['line_code']] = [col['balance'] for col in line['columns']]
+                    balances_by_code[line['line_code']] = [col['no_format'] for col in line['columns']]
 
                 if active_sections_stack:
                     for active_section in active_sections_stack:
-                        line_balances = [col['balance'] for col in line['columns']]
+                        line_balances = [col['no_format'] for col in line['columns']]
                         rslt_balances = totals_by_line.get(active_section['id'])
                         totals_by_line[active_section['id']] = line_balances if not rslt_balances else [line_balances[i] + rslt_balances[i] for i in range(0, len(rslt_balances))]
 
@@ -1017,14 +1017,14 @@ class AccountGenericTaxReport(models.AbstractModel):
                 if tax_report_line and carryover_bounds:
                     amounts[line['line_code']] = self.get_amounts_after_carryover(
                         tax_report_line,
-                        line['columns'][0]['balance'],
+                        line['columns'][0]['no_format'],
                         line['columns'][0]['carryover_bounds'],
                         options,
                         0,
                         tax_report_line.is_carryover_persistent
                     )[0]
                 else:
-                    amounts[line['line_code']] = line['columns'][0]['balance']
+                    amounts[line['line_code']] = line['columns'][0]['no_format']
                 carried_over[line['line_code']] = carryover_bounds
 
         for i, calc in enumerate(tax_report.get_checks_to_perform(amounts, carried_over)):
@@ -1036,7 +1036,7 @@ class AccountGenericTaxReport(models.AbstractModel):
                 control_line_id = self._get_generic_line_id(None, str(i), markup='control')
                 controls.append({'name': calc[0], 'id': control_line_id, 'columns': [{'name': value,
                                                                                       'style': 'white-space:nowrap;',
-                                                                                      'balance': calc[1]}],
+                                                                                      'no_format': calc[1]}],
                                  'is_control': True})
                 html_lines.append("<tr><td>{name}</td><td>{amount}</td></tr>".format(name=calc[0], amount=value))
         if controls:
@@ -1044,7 +1044,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             lines.extend([{'id': control_line_id, 'name': _('Controls failed'), 'unfoldable': False,
                            'columns': [{'name': '',
                                         'style': 'white-space:nowrap;',
-                                        'balance': ''}] * col_nber, 'level': 0, 'line_code': False, 'is_control': True}] + controls)
+                                        'no_format': ''}] * col_nber, 'level': 0, 'line_code': False, 'is_control': True}] + controls)
             options['tax_report_control_error'] = "<table width='100%'><tr><th>Control</th><th>Difference</th></tr>{}</table>".format("".join(html_lines))
 
     def _get_total_line_eval_dict(self, period_balances_by_code, period_date_from, period_date_to, options):
@@ -1088,7 +1088,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             column = {
                 'name': '' if period_total is None else self.format_value(period_total),
                 'style': 'white-space:nowrap;',
-                'balance': period_total or 0.0,
+                'no_format': period_total or 0.0,
             }
 
             carryover_bounds = report_line._get_carryover_bounds(options, period_total, carryover_account_balance)
@@ -1139,7 +1139,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             column = {
                 'name': self.format_value(value),
                 'style': 'white-space:nowrap;',
-                'balance': value
+                'no_format': value
             }
 
             carryover_bounds = grid_data['obj']._get_carryover_bounds(options, value, carryover_account_balance)
@@ -1267,7 +1267,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             # it'll already have been directly into the report.
             if tax_report_line.is_carryover_persistent:
                 column['name'] = self.format_value(line_balance)
-                column['balance'] = line_balance
+                column['no_format'] = line_balance
 
     def _get_column_styles(self, report_line):
         return {

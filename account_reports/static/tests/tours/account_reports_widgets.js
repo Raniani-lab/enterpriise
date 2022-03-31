@@ -25,12 +25,12 @@ tour.register('account_reports_widgets', {
         },
         {
             content: 'Open dropdown menu of one of the unfolded line',
-            trigger: '[data-parent-id] .o_account_report_line a:first',
+            trigger: '[data-parent-id] .o_account_report_line .dropdown a',
             run: 'click',
         },
         {
             content: 'click on the annotate action',
-            trigger: '[data-parent-id] .o_account_report_line .o_account_reports_domain_dropdown:first .js_account_reports_add_footnote',
+            trigger: '[data-parent-id] .o_account_report_line .dropdown .o_account_reports_domain_dropdown .js_account_reports_add_footnote',
             run: 'click',
         },
         {
@@ -59,7 +59,7 @@ tour.register('account_reports_widgets', {
         },
         {
             content: "wait refresh",
-            trigger: ".o_account_reports_level2:last() .o_account_report_column_value:contains(0.00)"
+            trigger: ".o_account_reports_level2:last() .o_account_report_column_value:contains('')"
         },
         {
             content: "change comparison filter",

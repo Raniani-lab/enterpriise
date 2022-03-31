@@ -93,18 +93,18 @@ class TestAbstractBuilder(AccountConsolidationTestCase):
     @patch('odoo.addons.account_consolidation.report.builder.comparison.ComparisonBuilder._build_total_line')
     def test__get_hierarchy(self, patched_total, patched_sections, patched_root, patched_orphan):
         patched_total.return_value = {
-            'columns': [{'no_format_name': 4242}, {'no_format_name': 2424}]
+            'columns': [{'no_format': 4242}, {'no_format': 2424}]
         }
         patched_sections.return_value = ([42, 24], [
             {'id': 'rootsect1', 'name': 'rootsect1', 'columns': [
-                {'no_format_name': 40}, {'no_format_name': 20}
+                {'no_format': 40}, {'no_format': 20}
             ]},
             {'id': 'sect2', 'name': 'sect2', 'parent_id': 'rootsect1', 'columns': [
-                {'no_format_name': 2}, {'no_format_name': 4}
+                {'no_format': 2}, {'no_format': 4}
             ]}])
         patched_root.return_value = [1]  # Need at least 1
         patched_orphan.return_value = ([4200, 2400], [{'id': 1, 'name': 'orphan1', 'columns': [
-            {'no_format_name': 4200}, {'no_format_name': 2400}
+            {'no_format': 4200}, {'no_format': 2400}
         ]}])
         chart_ids = []
         cols_amount = 2
@@ -128,13 +128,13 @@ class TestAbstractBuilder(AccountConsolidationTestCase):
         section_totals = [4200.42, 28.0, -0.01]
         patched_build.return_value = (section_totals, [
             {
-                'columns': [{'no_format_name': section_total} for section_total in section_totals]
+                'columns': [{'no_format': section_total} for section_total in section_totals]
             },
             {
-                'columns': [{'no_format_name': -0.42}, {'no_format_name': -42.01}, {'no_format_name': 0.02}]
+                'columns': [{'no_format': -0.42}, {'no_format': -42.01}, {'no_format': 0.02}]
             },
             {
-                'columns': [{'no_format_name': 4200.84}, {'no_format_name': 14.01}, {'no_format_name': -0.03}]
+                'columns': [{'no_format': 4200.84}, {'no_format': 14.01}, {'no_format': -0.03}]
             },
         ])
         sections = ['fake1', 'fake2']
@@ -305,11 +305,11 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                 'columns': [
                     {
                         'name': '1,000.00 €',
-                        'no_format_name': 1000.0
+                        'no_format': 1000.0
                     },
                     {
                         'name': '-2,000.00 €',
-                        'no_format_name': -2000.0
+                        'no_format': -2000.0
                     }
                 ]
             },
@@ -323,11 +323,11 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                 'columns': [
                     {
                         'name': '1,000.00 €',
-                        'no_format_name': 1000.0
+                        'no_format': 1000.0
                     },
                     {
                         'name': '-2,000.00 €',
-                        'no_format_name': -2000.0
+                        'no_format': -2000.0
                     }
                 ]
             },
@@ -339,12 +339,12 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                 'columns': [
                     {
                         'name': '1,000.00 €',
-                        'no_format_name': 1000.0,
+                        'no_format': 1000.0,
                         'class': 'number'
                     },
                     {
                         'name': '-2,000.00 €',
-                        'no_format_name': -2000.0,
+                        'no_format': -2000.0,
                         'class': 'number'
                     }
                 ],
@@ -373,8 +373,8 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
             'unfoldable': True,
             'unfolded': False,
             'columns': [
-                {'name': '0.00 €', 'no_format_name': 0.0},
-                {'name': '0.00 €', 'no_format_name': 0.0}
+                {'name': '0.00 €', 'no_format': 0.0},
+                {'name': '0.00 €', 'no_format': 0.0}
             ]
         }]
         self.assertListEqual(expected, section_line)
@@ -411,13 +411,13 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
             self.assertIn('name', perc_column)
             # NO FORMAT NAME
             if exp_percent != 'n/a':
-                self.assertIn('no_format_name', perc_column)
+                self.assertIn('no_format', perc_column)
                 if isinstance(exp_percent, float):
-                    self.assertAlmostEqual(perc_column['no_format_name'], exp_percent)
+                    self.assertAlmostEqual(perc_column['no_format'], exp_percent)
                 else:
-                    self.assertEqual(perc_column['no_format_name'], exp_percent)
+                    self.assertEqual(perc_column['no_format'], exp_percent)
             else:
-                self.assertNotIn('no_format_name', perc_column)
+                self.assertNotIn('no_format', perc_column)
 
             # CLASS
             if exp_class is not None:
@@ -427,7 +427,7 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                 self.assertNotIn('class', perc_column)
 
     @patch('odoo.addons.account_consolidation.report.builder.comparison.ComparisonBuilder._build_percentage_column',
-           return_value={'name': '0 %', 'no_format_name': 0})
+           return_value={'name': '0 %', 'no_format': 0})
     def test__build_total_line(self, patched_bpc):
         other_chart = self.env['consolidation.chart'].create({
             'name': 'Other chart',
@@ -438,9 +438,9 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
         # NO PERCENTAGE
         # €
         euro_exp = {'id': 'grouped_accounts_total', 'name': 'Total', 'class': 'total', 'level': 1,
-                    'columns': [{'name': '0.00 €', 'no_format_name': 0.0, 'class': 'number'},
-                                {'name': '1,500,000.00 €', 'no_format_name': 1500000.0, 'class': 'number text-danger'},
-                                {'name': '-2,000.00 €', 'no_format_name': -2000.0, 'class': 'number text-danger'}]}
+                    'columns': [{'name': '0.00 €', 'no_format': 0.0, 'class': 'number'},
+                                {'name': '1,500,000.00 €', 'no_format': 1500000.0, 'class': 'number text-danger'},
+                                {'name': '-2,000.00 €', 'no_format': -2000.0, 'class': 'number text-danger'}]}
         euro_total_line = self.builder._build_total_line(totals, {}, include_percentage=False)
         self.assertDictEqual(euro_total_line, euro_exp)
         # $
@@ -449,17 +449,17 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
         usd_total_line = us_builder._build_total_line(totals, [ap_usd], include_percentage=False)
 
         usd_exp = {'id': 'grouped_accounts_total', 'name': 'Total', 'class': 'total', 'level': 1,
-                   'columns': [{'name': '$ 0.00', 'no_format_name': 0.0, 'class': 'number'},
-                               {'name': '$ 1,500,000.00', 'no_format_name': 1500000.0, 'class': 'number text-danger'},
-                               {'name': '$ -2,000.00', 'no_format_name': -2000.0, 'class': 'number text-danger'}]}
+                   'columns': [{'name': '$ 0.00', 'no_format': 0.0, 'class': 'number'},
+                               {'name': '$ 1,500,000.00', 'no_format': 1500000.0, 'class': 'number text-danger'},
+                               {'name': '$ -2,000.00', 'no_format': -2000.0, 'class': 'number text-danger'}]}
         self.assertDictEqual(usd_total_line, usd_exp)
         patched_bpc.assert_not_called()
         # WITH PERCENTAGE
         totals = [0.0, -2000.0]
         euro_prct_total_line = self.builder._build_total_line(totals, {}, include_percentage=True)
         euro_exp_prct = {'id': 'grouped_accounts_total', 'name': 'Total', 'class': 'total', 'level': 1,
-                         'columns': [{'name': '0.00 €', 'no_format_name': 0.0, 'class': 'number'},
-                                     {'name': '-2,000.00 €', 'no_format_name': -2000.0, 'class': 'number text-danger'},
+                         'columns': [{'name': '0.00 €', 'no_format': 0.0, 'class': 'number'},
+                                     {'name': '-2,000.00 €', 'no_format': -2000.0, 'class': 'number text-danger'},
                                      patched_bpc.return_value]}
         self.assertDictEqual(euro_prct_total_line, euro_exp_prct)
 
@@ -523,7 +523,7 @@ class TestDefaultBuilder(AccountConsolidationTestCase):
             'title_hover': "%s (%s Currency Conversion Method)" % (account_name, account_currency_name),
             'columns': [{
                 'name': self.builder.value_formatter(t),
-                'no_format_name': t,
+                'no_format': t,
                 'class': 'number',
                 'journal_id': False  # False as no company period id is set on journals
             } for t in totals]

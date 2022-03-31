@@ -782,19 +782,19 @@ class TestAccountAsset(TestAccountReportsCommon):
         options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 10000.0,     0.0, 10000.0,     0.0,  7500.0,     0.0,  7500.0,  2500.0],
-                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+                             [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # look at all period, without unposted entries
         options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': False}})
         self.assertListEqual([    0.0, 10000.0,     0.0, 10000.0,     0.0,  4500.0,     0.0,  4500.0,  5500.0],
-                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+                             [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # look only at this period
         options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,     0.0,     0.0, 10000.0,  4500.0,   750.0,     0.0,  5250.0,  4750.0],
-                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+                             [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # test value increase
         #           PY     +   -  Final    PY     +    - Final Bookvalue
@@ -824,14 +824,14 @@ class TestAccountAsset(TestAccountReportsCommon):
         options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
-                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+                             [x['no_format'] for x in lines[0]['columns'][4:]])
         self.assertEqual('10 y', lines[0]['columns'][3]['name'], 'Depreciation Rate = 10%')
 
         # look only at this period
         options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  1000.0,     0.0,  5500.0,  6000.0],
-                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+                             [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # test value decrease
         self.env['asset.modify'].create({
@@ -857,13 +857,13 @@ class TestAccountAsset(TestAccountReportsCommon):
         options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
-                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+                             [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # look only at this period
         options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  3250.0,     0.0,  7750.0,  3750.0],
-                             [x['no_format_name'] for x in lines[0]['columns'][4:]])
+                             [x['no_format'] for x in lines[0]['columns'][4:]])
 
     def test_asset_pause_resume(self):
         """Test that depreciation remains the same after a pause and resume at a later date"""

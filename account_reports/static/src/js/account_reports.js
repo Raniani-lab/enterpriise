@@ -145,7 +145,7 @@ var accountReportsWidget = AbstractAction.extend({
     hasControlPanel: true,
 
     events: {
-        'input .o_account_reports_filter_input': 'filter_accounts',
+        'input .o_searchview_input': 'filter_accounts',
         'click .o_account_reports_summary': 'edit_summary',
         'click .js_account_report_save_summary': 'save_summary',
         'click .o_account_reports_footnote_icons': 'delete_footnote',
@@ -237,6 +237,7 @@ var accountReportsWidget = AbstractAction.extend({
         this.buttons = values.buttons;
 
         this.main_html = values.main_html;
+        this.$searchview = $(QWeb.render("accountReports.search_bar", {report_options: this.report_options}));
         this.$searchview_buttons = $(values.searchview_html);
         this.persist_options();
     },
@@ -967,6 +968,12 @@ var accountReportsWidget = AbstractAction.extend({
         var parent_ids = new Map();
         lines.each((it, line) => {
             let $line = $(line);
+
+            // This prevents to flip the carret of domain lines when opening/closing a parent dropdown
+            if ($line.find('> .dropdown').length != 0) {
+                return;
+            }
+
             $line.find('.fa-caret-down').toggleClass('fa-caret-right fa-caret-down');
             $line.toggleClass('folded');
             $line.parent('tr').removeClass('o_js_account_report_parent_row_unfolded');
@@ -1003,7 +1010,7 @@ var accountReportsWidget = AbstractAction.extend({
         var self = this;
         var line_id = line.data('id');
         line.find('.o_account_reports_caret_icon .fa-caret-down').toggleClass('fa-caret-right fa-caret-down');
-        line.toggleClass('folded');
+        line.addClass('folded');
         $(line).parent('tr').removeClass('o_js_account_report_parent_row_unfolded');
         var $lines_to_hide = this.$el.find('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
         var index = self.report_options.unfolded_lines.indexOf(line_id);

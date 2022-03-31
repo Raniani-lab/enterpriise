@@ -123,9 +123,9 @@ class TaxReport(models.AbstractModel):
                 'name': row['name'],
                 'columns': [
                     {'name': row['vat']},
-                    {'name': self.format_value(row['total_gst']), 'no_format_name': row['total_gst']},
-                    {'name': self.format_value(row['gross_paid']), 'no_format_name': row['gross_paid']},
-                    {'name': self.format_value(row['tax_withheld']), 'no_format_name': row['tax_withheld']},
+                    {'name': self.format_value(row['total_gst']), 'no_format': row['total_gst']},
+                    {'name': self.format_value(row['gross_paid']), 'no_format': row['gross_paid']},
+                    {'name': self.format_value(row['tax_withheld']), 'no_format': row['tax_withheld']},
                 ],
             }]
 

@@ -174,7 +174,7 @@ class TestItalianTaxReport(AccountTestInvoicingCommon):
             report_lines = report._get_lines(second_month_options)
             line = [line for line in report_lines if line['line_code'] == target_line_code][0]
 
-            self.assertEqual(line['columns'][0]['balance'], target_line_value)
+            self.assertEqual(line['columns'][0]['no_format'], target_line_value)
 
     def _init_options(self, report, date_from, date_to):
         return report._get_options({'date': {

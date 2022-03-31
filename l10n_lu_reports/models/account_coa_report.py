@@ -121,12 +121,12 @@ class AccountChartOfAccountReport(models.AbstractModel):
             # Code of account being reported in the P&L: result for the year
             p_l_code = code[0] in ('6', '7')
             if p_l_code:
-                debit = float(line['columns'][2]['no_format_name'])
-                credit = float(line['columns'][3]['no_format_name'])
+                debit = float(line['columns'][2]['no_format'])
+                credit = float(line['columns'][3]['no_format'])
             # Code of account being reported in the Balance Sheet: total
             else:
-                debit = float(line['columns'][4]['no_format_name'])
-                credit = float(line['columns'][5]['no_format_name'])
+                debit = float(line['columns'][4]['no_format'])
+                credit = float(line['columns'][5]['no_format'])
             # 142 (results for the financial year) will be manually calculated to balance as required
             if code[:3] == '142' and year <= 2019:
                 continue

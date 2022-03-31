@@ -269,7 +269,7 @@ class AbstractBuilder(ABC):
         # Columns
         cols = [{
             'name': self.value_formatter(total),
-            'no_format_name': total,
+            'no_format': total,
             'class': 'number' + (' text-muted' if float_is_zero(total, 6) else '')}
             for total in totals]
 
@@ -338,7 +338,7 @@ class AbstractBuilder(ABC):
 
         if section_totals is None:
             section_totals = self._get_default_line_totals(options, **kwargs)
-        section_line['columns'] = [{'name': self.value_formatter(total), 'no_format_name': total}
+        section_line['columns'] = [{'name': self.value_formatter(total), 'no_format': total}
                                    for total in section_totals]
         return section_totals, lines
 
@@ -353,7 +353,7 @@ class AbstractBuilder(ABC):
         :rtype: dict
         """
         cols = [{
-            'name': self.value_formatter(total), 'no_format_name': total,
+            'name': self.value_formatter(total), 'no_format': total,
             'class': 'number' + (' text-danger' if not float_is_zero(total, 6) else '')
         } for total in totals]
 

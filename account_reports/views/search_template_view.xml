@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <data>
-
     <template id="search_template_date_filter">
         <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-calendar" title="Dates" role="img" aria-label="Dates"/>

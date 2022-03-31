@@ -22,7 +22,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         ctx = self._set_context(options)
         report_lines = self.with_context(ctx)._get_lines(options)
 
-        template_context = {line['line_code']: float_repr(line['columns'][0]['balance'], 0) for line in report_lines}
+        template_context = {line['line_code']: float_repr(line['columns'][0]['no_format'], 0) for line in report_lines}
 
         template_context['org_number'] = self._get_sender_company_for_export(options).org_number
         template_context['period'] = (options['date']['date_to'][:4] + options['date']['date_to'][5:7])

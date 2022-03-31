@@ -17,7 +17,7 @@ from markupsafe import Markup
 from odoo import models, fields, api, _
 from odoo.exceptions import RedirectWarning
 from odoo.osv import expression
-from odoo.tools import config, date_utils, get_lang
+from odoo.tools import config, date_utils, get_lang, float_compare
 from odoo.tools.misc import formatLang, format_date
 from odoo.tools.misc import xlsxwriter
 from odoo.addons.web.controllers.utils import clean_action
@@ -64,6 +64,24 @@ class AccountReport(models.AbstractModel):
     filter_partner = None
     filter_fiscal_position = None
     order_selected_column = None
+    search_account = None
+    search_partner = None
+
+    ####################################################
+    # OPTIONS: search
+    ####################################################
+
+    def _init_search_account(self, options, previous_options=None):
+        if self.search_account is None:
+            return
+
+        options['search_account'] = self.search_account
+
+    def _init_search_partner(self, options, previous_options=None):
+        if self.search_partner is None:
+            return
+
+        options['search_partner'] = self.search_partner
 
     ####################################################
     # OPTIONS: journals
@@ -710,7 +728,7 @@ class AccountReport(models.AbstractModel):
                 'unfolded': unfolded,
                 'level': level,
                 'parent_id': parent_id,
-                'columns': [{'name': self.format_value(c) if isinstance(c, (int, float)) else c, 'no_format_name': c} for c in val_dict['totals']],
+                'columns': [{'name': self.format_value(c) if isinstance(c, (int, float)) else c, 'no_format': c} for c in val_dict['totals']],
             })
             if not self._context.get('print_mode') or unfolded:
                 for i in val_dict['children_codes']:
@@ -738,9 +756,7 @@ class AccountReport(models.AbstractModel):
                     hierarchy[code[0]]['id'] = self._get_generic_line_id('account.group', code[0], parent_line_id=line['id'])
                     hierarchy[code[0]]['name'] = code[1]
                     for i, column in enumerate(line['columns']):
-                        if 'no_format_name' in column:
-                            no_format = column['no_format_name']
-                        elif 'no_format' in column:
+                        if 'no_format' in column:
                             no_format = column['no_format']
                         else:
                             no_format = None
@@ -903,7 +919,7 @@ class AccountReport(models.AbstractModel):
         filter_list = [
             attr for attr in dir(self)
             if (
-                (attr.startswith('filter_') or attr.startswith('order_'))
+                (attr.startswith('filter_') or attr.startswith('order_') or attr.startswith('search_'))
                 and len(attr) > 7
                 and not callable(getattr(self, attr))
             )
@@ -1525,6 +1541,16 @@ class AccountReport(models.AbstractModel):
 
         lines = self._format_lines_for_display(lines, options)
 
+        # Catch negative numbers when present
+        for line in lines:
+            for col in line['columns']:
+                if (
+                    'no_format' in col
+                    and isinstance(col['no_format'], float)
+                    and float_compare(col['no_format'], 0.0, precision_digits=self.env.company.currency_id.decimal_places) == -1
+                ):
+                    col['class'] = 'number color-red'
+
         render_values['lines'] = {'columns_header': headers, 'lines': lines}
 
         # Manage footnotes.
@@ -1621,7 +1647,7 @@ class AccountReport(models.AbstractModel):
         return existing_manager
 
     @api.model
-    def format_value(self, amount, currency=False, blank_if_zero=False):
+    def format_value(self, amount, currency=False, blank_if_zero=True):
         ''' Format amount to have a monetary display (with a currency symbol).
         E.g: 1000 => 1000.0 $
 

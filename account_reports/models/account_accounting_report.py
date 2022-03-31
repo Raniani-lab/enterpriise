@@ -102,7 +102,7 @@ class AccountingReport(models.AbstractModel):
 
     # COLUMN/CELL FORMATTING ###################################################
     # ##########################################################################
-    def _field_column(self, field_name, sortable=False, name=None, ellipsis=False, blank_if_zero=False):
+    def _field_column(self, field_name, sortable=False, name=None, ellipsis=False, blank_if_zero=True):
         """Build a column based on a field.
 
         The type of the field determines how it is displayed.

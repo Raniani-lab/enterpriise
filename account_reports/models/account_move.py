@@ -16,7 +16,7 @@ class AccountMove(models.Model):
             report_lines = AccountGenericTaxReport.with_context(new_context)._get_lines(options)
 
             for line in [line for line in report_lines if line['columns'][0].get('carryover_bounds', False)]:
-                line_balance = line['columns'][0]['balance']
+                line_balance = line['columns'][0]['no_format']
                 carryover_bounds = line['columns'][0].get('carryover_bounds')
                 tax_line_id = AccountGenericTaxReport._parse_line_id(line['id'])[-1][2]
 

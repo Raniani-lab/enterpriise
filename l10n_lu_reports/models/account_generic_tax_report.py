@@ -22,7 +22,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             # having `code` as dictionary key
             split_line_code = line.get('line_code') and line['line_code'].split('_') or []
             if len(split_line_code) > 1 and split_line_code[1].isdigit():
-                balance = "{:.2f}".format(line['columns'][0]['balance']).replace('.', ',')
+                balance = "{:.2f}".format(line['columns'][0]['no_format']).replace('.', ',')
                 values[split_line_code[1]] = {'value': balance, 'field_type': 'number'}
 
         on_payment = self.env['account.tax'].search([

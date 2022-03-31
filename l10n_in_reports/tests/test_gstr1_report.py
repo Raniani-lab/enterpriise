@@ -46,8 +46,8 @@ class TestReports(TestAccountReportsCommon):
             {"name": 1, "class": ""},
             {"name": "₹ 25.00", "class": "number"},
             {"name": "₹ 25.00", "class": "number"},
-            {"name": "₹ 0.00", "class": "number"},
-            {"name": "₹ 0.00", "class": "number"}
+            {"name": "", "class": "number"},
+            {"name": "", "class": "number"}
             ]
         self.assertListEqual(expected, lines[0]['columns'], "Wrong values for Indian GSTR-1 B2B summary report.")
 

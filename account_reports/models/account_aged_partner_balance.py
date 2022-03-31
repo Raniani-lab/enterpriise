@@ -166,7 +166,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
             self._header_column(),
             self._field_column('report_date'),
 
-            self._field_column('account_name', name=_("Account"), ellipsis=True),
+            self._field_column('account_code', name=_("Account")),
             self._field_column('expected_pay_date'),
             self._field_column('period0', name=_("As of: %s", format_date(self.env, options['date']['date_to']))),
             self._field_column('period1', sortable=True),
@@ -221,6 +221,11 @@ class ReportAccountAgedPartner(models.AbstractModel):
         res['name'] = _('Total')
         res['colspan'] = len(self._get_column_details(options)) - 7
         res['columns'] = res['columns'][res['colspan']-1:]
+
+        # Since we remove every 0.0 by default we need to add them here
+        for col in res['columns']:
+            if col.get('no_format') == 0:
+                col['name'] = self.format_value(col.get('no_format'), blank_if_zero=False)
 
 
 class ReportAccountAgedReceivable(models.Model):

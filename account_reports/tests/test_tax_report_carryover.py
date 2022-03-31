@@ -247,7 +247,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
         line_22 = [line for line in lines if line['id'] == line_id][0]
 
         # The balance of the line 22 for the next period is the balance of its carryover from last period.
-        self.assertEqual(line_22['columns'][0]['balance'], 27.0)
+        self.assertEqual(line_22['columns'][0]['no_format'], 27.0)
 
         # Close the current period again. It should trigger a carryover from line 27 to line 22.
         # even if it is empty, to reset the balance since it is not persistent and should be at 0 if there
@@ -291,7 +291,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
         line_25 = [line for line in lines if line['id'] == line_id][0]
 
         # The balance of the line 25 for the next period is the balance of its carryover from last period.
-        self.assertEqual(line_25['columns'][0]['balance'], 25.0)
+        self.assertEqual(line_25['columns'][0]['no_format'], 25.0)
 
         # Close the current period again. As no changes were done and 32 is using 25 in the formula, the amount should
         # Be the same. Thus, there should be no new carryover line.
@@ -311,4 +311,4 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             line_25 = [line for line in lines if line['id'] == line_id][0]
 
             # The balance of the line 25 for the next period is the same as the last period as no changes occurred.
-            self.assertEqual(line_25['columns'][0]['balance'], 25.0)
+            self.assertEqual(line_25['columns'][0]['no_format'], 25.0)

@@ -23,29 +23,83 @@
     }
 }
 
+// Reports on large screens
+@media (min-width: map-get($grid-breakpoints,"xl")) {
+    .o_content > .o_account_reports_body {
+        .o_account_reports_no_print {
+            min-width: map-get($container-max-widths,"xl");
+            width: fit-content !important;
+        }
+
+        .o_account_reports_summary {
+            display: none;
+        }
+    }
+}
+
+// The selector is to target financial reports without targeting follow ups
+// reports_body are not a direct child of o_content on follow ups but it is for financial reports
+.o_content > .o_account_reports_body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden !important; // Removes a useless scrollbar when resizing down
+
+    #warnings_div {
+        width: 100%;
+
+        .alert {
+            width: 100%;
+        }
+    }
+
+    .o_account_reports_no_print {
+        // form sheet
+        border: 1px solid #C9CCD2;
+        box-shadow: 0 5px 20px -15px rgba(0,0,0,.4);
+        margin: 24px 12px 48px;
+        padding: 24px;
+        width: calc(100% - 12px);
+
+        .table-responsive {
+            min-height: 470px;
+        }
+    }
+}
+
 .o_account_reports_page {
     background-color: $o-view-background-color;
     color: $o-main-text-color;
 
-    .dropdown-toggle::after {
-        display: none; // disable bootstrap's carret and do it manaully for positionning
+    // Clearfix the floats (prevent the element height to collapse)
+    .o_account_reports_header {
+        clear: both;
+        overflow: hidden;
     }
 
-    padding-bottom: 125px;
-    @include o-webclient-padding($top: $o-sheet-vpadding, $bottom: $o-sheet-vpadding);
+    .dropdown-toggle::after {
+        display: none; // disable bootstrap's caret and do it manually for positioning
+    }
+
+    padding: 24px;
+
     .o_account_reports_level0 {
-        border-width: 3px;
+        border-width: 2px;
         font-weight: bold;
-        // border-top-style: $border-top-style;
-        border-bottom-style: double;
+        border-bottom-style: solid;
     }
     .o_account_reports_table {
-        margin-bottom: 128px;
+        margin-bottom: 24px;
+
         th.o_account_report_column_header {
-            &.sortable::before {
-                content: '\f07d';
-                font-family: 'FontAwesome';
-                color: lightgray;
+            &.sortable {
+                cursor: pointer;
+
+                &::before {
+                    content: '\f07d';
+                    font-family: 'FontAwesome';
+                    color: lightgray;
+                }
             }
             &.up::before {
                 content: '\f176';
@@ -75,19 +129,22 @@
         }
         position: relative;
     }
-    // truncate span content and ad '...' if content width > span width
+    // truncate span content and add '...' if content width > span width
     .o_account_report_line_ellipsis, .o_account_report_name_ellipsis{
         position: relative;
+        max-width: 320px;
+
         span {
-            position: absolute;
+            float: left;
         }
         > span, span[class^="o_account_reports_domain_line_"] {
-            left: 0;
-            right: 0;
-            top: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding-left: 8px;
+        }
+        > span[class="o_account_report_column_value"] {
+            max-width: 320px;
         }
     }
     .o_account_report_name_ellipsis {
@@ -125,7 +182,7 @@
         cursor: pointer;
     }
     .color-red {
-        color: red !important;
+        color: #d23f3a !important;
     }
     .color-green {
         color: green !important;
@@ -162,20 +219,19 @@
         .date {
             text-align: center;
         }
-        th{
+        th {
             background-color: white;
             background-clip: padding-box;
-            border: 1px solid #e6e6e6;
             .subtitle{
                 font-weight:normal;
             }
         }
         .o_account_reports_header_hierarchy {
+            line-height: 2;
             th {
                 border-bottom: none;
             }
             th:not(:first-child) {
-                border: 1px solid #e6e6e6;
                 border-collapse: separate;
                 padding-right: 8px;
                 padding-left: 8px;
@@ -210,6 +266,12 @@
     }
     table > tbody > tr >  td{
         vertical-align: top;
+
+        &.number {
+            font-family: 'Courier New', monospace;
+            font-feature-settings: 'tnum';
+            font-weight: bold;
+        }
     }
     .o_account_reports_summary {
         margin-bottom: 20px;
@@ -226,8 +288,12 @@
     td.o_account_reports_unfoldable, td.o_account_reports_foldable, span.partner_id, span.move_line_id, input[type=checkbox] {
         cursor: pointer;
     }
-    p.footnote > .text {
-        white-space: pre-wrap;
+    p.footnote {
+        margin-top: 8px;
+
+        > .text {
+            white-space: pre-wrap;
+        }
     }
     p.footnote > .o_account_reports_footnote_icons, p.o_account_reports_footnote_edit > .o_account_reports_footnote_icons {
         visibility: hidden;
@@ -244,7 +310,8 @@
         display: contents;
         .fa {
             position: absolute;
-            bottom: 4px;
+            bottom: 5px;
+            left: 0;
         }
     }
     .o_account_reports_domain_line_0 {
@@ -256,38 +323,10 @@
     .o_account_reports_domain_line_2 {
         margin-left: 30px;
     }
-    .o_account_reports_domain_line_3 {
-        margin-left: 40px;
-    }
-    .o_account_reports_domain_line_4 {
-        margin-left: 50px;
-    }
-    .o_account_reports_domain_line_5 {
-        margin-left: 60px;
-    }
-    .o_account_reports_domain_line_6 {
-        margin-left: 70px;
-    }
-    .o_account_reports_domain_line_7 {
-        margin-left: 80px;
-    }
-    .o_account_reports_domain_line_8 {
-        margin-left: 90px;
-    }
-    .o_account_reports_domain_line_9 {
-        margin-left: 100px;
-    }
-    .o_account_reports_domain_line_10 {
-        margin-left: 110px;
-    }
-    .o_account_reports_domain_line_11 {
-        margin-left: 120px;
-    }
-    .o_account_reports_domain_line_12 {
-        margin-left: 130px;
-    }
-    .o_account_reports_domain_line_13 {
-        margin-left: 140px;
+    @for $i from 3 through 13 {
+        .o_account_reports_domain_line_#{$i} {
+            margin-left: ($i * 10px) + 10;
+        }
     }
     tr.o_account_reports_domain_total {
         font-weight: bold;
@@ -309,6 +348,7 @@
     }
     .total {
         font-weight: bold;
+        color: #212121 !important;
     }
     .o_account_reports_level0, .o_account_reports_level1, .o_account_reports_level2, .o_account_reports_domain_total, .total {
         .text-muted {
@@ -317,10 +357,10 @@
     }
     .o_foldable_total {
         color: #666666 !important;
-        &.color-red{
-            color: red !important;
+        &.color-red {
+            color: #d23f3a !important;
         }
-        &.color-green{
+        &.color-green {
             color: green !important;
         }
     }
@@ -337,10 +377,15 @@
     }
     @mixin report_level($indent) {
         border-bottom: 1px solid #eee;
+        line-height: 1.8;
+
         > td.o_account_report_line_indent > span:last-child {
             margin-left: ($indent + 1) * 10px;
         }
         &.total {
+            font-weight: bold !important;
+            color: #212121 !important;
+
             > td > span:last-child {
                 margin-left: $indent * 10px;
             }
@@ -353,6 +398,11 @@
                 top: unset;
             }
         }
+
+        .o_account_report_name_ellipsis > span {
+            left: 8px;
+        }
+
         > td.o_account_report_line_indent.o_foldable_total > span:last-child {
             margin-left: 10px;
         }
@@ -367,38 +417,10 @@
         font-weight: bold;
         border-bottom: 1px solid #bbb;
     }
-    .o_account_reports_level3 {
-        @include report_level(3);
-    }
-    .o_account_reports_level4 {
-        @include report_level(4);
-    }
-    .o_account_reports_level5 {
-        @include report_level(5);
-    }
-    .o_account_reports_level6 {
-        @include report_level(6);
-    }
-    .o_account_reports_level7 {
-        @include report_level(7);
-    }
-    .o_account_reports_level8 {
-        @include report_level(8);
-    }
-    .o_account_reports_level9 {
-        @include report_level(9);
-    }
-    .o_account_reports_level10 {
-        @include report_level(10);
-    }
-    .o_account_reports_level11 {
-        @include report_level(11);
-    }
-    .o_account_reports_level12 {
-        @include report_level(12);
-    }
-    .o_account_reports_level13 {
-        @include report_level(13);
+    @for $i from 3 through 13 {
+        .o_account_reports_level#{$i} {
+            @include report_level($i);
+        }
     }
     .o_account_reports_default_style {
         border-bottom: 1px solid #eee;
@@ -437,9 +459,28 @@
         background-color: #FAFAFA;
         background-clip: padding-box;
     }
-    .table-hover tbody tr:hover td {
-        background-color: #F0F0F0;
-        background-clip: padding-box;
+    .table-hover tbody {
+        tr:not(.o_account_reports_level0):hover > td {
+            background-color: #F0F0F0;
+            background-clip: padding-box;
+        }
+
+        // Since, we can't add spacing between rows in a table, this prevents the background to be the full height of the row.
+        .o_account_reports_level0:hover {
+            background-repeat: no-repeat;
+            background-image: linear-gradient(#FFF, #FFF), linear-gradient(#F0F0F0, #F0F0F0);
+            background-size: 100% 26px, 100% 28px;
+        }
+    }
+
+    .table-bold-unfold {
+        td.o_foldable_total.folded {
+            font-weight: normal;
+        }
+
+        .o_account_reports_level1, .o_account_reports_level2 {
+            font-weight: normal;
+        }
     }
 }
 
@@ -511,7 +552,6 @@
 .o_account_reports_body .o_account_reports_summary {
     display: inline-block;
     position: relative;
-
 
     .o_account_report_summary_placeholder{
         opacity: .5;

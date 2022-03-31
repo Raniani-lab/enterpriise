@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <templates>
+    <t t-name="accountReports.search_bar">
+        <div class="o_cp_searchview" t-if="report_options.search_account or report_options.search_partner">
+            <div class="o_searchview">
+                <i class="o_searchview_icon oi oi-search" role="img" aria-label="Search..." title="Search..."></i>
+
+                <div class="o_searchview_input_container">
+                    <input class="o_searchview_input" type="text" placeholder="Search account" t-if="report_options.search_account"/>
+                    <input class="o_searchview_input" type="text" placeholder="Search partner" t-if="report_options.search_partner"/>
+                </div>
+            </div>
+        </div>
+    </t>
 
     <t t-name="accountReports.footnote_dialog">
         <form role="form">

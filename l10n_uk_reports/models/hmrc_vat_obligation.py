@@ -142,7 +142,7 @@ class HmrcVatObligation(models.Model):
         for line in lines:
             line_id = self.env['account.generic.tax.report']._parse_line_id(line['id'])[-1][-1]
             if reverse_table.get(line_id):
-                # Do a get for the no_format_name as for the totals you have twice the line, without and with amount
+                # Do a get for the no_format as for the totals you have twice the line, without and with amount
                 # We cannot pass a negative netVatDue to the API and the amounts of sales/purchases/goodssupplied/ ... must be rounded
                 if reverse_table[line_id] == 'netVatDue':
                     values[reverse_table[line_id]] = abs(round(line['columns'][0].get('balance', 0.0), 2))

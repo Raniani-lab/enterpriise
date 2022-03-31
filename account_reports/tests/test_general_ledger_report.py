@@ -94,22 +94,21 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             #   Name                                    Debit           Credit          Balance
             [   0,                                      4,              5,              6],
             [
-                ('121000 Account Receivable',           1000.0,         0.0,            1000.0),
-                ('211000 Account Payable',              100.0,          0.0,            100.0),
-                ('211000 Account Payable',              50.0,           0.0,            50.0),
-                ('400000 Product Sales',                20000.0,        0.0,            20000.0),
-                ('Initial Balance',                     0.0,            0.0,            0.0),
+                ('121000 Account Receivable',           1000.0,         '',             1000.0),
+                ('211000 Account Payable',              100.0,          '',             100.0),
+                ('211000 Account Payable',              50.0,           '',             50.0),
+                ('400000 Product Sales',                20000.0,        '',             20000.0),
                 ('INV/2017/00001',                      2000.0,         '',             2000.0),
                 ('INV/2017/00001',                      3000.0,         '',             5000.0),
                 ('INV/2017/00001',                      4000.0,         '',             9000.0),
                 ('INV/2017/00001',                      5000.0,         '',             14000.0),
                 ('INV/2017/00001',                      6000.0,         '',             20000.0),
                 ('Total 400000 Product Sales',          20000.0,        0.0,            20000.0),
-                ('400000 Product Sales',                0.0,            200.0,          -200.0),
-                ('600000 Expenses',                     0.0,            21000.0,        -21000.0),
-                ('600000 Expenses',                     200.0,          0.0,            200.0),
+                ('400000 Product Sales',                '',             200.0,          -200.0),
+                ('600000 Expenses',                     '',             21000.0,        -21000.0),
+                ('600000 Expenses',                     200.0,          '',             200.0),
                 ('999999 Undistributed Profits/Losses', 200.0,          300.0,          -100.0),
-                ('999999 Undistributed Profits/Losses', 0.0,            50.0,           -50.0),
+                ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
                 ('Total',                               21550.0,        21550.0,        0.0),
             ],
         )
@@ -127,14 +126,13 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             #   Name                                    Debit           Credit          Balance
             [   0,                                      4,              5,              6],
             [
-                ('400000 Product Sales',                20000.0,        0.0,            20000.0),
-                ('Initial Balance',                     0.0,            0.0,            0.0),
+                ('400000 Product Sales',                20000.0,        '',             20000.0),
                 ('INV/2017/00001',                      2000.0,         '',             2000.0),
                 ('INV/2017/00001',                      3000.0,         '',             5000.0),
                 ('INV/2017/00001',                      4000.0,         '',             9000.0),
                 ('INV/2017/00001',                      5000.0,         '',             14000.0),
                 ('INV/2017/00001',                      6000.0,         '',             20000.0),
-                ('Total 400000 Product Sales',          20000.0,        0.0,            20000.0),
+                ('Total 400000 Product Sales',          20000.0,       0.0,             20000.0),
             ],
         )
 
@@ -153,21 +151,20 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 #   Name                                    Debit           Credit          Balance
                 [   0,                                      4,              5,              6],
                 [
-                    ('400000 Product Sales',                20000.0,        0.0,            20000.0),
-                    ('Initial Balance',                     0.0,            0.0,            0.0),
+                    ('400000 Product Sales',                20000.0,        '',             20000.0),
                     ('INV/2017/00001',                      2000.0,         '',             2000.0),
                     ('INV/2017/00001',                      3000.0,         '',             5000.0),
                     ('Load more... (3 remaining)',          '',             '',             ''),
-                    ('Total 400000 Product Sales',          20000.0,        0.0,            20000.0),
+                    ('Total 400000 Product Sales',          20000.0,       0.0,             20000.0),
                 ],
             )
 
-            line_id = report_lines[4]['id']
+            line_id = report_lines[3]['id']
             options['unfolded_lines'] = [line_id]
             options.update({
-                'lines_offset': report_lines[4]['offset'],
-                'lines_progress': report_lines[4]['progress'],
-                'lines_remaining': report_lines[4]['remaining'],
+                'lines_offset': report_lines[3]['offset'],
+                'lines_progress': report_lines[3]['progress'],
+                'lines_remaining': report_lines[3]['remaining'],
             })
 
             report_lines = report._get_lines(options, line_id=line_id)
@@ -278,17 +275,17 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             #   Name                                    Amount_currency Debit           Credit          Balance
             [   0,                                      4,              5,              6,              7],
             [
-                ('121000 Account Receivable',           '',             2100.0,         0.0,            2100.0),
-                ('211000 Account Payable',              '',             100.0,          0.0,            100.0),
-                ('211000 Account Payable',              '',             50.0,           0.0,            50.0),
-                ('400000 Product Sales',                '',             20000.0,        0.0,            20000.0),
-                ('400000 Product Sales',                '',             0.0,            200.0,          -200.0),
-                ('600000 Expenses',                     '',             0.0,            21000.0,        -21000.0),
-                ('600000 Expenses',                     '',             200.0,          0.0,            200.0),
+                ('121000 Account Receivable',           '',             2100.0,         '',             2100.0),
+                ('211000 Account Payable',              '',             100.0,          '',             100.0),
+                ('211000 Account Payable',              '',             50.0,           '',             50.0),
+                ('400000 Product Sales',                '',             20000.0,        '',             20000.0),
+                ('400000 Product Sales',                '',             '',             200.0,          -200.0),
+                ('600000 Expenses',                     '',             '',             21000.0,        -21000.0),
+                ('600000 Expenses',                     '',             200.0,          '',             200.0),
                 ('999999 Undistributed Profits/Losses', '',             200.0,          300.0,          -100.0),
-                ('999999 Undistributed Profits/Losses', '',             0.0,            50.0,           -50.0),
-                ('test foreign_curr_account',           -2300.0,        0.0,            1100.0,         -1100.0),
-                ('Initial Balance',                     -300.0,         0.0,            100.0,          -100.0),
+                ('999999 Undistributed Profits/Losses', '',             '',             50.0,           -50.0),
+                ('test foreign_curr_account',           -2300.0,        '',             1100.0,         -1100.0),
+                ('Initial Balance',                     -300.0,         '',             100.0,          -100.0),
                 ('INV/2017/00002',                      -2000.0,        '',             1000.0,         -1100.0),
                 ('Total test foreign_curr_account',     -2300.0,        0.0,            1100.0,         -1100.0),
                 ('Total',                               '',             22650.0,        22650.0,        0.0),
@@ -307,8 +304,8 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             #   Name                                    Debit           Credit          Balance
             [   0,                                      4,              5,              6],
             [
-                ('400000 Product Sales',                20000.0,        0.0,            20000.0),
-                ('400000 Product Sales',                0.0,            200.0,          -200.0),
+                ('400000 Product Sales',                20000.0,        '',             20000.0),
+                ('400000 Product Sales',                '',             200.0,          -200.0),
                 ('Total',                               20000.0,        200.0,          19800.0),
             ],
         )
@@ -320,7 +317,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             [   0,                                      4,              5,              6],
             [
                 ('999999 Undistributed Profits/Losses', 200.0,          300.0,          -100.0),
-                ('999999 Undistributed Profits/Losses', 0.0,            50.0,           -50.0),
+                ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
                 ('Total',                               200.0,          350.0,          -150.0),
             ],
         )
@@ -366,7 +363,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 ('121000 Account Receivable',           '',             '',             1000.0,         '',             1000.0,         ''),
                 ('400000 Product Sales',                '',             '',             20000.0,        '',             20000.0,        ''),
                 ('600000 Expenses',                     '',             '',             '',             21000.0,        '',             21000.0),
-                ('Total',                               0.0,            0.0,            21000.0,        21000.0,        21000.0,        21000.0),
+                ('Total',                              0.0,            0.0,             21000.0,        21000.0,        21000.0,        21000.0),
             ],
         )
 
@@ -388,6 +385,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 ('400000 Product Sales',                '',             '',             '',             50.0,           '',             200.0,          '',             250.0),
                 ('600000 Expenses',                     '',             '',             200.0,          '',             '',             21000.0,        '',             20800.0),
                 ('600000 Expenses',                     '',             '',             '',             '',             200.0,          '',             200.0,          ''),
-                ('Total',                               0.0,            0.0,            350.0,          350.0,          21200.0,        21200.0,        21050.0,        21050.0),
+                ('Total',                              0.0,            0.0,             350.0,          350.0,          21200.0,        21200.0,        21050.0,        21050.0),
             ],
         )

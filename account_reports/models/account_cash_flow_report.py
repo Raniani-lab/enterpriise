@@ -423,7 +423,7 @@ class AccountCashFlowReport(models.AbstractModel):
                 'name': name,
                 'level': level,
                 'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
-                'columns': [{'name': 0.0, 'class': 'number'}],
+                'columns': [{'no_format': 0.0, 'class': 'number'}],
             } for index, level, name in [
                 (0, 0, _('Cash and cash equivalents, beginning of period')),
                 (1, 0, _('Net increase in cash and cash equivalents')),
@@ -447,6 +447,9 @@ class AccountCashFlowReport(models.AbstractModel):
 
     @api.model
     def _get_lines(self, options, line_id=None):
+        def _add_no_format_values(array, key_result, key_to_sum):
+            for key in key_to_sum:
+                array[key_result]['columns'][0]['no_format'] += array[key]['columns'][0]['no_format']
 
         def _insert_at_index(index, account_id, account_code, account_name, amount):
             ''' Insert the amount in the right section depending the line's index and the account_id. '''
@@ -463,11 +466,12 @@ class AccountCashFlowReport(models.AbstractModel):
                 'name': '%s %s' % (account_code, account_name),
                 'level': line['level'] + 1,
                 'parent_id': line['id'],
-                'columns': [{'name': 0.0, 'class': 'number'}],
+                'columns': [{'no_format': 0.0, 'class': 'number'}],
                 'caret_options': 'account.account',
             })
-            line['columns'][0]['name'] += amount
-            line['unfolded_lines'][account_id]['columns'][0]['name'] += amount
+
+            line['columns'][0]['no_format'] += amount
+            line['unfolded_lines'][account_id]['columns'][0]['no_format'] += amount
 
         def _dispatch_result(account_id, account_code, account_name, account_internal_type, amount):
             ''' Dispatch the newly fetched line inside the right section. '''
@@ -539,41 +543,31 @@ class AccountCashFlowReport(models.AbstractModel):
             _dispatch_result(account_id, account_code, account_name, account_internal_type, balance)
 
         # 'Cash flows from operating activities'                            (index=2)
-        lines_to_compute[2]['columns'][0]['name'] = \
-            lines_to_compute[3]['columns'][0]['name'] + \
-            lines_to_compute[4]['columns'][0]['name'] + \
-            lines_to_compute[5]['columns'][0]['name'] + \
-            lines_to_compute[6]['columns'][0]['name']
+        _add_no_format_values(lines_to_compute, 2, [3, 4, 5, 6])
+
         # 'Cash flows from investing & extraordinary activities'            (index=7)
-        lines_to_compute[7]['columns'][0]['name'] = \
-            lines_to_compute[8]['columns'][0]['name'] + \
-            lines_to_compute[9]['columns'][0]['name']
+        _add_no_format_values(lines_to_compute, 7, [8, 9])
+
         # 'Cash flows from financing activities'                            (index=10)
-        lines_to_compute[10]['columns'][0]['name'] = \
-            lines_to_compute[11]['columns'][0]['name'] + \
-            lines_to_compute[12]['columns'][0]['name']
+        _add_no_format_values(lines_to_compute, 10, [11, 12])
+
         # 'Cash flows from unclassified activities'                         (index=13)
-        lines_to_compute[13]['columns'][0]['name'] = \
-            lines_to_compute[14]['columns'][0]['name'] + \
-            lines_to_compute[15]['columns'][0]['name']
+        _add_no_format_values(lines_to_compute, 13, [14, 15])
+
         # 'Net increase in cash and cash equivalents'                       (index=1)
-        lines_to_compute[1]['columns'][0]['name'] = \
-            lines_to_compute[2]['columns'][0]['name'] + \
-            lines_to_compute[7]['columns'][0]['name'] + \
-            lines_to_compute[10]['columns'][0]['name'] + \
-            lines_to_compute[13]['columns'][0]['name']
+        _add_no_format_values(lines_to_compute, 1, [2, 7, 10, 13])
 
         # ==== Compute the unexplained difference ====
 
-        closing_ending_gap = lines_to_compute[16]['columns'][0]['name'] - lines_to_compute[0]['columns'][0]['name']
-        computed_gap = sum(lines_to_compute[index]['columns'][0]['name'] for index in [2, 7, 10, 13])
+        closing_ending_gap = lines_to_compute[16]['columns'][0]['no_format'] - lines_to_compute[0]['columns'][0]['no_format']
+        computed_gap = sum(lines_to_compute[index]['columns'][0]['no_format'] for index in [2, 7, 10, 13])
         delta = closing_ending_gap - computed_gap
         if not self.env.company.currency_id.is_zero(delta):
             lines_to_compute.insert(16, {
                 'id': 'cash_flow_line_unexplained_difference',
                 'name': _('Unexplained Difference'),
                 'level': 0,
-                'columns': [{'name': delta, 'class': 'number'}],
+                'columns': [{'no_format': delta, 'class': 'number'}],
             })
 
         # ==== Build final lines ====
@@ -587,12 +581,12 @@ class AccountCashFlowReport(models.AbstractModel):
             line['unfolded'] = line['unfoldable'] and (unfold_all or line['id'] in options['unfolded_lines'])
 
             # Header line.
-            line['columns'][0]['name'] = self.format_value(line['columns'][0]['name'])
+            line['columns'][0]['name'] = self.format_value(line['columns'][0]['no_format'])
             lines.append(line)
 
             # Sub lines.
             for sub_line in sub_lines:
-                sub_line['columns'][0]['name'] = self.format_value(sub_line['columns'][0]['name'])
+                sub_line['columns'][0]['name'] = self.format_value(sub_line['columns'][0]['no_format'])
                 sub_line['style'] = '' if line['unfolded'] else 'display: none;'
                 lines.append(sub_line)
 

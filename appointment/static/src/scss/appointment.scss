@@ -3,6 +3,7 @@
 }
 
 .o_appointment_index {
+    min-height: 80vh;
     .o_half_screen_height {
         min-height: 200px !important;
     }
@@ -100,7 +101,9 @@
 
 .o_appointment {
     .o_appointment_availabilities {
-        min-height: 26em;
+        @media screen and (min-device-width: 769px) {
+            min-height: 31em;
+        }
         .o_slots_list {
             a:hover {
                 color: white!important;

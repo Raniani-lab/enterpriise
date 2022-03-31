@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, time
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
 from babel.dates import format_datetime, format_time
-from werkzeug.urls import url_join
+from werkzeug.urls import url_encode, url_join
 
 from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
@@ -145,16 +145,48 @@ class CalendarAppointmentType(models.Model):
         """ Generate all appointment slots (in naive UTC, appointment timezone, and given (visitors) timezone)
             between first_day and last_day (datetimes in appointment timezone)
 
-            :return: [ {'slot': slot_record, <timezone>: (date_start, date_end), ...},
-                      ... ]
+        :param datetime first_day: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime last_day: end of appointment check boundary. Timezoned to UTC;
+        :param str timezone: requested timezone string e.g.: 'Europe/Brussels' or 'Etc/GMT+1'
+        :param datetime reference_date: starting datetime to fetch slots. If not
+          given now (in UTC) is used instead. Note that minimum schedule hours
+          defined on appointment type is added to the beginning of slots;
+
+        :return: [ {'slot': slot_record, <timezone>: (date_start, date_end), ...},
+                  ... ]
         """
         if not reference_date:
             reference_date = datetime.utcnow()
+        appt_tz = pytz.timezone(self.appointment_tz)
+        requested_tz = pytz.timezone(timezone)
+        ref_tz_apt_type = reference_date.astimezone(appt_tz)
+        slots = []
 
         def append_slot(day, slot):
-            local_start = appt_tz.localize(datetime.combine(day, time(hour=int(slot.start_hour), minute=int(round((slot.start_hour % 1) * 60)))))
-            local_end = appt_tz.localize(
-                datetime.combine(day, time(hour=int(slot.start_hour), minute=int(round((slot.start_hour % 1) * 60)))) + relativedelta(hours=self.appointment_duration))
+            """ Appends and generates all recurring slots. In case day is the
+            reference date we adapt local_start to not append slots in the past.
+            e.g. With a slot duration of 1 hour if we have slots from 8:00 to
+            17:00 and we are now 9:30 for today. The first slot that we append
+            should be 11:00 and not 8:00. This is necessary since we no longer
+            always check based on working hours that were ignoring these past
+            slots.
+
+            :param date day: day for which we generate slots;
+            :param record slot: a <calendar.appointment.slot> record
+            """
+            local_start = appt_tz.localize(
+                datetime.combine(day,
+                                 time(hour=int(slot.start_hour),
+                                      minute=int(round((slot.start_hour % 1) * 60))
+                                     )
+                                )
+            )
+            # Adapt local start to not append slot in the past for today
+            if local_start.date() == ref_tz_apt_type.date():
+                while local_start < ref_tz_apt_type + relativedelta(hours=self.min_schedule_hours):
+                    local_start += relativedelta(hours=self.appointment_duration)
+            local_end = local_start + relativedelta(hours=self.appointment_duration)
+
             while (local_start.hour + local_start.minute / 60) <= slot.end_hour - self.appointment_duration:
                 slots.append({
                     self.appointment_tz: (
@@ -173,19 +205,13 @@ class CalendarAppointmentType(models.Model):
                 })
                 local_start = local_end
                 local_end += relativedelta(hours=self.appointment_duration)
-        appt_tz = pytz.timezone(self.appointment_tz)
-        requested_tz = pytz.timezone(timezone)
 
-        slots = []
         # We use only the recurring slot if it's not a custom appointment type.
         if self.category != 'custom':
             # Regular recurring slots (not a custom appointment), generate necessary slots using configuration rules
-            for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == first_day.isoweekday()):
-                if slot.end_hour > first_day.hour + first_day.minute / 60.0:
-                    append_slot(first_day.date(), slot)
             slot_weekday = [int(weekday) - 1 for weekday in self.slot_ids.mapped('weekday')]
             for day in rrule.rrule(rrule.DAILY,
-                                dtstart=first_day.date() + timedelta(days=1),
+                                dtstart=first_day.date(),
                                 until=last_day.date(),
                                 byweekday=slot_weekday):
                 for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == day.isoweekday()):
@@ -409,11 +435,19 @@ class CalendarAppointmentType(models.Model):
 
         appt_tz = pytz.timezone(self.appointment_tz)
         requested_tz = pytz.timezone(timezone)
-        first_day = requested_tz.fromutc(reference_date + relativedelta(hours=self.min_schedule_hours))
+
         appointment_duration_days = self.max_schedule_days
         unique_slots = self.slot_ids.filtered(lambda slot: slot.slot_type == 'unique')
+
         if self.category == 'custom' and unique_slots:
+            # With custom appointment type, the first day should depend on the first slot datetime
+            start_first_slot = unique_slots[0].start_datetime
+            first_day_utc = start_first_slot if reference_date > start_first_slot else reference_date
+            first_day = requested_tz.fromutc(first_day_utc + relativedelta(hours=self.min_schedule_hours))
             appointment_duration_days = (unique_slots[-1].end_datetime - reference_date).days
+        else:
+            first_day = requested_tz.fromutc(reference_date + relativedelta(hours=self.min_schedule_hours))
+
         last_day = requested_tz.fromutc(reference_date + relativedelta(days=appointment_duration_days))
 
         # Compute available slots (ordered)
@@ -423,6 +457,11 @@ class CalendarAppointmentType(models.Model):
             timezone,
             reference_date=reference_date
         )
+
+        # Return void list if there is no slots
+        if not slots:
+            return slots
+
         if not staff_user or staff_user in self.staff_user_ids:
             self._slots_available(slots, first_day.astimezone(pytz.UTC), last_day.astimezone(pytz.UTC), staff_user)
         total_nb_slots = len(slots)
@@ -430,7 +469,7 @@ class CalendarAppointmentType(models.Model):
 
         # Compute calendar rendering and inject available slots
         today = requested_tz.fromutc(reference_date)
-        start = today
+        start = slots[0][timezone][0] if slots else today
         locale = babel_locale_parse(get_lang(self.env).code)
         month_dates_calendar = cal.Calendar(locale.first_week_day).monthdatescalendar
         months = []
@@ -452,22 +491,31 @@ class CalendarAppointmentType(models.Model):
                         # slots are ordered, so check all unprocessed slots from until > day
                         while slots and (slots[0][timezone][0].date() <= day):
                             if (slots[0][timezone][0].date() == day) and ('staff_user_id' in slots[0]):
+                                slot_staff_user_id = slots[0]['staff_user_id'].id
+                                slot_start_dt_tz = slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S')
                                 slot = {
-                                    'staff_user_id': slots[0]['staff_user_id'].id,
-                                    'datetime': slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S'),
+                                    'datetime': slot_start_dt_tz,
+                                    'staff_user_id': slot_staff_user_id,
                                 }
                                 if slots[0]['slot'].allday:
+                                    slot_duration = 24
                                     slot.update({
                                         'hours': _("All day"),
-                                        'duration': 24,
+                                        'slot_duration': slot_duration,
                                     })
                                 else:
                                     start_hour = format_time(slots[0][timezone][0].time(), format='short', locale=locale)
                                     end_hour = format_time(slots[0][timezone][1].time(), format='short', locale=locale)
+                                    slot_duration = str((slots[0][timezone][1] - slots[0][timezone][0]).total_seconds() / 3600)
                                     slot.update({
                                         'hours': "%s - %s" % (start_hour, end_hour) if self.category == 'custom' else start_hour,
-                                        'duration': str((slots[0][timezone][1] - slots[0][timezone][0]).total_seconds() / 3600),
+                                        'slot_duration': slot_duration,
                                     })
+                                slot['url_parameters'] = url_encode({
+                                    'staff_user_id': slot_staff_user_id,
+                                    'date_time': slot_start_dt_tz,
+                                    'duration': slot_duration,
+                                })
                                 today_slots.append(slot)
                             slots.pop(0)
                             nb_slots_next_months -= 1

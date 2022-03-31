@@ -36,8 +36,12 @@
                     <span class="fa fa-2x fa-angle-down"/>
                 </button>
                 <div id="dropdownMenuAppointmentLink" class="dropdown-menu dropdown-menu-right col" data-labelledby="dropdownAppointmentLink">
+                    <button id="select_availabilities" class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold pl-3 o_appointment_select_slots">
+                        <span class="align-bottom">Select Dates</span>
+                    </button>
+                    <div t-if="appointments.length" role="separator" class="dropdown-divider"/>
                     <t t-foreach="appointments" t-as="appointment">
-                        <button t-if="appointment.category == 'website'" t-att-id="appointment.id"
+                        <button t-if="appointment.category == 'website'" t-att-id="appointment.id" t-att-title="appointment.name"
                             t-attf-data-url="/calendar/#{appointment.id}#{staff_user_id ? '?filter_staff_user_ids=[' + staff_user_id + ']' : ''}"
                             class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold pl-3 o_appointment_button_link o_appointment_appointment_link_clipboard text-truncate">
                             <span class="align-bottom" t-out="appointment.name"/>

@@ -25,7 +25,9 @@
                                 <i class="fa fa-pencil mr-2" role="img" aria-label="Edit" title="Create custom questions in backend"/><em>Add Custom Questions</em>
                             </a>
                         </div>
-                        <form class="mt32 appointment_submit_form" t-attf-action="/calendar/#{ slug(appointment_type) }/submit" method="POST">
+                        <form class="mt32 appointment_submit_form"
+                            t-attf-action="/calendar/#{ slug(appointment_type) }/submit?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids')}"
+                            method="POST">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <input type="hidden" name="datetime_str" t-att-value="datetime_str"/>
                             <input type="hidden" name="duration_str" t-att-value="duration_str"/>
@@ -47,7 +49,7 @@
                                 <div class="col-md-8">
                                     <input type="tel" class="form-control" name="phone" required="1" id="phone_field" t-att-value="'mobile' in partner_data and partner_data['mobile']"/>
                                     <small t-if="appointment_type.reminder_ids.filtered(lambda r:r.alarm_type == 'sms')" class="text-muted">
-                                        A text message reminder is sent to you before your appointment
+                                        We will use it to remind you of this appointment.
                                     </small>
                                 </div>
                             </div>

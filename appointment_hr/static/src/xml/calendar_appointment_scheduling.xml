@@ -3,11 +3,11 @@
 <templates xml:space="preserve">
 
     <t t-inherit="appointment.Calendar.calendar_link_buttons" t-inherit-mode="extension">
-        <xpath expr="//div[@id='dropdownMenuAppointmentLink']" position="inside">
+        <xpath expr="//button[@id='select_availabilities']" position="after">
             <t t-if="context_user_has_employee">
                 <button id="search_create_work_hours_appointment"
                     class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold pl-3 o_appointment_button_link o_appointment_search_create_work_hours_appointment">
-                    <span class="align-bottom">Work Hours</span>
+                    <span class="align-bottom">During Work Hours</span>
                 </button>
             </t>
         </xpath>

@@ -12,10 +12,29 @@ from odoo.tests import common, tagged, users
 
 
 @tagged('appointment_ui', '-at_install', 'post_install')
-class AppointmentUITest(AppointmentCommon, common.HttpCase):
+class AppointmentUICommon(AppointmentCommon, common.HttpCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super(AppointmentUICommon, cls).setUpClass()
+
+        cls.std_user = mail_new_test_user(
+            cls.env,
+            company_id=cls.company_admin.id,
+            email='std_user@test.example.com',
+            groups='base.group_user',
+            name='Solène StandardUser',
+            notification_type='email',
+            login='std_user',
+            tz='Europe/Brussels'  # UTC + 1 (at least in February)
+        )
+
+
+@tagged('appointment_ui', '-at_install', 'post_install')
+class AppointmentUITest(AppointmentUICommon):
 
     @users('apt_manager')
-    def test_route_create_custom_appointment(self):
+    def test_route_apt_type_create_custom(self):
         self.authenticate(self.env.user.login, self.env.user.login)
 
         with freeze_time(self.reference_now):
@@ -39,6 +58,7 @@ class AppointmentUITest(AppointmentCommon, common.HttpCase):
             ).json()
         result = request.get('result', {})
         self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
+
         appointment_type = self.env['calendar.appointment.type'].browse(result['id'])
         self.assertEqual(appointment_type.category, 'custom')
         self.assertEqual(appointment_type.name, "%s - Let's meet" % self.env.user.name)
@@ -55,34 +75,20 @@ class AppointmentUITest(AppointmentCommon, common.HttpCase):
                     self.assertEqual(slot.end_datetime, datetime.now() + timedelta(hours=2))
 
 
-@tagged('-at_install', 'post_install')
-class CalendarTest(common.HttpCase):
-
-    @classmethod
-    def setUpClass(cls):
-        super(CalendarTest, cls).setUpClass()
-
-        cls.user_emp = mail_new_test_user(
-            cls.env,
-            email='user_emp@test.example.com',
-            groups='base.group_user',
-            name='Ernest Employee',
-            notification_type='email',
-            login='user_emp',
-            tz='Europe/Brussels'
-        )
+@tagged('appointment_ui', '-at_install', 'post_install')
+class CalendarTest(AppointmentUICommon):
 
     def test_meeting_accept_authenticated(self):
         event = self.env["calendar.event"].create(
             {"name": "Doom's day",
              "start": datetime(2019, 10, 25, 8, 0),
              "stop": datetime(2019, 10, 27, 18, 0),
-             "partner_ids": [(4, self.user_emp.partner_id.id)],
+             "partner_ids": [(4, self.std_user.partner_id.id)],
             }
         )
         token = event.attendee_ids[0].access_token
         url = "/calendar/meeting/accept?token=%s&id=%d" % (token, event.id)
-        self.authenticate("user_emp", "user_emp")
+        self.authenticate(self.std_user.login, self.std_user.login)
         res = self.url_open(url)
 
         self.assertEqual(res.status_code, 200, "Response should = OK")
@@ -94,7 +100,7 @@ class CalendarTest(common.HttpCase):
             {"name": "Doom's day",
              "start": datetime(2019, 10, 25, 8, 0),
              "stop": datetime(2019, 10, 27, 18, 0),
-             "partner_ids": [(4, self.user_emp.partner_id.id)],
+             "partner_ids": [(4, self.std_user.partner_id.id)],
             }
         )
         token = event.attendee_ids[0].access_token

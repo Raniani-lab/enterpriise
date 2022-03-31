@@ -63,7 +63,12 @@ class WebsiteAppointment(Appointment):
         )
 
         appointment_types = Appointment.search(domain, limit=APPOINTMENTS_PER_PAGE, offset=pager['offset'])
-        keep = QueryURL('/calendar', search=kwargs.get('search'), filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'))
+        keep = QueryURL(
+            '/calendar',
+            search=kwargs.get('search'),
+            filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
+            filter_staff_user_ids=kwargs.get('filter_staff_user_ids'),
+        )
 
         return {
             'appointment_types': appointment_types,

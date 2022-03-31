@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import pytz
+
 from datetime import date, datetime, timedelta
 from freezegun import freeze_time
 
@@ -257,6 +259,32 @@ class AppointmentTest(AppointmentCommon):
              'slots_weekdays_nowork': range(2, 7)  # working hours only on Monday/Tuesday (0, 1)
             }
         )
+
+    @users('apt_manager')
+    def test_slots_for_today(self):
+        test_reference_now = datetime(2022, 2, 14, 11, 0, 0)  # is a Monday
+        appointment = self.env['calendar.appointment.type'].create({
+            'appointment_tz': 'UTC',
+            'min_schedule_hours': 1.0,
+            'max_schedule_days': 8,
+            'name': 'Test',
+            'slot_ids': [(0, 0, {
+                'weekday': str(test_reference_now.isoweekday()),
+                'start_hour': 6,
+                'end_hour': 18,
+            })],
+            'staff_user_ids': [self.staff_user_bxls.id],
+        })
+        first_day = (test_reference_now + timedelta(hours=appointment.min_schedule_hours)).astimezone(pytz.UTC)
+        last_day = (test_reference_now + timedelta(days=appointment.max_schedule_days)).astimezone(pytz.UTC)
+        with freeze_time(test_reference_now):
+            slots = appointment._slots_generate(first_day, last_day, 'UTC')
+
+        self.assertEqual(len(slots), 18, '2 mondays of 12 slots but 6 would be before reference date')
+        for slot in slots:
+            self.assertTrue(
+                test_reference_now.astimezone(pytz.UTC) < slot['UTC'][0].astimezone(pytz.UTC),
+                "A slot shouldn't be generated before the first_day datetime")
 
     @users('staff_user_aust')
     def test_timezone_delta(self):

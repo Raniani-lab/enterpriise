@@ -97,15 +97,15 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         this.$(ev.currentTarget).addClass('o_slot_selected');
 
         const appointmentTypeID = this.$("input[name='appointment_type_id']").val();
-        const appointmentTypeIDs = this.$("input[name='filter_appointment_type_ids']").val();
         const slotDate = this.$(ev.currentTarget.firstElementChild).attr('id');
         const slots = JSON.parse(this.$(ev.currentTarget).find('div')[0].dataset['availableSlots']);
+        const commonUrlParams = window.location.search.substring(1);
 
         this.$slotsList.empty().append(qweb.render('appointment.slots_list', {
             slotDate: moment(slotDate).format("dddd D MMMM"),
             slots: slots,
             appointment_type_id: appointmentTypeID,
-            filter_appointment_type_ids: appointmentTypeIDs,
+            commonUrlParams: commonUrlParams,
         }));
     },
 

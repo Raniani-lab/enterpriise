@@ -215,39 +215,3 @@ class AppointmentHrTest(AppointmentHrCommon):
              'slots_weekdays_nowork': range(2, 7)  # working hours only on Monday/Tuesday (0, 1)
             }
         )
-
-    @users('staff_user_aust')
-    def test_timezone_delta(self):
-        """ Test timezone delta. Not sure what original test was really doing. """
-        # As if the second user called the function
-        apt_type = self.apt_type_bxls_2days.with_user(self.env.user).with_context(
-            lang='en_US',
-            tz=self.staff_user_aust.tz,
-            uid=self.staff_user_aust.id,
-        )
-
-        # Do what the controller actually does, aka sudo
-        with freeze_time(self.reference_now):
-            slots = apt_type.sudo()._get_appointment_slots('Australia/West', staff_user=None)
-
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 4, 2)  # last day of last week of March
-        self.assertSlots(
-            slots,
-            [{'name_formated': 'February 2022',
-              'month_date': datetime(2022, 2, 1),
-              'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
-             },
-             {'name_formated': 'March 2022',
-              'month_date': datetime(2022, 3, 1),
-              'weeks_count': 5,  # 28/02 -> 28/03 (03/04)
-             }
-            ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
-             'slots_enddate': self.reference_now.date() + timedelta(days=15),  # maximum 2 weeks of slots
-             'slots_start_hours': [15, 16, 17, 18, 20],  # based on appointment type start hours of slots but 12 is pause midi, set in UTC+8
-             'slots_startdate': self.reference_monday.date(),  # first Monday after reference_now
-             'slots_weekdays_nowork': range(2, 7)  # working hours only on Monday/Tuesday (0, 1)
-            }
-        )

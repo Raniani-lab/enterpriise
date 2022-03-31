@@ -107,6 +107,8 @@ class MrpEcoApproval(models.Model):
         compute='_compute_is_approved', store=True)
     is_rejected = fields.Boolean(
         compute='_compute_is_rejected', store=True)
+    awaiting_my_validation = fields.Boolean(
+        compute='_compute_awaiting_my_validation', search='_search_awaiting_my_validation')
 
     @api.depends('status', 'approval_template_id.approval_type')
     def _compute_is_approved(self):
@@ -124,6 +126,21 @@ class MrpEcoApproval(models.Model):
             else:
                 rec.is_rejected = False
 
+    @api.depends('status', 'approval_template_id.approval_type')
+    def _compute_awaiting_my_validation(self):
+        # trigger the search method and return a domain where approval ids satisfying the conditions in the search method
+        awaiting_validation_approval = self.search([('id', 'in', self.ids), ('awaiting_my_validation', '=', True)])
+        # set awaiting_my_validation values for approvals
+        awaiting_validation_approval.awaiting_my_validation = True
+        (self - awaiting_validation_approval).awaiting_my_validation = False
+
+    def _search_awaiting_my_validation(self, operator, value):
+        if (operator, value) not in [('=', True), ('!=', False)]:
+            raise NotImplementedError(_('Operation not supported'))
+        return [('required_user_ids', 'in', self.env.uid),
+                ('approval_template_id.approval_type', 'in', ('mandatory', 'optional')),
+                ('status', '!=', 'approved'),
+                ('is_closed', '=', False)]
 
 class MrpEcoStage(models.Model):
     _name = 'mrp.eco.stage'

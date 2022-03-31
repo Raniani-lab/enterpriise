@@ -217,7 +217,7 @@ class AccountGenericTaxReport(models.AbstractModel):
             'res_model': 'account.move.line',
             'views': [[self.env.ref('account.view_move_line_tax_audit_tree').id, 'list'], [False, 'form']],
             'domain': domain,
-            'context': dict(self._context, search_default_groupby_date=1),
+            'context': self._context,
         }
 
     def action_dropdown_audit_default_tax_report(self, options, data):

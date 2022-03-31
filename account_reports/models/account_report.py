@@ -1200,7 +1200,7 @@ class AccountReport(models.AbstractModel):
             domain += [('move_id.state', '=', 'posted')]
 
         ctx = self.env.context.copy()
-        ctx.update({'search_default_account': 1, 'search_default_groupby_date': 1})
+        ctx.update({'search_default_account': 1})
 
         return {
             'type': 'ir.actions.act_window',

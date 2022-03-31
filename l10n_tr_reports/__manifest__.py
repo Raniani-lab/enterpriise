@@ -13,8 +13,8 @@
         'l10n_tr', 'account_reports'
     ],
     'data': [
-        'data/account_financial_html_report_bilanco_data.xml',
-        'data/account_financial_html_report_ozet_bilanco_data.xml',
+        'data/account_report_tr_balance_sheet_data.xml',
+        'data/account_report_tr_pnl_data.xml',
     ],
     'installable': True,
     'auto_install': True,

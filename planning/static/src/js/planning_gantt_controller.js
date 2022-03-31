@@ -73,7 +73,7 @@ const PlanningGanttController = GanttController.extend(PlanningControllerMixin, 
     _openDialog: function (resID, context) {
         var self = this;
         var record = resID ? _.findWhere(this.model.get().records, {id: resID,}) : {};
-        var title = resID ? record.display_name : _t("Open");
+        var title = resID ? record.display_name : _t("Add Shift");
         const allContext = Object.assign({}, this.context, context);
 
         const dialog = new FormViewDialog(this, {

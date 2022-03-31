@@ -52,7 +52,7 @@
                         <div class="container">
                             <h1 align="center" class="m-3">Open Shifts Available</h1>
                             <div class="table-responsive-md">
-                                <table class="table table-borderless table-hover">
+                                <table class="table table-borderless table-hover table-striped">
                                     <thead class="o_thead">
                                         <tr>
                                             <th class="text-left">Date</th>

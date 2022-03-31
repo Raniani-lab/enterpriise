@@ -9,7 +9,7 @@
                 <field name="resource_id" groups="planning.group_planning_user" widget="many2one_avatar_resource" optional="show"
                     attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'show_job_title': True}"/>
                 <field name="resource_type" invisible="1"/>
-                <field name="role_id" optional="show" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
+                <field name="role_id" optional="show" attrs="{'invisible': [('resource_type', '=', 'material')]}" placeholder="e.g. Bartender"/>
                 <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
                 <field name="start_datetime" widget="daterange" options="{'related_end_date': 'end_datetime'}"/>
@@ -78,7 +78,7 @@
                         <group>
                             <field name="resource_id" context="{'from_planning': True, 'show_job_title': True}" options="{'no_create_edit': True}"
                                 attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" widget="many2one_avatar_resource"/>
-                            <field name="role_id" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
+                            <field name="role_id" attrs="{'invisible': [('resource_type', '=', 'material')]}" placeholder="e.g. Bartender"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                         </group>
@@ -247,7 +247,7 @@
                     <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
 
                     <button name="action_self_unassign" class="btn btn-secondary float-right" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w"/>
-                    <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary float-right" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager" data-hotkey="d"/>
+                    <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary float-right d-none d-md-inline" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager" data-hotkey="d"/>
                 </footer>
             </xpath>
         </field>

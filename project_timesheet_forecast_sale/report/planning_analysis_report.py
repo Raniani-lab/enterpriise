@@ -11,13 +11,13 @@ class PlanningAnalysisReport(models.Model):
 
     @property
     def _table_query(self):
-        return """
+        return f"""
             SELECT S.*,
                 (S.allocated_hours - billable_allocated_hours) AS non_billable_allocated_hours
             FROM (
-                %s %s %s %s
+                {super()._table_query}
             ) S
-        """ % (self._select(), self._from(), self._join(), self._group_by())
+        """
 
     @api.model
     def _select(self):

@@ -18,6 +18,7 @@ odoo.define('forecast_timesheet.ForecastTimesheetGanttView', function (require) 
         _getPopoverContext() {
             const data = this._super(...arguments);
             data.effectiveHoursFormatted = fieldUtils.format.float_time(data.effective_hours);
+            data.effectivePercentageFormatted = fieldUtils.format.float(data.percentage_hours);
             return data;
         },
     });

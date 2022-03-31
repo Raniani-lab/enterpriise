@@ -112,7 +112,7 @@
             </xpath>
             <xpath expr="//div[@id='allocated_hours']" position="after">
                 <div t-if="task_id and resource_type == 'user'" id="effective_hours">
-                    <strong>Effective Hours — </strong><t t-esc="effectiveHoursFormatted"/>
+                    <strong>Effective Hours — </strong><t t-esc="effectiveHoursFormatted"/> (<t t-esc="effectivePercentageFormatted"/>%)
                 </div>
             </xpath>
         </field>

@@ -74,7 +74,7 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
             period_since_2014 = relativedelta(notice.start_notice_period, first_day_since_2014)
             difference_in_years = notice._get_years(relativedelta(datetime(2013, 12, 31),
                 notice.first_contract))
-            if notice.leaving_type_id == departure_reasons['fired']:
+            if notice.leaving_type_id.reason_code == departure_reasons['fired']:
                 # Part I
                 if difference_in_years > 0:
                     notice.salary_visibility = True
@@ -88,7 +88,7 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
                 # Part II
                 notice.notice_duration_week_after_2014 = notice._find_week(
                     period_since_2014.months + period_since_2014.years*12, 'fired')
-            elif notice.leaving_type_id == departure_reasons['resigned']:
+            elif notice.leaving_type_id.reason_code == departure_reasons['resigned']:
                 notice.salary_visibility = False
                 if difference_in_years > 0:
                     notice.notice_duration_month_before_2014 = 3
@@ -97,7 +97,7 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
                     notice.notice_duration_month_before_2014 = 0
                     notice.notice_duration_week_after_2014 = notice._find_week(
                         period_since_2014.months + period_since_2014.years*12, 'resigned')
-            elif notice.leaving_type_id == departure_reasons['retired']:
+            elif notice.leaving_type_id.reason_code == departure_reasons['retired']:
                 notice.salary_visibility = False
                 notice.notice_duration_month_before_2014 = 0
                 notice.notice_duration_week_after_2014 = 0

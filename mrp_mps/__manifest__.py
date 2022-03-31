@@ -39,11 +39,11 @@ procure.
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'mrp_mps/static/src/js/client_action.js',
-            'mrp_mps/static/src/scss/client_action.scss',
+            'mrp_mps/static/src/**/*.js',
+            'mrp_mps/static/src/**/*.scss',
         ],
         'web.assets_qweb': [
-            'mrp_mps/static/src/xml/**/*',
+            'mrp_mps/static/src/**/*.xml',
         ],
     }
 }

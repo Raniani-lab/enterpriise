@@ -197,7 +197,7 @@ class MrpProductionSchedule(models.Model):
             self.env['mrp.product.forecast'].create(forecasts_values)
 
     @api.model
-    def get_mps_view_state(self, domain=False):
+    def get_mps_view_state(self, domain=False, offset=0, limit=False):
         """ Return the global information about MPS and a list of production
         schedules values with the domain.
 
@@ -210,7 +210,8 @@ class MrpProductionSchedule(models.Model):
             - groups: company settings that hide/display different rows
         :rtype: dict
         """
-        productions_schedules = self.env['mrp.production.schedule'].search(domain or [])
+        productions_schedules = self.env['mrp.production.schedule'].search(domain or [], offset=offset, limit=limit)
+        count = self.env['mrp.production.schedule'].search_count(domain or [])
         productions_schedules_states = productions_schedules.get_production_schedule_view_state()
         company_groups = self.env.company.read([
             'mrp_mps_show_starting_inventory',
@@ -230,6 +231,7 @@ class MrpProductionSchedule(models.Model):
             'manufacturing_period': self.env.company.manufacturing_period,
             'company_id': self.env.company.id,
             'groups': company_groups,
+            'count': count,
         }
 
     @api.model_create_multi

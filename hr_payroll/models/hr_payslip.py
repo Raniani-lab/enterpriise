@@ -13,7 +13,7 @@ from odoo import api, Command, fields, models, _
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv.expression import AND
-from odoo.tools import float_round, date_utils, convert_file, html2plaintext, is_html_empty
+from odoo.tools import float_round, date_utils, convert_file, html2plaintext, is_html_empty, format_amount
 from odoo.tools.float_utils import float_compare
 from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
@@ -1096,6 +1096,17 @@ class HrPayslip(models.Model):
                 'action': self._dashboard_default_action(schedule_change_str, 'hr.contract', multiple_schedule_contracts.ids, additional_context={'search_default_group_by_employee': 1}),
             })
 
+        # Nearly expired contracts
+        date_today = fields.Date.from_string(fields.Date.today())
+        outdated_days = fields.Date.to_string(date_today + relativedelta(days=+14))
+        nearly_expired_contracts = self.env['hr.contract']._get_nearly_expired_contracts(outdated_days)
+        if nearly_expired_contracts:
+            result.append({
+                'string': _('Running contracts coming to an end'),
+                'count': len(nearly_expired_contracts),
+                'action': self._dashboard_default_action('Employees with running contracts coming to an end', 'hr.contract', nearly_expired_contracts.ids)
+            })
+
         # Payslip Section
         if employees_previous_contract:
             result.append({
@@ -1109,10 +1120,8 @@ class HrPayslip(models.Model):
                 'count': len(payslips_with_negative_net),
                 'action': self._dashboard_default_action(_('Payslips with negative NET'), 'hr.payslip', payslips_with_negative_net.ids),
             })
-        return result
 
-    def _get_employee_stats_actions(self):
-        result = []
+        # new contracts warning
         new_contracts = self.env['hr.contract'].search([
             ('state', '=', 'draft'),
             ('kanban_state', '=', 'normal')])
@@ -1121,10 +1130,48 @@ class HrPayslip(models.Model):
             result.append({
                 'string': new_contracts_str,
                 'count': len(new_contracts),
-                'action': self._dashboard_default_action(new_contracts_str, 'hr.contract', new_contracts.ids),
+                'action': self._dashboard_default_action(new_contracts_str, 'hr.contract', new_contracts.ids)
             })
+
+        return result
+
+    def _get_employee_stats_actions(self):
+        result = []
+        today = fields.Date.today()
+        HRContract = self.env['hr.contract']
+        new_contracts = HRContract.search([
+            ('state', '=', 'open'),
+            ('kanban_state', '=', 'normal'),
+            ('date_start', '>=', today + relativedelta(months=-3, day=1))])
+
+        past_contracts_grouped_by_employee_id = {
+            c['employee_id'][0]: c['employee_id_count']
+            for c in HRContract._read_group([
+                ('employee_id', 'in', new_contracts.employee_id.ids),
+                ('date_end', '<', today),
+                ('id', 'not in', new_contracts.ids)
+            ], groupby=['employee_id'], fields=['employee_id'])
+        }
+
+        new_contracts_without_past_contract = HRContract
+        for new_contract in new_contracts:
+            if new_contract.employee_id.id not in past_contracts_grouped_by_employee_id:
+                new_contracts_without_past_contract |= new_contract
+
+        if new_contracts_without_past_contract:
+            new_contracts_str = _('New Employees')
+            employees_from_new_contracts = new_contracts_without_past_contract.mapped('employee_id')
+            new_employees = {
+                'string': new_contracts_str,
+                'count': len(employees_from_new_contracts),
+                'action': self._dashboard_default_action(new_contracts_str, 'hr.employee', employees_from_new_contracts.ids),
+            }
+            new_employees['action']['views'][0] = [self.env.ref('hr_payroll.payroll_hr_employee_view_tree_employee_trends').id, 'list']
+            result.append(new_employees)
+
+
         gone_employees = self.env['hr.employee'].with_context(active_test=False).search([
-            ('departure_date', '>=', fields.Date.today() + relativedelta(months=-1, day=1)),
+            ('departure_date', '>=', today + relativedelta(months=-1, day=1)),
         ])
         if gone_employees:
             gone_employees_str = _('Last Departures')
@@ -1137,8 +1184,19 @@ class HrPayslip(models.Model):
         return result
 
     @api.model
+    def _get_other_expenses_cost_codes(self):
+        other_expenses = self.env['hr.salary.rule'].search_read([
+            ('appears_on_employee_cost_dashboard', '=', True)],
+            fields=['code', 'name'])
+        other_expenses_cost_codes = {}
+
+        for other_expense in other_expenses:
+            other_expenses_cost_codes[other_expense['code']] = other_expense['name']
+        return other_expenses_cost_codes
+
+    @api.model
     def _get_dashboard_stat_employer_cost_codes(self):
-        return {'NET': _('Net Salary')}
+        return {'NET': _('Net Salary'), **self._get_other_expenses_cost_codes()}
 
     @api.model
     def _get_dashboard_stats_employer_cost(self):
@@ -1149,6 +1207,7 @@ class HrPayslip(models.Model):
         }
         employer_cost = {
             'type': 'stacked_bar',
+            'title': _('Employer Cost'),
             'label': _('Employer Cost'),
             'id': 'employer_cost',
             'is_sample': False,
@@ -1175,9 +1234,11 @@ class HrPayslip(models.Model):
                 idx = -((end.year - start.year) * 12 + (end.month - start.month) - 2)
                 period_str = format_date(self.env, start, date_format=date_formats['monthly'])
                 amount = employer_cost['data']['monthly'][code_desc][idx].get('value', 0.0)
+                rounded_amount = round(amount + line_values[code][slip.id]['total'], 2)
                 employer_cost['data']['monthly'][code_desc][idx].update({
-                    'value': round(amount + line_values[code][slip.id]['total'], 2),
+                    'value': rounded_amount,
                     'label': period_str,
+                    'formatted_value': format_amount(self.env, rounded_amount, self.env.company.currency_id),
                 })
         # Retrieve employer costs over the last 3 years
         last_payslips = self.env['hr.payslip'].search([
@@ -1193,22 +1254,28 @@ class HrPayslip(models.Model):
                 idx = -(end.year - start.year - 2)
                 period_str = format_date(self.env, start, date_format=date_formats['yearly'])
                 amount = employer_cost['data']['yearly'][code_desc][idx].get('value', 0.0)
+                rounded_amount = round(amount + line_values[code][slip.id]['total'], 2)
                 employer_cost['data']['yearly'][code_desc][idx].update({
-                    'value': round(amount + line_values[code][slip.id]['total'], 2),
+                    'value': rounded_amount,
                     'label': period_str,
+                    'formatted_value': format_amount(self.env, rounded_amount, self.env.company.currency_id),
                 })
         # Nullify empty sections
         for i in range(3):
             for code, code_desc in cost_codes.items():
                 if not employer_cost['data']['monthly'][code_desc][i]:
+                    value = 0 if not employer_cost['is_sample'] else random.randint(1000, 1500)
                     employer_cost['data']['monthly'][code_desc][i].update({
-                        'value': 0 if not employer_cost['is_sample'] else random.randint(1000, 1500),
-                        'label': format_date(self.env, today + relativedelta(months=i-2), date_format=date_formats['monthly'])
+                        'value': value,
+                        'label': format_date(self.env, today + relativedelta(months=i-2), date_format=date_formats['monthly']),
+                        'formatted_value': format_amount(self.env, value, self.env.company.currency_id),
                     })
                 if not employer_cost['data']['yearly'][code_desc][i]:
+                    value = 0 if not employer_cost['is_sample'] else random.randint(10000, 15000)
                     employer_cost['data']['yearly'][code_desc][i].update({
-                        'value': 0 if not employer_cost['is_sample'] else random.randint(10000, 15000),
-                        'label': format_date(self.env, today + relativedelta(years=i-2), date_format=date_formats['yearly'])
+                        'value': value,
+                        'label': format_date(self.env, today + relativedelta(years=i-2), date_format=date_formats['yearly']),
+                        'formatted_value': format_amount(self.env, value, self.env.company.currency_id),
                     })
         return employer_cost
 
@@ -1216,8 +1283,9 @@ class HrPayslip(models.Model):
     def _get_dashboard_stat_employee_trends(self):
         today = fields.Date.context_today(self)
         employees_trends = {
-            'type': 'line',
-            'label': _('Employee Trends'),
+            'type': 'bar',
+            'title': _('Employee Trends'),
+            'label': _('Employee Count'),
             'id': 'employees',
             'is_sample': False,
             'actions': self._get_employee_stats_actions(),
@@ -1288,8 +1356,8 @@ class HrPayslip(models.Model):
             period_str = format_date(self.env, start, date_format=date_formats[period_type])
             # The data is formatted for the chart module
             employees_trends['data'][period_type][period_idx] = {
-                'x': period_str,
-                'y': res['employee_count'],
+                'label': period_str,
+                'value': res['employee_count'],
                 'name': period_str,
             }
 
@@ -1339,7 +1407,7 @@ class HrPayslip(models.Model):
 
     @api.model
     def _get_dashboard_batch_fields(self):
-        return ['id', 'date_start', 'name', 'state']
+        return ['id', 'date_start', 'name', 'state', 'payslip_count']
 
     @api.model
     def get_payroll_dashboard_data(self, sections=None):
@@ -1381,8 +1449,8 @@ class HrPayslip(models.Model):
             translated_states = dict(self.env['hr.payslip.run']._fields['state']._description_selection(self.env))
             for batch_read in batches_read_result:
                 batch_read.update({
+                    'name': f"{batch_read['name']} ({format_date(self.env, batch_read['date_start'], date_format='MM/y')}) {_('(%s Payslips)', batch_read['payslip_count'])}",
                     'state': translated_states.get(batch_read['state'], _('Unknown State')),
-                    'date_start': format_date(self.env, batch_read['date_start'], date_format='MM/y'),
                 })
             result['batches'] = batches_read_result
         if 'notes' in sections:
@@ -1395,7 +1463,8 @@ class HrPayslip(models.Model):
                     'tag_id': dashboard_note_tag.id,
                     'notes': self.env['note.note'].search_read(
                         [('tag_ids', 'in', dashboard_note_tag.id)],
-                        fields=['id', 'name', 'memo', 'color'])
+                        fields=['id', 'name', 'memo', 'color', 'user_id'],
+                        order="id asc")
                 })
         if 'stats' in sections:
             result['stats'] = self._get_dashboard_stats()

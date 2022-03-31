@@ -185,15 +185,15 @@ class TestDashboard(TransactionCase):
         # Check employees monthly
         # Employees contains the number of unique employees that worked on that period
         employees_stat = employees['data']['monthly']
-        self.assertEqual(employees_stat[0]['y'], 1)
-        self.assertEqual(employees_stat[1]['y'], 2)
-        self.assertEqual(employees_stat[2]['y'], 3)
+        self.assertEqual(employees_stat[0]['value'], 1)
+        self.assertEqual(employees_stat[1]['value'], 2)
+        self.assertEqual(employees_stat[2]['value'], 3)
 
         # Check yearly
         employees_stat = employees['data']['yearly']
-        self.assertEqual(employees_stat[0]['y'], 0)
-        self.assertEqual(employees_stat[1]['y'], 3 if contract_3_this_year else 2)
-        self.assertEqual(employees_stat[2]['y'], 3)
+        self.assertEqual(employees_stat[0]['value'], 0)
+        self.assertEqual(employees_stat[1]['value'], 3 if contract_3_this_year else 2)
+        self.assertEqual(employees_stat[2]['value'], 3)
 
 
     def test_dashboard_stat_end_of_year(self):

@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <template>
     <t t-name="hr_payroll.Dashboard" owl="1">
-        <div class="o_hr_payroll_dashboard_sheet mt-3">
+        <div class="o_hr_payroll_dashboard_sheet container-fluid mt-3 mb-2">
             <div class="row m-2">
-                <div class="col m-2 p-0">
-                    <PayrollDashboardActionBox actions="dashboardData.actions"/>
+                <div class="col-md-7 m-0 p-0">
+                    <div class="row mx-2 h-auto" style="min-height:50%;">
+                        <div class="col m-2 p-0">
+                            <PayrollDashboardActionBox actions="dashboardData.actions"/>
+                        </div>
+                        <div class="col m-2 p-0">
+                            <PayrollDashboardPayslipBatch batches="dashboardData.batches"/>
+                        </div>
+                    </div>
+                    <t t-set="stats" t-value="dashboardData.stats"/>
+                    <div class="row m-2 h-auto" style="min-height:50%;" t-if="stats &amp;&amp; stats.length > 0">
+                        <t t-foreach="stats" t-as="stat" t-key="stat.id">
+                            <div class="col m-2 p-0">
+                                <PayrollDashboardStats t-props="stat"/>
+                            </div>
+                        </t>
+                    </div>
                 </div>
-                <div class="col m-2 p-0">
-                    <PayrollDashboardPayslipBatch batches="dashboardData.batches"/>
-                </div>
-                <div class="col m-2 p-0">
+                <div class="col mt-2 p-0" style="height: 90vh;">
                     <PayrollDashboardTodo tagId="dashboardData.notes.tag_id" notes="dashboardData.notes.notes"
                         reloadNotes.bind="reloadNotes" updateNoteMemo.bind="updateNoteMemo"/>
                 </div>
-            </div>
-            <t t-set="stats" t-value="dashboardData.stats"/>
-            <div class="row m-2" t-if="stats &amp;&amp; stats.length > 0">
-                <t t-foreach="stats" t-as="stat" t-key="stat.id">
-                    <div class="col m-2 p-0">
-                        <PayrollDashboardStats t-props="stat"/>
-                    </div>
-                </t>
             </div>
         </div>
     </t>

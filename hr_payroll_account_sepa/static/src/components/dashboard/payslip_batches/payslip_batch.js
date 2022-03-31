@@ -18,6 +18,7 @@ export class PayrollDashboardPayslipBatchAdapter extends ComponentAdapter {
     }
 }
 
+
 patch(PayrollDashboardPayslipBatch.prototype, 'payroll_sepa', {
     /**
      * @override
@@ -48,7 +49,7 @@ patch(PayrollDashboardPayslipBatch.prototype, 'payroll_sepa', {
             data: {
                 id: batchData.id,
                 sepa_export: batchData.sepa_export,
-                sepa_export_filename: batchData.sepa_export_filename,
+                sepa_export_filename: 'SEPA',
             },
             fields: {
                 sepa_export: {string: '', type: 'binary'},

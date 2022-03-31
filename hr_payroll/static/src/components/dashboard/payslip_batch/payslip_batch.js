@@ -16,6 +16,16 @@ export class PayrollDashboardPayslipBatch extends Component {
         this.actionService.doAction('hr_payroll.action_hr_payslip_run_tree');
     }
 
+    getColorFromState(state) {
+        const colorMap = {
+            'New': 'bg-info-light',
+            'Confirmed': 'bg-success-light',
+            'Done': 'bg-primary-light',
+            'Paid': 'bg-warning-light',
+        };
+        return colorMap[state] || 'badge-primary'
+    }
+
     /**
      * Handles clicking on the line
      *

@@ -52,7 +52,6 @@
         'views/hr_payroll_dashboard_views.xml',
         'views/hr_payroll_menu.xml',
         'report/hr_contract_history_report_views.xml',
-        'views/note_note_views.xml',
     ],
     'demo': ['data/hr_payroll_demo.xml'],
     'assets': {

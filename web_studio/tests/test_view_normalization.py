@@ -145,7 +145,7 @@ class TestViewNormalization(TransactionCase):
                 </group>
               </xpath>
               <xpath expr="//group[@name='studio_group_E16QG_left']" position="inside">
-                <field name="credit_limit"/>
+                <field name="partner_latitude"/>
               </xpath>
               <xpath expr="//group[@name='studio_group_E16QG_left']" position="after">
                 <field name="id"/>
@@ -153,7 +153,7 @@ class TestViewNormalization(TransactionCase):
               <xpath expr="//group[@name='studio_group_E16QG_right']" position="inside">
                 <field name="employee"/>
               </xpath>
-              <xpath expr="//field[@name='credit_limit']" position="after">
+              <xpath expr="//field[@name='partner_latitude']" position="after">
                 <field name="contact_address"/>
               </xpath>
             </data>
@@ -162,7 +162,7 @@ class TestViewNormalization(TransactionCase):
               <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
                 <group name="studio_group_E16QG">
                   <group name="studio_group_E16QG_left" string="Left Title">
-                    <field name="credit_limit"/>
+                    <field name="partner_latitude"/>
                     <field name="contact_address"/>
                   </group>
                   <field name="id"/>
@@ -185,7 +185,7 @@ class TestViewNormalization(TransactionCase):
                 </group>
               </xpath>
               <xpath expr="//group[@name='studio_group_E16QG_left']" position="inside">
-                <field name="credit_limit"/>
+                <field name="partner_latitude"/>
               </xpath>
               <xpath expr="//group[@name='studio_group_E16QG_left']" position="after">
                 <field name="id"/>
@@ -193,7 +193,7 @@ class TestViewNormalization(TransactionCase):
               <xpath expr="//group[@name='studio_group_E16QG_right']" position="inside">
                 <field name="employee"/>
               </xpath>
-              <xpath expr="//field[@name='credit_limit']" position="after">
+              <xpath expr="//field[@name='partner_latitude']" position="after">
                 <field name="contact_address"/>
               </xpath>
               <xpath expr="//group[@name='studio_group_E16QG_left']" position="replace"/>
@@ -1018,14 +1018,14 @@ class TestViewNormalization(TransactionCase):
                 <field name="function" position="move"/>
               </xpath>
               <xpath expr="//field[@name='function']" position="after">
-                <field name="credit_limit"/>
+                <field name="partner_latitude"/>
               </xpath>
             </data>
         """, """
             <data>
               <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='email']" position="after">
                 <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='function']" position="move"/>
-                <field name="credit_limit"/>
+                <field name="partner_latitude"/>
               </xpath>
             </data>
         """)

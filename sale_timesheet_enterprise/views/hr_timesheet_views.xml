@@ -73,5 +73,16 @@
             <field name="act_window_id" ref="sale_timesheet.timesheet_action_billing_report"/>
         </record>
 
+        <record id="timesheet_action_from_sales_order_item_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="15"/>
+            <field name="view_mode">grid</field>
+            <field name="view_id" ref="timesheet_grid.timesheet_view_grid_by_employee"/>
+            <field name="act_window_id" ref="sale_timesheet.timesheet_action_from_sales_order_item"/>
+        </record>
+
+        <record id="sale_timesheet.timesheet_action_from_sales_order_item_form" model="ir.actions.act_window.view">
+            <field name="view_id" ref="timesheet_grid.timesheet_view_form"/>
+        </record>
+
     </data>
 </odoo>

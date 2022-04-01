@@ -30,6 +30,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             this.destLocationList.push(this.cache.getRecord('stock.location', id));
         });
         this._useReservation = this.initialState.lines.some(line => line.reserved_uom_qty);
+        this.displayPutInPackButton = this.groups.group_tracking_lot;
     }
 
     async changeDestinationLocation(id, moveScannedLineOnly) {

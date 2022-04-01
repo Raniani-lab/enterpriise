@@ -95,6 +95,10 @@
                                         attrs="{'invisible': [('active', '=', False)]}">
                                     Share
                                 </button>
+                                <button name="action_customer_preview" string="View availabilities" type="object"
+                                        class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': [('active', '=', False)]}">
+                                    View availabilities
+                                </button>
                             </div>
                         </div>
                         <div class="o_appointment_kanban_card_grouped oe_kanban_global_click">

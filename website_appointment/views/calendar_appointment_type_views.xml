@@ -26,11 +26,13 @@
                     <field name="is_published" widget='boolean_toggle'/>
                 </span>
             </xpath>
-            <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]/button" position="after">
+            <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]/button[@name='action_customer_preview']" position="replace">
                 <button name="open_website_url" string="View availabilities" type="object"
                         class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
                     View availabilities
                 </button>
+            </xpath>
+            <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]/button[last()]" position="after">
                 <button name="action_toggle_published" string="Publish" type="object"
                     class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', True), ('active', '=', False)]}">
                     Publish

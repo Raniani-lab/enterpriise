@@ -28,7 +28,7 @@ class AppointmentType(models.Model):
                     'slot_ids': [(0, 0, {
                         'weekday': str(day + 1),
                         'start_hour': hour * 0.5,
-                        'end_hour': 23.99,
+                        'end_hour': 0,  # 0 hour of next day
                     }) for hour in range(2) for day in range(7)],
                 })
         appointment_types |= self.create(appointment_types_work_hours)

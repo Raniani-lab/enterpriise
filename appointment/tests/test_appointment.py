@@ -8,7 +8,8 @@ from freezegun import freeze_time
 
 from odoo.addons.appointment.tests.common import AppointmentCommon
 from odoo.exceptions import ValidationError
-from odoo.tests import tagged, users
+from odoo.tests import Form, tagged, users
+from odoo.tools import mute_logger
 
 
 @tagged('appointment_slots')
@@ -37,37 +38,84 @@ class AppointmentTest(AppointmentCommon):
                 'name': 'Custom with users',
             })
 
+    @mute_logger('odoo.sql_db')
     @users('apt_manager')
     def test_appointment_slot_start_end_hour_auto_correction(self):
         """ Test the autocorrection of invalid intervals [start_hour, end_hour]. """
-        apt_type = self.env['appointment.type'].create({
+        appt_type = self.env['appointment.type'].create({
             'category': 'website',
             'name': 'Schedule a demo',
             'appointment_duration': 1,
+            'slot_ids': [(0, 0, {
+                'weekday': '1',  # Monday
+                'start_hour': 9,
+                'end_hour': 17,
+            })],
         })
-        slot = self.env['appointment.slot'].create({
-            'appointment_type_id': apt_type.id,
-            'start_hour': 9,
-            'end_hour': 17,
-        })
+        appt_form = Form(appt_type)
 
         # invalid interval, no adaptation because start_hour is not changed
         with self.assertRaises(ValidationError):
-            slot.end_hour = 8
+            with appt_form.slot_ids.edit(0) as slot_form:
+                slot_form.end_hour = 8
+            appt_form.save()
 
         # invalid interval, adapted because start_hour is changed
-        slot.start_hour = 18
-        self.assertEqual(slot.start_hour, 18)
-        self.assertEqual(slot.end_hour, 19)
+        with appt_form.slot_ids.edit(0) as slot_form:
+            slot_form.start_hour = 18
+            self.assertEqual(slot_form.start_hour, 18)
+            self.assertEqual(slot_form.end_hour, 19)
+        appt_form.save()
 
         # empty interval, adapted because start_hour is changed
-        slot.start_hour = 19
-        self.assertEqual(slot.start_hour, 19)
-        self.assertEqual(slot.end_hour, 20)
+        with appt_form.slot_ids.edit(0) as slot_form:
+            slot_form.start_hour = 19
+            self.assertEqual(slot_form.start_hour, 19)
+            self.assertEqual(slot_form.end_hour, 20)
+        appt_form.save()
 
         # invalid interval, end_hour not adapted [23.5, 19] because it will exceed 24
         with self.assertRaises(ValidationError):
-            slot.start_hour = 23.5
+            with appt_form.slot_ids.edit(0) as slot_form:
+                slot_form.start_hour = 23.5
+            appt_form.save()
+
+    def test_generate_slots_until_midnight(self):
+        """ Generate recurring slots until midnight. """
+        appt_type = self.env['appointment.type'].create({
+            'category': 'website',
+            'name': 'Schedule a demo',
+            'max_schedule_days': 1,
+            'appointment_duration': 1,
+            'appointment_tz': 'Europe/Brussels',
+            'slot_ids': [(0, 0, {
+                'weekday': '1',  # Monday
+                'start_hour': 18,
+                'end_hour': 0,
+            })],
+            'staff_user_ids': [(4, self.staff_user_bxls.id)],
+        }).with_user(self.env.user)
+
+        with freeze_time(self.reference_now):
+            slots = appt_type._get_appointment_slots('Europe/Brussels')
+
+        global_slots_startdate = self.reference_now_monthweekstart
+        global_slots_enddate = date(2022, 3, 5)  # last day of last week of February
+        self.assertSlots(
+            slots,
+            [{'name_formated': 'February 2022',
+              'month_date': datetime(2022, 2, 1),
+              'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
+              }
+             ],
+            {'enddate': global_slots_enddate,
+             'startdate': global_slots_startdate,
+             'slots_start_hours': [18, 19, 20, 21, 22, 23],
+             'slots_startdate': self.reference_monday.date(),  # first Monday after reference_now
+             'slots_enddate': self.reference_monday.date(),  # only test that day
+             }
+        )
+
 
     @users('apt_manager')
     def test_appointment_type_custom_badge(self):

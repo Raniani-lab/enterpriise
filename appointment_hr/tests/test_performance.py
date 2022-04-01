@@ -451,7 +451,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
             'category': 'work_hours',
             'max_schedule_days': 90,
             'slot_ids': [(5, 0)] + [  # while loop in _slots_generate generates the actual slots
-                (0, 0, {'end_hour': 23.99,
+                (0, 0, {'end_hour': 0,  # 0 hour of next day
                         'start_hour': hour * 0.5,
                         'weekday': str(day + 1),
                        }
@@ -515,7 +515,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
             'category': 'work_hours',
             'max_schedule_days': 10,
             'slot_ids': [(5, 0)] + [  # while loop in _slots_generate generates the actual slots
-                (0, 0, {'end_hour': 23.99,
+                (0, 0, {'end_hour': 0,  # 0 hour of next day
                         'start_hour': hour * 0.5,
                         'weekday': str(day + 1),
                        }
@@ -608,7 +608,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
             'category': 'work_hours',
             'max_schedule_days': 90,
             'slot_ids': [(5, 0)] + [  # while loop in _slots_generate generates the actual slots
-                (0, 0, {'end_hour': 23.99,
+                (0, 0, {'end_hour': 0,  # 0 hour of next day
                         'start_hour': hour * 0.5,
                         'weekday': str(day + 1),
                        }

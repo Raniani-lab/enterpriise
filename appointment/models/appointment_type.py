@@ -261,7 +261,9 @@ class AppointmentType(models.Model):
                     local_start += relativedelta(hours=self.appointment_duration)
             local_end = local_start + relativedelta(hours=self.appointment_duration)
 
-            while (local_start.hour + local_start.minute / 60) <= slot.end_hour - self.appointment_duration:
+            n_slot = int((slot._convert_end_hour_24_format() - (local_start.hour + local_start.minute / 60.0)) /
+                         self.appointment_duration)
+            for _ in range(n_slot):
                 slots.append({
                     self.appointment_tz: (
                         local_start,

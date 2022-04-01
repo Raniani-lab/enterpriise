@@ -43,6 +43,16 @@ class AppointmentSlot(models.Model):
     end_datetime = fields.Datetime('To', help="End datetime for unique slot type management")
     duration = fields.Float('Duration', compute='_compute_duration')
 
+    _sql_constraints = [(
+        'check_start_and_end_hour',
+        """CHECK(
+                ((end_hour=0 AND (start_hour BETWEEN 0 AND 23.99))
+                    OR (start_hour BETWEEN 0 AND end_hour))
+                AND (end_hour=0
+                    OR (end_hour BETWEEN start_hour AND 23.99))
+                )""",
+        'The end time must be later than the start time.')]
+
     @api.depends('start_datetime', 'end_datetime')
     def _compute_duration(self):
         for slot in self:
@@ -62,21 +72,13 @@ class AppointmentSlot(models.Model):
         """ Try to adapt end_hour if the interval end_hour < start_hour """
         for record in self:
             duration = record.appointment_type_id.appointment_duration
-            if duration > 0 and record.end_hour <= record.start_hour and record.start_hour + duration < 24:
-                record.end_hour = record.start_hour + duration
-
-    @api.constrains('start_hour')
-    def _check_hour(self):
-        if any(slot.start_hour < 0.00 or slot.start_hour >= 24.00 for slot in self):
-            raise ValidationError(_("Please enter a valid hour between 0:00 and 24:00 for your slots."))
+            if duration > 0 and record._convert_end_hour_24_format() <= record.start_hour \
+                    and record.start_hour + duration <= 24:
+                record.end_hour = (record.start_hour + duration) % 24
 
     @api.constrains('start_hour', 'end_hour')
     def _check_delta_hours(self):
-        if any(self.filtered(lambda slot: slot.start_hour >= slot.end_hour and slot.slot_type != 'unique')):
-            raise ValidationError(_(
-                "At least one slot has a start time that is not anterior to its end time."
-            ))
-        if any(self.filtered(lambda slot: slot.start_hour + slot.appointment_type_id.appointment_duration > slot.end_hour and slot.slot_type != 'unique')):
+        if any(self.filtered(lambda slot: slot.start_hour + slot.appointment_type_id.appointment_duration > slot._convert_end_hour_24_format() and slot.slot_type != 'unique')):
             raise ValidationError(_(
                 "At least one slot duration is shorter than the meeting duration (%s hours)",
                 format_duration(self.appointment_type_id.appointment_duration)
@@ -86,6 +88,17 @@ class AppointmentSlot(models.Model):
     def _check_unique_slot_has_datetime(self):
         if any(self.filtered(lambda slot: slot.slot_type == "unique" and not (slot.start_datetime and slot.end_datetime))):
             raise ValidationError(_("An unique type slot should have a start and end datetime"))
+
+    def _convert_end_hour_24_format(self):
+        """Convert end_hour from [0, 24[ to ]0, 24] by replacing 0 by 24 if necessary.
+
+        The end_hour can be encoded as '00:00', which means 'the next day at midnight'.
+        For some simple computation, we transform that 0 into 24 to make it easier to manipulate.
+        For example, when we want to know if the end hour is after the start hour, or when looping through
+        available slots 'until the end hour'.
+        """
+        self.ensure_one()
+        return self.end_hour if self.end_hour else 24
 
     def name_get(self):
         result = []

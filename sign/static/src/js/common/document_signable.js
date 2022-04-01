@@ -1254,7 +1254,7 @@ export const SignableDocument = Document.extend({
 
             type.auto_value = signature;
 
-            if (signDialog.nameAndSignature.signatureChanged) {
+            if (session.user_id && signDialog.nameAndSignature.signatureChanged) {
               this.updateUserSignature(type);
             }
 
@@ -1285,7 +1285,7 @@ export const SignableDocument = Document.extend({
 
           type.auto_value = signature;
 
-          if (signDialog.nameAndSignature.signatureChanged) {
+          if (session.user_id && signDialog.nameAndSignature.signatureChanged) {
             this.updateUserSignature(type);
           }
 

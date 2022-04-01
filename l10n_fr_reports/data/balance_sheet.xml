@@ -512,7 +512,7 @@
                                                         <field name="code">CREANCES_PARTICIPATIONS_AMOR</field>
                                                         <field name="level" eval="4"/>
                                                         <field name="sequence" eval="2"/>
-                                                        <field name="domain" eval="['|', ('account_id.code', '=like', '2967%'), ('account_id.code', '=like', '2967%')]"/>
+                                                        <field name="domain" eval="['|', ('account_id.code', '=like', '2967%'), ('account_id.code', '=like', '2968%')]"/>
                                                         <field name="groupby">account_id</field>
                                                         <field name="formulas">- sum</field>
                                                         <field name="hide_if_zero" eval="True"/>

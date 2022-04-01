@@ -66,6 +66,11 @@ class Project(models.Model):
         labels['subscriptions'] = _lt('Subscriptions')
         return labels
 
+    def _get_profitability_sequence_per_invoice_type(self):
+        sequence_per_invoice_type = super()._get_profitability_sequence_per_invoice_type()
+        sequence_per_invoice_type['subscriptions'] = 8
+        return sequence_per_invoice_type
+
     def _get_profitability_aal_domain(self):
         return expression.AND([
             super()._get_profitability_aal_domain(),
@@ -117,6 +122,7 @@ class Project(models.Model):
         section_id = 'subscriptions'
         subscription_revenue = {
             'id': section_id,
+            'sequence': self._get_profitability_sequence_per_invoice_type()[section_id],
             'invoiced': amount_invoiced,
             'to_invoice': amount_to_invoice,
         }

@@ -49,7 +49,7 @@ class TestIndustryFsmSaleProjectProfitability(TestProjectProfitabilityCommon):
             'No data should be found since no SO is linked to the project.'
         )
         self.additional_quotation.action_confirm()
-
+        sequence_per_invoice_type = self.project._get_profitability_sequence_per_invoice_type()
         self.assertDictEqual(
             self.project._get_profitability_items(False),
             {
@@ -57,6 +57,7 @@ class TestIndustryFsmSaleProjectProfitability(TestProjectProfitabilityCommon):
                 'revenues': {
                     'data': [{
                         'id': 'other_revenues',
+                        'sequence': sequence_per_invoice_type['other_revenues'],
                         'to_invoice': self.additional_quotation.order_line.untaxed_amount_to_invoice,
                         'invoiced': 0.0,
                     }],

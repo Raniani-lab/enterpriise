@@ -38,11 +38,14 @@ class TestProjectProfitability(TestSubscriptionCommon, TestProjectProfitabilityC
         )
         self.sale_order.action_confirm()
         self.assertEqual(len(self.subscription.recurring_invoice_line_ids), 1)
+        sequence_per_invoice_type = self.project._get_profitability_sequence_per_invoice_type()
+        self.assertIn('subscriptions', sequence_per_invoice_type)
+        subscription_sequence = sequence_per_invoice_type['subscriptions']
         self.assertDictEqual(
             self.project._get_profitability_items(False),
             {
                 'revenues': {
-                    'data': [{'id': 'subscriptions', 'to_invoice': self.subscription.recurring_total, 'invoiced': 0.0}],
+                    'data': [{'id': 'subscriptions', 'sequence': subscription_sequence, 'to_invoice': self.subscription.recurring_total, 'invoiced': 0.0}],
                     'total': {'to_invoice': self.subscription.recurring_total, 'invoiced': 0.0},
                 },
                 'costs': {

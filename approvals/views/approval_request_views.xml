@@ -337,6 +337,7 @@
         id="approvals_menu_config"
         parent="approvals_menu_root"
         name="Configuration"
+        groups="group_approval_manager"
         sequence="40"/>
 
     <menuitem
@@ -349,7 +350,7 @@
 
     <menuitem
         id="approvals_menu_product"
-        parent="approvals_menu_root"
+        parent="approvals_menu_config"
         name="Products"
         sequence="30"/>
 

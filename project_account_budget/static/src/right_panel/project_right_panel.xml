@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="project.ProjectRightPanel" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[@t-call='project.MilestoneSection']" position="before">
+            <t t-call="project_account_budget.BudgetSection"/>
+        </xpath>
+    </t>
+
+    <t t-inherit="project_enterprise.ProjectRightPanel" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[@t-call='project_enterprise.ProfitabilitySection']" position="after">
+            <t t-call="project_account_budget.BudgetSectionMobile"/>
+        </xpath>
+    </t>
+
+    <t t-name="project_account_budget.BudgetSection" owl="1">
+        <t t-set="budget" t-value="state.data.budget_items"/>
+        <div name="budget" class="o_rightpanel_section" t-if="budget">
+            <t t-set="budget_items" t-value="state.data.budget_items.data"/>
+            <t t-set="budget_total" t-value="state.data.budget_items.total"/>
+            <div class="o_rightpanel_header">
+                <div class="o_rightpanel_title">
+                    Budgets
+                </div>
+                <div class="o_rightpanel_button" t-if="budget.can_add_budget">
+                    <AddBudget form_view_id="budget.form_view_id" analytic_account_id="state.data.analytic_account_id" context="context" onBudgetUpdate.bind="_loadQwebContext"/>
+                </div>
+            </div>
+            <div class="o_rightpanel_data">
+                <table class="w-100">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">Budgetary Positions</th>
+                            <th style="width: 20%; text-align: right;">Allocated</th>
+                            <th style="width: 20%; text-align: right;">Spent</th>
+                            <th style="width: 20%; text-align: right;">Remaining</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="budget_items" t-as="budget" t-key="budget.name">
+                            <td>
+                                <a t-if="budget.action" class="o_rightpanel_button"
+                                    t-on-click="onProjectActionClick"
+                                    t-att-data-action="budget.action.name"
+                                    t-att-data-type="budget.action.type"
+                                    t-att-data-domain="budget.action.domain"
+                                >
+                                    <t t-call="project_account_budget.BudgetName"/>
+                                </a>
+                                <t t-else="">
+                                    <t t-call="project_account_budget.BudgetName"/>
+                                </t>
+                            </td>
+                            <td align="right" t-att-class="budget.allocated === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget.allocated)"/></td>
+                            <td align="right" t-att-class="budget.spent === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget.spent)"/></td>
+                            <t t-set="budget_remaining" t-value="budget.allocated + budget.spent"/>
+                            <td align="right" t-attf-class="text-bold {{budget_remaining &lt; 0 ? 'o_color_red' : budget_remaining === 0 ? 'text-muted' : 'o_color_green'}}">
+                                <t t-esc="formatMonetary(budget_remaining)"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot t-if="budget_items.length > 0">
+                        <tr>
+                            <td>Total</td>
+                            <td align="right" t-att-class="budget_total.allocated === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget_total.allocated)"/></td>
+                            <td align="right" t-att-class="budget_total.spent === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget_total.spent)"/></td>
+                            <t t-set="budget_total_remaining" t-value="budget_total.allocated + budget_total.spent"/>
+                            <td align="right" t-attf-class="text-bold {{budget_total_remaining &lt; 0 ? 'o_color_red' : budget_total_remaining === 0 ? 'text-muted' : 'o_color_green'}}">
+                                <t t-esc="formatMonetary(budget_total_remaining)" />
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="project_account_budget.BudgetSectionMobile" t-inherit="project_account_budget.BudgetSection" t-inherit-mode="primary" owl="1">
+        <xpath expr="//div[hasclass('o_rightpanel_title')]" position="before">
+            <span t-on-click="_onClickSection"><i t-attf-class="fa {{section.budget.closed ? 'fa-caret-right' : 'fa-caret-down'}}"></i></span>
+        </xpath>
+        <xpath expr="//div[hasclass('o_rightpanel_header')]" position="attributes">
+            <attribute name="t-on-click">_onClickSection</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_rightpanel_data')]" position="attributes">
+            <attribute name="t-attf-class" separator=" " add="{{section.budget.closed ? 'o_rightpanel_hidden' : ''}}"/>
+        </xpath>
+    </t>
+
+    <t t-name="project_account_budget.AddBudget" owl="1">
+        <a t-on-click="onAddBudgetClick">Add Budget</a>
+    </t>
+
+    <t t-name="project_account_budget.BudgetName" owl="1">
+        <t t-if="budget.name">
+            <t t-esc="budget.name"/>
+        </t>
+        <t t-else="">
+            <i>No Budgetary Position</i>
+        </t>
+    </t>
+
+</templates>

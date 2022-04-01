@@ -5,10 +5,10 @@ import { patch } from 'web.utils';
 import ProjectRightPanel from '@project/js/right_panel/project_right_panel';
 
 if (config.device.isMobile) {
-    patch(ProjectRightPanel.prototype, 'sale_timesheet_enterprise.ProjectRightPanel', {
+    patch(ProjectRightPanel.prototype, 'sale_project_enterprise.ProjectRightPanel', {
         setup() {
             this._super();
-            this.section.profitability = {
+            this.section.sales = {
                 closed: true,
             };
         },

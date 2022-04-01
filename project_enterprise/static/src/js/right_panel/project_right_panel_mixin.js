@@ -16,10 +16,7 @@ if (config.device.isMobile) {
         setup() {
             this._super(...arguments);
             this.section = useState({
-                sold: {
-                    closed: true,
-                },
-                total_sold: {
+                profitability: {
                     closed: true,
                 },
                 milestone: {

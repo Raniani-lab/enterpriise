@@ -86,7 +86,7 @@ class WorksheetTemplate(models.Model):
         # context needed to avoid "manual" removal of related fields
         self.mapped('model_id').with_context(**{MODULE_UNINSTALL_FLAG: True}).unlink()
 
-        return super().unlink()
+        return super(WorksheetTemplate, self.exists()).unlink()
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):

@@ -8308,16 +8308,6 @@
                     return false;
             }
         }
-        withDisplayProperties(properties) {
-            return Object.create(this, {
-                style: {
-                    value: properties.style,
-                },
-                format: {
-                    value: properties.format,
-                },
-            });
-        }
     }
     class EmptyCell extends AbstractCell {
         constructor(id, properties = {}) {
@@ -9993,10 +9983,13 @@
             return format;
         }
         updateCell(sheet, col, row, after) {
+            var _a;
             const before = this.getters.getCell(sheet.id, col, row);
             const hasContent = "content" in after || "formula" in after;
             // Compute the new cell properties
-            const afterContent = after.content ? after.content.replace(nbspRegexp, "") : "";
+            const afterContent = hasContent
+                ? ((_a = after.content) === null || _a === void 0 ? void 0 : _a.replace(nbspRegexp, "")) || ""
+                : (before === null || before === void 0 ? void 0 : before.content) || "";
             let style;
             if (after.style !== undefined) {
                 style = after.style || undefined;
@@ -10029,13 +10022,17 @@
             }
             const cellId = (before === null || before === void 0 ? void 0 : before.id) || this.uuidGenerator.uuidv4();
             const didContentChange = hasContent;
-            let cell;
             const properties = { format, style };
-            if (before && !didContentChange) {
-                cell = before.withDisplayProperties(properties);
-            }
-            else {
-                cell = this.createCell(cellId, afterContent, properties, sheet.id);
+            const cell = this.createCell(cellId, afterContent, properties, sheet.id);
+            if (before && !didContentChange && cell.isFormula()) {
+                // content is not re-evaluated if the content did not change => reassign the value manually
+                // TODO this plugin should not care about evaluation
+                // and evaluation should not depend on implementation details here.
+                // Task 2813749
+                cell.assignValue(before.evaluated.value);
+                if (before.evaluated.type === CellValueType.error) {
+                    cell.assignError(before.evaluated.value, before.evaluated.error);
+                }
             }
             this.history.update("cells", sheet.id, cell.id, cell);
             this.dispatch("UPDATE_CELL_POSITION", { cellId: cell.id, col, row, sheetId: sheet.id });
@@ -32194,8 +32191,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-03-29T07:05:53.793Z';
-    exports.__info__.hash = '82a7624';
+    exports.__info__.date = '2022-04-04T14:12:46.973Z';
+    exports.__info__.hash = '1405135';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

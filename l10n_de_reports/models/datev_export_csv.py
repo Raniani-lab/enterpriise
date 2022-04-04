@@ -15,7 +15,7 @@ import io
 import re
 import os
 
-BalanceKey = namedtuple('BalanceKey', ['from_code', 'to_code', 'partner_id'])
+BalanceKey = namedtuple('BalanceKey', ['from_code', 'to_code', 'partner_id', 'tax_id'])
 
 
 class AccountDatevCompany(models.Model):
@@ -442,7 +442,8 @@ class DatevExportCSV(models.AbstractModel):
                         to_account_code = payment_account
 
                 # group lines by account, to_account & partner
-                match_key = BalanceKey(from_code=account_code, to_code=to_account_code, partner_id=aml.partner_id)
+                match_key = BalanceKey(from_code=account_code, to_code=to_account_code, partner_id=aml.partner_id,
+                                       tax_id=code_correction)
 
                 if match_key in line_values:
                     # values already in line_values

@@ -576,6 +576,9 @@ class Planning(models.Model):
         if intervals and (end_datetime-start_datetime).days == 0: # Then we want the first working day and keep the end hours of this day
             start_datetime = intervals[0][0]
             end_datetime = [stop for start, stop in intervals if stop.date() == start_datetime.date()][-1]
+        elif intervals and (end_datetime-start_datetime).days >= 0:
+            start_datetime = intervals[0][0]
+            end_datetime = intervals[-1][1]
 
         return (start_datetime, end_datetime)
 

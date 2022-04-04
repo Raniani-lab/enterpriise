@@ -4,6 +4,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from .common import TestCommonPlanning
+from odoo.tests.common import Form
 
 class TestPlanning(TestCommonPlanning):
 
@@ -236,3 +237,23 @@ class TestPlanning(TestCommonPlanning):
         self.assertEqual(self.slot.state, 'draft', 'Planning is draft mode.')
         self.slot.action_publish()
         self.assertEqual(self.slot.state, 'published', 'Planning is published.')
+
+    def test_create_working_calendar_period(self):
+        """ A default dates should be calculated based on the working calendar of the company whatever the period """
+        test = Form(self.env['planning.slot'].with_context(
+            default_start_datetime=datetime(2019, 5, 27, 0, 0),
+            default_end_datetime=datetime(2019, 5, 27, 23, 59, 59)
+        ))
+        slot = test.save()
+        self.assertEqual(slot.start_datetime, datetime(2019, 5, 27, 8, 0), 'It should adjust to employee calendar: 0am -> 9pm')
+        self.assertEqual(slot.end_datetime, datetime(2019, 5, 27, 17, 0), 'It should adjust to employee calendar: 0am -> 9pm')
+
+        # For weeks period
+        test_week = Form(self.env['planning.slot'].with_context(
+            default_start_datetime=datetime(2019, 6, 23, 0, 0),
+            default_end_datetime=datetime(2019, 6, 29, 23, 59, 59)
+        ))
+
+        test_week = test_week.save()
+        self.assertEqual(test_week.start_datetime, datetime(2019, 6, 24, 8, 0), 'It should adjust to employee calendar: 0am -> 9pm')
+        self.assertEqual(test_week.end_datetime, datetime(2019, 6, 28, 17, 0), 'It should adjust to employee calendar: 0am -> 9pm')

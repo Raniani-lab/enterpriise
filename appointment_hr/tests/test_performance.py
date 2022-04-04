@@ -266,7 +266,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
 
         # with self.profile(collectors=['sql']) as profile:
         with self.mockAppointmentCalls(), \
-             self.assertQueryCount(staff_user_bxls=50):  # apt only: 47
+             self.assertQueryCount(staff_user_bxls=48):  # apt only: 47
             t0 = time.time()
             res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
             t1 = time.time()
@@ -368,7 +368,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
 
         # with self.profile(collectors=['sql']) as profile:
         with self.mockAppointmentCalls(), \
-             self.assertQueryCount(staff_user_bxls=63):  # apt only: 56
+             self.assertQueryCount(staff_user_bxls=61):  # apt only: 56
             t0 = time.time()
             res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
             t1 = time.time()
@@ -467,7 +467,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
 
         # with self.profile(collectors=['sql']) as profile:
         with self.mockAppointmentCalls(), \
-             self.assertQueryCount(staff_user_bxls=40):  # apt only: 35
+             self.assertQueryCount(staff_user_bxls=39):  # apt only: 35
             t0 = time.time()
             res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
             t1 = time.time()
@@ -531,7 +531,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
 
         # with self.profile(collectors=['sql']) as profile:
         with self.mockAppointmentCalls(), \
-             self.assertQueryCount(staff_user_bxls=40):  # apt only: 35
+             self.assertQueryCount(staff_user_bxls=39):  # apt only: 35
             t0 = time.time()
             res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
             t1 = time.time()
@@ -591,7 +591,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=52):  # apt only: 43 (44 w website)
+            with self.assertQueryCount(default=51):  # apt only: 43 (44 w website)
                 self._test_url_open('/calendar/%i' % self.test_apt_type.id)
         t1 = time.time()
 
@@ -623,7 +623,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=54):  # apt only: 45 (46 w website)
+            with self.assertQueryCount(default=53):  # apt only: 45 (46 w website)
                 self._test_url_open('/calendar/%i' % self.test_apt_type.id)
         t1 = time.time()
 

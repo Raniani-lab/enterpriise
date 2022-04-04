@@ -483,6 +483,7 @@ codes = {
     'OTHR': _('Other'),
     'MCOP': _('Miscellaneous Credit Operations'),
     'MDOP': _('Miscellaneous Debit Operations'),
+    'FCTI': _('Fees, Commission , Taxes, Charges and Interest'),
 }
 
 

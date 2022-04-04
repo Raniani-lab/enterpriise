@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from math import ceil
 
 class TimerMixin(models.AbstractModel):
@@ -10,13 +10,24 @@ class TimerMixin(models.AbstractModel):
 
     timer_start = fields.Datetime(related='user_timer_id.timer_start')
     timer_pause = fields.Datetime(related='user_timer_id.timer_pause')
-    is_timer_running = fields.Boolean(related='user_timer_id.is_timer_running')
+    is_timer_running = fields.Boolean(related='user_timer_id.is_timer_running', search="_search_is_timer_running")
     user_timer_id = fields.One2many('timer.timer', compute='_compute_user_timer_id', search='_search_user_timer_id')
 
     display_timer_start_primary = fields.Boolean(compute='_compute_display_timer_buttons')
     display_timer_stop = fields.Boolean(compute='_compute_display_timer_buttons')
     display_timer_pause = fields.Boolean(compute='_compute_display_timer_buttons')
     display_timer_resume = fields.Boolean(compute='_compute_display_timer_buttons')
+
+    def _search_is_timer_running(self, operator, value):
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise NotImplementedError(_('Operation not supported'))
+
+        running_timer = self.env['timer.timer'].search([('timer_start', '!=', False), ('timer_pause', '=', False), ('res_model', '=', self._name)])
+
+        if operator == '!=':
+            value = not value
+
+        return [('id', 'in' if value else 'not in', running_timer.mapped('res_id'))]
 
     def _search_user_timer_id(self, operator, value):
         timers = self.env['timer.timer'].search([

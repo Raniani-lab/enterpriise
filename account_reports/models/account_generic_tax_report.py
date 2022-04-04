@@ -1222,7 +1222,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         if not carryover_bounds:
             return
 
-        line_balance, carryover_balance = self.get_amounts_after_carryover(tax_report_line, column['balance'],
+        line_balance, carryover_balance = self.get_amounts_after_carryover(tax_report_line, column['no_format'],
                                                                            carryover_bounds, options, period)
         carryover_balance = self.format_value(carryover_balance)
 
@@ -1233,17 +1233,17 @@ class AccountGenericTaxReport(models.AbstractModel):
             column_styles = self._get_column_styles(line)
             column_style = column_styles.get('base_style', '')
 
-            if carryover_bounds[0] is not None and column['balance'] < carryover_bounds[0]:
+            if carryover_bounds[0] is not None and column['no_format'] < carryover_bounds[0]:
                 popup_data.update(messages['out_of_bounds'])
                 column_style += column_styles.get('below_bound_style', '')
-            elif carryover_bounds[1] is not None and column['balance'] > carryover_bounds[1]:
+            elif carryover_bounds[1] is not None and column['no_format'] > carryover_bounds[1]:
                 popup_data.update(messages['out_of_bounds'])
                 column_style += column_styles.get('above_bound_style', '')
 
             # We are between the bounds. We'll take as much as possible in the carryover balance as we can without
             # going out of bounds
             else:
-                balance = column['balance'] - line_balance
+                balance = column['no_format'] - line_balance
                 if balance < 0:
                     popup_data.update(messages['positive'])
                 elif balance > 0:

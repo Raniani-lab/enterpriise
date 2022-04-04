@@ -31,7 +31,7 @@
             'account_invoice_extract/static/src/css/account_invoice_extract_box_layer.css',
         ],
         'web.qunit_suite_tests': [
-            'account_invoice_extract/static/src/tests/helpers/invoice_extract_test_utils.js',
+            'account_invoice_extract/static/src/tests/helpers/*',
             'account_invoice_extract/static/src/tests/invoice_extract_box_tests.js',
             'account_invoice_extract/static/src/tests/invoice_extract_box_layer_tests.js',
             'account_invoice_extract/static/src/tests/invoice_extract_fields_and_box_layer_tests.js',

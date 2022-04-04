@@ -3,7 +3,7 @@
 
 import { nextTick, dom, fields, createView } from "web.test_utils";
 import { registry } from "@web/core/registry";
-import { beforeEach } from "@mail/../tests/helpers/test_utils";
+import { startServer, TEST_USER_IDS } from "@mail/../tests/helpers/test_utils";
 
 import { jsonToBase64, base64ToJson } from "@documents_spreadsheet_bundle/o_spreadsheet/helpers";
 import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
@@ -60,119 +60,28 @@ module(
     "documents_spreadsheet > pivot_templates",
     {
         async beforeEach() {
-            await beforeEach(this);
+            const pyEnv = await startServer();
+            pyEnv['ir.model'].create([
+                { name: "Product", model: "product" },
+                { name: "partner", model: "partner" },
+            ]);
+            pyEnv['documents.document'].create([
+                { name: "My spreadsheet", raw: "{}", is_favorited: false },
+                { name: "", raw: "{}", is_favorited: true },
+            ]);
+            const documentsFolderId1 = pyEnv['documents.folder'].create({ name: "Workspace1", description: "Workspace" })
+            const mailAliasId1 = pyEnv['mail.alias'].create({ alias_name: "hazard@rmcf.es" });
+            pyEnv['documents.share'].create({
+                name: "Share1",
+                folder_id: documentsFolderId1,
+                alias_id: mailAliasId1,
+            });
+            pyEnv['spreadsheet.template'].create([
+                { name: "Template 1", data: btoa("{}") },
+                { name: "Template 2", data: btoa("{}") },
+            ]);
+            this.data = Object.assign(pyEnv.mockServer.data, TEST_USER_IDS);
             Object.assign(this.data, {
-                "ir.model": {
-                    fields: {
-                        name: { string: "Model Name", type: "char" },
-                        model: { string: "Model", type: "char" },
-                    },
-                    records: [
-                        {
-                            id: 37,
-                            name: "Product",
-                            model: "product",
-                        },
-                        {
-                            id: 544,
-                            name: "partner",
-                            model: "partner",
-                        },
-                    ],
-                },
-                "documents.document": {
-                    fields: {
-                        name: { string: "Name", type: "char" },
-                        raw: { string: "Data", type: "text" },
-                        mimetype: { string: "mimetype", type: "char" },
-                        handler: { string: "handler", type: "char" },
-                        available_rule_ids: {
-                            string: "Rules",
-                            type: "many2many",
-                            relation: "documents.workflow.rule",
-                        },
-                        folder_id: {
-                            string: "Workspaces",
-                            type: "many2one",
-                            relation: "documents.folder",
-                        },
-                        res_model: { string: "Resource model", type: "char" },
-                        tag_ids: {
-                            string: "Tags",
-                            type: "many2many",
-                            relation: "documents.tag",
-                        },
-                        favorited_ids: { string: "Name", type: "many2many" },
-                        is_favorited: { string: "Name", type: "boolean" },
-                        thumbnail: { string: "Thumbnail", type: "text" },
-                    },
-                    records: [
-                        { id: 1, name: "My spreadsheet", raw: "{}", is_favorited: false },
-                        { id: 2, name: "", raw: "{}", is_favorited: true },
-                    ],
-                },
-                "documents.workflow.rule": {
-                    fields: {
-                        display_name: { string: "Name", type: "char" },
-                    },
-                    records: [],
-                },
-                "documents.folder": {
-                    fields: {
-                        name: { string: "Name", type: "char" },
-                        parent_folder_id: {
-                            string: "Parent Workspace",
-                            type: "many2one",
-                            relation: "documents.folder",
-                        },
-                        description: { string: "Description", type: "text" },
-                    },
-                    records: [
-                        {
-                            id: 1,
-                            name: "Workspace1",
-                            description: "Workspace",
-                            parent_folder_id: false,
-                        },
-                    ],
-                },
-                "mail.alias": {
-                    fields: {
-                        alias_name: { string: "Name", type: "char" },
-                    },
-                    records: [{ id: 1, alias_name: "hazard@rmcf.es" }],
-                },
-                "documents.share": {
-                    fields: {
-                        name: { string: "Name", type: "char" },
-                        folder_id: {
-                            string: "Workspaces",
-                            type: "many2one",
-                            relation: "documents.folder",
-                        },
-                        alias_id: { string: "alias", type: "many2one", relation: "mail.alias" },
-                    },
-                    records: [{ id: 1, name: "Share1", folder_id: 1, alias_id: 1 }],
-                    create_share: function () {
-                        return Promise.resolve();
-                    },
-                },
-                "documents.tag": {
-                    fields: {},
-                    records: [],
-                    get_tags: () => [],
-                },
-                "spreadsheet.template": {
-                    fields: {
-                        name: { string: "Name", type: "char" },
-                        data: { string: "Data", type: "binary" },
-                        thumbnail: { string: "Thumbnail", type: "binary" },
-                    },
-                    records: [
-                        { id: 1, name: "Template 1", data: btoa("{}") },
-                        { id: 2, name: "Template 2", data: btoa("{}") },
-                    ],
-                },
                 partner: {
                     fields: {
                         foo: {

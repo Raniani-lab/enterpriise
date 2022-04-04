@@ -150,7 +150,6 @@ async function createSidebar(params) {
  */
 async function createViewEditorManager(params) {
     weTestUtils.patch();
-    params.data = weTestUtils.wysiwygData(params.data);
     const { mockServer, widget } = await start(params);
     const parent = new StudioEnvironment(widget);
     const fieldsView = testUtils.mock.fieldsViewGet(mockServer, params);

@@ -3,6 +3,10 @@
 import Domain from 'web.Domain';
 import MockServer from 'web.MockServer';
 
+const FACET_ORDER_COLORS = [
+    '#F06050', '#6CC1ED', '#F7CD1F', '#814968', '#30C381', '#D6145F', '#475577', '#F4A460', '#EB7E7F', '#2C8397',
+];
+
 MockServer.include({
     //--------------------------------------------------------------------------
     // Private
@@ -67,6 +71,32 @@ MockServer.include({
         return [...sorted, ...notAttached, ...notAFile];
     },
     /**
+     * Mocks the '_get_tags' method of the model 'documents.tag'.
+     */
+    _mockDocumentsTag_GetTags(domain, folderId) {
+        const facets = this.data['documents.facet'].records;
+        const orderedTags = this.data['documents.tag'].records.sort((firstTag, secondTag) => {
+            const firstTagFacet = facets.find(facet => facet.id === firstTag.facet_id);
+            const secondTagFacet = facets.find(facet => facet.id === secondTag.facet_id);
+            return firstTagFacet.sequence === secondTagFacet.sequence
+                ? firstTag.sequence - secondTag.sequence
+                : firstTagFacet.sequence - secondTagFacet.sequence;
+        });
+        return orderedTags.map(tag => {
+            const [facet] = this._mockSearchRead('documents.facet', [[['id', '=', tag['facet_id']]]], {});
+            return {
+                display_name: tag.display_name,
+                group_hex_color: FACET_ORDER_COLORS[facet.id % FACET_ORDER_COLORS.length],
+                group_id: facet.id,
+                group_name: facet.name,
+                group_sequence: facet.sequence,
+                group_tooltip: facet.tooltip,
+                id: tag.id,
+                sequence: tag.sequence,
+            };
+        });
+    },
+    /**
      * Override to handle the specific case of model 'documents.document'.
      *
      * @override
@@ -120,17 +150,14 @@ MockServer.include({
         if (model === 'documents.document') {
             if (fieldName === 'tag_ids') {
                 const folderId = categoryDomain.length ? categoryDomain[0][2] : false;
-                if (folderId) {
-                    const domain = Domain.prototype.normalizeArray([
-                        ...searchDomain,
-                        ...categoryDomain,
-                        ...filterDomain,
-                        [fieldName, '!=', false],
-                    ]);
-                    return {values: this.data['documents.tag'].get_tags(domain, folderId), };
-                } else {
-                    return {values: [], };
-                }
+                const domain = Domain.prototype.normalizeArray([
+                    ...searchDomain,
+                    ...categoryDomain,
+                    ...filterDomain,
+                    [fieldName, '!=', false],
+                ]);
+                const values = folderId ? this._mockDocumentsTag_GetTags(domain, folderId) : [];
+                return { values };
             } else if (fieldName === 'res_model') {
                 let domain = Domain.prototype.normalizeArray([...searchDomain, ...categoryDomain]);
                 const modelValues = this._mockGetModels(model, domain);

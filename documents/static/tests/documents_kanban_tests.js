@@ -10,7 +10,7 @@ const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 
 const {
     afterNextRender,
-    beforeEach,
+    startServer,
 } = require('@mail/../tests/helpers/test_utils');
 
 const {
@@ -25,8 +25,6 @@ const RamStorage = require('web.RamStorage');
 const relationalFields = require('web.relational_fields');
 const testUtils = require('web.test_utils');
 const { str_to_datetime } = require('web.time');
-
-const createView = testUtils.createView;
 
 function autocompleteLength() {
     var $el = $('.ui-autocomplete');
@@ -44,11 +42,10 @@ function searchValue(el, value) {
     matches.val(value).trigger('keydown');
 }
 
+let pyEnv;
 QUnit.module('documents', {}, function () {
 QUnit.module('documents_kanban_tests.js', {
     async beforeEach() {
-        await beforeEach(this);
-
         this.ORIGINAL_CREATE_XHR = DocumentsKanbanController.prototype._createXHR;
         this.patchDocumentXHR = (mockedXHRs, customSend) => {
             DocumentsKanbanController.prototype._createXhr = () => {
@@ -61,193 +58,90 @@ QUnit.module('documents_kanban_tests.js', {
                 return xhr;
             };
         };
-        Object.assign(this.data, {
-            'documents.document': {
-                fields: {
-                    active: {string: "Active", type: 'boolean', default: true},
-                    available_rule_ids: {string: "Rules", type: 'many2many', relation: 'documents.workflow.rule'},
-                    file_size: {string: "Size", type: 'integer'},
-                    folder_id: {string: "Workspaces", type: 'many2one', relation: 'documents.folder'},
-                    lock_uid: { string: "Locked by", type: "many2one", relation: 'res.users' },
-                    message_follower_ids: {string: "Followers", type: 'one2many', relation: 'mail.followers'},
-                    message_ids: {string: "Messages", type: 'one2many', relation: 'mail.message'},
-                    mimetype: {string: "Mimetype", type: 'char', default: ''},
-                    name: {string: "Name", type: 'char', default: ' '},
-                    owner_id: { string: "Owner", type: "many2one", relation: 'res.users' },
-                    partner_id: { string: "Related partner", type: 'many2one', relation: 'res.partner' },
-                    previous_attachment_ids: {string: "History", type: 'many2many', relation: 'ir.attachment'},
-                    public: {string: "Is public", type: 'boolean'},
-                    res_id: {string: "Resource id", type: 'integer'},
-                    res_model: {string: "Model (technical)", type: 'char'},
-                    res_model_name: {string: "Resource model", type: 'char'},
-                    res_name: {string: "Resource name", type: 'char'},
-                    share_ids: {string: "Shares", type: "many2many", relation: 'documents.share'},
-                    tag_ids: {string: "Tags", type: 'many2many', relation: 'documents.tag'},
-                    type: {string: "Type", type: 'selection', selection: [['url', "URL"], ['binary', "File"]], default: 1},
-                    url: {string: "Url", type: 'char'},
-                    activity_ids: {string: 'Activities', type: 'one2many', relation: 'mail.activity',
-                        relation_field: 'res_id'},
-                    activity_state: {string: 'State', type: 'selection',
-                        selection: [['overdue', 'Overdue'], ['today', 'Today'], ['planned', 'Planned']]},
-                    is_editable_attachment: {string: "Is Editable Attachment", type: 'boolean'},
-                },
-                records: [
-                    {id: 1, name: 'yop', file_size: 30000, owner_id: 11, partner_id: 12,
-                        public: true, res_id: 1, res_model: 'task', res_model_name: 'Task', activity_ids: [1],
-                        activity_state: 'today', res_name: 'Write specs', tag_ids: [1, 2], share_ids: [], folder_id: 1,
-                        available_rule_ids: [1, 2, 4], is_editable_attachment: true},
-                    {id: 2, name: 'blip', file_size: 20000, owner_id: 12, partner_id: 12,
-                        public: false, res_id: 2, mimetype: 'application/pdf', res_model: 'task', res_model_name: 'Task',
-                        res_name: 'Write tests', tag_ids: [2], share_ids: [], folder_id: 1, available_rule_ids: [1],
-                        is_editable_attachment: false},
-                    {id: 3, name: 'gnap', file_size: 15000, lock_uid: 13, owner_id: 12, partner_id: 11,
-                        public: false, res_id: 2, res_model: 'documents.document', res_model_name: 'Task',
-                        res_name: 'Write doc', tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 3, 4],
-                        is_editable_attachment: false},
-                    {id: 4, name: 'burp', file_size: 10000, mimetype: 'image/png', owner_id: 11, partner_id: 13,
-                        public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale Order',
-                        res_name: 'SO 0001', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: [],
-                        is_editable_attachment: false},
-                    {id: 5, name: 'zip', file_size: 40000, lock_uid: 11, owner_id: 12, partner_id: 12,
-                        public: false, res_id: 3, res_model: false, res_model_name: false,
-                        res_name: false, tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 4],
-                        is_editable_attachment: false},
-                    {id: 6, name: 'pom', file_size: 70000, partner_id: 13,
-                        public: true, res_id: 1, res_model: 'documents.document', res_model_name: 'Document',
-                        res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 2, available_rule_ids: [],
-                        is_editable_attachment: false},
-                    {id: 8, active: false, name: 'wip', file_size: 70000, owner_id: 13, partner_id: 13,
-                        public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale Order',
-                        res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: [],
-                        is_editable_attachment: false},
-                    {id: 9, active: false, name: 'zorro', file_size: 20000, mimetype: 'image/png',
-                        owner_id: 13, partner_id: 13, public: true, res_id: false, res_model: false,
-                        res_model_name: false, res_name: false, tag_ids: [], share_ids: [], folder_id: 1,
-                        available_rule_ids: [], is_editable_attachment: false},
-                ],
+        pyEnv = await startServer();
+        const resPartnerIds = pyEnv['res.partner'].create([
+            { display_name: 'Hazard' },
+            { display_name: 'Lukaku' },
+            { display_name: 'De Bruyne' },
+            { email: 'raoul@grosbedon.fr', name: 'Raoul Grosbedon' },
+            { email: 'raoulette@grosbedon.fr', name: 'Raoulette Grosbedon' },
+        ]);
+        const resUsersIds = pyEnv['res.users'].create([
+            { display_name: 'Hazard', partner_id: resPartnerIds[0] },
+            { display_name: 'Lukaku', partner_id: resPartnerIds[1] },
+            { display_name: 'De Bruyne', partner_id: resPartnerIds[2] }
+        ]);
+        const documentsFolderIds = pyEnv['documents.folder'].create([
+            { name: 'Workspace1', description: '_F1-test-description_' },
+            { name: 'Workspace2' },
+        ]);
+        documentsFolderIds.push(
+            pyEnv['documents.folder'].create([
+                { name: 'Workspace3', parent_folder_id: documentsFolderIds[0] },
+            ])
+        );
+        const [documentsFacetId1, documentsFacetId2] = pyEnv['documents.facet'].create([
+            { name: 'Status', tooltip: 'A Status tooltip', sequence: 11 },
+            { name: 'Priority', tooltip: 'A priority tooltip', sequence: 10 }]);
+        const documentsTagIds = pyEnv['documents.tag'].create([
+            { display_name: 'New', facet_id: documentsFacetId1, sequence: 11 },
+            { display_name: 'Draft', facet_id: documentsFacetId1, sequence: 10 },
+            { display_name: 'No stress', facet_id: documentsFacetId2, sequence: 10 },
+        ]);
+        const documentsWorkflowRuleIds = pyEnv['documents.workflow.rule'].create([
+            { display_name: 'Convincing AI not to turn evil', note: 'Racing for AI Supremacy' },
+            { display_name: 'Follow the white rabbit' },
+            { display_name: 'Entangling superstrings' },
+            { display_name: 'One record rule', limited_to_single_record: true },
+        ]);
+        const resFakeIds = pyEnv['res.fake'].create([{ name: 'fake1' }, { name: 'fake2' }]);
+        const irAttachmentId1 = pyEnv['ir.attachment'].create({});
+        const [documentsDocumentId1, documentsDocumentId2] = pyEnv['documents.document'].create([
+            {
+                activity_state: 'today', available_rule_ids: [documentsWorkflowRuleIds[0], documentsWorkflowRuleIds[1], documentsWorkflowRuleIds[3]],
+                file_size: 30000, folder_id: documentsFolderIds[0], is_editable_attachment: true, name: 'yop', owner_id: resUsersIds[0],
+                partner_id: resPartnerIds[1], res_id: resFakeIds[0], res_model: 'res.fake', res_model_name: 'Task', res_name: 'Write specs',
+                tag_ids: [documentsTagIds[0], documentsTagIds[1]],
             },
-            'task': {
-                fields: {},
-                get_formview_id: function () {
-                    return Promise.resolve();
-                },
+            {
+                available_rule_ids: [1], file_size: 20000, folder_id: documentsFolderIds[0], mimetype: 'application/pdf', name: 'blip',
+                owner_id: resUsersIds[1], partner_id: resPartnerIds[1], res_id: resFakeIds[1], res_model: 'res.fake', res_model_name: 'Task',
+                res_name: 'Write tests', tag_ids: [documentsTagIds[1]],
             },
-            'documents.folder': {
-                fields: {
-                    name: {string: 'Name', type: 'char'},
-                    parent_folder_id: {string: 'Parent Workspace', type: 'many2one', relation: 'documents.folder'},
-                    description: {string: 'Description', type:'text'},
-                },
-                records: [
-                        {id: 1, name: 'Workspace1', description: '_F1-test-description_', parent_folder_id: false},
-                        {id: 2, name: 'Workspace2', parent_folder_id: false},
-                        {id: 3, name: 'Workspace3', parent_folder_id: 1},
-                ],
+        ]);
+        pyEnv['documents.document'].create([
+            {
+                available_rule_ids: documentsWorkflowRuleIds, file_size: 15000, folder_id: documentsFolderIds[0], lock_uid: resUsersIds[2],
+                name: 'gnap', owner_id: resUsersIds[1], partner_id: resPartnerIds[0], res_id: documentsDocumentId2, res_model: 'documents.document',
+                res_model_name: 'Task', tag_ids: [documentsTagIds[0], documentsTagIds[1], documentsTagIds[2]],
             },
-            'documents.tag': {
-                fields: {},
-                records: [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}],
-                get_tags: function () {
-                    return [{
-                      group_id: 2,
-                      group_name: 'Priority',
-                      group_sequence: 10,
-                      group_tooltip: 'A priority tooltip',
-                      group_hex_color: '#F06050',
-                      id: 5,
-                      display_name: 'No stress',
-                      sequence: 10,
-                      __count: 0,
-                    }, {
-                      group_id: 1,
-                      group_name: 'Status',
-                      group_sequence: 11,
-                      group_tooltip: 'A Status tooltip',
-                      group_hex_color: '#6CC1ED',
-                      id: 2,
-                      display_name: 'Draft',
-                      sequence: 10,
-                      __count: 0,
-                    }, {
-                      group_id: 1,
-                      group_name: 'Status',
-                      group_sequence: 11,
-                      group_tooltip: 'A Status tooltip',
-                      group_hex_color: '#F7CD1F',
-                      id: 1,
-                      display_name: 'New',
-                      sequence: 11,
-                      __count: 0,
-                    }];
-                },
-            },
-            'mail.alias': {
-                fields: {
-                    alias_name: {string: 'Name', type: 'char'},
-                },
-                records: [
-                    {id: 1, alias_name: 'hazard@rmcf.es'},
-                    {id: 2, alias_name: 'lukaku@im.it'},
-                    {id: 3, alias_name: 'debruyne@mc.uk'},
-                ]
-            },
-            'documents.share': {
-                fields: {
-                    name: {string: 'Name', type: 'char'},
-                    folder_id: {string: "Workspaces", type: 'many2one', relation: 'documents.folder'},
-                    alias_id: {string: "alias", type: 'many2one', relation: 'mail.alias'},
-                },
-                records: [
-                    {id: 1, name: 'Share1', folder_id: 1, alias_id: 1},
-                    {id: 2, name: 'Share2', folder_id: 1, alias_id: 2},
-                    {id: 3, name: 'Share3', folder_id: 2, alias_id: 3},
-                ],
-                open_share_popup: function () {
-                    return Promise.resolve();
-                },
-            },
-            'documents.workflow.rule': {
-                fields: {
-                    display_name: {string: 'Name', type: 'char'},
-                    note: {string: 'Tooltip', type: 'char'},
-                    limited_to_single_record: {string: 'Single Record', type: 'boolean'},
-                },
-                records: [
-                    {id: 1, display_name: 'Convincing AI not to turn evil', note: 'Racing for AI Supremacy', limited_to_single_record: false},
-                    {id: 2, display_name: 'Follow the white rabbit', limited_to_single_record: false},
-                    {id: 3, display_name: 'Entangling superstrings', limited_to_single_record: false},
-                    {id: 4, display_name: 'One record rule', limited_to_single_record: true},
-                ],
-            },
-        });
+            {
+                file_size: 10000, folder_id: documentsFolderIds[0], mimetype: 'image/png', name: 'burp', owner_id: resUsersIds[0],
+                partner_id: resPartnerIds[2], res_id: irAttachmentId1, res_model: 'ir.attachment', res_model_name: 'Attachment',
 
-        this.data['res.partner'].records.push(
-            { id: 11, display_name: 'Hazard' },
-            { id: 12, display_name: 'Lukaku' },
-            { id: 13, display_name: 'De Bruyne' },
-            {
-                email: 'raoul@grosbedon.fr',
-                id: 14,
-                name: 'Raoul Grosbedon'
             },
             {
-                email: 'raoulette@grosbedon.fr',
-                id: 15,
-                name: 'Raoulette Grosbedon'
+                available_rule_ids: [documentsWorkflowRuleIds[0], documentsWorkflowRuleIds[1], documentsWorkflowRuleIds[3]], file_size: 40000,
+                folder_id: documentsFolderIds[0], lock_uid: resUsersIds[0], name: 'zip', owner_id: resUsersIds[1], partner_id: resPartnerIds[1],
+                tag_ids: documentsTagIds,
             },
-        );
-        this.data['res.users'].records.push(
-            { id: 11, display_name: 'Hazard', partner_id: 11 },
-            { id: 12, display_name: 'Lukaku', partner_id: 12 },
-            { id: 13, display_name: 'De Bruyne', partner_id: 13 }
-        );
-        this.data['mail.activity.type'].records.push(
-            { id: 11, name: "Type 1" },
-            { id: 12, name: "Type 2" }
-        );
+            {
+                file_size: 70000, folder_id: documentsFolderIds[1], name: 'pom', partner_id: resPartnerIds[2], res_id: documentsDocumentId1,
+                res_model: 'documents.document', res_model_name: 'Document',
+            },
+            {
+                active: false, file_size: 70000, folder_id: documentsFolderIds[0], name: 'wip', owner_id: resUsersIds[2], partner_id: resPartnerIds[2],
+                res_id: irAttachmentId1, res_model: 'ir.attachment', res_model_name: 'Attachment',
+            },
+            {
+                active: false, file_size: 20000, folder_id: documentsFolderIds[0], mimetype: 'image/png', name: 'zorro', owner_id: resUsersIds[2],
+                partner_id: resPartnerIds[2],
+            },
+        ]);
     },
     afterEach() {
         DocumentsKanbanController.prototype._createXHR = this.ORIGINAL_CREATE_XHR;
+        pyEnv = undefined;
     },
 }, function () {
     QUnit.test('kanban basic rendering', async function (assert) {
@@ -256,7 +150,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -333,7 +226,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -371,7 +263,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -405,7 +296,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -431,7 +321,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -476,7 +365,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -528,7 +416,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -577,11 +464,9 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('selected records are kept when a button is clicked', async function (assert) {
         assert.expect(7);
 
-        var self = this;
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -600,7 +485,7 @@ QUnit.module('documents_kanban_tests.js', {
                 execute_action: function (ev) {
                     assert.strictEqual(ev.data.action_data.name, 'some_method',
                         "should call the correct method");
-                    self.data['documents.document'].records[0].name = 'yop changed';
+                    pyEnv['documents.document'].write([ev.data.env.currentID], { name: 'yop changed' });
                     ev.data.on_closed();
                 },
             },
@@ -636,11 +521,11 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('can share current domain', async function (assert) {
         assert.expect(2);
 
-        const domain = ['owner_id', '=', 12];
+        const [resUsersId1] = pyEnv['res.users'].search([['display_name', '=', 'Lukaku']]);
+        const domain = ['owner_id', '=', resUsersId1];
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -656,7 +541,7 @@ QUnit.module('documents_kanban_tests.js', {
                                 domain,
                             "&",
                                 ["folder_id", "child_of", 1],
-                                ["res_model", "in", ["task"]]
+                                ["res_model", "in", ["res.fake"]]
                         ],
                         folder_id: 1,
                         tag_ids: [[6, 0, []]],
@@ -688,7 +573,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -713,7 +597,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -740,7 +623,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -764,7 +646,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -806,7 +687,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -839,7 +719,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban limit="2"><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -881,7 +760,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -941,7 +819,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -979,10 +856,10 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document inspector: can delete records', async function (assert) {
         assert.expect(5);
 
+        const selectedRecordIds = pyEnv['documents.document'].search(['&', ['name', 'in', ['wip', 'zorro']], ['active', '=', false]]);
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             domain: [['active', '=', false]],
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -992,7 +869,7 @@ QUnit.module('documents_kanban_tests.js', {
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
                 if (args.method === 'unlink') {
-                    assert.deepEqual(args.args[0], [8, 9],
+                    assert.deepEqual(args.args[0], selectedRecordIds,
                         "should unlink the selected records");
                 }
                 return this._super.apply(this, arguments);
@@ -1027,7 +904,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -1082,7 +958,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -1119,18 +994,17 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document inspector: locked records', async function (assert) {
         assert.expect(6);
 
-        this.data.currentUserId = 11;
+        pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Hazard']])[0];
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             session: {
-                uid: this.data.currentUserId,
+                uid: pyEnv.currentUserId,
             },
         });
 
@@ -1166,25 +1040,23 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document inspector: can (un)lock records', async function (assert) {
         assert.expect(5);
 
-        var self = this;
-        this.data.currentUserId = 11;
+        pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Hazard']])[0];
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             session: {
-                uid: this.data.currentUserId,
+                uid: pyEnv.currentUserId,
             },
             mockRPC: function (route, args) {
                 if (args.method === 'toggle_lock') {
                     assert.deepEqual(args.args, [1], "should call method for the correct record");
-                    var record = self.data['documents.document'].records.find((d) => d.id === 1);
-                    record.lock_uid = record.lock_uid ? false : 11;
+                    const [record] = pyEnv['documents.document'].searchRead([['name', '=', 'yop']]);
+                    pyEnv['documents.document'].write([record.id], { lock_uid: record.lock_uid ? false : pyEnv.currentUserId });
                     return Promise.resolve();
                 }
                 return this._super.apply(this, arguments);
@@ -1223,7 +1095,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -1259,10 +1130,10 @@ QUnit.module('documents_kanban_tests.js', {
         var M2O_DELAY = relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY;
         relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = 0;
 
+        const [deBruyneUserId] = pyEnv['res.users'].search([['display_name', '=', 'De Bruyne']]);
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -1274,7 +1145,7 @@ QUnit.module('documents_kanban_tests.js', {
                     count++;
                     switch (count) {
                         case 1:
-                            assert.deepEqual(args.args, [[1], {owner_id: 13}],
+                            assert.deepEqual(args.args, [[1], {owner_id: deBruyneUserId }],
                                 "should save the change directly");
                             break;
                         case 2:
@@ -1324,7 +1195,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -1373,11 +1243,11 @@ QUnit.module('documents_kanban_tests.js', {
 
         var M2O_DELAY = relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY;
         relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = 0;
+        const [deBruyneUserId] = pyEnv['res.users'].search([['display_name', '=', 'De Bruyne']]);
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -1387,7 +1257,7 @@ QUnit.module('documents_kanban_tests.js', {
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
                 if (args.method === 'write') {
-                    assert.deepEqual(args.args, [[1, 2], {owner_id: 13}],
+                    assert.deepEqual(args.args, [[1, 2], {owner_id: deBruyneUserId}],
                         "should save the change directly");
                 }
                 return this._super.apply(this, arguments);
@@ -1442,7 +1312,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -1506,7 +1375,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -1515,8 +1383,8 @@ QUnit.module('documents_kanban_tests.js', {
             intercepts: {
                 do_action: function (ev) {
                     assert.deepEqual(ev.data.action, {
-                        res_id: 1,
-                        res_model: 'task',
+                        res_id: pyEnv['res.fake'].search([['name', '=', 'fake1']])[0],
+                        res_model: 'res.fake',
                         type: 'ir.actions.act_window',
                         views: [[false, 'form']],
                     }, "should open the resource in a form view");
@@ -1540,7 +1408,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -1579,7 +1446,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -1604,11 +1470,10 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document inspector: remove tag', async function (assert) {
         assert.expect(4);
 
-        this.data.currentUserId = 11;
+        pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Hazard']])[0];
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -1626,7 +1491,7 @@ QUnit.module('documents_kanban_tests.js', {
                 return this._super.apply(this, arguments);
             },
             session: {
-                uid: this.data.currentUserId,
+                uid: pyEnv.currentUserId,
             },
         });
 
@@ -1652,10 +1517,10 @@ QUnit.module('documents_kanban_tests.js', {
         assert.expect(7);
         var done = assert.async();
 
+        const [lastDocumentsTagId] = pyEnv['documents.tag'].search([['display_name', '=', 'No stress']]);
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -1667,7 +1532,7 @@ QUnit.module('documents_kanban_tests.js', {
                     assert.deepEqual(args.args[0], [1, 2],
                         "should write on the selected records");
                     assert.deepEqual(args.args[1], {
-                        tag_ids: [[4, 5]],
+                        tag_ids: [[4, lastDocumentsTagId]],
                     }, "should write the correct value");
                 }
                 return this._super.apply(this, arguments);
@@ -1707,7 +1572,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -1737,7 +1601,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -1763,12 +1626,11 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document inspector: unknown tags are hidden', async function (assert) {
         assert.expect(1);
 
-        this.data['documents.document'].records[0].tag_ids = [1, 2, 78];
-
+        const [firstDocumentRecord] = pyEnv['documents.document'].searchRead([]);
+        pyEnv['documents.document'].write([firstDocumentRecord.id], { tag_ids: [...firstDocumentRecord.tag_ids, 42] });
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -1795,7 +1657,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -1835,13 +1696,12 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document inspector: displays the right amount of single record rules', async function (assert) {
         assert.expect(2);
 
-        this.data.currentUserId = 11;
+        pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Hazard']])[0];
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             session: {
-                uid: this.data.currentUserId,
+                uid: pyEnv.currentUserId,
             },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1874,20 +1734,18 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document inspector: locked by another user', async function (assert) {
         assert.expect(4);
 
-        this.data['documents.document'].records.push({
-            id: 54,
+        const resUsersId1 = pyEnv['res.users'].create({});
+        pyEnv['documents.document'].create({
+            folder_id: pyEnv['documents.folder'].search([])[0],
+            lock_uid: resUsersId1,
             name: 'lockedByAnother',
-            folder_id: 1,
-            lock_uid: 13,
-            available_rule_ids: [1, 2, 4]
         });
-        this.data.currentUserId = 12;
+        pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Lukaku']])[0];
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             session: {
-                uid: this.data.currentUserId,
+                uid: pyEnv.currentUserId,
             },
             arch: `
                 <kanban><templates><t t-name="kanban-box">
@@ -1916,11 +1774,9 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document inspector: display rules of reloaded record', async function (assert) {
         assert.expect(7);
 
-        var self = this;
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -1931,7 +1787,7 @@ QUnit.module('documents_kanban_tests.js', {
                 execute_action: function (ev) {
                     assert.strictEqual(ev.data.action_data.name, 'some_method',
                         "should call the correct method");
-                    self.data['documents.document'].records[0].name = 'yop changed';
+                    pyEnv['documents.document'].write([ev.data.env.currentID], { name: 'yop changed' });
                     ev.data.on_closed();
                 },
             },
@@ -1982,7 +1838,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -2023,7 +1878,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: `<kanban><templates><t t-name="kanban-box">
                     <div>
                         <i class="fa fa-circle-thin o_record_selector"/>
@@ -2086,7 +1940,6 @@ QUnit.module('documents_kanban_tests.js', {
        var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -2116,7 +1969,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2159,16 +2011,15 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: fetch and display chatter messages', async function (assert) {
         assert.expect(2);
 
-        this.data['documents.document'].records[0].message_ids = [101, 102];
-        this.data['mail.message'].records.push(
-            { body: "Message 1", id: 101, model: 'documents.document', res_id: 1 },
-            { body: "Message 2", id: 102, model: 'documents.document', res_id: 1 }
-        );
+        const [documentsDocumentId1] = pyEnv['documents.document'].search([]);
+        pyEnv['mail.message'].create([
+            { body: "Message 2", model: 'documents.document', res_id: documentsDocumentId1 },
+            { body: "Message 1", model: 'documents.document', res_id: documentsDocumentId1 },
+        ]);
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2195,29 +2046,27 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: fetch and display followers', async function (assert) {
         assert.expect(3);
 
-        this.data['documents.document'].records[0].message_follower_ids = [301, 302];
-        this.data['mail.followers'].records.push(
+        const [documentsDocumentId1] = pyEnv['documents.document'].search([]);
+        const [resPartnerId1, resPartnerId2] = pyEnv['res.partner'].search([]);
+        pyEnv['mail.followers'].create([
             {
                 email: 'raoul@grosbedon.fr',
-                id: 301,
                 name: 'Raoul Grosbedon',
-                partner_id: 14,
-                res_id: 1,
+                partner_id: resPartnerId1,
+                res_id: documentsDocumentId1,
                 res_model: 'documents.document',
             },
             {
                 email: 'raoulette@grosbedon.fr',
-                id: 302,
                 name: 'Raoulette Grosbedon',
-                partner_id: 15,
-                res_id: 1,
+                partner_id: resPartnerId2,
+                res_id: documentsDocumentId1,
                 res_model: 'documents.document',
             },
-        );
+        ]);
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2276,7 +2125,6 @@ QUnit.module('documents_kanban_tests.js', {
             env: { bus },
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2305,44 +2153,20 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: render the activity button 2', async function (assert) {
         assert.expect(8);
 
-        this.data['mail.activity'].records.push({
-            id: 1,
-            display_name: "An activity",
-            date_deadline: moment().format("YYYY-MM-DD"),
-            state: "today",
-            user_id: 2,
-            create_uid: 2,
+        pyEnv['mail.activity'].create({
             can_write: true,
-            activity_type_id: 1,
+            create_uid: pyEnv.currentUserId,
+            date_deadline: moment().format("YYYY-MM-DD"),
+            display_name: "An activity",
+            res_id: pyEnv['documents.document'].search([])[0],
+            res_model: 'documents.document',
+            state: "today",
+            user_id: pyEnv.currentUserId,
         });
-        this.data.partner = {
-            fields: {
-                display_name: { string: "Displayed name", type: "char" },
-                message_ids: {
-                    string: "messages",
-                    type: "one2many",
-                    relation: 'mail.message',
-                    relation_field: "res_id",
-                },
-                activity_ids: {
-                    string: 'Activities',
-                    type: 'one2many',
-                    relation: 'mail.activity',
-                    relation_field: 'res_id',
-                },
-            },
-            records: [{
-                id: 2,
-                display_name: "first partner",
-                message_ids: [],
-                activity_ids: [],
-            }]
-        };
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2390,7 +2214,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2450,16 +2273,15 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: keep chatter open when switching between records', async function (assert) {
         assert.expect(6);
 
-        this.data['documents.document'].records[0].message_ids = [101, 102];
-        this.data['mail.message'].records.push(
-            { body: "Message on 'yop'", id: 101, model: 'documents.document', res_id: 1 },
-            { body: "Message on 'blip'", id: 102, model: 'documents.document', res_id: 2 }
-        );
+        const [documentsDocumentId1, documentsDocumentId2] = pyEnv['documents.document'].search([]);
+        pyEnv['mail.message'].create([
+            { body: "Message on 'yop'", model: 'documents.document', res_id: documentsDocumentId1 },
+            { body: "Message on 'blip'", model: 'documents.document', res_id: documentsDocumentId2 }
+        ]);
 
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2503,7 +2325,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2547,7 +2368,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -2586,7 +2406,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2631,7 +2450,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2689,7 +2507,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             mockRPC: function (route, args) {
                 if (args.method === 'search_panel_select_multi_range') {
                     return Promise.resolve({values: [], });
@@ -2720,7 +2537,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2749,7 +2565,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2769,9 +2584,9 @@ QUnit.module('documents_kanban_tests.js', {
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 3 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should have 4 related models");
 
-        // filter on 'Sale Order' (should be a disjunction)
+        // filter on 'Attachment' (should be a disjunction)
         await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Sale Order")
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Attachment")
         );
 
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 3 records in the renderer");
@@ -2779,7 +2594,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         // remove both filters
         await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Sale Order")
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Attachment")
         );
         await testUtils.dom.click(
             testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
@@ -2797,7 +2612,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2845,7 +2659,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2854,7 +2667,7 @@ QUnit.module('documents_kanban_tests.js', {
             archs: {
                 "documents.document,false,search": `
                     <search>
-                        <filter name="owo" string="OwO" domain="[['public', '=', True]]"/>
+                        <filter name="owo" string="OwO" domain="[['name', 'in', ['yop', 'burp', 'pom', 'wip', 'zorro']]]"/>
                     </search>`
             },
         });
@@ -2883,13 +2696,13 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the correct number of records"
         );
         assert.ok(
-            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Sale Order\n1"),
+            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Attachment\n1"),
             "should display the correct number of records"
         );
 
-        // filter on 'Sale Order'
+        // filter on 'Attachment'
         await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Sale Order")
+            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Attachment")
         );
 
         assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 2 records in the renderer");
@@ -2904,7 +2717,7 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the correct number of records"
         );
         assert.ok(
-            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Sale Order\n1"),
+            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Attachment\n1"),
             "should display the correct number of records"
         );
 
@@ -2917,7 +2730,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2959,7 +2771,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
@@ -3006,7 +2817,6 @@ QUnit.module('documents_kanban_tests.js', {
         var kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="tag_ids" widget="documents_many2many_tags"/>' +
@@ -3023,7 +2833,7 @@ QUnit.module('documents_kanban_tests.js', {
             "should have a span for color ball");
 
         assert.strictEqual(kanban.$('.o_field_many2manytags:nth(2) > span:first > span').css('color'),
-            "rgb(240, 96, 80)", "should have the right color");
+            "rgb(247, 205, 31)", "should have the right color");
 
         kanban.destroy();
     });
@@ -3031,10 +2841,9 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('kanban color widget without SearchPanel', async function (assert) {
         assert.expect(5);
 
-        const kanban = await createView({
+        const kanban = await createDocumentsView({
             View: KanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: `<kanban><templates><t t-name="kanban-box">
                     <div>
                         <field name="name"/>
@@ -3065,7 +2874,6 @@ QUnit.module('documents_kanban_tests.js', {
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             mockRPC: function (route, args) {
                 if (args.method === 'write' && args.model === 'documents.document') {
                     assert.deepEqual(
@@ -3124,7 +2932,6 @@ QUnit.module('documents_kanban_tests.js', {
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             mockRPC: function (route, args) {
                 if (args.method === 'write' && args.model === 'documents.document') {
                     throw new Error('It should not be possible to drop a record on the All selector');
@@ -3187,7 +2994,6 @@ QUnit.module('documents_kanban_tests.js', {
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: `
             <kanban><templates><t t-name="kanban-box">
                 <div draggable="true" class="oe_kanban_global_area">
@@ -3222,11 +3028,9 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('documents: upload replace bars', async function (assert) {
         assert.expect(5);
 
-        const documentId = 23;
-        this.data['documents.document'].records = []; // reset incompatible setup
-        this.data['documents.document'].records.push({
-            folder_id: 1,
-            id: documentId,
+        pyEnv['documents.document'].unlink(pyEnv['documents.document'].search([]));// reset incompatible setup
+        const documentsDocumentId1 = pyEnv['documents.document'].create({
+            folder_id: pyEnv['documents.folder'].search([])[0],
             name: 'request',
             type: 'empty',
         });
@@ -3245,10 +3049,9 @@ QUnit.module('documents_kanban_tests.js', {
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: `
                 <kanban><templates><t t-name="kanban-box">
-                    <div draggable="true" class="oe_kanban_global_area o_documents_attachment" data-id="${documentId}">
+                    <div draggable="true" class="oe_kanban_global_area o_documents_attachment" data-id="${documentsDocumentId1}">
                         <field name="name"/>
                     </div>
                 </t></templates></kanban>`,
@@ -3300,7 +3103,6 @@ QUnit.module('documents_kanban_tests.js', {
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: `
             <kanban><templates><t t-name="kanban-box">
                 <div draggable="true" class="oe_kanban_global_area">
@@ -3358,7 +3160,6 @@ QUnit.module('documents_kanban_tests.js', {
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             services: {
                 notification: {
                     notify(notification) {
@@ -3398,9 +3199,8 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('documents Kanban: displays youtube thumbnails', async function (assert) {
         assert.expect(1);
 
-        this.data['documents.document'].records.push({
-            folder_id: 1,
-            id: 12,
+        pyEnv['documents.document'].create({
+            folder_id: pyEnv['documents.folder'].search([])[0],
             name: 'youtubeVideo',
             type: 'url',
             url: 'https://youtu.be/Ayab6wZ_U1A'
@@ -3409,7 +3209,6 @@ QUnit.module('documents_kanban_tests.js', {
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: `
                 <kanban><templates><t t-name="kanban-box">
                     <div>
@@ -3437,7 +3236,6 @@ QUnit.module('documents_kanban_tests.js', {
         const list = await createDocumentsView({
             View: DocumentsListView,
             model: 'documents.document',
-            data: this.data,
             arch: `
                 <tree>
                     <field name="type" invisible="1"/>
@@ -3473,7 +3271,6 @@ QUnit.module('documents_kanban_tests.js', {
         const list = await createDocumentsView({
             View: DocumentsListView,
             model: 'documents.document',
-            data: this.data,
             arch: `
             <tree>
                 <field name="type" invisible="1"/>
@@ -3533,7 +3330,6 @@ QUnit.module('documents_kanban_tests.js', {
         const list = await createDocumentsView({
             View: DocumentsListView,
             model: 'documents.document',
-            data: this.data,
             arch: `
             <tree>
                 <field name="type" invisible="1"/>
@@ -3553,25 +3349,22 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('documents: Versioning', async function (assert) {
         assert.expect(13);
 
-        this.data['documents.document'].records.push({
-            folder_id: 1,
-            id: 12,
+        const irAttachmentId1 = pyEnv['ir.attachment'].create({
+            name: 'oldYoutubeVideo',
+            create_date: '2019-12-09 14:13:21',
+            create_uid: pyEnv.currentUserId,
+        });
+        const documentsDocumentId1 = pyEnv['documents.document'].create({
+            folder_id: pyEnv['documents.folder'].search([])[0],
             name: 'newYoutubeVideo',
             type: 'url',
             url: 'https://youtu.be/Ayab6wZ_U1A',
-            previous_attachment_ids: [99],
-        });
-        this.data['ir.attachment'].records.push({
-            id: 99,
-            name: 'oldYoutubeVideo',
-            create_date: '2019-12-09 14:13:21',
-            create_uid: 12,
+            previous_attachment_ids: [irAttachmentId1],
         });
 
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: `
                 <kanban><templates><t t-name="kanban-box">
                     <div draggable="true" class="oe_kanban_global_area">
@@ -3580,15 +3373,15 @@ QUnit.module('documents_kanban_tests.js', {
                 </t></templates></kanban>`,
             async mockRPC(route, args) {
                 if (args.model === 'ir.attachment' && args.method === 'unlink') {
-                    assert.deepEqual(args.args[0], [99],
+                    assert.deepEqual(args.args[0], [irAttachmentId1],
                         "should unlink the right attachment");
                     assert.step('attachmentUnlinked');
                     return;
                 }
                 if (args.model === 'documents.document' && args.method === 'write') {
-                    assert.deepEqual(args.args[0], [12],
+                    assert.deepEqual(args.args[0], [documentsDocumentId1],
                         "should target the right document");
-                    assert.deepEqual(args.args[1], {attachment_id: 99},
+                    assert.deepEqual(args.args[1], {attachment_id: irAttachmentId1},
                         "should target the right attachment");
                     assert.step('attachmentRestored');
                     return;
@@ -3604,7 +3397,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         assert.strictEqual(kanban.$('.o_inspector_history_name').text(), 'oldYoutubeVideo',
             "should display the correct record name");
-        assert.strictEqual(kanban.$('.o_inspector_history_create_name').text(), 'Lukaku',
+        assert.strictEqual(kanban.$('.o_inspector_history_create_name').text(), 'Your Company, Mitchell Admin',
             "should display the correct name");
         assert.strictEqual(
             kanban.$('.o_inspector_history_info_date').text(),
@@ -3656,7 +3449,6 @@ QUnit.module('documents_kanban_tests.js', {
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: "documents.document",
-            data: this.data,
             services: { local_storage },
             arch: `
                 <kanban>
@@ -3712,7 +3504,6 @@ QUnit.module('documents_kanban_tests.js', {
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: "documents.document",
-            data: this.data,
             services: { local_storage },
             arch: `
                 <kanban>

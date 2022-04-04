@@ -2,9 +2,9 @@
 
 import {
     afterNextRender,
-    beforeEach,
     nextAnimationFrame,
     start,
+    startServer,
 } from '@mail/../tests/helpers/test_utils';
 
 import FormRenderer from '@account_invoice_extract/js/invoice_extract_form_renderer';
@@ -16,56 +16,7 @@ import testUtils from 'web.test_utils';
 
 QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('invoice_extract_form_view_tests.js', {
-    async beforeEach() {
-        await beforeEach(this);
-
-        Object.assign(this.data, {
-            'account.move': {
-                fields: {
-                    amount_total: { string: 'Amount Total', type: 'integer' },
-                    currency_id: { string: 'Currency', type: 'many2one', relation: 'res.currency' },
-                    date: { string: 'Date', type: 'date' },
-                    date_due: { string: 'Due Date', type: 'date' },
-                    invoice_date: { string: 'Invoice Date', type: 'date' },
-                    display_name: { string: 'Name', type: 'string' },
-                    invoice_id: { string: 'InvoiceId', type: 'string' },
-                    message_attachment_count: { string: 'Attachment count', type: 'integer' },
-                    message_ids: { string: 'messages', type: 'one2many', relation: 'mail.message', relation_field: 'res_id' },
-                    message_main_attachment_id: { string: "Main Attachment", type: 'many2one', relation: 'ir.attachment' },
-                },
-                records: [{
-                    amount_total: 100,
-                    currency_id: 2,
-                    date: '1984-12-15',
-                    date_due: '1984-12-20',
-                    display_name: 'MyInvoice',
-                    id: 2,
-                    invoice_date: '1984-12-15',
-                    invoice_id: 'INV_15/26/34',
-                    message_attachment_count: 1,
-                    message_ids: [1],
-                    message_main_attachment_id: 1,
-                }],
-            },
-            'res.currency': {
-                fields: {
-                    name: { string: "Name" },
-                },
-                records: [{ id: 2, name: "USD" }],
-            },
-        });
-        this.data['ir.attachment'].records.push({
-            id: 1,
-            mimetype: 'image/jpeg',
-            res_id: 2,
-            res_model: 'account.move',
-        });
-        this.data['mail.message'].records.push({
-            attachment_ids: [1],
-            model: 'account.move',
-            res_id: 2,
-        });
-
+    beforeEach() {
         testUtils.mock.patch(FormRenderer, {
             /**
              * Called when chatter is rendered
@@ -87,11 +38,30 @@ QUnit.module('invoice_extract_form_view_tests.js', {
     QUnit.test('basic', async function (assert) {
         assert.expect(27);
 
+        const pyEnv = await startServer();
+        const resCurrencyId1 = pyEnv['res.currency'].create({ name: 'USD' });
+        const accountMoveId1 = pyEnv['account.move'].create({
+            amount_total: 100,
+            currency_id: resCurrencyId1,
+            date: '1984-12-15',
+            invoice_date_due: '1984-12-20',
+            display_name: 'MyInvoice',
+            invoice_date: '1984-12-15',
+        });
+        const irAttachmentId1 = pyEnv['ir.attachment'].create({
+            mimetype: 'image/jpeg',
+            res_model: 'account.move',
+            res_id: accountMoveId1,
+        });
+        pyEnv['mail.message'].create({
+            attachment_ids: [irAttachmentId1],
+            model: 'account.move',
+            res_id: accountMoveId1,
+        });
         const { widget: form } = await start({
             hasView: true,
             View: FormView,
             model: 'account.move',
-            data: this.data,
             arch: '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
@@ -103,7 +73,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             archs: {
                 'mail.message,false,list': '<tree/>',
             },
-            res_id: 2,
+            res_id: accountMoveId1,
             services: this.services,
             config: {
                 device: {
@@ -125,7 +95,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                     return (
                         hint.type === 'messages-loaded' &&
                         threadViewer.thread.model === 'account.move' &&
-                        threadViewer.thread.id === 2
+                        threadViewer.thread.id === accountMoveId1
                     );
                 },
             },
@@ -217,11 +187,30 @@ QUnit.module('invoice_extract_form_view_tests.js', {
     QUnit.test('no box and button in readonly mode', async function (assert) {
         assert.expect(15);
 
+        const pyEnv = await startServer();
+        const resCurrencyId1 = pyEnv['res.currency'].create({ name: 'USD' });
+        const accountMoveId1 = pyEnv['account.move'].create({
+            amount_total: 100,
+            currency_id: resCurrencyId1,
+            date: '1984-12-15',
+            invoice_date_due: '1984-12-20',
+            display_name: 'MyInvoice',
+            invoice_date: '1984-12-15',
+        });
+        const irAttachmentId1 = pyEnv['ir.attachment'].create({
+            mimetype: 'image/jpeg',
+            res_model: 'account.move',
+            res_id: accountMoveId1,
+        });
+        pyEnv['mail.message'].create({
+            attachment_ids: [irAttachmentId1],
+            model: 'account.move',
+            res_id: accountMoveId1,
+        });
         const { widget: form } = await start({
             hasView: true,
             View: FormView,
             model: 'account.move',
-            data: this.data,
             arch: '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
@@ -233,7 +222,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             archs: {
                 'mail.message,false,list': '<tree/>',
             },
-            res_id: 2,
+            res_id: accountMoveId1,
             config: {
                 device: {
                     size_class: config.device.SIZES.XXL,
@@ -254,7 +243,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                     return (
                         hint.type === 'messages-loaded' &&
                         threadViewer.thread.model === 'account.move' &&
-                        threadViewer.thread.id === 2
+                        threadViewer.thread.id === accountMoveId1
                     );
                 },
             },
@@ -314,11 +303,30 @@ QUnit.module('invoice_extract_form_view_tests.js', {
     QUnit.test('change active field', async function (assert) {
         assert.expect(12);
 
+        const pyEnv = await startServer();
+        const resCurrencyId1 = pyEnv['res.currency'].create({ name: 'USD' });
+        const accountMoveId1 = pyEnv['account.move'].create({
+            amount_total: 100,
+            currency_id: resCurrencyId1,
+            date: '1984-12-15',
+            invoice_date_due: '1984-12-20',
+            display_name: 'MyInvoice',
+            invoice_date: '1984-12-15',
+        });
+        const irAttachmentId1 = pyEnv['ir.attachment'].create({
+            mimetype: 'image/jpeg',
+            res_model: 'account.move',
+            res_id: accountMoveId1,
+        });
+        pyEnv['mail.message'].create({
+            attachment_ids: [irAttachmentId1],
+            model: 'account.move',
+            res_id: accountMoveId1,
+        });
         const { widget: form } = await start({
             hasView: true,
             View: FormView,
             model: 'account.move',
-            data: this.data,
             arch: '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
@@ -330,7 +338,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             archs: {
                 'mail.message,false,list': '<tree/>',
             },
-            res_id: 2,
+            res_id: accountMoveId1,
             config: {
                 device: {
                     size_class: config.device.SIZES.XXL,
@@ -351,7 +359,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                     return (
                         hint.type === 'messages-loaded' &&
                         threadViewer.thread.model === 'account.move' &&
-                        threadViewer.thread.id === 2
+                        threadViewer.thread.id === accountMoveId1
                     );
                 },
             },
@@ -400,11 +408,30 @@ QUnit.module('invoice_extract_form_view_tests.js', {
     QUnit.test('always keep one box layer per page on enabling OCR boxes visualisation', async function (assert) {
         assert.expect(3);
 
+        const pyEnv = await startServer();
+        const resCurrencyId1 = pyEnv['res.currency'].create({ name: 'USD' });
+        const accountMoveId1 = pyEnv['account.move'].create({
+            amount_total: 100,
+            currency_id: resCurrencyId1,
+            date: '1984-12-15',
+            invoice_date_due: '1984-12-20',
+            display_name: 'MyInvoice',
+            invoice_date: '1984-12-15',
+        });
+        const irAttachmentId1 = pyEnv['ir.attachment'].create({
+            mimetype: 'image/jpeg',
+            res_model: 'account.move',
+            res_id: accountMoveId1,
+        });
+        pyEnv['mail.message'].create({
+            attachment_ids: [irAttachmentId1],
+            model: 'account.move',
+            res_id: accountMoveId1,
+        });
         const { widget: form } = await start({
             hasView: true,
             View: FormView,
             model: 'account.move',
-            data: this.data,
             arch: `<form string="Account Invoice">
                     <div class="o_success_ocr"/>
                     <div class="o_attachment_preview" options="{'order': 'desc'}"></div>
@@ -416,7 +443,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             archs: {
                 'mail.message,false,list': '<tree/>',
             },
-            res_id: 2,
+            res_id: accountMoveId1,
             config: {
                 device: {
                     size_class: config.device.SIZES.XXL,
@@ -437,7 +464,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                     return (
                         hint.type === 'messages-loaded' &&
                         threadViewer.thread.model === 'account.move' &&
-                        threadViewer.thread.id === 2
+                        threadViewer.thread.id === accountMoveId1
                     );
                 },
             },

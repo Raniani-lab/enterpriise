@@ -83,7 +83,7 @@
             'documents/static/src/js/documents_public_pages.js',
         ],
         'web.tests_assets': [
-            'documents/static/tests/mock_server.js',
+            'documents/static/tests/helpers/*',
         ],
         'web.qunit_suite_tests': [
             'documents/static/tests/documents_test_utils.js',

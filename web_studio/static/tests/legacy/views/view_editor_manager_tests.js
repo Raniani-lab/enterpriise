@@ -1,7 +1,7 @@
 odoo.define('web_studio.ViewEditorManager_tests', function (require) {
 "use strict";
 
-const { beforeEach, start } = require('@mail/../tests/helpers/test_utils');
+const { start, startServer } = require('@mail/../tests/helpers/test_utils');
 
 var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');
@@ -27,157 +27,59 @@ const { xml } = owl;
 
 let serverData;
 let target;
-
+let pyEnv;
 QUnit.module('web_studio', {}, function () {
 QUnit.module('ViewEditorManager', {
     async beforeEach() {
-        await beforeEach(this);
-
-        Object.assign(this.data, {
-            coucou: {
-                fields: {
-                    display_name: {
-                        string: "Display Name",
-                        type: "char"
-                    },
-                    message_attachment_count: {
-                        string: 'Attachment count',
-                        type: 'integer',
-                    },
-                    char_field: {
-                        string:"A char",
-                        type: "char",
-                    },
-                    m2o: {
-                        string: "M2O",
-                        type: "many2one",
-                        relation: 'product',
-                    },
-                    product_ids: {string: "Products", type: "one2many", relation: "product"},
-                    priority: {
-                        string: "Priority",
-                        type: "selection",
-                        manual: true,
-                        selection: [['1', "Low"], ['2', "Medium"], ['3', "High"]],
-                    },
-                    start: {
-                        string: "Start Date",
-                        type: 'datetime',
-                    },
-                    stop: {
-                        string: "Stop Date",
-                        type: 'datetime',
-                    },
-                },
+        pyEnv = await startServer();
+        this.data = pyEnv.mockServer.data;
+        const resPartnerId1 = pyEnv['res.partner'].create({ display_name: 'Dustin', avatar_128: 'D Artagnan' });
+        const [partnerId1, partnerId2] = pyEnv['partner'].create([
+            { display_name: 'jean' },
+            { display_name: 'jacques' },
+        ]);
+        pyEnv['product'].create([
+            {
+                display_name: 'xpad',
+                m2o: partnerId2,
+                partner_ids: [partnerId1],
             },
-            product: {
-                fields: {
-                    display_name: {string: "Display Name", type: "char"},
-                    m2o: {string: "M2O", type: "many2one", relation: 'partner'},
-                    partner_ids: {string: "Partners", type: "one2many", relation: "partner"},
-                    coucou_id: {string: "coucou", type: "many2one", relation: "coucou"},
-                    m2m: {string: "M2M", type: "many2many", relation: "product"},
-                    toughness: {
-                        manual: true,
-                        string: "toughness",
-                        type: 'selection',
-                        selection: [['0', "Hard"], ['1', "Harder"]],
-                    },
-                },
-                records: [{
-                    id: 37,
-                    display_name: 'xpad',
-                    m2o: 7,
-                    partner_ids: [4],
-                }, {
-                    id: 42,
-                    display_name: 'xpod',
-                }],
+            {
+                display_name: 'xpod',
             },
-            partner: {
-                fields: {
-                    display_name: {string: "Display Name", type: "char"},
-                    image: {string: "Image", type: "binary"},
-                    displayed_image_id: {string: "cover", type: "many2one", relation: "ir.attachment"},
-                },
-                records: [{
-                    id: 4,
-                    display_name: "jean",
-                }, {
-                    id: 7,
-                    display_name: "jacques",
-                }],
-            },
-            tasks: {
-                fields: {
-                    name: {string: 'Name', type: 'char'},
-                    partner_id: {string: 'Partner', type: 'many2one', relation: 'res.partner'},
-                    description: {string: 'Description', type: 'char'},
-                },
-                records: [
-                    {id: 1, name: 'Chhagan', partner_id: 11, description: 'shaktiman'},
-                ],
-            },
-            'res.groups': {
-                fields: {
-                    display_name: {string: "Display Name", type: "char"},
-                },
-                records: [{
-                    id: 4,
-                    display_name: "Admin",
-                }],
-            },
-            'ir.model.fields': {
-                fields: {
-                    name: {string: "Field Name", type: "char"},
-                    relation: {string: "Object Relation", type: "char"},
-                    model: {string: "Object Name", type: "char"},
-                    ttype: {
-                        string: "Field Type",
-                        type: "selection",
-                        selection: [['many2one', 'many2one'], ['char', 'char']],
-                    },
-                },
-                records: [{
-                        id: 1,
-                        name: "abc",
-                        ttype: "many2one",
-                        relation: "coucou",
-                    },
-                    {
-                        id: 2,
-                        name: "def",
-                        ttype: "many2one",
-                        relation: "coucou",
-                    },
-                    {
-                        id: 3,
-                        name: 'name',
-                        model: 'tasks',
-                        ttype: 'char',
-                    },
-                    {
-                        id: 4,
-                        name: 'description',
-                        model: 'tasks',
-                        ttype: 'char',
-                    },
-                ]
-            },
+        ]);
+        pyEnv['mail.activity'].create({
+            name: 'Chhagan',
+            request_partner_id: resPartnerId1,
+            summary: 'shaktiman',
         });
-
-        this.data['ir.attachment'].records = [
-            { id: 1, name: "1.png" },
-            { id: 2, name: "2.png" },
-        ];
-        this.data['res.partner'].records.push({
-            display_name: 'Dustin',
-            id: 11,
-            avatar_128: 'D Artagnan',
-        });
+        pyEnv['res.groups'].create({ display_name: "Admin" });
+        pyEnv['ir.model.fields'].create([
+            {
+                name: "abc",
+                ttype: "many2one",
+                relation: "coucou",
+            },
+            {
+                name: "def",
+                ttype: "many2one",
+                relation: "coucou",
+            },
+            {
+                name: 'name',
+                model: 'tasks',
+                ttype: 'char',
+            },
+            {
+                name: 'description',
+                model: 'tasks',
+                ttype: 'char',
+            },
+        ]);
+        pyEnv['ir.attachment'].create([{ name: '1.png' }, { name: '2.png' }]);
 
         registerStudioDependencies();
-        serverData = {models: this.data};
+        serverData = { models: this.data };
         serverData.views = {};
         serverData.actions = {};
 
@@ -195,6 +97,9 @@ QUnit.module('ViewEditorManager', {
 
         target = getFixture();
     },
+    afterEach() {
+        pyEnv = undefined;
+    }
 }, function () {
 
     QUnit.module('List');
@@ -203,7 +108,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(5);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree/>",
         });
@@ -233,7 +137,6 @@ QUnit.module('ViewEditorManager', {
         odoo.debug = true;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree/>",
         });
@@ -245,14 +148,14 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('.o_web_studio_field_type_container').length, 2,
             "there should be two sections in Add (new & existing fields");
         assert.containsN(vem,
-            '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component', 11);
+            '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component', 12);
 
         const $input = vem.$('.o_web_studio_sidebar_search_input');
 
         $input.val("a");
         await testUtils.fields.triggerKeyup($input);
         assert.containsN(vem,
-            '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component', 7);
+            '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component', 8);
 
         $input.val("ar");
         await testUtils.fields.triggerKeyup($input);
@@ -278,7 +181,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(5);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree/>",
         });
@@ -302,7 +204,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(3);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
         });
@@ -322,7 +223,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(2);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name' optional='show'/></tree>",
         });
@@ -355,7 +255,6 @@ QUnit.module('ViewEditorManager', {
 
         const vem = await studioTestUtils.createViewEditorManager({
             arch: arch,
-            data: this.data,
             model: 'coucou',
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_view') {
@@ -405,7 +304,6 @@ QUnit.module('ViewEditorManager', {
 
         const vem = await studioTestUtils.createViewEditorManager({
             arch: '<tree><field name="display_name"/></tree>',
-            data: this.data,
             model: 'coucou',
         });
 
@@ -424,7 +322,6 @@ QUnit.module('ViewEditorManager', {
         let fieldsView;
         const arch = "<tree><field name='display_name'/></tree>";
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch,
             mockRPC: function (route, args) {
@@ -459,7 +356,6 @@ QUnit.module('ViewEditorManager', {
             <field name='display_name'/>
         </tree>`;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch,
             debug: 1,
@@ -512,7 +408,6 @@ QUnit.module('ViewEditorManager', {
             <button name="action_2" type="object"/>
         </tree>`;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch,
             mockRPC: function (route, args) {
@@ -559,7 +454,6 @@ QUnit.module('ViewEditorManager', {
 
         const vem = await studioTestUtils.createViewEditorManager({
             arch: '<tree><field invisible="1" name="display_name"/></tree>',
-            data: this.data,
             model: 'coucou',
         });
 
@@ -615,7 +509,6 @@ QUnit.module('ViewEditorManager', {
         const archReturn = '<tree><field name="display_name" modifiers="{}" attrs="{}"/></tree>';
         const vem = await studioTestUtils.createViewEditorManager({
             arch: '<tree><field invisible="1" name="display_name"/></tree>',
-            data: this.data,
             model: 'coucou',
             mockRPC(route, args) {
                 if (route === "/web_studio/edit_view") {
@@ -654,7 +547,6 @@ QUnit.module('ViewEditorManager', {
         fieldRegistry.add('widgetWithoutDescription', FieldChar.extend({}));
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
         });
@@ -684,7 +576,6 @@ QUnit.module('ViewEditorManager', {
 
         let fieldsView;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: '<tree><field name="display_name"/></tree>',
             async mockRPC(route) {
@@ -736,7 +627,6 @@ QUnit.module('ViewEditorManager', {
             </tree>`;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC(route, args) {
@@ -800,7 +690,6 @@ QUnit.module('ViewEditorManager', {
         odoo.debug = false;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: `<tree>
                     <field name='display_name'/>
@@ -862,7 +751,6 @@ QUnit.module('ViewEditorManager', {
         fieldRegistry.add('widgetWithoutDescription', FieldChar.extend({}));
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name' widget='widgetWithoutDescription'/></tree>",
         });
@@ -927,7 +815,6 @@ QUnit.module('ViewEditorManager', {
         let editCalls = 0;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: `<form>
                 <group>
@@ -987,7 +874,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(4);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name' invisible='1'/></tree>",
         });
@@ -1013,12 +899,11 @@ QUnit.module('ViewEditorManager', {
         assert.expect(4)
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: "tasks",
+            model: "mail.activity",
             arch: "<tree string='List'>" +
             "<header><button name=\"action_do_something\" type=\"object\" string=\"The Button\"/></header>" +
             "<field name='name' class=\"my_super_name_class\" />" +
-            "<field name='description' class=\"my_super_description_class\" invisible=\"True\"/>" +
+            "<field name='summary' class=\"my_super_description_class\" invisible=\"True\"/>" +
             "</tree>",
         });
 
@@ -1039,11 +924,10 @@ QUnit.module('ViewEditorManager', {
         assert.expect(2)
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: "tasks",
+            model: "mail.activity",
             arch: `<tree string='List'>
                     <field name='name' class="my_super_name_class" />
-                    <field name='description' class="my_super_description_class" invisible="True"/>
+                    <field name='summary' class="my_super_description_class" invisible="True"/>
                 </tree>`
         });
 
@@ -1061,7 +945,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(2);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><control><create string='Add a line'/></control></tree>",
         });
@@ -1091,7 +974,6 @@ QUnit.module('ViewEditorManager', {
         var fieldsView;
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name'/>" +
                         "<field name='char_field' invisible='1'/>" +
@@ -1135,7 +1017,6 @@ QUnit.module('ViewEditorManager', {
         var fieldsView;
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name'/>" +
                         "<field name='char_field' readonly='1'/>" +
@@ -1173,7 +1054,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(5);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
         });
@@ -1200,7 +1080,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(2);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
             mockRPC: function(route, args) {
@@ -1211,7 +1090,7 @@ QUnit.module('ViewEditorManager', {
                             children: [],
                             tag: 'field',
                         },
-                        new_attrs: {groups: [4]},
+                        new_attrs: {groups: pyEnv['res.groups'].search([['display_name', '=', 'Admin']])},
                         position: 'attributes',
                         target: {
                             attrs: {name: 'display_name'},
@@ -1263,7 +1142,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(3);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'product',
             arch: "<tree editable='true'> "+
                 "<field name='id' widget='handle'/>" +
@@ -1291,12 +1169,12 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('List grouped should not be grouped', async function (assert) {
         assert.expect(1);
 
-        this.data.coucou.fields.croissant = {string: "Croissant", type: "integer"};
-        this.data.coucou.records = [{id: 1, display_name: 'Red Right Hand', priority: '1', croissant: 3},
-                                    {id: 2, display_name: 'Hell Broke Luce', priority: '1', croissant: 5}];
+        pyEnv['coucou'].create([
+            { display_name: 'Red Right Hand', priority: '1', croissant: 3 },
+            { display_name: 'Hell Broke Luce', priority: '1', croissant: 5 },
+        ]);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='croissant' sum='Total Croissant'/></tree>",
             groupBy: ['priority'],
@@ -1316,7 +1194,6 @@ QUnit.module('ViewEditorManager', {
             "<field name='m2o'/>" +
         "</tree>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -1380,17 +1257,16 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('list editor field with aggregate function', async function (assert) {
         assert.expect(10);
 
-        this.data.coucou.fields.croissant = {string: "Croissant", type: "integer"};
-        this.data.coucou.records = [{id: 1, display_name: 'Red Right Hand', croissant: 3},
-                                    {id: 2, display_name: 'Hell Broke Luce', croissant: 5}];
-
+        pyEnv['coucou'].create([
+            { display_name: 'Red Right Hand', croissant: 3 },
+            { display_name: 'Hell Broke Luce', croissant: 5 },
+        ]);
         var arch = '<tree><field name="display_name"/><field name="croissant"/></tree>';
         var sumArchReturn = '<tree><field name="display_name"/><field name="croissant" sum="Sum of Croissant"/></tree>';
         var avgArchReturn = '<tree><field name="display_name"/><field name="croissant" avg="Average of Croissant"/></tree>';
         var fieldsView;
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function(route, args) {
@@ -1457,7 +1333,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(4);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form/>",
         });
@@ -1478,7 +1353,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(6);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -1515,7 +1389,6 @@ QUnit.module('ViewEditorManager', {
                         <field name="display_name"/>
                     </sheet>
                 </form>`,
-            data: this.data,
             model: 'coucou',
         });
 
@@ -1531,25 +1404,20 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('many2one field edition', async function (assert) {
         assert.expect(4);
 
-        this.data.product.records = [{
-            id: 42,
-            display_name: "A very good product",
-        }];
-        this.data.coucou.records = [{
-            id: 1,
-            display_name: "Kikou petite perruche",
-            m2o: 42,
-        }];
+        const productId1 = pyEnv['product'].create({ display_name: 'A very good product' });
+        const coucouId1 = pyEnv['coucou'].create({
+            display_name: 'Kikou petite perruche',
+            m2o: productId1,
+        });
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
                         "<field name='m2o'/>" +
                     "</sheet>" +
                 "</form>",
-            res_id: 1,
+            res_id: coucouId1,
             mockRPC: function (route, args) {
                 if (args.method === 'get_formview_action') {
                     throw new Error("The many2one form view should not be opened");
@@ -1582,9 +1450,7 @@ QUnit.module('ViewEditorManager', {
             "</sheet>" +
         "</form>";
         var fieldsView;
-
-        this.data.partner.records.push({
-            id: 8,
+        const partnerId1 = pyEnv['partner'].create({
             display_name: "kamlesh",
             image: "sulochan",
         });
@@ -1596,10 +1462,9 @@ QUnit.module('ViewEditorManager', {
         }
         document.body.addEventListener("load", imageLoadHandler, { capture: true });
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'partner',
             arch: arch,
-            res_id: 8,
+            res_id: partnerId1,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].new_attrs.options, "{\"size\":[0,270],\"preview_image\":\"coucou\"}",
@@ -1652,8 +1517,11 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('signature field edition (change full_name)', async function (assert) {
         assert.expect(8);
 
-        this.data.coucou.fields.sign = {string: "Signature", type: "binary"};
-        this.data.coucou.records = [{id: 1, display_name:'Jughead', m2o: 37}];
+        const productId1 = pyEnv['product'].create({});
+        pyEnv['coucou'].create({
+            display_name:'Jughead',
+            m2o: productId1,
+        });
         var editViewCount = 0;
 
         var arch = "<form>" +
@@ -1666,7 +1534,6 @@ QUnit.module('ViewEditorManager', {
         var newFieldName;
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             res_id: 1,
@@ -1769,13 +1636,13 @@ QUnit.module('ViewEditorManager', {
         "</form>";
         var fieldsView;
 
-        this.data.partner.records[0].image = 'kikou';
+        const [partnerId1] = pyEnv['partner'].search([['display_name', '=', 'jean']]);
+        pyEnv['partner'].write([partnerId1], { image: 'kikou' });
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'partner',
             arch: arch,
-            res_id: 4,
+            res_id: partnerId1,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].new_attrs.options, '{"size":[0,90]}',
@@ -1820,7 +1687,6 @@ QUnit.module('ViewEditorManager', {
         var fieldsView;
         var arch = "<tree><field name='display_name'/></tree>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -1849,7 +1715,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(7);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -1886,7 +1751,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(5);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -1923,13 +1787,9 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('fields without value and label (outside of groups) are shown in form', async function (assert) {
         assert.expect(6);
 
-        this.data.coucou.records = [{
-            id: 1,
-            display_name: "Kikou petite perruche",
-        }];
+        const coucouId1 = pyEnv['coucou'].create({ display_name: 'Kikou petite perruche' });
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -1941,7 +1801,7 @@ QUnit.module('ViewEditorManager', {
                         "<field name='char_field'/>" +
                     "</sheet>" +
                 "</form>",
-            res_id: 1,
+            res_id: coucouId1,
         });
 
         assert.doesNotHaveClass(vem.$('.o_web_studio_form_view_editor [name="id"]'), 'o_web_studio_widget_empty',
@@ -1974,7 +1834,6 @@ QUnit.module('ViewEditorManager', {
         </form>`;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: `<form>
                     <sheet>
@@ -2028,7 +1887,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(4);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -2063,7 +1921,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(14);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -2125,7 +1982,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(2);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -2147,7 +2003,6 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form>" +
                     "<sheet>" +
@@ -2192,7 +2047,6 @@ QUnit.module('ViewEditorManager', {
         "</form>";
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -2259,7 +2113,6 @@ QUnit.module('ViewEditorManager', {
         </form>`;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: `<form>
                         <sheet>
@@ -2329,7 +2182,6 @@ QUnit.module('ViewEditorManager', {
         "</form>";
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -2408,7 +2260,6 @@ QUnit.module('ViewEditorManager', {
         "</form>";
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -2464,7 +2315,6 @@ QUnit.module('ViewEditorManager', {
             "</sheet>" +
         "</form>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -2550,7 +2400,6 @@ QUnit.module('ViewEditorManager', {
         let editViewCount = 0;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'partner',
             arch: arch,
             mockRPC: function (route, args) {
@@ -2691,7 +2540,6 @@ QUnit.module('ViewEditorManager', {
             </form>`;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'product',
             arch: arch,
         });
@@ -2708,7 +2556,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(4);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<kanban>" +
                     "<templates><t t-name='kanban-box'/></templates>" +
@@ -2731,7 +2578,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(18);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<kanban>" +
                     "<templates>" +
@@ -2797,7 +2643,6 @@ QUnit.module('ViewEditorManager', {
         }));
 
         var prom = studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<kanban>" +
                     "<templates>" +
@@ -2833,7 +2678,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(5);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch : "<kanban>" +
                     "<templates>" +
@@ -2876,7 +2720,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(4);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch : "<kanban>" +
                     "<templates>" +
@@ -2922,7 +2765,6 @@ QUnit.module('ViewEditorManager', {
         var fieldsView;
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<kanban>" +
                    "<templates>" +
@@ -2994,7 +2836,6 @@ QUnit.module('ViewEditorManager', {
         this.data.coucou.fields.partner_id = {string: 'Res Partner', type: 'many2one', relation: 'res.partner'};
         this.data.coucou.records = [{ id: 1, display_name: 'Eleven', partner_id: 11}];
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -3030,7 +2871,6 @@ QUnit.module('ViewEditorManager', {
         var editViewCount = 0;
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -3114,7 +2954,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(4);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<kanban>" +
                     "<templates>" +
@@ -3146,7 +2985,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(4);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<kanban default_group_by='display_name'>" +
                     "<templates>" +
@@ -3180,7 +3018,6 @@ QUnit.module('ViewEditorManager', {
         }];
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<kanban default_group_by='display_name'>" +
                     "<templates>" +
@@ -3229,7 +3066,6 @@ QUnit.module('ViewEditorManager', {
             '</kanban>';
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -3291,7 +3127,6 @@ QUnit.module('ViewEditorManager', {
         var fieldsView;
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'partner',
             arch: arch,
             mockRPC: function (route, args) {
@@ -3347,7 +3182,6 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>";
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'partner',
             arch: arch,
             mockRPC: function (route, args) {
@@ -3390,7 +3224,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(6);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<search/>",
         });
@@ -3432,7 +3265,6 @@ QUnit.module('ViewEditorManager', {
             "</search>";
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -3502,7 +3334,6 @@ QUnit.module('ViewEditorManager', {
             "</search>";
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -3557,7 +3388,6 @@ QUnit.module('ViewEditorManager', {
 
         this.data.coucou.fields.display_name.store = true;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<search>" +
                 "<field name='display_name'/>" +
@@ -3596,7 +3426,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(3);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<search>" +
                 "<field name='display_name'/>" +
@@ -3649,7 +3478,6 @@ QUnit.module('ViewEditorManager', {
         this.data.product.fields.m2m.store = true;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'product',
             arch:
                 `<search>
@@ -3695,7 +3523,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(3);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<search>" +
                 "<field name='display_name'/>" +
@@ -3733,7 +3560,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(3);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<search>" +
                     "<field name='display_name'/>" +
@@ -3790,7 +3616,6 @@ QUnit.module('ViewEditorManager', {
         this.data.coucou.fields.start.store = true;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<search>" +
                 "<field name='display_name'/>" +
@@ -3850,7 +3675,6 @@ QUnit.module('ViewEditorManager', {
         }];
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<pivot/>",
         });
@@ -3886,7 +3710,6 @@ QUnit.module('ViewEditorManager', {
             </pivot>`;
 
         const pivot = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'product',
             arch: arch,
             mockRPC(route, args) {
@@ -3993,7 +3816,6 @@ QUnit.module('ViewEditorManager', {
         }];
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<graph/>",
         });
@@ -4031,7 +3853,6 @@ QUnit.module('ViewEditorManager', {
             </graph>`;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -4093,7 +3914,6 @@ QUnit.module('ViewEditorManager', {
         this.data.coucou.records = [];
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<gantt date_start='start' date_stop='stop'/>",
             mockRPC: function (route, args) {
@@ -4132,29 +3952,28 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('marker popup fields in editor sidebar', async function (assert) {
         assert.expect(12);
 
-        const partner = this.data['res.partner'].records.find(partner => partner.id === 11);
-        Object.assign(partner, {
+        const partnerIds = pyEnv['res.partner'].search([['display_name', '=', 'Dustin']]);
+        pyEnv['res.partner'].write(partnerIds, {
             display_name: 'Magan',
             partner_latitude: 10.0,
             partner_longitude: 10.5,
         });
-
+        const irModelFieldsIds = pyEnv['ir.model.fields'].search([['name', 'in', ['name', 'description']]]);
         let fieldsView;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
-            model: 'tasks',
-            arch: "<map res_partner='partner_id' routing='true' studio_map_field_ids='[3, 4]' hide_name='true' hide_address='true'>" +
+            model: 'mail.activity',
+            arch: `<map res_partner='request_partner_id' routing='true' studio_map_field_ids='[${irModelFieldsIds[0]},${irModelFieldsIds[1]}]' hide_name='true' hide_address='true'>` +
                     "<field name='name' string='Name'/>" +
-                    "<field name='description' string='Description'/>" +
+                    "<field name='summary' string='Description'/>" +
                 "</map>",
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_view') {
                     assert.deepEqual(args.operations[0], {
                         type: 'map_popup_fields',
-                        target: {field_ids: [3], operation_type: 'remove'},
+                        target: {field_ids: [irModelFieldsIds[0]], operation_type: 'remove'},
                     });
-                    fieldsView.arch = "<map res_partner='partner_id' routing='true' studio_map_field_ids='[4]' hide_name='true' hide_address='true'>" +
-                        "<field name='description' string='Description'/>" +
+                    fieldsView.arch = `<map res_partner='request_partner_id' routing='true' studio_map_field_ids='[${irModelFieldsIds[1]}]' hide_name='true' hide_address='true'>` +
+                        "<field name='summary' string='Description'/>" +
                     "</map>";
                     return Promise.resolve({
                         fields: fieldsView.fields,
@@ -4215,7 +4034,6 @@ QUnit.module('ViewEditorManager', {
 
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='id'/></tree>",
             mockRPC: function (route) {
@@ -4277,7 +4095,6 @@ QUnit.module('ViewEditorManager', {
 
         var firstExecution = true;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='id'/></tree>",
             mockRPC: function (route) {
@@ -4335,7 +4152,6 @@ QUnit.module('ViewEditorManager', {
         };
         var arch = "<tree><field name='display_name'/></tree>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -4401,7 +4217,6 @@ QUnit.module('ViewEditorManager', {
         var nbEdit = 0;
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route) {
@@ -4458,7 +4273,6 @@ QUnit.module('ViewEditorManager', {
         var nbEdit = 0;
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
             mockRPC: function (route, args) {
@@ -4580,7 +4394,6 @@ QUnit.module('ViewEditorManager', {
                         '<field name="display_name"/>' +
                     '</group></form>';
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -4640,7 +4453,6 @@ QUnit.module('ViewEditorManager', {
                         '<field name="display_name"/>' +
                     '</group></form>';
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'partner',
             arch: arch,
             mockRPC: function (route, args) {
@@ -4671,7 +4483,6 @@ QUnit.module('ViewEditorManager', {
                 </group>
             </form>`;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'partner',
             arch: arch,
             mockRPC: function (route, args) {
@@ -4707,7 +4518,6 @@ QUnit.module('ViewEditorManager', {
                         '<field name="display_name"/>' +
                     '</group></form>';
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -4763,7 +4573,6 @@ QUnit.module('ViewEditorManager', {
                         '<field name="display_name"/>' +
                     '</group></form>';
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -4817,7 +4626,6 @@ QUnit.module('ViewEditorManager', {
 
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='id'/><field name='display_name'/></tree>",
             mockRPC: function (route) {
@@ -4881,7 +4689,6 @@ QUnit.module('ViewEditorManager', {
 
         var arch = "<form><sheet><field name='display_name'/></sheet></form>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -4948,7 +4755,6 @@ QUnit.module('ViewEditorManager', {
 
         var arch = "<form><sheet><field name='display_name'/></sheet></form>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -5038,7 +4844,6 @@ QUnit.module('ViewEditorManager', {
 
         var arch = "<form><sheet><field name='display_name'/></sheet></form>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5072,7 +4877,6 @@ QUnit.module('ViewEditorManager', {
             "</sheet></form>";
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -5155,7 +4959,6 @@ QUnit.module('ViewEditorManager', {
             "</sheet></form>";
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route) {
@@ -5205,7 +5008,6 @@ QUnit.module('ViewEditorManager', {
                 "</group>" +
             "</sheet></form>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -5242,7 +5044,6 @@ QUnit.module('ViewEditorManager', {
             </group>
             </sheet></form>`;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -5290,7 +5091,6 @@ QUnit.module('ViewEditorManager', {
             </sheet></form>`;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -5339,7 +5139,6 @@ QUnit.module('ViewEditorManager', {
                 "</group>" +
             "</sheet></form>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route) {
@@ -5362,7 +5161,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(1);
 
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<form><sheet/></form>",
         });
@@ -5382,7 +5180,6 @@ QUnit.module('ViewEditorManager', {
         var fieldsView;
         var arch = "<tree><field name='display_name'/></tree>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -5448,7 +5245,6 @@ QUnit.module('ViewEditorManager', {
         var fieldsView;
         var arch = "<tree><field name='display_name'/></tree>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -5530,7 +5326,6 @@ QUnit.module('ViewEditorManager', {
         var arch = "<tree><field name='display_name'/></tree>";
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
@@ -5584,7 +5379,6 @@ QUnit.module('ViewEditorManager', {
 
         var fieldsView;
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
             mockRPC: function(route, args) {
@@ -5656,7 +5450,6 @@ QUnit.module('ViewEditorManager', {
 
         let fieldsView;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
             mockRPC: function (route, args) {
@@ -5705,7 +5498,6 @@ QUnit.module('ViewEditorManager', {
             </form>
         `
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5724,7 +5516,6 @@ QUnit.module('ViewEditorManager', {
             </form>
         `
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5741,7 +5532,6 @@ QUnit.module('ViewEditorManager', {
             </form>
         `
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5761,7 +5551,6 @@ QUnit.module('ViewEditorManager', {
             </form>
         `
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5779,7 +5568,6 @@ QUnit.module('ViewEditorManager', {
             </form>
         `
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5804,7 +5592,6 @@ QUnit.module('ViewEditorManager', {
             </form>
         `
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5823,7 +5610,6 @@ QUnit.module('ViewEditorManager', {
             </form>
         `
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5841,7 +5627,6 @@ QUnit.module('ViewEditorManager', {
             </form>
         `
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5858,7 +5643,6 @@ QUnit.module('ViewEditorManager', {
             </form>
         `
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5885,7 +5669,6 @@ QUnit.module('ViewEditorManager', {
                 </group>
             </sheet></form>`;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5927,7 +5710,6 @@ QUnit.module('ViewEditorManager', {
                 </group>
             </sheet></form>`;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -5952,9 +5734,10 @@ QUnit.module('ViewEditorManager', {
         patchWithCleanup(odoo, { debug: true });
 
         const action = serverData.actions["studio.coucou_action"];
-        action.views = [[1, "form"]];
+        const irUiViewId1 = pyEnv['ir.ui.view'].create({ model: 'bloups' });
+        action.views = [[irUiViewId1, "form"]];
         action.res_model = "coucou";
-        serverData.views["coucou,1,form"] = /*xml */ `
+        serverData.views[`coucou,${irUiViewId1},form`] = /*xml */ `
             <form>
                 <sheet>
                     <field name='display_name'/>
@@ -5964,15 +5747,7 @@ QUnit.module('ViewEditorManager', {
                 </sheet>
             </form>`;
         serverData.views["coucou,false,search"] = `<search></search>`;
-
-        Object.assign(serverData.models, {
-            "ir.ui.view": {
-                fields: {
-                    model: { type: "char" },
-                },
-                records: [{  id: 1, model: "bloups" }],
-            },
-        });
+        serverData.models = pyEnv.mockServer.data;
 
         serverData.views["ir.ui.view,false,form"] = /*xml */ `<form><field name="model" /></form>`;
         serverData.views["ir.ui.view,false,search"] = /*xml */ `<search />`;
@@ -5999,16 +5774,15 @@ QUnit.module('ViewEditorManager', {
             unblockUI: () => Promise.resolve()
         });
 
-        serverData.models.coucou.records = [{
-            id: 11,
+        const coucouId1 = pyEnv['coucou'].create({
             display_name: 'Coucou 11',
-            product_ids: [37],
-        }];
+            product_ids: pyEnv['product'].search([['display_name', '=', 'xpad']]),
+        });
 
         const action = serverData.actions["studio.coucou_action"];
         action.views = [[1, "form"]];
         action.res_model = "coucou";
-        action.res_id = 11;
+        action.res_id = coucouId1;
         serverData.views["coucou,1,form"] = /*xml */ `
             <form>
                 <sheet>
@@ -6027,6 +5801,7 @@ QUnit.module('ViewEditorManager', {
             "product,2,list": "<tree><field name='display_name'/></tree>",
             "partner,3,list": "<tree><field name='display_name'/></tree>",
         });
+
 
         patchWithCleanup(MockServer.prototype, {
             mockEditView(args) {
@@ -6089,7 +5864,6 @@ QUnit.module('ViewEditorManager', {
 
         let fieldsView;
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'product',
             arch: `
             <form>
@@ -6414,16 +6188,16 @@ QUnit.module('ViewEditorManager', {
             unblockUI: () => Promise.resolve()
         });
 
-        serverData.models.coucou.records = [{
-            id: 11,
+        const coucouId1 = pyEnv['coucou'].create({
             display_name: 'Coucou 11',
-            product_ids: [37],
-        }];
+            product_ids: pyEnv['product'].search([['display_name', '=', 'xpad']]),
+        });
 
         const action = serverData.actions["studio.coucou_action"];
         action.views = [[1, "form"]];
         action.res_model = "coucou";
-        action.res_id = 11;
+        action.res_id = coucouId1;
+        serverData.models = undefined;
         serverData.views["coucou,1,form"] = /*xml */ `
             <form>
                 <sheet>
@@ -6447,9 +6221,8 @@ QUnit.module('ViewEditorManager', {
             "partner,3,list": "<tree><field name='display_name'/></tree>",
         });
 
-        serverData.views["coucou,false,search"] = `<search></search>`;
-
-        patchWithCleanup(MockServer.prototype, {
+    serverData.views["coucou,false,search"] = `<search></search>`;
+    patchWithCleanup(MockServer.prototype, {
             mockEditView(args) {
                 const result = this._super(...arguments);
                 if (args.view_id !== 1) {
@@ -6545,16 +6318,15 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('edit one2many list view that uses parent key [REQUIRE FOCUS]', async function (assert) {
         assert.expect(3);
 
-        serverData.models.coucou.records = [{
-            id: 11,
+        const coucouId1 = pyEnv['coucou'].create({
             display_name: 'Coucou 11',
-            product_ids: [37],
-        }];
+            product_ids: pyEnv['product'].search([['display_name', '=', 'xpad']]),
+        });
 
         const action = serverData.actions["studio.coucou_action"];
         action.views = [[1, "form"]];
         action.res_model = "coucou";
-        action.res_id = 11;
+        action.res_id = coucouId1;
         serverData.views["coucou,1,form"] = /*xml */ `
            <form>
                 <sheet>
@@ -6606,16 +6378,15 @@ QUnit.module('ViewEditorManager', {
             unblockUI: () => Promise.resolve()
         });
 
-        serverData.models.coucou.records = [{
-            id: 11,
+        const coucouId1 = pyEnv['coucou'].create({
             display_name: 'Coucou 11',
-            product_ids: [37],
-        }];
+            product_ids: pyEnv['product'].search([['display_name', '=', 'xpad']]),
+        });
 
         const action = serverData.actions["studio.coucou_action"];
         action.views = [[1, "form"]];
         action.res_model = "coucou";
-        action.res_id = 11;
+        action.res_id = coucouId1;
         serverData.views["coucou,1,form"] = /*xml */ `
             <form>
                 <sheet>
@@ -6709,7 +6480,6 @@ QUnit.module('ViewEditorManager', {
                 "</group>" +
             "</sheet></form>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
         });
@@ -6731,11 +6501,10 @@ QUnit.module('ViewEditorManager', {
             unblockUI: () => Promise.resolve()
         });
 
-        serverData.models.coucou.records = [{
-            id: 11,
+        pyEnv['coucou'].create({
             display_name: 'Coucou 11',
-            product_ids: [37],
-        }];
+            product_ids: pyEnv['product'].search([['display_name', '=', 'xpad']]),
+        });
 
         const action = serverData.actions["studio.coucou_action"];
         action.views = [[1, "form"]];
@@ -6826,16 +6595,15 @@ QUnit.module('ViewEditorManager', {
         */
         assert.expect(1);
 
-        serverData.models.coucou.records = [{
-            id: 11,
+        const coucouId1 = pyEnv['coucou'].create({
             display_name: 'Coucou 11',
             product_ids: [],
-        }];
+        });
 
         const action = serverData.actions["studio.coucou_action"];
         action.views = [[1, "form"]];
         action.res_model = "coucou";
-        action.res_id = 11;
+        action.res_id = coucouId1;
         serverData.views["coucou,1,form"] = /*xml */ `
            <form>
                <field name='product_ids'>
@@ -6876,7 +6644,6 @@ QUnit.module('ViewEditorManager', {
                 "</group>" +
             "</sheet></form>";
         var vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             intercepts: {
@@ -6913,7 +6680,6 @@ QUnit.module('ViewEditorManager', {
         </form>`;
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC: function (route) {
@@ -6993,7 +6759,6 @@ QUnit.module('ViewEditorManager', {
 
         const arch = '<pivot />';
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC(route) {
@@ -7037,7 +6802,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(2);
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: `<kanban>
                     <templates>
@@ -7063,7 +6827,6 @@ QUnit.module('ViewEditorManager', {
         assert.expect(2);
 
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: `<search>
                     <field name='display_name'/>
@@ -7098,7 +6861,6 @@ QUnit.module('ViewEditorManager', {
 
         const arch = '<graph />';
         const vem = await studioTestUtils.createViewEditorManager({
-            data: this.data,
             model: 'coucou',
             arch: arch,
             mockRPC(route) {

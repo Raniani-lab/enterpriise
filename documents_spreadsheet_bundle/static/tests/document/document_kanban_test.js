@@ -3,26 +3,25 @@
 import { nextTick, dom } from "web.test_utils";
 import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
 import { createDocumentsView } from "documents.test_utils";
-import { beforeEach } from "@mail/../tests/helpers/test_utils";
-import { getBasicData } from "../utils/spreadsheet_test_data";
+import { startServer } from "@mail/../tests/helpers/test_utils";
 const { module, test } = QUnit;
 
-module("documents_spreadsheet kanban", {
-    async beforeEach() {
-        await beforeEach(this);
-        this.data = {
-            ...this.data,
-            ...getBasicData(),
-        };
-    },
-});
+module("documents_spreadsheet kanban");
 
 test("download spreadsheet from the document inspector", async function (assert) {
     assert.expect(3);
+    const pyEnv = await startServer();
+    const documentsFolderId1 = pyEnv['documents.folder'].create({});
+    const documentsDocumentId1 = pyEnv['documents.document'].create({
+        name: "My spreadsheet",
+        raw: "{}",
+        is_favorited: false,
+        folder_id: documentsFolderId1,
+        handler: "spreadsheet",
+    });
     const kanban = await createDocumentsView({
         View: DocumentsKanbanView,
         model: "documents.document",
-        data: this.data,
         arch: `
           <kanban><templates><t t-name="kanban-box">
               <div>
@@ -39,7 +38,7 @@ test("download spreadsheet from the document inspector", async function (assert)
                     type: "ir.actions.client",
                     tag: "action_open_spreadsheet",
                     params: {
-                        spreadsheet_id: 1,
+                        spreadsheet_id: documentsDocumentId1,
                         download: true,
                     },
                 });
@@ -56,17 +55,33 @@ test("download spreadsheet from the document inspector", async function (assert)
 
 test("thumbnail size in document side panel", async function (assert) {
     assert.expect(9);
-    this.data["documents.document"].records.push({
-        id: 3,
-        name: "",
-        raw: "{}",
-        folder_id: 1,
-        handler: "spreadsheet",
-    });
+    const pyEnv = await startServer();
+    const documentsFolderId1 = pyEnv['documents.folder'].create({});
+    pyEnv['documents.document'].create([
+        {
+            name: "My spreadsheet",
+            raw: "{}",
+            is_favorited: false,
+            folder_id: documentsFolderId1,
+            handler: "spreadsheet",
+        },
+        {
+            name: "",
+            raw: "{}",
+            is_favorited: true,
+            folder_id: documentsFolderId1,
+            handler: "spreadsheet",
+        },
+        {
+            name: "",
+            raw: "{}",
+            folder_id: documentsFolderId1,
+            handler: "spreadsheet",
+        },
+    ]);
     const kanban = await createDocumentsView({
         View: DocumentsKanbanView,
         model: "documents.document",
-        data: this.data,
         arch: `
           <kanban><templates><t t-name="kanban-box">
               <div>
@@ -103,6 +118,15 @@ test("thumbnail size in document side panel", async function (assert) {
 });
 
 test("Can create a blank spreadsheet from template dialog", async function (assert) {
+    const pyEnv = await startServer();
+    const documentsFolderId1 = pyEnv['documents.folder'].create({});
+    pyEnv['documents.document'].create({
+        name: "My spreadsheet",
+        raw: "{}",
+        is_favorited: false,
+        folder_id: documentsFolderId1,
+        handler: "spreadsheet",
+    });
     const kanban = await createDocumentsView({
         View: DocumentsKanbanView,
         model: "documents.document",

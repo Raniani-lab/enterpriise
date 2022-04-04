@@ -1,22 +1,17 @@
 /** @odoo-module **/
 
 import ActivityMenu from '@mail/js/systray/systray_activity_menu';
-import { beforeEach, start } from '@mail/../tests/helpers/test_utils';
+import { start } from '@mail/../tests/helpers/test_utils';
 
 import testUtils from 'web.test_utils';
 
 QUnit.module('documents', {}, function () {
-    QUnit.module('documents_systray_activity_menu_tests.js', {
-        async beforeEach() {
-            await beforeEach(this);
-        },
-    });
+    QUnit.module('documents_systray_activity_menu_tests.js');
 
     QUnit.test('activity menu widget: documents request button', async function (assert) {
         assert.expect(6);
 
         const { widget } = await start({
-            data: this.data,
             async mockRPC(route, args) {
                 if (args.method === 'systray_get_activities') {
                     return [];

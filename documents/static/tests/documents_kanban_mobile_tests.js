@@ -5,77 +5,22 @@ const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const DocumentsListView = require('documents.DocumentsListView');
 const { createDocumentsView } = require('documents.test_utils');
 
-const { beforeEach } = require('@mail/../tests/helpers/test_utils');
+const { startServer } = require('@mail/../tests/helpers/test_utils');
 
 const { dom, nextTick } = require('web.test_utils');
 
 QUnit.module('documents', {}, function () {
-QUnit.module('documents_kanban_mobile_tests.js', {
-    async beforeEach() {
-        await beforeEach(this);
-
-        Object.assign(this.data, {
-            'documents.document': {
-                fields: {
-                    available_rule_ids: {string: "Rules", type: 'many2many', relation: 'documents.workflow.rule'},
-                    folder_id: {string: "Folders", type: 'many2one', relation: 'documents.folder'},
-                    name: {string: "Name", type: 'char', default: ' '},
-                    previous_attachment_ids: {string: "History", type: 'many2many', relation: 'ir.attachment'},
-                    res_model: {string: "Model (technical)", type: 'char'},
-                    tag_ids: {string: "Tags", type: 'many2many', relation: 'documents.tag'},
-                    owner_id: { string: "Owner", type: "many2one", relation: 'res.users' },
-                    partner_id: { string: "Related partner", type: 'many2one', relation: 'res.partner' },
-                },
-                records: [
-                    {id: 1, available_rule_ids: [], folder_id: 1},
-                    {id: 2, available_rule_ids: [], folder_id: 1},
-                ],
-            },
-            'documents.folder': {
-                fields: {
-                    name: {string: 'Name', type: 'char'},
-                    parent_folder_id: {string: 'Parent Workspace', type: 'many2one', relation: 'documents.folder'},
-                    description: {string: 'Description', type:'text'},
-                },
-                records: [
-                    {id: 1, name: 'Workspace1', description: '_F1-test-description_', parent_folder_id: false},
-                ],
-            },
-            'documents.tag': {
-                fields: {},
-                records: [],
-                get_tags: () => [],
-            },
-            'mail.alias': {
-                fields: {
-                    alias_name: {string: 'Name', type: 'char'},
-                },
-                records: [
-                    {id: 1, alias_name: 'hazard@rmcf.es'},
-                ]
-            },
-            'documents.share': {
-                fields: {
-                    name: {string: 'Name', type: 'char'},
-                    folder_id: {string: "Workspace", type: 'many2one', relation: 'documents.folder'},
-                    alias_id: {string: "alias", type: 'many2one', relation: 'mail.alias'},
-                },
-                records: [
-                    {id: 1, name: 'Share1', folder_id: 1, alias_id: 1},
-                ],
-            },
-        });
-    },
-}, function () {
+QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
     QUnit.module('DocumentsKanbanViewMobile', function () {
 
     QUnit.test('basic rendering on mobile', async function (assert) {
         assert.expect(12);
 
+        const pyEnv = await startServer();
+        pyEnv['documents.folder'].create({ name: 'Workspace1', description: '_F1-test-description_' });
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: `
                 <kanban>
                     <templates>
@@ -138,10 +83,15 @@ QUnit.module('documents_kanban_mobile_tests.js', {
     QUnit.test('toggle inspector based on selection', async function (assert) {
         assert.expect(13);
 
+        const pyEnv = await startServer();
+        const documentsFolderId1 = pyEnv['documents.folder'].create({ name: 'Workspace1', description: '_F1-test-description_' });
+        pyEnv['documents.document'].create([
+            { folder_id: documentsFolderId1 },
+            { folder_id: documentsFolderId1 },
+        ]);
         const kanban = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
-            data: this.data,
             arch: `
                 <kanban>
                     <templates>
@@ -209,10 +159,11 @@ QUnit.module('documents_kanban_mobile_tests.js', {
     QUnit.test('basic rendering on mobile', async function (assert) {
         assert.expect(12);
 
+        const pyEnv = await startServer();
+        pyEnv['documents.folder'].create({ name: 'Workspace1', description: '_F1-test-description_' });
         const list = await createDocumentsView({
             View: DocumentsListView,
             model: 'documents.document',
-            data: this.data,
             arch: `
                 <tree>
                     <field name="name"/>
@@ -269,10 +220,15 @@ QUnit.module('documents_kanban_mobile_tests.js', {
     QUnit.test('toggle inspector based on selection', async function (assert) {
         assert.expect(13);
 
+        const pyEnv = await startServer();
+        const documentsFolderId1 = pyEnv['documents.folder'].create({ name: 'Workspace1', description: '_F1-test-description_' });
+        pyEnv['documents.document'].create([
+            { folder_id: documentsFolderId1 },
+            { folder_id: documentsFolderId1 },
+        ]);
         const list = await createDocumentsView({
             View: DocumentsListView,
             model: 'documents.document',
-            data: this.data,
             arch: `
                 <tree>
                     <field name="name"/>

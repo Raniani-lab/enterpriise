@@ -130,7 +130,8 @@ class HrLeave(models.Model):
                 periods.append({'is_validated': is_validated, 'from': leave.date_from, 'to': leave.date_to, 'show_hours': number_of_days <= 1})
             else:
                 periods[-1]['is_validated'] = is_validated
-                periods[-1]['to'] = leave.date_to
+                if periods[-1]['to'] < leave.date_to:
+                    periods[-1]['to'] = leave.date_to
                 periods[-1]['show_hours'] = periods[-1].get('show_hours') or number_of_days <= 1
         return periods
 

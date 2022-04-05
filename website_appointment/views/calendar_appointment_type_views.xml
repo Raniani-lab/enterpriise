@@ -28,7 +28,7 @@
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]/button[@name='action_customer_preview']" position="replace">
                 <button name="open_website_url" string="View availabilities" type="object"
-                        class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
+                        class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': [('active', '=', False)]}">
                     View availabilities
                 </button>
             </xpath>

@@ -9,13 +9,6 @@
             <field name="sequence">19</field>
         </record>
 
-        <record id="calendar_alarm_data_1h_sms" model="calendar.alarm">
-            <field name="name">SMS Text Message - 1 Hours</field>
-            <field name="interval">hours</field>
-            <field name="duration">1</field>
-            <field name="alarm_type">sms</field>
-            <field name="default_for_new_appointment_type">True</field>
-        </record>
         <record id="calendar.alarm_notif_1" model="calendar.alarm">
             <field name="default_for_new_appointment_type">True</field>
         </record>

@@ -11,7 +11,7 @@
     'description': """
         Allow clients to Schedule Appointments through the Portal
     """,
-    'depends': ['calendar_sms', 'portal'],
+    'depends': ['calendar', 'portal'],
     'data': [
         'data/calendar_data.xml',
         'data/mail_data.xml',

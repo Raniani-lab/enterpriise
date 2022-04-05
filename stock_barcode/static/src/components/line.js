@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import LineTitleComponent from '@stock_barcode/components/line_title';
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
 export default class LineComponent extends LegacyComponent {
@@ -89,3 +90,6 @@ export default class LineComponent extends LegacyComponent {
     }
 }
 LineComponent.template = 'stock_barcode.LineComponent';
+LineComponent.components = {
+    LineTitleComponent,
+};

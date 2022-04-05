@@ -7,24 +7,7 @@
             t-att-data-barcode="line.product_id.barcode" t-attf-class="{{componentClasses}}">
             <div class="o_barcode_line_summary d-flex flex-grow-1">
                 <div class="o_barcode_line_details flex-grow-1">
-                    <t t-if="line.product_id.default_code">
-                        <div class="o_barcode_line_title">
-                            <i class="fa fa-fw fa-tags"/>
-                            <span class="o_barcode_product_ref">
-                                <b>[<t t-esc="line.product_id.default_code"/>]</b>
-                            </span>
-                        </div>
-                        <div>
-                            <i class="fa fa-fw"/>
-                            <span class="product-label" t-esc="line.product_id.display_name"/>
-                        </div>
-                    </t>
-                    <t t-else="">
-                        <div class="o_barcode_line_title pb-1">
-                            <i class="fa fa-fw fa-tags"/>
-                            <span class="product-label" t-esc="line.product_id.display_name"/>
-                        </div>
-                    </t>
+                    <LineTitleComponent line="line" subline="false"/>
                     <div name="quantity">
                         <i class="fa fa-fw fa-cube" t-attf-class="{{nextExpected === 'quantity' ? 'o_next_expected' : ''}}"/>
                         <span t-attf-class="o_barcode_scanner_qty text-monospace badge #{' '}">

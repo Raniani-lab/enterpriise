@@ -183,9 +183,10 @@ class Appointment(http.Controller):
             suggested_staff_users = appointment_type.staff_user_ids.filtered(lambda staff_user: staff_user.id in filter_staff_user_ids)
 
         request.session.timezone = self._get_default_timezone(appointment_type)
+        selected_staff_user = suggested_staff_users[0] if suggested_staff_users and appointment_type.assign_method == 'chosen' else request.env['res.users']
         slots = appointment_type._get_appointment_slots(
             request.session['timezone'],
-            suggested_staff_users[0] if suggested_staff_users else request.env['res.users']
+            staff_user=selected_staff_user or suggested_staff_users or request.env['res.users'],
         )
         formated_days = _formated_weekdays(get_lang(request.env).code)
         month_first_available = next((month['id'] for month in slots if month['has_availabilities']), False)
@@ -537,8 +538,14 @@ class Appointment(http.Controller):
             raise ValueError()
 
         request.session['timezone'] = timezone or appointment_type.appointment_tz
-        staff_user = request.env['res.users'].sudo().browse(int(staff_user_id)) if staff_user_id else None
-        slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], staff_user)
+        requested_user = request.env['res.users'].sudo().browse(int(staff_user_id)) if staff_user_id else request.env['res.users']
+        # If no staff_user is set / chosen, use only the filtered staff users instead to compute slots.
+        filter_staff_users = request.env['res.users']
+        if not requested_user:
+            filter_staff_user_ids = json.loads(kwargs.get('filter_staff_user_ids', '[]'))
+            if filter_staff_user_ids:
+                filter_staff_users = appointment_type.staff_user_ids.filtered(lambda staff_user: staff_user.id in filter_staff_user_ids)
+        slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], requested_user or filter_staff_users)
         month_first_available = next((month['id'] for month in slots if month['has_availabilities']), False)
         formated_days = _formated_weekdays(get_lang(request.env).code)
 

@@ -393,8 +393,6 @@ export default class BarcodePickingModel extends BarcodeModel {
             }
             lines.push(Object.assign({}, smlData));
         }
-        // Sorts lines by source location (important to have a deterministic pages' order).
-        lines.sort((l1, l2) => l1.location_id < l2.location_id ? -1 : 0);
         return lines;
     }
 

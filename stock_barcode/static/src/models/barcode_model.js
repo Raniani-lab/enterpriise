@@ -717,7 +717,7 @@ export default class BarcodeModel extends EventBus {
         );
         await this.updateLine(newLine, params.fieldsParams);
         this.currentState.lines.push(newLine);
-        this._groupLinesByPage(this.currentState);
+        this.page.lines.push(newLine);
         return newLine;
     }
 
@@ -836,22 +836,21 @@ export default class BarcodeModel extends EventBus {
     _groupLinesByPage(state) {
         const groups = {};
         for (const line of state.lines) { // Groups the barcode lines by src/dest locations.
-            const key = `${line.location_id}_${line.location_dest_id}`;
+            const sourceLocationName = this.cache.getRecord('stock.location', line.location_id).display_name;
+            const destLocationName = line.location_dest_id ? this.cache.getRecord('stock.location', line.location_dest_id).display_name : "";
+            const key = `${sourceLocationName.toLowerCase()}\x00${destLocationName.toLowerCase()}`;
             if (!groups[key]) {
                 groups[key] = [];
             }
             groups[key].push(line);
         }
-        const pages = [];
-        for (const lines of Object.values(groups)) {
-            const page = {
-                index: pages.length,
-                lines,
-                sourceLocationId: lines[0].location_id,
-                destinationLocationId: lines[0].location_dest_id,
-            };
-            pages.push(page);
-        }
+        const sortedGroups = Object.entries(groups).sort((l1, l2) => l1[0] < l2[0] ? -1 : 0);
+        const pages = sortedGroups.map(([, lines], index) => new Object({
+            index,
+            lines,
+            sourceLocationId: lines[0].location_id,
+            destinationLocationId: lines[0].location_dest_id,
+        }));
         if (pages.length === 0) { // If no pages, creates a default one.
             const page = {
                 index: pages.length,

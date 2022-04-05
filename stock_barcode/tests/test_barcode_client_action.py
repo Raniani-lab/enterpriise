@@ -34,6 +34,11 @@ class TestBarcodeClientAction(HttpCase):
         })
         self.customer_location = self.env.ref('stock.stock_location_customers')
         self.pack_location = self.env.ref('stock.location_pack_zone')
+        self.shelf3 = self.env['stock.location'].create({
+            'name': 'Section 3',
+            'location_id': self.stock_location.id,
+            'barcode': 'shelf3',
+        })
         self.shelf1 = self.env["stock.location"].create({
             'name': 'Section 1',
             'location_id': self.env.ref('stock.warehouse0').lot_stock_id.id,
@@ -43,11 +48,6 @@ class TestBarcodeClientAction(HttpCase):
             'name': 'Section 2',
             'location_id': self.env.ref('stock.warehouse0').lot_stock_id.id,
             'barcode': 'LOC-01-02-00',
-        })
-        self.shelf3 = self.env['stock.location'].create({
-            'name': 'Section 3',
-            'location_id': self.stock_location.id,
-            'barcode': 'shelf3',
         })
         self.shelf4 = self.env['stock.location'].create({
             'name': 'Section 4',

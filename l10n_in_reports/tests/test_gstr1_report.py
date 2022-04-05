@@ -16,14 +16,21 @@ class TestReports(TestAccountReportsCommon):
         cls.maxDiff = None
         cls.company_data["company"].write({
             "state_id": cls.env.ref("base.state_in_gj").id,
+            "street": "street1",
+            "city": "city1",
+            "zip": "123456",
             "country_id": cls.env.ref("base.in").id,
             })
         cls.partner_a.write({
             "vat": "24BBBFF5679L8ZR",
             "state_id": cls.env.ref("base.state_in_gj").id,
+            "street": "street2",
+            "city": "city2",
+            "zip": "123456",
             "country_id": cls.env.ref("base.in").id,
             "l10n_in_gst_treatment": "regular",
             })
+        cls.product_a.write({"l10n_in_hsn_code": "01111"})
         cls.invoice = cls.init_invoice(
             "out_invoice",
             post=True,

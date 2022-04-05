@@ -642,7 +642,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertLocationHighlight(true);
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('2/3');
-            helper.assertValidateVisible(true);
+            helper.assertValidateVisible(false);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(false);
             var $lineproduct1 = helper.getLine({barcode: 'product1'});
@@ -673,7 +673,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertPager('1/3');
             helper.assertValidateVisible(false);
             helper.assertValidateIsHighlighted(false);
-            helper.assertValidateVisible(false);
+            helper.assertValidateEnabled(false);
             var $lineproduct1 = helper.getLine({barcode: 'product1'});
             helper.assertLineIsHighlighted($lineproduct1, false);
             var $lineproduct2 = helper.getLine({barcode: 'product2'});

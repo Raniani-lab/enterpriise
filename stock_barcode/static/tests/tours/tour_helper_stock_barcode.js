@@ -128,21 +128,19 @@ function assertNextIsHighlighted (expected) {
 }
 
 function assertValidateVisible (expected) {
-    var $validate = $('.o_validate_page');
-    var current = (!$validate.length && !expected) || $validate.hasClass('o_hidden');
-    assert(!current, expected, 'Validate visible');
+    const validateButton = document.querySelector('.o_validate_page,.o_apply_page');
+    assert(Boolean(validateButton), expected, 'Validate visible');
 }
 
 function assertValidateEnabled (expected) {
-    var $validate = $('.o_validate_page');
-    var current = (!$validate.length && !expected) || $validate.prop('disabled');
-    assert(!current, expected, 'Validate enabled');
+    const validateButton = document.querySelector('.o_validate_page,.o_apply_page') || false;
+    assert(validateButton && !validateButton.hasAttribute('disabled'), expected, 'Validate enabled');
 }
 
 function assertValidateIsHighlighted (expected) {
-    var $validate = $('.o_validate_page');
-    var current = $validate.hasClass('btn-success');
-    assert(current, expected, 'Validate button is highlighted');
+    const validateButton = document.querySelector('.o_validate_page,.o_apply_page') || false;
+    const isHighlighted = validateButton && validateButton.classList.contains('btn-success');
+    assert(isHighlighted, expected, 'Validate button is highlighted');
 }
 
 function assertLinesCount(expected) {

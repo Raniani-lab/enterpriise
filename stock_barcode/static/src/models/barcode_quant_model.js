@@ -101,7 +101,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
     }
 
     get highlightValidateButton() {
-        return this.applyOn === this.pageLines.length;
+        return this.applyOn > 0 && this.applyOn === this.pageLines.length;
     }
 
     get incrementButtonsDisplayStyle() {

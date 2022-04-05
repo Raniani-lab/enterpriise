@@ -22,20 +22,20 @@ class AppointmentHrTest(AppointmentHrCommon):
     @users('apt_manager')
     def test_appointment_type_create(self):
         # Work hours: only 1 / employee
-        apt_type = self.env['calendar.appointment.type'].create({
+        apt_type = self.env['appointment.type'].create({
             'category': 'work_hours',
             'name': 'Work hours on me',
         })
         self.assertEqual(apt_type.staff_user_ids, self.apt_manager)
 
         with self.assertRaises(ValidationError):
-            self.env['calendar.appointment.type'].create({
+            self.env['appointment.type'].create({
                 'category': 'work_hours',
                 'name': 'Work hours on me, duplicate',
             })
 
         with self.assertRaises(ValidationError):
-            self.env['calendar.appointment.type'].create({
+            self.env['appointment.type'].create({
                 'name': 'Work hours without employee',
                 'category': 'work_hours',
                 'staff_user_ids': [self.staff_users.ids]

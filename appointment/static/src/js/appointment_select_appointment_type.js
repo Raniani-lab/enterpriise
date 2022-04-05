@@ -33,9 +33,18 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
     _onAppointmentTypeChange: function (ev) {
         var self = this;
         const appointmentTypeID = $(ev.target).val();
-        this.$(".o_website_appointment_form").attr('action', `/calendar/${appointmentTypeID}/appointment`);
+        const filterAppointmentTypeIds = this.$("input[name='filter_appointment_type_ids']").val();
+        const filterUserIds = this.$("input[name='filter_staff_user_ids']").val();
+        const inviteToken = this.$("input[name='invite_token']").val();
+        self.$(".o_website_appointment_form").attr('action', `/appointment/${appointmentTypeID}${window.location.search}`);
+        
         this._rpc({
-            route: `/calendar/${appointmentTypeID}/get_message_intro`,
+            route: `/appointment/${appointmentTypeID}/get_message_intro`,
+            params: {
+                invite_token: inviteToken,
+                filter_appointment_type_ids: filterAppointmentTypeIds,
+                filter_staff_user_ids: filterUserIds,
+            },
         }).then(function (message_intro) {
             self.$('.o_calendar_intro').empty().append(message_intro);
         });

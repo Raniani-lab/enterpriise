@@ -10,7 +10,7 @@ class Website(models.Model):
 
     def get_suggested_controllers(self):
         suggested_controllers = super(Website, self).get_suggested_controllers()
-        suggested_controllers.append((_('Appointment'), url_for('/calendar'), 'website_appointment'))
+        suggested_controllers.append((_('Appointment'), url_for('/appointment'), 'website_appointment'))
         return suggested_controllers
 
     def get_cta_data(self, website_purpose, website_type):
@@ -18,6 +18,6 @@ class Website(models.Model):
         if website_purpose == 'schedule_appointments':
             cta_data.update({
                 'cta_btn_text': _('Schedule an appointment'),
-                'cta_btn_href': '/calendar',
+                'cta_btn_href': '/appointment',
             })
         return cta_data

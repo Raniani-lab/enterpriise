@@ -48,7 +48,7 @@ class AppointmentUITest(AppointmentUICommon):
                 'allday': True,
             }]
             request = self.url_open(
-                "/appointment/calendar_appointment_type/create_custom",
+                "/appointment/appointment_type/create_custom",
                 data=json.dumps({
                     'params': {
                         'slots': unique_slots,
@@ -57,9 +57,8 @@ class AppointmentUITest(AppointmentUICommon):
                 headers={"Content-Type": "application/json"},
             ).json()
         result = request.get('result', {})
-        self.assertTrue(result.get('id'), 'The request returns the id of the custom appointment type')
-
-        appointment_type = self.env['calendar.appointment.type'].browse(result['id'])
+        self.assertTrue(result.get('appointment_type_id'), 'The request returns the id of the custom appointment type')
+        appointment_type = self.env['appointment.type'].browse(result['appointment_type_id'])
         self.assertEqual(appointment_type.category, 'custom')
         self.assertEqual(appointment_type.name, "%s - Let's meet" % self.env.user.name)
         self.assertEqual(len(appointment_type.slot_ids), 2, "Two slots have been created")
@@ -73,6 +72,18 @@ class AppointmentUITest(AppointmentUICommon):
                 else:
                     self.assertEqual(slot.start_datetime, datetime.now() + timedelta(hours=1))
                     self.assertEqual(slot.end_datetime, datetime.now() + timedelta(hours=2))
+
+    def test_share_appointment_type(self):
+        self._create_invite_test_data()
+        self.authenticate(None, None)
+        res = self.url_open(self.invite_apt_type_bxls_2days.book_url)
+        self.assertEqual(res.status_code, 200, "Response should = OK")
+
+    def test_share_appointment_type_multi(self):
+        self._create_invite_test_data()
+        self.authenticate(None, None)
+        res = self.url_open(self.invite_all_apts.book_url)
+        self.assertEqual(res.status_code, 200, "Response should = OK")
 
 
 @tagged('appointment_ui', '-at_install', 'post_install')

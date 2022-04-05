@@ -82,7 +82,7 @@ class AppointmenHrPerformanceCase(AppointmentHrCommon):
             for user_idx, user in enumerate(cls.staff_users)
         ])
 
-        cls.test_apt_type = cls.env['calendar.appointment.type'].create({
+        cls.test_apt_type = cls.env['appointment.type'].create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'random',
@@ -127,7 +127,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
     @users('staff_user_bxls')
     def test_get_appointment_slots_custom(self):
         """ Custom type: mono user, unique slots, work hours check. """
-        apt_type_custom_bxls = self.env['calendar.appointment.type'].sudo().create({
+        apt_type_custom_bxls = self.env['appointment.type'].sudo().create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'random',
@@ -193,7 +193,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
     @users('staff_user_bxls')
     def test_get_appointment_slots_custom_whours(self):
         """ Custom type: mono user, unique slots, work hours check. """
-        apt_type_custom_bxls = self.env['calendar.appointment.type'].sudo().create({
+        apt_type_custom_bxls = self.env['appointment.type'].sudo().create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'random',
@@ -592,10 +592,10 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
             with self.assertQueryCount(default=51):  # apt only: 43 (44 w website)
-                self._test_url_open('/calendar/%i' % self.test_apt_type.id)
+                self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 
-        _logger.info('Browsed /calendar/%i, time %.3f', self.test_apt_type.id, t1 - t0)
+        _logger.info('Browsed /appointment/%i, time %.3f', self.test_apt_type.id, t1 - t0)
         # Time before optimization: ~1.90 (but with boilerplate)
         # Time after optimization: ~0.50 (but with boilerplate)
 
@@ -624,9 +624,9 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
             with self.assertQueryCount(default=53):  # apt only: 45 (46 w website)
-                self._test_url_open('/calendar/%i' % self.test_apt_type.id)
+                self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 
-        _logger.info('Browsed /calendar/%i, time %.3f', self.test_apt_type.id, t1 - t0)
+        _logger.info('Browsed /appointment/%i, time %.3f', self.test_apt_type.id, t1 - t0)
         # Time before optimization: ~4.60 (but with boilerplate)
         # Time after optimization: ~1.10 (but with boilerplate)

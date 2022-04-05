@@ -13,8 +13,8 @@ class AppointmentHRCalendarView(AppointmentCalendarView):
     # APPOINTMENT JSON ROUTES FOR BACKEND
     # ------------------------------------------------------------
 
-    @route('/appointment/calendar_appointment_type/search_create_work_hours', type='json', auth='user')
-    def appointment_search_create_work_hours_appointment_type(self):
+    @route('/appointment/appointment_type/search_create_work_hours', type='json', auth='user')
+    def appointment_type_search_create_work_hours(self):
         """
         Return the info (id and url) of the work hours appointment type of the actual user.
 
@@ -24,14 +24,14 @@ class AppointmentHRCalendarView(AppointmentCalendarView):
         We emcopass the whole week to avoid computation in case the working hours
         of the user are modified at a later date.
         """
-        appointment_type = request.env['calendar.appointment.type'].search([
+        appointment_type = request.env['appointment.type'].search([
             ('category', '=', 'work_hours'),
             ('staff_user_ids', 'in', request.env.user.ids)])
         if not appointment_type:
             # Check if the user is a member of group_user to avoid portal user and the like to create appointment types
             if not request.env.user.user_has_groups('base.group_user'):
                 raise AccessError(_("Access Denied"))
-            appointment_type = request.env['calendar.appointment.type'].sudo().create({
+            appointment_type = request.env['appointment.type'].sudo().create({
                 'max_schedule_days': 30,
                 'category': 'work_hours',
                 'work_hours_activated': True,
@@ -42,10 +42,10 @@ class AppointmentHRCalendarView(AppointmentCalendarView):
                 }) for hour in range(2) for day in range(7)],
             })
 
-        return self._get_staff_user_appointment_info(appointment_type)
+        return self._get_staff_user_appointment_invite_info(appointment_type)
 
-    @route('/appointment/calendar_appointment_type/get_staff_user_appointment_types', type='json', auth='user')
-    def appointment_get_staff_user_appointment_types(self):
-        res = super().appointment_get_staff_user_appointment_types()
+    @route()
+    def appointment_get_user_appointment_types(self):
+        res = super().appointment_get_user_appointment_types()
         res['context_user_has_employee'] = bool(request.env.user.employee_id)
         return res

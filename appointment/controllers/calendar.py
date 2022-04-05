@@ -10,7 +10,6 @@ from werkzeug.urls import url_encode
 from odoo import fields, _
 from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.calendar.controllers.main import CalendarController
-from odoo.addons.http_routing.models.ir_http import slug
 from odoo.http import request, route
 from odoo.tools import html2plaintext, is_html_empty
 from odoo.tools.misc import get_lang
@@ -48,7 +47,7 @@ class AppointmentCalendarController(CalendarController):
         return request.redirect('/calendar/view/%s?partner_id=%s' % (attendee.event_id.access_token, attendee.partner_id.id))
 
     @route(['/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
-    def calendar_appointment_view(self, access_token, partner_id, state=False, **kwargs):
+    def appointment_view(self, access_token, partner_id, state=False, **kwargs):
         """
         Render the validation of an appointment and display a summary of it
 
@@ -106,21 +105,26 @@ class AppointmentCalendarController(CalendarController):
     @route(['/calendar/cancel/<string:access_token>',
             '/calendar/<string:access_token>/cancel',
            ], type='http', auth="public", website=True)
-    def calendar_appointment_cancel(self, access_token, partner_id, **kwargs):
+    def appointment_cancel(self, access_token, partner_id, **kwargs):
         """
             Route to cancel an appointment event, this route is linked to a button in the validation page
         """
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
         appointment_type = event.appointment_type_id
+        appointment_invite = event.appointment_invite_id
         if not event:
             return request.not_found()
         if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + timedelta(hours=event.appointment_type_id.min_cancellation_hours):
             return request.redirect('/calendar/view/' + access_token + '?state=no-cancel&partner_id=%s' % partner_id)
         event.sudo().action_cancel_meeting([int(partner_id)])
-        return request.redirect('/calendar/%s/appointment?%s' % (slug(appointment_type), keep_query('*', state="cancel")))
+        if appointment_invite:
+            redirect_url = "%s&state=cancel" % appointment_invite.redirect_url
+        else:
+            redirect_url = '/appointment/%s?%s' % (appointment_type.id, keep_query('*', state="cancel"))
+        return request.redirect(redirect_url)
 
     @route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)
-    def calendar_appointment_ics(self, access_token, **kwargs):
+    def appointment_get_ics_file(self, access_token, **kwargs):
         """
             Route to add the appointment event in a iCal/Outlook calendar
         """

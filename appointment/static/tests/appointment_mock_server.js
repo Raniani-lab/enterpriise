@@ -11,12 +11,12 @@ MockServer.include({
      */
     async _performRpc(route, args) {
         const _super = this._super.bind(this);
-        if (route === "/appointment/calendar_appointment_type/create_custom") {
+        if (route === "/appointment/appointment_type/create_custom") {
             const slots = args.slots;
             if (slots.length === 0) {
                 return false;
             }
-            const customAppointmentTypeID = this._mockCreate('calendar.appointment.type', {
+            const customAppointmentTypeID = this._mockCreate('appointment.type', {
                 name: "Appointment with Actual User",
                 staff_user_ids: [session.uid],
                 category: 'custom',
@@ -24,7 +24,7 @@ MockServer.include({
             });
             let slotIDs = [];
             slots.forEach(slot => {
-                const slotID = this._mockCreate('calendar.appointment.slot', {
+                const slotID = this._mockCreate('appointment.slot', {
                     appointment_type_id: customAppointmentTypeID,
                     start_datetime: slot.start,
                     end_datetime: slot.end,
@@ -33,23 +33,29 @@ MockServer.include({
                 slotIDs.push(slotID);
             });
             return {
-                id: customAppointmentTypeID,
-                url: `http://amazing.odoo.com/calendar/3?filter_staff_user_ids=%5B${session.uid}%5D`,
+                appointment_type_id: customAppointmentTypeID,
+                invite_url: `http://amazing.odoo.com/appointment/3?filter_staff_user_ids=%5B${session.uid}%5D`,
             };
-        } else if (route === "/appointment/calendar_appointment_type/get_staff_user_appointment_types") {
+        } else if (route === "/appointment/appointment_type/get_staff_user_appointment_types") {
             if (session.uid) {
                 const domain = [
                     ['staff_user_ids', 'in', [session.uid]],
                     ['category', '!=', 'custom'],
                     ['website_published', '=', true],
                 ];
-                const appointment_types_info = this._mockSearchRead('calendar.appointment.type', [domain, ['category', 'name']], {});
+                const appointment_types_info = this._mockSearchRead('appointment.type', [domain, ['category', 'name']], {});
 
                 return Promise.resolve({
                     appointment_types_info: appointment_types_info
                 });
             }
             return {};
+        } else if (route === "/appointment/appointment_type/get_book_url") {
+            const appointment_type_id = args.appointment_type_id;
+            return {
+                appointment_type_id: appointment_type_id,
+                invite_url: `http://amazing.odoo.com/appointment/${appointment_type_id}?filter_staff_user_ids=%5B${session.uid}%5D`,
+            }
         }
         return await _super(...arguments);
     },

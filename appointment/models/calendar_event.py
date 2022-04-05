@@ -13,8 +13,9 @@ class CalendarEvent(models.Model):
 
     access_token = fields.Char('Access Token', default=_default_access_token, readonly=True)
     alarm_ids = fields.Many2many(compute='_compute_alarm_ids', store=True, readonly=False)
-    appointment_type_id = fields.Many2one('calendar.appointment.type', 'Online Appointment', readonly=True, tracking=True)
-    appointment_answer_input_ids = fields.One2many('calendar.appointment.answer.input', 'calendar_event_id', string="Appointment Answers")
+    appointment_type_id = fields.Many2one('appointment.type', 'Online Appointment', readonly=True, tracking=True)
+    appointment_answer_input_ids = fields.One2many('appointment.answer.input', 'calendar_event_id', string="Appointment Answers")
+    appointment_invite_id = fields.Many2one('appointment.invite', 'Appointment Invitation', readonly=True, ondelete='set null')
 
     def _get_public_fields(self):
         return super()._get_public_fields() | {'appointment_type_id'}
@@ -27,7 +28,7 @@ class CalendarEvent(models.Model):
 
     def _compute_is_highlighted(self):
         super(CalendarEvent, self)._compute_is_highlighted()
-        if self.env.context.get('active_model') == 'calendar.appointment.type':
+        if self.env.context.get('active_model') == 'appointment.type':
             appointment_type_id = self.env.context.get('active_id')
             for event in self:
                 if event.appointment_type_id.id == appointment_type_id:

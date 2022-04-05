@@ -14,11 +14,11 @@ CalendarController.include({
      */
     async _onSearchCreateWorkHoursAppointment(ev) {
         const workHoursAppointment = await this._rpc({
-            route: '/appointment/calendar_appointment_type/search_create_work_hours',
+            route: '/appointment/appointment_type/search_create_work_hours',
         });
-        if (workHoursAppointment.id) {
-            browser.navigator.clipboard.writeText(workHoursAppointment.url);
-            this.lastAppointmentURL = workHoursAppointment.url;
+        if (workHoursAppointment.appointment_type_id) {
+            browser.navigator.clipboard.writeText(workHoursAppointment.invite_url);
+            this.lastAppointmentURL = workHoursAppointment.invite_url;
         }
     },
 });

@@ -10,7 +10,7 @@
             <field name="icon">fa-address-card</field>
             <field name="menu_company">False</field>
             <field name="menu_sequence">55</field>
-            <field name="feature_url">/calendar</field>
+            <field name="feature_url">/appointment</field>
         </record>
     </data>
 </odoo>

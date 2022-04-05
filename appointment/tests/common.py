@@ -9,9 +9,10 @@ from odoo.addons.appointment.models.res_partner import Partner
 from odoo.addons.calendar.models.calendar_event import Meeting
 from odoo.addons.resource.models.resource import ResourceCalendar
 from odoo.addons.mail.tests.common import mail_new_test_user, MailCommon
+from odoo.tests import common
 
 
-class AppointmentCommon(MailCommon):
+class AppointmentCommon(MailCommon, common.HttpCase):
 
     @classmethod
     def setUpClass(cls):
@@ -41,7 +42,7 @@ class AppointmentCommon(MailCommon):
             cls.env,
             company_id=cls.company_admin.id,
             email='apt_manager@test.example.com',
-            groups='base.group_user,appointment.group_calendar_manager',
+            groups='base.group_user,appointment.group_appointment_manager',
             name='Appointment Manager',
             notification_type='email',
             login='apt_manager',
@@ -72,7 +73,7 @@ class AppointmentCommon(MailCommon):
         # Default (test) appointment type
         # Slots are each hours from 8 to 13 (UTC + 1)
         # -> working hours: 7, 8, 9, 10 and 12 UTC as 11 is lunch time in working hours
-        cls.apt_type_bxls_2days = cls.env['calendar.appointment.type'].create({
+        cls.apt_type_bxls_2days = cls.env['appointment.type'].create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
             'assign_method': 'random',
@@ -105,6 +106,18 @@ class AppointmentCommon(MailCommon):
             }
             for start, stop, allday in time_info
         ])
+
+    def _create_invite_test_data(self):
+        apt_type_test = self.env['appointment.type'].create({
+            'name': 'Appointment Test',
+        })
+        self.all_apts = self.apt_type_bxls_2days + apt_type_test
+        self.invite_apt_type_bxls_2days = self.env['appointment.invite'].create({
+            'appointment_type_ids': self.apt_type_bxls_2days.ids,
+        })
+        self.invite_all_apts = self.env['appointment.invite'].create({
+            'appointment_type_ids': self.all_apts.ids,
+        })
 
     def _flush_tracking(self):
         """ Force the creation of tracking values notably, and ensure tests are

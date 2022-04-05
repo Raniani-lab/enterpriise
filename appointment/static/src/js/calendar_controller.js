@@ -20,11 +20,16 @@ CalendarController.include({
      * Save in the clipboard in the URL of the appointment type selected
      * @param {Event} ev 
      */
-     _onClickAppointmentLink(ev) {
+    async _onClickAppointmentLink(ev) {
         const $currentTarget = $(ev.data.currentTarget);
-        const appointmentURL = window.encodeURI(`${this.getSession()['web.base.url']}${$currentTarget.attr('data-url')}`);
-        browser.navigator.clipboard.writeText(appointmentURL);
-        this.lastAppointmentURL = appointmentURL;
+        const appointment = await this._rpc({
+            route: '/appointment/appointment_type/get_book_url',
+            params: {
+                appointment_type_id: $currentTarget.attr('id'),
+            },
+        });
+        browser.navigator.clipboard.writeText(appointment.invite_url);
+        this.lastAppointmentURL = appointment.invite_url;
     },
     /**
      * Copy in the clipboard the last appointment URL
@@ -54,15 +59,15 @@ CalendarController.include({
         if (slots.length) {
             slotEvents.forEach(event => event.remove());
             const customAppointment = await this._rpc({
-                route: '/appointment/calendar_appointment_type/create_custom',
+                route: '/appointment/appointment_type/create_custom',
                 params: {
                     slots: slots,
                     context: this.context, // To pass default values like opportunity_id for appointment_crm
                 },
             });
-            if (customAppointment.id) {
-                browser.navigator.clipboard.writeText(customAppointment.url);
-                this.lastAppointmentURL = customAppointment.url;
+            if (customAppointment.appointment_type_id) {
+                browser.navigator.clipboard.writeText(customAppointment.invite_url);
+                this.lastAppointmentURL = customAppointment.invite_url;
             }
         }
         this.model.setCalendarMode('default');

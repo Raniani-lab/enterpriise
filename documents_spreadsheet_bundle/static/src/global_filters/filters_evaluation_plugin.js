@@ -158,9 +158,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                 if(!period){
                     periodStr = MONTHS[value.period] && String(MONTHS[value.period].value + 1).padStart(2, "0");
                 }
-                // Use format "Q4 2022" instead of "Q2/2022" to not introduce possibly breaking changes in this version
-                const separator = period && period.id.endsWith("quarter") ? " " : "/";
-                return periodStr ? periodStr + separator + year : year;
+                return periodStr ? periodStr + "/" + year : year;
             case "relation":
                 if (!value || !this.orm) return "";
                 if (!this.recordsDisplayName[filter.id]) {

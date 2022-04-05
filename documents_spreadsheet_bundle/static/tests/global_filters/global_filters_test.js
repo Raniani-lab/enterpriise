@@ -686,7 +686,7 @@ module("documents_spreadsheet > global_filters",
             },
         });
         await nextTick();
-        assert.equal(getCellValue(model, "A10"), `Q1 ${moment().year()}`);
+        assert.equal(getCellValue(model, "A10"), `Q1/${moment().year()}`);
         await setGlobalFilterValue(model, {
             id: filter.id,
             rangeType: "year",

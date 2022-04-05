@@ -5,6 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
+from odoo.fields import Datetime
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -107,21 +108,27 @@ class HrLeave(models.Model):
         for leave in self:
             if not leave.employee_id or leave.payslip_state != 'blocked':
                 raise UserError(_('Only an employee time off to defer can be reported to next month'))
+            if (leave.date_to.year - leave.date_from.year) * 12 + leave.date_to.month - leave.date_from.month > 1:
+                raise UserError(_('The time off %s can not be reported because it is defined over more than 2 months', leave.display_name))
+            max_date_to = min(leave.date_to, leave.date_from + relativedelta(months=1, day=1, days=-1))
+            work_entries_date_to = datetime.combine(Datetime.to_datetime(max_date_to), datetime.max.time())
             leave_work_entries = self.env['hr.work.entry'].search([
                 ('employee_id', '=', leave.employee_id.id),
                 ('company_id', '=', self.env.company.id),
-                ('date_start', '>=', fields.Datetime.to_datetime(leave.date_from)),
-                ('date_stop', '<=', datetime.combine(fields.Datetime.to_datetime(leave.date_to), datetime.max.time()))
+                ('date_start', '>=', Datetime.to_datetime(leave.date_from)),
+                ('date_stop', '<=', work_entries_date_to)
             ])
             next_month_work_entries = self.env['hr.work.entry'].search([
                 ('employee_id', '=', leave.employee_id.id),
                 ('company_id', '=', self.env.company.id),
                 ('state', '=', 'draft'),
-                ('date_start', '>=', fields.Datetime.to_datetime(leave.date_from + relativedelta(day=1, months=1))),
-                ('date_stop', '<=', datetime.combine(fields.Datetime.to_datetime(leave.date_to + relativedelta(day=31, months=1)), datetime.max.time()))
+                ('date_start', '>=', Datetime.to_datetime(leave.date_from + relativedelta(day=1, months=1))),
+                ('date_stop', '<=', datetime.combine(Datetime.to_datetime(leave.date_to + relativedelta(day=31, months=1)), datetime.max.time()))
             ])
             if not next_month_work_entries:
                 raise UserError(_('The next month work entries are not generated yet or are validated already for time off %s', leave.display_name))
+            if not leave_work_entries:
+                raise UserError(_('There is no work entries linked to this time off to report'))
             for work_entry in leave_work_entries:
                 found = False
                 for next_work_entry in next_month_work_entries:
@@ -132,6 +139,6 @@ class HrLeave(models.Model):
                         found = True
                         break
                 if not found:
-                    raise UserError(_('No attendance work entry found to report the time off %s', leave.display_name))
+                    raise UserError(_('Not enough attendance work entries to report the time off %s. Plase make the operation manually', leave.display_name))
         # Should change payslip_state to 'done' at the same time
         self.activity_feedback(['hr_payroll_holidays.mail_activity_data_hr_leave_to_defer'])

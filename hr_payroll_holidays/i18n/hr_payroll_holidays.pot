@@ -76,7 +76,9 @@ msgstr ""
 #. module: hr_payroll_holidays
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
-msgid "No attendance work entry found to report the time off %s"
+msgid ""
+"Not enough attendance work entries to report the time off %s. Plase make the"
+" operation manually"
 msgstr ""
 
 #. module: hr_payroll_holidays
@@ -130,6 +132,20 @@ msgstr ""
 msgid ""
 "The selected period is covered by a validated payslip. You can't create a "
 "time off for that period."
+msgstr ""
+
+#. module: hr_payroll_holidays
+#: code:addons/hr_payroll_holidays/models/hr_leave.py:0
+#, python-format
+msgid ""
+"The time off %s can not be reported because it is defined over more than 2 "
+"months"
+msgstr ""
+
+#. module: hr_payroll_holidays
+#: code:addons/hr_payroll_holidays/models/hr_leave.py:0
+#, python-format
+msgid "There is no work entries linked to this time off to report"
 msgstr ""
 
 #. module: hr_payroll_holidays

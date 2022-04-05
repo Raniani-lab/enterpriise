@@ -48,15 +48,20 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
 
     def _get_query(self, options, line_id):
         company_ids = tuple(self.env.companies.ids) if options.get('multi_company', False) else tuple(self.env.company.ids)
-        params = {'date_to': options['date']['date_to'], 'date_from': options['date']['date_from'], 'company_ids': company_ids, 'lang': self.env.user.lang or get_lang(self.env).code}
+        params = {
+            'date_to': options['date']['date_to'],
+            'date_from': options['date']['date_from'],
+            'company_ids': company_ids,
+            'lang': self.env.user.lang or get_lang(self.env).code,
+        }
         current = self._parse_line_id(line_id)
         params.update(current)
         select = """
             SELECT COALESCE(SUM(aml.balance), 0) as balance,
-                COALESCE(NULLIF(ir_translation.value, ''), account.name) as account_name,
+                COALESCE(NULLIF(account_tr.value, ''), account.name) as account_name,
                 account.code as account_code,
                 category.id as category_id,
-                category.name as category_name,
+                COALESCE(NULLIF(category_tr.value, ''), category.name) as category_name,
                 category.code as category_code,
                 account.company_id,
                 aml.account_id,
@@ -73,7 +78,14 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
                   AND c2.id = category.id
                 ORDER BY r2.date_from DESC LIMIT 1
             )
-            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %(lang)s"""
+            LEFT JOIN ir_translation account_tr ON account_tr.name = 'account.account,name'
+                AND account_tr.res_id = account.id
+                AND account_tr.type = 'model'
+                AND account_tr.lang = %(lang)s
+            LEFT JOIN ir_translation category_tr ON category_tr.name = 'account.disallowed.expenses.category,name'
+                AND category_tr.res_id = category.id
+                AND category_tr.type = 'model'
+                AND category_tr.lang = %(lang)s"""
         where = """
             WHERE aml.company_id in %(company_ids)s
               AND aml.date >= %(date_from)s AND aml.date <= %(date_to)s
@@ -87,7 +99,7 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
         where += not options.get('all_entries') and """
               AND move.state = 'posted'""" or ""
         group_by = """
-            GROUP BY aml.account_id, account.id, category.id, account_name"""
+            GROUP BY aml.account_id, account.id, category.id, account_name, category_name"""
         group_by += options['multi_rate_in_period'] and ", rate.rate" or ""
         order_by = """
             ORDER BY category_code, account_code"""

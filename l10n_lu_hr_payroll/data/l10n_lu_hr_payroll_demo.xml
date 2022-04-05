@@ -4,6 +4,7 @@
         <field name="name">My Lux Company</field>
         <field name="currency_id" ref="base.EUR"/>
         <field name="l10n_lu_official_social_security">123456789</field>
+        <field name="l10n_lu_seculine">987654</field>
         <field name="street">14 Rixegoard</field>
         <field name="zip">8353</field>
         <field name="city">Garnech</field>

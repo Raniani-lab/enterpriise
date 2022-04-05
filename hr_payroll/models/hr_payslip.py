@@ -1212,6 +1212,18 @@ class HrPayslip(models.Model):
                 'action': self._dashboard_default_action(new_contracts_str, 'hr.contract', new_contracts.ids)
             })
 
+        # Employees Without ID Number
+        employees_wo_id = self.env['hr.employee'].search([
+            ('identification_id', '=', False),
+        ])
+        if employees_wo_id:
+            no_id_str = _('Employees Without Identification Number')
+            result.append({
+                'string': no_id_str,
+                'count': len(employees_wo_id),
+                'action': self._dashboard_default_action(no_id_str, 'hr.employee', employees_wo_id.ids)
+            })
+
         return result
 
     def _get_employee_stats_actions(self):

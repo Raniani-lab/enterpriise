@@ -10,6 +10,7 @@
                 <block title="Luxembourg Localization" id="l10n_lu_hr_payroll">
                     <setting string="Company Information" help="Offical Company Information" company_dependent="1" id="company_information">
                         <field name="l10n_lu_official_social_security"/>
+                        <field name="l10n_lu_seculine"/>
                     </setting>
                 </block>
             </xpath>

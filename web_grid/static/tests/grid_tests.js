@@ -195,7 +195,7 @@ QUnit.module('Views', {
             "first section should be for project P1");
         assert.strictEqual(grid.$('.o_grid_section:eq(0) div.o_grid_cell_container').length, 14,
             "first section should have 14 cells");
-        assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(Undefined)').length, 1,
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(None)').length, 1,
             "first section should have a row without task");
         assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(BS task)').length, 1,
             "first section should have a row for BS task");
@@ -334,7 +334,7 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('tr:eq(1) th').text(), 'BS task',
             "GroupBy should have been taken into account when loading the view."
         );
-        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'Undefined',
+        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'None',
             "GroupBy should have been taken into account when loading the view."
         );
 
@@ -410,7 +410,7 @@ QUnit.module('Views', {
         assert.strictEqual(grid.$('tr:eq(2) th').text(), 'BS task',
             "Should be grouped by default (Project > Task)."
         );
-        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'Undefined',
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'None',
             "Should be grouped by default (Project > Task)."
         );
 
@@ -1658,7 +1658,7 @@ QUnit.module('Views', {
             "first section should be for project P1");
         assert.containsN(grid, '.o_grid_section:eq(0) div.o_grid_cell_container', 1,
             "first section should have 1 cells");
-        assert.containsNone(grid, '.o_grid_section:eq(0) th:contains(Undefined)',
+        assert.containsNone(grid, '.o_grid_section:eq(0) th:contains(None)',
             "first section should'nt have a row without task");
         assert.containsOnce(grid, '.o_grid_section:eq(0) th:contains(BS task)',
             "first section should have a row for BS task");

@@ -126,7 +126,7 @@
                 <tr>
                     <th>
                         <t t-if="grid.__label" t-esc="grid.__label[1]"/>
-                        <t t-else="">Undefined</t>
+                        <t t-else="">None</t>
                     </th>
                     <t t-foreach="columns" t-as="column" t-key="column_index">
                         <td t-att-class="{
@@ -223,7 +223,7 @@
                                 class="o_grid_row_header_part"
                                 t-att-class="{o_grid_text_muted: !label }">
                                 <t t-if="label" t-esc="label"/>
-                                <t t-else="">Undefined</t>
+                                <t t-else="">None</t>
                             </div>
                         </t>
                     </div>

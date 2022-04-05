@@ -1,0 +1,33 @@
+.o_website_sale_renting {
+    &.daterangepicker {
+        td.disabled, option.disabled {
+            background-color: #ddd;
+            text-decoration: none;
+        }
+        td.disabled.o_daterangepicker_danger, option.disabled.o_daterangepicker_danger {
+            background-color: #daa;
+            text-decoration: none;
+        }
+        .calendar-table {
+            td {
+                border-radius: 100%;
+                &.off {
+                    &.ends {
+                        &, &:focus, &:hover{
+                            opacity: 0;
+                        }
+                    }
+                }
+            }
+            th {
+                &.off {
+                    &.ends {
+                        &, &:focus, &:hover{
+                            opacity: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

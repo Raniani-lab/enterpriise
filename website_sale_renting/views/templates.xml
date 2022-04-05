@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="rental_products_price" inherit_id="website_sale.product_price" name="Rental Product Price">
+        <xpath expr="//span[hasclass('oe_price')]" position="after">
+            <t t-if="combination_info['is_rental']">
+                <input type="hidden" name="is_rental" t-att-value="combination_info['is_rental']"/>
+                <span class="oe_price o_renting_price" style="white-space: nowrap;"
+                      t-esc="combination_info['current_rental_price_per_unit']"
+                      t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+            </t>
+        </xpath>
+        <xpath expr="//h3[hasclass('css_editable_mode_hidden')]/del" position="after">
+            <t t-if="combination_info['is_rental']">
+                <span>per</span>
+                <span itemprop="rental_duration" t-if="combination_info['rental_duration'] > 1"
+                      t-esc="combination_info['rental_duration']"/>
+                <span itemprop="rental_unit" style="text-transform:lowercase;" t-esc="combination_info['rental_unit']"/>
+            </t>
+        </xpath>
+        <xpath expr="//span[hasclass('oe_price')]" position="attributes">
+            <attribute name="t-if">not combination_info.get('is_rental')</attribute>
+        </xpath>
+        <xpath expr="//span[@itemprop='listPrice']" position="attributes">
+            <attribute name="t-if">not combination_info.get('is_rental')</attribute>
+        </xpath>
+        <xpath expr="//h3[hasclass('css_non_editable_mode_hidden')]" position="attributes">
+            <attribute name="t-if">not combination_info.get('is_rental')</attribute>
+        </xpath>
+    </template>
+
+    <template id="rental_product" inherit_id="website_sale.product" name="Select pickup Date and Return Date">
+        <xpath expr="//div[hasclass('js_main_product')]/t[@t-placeholder='select']" position="after">
+            <div t-if="combination_info['is_rental']" class="css_editable_mode_hidden">
+                <div class="form-group align-middle input-group-lg o_website_sale_daterange_picker variant_attribute">
+                    <input type="hidden" name="default_start_date" t-att-value="combination_info['default_start_date']"/>
+                    <input type="hidden" name="default_end_date" t-att-value="combination_info['default_end_date']"/>
+                    <input type="hidden" name="rental_duration_unit" t-att-value="combination_info['rental_duration_unit']"/>
+                    <strong class="attribute_name">Rental Period</strong>
+                    <div class="oe_unremovable w-100">
+                        <div class="s_website_form_datetime input-group date col-md-8 pl-0"
+                                data-target-input="nearest"
+                                id="rentingDates">
+                            <input type="text" name="renting_dates"
+                                    class="form-control daterange-input"/>
+                            <div class="input-group-append" data-target="#rentingDates"
+                                    data-toggle="daterange">
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="o_renting_details my-2 col-md-8 pl-0 d-flex justify-content-between">
+                    <div>
+                        <strong>
+                            <span class="o_renting_duration" t-esc="combination_info['current_rental_duration']"/>
+                            <span class="o_renting_unit" t-esc="combination_info['current_rental_unit']" style="text-transform:lowercase;"/>
+                        </strong>
+                    </div>
+                    <div>
+                        Total
+                        <strong>
+                            <span class="oe_price o_renting_total_price" style="white-space: nowrap;"
+                                  t-esc="combination_info['current_rental_price']"
+                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        </strong>
+                    </div>
+                </div>
+                <div class="o_renting_warning d-none my-2">
+                    <span class="text-warning">
+                        <i class="fa fa-warning"/>
+                        <span name="renting_warning_message"/>
+                    </span>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="variants" inherit_id="sale.variants">
+        <xpath expr="//option/t[@t-call='sale.badge_extra_price']" position="attributes">
+            <attribute name="t-if">not product.rent_ok</attribute>
+        </xpath>
+        <xpath expr="//label/div/div[hasclass('radio_input_value')]/t[@t-call='sale.badge_extra_price']" position="attributes">
+            <attribute name="t-if">not product.rent_ok</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_variant_pills_input_value')]/t[@t-call='sale.badge_extra_price']" position="attributes">
+            <attribute name="t-if">not product.rent_ok</attribute>
+        </xpath>
+    </template>
+
+    <template id="products_item" inherit_id="website_sale.products_item">
+        <xpath expr="//div[hasclass('product_price')]/*[1]" position="before">
+            <span t-if="product.rent_ok and template_price_vals['rental_duration']" class="h6">from</span>
+        </xpath>
+        <xpath expr="//span[@itemprop='priceCurrency']" position="after">
+            <span t-if="product.rent_ok and template_price_vals['rental_duration']" class="h6">
+                <span>per</span>
+                <span t-if="template_price_vals['rental_duration'] > 1" t-esc="template_price_vals['rental_duration']"/>
+                <span t-esc="template_price_vals['rental_unit']" style="text-transform:lowercase;"/>
+            </span>
+        </xpath>
+    </template>
+
+    <template id="rental_search_result_price">
+        <small>from</small>
+        <t t-esc="price"
+           t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+        <small>per</small>
+        <small t-if="duration > 1" t-esc="duration"/>
+        <small t-esc="unit" style="text-transform:lowercase;"/>
+    </template>
+
+    <template id="cart_summary_inherit_website_sale_renting"
+            inherit_id="website_sale.cart_summary">
+        <xpath expr="//td[hasclass('td-product_name')]/div/strong" position="after">
+            <div t-if="line.is_rental" class="text-muted d-none d-md-block small"
+                 t-esc="line._get_rental_order_line_description()"/>
+        </xpath>
+    </template>
+
+    <template id="base_unit_price" inherit_id="website_sale.base_unit_price">
+        <xpath expr="//t" position="attributes">
+            <attribute name="t-if">not product.rent_ok</attribute>
+        </xpath>
+    </template>
+
+    <template id="suggested_products_list" inherit_id="website_sale.suggested_products_list">
+        <xpath expr="//table[@id='suggested_products']//td[hasclass('td-price')]/*[1]" position="before">
+            <span t-if="product.rent_ok and combination_info['rental_duration']" class="h6">from</span>
+        </xpath>
+        <xpath expr="//table[@id='suggested_products']//td[hasclass('td-price')]/del" position="attributes">
+            <attribute name="t-if">not product.rent_ok</attribute>
+        </xpath>
+        <xpath expr="//table[@id='suggested_products']//td[hasclass('td-price')]/span" position="after">
+            <span t-if="product.rent_ok and combination_info['rental_duration']" class="h6">
+                <span>per</span>
+                <span t-if="combination_info['rental_duration'] > 1" t-esc="combination_info['rental_duration']"/>
+                <span t-esc="combination_info['rental_unit']" style="text-transform:lowercase;"/>
+            </span>
+        </xpath>
+    </template>
+
+</odoo>

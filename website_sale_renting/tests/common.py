@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo.tests import TransactionCase
+
+
+class TestWebsiteSaleRentingCommon(TransactionCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.company = cls.env['res.company'].create({
+            'name': 'Renting Company',
+            'renting_forbidden_sat': True,
+            'renting_forbidden_sun': True,
+        })
+        cls.computer = cls.env['product.product'].create({
+            'name': 'Computer',
+            'list_price': 2000,
+            'rent_ok': True,
+        })
+        cls.env['product.pricing'].create([
+            {
+                'duration': 1.0,
+                'unit': 'hour',
+                'price': 3.5,
+                'product_template_id': cls.computer.product_tmpl_id.id,
+            }, {
+                'duration': 5.0,
+                'unit': 'hour',
+                'price': 15.0,
+                'product_template_id': cls.computer.product_tmpl_id.id,
+            },
+        ])
+        cls.partner = cls.env['res.partner'].create({
+            'name': 'partner_a',
+        })

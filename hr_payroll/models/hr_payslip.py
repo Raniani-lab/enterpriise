@@ -989,7 +989,7 @@ class HrPayslip(models.Model):
             })
 
         # Retrieves last batches (this month, or last month)
-        batch_group_read = self.env['hr.payslip.run'].read_group(
+        batch_group_read = self.env['hr.payslip.run'].with_context(lang='en_US')._read_group(
             [('date_start', '>=', fields.Date.today() - relativedelta(months=1, day=1))],
             fields=['date_start'],
             groupby=['date_start:month'],
@@ -1431,7 +1431,7 @@ class HrPayslip(models.Model):
             # the summer and september is loaded, we want to get september, june, may.
             # Limit to max - 1 year
             batch_limit_date = fields.Date.today() - relativedelta(years=1, day=1)
-            batch_group_read = self.env['hr.payslip.run'].read_group(
+            batch_group_read = self.env['hr.payslip.run'].with_context(lang='en_US')._read_group(
                 [('date_start', '>=', batch_limit_date)],
                 fields=['date_start'],
                 groupby=['date_start:month'],

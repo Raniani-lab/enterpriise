@@ -93,14 +93,17 @@ class Payslip(models.Model):
                 payslip.representation_fees_missing_days = 0
         else:
             all_benefits = self.env['hr.work.entry.type'].get_work_entry_type_benefits()
-            work_entries_benefits_rights = self.env['l10n_be.work.entry.daily.benefit.report'].search_read([
+            query = self.env['l10n_be.work.entry.daily.benefit.report']._search([
                 ('employee_id', 'in', self.mapped('employee_id').ids),
                 ('day', '<=', max(self.mapped('date_to'))),
-                ('day', '>=', min(self.mapped('date_from')))], ['day', 'employee_id', 'benefit_name'])
+                ('day', '>=', min(self.mapped('date_from')))])
+            query_str, params = query.select('day', 'benefit_name', 'employee_id')
+            self.env.cr.execute(query_str, params)
+            work_entries_benefits_rights = self.env.cr.dictfetchall()
 
             work_entries_benefits_rights_by_employee = defaultdict(list)
             for work_entries_benefits_right in work_entries_benefits_rights:
-                employee_id = work_entries_benefits_right['employee_id'][0]
+                employee_id = work_entries_benefits_right['employee_id']
                 work_entries_benefits_rights_by_employee[employee_id].append(work_entries_benefits_right)
 
             # {(calendar, date_from, date_to): resources}

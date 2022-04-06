@@ -114,8 +114,10 @@ class Planning(models.Model):
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
     repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat', copy=True)
     repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat_interval', inverse='_inverse_repeat', copy=True)
-    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Repeat Type', default='forever', compute='_compute_repeat_type', inverse='_inverse_repeat', copy=True)
+    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until'), ('x_times', 'Number of Repetitions')],
+        string='Repeat Type', default='forever', compute='_compute_repeat_type', inverse='_inverse_repeat', copy=True)
     repeat_until = fields.Date("Repeat Until", compute='_compute_repeat_until', inverse='_inverse_repeat', copy=True, help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
+    repeat_number = fields.Integer("Repetitions", default=1, compute='_compute_repeat_number', inverse='_inverse_repeat', copy=True)
     confirm_delete = fields.Boolean('Confirm Slots Deletion', compute='_compute_confirm_delete')
 
     is_hatched = fields.Boolean(compute='_compute_is_hatched')
@@ -130,11 +132,12 @@ class Planning(models.Model):
         for slot in self:
             slot.color = slot.role_id.color or slot.resource_id.color
 
-    @api.depends('repeat_until')
+    @api.depends('repeat_until', 'repeat_number')
     def _compute_confirm_delete(self):
         for slot in self:
-            if slot.recurrency_id and slot.repeat_until:
-                slot.confirm_delete = fields.Date.to_date(slot.recurrency_id.repeat_until) > slot.repeat_until if slot.recurrency_id.repeat_until else True
+            if slot.recurrency_id and slot.repeat_until and slot.repeat_number:
+                recurrence_end_dt = slot.repeat_until or slot.recurrency_id._get_recurrence_last_datetime()
+                slot.confirm_delete = fields.Date.to_date(recurrence_end_dt) > slot.repeat_until
             else:
                 slot.confirm_delete = False
 
@@ -445,6 +448,13 @@ class Planning(models.Model):
             else:
                 slot.repeat_until = False
 
+    @api.depends('recurrency_id.repeat_number', 'repeat_type')
+    def _compute_repeat_number(self):
+        recurrency_slots = self.filtered('recurrency_id')
+        for slot in recurrency_slots:
+            slot.repeat_number = slot.recurrency_id.repeat_number
+        (self - recurrency_slots).update(self.default_get(['repeat_number']))
+
     @api.depends('recurrency_id.repeat_type')
     def _compute_repeat_type(self):
         recurrency_slots = self.filtered('recurrency_id')
@@ -457,12 +467,16 @@ class Planning(models.Model):
         for slot in self:
             if slot.repeat and not slot.recurrency_id.id:  # create the recurrence
                 repeat_until = False
+                repeat_number = 0
                 if slot.repeat_type == "until":
                     repeat_until = datetime.combine(fields.Date.to_date(slot.repeat_until), datetime.max.time())
                     repeat_until = repeat_until.replace(tzinfo=pytz.timezone(slot.company_id.resource_calendar_id.tz or 'UTC')).astimezone(pytz.utc).replace(tzinfo=None)
+                if slot.repeat_type == 'x_times':
+                    repeat_number = slot.repeat_number
                 recurrency_values = {
                     'repeat_interval': slot.repeat_interval,
                     'repeat_until': repeat_until,
+                    'repeat_number': repeat_number,
                     'repeat_type': slot.repeat_type,
                     'company_id': slot.company_id.id,
                 }
@@ -474,6 +488,7 @@ class Planning(models.Model):
             elif not slot.repeat and slot.recurrency_id.id and (
                 slot.repeat_type == slot.recurrency_id.repeat_type and
                 slot.repeat_until == slot.recurrency_id.repeat_until and
+                slot.repeat_number == slot.recurrency_id.repeat_number and
                 slot.repeat_interval == slot.recurrency_id.repeat_interval
             ):
                 slot.recurrency_id._delete_slot(slot.end_datetime)
@@ -715,23 +730,27 @@ class Planning(models.Model):
             values.update({'recurrency_id': False})
         result = super(Planning, self).write(values)
         # recurrence
-        if any(key in ('repeat', 'repeat_type', 'repeat_until', 'repeat_interval') for key in values):
+        if any(key in ('repeat', 'repeat_type', 'repeat_until', 'repeat_interval', 'repeat_number') for key in values):
             # User is trying to change this record's recurrence so we delete future slots belonging to recurrence A
             # and we create recurrence B from now on w/ the new parameters
             for slot in self:
                 if slot.recurrency_id and values.get('repeat') is None:
                     repeat_type = values.get('repeat_type') or slot.recurrency_id.repeat_type
                     repeat_until = values.get('repeat_until') or slot.recurrency_id.repeat_until
+                    repeat_number = values.get('repeat_number', 0) or slot.repeat_number
                     if repeat_type == 'until':
                         repeat_until = datetime.combine(fields.Date.to_date(repeat_until), datetime.max.time())
                         repeat_until = repeat_until.replace(tzinfo=pytz.timezone(slot.company_id.resource_calendar_id.tz or 'UTC')).astimezone(pytz.utc).replace(tzinfo=None)
                     recurrency_values = {
                         'repeat_interval': values.get('repeat_interval') or slot.recurrency_id.repeat_interval,
                         'repeat_until': repeat_until if repeat_type == 'until' else False,
+                        'repeat_number': repeat_number,
                         'repeat_type': repeat_type,
                         'company_id': slot.company_id.id,
                     }
                     slot.recurrency_id.write(recurrency_values)
+                    if slot.repeat_type == 'x_times':
+                        recurrency_values['repeat_until'] = slot.recurrency_id._get_recurrence_last_datetime()
                     slot.recurrency_id._delete_slot(recurrency_values.get('repeat_until'))
                     slot.recurrency_id._repeat_slot()
         return result

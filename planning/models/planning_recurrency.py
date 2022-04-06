@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import datetime
+from datetime import timedelta
 
 from odoo import api, fields, models, _
 from odoo.tools import get_timedelta
@@ -13,8 +13,9 @@ class PlanningRecurrency(models.Model):
 
     slot_ids = fields.One2many('planning.slot', 'recurrency_id', string="Related Planning Entries")
     repeat_interval = fields.Integer("Repeat Every", default=1, required=True)
-    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until')], string='Weeks', default='forever')
+    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until'), ('x_times', 'Number of Repetitions')], string='Weeks', default='forever')
     repeat_until = fields.Datetime(string="Repeat Until", help="Up to which date should the plannings be repeated")
+    repeat_number = fields.Integer(string="Repetitions", help="No Of Repetitions of the plannings")
     last_generated_end_datetime = fields.Datetime("Last Generated End Date", readonly=True)
     company_id = fields.Many2one('res.company', string="Company", readonly=True, required=True, default=lambda self: self.env.company)
 
@@ -22,6 +23,11 @@ class PlanningRecurrency(models.Model):
         ('check_repeat_interval_positive', 'CHECK(repeat_interval >= 1)', 'The recurrence should be greater than 0.'),
         ('check_until_limit', "CHECK((repeat_type = 'until' AND repeat_until IS NOT NULL) OR (repeat_type != 'until'))", 'A recurrence repeating itself until a certain date must have its limit set'),
     ]
+
+    @api.constrains('repeat_number', 'repeat_type')
+    def _check_repeat_number(self):
+        if self.filtered(lambda t: t.repeat_type == 'x_times' and t.repeat_number < 0):
+            raise ValidationError('The number of repetitions cannot be negative.')
 
     @api.constrains('company_id', 'slot_ids')
     def _check_multi_company(self):
@@ -68,6 +74,8 @@ class PlanningRecurrency(models.Model):
                 recurrence_end_dt = False
                 if recurrency.repeat_type == 'until':
                     recurrence_end_dt = recurrency.repeat_until
+                if recurrency.repeat_type == 'x_times':
+                    recurrence_end_dt = recurrency._get_recurrence_last_datetime()
 
                 # find end of generation period (either the end of recurrence (if this one ends before the cron period), or the given `stop_datetime` (usually the cron period))
                 if not stop_datetime:
@@ -105,3 +113,8 @@ class PlanningRecurrency(models.Model):
             ('state', '=', 'draft'),
         ])
         slots.unlink()
+
+    def _get_recurrence_last_datetime(self):
+        self.ensure_one()
+        end_datetime = self.env['planning.slot'].search_read([('recurrency_id', '=', self.id)], ['end_datetime'], order='end_datetime', limit=1)
+        return end_datetime[0]['end_datetime'] + timedelta(weeks=self.repeat_number * self.repeat_interval)

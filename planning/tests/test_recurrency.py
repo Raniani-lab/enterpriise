@@ -308,6 +308,61 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             self.env['planning.recurrency']._cron_schedule_next()
             self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 7, 'second run should not generate any slots')
 
+    def test_number_of_repetitions(self):
+        """ Since the recurrency cron is meant to run every week, make sure generation works accordingly when
+            both the company's repeat span and the repeat interval are much larger
+            Company's span is 1 month and repeat_interval is 1 week
+
+            Test Case:
+            ---------
+            First Automated Run:
+                now :                   2020-4-20
+                initial_start :         2020-4-20
+                repeat_end :            2020-05-25  now + 1 month
+                generated slots:
+                                        2020-4-20
+                                        2020-4-27
+                                        2020-5-04
+                                        2020-5-11
+                                        2020-5-18
+            First Cron:
+                now:                    2020-4-27
+                last generated start    2020-5-18
+                repeat_end              2020-05-25
+                generated slots:
+                                        2020-05-25
+            Second Cron:
+                now:                    2020-5-4
+                last generated start    2020-05-25
+                repeat_end              2020-05-25
+                generated slots:
+        """
+        with self._patch_now('2020-04-20 08:00:00'):
+            self.configure_recurrency_span(1)
+
+            self.env['planning.slot'].create({
+                'start_datetime': datetime(2020, 4, 20, 8, 0, 0),
+                'end_datetime': datetime(2020, 4, 20, 17, 0, 0),
+                'resource_id': self.resource_joseph.id,
+                'repeat': True,
+                'repeat_interval': 1,
+                'repeat_type': 'x_times',
+                'repeat_number': 5,
+            })
+
+            # we should have generated 5 slots
+            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 5, 'first run should generated 5 slots')
+
+        # one week later, always having the slots generated 1 month in advance means we have generated one more, which makes 6
+        with self._patch_now('2020-04-27 08:00:00'):
+            self.env['planning.recurrency']._cron_schedule_next()
+            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 6, 'first cron should generate one more slot')
+
+        # again one week later, we are now up-to-date so there should still be 6 slots
+        with self._patch_now('2020-05-04 08:00:00'):
+            self.env['planning.recurrency']._cron_schedule_next()
+            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 6, 'second run should not generate any slots')
+
     @unittest.skip
     def kkktest_slot_remove_all(self):
         with self._patch_now('2019-06-01 08:00:00'):

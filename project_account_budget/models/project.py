@@ -20,7 +20,7 @@ class Project(models.Model):
                 [('analytic_account_id', '=', self.analytic_account_id.id)],
                 domain or [],
             ]),
-            'context': {'no_create': True},
+            'context': {'create': False, 'edit': False},
             "name": _("Budget Items"),
             'view_mode': 'tree,form',
         }

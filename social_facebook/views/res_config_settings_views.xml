@@ -5,7 +5,7 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('o_social_developper_settings')]" position="inside">
+            <xpath expr="//div[hasclass('o_social_developer_settings')]" position="inside">
                 <div class="col-md-6 o_setting_box">
                     <div class="o_setting_left_pane">
                         <field name="facebook_use_own_account"/>

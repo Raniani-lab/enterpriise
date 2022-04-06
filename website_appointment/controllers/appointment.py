@@ -26,21 +26,50 @@ class WebsiteAppointment(Appointment):
         This param is propagated through templates to allow people to go back with the initial appointment
         types filter selection
         """
+        available_appointment_types = self._fetch_available_appointments(
+            kwargs.get('filter_appointment_type_ids'),
+            kwargs.get('filter_staff_user_ids'),
+            kwargs.get('invite_token'),
+            kwargs.get('search')
+        )
+        if len(available_appointment_types) == 1 and not kwargs.get('search'):
+            # If there is only one appointment type available in the selection, skip the appointment type selection view
+            return request.redirect('/appointment/%s' % available_appointment_types.id)
+
         cards_layout = request.website.viewref('website_appointment.opt_appointments_list_cards').active
 
         if cards_layout:
-            return request.render('website_appointment.appointments_cards_layout', self._prepare_appointments_cards_data(page, **kwargs))
+            return request.render(
+                'website_appointment.appointments_cards_layout',
+                self._prepare_appointments_cards_data(
+                    page, available_appointment_types,
+                    **kwargs
+                )
+            )
         else:
-            return super().appointment_type_index(page, **kwargs)
-
+            return request.render(
+                'appointment.appointments_list_layout',
+                self._prepare_appointments_list_data(
+                    available_appointment_types,
+                    **kwargs
+                )
+            )
 
     # Tools / Data preparation
     # ------------------------------------------------------------
 
-    def _prepare_appointments_cards_data(self, page, **kwargs):
+    def _prepare_appointments_cards_data(self, page, appointment_types=None, **kwargs):
         """
             Compute specific data for the cards layout like the the search bar and the pager.
         """
+        if appointment_types is None:
+            appointment_types = self._fetch_available_appointments(
+                kwargs.get('filter_appointment_type_ids'),
+                kwargs.get('filter_staff_user_ids'),
+                kwargs.get('invite_token'),
+                kwargs.get('search')
+            )
+
         appointment_type_ids = kwargs.get('filter_appointment_type_ids')
         domain = self._appointments_base_domain(
             appointment_type_ids,
@@ -53,12 +82,6 @@ class WebsiteAppointment(Appointment):
         APPOINTMENTS_PER_PAGE = 12
 
         Appointment = request.env['appointment.type']
-        appointment_types = self._fetch_and_check_private_appointment_types(
-            appointment_type_ids,
-            kwargs.get('filter_staff_user_ids'),
-            kwargs.get('invite_token'),
-            domain=domain
-        )
         appointment_count = len(appointment_types)
 
         pager = website.pager(

@@ -82,26 +82,36 @@ class Appointment(http.Controller):
     # Tools / Data preparation
     # ------------------------------------------------------------
 
-    def _prepare_appointments_list_data(self, **kwargs):
+    def _fetch_available_appointments(self, appointment_types, staff_users, invite_token, search=None):
+        """Fetch the available appointment types
+
+        :param recordset appointment_types: Record set of appointment types for
+            the filter linked to the appointment types
+        :param recordset staff_users: Record set of users for the filter linked
+            to the staff users
+        :param str invite_token: token of the appointment invite
+        :param str search: search bar value used to compute the search domain
         """
-            Compute specific data for the list layout.
-        """
-        appointment_type_ids = kwargs.get('filter_appointment_type_ids')
-        domain = self._appointments_base_domain(
-            appointment_type_ids,
-            search=kwargs.get('search'),
-            invite_token=kwargs.get('invite_token'),
+        return self._fetch_and_check_private_appointment_types(
+            appointment_types, staff_users, invite_token,
+            domain=self._appointments_base_domain(
+                appointment_types, search, invite_token
+            )
         )
 
-        appointment_types = self._fetch_and_check_private_appointment_types(
-            appointment_type_ids,
-            kwargs.get('filter_staff_user_ids'),
-            kwargs.get('invite_token'),
-            domain=domain,
-        )
+    def _prepare_appointments_list_data(self, appointment_types=None, **kwargs):
+        """Compute specific data used to render the list layout
 
+        :param recordset appointment_types: Record set of appointments to show.
+            If not provided, fetch them using _fetch_available_appointments
+        """
         return {
-            'appointment_types': appointment_types,
+            'appointment_types': appointment_types if appointment_types
+            else self._fetch_available_appointments(
+                kwargs.get('filter_appointment_type_ids'),
+                kwargs.get('filter_staff_user_ids'),
+                kwargs.get('invite_token'),
+            ),
             'invite_token': kwargs.get('invite_token'),
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
             'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
@@ -181,6 +191,11 @@ class Appointment(http.Controller):
 
         return request.render("appointment.appointment_info", {
             'appointment_type': appointment_type,
+            'available_appointments': self._fetch_available_appointments(
+                kwargs.get('filter_appointment_type_ids'),
+                kwargs.get('filter_staff_user_ids'),
+                kwargs.get('invite_token')
+            ),
             'suggested_staff_users': suggested_staff_users,
             'main_object': appointment_type,
             'timezone': request.session['timezone'],  # bw compatibility
@@ -279,6 +294,11 @@ class Appointment(http.Controller):
         return request.render("appointment.appointment_form", {
             'partner_data': partner_data,
             'appointment_type': appointment_type,
+            'available_appointments': self._fetch_available_appointments(
+                kwargs.get('filter_appointment_type_ids'),
+                kwargs.get('filter_staff_user_ids'),
+                kwargs.get('invite_token'),
+            ),
             'main_object': appointment_type,
             'datetime': date_time,
             'datetime_locale': day_name + ' ' + date_formated,
@@ -514,6 +534,11 @@ class Appointment(http.Controller):
 
         return request.env['ir.qweb']._render('appointment.appointment_calendar', {
             'appointment_type': appointment_type,
+            'available_appointments': self._fetch_available_appointments(
+                kwargs.get('filter_appointment_type_ids'),
+                kwargs.get('filter_staff_user_ids'),
+                kwargs.get('invite_token')
+            ),
             'timezone': request.session['timezone'],
             'formated_days': formated_days,
             'slots': slots,

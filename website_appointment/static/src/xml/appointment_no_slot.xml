@@ -3,7 +3,12 @@
 
     <t t-extend="Appointment.appointment_info_no_slot">
         <t t-jquery="p" t-operation="append">
-            <a href="/appointment">Go back to Appointment</a> or <a href="/contactus"> contact us</a>.
+            <div t-if="appointments_count !== 1" class="text-center">
+                <a href="/appointment">Go back to Appointment</a> or <a href="/contactus">contact us</a>.
+            </div>
+            <div t-else="" class="text-center">
+                <a href="/contactus">Contact us</a>.
+            </div>
         </t>
     </t>
 

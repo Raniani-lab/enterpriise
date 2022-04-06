@@ -105,6 +105,7 @@ const NewAppointmentDialog = Dialog.extend({
             kwargs: {
                 name: name,
                 staff_user_ids: staff_user_ids,
+                is_published: true,
             },
         }).then(url => {
             window.location.href = url;

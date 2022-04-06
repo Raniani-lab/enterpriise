@@ -61,7 +61,12 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
      _updateSlotAvailability: function () {
         if (!this.$first.length) { // No slot available
             if (!this.$slotsList.hasClass('o_no_slot')) {
-                this.$('#slots_availabilities').empty().append(qweb.render('Appointment.appointment_info_no_slot'));
+                this.$('#slots_availabilities').empty().append(
+                    qweb.render(
+                        'Appointment.appointment_info_no_slot',
+                        {'appointments_count': this.$slotsList.data('appointmentsCount')}
+                    )
+                );
             }
         }
         if (this.$('.o_appointment_missing_configuration').hasClass('d-none')) {

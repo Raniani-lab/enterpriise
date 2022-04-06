@@ -591,7 +591,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=51):  # apt only: 43 (44 w website)
+            with self.assertQueryCount(default=52):  # apt only: 38 (44 w website)
                 self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 
@@ -623,7 +623,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=53):  # apt only: 45 (46 w website)
+            with self.assertQueryCount(default=54):  # apt only: 40 (46 w website)
                 self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 

@@ -9,7 +9,7 @@
         </xpath>
         <xpath expr="//t[@t-set='o_portal_fullwidth_alert']" position="replace"/>
         <xpath expr="//div[hasclass('o_appointment')]" position="before">
-            <nav t-if="appointment_type.category == 'website'" class="navbar navbar-light border-top shadow-sm d-print-none">
+            <nav t-if="appointment_type.category == 'website' and len(available_appointments) != 1" class="navbar navbar-light border-top shadow-sm d-print-none">
                 <div class="container">
                     <a t-attf-href="/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}"
                         class="navbar-brand h4 my-0 mr-auto">

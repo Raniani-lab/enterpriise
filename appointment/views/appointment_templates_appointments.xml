@@ -206,7 +206,8 @@
                     </div>
                 </div>
             </div>
-            <div id="slotsList" class="o_appointment_availabilities col-lg-4 mb-3 o_not_editable"/>
+            <div id="slotsList" class="o_appointment_availabilities col-lg-4 mb-3 o_not_editable"
+            t-att-data-appointments-count="len(available_appointments)"/>
         </div>
     </template>
 

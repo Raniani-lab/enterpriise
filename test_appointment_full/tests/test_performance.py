@@ -44,7 +44,7 @@ class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=51):  # apt only: 44
+            with self.assertQueryCount(default=52):  # apt only: 44
                 self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 

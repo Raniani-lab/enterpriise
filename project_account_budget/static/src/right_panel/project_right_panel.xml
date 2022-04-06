@@ -26,7 +26,7 @@
                     <AddBudget form_view_id="budget.form_view_id" analytic_account_id="state.data.analytic_account_id" context="context" onBudgetUpdate.bind="_loadQwebContext"/>
                 </div>
             </div>
-            <div class="o_rightpanel_data">
+            <div class="o_rightpanel_data" t-if="budget and budget_items.length > 0">
                 <table class="w-100">
                     <thead>
                         <tr>

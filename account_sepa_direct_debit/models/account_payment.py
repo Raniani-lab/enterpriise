@@ -124,7 +124,7 @@ class AccountPayment(models.Model):
 
         PmtTpInf = create_xml_node_chain(PmtInf, ['PmtTpInf','SvcLvl','Cd'], 'SEPA')[0]
         
-        sdd_scheme = self[0].sdd_mandate_id.sdd_scheme
+        sdd_scheme = self[0].sdd_mandate_id.sdd_scheme or 'CORE'
         create_xml_node_chain(PmtTpInf, ['LclInstrm','Cd'], sdd_scheme)
         
         create_xml_node(PmtTpInf, 'SeqTp', 'RCUR')

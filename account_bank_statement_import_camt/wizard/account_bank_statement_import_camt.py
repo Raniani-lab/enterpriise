@@ -843,7 +843,7 @@ class AccountBankStatementImport(models.TransientModel):
                     BkTxCd = entry.xpath('ns:BkTxCd', namespaces=ns)[0]
                     entry_vals.update(_get_transaction_type(BkTxCd, namespaces=ns))
                     notes = []
-                    entry_info = _get_additional_entry_info(entry_details, namespaces=ns)
+                    entry_info = _get_additional_entry_info(entry, namespaces=ns)
                     if entry_info:
                         notes.append(_('Entry Info: %s', entry_info))
                     text_info = _get_additional_text_info(entry_details, namespaces=ns)

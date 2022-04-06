@@ -11,6 +11,7 @@ import urllib3
 from functools import wraps
 from html import unescape
 
+import zeep
 from lxml import etree
 from OpenSSL import crypto
 from urllib3.exceptions import NewConnectionError
@@ -64,11 +65,17 @@ def l10n_cl_edi_retry(max_retries=MAX_RETRIES, logger=None, custom_msg=None):
                     if logger is not None:
                         logger.error(error)
                     retries -= 1
+                # DTE acceptation or claim returns a Fault error without status code but 'Error de Autentication:
+                # Token invalido' as message instead of return 200 with the invalid TOKEN status code in the response
+                except zeep.exceptions.Fault as error:
+                    if error.message == 'Error de Autenticacion: TOKEN invalido':
+                        raise InvalidToken
+                    self._report_connection_err(error)
+                    break
                 except Exception as error:
                     self._report_connection_err(error)
-                    logger.error(error)
                     break
-            msg = _('- It was not possible to get a seed after %s retries.') % max_retries
+            msg = _('- It was not possible to get a response after %s retries.') % max_retries
             if custom_msg is not None:
                 msg = custom_msg + msg
             self._report_connection_err(msg)
@@ -76,6 +83,10 @@ def l10n_cl_edi_retry(max_retries=MAX_RETRIES, logger=None, custom_msg=None):
         return wrapper_retry
 
     return deco_retry
+
+
+class InvalidToken(Exception):
+    pass
 
 
 class UnexpectedXMLResponse(Exception):

@@ -12,7 +12,7 @@ from psycopg2 import OperationalError
 from lxml import etree
 
 from odoo import fields, models, api
-from odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util import UnexpectedXMLResponse
+from odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util import UnexpectedXMLResponse, InvalidToken
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 from odoo.tools.float_utils import float_repr
@@ -390,10 +390,15 @@ class AccountMove(models.Model):
             self.message_post(body=_('Claim status was not sending to SII. This feature is not available in '
                                      'certification/test mode'))
             return None
-        response = self._send_sii_claim_response(
-            self.company_id.l10n_cl_dte_service_provider, self.partner_id.vat,
-            self.company_id._get_digital_signature(user_id=self.env.user.id), self.l10n_latam_document_type_id.code,
-            self.l10n_latam_document_number, 'ACD')
+        try:
+            response = self._send_sii_claim_response(
+                self.company_id.l10n_cl_dte_service_provider, self.partner_id.vat,
+                self.company_id._get_digital_signature(user_id=self.env.user.id), self.l10n_latam_document_type_id.code,
+                self.l10n_latam_document_number, 'ACD')
+        except InvalidToken:
+            digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
+            digital_signature.last_token = None
+            return self.l10n_cl_accept_document()
         if not response:
             return None
 
@@ -424,15 +429,19 @@ class AccountMove(models.Model):
             self.message_post(body=_('The claim status was not sent to SII as this feature does not work '
                                      'in certification/test mode'))
             return
-
-        response = self._send_sii_claim_response(
-            self.company_id.l10n_cl_dte_service_provider,
-            self.partner_id.vat,
-            self.company_id._get_digital_signature(user_id=self.env.user.id),
-            self.l10n_latam_document_type_id.code,
-            self.l10n_latam_document_number,
-            'RCD'
-        )
+        try:
+            response = self._send_sii_claim_response(
+                self.company_id.l10n_cl_dte_service_provider,
+                self.partner_id.vat,
+                self.company_id._get_digital_signature(user_id=self.env.user.id),
+                self.l10n_latam_document_type_id.code,
+                self.l10n_latam_document_number,
+                'RCD'
+            )
+        except InvalidToken:
+            digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
+            digital_signature.last_token = None
+            return self.l10n_cl_claim_document()
         if not response:
             return None
         try:

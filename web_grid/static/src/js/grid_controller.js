@@ -82,6 +82,24 @@ var GridController = AbstractController.extend({
         this.$buttons.find('.grid_arrow_range').removeClass('active');
         this.$buttons.find('.grid_arrow_range[data-name=' + this.currentRange + ']').addClass('active');
     },
+    /**
+     * Get the action to execute.
+     */
+    _getEventAction(label, cell, ctx) {
+        const noActivitiesFound = _t('No activities found');
+        return {
+            type: 'ir.actions.act_window',
+            name: label,
+            res_model: this.modelName,
+            views: [
+                [this.listViewID, 'list'],
+                [this.formViewID, 'form']
+            ],
+            domain: cell.domain,
+            context: ctx,
+            help: markup(`<p class='o_view_nocontent_smiling_face'>${noActivitiesFound}</p>`),
+        };
+    },
 
     //--------------------------------------------------------------------------
     // Private
@@ -306,18 +324,7 @@ var GridController = AbstractController.extend({
 
         ctx['create'] = this.canCreate && !cell.readonly;
         ctx['edit'] = this.activeActions.edit && !cell.readonly;
-        this.do_action({
-            type: 'ir.actions.act_window',
-            name: label,
-            res_model: this.modelName,
-            views: [
-                [this.listViewID, 'list'],
-                [this.formViewID, 'form']
-            ],
-            domain: cell.domain,
-            context: ctx,
-            help: markup("<p class='o_view_nocontent_smiling_face'>No activities found</p>"),
-        });
+        this.do_action(this._getEventAction(label, cell, ctx));
     },
     /**
      * @private

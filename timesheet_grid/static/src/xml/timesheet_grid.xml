@@ -152,4 +152,21 @@
         </xpath>
     </t>
 
+    <t t-name="timesheet_grid.detailActionHelp">
+        <p class="o_view_nocontent_smiling_face">
+            No activities found. Let's start a new one!
+        </p>
+        <p>
+        Track your working hours by projects every day and invoice this time to your customers.
+        </p>
+        <p>Download our web/mobile apps to track your time from anywhere, even offline.</p>
+        <div>
+            <a href="http://www.odoo.com/app/timesheet?platform=chrome" target="_blank" class="o_chrome_store_link d-none d-sm-inline-block">
+                <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>
+            </a>
+            <img alt="Apple App Store" class="img img-fluid h-100 o_config_app_store" style="cursor: pointer;" src="project/static/src/img/app_store.png"/>
+            <img alt="Google Play Store" class="img img-fluid h-100 o_config_play_store" style="cursor: pointer;" src="project/static/src/img/play_store.png"/>
+        </div>
+    </t>
+
 </templates>

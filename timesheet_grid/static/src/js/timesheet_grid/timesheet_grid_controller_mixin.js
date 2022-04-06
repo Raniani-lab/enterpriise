@@ -1,6 +1,12 @@
 odoo.define('timesheet_grid.TimesheetGridControllerMixin', function (require) {
 'use strict';
 
+const core = require('web.core');
+
+const qWeb = core.qweb;
+
+const { markup } = owl;
+
 const TimesheetGridControllerMixin = {
 
     /**
@@ -25,6 +31,15 @@ const TimesheetGridControllerMixin = {
             formContext[defaultColField] = firstWorkingDayCol.values[state.colField][0].split('/')[0];
         }
         return formContext;
+    },
+
+    /**
+     * @override
+     */
+    _getEventAction(label, cell, ctx) {
+        var action = this._super(label, cell, ctx);
+        action.help = markup(qWeb.render('timesheet_grid.detailActionHelp'));
+        return action;
     },
 };
 

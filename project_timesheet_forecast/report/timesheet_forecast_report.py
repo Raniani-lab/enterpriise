@@ -31,7 +31,7 @@ class TimesheetForecastReport(models.Model):
             SELECT
                 d::date AS entry_date,
                 F.employee_id AS employee_id,
-                E.company_id AS company_id,
+                F.company_id AS company_id,
                 F.task_id AS task_id,
                 F.project_id AS project_id,
                 F.user_id AS user_id,
@@ -74,7 +74,7 @@ class TimesheetForecastReport(models.Model):
             SELECT
                 A.date AS entry_date,
                 E.id AS employee_id,
-                E.company_id AS company_id,
+                A.company_id AS company_id,
                 A.task_id AS task_id,
                 A.project_id AS project_id,
                 A.user_id AS user_id,

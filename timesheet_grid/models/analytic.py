@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import re
+import ast
 
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -135,8 +136,8 @@ class AnalyticLine(models.Model):
         #                  ['project_id.user_id', '=', 2],
         #                  ['user_id', '=', 2]]
         #       '&',
-        #           ['date', '>=', '1-1-1970'],
-        #           ['date', '<=', '1-1-2250']
+        #           ['date', '>=', '1970-01-01'],
+        #           ['date', '<=', '2250-01-01']
         #   3) retrieve data and create correctly the grid and rows in result
 
         today = fields.Date.to_string(fields.Date.today())
@@ -164,7 +165,7 @@ class AnalyticLine(models.Model):
                 elif name == 'date':
                     if operator == '=':
                         operator = '<='
-                    value = '1-1-2250' if operator in ['<', '<='] else '1-1-1970'
+                    value = '2250-01-01' if operator in ['<', '<='] else '1970-01-01'
                 domain_timesheet_search.append([name, operator, value])
                 if name in ['project_id', 'task_id']:
                     if operator in ['=', '!='] and value:
@@ -566,7 +567,7 @@ class AnalyticLine(models.Model):
             This group expand allow to add some record grouped by project,
             where the current user (= the current employee) has been
             timesheeted in the past 7 days.
-            
+
             We keep the actual domain and modify it to enforce its validity
             concerning the dates, while keeping the restrictions about other
             fields.
@@ -596,8 +597,8 @@ class AnalyticLine(models.Model):
                         ['project_id.user_id', '=', 2],
                         ['user_id', '=', 2]]
              '&',
-                 ['date', '>=', '1-1-1970'],
-                 ['date', '<=', '1-1-2250']
+                 ['date', '>=', '1970-01-01'],
+                 ['date', '<=', '2250-01-01']
         """
 
         today = fields.Date.to_string(fields.Date.today())
@@ -611,7 +612,7 @@ class AnalyticLine(models.Model):
                 name, operator, _rule = rule
                 if operator == '=':
                     operator = '<='
-                domain_search.append((name, operator, '1-1-2250' if operator in ['<', '<='] else '1-1-1970'))
+                domain_search.append((name, operator, '2250-01-01' if operator in ['<', '<='] else '1970-01-01'))
             else:
                 domain_search.append(rule)
 
@@ -651,8 +652,8 @@ class AnalyticLine(models.Model):
                         ['project_id.user_id', '=', 2],
                         ['user_id', '=', 2]]
              '&',
-                 ['date', '>=', '1-1-1970'],
-                 ['date', '<=', '1-1-2250']
+                 ['date', '>=', '1970-01-01'],
+                 ['date', '<=', '2250-01-01']
         """
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = self.env.context.get('grid_anchor', today)
@@ -664,7 +665,7 @@ class AnalyticLine(models.Model):
                 name, operator, _rule = rule
                 if operator == '=':
                     operator = '<='
-                domain_search.append((name, operator, '1-1-2250' if operator in ['<', '<='] else '1-1-1970'))
+                domain_search.append((name, operator, '2250-01-01' if operator in ['<', '<='] else '1970-01-01'))
             else:
                 domain_search.append(rule)
         domain_search = expression.AND([
@@ -859,11 +860,8 @@ class AnalyticLine(models.Model):
         return new_timesheet.id
 
     def _action_open_to_validate_timesheet_view(self, type_view=None):
-        context = {
-            'search_default_nonvalidated': True,
-            'search_default_my_team_timesheet': True,
-            'group_expand': True,
-        }
+        action = self.env['ir.actions.act_window']._for_xml_id('timesheet_grid.timesheet_grid_to_validate_action')
+        context = action.get('context', {}) and ast.literal_eval(action['context'])
         if (type_view == 'week'):
             context['grid_range'] = 'week'
             context['grid_anchor'] = fields.Date.today() - relativedelta(weeks=1)
@@ -875,46 +873,20 @@ class AnalyticLine(models.Model):
                 context['grid_anchor'] = fields.Date.today()
                 context.pop('search_default_my_team_timesheet', None)
 
-        name = _('Timesheets to Validate')
-        action = self.env["ir.actions.actions"]._for_xml_id("hr_timesheet.act_hr_timesheet_report")
-        # The purpose of this view is only to store the view order that can be edited with studio without impacting
-        # `act_hr_timesheet_report`. Because `act_hr_timesheet_report` may contain more view_types than the action we will return,
-        # editing with studio in the to validate view can cause the loss of some views in `act_hr_timesheet_report`.
-        action_validate_id = self.env.ref('timesheet_grid.timesheet_grid_to_validate_action', raise_if_not_found=False)
-        if action_validate_id:
-            action_validate = action_validate_id.sudo().read(['id', 'views'])[0]
-        else:
-            action_validate = {'id': action['id']}
-        #We want the pivot view to group by week and not by month in weekly mode
+        # We want the pivot view to group by week and not by month in weekly mode
+        views = action['views']
         if type_view == 'week':
-            pivot_view_id = self.env.ref('timesheet_grid.timesheet_grid_pivot_view_weekly_validate').id
-        else:
-            pivot_view_id = self.env.ref('hr_timesheet.view_hr_timesheet_line_pivot').id
-        # 'views' contain an array of (id, view_name) in the order they will be displayed on screen.
-        if type_view:
-            view_order = [view[1] for view in action_validate.get('views', [])]
-        else:
-            view_order = ['pivot', 'grid', 'tree', 'kanban', 'graph']
-        views = [
-            [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],
-            [self.env.ref('timesheet_grid.view_kanban_account_analytic_line_inherit_timesheet_grid_validation').id, 'kanban'],
-            [self.env.ref('timesheet_grid.timesheet_view_grid_by_employee_validation').id, 'grid'],
-            [self.env.ref('timesheet_grid.timesheet_view_form').id, 'form'],
-            [pivot_view_id, 'pivot'],
-            [self.env.ref('hr_timesheet.view_hr_timesheet_line_graph_all').id, 'graph'],
-        ]
-        views.sort(key=lambda v: view_order.index(v[1]) if v[1] in view_order else 10000)
+            views = [
+                (view_id if view_type != 'pivot' else self.env.ref('timesheet_grid.timesheet_grid_pivot_view_weekly_validate').id, view_type)
+                for view_id, view_type in views
+            ]
+        elif not type_view:
+            views.sort(key=lambda v: 1 if v[1] == 'pivot' else 1000)
         action.update({
-            'id': action_validate['id'],
-            "name": name,
-            "display_name": name,
             "views": views,
-            "view_mode": 'grid,tree,kanban,pivot,graph',
             "domain": [('is_timesheet', '=', True)],
             "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],
             "context": context,
-            "help": '<p class="o_view_nocontent_smiling_face">No timesheets to validate</p>' +
-                '<p>Check that your employees correctly filled in their timesheets and that their time is billable</p>',
         })
         return action
 

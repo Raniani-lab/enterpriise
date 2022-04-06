@@ -370,7 +370,7 @@ var ClientAction = AbstractAction.extend({
                     $warehouse = $('.o_mps_content[data-warehouse_id='+ state.warehouse_id[0] +']');
                 }
                 if ($warehouse.length) {
-                    $warehouse.last().append($table);
+                    $warehouse.last().after($table);
                 } else {
                     $('.o_mps_product_table').append($table);
                 }

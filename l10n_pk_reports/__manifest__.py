@@ -4,6 +4,7 @@
 
 {
     'name': 'Pakistan - Accounting Reports',
+    'icon': '/l10n_pk/static/description/icon.png',
     'version': '1.0',
     'description': """
         Accounting reports for Pakistan

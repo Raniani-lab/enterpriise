@@ -211,7 +211,10 @@ class MrpReport(models.Model):
             for data in res:
                 for field in additional_fields:
                     special_field = 'aggregated_%s' % field
-                    data[field] = sum([float(value) * float(qty) for value, qty in zip(data[special_field], data[qties])]) / sum(float(qty) for qty in data[qties])
+                    if data[special_field] and data[qties]:
+                        total_unit_cost = sum(float(value) * float(qty) for value, qty in zip(data[special_field], data[qties]) if value and qty)
+                        total_qty_produced = sum(float(qty) for qty in data[qties] if qty)
+                        data[field] = (total_unit_cost / total_qty_produced) if total_qty_produced else 0
                     del data[special_field]
                 del data[qties]
         return res

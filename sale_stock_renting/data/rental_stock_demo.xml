@@ -24,24 +24,24 @@
     <field name="tracking">serial</field>
   </record>
 
-  <record id="rental_stock_pricing_1" model="rental.pricing">
+  <record id="rental_stock_pricing_1" model="product.pricing">
       <field name="duration" eval="1"/>
       <field name="price" eval="5.0"/>
       <field name="unit">hour</field>
   </record>
-  <record id="rental_stock_pricing_2" model="rental.pricing">
+  <record id="rental_stock_pricing_2" model="product.pricing">
       <field name="duration" eval="1"/>
       <field name="price" eval="20.0"/>
       <field name="unit">day</field>
   </record>
-  <record id="rental_stock_pricing_3" model="rental.pricing">
+  <record id="rental_stock_pricing_3" model="product.pricing">
       <field name="duration" eval="7"/>
       <field name="price" eval="100.0"/>
       <field name="unit">day</field>
   </record>
 
   <record id="rental_stock_product_1" model="product.product"> <!-- House -->
-    <field name="rental_pricing_ids" eval="[(6,0,[ref('rental_stock_pricing_1'), ref('rental_stock_pricing_2'), ref('rental_stock_pricing_3')])]"/>
+    <field name="product_pricing_ids" eval="[(6,0,[ref('rental_stock_pricing_1'), ref('rental_stock_pricing_2'), ref('rental_stock_pricing_3')])]"/>
   </record>
 
   <record id="rental_stock_lot_1" model="stock.lot">
@@ -113,8 +113,9 @@
       <field name="product_uom" ref="uom.product_uom_unit"/>
       <field name="name" eval="'[RENT003] Printer'"/>
       <field name="is_rental" eval="True"/>
-      <field name="pickup_date" eval="DateTime.today() + relativedelta(days=1)"/>
+      <field name="start_date" eval="DateTime.today() + relativedelta(days=1)"/>
       <field name="return_date" eval="DateTime.today() + relativedelta(days=5)"/>
+      <field name="next_invoice_date" eval="DateTime.today() + relativedelta(days=5)"/>
       <field name="price_unit" eval="100.0"/>
   </record>
 
@@ -125,8 +126,9 @@
       <field name="product_uom" ref="uom.product_uom_unit"/>
       <field name="name" eval="'[RENT003] Printer'"/>
       <field name="is_rental" eval="True"/>
-      <field name="pickup_date" eval="DateTime.today() + relativedelta(days=4)"/>
+      <field name="start_date" eval="DateTime.today() + relativedelta(days=4)"/>
       <field name="return_date" eval="DateTime.today() + relativedelta(days=10)"/>
+      <field name="next_invoice_date" eval="DateTime.today() + relativedelta(days=10)"/>
       <field name="price_unit" eval="150.0"/>
       <field name="reserved_lot_ids" eval="[(6,0,[ref('rental_stock_lot_1'), ref('rental_stock_lot_2')])]"/>
   </record>

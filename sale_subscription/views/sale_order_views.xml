@@ -1,18 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-     <record id="view_sale_subscription_order_line" model="ir.ui.view">
-        <field name="name">sale.subscription.order.line</field>
+    <record id="sale_subscription_order_view_form" model="ir.ui.view">
+        <field name="name">sale.subscription.order.form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="after">
-                <field name="subscription_id" attrs="{'invisible': [('subscription_id', '=', False)]}"/>
+            <form position="attributes">
+                <attribute name="js_class">sale_subscription_form</attribute>
+            </form>
+            <xpath expr="//header" position="inside">
+                <field name="is_subscription" invisible="1"/>
+                <field name="subscription_management" invisible="1"/>
+                <field name="stage_category" invisible="1"/>
+                <field name="recurring_rule_boundary" invisible="1"/>
+                <field name="archived_product_count" invisible="1"/>
+                <field name="payment_mode" invisible="1"/>
             </xpath>
-            <xpath expr="//div[hasclass('oe_button_box')]/button[1]" position="before">
-                <button class="oe_stat_button" name="action_open_subscriptions" type="object" icon="fa-book" attrs="{'invisible': [('subscription_count', '=', 0)]}">
-                    <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
+            <button id="create_invoice" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), ('invoice_status', '!=', 'to invoice')]}</attribute>
+            </button>
+            <button id="create_invoice_percentage" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), ('invoice_status', '!=', 'to invoice')]}</attribute>
+            </button>
+            <button id="create_invoice" position="after">
+                <button name="action_invoice_subscription" string="Create Recurring Invoice"
+                        id="create_recurring_invoice" type="object" class="btn-secondary" data-hotkey="q"
+                        attrs="{'invisible': ['|', '|', ('state', '!=', 'sale'), ('is_subscription', '=', False), ('payment_mode', 'in', ['validate_send', 'success_payment'])]}"
+                />
+            </button>
+            <button name="action_draft" position="after">
+                <button string="Upsell" name="prepare_upsell_order" type="object"
+                            attrs="{'invisible': ['|', '|', ('is_subscription', '=', False), ('stage_category', '!=', 'progress'), ('state', 'not in', ['sale', 'done'])]}" data-hotkey="z"/>
+                    <button string="Renew" name="prepare_renewal_order" type="object" data-hotkey="w"
+                        attrs="{'invisible': [
+                        '|','|',
+                        ('state', '!=', 'sale'),
+                        ('is_subscription', '=', False),
+                        '&amp;','&amp;',
+                        ('recurring_rule_boundary','=','unlimited'),
+                        ('stage_category','not in',['closed', 'draft']),
+                        ('to_renew', '!=', False)]}"/>
                 </button>
+            <button name="action_cancel" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', '|',('state', 'not in', ['draft', 'sent','sale']), ('id', '=', False),
+                    ('is_subscription','=',True)]}
+                </attribute>
+            </button>
+            <!--  Change the label of cancel button for subscription -->
+            <button name="action_cancel" position="after">
+                <button name="action_cancel" type="object" string="Close" attrs="{'invisible': ['|', ('stage_category', '!=', 'progress'), ('id', '=', False)]}" data-hotkey="z"/>
+            </button>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button attrs="{'invisible': [('history_count', '&lt;', 2)]}"
+                    name="open_subscription_history"
+                    class="oe_stat_button"
+                    icon="fa-pencil-square-o"
+                    type="object">
+                    <field name="history_count" widget="statinfo" string="Orders"/>
+                </button>
+                <button attrs="{'invisible': [('history_count', '&lt;', 2)]}"
+                    name="action_sale_order_lines"
+                    class="oe_stat_button"
+                    icon="fa-list"
+                    type="object">
+                    <span>Related Lines</span>
+                 </button>
+                <button attrs="{'invisible': [('is_subscription', '=', False)]}"
+                    name="action_sale_order_log"
+                    class="oe_stat_button"
+                    icon="fa-money"
+                    type="object">
+                    <field name="recurring_monthly" widget="statinfo" string="MRR"/>
+                 </button>
             </xpath>
-         </field>
-     </record>
+            <xpath expr="//div[@name='button_box']" position="after">
+                <div class="badge-pill badge-warning float-right" attrs="{'invisible': [('to_renew', '=', False)]}">To Renew</div>
+                <div class="badge-pill badge-danger float-right" attrs="{'invisible': [('payment_exception', '=', False)]}">Payment Failure</div>
+            </xpath>
+            <xpath expr="//header" position="after">
+                <div role="alert" class="alert alert-warning mb-0 p-3 text-center" attrs="{'invisible': [('archived_product_count', '=', 0)]}">
+                    <button name="action_archived_product" type="object" class="btn-link">
+                        <field name="archived_product_count"/>
+                        archived product(s)
+                    </button>
+                    <span class="align-middle">for this subscription.</span>
+                </div>
+            </xpath>
+            <field name="show_update_pricelist" position='before'>
+                <field name="end_date" attrs="{'readonly': [('state', '=', 'done')], 'invisible': [('is_subscription', '=', False)]}"/>
+                 <field name="next_invoice_date" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']), ('is_subscription', '=', False)]}"/>
+            </field>
+            <field name="sale_order_template_id" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['sale', 'done']), ('subscription_management', '=', 'upsell')]}</attribute>
+            </field>
+            <xpath expr="//div[@name='button_box']" position="after">
+                <div name="subscription_pill" class="badge-pill badge-info float-right"
+                     attrs="{'invisible': [('is_subscription', '=', False)]}">Recurring
+                </div>
+                <div name="upsell_pill" class="badge-pill badge-success float-right"
+                     attrs="{'invisible': [('subscription_management', '!=', 'upsell')]}">Upsell
+                </div>
+                <div name="upsell_pill" class="badge-pill badge-dark float-right"
+                     attrs="{'invisible': [('subscription_management', '!=', 'renew')]}">Renew
+                </div>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position='after'>
+                <field name="temporal_type" invisible="1"/>
+                <field name="is_subscription_product" invisible="1"/>
+                <field name="product_pricing_ids" invisible="1"/>
+                <field name="pricelist_id" invisible="1"/>
+                <field name="pricing_id" string="Recurrency" optional="hide" widget="subscription_pricing" options="{'no_open': True}"/>
+                <field name="start_date" optional="hide" widget="subscription_date"/>
+                <field name="next_invoice_date" optional="hide" widget="subscription_date"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='price_subtotal']" position='replace'>
+                <field name="price_subtotal" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded" decoration-info="temporal_type == 'subscription'"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='price_total']" position='replace'>
+                <field name="price_total" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded" decoration-info="temporal_type == 'subscription'"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position='after'>
+                <field name="option_pricelist_id" invisible="1"/>
+                <field name="option_pricing_ids" invisible="1"/>
+                <field name="option_pricing_id" optional="hide"/>
+            </xpath>
+            <xpath expr="//group[@name='note_group']" position='replace'>
+                <!-- Reorganize the prices and notes to display recurring summary -->
+                <group name="note_group" col="6" class="mt-2 mt-md-0">
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                        <field name="tax_totals_json" widget="account-tax-totals-field" nolabel="1" colspan="2"/>
+                        <field name="recurring_pricing_details" nolabel="1" colspan="2"/>
+                    </group>
+                     <group colspan="4">
+                        <field name="note" nolabel="1" placeholder="Terms and conditions..." colspan="4"/>
+                    </group>
+                </group>
+            </xpath>
+            <group name="sales_person" position='inside'>
+                <field name="to_renew"/>
+            </group>
+            <group name="sale_info" position='inside'>
+                <field name="commercial_partner_id" invisible="1"/>
+                <field name="account_tag_ids" widget="many2many_tags"/>
+                <field name="payment_token_id" groups="base.group_no_one"/>
+                <field name="payment_exception" groups="base.group_no_one"/>
+            </group>
+        </field>
+    </record>
 </odoo>

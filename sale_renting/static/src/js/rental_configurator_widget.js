@@ -94,10 +94,10 @@ ProductConfiguratorWidget.include({
     _defaultRentalData: function (data) {
         data = data || {};
         if (this.recordData.pickup_date) {
-            data.default_pickup_date = this.recordData.pickup_date;
+            data.default_pickup_date = this.recordData.start_date;
         }
         if (this.recordData.return_date) {
-            data.default_return_date = this.recordData.return_date;
+            data.default_return_date = this.recordData.next_invoice_date;
         }
         if (!data.default_product_id) {
             data.default_product_id = this.recordData.product_id.data.id;
@@ -122,8 +122,8 @@ ProductConfiguratorWidget.include({
             if (parent.state.data.length > 1) {
                 parent.state.data.forEach(function (item) {
                     if (item.data.is_rental) {
-                        defaultPickupDate = item.data.pickup_date;
-                        defaultReturnDate = item.data.return_date;
+                        defaultPickupDate = item.data.start_date;
+                        defaultReturnDate = item.data.next_invoice_date;
                     }
                 });
                 if (defaultPickupDate) {
@@ -177,7 +177,7 @@ ProductConfiguratorWidget.include({
                         }
                     });
                 } else {
-                    if (!self.recordData.pickup_date || !self.recordData.return_date) {
+                    if (!self.recordData.start_date || !self.recordData.next_invoice_date) {
                         self.trigger_up('field_changed', {
                             dataPointID: dataPointId,
                             changes: {

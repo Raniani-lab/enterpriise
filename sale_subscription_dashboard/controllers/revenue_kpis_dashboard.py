@@ -14,7 +14,7 @@ class RevenueKPIsDashboard(http.Controller):
 
     @http.route('/sale_subscription_dashboard/fetch_data', type='json', auth='user')
     def fetch_data(self):
-        dates_ranges = request.env['sale.subscription'].get_dates_ranges()
+        dates_ranges = request.env['sale.order']._get_subscription_dates_ranges()
         return {
             'stat_types': {
                 key: {
@@ -38,10 +38,10 @@ class RevenueKPIsDashboard(http.Controller):
                 for key, stat in FORECAST_STAT_TYPES.items()
             },
             'currency_id': request.env.company.currency_id.id,
-            'contract_templates': request.env['sale.subscription.template'].search_read([], fields=['name']),
+            'contract_templates': request.env['sale.order.template'].search_read([], fields=['name']),
             'tags': request.env['account.analytic.tag'].search_read([], fields=['name']),
             'companies': request.env['res.company'].search_read([], fields=['name']),
-            'has_template': bool(request.env['sale.subscription.template'].search_count([])),
+            'has_template': bool(request.env['sale.order.template'].search_count([])),
             'has_mrr': bool(request.env['account.move.line'].search_count([('subscription_start_date', '!=', False)])),
             'sales_team': request.env['crm.team'].search_read([], fields=['name']),
             'dates_ranges': dates_ranges,
@@ -122,13 +122,13 @@ class RevenueKPIsDashboard(http.Controller):
         if filters.get('template_ids'):
             domain += [('id', 'in', filters.get('template_ids'))]
 
-        template_ids = request.env['sale.subscription.template'].search(domain)
+        template_ids = request.env['sale.order.template'].search(domain)
 
         for template in template_ids:
             lines_domain = [
                 ('subscription_start_date', '<=', end_date),
                 ('subscription_end_date', '>=', end_date),
-                ('subscription_id.template_id', '=', template.id),
+                ('subscription_id.sale_order_template_id', '=', template.id),
             ]
             if filters.get('company_ids'):
                 lines_domain.append(('company_id', 'in', filters.get('company_ids')))

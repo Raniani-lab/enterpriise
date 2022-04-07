@@ -10,9 +10,10 @@ class product_template(models.Model):
         'Subscription Product',
         help='If set, confirming a sale order with this product will create a subscription')
 
-    subscription_template_id = fields.Many2one(
-        'sale.subscription.template', 'Subscription Template',
-        help="Product will be included in a selected template")
+    @api.depends('recurring_invoice')
+    def _compute_is_temporal(self):
+        super()._compute_is_temporal()
+        self.filtered('recurring_invoice').is_temporal = True
 
     @api.onchange('type')
     def _onchange_product_type(self):
@@ -42,11 +43,3 @@ class product_template(models.Model):
                 'title': _("Warning"),
                 'message': _("A 'Storable Product' cannot be a 'Subscription Product' !")
             }}
-        elif not self.recurring_invoice:
-            self.subscription_template_id = False
-
-    @api.constrains('recurring_invoice', 'type')
-    def _check_subscription_product(self):
-        if any(product.recurring_invoice and product.type == 'product' for product in self):
-            raise ValidationError(
-                _('A subscription product cannot be a storable product.'))

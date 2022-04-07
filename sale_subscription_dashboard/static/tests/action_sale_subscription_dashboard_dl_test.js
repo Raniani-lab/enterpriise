@@ -13,7 +13,7 @@ QUnit.module("Sale Subscription Dashboard Download Reports", {
         serverData.actions[1] = {
             id: 1,
             data: {
-                model: "sale.subscription",
+                model: "sale.order",
                 output_format: "pdf",
             },
             type: 'ir_actions_sale_subscription_dashboard_download',
@@ -21,7 +21,7 @@ QUnit.module("Sale Subscription Dashboard Download Reports", {
         mockDownload((params) => {
             assert.step(params.url);
             assert.deepEqual(params.data, {
-                model: 'sale.subscription',
+                model: 'sale.order',
                 output_format: 'pdf',
             }, "should give the correct data");
             return Promise.resolve();

@@ -16,7 +16,7 @@ class AccountMoveLine(models.Model):
             create_column(self.env.cr, "account_move_line", "subscription_mrr", "numeric")
         return super()._auto_init()
 
-    subscription_id = fields.Many2one("sale.subscription")
+    subscription_id = fields.Many2one("sale.order")
     subscription_start_date = fields.Date(
         string="Subscription Revenue Start Date", readonly=True
     )
@@ -42,7 +42,7 @@ class AccountMoveLine(models.Model):
         """Compute the Subscription MRR for the line.
 
         The MRR is defined using generally accepted ratios used identically in the
-        sale.subscription model to compute the MRR for a subscription; this method
+        sale.order model to compute the MRR for a subscription; this method
         simply applies the same computation for a single invoice line for reporting
         purposes.
         """

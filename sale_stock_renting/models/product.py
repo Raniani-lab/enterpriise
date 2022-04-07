@@ -70,7 +70,7 @@ class Product(models.Model):
                 # If no soline in begins_during_period, we need to check at period beginning
                 # how much products are rented.
                 active_lines_at_date = active_lines_in_period.filtered(
-                    lambda line: line.reservation_begin <= date and line.return_date >= date)
+                    lambda line: line.reservation_begin and line.reservation_begin <= date and line.return_date and line.return_date >= date)
                 qty_rented_at_date = sum(active_lines_at_date.mapped(unavailable_qty))
                 if qty_rented_at_date > max_qty_rented:
                     max_qty_rented = qty_rented_at_date

@@ -17,7 +17,7 @@
     'sequence': 160,
     'version': '1.0',
 
-    'depends': ['sale'],
+    'depends': ['sale_temporal'],
 
     'data': [
         'security/ir.model.access.csv',

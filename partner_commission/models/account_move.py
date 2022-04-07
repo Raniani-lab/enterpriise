@@ -79,14 +79,17 @@ class AccountMove(models.Model):
             comm_by_rule = defaultdict(float)
 
             product = None
-            subscription = None
+            order = None
+            desc_lines = ""
             for line in move.invoice_line_ids:
                 rule = line._get_commission_rule()
                 if rule:
                     if not product:
                         product = rule.plan_id.product_id
-                    if not subscription:
-                        subscription = line.subscription_id
+                    if not order:
+                        order = line.subscription_id
+                        desc_lines += _("\n%s: from %s to %s", line.product_id.name, format_date(self.env, line.subscription_start_date),
+                                        format_date(self.env, line.subscription_end_date))
                     commission = move.currency_id.round(line.price_subtotal * rule.rate / 100.0)
                     comm_by_rule[rule] += commission
 
@@ -102,17 +105,18 @@ class AccountMove(models.Model):
 
             # build description lines
             desc = f"{_('Commission on %s') % (move.name)}, {move.partner_id.name}, {formatLang(self.env, move.amount_untaxed, currency_obj=move.currency_id)}"
-            if subscription:
-                periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-                date_to = subscription.recurring_next_date
-                date_from = fields.Date.subtract(date_to, **{periods[subscription.recurring_rule_type]: subscription.recurring_interval})
-                desc += f"\n{subscription.code}, {_('from %s to %s') % (format_date(self.env, date_from), format_date(self.env, date_to))}"
-
+            if order:
+                desc += f"\n{order.name}, {desc_lines}"
                 # extend the description to show the number of months to defer the expense over
-                delta = relativedelta(date_to, date_from)
+                end_date_list = move.invoice_line_ids.mapped('subscription_end_date')
+                start_date_list = move.invoice_line_ids.mapped('subscription_start_date')
+                date_to = max([ed for ed in end_date_list if ed])
+                date_from = min([sd for sd in start_date_list if sd])
+                # we calculate the delta according to the whole range to avoid 11 month and 29 days= 11 months
+                delta = relativedelta(date_to + relativedelta(days=1), date_from)
                 n_months = delta.years * 12 + delta.months + delta.days // 30
                 if n_months:
-                    desc += f" ({_('%d month(s)') % (n_months)})"
+                    desc += _(' (%d month(s))', n_months)
 
             purchase = move._get_commission_purchase_order()
 
@@ -165,9 +169,10 @@ class AccountMoveLine(models.Model):
 
     def _get_commission_rule(self):
         self.ensure_one()
-        template = self.subscription_id.template_id
+        template = self.subscription_id.sale_order_template_id
         # check whether the product is part of the subscription template
-        template_id = template.id if template and self.product_id.product_tmpl_id in template.product_ids else None
+        template_products = template.sale_order_template_line_ids.product_id.mapped('product_tmpl_id')
+        template_id = template.id if template and self.product_id.product_tmpl_id in template_products.ids else None
         sub_pricelist = self.subscription_id.pricelist_id
         pricelist_id =  sub_pricelist and sub_pricelist.id or self.sale_line_ids.mapped('order_id.pricelist_id')[:1].id
 

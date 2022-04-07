@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="sale_subscription_action_res_partner" model="ir.actions.act_window">
-        <field name="context">{'search_default_partner_id': [active_id], 'default_partner_id': active_id}</field>
+        <field name="context">
+            {'search_default_partner_id': [active_id], 'default_partner_id': active_id}
+        </field>
+        <field name="domain">[('is_subscription','=', True)]</field>
         <field name="name">Subscriptions</field>
-        <field name="res_model">sale.subscription</field>
+        <field name="res_model">sale.order</field>
     </record>
 
     <record model="ir.ui.view" id="res_partner_view_inherit_sale_subscription">

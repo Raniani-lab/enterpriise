@@ -90,7 +90,7 @@ class RentalSchedule(models.Model):
     def _late(self):
         return """
             CASE WHEN sol.state NOT IN ('sale', 'done') THEN FALSE
-                WHEN sol.pickup_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_delivered < sol.product_uom_qty THEN TRUE
+                WHEN sol.start_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_delivered < sol.product_uom_qty THEN TRUE
                 WHEN sol.return_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_returned < sol.qty_delivered THEN TRUE
             ELSE FALSE
             END as late
@@ -108,7 +108,7 @@ class RentalSchedule(models.Model):
     def _color(self):
         """2 = orange (pickedup), 4 = blue(reserved), 6 = red(late return), 7 = green(returned)"""
         return """
-            CASE WHEN sol.pickup_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_delivered < sol.product_uom_qty THEN 4
+            CASE WHEN sol.start_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_delivered < sol.product_uom_qty THEN 4
                 WHEN sol.return_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_returned < sol.qty_delivered THEN 6
                 WHEN sol.qty_returned = sol.qty_delivered AND sol.qty_delivered = sol.product_uom_qty THEN 7
                 WHEN sol.qty_delivered = sol.product_uom_qty THEN 2
@@ -125,14 +125,14 @@ class RentalSchedule(models.Model):
             s.name as name,
             %s,
             s.date_order as order_date,
-            sol.pickup_date as pickup_date,
+            sol.start_date as pickup_date,
             sol.return_date as return_date,
             s.state as state,
             s.rental_status as rental_status,
             s.partner_id as partner_id,
             s.user_id as user_id,
             s.company_id as company_id,
-            extract(epoch from avg(date_trunc('day',sol.return_date)-date_trunc('day',sol.pickup_date)))/(24*60*60)::decimal(16,2) as delay,
+            extract(epoch from avg(date_trunc('day',sol.return_date)-date_trunc('day',sol.start_date)))/(24*60*60)::decimal(16,2) as delay,
             t.categ_id as categ_id,
             s.pricelist_id as pricelist_id,
             s.analytic_account_id as analytic_account_id,
@@ -168,7 +168,7 @@ class RentalSchedule(models.Model):
             t.name,
             s.name,
             s.date_order,
-            sol.pickup_date,
+            sol.start_date,
             sol.return_date,
             s.partner_id,
             s.user_id,

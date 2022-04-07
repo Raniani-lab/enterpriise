@@ -18,24 +18,16 @@ class TestSubscriptionDashboard(HttpCase):
     def _create_test_objects(container):
         # disable most emails for speed
         context_no_mail = {"no_reset_password": True, "mail_create_nosubscribe": True, "mail_create_nolog": True}
-        Subscription = container.env["sale.subscription"].with_context(context_no_mail)
-        SubTemplate = container.env["sale.subscription.template"].with_context(context_no_mail)
+        Subscription = container.env["sale.order"].with_context(context_no_mail)
+        SubTemplate = container.env["sale.order.template"].with_context(context_no_mail)
         ProductTmpl = container.env["product.template"].with_context(context_no_mail)
 
-        # Test Subscription Template
-        container.subscription_tmpl = SubTemplate.create(
-            {
-                "name": "TestSubscriptionTemplate",
-                "description": "Test Subscription Template 1",
-            }
-        )
         # Test product
         container.product_tmpl = ProductTmpl.create(
             {
                 "name": "TestProduct",
                 "type": "service",
                 "recurring_invoice": True,
-                "subscription_template_id": container.subscription_tmpl.id,
                 "uom_id": container.env.ref("uom.product_uom_unit").id,
             }
         )
@@ -46,6 +38,19 @@ class TestSubscriptionDashboard(HttpCase):
             }
         )
 
+        # Test Subscription Template
+        container.pricing_month = container.env['product.pricing'].create({'duration': 1, 'unit': 'month', 'product_template_id': container.product_tmpl.id})
+        container.subscription_tmpl = SubTemplate.create({
+            "name": "TestSubscriptionTemplate",
+            "note": "Test Subscription Template 1",
+            "sale_order_template_line_ids": [(0, 0, {
+                'product_id': container.product.id,
+                'name': 'Test monthly product',
+                'product_uom_qty': 1,
+                'product_uom_id': container.env.ref("uom.product_uom_unit").id,
+                'pricing_id': container.pricing_month.id
+            })],
+        })
         # Test Subscription
         container.partner_id = container.env["res.partner"].create(
             {
@@ -55,9 +60,10 @@ class TestSubscriptionDashboard(HttpCase):
         container.subscription = Subscription.create(
             {
                 "name": "TestSubscription",
+                "is_subscription": True,
                 "partner_id": container.partner_id.id,
                 "pricelist_id": container.env.ref("product.list0").id,
-                "template_id": container.subscription_tmpl.id,
+                "sale_order_template_id": container.subscription_tmpl.id,
             }
         )
 
@@ -86,9 +92,8 @@ class TestSubscriptionDashboard(HttpCase):
         self.subscription.write(
             {
                 "partner_id": self.partner_id.id,
-                "recurring_next_date": fields.Date.to_string(datetime.date.today()),
-                "template_id": self.subscription_tmpl.id,
-                "recurring_invoice_line_ids": [
+                "sale_order_template_id": self.subscription_tmpl.id,
+                "order_line": [
                     (
                         0,
                         0,
@@ -96,14 +101,16 @@ class TestSubscriptionDashboard(HttpCase):
                             "product_id": self.product.id,
                             "name": "TestRecurringLine",
                             "price_unit": 50,
-                            "uom_id": self.product.uom_id.id,
+                            "product_uom": self.product.uom_id.id,
+                            "pricing_id": self.pricing_month.id
                         },
                     )
                 ],
-                "stage_id": self.ref("sale_subscription.sale_subscription_stage_in_progress"),
             }
         )
-        invoice_id = self.subscription.with_context(auto_commit=False)._recurring_create_invoice(automatic=True)
+        self.subscription.action_confirm()
+        self.subscription._create_recurring_invoice()
+        invoice_id = self.subscription.invoice_ids
         invoice_id._post()
 
         res = self.url_open(

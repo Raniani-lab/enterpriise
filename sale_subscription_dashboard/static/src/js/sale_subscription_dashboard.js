@@ -1170,8 +1170,8 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
 
     init: function() {
         this._super.apply(this, arguments);
-        this.start_date = moment().subtract(1, 'months').startOf('month');
-        this.end_date = moment().subtract(1, 'months').endOf('month');
+        this.start_date = moment().subtract(1,'months').startOf('month'); // last month values by default
+        this.end_date = moment().subtract(1,'months').endOf('month');
         this.barGraph = {};
         this.migrationDate = false;
         this.currentCompany = $.bbq.getState('cids') && parseInt($.bbq.getState('cids').split(',')[0]);
@@ -1401,7 +1401,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         self.$cpButton = $(QWeb.render("sale_subscription_dashboard.export"));
         self.$cpButton.on('click', function () {
             ajax.rpc('/web/dataset/call_kw/sale.subscription/print_pdf', {
-            model: 'sale.subscription',
+            model: 'sale.order',
             method: 'print_pdf',
             args: [],
             kwargs: {},

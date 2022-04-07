@@ -44,6 +44,15 @@ class TestCommissionsSetup(TransactionCase):
             .filtered(lambda x: x.code != 'manual')\
             .unlink()
 
+        account_journal_payment_debit_account = self.env['account.account'].create({
+            'name': 'Test account',
+            'user_type_id': self.account_type_receivable.id,
+            'company_id': self.company.id,
+            'reconcile': True,
+            'code': 'test code',
+        })
+        self.company.account_journal_payment_debit_account_id = account_journal_payment_debit_account.id
+
     def _make_partners(self):
         self.referrer = self.env['res.partner'].create({
             'name': 'Referrer',
@@ -71,11 +80,11 @@ class TestCommissionsSetup(TransactionCase):
         })
 
         # subscription templates
-        self.template_yearly = self.env['sale.subscription.template'].create({
+        self.template_yearly = self.env['sale.order.template'].create({
             'name': 'Odoo yearly',
-            'code': 'OY',
-            'recurring_rule_type': 'yearly',
-            'recurring_interval': 1,
+            'note': 'OY',
+            'recurring_rule_type': 'year',
+            'recurring_rule_count': 1,
             'recurring_rule_boundary': 'unlimited',
         })
 
@@ -91,10 +100,9 @@ class TestCommissionsSetup(TransactionCase):
             'recurring_invoice': True,
             'purchase_ok': True,
             'property_account_income_id': self.account_sale.id,
-            'subscription_template_id': self.template_yearly.id,
             'invoice_policy': 'order',
         })
-
+        self.worker_pricing = self.env['product.pricing'].create({'duration': 1, 'unit': 'year', 'price': 100, 'product_template_id': self.worker.product_tmpl_id.id})
         self.staging = self.env['product.product'].create({
             'name': 'Odoo.sh Staging Branch',
             'categ_id': self.odoo_sh.id,
@@ -102,9 +110,10 @@ class TestCommissionsSetup(TransactionCase):
             'recurring_invoice': True,
             'purchase_ok': True,
             'property_account_income_id': self.account_sale.id,
-            'subscription_template_id': self.template_yearly.id,
             'invoice_policy': 'order',
         })
+        self.staging_pricing = self.env['product.pricing'].create(
+            {'duration': 1, 'unit': 'year', 'price': 420, 'product_template_id': self.staging.product_tmpl_id.id})
 
         # apps support
         self.apps_support = self.env['product.category'].create({
@@ -118,9 +127,10 @@ class TestCommissionsSetup(TransactionCase):
             'recurring_invoice': True,
             'purchase_ok': True,
             'property_account_income_id': self.account_sale.id,
-            'subscription_template_id': self.template_yearly.id,
             'invoice_policy': 'order',
         })
+        self.crm_pricing = self.env['product.pricing'].create(
+            {'duration': 1, 'unit': 'month', 'price': 15, 'product_template_id': self.crm.product_tmpl_id.id})
 
         self.invoicing = self.env['product.product'].create({
             'name': 'Invoicing',
@@ -129,9 +139,10 @@ class TestCommissionsSetup(TransactionCase):
             'recurring_invoice': True,
             'purchase_ok': True,
             'property_account_income_id': self.account_sale.id,
-            'subscription_template_id': self.template_yearly.id,
             'invoice_policy': 'order',
         })
+        self.invoicing_pricing = self.pricing_worker = self.env['product.pricing'].create(
+            {'duration': 1, 'unit': 'month', 'price': 20, 'product_template_id': self.invoicing.product_tmpl_id.id})
 
     def _make_commission_plans(self):
         self.learning_plan = self.env['commission.plan'].create({
@@ -256,6 +267,7 @@ class TestCommissionsSetup(TransactionCase):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
+        form.commission_plan_frozen = False
 
         for l in spec.lines:
             with form.order_line.new() as line:

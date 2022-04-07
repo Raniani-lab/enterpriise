@@ -17,8 +17,9 @@ class Project(models.Model):
         if not self.analytic_account_id:
             self.subscriptions_count = 0
             return
-        subscriptions_data = self.env['sale.subscription']._read_group([
-            ('analytic_account_id', 'in', self.analytic_account_id.ids)
+        subscriptions_data = self.env['sale.order']._read_group([
+            ('analytic_account_id', 'in', self.analytic_account_id.ids),
+            ('is_subscription', '=', True),
         ], ['analytic_account_id'], ['analytic_account_id'])
         mapped_data = {data['analytic_account_id'][0]: data['analytic_account_id_count'] for data in subscriptions_data}
         for project in self:
@@ -49,7 +50,7 @@ class Project(models.Model):
         self.ensure_one()
         if not self.analytic_account_id:
             return {}
-        subscription_ids = self.env['sale.subscription']._search([('analytic_account_id', 'in', self.analytic_account_id.ids)])
+        subscription_ids = self.env['sale.order']._search([('is_subscription', '=', True), ('analytic_account_id', 'in', self.analytic_account_id.ids)])
         return self._get_subscription_action(subscription_ids=subscription_ids)
 
     def action_profitability_items(self, section_name, domain=None, res_id=False):
@@ -81,35 +82,41 @@ class Project(models.Model):
         profitability_items = super()._get_profitability_items(with_action)
         if not self.analytic_account_id:
             return profitability_items
-        subscription_read_group = self.env['sale.subscription'].sudo()._read_group(
+        subscription_read_group = self.env['sale.order'].sudo()._read_group(
             [('analytic_account_id', 'in', self.analytic_account_id.ids),
              ('stage_category', '!=', 'draft'),
-             ('recurring_total', '>', 0.0),
+             ('is_subscription', '=', True),
             ],
-            ['stage_category', 'template_id', 'recurring_total', 'ids:array_agg(id)'],
-            ['template_id', 'stage_category'],
+            ['stage_category', 'sale_order_template_id', 'recurring_monthly', 'ids:array_agg(id)'],
+            ['sale_order_template_id', 'stage_category'],
             lazy=False,
         )
         if not subscription_read_group:
             return profitability_items
         all_subscription_ids = []
         subscription_data_per_template_id = {}
-        for res in subscription_read_group:
-            subscription_data_per_template_id.setdefault(res['template_id'][0], {})[res['stage_category']] = res['recurring_total']
-            all_subscription_ids.extend(res['ids'])
-
-        subscription_template_dict = {
-            res['id']: res['recurring_rule_count']
-            for res in self.env['sale.subscription.template'].sudo().search_read(
-                [('id', 'in', list(subscription_data_per_template_id.keys())), ('recurring_rule_boundary', '=', 'limited')],
-                ['id', 'recurring_rule_count'],
-            )
-        }
         amount_to_invoice = 0.0
-        for subcription_template_id, subscription_data_per_stage_category in subscription_data_per_template_id.items():
+        for res in subscription_read_group:
+            all_subscription_ids.extend(res['ids'])
+            if res['stage_category'] != 'progress':  # then the subscriptions are closed and so nothing is to invoice.
+                continue
+            if not res['sale_order_template_id']:  # then we will take the recurring monthly amount that we will invoice in the next invoice(s).
+                amount_to_invoice += res['recurring_monthly']
+                continue
+            subscription_data_per_template_id[res['sale_order_template_id'][0]] = res['recurring_monthly']
+
+        subscription_template_dict = {}
+        if subscription_data_per_template_id:
+            subscription_template_dict = {
+                res['id']: res['recurring_rule_count']
+                for res in self.env['sale.order.template'].sudo().search_read(
+                    [('id', 'in', list(subscription_data_per_template_id.keys())), ('recurring_rule_boundary', '=', 'limited')],
+                    ['id', 'recurring_rule_count'],
+                )
+            }
+        for subcription_template_id, recurring_monthly in subscription_data_per_template_id.items():
             nb_period = subscription_template_dict.get(subcription_template_id, 1)
-            for category, recurring_total in subscription_data_per_stage_category.items():
-                amount_to_invoice += recurring_total * (nb_period if category != 'closed' else 1)  # if the category is closen the subscriptions are supposed to be end.
+            amount_to_invoice += recurring_monthly * nb_period
 
         aal_read_group = self.env['account.analytic.line'].sudo()._read_group(
             [('move_id.subscription_id', 'in', all_subscription_ids), ('account_id', 'in', self.analytic_account_id.ids)],
@@ -117,7 +124,6 @@ class Project(models.Model):
             [],
         )
         amount_invoiced = aal_read_group[0]['amount'] if aal_read_group and aal_read_group[0]['__count'] else 0.0
-        amount_to_invoice -= amount_invoiced  # because the amount_to_invoice included the amount_invoiced.
         revenues = profitability_items['revenues']
         section_id = 'subscriptions'
         subscription_revenue = {

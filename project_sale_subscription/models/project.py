@@ -51,7 +51,7 @@ class Project(models.Model):
         if not self.analytic_account_id:
             return {}
         subscription_ids = self.env['sale.order']._search([('is_subscription', '=', True), ('analytic_account_id', 'in', self.analytic_account_id.ids)])
-        return self._get_subscription_action(subscription_ids=subscription_ids)
+        return self._get_subscription_action(subscription_ids=list(subscription_ids))
 
     def action_profitability_items(self, section_name, domain=None, res_id=False):
         if section_name == 'subscriptions':

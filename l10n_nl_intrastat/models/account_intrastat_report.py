@@ -108,8 +108,8 @@ class IntrastatReport(models.AbstractModel):
             line = line_map[res['id']]
             inv = line.move_id
             country_dest_code = inv.partner_id.country_id and inv.partner_id.country_id.code or ''
-            country_origin_code = inv.intrastat_country_id and inv.intrastat_country_id.code or ''
-            country = country_origin_code if res['type'] == 'Arrival' else country_dest_code
+            country_origin_code = res['intrastat_product_origin_country'] if res['type'] == 'Dispatch' and fields.Date.to_date(date_to) > date(2022, 1, 1) else ''
+            country = inv.intrastat_country_id.code and inv.intrastat_country_id.code or '' if res['type'] == 'Arrival' else country_dest_code
 
             # From the Manual for Statistical Declarations International Trade in Goods:
             #
@@ -138,7 +138,7 @@ class IntrastatReport(models.AbstractModel):
                 '6' if res['type'] == 'Arrival' else '7',                       # Commodity flow        length=1
                 vat and vat[2:].replace(' ', '').ljust(12) or ''.ljust(12),     # VAT number            length=12
                 str(i).zfill(5),                                                # Line number           length=5
-                '000',                                                          # Country of origin     length=3
+                country_origin_code.ljust(3),                                   # Country of origin     length=3
                 country.ljust(3),                                               # Count. of cons./dest. length=3
                 res['invoice_transport'] or '3',                                # Mode of transport     length=1
                 '0',                                                            # Container             length=1

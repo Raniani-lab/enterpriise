@@ -78,7 +78,7 @@ class AccountDisallowedExpensesReport(models.AbstractModel):
         lines = super()._get_lines(options, line_id)
         for line in lines:
             total, rate, disallowed = line['columns']
-            computed_rate = disallowed['no_format'] / total['no_format'] * 100
+            computed_rate = disallowed['no_format'] / total['no_format'] * 100 if total['no_format'] else 0
             if computed_rate != rate['no_format']:
                 rate['name'] = ''
         return lines

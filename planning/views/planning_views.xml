@@ -228,11 +228,11 @@
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1"
                         attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
-                        attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="s"/>
+                        attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="s" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1"
                         groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" data-hotkey="w" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish" class="btn btn-secondary" close="1"
-                        groups="planning.group_planning_manager" attrs="{'invisible': [('state', '=', 'draft')]}" data-hotkey="q"/>
+                        groups="planning.group_planning_manager" attrs="{'invisible': [('state', '=', 'draft')]}" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
 
                     <button name="action_self_unassign" class="btn btn-secondary float-right" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w"/>

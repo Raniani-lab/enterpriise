@@ -1062,3 +1062,77 @@ file_filter = worksheet/i18n/<lang>.po
 source_file = worksheet/i18n/worksheet.pot
 source_lang = en
 
+[odoo-15-l10n.documents_l10n_be_hr_payroll]
+file_filter = documents_l10n_be_hr_payroll/i18n/<lang>.po
+source_file = documents_l10n_be_hr_payroll/i18n/documents_l10n_be_hr_payroll.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_coda]
+file_filter = l10n_be_coda/i18n/<lang>.po
+source_file = l10n_be_coda/i18n/l10n_be_coda.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_disallowed_expenses]
+file_filter = l10n_be_disallowed_expenses/i18n/<lang>.po
+source_file = l10n_be_disallowed_expenses/i18n/l10n_be_disallowed_expenses.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_hr_contract_salary]
+file_filter = l10n_be_hr_contract_salary/i18n/<lang>.po
+source_file = l10n_be_hr_contract_salary/i18n/l10n_be_hr_contract_salary.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_hr_contract_salary_group_insurance]
+file_filter = l10n_be_hr_contract_salary_group_insurance/i18n/<lang>.po
+source_file = l10n_be_hr_contract_salary_group_insurance/i18n/l10n_be_hr_contract_salary_group_insurance.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_hr_payroll]
+file_filter = l10n_be_hr_payroll/i18n/<lang>.po
+source_file = l10n_be_hr_payroll/i18n/l10n_be_hr_payroll.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_hr_payroll_account]
+file_filter = l10n_be_hr_payroll_account/i18n/<lang>.po
+source_file = l10n_be_hr_payroll_account/i18n/l10n_be_hr_payroll_account.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_hr_payroll_canteen]
+file_filter = l10n_be_hr_payroll_canteen/i18n/<lang>.po
+source_file = l10n_be_hr_payroll_canteen/i18n/l10n_be_hr_payroll_canteen.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_hr_payroll_december]
+file_filter = l10n_be_hr_payroll_december/i18n/<lang>.po
+source_file = l10n_be_hr_payroll_december/i18n/l10n_be_hr_payroll_december.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_hr_payroll_fleet]
+file_filter = l10n_be_hr_payroll_fleet/i18n/<lang>.po
+source_file = l10n_be_hr_payroll_fleet/i18n/l10n_be_hr_payroll_fleet.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_hr_payroll_holiday_pay_recovery]
+file_filter = l10n_be_hr_payroll_holiday_pay_recovery/i18n/<lang>.po
+source_file = l10n_be_hr_payroll_holiday_pay_recovery/i18n/l10n_be_hr_payroll_holiday_pay_recovery.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_hr_payroll_report_measures]
+file_filter = l10n_be_hr_payroll_report_measures/i18n/<lang>.po
+source_file = l10n_be_hr_payroll_report_measures/i18n/l10n_be_hr_payroll_report_measures.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_intrastat]
+file_filter = l10n_be_intrastat/i18n/<lang>.po
+source_file = l10n_be_intrastat/i18n/l10n_be_intrastat.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_reports]
+file_filter = l10n_be_reports/i18n/<lang>.po
+source_file = l10n_be_reports/i18n/l10n_be_reports.pot
+source_lang = en
+
+[odoo-15-l10n.l10n_be_reports_post_wizard]
+file_filter = l10n_be_reports_post_wizard/i18n/<lang>.po
+source_file = l10n_be_reports_post_wizard/i18n/l10n_be_reports_post_wizard.pot
+source_lang = en

@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#   * l10n_be_hr_payroll
+# 	* l10n_be_hr_payroll
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.2alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-13 14:06+0000\n"
-"PO-Revision-Date: 2022-01-13 14:06+0000\n"
+"POT-Creation-Date: 2022-04-11 08:18+0000\n"
+"PO-Revision-Date: 2022-04-11 08:18+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -110,7 +110,7 @@ msgid "%s is in %s. Fill in the appropriate eDRS here: %s"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: code:addons/l10n_be_hr_payroll/wizard/l10n_be_individual_account_wizard.py:0
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_individual_account.py:0
 #, python-format
 msgid "%s-individual-account-%s"
 msgstr ""
@@ -1249,6 +1249,13 @@ msgid ""
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.res_config_settings_view_form
+msgid ""
+"<span class=\"o_form_label\">SDWorx</span>\n"
+"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_group_insurance_wizard_view_form
 msgid "<span class=\"oe_inline\">From</span>"
 msgstr ""
@@ -1617,6 +1624,14 @@ msgid "<span>€</span>"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_hr_payroll_schedule_change_wizard_view_form
+msgid ""
+"<strong class=\"o_group_col_12\" attrs=\"{'invisible': ['|', ('leave_type_id', '=', False), ('found_leave_allocation', '=', True)]}\" style=\"color:#ff6600;\">\n"
+"                        No time off allocation has been found for this time off type, no changes will occur to time off for this employee.\n"
+"                    </strong>"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_employee_form__l10n_be_view_for
 msgid ""
 "<strong class=\"o_horizontal_separator\" colspan=\"2\" "
@@ -1630,14 +1645,6 @@ msgstr ""
 msgid ""
 "<strong class=\"o_horizontal_separator\" colspan=\"2\">Previous "
 "Occupations</strong>"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_hr_payroll_schedule_change_wizard_view_form
-msgid ""
-"<strong class=\"text-warning o_group_col_12\" attrs=\"{'invisible': ['|', ('leave_type_id', '=', False), ('found_leave_allocation', '=', True)]}\">\n"
-"                        No time off allocation has been found for this time off type, no changes will occur to time off for this employee.\n"
-"                    </strong>"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -2177,6 +2184,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__4
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__4
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__4
 msgid "April"
 msgstr ""
 
@@ -2200,6 +2208,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__8
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__8
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__8
 msgid "August"
 msgstr ""
 
@@ -2426,6 +2435,11 @@ msgid "By reason for termination of contract"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_export_sdworx_leaves_wizard_view_form
+msgid "CANCEL"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_job_view_form
 msgid "CP200 Category"
 msgstr ""
@@ -2476,7 +2490,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_payroll_generate_warrant_payslips_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_hr_payroll_employee_lang_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_hr_payroll_schedule_change_wizard_view_form
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_individual_account_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_social_balance_sheet_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_social_security_certificate_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.view_hr_payroll_employee_departure_holiday_attests
@@ -2665,6 +2678,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__company_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard__company_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__company_id
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__company_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_balance_sheet__company_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_security_certificate__company_id
 msgid "Company"
@@ -2814,6 +2828,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_10_form_wizard
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_45_form_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_individual_account_view_form
 msgid "Create PDFs"
 msgstr ""
 
@@ -2850,12 +2865,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_line_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_line_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard_line__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__create_uid
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__create_uid
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_schedule_change_allocation__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_balance_sheet__create_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_security_certificate__create_uid
@@ -2884,12 +2901,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_line_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_line_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard_line__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__create_date
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__create_date
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_schedule_change_allocation__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_balance_sheet__create_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_security_certificate__create_date
@@ -3085,6 +3104,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__12
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__12
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__12
 msgid "December"
 msgstr ""
 
@@ -3096,6 +3116,13 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_december_slip_wizard_view_form
 msgid "December Slip"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_payslip_employee_depature_notice__notice_respect
+msgid ""
+"Decides whether the employee will still work during his notice period or "
+"not."
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -3179,6 +3206,11 @@ msgid "Departures"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__name
+msgid "Description"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__disabled
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_users__disabled
 msgid "Disabled"
@@ -3233,12 +3265,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_line_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_line_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard_line__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__display_name
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__display_name
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_schedule_change_allocation__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_balance_sheet__display_name
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_security_certificate__display_name
@@ -3269,12 +3303,6 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_274_XX_view_form
 msgid "Doctors / Civil Engineers"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10__documents_enabled
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__documents_enabled
-msgid "Documents Enabled"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -3457,6 +3485,7 @@ msgstr ""
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_eco_vouchers_wizard.py:0
 #: model:ir.actions.act_window,name:l10n_be_hr_payroll.l10n_be_eco_vouchers_wizard_action
 #: model:ir.ui.menu,name:l10n_be_hr_payroll.menu_l10n_be_eco_vouchers_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_payslip_run_view_tree
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_eco_vouchers_wizard_view_form
 #, python-format
 msgid "Eco-Vouchers"
@@ -3499,6 +3528,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_line_wizard__employee_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard_line__employee_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__employee_id
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__employee_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_work_entry_daily_benefit_report__employee_id
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.view_hr_payroll_alloc_employee_view_tree
@@ -3526,23 +3556,18 @@ msgid "Employee Departure - Holiday Attests"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_payslip_employee_depature_notice__notice_respect__with
-msgid "Employee works during his notice period"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_payslip_employee_depature_notice__notice_respect__without
 msgid "Employee doesn't work during his notice period"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: model:ir.model.fields,help:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__wage
-msgid "Employee's monthly gross wage for the new contract."
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_payslip_employee_depature_notice__notice_respect__with
+msgid "Employee works during his notice period"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: model:ir.model.fields,help:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__current_wage
-msgid "Employee's monthly gross wage."
+#: model:ir.model.fields,help:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__wage
+msgid "Employee's monthly gross wage for the new contract."
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -3694,8 +3719,47 @@ msgid "Export Complete"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_export_sdworx_leaves_wizard_view_form
+msgid "Export Employee Leaves for SD Worx"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__export_file
+msgid "Export File"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__export_filename
+msgid "Export Filename"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_export_sdworx_leaves_wizard
+msgid "Export Leaves to SDWorx"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_273S_view_form
 msgid "Export PDF file"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_config_settings__group_export_sdworx_leaves
+#: model:res.groups,name:l10n_be_hr_payroll.group_export_sdworx_leaves
+msgid "Export Time Off to SDWorx"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.res_config_settings_view_form
+msgid "Export Time Offs to your Social Secretariat"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/wizard/l10n_be_export_sdworx_leaves_wizard.py:0
+#: model:ir.actions.act_window,name:l10n_be_hr_payroll.l10n_be_export_sdworx_leaves_wizard_action
+#: model:ir.ui.menu,name:l10n_be_hr_payroll.menu_l10n_be_export_sdworx_leaves_wizard
+#, python-format
+msgid "Export Work Entries to SDWorx"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -3739,6 +3803,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__2
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__2
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__2
 msgid "February"
 msgstr ""
 
@@ -3906,6 +3971,11 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_gross
 msgid "GROSS"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_export_sdworx_leaves_wizard_view_form
+msgid "Generate Export File"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -4108,8 +4178,13 @@ msgid "Group Insurance Wizard Line"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_individual_account_wizard
+#: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_individual_account
 msgid "HR Individual Account Report By Employee"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_individual_account_line
+msgid "HR Individual Account Report By Employee Line"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -4262,12 +4337,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_wizard__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_line_wizard__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__id
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_line_wizard__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard_line__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__id
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_wizard__id
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__id
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_schedule_change_allocation__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_balance_sheet__id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_security_certificate__id
@@ -4366,15 +4443,15 @@ msgid "Individual Account Report"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: model:ir.actions.act_window,name:l10n_be_hr_payroll.l10n_be_individual_account_wizard_action
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_individual_account_wizard_view_form
+#: model:ir.actions.act_window,name:l10n_be_hr_payroll.l10n_be_individual_account_action
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_individual_account_view_form
 msgid "Individual Accounts"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: code:addons/l10n_be_hr_payroll/controllers/main.py:0
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_individual_account.py:0
 #, python-format
-msgid "Individual Accounts PDF"
+msgid "Individual Accounts - Year %s"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -4496,6 +4573,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__1
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__1
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__1
 msgid "January"
 msgstr ""
 
@@ -4512,12 +4590,14 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__7
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__7
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__7
 msgid "July"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__6
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__6
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__6
 msgid "June"
 msgstr ""
 
@@ -4529,6 +4609,11 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_ambulatory_insured_adults_total
 msgid "L10N Be Ambulatory Insured Adults Total"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip_run__l10n_be_display_eco_voucher_button
+msgid "L10N Be Display Eco Voucher Button"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -4610,12 +4695,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_wizard____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_line_wizard____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard____last_update
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_line_wizard____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard_line____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard____last_update
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_wizard____last_update
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account____last_update
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_schedule_change_allocation____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_balance_sheet____last_update
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_security_certificate____last_update
@@ -4645,12 +4732,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_line_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_line_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard_line__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__write_uid
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__write_uid
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_schedule_change_allocation__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_balance_sheet__write_uid
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_security_certificate__write_uid
@@ -4679,12 +4768,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_line_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_line_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard_line__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_schedule_change_wizard__write_date
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__write_date
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_schedule_change_allocation__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_balance_sheet__write_date
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_social_security_certificate__write_date
@@ -4705,6 +4796,11 @@ msgid "Leave Allocation"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__leave_ids
+msgid "Leaves"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip_employee_depature_notice__leaving_type_id
 msgid "Leaving Type"
 msgstr ""
@@ -4716,6 +4812,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__line_ids
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__line_ids
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_group_insurance_wizard__line_ids
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__line_ids
 msgid "Line"
 msgstr ""
 
@@ -4777,7 +4874,13 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__3
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__3
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__3
 msgid "March"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_export_sdworx_leaves_wizard_view_form
+msgid "Mark as reported in payslip"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -4804,6 +4907,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__5
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__5
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__5
 msgid "May"
 msgstr ""
 
@@ -5103,6 +5207,12 @@ msgid "No Withholding Taxes"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/models/hr_dmfa.py:0
+#, python-format
+msgid "No start/end notice period defined for %s"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
 msgid "Nom, prénoms, dénomination sociale ou officielle :"
 msgstr ""
@@ -5182,6 +5292,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__11
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__11
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__11
 msgid "November"
 msgstr ""
 
@@ -5441,6 +5552,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__10
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__10
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__10
 msgid "October"
 msgstr ""
 
@@ -5532,8 +5644,8 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_273s__pdf_file
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__pdf_file
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__pdf_file
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__pdf_file
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__pdf_file
 msgid "PDF File"
 msgstr ""
 
@@ -5545,11 +5657,6 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__dmfa_pdf
 msgid "PDF file"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: model:hr.leave.type,name:l10n_be_hr_payroll.holiday_status_cl
-msgid "Paid Time Off"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -5666,6 +5773,11 @@ msgid "Payslip"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model:ir.model,name:l10n_be_hr_payroll.model_hr_payslip_run
+msgid "Payslip Batches"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model:ir.actions.report,name:l10n_be_hr_payroll.action_report_double_holiday_13th_month
 msgid "Payslip Double Holidays / 13th Month"
 msgstr ""
@@ -5697,14 +5809,15 @@ msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__pdf_filename
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__pdf_filename
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__pdf_filename
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__pdf_filename
 msgid "Pdf Filename"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__pdf_to_generate
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__pdf_to_generate
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__pdf_to_generate
 msgid "Pdf To Generate"
 msgstr ""
 
@@ -5818,7 +5931,6 @@ msgid "Primary education"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_individual_account_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_social_balance_sheet_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_social_security_certificate_view_form
 msgid "Print"
@@ -5866,6 +5978,11 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__public_transport_reimbursed_amount
 msgid "Public Transport Reimbursed amount"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
+msgid "Public Transportation"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -5981,6 +6098,11 @@ msgid "Reference Mean Working Hours"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__reference_month
+msgid "Reference Month"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payroll_alloc_paid_leave__year
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__reference_period
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_274_XX_view_form
@@ -5996,6 +6118,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10__reference_year
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45__reference_year
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_eco_vouchers_wizard__reference_year
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__reference_year
 msgid "Reference Year"
 msgstr ""
 
@@ -6119,6 +6242,19 @@ msgid "Réservé à l'administration"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_employee_form__l10n_be_view_for
+msgid "SD Worx"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__sdworx_code
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_work_entry_type__sdworx_code
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_company__sdworx_code
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_config_settings__sdworx_code
+msgid "SDWorx code"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_individual_account
 msgid "SEP"
 msgstr ""
@@ -6205,6 +6341,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__9
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_274_xx__month__9
+#: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_export_sdworx_leaves_wizard__reference_month__9
 msgid "September"
 msgstr ""
 
@@ -6217,6 +6354,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_274_xx_line__sheet_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_10_line__sheet_id
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__sheet_id
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__sheet_id
 msgid "Sheet"
 msgstr ""
 
@@ -6616,12 +6754,6 @@ msgid "Termination fees"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
-#: model_terms:res.company,sign_terms:l10n_be_hr_payroll.res_company_be
-#: model_terms:res.company,sign_terms_html:l10n_be_hr_payroll.res_company_be
-msgid "Terms &amp; Conditions"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_work_entry_type__dmfa_code
 msgid "The DMFA Code will identify the work entry in DMFA report."
 msgstr ""
@@ -6634,6 +6766,33 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.constraint,message:l10n_be_hr_payroll.constraint_hr_contract_check_percentage_ip_rate
 msgid "The IP rate on wage should be between 0 and 100."
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/models/hr_employee.py:0
+#, python-format
+msgid "The SDWorx code should have 7 characters or should be left empty!"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_281_10.py:0
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_281_45.py:0
+#, python-format
+msgid ""
+"The belgian postcode length shouldn't exceed 4 characters and should contain"
+" only numbers for employee %s"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/models/hr_work_entry_type.py:0
+#, python-format
+msgid "The code should have 4 characters!"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/models/res_company.py:0
+#, python-format
+msgid "The code should have 7 characters!"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -6652,6 +6811,13 @@ msgstr ""
 msgid ""
 "The company number should contain digits only, starts with a '0' or a '1' "
 "and be 10 characters long."
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_281_10.py:0
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_281_45.py:0
+#, python-format
+msgid "The company phone number shouldn't exceed 12 characters"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -6688,6 +6854,13 @@ msgid "The employee %s doens't have a specified certificate"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_281_10.py:0
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_281_45.py:0
+#, python-format
+msgid "The employee first name shouldn't exceed 30 characters for employee %s"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_double_pay_recovery_wizard.py:0
 #, python-format
 msgid "The employee is occupied from the %s to the %s."
@@ -6719,6 +6892,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_10_form_wizard
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_45_form_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_individual_account_view_form
 msgid ""
 "The files won't be posted in the employee portal if you don't have the "
 "Documents app."
@@ -6795,14 +6969,6 @@ msgstr ""
 #: code:addons/l10n_be_hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid ""
-"The regular pay for these employees don't have any worked day lines:\n"
-"%s"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: code:addons/l10n_be_hr_payroll/models/hr_payslip.py:0
-#, python-format
-msgid ""
 "The seized amount (%s€) is above the belgian ceilings. Given a global net "
 "salary of %s€ for the pay period and %s dependent children, the maximum "
 "seizable amount is equal to %s€"
@@ -6830,16 +6996,30 @@ msgid ""
 msgstr ""
 
 #. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/wizard/l10n_be_export_sdworx_leaves_wizard.py:0
+#, python-format
+msgid "There is no SDWorx code defined for the following employees:\n"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/wizard/l10n_be_export_sdworx_leaves_wizard.py:0
+#, python-format
+msgid "There is no SDWorx code defined for the following work entry types:\n"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
+#: code:addons/l10n_be_hr_payroll/wizard/l10n_be_export_sdworx_leaves_wizard.py:0
+#, python-format
+msgid ""
+"There is no SDWorx code defined on the company. Please configure it on the "
+"Payroll Settings"
+msgstr ""
+
+#. module: l10n_be_hr_payroll
 #: code:addons/l10n_be_hr_payroll/models/hr_dmfa.py:0
 #: code:addons/l10n_be_hr_payroll/models/hr_dmfa.py:0
 #, python-format
 msgid "There is no defined expeditor number for the company."
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: code:addons/l10n_be_hr_payroll/controllers/main.py:0
-#, python-format
-msgid "There is no individual account to post for this period."
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -6857,11 +7037,6 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
 msgid "Thirteen Month"
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
-msgid "Thirteen Month Gross"
 msgstr ""
 
 #. module: l10n_be_hr_payroll
@@ -7611,7 +7786,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_273s__year
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_274_xx__year
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__year
-#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_wizard__year
+#: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__year
 msgid "Year"
 msgstr ""
 
@@ -7657,14 +7832,15 @@ msgstr ""
 #: code:addons/l10n_be_hr_payroll/models/l10n_be_274_XX.py:0
 #: code:addons/l10n_be_hr_payroll/models/l10n_be_281_10.py:0
 #: code:addons/l10n_be_hr_payroll/models/l10n_be_281_45.py:0
+#: code:addons/l10n_be_hr_payroll/models/l10n_be_individual_account.py:0
 #: code:addons/l10n_be_hr_payroll/wizard/hr_payroll_allocating_paid_time_off.py:0
 #: code:addons/l10n_be_hr_payroll/wizard/hr_payroll_employee_departure_holiday_attest.py:0
 #: code:addons/l10n_be_hr_payroll/wizard/hr_payroll_employee_departure_notice.py:0
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_december_slip_wizard.py:0
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_double_pay_recovery_wizard.py:0
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_eco_vouchers_wizard.py:0
+#: code:addons/l10n_be_hr_payroll/wizard/l10n_be_export_sdworx_leaves_wizard.py:0
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_group_insurance_wizard.py:0
-#: code:addons/l10n_be_hr_payroll/wizard/l10n_be_individual_account_wizard.py:0
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_social_balance_sheet.py:0
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_social_security_certificate.py:0
 #, python-format
@@ -7675,12 +7851,6 @@ msgstr ""
 #: code:addons/l10n_be_hr_payroll/wizard/hr_payroll_generate_warrant_payslips.py:0
 #, python-format
 msgid "You should upload a file to import first."
-msgstr ""
-
-#. module: l10n_be_hr_payroll
-#: model_terms:res.company,sign_terms:l10n_be_hr_payroll.res_company_be
-#: model_terms:res.company,sign_terms_html:l10n_be_hr_payroll.res_company_be
-msgid "Your conditions..."
 msgstr ""
 
 #. module: l10n_be_hr_payroll

@@ -326,21 +326,21 @@ class ReportAccountFinancialReport(models.Model):
                 groupby_keys,
             )
 
-            # Manage 'hide_if_zero' field.
-            if financial_line.hide_if_zero and all(self.env.company.currency_id.is_zero(column['no_format'])
-                                                   for column in financial_report_line['columns'] if 'no_format' in column):
+            # Manage 'hide_if_zero' field with formulas.
+            are_all_columns_zero = all(self.env.company.currency_id.is_zero(column['no_format'])
+                                       for column in financial_report_line['columns'] if 'no_format' in column)
+            if financial_line.hide_if_zero and are_all_columns_zero and financial_line.formulas:
                 continue
 
             # Manage 'hide_if_empty' field.
             if financial_line.hide_if_empty and is_leaf and not has_lines:
                 continue
 
-            lines.append(financial_report_line)
-
             aml_lines = []
+            children = []
             if financial_line.children_ids:
                 # Travel children.
-                lines += self._build_lines_hierarchy(options_list, financial_line.children_ids, solver, groupby_keys)
+                children += self._build_lines_hierarchy(options_list, financial_line.children_ids, solver, groupby_keys)
             elif is_leaf and financial_report_line['unfolded']:
                 # Fetch the account.move.lines.
                 solver_results = solver.get_results(financial_line)
@@ -356,6 +356,17 @@ class ReportAccountFinancialReport(models.Model):
                         results,
                         groupby_keys,
                     ))
+            # Manage 'hide_if_zero' field without formulas.
+            # If a line hi 'hide_if_zero' and has no formulas, we have to check the sum of all the columns from its children
+            # If all sums are zero, we hide the line
+            if financial_line.hide_if_zero and not financial_line.formulas:
+                amounts_by_line = [[col['no_format'] for col in child['columns'] if 'no_format' in col] for child in children]
+                amounts_by_column = zip(*amounts_by_line)
+                all_columns_have_children_zero = all(self.env.company.currency_id.is_zero(sum(col)) for col in amounts_by_column)
+                if all_columns_have_children_zero:
+                    continue
+            lines.append(financial_report_line)
+            lines += children
             lines += aml_lines
 
             if self.env.company.totals_below_sections and (financial_line.children_ids or (is_leaf and financial_report_line['unfolded'] and aml_lines)):

@@ -630,3 +630,105 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ("report_line_4",           ''),
             ],
         )
+
+    def test_hide_if_zero_with_no_formulas(self):
+        """
+        Check if a report line stays displayed when hide_if_zero is True and no formulas
+        is set on the line but has some child which have balance != 0
+        We check also if the line is hidden when all its children have balance == 0
+        """
+        account1, account2 = self.env['account.account'].create([{
+            'name': "test_financial_report_1",
+            'code': "42241",
+            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id,
+        }, {
+            'name': "test_financial_report_2",
+            'code': "42242",
+            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id,
+        }])
+
+        moves = self.env['account.move'].create([
+            {
+                'move_type': 'entry',
+                'date': '2019-04-01',
+                'line_ids': [
+                    (0, 0, {'debit': 3.0, 'credit': 0.0, 'account_id': account1.id}),
+                    (0, 0, {'debit': 0.0, 'credit': 3.0, 'account_id': self.company_data['default_account_revenue'].id}),
+                ],
+            },
+            {
+                'move_type': 'entry',
+                'date': '2019-05-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 1.0, 'account_id': account2.id}),
+                    (0, 0, {'debit': 1.0, 'credit': 0.0, 'account_id': self.company_data['default_account_revenue'].id}),
+                ],
+            },
+            {
+                'move_type': 'entry',
+                'date': '2019-04-01',
+                'line_ids': [
+                    (0, 0, {'debit': 0.0, 'credit': 3.0, 'account_id': account2.id}),
+                    (0, 0, {'debit': 3.0, 'credit': 0.0, 'account_id': self.company_data['default_account_revenue'].id}),
+                ],
+            },
+        ])
+        moves.action_post()
+
+        report = self.env["account.financial.html.report"].create({
+            'name': "test_financial_report_sum",
+            'unfold_all_filter': True,
+            'line_ids': [
+                (0, 0, {
+                    'name': "Title",
+                    'code': 'TT',
+                    'level': 1,
+                    'hide_if_zero': True,
+                    'children_ids': [
+                        (0, 0, {
+                            'name': "report_line_1",
+                            'code': 'TEST_L1',
+                            'level': 2,
+                            'domain': [('account_id', '=', account1.id)],
+                            'groupby': 'account_id',
+                            'formulas': 'sum',
+                        }),
+                        (0, 0, {
+                            'name': "report_line_2",
+                            'code': 'TEST_L2',
+                            'level': 2,
+                            'domain': [('account_id', '=', account2.id)],
+                            'groupby': 'account_id',
+                            'formulas': 'sum',
+                        }),
+                    ]
+                }),
+            ],
+        })
+
+        options = self._init_options(report, fields.Date.from_string('2019-05-01'), fields.Date.from_string('2019-05-01'))
+        options = self._update_comparison_filter(options, report, 'previous_period', 2)
+        options['unfolded_lines'] = report.line_ids.ids
+
+        expected_values = [
+            # pylint: disable=C0326
+            ("Title",              '',      '',     ''),
+            ("report_line_1",     3.0,     3.0,     ''),
+            ("report_line_2",    -4.0,    -3.0,     ''),
+            ("Total Title",        '',      '',     ''),
+        ]
+
+        self.assertLinesValues(report._get_table(options)[1], [0, 1, 2, 3], expected_values)
+
+        move = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2019-05-01',
+            'line_ids': [
+                (0, 0, {'debit': 1.0, 'credit': 0.0, 'account_id': account1.id}),
+                (0, 0, {'debit': 0.0, 'credit': 1.0, 'account_id': self.company_data['default_account_revenue'].id}),
+            ],
+        })
+
+        move.action_post()
+
+        self.assertLinesValues(report._get_table(options)[1], [0, 1, 2, 3], [])

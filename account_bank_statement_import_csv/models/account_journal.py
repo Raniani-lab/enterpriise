@@ -31,11 +31,12 @@ class AccountJournal(models.Model):
         ctx = dict(self.env.context)
         import_wizard = self.env['base_import.import'].create({
             'res_model': 'account.bank.statement.line',
-            'file': attachments.datas,
-            'file_name': 'bank_statement_import.csv',
-            'file_type': 'text/csv'
+            'file': attachments.raw,
+            'file_name': attachments.name,
+            'file_type': attachments.mimetype,
         })
         ctx['wizard_id'] = import_wizard.id
+        ctx['default_journal_id'] = self.id
         return {
             'type': 'ir.actions.client',
             'tag': 'import_bank_stmt',

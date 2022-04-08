@@ -23,12 +23,15 @@ class TestAccountBankStatementImportCSV(AccountTestInvoicingCommon):
         # Use an import wizard to process the file
         csv_file_path = 'account_bank_statement_import_csv/test_csv_file/test_csv.csv'
         with file_open(csv_file_path, 'rb') as csv_file:
-            import_wizard = self.env['base_import.import'].create({
-                'res_model': 'account.bank.statement.line',
-                'file': csv_file.read(),
-                'file_name': 'test_csv.csv',
-                'file_type': 'text/csv',
-            })
+            action = bank_journal.create_document_from_attachment(self.env['ir.attachment'].create({
+                'mimetype': 'text/csv',
+                'name': 'test_csv.csv',
+                'raw': csv_file.read(),
+            }).ids)
+        import_wizard = self.env['base_import.import'].browse(
+            action['params']['context']['wizard_id']
+        ).with_context(action['params']['context'])
+
         import_wizard_options = {
             'date_format': '%m %d %y',
             'keep_matches': False,
@@ -43,7 +46,7 @@ class TestAccountBankStatementImportCSV(AccountTestInvoicingCommon):
             'advanced': False,
         }
         import_wizard_fields = ['date', False, 'payment_ref', 'amount', 'balance']
-        import_wizard.with_context(journal_id=bank_journal.id).execute_import(import_wizard_fields, [], import_wizard_options, dryrun=False)
+        import_wizard.execute_import(import_wizard_fields, [], import_wizard_options, dryrun=False)
 
         # Check the imported bank statement
         imported_statement = self.env['account.bank.statement'].search([('company_id', '=', self.env.company.id)])

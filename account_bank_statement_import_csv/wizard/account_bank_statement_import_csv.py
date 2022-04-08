@@ -100,8 +100,8 @@ class AccountBankStmtImportCSV(models.TransientModel):
             # Don't set the currency_id on statement line if the currency is the same as the company one.
             if currency_index is not False and line[currency_index] == company_currency_name:
                 line[currency_index] = False
-        if 'date' in import_fields:
-            vals['date'] = data[len(data)-1][import_fields.index('date')]
+        if 'date' in import_fields and data:
+            vals['date'] = data[-1][import_fields.index('date')]
 
         # add starting balance and date if there is one set in fields
         if vals:
@@ -117,7 +117,6 @@ class AccountBankStmtImportCSV(models.TransientModel):
         if options.get('bank_stmt_import', False):
             self._cr.execute('SAVEPOINT import_bank_stmt')
             vals = {
-                'journal_id': self._context.get('journal_id', False),
                 'reference': self.file_name
             }
             statement = self.env['account.bank.statement'].create(vals)

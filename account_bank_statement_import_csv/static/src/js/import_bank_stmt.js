@@ -18,6 +18,11 @@ var DataImportStmt = BaseImport.DataImport.extend({
         return this._super().then(function (res) {
             self.id = self.parent_context.wizard_id;
             self.$('input[name=import_id]').val(self.id);
+            self.renderButtons();
+            var status = {
+                cp_content: {$buttons: self.$buttons},
+            };
+            self.updateControlPanel(status);
             self['loaded_file']();
         });
     },
@@ -56,7 +61,7 @@ var DataImportStmt = BaseImport.DataImport.extend({
         return superProm;
     },
     exit: function () {
-        if (!this.statement_id) return;
+        if (!this.statement_id) return this._super.apply(this, arguments);
         this.do_action({
             type: 'ir.actions.act_window',
             res_model: 'account.bank.statement',

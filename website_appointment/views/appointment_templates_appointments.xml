@@ -63,6 +63,9 @@
                 </a>
             </div>
         </xpath>
+        <xpath expr="//t[@t-call='appointment.staff_user_select']" position="attributes">
+            <attribute name="t-if">appointment_type.assign_method == 'chosen' and not skip_operator_selection</attribute>
+        </xpath>
     </template>
 
     <record id="appointment.appointment_info" model="ir.ui.view">
@@ -89,8 +92,14 @@
                 </nav>
                 <div class="container pb64 o_appointment o_wappointment_select_operator">
                     <h1 class="o_page_header mt32"> Schedule <span class="text-primary" t-out="appointment_type.name"/> Appointment</h1>
-                    <div class="row px-0">
-                        <div class="col h2 py-2">Choose who you will meet</div>
+                    <div class="row justify-content-between my-2">
+                        <h3 class="col-12 col-md-6 pt-1 pb-2">Choose who you will meet</h3>
+                        <div class="col-12 col-md-6 mb-md-0 my-3 mt-md-2 text-center text-md-end">
+                            <a t-attf-href="/appointment/#{ appointment_type.id }?#{keep_query('*', skip_operator_selection=1)}"
+                                class="o_wappointment_select_btn text-reset h6 px-3 py-2">
+                                <span> See all availabilities <i class="fa fa-long-arrow-right"/></span>
+                            </a>
+                        </div>
                     </div>
                     <div class="row px-0 pt-3">
                         <div t-foreach="users_possible" t-as="staff_user" class="col-md-6 col-lg-4 mb-4">
@@ -109,7 +118,7 @@
                                         <div class="o_wappointment_card_user_dsc mt-3 mb48">
                                             <div t-field="staff_user.partner_id.website_description" placeholder="Add a user description here..."/>
                                         </div>
-                                        <div class="o_wappointment_card_user_select position-absolute h6 p-2 mb-0">
+                                        <div class="o_wappointment_card_user_select o_wappointment_select_btn position-absolute h6 p-2 mb-0">
                                             <span class="d-block text-center h6 mb-0">Choose <t t-out="staff_user.name"/></span>
                                         </div>
                                     </main>

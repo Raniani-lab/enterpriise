@@ -261,7 +261,7 @@ class TestSubscription(TestSubscriptionCommon):
                                                'pricing_id': self.pricing_month.id,
                                                }),
                                Command.create({'product_id': self.product.id,
-                                               'name': "year",
+                                               'name': "2 month",
                                                'price_unit': 420,
                                                'product_uom_qty': 3,
                                                'pricing_id': princing_2_month.id
@@ -304,8 +304,8 @@ class TestSubscription(TestSubscriptionCommon):
             }]
 
             new_line = self.env['sale.order.line'].create(so_line_vals)
-
             upsell_so.action_confirm()
+            discounts = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('discount')]
             prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
             self.assertEqual(prices, [27.42, 38.14, 40, 42], 'Prorated prices should be applied')
 
@@ -340,6 +340,73 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(self.subscription, new_line.order_id.subscription_id,
                          'sale_subscription: upsell line added to quote after creation but before validation must be automatically  linked to correct subscription')
         self.assertEqual(len(self.subscription.order_line), 4)
+
+    def test_upsell_prorata(self):
+        """ Test the prorated values obtained when creating an upsell. complementary to the previous one where new
+         lines had no existing default values.
+        """
+        princing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month'})
+        with freeze_time("2021-01-01"):
+            self.subscription.order_line = False
+            self.subscription.write({
+                'partner_id': self.partner.id,
+                'order_line': [
+                    Command.create({
+                        'product_id': self.product.id,
+                        'name': "month: original",
+                        'price_unit': 50,
+                        'product_uom_qty': 1,
+                        'pricing_id': self.pricing_month.id,
+                        'start_date': '2021-01-01'
+                    }),
+                    Command.create({
+                        'product_id': self.product.id,
+                        'name': "2 month: original",
+                        'price_unit': 50,
+                        'product_uom_qty': 1,
+                        'pricing_id': princing_2_month.id,
+                        'start_date': '2021-01-01'
+                    }),
+                    Command.create({
+                        'product_id': self.product2.id,
+                        'name': "1 month: original shifted",
+                        'price_unit': 50,
+                        'product_uom_qty': 1,
+                        'pricing_id': self.pricing_month.id,
+                        'start_date': '2021-01-10',
+                    }),
+                ]
+            })
+            self.subscription.action_confirm()
+
+        with freeze_time("2021-01-20"):
+            action = self.subscription.prepare_upsell_order()
+            upsell_so = self.env['sale.order'].browse(action['res_id'])
+            # Create new lines that should be aligned with existing ones
+            so_line_vals = [{
+                'name': 'Upsell added: 1 month',
+                'order_id': upsell_so.id,
+                'product_id': self.product2.id,
+                'product_uom_qty': 1,
+                'product_uom': self.product2.uom_id.id,
+                'price_unit': self.product.list_price,
+                'pricing_id': self.pricing_month.id
+            }, {
+                'name': 'Upsell added: 2 month',
+                'order_id': upsell_so.id,
+                'product_id': self.product3.id,
+                'product_uom_qty': 1,
+                'product_uom': self.product3.uom_id.id,
+                'price_unit': self.product3.list_price,
+                'pricing_id': princing_2_month.id,
+            }]
+            self.env['sale.order.line'].create(so_line_vals)
+            upsell_so.order_line.product_uom_qty = 1
+            discounts = [round(v) for v in upsell_so.order_line.sorted('pricing_id').mapped('discount')]
+            # discounts for: 12d/31d; 40d/59d; 21d/31d (shifted); 31d/41d; 59d/78d;
+            self.assertEqual(discounts, [61, 32, 32, 24, 24], 'Prorated prices should be applied')
+            prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
+            self.assertEqual(prices, [19.36, 33.9, 13.55, 15.12, 31.77], 'Prorated prices should be applied')
 
     def test_recurring_revenue(self):
         """Test computation of recurring revenue"""

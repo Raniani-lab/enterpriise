@@ -552,9 +552,7 @@ class SaleOrder(models.Model):
         When confirming an upsell order, the recurring product lines must be updated
         """
         today = fields.Date.today()
-        future_lines = self.order_line.filtered(lambda l: l.start_date and l.start_date.date() > today)
         self.order_line.filtered(lambda l: not l.start_date and not l.display_type).write({'start_date': today})
-        (self.order_line - future_lines)._update_next_invoice_date(force=True)
         self.update_existing_subscriptions()
 
     def _confirm_renew(self):

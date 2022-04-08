@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
+from collections import defaultdict
 
 from odoo import fields, models, api, _, Command
 from odoo.tools.date_utils import get_timedelta
@@ -61,13 +62,93 @@ class SaleOrderLine(models.Model):
 
     @api.depends('order_id.is_subscription', 'temporal_type', 'start_date', 'pricing_id')
     def _compute_next_invoice_date(self):
-        subscription_lines = self.filtered(lambda l: (l.order_id.is_subscription or l.order_id.subscription_management == 'upsell') and l.temporal_type == 'subscription')
-        super(SaleOrderLine, self - subscription_lines)._compute_next_invoice_date()
-        for line in subscription_lines:
-            # This only works if one change the start_date, save the record* and then change the next_invoice_date.
-            update_allowed = line._origin.pricing_id != line.pricing_id or line.start_date != line._origin.start_date
-            if line.pricing_id.unit and line.pricing_id.duration and update_allowed:
+        other_line_ids = self.env['sale.order.line']
+        upsell_line_ids = self.env['sale.order.line']
+        for line in self:
+            if not (line.order_id.is_subscription or line.order_id.subscription_management == 'upsell') and not line.temporal_type == 'subscription':
+                # regular sale order line should be handled by super
+                other_line_ids |= line
+            elif line.order_id.subscription_management == 'upsell' and line.order_id.subscription_id:
+                upsell_line_ids |= line
+            elif line.pricing_id:
+                # default value
                 line.next_invoice_date = line.start_date and line.start_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
+        upsell_line_ids._set_upsell_next_invoice_date()
+        return super(SaleOrderLine, other_line_ids)._compute_next_invoice_date()
+
+    def _set_upsell_next_invoice_date(self):
+        """ Set the next invoice date according to the other values """
+        default_dates = self._get_previous_order_default_dates()
+        # set the nid whenever the start_date to have them aligned
+        for line in self:
+            if line.state in ['sale', 'done']:
+                continue
+            pricing_id = line.pricing_id
+            if not line.pricing_id:
+                continue
+            naive_nid = None
+            if line.parent_line_id.next_invoice_date:
+                # We keep the existing value if the line has a parent
+                line.next_invoice_date = line.parent_line_id.next_invoice_date
+                continue
+            if line.start_date and line.pricing_id:
+                # value used for new lines with a periodicity not defined on the parent order
+                naive_nid = line.start_date and line.start_date + get_timedelta(pricing_id.duration, pricing_id.unit)
+            order_default_values = default_dates.get(line.order_id, {})
+            previous_line_values = order_default_values.get((pricing_id.duration, pricing_id.unit))
+            line.next_invoice_date = previous_line_values and previous_line_values['next_invoice_date'] or naive_nid
+
+    @api.depends('order_id.subscription_management', 'start_date', 'next_invoice_date')
+    def _compute_discount(self):
+        default_dates = self.order_id.order_line._get_previous_order_default_dates()
+        other_lines = self.env['sale.order.line']
+
+        today = fields.Datetime.today()
+        for line in self:
+            if not line.next_invoice_date or line.temporal_type != 'subscription' or line.order_id.subscription_management != 'upsell':
+                other_lines |= line
+                continue
+            order_default_values = default_dates.get(line.order_id, {})
+            if line.parent_line_id:
+                current_period_start = line.parent_line_id.last_invoice_date or line.parent_line_id.start_date
+            else: # use the default values
+                previous_line_values = order_default_values.get((line.pricing_id.duration, line.pricing_id.unit))
+                current_period_start = previous_line_values and previous_line_values['start_date'] or today
+            time_to_invoice = line.next_invoice_date - today
+            if line.next_invoice_date != current_period_start:
+                ratio = float(time_to_invoice.days) / float((line.next_invoice_date - current_period_start).days)
+            else:
+                ratio = 1
+            if ratio < 0 or ratio > 1:
+                ratio = 1.00  # Something went wrong in the dates
+            if line.order_id.subscription_management == 'upsell' and line.pricing_id and line.next_invoice_date:
+                line.discount = (1 - ratio) * 100
+        return super(SaleOrderLine, other_lines)._compute_discount()
+
+    # HELPERS
+    def _get_previous_order_default_dates(self):
+        """ Helper to match the previous invoice dates when creating an upsell or a renew
+            It prevents to have different dates of invoices
+         """
+        default_values = defaultdict(dict)
+        # We take the values on the parent_line to avoid using the new lines values during computation
+        pricing_dates = defaultdict(dict)
+        for line in self:
+            previous_line_id = line.parent_line_id
+            if not previous_line_id:
+                continue
+            pricing = (previous_line_id.pricing_id.duration, previous_line_id.pricing_id.unit)
+            # start_date is used to compute the prorata discount. It is the beginning of the current period
+            start_date = previous_line_id.last_invoice_date or previous_line_id.start_date
+            next_invoice_date = previous_line_id.next_invoice_date
+            other_line_vals = pricing_dates.get(pricing)
+            if other_line_vals and next_invoice_date and other_line_vals['next_invoice_date'] > next_invoice_date:
+                # If multiple lines have the same periodicity but different dates, we take the closest one
+                next_invoice_date = other_line_vals['next_invoice_date']
+                start_date = other_line_vals['start_date']
+            pricing_dates[pricing] = {'next_invoice_date': next_invoice_date, 'start_date': start_date}
+            default_values[line.order_id] = pricing_dates
+        return default_values
 
     def _update_next_invoice_date(self, force=False):
         """ Update the next_invoice_date according to the periodicity of the line.
@@ -104,7 +185,7 @@ class SaleOrderLine(models.Model):
     def _compute_last_invoice_date(self):
         for line in self:
             if line.pricing_id and line.order_id.state in ['sale', 'done'] and line.invoice_lines:
-                line.last_invoice_date = line.next_invoice_date and line.next_invoice_date - get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
+                line.last_invoice_date = line.invoice_lines and line.invoice_lines[-1].date
             else:
                 line.last_invoice_date = False
 
@@ -140,7 +221,8 @@ class SaleOrderLine(models.Model):
             if line.temporal_type != 'subscription' or line.order_id.state not in ['sale', 'done']:
                 continue
             qty_invoiced = 0.0
-            start_date = last_invoice_date or line.last_invoice_date and line.last_invoice_date.date()
+            last_period_start = line.next_invoice_date and line.next_invoice_date - get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
+            start_date = last_invoice_date or last_period_start and last_period_start.date()
             end_date = next_invoice_date or line.next_invoice_date and line.next_invoice_date.date()
             day_before_end_date = end_date - relativedelta(days=1)
             related_invoice_lines = line.invoice_lines.filtered(
@@ -197,7 +279,7 @@ class SaleOrderLine(models.Model):
             format_start = format_date(self.env, new_period_start, lang_code=lang_code)
             default_next_invoice_date = new_period_start + get_timedelta(self.pricing_id.duration, self.pricing_id.unit)
             if self.order_id.subscription_management == 'upsell' and self.parent_line_id.next_invoice_date:
-                next_invoice_date = self.parent_line_id.next_invoice_date
+                next_invoice_date = self.next_invoice_date
             else:
                 next_invoice_date = default_next_invoice_date
             format_invoice = format_date(self.env, next_invoice_date, lang_code=lang_code)
@@ -238,6 +320,18 @@ class SaleOrderLine(models.Model):
                 result[line['id']] = {'id': line_pricing_id.id, 'display_name': line_pricing_id.name}
         return result
 
+    def _get_sale_order_line_multiline_description_sale(self):
+        """Add Rental information to the SaleOrderLine name."""
+        res = super()._get_sale_order_line_multiline_description_sale()
+        if self.order_id.subscription_management == 'upsell':
+            today = fields.Datetime.today()
+            partner_lang = self.order_id.partner_id.lang
+            format_start = format_date(self.env, today, lang_code=partner_lang)
+            end_period = self.next_invoice_date - relativedelta(days=1)
+            format_next_invoice = format_date(self.env, end_period, lang_code=partner_lang)
+            res += _("\n%s to %s", format_start, format_next_invoice)
+        return res
+
     ####################
     # CRUD             #
     ####################
@@ -268,15 +362,7 @@ class SaleOrderLine(models.Model):
             quantity = 0
             product = line.product_id
             if subscription_management == 'upsell':
-                # calculate unit price according to prorata.
-                time_to_invoice = line.next_invoice_date - today
-                # Copy last_invoice_date from subscription, start date if needed and start today if the line was created in the upsell order
-                current_period_start = line.last_invoice_date or line.start_date or today
                 next_invoice_date = line.next_invoice_date
-                ratio = float(time_to_invoice.days) / float((line.next_invoice_date - current_period_start).days)
-                if ratio < 0 or ratio > 1:
-                    ratio = 1.00 # Something went wrong in the dates
-                discount = (1 - ratio) * 100
                 line_start = today
                 line_name = line.with_context(lang=partner_lang)._get_sale_order_line_multiline_description_sale()
                 format_start = format_date(self.env, today, lang_code=partner_lang)
@@ -284,8 +370,6 @@ class SaleOrderLine(models.Model):
                 format_next_invoice = format_date(self.env, end_period, lang_code=partner_lang)
                 line_name += _("\n%s to %s", format_start, format_next_invoice)
             else:
-                # renew: all the periods will start at the end of their current next_invoice_date value
-                discount = 0
                 line_start = line.next_invoice_date
                 next_invoice_date = line_start + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
                 line_name = line.with_context(lang=partner_lang)._get_sale_order_line_multiline_description_sale()
@@ -298,7 +382,6 @@ class SaleOrderLine(models.Model):
                 'product_uom': line.product_uom.id,
                 'product_uom_qty': quantity,
                 'price_unit': line.price_unit,
-                'discount': discount,
                 'start_date': line_start,
                 'next_invoice_date': next_invoice_date,
                 'pricing_id': line.pricing_id.id

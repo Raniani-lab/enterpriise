@@ -1,4 +1,28 @@
+/*                      Backend Helper
+ **********************************************************/
+@mixin o_appointment_type_backend_helper {
+    .o_view_nocontent {
+        top: 20vh;
+        .o_view_no_content_appointment_type:before {
+            @extend %o-nocontent-init-image;
+            background: transparent url(/appointment/static/src/img/appointment-type-helper.svg) no-repeat center;
+            background-size: contain;
+            width: 100%;
+            height: 325px;
+        }
+    }
+}
+
+/*                      List View
+ **********************************************************/
+ .o_appointment_type_view_list {
+    @include o_appointment_type_backend_helper;
+ }
+
+/*                      Kanban view
+ **********************************************************/
 .o_kanban_renderer.o_kanban_dashboard.o_appointment_kanban {
+    @include o_appointment_type_backend_helper;
     &.o_kanban_grouped {
         .o_appointment_kanban_card_ungrouped {
             display:none !important;
@@ -137,6 +161,8 @@
     }
 }
 
+/*                      Form View
+ **********************************************************/
 .o_appointment_slots_list {
     th.o_list_button {
         width: 2.4em!important;
@@ -147,6 +173,8 @@
     }
 }
 
+/*                      Others
+ **********************************************************/
 .o_appointment_create_custom_appointment.disabled {
     pointer-events: none;
 }

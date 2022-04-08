@@ -146,7 +146,7 @@
         <field name="name">appointment.type.tree</field>
         <field name="model">appointment.type</field>
         <field name="arch" type="xml">
-            <tree string="Appointment Type" multi_edit="1" sample="1" js_class="appointment_type_tree_view">
+            <tree string="Appointment Type" class="o_appointment_type_view_list" multi_edit="1" sample="1" js_class="appointment_type_tree_view">
                 <header>
                     <button name="action_share_invite" type="object" string="Share"/>
                 </header>
@@ -320,7 +320,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('category', '=', 'website')]</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
+            <p class="o_view_no_content_appointment_type">
                 Create an Appointment Type
             </p><p>
                 Configure your service opening hours and let attendees book time slots online.

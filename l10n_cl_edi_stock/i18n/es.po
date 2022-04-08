@@ -116,8 +116,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.barcode_stamp_footer
 msgid ""
 "<br/>\n"
-"                        Verifique documento en www.sii.cl"
-msgstr ""
+"                        Verify the document on www.sii.cl"
+msgstr "                        Verifique documento en www.sii.cl"
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
@@ -209,6 +209,11 @@ msgstr ""
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
+msgid "<span>Customer Purchase Order</span>"
+msgstr "<span>Orden de compra del cliente</span>"
+
+#. module: l10n_cl_edi_stock
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
 msgid "<span>Date</span>"
 msgstr "<span>Fecha</span>"
 
@@ -219,18 +224,13 @@ msgstr "<span>Cod Documento</span>"
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
-msgid "<span>Orden de compra del cliente</span>"
-msgstr ""
-
-#. module: l10n_cl_edi_stock
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
-msgid "<span>Orden de compra</span>"
-msgstr ""
-
-#. module: l10n_cl_edi_stock
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
 msgid "<span>Origin Ref</span>"
 msgstr "<span>Referencia de Origen</span>"
+
+#. module: l10n_cl_edi_stock
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
+msgid "<span>Purchase Order</span>"
+msgstr "<span>Orden de compra</span>"
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
@@ -291,6 +291,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.delivery_guide_document
 msgid "<strong>Unit Price</strong>"
 msgstr "<strong>Precio Unitario</strong>"
+
+#. module: l10n_cl_edi_stock
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.delivery_guide_document
+msgid "<strong>UoM</strong>"
+msgstr "<strong>Un Med</strong>"
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.delivery_guide_document
@@ -756,14 +761,6 @@ msgid "This electronic document is being processed already."
 msgstr "Este documento electrónico ya se encuentra en proceso."
 
 #. module: l10n_cl_edi_stock
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.barcode_stamp_footer
-msgid ""
-"Timbre Electrónico SII\n"
-"                        <br/>\n"
-"                        Resolución Nº:"
-msgstr ""
-
-#. module: l10n_cl_edi_stock
 #: model:ir.model,name:l10n_cl_edi_stock.model_stock_picking
 msgid "Transfer"
 msgstr "Transferencia"
@@ -799,8 +796,8 @@ msgstr ""
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.barcode_stamp_footer
-msgid "de Fecha:"
-msgstr ""
+msgid "from Date:"
+msgstr "de Fecha:"
 
 #. module: l10n_cl_edi_stock
 #: model:mail.template,subject:l10n_cl_edi_stock.l10n_cl_edi_email_template_picking

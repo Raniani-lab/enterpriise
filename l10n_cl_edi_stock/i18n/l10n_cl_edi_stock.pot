@@ -105,7 +105,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.barcode_stamp_footer
 msgid ""
 "<br/>\n"
-"                        Verifique documento en www.sii.cl"
+"                        Verify the document on www.sii.cl"
 msgstr ""
 
 #. module: l10n_cl_edi_stock
@@ -162,6 +162,11 @@ msgstr ""
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
+msgid "<span>Customer Purchase Order</span>"
+msgstr ""
+
+#. module: l10n_cl_edi_stock
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
 msgid "<span>Date</span>"
 msgstr ""
 
@@ -172,17 +177,12 @@ msgstr ""
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
-msgid "<span>Orden de compra del cliente</span>"
-msgstr ""
-
-#. module: l10n_cl_edi_stock
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
-msgid "<span>Orden de compra</span>"
-msgstr ""
-
-#. module: l10n_cl_edi_stock
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
 msgid "<span>Origin Ref</span>"
+msgstr ""
+
+#. module: l10n_cl_edi_stock
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.stock_informations
+msgid "<span>Purchase Order</span>"
 msgstr ""
 
 #. module: l10n_cl_edi_stock
@@ -243,6 +243,11 @@ msgstr ""
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.delivery_guide_document
 msgid "<strong>Unit Price</strong>"
+msgstr ""
+
+#. module: l10n_cl_edi_stock
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.delivery_guide_document
+msgid "<strong>UoM</strong>"
 msgstr ""
 
 #. module: l10n_cl_edi_stock
@@ -665,14 +670,6 @@ msgid "This electronic document is being processed already."
 msgstr ""
 
 #. module: l10n_cl_edi_stock
-#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.barcode_stamp_footer
-msgid ""
-"Timbre Electrónico SII\n"
-"                        <br/>\n"
-"                        Resolución Nº:"
-msgstr ""
-
-#. module: l10n_cl_edi_stock
 #: model:ir.model,name:l10n_cl_edi_stock.model_stock_picking
 msgid "Transfer"
 msgstr ""
@@ -705,7 +702,7 @@ msgstr ""
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.barcode_stamp_footer
-msgid "de Fecha:"
+msgid "from Date:"
 msgstr ""
 
 #. module: l10n_cl_edi_stock

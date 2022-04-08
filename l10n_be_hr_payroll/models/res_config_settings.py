@@ -50,8 +50,11 @@ class ResConfigSettings(models.TransientModel):
     hospital_insurance_amount_adult = fields.Float(
         string="Hospital Insurance Amount per Adult",
         config_parameter='hr_contract_salary.hospital_insurance_amount_adult')
+    default_l10n_be_canteen_cost = fields.Float(
+        string="Canteen Cost",
+        default_model="hr.contract")
     l10n_be_ffe_employer_type = fields.Selection(
-        related='company_id.l10n_be_ffe_employer_type',
+        related='company_id.l10n_be_ffe_employer_type', string='Ffe Employer Type',
         readonly=False)
     group_export_sdworx_leaves = fields.Boolean(
         string="Export Time Off to SDWorx",

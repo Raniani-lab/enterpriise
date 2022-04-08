@@ -16,53 +16,78 @@
                             <div class="text-muted">
                                 Configure Default Values for Belgian Advantages
                             </div>
-                            <group class="mt16" name="default_advantages">
-                                <label for="default_commission_on_target"/>
-                                <div>
-                                    <field name="default_commission_on_target" nolabel="1"/>
-                                    <span>€ / month</span>
+                            <div name="default_advantages" class="mt16 content-group">
+                                <div class="row">
+                                    <label for="default_commission_on_target" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="default_commission_on_target" nolabel="1"/>
+                                        <span>€ / month</span>
+                                    </div>
                                 </div>
-                                <label for="default_fuel_card"/>
-                                <div>
-                                    <field name="default_fuel_card" nolabel="1"/>
-                                    <span>€ / month</span>
+                                <div class="row">
+                                    <label for="default_fuel_card" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="default_fuel_card" nolabel="1"/>
+                                        <span>€ / month</span>
+                                    </div>
                                 </div>
-                                <label for="default_representation_fees"/>
-                                <div>
-                                    <field name="default_representation_fees" nolabel="1"/>
-                                    <span>€ / month</span>
+                                <div class="row">
+                                    <label for="default_representation_fees" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="default_representation_fees" nolabel="1"/>
+                                        <span>€ / month</span>
+                                    </div>
                                 </div>
-                                <label for="default_internet"/>
-                                <div>
-                                    <field name="default_internet" nolabel="1"/>
-                                    <span>€ / month</span>
+                                <div class="row">
+                                    <label for="default_internet" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="default_internet" nolabel="1"/>
+                                        <span>€ / month</span>
+                                    </div>
                                 </div>
-                                <label for="default_mobile"/>
-                                <div>
-                                    <field name="default_mobile" nolabel="1"/>
-                                    <span>€ / month</span>
+                                <div class="row">
+                                    <label for="default_mobile" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="default_mobile" nolabel="1"/>
+                                        <span>€ / month</span>
+                                    </div>
                                 </div>
-                                <label for="default_meal_voucher_amount"/>
-                                <div>
-                                    <field name="default_meal_voucher_amount" nolabel="1"/>
-                                    <span>€ / month</span>
+                                <div class="row">
+                                    <label for="default_l10n_be_canteen_cost" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="default_l10n_be_canteen_cost" nolabel="1"/>
+                                        <span>€ / month</span>
+                                    </div>
                                 </div>
-                                <label for="default_eco_checks"/>
-                                <div>
-                                    <field name="default_eco_checks" nolabel="1"/>
-                                    <span>€ / year</span>
+                                <div class="row">
+                                    <label for="default_meal_voucher_amount" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="default_meal_voucher_amount" nolabel="1"/>
+                                        <span>€ / month</span>
+                                    </div>
                                 </div>
-                                <label for="hospital_insurance_amount_child"/>
-                                <div>
-                                    <field name="hospital_insurance_amount_child" nolabel="1"/>
-                                    <span>€ / month</span>
+                                <div class="row">
+                                    <label for="default_eco_checks" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="default_eco_checks" nolabel="1"/>
+                                        <span>€ / year</span>
+                                    </div>
                                 </div>
-                                <label for="hospital_insurance_amount_adult"/>
-                                <div>
-                                    <field name="hospital_insurance_amount_adult" nolabel="1"/>
-                                    <span>€ / month</span>
+                                <div class="row">
+                                    <label for="hospital_insurance_amount_child" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="hospital_insurance_amount_child" nolabel="1"/>
+                                        <span>€ / month</span>
+                                    </div>
                                 </div>
-                            </group>
+                                <div class="row">
+                                    <label for="hospital_insurance_amount_adult" class="col-md-7 m-0"/>
+                                    <div class="col-md-5 p-0">
+                                        <field name="hospital_insurance_amount_adult" nolabel="1"/>
+                                        <span>€ / month</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-12 o_setting_box">
@@ -89,11 +114,20 @@
                             <div class="text-muted">
                                 Offical Company Information
                             </div>
-                            <group class="mt16">
-                                <field name="l10n_be_company_number"/>
-                                <field name="l10n_be_revenue_code"/>
-                                <field name="l10n_be_ffe_employer_type"/>
-                            </group>
+                            <div class="mt16 content-group">
+                                <div class="row">
+                                    <label for="l10n_be_company_number" class="col-md-7 m-0"/>
+                                    <field name="l10n_be_company_number" class="col-lg-5"/>
+                                </div>
+                                <div class="row">
+                                    <label for="l10n_be_revenue_code" class="col-md-7 m-0"/>
+                                    <field name="l10n_be_revenue_code" class="col-lg-5"/>
+                                </div>
+                                <div class="row">
+                                    <label for="l10n_be_ffe_employer_type" class="col-md-7 m-0"/>
+                                    <field name="l10n_be_ffe_employer_type" required="1" class="col-lg-5"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-12 o_setting_box" id="company_information">
@@ -104,7 +138,7 @@
                             <span class="o_form_label">SDWorx</span>
                             <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
                             <div class="text-muted">
-                                Export Time Offs to your Social Secretariat
+                                Allow to export Working Entries to your Social Secretariat
                             </div>
                             <group class="mt16" groups="l10n_be_hr_payroll.group_export_sdworx_leaves">
                                 <field name="sdworx_code"/>

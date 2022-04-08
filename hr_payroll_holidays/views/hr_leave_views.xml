@@ -7,7 +7,6 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='group_employee']" position="before">
                 <separator/>
-                <filter string="To Report in Payslip" name="to_report" domain="[('payslip_state', '=', 'normal')]" groups="hr_holidays.group_hr_holidays_user"/>
                 <filter string="To Defer" name="to_defer" domain="[('payslip_state', '=', 'blocked')]" groups="hr_holidays.group_hr_holidays_user"/>
                 <separator/>
             </xpath>
@@ -62,7 +61,6 @@
         <field name="view_id" ref="hr_payroll_holidays.hr_leave_view_tree_inherit_payroll"/>
         <field name="context">{
             'search_default_to_defer':1,
-            'search_default_to_report':1,
             'hide_employee_name': 1
         }</field>
         <field name="help" type="html">

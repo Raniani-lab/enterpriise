@@ -214,7 +214,7 @@ class HrContract(models.Model):
 class HrPayrollStructure(models.Model):
     _inherit = 'hr.payroll.structure'
 
-    journal_id = fields.Many2one('account.journal', 'Salary Journal', readonly=False, required=False,
+    journal_id = fields.Many2one('account.journal', 'Salary Journal', readonly=False, required=True,
         company_dependent=True,
         default=lambda self: self.env['account.journal'].sudo().search([
             ('type', '=', 'general'), ('company_id', '=', self.env.company.id)], limit=1))

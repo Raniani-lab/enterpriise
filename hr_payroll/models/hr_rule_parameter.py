@@ -13,7 +13,8 @@ class HrSalaryRuleParameterValue(models.Model):
     _description = 'Salary Rule Parameter Value'
     _order = 'date_from desc'
 
-    rule_parameter_id = fields.Many2one('hr.rule.parameter', required=True, ondelete='cascade')
+    rule_parameter_id = fields.Many2one('hr.rule.parameter', required=True, ondelete='cascade', default=lambda self: self.env.context.get('active_id'))
+    rule_parameter_name = fields.Char(related="rule_parameter_id.name", readonly=True)
     code = fields.Char(related="rule_parameter_id.code", index=True, store=True, readonly=True)
     date_from = fields.Date(string="From", index=True, required=True)
     parameter_value = fields.Text(help="Python data structure")

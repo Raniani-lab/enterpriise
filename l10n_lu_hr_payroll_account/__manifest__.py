@@ -14,6 +14,7 @@ Accounting Data for Luxembourg Payroll Rules
     'depends': ['hr_payroll_account', 'l10n_lu', 'l10n_lu_hr_payroll'],
     'data': [
         'data/account_chart_template_data.xml',
+        'data/l10n_lu_hr_payroll_account_data.xml',
     ],
     'demo': [
         'data/l10n_lu_hr_payroll_account_demo.xml',

@@ -91,8 +91,8 @@
                     <h1><field name="employee_id" placeholder="Employee"/></h1>
                     <h2><field name="number" attrs="{'invisible': [('state', '=', 'draft')]}"/></h2>
                 </div>
-                 <div class="alert alert-warning" role="alert" attrs="{'invisible': [('warning_message','=',False)]}">
-                    <field name="warning_message"/>
+                <div class="alert alert-warning" role="alert" attrs="{'invisible': [('warning_message','=',False)]}">
+                    <field name="warning_message" readonly="1"/>
                 </div>
                 <group col="4">
                     <label for="date_from" string="Period"/>
@@ -120,7 +120,7 @@
                                 <field name="work_entry_type_id" readonly="1" force_save="1"/>
                                 <field name="name"/>
                                 <field name="number_of_days" sum="Total Working Days" readonly="1" force_save="1"/>
-                                <field name="number_of_hours" sum="Total Working Hours" readonly="1" force_save="1"/>
+                                <field name="number_of_hours"  widget="float_time" sum="Total Working Hours" readonly="1" force_save="1"/>
                                 <field name="amount" readonly="1" sum="Total Amount" force_save="1"/>
                                 <field name="is_paid" invisible="True" readonly="1" force_save="1"/>
                                 <field name="sequence" invisible="True" readonly="1" force_save="1"/>

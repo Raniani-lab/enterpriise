@@ -51,12 +51,12 @@ class HrPayslip(models.Model):
     department_id = fields.Many2one('hr.department', string='Department', related='employee_id.department_id', readonly=True, store=True)
     job_id = fields.Many2one('hr.job', string='Job Position', related='employee_id.job_id', readonly=True, store=True)
     date_from = fields.Date(
-        string='From', readonly=True, required=True,
-        default=lambda self: fields.Date.to_string(date.today().replace(day=1)), states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+        string='From', readonly=False, required=True,
+        default=lambda self: fields.Date.to_string(date.today().replace(day=1)), states={'done': [('readonly', True)], 'paid': [('readonly', True)], 'cancel': [('readonly', True)]})
     date_to = fields.Date(
-        string='To', readonly=True, required=True,
-        default=lambda self: fields.Date.to_string((datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()),
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+        string='To', readonly=False, required=True,
+        precompute=True, compute="_compute_date_to", store=True,
+        states={'done': [('readonly', True)], 'paid': [('readonly', True)], 'cancel': [('readonly', True)]})
     state = fields.Selection([
         ('draft', 'Draft'),
         ('verify', 'Waiting'),
@@ -136,6 +136,12 @@ class HrPayslip(models.Model):
         readonly=False,
     )
     salary_attachment_count = fields.Integer('Salary Attachment count', compute='_compute_salary_attachment_count')
+
+    @api.depends('date_from')
+    def _compute_date_to(self):
+        next_month = relativedelta(months=+1, day=1, days=-1)
+        for payslip in self:
+            payslip.date_to = payslip.date_from + next_month
 
     @api.depends('company_id', 'employee_id', 'date_from', 'date_to')
     def _compute_contract_domain_ids(self):

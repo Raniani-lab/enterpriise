@@ -20,11 +20,12 @@
         <field name="name">hr.payslip.run.tree</field>
         <field name="model">hr.payslip.run</field>
         <field name="arch" type="xml">
-            <tree string="Payslips Batches" sample="1">
+            <tree string="Payslips Batches" class="o_payslip_run_list" sample="1">
                 <field name="name"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
                 <field name="state"/>
+                <field name="payslip_count" string="Payslips Count"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
@@ -115,4 +116,14 @@
         <field name="search_view_id" ref="hr_payslip_run_filter"/>
     </record>
 
+    <record id="action_hr_payslip_run_generate" model="ir.actions.server">
+        <field name="name">Add payslips</field>
+        <field name="model_id" ref="model_hr_payslip_run"/>
+        <field name="binding_model_id" ref="model_hr_payslip_run"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+action = records._generate_payslips()
+        </field>
+    </record>
 </odoo>

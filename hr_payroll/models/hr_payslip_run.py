@@ -5,7 +5,7 @@ from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class HrPayslipRun(models.Model):
@@ -22,7 +22,7 @@ class HrPayslipRun(models.Model):
         ('verify', 'Confirmed'),
         ('close', 'Done'),
         ('paid', 'Paid'),
-    ], string='Status', index=True, readonly=True, copy=False, default='draft')
+    ], string='Status', index=True, readonly=True, copy=False, default='draft', store=True, compute='_compute_state_change')
     date_start = fields.Date(string='Date From', required=True, readonly=True,
         states={'draft': [('readonly', False)]}, default=lambda self: fields.Date.to_string(date.today().replace(day=1)))
     date_end = fields.Date(string='Date To', required=True, readonly=True,
@@ -41,8 +41,17 @@ class HrPayslipRun(models.Model):
         for payslip_run in self:
             payslip_run.payslip_count = len(payslip_run.slip_ids)
 
+    @api.depends('slip_ids', 'state')
+    def _compute_state_change(self):
+        for payslip_run in self:
+            if payslip_run.state == 'draft' and payslip_run.slip_ids:
+                payslip_run.write({'state': 'verify'})
+
     def action_draft(self):
+        if self.slip_ids.filtered(lambda s: s.state == 'paid'):
+            raise ValidationError(_('You cannot reset a batch to draft if some of the payslips have already been paid.'))
         self.write({'state': 'draft'})
+        self.slip_ids.write({'state': 'draft'})
 
     def action_open(self):
         self.write({'state': 'verify'})
@@ -79,6 +88,11 @@ class HrPayslipRun(models.Model):
             'views': [[False, 'form']],
             'res_id': self.id,
         }
+
+    def _generate_payslips(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("hr_payroll.action_hr_payslip_by_employees")
+        action['context'] = repr(self.env.context)
+        return action
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_draft_or_cancel(self):

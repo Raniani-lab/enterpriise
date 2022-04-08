@@ -18,8 +18,8 @@
                             </div>
                             <div class="content-group">
                                 <div class="row mt16">
-                                    <label string="Responsible" for="deferred_time_off_manager" class="col-lg-3 o_light_label"/>
-                                    <field name="deferred_time_off_manager"/>
+                                    <label string="Responsible" for="deferred_time_off_manager" class="col-md-7 m-0 o_light_label"/>
+                                    <field name="deferred_time_off_manager" class="col-lg-5 p-0"/>
                                 </div>
                             </div>
                         </div>

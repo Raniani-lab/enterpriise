@@ -31,15 +31,14 @@
             <attribute name="t-call">website.layout</attribute>
         </xpath>
         <xpath expr="//div[@id='wrap']" position="attributes">
-            <attribute name="class" value=""/>
+            <attribute name="class">o_wappointment_wrap</attribute>
         </xpath>
         <xpath expr="//t[@t-set='o_portal_fullwidth_alert']" position="replace"/>
         <xpath expr="//div[hasclass('o_appointment')]" position="before">
-            <nav t-if="appointment_type.category == 'website'"
-                class="o_wappointment_navbar navbar navbar-light border-top shadow-sm d-print-none py-0">
+            <nav class="o_wappointment_navbar navbar navbar-light border-top shadow-sm d-print-none py-0">
                 <div class="container">
-                    <a t-if="len(available_appointments) != 1" class="navbar-brand h4 my-0 me-auto"
-                        t-attf-href="/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}">
+                    <a t-if="appointment_type.category == 'website' and len(available_appointments) != 1" class="navbar-brand btn px-0 h4 my-0 me-auto"
+                       t-attf-href="/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}">
                         <i class="fa fa-long-arrow-left me-2"/>All Appointments
                     </a>
                         <t t-call="website_appointment.appointment_progress_bar">
@@ -47,21 +46,6 @@
                         </t>
                 </div>
             </nav>
-        </xpath>
-        <xpath expr="//div[hasclass('o_calendar_intro')]" position="before">
-            <t t-set="no_users" t-value="not appointment_type.staff_user_ids"/>
-            <t t-set="no_slots" t-value="not appointment_type.slot_ids"/>
-            <div t-if="no_users or no_slots" class="o_appointment_missing_configuration alert alert-info rounded-0 mb-0 o_not_editable d-none" groups="appointment.group_appointment_manager">
-                This appointment type has no availabilities because it
-                <t t-if="no_users"> has no staff assigned</t>
-                <t t-if="no_users and no_slots"> and</t>
-                <t t-if="no_slots">
-                    does not have any opening hours configured
-                </t>
-                <a t-attf-href="/web#model=#{main_object._name}&amp;id=#{main_object.id}&amp;menu_id=#{backend_menu_id}" class="d-block">
-                    <i class="fa fa-arrow-right me-2"/><em>Configure <t t-out="appointment_type.name"/></em>
-                </a>
-            </div>
         </xpath>
         <xpath expr="//t[@t-call='appointment.staff_user_select']" position="attributes">
             <attribute name="t-if">appointment_type.assign_method == 'chosen' and not skip_operator_selection</attribute>

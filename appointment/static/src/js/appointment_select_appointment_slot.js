@@ -16,7 +16,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         'change select[name="timezone"]': '_onRefresh',
         'change select[id="selectStaffUser"]': '_onRefresh',
         'click .o_js_calendar_navigate': '_onCalendarNavigate',
-        'click .o_day': '_onClickDaySlot',
+        'click .o_slot_button': '_onClickDaySlot',
     },
 
     /**
@@ -47,28 +47,51 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const $firstMonth = this.$first.closest('.o_appointment_month');
         const $currentMonth = this.$('.o_appointment_month:not(.d-none)');
         $currentMonth.addClass('d-none');
+        $currentMonth.find('table').removeClass('d-none');
+        $currentMonth.find('.o_appointment_no_slot_month_helper').remove();
         $firstMonth.removeClass('d-none');
         this.$slotsList.empty();
         this.$first.click();
     },
 
     /**
+     * Replaces the content of the calendar month with the no month helper.
+     * Renders and appends its template to the element given as argument.
+     * - $month: the month div to which we append the helper.
+     */
+     _renderNoAvailabilityForMonth: function ($month) {
+        const firstAvailabilityDate = this.$first.find('.o_day_wrapper').attr('id');
+        const staffUserName = this.$("#slots_form select[name='staff_user_id'] :selected").text();
+        $month.find('table').addClass('d-none');
+        $month.append(qweb.render('Appointment.appointment_info_no_slot_month', {
+            firstAvailabilityDate: moment(firstAvailabilityDate).format('dddd D MMMM YYYY'),
+            staffUserName: staffUserName,
+        }));
+        $month.find('#next_available_slot').on('click', () => this.selectFirstAvailableMonth());
+    },
+
+    /**
      * Checks whether any slot is available in the calendar.
-     * If there isn't, adds an explicative message in the slot list.
+     * If there isn't, adds an explicative message in the slot list, and hides the appointment details,
+     * and make design width adjustment to have the helper message centered to the whole width.
      * If the appointment is missconfigured (missing user or missing availabilities),
-     * shows an explicative message instead of the calendar.
+     * display an explicative message. The calendar is then not displayed.
      *
      */
      _updateSlotAvailability: function () {
         if (!this.$first.length) { // No slot available
-            if (!this.$slotsList.hasClass('o_no_slot')) {
-                this.$('#slots_availabilities').empty().append(
-                    qweb.render(
-                        'Appointment.appointment_info_no_slot',
-                        {'appointments_count': this.$slotsList.data('appointmentsCount')}
-                    )
-                );
-            }
+            this.$('#slots_availabilities').empty();
+            this.$('.o_appointment_details_column, .o_appointment_timezone_selection').addClass('d-none');
+            this.$('.o_appointment_info_main').removeClass('col-lg-8').addClass('col-12');
+            const staffUserName = this.$("#slots_form select[name='staff_user_id'] :selected").text();
+            const hideSelectDropdown = !!this.$("input[name='hide_select_dropdown']").val();
+            this.$('.o_appointment_no_slot_overall_helper').empty().append(qweb.render('Appointment.appointment_info_no_slot', {
+                appointmentsCount: this.$slotsList.data('appointmentsCount'),
+                staffUserName: hideSelectDropdown ? staffUserName : false,
+            }));
+        } else {
+            this.$('.o_appointment_details_column, .o_appointment_timezone_selection').removeClass('d-none');
+            this.$('.o_appointment_info_main').removeClass('col-12').addClass('col-lg-8');
         }
         if (this.$('.o_appointment_missing_configuration').hasClass('d-none')) {
             this.$('.o_appointment_missing_configuration').removeClass('d-none');
@@ -82,6 +105,8 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const parent = this.$('.o_appointment_month:not(.d-none)');
         let monthID = parseInt(parent.attr('id').split('-')[1]);
         monthID += ((this.$(ev.currentTarget).attr('id') === 'nextCal') ? 1 : -1);
+        parent.find('table').removeClass('d-none');
+        parent.find('.o_appointment_no_slot_month_helper').remove();
         parent.addClass('d-none');
         const $month = $(`div#month-${monthID}`).removeClass('d-none');
         this.$('.o_slot_selected').removeClass('o_slot_selected');
@@ -89,13 +114,8 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
 
         if (!!this.$first.length) {
             // If there is at least one slot available, check if it is in the current month.
-            this.$slotsList.removeClass('o_no_slot');
             if (!$month.find('.o_day').length) {
-                const slotDate = this.$first.children().first().attr('id');
-                this.$slotsList.append(qweb.render('Appointment.appointment_info_no_slot_month', {
-                    date_first_availability: moment(slotDate).format('dddd D MMMM YYYY'),
-                }));
-                $('#next_available_slot').on('click', () => this.selectFirstAvailableMonth());
+                this._renderNoAvailabilityForMonth($month);
             }
         }
     },
@@ -108,8 +128,8 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         this.$(ev.currentTarget).addClass('o_slot_selected');
 
         const appointmentTypeID = this.$("input[name='appointment_type_id']").val();
-        const slotDate = this.$(ev.currentTarget.firstElementChild).attr('id');
-        const slots = JSON.parse(this.$(ev.currentTarget).find('div')[0].dataset['availableSlots']);
+        const slotDate = this.$(ev.currentTarget).attr('id');
+        const slots = JSON.parse(this.$(ev.currentTarget)[0].dataset['availableSlots']);
         let commonUrlParams = new URLSearchParams(window.location.search);
         // If for instance the chosen slot is already taken, then an error is thrown and the
         // user is brought back to the calendar view. In order to keep the selected user, the
@@ -123,14 +143,14 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
 
         this.$slotsList.empty().append(qweb.render('appointment.slots_list', {
             commonUrlParams: commonUrlParams,
-            slotDate: moment(slotDate).format("dddd D MMMM"),
+            slotDate: moment(slotDate).format("dddd D MMMM YYYY"),
             slots: slots,
             url: `/appointment/${appointmentTypeID}/info`,
         }));
     },
 
     /**
-     * Refresh the slots info when the user modifies the timezone or the assigned user.
+     * Refresh the slots info when the user modifies the timezone or the selected user.
      */
     _onRefresh: function (ev) {
         if (this.$("#slots_availabilities")[0]) {
@@ -139,21 +159,30 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             const filterAppointmentTypeIds = this.$("input[name='filter_appointment_type_ids']").val();
             const filterUserIds = this.$("input[name='filter_staff_user_ids']").val();
             const inviteToken = this.$("input[name='invite_token']").val();
+            const previousMonthName = this.$('.o_appointment_month:not(.d-none) .o_appointment_month_name').text();
             const staffUserID = this.$("#slots_form select[name='staff_user_id']").val();
             const timezone = this.$("select[name='timezone']").val();
+            this.$('.o_appointment_no_slot_overall_helper').empty();
+            this.$slotsList.empty();
             this._rpc({
                 route: `/appointment/${appointmentTypeID}/update_available_slots`,
                 params: {
                     invite_token: inviteToken,
                     filter_appointment_type_ids: filterAppointmentTypeIds,
                     filter_staff_user_ids: filterUserIds,
+                    month_before_update: previousMonthName,
                     staff_user_id: staffUserID,
                     timezone: timezone,
                 },
-            }).then(function (data) {
-                if (data) {
-                    self.$("#slots_availabilities").replaceWith(data);
+            }).then(function (updatedAppointmentCalendarHtml) {
+                if (updatedAppointmentCalendarHtml) {
+                    self.$("#slots_availabilities").replaceWith(updatedAppointmentCalendarHtml);
                     self.initSlots();
+                    // If possible, we keep the current month, and display the helper if it has no availability.
+                    const $displayedMonth = self.$('.o_appointment_month:not(.d-none)');
+                    if (!!self.$first.length && !$displayedMonth.find('.o_day').length) {
+                        self._renderNoAvailabilityForMonth($displayedMonth);
+                    }
                 }
             });
         }

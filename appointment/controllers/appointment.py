@@ -15,6 +15,7 @@ from odoo import exceptions, http, fields, _
 from odoo.http import request, route
 from odoo.osv import expression
 from odoo.tools import plaintext2html, DEFAULT_SERVER_DATETIME_FORMAT as dtf
+from odoo.tools.mail import is_html_empty
 from odoo.tools.misc import babel_locale_parse, get_lang
 from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.http_routing.models.ir_http import unslug
@@ -197,9 +198,11 @@ class Appointment(http.Controller):
 
         render_params = dict({
             'appointment_type': appointment_type,
+            'is_html_empty': is_html_empty,
             'formated_days': formated_days,
             'main_object': appointment_type,
             'month_first_available': month_first_available,
+            'month_kept_from_update': False,
             'slots': slots,
             'state': state,
             'timezone': request.session['timezone'],  # bw compatibility
@@ -220,6 +223,8 @@ class Appointment(http.Controller):
             upstream, from the operator_select screen (see WebsiteAppointment controller), or coming back from an error.
             It is only set if among the possible users.
             - users_possible: all possible staff users considering filter_staff_user_ids and staff members of appointment_type.
+            - hide_select_dropdown: True if the user select dropdown should be hidden. (e.g. an operator has been selected before)
+            Even if hidden, it can still be in the view and used to update availabilities according to the selected user in the js.
         """
         filter_staff_user_ids = json.loads(kwargs.get('filter_staff_user_ids') or '[]')
         users_possible = self._get_possible_staff_users(appointment_type, filter_staff_user_ids)
@@ -239,6 +244,7 @@ class Appointment(http.Controller):
             ),
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
             'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
+            'hide_select_dropdown': len(users_possible) <= 1,
             'invite_token': kwargs.get('invite_token'),
             'user_default': user_default,
             'user_selected': user_selected,
@@ -616,6 +622,8 @@ class Appointment(http.Controller):
             filter_users = self._get_possible_staff_users(appointment_type, filter_staff_user_ids)
         slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], filter_users)
         month_first_available = next((month['id'] for month in slots if month['has_availabilities']), False)
+        month_before_update = kwargs.get('month_before_update')
+        month_kept_from_update = next((month['id'] for month in slots if month['month'] == month_before_update), False) if month_before_update else False
         formated_days = _formated_weekdays(get_lang(request.env).code)
 
         return request.env['ir.qweb']._render('appointment.appointment_calendar', {
@@ -628,5 +636,6 @@ class Appointment(http.Controller):
             'timezone': request.session['timezone'],
             'formated_days': formated_days,
             'slots': slots,
+            'month_kept_from_update': month_kept_from_update,
             'month_first_available': month_first_available,
         })

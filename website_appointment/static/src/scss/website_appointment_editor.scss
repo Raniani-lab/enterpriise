@@ -12,5 +12,10 @@ body.editor_enable {
                 }
             }
         }
+        // Make sure the intro field appears on edition, as it is not displayed if html-empty.
+        .o_appointment_intro {
+            display: block !important;
+            padding-bottom: 1rem;
+        }
     }
 }

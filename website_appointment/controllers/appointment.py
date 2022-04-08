@@ -95,14 +95,16 @@ class WebsiteAppointment(Appointment):
     def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, skip_operator_selection=False, **kwargs):
         """
         Override: Take into account the operator selection flow. When skipping the selection,
-        no user_selected or user_default should be set.
+        no user_selected or user_default should be set. The display is also properly managed according to this new flow.
 
-        :param skip_operator_selection: If true, skip the selection, and instead see all availabilities.
+        :param skip_operator_selection: If true, skip the selection, and instead see all availabilities. No user should be selected.
         """
         values = super()._prepare_appointment_type_page_values(appointment_type, staff_user_id, **kwargs)
         values['skip_operator_selection'] = skip_operator_selection
         if skip_operator_selection:
             values['user_selected'] = values['user_default'] = request.env['res.users']
+        else:
+            values['hide_select_dropdown'] = len(values['users_possible']) <= 1 or (appointment_type.avatars_display == 'show' and values['user_selected'])
         return values
 
     # Tools / Data preparation

@@ -41,35 +41,36 @@
 }
 
 .o_appointment_days {
-    font-size: 16px;
-    height: 40px;
+    font-size: 12px;
+    height: 64px;
     .o_weekend {
         background-color: mix(map-get($theme-colors, 'primary'), $body-bg, 30%);
         color: color-contrast(mix(map-get($theme-colors, 'primary'), $body-bg, 30%));
     }
-    .o_day{
-        border: 2px solid map-get($theme-colors, 'primary');
-        border-radius: 0.5rem;
-        cursor: pointer;
-        &.dropdown{
-            padding: 0px;
-        }
-        .o_slots_dropdown{
-             padding: 8px;
+    .o_day_wrapper {
+        min-width: 54px;
+        @include media-breakpoint-down(sm) {
+            min-width: 28px;
         }
     }
-    .o_day:hover, .o_slot_selected {
+    .o_day {
+        .o_slot_button {
+            border: 1px solid map-get($theme-colors, 'primary');
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+    }
+    .o_slot_button:hover, .o_slot_selected {
         color: color-contrast(map-get($theme-colors, 'primary'));
         background-color: map-get($theme-colors, 'primary');
     }
     .o_mute_day {
         opacity: 0.5
     }
-    .o_today{
-        position: relative;
-        div {
-            border-bottom: 3px solid #f0ad4e;
-        }
+    .o_today .o_day_wrapper:after {
+        content: "";
+        display: block;
+        border-bottom: 2px solid map-get($theme-colors, 'secondary') !important;
     }
 }
 
@@ -85,16 +86,53 @@
 }
 
 .o_appointment {
-    .o_appointment_availabilities {
+    .o_appointment_selected_slot_date {
+        font-size: 18px;
+        font-weight: 500;
+    }
+    .o_appointment_details_column {
         @media screen and (min-device-width: 769px) {
-            min-height: 31em;
+            min-height: 45em;
         }
+        .o_appointment_details_duration, .o_appointment_details_location {
+            font-size: 1rem;
+            line-height: 2rem;
+            .fa {
+                text-align: center;
+                font-size: 1.5rem;
+                width: 1.5rem !important;
+            }
+            .o_appointment_details_location_description {
+                line-height: 1.4rem;
+            }
+        }
+    }
+    .o_appointment_no_slot_month_helper {
+        > * {
+            width: 75%;
+            @media screen and (max-width: 400px) {
+                width: 95%;
+            }
+        }
+        .o_appointment_no_slot_month_helper_svg {
+            max-width: 400px;
+        }
+    }
+    .o_appointment_no_slot_overall_helper_svg {
+        max-width: 450px;
+    }
+    .o_appointment_availabilities {
         .o_slots_list {
             a {
                 color: $body-color;
-            }
-            a:hover {
-                color: color-contrast(map-get($theme-colors, 'primary'));
+                height: 50px;
+                border-color: mix(map-get($theme-colors, 'primary'), $body-bg, 30%);
+                font-weight: 500;
+                font-size: 16px;
+                &:hover {
+                    color: color-contrast(map-get($theme-colors, 'primary')) !important;
+                    background-color: map-get($theme-colors, 'primary');
+                }
             }
         }
     }

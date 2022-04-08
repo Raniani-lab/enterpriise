@@ -4,6 +4,10 @@
     min-height: calc(98vh - 56px);
 }
 
+.o_appointment .o_appointment_details_column {
+    min-height: unset;
+}
+
 .o_wappointment_appointment_list_columns {
     .card {
         header {

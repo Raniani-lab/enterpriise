@@ -16,24 +16,21 @@
                 }
             }
         }
-        .appointments_list_columns {
-            header {
-                height: 200px;
-            }
-        }
         .o_appointment_unpublished {
             bottom: 0;
             padding: $card-spacer-y $card-spacer-x;
         }
     }
-}
-
-.o_appointment_selection {
-    select {
-        appearance: none;
+    .o_appointment_appointments_list_form {
+        #appointment_type_id {
+            height: 2.5rem;
+            &:disabled {
+                background-color: #FAFAFA;
+            }
+        }
     }
-    select::-ms-expand {
-        display: none;
+    .o_appointment_svg {
+        max-width: 500px;
     }
 }
 
@@ -85,11 +82,6 @@
     .table th, .table td {
         width: 3em;
     }
-}
-
-// Class used to adapt the color of the svg picture to the chosen theme's color
-.o_fill_color_1 {
-    fill: o-color("o-color-1");
 }
 
 .o_appointment {
@@ -191,6 +183,10 @@
 }
 
 .o_appointment, .o_appointment_choice, {
+    // Class used to adapt the color of the svg picture to the chosen theme's color
+    .o_appointment_svg_fill_color_1 {
+        fill: o-color("o-color-1");
+    }
     select {
         background-color: $body-bg;
         color: $text-muted;

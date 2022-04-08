@@ -1,0 +1,5 @@
+// Make the footer only slightly (2vh) visible. 56px is the height
+// of the top header bar o_header_standard. (navbar + 1rem padding)
+.o_appointment_index {
+    min-height: calc(98vh - 56px);
+}

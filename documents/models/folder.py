@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api, _
+from odoo import _, api, Command, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -7,6 +7,7 @@ class DocumentFolder(models.Model):
     _name = 'documents.folder'
     _description = 'Documents Workspace'
     _parent_name = 'parent_folder_id'
+    _parent_store = True
     _order = 'sequence'
 
     _sql_constraints = [
@@ -43,13 +44,15 @@ class DocumentFolder(models.Model):
                                        string="Parent Workspace",
                                        ondelete="cascade",
                                        help="A workspace will inherit the tags of its parent workspace")
+    parent_path = fields.Char(index=True, unaccent=False)
     name = fields.Char(required=True, translate=True)
     description = fields.Html(string="Description", translate=True)
     children_folder_ids = fields.One2many('documents.folder', 'parent_folder_id', string="Sub workspaces")
     document_ids = fields.One2many('documents.document', 'folder_id', string="Documents")
     sequence = fields.Integer('Sequence', default=10)
     share_link_ids = fields.One2many('documents.share', 'folder_id', string="Share Links")
-    facet_ids = fields.One2many('documents.facet', 'folder_id',
+    is_shared = fields.Boolean(compute='_compute_is_shared')
+    facet_ids = fields.One2many('documents.facet', 'folder_id', copy=True,
                                 string="Tag Categories",
                                 help="Tag categories defined for this workspace")
     group_ids = fields.Many2many('res.groups',
@@ -67,6 +70,37 @@ class DocumentFolder(models.Model):
     action_count = fields.Integer('Action Count', compute='_compute_action_count')
     document_count = fields.Integer('Document Count', compute='_compute_document_count')
 
+    def _compute_is_shared(self):
+        ancestor_ids_by_folder = {folder.id: [int(ancestor_id) for ancestor_id in folder.parent_path[:-1].split('/')[-2::-1]] for folder in self}
+        ancestor_ids_set = set().union(*ancestor_ids_by_folder.values())
+
+        search_domain = [
+            '&',
+                '|',
+                    ('date_deadline', '=', False),
+                    ('date_deadline', '>', fields.Date.today()),
+                '&',
+                    ('type', '=', 'domain'),
+                    '|',
+                        ('folder_id', 'in', self.ids),
+                        '&',
+                            ('folder_id', 'in', list(ancestor_ids_set)),
+                            ('include_sub_folders', '=', True),
+        ]
+
+        doc_share_read_group = self.env['documents.share']._read_group(
+            search_domain,
+            ['folder_id', 'include_sub_folders'],
+            ['folder_id', 'include_sub_folders'],
+            lazy=False,
+        )
+
+        doc_share_count_per_folder_id = {(res['folder_id'][0], res['include_sub_folders']): res['__count'] for res in doc_share_read_group}
+        for folder in self:
+            folder.is_shared = doc_share_count_per_folder_id.get((folder.id, True)) \
+                or doc_share_count_per_folder_id.get((folder.id, False)) \
+                or any(doc_share_count_per_folder_id.get((ancestor_id, True)) for ancestor_id in ancestor_ids_by_folder[folder.id])
+
     @api.depends('user_specific')
     def _compute_user_specific_write(self):
         for folder in self:
@@ -82,6 +116,60 @@ class DocumentFolder(models.Model):
         action_count_dict = dict((d['domain_folder_id'][0], d['domain_folder_id_count']) for d in read_group_var)
         for record in self:
             record.action_count = action_count_dict.get(record.id, 0)
+
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        self.ensure_one()
+        folder = super().copy(default)
+        folder.flush_recordset(['children_folder_ids'])
+        self.env['documents.tag'].flush_model(['folder_id'])
+
+        def get_old_id_to_new_id_map(old_folder_id, new_folder_id, table):
+            query = f"""
+                SELECT t1.id AS old_id, t2.id AS new_id
+                  FROM {table} t1
+                  JOIN {table} t2
+                    ON t1.name = t2.name
+                 WHERE t1.folder_id = %s
+                   AND t2.folder_id = %s
+            """
+            self.env.cr.execute(query, (old_folder_id, new_folder_id))
+            res = self.env.cr.dictfetchall()
+            return {key: value for key, value in [line.values() for line in res]}
+
+        old_facet_id_to_new_facet_id, old_tag_id_to_new_tag_id = \
+            [get_old_id_to_new_id_map(self.id, folder.id, table) for table in ('documents_facet', 'documents_tag')]
+
+        old_workflow_rule_id_to_new_workflow_rule_id = {}
+        for workflow_rule in self.env['documents.workflow.rule'].search([('domain_folder_id', '=', self.id)]):
+            new_workflow_rule = workflow_rule.copy({
+                'domain_folder_id': folder.id,
+                'required_tag_ids': [Command.set(old_tag_id_to_new_tag_id[tag_id] for tag_id in workflow_rule.required_tag_ids.ids)],
+                'excluded_tag_ids': [Command.set(old_tag_id_to_new_tag_id[tag_id] for tag_id in workflow_rule.excluded_tag_ids.ids)],
+            })
+            old_workflow_rule_id_to_new_workflow_rule_id[workflow_rule.id] = new_workflow_rule.id
+
+        old_workflow_actions = self.env['documents.workflow.action'].search([
+            '|',
+                '|',
+                    ('workflow_rule_id', 'in', list(old_workflow_rule_id_to_new_workflow_rule_id)),
+                    ('facet_id', 'in', list(old_facet_id_to_new_facet_id)),
+                ('tag_id', 'in', list(old_tag_id_to_new_tag_id)),
+        ])
+        for workflow_action in old_workflow_actions:
+            workflow_action.copy({
+                'workflow_rule_id': old_workflow_rule_id_to_new_workflow_rule_id[workflow_action.workflow_rule_id.id],
+                'facet_id': old_facet_id_to_new_facet_id[workflow_action.facet_id.id],
+                'tag_id': old_tag_id_to_new_tag_id[workflow_action.tag_id.id],
+            })
+
+        # We cannot just put `copy=True` on the children_folder_ids field,
+        # because this will call copy_data instead of copy, which won't copy
+        # workflow rules and actions for the children folders
+        for child in self.children_folder_ids:
+            child.copy({'parent_folder_id': folder.id})
+
+        return folder
 
     def action_see_actions(self):
         return {

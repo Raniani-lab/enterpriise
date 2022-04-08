@@ -8,9 +8,34 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_all_rating']" position="before">
                 <field name="document_count" invisible="1"/>
-                <button class="oe_stat_button" name="action_view_documents_project" groups="documents.group_documents_user" type="object" icon="fa-file-text-o">
+                <field name="use_documents" invisible="1"/>
+                <button class="oe_stat_button" name="action_view_documents_project" groups="documents.group_documents_user"
+                    type="object" icon="fa-file-text-o" attrs="{'invisible': [('use_documents', '=', False)]}">
                     <field string="Documents" name="document_count" widget="statinfo"/>
                 </button>
+            </xpath>
+            <xpath expr="//div[@id='task_dependencies_setting']" position="after">
+                <field name="company_use_documents" invisible="1"/>
+                <div class="col-lg-6 o_setting_box" id="documents_setting" attrs="{'invisible': [('company_use_documents', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                        <field name="use_documents"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="use_documents"/>
+                        <div class="text-muted">
+                            Categorize and share your documents with your customers
+                        </div>
+                        <div attrs="{'invisible': [('use_documents', '=', False)]}" class="pt-4">
+                            <label for="documents_folder_id"/>
+                            <field name="documents_folder_id" attrs="{'required': [('use_documents', '=', True), ('id', '!=', False)]}" context="{'documents_project': True, 'default_company_id': company_id}"/>
+                            <br/>
+                            <span attrs="{'invisible': [('documents_folder_id', '=', False)]}">
+                                <label for="documents_tag_ids"/>
+                                <field name="documents_tag_ids" widget="many2many_tags" options="{'no_quick_create': True}" context="{'form_view_ref': 'documents_project.tag_view_form_inherit', 'documents_project_folder': documents_folder_id}"/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>
@@ -20,7 +45,7 @@
         <field name="res_model">documents.document</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('res_model', '=', active_model), ('res_id', '=', active_id)]</field>
-        <field name="context">{'default_res_model': active_model, 'default_res_id': active_id}</field>
+        <field name="context">{'default_res_model': active_model, 'default_res_id': active_id, 'limit_folders_to_project': True}</field>
     </record>
 
     <record id="view_task_form2_document_inherit" model="ir.ui.view">
@@ -29,10 +54,26 @@
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
-                <field name="document_count" invisible="1"/>
-                <button class="oe_stat_button" name="%(action_view_documents_project_task)d" groups="documents.group_documents_user" type="action" icon="fa-file-text-o">
+                <field name="project_use_documents" invisible="1"/>
+                <button class="oe_stat_button" name="%(action_view_documents_project_task)d" groups="documents.group_documents_user"
+                    type="action" icon="fa-file-text-o" attrs="{'invisible': [('project_use_documents', '=', False)]}">
                     <field string="Documents" name="document_count" widget="statinfo"/>
                 </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_view_kanban_inherit_documents" model="ir.ui.view">
+        <field name="name">project.kanban.inherit.documents</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="priority">27</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_kanban_manage_view')]" position="inside">
+                <field name="use_documents" invisible="1"/>
+                <div role="menuitem" groups="documents.group_documents_user" attrs="{'invisible': [('use_documents', '=', False)]}">
+                    <a name="action_view_documents_project" type="object">Documents</a>
+                </div>
             </xpath>
         </field>
     </record>

@@ -4,7 +4,6 @@ odoo.define('social_push_notifications.NotificationManager', function (require) 
 
 var core = require('web.core');
 var publicWidget = require('web.public.widget');
-var utils = require('web.utils');
 var localStorage = require('web.local_storage');
 var NotificationRequestPopup = require('social_push_notifications.NotificationRequestPopup');
 
@@ -181,12 +180,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
             params: {
                 token: token
             }
-        }).then(function (res) {
-            // If new visitor has been created, store signature in cookie.
-            if (res && res.visitor_uuid) {
-                utils.set_cookie('visitor_uuid', res.visitor_uuid);
-            }
-
+        }).then(function () {
             localStorage.setItem('social_push_notifications.configuration', JSON.stringify({
                 'token': token,
             }));

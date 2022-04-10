@@ -76,9 +76,6 @@ class SocialPushNotificationsController(http.Controller):
 
         Visitor = request.env['website.visitor'].sudo()
         visitor_sudo = Visitor._get_visitor_from_request(force_create=True)
-        if request.httprequest.cookies.get('visitor_uuid', '') != visitor_sudo.access_token:
-            res['visitor_uuid'] = visitor_sudo.access_token
-
         visitor_sudo._register_push_subscription(token)
 
         return res

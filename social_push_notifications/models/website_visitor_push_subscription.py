@@ -11,7 +11,7 @@ class WebsiteVisitorPushSubscription(models.Model):
     This token is used by the firebase service to send notifications to that browser.
 
     A visitor can have multiple push subscriptions if they use several devices / browsers.
-    (push_subscriptions are 'merged' onto the main visitor, see website.visitor#_link_to_visitor for
+    (push_subscriptions are 'merged' onto the main visitor, see website.visitor#_merge_visitor for
     more information.) """
 
     _name = 'website.visitor.push.subscription'

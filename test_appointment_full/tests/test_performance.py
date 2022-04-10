@@ -29,7 +29,7 @@ class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase):
         t0 = time.time()
         with freeze_time(self.reference_now):
             self.authenticate(None, None)
-            with self.assertQueryCount(default=43):  # apt only: 42
+            with self.assertQueryCount(default=44):  # apt only: 42
                 self._test_url_open('/appointment/%i' % self.test_apt_type.id)
         t1 = time.time()
 

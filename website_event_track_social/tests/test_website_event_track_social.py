@@ -31,6 +31,7 @@ class TestTrackPush(TestEventOnlineCommon):
 
         visitors_track_1 = self.env['website.visitor'].create([{
             'name': 'Wishlisting Visitor 1',
+            'access_token': 'f9d268880b2afc54313fa45b7871d336',
             'event_track_visitor_ids': [(0, 0, {
                 'is_wishlisted': True,
                 'track_id': track_1.id
@@ -41,6 +42,7 @@ class TestTrackPush(TestEventOnlineCommon):
             })]
         }, {
             'name': 'Wishlisting Visitor 2',
+            'access_token': 'f9d2d2bc34433e5477f6aa2772cca6b7',
             'event_track_visitor_ids': [(0, 0, {
                 'is_wishlisted': True,
                 'track_id': track_1.id
@@ -53,6 +55,7 @@ class TestTrackPush(TestEventOnlineCommon):
 
         self.env['website.visitor'].create({
             'name': 'Wishlisting Visitor 3',
+            'access_token': 'f9d2f351b2e4c32e9da07c8e6e2c26f3',
             'event_track_visitor_ids': [(0, 0, {
                 'is_wishlisted': True,
                 'track_id': track_2.id
@@ -110,12 +113,14 @@ class TestTrackPush(TestEventOnlineCommon):
 
         visitors = self.env['website.visitor'].create([{
             'name': 'Regular Visitor 1',
+            'access_token': 'f9d2ee58283634915fa60795172ffcc2',
             'push_subscription_ids': [(0, 0, {'push_token': 'AAAAAA'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
             })]
         }, {
             'name': 'Regular Visitor 2',
+            'access_token': 'f9d2c399f328eab40f3b65cf018b2bea',
             'push_subscription_ids': [(0, 0, {'push_token': 'BBBBBB'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
@@ -123,6 +128,7 @@ class TestTrackPush(TestEventOnlineCommon):
         }])
 
         self.env['website.visitor'].create({
+            'access_token': 'f9d29d32bd910e02391fe16d2ac50210',
             'name': 'Visitor Blacklist',
             'event_track_visitor_ids': [(0, 0, {
                 'is_blacklisted': True,

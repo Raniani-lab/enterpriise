@@ -20,7 +20,7 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
 
         visitor = self.env['website.visitor'].create({
             "name": 'Test Visitor',
-            "partner_id": test_user.partner_id.id,
+            'access_token': test_user.partner_id.id,
             "timezone": False,
         })
 

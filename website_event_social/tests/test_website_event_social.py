@@ -12,20 +12,20 @@ class TestTrackPush(TestEventOnlineCommon):
         targets all visitors that are registered to the event """
 
         registered_parent_visitor = self.env['website.visitor'].create({
-            'name': 'Registered Parent',
+            'access_token': self.env.ref('base.user_demo').partner_id.id,
             'push_subscription_ids': [(0, 0, {'push_token': 'AAAAA1'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
             })]
         })
         register_child_visitor = self.env['website.visitor'].create({
-            'name': 'Registered Child',
+            'access_token': 'f9d254aa8344a31e3120ef5ac2d8f87b',
             'push_subscription_ids': [(0, 0, {'push_token': 'AAAAA2'})],
         })
-        register_child_visitor._link_to_visitor(registered_parent_visitor)
+        register_child_visitor._merge_visitor(registered_parent_visitor)
 
         registered_visitor = self.env['website.visitor'].create({
-            'name': 'Registered Visitor',
+            'access_token': 'f9d2277006a7f10496c311860070df6e',
             'push_subscription_ids': [(0, 0, {'push_token': 'BBBBB'})],
             'event_registration_ids': [(0, 0, {
                 'event_id': self.event_0.id
@@ -34,7 +34,7 @@ class TestTrackPush(TestEventOnlineCommon):
 
         # unregistered attendee that should not appear in results
         self.env['website.visitor'].create({
-            'name': 'Unregistered Visitor',
+            'access_token': 'f9d2e3cc29e8175daf79c6f5beb1d5ce',
             'push_subscription_ids': [(0, 0, {'push_token': 'CCCCC'})],
         })
 

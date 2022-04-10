@@ -42,11 +42,11 @@ class WebsiteVisitor(models.Model):
         domain = super()._inactive_visitors_domain()
         return expression.AND([domain, [('has_push_notifications', '=', False)]])
 
-    def _link_to_visitor(self, target):
+    def _merge_visitor(self, target):
         """ Override linking process to link existing push subscriptions to the final visitor. """
         self.push_subscription_ids.write({'website_visitor_id': target.id})
         self.write({'has_push_notifications': False})
-        return super(WebsiteVisitor, self)._link_to_visitor(target)
+        return super()._merge_visitor(target)
 
     def _register_push_subscription(self, push_token):
         self.ensure_one()

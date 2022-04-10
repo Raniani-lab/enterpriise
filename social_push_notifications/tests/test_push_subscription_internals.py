@@ -12,13 +12,13 @@ class TestPushToken(common.TransactionCase):
 
         common_push_token = 'ABC123'
 
-        visitor_1 = self.env['website.visitor'].create({'name': 'Bob'})
+        visitor_1 = self.env['website.visitor'].create({'access_token': 'f9d2b3e247685b628b8e96f5788cf40a'})
         push_token_1 = visitor_1._register_push_subscription(common_push_token)
 
         self.assertEqual(visitor_1.push_subscription_ids[0], push_token_1)
         self.assertTrue(visitor_1.has_push_notifications)
 
-        visitor_2 = self.env['website.visitor'].create({'name': 'Frank'})
+        visitor_2 = self.env['website.visitor'].create({'access_token': 'f9d28377d61080c17076c35d9a1bccb5'})
         push_token_2 = visitor_2._register_push_subscription(common_push_token)
 
         self.assertFalse(bool(visitor_1.push_subscription_ids))
@@ -27,7 +27,7 @@ class TestPushToken(common.TransactionCase):
         self.assertTrue(visitor_2.has_push_notifications)
 
     def test_sync_has_push_notification(self):
-        visitor_1 = self.env['website.visitor'].create({'name': 'Bob'})
+        visitor_1 = self.env['website.visitor'].create({'access_token': 'f9d20bd006c3bf46b875451defb5991d'})
         push_token_1 = visitor_1._register_push_subscription('ABC123')
 
         self.assertTrue(visitor_1.has_push_notifications)

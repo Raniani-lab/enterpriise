@@ -19,6 +19,7 @@ class WebsiteVisitorTestsPush(WebsiteVisitorTests):
             'country_id': self.env.ref('base.be').id,
             'website_id': 1,
             'last_connection_datetime': datetime.now() - timedelta(days=8),
+            'access_token': 'f9d2f932a8f657d2d002638ea80fb97f',
             'push_subscription_ids': [(0, 0, {
                 'push_token': 'token-1'
             })]
@@ -43,7 +44,7 @@ class WebsiteVisitorTestsPush(WebsiteVisitorTests):
             'website_visitor_id': linked_visitor.id,
         }])
 
-        linked_visitor._link_to_visitor(main_visitor)
+        linked_visitor._merge_visitor(main_visitor)
 
         self.assertVisitorDeactivated(linked_visitor, main_visitor)
 
@@ -55,4 +56,4 @@ class WebsiteVisitorTestsPush(WebsiteVisitorTests):
             push_subscription_1 | push_subscription_2)
 
         self.assertTrue(main_visitor.has_push_notifications)
-        self.assertFalse(linked_visitor.has_push_notifications)
+        self.assertFalse(linked_visitor.exists())

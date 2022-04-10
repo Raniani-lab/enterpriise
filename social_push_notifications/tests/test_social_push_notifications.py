@@ -3,6 +3,7 @@
 
 import base64
 import datetime
+import random
 
 from unittest.mock import patch
 
@@ -34,6 +35,7 @@ class SocialPushNotificationsCase(SocialCase, CronMixinCase):
             visitor_vals.append({
                 'name': timezones[i] or 'Visitor',
                 'timezone': timezones[i],
+                'access_token': '%032x' % random.randrange(16**32),
                 'push_subscription_ids': [(0, 0, {'push_token': 'fake_token_%s' % i})] if i != 0 else False,
             })
         visitors = Visitor.create(visitor_vals)

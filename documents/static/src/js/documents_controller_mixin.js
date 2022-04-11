@@ -601,6 +601,8 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
                 default_partner_id: context.default_partner_id || false,
                 default_folder_id: this.searchModel.get('selectedFolderId'),
                 default_tag_ids: [[6, 0, this.searchModel.get('selectedTagIds')]],
+                default_res_id: context.default_res_id || false,
+                default_res_model: context.default_res_model || false,
             },
             fullscreen: config.device.isMobile,
             on_close: async () => await this.reload()

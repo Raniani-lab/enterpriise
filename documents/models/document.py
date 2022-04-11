@@ -29,7 +29,7 @@ class Document(models.Model):
     mimetype = fields.Char(related='attachment_id.mimetype')
     res_model = fields.Char('Resource Model', compute="_compute_res_record", inverse="_inverse_res_model", store=True)
     res_id = fields.Integer('Resource ID', compute="_compute_res_record", inverse="_inverse_res_model", store=True)
-    res_name = fields.Char('Resource Name', related='attachment_id.res_name')
+    res_name = fields.Char('Resource Name', compute="_compute_res_name", compute_sudo=True)
     index_content = fields.Text(related='attachment_id.index_content')
     description = fields.Text('Attachment Description', related='attachment_id.description', readonly=False)
 
@@ -93,6 +93,15 @@ class Document(models.Model):
                 record.res_model = attachment.res_model
                 record.res_id = attachment.res_id
 
+    @api.depends('attachment_id', 'res_model', 'res_id')
+    def _compute_res_name(self):
+        for record in self:
+            if record.attachment_id:
+                record.res_name = record.attachment_id.res_name
+            elif record.res_id and record.res_model:
+                record.res_name = self.env[record.res_model].browse(record.res_id).display_name
+            else:
+                record.res_name = False
 
     def _inverse_res_model(self):
         for record in self:

@@ -6,6 +6,12 @@ from odoo.exceptions import UserError
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
+    def _select_action_to_open(self):
+        self.ensure_one()
+        if not self._context.get('action_name') and self.type == 'bank' and self.bank_statements_source == 'online_sync':
+            return 'action_bank_statement_line'
+        return super()._select_action_to_open()
+
     def __get_bank_statements_available_sources(self):
         rslt = super(AccountJournal, self).__get_bank_statements_available_sources()
         rslt.append(("online_sync", _("Automated Bank Synchronization")))

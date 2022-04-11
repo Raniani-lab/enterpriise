@@ -8,7 +8,7 @@ from werkzeug.urls import url_encode, url_join
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
-SHORT_CODE_PATTERN = re.compile(r"^[\w]+$")
+SHORT_CODE_PATTERN = re.compile(r"^[\w-]+$")
 
 
 class AppointmentShare(models.Model):
@@ -50,7 +50,7 @@ class AppointmentShare(models.Model):
         invalid_invite = next((invite for invite in self if invite.short_code_format_warning), False)
         if invalid_invite:
             raise ValidationError(_(
-                "Only letters, numbers and underscores are allowed in your links. You need to adapt %s.", invalid_invite.short_code
+                "Only letters, numbers, underscores and dashes are allowed in your links. You need to adapt %s.", invalid_invite.short_code
             ))
 
     @api.depends('appointment_type_ids')

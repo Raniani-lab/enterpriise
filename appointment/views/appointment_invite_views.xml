@@ -40,7 +40,7 @@
                 <field name="short_code_unique_warning" invisible="1"/>
                 <div class="alert alert-warning mb-0" role="alert"
                     attrs="{'invisible': [('short_code_format_warning', '=', False)]}">
-                    Only letters, numbers and underscores are allowed in your links.
+                    Only letters, numbers, underscores and dashes are allowed in your links.
                 </div>
                 <div class="alert alert-warning mb-0" role="alert"
                     attrs="{'invisible': [('short_code_unique_warning', '=', False)]}">

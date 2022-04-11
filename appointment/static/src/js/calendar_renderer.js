@@ -29,7 +29,6 @@ AttendeeCalendarRenderer.include({
         const appointments = this.state.staffUserAppointmentTypes || [];
         return {
             appointments: appointments,
-            staff_user_id: this.getSession().uid,
         };
     },
     /**
@@ -274,7 +273,7 @@ AttendeeCalendarRenderer.include({
      * @param {Event} ev 
      */
     _onChangeDisplay(ev) {
-        this.$sidebar.find('.o_appointment_appointment_group_buttons').toggleClass('o_hidden');
+        this.$sidebar.find('.o_appointment_calendar_group_buttons').toggleClass('o_hidden');
         this.$sidebar.find('#copy_text').toggleClass('o_hidden');
         this.$sidebar.find('#scheduling_box').toggleClass('o_appointment_scheduling_message_box');
         this.$sidebar.find('.o_appointment_get_last_copy_link').toggleClass('o_hidden');
@@ -294,7 +293,7 @@ AttendeeCalendarRenderer.include({
     _switchMode() {
         this.state.calendarMode = this.state.calendarMode === 'default' ? 'slots-creation' : 'default';
         this.$sidebar.find('.o_appointment_create_custom_appointment').toggleClass('o_hidden');
-        this.$sidebar.find('.o_appointment_appointment_group_buttons').toggleClass('o_hidden');
+        this.$sidebar.find('.o_appointment_calendar_group_buttons').toggleClass('o_hidden');
         this.$sidebar.find('.o_appointment_discard_slots').toggleClass('o_hidden');
         this.$sidebar.find('#message_text').toggleClass('o_hidden');
         this.$sidebar.find('#scheduling_box').toggleClass('o_appointment_scheduling_message_box');

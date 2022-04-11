@@ -28,7 +28,7 @@
                     <i class="fa fa-trash"/>
                 </button>
             </span>
-            <div class="btn-group col px-0 o_appointment_appointment_group_buttons">
+            <div t-if="appointments.length !== 0" class="btn-group col px-0 o_appointment_calendar_group_buttons">
                 <button class="btn btn-primary o_appointment_select_slots" aria-label="Share Availabilities" title="Share Availabilities">
                     Share Availabilities
                 </button>
@@ -47,6 +47,11 @@
                         </button>
                     </t>
                 </div>
+            </div>
+            <div t-else="" class="btn-group col px-0 o_appointment_calendar_group_buttons">
+                <button class="btn btn-primary o_appointment_select_slots" aria-label="Share Availabilities" title="Share Availabilities">
+                    Select Dates
+                </button>
             </div>
         </div>
     </t>

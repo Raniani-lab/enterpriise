@@ -7,13 +7,11 @@ AttendeeCalendarRenderer.include({
         'click .o_appointment_search_create_work_hours_appointment': '_onSearchCreateWorkHoursAppointment',
     }),
     /**
-     * Add data to dynamically show / hide 'work hours' button in the dropdown,
-     * and know if one work hours appointment already exists.
+     * Add data to dynamically show / hide 'work hours' button in the dropdown.
      * @override
      */
      _prepareAppointmentButtonsTemplateContext() {
         let data = this._super(...arguments);
-        data.work_hours_appointment = data.appointments.find(appointment => appointment.category == 'work_hours');
         data.context_user_has_employee = this.state.contextUserHasEmployee;
         return data;
     },

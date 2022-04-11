@@ -109,9 +109,8 @@ SignableDocument.include({
 
   get_pdfiframe_class: function () {
     const PDFIframeWithToolbar = this._super.apply(this, arguments).extend({
-      // Currently only Signature, Initials, Text are allowed to be added while signing
       getToolbarTypesArray: function() {
-        return Object.values(this.types).filter((v) => ["Signature", "Initials", "Text"].includes(v["name"]));
+        return Object.values(this.types).filter((v) => v["editWhileSigningAllowed"]);
       },
 
       postItemClone: function (signItems) {

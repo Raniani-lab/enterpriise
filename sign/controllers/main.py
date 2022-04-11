@@ -26,6 +26,16 @@ class Sign(http.Controller):
             return request.not_found()
 
         sign_item_types = http.request.env['sign.item.type'].sudo().search_read([])
+
+        # Currently only Signature, Initials, Text are allowed to be added while signing
+        edit_while_signing_allowed_type_ids = {
+            request.env.ref('sign.sign_item_type_signature').id,
+            request.env.ref('sign.sign_item_type_initial').id,
+            request.env.ref('sign.sign_item_type_text').id,
+        }
+        for item_type in sign_item_types:
+            item_type['edit_while_signing_allowed'] = item_type['id'] in edit_while_signing_allowed_type_ids
+
         if current_request_item:
             for item_type in sign_item_types:
                 if item_type['auto_field']:

@@ -25,44 +25,47 @@ odoo.define('l10n_de_pos_cert.PaymentScreen', function(require) {
                 this.validateOrderFree = true;
             }
         }
-        // Almost the same as in the basic module but we don't finalize if the api call has failed
+        //@override
         async validateOrder(isForceValidate) {
             if (this.env.pos.isCountryGermanyAndFiskaly()) {
-                if (!this.validateOrderFree) {
-                    return;
-                }
-                this.validateOrderFree = false;
-                if (await this._isOrderValid(isForceValidate)) {
-                    // remove pending payments before finalizing the validation
-                    for (let line of this.paymentLines) {
-                        if (!line.is_done()) this.currentOrder.remove_paymentline(line);
-                    }
-                    if (this.currentOrder.isTransactionInactive()) {
-                        await this.currentOrder.createTransaction().catch(async (error) => {
-                            if (error.status === 0) {
-                                this.trigger('fiskaly-no-internet-confirm-popup', this._finalizeValidation.bind(this));
-                            } else {
-                                const message = {'unknown': this.env._t('An unknown error has occurred ! Please, contact Odoo.')};
-                                this.trigger('fiskaly-error', {error, message});
-                            }
-                        })
-                    }
-                    if (this.currentOrder.isTransactionStarted()) {
-                        await this.currentOrder.finishShortTransaction().then(async () => {
-                            await this._finalizeValidation();
-                        }).catch(async (error) => {
-                            if (error.status === 0) {
-                                this.trigger('fiskaly-no-internet-confirm-popup', this._finalizeValidation.bind(this));
-                            } else {
-                                const message = {'unknown': this.env._t('An unknown error has occurred ! Please, contact Odoo.')};
-                                this.trigger('fiskaly-error', {error, message});
-                            }
-                        });
+                if (this.validateOrderFree) {
+                    this.validateOrderFree = false;
+                    try {
+                        await super.validateOrder(...arguments);
+                    } finally {
+                        this.validateOrderFree = true;
                     }
                 }
-                this.validateOrderFree = true;
             } else {
                 await super.validateOrder(...arguments);
+            }
+        }
+        //@override
+        async _finalizeValidation() {
+            if (this.currentOrder.isTransactionInactive()) {
+                try {
+                    await this.currentOrder.createTransaction();
+                } catch (error) {
+                    if (error.status === 0) {
+                        this.trigger('fiskaly-no-internet-confirm-popup', super._finalizeValidation.bind(this));
+                    } else {
+                        const message = {'unknown': this.env._t('An unknown error has occurred ! Please, contact Odoo.')};
+                        this.trigger('fiskaly-error', {error, message});
+                    }
+                }
+            }
+            if (this.currentOrder.isTransactionStarted()) {
+                try {
+                    await this.currentOrder.finishShortTransaction();
+                    await super._finalizeValidation(...arguments)
+                } catch (error) {
+                    if (error.status === 0) {
+                        this.trigger('fiskaly-no-internet-confirm-popup', super._finalizeValidation.bind(this));
+                    } else {
+                        const message = {'unknown': this.env._t('An unknown error has occurred ! Please, contact Odoo.')};
+                        this.trigger('fiskaly-error', {error, message});
+                    }
+                }
             }
         }
     };

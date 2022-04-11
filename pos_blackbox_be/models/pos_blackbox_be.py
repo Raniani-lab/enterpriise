@@ -55,12 +55,12 @@ class pos_config(models.Model):
                 if len(config.blackbox_pos_production_id) != 14:
                     raise ValidationError(_("Serial number must consist of 14 characters."))
 
-    def open_session_cb(self):
+    def _check_before_creating_new_session(self):
         if self.blackbox_pos_production_id:
             self._check_insz_user()
             self._check_company_address()
             self._check_work_product_taxes()
-        return super(pos_config, self).open_session_cb()
+        return super()._check_before_creating_new_session()
 
     def _check_work_product_taxes(self):
         work_in = self.env.ref('pos_blackbox_be.product_product_work_in')

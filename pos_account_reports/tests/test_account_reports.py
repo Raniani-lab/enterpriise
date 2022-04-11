@@ -159,7 +159,7 @@ class POSTestTaxReport(TestAccountReportsCommon):
     @freeze_time("2020-01-01")
     def _check_tax_report_content(self):
         today = fields.Date.today()
-        self.pos_config.open_session_cb()
+        self.pos_config.open_ui()
         self._create_and_pay_pos_order(1, 30)
         self._create_and_pay_pos_order(-1, 40)
         self.pos_config.current_session_id.action_pos_session_closing_control()

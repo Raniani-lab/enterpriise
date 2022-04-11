@@ -96,11 +96,10 @@ class PosConfig(models.Model):
             if config.is_posbox:
                 config.iot_device_ids += config.iface_sweden_fiscal_data_module
 
-    def open_session_cb(self):
-        for config in self:
-            if config.iface_sweden_fiscal_data_module:
-                config._check_pos_settings_for_sweden()
-            return super(PosConfig, self).open_session_cb()
+    def _check_before_creating_new_session(self):
+        if self.iface_sweden_fiscal_data_module:
+            self._check_pos_settings_for_sweden()
+        return super()._check_before_creating_new_session()
 
     def _check_pos_settings_for_sweden(self):
         if self.iface_sweden_fiscal_data_module and not self.company_id.vat:

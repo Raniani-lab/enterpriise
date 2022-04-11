@@ -7,7 +7,8 @@ odoo.define('pos_settle_due.PaymentScreen', function (require) {
 
     const PosSettleDuePaymentScreen = (PaymentScreen) =>
         class extends PaymentScreen {
-            async validateOrder() {
+            //@override
+            async validateOrder(isForceValidate) {
                 const order = this.currentOrder;
                 const change = order.get_change();
                 const paylaterPaymentMethod = this.env.pos.payment_methods.filter(

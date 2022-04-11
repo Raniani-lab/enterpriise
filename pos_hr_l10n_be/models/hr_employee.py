@@ -50,9 +50,9 @@ class PosConfig(models.Model):
                     ", ".join(str(emp) for emp in emp_list)
                 ))
 
-    def open_session_cb(self):
+    def _check_before_creating_new_session(self):
         self._check_employee_insz_or_bis_number()
-        return super(PosConfig, self).open_session_cb()
+        return super()._check_before_creating_new_session()
 
 
 class PosSession(models.Model):

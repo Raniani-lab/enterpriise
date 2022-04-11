@@ -352,7 +352,7 @@
         <div class="s_hr o_mail_snippet_general pt16 pb0" data-snippet="s_hr" data-name="Separator">
             <hr class="s_hr_1px s_hr_solid mx-auto"/>
         </div>
-        <div class="s_footer_social o_mail_block_footer_social o_mail_footer_social_center o_mail_snippet_general" data-snippet="o_mail_block_footer_social" data-name="Footer Social Center">
+        <div class="s_footer_social o_mail_block_footer_social o_mail_footer_social_center o_mail_snippet_general" data-snippet="s_mail_block_footer_social" data-name="Footer Social Center">
             <div cellspacing="0" cellpadding="0" class="container o_mail_table_styles">
                 <div class="row">
                     <div class="col-lg o_mail_footer_links">

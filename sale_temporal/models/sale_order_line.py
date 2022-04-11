@@ -24,7 +24,13 @@ class SaleOrderLine(models.Model):
                                         help="The next invoice will be created on this date then the period will be extended.")
     pricelist_id = fields.Many2one(related='order_id.pricelist_id')
     pricing_id = fields.Many2one('product.pricing',
-                                 domain="[('id', 'in', product_pricing_ids), '|', ('pricelist_id', '=', False), ('pricelist_id', '=', pricelist_id)]",
+                                 domain="[('id', 'in', product_pricing_ids),"
+                                        "'|',"
+                                        "('product_variant_ids', '=', False),"
+                                        "('product_variant_ids', '=', product_id),"
+                                        "'|',"
+                                        "('pricelist_id', '=', False),"
+                                        "('pricelist_id', '=', pricelist_id)]",
                                  compute='_compute_pricing', store=True, precompute=True, readonly=False)
     temporal_type = fields.Selection([], compute="_compute_temporal_type")
 

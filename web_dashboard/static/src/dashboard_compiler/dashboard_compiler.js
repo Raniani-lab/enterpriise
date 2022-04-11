@@ -89,6 +89,8 @@ function compileWidget({ document }, { node }) {
     const viewWidget = document.createElement("ViewWidget");
     viewWidget.setAttribute("model", "model");
     viewWidget.setAttribute("widgetName", `"${node.getAttribute("name")}"`);
+    viewWidget.setAttribute("t-key", "renderKey");
+
     if ("title" in node.attributes) {
         viewWidget.setAttribute("title", `"${node.getAttribute("title")}"`);
     }
@@ -175,8 +177,8 @@ export class DashboardCompiler {
     compileView(node) {
         const view = this.doc.createElement("ViewWrapper");
         const type = node.getAttribute("type");
-        view.setAttribute("t-props", `getViewWrapperProps("${type}")`);
-        view.setAttribute("t-key", "subViewsRenderKey");
+        view.setAttribute("t-props", `this.getViewWrapperProps("${type}")`);
+        view.setAttribute("t-key", "renderKey");
         return view;
     }
 
@@ -193,6 +195,7 @@ export class DashboardCompiler {
         agg.setAttribute("model", "model");
         agg.setAttribute("name", `"${aggName}"`);
         agg.setAttribute("statisticType", `"${node.tagName}"`);
+        agg.setAttribute("t-key", "renderKey");
 
         if ("value_label" in node.attributes) {
             agg.setAttribute(

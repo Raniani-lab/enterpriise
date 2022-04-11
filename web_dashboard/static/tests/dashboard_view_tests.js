@@ -4221,9 +4221,9 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("dashboard statistic support wowl field with comparison", async (assert) => {
-        assert.expect(31);
+        assert.expect(36);
 
-        const expectedFieldValues = [8, 16, 4];
+        const expectedFieldValues = [8, 16, 16, 4, 4];
         class CustomField extends Component {
             setup() {
                 assert.ok(this.props.model instanceof DashboardModel);

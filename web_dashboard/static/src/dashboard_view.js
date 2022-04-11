@@ -16,7 +16,7 @@ import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
 import { ViewWidget } from "./view_widget";
 import { ViewWrapper } from "./view_wrapper/view_wrapper";
 
-const { Component, onWillStart, onWillUpdateProps, useEffect } = owl;
+const { Component, onWillStart, onWillUpdateProps } = owl;
 
 const viewRegistry = registry.category("views");
 
@@ -40,7 +40,7 @@ export class DashboardView extends Component {
     setup() {
         this._viewService = useService("view");
         this.action = useService("action");
-        this.subViewsRenderKey = 1;
+        this.renderKey = 1;
 
         const { resModel, arch, fields } = this.props;
         const processedArch = useViewArch(arch, {
@@ -79,17 +79,23 @@ export class DashboardView extends Component {
             },
         });
 
+        // indexed by view type
+        this.viewWrapperProps = {};
+
         this.model = useModel(this.constructor.Model, {
             resModel,
             fields,
             aggregates: this.aggregates,
             formulae: this.formulae,
+        }, {
+            onUpdate: ()  => {
+                // renew every view whenever dashboard model is updated
+                this.renderKey++;
+                this.viewWrapperProps = {};
+                this.render();
+            }
         });
 
-        // Always renew every view
-        useEffect(() => {
-            this.subViewsRenderKey++;
-        });
 
         onWillStart(this.onWillStart);
         onWillUpdateProps(this.onWillUpdateProps);
@@ -218,12 +224,15 @@ export class DashboardView extends Component {
      * @returns {Object}
      */
     getViewWrapperProps(viewType) {
-        return {
-            callbackRecorders: this.subViews[viewType].callbackRecorders,
-            switchView: () => this.openFullscreen(viewType),
-            type: viewType,
-            viewProps: this.getViewProps(viewType),
-        };
+        if (!this.viewWrapperProps[viewType]) {
+            this.viewWrapperProps[viewType] = {
+                callbackRecorders: this.subViews[viewType].callbackRecorders,
+                switchView: () => this.openFullscreen(viewType),
+                type: viewType,
+                viewProps: this.getViewProps(viewType),
+            };
+        }
+        return this.viewWrapperProps[viewType];
     }
 
     /**

@@ -34,7 +34,7 @@ class SaleOrder(models.Model):
             ('create', 'Creation'),
             ('renew', 'Renewal'),
             ('upsell', 'Upselling')],
-        default='create',
+        default=False,
         help="Creation: The Sales Order created the subscription\n"
              "Upselling: The Sales Order added lines to the subscription\n"
              "Renewal: The Sales Order replaced the subscription's content with its own")
@@ -438,6 +438,7 @@ class SaleOrder(models.Model):
         for order, vals in zip(orders, vals_list):
             if not order.is_subscription:
                 continue
+            order.subscription_management = vals.get('subscription_management', 'create')
             if vals.get('stage_id'):
                 order._send_subscription_rating_mail(force_send=True)
         return orders

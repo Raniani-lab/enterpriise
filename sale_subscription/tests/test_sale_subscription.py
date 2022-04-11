@@ -306,6 +306,7 @@ class TestSubscription(TestSubscriptionCommon):
             new_line = self.env['sale.order.line'].create(so_line_vals)
             upsell_so.action_confirm()
             discounts = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('discount')]
+            self.assertEqual(discounts, [45.16, 23.73, 0.0, 0.0], 'Prorated prices should be applied')
             prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
             self.assertEqual(prices, [27.42, 38.14, 40, 42], 'Prorated prices should be applied')
 

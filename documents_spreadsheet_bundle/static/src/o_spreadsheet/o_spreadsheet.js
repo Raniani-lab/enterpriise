@@ -19041,12 +19041,29 @@
                 };
                 if (definition.type === "pie") {
                     // In case of pie graph, dataset.backgroundColor is an array of string
-                    // @ts-ignore - we know dataset.data is an array
                     dataset.backgroundColor = pieColors;
                 }
                 runtime.data.datasets.push(dataset);
             }
-            return runtime;
+            return { ...runtime, data: this.filterEmptyDataPoints(runtime.data) };
+        }
+        filterEmptyDataPoints(chartData) {
+            const labels = chartData.labels;
+            const datasets = chartData.datasets;
+            const numberOfDataPoints = Math.max(labels.length, ...datasets.map((dataset) => { var _a; return ((_a = dataset.data) === null || _a === void 0 ? void 0 : _a.length) || 0; }));
+            const dataPointsIndexes = range(0, numberOfDataPoints).filter((dataPointIndex) => {
+                const label = labels[dataPointIndex];
+                const values = datasets.map((dataset) => { var _a; return (_a = dataset.data) === null || _a === void 0 ? void 0 : _a[dataPointIndex]; });
+                return label || values.some((value) => value === 0 || Boolean(value));
+            });
+            return {
+                ...chartData,
+                labels: dataPointsIndexes.map((i) => labels[i] || ""),
+                datasets: datasets.map((dataset) => ({
+                    ...dataset,
+                    data: dataPointsIndexes.map((i) => dataset.data[i]),
+                })),
+            };
         }
         // TODO type this with Chart.js types.
         getData(ds, sheetId) {
@@ -29097,7 +29114,16 @@
                                 changeType = "RESIZE";
                                 newRange = this.createAdaptedRange(newRange, dimension, changeType, -toRemove);
                             }
-                            if (min < range.zone[start]) {
+                            else if (range.zone[start] >= min && range.zone[end] <= max) {
+                                changeType = "REMOVE";
+                            }
+                            else if (range.zone[start] <= max && range.zone[end] >= max) {
+                                const toRemove = max - range.zone[start] + 1;
+                                changeType = "RESIZE";
+                                newRange = this.createAdaptedRange(newRange, dimension, changeType, -toRemove);
+                                newRange = this.createAdaptedRange(newRange, dimension, "MOVE", -(range.zone[start] - min));
+                            }
+                            else if (min < range.zone[start]) {
                                 changeType = "MOVE";
                                 newRange = this.createAdaptedRange(newRange, dimension, changeType, -(max - min + 1));
                             }
@@ -29191,10 +29217,7 @@
         verifyRangeRemoved(adaptRange) {
             return (range) => {
                 const result = adaptRange(range);
-                if (result.changeType !== "NONE" &&
-                    result.range &&
-                    (result.range.zone.right - result.range.zone.left < 0 ||
-                        result.range.zone.bottom - result.range.zone.top < 0)) {
+                if (result.changeType !== "NONE" && !isZoneValid(result.range.zone)) {
                     return { range: result.range, changeType: "REMOVE" };
                 }
                 return result;
@@ -32148,8 +32171,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-04-08T07:02:43.099Z';
-    exports.__info__.hash = '166fa3e';
+    exports.__info__.date = '2022-04-11T12:12:35.693Z';
+    exports.__info__.hash = '26a1856';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

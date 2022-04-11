@@ -180,6 +180,7 @@ class L10nClDailySalesBook(models.Model):
             'format_vat': self.env['l10n_cl.edi.util']._l10n_cl_format_vat,
             'timestamp': self.env['l10n_cl.edi.util']._get_cl_current_strftime(),
             'items': items,
+            '__keep_empty_lines': True,
         })
         dte = self.env['l10n_cl.edi.util']._sign_full_xml(xml_book, digital_signature, doc_id, 'consu')
         attachment = self.env['ir.attachment'].create({

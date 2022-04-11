@@ -21,7 +21,7 @@ class AccountAnalyticLine(models.Model):
 
         employee = self.env.user.employee_id if self._context.get('my_timesheet_display_timer') else False
         valid_row_fields = list(set(['project_id', 'employee_id']) & set(row_fields))
-        if not employee or not valid_row_fields:
+        if not employee or not valid_row_fields or not section_field or section_field != 'employee_id':
             return grids
         slots = self.env['planning.slot'].read_group(
             self._get_planning_domain(employee.id),

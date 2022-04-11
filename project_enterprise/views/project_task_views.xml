@@ -230,4 +230,10 @@
         <field name="act_window_id" ref="project.action_view_task_from_milestone"/>
         <field name="view_id" ref="project_task_map_view_no_title"/>
     </record>
+
+    <record id="project.project_task_action_sub_task" model="ir.actions.act_window">
+        <field name="res_model">project.task</field>
+        <field name="view_mode">tree,kanban,form,calendar,gantt,map,pivot,graph,activity</field>
+    </record>
+
 </odoo>

@@ -6,3 +6,4 @@ from . import analytic
 from . import project_task
 from . import res_config_settings
 from . import sale
+from . import project

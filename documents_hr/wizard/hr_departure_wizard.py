@@ -8,7 +8,8 @@ class HrDepartureWizard(models.TransientModel):
     _inherit = 'hr.departure.wizard'
 
     def _get_default_send_hr_documents_access_link(self):
-        return self.env.company.documents_hr_settings and self.env.company.documents_hr_folder
+        employee = self.env['hr.employee'].browse(self.env.context.get('active_id'))
+        return self.env.company.documents_hr_settings and self.env.company.documents_hr_folder and employee.address_home_id.email
 
     send_hr_documents_access_link = fields.Boolean(
         string="Send Access Link",

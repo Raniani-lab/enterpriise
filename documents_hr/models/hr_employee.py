@@ -59,9 +59,9 @@ class HrEmployee(models.Model):
         return action
 
     def action_send_documents_share_link(self):
-        invalid_employees = self.filtered(lambda e: not e.user_id)
+        invalid_employees = self.filtered(lambda e: not e.address_home_id.email)
         if invalid_employees:
-            raise UserError(_('The following employees are not linked to any user:\n%s', '\n'.join(invalid_employees.mapped('name'))))
+            raise UserError(_('Employee\'s private email must be set to use \"Send Access Link\" function:\n%s', '\n'.join(invalid_employees.mapped('name'))))
         template = self.env.ref('documents_hr.mail_template_document_folder_link', raise_if_not_found=False)
         for employee in self:
             if not employee.documents_share_id:

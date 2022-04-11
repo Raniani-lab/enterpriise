@@ -182,6 +182,7 @@ class AccountEdiFormat(models.Model):
 
             withholding_amount = invoice.amount_untaxed + sum(invoice.line_ids.filtered(lambda line: line.tax_line_id and not line.tax_line_id.l10n_co_edi_type.retention).mapped('price_total'))
             amount_in_words = invoice.currency_id.with_context(lang=invoice.partner_id.lang or 'es_ES').amount_to_text(withholding_amount)
+            narration = (html2plaintext(invoice.narration or '') and html2plaintext(invoice.narration) + ' ') + (invoice.invoice_origin or '')
             notas = [
                 '1.-%s|%s|%s|%s|%s|%s' % (invoice.company_id.l10n_co_edi_header_gran_contribuyente or '',
                                           invoice.company_id.l10n_co_edi_header_tipo_de_regimen or '',
@@ -190,11 +191,11 @@ class AccountEdiFormat(models.Model):
                                           invoice.company_id.l10n_co_edi_header_resolucion_aplicable or '',
                                           invoice.company_id.l10n_co_edi_header_actividad_economica or ''),
                 '2.-%s' % (invoice.company_id.l10n_co_edi_header_bank_information or '').replace('\n', '|'),
-                '3.- %s' % (html2plaintext(invoice.narration or 'N/A')),
+                ('3.- %s' % (narration or 'N/A'))[:500],
                 '6.- %s|%s' % (html2plaintext(invoice.invoice_payment_term_id.note), amount_in_words),
                 '7.- %s' % (invoice.company_id.website),
-                '8.-%s|%s|%s' % (invoice.partner_id.commercial_partner_id._get_vat_without_verification_code() or '', invoice.partner_shipping_id.phone or '', invoice.invoice_origin or ''),
-                '10.- | | | |%s' % (invoice.invoice_origin or 'N/A'),
+                '8.-%s|%s|%s' % (invoice.partner_id.commercial_partner_id._get_vat_without_verification_code() or '', invoice.partner_shipping_id.phone or '', invoice.invoice_origin and invoice.invoice_origin.split(',')[0] or ''),
+                '10.- | | | |%s' % (invoice.invoice_origin and invoice.invoice_origin.split(',')[0] or 'N/A'),
                 '11.- |%s| |%s|%s' % (total_units, total_weight, total_volume)
             ]
 

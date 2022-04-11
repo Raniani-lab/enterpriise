@@ -23,3 +23,9 @@ class AccountFiscalPosition(models.Model):
         default=_default_avatax_refund_account_id,
         help="Account that will be used by Avatax taxes for refunds.",
     )
+
+    def _neutralize(self):
+        super()._neutralize()
+        self.flush()
+        self.invalidate_cache()
+        self.env.cr.execute("UPDATE account_fiscal_position SET is_avatax=False")

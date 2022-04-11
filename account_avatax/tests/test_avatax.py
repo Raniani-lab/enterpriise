@@ -118,6 +118,13 @@ class TestAccountAvalaraSalesTaxAdministration(TestAccountAvataxCommon):
             self._create_invoice()
             mocked_request.assert_not_called()
 
+    def test_disable_avatax_neutralize(self):
+        """ORM's neutralization feature works."""
+        self.env['account.fiscal.position']._neutralize()
+        with patch('odoo.addons.account_avatax.lib.avatax_client.AvataxClient.request') as mocked_request:
+            self._create_invoice()
+            mocked_request.assert_not_called()
+
     def test_integration_connect_button(self):
         """Test the connection to the AvaTax service and verify the AvaTax credentials."""
         with self._skip_no_credentials(), self.assertRaisesRegex(UserError, "'version'"):

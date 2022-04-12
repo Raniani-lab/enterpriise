@@ -46,5 +46,5 @@ class TestSubscriptionPerformance(TestSubscriptionCommon):
 
             sale_orders.action_confirm()
 
-        with self.assertQueryCount(__system__=7831):
+        with self.assertQueryCount(__system__=7731):
             sale_orders._create_recurring_invoice()

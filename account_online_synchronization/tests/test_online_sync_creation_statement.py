@@ -334,7 +334,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
             ]
         )
 
-        # Post first statement and then try adding new transaction to it, new transactions should be posted inside previous statement
+        # Post first statement and then try adding new transaction to it, create a new statement at the same date and add the transaction to it
         self.confirm_bank_statement(created_bnk_stmt[0])
         created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc', limit=1)
         self.assertEqual(created_bnk_stmt.state, 'confirm', 'Statement should be posted')
@@ -342,20 +342,27 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         transactions = self.create_transactions(['2016-01-10'])
         self.online_account.balance = 80
         self.bnk_stmt._online_sync_bank_statement(transactions, self.online_account)
-        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc, balance_start asc')
         self.assertBankStatementValues(
             created_bnk_stmt,
             [
                 {
                     'balance_start': 0.0,
-                    'balance_end_real': 40.0,
+                    'balance_end_real': 30.0,
                     'date': fields.Date.from_string('2016-01-10'),
-                    'state': 'posted',
+                    'state': 'confirm',
                     'line_ids': [
                         {'amount': 10.0},
                         {'amount': 10.0},
                         {'amount': 10.0},
-                        {'amount': 10.0}
+                    ]
+                },
+                {
+                    'balance_start': 30.0,
+                    'balance_end_real': 40.0,
+                    'date': fields.Date.from_string('2016-01-10'),
+                    'line_ids': [
+                        {'amount': 10.0},
                     ]
                 },
                 {

@@ -127,7 +127,10 @@ class AccountBankStatement(models.Model):
                         line['partner_id'] = partner_id_per_information[partner_info]
 
                 # Decide if we have to update an existing statement or create a new one with this line
-                stmt = statements_in_range.filtered(lambda x: x.date == key)
+                # Confirmed statement (Where all line are reconciled) shouldn't be edited. In this case we will create another one too.
+                # This will avoid issues where duplicated transaction impact validated statements, forcing the user to undo the reconciliations and redo it after fixing.
+                # With this, they will just need to delete the addition bank statement.
+                stmt = statements_in_range.filtered(lambda x: x.date == key and x.state != 'confirm')
                 if stmt:
                     line['statement_id'] = stmt[0].id
                     transactions_in_statements.append(line)

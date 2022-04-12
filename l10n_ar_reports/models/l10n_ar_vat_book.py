@@ -185,7 +185,7 @@ class L10nARVatBook(models.AbstractModel):
         for k, v in aliquots.items():
             lines += v
         aliquots_data = '\r\n'.join(lines).encode('ISO-8859-1')
-        vouchers_data = '\r\n'.join(self._get_REGINFO_CV_CBTE(options, aliquots)).encode('ISO-8859-1')
+        vouchers_data = '\r\n'.join(self._get_REGINFO_CV_CBTE(options, aliquots)).encode('ISO-8859-1', 'ignore')
         return vouchers_data, aliquots_data
 
     def _get_zip(self, options):

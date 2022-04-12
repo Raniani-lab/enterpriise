@@ -7,7 +7,40 @@ const qWeb = core.qweb;
 
 const { markup } = owl;
 
+const _t = core._t;
+
 const TimesheetGridControllerMixin = {
+
+    /**
+     * display notification if the timesheet is created/updated outside the period displayed in the Grid View.
+     *
+     * @private
+     * @param {Object} grid_data
+     */
+    _onDialogSaved(grid_data) {
+        const analyticLineDate = grid_data.data.date;
+        const state = this.model.get();
+        const startDate = moment(state.timeBoundariesContext.start);
+        const endDate = moment(state.timeBoundariesContext.end);
+        if (!analyticLineDate.isBetween(startDate, endDate)) {
+            this.displayNotification({
+                type: "success",
+                message: _t('The timesheet entry has successfully been created.'),
+            });
+        } else {
+            this.reload();
+        }
+    },
+
+    /**
+     * @private
+     * @override
+     */
+    _getFormDialogOptions() {
+        let result = this._super(...arguments);
+        result['on_saved'] = this._onDialogSaved.bind(this);
+        return result;
+    },
 
     /**
      * @override

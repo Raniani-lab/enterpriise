@@ -375,6 +375,13 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
             type: Object,
             optional: true
         },
+        timeBoundariesContext: {
+            type: Object,
+            shape: {
+                start: String,
+                end: String,
+            },
+        },
     });
 
     TimerGridRenderer.components = {

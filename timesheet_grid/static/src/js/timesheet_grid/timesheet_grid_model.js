@@ -10,12 +10,8 @@ odoo.define('timesheet_grid.GridModel', function (require) {
          * @override
          */
         async __load(params) {
-            const result = await this._super(...arguments);
-
-            this._gridData.timeBoundariesContext = this.getTimeContext();
+            await this._super(...arguments);
             this._gridData.workingHoursData = await this.fetchAllTimesheetM2OAvatarData(this.getEmployeeGridValues(), this._gridData.timeBoundariesContext.start, this._gridData.timeBoundariesContext.end);
-
-            return result;
         },
 
         /**
@@ -25,18 +21,14 @@ odoo.define('timesheet_grid.GridModel', function (require) {
 
             // Sometimes, like after a cell update, we only need to update the hours widget data.
             if (params && params.onlyHoursData) {
-                const { start, end } = this.getTimeContext();
+                const { start, end } = this._getTimeContext();
                 this._gridData.workingHoursData = await this.fetchAllTimesheetM2OAvatarData(this.getEmployeeGridValues(), start, end);
                 return;
             }
 
-            const result = await this._super(...arguments);
+            await this._super(...arguments);
 
-            this._gridData.timeBoundariesContext = this.getTimeContext();
             this._gridData.workingHoursData = await this.fetchAllTimesheetM2OAvatarData(this.getEmployeeGridValues(), this._gridData.timeBoundariesContext.start, this._gridData.timeBoundariesContext.end);
-
-            return result;
-
         },
 
         /**
@@ -72,27 +64,6 @@ odoo.define('timesheet_grid.GridModel', function (require) {
                     });
             }
             return employees;
-        },
-
-        /**
-         * Retrieve the start and end date of the currently displayed range.
-         * So, start of week / month and end of week / month.
-         * The data is retrieved that way to avoid problems of localization where the start of the week may be a
-         * different day (Sunday or Monday or ... )
-         *
-         * @returns {{start: string, end: string}}
-         */
-
-        getTimeContext() {
-
-            const startOfTheRange = this._gridData.data[0].cols[0].domain[1][2];
-            const endOfTheRange = this._gridData.data[0].cols[this._gridData.data[0].cols.length - 1].domain[1][2];
-
-            return {
-                start: startOfTheRange,
-                end: endOfTheRange,
-            };
-
         },
 
         /**

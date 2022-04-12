@@ -114,14 +114,14 @@ var GridController = AbstractController.extend({
     },
 
     /**
-     * Open a form View to create a new entry in the grid
      * @private
+     * @returns {object}
      */
-    _addLine: function () {
+    _getFormDialogOptions() {
         const formContext = this._getFormContext();
         // TODO: document quick_create_view (?) context key
         var formViewID = formContext.quick_create_view || this.formViewID || false;
-        new dialogs.FormViewDialog(this, {
+        return {
             res_model: this.modelName,
             res_id: false,
             context: formContext,
@@ -129,7 +129,16 @@ var GridController = AbstractController.extend({
             title: _t("Add a Line"),
             disable_multiple_selection: true,
             on_saved: this.reload.bind(this, {}),
-        }).open();
+        };
+    },
+
+    /**
+     * Open a form View to create a new entry in the grid
+     * @private
+     */
+    _addLine() {
+        const options = this._getFormDialogOptions()
+        new dialogs.FormViewDialog(this, options).open();
     },
     /**
      * @private

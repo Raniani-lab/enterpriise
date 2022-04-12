@@ -31,7 +31,7 @@
         </xpath>
     </t>
 
-    <div t-name="timesheet_grid.timer_header" class="row px-5 align-items-center timesheet-timer py-2" owl="1" t-on-timer-started="props.onTimerStarted" t-on-timer-stopped="props.onTimerStopped"
+    <div t-name="timesheet_grid.timer_header" class="row px-5 align-items-center timesheet-timer py-2 mr-0" owl="1" t-on-timer-started="props.onTimerStarted" t-on-timer-stopped="props.onTimerStopped"
                 t-on-timer-unlink="props.onTimerUnlink" t-on-timer-edit-project="props.onTimerEditProject"
                 t-on-timer-edit-task="props.onTimerEditTask" t-on-new-timer-value="props.onNewTimerValue"
                 t-on-new-description="props.onNewDescription">

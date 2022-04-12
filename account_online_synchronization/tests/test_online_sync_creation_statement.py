@@ -151,6 +151,43 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         )
         self.assertEqual(len(created_bnk_stmt[0].line_ids), 2, 'Should have two lines')
 
+    def test_creation_initial_sync_statement_invert_sign(self):
+        transactions = self.create_transactions(['2016-01-01', '2016-01-03'])
+        self.online_account.balance = -20
+        self.online_account.inverse_transaction_sign = True
+        self.online_account.inverse_balance_sign = True
+        self.bnk_stmt._online_sync_bank_statement(transactions, self.online_account)
+        # Since ending balance is 1000$ and we only have 20$ of transactions and that it is the first statement
+        # it should create a statement before this one with the initial statement line
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertEqual(len(created_bnk_stmt), 1, 'Should have created one bank statement for the synchronization')
+        # Since a statement already exists, next transactions should not create an initial statement even if ending_balance
+        # is greater than the sum of transactions
+        transactions = self.create_transactions(['2016-01-05'])
+        self.online_account.balance = -30
+        self.bnk_stmt._online_sync_bank_statement(transactions, self.online_account)
+        created_bnk_stmt = self.bnk_stmt.search([('journal_id', '=', self.bank_journal.id)], order='date asc')
+        self.assertBankStatementValues(
+            created_bnk_stmt,
+            [
+                {
+                    'balance_start': 0.0,
+                    'balance_end_real': -20.0,
+                    'date': fields.Date.from_string('2016-01-03'),
+                    'line_ids': [
+                        {'amount': -10.0},
+                        {'amount': -10.0}
+                    ]
+                },
+                {
+                    'balance_start': -20.0,
+                    'balance_end_real': -30.0,
+                    'date': fields.Date.from_string('2016-01-05'),
+                    'line_ids': [{'amount': -10.0}]
+                },
+            ]
+        )
+
     def test_creation_every_sync(self):
         self.bank_journal.write({'bank_statement_creation_groupby': 'none'})
         # Create one statement with 2 lines

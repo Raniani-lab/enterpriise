@@ -56,6 +56,8 @@
                                         context="{'default_type': 'bank', 'default_bank_statements_source': 'online_sync', 'default_account_online_account_id': id}"/>
                                     <field name="last_sync"/>
                                     <field name="balance" readonly="1"/>
+                                    <field name="inverse_balance_sign" groups="base.group_no_one" optional="hide"/>
+                                    <field name="inverse_transaction_sign" groups="base.group_no_one" optional="hide"/>
                                 </tree>
                             </field>
                         </group>

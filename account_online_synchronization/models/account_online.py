@@ -32,6 +32,15 @@ class AccountOnlineAccount(models.Model):
     last_sync = fields.Date("Last synchronization")
     company_id = fields.Many2one('res.company', related='account_online_link_id.company_id')
 
+    inverse_balance_sign = fields.Boolean(
+        string="Inverse Balance Sign",
+        help="If checked, the balance sign will be inverted",
+    )
+    inverse_transaction_sign = fields.Boolean(
+        string="Inverse Transaction Sign",
+        help="If checked, the transaction sign will be inverted",
+    )
+
     @api.constrains('journal_ids')
     def _check_journal_ids(self):
         if len(self.journal_ids) > 1:
@@ -94,7 +103,8 @@ class AccountOnlineAccount(models.Model):
             })
             resp_json = self.account_online_link_id._fetch_odoo_fin('/proxy/v1/transactions', data=data)
             if resp_json.get('balance'):
-                self.balance = resp_json['balance']
+                sign = -1 if self.inverse_balance_sign else 1
+                self.balance = sign * resp_json['balance']
             if resp_json.get('account_data'):
                 self.account_data = resp_json['account_data']
             transactions += resp_json.get('transactions', [])

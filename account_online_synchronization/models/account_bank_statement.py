@@ -34,6 +34,7 @@ class AccountBankStatement(models.Model):
          Return: The number of imported transaction for the journal
         """
         line_to_reconcile = self.env['account.bank.statement.line']
+        amount_sign = -1 if online_account.inverse_transaction_sign else 1
         for journal in online_account.journal_ids:
             # Since the synchronization succeeded, set it as the bank_statements_source of the journal
             journal.sudo().write({'bank_statements_source': 'online_sync'})
@@ -46,6 +47,7 @@ class AccountBankStatement(models.Model):
 
             transactions_partner_information = []
             for transaction in transactions:
+                transaction['amount'] = transaction['amount'] * amount_sign
                 transaction['date'] = fields.Date.from_string(transaction['date'])
                 if transaction.get('online_partner_information'):
                     transactions_partner_information.append(transaction['online_partner_information'])

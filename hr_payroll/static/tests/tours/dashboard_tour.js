@@ -71,10 +71,17 @@ tour.register('payroll_dashboard_ui_tour', {
     {
         content: "Set a name",
         trigger: 'div.o_hr_payroll_todo_tab input',
-        run: 'text Dashboard Todo List'
+        run: "text_blur Dashboard Todo List"
     },
     {
         content: "Edit the note in dashboard view",
-        trigger: 'div.o_hr_payroll_todo_value'
+        trigger: 'div.o_hr_payroll_todo_value',
+        run: 'click',
+        extra_trigger: 'div.o_hr_payroll_todo_tab.active h3:contains("Dashboard Todo List")'
+    },
+    {
+        content: "Write in the note",
+        trigger: ".note-editable.odoo-editor-editable",
+        run: "text Todo List"
     }
 ]);

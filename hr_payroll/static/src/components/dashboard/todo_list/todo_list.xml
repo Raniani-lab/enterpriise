@@ -9,12 +9,10 @@
                         <div class="o_hr_payroll_todo_tab"
                             t-att-class="' oe_kanban_color_' + noteData.color + ((noteData.id == state.activeNoteId) ? ' active' : '')"
                             t-on-click="() => this.onClickNoteTab(noteData.id)"
-                            t-on-dblclick="() => this.onDoubleClickNoteTab(noteData.id)"
-                            t-on-mouseenter="(e) => this.onMouseEnter(e, noteData.id)"
-                            t-on-mouseleave="(e) => this.onMouseLeave(e, noteData.id)">
+                            t-on-dblclick="() => this.onDoubleClickNoteTab(noteData.id)">
                             <h3>
-                                <t t-if="noteData.isEditable &amp;&amp; noteData.id == state.activeNoteId">
-                                    <input type="text" t-ref="autofocus" t-att-value="this.bufferedText" t-on-input="onInputNoteNameInput" t-on-keydown="onKeyDownNoteNameInput" t-on-focus="handleFocus" t-on-blur="handleBlur"/>
+                                <t t-if="state.isActiveNoteEditable &amp;&amp; noteData.id == state.activeNoteId">
+                                    <input type="text" t-ref="autofocus" t-att-value="this.bufferedText" t-on-input="onInputNoteNameInput" t-on-keydown="onKeyDownNoteNameInput" t-on-blur="handleBlur"/>
                                 </t>
                                 <t t-else="">
                                     <t t-esc="(noteData.name || 'untitled').substring(0, 30)"/>
@@ -28,7 +26,11 @@
                     </div>
                 </div>
                 <div class="o_hr_payroll_todo_value mt-1" t-on-click="onClickEdit">
-                    <t t-if="state.mode !== '' &amp;&amp; state.activeNoteId > 0">
+                    <!-- widgets are not supposed to have their mode switched. this if/else block guarantees that a new widget will be created if the mode changes -->
+                    <t t-if="state.mode === 'readonly' &amp;&amp; state.activeNoteId > 0">
+                        <PayrollDashboardTodoAdapter Component="FieldHtml" setWidget.bind="setFieldHtmlWidget" widgetArgs="noteWidgetArgs"/>
+                    </t>
+                    <t t-elif="state.mode === 'edit' &amp;&amp; state.activeNoteId > 0">
                         <PayrollDashboardTodoAdapter Component="FieldHtml" setWidget.bind="setFieldHtmlWidget" widgetArgs="noteWidgetArgs"/>
                     </t>
                 </div>

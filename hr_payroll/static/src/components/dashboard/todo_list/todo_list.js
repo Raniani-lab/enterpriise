@@ -7,7 +7,7 @@ import { session } from '@web/session';
 import Dialog from 'web.Dialog';
 import { _t } from 'web.core';
 
-const { Component, onMounted, onPatched, onWillUnmount, useState, useExternalListener } = owl;
+const { Component, onMounted, onPatched, onWillUnmount, useState, useEffect, useExternalListener } = owl;
 
 class PayrollDashboardTodoAdapter extends ComponentAdapter {
     setup() {
@@ -33,20 +33,6 @@ class PayrollDashboardTodoAdapter extends ComponentAdapter {
     updateWidget(nextProps) {
         const record = nextProps.widgetArgs[1];
         this.widget._reset(record);
-        this.widget.mode = nextProps.widgetArgs[2].mode || 'readonly';
-        if (this.widget.wysiwyg) {
-            // Explicitely destroy the editor as it otherwise would not be
-            // due to the adapter keeping the legacy widget alive.
-            this.widget.wysiwyg.destroy();
-        }
-        // Destroy routine from html field as not all resources are cleared properly upon rerendering
-        delete window.top[this.widget._onUpdateIframeId];
-        if (this.widget.$iframe) {
-            this.widget.$iframe.destroy();
-        }
-        if (this.widget._qwebPlugin) {
-            this.widget._qwebPlugin.destroy();
-        }
     }
 }
 
@@ -58,9 +44,10 @@ export class PayrollDashboardTodo extends Component {
         this.state = useState({
             activeNoteId: this.props.notes.length ? this.props.notes[0]['id'] : -1,
             mode: this.props.notes.length ? 'readonly' : '',
+            isActiveNoteEditable: false
         });
         this.recentlyCreatedNote = false;
-        useAutofocus();
+        this.autofocusInput = useAutofocus();
         onWillUnmount(() => {
             if (this.state.mode === 'edit') {
                 this.saveNote()
@@ -73,8 +60,11 @@ export class PayrollDashboardTodo extends Component {
             }
 
             if (this.recentlyCreatedNote) {
-                this.onClickNoteTab(this.recentlyCreatedNote);
-                this.onDoubleClickNoteTab();
+                this.state.mode = 'readonly';
+                this.state.isActiveNoteEditable = false;
+                this.state.activeNoteId = this.recentlyCreatedNote;
+                //this.onClickNoteTab(this.recentlyCreatedNote);
+                this.onDoubleClickNoteTab(this.recentlyCreatedNote);
                 this.recentlyCreatedNote = false;
             }
         });
@@ -83,7 +73,16 @@ export class PayrollDashboardTodo extends Component {
             if (this.state.mode === 'edit') {
                 this.saveNote();
             }
-        })
+        });
+
+        useEffect((el) => {
+            if (el) {
+                if (["INPUT", "TEXTAREA"].includes(el.tagName)) {
+                    el.selectionStart = 0;
+                    el.selectionEnd = el.value.length;
+                }
+            }
+        }, () => [this.autofocusInput.el])
     }
 
     /**
@@ -137,7 +136,7 @@ export class PayrollDashboardTodo extends Component {
             'company_id': owl.Component.env.session.user_context.allowed_company_ids[0],
         });
         this.recentlyCreatedNote = createdNote;
-        this.props.reloadNotes();
+        await this.props.reloadNotes();
     }
 
     /**
@@ -153,7 +152,7 @@ export class PayrollDashboardTodo extends Component {
             this.saveNote();
         }
         this.state.mode = 'readonly';
-        this.activeNoteData.isEditable = false;
+        this.state.isActiveNoteEditable = false;
         this.state.activeNoteId = noteId;
     }
 
@@ -162,8 +161,10 @@ export class PayrollDashboardTodo extends Component {
      * @param { Number } noteId 
      */
     onDoubleClickNoteTab(noteId) {
-        this.activeNoteData.isEditable = true;
-        this.bufferedText = this.activeNoteData.name;
+        if (noteId == this.state.activeNoteId) {
+            this.state.isActiveNoteEditable = true;
+            this.bufferedText = this.activeNoteData.name;
+        }
     }
 
     /**
@@ -184,30 +185,8 @@ export class PayrollDashboardTodo extends Component {
                 this._applyNoteRename();
                 break;
             case 'Escape':
-                this.activeNoteData.isEditable = false;
+                this.state.isActiveNoteEditable = false;
                 break;
-        }
-    }
-
-    /**
-     * Handles mouse entering a note title
-     * @param { Event } ev 
-     * @param { Number } noteId 
-     */
-    onMouseEnter(ev, noteId) {
-        if (noteId === this.state.activeNoteId) {
-            this.isMouseOnActiveNoteName = true;
-        }
-    }
-
-    /**
-     * Handles mouse leaving a note title
-     * @param { Event } ev 
-     * @param { Number } noteId 
-     */
-    onMouseLeave(ev, noteId) {
-        if (noteId === this.state.activeNoteId) {
-            this.isMouseOnActiveNoteName = false;
         }
     }
 
@@ -221,7 +200,7 @@ export class PayrollDashboardTodo extends Component {
                 'name': this.activeNoteData.name
             });
         }
-        this.activeNoteData.isEditable = false;
+        this.state.isActiveNoteEditable = false;
     }
 
     /**
@@ -244,18 +223,7 @@ export class PayrollDashboardTodo extends Component {
         await this.orm.unlink("note.note", [
             noteId,
         ]);
-        this.props.reloadNotes();
-    }
-
-    /**
-     * Sets the cursor position to the end
-     * @param { Event } ev
-     */
-    handleFocus(ev) {
-        ev.currentTarget.setSelectionRange(
-            ev.currentTarget.value.length,
-            ev.currentTarget.value.length
-        );
+        await this.props.reloadNotes();
     }
 
     /**
@@ -269,9 +237,9 @@ export class PayrollDashboardTodo extends Component {
     /**
      * Handles the click on the create note button
      */
-    onClickCreateNote() {
+    async onClickCreateNote() {
         if (this.state.mode === 'edit') {
-            this.saveNote(false, false);
+            await this.saveNote(false);
         }
         this.createNoteForm();
     }
@@ -280,7 +248,7 @@ export class PayrollDashboardTodo extends Component {
      * Switches the component to edit mode, creating an editor instead of simply displaying the note.
      */
     onClickEdit() {
-        if (this.state.mode === 'edit' || this.state.activeNoteId < 0) {
+        if (this.state.isActiveNoteEditable || this.state.mode === 'edit' || this.state.activeNoteId < 0) {
             return;
         }
         this.state.mode = 'edit';

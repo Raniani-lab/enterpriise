@@ -468,7 +468,7 @@ class SaleOrder(models.Model):
             diff_partner = subscription.partner_id.id != old_partners[subscription.id]
             diff_in_progress = (subscription.stage_category == "progress") != old_in_progress[subscription.id]
             if diff_partner or diff_in_progress:
-                if subscription.stage_category == "progress":
+                if subscription.stage_category == "progress" and diff_partner:
                     subscription.message_subscribe(subscription.partner_id.ids)
                     subscriptions_to_confirm += subscription
                 if subscription.stage_category == "closed" and not subscription.state == 'done':

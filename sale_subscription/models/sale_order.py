@@ -462,17 +462,23 @@ class SaleOrder(models.Model):
             # simple SO don't see their lines recomputed, especially when they are in a sent/confirmed state.
             # Subscription should be updated
             subscriptions.order_line._compute_tax_id()
+        subscriptions_to_confirm = self.env['sale.order']
+        subscriptions_to_cancel = self.env['sale.order']
         for subscription in subscriptions:
             diff_partner = subscription.partner_id.id != old_partners[subscription.id]
             diff_in_progress = (subscription.stage_category == "progress") != old_in_progress[subscription.id]
             if diff_partner or diff_in_progress:
                 if subscription.stage_category == "progress":
                     subscription.message_subscribe(subscription.partner_id.ids)
-                    subscription.action_confirm()
+                    subscriptions_to_confirm += subscription
                 if subscription.stage_category == "closed" and not subscription.state == 'done':
-                    subscription.action_cancel()
+                    subscriptions_to_cancel += subscription
                 if diff_partner or subscription.stage_category != "progress":
                     subscription.message_unsubscribe([old_partners[subscription.id]])
+        if subscriptions_to_confirm:
+            subscriptions_to_confirm.action_confirm()
+        if subscriptions_to_cancel:
+            subscriptions_to_cancel.action_cancel()
         return res
 
     ###########

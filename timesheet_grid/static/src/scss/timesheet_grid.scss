@@ -117,6 +117,7 @@ table > tbody.o_grid_section > tr {
             > i.o-timer-play-button, > i.o-timer-stop-button , &:hover > i.o-timer-play-button, &:hover > i.o-timer-stop-button {
                 color: white !important;
                 font-size: 1.2em;
+                vertical-align: middle;
             }
         }
     }

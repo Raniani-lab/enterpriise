@@ -39,6 +39,11 @@ class ProductPricing(models.Model):
     pricelist_id = fields.Many2one('product.pricelist', compute='_compute_pricelist_id', store=True, readonly=False)
     company_id = fields.Many2one('res.company', related='pricelist_id.company_id')
 
+    _sql_constraints = [
+        ('temporal_pricing_duration', "CHECK(duration >= 0)", "The pricing duration has to be greater or equal to 0."),
+        ('temporal_pricing_price', "CHECK(price >= 0)", "The pricing price has to be greater or equal to 0."),
+    ]
+
     @api.depends('duration', 'unit')
     def _compute_name(self):
         for pricing in self:
@@ -86,11 +91,6 @@ class ProductPricing(models.Model):
         vals['month'] = months
         vals['year'] = months/12
         return vals
-
-    _sql_constraints = [
-        ('temporal_pricing_duration', "CHECK(duration >= 0)", "The pricing duration has to be greater or equal to 0."),
-        ('temporal_pricing_price', "CHECK(price >= 0)", "The pricing price has to be greater or equal to 0."),
-    ]
 
     def _applies_to(self, product):
         """ Check whether current pricing applies to given product.

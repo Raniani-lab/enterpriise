@@ -25,15 +25,23 @@
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {
+        'documents_spreadsheet.o_spreadsheet': [
+            'documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js',
+            'documents_spreadsheet/static/src/bundle/**/*.js',
+        ],
         'web.assets_backend': [
-            'documents_spreadsheet/static/src/**/*.js',
+            'documents_spreadsheet/static/src/assets/**/*.js',
             'documents_spreadsheet/static/src/scss/**/*',
         ],
         'web.assets_qweb': [
             'documents_spreadsheet/static/src/**/*.xml',
         ],
         'web.assets_tests': [
-            'documents_spreadsheet/static/tests/**/*',
+            'documents_spreadsheet/static/tests/tours/*',
         ],
+        'web.qunit_suite_tests': [
+            'documents_spreadsheet/static/tests/**/*',
+            ('include', 'documents_spreadsheet.o_spreadsheet')
+        ]
     }
 }

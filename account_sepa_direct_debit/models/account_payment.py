@@ -210,8 +210,8 @@ class AccountPayment(models.Model):
         return rslt
 
     @api.depends('is_internal_transfer')
-    def _compute_payment_method_fields(self):
-        return super(AccountPayment, self)._compute_payment_method_fields()
+    def _compute_payment_method_line_fields(self):
+        return super(AccountPayment, self)._compute_payment_method_line_fields()
 
     def _get_payment_method_codes_to_exclude(self):
         res = super(AccountPayment, self)._get_payment_method_codes_to_exclude()

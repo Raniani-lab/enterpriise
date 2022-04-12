@@ -45,6 +45,11 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
             'product_uom_qty': 3,
         })
         cls.current_website = cls.env['website'].get_current_website()
+        cls.env['product.pricelist'].create({
+            'name': 'Default website sale renting pricelist',
+            'currency_id': cls.current_website.currency_id.id,
+            'website_id': cls.current_website.id,
+        })
 
     def test_sol_draft(self):
         from_date = self.now

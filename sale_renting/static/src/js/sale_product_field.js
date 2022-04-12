@@ -49,6 +49,9 @@ patch(SaleOrderLineProductField.prototype, 'sale_renting', {
         if (saleOrderRecord.data.company_id) {
             data.default_company_id = saleOrderRecord.data.company_id[0];
         }
+        if (saleOrderRecord.data.currency_id) {
+            data.default_currency_id = saleOrderRecord.data.currency_id[0];
+        }
         if (saleOrderRecord.data.pricelist_id) {
             data.default_pricelist_id = saleOrderRecord.data.pricelist_id[0];
         }

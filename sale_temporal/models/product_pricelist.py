@@ -23,15 +23,18 @@ class Pricelist(models.Model):
                 raise UserError(_('You can not have a time-based rule for products that are not recurring or rentable.'))
 
     def _compute_price_rule(
-        self, products, qty, uom=None, date=False, start_date=None, end_date=None, duration=None,
-        unit=None, **kwargs
+        self, products, quantity, currency=None, uom=None, date=False, start_date=None,
+        end_date=None, duration=None, unit=None, **kwargs
     ):
         """ Override to handle the temporal product price
 
         Note that this implementation can be done deeper in the base price method of pricelist item
         or the product price compute method.
         """
-        self.ensure_one()
+        self and self.ensure_one()  # self is at most one record
+
+        currency = currency or self.currency_id or self.env.company.currency_id
+        currency.ensure_one()
 
         if not products:
             return {}
@@ -48,7 +51,7 @@ class Pricelist(models.Model):
                 if (start_date and end_date) or (duration is not None and unit):
                     pricing = product._get_best_pricing_rule(
                         start_date=start_date, end_date=end_date, duration=duration, unit=unit,
-                        pricelist=self, currency=self.currency_id
+                        pricelist=self, currency=currency
                     )
                     if not duration:
                         duration_vals = Pricing._compute_duration_vals(start_date, end_date)
@@ -62,14 +65,20 @@ class Pricelist(models.Model):
                 else:
                     price = product.list_price
                 results[product.id] = pricing.currency_id._convert(
-                    price, self.currency_id, self.env.company, date
+                    price, currency, self.env.company, date
                 ), False
 
         price_computed_products = self.env[products._name].browse(results.keys())
         return {
             **results,
             **super()._compute_price_rule(
-                products - price_computed_products, qty, uom=uom, date=date, **kwargs),
+                products - price_computed_products,
+                quantity,
+                currency=currency,
+                uom=uom,
+                date=date,
+                **kwargs
+            ),
         }
 
     def _enable_temporal_price(self, start_date=None, end_date=None, duration=None, unit=None):

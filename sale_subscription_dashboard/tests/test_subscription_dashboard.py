@@ -64,7 +64,6 @@ class TestSubscriptionDashboard(HttpCase):
                 "name": "TestSubscription",
                 "is_subscription": True,
                 "partner_id": container.partner_id.id,
-                "pricelist_id": container.env.ref("product.list0").id,
                 "sale_order_template_id": container.subscription_tmpl.id,
             }
         )

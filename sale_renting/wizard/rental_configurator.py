@@ -35,7 +35,7 @@ class RentalWizard(models.TransientModel):
     pricing_id = fields.Many2one(
         'product.pricing', compute="_compute_pricing",
         string="Pricing", help="Best Pricing Rule based on duration")
-    currency_id = fields.Many2one('res.currency', string="Currency", compute='_compute_currency_id')
+    currency_id = fields.Many2one('res.currency', string="Currency", store=False)
 
     duration = fields.Integer(
         string="Duration", compute="_compute_duration",
@@ -63,11 +63,6 @@ class RentalWizard(models.TransientModel):
                     company=company,
                     currency=wizard.currency_id or company.currency_id,
                 )
-
-    @api.depends('pricelist_id')
-    def _compute_currency_id(self):
-        for wizard in self:
-            wizard.currency_id = wizard.pricelist_id.currency_id or wizard.env.company.currency_id
 
     @api.depends('pricing_id', 'pickup_date', 'return_date')
     def _compute_duration(self):

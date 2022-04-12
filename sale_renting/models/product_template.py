@@ -74,8 +74,6 @@ class ProductTemplate(models.Model):
             return super()._get_contextual_price(product=product)
 
         pricelist = self._get_contextual_pricelist()
-        if not pricelist:
-            return 0.0
 
         quantity = self.env.context.get('quantity', 1.0)
         uom = self.env['uom.uom'].browse(self.env.context.get('uom'))

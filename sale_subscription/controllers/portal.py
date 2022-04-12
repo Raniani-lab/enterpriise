@@ -183,7 +183,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
                 providers_sudo, logged_in=logged_in, sale_order_id=order_sudo.id
             ),
             'amount': None,  # Determined by the generated invoice
-            'currency': order_sudo.pricelist_id.currency_id,
+            'currency': order_sudo.currency_id,
             'partner_id': order_sudo.partner_id.id,
             'access_token': order_sudo.access_token,
             'transaction_route': f'/my/subscription/transaction/{order_sudo.id}',

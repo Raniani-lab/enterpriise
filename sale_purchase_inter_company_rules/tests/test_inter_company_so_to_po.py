@@ -14,7 +14,6 @@ class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommonSOPO):
         sale_order = Form(self.env['sale.order'])
         sale_order.company_id = company
         sale_order.warehouse_id = company.warehouse_id
-        sale_order.pricelist_id = self.env['product.pricelist'].search([('id', '=', 1)])
         sale_order.partner_id = partner
         sale_order.user_id = user
         sale_order.partner_invoice_id = partner

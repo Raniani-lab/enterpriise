@@ -1492,7 +1492,7 @@ class SaleOrder(models.Model):
                             'email_to': self.partner_id.email,
                             'code': self.client_order_ref,
                             'subscription_name': self.name,
-                            'currency': self.pricelist_id.currency_id.name,
+                            'currency': self.currency_id.name,
                             'date_end': self.end_date}}
         _logger.debug("Sending Payment Confirmation Mail to %s for subscription %s", self.partner_id.email, self.id)
         template = self.env.ref('sale_subscription.email_payment_success')
@@ -1517,7 +1517,7 @@ class SaleOrder(models.Model):
             'total_amount': invoice.amount_total,
             'email_to': self.partner_id.email,
             'code': self.client_order_ref or self.name,
-            'currency': self.pricelist_id.currency_id.name,
+            'currency': self.currency_id.name,
             'date_end': self.end_date,
             'no_new_invoice': True}}
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)

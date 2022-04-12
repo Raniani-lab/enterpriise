@@ -110,7 +110,6 @@
         <record id="subscription_portal_1" model="sale.order">
             <field name="partner_id" ref="base.partner_demo_portal"/>
             <field name="sale_order_template_id" ref="sale_subscription.monthly_template"/>
-            <field name="pricelist_id" ref="product.list0"/>
             <field name="user_id" ref="base.user_admin"/>
             <field name="state">draft</field>
             <field name="client_order_ref">subscription_portal_1</field>
@@ -134,7 +133,6 @@
         <record id="subscription_portal_2" model="sale.order">
             <field name="partner_id" ref="base.partner_demo_portal"/>
             <field name="sale_order_template_id" ref="sale_subscription.yearly_template"/>
-            <field name="pricelist_id" ref="product.list0"/>
             <field name="user_id" ref="base.user_admin"/>
             <field name="state">draft</field>
             <field name="client_order_ref">subscription_portal_2</field>
@@ -148,7 +146,6 @@
 
         <record id="subscription_portal_3" model="sale.order">
             <field name="partner_id" ref="base.partner_demo_portal"/>
-            <field name="pricelist_id" ref="product.list0"/>
             <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
             <field name="user_id" ref="base.user_admin"/>
             <field name="state">draft</field>

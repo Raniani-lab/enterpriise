@@ -728,7 +728,6 @@ class TestSubscription(TestSubscriptionCommon):
             'next_invoice_date': False,
             'recurrence_id': self.recurrence_month.id,
             'partner_id': self.user_portal.partner_id.id,
-            'pricelist_id': self.env.ref('product.list0').id,
             'sale_order_template_id': self.subscription_tmpl.id,
         })
         self.cr.precommit.clear()
@@ -1363,10 +1362,10 @@ class TestSubscription(TestSubscriptionCommon):
         line._compute_price_unit()
         conversion_rate = self.env['res.currency']._get_conversion_rate(
             self.product.currency_id,
-            self.subscription.pricelist_id.currency_id,
+            self.subscription.currency_id,
             self.product.company_id or self.env.company,
             fields.Date.today())
-        self.assertEqual(line.price_unit, self.subscription.pricelist_id.currency_id.round(50 * conversion_rate),
+        self.assertEqual(line.price_unit, self.subscription.currency_id.round(50 * conversion_rate),
                          'Price unit must be converted into the currency of the pricelist (USD)')
 
     def test_archive_partner_invoice_shipping(self):

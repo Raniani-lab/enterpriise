@@ -51,17 +51,20 @@ class ProductTemplate(models.Model):
             partner = self.env.user.partner_id
             company_id = website.company_id
             pricelist = pricelist or website.get_current_pricelist()
+            currency = pricelist.currency_id or self.env.company.currency_id
 
             fpos = self.env['account.fiscal.position'].sudo()._get_fiscal_position(partner)
             product_taxes = self.sudo().taxes_id.filtered(lambda t: t.company_id == company_id)
             taxes = fpos.map_tax(product_taxes)
             unit_price = self._price_with_tax_computed(
-                unit_price, product_taxes, taxes, company_id, pricelist, product, partner
+                unit_price, product_taxes, taxes, company_id, currency, product, partner
             )
+        else:
+            currency = pricelist.currency_id if pricelist else self.env.company.currency_id
 
-        if pricelist and pricelist.currency_id != pricing.currency_id:
+        if currency != pricing.currency_id:
             company_id = pricing.company_id or self.env.company
-            unit_price = pricing.currency_id._convert(unit_price, pricelist.currency_id, company_id, fields.Date.today())
+            unit_price = pricing.currency_id._convert(unit_price, currency, company_id, fields.Date.today())
 
         return {
             'is_subscription': True,

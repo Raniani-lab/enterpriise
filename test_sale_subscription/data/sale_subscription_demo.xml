@@ -72,7 +72,6 @@
     <record id="test_subscription_portal_0" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="template_draft_multi"/>
-        <field name="pricelist_id" ref="product.list0"/>
         <field name="user_id" ref="base.user_admin"/>
         <field name="client_order_ref">test_subscription_portal_0</field>
         <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
@@ -83,7 +82,6 @@
     <record id="test_subscription_portal_1" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="template_draft_multi"/>
-        <field name="pricelist_id" ref="product.list0"/>
         <field name="user_id" ref="base.user_admin"/>
         <field name="note">Full flow 2</field>
         <field name="client_order_ref">test_subscription_portal_1</field>
@@ -98,7 +96,6 @@
     <record id="test_subscription_portal_2" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="sale_subscription.monthly_template"/>
-        <field name="pricelist_id" ref="product.list0"/>
         <field name="user_id" ref="base.user_admin"/>
         <field name="client_order_ref">test_subscription_portal_2</field>
         <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
@@ -111,7 +108,6 @@
     <record id="test_subscription_portal_3" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="sale_subscription.monthly_template"/>
-        <field name="pricelist_id" ref="product.list0"/>
         <field name="user_id" ref="base.user_admin"/>
         <field name="client_order_ref">test_subscription_portal_3</field>
         <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
@@ -129,7 +125,6 @@
     <record id="test_subscription_portal_4" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="template_draft_multi"/>
-        <field name="pricelist_id" ref="product.list0"/>
         <field name="user_id" ref="base.user_admin"/>
         <field name="state">draft</field>
         <field name="client_order_ref">test_subscription_portal_4</field>

@@ -187,7 +187,7 @@ class PosOrderProforma(models.Model):
 
     name = fields.Char('Profo Order Ref', readonly=True)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env['res.users'].browse(self.env.uid).company_id.id, readonly=True)
-    currency_id = fields.Many2one("res.currency", related='pricelist_id.currency_id', string="Currency", readonly=True,
+    currency_id = fields.Many2one("res.currency", related='config_id.currency_id', string="Currency", readonly=True,
                                   required=True)
     date_order = fields.Datetime('Order Date', readonly=True)
     create_date = fields.Datetime(string="Pro Forma Creation")

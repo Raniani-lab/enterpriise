@@ -22,7 +22,7 @@
                         <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
                             <li class="list-group-item flex-grow-1">
                                 <div><strong>Next Invoice: <span t-field="subscription.next_invoice_date"/></strong></div>
-                                <div><strong>Amount: <span t-field="subscription.amount_untaxed" t-options='{"widget": "monetary","display_currency": subscription.pricelist_id.currency_id}'/></strong></div>
+                                <div><strong>Amount: <span t-field="subscription.amount_untaxed" t-options='{"widget": "monetary","display_currency": subscription.currency_id}'/></strong></div>
                                 <a t-if="subscription.stage_category == 'progress' and not subscription.to_renew and subscription.sale_order_template_id and display_change_plan"
                                     role="button" class="mt8 btn btn-primary" t-att-href="subscription.get_portal_url()">
                                         Change plan
@@ -190,18 +190,18 @@
                                                         <td class="line-description"><span t-field="line.name"/></td>
                                                         <td class="text-end"><t t-esc="line.product_uom_qty"/> <span t-field="line.product_uom" data-oe-readonly="1"/></td>
                                                         <td class="text-end d-none d-sm-table-cell" t-if="not line.discount">
-                                                            <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/>
+                                                            <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": line.currency_id}'/>
                                                         </td>
                                                         <td class="text-end d-none d-sm-table-cell" t-if="line.discount">
                                                             <div
                                                                 t-if="line.discount &gt;= 0"
                                                                 t-field="line.price_unit"
-                                                                t-options='{"widget": "monetary", "display_currency": subscription.pricelist_id.currency_id}'
+                                                                t-options='{"widget": "monetary", "display_currency": subscription.currency_id}'
                                                                 t-att-style="line.discount and 'text-decoration: line-through' or None"
                                                                 t-att-class="(line.discount and 'text-danger' or '') + ' text-end'"
                                                             />
                                                             <div t-if="line.discount">
-                                                                <t t-esc="(1-line.discount / 100.0) * line.price_unit" t-options='{"widget": "monetary", "display_currency": subscription.pricelist_id.currency_id}'/>
+                                                                <t t-esc="(1-line.discount / 100.0) * line.price_unit" t-options='{"widget": "monetary", "display_currency": subscription.currency_id}'/>
                                                             </div>
                                                         </td>
                                                         <td class="text-end d-none d-sm-table-cell" t-if="display_discount">
@@ -232,7 +232,7 @@
                                                     <td colspan="99">
                                                         <strong class="mr16">Subtotal</strong>
                                                         <span t-esc="current_subtotal"
-                                                            t-options='{"widget": "monetary", "display_currency": subscription.pricelist_id.currency_id}'
+                                                            t-options='{"widget": "monetary", "display_currency": subscription.currency_id}'
                                                         />
                                                     </td>
                                                 </tr>
@@ -248,7 +248,7 @@
                                                         <span
                                                             data-id="amount_untaxed"
                                                             t-field="subscription.amount_untaxed"
-                                                            t-options='{"widget": "monetary","display_currency": subscription.pricelist_id.currency_id}'
+                                                            t-options='{"widget": "monetary","display_currency": subscription.currency_id}'
                                                         />
                                                     </td>
                                                 </tr>
@@ -258,14 +258,14 @@
                                                         <span
                                                             data-id="amount_tax"
                                                             t-field="subscription.amount_tax"
-                                                            t-options='{"widget": "monetary","display_currency": subscription.pricelist_id.currency_id}'
+                                                            t-options='{"widget": "monetary","display_currency": subscription.currency_id}'
                                                         />
                                                     </td>
                                                 </tr>
                                                 <tr class="border-black">
                                                     <td><strong>Next Billing Amount:</strong></td>
                                                     <td class="text-end">
-                                                        <span data-id="amount_total" t-field="subscription.amount_total" t-options='{"widget": "monetary", "display_currency": subscription.pricelist_id.currency_id}'/>
+                                                        <span data-id="amount_total" t-field="subscription.amount_total" t-options='{"widget": "monetary", "display_currency": subscription.currency_id}'/>
                                                     </td>
                                                 </tr>
                                             </table>

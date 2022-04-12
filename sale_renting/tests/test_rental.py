@@ -293,10 +293,15 @@ class TestRentalCommon(TransactionCase):
         self.assertEqual(sol.price_unit, 3.5, "Update price should not alter first computed price.")
 
     def test_no_pricing_for_pricelist(self):
-        partner = self.env['res.partner'].create({'name': 'A partner'})
         pricelist_A = self.env['product.pricelist'].create({
             'name': 'Pricelist A',
         })
+        pricelist_B = self.env['product.pricelist'].create({
+            'name': 'Pricelist B',
+        })
+        partner = self.env['res.partner'].create(
+            {'name': 'A partner', 'property_product_pricelist': pricelist_B}
+        )
         recurrence_hour = self.env['sale.temporal.recurrence'].create({'duration': 1.0, 'unit': 'hour'})
         PRICINGS = [
             {
@@ -308,7 +313,7 @@ class TestRentalCommon(TransactionCase):
         self.product_template_id.product_pricing_ids.unlink()
         for pricing in PRICINGS:
             pricing.update(product_template_id=self.product_template_id.id)
-            pricing = self.env['product.pricing'].create(pricing)
+            self.env['product.pricing'].create(pricing)
 
         sale_order = self.env['sale.order'].create({
             'partner_id': partner.id,

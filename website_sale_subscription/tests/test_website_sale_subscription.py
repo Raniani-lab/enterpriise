@@ -10,6 +10,7 @@ from .common import TestWebsiteSaleSubscriptionCommon
 class TestWebsiteSaleSubscription(TestWebsiteSaleSubscriptionCommon):
 
     def test_cart_update_so_reccurence(self):
+        self.env['product.pricelist'].sudo().search([('active', '=', True)]).action_archive()
         # Product not recurring
         product = self.env['product.template'].with_context(website_id=self.current_website.id).create({
             'name': 'Streaming SUB Weekly',

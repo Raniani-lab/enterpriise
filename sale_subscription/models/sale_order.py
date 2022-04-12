@@ -1271,7 +1271,9 @@ class SaleOrder(models.Model):
         invoice.is_move_sent = True
 
     def _send_subscription_rating_mail(self, force_send=False):
-        for subscription in self.filtered(lambda s: s.stage_id.rating_template_id and s._is_subscription):
+        for subscription in self:
+            if not subscription.stage_id.rating_template_id or not subscription.is_subscription:
+                continue
             subscription.rating_send_request(
                 subscription.stage_id.rating_template_id,
                 lang=subscription.partner_id.lang,

@@ -246,7 +246,7 @@ class TestMrpPlm(TestPlmCommon):
 
         # unfold the stage to check if all ECOs are counted
         self.eco_stage_folded.folded = False
-        eco1.new_bom_id.invalidate_cache()
+        eco1.new_bom_id.invalidate_recordset()
         self.assertEqual(eco1.new_bom_id.eco_count, 2)
 
     def test_do_not_merge_bom_lines(self):

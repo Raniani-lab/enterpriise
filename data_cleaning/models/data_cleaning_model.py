@@ -108,7 +108,7 @@ class DataCleaningModel(models.Model):
 
 
     def _clean_records(self, batch_commits=False):
-        self.flush()
+        self.env.flush_all()
 
         records_to_clean = []
         for cleaning_model in self:

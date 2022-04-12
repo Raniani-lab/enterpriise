@@ -109,7 +109,7 @@ class TestSocialMultiCompany(common.SocialCase):
             'Should be able to read the account of the company',
         )
 
-        self.account_2.invalidate_cache()
+        self.env.invalidate_all()
         with self.assertRaises(AccessError, msg='Should not be able to read the account of an other company'):
             self.env['social.account'].browse(self.account_2.id).name
 
@@ -128,7 +128,7 @@ class TestSocialMultiCompany(common.SocialCase):
 
         post.action_post()
 
-        post.invalidate_cache()
+        self.env.invalidate_all()
 
         self.assertEqual(
             len(post.with_user(self.social_manager_2).live_post_ids),
@@ -137,7 +137,7 @@ class TestSocialMultiCompany(common.SocialCase):
             'He should not see the live post which belongs to the company 1.'
         )
 
-        post.invalidate_cache()
+        self.env.invalidate_all()
 
         self.assertEqual(
             len(post.live_post_ids),
@@ -194,22 +194,22 @@ class TestSocialMultiCompany(common.SocialCase):
         self.assertEqual(link_tracker_1.count, 13)
         self.assertEqual(link_tracker_2.count, 7)
 
-        post.invalidate_cache()
+        self.env.invalidate_all()
         self.assertEqual(post.click_count, 20, 'There should be 20 clicks across all the companies')
-        post.invalidate_cache()
+        self.env.invalidate_all()
         self.assertEqual(post.with_company(self.company_1).click_count, 13, 'There should be 13 clicks for a user who is only in the first company')
-        post.invalidate_cache()
+        self.env.invalidate_all()
         self.assertEqual(post.with_company(self.company_2).click_count, 7, 'There should be 7 clicks for a user who is only in the second company')
 
     @users('social_user')
     @mock_void_external_calls()
     def test_social_stream_post_acls(self):
-        self.env['social.stream.post'].invalidate_cache()
+        self.env.invalidate_all()
 
         result = self.env['social.stream.post'].search([])
         self.assertEqual(self.stream_post_1, result)
 
-        self.env['social.stream.post'].invalidate_cache()
+        self.env.invalidate_all()
 
         result = self.env['social.stream.post'].with_user(self.social_manager).search([])
         self.assertEqual(self.stream_post_1 | self.stream_post_2, result)

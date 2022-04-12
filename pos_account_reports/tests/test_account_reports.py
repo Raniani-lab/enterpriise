@@ -170,7 +170,7 @@ class POSTestTaxReport(TestAccountReportsCommon):
         self.pos_config.current_session_id.action_pos_session_closing_control()
 
         report = self.env['account.generic.tax.report']
-        report.flush()
+        self.env.flush_all()
         report_opt = report._get_options({'date': {'period_type': 'custom', 'filter': 'custom', 'date_to': today, 'mode': 'range', 'date_from': today}})
         new_context = report._set_context(report_opt)
         inv_report_lines = report.with_context(new_context)._get_lines(report_opt)

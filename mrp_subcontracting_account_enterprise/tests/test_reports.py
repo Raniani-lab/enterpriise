@@ -34,7 +34,7 @@ class TestReportsMrpAccountSubcontracting(TestMrpSubcontractingCommon):
         picking.move_ids_without_package.quantity_done = 2
         picking.button_validate()
 
-        self.env['base'].flush()  # Need to flush for mrp report
+        self.env.flush_all()  # Need to flush for mrp report
 
         mo_subcontracted = self.env['mrp.production'].search([('product_id', '=', self.finished.id)], limit=1)
         self.assertTrue(mo_subcontracted)

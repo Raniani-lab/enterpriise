@@ -57,8 +57,8 @@ class Tags(models.Model):
         # folders are searched with sudo() so we fetch the tags and facets from all the folder hierarchy (as tags
         # and facets are inherited from ancestor folders).
         folders = self.env['documents.folder'].sudo().search([('parent_folder_id', 'parent_of', folder_id)])
-        self.flush(['sequence', 'name', 'facet_id'])
-        self.env['documents.facet'].flush(['sequence', 'name', 'tooltip'])
+        self.flush_model(['sequence', 'name', 'facet_id'])
+        self.env['documents.facet'].flush_model(['sequence', 'name', 'tooltip'])
         query = """
             SELECT  facet.sequence AS group_sequence,
                     facet.id AS group_id,

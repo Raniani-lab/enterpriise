@@ -84,7 +84,7 @@ class SDDMandate(models.Model):
         """ returns the first mandate found that can be used, accordingly to given parameters
         or none if there is no such mandate.
         """
-        self.flush(['state', 'start_date', 'end_date', 'company_id', 'partner_id', 'one_off'])
+        self.flush_model(['state', 'start_date', 'end_date', 'company_id', 'partner_id', 'one_off'])
 
         query_obj = self._where_calc([
             ('state', 'not in', ['draft', 'revoked']),
@@ -125,7 +125,7 @@ class SDDMandate(models.Model):
             self.paid_invoice_ids = False
             self.payment_ids = False
             return
-        self.env['account.move'].flush(['sdd_mandate_id', 'move_type'])
+        self.env['account.move'].flush_model(['sdd_mandate_id', 'move_type'])
 
         self._cr.execute('''
             SELECT

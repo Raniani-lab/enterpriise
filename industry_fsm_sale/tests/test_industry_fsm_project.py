@@ -30,7 +30,7 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
         with mute_logger('odoo.sql_db'):
             with self.assertRaises(IntegrityError):
                 self.fsm_project.write({'timesheet_product_id': False})
-                self.fsm_project.flush()
+                self.env.flush_all()
 
     def test_convert_project_into_fsm_project(self):
         """ Test when we want to convert a project to fsm project
@@ -139,7 +139,7 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
         self.assertTrue(self.task.fsm_done)
         self.assertTrue(self.task.sale_line_id, 'The fsm task should have a SOL linked.')
 
-        self.task.flush()  # It needed to have the result of `action_fsm_validate` in db before executing the query to fetch SOL linked to the project
+        self.env.flush_all()  # It needed to have the result of `action_fsm_validate` in db before executing the query to fetch SOL linked to the project
         self.assertEqual(self.fsm_project._fetch_sale_order_items(), self.task.sale_line_id)
         self.assertEqual(self.fsm_project._get_sale_order_items(), self.task.sale_line_id)
         self.assertEqual(self.fsm_project._get_sale_orders(), self.task.sale_order_id)

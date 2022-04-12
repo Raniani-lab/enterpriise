@@ -44,9 +44,9 @@ class TaxReport(models.AbstractModel):
             'tag_tpar_id': self.env.ref('l10n_au.service_tag').id,
             'tag_withheld_id': self.env.ref('l10n_au.tax_withheld_tag').id,
         }
-        self.env['account.move'].flush()
-        self.env['account.move.line'].flush()
-        self.env['res.partner'].flush()
+        self.env['account.move'].flush_model()
+        self.env['account.move.line'].flush_model()
+        self.env['res.partner'].flush_model()
 
         query = """
             SELECT

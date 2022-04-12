@@ -117,7 +117,7 @@ class SocialTwitterCase(SocialCase):
         })
 
         # We should not be able to retweet the tweet or the retweet with the same account:
-        tweet_1.invalidate_cache()
+        tweet_1.invalidate_recordset()
         self.assertFalse(tweet_1.twitter_can_retweet)
         self.assertFalse(retweet.twitter_can_retweet)
 
@@ -131,8 +131,8 @@ class SocialTwitterCase(SocialCase):
         })
 
         # We should be able to retweet it with the other account:
-        tweet_1.invalidate_cache()
-        retweet.invalidate_cache()
+        tweet_1.invalidate_recordset()
+        retweet.invalidate_recordset()
         self.assertFalse(tweet_1.twitter_can_retweet)
         self.assertFalse(retweet.twitter_can_retweet)
         self.assertTrue(tweet_2.twitter_can_retweet)

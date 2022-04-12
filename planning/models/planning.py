@@ -294,7 +294,7 @@ class Planning(models.Model):
     @api.depends('start_datetime', 'end_datetime', 'resource_id')
     def _compute_overlap_slot_count(self):
         if self.ids:
-            self.flush(['start_datetime', 'end_datetime', 'resource_id'])
+            self.flush_model(['start_datetime', 'end_datetime', 'resource_id'])
             query = """
                 SELECT S1.id,ARRAY_AGG(DISTINCT S2.id) as conflict_ids FROM
                     planning_slot S1, planning_slot S2

@@ -329,9 +329,9 @@ class ResPartner(models.Model):
             'partner_ids': tuple(self.ids),
             'current_date': today,
         }
-        self.env['account.move.line'].flush()
-        self.env['res.partner'].flush()
-        self.env['account_followup.followup.line'].flush()
+        self.env['account.move.line'].flush_model()
+        self.env['res.partner'].flush_model()
+        self.env['account_followup.followup.line'].flush_model()
         self.env.cr.execute(sql, params)
         result = self.env.cr.dictfetchall()
         result = {r['partner_id']: r for r in result}

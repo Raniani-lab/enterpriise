@@ -30,6 +30,6 @@ class ResCompany(models.Model):
 
     def _neutralize(self):
         super()._neutralize()
-        self.flush()
-        self.invalidate_cache()
+        self.flush_model()
+        self.invalidate_model()
         self.env.cr.execute("UPDATE res_company SET l10n_co_edi_test_mode = true")

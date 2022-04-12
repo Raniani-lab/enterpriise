@@ -16,10 +16,8 @@ class TestSubscription(TestSubscriptionCommon):
 
     def flush_tracking(self):
         """ Force the creation of tracking values. """
-        self.env['base'].flush()
-        self.cr.precommit.run()
+        self.env.flush_all()
         self.cr.flush()
-
 
     def setUp(self):
         super(TestSubscription, self).setUp()
@@ -745,7 +743,7 @@ class TestSubscription(TestSubscriptionCommon):
 
         with freeze_time("2021-03-01"):
             self.env['sale.order']._cron_recurring_create_invoice()
-            self.subscription.invalidate_cache()
+            self.env.invalidate_all()
             val_invoice = self._get_quantities(self.subscription.order_line)
             self.assertEqual(val_invoice['to_invoice'], [0, 0], "To invoice should be equal to quantity")
             self.assertEqual(val_invoice['delivered_qty'], [3, 0], "Delivered qty should be equal to quantity")

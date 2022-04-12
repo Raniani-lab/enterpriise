@@ -779,7 +779,7 @@ class HrPayslip(models.Model):
         result = defaultdict(lambda: defaultdict(lambda: dict.fromkeys(vals_list, 0)))
         if not self or not code_list:
             return result
-        self.flush()
+        self.env.flush_all()
         selected_fields = ','.join('SUM(%s) AS %s' % (vals, vals) for vals in vals_list)
         self.env.cr.execute("""
             SELECT

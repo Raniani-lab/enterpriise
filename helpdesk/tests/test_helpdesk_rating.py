@@ -65,7 +65,7 @@ class TestHelpdeskRating(HelpdeskCommon):
             },
         ])
         self.env.cr.execute("UPDATE rating_rating SET create_date=%s, write_date=%s WHERE id in %s", (yesterday_str, yesterday_str, tuple(ratings.ids)))
-        ratings.invalidate_cache()
+        ratings.invalidate_recordset(['create_date', 'write_date'])
 
         HelpdeskTeam = self.env['helpdesk.team']
         self.assertTrue(HelpdeskTeam.with_user(self.helpdesk_manager)._check_rating_feature_enabled(True))
@@ -93,7 +93,7 @@ class TestHelpdeskRating(HelpdeskCommon):
                 'res_id': self.test_team_ticket1.id,
             },
         ])
-        ratings.invalidate_cache()
+        ratings.invalidate_recordset()
         data = HelpdeskTeam.with_user(self.helpdesk_manager).retrieve_dashboard()
         self.assertEqual(data['today']['rating'], 100, 'The average rating of the Helpdesk Manager user should be equal to 5 / 5')
         self.assertEqual(data['7days']['rating'], 80, 'The average rating of the Helpdesk Manager user should be equal to 4 / 5')

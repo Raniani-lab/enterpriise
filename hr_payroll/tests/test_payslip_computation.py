@@ -38,7 +38,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         # same transaction which is quite unlikely supposed to happen in real conditions
         worked_days = (cls.richard_payslip + cls.richard_payslip_quarter).worked_days_line_ids
         worked_days._compute_is_paid()
-        worked_days.flush(['is_paid'])
+        worked_days.flush_model(['is_paid'])
 
     def _reset_work_entries(self, contract):
         # Use hr.leave to automatically regenerate work entries for absences

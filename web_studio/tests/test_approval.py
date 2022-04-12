@@ -267,12 +267,12 @@ class TestStudioApproval(TransactionCase):
             user_rule.with_user(self.manager).delete_approval(res_id=self.record.id)
         with self.assertRaises(UserError, msg="Shouldn't be able to create a second entry for the same record+rule"):
             user_rule.with_user(self.manager).set_approval(res_id=self.record.id, approved=True)
-            user_rule.env['studio.approval.entry'].flush()
+            self.env.flush_all()
         with self.assertRaises(UserError, msg="Shouldn't be able to cancel approval of someone else"):
             manager_rule.with_user(self.user).delete_approval(res_id=self.record.id)
         with self.assertRaises(UserError, msg="Shouldn't be able to create a second entry for the same record+rule"):
             manager_rule.with_user(self.user).set_approval(res_id=self.record.id, approved=True)
-            manager_rule.env['studio.approval.entry'].flush()
+            self.env.flush_all()
 
     def test_07_forbidden_record(self):
         """Getting/setting approval on records to which you don't have access."""

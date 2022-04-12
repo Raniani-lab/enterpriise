@@ -873,7 +873,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         self.start_tour(url, 'test_delivery_reserved_lots_1', login='admin', timeout=180)
 
-        delivery_picking.invalidate_cache()
+        self.env.invalidate_all()
         lines = delivery_picking.move_line_ids
         self.assertEqual(lines[0].lot_id.name, 'lot1')
         self.assertEqual(lines[1].lot_id.name, 'lot2')
@@ -933,7 +933,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         self.start_tour(url, 'test_delivery_different_products_with_same_lot_name', login='admin', timeout=180)
 
-        delivery_picking.invalidate_cache()
+        self.env.invalidate_all()
         lines = delivery_picking.move_line_ids
         self.assertEqual(lines[0].lot_id.name, 'lot1')
         self.assertEqual(lines[0].product_id.name, 'productlot1')
@@ -988,7 +988,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         # TODO: the framework should call invalidate_cache every time a test cursor is asked or
         #       given back
-        delivery_picking.invalidate_cache()
+        self.env.invalidate_all()
         lines = delivery_picking.move_line_ids
         self.assertEqual(lines.mapped('lot_id.name'), ['sn1', 'sn2', 'sn3', 'sn4'])
         self.assertEqual(lines.mapped('qty_done'), [1, 1, 1, 1])
@@ -1073,7 +1073,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         receipts_picking.action_assign()
 
         self.start_tour(url, 'test_receipt_reserved_lots_multiloc_1', login='admin', timeout=180)
-        receipts_picking.invalidate_cache()
+        self.env.invalidate_all()
         lines = receipts_picking.move_line_ids
         self.assertEqual(lines[0].qty_done, 0.0)
         self.assertEqual(lines[0].reserved_qty, 4.0)

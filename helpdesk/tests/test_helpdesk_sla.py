@@ -114,7 +114,7 @@ class HelpdeskSLA(TransactionCase):
         """ % (records._table,)
         self.env.cr.execute(query, (date_str, tuple(records.ids)))
 
-        records.invalidate_cache()
+        records.invalidate_recordset(['create_date'])
 
         if ticket_to_update:
             ticket_to_update.sla_status_ids._compute_deadline()

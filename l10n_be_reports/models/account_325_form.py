@@ -322,7 +322,7 @@ class Form325(models.Model):
         tag_281_50_atn, tag_281_50_commissions, tag_281_50_exposed_expenses, tag_281_50_fees = self._get_281_50_tags()
         account_281_50_tags = tag_281_50_commissions + tag_281_50_fees + tag_281_50_atn + tag_281_50_exposed_expenses
 
-        self.env['account.move'].flush()
+        self.env.flush_all()
         commissions_per_partner = self._get_balance_per_partner(partner_ids, tag_281_50_commissions)
         fees_per_partner = self._get_balance_per_partner(partner_ids, tag_281_50_fees)
         atn_per_partner = self._get_balance_per_partner(partner_ids, tag_281_50_atn)

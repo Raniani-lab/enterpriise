@@ -46,8 +46,8 @@ class ResCompany(models.Model):
 
     def _neutralize(self):
         super()._neutralize()
-        self.flush()
-        self.invalidate_cache()
+        self.flush_model()
+        self.invalidate_model()
         self.env.cr.execute("""
             UPDATE res_company
             SET taxcloud_api_id = NULL, taxcloud_api_key = NULL

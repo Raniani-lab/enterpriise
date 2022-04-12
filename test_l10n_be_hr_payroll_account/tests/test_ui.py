@@ -222,7 +222,7 @@ class TestUi(odoo.tests.HttpCase):
             'car_id': False
         })
 
-        demo.flush()
+        self.env.flush_all()
         with freeze_time("2022-01-01"):
             self.start_tour("/", 'hr_contract_salary_tour', login='admin', timeout=300)
 

@@ -254,7 +254,7 @@ class HrContractSalary(http.Controller):
 
         response = request.render("hr_contract_salary.salary_package", values)
         response.flatten()
-        request.env['hr.contract'].sudo().flush()
+        request.env.flush_all()
         request.env.cr.precommit.clear()
         request.env.cr.execute('ROLLBACK TO SAVEPOINT salary')
         return response

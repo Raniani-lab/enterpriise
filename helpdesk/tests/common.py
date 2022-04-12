@@ -141,12 +141,11 @@ class HelpdeskCommon(TransactionCase):
         """ % (records._table,)
         self.env.cr.execute(query, (date_str, tuple(records.ids)))
 
-        records.invalidate_cache()
+        records.invalidate_recordset(['create_date'])
 
         if records._name == 'helpdesk.ticket':
             field = self.env['helpdesk.sla.status']._fields['deadline']
             self.env.add_to_compute(field, records.sla_status_ids)
-            records.recompute()
 
     @contextmanager
     def _ticket_patch_now(self, datetime_str):

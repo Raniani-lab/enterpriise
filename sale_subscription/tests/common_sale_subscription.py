@@ -241,5 +241,5 @@ class TestSubscriptionCommon(TestSaleCommon):
         })
 
     def flush_tracking(self):
-        self.env['base'].flush()
+        self.env.flush_all()
         self.cr.flush()

@@ -103,7 +103,7 @@ class CalendarTest(AppointmentUICommon):
         res = self.url_open(url)
 
         self.assertEqual(res.status_code, 200, "Response should = OK")
-        event.attendee_ids[0].invalidate_cache()
+        event.attendee_ids[0].invalidate_recordset()
         self.assertEqual(event.attendee_ids[0].state, "accepted", "Attendee should have accepted")
 
     def test_meeting_accept_unauthenticated(self):
@@ -119,5 +119,5 @@ class CalendarTest(AppointmentUICommon):
         res = self.url_open(url)
 
         self.assertEqual(res.status_code, 200, "Response should = OK")
-        event.attendee_ids[0].invalidate_cache()
+        event.attendee_ids[0].invalidate_recordset()
         self.assertEqual(event.attendee_ids[0].state, "accepted", "Attendee should have accepted")

@@ -67,8 +67,7 @@ class TestSubscriptionController(HttpCase):
         self.subscription._onchange_sale_order_template_id()
         self.subscription.order_line.start_date = False  # the confirmation will set the start_date
         self.subscription.end_date = False  # reset the end_date too
-        self.subscription_tmpl.flush()
-        self.subscription.flush()
+        self.env.flush_all()
 
     def test_renewal_identical(self):
         """ Test subscription renewal """
@@ -78,10 +77,10 @@ class TestSubscriptionController(HttpCase):
             self.assertEqual(self.subscription.end_date, date(2023, 11, 17),
                              'The end date of the subscription should be updated according to the template')
             url = "/my/subscription/%s/renew?access_token=%s" % (self.subscription.id, self.subscription.access_token)
-            self.subscription_tmpl.flush()
+            self.env.flush_all()
             res = self.url_open(url, allow_redirects=False)
             self.assertEqual(res.status_code, 303, "Response should redirection")
-            self.subscription.invalidate_cache()
+            self.env.invalidate_all()
             self.assertEqual(self.subscription.end_date, date(2025, 11, 17),
                              'The end date of the subscription should be updated according to the template')
 
@@ -110,6 +109,6 @@ class TestSubscriptionController(HttpCase):
             url = "/my/subscription/%s/close" % self.subscription.id
             res = self.url_open(url, allow_redirects=False, data=data)
             self.assertEqual(res.status_code, 303)
-            self.subscription.invalidate_cache()
+            self.env.invalidate_all()
             self.assertEqual(self.subscription.stage_category, 'closed', 'The subscription should be closed.')
             self.assertEqual(self.subscription.end_date, date(2021, 11, 18), 'The end date of the subscription should be updated.')

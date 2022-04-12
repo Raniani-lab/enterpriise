@@ -154,7 +154,7 @@ class AppointmentCommon(MailCommon, common.HttpCase):
     def _flush_tracking(self):
         """ Force the creation of tracking values notably, and ensure tests are
         reproducible. """
-        self.env['base'].flush()
+        self.env.flush_all()
         self.cr.flush()
 
     def assertSlots(self, slots, exp_months, slots_data):

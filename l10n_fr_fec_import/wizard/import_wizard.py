@@ -573,7 +573,7 @@ class FecImportWizard(models.TransientModel):
         """
 
         # Ensure data consistency
-        journals.flush()
+        self.env.flush_all()
 
         # Query the database to determine the journal type
         # The sum_move_lines_per_move query determines the type of the account of the lines
@@ -648,7 +648,7 @@ class FecImportWizard(models.TransientModel):
         """ Reconcile imported move lines, the matching is done between the fields ['account_id', 'matching_number'] """
 
         # Ensure that the database is aligned
-        moves.flush()
+        self.env.flush_all()
 
         # Retrieve the move lines
         sql = """ SELECT ARRAY_AGG(id) ids,

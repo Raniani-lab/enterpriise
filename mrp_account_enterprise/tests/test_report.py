@@ -75,7 +75,7 @@ class TestReportsCommon(TestMrpAccount):
         total_operation_cost = sum(wo.costs_hour * sum(wo.time_ids.mapped('duration')) / 60.0 for wo in production_table.workorder_ids)
 
         report = self.env['report.mrp_account_enterprise.mrp_cost_structure']
-        report.flush()  # flush to avoid the wo duration not being available in the db in order to correctly build report
+        self.env.flush_all()  # flush to avoid the wo duration not being available in the db in order to correctly build report
         report_values = report._get_report_values(docids=production_table.id)['lines'][0]
         self.assertEqual(report_values['component_cost_by_product'][self.dining_table], total_component_cost * (100 - byproduct_cost_share) / 100)
         self.assertEqual(report_values['operation_cost_by_product'][self.dining_table], total_operation_cost * (100 - byproduct_cost_share) / 100)
@@ -195,7 +195,7 @@ class TestReportsCommon(TestMrpAccount):
         mo_2.button_mark_done()
 
         # must flush else SQL request in report is not accurate
-        self.env['mrp.production'].flush(records=(mo_1 + mo_2).ids)
+        self.env.flush_all()
 
         report = self.env['mrp.report'].read_group(
             [('product_id', '=', self.bom_2.product_id.id)],

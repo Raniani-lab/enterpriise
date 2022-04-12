@@ -371,7 +371,7 @@ class assets_report(models.AbstractModel):
         else:
             company_ids = tuple(self.env.company.ids)
 
-        self.flush()
+        self.env.flush_all()
         self.env.cr.execute(sql, {'date_to': date_to, 'date_from': date_from, 'company_ids': company_ids})
         results = self.env.cr.dictfetchall()
         self.env.cr.execute("DROP TABLE temp_account_move")  # Because tests are run in the same transaction, we need to clean here the SQL INHERITS

@@ -168,8 +168,8 @@ class TestDashboard(TransactionCase):
                 'company_id': self.company.id,
             }
         ])
-        self.env['hr.employee'].flush()
-        self.env['hr.contract'].flush()
+        self.env['hr.employee'].flush_model()
+        self.env['hr.contract'].flush_model()
 
         dashboard = self.env['hr.payslip'].with_user(self.user).get_payroll_dashboard_data(sections=['stats'])
         # Identify the different sections

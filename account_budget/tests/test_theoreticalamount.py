@@ -27,7 +27,7 @@ class TestTheoreticalAmount(TestAccountBudgetCommon):
     def assertTheoricalAmountAt(self, budget_line, frozen_date, expected_amount):
         with freeze_time(frozen_date):
             self.assertRecordValues(budget_line, [{'theoritical_amount': expected_amount}])
-            budget_line.invalidate_cache(fnames=['theoritical_amount'])
+            budget_line.invalidate_model(['theoritical_amount'])
 
     def test_theoritical_amount_without_paid_date(self):
         line = self.env['crossovered.budget.lines'].create({

@@ -537,10 +537,10 @@ class AccountGenericTaxReport(models.AbstractModel):
         self = self.with_company(company) # Needed to handle access to property fields correctly
 
         # first, for each tax group, gather the tax entries per tax and account
-        self.env['account.tax'].flush(['name', 'tax_group_id'])
-        self.env['account.tax.repartition.line'].flush(['use_in_tax_closing'])
-        self.env['account.move.line'].flush(['account_id', 'debit', 'credit', 'move_id', 'tax_line_id', 'date', 'company_id', 'display_type'])
-        self.env['account.move'].flush(['state'])
+        self.env['account.tax'].flush_model(['name', 'tax_group_id'])
+        self.env['account.tax.repartition.line'].flush_model(['use_in_tax_closing'])
+        self.env['account.move.line'].flush_model(['account_id', 'debit', 'credit', 'move_id', 'tax_line_id', 'date', 'company_id', 'display_type'])
+        self.env['account.move'].flush_model(['state'])
         sql = """
             SELECT "account_move_line".tax_line_id as tax_id,
                     tax.tax_group_id as tax_group_id,
@@ -879,7 +879,7 @@ class AccountGenericTaxReport(models.AbstractModel):
 
     @api.model
     def _get_lines(self, options, line_id=None):
-        self.flush()
+        self.env.flush_all()
 
         if self._is_generic_layout(options):
             return self._get_lines_default_tax_report(options)

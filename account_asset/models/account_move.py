@@ -380,7 +380,7 @@ class AccountMoveLine(models.Model):
             domain = [('move_id', 'in', self.move_id.ids)]
             tax_details_query, tax_details_params = self._get_query_tax_details_from_domain(domain)
 
-            self.flush(self._fields)
+            self.flush_model()
             self._cr.execute(f'''
                 SELECT
                     tdq.base_line_id,

@@ -94,7 +94,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': self.task_3_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
         with self.assertQueryCount(19):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the planned_hours into account and update the" \
                          "planned_date_end accordingly when moving a task forward."
@@ -117,7 +117,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
         with self.assertQueryCount(37):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the planned_hours into account and update the" \
                          "planned_date_begin accordingly when moving a task backward."
@@ -138,7 +138,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
                         self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
         with self.assertQueryCount(37):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "When planned_hours=0, the auto shift date feature should preserve the time interval between" \
                          "planned_date_begin and planned_date_end when moving a task forward."
@@ -159,7 +159,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
         with self.assertQueryCount(19):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the planned_hours into account and update the" \
                          "planned_date_begin accordingly when moving a task backward."
@@ -178,7 +178,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
                         self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
         with self.assertQueryCount(19):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_3.planned_date_begin,
@@ -195,7 +195,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
         with self.assertQueryCount(37):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_1.planned_date_end,
@@ -215,7 +215,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': new_task_1_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
         with self.assertQueryCount(19):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_3.planned_date_begin,
@@ -235,7 +235,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
         with self.assertQueryCount(37):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_1.planned_date_end,
@@ -254,7 +254,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': self.task_4_planned_date_begin + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
         with self.assertQueryCount(36):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_3, self.task_4)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account and" \
                          "works also for long periods (requiring extending the search interval period)."
@@ -275,7 +275,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
                         self.task_6_planned_date_end - self.task_6_planned_date_begin),
         })
         with self.assertQueryCount(30):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_5, self.task_6)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account and" \
                          "works also for long periods (requiring extending the search interval period)."
@@ -293,7 +293,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': new_task_3_planned_date_begin + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
         with self.assertQueryCount(42):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_3, self.task_4)
         failed_message = "The auto shift date feature should handle correctly dependencies cascades."
         self.assertEqual(self.task_4.planned_date_begin,
@@ -316,7 +316,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': new_task_6_planned_date_begin + (self.task_6_planned_date_end - self.task_6_planned_date_begin),
         })
         with self.assertQueryCount(35):
-            self.ProjectTask.invalidate_cache()
+            self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_5, self.task_6)
         failed_message = "The auto shift date feature should handle correctly dependencies cascades."
         self.assertEqual(self.task_5.planned_date_end,

@@ -21,7 +21,7 @@ class SaleOrder(models.Model):
 
         # Trigger field computation due to changing the tax id. Do
         # this here because we will manually change the taxes.
-        to_flush.flush(['price_tax', 'price_subtotal', 'price_total'])
+        to_flush.flush_recordset(['price_tax', 'price_subtotal', 'price_total'])
 
         for line, detail in mapped_taxes.items():
             line.price_tax = detail['tax_amount']

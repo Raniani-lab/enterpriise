@@ -19,6 +19,6 @@ class ResUsers(models.Model):
 
     def _neutralize(self):
         super()._neutralize()
-        self.flush()
-        self.invalidate_cache()
+        self.flush_model()
+        self.invalidate_model()
         self.env.cr.execute("UPDATE res_users SET onsip_auth_user = 'dummy'")

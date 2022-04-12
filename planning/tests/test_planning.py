@@ -81,8 +81,8 @@ class TestPlanning(TestCommonPlanning):
     def test_change_start_partial(self):
         self.slot.allocated_percentage = 80
         self.slot.start_datetime += relativedelta(hours=2)
-        self.slot.flush()
-        self.slot.invalidate_cache()
+        self.slot.flush_recordset()
+        self.slot.invalidate_recordset()
         self.assertEqual(self.slot.allocated_hours, 8 * 0.8, "It should be decreased by 2 hours and percentage applied")
         self.assertEqual(self.slot.allocated_percentage, 80, "It should still be 80%")
 
@@ -98,7 +98,7 @@ class TestPlanning(TestCommonPlanning):
 
     def test_change_employee_with_template(self):
         self.slot.template_id = self.template
-        self.slot.flush()
+        self.env.flush_all()
 
         # simulate public user (no tz)
         self.env.user.tz = False
@@ -159,13 +159,13 @@ class TestPlanning(TestCommonPlanning):
         self.env.user.tz = 'America/New_York'
         self.env.user.company_id.resource_calendar_id.tz = 'America/New_York'
         self.slot.template_id = self.template
-        self.slot.flush()
+        self.env.flush_all()
         self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should set time from template, in user timezone (11am EDT -> 3pm UTC)')
 
         # simulate public user (no tz)
         self.env.user.tz = False
         self.slot.resource_id = self.resource_janice.id
-        self.slot.flush()
+        self.env.flush_all()
         self.assertEqual(self.slot.start_datetime, datetime(2019, 6, 27, 15, 0), 'It should adjust to employee timezone')
 
         self.slot.resource_id = None

@@ -84,9 +84,9 @@ class Payslips(BrowsableObject):
         if to_date is None:
             to_date = fields.Date.today()
 
-        self.env['hr.payslip'].flush(['employee_id', 'state', 'date_from', 'date_to'])
-        self.env['hr.payslip.line'].flush(['total', 'slip_id', 'category_id'])
-        self.env['hr.salary.rule.category'].flush(['code'])
+        self.env['hr.payslip'].flush_model(['employee_id', 'state', 'date_from', 'date_to'])
+        self.env['hr.payslip.line'].flush_model(['total', 'slip_id', 'category_id'])
+        self.env['hr.salary.rule.category'].flush_model(['code'])
 
         self.env.cr.execute("""
             SELECT sum(pl.total)

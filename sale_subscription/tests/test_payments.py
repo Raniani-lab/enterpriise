@@ -182,13 +182,13 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
             next_invoices = lines.mapped('next_invoice_date')
             self.assertEqual(next_invoices, [datetime.datetime(2021, 2, 3), datetime.datetime(2022, 1, 3)])
         with freeze_time("2021-02-03"):
-            self.subscription.invalidate_cache()
+            self.env.invalidate_all()
             self.env['sale.order']._cron_recurring_create_invoice()
             invoice = self.subscription.invoice_ids.sorted('date')[-1]
             self.assertEqual(len(invoice.invoice_line_ids), 1, 'Only one product must be invoiced the second time')
 
         with freeze_time("2021-03-03"):
-            self.subscription.invalidate_cache()
+            self.env.invalidate_all()
             self.env['sale.order']._cron_recurring_create_invoice()
             invoice = self.subscription.invoice_ids.sorted('date')[-1]
             self.assertEqual(len(invoice.invoice_line_ids), 1, 'Only one product must be invoiced the second time')

@@ -252,7 +252,7 @@ class DataMergeRecord(models.Model):
                 AND cl2.relname = %s
             GROUP BY cl1.relname"""
 
-        self.flush()
+        self.env.flush_all()
         self._cr.execute(query, (table, ))
         return {r[0]:r[1] for r in self._cr.fetchall()}
 
@@ -268,7 +268,7 @@ class DataMergeRecord(models.Model):
         references = self._get_model_references(destination._table)
 
         source_ids = source.ids
-        self.flush()
+        self.env.flush_all()
 
         for table, columns in references.items():
             for column in columns:
@@ -343,8 +343,8 @@ class DataMergeRecord(models.Model):
         self._merge_additional_models(destination, source_ids)
         fields_to_recompute = [f.name for f in destination._fields.values() if f.compute and f.store]
         destination.modified(fields_to_recompute)
-        destination.recompute()
-        self.invalidate_cache()
+        self.env.flush_all()
+        self.env.invalidate_all()
 
     ## Manual merge of ir.attachment & mail.activity
     @api.model

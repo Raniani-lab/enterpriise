@@ -67,9 +67,9 @@ class TestTrackPush(TestEventOnlineCommon):
             'push_reminder': True,
             'push_reminder_delay': 10
         })
-        track_1.flush(['push_reminder'])
+        track_1.flush_recordset(['push_reminder'])
         track_2.write({'push_reminder': True})
-        track_2.flush(['push_reminder'])
+        track_2.flush_recordset(['push_reminder'])
 
         push_reminder = self.env['social.post'].search([('event_track_id', '=', track_1.id)])
         self.assertTrue(bool(push_reminder))
@@ -89,13 +89,13 @@ class TestTrackPush(TestEventOnlineCommon):
             'push_reminder_delay': 20,
             'date': fields.Datetime.now() + relativedelta(hours=3)
         })
-        track_1.flush(['name', 'date'])
+        track_1.flush_recordset(['name', 'date'])
         push_reminder = self.env['social.post'].search([('event_track_id', '=', track_1.id)])
         self.assertEqual("Your favorite track 'New Name' will start in 20 minutes!", push_reminder.message)
         self.assertEqual(track_1.date - relativedelta(minutes=20), push_reminder.scheduled_date)
 
         track_1.write({'push_reminder': False})
-        track_1.flush(['push_reminder'])
+        track_1.flush_recordset(['push_reminder'])
         push_reminder = self.env['social.post'].search([('event_track_id', '=', track_1.id)])
         self.assertFalse(bool(push_reminder))
 
@@ -135,7 +135,7 @@ class TestTrackPush(TestEventOnlineCommon):
         })
 
         track_1.write({'push_reminder': True})
-        track_1.flush(['push_reminder'])
+        track_1.flush_recordset(['push_reminder'])
 
         push_reminder = self.env['social.post'].search([('event_track_id', '=', track_1.id)])
         self.assertTrue(bool(push_reminder))

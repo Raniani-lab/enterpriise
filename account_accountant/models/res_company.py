@@ -21,6 +21,8 @@ class ResCompany(models.Model):
 
         for record in self:
             if 'invoicing_switch_threshold' in vals and old_threshold_vals[record] != vals['invoicing_switch_threshold']:
+                self.env['account.move.line'].flush_model(['move_id', 'parent_state'])
+                self.env['account.move'].flush_model(['company_id', 'date', 'state', 'payment_state', 'payment_state_before_switch'])
                 if record.invoicing_switch_threshold:
                     # If a new date was set as threshold, we switch all the
                     # posted moves and payments before it to 'invoicing_legacy'.
@@ -78,7 +80,8 @@ class ResCompany(models.Model):
                         and company_id = %(company_id)s;
                     """, {'company_id': record.id})
 
-                self.env['account.move'].invalidate_cache(fnames=['state'])
+                self.env['account.move.line'].invalidate_model(['parent_state'])
+                self.env['account.move'].invalidate_model(['state', 'payment_state', 'payment_state_before_switch'])
 
         return rslt
 

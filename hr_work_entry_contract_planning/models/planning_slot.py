@@ -27,12 +27,12 @@ class PlanningSlot(models.Model):
         # We will instead archive all work entries that are touched by the current planning slot's period
         # (slots don't have an overlap constraint), and regenerate all work entries that were covered by them.
         # Since all we need is already in the database we can use that query to have better performance.
-        self.flush(['start_datetime', 'end_datetime', 'employee_id'])
-        self.env['hr.contract'].flush([
+        self.flush_model(['start_datetime', 'end_datetime', 'employee_id'])
+        self.env['hr.contract'].flush_model([
             'employee_id', 'state', 'work_entry_source',
             'date_start', 'date_end', 'date_generated_from', 'date_generated_to'
         ])
-        self.env['hr.work.entry'].flush(['employee_id', 'date_start', 'date_stop'])
+        self.env['hr.work.entry'].flush_model(['employee_id', 'date_start', 'date_stop'])
         self.env.cr.execute("""
             SELECT slot.id as id,
                    ARRAY_AGG(contract.id) as contract_ids,

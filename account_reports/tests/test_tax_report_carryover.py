@@ -70,7 +70,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
         report = report.with_context(report._set_context(options))
 
         # Invalidate the cache to ensure the lines will be fetched in the right order.
-        report.invalidate_cache()
+        self.env.invalidate_all()
 
         if with_reversal:
             # We refund the invoice

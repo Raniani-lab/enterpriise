@@ -72,11 +72,11 @@ class TestActivityPerformance(BaseMailPerformance):
             record = ActivityModel.create({
                 'name': 'Test',
             })
-            record.flush()
+            self.env.flush_all()
 
         with self.assertQueryCount(__system__=1, employee=1):
             record.write({'name': 'New Name'})
-            record.flush()
+            self.env.flush_all()
 
     @users('employee')
     @warmup
@@ -87,7 +87,7 @@ class TestActivityPerformance(BaseMailPerformance):
 
         with self.assertQueryCount(employee=36):  # TME only: 36
             activity = record.activity_schedule('mail.mail_activity_data_call', summary='Call Activity')
-            activity.flush()
+            self.env.flush_all()
 
         # check business information (to benefits from this test)
         self.assertEqual(record.activity_ids, activity)
@@ -104,7 +104,7 @@ class TestActivityPerformance(BaseMailPerformance):
             activity = record.activity_schedule(
                 'mail.mail_activity_data_upload_document',
                 summary='Upload Activity')
-            activity.flush()
+            self.env.flush_all()
 
         # check business information (to benefits from this test)
         self.assertEqual(record.activity_ids, activity)

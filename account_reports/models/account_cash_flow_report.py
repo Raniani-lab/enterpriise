@@ -507,7 +507,7 @@ class AccountCashFlowReport(models.AbstractModel):
                     # 'Cash out for unclassified activities'                (index=15)
                     _insert_at_index(15, account_id, account_code, account_name, -amount)
 
-        self.flush()
+        self.env.flush_all()
 
         unfold_all = self._context.get('print_mode') or options.get('unfold_all')
         currency_table_query = self.env['res.currency']._get_query_currency_table(options)

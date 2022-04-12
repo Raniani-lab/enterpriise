@@ -238,7 +238,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         self.spreadsheet.dispatch_spreadsheet_message(
             self.new_revision_data(self.spreadsheet)
         )
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         revision = self.env["spreadsheet.revision"].with_user(self.manager).search([])
         self.assertTrue(revision)
         self.assertTrue(revision.read())
@@ -249,7 +249,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
 
     def test_write_user_with_doc_access(self):
         self.user.groups_id |= self.group
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         self.spreadsheet.with_user(self.user).write(
             {"name": "new name"}
         )  # the user can write the document
@@ -260,7 +260,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         self.spreadsheet.dispatch_spreadsheet_message(
             self.new_revision_data(self.spreadsheet)
         )
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         self.spreadsheet.with_user(self.manager).spreadsheet_revision_ids.write(
             {"commands": "coucou"}
         )
@@ -280,7 +280,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
             self.new_revision_data(self.spreadsheet)
         )
         self.assertTrue(self.spreadsheet.spreadsheet_revision_ids)
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         self.spreadsheet.with_user(self.manager).spreadsheet_revision_ids.unlink()
         self.assertFalse(self.spreadsheet.spreadsheet_revision_ids)
 
@@ -290,14 +290,14 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
 
     def test_join_user_with_doc_access(self):
         self.user.groups_id |= self.group
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         self.spreadsheet.with_user(self.user).join_spreadsheet_session()
 
     def test_join_user_with_read_doc_access(self):
         self.user.groups_id |= self.group
         self.folder.group_ids = False
         self.folder.read_group_ids = self.group
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         self.spreadsheet.with_user(self.user).join_spreadsheet_session()
         with self.assertRaises(AccessError):
             self.spreadsheet.with_user(self.user).dispatch_spreadsheet_message(
@@ -336,7 +336,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
             # add at least one revision
             self.new_revision_data(self.spreadsheet)
         )
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         self.snapshot(
             self.spreadsheet.with_user(self.user),
             self.get_revision(self.spreadsheet), "snapshot-id", "{}",
@@ -348,7 +348,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         self.folder.group_ids = False
         self.folder.read_group_ids = self.group
         self.get_revision(self.spreadsheet)
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         with self.assertRaises(AccessError):
             self.snapshot(
                 self.spreadsheet.with_user(self.user),
@@ -364,7 +364,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
     def test_dispatch_user_with_doc_access(self):
         self.user.groups_id |= self.group
         commands = self.new_revision_data(self.spreadsheet)
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         self.spreadsheet.with_user(self.user).dispatch_spreadsheet_message(commands)
         self.assertEqual(
             json.loads(self.spreadsheet.spreadsheet_revision_ids.commands),
@@ -385,7 +385,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         self.user.groups_id |= self.group
         self.folder.group_ids = False
         self.folder.read_group_ids = self.group
-        self.spreadsheet.invalidate_cache()
+        self.env.invalidate_all()
         self.spreadsheet.with_user(self.user).dispatch_spreadsheet_message(
             {"type": "CLIENT_MOVED"}
         )

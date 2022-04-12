@@ -84,13 +84,13 @@ class TestReadGridGrouped(TestWebGrid):
         )
 
         # determine the number of queries with the initial data
-        TestWebGrid.flush()
-        TestWebGrid.invalidate_cache()
+        self.env.flush_all()
+        self.env.invalidate_all()
         query_count = -self.cr.sql_log_count
         result = TestWebGrid.read_grid_grouped(
             row_fields, col_field, cell_field, section_field, domain, self.range_day,
         )
-        TestWebGrid.flush()
+        self.env.flush_all()
         query_count += self.cr.sql_log_count
         base_size = len(result)
 
@@ -116,7 +116,7 @@ class TestReadGridGrouped(TestWebGrid):
 
         # check that the query count has not increased
         with self.assertQueryCount(query_count):
-            TestWebGrid.invalidate_cache()
+            self.env.invalidate_all()
             result = TestWebGrid.read_grid_grouped(
                 row_fields, col_field, cell_field, section_field, domain, self.range_day,
             )

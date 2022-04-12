@@ -376,7 +376,7 @@ class AccountAvatax(models.AbstractModel):
                 ''' This creates a new cursor to make sure the log is committed even when an
                     exception is thrown later in this request.
                 '''
-                self.flush()
+                self.env.flush_all()
                 dbname = self._cr.dbname
                 with registry(dbname).cursor() as cr:
                     env = api.Environment(cr, SUPERUSER_ID, {})

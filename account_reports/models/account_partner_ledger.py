@@ -365,9 +365,9 @@ class ReportPartnerLedger(models.AbstractModel):
         company_currency = self.env.company.currency_id
 
         # flush the tables that gonna be queried
-        self.env['account.move.line'].flush(fnames=self.env['account.move.line']._fields)
-        self.env['account.move'].flush(fnames=self.env['account.move']._fields)
-        self.env['account.partial.reconcile'].flush(fnames=self.env['account.partial.reconcile']._fields)
+        self.env['account.move.line'].flush_model()
+        self.env['account.move'].flush_model()
+        self.env['account.partial.reconcile'].flush_model()
 
         # Execute the queries and dispatch the results.
         query, params = self._get_query_sums(options, expanded_partner=expanded_partner)

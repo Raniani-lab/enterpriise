@@ -150,7 +150,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
             'staff_user_ids': [(4, self.staff_users[0].id)],
             'work_hours_activated': False,
         })
-        apt_type_custom_bxls.flush()
+        self.env.flush_all()
         apt_type_custom_bxls = apt_type_custom_bxls.with_user(self.env.user)
 
         # with self.profile(collectors=['sql']) as profile:
@@ -216,7 +216,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
             'staff_user_ids': [(4, self.staff_users[0].id)],
             'work_hours_activated': True,
         })
-        apt_type_custom_bxls.flush()
+        self.env.flush_all()
         apt_type_custom_bxls = apt_type_custom_bxls.with_user(self.env.user)
 
         # with self.profile(collectors=['sql']) as profile:
@@ -363,7 +363,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         involved. """
         random.seed(1871)  # fix shuffle in _slots_available
         self.test_apt_type.write({'max_schedule_days': 10})
-        self.test_apt_type.flush()
+        self.env.flush_all()
         apt_type = self.test_apt_type.with_user(self.env.user)
 
         # with self.profile(collectors=['sql']) as profile:
@@ -407,7 +407,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         involved. """
         random.seed(1871)  # fix shuffle in _slots_available
         self.test_apt_type.write({'max_schedule_days': 10})
-        self.test_apt_type.flush()
+        self.env.flush_all()
         apt_type = self.test_apt_type.with_user(self.env.user)
 
         # with self.profile(collectors=['sql']) as profile:
@@ -462,7 +462,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
             'staff_user_ids': [(5, 0), (4, self.staff_users[0].id)],
             'work_hours_activated': True,
             })
-        self.apt_type_bxls_2days.flush()
+        self.env.flush_all()
         apt_type = self.apt_type_bxls_2days.with_user(self.env.user)
 
         # with self.profile(collectors=['sql']) as profile:
@@ -526,7 +526,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
             'staff_user_ids': [(5, 0), (4, self.staff_users[0].id)],
             'work_hours_activated': True,
         })
-        self.apt_type_bxls_2days.flush()
+        self.env.flush_all()
         apt_type = self.apt_type_bxls_2days.with_user(self.env.user)
 
         # with self.profile(collectors=['sql']) as profile:
@@ -618,7 +618,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
             ],
             'staff_user_ids': [(5, 0), (4, self.staff_users[0].id)],
             })
-        self.test_apt_type.flush()
+        self.env.flush_all()
 
         t0 = time.time()
         with freeze_time(self.reference_now):

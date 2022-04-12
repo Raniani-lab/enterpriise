@@ -50,7 +50,6 @@ class TestActivity(TestMailCommon, TestRecipients):
             ('activity_type_id', '=', self.phonecall_activity.id),
         ])
         phonecall_activities.write({'activity_type_id': False})
-        phonecall_activities.flush()
         self.phonecall_activity.unlink()
 
         with self.assertRaises(exceptions.UserError):

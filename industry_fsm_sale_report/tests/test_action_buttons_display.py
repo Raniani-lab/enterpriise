@@ -400,7 +400,7 @@ class TestTimerButtons(TestFsmFlowSaleCommon):
             })]
         })
         order.action_confirm()
-        order.flush()
+        self.env.flush_all()
         project = order.order_line.project_id
         self.assertTrue(project.sale_line_id)
         self.assertTrue(project.partner_id)

@@ -31,7 +31,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         })
 
     def assertPartnerFollowup(self, partner, status, level):
-        partner.invalidate_cache(['followup_status', 'followup_level'])
+        partner.invalidate_model(['followup_status', 'followup_level'])
         res = partner._query_followup_level()
         self.assertEqual(res.get(partner.id, {}).get('followup_status'), status or None)
         self.assertEqual(res.get(partner.id, {}).get('followup_level'), level.id if level else None)

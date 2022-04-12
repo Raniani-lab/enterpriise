@@ -18,8 +18,7 @@ class SaleOrder(models.Model):
     @api.model
     def _test_demo_flush_tracking(self):
         """ Force the creation of tracking values. """
-        self.env['base'].flush()
-        self.env.cr.precommit.run()
+        self.env.flush_all()
         self.env.cr.flush()
 
     def _test_demo_create_invoices(self, automatic=True):

@@ -11,9 +11,9 @@ class AccountReconciliation(models.AbstractModel):
         if not stl_ids:
             return res
         # Search if we can find a sale order line that match the statement reference
-        self.env['sale.order'].flush(['name', 'reference', 'invoice_status', 'company_id',
-                                      'state', 'partner_id', 'amount_total'])
-        self.env['account.bank.statement.line'].flush(['name', 'partner_id'])
+        self.env['sale.order'].flush_model(['name', 'reference', 'invoice_status', 'company_id',
+                                            'state', 'partner_id', 'amount_total'])
+        self.env['account.bank.statement.line'].flush_model(['name', 'partner_id'])
         sql_query = """
             SELECT stl.id, array_agg(o.id) AS order_id, stl.partner_id, array_agg(o.partner_id) as order_partner
             FROM sale_order o,

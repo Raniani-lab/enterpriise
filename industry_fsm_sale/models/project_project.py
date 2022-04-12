@@ -59,7 +59,7 @@ class Project(models.Model):
             else:
                 project.allow_material = project.allow_billable
 
-    def flush(self, fnames=None, records=None):
+    def flush_model(self, fnames=None):
         if fnames is not None:
             # force 'allow_billable' and 'allow_material' to be flushed
             # altogether in order to satisfy the SQL constraint above
@@ -67,7 +67,17 @@ class Project(models.Model):
             if 'allow_billable' in fnames or 'allow_material' in fnames:
                 fnames.add('allow_billable')
                 fnames.add('allow_material')
-        return super().flush(fnames, records)
+        return super().flush_model(fnames)
+
+    def flush_recordset(self, fnames=None):
+        if fnames is not None:
+            # force 'allow_billable' and 'allow_material' to be flushed
+            # altogether in order to satisfy the SQL constraint above
+            fnames = set(fnames)
+            if 'allow_billable' in fnames or 'allow_material' in fnames:
+                fnames.add('allow_billable')
+                fnames.add('allow_material')
+        return super().flush_recordset(fnames)
 
     @api.depends('sale_line_id', 'sale_line_employee_ids', 'allow_billable', 'is_fsm')
     def _compute_pricing_type(self):

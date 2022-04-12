@@ -392,8 +392,8 @@ class AccountReconciliation(models.AbstractModel):
                 order_by=is_partner and 'ORDER BY p.last_time_entries_checked' or 'ORDER BY a.code',
                 outer_where=is_partner and 'WHERE (last_time_entries_checked IS NULL OR max_date > last_time_entries_checked)' or ' ',
             ))
-        self.env['account.move.line'].flush()
-        self.env['account.account'].flush()
+        self.env['account.move.line'].flush_model()
+        self.env['account.account'].flush_model()
         self.env.cr.execute(query, locals())
 
         # Apply ir_rules by filtering out

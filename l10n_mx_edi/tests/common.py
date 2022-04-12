@@ -60,7 +60,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
         # Rename USD to something else and create a new USD with defined rates.
         # Done like this because currencies should be fetched by name, not by xml_id
         cls.env.ref('base.USD').name = 'FUSD'
-        cls.env['res.currency'].flush(['name'])
+        cls.env['res.currency'].flush_model(['name'])
         cls.fake_usd_data = cls.setup_multi_currency_data(default_values={
             'name': 'USD',
             'symbol': '$',

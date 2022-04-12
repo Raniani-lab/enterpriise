@@ -195,9 +195,9 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheet):
             'date': today,
         })
 
-        ordered_task.invalidate_cache(fields_to_fetch)
+        ordered_task.invalidate_recordset(fields_to_fetch)
         basic_task_read = ordered_task.read(fields_to_fetch)[0]
-        ordered_task.invalidate_cache(fields_to_fetch)
+        ordered_task.invalidate_recordset(fields_to_fetch)
         portal_task_read = ordered_task.with_user(portal_user).read(fields_to_fetch)[0]
 
         self.assertEqual(basic_task_read['portal_remaining_hours'], 2)
@@ -222,9 +222,9 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheet):
             'validated': True
         })
 
-        ordered_task.invalidate_cache(fields_to_fetch)
+        ordered_task.invalidate_recordset(fields_to_fetch)
         basic_task_read = ordered_task.read(fields_to_fetch)[0]
-        ordered_task.invalidate_cache(fields_to_fetch)
+        ordered_task.invalidate_recordset(fields_to_fetch)
         portal_task_read = ordered_task.with_user(portal_user).read(fields_to_fetch)[0]
 
         self.assertEqual(basic_task_read['portal_remaining_hours'], 0)

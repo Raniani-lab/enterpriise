@@ -230,7 +230,7 @@ class TestRentalCommon(common.TransactionCase):
             1
         )
 
-        self.product_id.invalidate_cache()
+        self.env.invalidate_all()
         """ In company internal rental location (in stock valuation but not in available qty) """
         self.assertEqual(
             self.product_id.with_context(
@@ -400,7 +400,7 @@ class TestRentalCommon(common.TransactionCase):
         # 2 reserved, 2 pickedup, 1 returned
         self.order_line_id2.returned_lot_ids = self.lot_id2
         self.order_line_id2.pickedup_lot_ids += self.lot_id1
-        scheduling_recs.invalidate_cache()
+        self.env.invalidate_all()
         scheduling_recs = self.env["sale.rental.schedule"].search([
             ('order_line_id', '=', self.order_line_id2.id)
         ])

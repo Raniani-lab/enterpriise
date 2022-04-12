@@ -170,7 +170,7 @@ class DataMergeModel(models.Model):
         :param bool batch_commits: If set, will automatically commit every X records
         """
         unaccent = get_unaccent_wrapper(self.env.cr)
-        self.flush()
+        self.env.flush_all()
         for dm_model in self:
             t1 = timeit.default_timer()
             ids = []

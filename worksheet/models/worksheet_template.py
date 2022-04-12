@@ -109,7 +109,7 @@ class WorksheetTemplate(models.Model):
         name = 'x_%s_worksheet_template_%d' % (res_model, self.id)
         # while creating model it will initialize the init_models method from create of ir.model
         # and there is related field of model_id in mail template so it's going to recursive loop while recompute so used flush
-        self.flush()
+        self.env.flush_all()
 
         # generate the ir.model (and so the SQL table)
         model = self.env['ir.model'].sudo().create({

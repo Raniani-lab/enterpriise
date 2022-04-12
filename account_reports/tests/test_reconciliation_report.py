@@ -122,7 +122,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
 
         # report._get_lines() makes SQL queries without flushing
-        report.flush()
+        self.env.flush_all()
 
         with freeze_time('2016-01-02'):
 
@@ -255,7 +255,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
 
         # report._get_lines() makes SQL queries without flushing
-        report.flush()
+        self.env.flush_all()
 
         with freeze_time('2016-01-02'), self.debug_mode(report):
 
@@ -330,7 +330,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
         payment.action_post()
 
         # report._get_lines() makes SQL queries without flushing
-        statement.flush()
+        self.env.flush_all()
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
 
         options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-01'))
@@ -422,7 +422,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
 
         # report._get_lines() makes SQL queries without flushing
-        report.flush()
+        self.env.flush_all()
 
         with freeze_time('2016-01-02'):
 

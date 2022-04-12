@@ -28,7 +28,7 @@ class TimerTimer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             # Reset the user_timer_id to force the recomputation
-            self.env[vals['res_model']].invalidate_cache(fnames=['user_timer_id'], ids=[vals['res_id']])
+            self.env[vals['res_model']].browse(vals['res_id']).invalidate_model(['user_timer_id'])
         return super().create(vals_list)
 
     def action_timer_start(self):

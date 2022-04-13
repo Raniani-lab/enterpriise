@@ -21,6 +21,11 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      */
     handle(cmd) {
         switch (cmd.type) {
+            case "REMOVE_ODOO_LIST":
+                this.dispatch("EVALUATE_CELLS", {
+                    sheetId: this.getters.getActiveSheetId(),
+                });
+                break;
             case "SELECT_ODOO_LIST":
                 this._selectList(cmd.listId);
                 break;

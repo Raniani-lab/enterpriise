@@ -31,6 +31,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
         super(getters, history, range, dispatch, config, uuidGenerator);
         this.dataSources = config.dataSources;
 
+        this.nextId = 1;
         /** @type {Object.<number, Pivot>} */
         this.pivots = {};
     }
@@ -43,6 +44,11 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
                 }
                 if (cmd.name === "") {
                     return CommandResult.EmptyName;
+                }
+                break;
+            case "INSERT_PIVOT":
+                if (cmd.id !== this.nextId.toString()) {
+                    return CommandResult.InvalidNextId;
                 }
                 break;
         }
@@ -63,6 +69,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
                 const table = new SpreadsheetPivotTable(cols, rows, measures);
                 this._addPivot(id, definition, dataSourceId);
                 this._insertPivot(sheetId, anchor, id, table);
+                this.nextId = parseInt(id, 10) + 1;
                 break;
             }
             case "RE_INSERT_PIVOT": {
@@ -75,6 +82,12 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
             }
             case "RENAME_ODOO_PIVOT": {
                 this.history.update("pivots", cmd.pivotId, "definition", "name", cmd.name);
+                break;
+            }
+            case "REMOVE_PIVOT": {
+                const pivots = { ...this.pivots };
+                delete pivots[cmd.pivotId];
+                this.history.update("pivots", pivots);
                 break;
             }
         }
@@ -135,7 +148,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
      * @returns {string} id
      */
     getNextPivotId() {
-        return (getMaxObjectId(this.pivots) + 1).toString();
+        return this.nextId.toString();
     }
 
     /**
@@ -450,6 +463,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
                 this._addPivot(id, definition, this.uuidGenerator.uuidv4());
             }
         }
+        this.nextId = data.pivotNextId || getMaxObjectId(this.pivots) + 1;
     }
     /**
      * Export the pivots
@@ -462,6 +476,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
             data.pivots[id] = JSON.parse(JSON.stringify(this.getPivotDefinition(id)));
             data.pivots[id].measures = data.pivots[id].measures.map((elt) => ({ field: elt }));
         }
+        data.pivotNextId = this.nextId;
     }
 }
 

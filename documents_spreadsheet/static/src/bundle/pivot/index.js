@@ -28,6 +28,7 @@ uiPluginRegistry.add("odooPivotTemplatePlugin", PivotTemplatePlugin);
 
 coreTypes.add("INSERT_PIVOT");
 coreTypes.add("RENAME_ODOO_PIVOT");
+coreTypes.add("REMOVE_PIVOT");
 coreTypes.add("RE_INSERT_PIVOT");
 
 readonlyAllowedCommands.add("ADD_PIVOT_DOMAIN");

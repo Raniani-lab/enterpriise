@@ -26,6 +26,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
         super(getters, history, range, dispatch, config, uuidGenerator);
         this.dataSources = config.dataSources;
 
+        this.nextId = 1;
         /** @type {Object.<number, Pivot>} */
         this.lists = {};
     }
@@ -33,6 +34,9 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
     allowDispatch(cmd) {
         switch (cmd.type) {
             case "INSERT_ODOO_LIST":
+                if (cmd.id !== this.nextId.toString()) {
+                    return CommandResult.InvalidNextId;
+                }
                 if (this.lists[cmd.id]) {
                     return CommandResult.ListIdDuplicated;
                 }
@@ -61,6 +65,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
                 const anchor = [col, row]
                 this._addList(id, definition, dataSourceId);
                 this._insertList(sheetId, anchor, id, linesNumber, columns);
+                this.nextId = parseInt(id, 10) + 1;
                 break;
             }
             case "RE_INSERT_ODOO_LIST": {
@@ -71,6 +76,12 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
             }
             case "RENAME_ODOO_LIST": {
                 this.history.update("lists", cmd.listId, "definition", "name", cmd.name);
+                break;
+            }
+            case "REMOVE_ODOO_LIST": {
+                const lists = { ...this.lists };
+                delete lists[cmd.listId];
+                this.history.update("lists", lists);
                 break;
             }
         }
@@ -162,7 +173,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
      * @returns {string} id
      */
     getNextListId() {
-        return (getMaxObjectId(this.lists) + 1).toString();
+        return this.nextId.toString();
     }
 
     /**
@@ -180,6 +191,17 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
             id,
             name: def.name,
         }
+    }
+
+    /**
+     * Check if an id is an id of an existing list
+     *
+     * @param {number} id Id of the list
+     *
+     * @returns {boolean}
+     */
+    isExistingList(id) {
+        return id in this.lists;
     }
 
     // ---------------------------------------------------------------------
@@ -345,6 +367,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
                 this._addList(id, definition, this.uuidGenerator.uuidv4());
             }
         }
+        this.nextId = data.listNextId || getMaxObjectId(this.lists) + 1;
     }
     /**
      * Export the lists
@@ -356,6 +379,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
         for (const id in this.lists) {
             data.lists[id] = JSON.parse(JSON.stringify(this.getListDefinition(id)));
         }
+        data.listNextId = this.nextId;
     }
 
 }
@@ -371,4 +395,5 @@ ListPlugin.getters = [
     "getListIds",
     "getListName",
     "getNextListId",
+    "isExistingList",
 ];

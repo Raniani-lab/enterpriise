@@ -69,7 +69,7 @@ function insertPreloadedPivot(model, params) {
         col: params.anchor ? params.anchor[0] : 0,
         row: params.anchor ? params.anchor[1] : 0,
         table,
-        id: 1,
+        id: "1",
         dataSourceId,
         definition,
     });
@@ -482,7 +482,7 @@ QUnit.module("documents_spreadsheet > collaborative > list", {
 
 QUnit.test("Add a list", async (assert) => {
     assert.expect(1);
-    insertList(alice, 1)
+    insertList(alice, "1")
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => user.getters.getListIds().length,
@@ -493,8 +493,8 @@ QUnit.test("Add a list", async (assert) => {
 QUnit.test("Add two lists concurrently", async (assert) => {
     assert.expect(6);
     await network.concurrent(() => {
-        insertList(alice, 1);
-        insertList(bob, 1, [0, 25]);
+        insertList(alice, "1");
+        insertList(bob, "1", [0, 25]);
     });
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => user.getters.getListIds(), [
         "1",
@@ -530,12 +530,94 @@ QUnit.test("Add two lists concurrently", async (assert) => {
 QUnit.test("Can undo a command before a INSERT_ODOO_LIST", async (assert) => {
     assert.expect(1);
     setCellContent(bob, "A10", "Hello Alice");
-    insertList(alice, 1);
+    insertList(alice, "1");
     setCellContent(charlie, "A11", "Hello all");
     bob.dispatch("REQUEST_UNDO");
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellContent(user, "A10"),
         ""
+    );
+});
+
+QUnit.test("Rename and remove a pivot concurrently", async (assert) => {
+    await insertPivot(alice);
+    await network.concurrent(() => {
+        alice.dispatch("RENAME_ODOO_PIVOT", {
+            pivotId: "1",
+            name: "test",
+        });
+        bob.dispatch("REMOVE_PIVOT", {
+            pivotId: "1"
+        });
+    });
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.getters.getPivotIds().length,
+        0
+    );
+});
+
+QUnit.test("Re-insert and remove a pivot concurrently", async (assert) => {
+    await insertPivot(alice);
+    await network.concurrent(() => {
+        const structure = alice.getters.getSpreadsheetPivotModel("1").getTableStructure();
+        const table = structure.export();
+        alice.dispatch("RE_INSERT_PIVOT", {
+            id: "1",
+            col: 0,
+            row: 0,
+            sheetId: alice.getters.getActiveSheetId(),
+            table,
+        });
+        bob.dispatch("REMOVE_PIVOT", {
+            pivotId: "1"
+        });
+    });
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.getters.getPivotIds().length,
+        0
+    );
+});
+
+QUnit.test("Rename and remove a list concurrently", async (assert) => {
+    insertList(alice, "1");
+    await network.concurrent(() => {
+        alice.dispatch("RENAME_ODOO_LIST", {
+            listId: "1",
+            name: "test",
+        });
+        bob.dispatch("REMOVE_ODOO_LIST", {
+            listId: "1"
+        });
+    });
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.getters.getListIds().length,
+        0
+    );
+});
+
+QUnit.test("Re-insert and remove a list concurrently", async (assert) => {
+    insertList(alice, "1");
+    await network.concurrent(() => {
+        const { columns } = getListPayload();
+        alice.dispatch("RE_INSERT_ODOO_LIST", {
+            id: "1",
+            col: 0,
+            row: 0,
+            sheetId: alice.getters.getActiveSheetId(),
+            linesNumber: 5,
+            columns,
+        });
+        bob.dispatch("REMOVE_ODOO_LIST", {
+            listId: "1"
+        });
+    });
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.getters.getPivotIds().length,
+        0
     );
 });

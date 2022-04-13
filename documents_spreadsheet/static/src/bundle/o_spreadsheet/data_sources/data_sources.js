@@ -96,15 +96,6 @@ export class DataSources extends EventBus {
     }
 
     /**
-     * Remove the data source with the following id.
-     *
-     * @param {string} id
-     */
-    remove(id) {
-        this._dataSources[id] = undefined;
-    }
-
-    /**
      * Notify that a data source has been updated. Could be useful to
      * request a re-evaluation.
      */

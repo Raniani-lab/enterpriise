@@ -10,11 +10,24 @@ function identity(cmd) {
 otRegistry
   .addTransformation("INSERT_PIVOT", ["INSERT_PIVOT"], (toTransform) => ({
     ...toTransform,
-    id: toTransform.id + 1,
-  }));
+    id: (parseInt(toTransform.id, 10) + 1).toString(),
+  }))
+  .addTransformation("REMOVE_PIVOT", ["RENAME_ODOO_PIVOT"], (toTransform, executed) => {
+    if (toTransform.pivotId === executed.pivotId) {
+      return undefined;
+    }
+    return toTransform;
+  })
+  .addTransformation("REMOVE_PIVOT", ["RE_INSERT_PIVOT"], (toTransform, executed) => {
+    if (toTransform.id === executed.pivotId) {
+      return undefined;
+    }
+    return toTransform;
+  });
 
 inverseCommandRegistry
   .add("INSERT_PIVOT", identity)
   .add("RENAME_ODOO_PIVOT", identity)
+  .add("REMOVE_PIVOT", identity)
   .add("RE_INSERT_PIVOT", identity)
 

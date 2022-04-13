@@ -1218,3 +1218,28 @@ test("Undo/Redo for RENAME_ODOO_PIVOT", async function (assert) {
     model.dispatch("REQUEST_REDO");
     assert.equal(model.getters.getPivotName("1"), "test");
 });
+
+QUnit.test("Can delete pivot", async function (assert) {
+    const { model } = await createSpreadsheetFromPivot();
+    model.dispatch("REMOVE_PIVOT", { pivotId: "1" });
+    assert.strictEqual(model.getters.getPivotIds().length, 0);
+    const B4 = getCell(model, "B4");
+    assert.equal(B4.evaluated.error, `There is no pivot with id "1"`);
+    assert.equal(B4.evaluated.value, `#ERROR`);
+});
+
+QUnit.test("Can undo/redo a delete pivot", async function (assert) {
+    const { model } = await createSpreadsheetFromPivot();
+    const value = getCell(model, "B4").evaluated.value;
+    model.dispatch("REMOVE_PIVOT", { pivotId: "1" });
+    model.dispatch("REQUEST_UNDO");
+    assert.strictEqual(model.getters.getPivotIds().length, 1);
+    let B4 = getCell(model, "B4");
+    assert.equal(B4.evaluated.error, undefined);
+    assert.equal(B4.evaluated.value, value);
+    model.dispatch("REQUEST_REDO");
+    assert.strictEqual(model.getters.getPivotIds().length, 0);
+    B4 = getCell(model, "B4");
+    assert.equal(B4.evaluated.error, `There is no pivot with id "1"`);
+    assert.equal(B4.evaluated.value, `#ERROR`);
+});

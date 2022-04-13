@@ -5,6 +5,7 @@
         <t t-if="pivotId">
             <PivotDetailsSidePanel pivotId="pivotId"/>
             <div class="o-sidePanelButtons">
+                <button t-on-click="() => this.delete(pivotId)" class="o-sidePanelButton o_delete_element">Delete</button>
                 <button t-on-click="resetSelectedPivot" class="o-sidePanelButton o_pivot_cancel">Back</button>
             </div>
         </t>

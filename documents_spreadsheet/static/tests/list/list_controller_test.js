@@ -618,4 +618,29 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         model.dispatch("REQUEST_REDO");
         assert.equal(model.getters.getListName("1"), "test");
     });
+
+    QUnit.test("Can delete list", async function (assert) {
+        const { model } = await createSpreadsheetFromList();
+        model.dispatch("REMOVE_ODOO_LIST", { listId: "1" });
+        assert.strictEqual(model.getters.getListIds().length, 0);
+        const B4 = getCell(model, "B4");
+        assert.equal(B4.evaluated.error, `There is no list with id "1"`);
+        assert.equal(B4.evaluated.value, `#ERROR`);
+    });
+
+    QUnit.test("Can undo/redo a delete list", async function (assert) {
+        const { model } = await createSpreadsheetFromList();
+        const value = getCell(model, "B4").evaluated.value;
+        model.dispatch("REMOVE_ODOO_LIST", { listId: "1" });
+        model.dispatch("REQUEST_UNDO");
+        assert.strictEqual(model.getters.getListIds().length, 1);
+        let B4 = getCell(model, "B4");
+        assert.equal(B4.evaluated.error, undefined);
+        assert.equal(B4.evaluated.value, value);
+        model.dispatch("REQUEST_REDO");
+        assert.strictEqual(model.getters.getListIds().length, 0);
+        B4 = getCell(model, "B4");
+        assert.equal(B4.evaluated.error, `There is no list with id "1"`);
+        assert.equal(B4.evaluated.value, `#ERROR`);
+    });
 });

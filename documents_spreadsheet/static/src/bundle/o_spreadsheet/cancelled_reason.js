@@ -7,7 +7,8 @@ export default {
     PivotCacheNotLoaded: 1002,
     InvalidValueTypeCombination: 1003,
     ListIdDuplicated: 1004,
-    ListIdNotFound: 1005,
-    EmptyName: 1006,
-    PivotIdNotFound: 1007,
+    InvalidNextId: 1005,
+    ListIdNotFound: 1006,
+    EmptyName: 1007,
+    PivotIdNotFound: 1008,
 };

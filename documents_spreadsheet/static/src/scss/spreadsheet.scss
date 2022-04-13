@@ -182,6 +182,17 @@
         color: #008784;
         border-color: #008784;
     }
+
+    &.o_delete_element {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+
+        &:hover:enabled {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    }
 }
 
 .o_spreadsheet_global_filters_side_panel, .o_spreadsheet_filter_editor_side_panel {

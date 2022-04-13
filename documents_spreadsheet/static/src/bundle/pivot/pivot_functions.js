@@ -9,13 +9,13 @@ const { functionRegistry } = spreadsheet.registries;
 // Spreadsheet functions
 //--------------------------------------------------------------------------
 
-function validatePivotId(pivotId, getters) {
+function assertPivotsExists(pivotId, getters) {
     if (!getters.isExistingPivot(pivotId)) {
         throw new Error(_.str.sprintf(_t('There is no pivot with id "%s"'), pivotId));
     }
 }
 
-function validateMeasure(pivotId, measure, getters) {
+function assertMeasureExist(pivotId, measure, getters) {
     const { measures } = getters.getPivotDefinition(pivotId);
     if (!measures.includes(measure)) {
         const validMeasures = `(${measures})`;
@@ -29,7 +29,7 @@ function validateMeasure(pivotId, measure, getters) {
     }
 }
 
-function validateDomain(domain) {
+function assertDomainLength(domain) {
     if (domain.length % 2 !== 0) {
         throw new Error(_t("Function PIVOT takes an even number of arguments."));
     }
@@ -52,9 +52,9 @@ functionRegistry
             pivotId = toString(pivotId);
             const measure = toString(measureName);
             const args = domain.map(toString);
-            validatePivotId(pivotId, this.getters);
-            validateMeasure(pivotId, measure, this.getters);
-            validateDomain(args);
+            assertPivotsExists(pivotId, this.getters);
+            assertMeasureExist(pivotId, measure, this.getters);
+            assertDomainLength(args);
             return this.getters.getPivotCellValue(pivotId, measure, args, this);
         },
         args: args(`
@@ -70,8 +70,8 @@ functionRegistry
         compute: function (pivotId, ...domain) {
             pivotId = toString(pivotId);
             const args = domain.map(toString);
-            validatePivotId(pivotId, this.getters);
-            validateDomain(args);
+            assertPivotsExists(pivotId, this.getters);
+            assertDomainLength(args);
             return this.getters.getPivotHeaderValue(pivotId, args);
         },
         args: args(`

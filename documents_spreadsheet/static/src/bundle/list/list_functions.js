@@ -10,12 +10,19 @@ const { functionRegistry } = spreadsheet.registries;
 // Spreadsheet functions
 //--------------------------------------------------------------------------
 
+function assertListsExists(listId, getters) {
+    if (!getters.isExistingList(listId)) {
+        throw new Error(_.str.sprintf(_t('There is no list with id "%s"'), listId));
+    }
+}
+
 functionRegistry.add("LIST", {
     description: _t("Get the value from a list."),
     compute: function (listId, index, fieldName) {
         const id = toString(listId);
         const position = toNumber(index) - 1;
         const field = toString(fieldName);
+        assertListsExists(id, this.getters);
         return this.getters.getListCellValue(id, position, field);
     },
     args: args(`
@@ -31,6 +38,7 @@ functionRegistry.add("LIST.HEADER", {
     compute: function (listId, fieldName) {
         const id = toString(listId);
         const field = toString(fieldName);
+        assertListsExists(id, this.getters);
         return this.getters.getListHeaderValue(id, field);
     },
     args: args(`

@@ -32,6 +32,7 @@ uiPluginRegistry.add("odooListAutofillPlugin", ListAutofillPlugin);
 
 coreTypes.add("INSERT_ODOO_LIST");
 coreTypes.add("RENAME_ODOO_LIST");
+coreTypes.add("REMOVE_ODOO_LIST");
 coreTypes.add("RE_INSERT_ODOO_LIST");
 
 readonlyAllowedCommands.add("ADD_LIST_DOMAIN");

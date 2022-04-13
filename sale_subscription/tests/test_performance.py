@@ -11,12 +11,13 @@ class TestSubscriptionPerformance(TestSubscriptionCommon):
     @users('__system__')
     @warmup
     def test_recurring_order_creation_perf(self):
-      with self.profile():
         ORDER_COUNT = 100
-        partners = self.env['res.partner'].create([
-            {'name': 'Jean-Luc %s' % (idx), 'email': 'jean-luc-%s@opoo.com' % (idx)} for idx in range(ORDER_COUNT)])
+        partners = self.env['res.partner'].create([{
+            'name': 'Jean-Luc %s' % (idx),
+            'email': 'jean-luc-%s@opoo.com' % (idx)
+        } for idx in range(ORDER_COUNT)])
 
-        with self.assertQueryCount(__system__=1341):
+        with self.assertQueryCount(__system__=1242):
             sale_orders = self.env['sale.order'].create([{
                 'name': "SO %s" % idx,
                 'partner_id': partners[idx].id,

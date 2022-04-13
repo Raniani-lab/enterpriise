@@ -73,8 +73,10 @@ class SaleOrder(models.Model):
     kpi_1month_mrr_percentage = fields.Float('KPI 1 Month MRR Percentage')
     kpi_3months_mrr_delta = fields.Float('KPI 3 months MRR Delta')
     kpi_3months_mrr_percentage = fields.Float('KPI 3 Months MRR Percentage')
-    percentage_satisfaction = fields.Integer(compute="_compute_percentage_satisfaction", string="% Happy", store=True, compute_sudo=True, default=-1,
-                                             help="Calculate the ratio between the number of the best ('great') ratings and the total number of ratings")
+    percentage_satisfaction = fields.Integer(
+        compute="_compute_percentage_satisfaction",
+        string="% Happy", store=True, compute_sudo=True, default=-1,
+        help="Calculate the ratio between the number of the best ('great') ratings and the total number of ratings")
     health = fields.Selection([('normal', 'Neutral'), ('done', 'Good'), ('bad', 'Bad')], string="Health", copy=False, default='normal', help="Show the health status")
     stage_category = fields.Selection(related='stage_id.category', store=True)
     to_renew = fields.Boolean(string='To Renew', default=False, copy=False)
@@ -118,12 +120,10 @@ class SaleOrder(models.Model):
                 continue
             order.partner_shipping_id = order.subscription_id.partner_shipping_id
 
-    @api.depends('rating_ids.rating')
+    @api.depends('rating_percentage_satisfaction')
     def _compute_percentage_satisfaction(self):
         for subscription in self:
-            activities = subscription.rating_get_grades()
-            total_activity_values = sum(activities.values())
-            subscription.percentage_satisfaction = activities['great'] * 100 / total_activity_values if total_activity_values else -1
+            subscription.percentage_satisfaction = int(subscription.rating_percentage_satisfaction)
 
     @api.depends('starred_user_ids')
     @api.depends_context('uid')

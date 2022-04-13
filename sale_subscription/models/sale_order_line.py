@@ -133,16 +133,19 @@ class SaleOrderLine(models.Model):
         return result
 
     def _get_subscription_qty_invoiced(self, last_invoice_date=None, next_invoice_date=None):
-        subscription_lines = self.filtered(lambda l: l.temporal_type == 'subscription' and l.order_id.state in ['sale', 'done'])
-        all_invoice_lines = subscription_lines.invoice_lines.filtered(lambda l: l.move_id.state != 'cancel')
         result = {}
-        for line in subscription_lines:
+        for line in self:
+            if line.temporal_type != 'subscription' or line.order_id.state not in ['sale', 'done']:
+                continue
             qty_invoiced = 0.0
             start_date = last_invoice_date or line.last_invoice_date and line.last_invoice_date.date()
             end_date = next_invoice_date or line.next_invoice_date and line.next_invoice_date.date()
-            related_invoice_lines = all_invoice_lines.filtered(lambda l: l.id in line.invoice_lines.ids and
-                                                                         l.subscription_start_date == start_date and
-                                                                         l.subscription_end_date == end_date - relativedelta(days=1))
+            day_before_end_date = end_date - relativedelta(days=1)
+            related_invoice_lines = line.invoice_lines.filtered(
+                lambda l: l.move_id.state != 'cancel' and \
+                          l.id in line.invoice_lines.ids and \
+                          l.subscription_start_date == start_date and
+                          l.subscription_end_date == day_before_end_date)
             for invoice_line in related_invoice_lines:
                 qty_invoiced += invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom)
             result[line.id] = qty_invoiced

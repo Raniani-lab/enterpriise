@@ -59,7 +59,6 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         timesheet1 = self.env['account.analytic.line'].with_user(self.user_employee).create({
             'name': "my timesheet 1",
             'project_id': internal_project.id,
-            'task_id': internal_task_leaves.id,
             'date': '2021-10-04',
             'unit_amount': 8.0,
         })

@@ -125,7 +125,9 @@ class SaleOrderLine(models.Model):
     def _get_subscription_qty_to_invoice(self, last_invoice_date=False, next_invoice_date=False):
         result = {}
         qty_invoiced = self._get_subscription_qty_invoiced(last_invoice_date, next_invoice_date)
-        for line in self.filtered(lambda l: l.temporal_type == 'subscription' and l.state in ['sale', 'done']):
+        for line in self:
+            if line.temporal_type != 'subscription' or line.state not in ['sale', 'done']:
+                continue
             if line.product_id.invoice_policy == 'order':
                 result[line.id] = line.product_uom_qty - qty_invoiced.get(line.id, 0.0)
             else:
@@ -204,12 +206,17 @@ class SaleOrderLine(models.Model):
                                                                    next_invoice_date=next_invoice_date)
             subscription_end_date = next_invoice_date - relativedelta(days=1) # remove 1 day as normal people thinks in terms of inclusive ranges.
             res['quantity'] = qty_to_invoice.get(self.id, 0.0)
-            batch_tag = self.env.ref('sale_subscription.recurring_trigger_tag', raise_if_not_found=False) or self.env['account.analytic.tag']
-            useful_tags = self.order_id.account_tag_ids - batch_tag
-            if useful_tags:
-                res.update({'analytic_tag_ids': [Command.link(t.id) for t in useful_tags]})
-            res.update({'name': description, 'subscription_start_date': new_period_start,
-                        'subscription_end_date': subscription_end_date, 'subscription_id': self.order_id.id})
+
+            batch_tag_id = self.env["ir.model.data"]._xmlid_to_res_id("sale_subscription.recurring_trigger_tag", raise_if_not_found=False)
+            useful_tag_ids = self.order_id.account_tag_ids.ids
+            if useful_tag_ids and useful_tag_ids != [batch_tag_id]:
+                res.update({'analytic_tag_ids': [Command.link(t_id) for t_id in useful_tag_ids if t_id != batch_tag_id]})
+            res.update({
+                'name': description,
+                'subscription_start_date': new_period_start,
+                'subscription_end_date': subscription_end_date,
+                'subscription_id': self.order_id.id
+            })
         return res
 
     @api.model

@@ -7,7 +7,6 @@ import ajax from "web.ajax";
 import config from "web.config";
 import core from "web.core";
 import { sprintf } from "@web/core/utils/strings";
-import { debounce } from "@web/core/utils/timing";
 import Dialog from "web.Dialog";
 import { Document } from "@sign/js/common/document";
 import { NameAndSignature } from "web.name_and_signature";
@@ -212,6 +211,13 @@ const SignatureDialog = SignInfoDialog.extend({
       self.nameAndSignature.resetSignature();
     });
     return this._super.apply(this, arguments);
+  },
+
+  destroy: function () {
+    if (!this.isDestroyed() && this.getParent()) {
+        this.getParent().isDialogOpen = false;
+    }
+    this._super.apply(this, arguments);
   },
 
   onConfirm: function (fct) {
@@ -1125,22 +1131,20 @@ export const SignableDocument = Document.extend({
         if (type.item_type === "signature" || type.item_type === "initial") {
           $signatureItem.on(
             "click",
-            debounce(
-              (e) => {
-                // when signing for the first time in edit mode, clicking in .o_sign_item_display should cause the sign.
-                // (because both edit and sign are possible) However if you want to change the signature after another
-                // one is set, .o_sign_item_display is not there anymore.
-                if (
-                  isSignItemEditable &&
-                  $(e.currentTarget).find('.o_sign_item_display').length &&
-                  !$(e.target).hasClass('o_sign_item_display')
-                ) {
-                  return;
-                }
-                this.handleSignatureDialogClick($(e.currentTarget), type)
-              },
-              800
-            )
+            (e) => {
+              // when signing for the first time in edit mode, clicking in .o_sign_item_display should cause the sign.
+              // (because both edit and sign are possible) However if you want to change the signature after another
+              // one is set, .o_sign_item_display is not there anymore.
+              if (
+                this.isDialogOpen ||
+                isSignItemEditable &&
+                $(e.currentTarget).find('.o_sign_item_display').length &&
+                !$(e.target).hasClass('o_sign_item_display')
+              ) {
+                return;
+              }
+              this.handleSignatureDialogClick($(e.currentTarget), type)
+            }
           );
         }
 
@@ -1230,6 +1234,7 @@ export const SignableDocument = Document.extend({
       },
 
       openSignatureDialog($signatureItem, type) {
+        this.isDialogOpen = true;
         const nameAndSignatureOptions = {
           defaultName: this.getParent().signerName || "",
           fontColor: "DarkBlue",
@@ -1447,6 +1452,10 @@ export const SignableDocument = Document.extend({
     this.$validateButton.text(this.validateButtonText).prepend('<i class="fa fa-spin fa-circle-o-notch" />');
     this.$validateButton.attr("disabled", true);
     if (this.signInfo.hasNoSignature) {
+      if (this.isDialogOpen) {
+        return;
+      }
+      this.isDialogOpen = true;
       const nameAndSignatureOptions = {
         fontColor: "DarkBlue",
         defaultName: this.signerName,
@@ -1456,7 +1465,8 @@ export const SignableDocument = Document.extend({
         this,
         options,
         this.requestID,
-        this.accessToken
+        this.accessToken,
+        this.iframeWidget.fonts
       );
 
       signDialog.open().onConfirm(() => {

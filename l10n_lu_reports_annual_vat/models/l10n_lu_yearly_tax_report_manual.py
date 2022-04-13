@@ -571,7 +571,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
                 for ln in lines:
                     split_line_code = ln.get('line_code') and ln['line_code'].split('_')[1] or ""
                     if split_line_code in monthly_totals:
-                        record[f'report_section_{ln["line_code"].split("_")[1]}'] = ln['columns'][0]['balance']
+                        record[f'report_section_{ln["line_code"].split("_")[1]}'] = ln['columns'][0]['no_format']
             else:
                 for mt in monthly_totals:
                     record[f'report_section_{mt}'] += 0

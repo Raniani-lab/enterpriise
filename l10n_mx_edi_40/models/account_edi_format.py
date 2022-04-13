@@ -32,7 +32,7 @@ class AccountEdiFormat(models.Model):
         return vals
 
     def _l10n_mx_edi_get_invoice_templates(self):
-        return 'l10n_mx_edi_40.cfdiv40', self.sudo().env.ref('l10n_mx_edi.xsd_cached_cfdv40_xsd', False)
+        return 'l10n_mx_edi_40.cfdiv40', 'xsd_cached_cfdv40_xsd'
 
     def _l10n_mx_edi_get_payment_template(self):
         return 'l10n_mx_edi_40.payment20'

@@ -6,9 +6,8 @@ from collections import namedtuple
 
 from dateutil.rrule import rrule, MONTHLY
 
-from odoo import models, fields, tools, release, _
+from odoo import models, fields, release, _
 from odoo.exceptions import UserError
-from odoo.tools.xml_utils import _check_with_xsd
 from odoo.tools.misc import street_split
 
 
@@ -340,8 +339,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             'moves_credit': round(vals_dict['moves_credit'], 2) or 0.0,
         }
         audit_content = self.env['ir.qweb']._render('l10n_nl_reports.xaf_audit_file', values)
-        with tools.file_open('l10n_nl_reports/data/xml_audit_file_3_2.xsd', 'rb') as xsd:
-            _check_with_xsd(audit_content, xsd)
+        self.env['ir.attachment'].l10n_nl_reports_validate_xml_from_attachment(audit_content, 'XmlAuditfileFinancieel3.2.xsd')
 
         return audit_content
 

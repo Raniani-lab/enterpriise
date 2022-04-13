@@ -2,10 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
-import base64
-from io import BytesIO
 from datetime import datetime
-from odoo import models, tools, _
+from odoo import models, _
 from odoo.exceptions import UserError
 
 
@@ -61,9 +59,5 @@ class AccountReport(models.AbstractModel):
         return True
 
     def _lu_validate_xml_content(self, content):
-        attachment = self.env.ref('l10n_lu_reports.xsd_cached_eCDF_file_v1_1-XML_schema_xsd', raise_if_not_found=False)
-        if attachment:
-            xsd_datas = base64.b64decode(attachment.datas) if attachment else b''
-            with BytesIO(xsd_datas) as xsd:
-                tools.xml_utils._check_with_xsd(content, xsd)
+        self.env['ir.attachment'].l10n_lu_reports_validate_xml_from_attachment(content, 'xsd_lu_eCDF.xsd')
         return True

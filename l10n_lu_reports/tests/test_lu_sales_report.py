@@ -194,7 +194,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         report, options = self._get_report_and_options(report, '2020-04-01', '2020-04-30')
         wizard = self.env['l10n_lu.generate.vat.intra.report'].create({})
         wizard.save_report = False
-        wizard.with_context(report.l10n_lu_open_report_export_wizard(options)['context']).get_xml()
+        wizard.with_context(report.l10n_lu_open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
         declaration_to_compare = base64.b64decode(wizard.report_data.decode("utf-8"))
 
         invoices = [
@@ -214,7 +214,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         attachment = self.env['ir.attachment'].create({'datas': wizard.report_data, 'name': 'discard'})
         stored_report = self.env['l10n_lu.stored.intra.report'].create({'attachment_id': attachment.id, 'year': '2020', 'period': '5', 'codes': 'LTS'})
         wizard2.l10n_lu_stored_report_ids = stored_report
-        wizard2.with_context(report.l10n_lu_open_report_export_wizard(options)['context']).get_xml()
+        wizard2.with_context(report.l10n_lu_open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
         declaration_to_compare_2 = base64.b64decode(wizard2.report_data.decode("utf-8"))
         filename = wizard2.filename[:-4]  # remove '.xml' postfix
         expected_xml_tree = self.get_xml_tree_from_string(
@@ -385,7 +385,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         asset_report = self.env['account.assets.report'].with_context({'model': 'account.assets.report'})
         options = asset_report._get_options(None)
         wizard = self.env['l10n_lu.generate.xml'].create({})
-        wizard.with_context({'model': 'account.assets.report', 'account_report_generation_options': options}).get_xml()
+        wizard.with_context({'model': 'account.assets.report', 'account_report_generation_options': options, 'skip_xsd': True}).get_xml()
         declaration_to_compare = base64.b64decode(wizard.report_data.decode("utf-8"))
         with self.assertRaises(ValidationError):
             report._get_correction_data(options, comparison_files=[('', declaration_to_compare)])

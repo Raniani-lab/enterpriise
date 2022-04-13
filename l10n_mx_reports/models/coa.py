@@ -1,9 +1,8 @@
 # coding: utf-8
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, _, api, fields, tools
+from odoo import models, _, api, fields
 from odoo.exceptions import ValidationError
-from odoo.tools.xml_utils import _check_with_xsd
 
 import ast
 
@@ -13,7 +12,6 @@ MX_NS_REFACTORING = {
 }
 
 CFDICOA_TEMPLATE = 'l10n_mx_reports.cfdicoa'
-CFDICOA_XSD = 'l10n_mx_reports/data/xsd/%s/cfdicoa.xsd'
 CFDICOA_XSLT_CADENA = 'l10n_mx_reports/data/xslt/%s/CatalogoCuentas_1_2.xslt'
 
 
@@ -151,8 +149,7 @@ class MXReportAccountCoa(models.AbstractModel):
         if certificate:
             cfdicoa = certificate._certify_and_stamp(cfdicoa.encode(), CFDICOA_XSLT_CADENA % version, no_cert_attrib_name='noCertificado')
 
-        with tools.file_open(CFDICOA_XSD % version, "rb") as xsd:
-            _check_with_xsd(cfdicoa, xsd)
+        self.env['ir.attachment'].l10n_mx_reports_validate_xml_from_attachment(cfdicoa, 'xsd_mx_cfdicoa_1_3.xsd')
         return cfdicoa
 
     def _get_report_name(self):

@@ -22,8 +22,7 @@ from zeep.exceptions import TransportError
 from zeep.transports import Transport
 
 
-from odoo import _, models, fields
-from odoo.tools import xml_utils
+from odoo import _, models, fields, tools
 
 _logger = logging.getLogger(__name__)
 
@@ -222,10 +221,10 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             return True
         xsd_fname = validation_types[validation_type]
         try:
-            return xml_utils._check_with_xsd(xml_to_validate, xsd_fname, self.sudo().env)
+            return tools.validate_xml_from_attachment(self.env, xml_to_validate, xsd_fname, self.env['ir.attachment']._l10n_cl_edi_load_xsd_files)
         except FileNotFoundError:
             _logger.warning(
-                _('The XSD validation files from SII has not been found, please run manually the cron: "Download XSD"'))
+                _('The XSD validation files from SII have not been found'))
             return True
 
     def _sign_full_xml(self, message, digital_signature, uri, xml_type, is_doc_type_voucher=False):

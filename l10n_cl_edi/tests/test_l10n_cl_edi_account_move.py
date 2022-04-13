@@ -58,7 +58,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             })],
         })
 
-        invoice.action_post()
+        invoice.with_context(skip_xsd=True).action_post()
 
         self.assertEqual(invoice.state, 'posted')
         self.assertEqual(invoice.l10n_cl_dte_status, 'not_sent')
@@ -117,7 +117,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             })],
         })
 
-        invoice._post()
+        invoice.with_context(skip_xsd=True)._post()
 
         self.assertEqual(invoice.state, 'posted')
         self.assertEqual(invoice.l10n_cl_dte_status, 'not_sent')
@@ -203,7 +203,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             }), ],
         })
 
-        invoice.action_post()
+        invoice.with_context(skip_xsd=True).action_post()
 
         self.assertEqual(invoice.state, 'posted')
         self.assertEqual(invoice.l10n_cl_dte_status, 'not_sent')
@@ -257,7 +257,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             })],
         })
 
-        invoice.action_post()
+        invoice.with_context(skip_xsd=True).action_post()
 
         self.assertEqual(invoice.state, 'posted')
         self.assertEqual(invoice.l10n_cl_dte_status, 'not_sent')
@@ -302,7 +302,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             })],
         })
 
-        invoice.action_post()
+        invoice.with_context(skip_xsd=True).action_post()
 
         self.assertEqual(invoice.state, 'posted')
         self.assertEqual(invoice.l10n_cl_dte_status, 'not_sent')
@@ -398,7 +398,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
                 'date': invoice.invoice_date, }, ], ]
         })
 
-        invoice.action_post()
+        invoice.with_context(skip_xsd=True).action_post()
 
         self.assertEqual(invoice.state, 'posted')
         self.assertEqual(invoice.l10n_cl_dte_status, 'not_sent')
@@ -451,7 +451,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
             })],
         })
 
-        invoice.action_post()
+        invoice.with_context(skip_xsd=True).action_post()
 
         self.assertEqual(invoice.state, 'posted')
         self.assertEqual(invoice.l10n_cl_dte_status, 'not_sent')

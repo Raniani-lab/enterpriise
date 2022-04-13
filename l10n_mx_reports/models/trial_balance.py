@@ -2,11 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import ast
-from lxml import etree
-from lxml.objectify import fromstring
-from odoo import models, api, _, fields, tools
+from odoo import models, api, _, fields
 from odoo.exceptions import UserError
-from odoo.tools.xml_utils import _check_with_xsd
 
 MX_NS_REFACTORING = {
     'catalogocuentas__': 'catalogocuentas',
@@ -14,7 +11,6 @@ MX_NS_REFACTORING = {
 }
 
 CFDIBCE_TEMPLATE = 'l10n_mx_reports.cfdibalance'
-CFDIBCE_XSD = 'l10n_mx_reports/data/xsd/%s/cfdibalance.xsd'
 CFDIBCE_XSLT_CADENA = ('l10n_mx_reports/data/xslt/%s'
                        '/BalanzaComprobacion_1_2.xslt')
 
@@ -323,8 +319,7 @@ class MxReportAccountTrial(models.AbstractModel):
         if certificate:
             cfdicoa = certificate._certify_and_stamp(cfdicoa.encode(), CFDIBCE_XSLT_CADENA % version, no_cert_attrib_name='noCertificado')
 
-        with tools.file_open(CFDIBCE_XSD % version, "rb") as xsd:
-            _check_with_xsd(cfdicoa, xsd)
+        self.env['ir.attachment'].l10n_mx_reports_validate_xml_from_attachment(cfdicoa, 'xsd_mx_cfdibalance_1_3.xsd')
         return cfdicoa
 
     def get_html(self, options, line_id=None, additional_context=None):

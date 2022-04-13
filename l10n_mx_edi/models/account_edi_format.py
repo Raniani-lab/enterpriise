@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, models, fields, tools, _
-from odoo.tools.xml_utils import _check_with_xsd
+from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_round, float_is_zero
 
 import logging
@@ -16,7 +16,6 @@ from lxml import etree
 from lxml.objectify import fromstring
 from math import copysign
 from datetime import datetime
-from io import BytesIO
 from zeep import Client
 from zeep.transports import Transport
 from json.decoder import JSONDecodeError
@@ -384,7 +383,7 @@ class AccountEdiFormat(models.Model):
         return cfdi_values
 
     def _l10n_mx_edi_get_invoice_templates(self):
-        return 'l10n_mx_edi.cfdiv33', self.sudo().env.ref('l10n_mx_edi.xsd_cached_cfdv33_xsd', False)
+        return 'l10n_mx_edi.cfdiv33', 'xsd_cached_cfdv33_xsd'
 
     def _l10n_mx_edi_export_invoice_cfdi(self, invoice):
         ''' Create the CFDI attachment for the invoice passed as parameter.
@@ -398,7 +397,7 @@ class AccountEdiFormat(models.Model):
 
         # == CFDI values ==
         cfdi_values = self._l10n_mx_edi_get_invoice_cfdi_values(invoice)
-        qweb_template, xsd_attachment = self._l10n_mx_edi_get_invoice_templates()
+        qweb_template, xsd_attachment_name = self._l10n_mx_edi_get_invoice_templates()
 
         # == Generate the CFDI ==
         cfdi = self.env['ir.qweb']._render(qweb_template, cfdi_values)
@@ -406,21 +405,16 @@ class AccountEdiFormat(models.Model):
         cfdi_cadena_crypted = cfdi_values['certificate'].sudo()._get_encrypted_cadena(decoded_cfdi_values['cadena'])
         decoded_cfdi_values['cfdi_node'].attrib['Sello'] = cfdi_cadena_crypted
 
-        # == Optional check using the XSD ==
-        xsd_datas = base64.b64decode(xsd_attachment.datas) if xsd_attachment else None
-
         res = {
             'cfdi_str': etree.tostring(decoded_cfdi_values['cfdi_node'], pretty_print=True, xml_declaration=True, encoding='UTF-8'),
         }
 
-        if xsd_datas:
-            try:
-                with BytesIO(xsd_datas) as xsd:
-                    _check_with_xsd(decoded_cfdi_values['cfdi_node'], xsd)
-            except (IOError, ValueError):
-                _logger.info(_('The xsd file to validate the XML structure was not found'))
-            except Exception as e:
-                res['errors'] = str(e).split('\\n')
+        try:
+            self.env['ir.attachment'].l10n_mx_edi_validate_xml_from_attachment(decoded_cfdi_values['cfdi_node'], xsd_attachment_name)
+        except FileNotFoundError:
+            _logger.warning(_('The XSD file to validate the XML structure was not found.'))
+        except UserError as error:
+            res['errors'] = str(error).split('\\n')
 
         return res
 
@@ -1273,9 +1267,6 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
                 continue
 
-            signed_edi = invoice._get_l10n_mx_edi_signed_edi_document()
-            if signed_edi:
-                cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
             uuid_replace = invoice.l10n_mx_edi_cancel_move_id.l10n_mx_edi_cfdi_uuid
             res = getattr(self, '_l10n_mx_edi_%s_cancel' % pac_name)(invoice.l10n_mx_edi_cfdi_uuid, invoice.company_id,
                                                                      credentials, uuid_replace=uuid_replace)
@@ -1367,9 +1358,6 @@ Content-Disposition: form-data; name="xml"; filename="xml"
                 edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
                 continue
 
-            signed_edi = move._get_l10n_mx_edi_signed_edi_document()
-            if signed_edi:
-                cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
             uuid_replace = move.l10n_mx_edi_cancel_move_id.l10n_mx_edi_cfdi_uuid
             res = getattr(self, '_l10n_mx_edi_%s_cancel' % pac_name)(move.l10n_mx_edi_cfdi_uuid, move.company_id,
                                                                      credentials, uuid_replace=uuid_replace)

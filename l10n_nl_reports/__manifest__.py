@@ -79,6 +79,7 @@
         'data/account_financial_report_profit_loss.xml',
         'data/account_financial_report_balance_sheet.xml',
         'data/account_financial_report_intrastat.xml',
+        "data/ir_cron_data.xml",
         'data/xml_audit_file_3_2.xml',
     ],
     'installable': True,

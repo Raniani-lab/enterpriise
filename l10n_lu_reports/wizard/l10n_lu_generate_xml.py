@@ -3,8 +3,6 @@
 
 import base64
 import re
-from io import BytesIO
-from datetime import datetime
 from odoo import models, fields, tools, _
 from odoo.exceptions import RedirectWarning, ValidationError
 
@@ -20,12 +18,7 @@ class L10nLuGenerateXML(models.TransientModel):
     filename = fields.Char(string='Filename', size=256, readonly=True)
 
     def _lu_validate_xml_content(self, content):
-        attachment = self.env.ref('l10n_lu_reports.xsd_cached_eCDF_file_v2_0-XML_schema_xsd',
-                                  raise_if_not_found=False)
-        if attachment:
-            xsd_datas = base64.b64decode(attachment.datas) if attachment else b''
-            with BytesIO(xsd_datas) as xsd:
-                tools.xml_utils._check_with_xsd(content, xsd)
+        self.env['ir.attachment'].l10n_lu_reports_validate_xml_from_attachment(content, 'xsd_lu_eCDF.xsd')
         return True
 
     def get_xml(self, lu_annual_report=False):

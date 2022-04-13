@@ -19,6 +19,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         cls.company_data['company'].write({
             'ecdf_prefix': '1234AB',
             'vat': 'LU12345613',
+            'matr_number': '12345678900',
         })
 
         cls.out_invoice = cls.env['account.move'].create({
@@ -150,13 +151,13 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
             <eCDFFileVersion>1.1</eCDFFileVersion>
             <Interface>MODL5</Interface>
             <Agent>
-                <MatrNbr>NE</MatrNbr>
+                <MatrNbr>12345678900</MatrNbr>
                 <RCSNbr>NE</RCSNbr>
                 <VATNbr>12345613</VATNbr>
             </Agent>
             <Declarations>
                 <Declarer>
-                    <MatrNbr>NE</MatrNbr>
+                    <MatrNbr>12345678900</MatrNbr>
                     <RCSNbr>NE</RCSNbr>
                     <VATNbr>12345613</VATNbr>
                     <Declaration model="1" type="TVA_DECM" language="EN">
@@ -290,7 +291,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         """ % options['filename']
 
         # Remove the <?xml version='1.0' encoding='UTF-8'?> from the string since the assert doesn't work with it
-        xml = report.get_xml(options)[38:]
+        xml = report.with_context(skip_xsd=True).get_xml(options)[38:]
 
         self.assertXmlTreeEqual(
             self.get_xml_tree_from_string(xml),

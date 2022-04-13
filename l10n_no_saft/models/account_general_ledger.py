@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import io
-import base64
 
-from odoo import api, models, tools, _
+from odoo import api, models, _
 
 
 class AccountGeneralLedger(models.AbstractModel):
@@ -39,8 +37,5 @@ class AccountGeneralLedger(models.AbstractModel):
         if self.env.company.account_fiscal_country_id.code != 'NO':
             return content
 
-        xsd_attachment = self.env['ir.attachment'].search([('name', '=', 'xsd_cached_Norwegian_SAF-T_Financial_Schema_v_1_10_xsd')])
-        if xsd_attachment:
-            with io.BytesIO(base64.b64decode(xsd_attachment.with_context(bin_size=False).datas)) as xsd:
-                tools.xml_utils._check_with_xsd(content, xsd)
+        self.env['ir.attachment'].l10n_no_saft_validate_xml_from_attachment(content, 'xsd_no_saft.xsd')
         return content

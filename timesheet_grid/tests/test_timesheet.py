@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
@@ -224,6 +224,8 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         employee = self.env['hr.employee'].with_company(company).create({
             'name': 'Juste Leblanc',
             'user_id': self.user_manager.id,
+            'create_date': date(2021, 1, 1),
+            'employee_type': 'freelance',  # Avoid searching the contract if hr_contract module is installed before this module.
         })
         employees_grid_data = [{
             'employee_id': employee.id,

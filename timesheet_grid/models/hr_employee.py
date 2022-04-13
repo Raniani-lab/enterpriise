@@ -2,10 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, time
-from decimal import Decimal, ROUND_HALF_UP
+from pytz import UTC
 
 from odoo import api, fields, models
 from odoo.tools import float_round
+from odoo.addons.resource.models.resource import sum_intervals
 
 
 class Employee(models.Model):
@@ -91,6 +92,8 @@ class Employee(models.Model):
 
         start_datetime = datetime.combine(fields.Date.from_string(date_start), time.min)
         end_datetime = datetime.combine(fields.Date.from_string(date_stop), time.max)
+        start_datetime = start_datetime.replace(tzinfo=UTC)
+        end_datetime = end_datetime.replace(tzinfo=UTC)
 
         uom = str(self.env.company.timesheet_encode_uom_id.name).lower()
 
@@ -98,10 +101,10 @@ class Employee(models.Model):
         employees = self.env['hr.employee'].browse(employee_ids)
         hours_per_day_per_employee = {}
 
-        employees_work_days_data = employees._get_work_days_data_batch(start_datetime, end_datetime)
+        employees_work_days_data, _dummy = employees.resource_id._get_valid_work_intervals(start_datetime, end_datetime)
 
         for employee in employees:
-            units_to_work = float(employees_work_days_data[employee.id]['hours'])
+            units_to_work = sum_intervals(employees_work_days_data[employee.resource_id.id])
 
             # Adjustments if we work with a different unit of measure
             if uom == 'days':
@@ -109,8 +112,7 @@ class Employee(models.Model):
                 units_to_work = units_to_work / hours_per_day_per_employee[employee.id]
                 rounding = len(str(self.env.company.timesheet_encode_uom_id.rounding).split('.')[1])
                 units_to_work = round(units_to_work, rounding)
-
-            result[employee.id] = {'units_to_work': units_to_work, 'uom': uom}
+            result[employee.id] = {'units_to_work': units_to_work, 'uom': uom, 'worked_hours': 0.0}
 
         query = self._get_timesheets_and_working_hours_query()
         self.env.cr.execute(query, (tuple(employee_ids), date_start, date_stop))

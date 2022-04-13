@@ -101,7 +101,7 @@ import { qweb, _lt } from 'web.core';
          * @returns boolean should show the hours line
          */
         _shouldShowHours() {
-            return this.cacheWorkedHours !== undefined && this.cacheWorkedHours != null && this.cacheWorkedHours - this.cacheHours != 0 && moment(this.timeContext.end) < moment();
+            return this.cacheWorkedHours !== undefined && this.cacheWorkedHours != null && this.cacheHours >= 0 && this.cacheWorkedHours - this.cacheHours != 0 && moment(this.timeContext.end) < moment();
         },
 
         _displayOvertimeIndication() {

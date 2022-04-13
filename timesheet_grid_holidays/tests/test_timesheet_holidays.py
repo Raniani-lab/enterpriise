@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
+from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import SUPERUSER_ID
@@ -15,11 +15,15 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
 
         HrEmployee = self.env['hr.employee']
         employees_grid_data = [{'employee_id': self.empl_employee.id}]
+        self.empl_employee.write({
+            'create_date': date(2021, 1, 1),
+            'employee_type': 'freelance',  # Avoid searching the contract if hr_contract module is installed before this module.
+        })
         start_date = '2021-10-04'
         end_date = '2021-10-09'
         result = HrEmployee.get_timesheet_and_working_hours_for_employees(employees_grid_data, start_date, end_date)
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 40, "Employee weekly working hours should be 40.")
-        self.assertEqual(result[self.empl_employee.id].get('worked_hours'), None, "Employee's working hours should be None.")
+        self.assertEqual(result[self.empl_employee.id]['worked_hours'], 0.0, "Employee's working hours should be None.")
 
         leave_start_datetime = datetime(2021, 10, 5, 7, 0, 0, 0)  # this is Tuesday
         leave_end_datetime = leave_start_datetime + relativedelta(days=1)
@@ -49,7 +53,7 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         self.assertTrue(len(holiday.timesheet_ids) > 0, 'Timesheet entry should be created in Internal project for time off.')
         # working hours for employee after leave creations
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 32, "Employee's weekly units of work after the leave creation should be 32.")
-        self.assertEqual(result[self.empl_employee.id].get('worked_hours'), None, "Employee's working hours shouldn't be altered after the leave creation.")
+        self.assertEqual(result[self.empl_employee.id]['worked_hours'], 0.0, "Employee's working hours shouldn't be altered after the leave creation.")
 
         # Timesheet created for same project
         timesheet1 = self.env['account.analytic.line'].with_user(self.user_employee).create({
@@ -63,4 +67,4 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         result = HrEmployee.get_timesheet_and_working_hours_for_employees(employees_grid_data, start_date, end_date)
         # working hours for employee after Timesheet creations
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 32, "Employee's one week units of work after the Timesheet creation should be 32.")
-        self.assertEqual(result[self.empl_employee.id].get('worked_hours'), 8, "Employee's working hours after the Timesheet creation should be 8.")
+        self.assertEqual(result[self.empl_employee.id]['worked_hours'], 8, "Employee's working hours after the Timesheet creation should be 8.")

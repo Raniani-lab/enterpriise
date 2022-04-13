@@ -312,7 +312,7 @@ class TestSubscription(TestSubscriptionCommon):
 
             upsell_so._create_invoices()
             last_invoice_line_name = upsell_so.invoice_ids.line_ids.sorted('id')[2].name.split('\n')[1]
-            self.assertEqual(last_invoice_line_name, '01/15/2021 to 07/15/2021',
+            self.assertEqual(last_invoice_line_name, '01/15/2021 to 07/14/2021 - 6 month',
                              "The upsell invoice take into account the first period, the line is valid 6 months.")
 
             sorted_lines = self.subscription.order_line.sorted('pricing_id')

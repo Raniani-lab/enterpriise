@@ -34,6 +34,21 @@ class SaleOrderLine(models.Model):
         not_subscription_lines = self.filtered(lambda line: not line.order_id.is_subscription)
         return not_subscription_lines and undeletable_lines
 
+    @api.depends('start_date', 'next_invoice_date', 'temporal_type', 'order_id.subscription_management')
+    def _compute_name(self):
+        super()._compute_name()
+
+    def _get_sale_order_line_multiline_description_variants(self):
+        """ Add period in description only for upsell """
+        res = super()._get_sale_order_line_multiline_description_variants()
+        if self.order_id.subscription_management == 'upsell' and self.start_date and self.next_invoice_date:
+            # lang is already defined in the context based on the partner
+            format_start = format_date(self.env, self.start_date)
+            end_period = self.next_invoice_date - relativedelta(days=1) # the period ends the day before the next invoice
+            format_next_invoice = format_date(self.env, end_period)
+            res += _("\n%s to %s", format_start, format_next_invoice)
+        return res
+
     @api.depends('product_template_id', 'pricing_id')
     def _compute_temporal_type(self):
         super()._compute_temporal_type()
@@ -320,18 +335,6 @@ class SaleOrderLine(models.Model):
                 result[line['id']] = {'id': line_pricing_id.id, 'display_name': line_pricing_id.name}
         return result
 
-    def _get_sale_order_line_multiline_description_sale(self):
-        """Add Rental information to the SaleOrderLine name."""
-        res = super()._get_sale_order_line_multiline_description_sale()
-        if self.order_id.subscription_management == 'upsell':
-            today = fields.Datetime.today()
-            partner_lang = self.order_id.partner_id.lang
-            format_start = format_date(self.env, today, lang_code=partner_lang)
-            end_period = self.next_invoice_date - relativedelta(days=1)
-            format_next_invoice = format_date(self.env, end_period, lang_code=partner_lang)
-            res += _("\n%s to %s", format_start, format_next_invoice)
-        return res
-
     ####################
     # CRUD             #
     ####################
@@ -364,19 +367,12 @@ class SaleOrderLine(models.Model):
             if subscription_management == 'upsell':
                 next_invoice_date = line.next_invoice_date
                 line_start = today
-                line_name = line.with_context(lang=partner_lang)._get_sale_order_line_multiline_description_sale()
-                format_start = format_date(self.env, today, lang_code=partner_lang)
-                end_period = next_invoice_date - relativedelta(days=1)
-                format_next_invoice = format_date(self.env, end_period, lang_code=partner_lang)
-                line_name += _("\n%s to %s", format_start, format_next_invoice)
             else:
                 line_start = line.next_invoice_date
                 next_invoice_date = line_start + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
-                line_name = line.with_context(lang=partner_lang)._get_sale_order_line_multiline_description_sale()
 
             order_lines.append((0, 0, {
                 'parent_line_id': line.id,
-                'name': line_name,
                 'temporal_type': 'subscription',
                 'product_id': product.id,
                 'product_uom': line.product_uom.id,

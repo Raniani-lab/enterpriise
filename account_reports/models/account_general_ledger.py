@@ -695,7 +695,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
     @api.model
     def _get_account_title_line(self, options, account, amount_currency, debit, credit, balance, has_lines):
-        has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
         unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
 
         name = '%s %s' % (account.code, account.name)
@@ -705,6 +704,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             {'name': self.format_value(balance, blank_if_zero=False), 'no_format': balance, 'class': 'number'},
         ]
         if self.user_has_groups('base.group_multi_currency'):
+            has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
             columns.insert(0, {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'})
         return {
             'id': 'account_%d' % account.id,
@@ -728,8 +728,8 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         if not any(column['no_format'] for column in columns):
             return None
 
-        has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
         if self.user_has_groups('base.group_multi_currency'):
+            has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
             columns.insert(0, {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id) or '', 'class': 'number'})
         return {
             'id': 'initial_%d' % account.id,
@@ -747,11 +747,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         else:
             caret_type = 'account.move'
 
-        if (aml['currency_id'] and aml['currency_id'] != account.company_id.currency_id.id) or account.currency_id:
-            currency = self.env['res.currency'].browse(aml['currency_id'])
-        else:
-            currency = False
-
         columns = [
             {'name': format_date(self.env, aml['date']), 'class': 'date'},
             {'name': self._format_aml_name(aml['name'], aml['ref']), 'class': 'o_account_report_line_ellipsis'},
@@ -761,6 +756,10 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             {'name': self.format_value(cumulated_balance, blank_if_zero=False), 'no_format': cumulated_balance, 'class': 'number'},
         ]
         if self.user_has_groups('base.group_multi_currency'):
+            if (aml['currency_id'] and aml['currency_id'] != account.company_id.currency_id.id) or account.currency_id:
+                currency = self.env['res.currency'].browse(aml['currency_id'])
+            else:
+                currency = False
             columns.insert(3, {'name': currency and aml['amount_currency'] and self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True) or '', 'class': 'number'})
         return {
             'id': aml['id'],
@@ -787,10 +786,10 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
     @api.model
     def _get_account_total_line(self, options, account, amount_currency, debit, credit, balance):
-        has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
 
         columns = []
         if self.user_has_groups('base.group_multi_currency'):
+            has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
             columns.append({'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=False) or '', 'class': 'number'})
 
         columns += [

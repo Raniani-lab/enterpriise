@@ -38,11 +38,12 @@ QUnit.module('Views', {
             },
             'project.project': {
                 fields: {
-                    name: {string: "Project Name", type: "char"}
+                    name: {string: "Project Name", type: "char"},
+                    allow_timesheets: {string: "Allow Timesheets", type: "boolean"},
                 },
                 records: [
-                    {id: 31, display_name: "P1"},
-                    {id: 142, display_name: "Webocalypse Now"},
+                    {id: 31, display_name: "P1", allow_timesheets: true},
+                    {id: 142, display_name: "Webocalypse Now", allow_timesheets: true},
                 ],
                 get_planned_and_worked_hours(args) {
                     return get_planned_and_worked_hours(args);
@@ -574,6 +575,8 @@ QUnit.module('Views', {
                 } else if (args.method === 'action_change_project_task') {
                     assert.deepEqual(args.args, [[24], 31, 1], "check timesheet_id, project_id and task_id");
                     return Promise.resolve(24);
+                } else if (args.method === 'name_search' && args.model === 'project.task') {
+                    return Promise.resolve([[1, "BS task"]]);
                 }
                 return this._super.apply(this, arguments);
             },

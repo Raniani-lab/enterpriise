@@ -14,4 +14,9 @@ This module prevents taking time offs into account when computing employee overt
     'depends': ['project_timesheet_holidays', 'timesheet_grid'],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'timesheet_grid_holidays/static/src/js/timer_m2o.js',
+        ],
+    }
 }

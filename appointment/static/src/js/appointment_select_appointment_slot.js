@@ -54,6 +54,8 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     /**
      * Checks whether any slot is available in the calendar.
      * If there isn't, adds an explicative message in the slot list.
+     * If the appointment is missconfigured (missing user or missing availabilities),
+     * shows an explicative message instead of the calendar.
      *
      */
      _updateSlotAvailability: function () {
@@ -61,6 +63,9 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             if (!this.$slotsList.hasClass('o_no_slot')) {
                 this.$('#slots_availabilities').empty().append(qweb.render('Appointment.appointment_info_no_slot'));
             }
+        }
+        if (this.$('.o_appointment_missing_configuration').hasClass('d-none')) {
+            this.$('.o_appointment_missing_configuration').removeClass('d-none');
         }
     },
 

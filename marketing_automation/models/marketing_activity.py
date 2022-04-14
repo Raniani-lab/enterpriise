@@ -306,7 +306,7 @@ class MarketingActivity(models.Model):
 
     def execute(self, domain=None):
         # auto-commit except in testing mode
-        auto_commit = not getattr(threading.currentThread(), 'testing', False)
+        auto_commit = not getattr(threading.current_thread(), 'testing', False)
         trace_domain = [
             ('schedule_date', '<=', Datetime.now()),
             ('state', '=', 'scheduled'),

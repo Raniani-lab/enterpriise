@@ -298,7 +298,7 @@ class SocialPost(models.Model):
                     for live_post in post._prepare_live_post_values()]
             })
 
-        if not getattr(threading.currentThread(), 'testing', False):
+        if not getattr(threading.current_thread(), 'testing', False):
             # If there's a link in the message, the Facebook / Twitter API will fetch it
             # to build a preview. But when posting, the SQL transaction will not
             # yet be committed, and so the link tracker associated to this link

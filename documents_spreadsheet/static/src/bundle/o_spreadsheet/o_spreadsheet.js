@@ -1,5 +1,6 @@
 (function (exports, owl) {
     'use strict';
+
     /*
      * usage: every string should be translated either with _lt if they are registered with a registry at
      *  the load of the app or with Spreadsheet._t in the templates. Spreadsheet._t is exposed in the
@@ -2747,7 +2748,7 @@
      * Regex that detect cell reference and a range reference (without the sheetName)
      */
     const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
-    const rangeReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7})?/, "i");
+    const rangeReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7})?$/, "i");
 
     //------------------------------------------------------------------------------
     /**
@@ -24826,7 +24827,10 @@
                 // not main button, probably a context menu
                 return;
             }
-            this.env.model.dispatch("SELECT_FIGURE", { id: figure.id });
+            const selectResult = this.env.model.dispatch("SELECT_FIGURE", { id: figure.id });
+            if (!selectResult.isSuccessful) {
+                return;
+            }
             if (this.props.sidePanelIsOpen) {
                 this.env.openSidePanel("ChartPanel", { figure });
             }
@@ -32025,8 +32029,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-04-12T07:50:00.150Z';
-    exports.__info__.hash = '68d6d25';
+    exports.__info__.date = '2022-04-14T05:53:46.454Z';
+    exports.__info__.hash = '10db754';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

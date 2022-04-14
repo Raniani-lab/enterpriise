@@ -18,7 +18,7 @@
                     <t t-if="activityView.activity.phone">
                         Mobile:
                     </t>
-                    <a class="o_Activity_voipCallMobile" href="#" t-on-click="_onClickVoipCallMobile">
+                    <a class="o_Activity_voipCallMobile" href="#" t-on-click="activityView.onClickMobileNumber">
                         <t t-esc="activityView.activity.mobile"/>
                     </a>
                 </div>

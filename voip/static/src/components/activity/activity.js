@@ -13,18 +13,6 @@ patch(Activity.prototype, 'voip/static/src/components/activity/activity.js', {
      * @private
      * @param {MouseEvent} ev
      */
-     _onClickVoipCallMobile(ev) {
-        ev.preventDefault();
-        this.trigger('voip_activity_call', {
-            activityId: this.activityView.activity.id,
-            number: this.activityView.activity.mobile,
-        });
-    },
-
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
     _onClickVoipCallPhone(ev) {
         ev.preventDefault();
         this.trigger('voip_activity_call', {

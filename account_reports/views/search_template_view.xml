@@ -232,9 +232,9 @@
     </template>
 
     <template id="search_template_currency">
-        <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="dropdown-toggle btn btn-secondary" data-toggle="dropdown">
             <span class="fa fa-line-chart"/> Exchange Rates
-        </a>
+        </button>
         <div class="dropdown-menu o_filters_menu" role="menu">
             <div class="o_account_report_search" data-filter='custom_currency'>
                 <div t-foreach="options['currency_rates'].values()" t-as="opt" class="form-group">

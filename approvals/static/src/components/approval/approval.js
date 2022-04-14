@@ -1,47 +1,34 @@
 /** @odoo-module **/
 
+import { useComponentToModel } from '@mail/component_hooks/use_component_to_model';
 import { registerMessagingComponent } from '@mail/utils/messaging_component';
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
 class Approval extends LegacyComponent {
+
+    /**
+     * @override
+     */
+     setup() {
+        super.setup();
+        useComponentToModel({ fieldName: 'component', modelName: 'ApprovalView' });
+    }
 
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
 
     /**
-     * @returns {Approval}
+     * @returns {ApprovalView}
      */
-    get approval() {
-        return this.messaging && this.messaging.models['Approval'].get(this.props.approvalLocalId);
-    }
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     */
-    async _onClickApprove() {
-        await this.approval.approve();
-        this.trigger('o-approval-approved');
-    }
-
-    /**
-     * @private
-     */
-    async _onClickRefuse() {
-        await this.approval.refuse();
-        this.trigger('o-approval-refused');
+    get approvalView() {
+        return this.messaging && this.messaging.models['ApprovalView'].get(this.props.localId);
     }
 
 }
 
 Object.assign(Approval, {
-    props: {
-        approvalLocalId: String,
-    },
+    props: { localId: String },
     template: 'approvals.Approval',
 });
 

@@ -20,7 +20,7 @@
                 <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), ('invoice_status', '!=', 'to invoice')]}</attribute>
             </button>
             <button id="create_invoice_percentage" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), ('invoice_status', '!=', 'to invoice')]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), '|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}</attribute>
             </button>
             <button id="create_invoice" position="after">
                 <button name="action_invoice_subscription" string="Create Recurring Invoice"

@@ -546,7 +546,10 @@ class SaleOrder(models.Model):
                 end_date = today + get_timedelta(sub.sale_order_template_id.recurring_rule_count, sub.sale_order_template_id.recurring_rule_type) - relativedelta(days=1)
             sub.write({'end_date': end_date})
             # We set the start date and invoice date at the date of confirmation to allow computing 'next_invoice_date'
-            sub.order_line.filtered(lambda l: not l.start_date).write({'start_date': today})
+            for line in sub.order_line:
+                if not line.start_date:
+                    line.start_date = today
+                line.qty_to_invoice = line.product_uom_qty
 
     def _confirm_upsell(self):
         """
@@ -554,7 +557,25 @@ class SaleOrder(models.Model):
         """
         today = fields.Date.today()
         self.order_line.filtered(lambda l: not l.start_date and not l.display_type).write({'start_date': today})
-        self.update_existing_subscriptions()
+        new_lines = self.order_line.filtered(lambda l: not l.parent_line_id)
+        create_values, update_values = self.update_existing_subscriptions()
+        updated_line_ids = [val[1] for val in update_values]
+        # When a new line is created with a start_date, the next_invoice_date will be recomputed and will be shifted.
+        # Example: with a new yearly line starting in june when the expected next invoice date is december,
+        # discount is 50% and the default next_invoice_date will be in june too.
+        # We need to save the default next_invoice_date that was saved on the upsell because the compute has no way
+        # to differentiate new line created by an upsell and new line created by the user.
+        for line in self.subscription_id.order_line:
+            if line.id in updated_line_ids:
+                continue
+            upsell_line = new_lines.filtered(lambda l:
+                                             (l.product_id, l.pricing_id, l.product_uom_qty, l.product_uom) ==
+                                             (line.product_id, line.pricing_id, line.product_uom_qty, line.product_uom)
+                                             and not line.parent_line_id)
+            if upsell_line:
+                line.next_invoice_date = upsell_line.next_invoice_date
+                # The upsell invoice will take care of the invoicing for this period
+                line.qty_to_invoice = 0
 
     def _confirm_renew(self):
         """
@@ -680,8 +701,8 @@ class SaleOrder(models.Model):
         :rtype: list(integer)
         :return: ids of modified subscriptions
         """
-        res = self.subscription_id.ids
         subscriptions = self.mapped('subscription_id')
+        create_values, update_values = [], []
         for order in self:
             if order.subscription_id and order.subscription_management != 'renew':
                 order.subscription_management = 'upsell'
@@ -691,14 +712,15 @@ class SaleOrder(models.Model):
                 subscriptions.payment_term_id = order.payment_term_id
                 subscriptions.set_open()
             # We don't propagate the line description from the upsell order to the subscription
-            line_values = order.order_line.filtered(lambda sol: not sol.display_type)._subscription_update_line_data(order.subscription_id)
-            order.subscription_id.write({'order_line': line_values})
-        return res
+            create_values, update_values = order.order_line.filtered(lambda sol: not sol.display_type)._subscription_update_line_data(order.subscription_id)
+            order.subscription_id.with_context(skip_next_invoice_update=True).write({'order_line': create_values + update_values})
+        return create_values, update_values
 
     def _subscription_update_line_data(self, subscription):
         """Prepare a dictionnary of values to add or update lines on a subscription."""
-        values = list()
-        dict_changes = dict()
+        update_values = []
+        create_values = []
+        dict_changes = []
         for line in self:
             sub_line = subscription.recurring_invoice_line_ids.filtered(
                 lambda l: (l.product_id, l.uom_id, l.price_unit) == (line.product_id, line.product_uom, line.price_unit)
@@ -715,9 +737,9 @@ class SaleOrder(models.Model):
                     dict_changes[sub_line.id] += line.product_uom_qty
             else:
                 # we create a new line in the subscription:
-                values.append(line._prepare_subscription_line_data()[0])
-        values += [(1, sub_id, {'quantity': dict_changes[sub_id]}) for sub_id in dict_changes]
-        return values
+                create_values.append(line._prepare_subscription_line_data()[0])
+        update_values += [(1, sub_id, {'quantity': dict_changes[sub_id]}) for sub_id in dict_changes]
+        return create_values, update_values
 
     def _set_closed_state(self):
         stages_closed = self.env['sale.order.stage'].search([('category', '=', 'closed')])
@@ -852,7 +874,7 @@ class SaleOrder(models.Model):
             elif line.next_invoice_date and line.next_invoice_date.date() <= today:
                 # Invoice due lines
                 return True
-            elif not line.invoice_lines:
+            elif not line.invoice_lines and line.qty_to_invoice:
                 # Invoice if the line was never invoiced
                 return True
             elif float_is_zero(line.product_uom_qty, precision_rounding=line.product_id.uom_id.rounding):
@@ -957,7 +979,6 @@ class SaleOrder(models.Model):
                 all_subscriptions = all_subscriptions[:batch_size]
         if not all_subscriptions:
             return self.env['account.move']
-
         # don't spam sale with assigned emails.
         all_subscriptions = all_subscriptions.with_context(mail_auto_subscribe_no_notify=True)
         auto_close_subscription = all_subscriptions.filtered_domain([('recurring_rule_boundary', '=', 'limited')])

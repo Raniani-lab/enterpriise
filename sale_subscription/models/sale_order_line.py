@@ -394,7 +394,8 @@ class SaleOrderLine(models.Model):
         Prepare a dictionary of values to add or update lines on a subscription.
         :return: order_line values to create or update the subscription
         """
-        values = []
+        update_values = []
+        create_values = []
         dict_changes = {}
         for line in self:
             sub_line = line.parent_line_id
@@ -405,33 +406,31 @@ class SaleOrderLine(models.Model):
                     # to avoid adding information to a random line, in that case we create a new line
                     # we can simply duplicate an arbitrary line to that effect
                     sub_line[0].copy({'name': line.display_name, 'product_uom_qty': line.product_uom_qty})
-                else:
+                elif line.product_uom_qty != 0:
                     dict_changes.setdefault(sub_line.id, sub_line.product_uom_qty)
                     # upsell, we add the product to the existing quantity
                     dict_changes[sub_line.id] += line.product_uom_qty
             else:
-                next_invoice_date = False
                 # we create a new line in the subscription:
+                start_date = False
+                next_invoice_date = False
                 if line.temporal_type == 'subscription':
                     start_date = line.start_date or fields.Datetime.today()
-                else:
-                    start_date = False
-                    next_invoice_date = False
-                values.append(Command.create({
+                    next_invoice_date = line.next_invoice_date
+                create_values.append(Command.create({
                     'product_id': line.product_id.id,
                     'name': line.name,
                     'product_uom_qty': line.product_uom_qty,
                     'product_uom': line.product_uom.id,
                     'price_unit': line.price_unit,
-                    'discount': line.discount,
+                    'discount': 0,
                     'pricing_id': line.pricing_id.id,
                     'start_date': start_date,
                     'next_invoice_date': next_invoice_date,
                     'order_id': subscription.id
                 }))
-
-        values += [(1, sub_id, {'product_uom_qty': dict_changes[sub_id]}) for sub_id in dict_changes]
-        return values
+        update_values += [(1, sub_id, {'product_uom_qty': dict_changes[sub_id]}) for sub_id in dict_changes]
+        return create_values, update_values
 
     #=== PRICE COMPUTING HOOKS ===#
 

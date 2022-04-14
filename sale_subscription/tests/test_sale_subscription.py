@@ -1225,3 +1225,90 @@ class TestSubscription(TestSubscriptionCommon):
             'partner_id': portal_partner.id,
         })
         self.subscription.with_user(self.user_portal).sudo().send_success_mail(tx, invoice)
+
+    def test_upsell_date_check(self):
+        """ Test what happens when the upsell invoice is not generated before the next invoice cron call """
+        pricing_year_1 = self.env['product.pricing'].create({'duration': 1, 'unit': 'year', 'price': 100})
+        (self.sub_product_tmpl | self.product_tmpl_2 | self.product_tmpl_3).product_pricing_ids = [(5, 0, 0)]
+        self.sub_product_tmpl.write({
+            'product_pricing_ids': [(6, 0, pricing_year_1.ids)]
+        })
+        pricing_year_2 = self.env['product.pricing'].create({'duration': 1, 'unit': 'year', 'price': 200})
+        self.product_tmpl_2.write({
+            'product_pricing_ids': [(6, 0, pricing_year_2.ids)]
+        })
+        pricing_year_3 = self.env['product.pricing'].create({'duration': 1, 'unit': 'year', 'price': 300})
+        self.product_tmpl_3.write({
+            'product_pricing_ids': [(6, 0, pricing_year_3.ids)]
+        })
+        with freeze_time("2022-01-01"):
+            sub = self.env['sale.order'].create({
+                'name': 'TestSubscription',
+                'is_subscription': True,
+                'note': "original subscription description",
+                'partner_id': self.user_portal.partner_id.id,
+                'pricelist_id': self.company_data['default_pricelist'].id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 1.0,
+                        'product_uom': self.product.uom_id.id,
+                        'pricing_id': pricing_year_1.id,
+                    }),
+                    (0, 0, {
+                        'name': self.product2.name,
+                        'product_id': self.product2.id,
+                        'product_uom_qty': 1.0,
+                        'product_uom': self.product.uom_id.id,
+                        'pricing_id': pricing_year_2.id,
+                    })
+                ]
+            })
+            sub.action_confirm()
+            self.env['sale.order']._cron_recurring_create_invoice()
+            inv = sub.invoice_ids
+            line_names = inv.invoice_line_ids.mapped('name')
+            periods = [n.split('\n')[1] for n in line_names]
+            for p in periods:
+                self.assertEqual(p, '01/01/2022 to 01/01/2023', 'the first year should be invoiced')
+
+        with freeze_time("2022-06-20"):
+            action = sub.prepare_upsell_order()
+            upsell_so = self.env['sale.order'].browse(action['res_id'])
+            upsell_so.order_line[0].product_uom_qty = 2
+            upsell_so.order_line = [(0, 0, {
+                'product_id': self.product3.id,
+                'product_uom_qty': 1.0,
+                'product_uom': self.product.uom_id.id,
+                'pricing_id': pricing_year_3.id,
+            })]
+            nid = upsell_so.order_line.mapped('next_invoice_date')[0]
+            self.assertEqual(nid, datetime.datetime(2023, 1, 1), "The end date is the the same than the parent sub")
+            discount = upsell_so.order_line.mapped('discount')[0]
+            self.assertEqual(discount, 46.58, "The discount is almost equal to 50%")
+            periods = sub.order_line.mapped('next_invoice_date')
+            for p in periods:
+                self.assertEqual(p, datetime.datetime(2023, 1, 1), 'the first year should be invoiced')
+            upsell_so.with_context(arj=True).action_confirm()
+            periods = sub.order_line.with_context(arj=True).mapped('next_invoice_date')
+            expected_values = [datetime.datetime(2023, 1, 1), datetime.datetime(2023, 1, 1), datetime.datetime(2023, 1, 1)]
+            for idx in range(3):
+                self.assertEqual(periods[idx], expected_values[idx], 'the first year should be invoiced')
+            # We trigger the invoice cron before the generation of the upsell invoice
+            self.env['sale.order']._cron_recurring_create_invoice()
+            inv = sub.invoice_ids.sorted('date')[-1]
+            self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")
+        with freeze_time("2022-07-01"):
+            upsell_invoice = upsell_so.with_context(arj=True)._create_invoices()
+            self.env['sale.order']._cron_recurring_create_invoice()
+            inv = sub.invoice_ids.sorted('date')[-1]
+            self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")
+            self.assertEqual(upsell_invoice.amount_untaxed, 252.05, "The upsell amount should be equal to 252.05")
+
+        with freeze_time("2023-01-01"):
+            self.env['sale.order']._cron_recurring_create_invoice()
+            inv = sub.invoice_ids.sorted('date')[-1]
+            self.assertEqual(inv.date, datetime.date(2023, 1, 1), "A new invoice should be created")
+            self.assertEqual(inv.amount_untaxed, 800, "A new invoice should be created, all the lines should be invoiced")
+

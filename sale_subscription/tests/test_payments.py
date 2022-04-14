@@ -102,11 +102,10 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
         failing_subs |= subscription_mail_fail
         for dummy in range(5):
             failing_subs |= subscription_mail_fail.copy({'to_renew': True, 'stage_id': self.subscription.stage_id.id})
-
         # issue: two problems:
         # 1) payment failed, we want to avoid trigger it twice: (double cost) --> payment_exception
         # 2) batch: we need to avoid taking subscription two time. flag remains until the end of the last trigger
-
+        failing_subs.order_line.qty_to_invoice = 1
         self.env['sale.order']._create_recurring_invoice(automatic=True, batch_size=3)
         self.assertFalse(self.mock_send_success_count)
         failing_result = [not res for res in failing_subs.mapped('payment_exception')]

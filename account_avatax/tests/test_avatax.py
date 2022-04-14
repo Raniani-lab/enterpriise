@@ -7,7 +7,7 @@ from .common import TestAccountAvataxCommon
 
 @tagged("-at_install", "post_install")
 class TestAccountAvalaraInternal(TestAccountAvataxCommon):
-    def assertInvoice(self, invoice, test_exact_taxes=True):
+    def assertInvoice(self, invoice, test_exact_response):
         self.assertEqual(
             len(invoice.invoice_line_ids.tax_ids),
             0,
@@ -21,12 +21,29 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
         }])
         invoice.action_post()
 
-        if test_exact_taxes:
+        if test_exact_response:
             self.assertRecordValues(invoice, [{
                 'amount_total': 96.54,
                 'amount_untaxed': 90.0,
                 'amount_tax': 6.54,
             }])
+
+            avatax_mapping = {avatax_line['lineNumber']: avatax_line for avatax_line in test_exact_response['lines']}
+            for line in invoice.invoice_line_ids:
+                line_number = f'account.move.line,{line.id}'
+                self.assertIn(line_number, avatax_mapping)
+                avatax_line = avatax_mapping[line_number]
+                self.assertEqual(
+                    line.price_total,
+                    avatax_line['tax'] + avatax_line['lineAmount'],
+                    f"Tax-included price doesn't match tax returned by Avatax for line {line.id} (product: {line.product_id.display_name})."
+                )
+                self.assertEqual(
+                    line.price_subtotal,
+                    avatax_line['lineAmount'],
+                    f"Wrong Avatax amount for {line.id} (product: {line.product_id.display_name}), there is probably a mismatch between the test SO and the mocked response."
+                )
+
         else:
             for line in invoice.invoice_line_ids:
                 product_name = line.product_id.display_name
@@ -37,7 +54,7 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
     def test_01_odoo_invoice(self):
         invoice, response = self._create_invoice_01_and_expected_response()
         with self._capture_request(return_value=response):
-            self.assertInvoice(invoice, test_exact_taxes=True)
+            self.assertInvoice(invoice, test_exact_response=response)
 
         # verify transactions are uncommitted
         with patch('odoo.addons.account_avatax.models.account_avatax.AccountAvatax._uncommit_avatax_transaction') as mocked_commit:
@@ -47,13 +64,13 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
     def test_integration_01_odoo_invoice(self):
         with self._skip_no_credentials():
             invoice, _ = self._create_invoice_01_and_expected_response()
-            self.assertInvoice(invoice, test_exact_taxes=False)
+            self.assertInvoice(invoice, test_exact_response=False)
             invoice.button_draft()
 
     def test_02_odoo_invoice(self):
         invoice, response = self._create_invoice_02_and_expected_response()
         with self._capture_request(return_value=response):
-            self.assertInvoice(invoice)
+            self.assertInvoice(invoice, test_exact_response=response)
 
         # verify transactions are uncommitted
         with patch('odoo.addons.account_avatax.models.account_avatax.AccountAvatax._uncommit_avatax_transaction') as mocked_commit:
@@ -63,7 +80,7 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
     def test_integration_02_odoo_invoice(self):
         with self._skip_no_credentials():
             invoice, _ = self._create_invoice_02_and_expected_response()
-            self.assertInvoice(invoice, test_exact_taxes=False)
+            self.assertInvoice(invoice, test_exact_response=False)
             invoice.button_draft()
 
     def test_01_odoo_refund(self):

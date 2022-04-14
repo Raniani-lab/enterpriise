@@ -49,6 +49,7 @@ class AccountMove(models.Model):
 
         for line, detail in mapped_taxes.items():
             line.tax_ids = detail['tax_ids']
+            line.price_total = detail['tax_amount'] + detail['total']
         self.with_context(check_move_validity=False)._recompute_dynamic_lines(recompute_all_taxes=True)
 
         # Check that Odoo computation = Avatax computation

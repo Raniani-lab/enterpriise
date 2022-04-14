@@ -1031,10 +1031,12 @@ class SaleOrder(models.Model):
                 existing_invoices = subscription._handle_automatic_invoices(auto_commit, invoice)
                 account_moves |= existing_invoices
                 subscription.with_context(mail_notrack=True).write({'payment_exception': False})
-            except Exception:
+            except Exception as error:
                 _logger.exception("Error during renewal of contract %s", subscription.client_order_ref)
                 if auto_commit:
                     self.env.cr.rollback()
+                if not automatic:
+                    raise error
             else:
                 if auto_commit:
                     self.env.cr.commit()

@@ -555,6 +555,7 @@ class SaleOrder(models.Model):
                 if not line.start_date and line.temporal_type == 'subscription':
                     line.start_date = today
             sub.order_line._reset_subscription_qty_to_invoice()
+            sub._save_token_from_payment()
 
     def _confirm_upsell(self):
         """
@@ -605,6 +606,13 @@ class SaleOrder(models.Model):
                 parent.end_date = max(next_invoice_dates)
             start_date = parent.end_date or today
             renew.write({'date_order': start_date})
+            renew._save_token_from_payment()
+
+    def _save_token_from_payment(self):
+        self.ensure_one()
+        last_token = self.transaction_ids._get_last().token_id.id
+        if self.payment_mode == 'success_payment' and last_token:
+            self.payment_token_id = last_token
 
     def action_invoice_subscription(self):
         account_move = self._create_recurring_invoice()

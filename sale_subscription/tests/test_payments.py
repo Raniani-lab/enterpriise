@@ -254,3 +254,40 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
             "The save payment details checkbox should be hidden if the sale order contains a "
             "subscription product that is not already linked to a subscription."
         )
+
+    def test_payment_token_is_saved(self):
+        """Tests that the payment token is saved when a quotation is paid"""
+        portal_partner = self.user_portal.partner_id
+        success_payment_template_id = self.subscription_tmpl.copy({'payment_mode': 'success_payment'})
+        subscription = self.env['sale.order'].create({
+            'partner_id': portal_partner.id,
+            'sale_order_template_id': success_payment_template_id.id,
+        })
+        subscription._onchange_sale_order_template_id()
+        # send quotation
+        subscription.action_quotation_sent()
+
+        test_payment_token = self.env['payment.token'].create({
+            'name': 'Test',
+            'partner_id': portal_partner.id,
+            'acquirer_id': self.dummy_acquirer.id,
+            'acquirer_ref': 'test'
+        })
+        payment_with_token = self.env['account.payment'].create({
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'amount': subscription.amount_total,
+            'date': subscription.date_order,
+            'currency_id': subscription.currency_id.id,
+            'partner_id': portal_partner.id,
+            'payment_token_id': test_payment_token.id
+        })
+
+        transaction_ids = payment_with_token._create_payment_transaction()
+        transaction_ids._set_done() # dummy transaction will always be successful
+
+        subscription.write({'transaction_ids': [(6, 0, transaction_ids.ids)]})
+        subscription.action_confirm()
+
+        self.assertTrue(subscription.is_subscription)
+        self.assertEqual(subscription.payment_token_id.id, test_payment_token.id)

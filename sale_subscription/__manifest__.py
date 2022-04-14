@@ -48,6 +48,7 @@ Features:
         'data/sale_subscription_demo.xml'
     ],
     'application': True,
+    'pre_init_hook': '_pre_init_sale_subscription',
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [

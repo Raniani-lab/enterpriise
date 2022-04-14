@@ -14,4 +14,5 @@
         'security/ir.model.access.csv',
         'views/product_template_views.xml',
     ],
+    'pre_init_hook': '_pre_init_temporal',
 }

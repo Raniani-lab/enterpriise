@@ -1780,6 +1780,29 @@ msgid "Technical field used to show the correct button in the view"
 msgstr ""
 
 #. module: l10n_lu_reports
+#: code:addons/l10n_lu_reports/models/res_partner.py:0
+#, python-format
+msgid ""
+"The Agent's ECDF Prefix is not valid. There should be exactly 6 characters."
+msgstr ""
+
+#. module: l10n_lu_reports
+#: code:addons/l10n_lu_reports/models/res_partner.py:0
+#, python-format
+msgid ""
+"The Agent's Matr. Number is not valid. There should be between 11 and 13 "
+"digits."
+msgstr ""
+
+#. module: l10n_lu_reports
+#: code:addons/l10n_lu_reports/wizard/l10n_lu_generate_xml.py:0
+#, python-format
+msgid ""
+"The ECDF Prefix hasn't been defined. Please add the ECDF prefix in the "
+"company's information."
+msgstr ""
+
+#. module: l10n_lu_reports
 #: code:addons/l10n_lu_reports/wizard/l10n_lu_generate_xml.py:0
 #, python-format
 msgid ""

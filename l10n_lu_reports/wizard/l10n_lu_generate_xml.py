@@ -6,7 +6,7 @@ import re
 from io import BytesIO
 from datetime import datetime
 from odoo import models, fields, tools, _
-from odoo.exceptions import RedirectWarning
+from odoo.exceptions import RedirectWarning, ValidationError
 
 class L10nLuGenerateXML(models.TransientModel):
     """
@@ -96,6 +96,8 @@ class L10nLuGenerateXML(models.TransientModel):
                 button_text=_('Configure'),
                 additional_context={'required_fields': ['matr_number']}
             )
+        if not company.ecdf_prefix:
+            raise ValidationError(_("The ECDF Prefix hasn't been defined. Please add the ECDF prefix in the company's information."))
 
         declaration_template_values = {
             'vat_number': company_vat or "NE",

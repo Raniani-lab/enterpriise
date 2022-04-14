@@ -128,8 +128,7 @@ class Base(models.AbstractModel):
         if result is not True:
             if result is False:
                 notification_type = 'warning'
-                message = _('You cannot reschedule %s in the past. Please, change its dates manually.',
-                            self._description)
+                message = _('Records that are in the past cannot be automatically rescheduled. They should be manually rescheduled instead.')
             elif result == self._WEB_GANTT_LOOP_ERROR:
                 notification_type = 'info'
                 message = _('You cannot reschedule tasks that do not follow a direct dependency path. '

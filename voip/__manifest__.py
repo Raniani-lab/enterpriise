@@ -30,12 +30,10 @@ Allows to make call from next activities or with click-to-dial.
     'license': 'OEEL-1',
     'assets': {
         'mail.assets_discuss_public': [
-            'voip/static/src/components/*/*',
             'voip/static/src/models/*.js',
         ],
         'web.assets_backend': [
             'voip/static/lib/sip.js',
-            'voip/static/src/components/*/*.js',
             'voip/static/src/js/call_center_field.js',
             'voip/static/src/js/dialing_panel.js',
             'voip/static/src/js/phone_call.js',

@@ -6,6 +6,17 @@ import "@mail/models/activity_view";
 
 addRecordMethods("ActivityView", {
     /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    onClickLandlineNumber(ev) {
+        ev.preventDefault();
+        this.component.trigger("voip_activity_call", {
+            activityId: this.activity.id,
+            number: this.activity.phone,
+        });
+    },
+    /**
      * @param {MouseEvent} ev
      */
     onClickMobileNumber(ev) {

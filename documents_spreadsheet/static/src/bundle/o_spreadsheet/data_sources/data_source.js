@@ -43,10 +43,6 @@ export class DataSource {
          * Promise to control the creation of the model
          */
         this._createModelPromise = undefined;
-
-        // Trigger the load of the model **after** the construction of the
-        // data source (after the call to all constructors)
-        Promise.resolve().then(() => this.loadModel());
     }
 
     /**

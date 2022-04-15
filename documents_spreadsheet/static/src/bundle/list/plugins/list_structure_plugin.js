@@ -30,7 +30,6 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
             case "REFRESH_ODOO_LIST":
                 this._refreshOdooList(cmd.listId);
                 break;
-            case "START":
             case "REFRESH_ALL_DATA_SOURCES":
                 this._refreshOdooLists();
                 break;

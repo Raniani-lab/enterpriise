@@ -87,7 +87,10 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
      * @returns {string}
      */
     getPivotDisplayName(id) {
-        return `(#${id}) ${this.getSpreadsheetPivotModel(id).getModelLabel()}`;
+        const model = this.getSpreadsheetPivotModel(id)
+        // fallback on the technical name
+        const modelName  = model ? model.getModelLabel() : this.getPivotDefinition(id).model
+        return `(#${id}) ${modelName}`;
     }
 
     /**

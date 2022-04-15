@@ -417,6 +417,51 @@ test("user related context is not saved in the spreadsheet", async function (ass
     );
 });
 
+test("don't fetch pivot data if no formula use it", async function (assert) {
+    const spreadsheetData = {
+        sheets: [{
+            id: "sheet1",
+        }, {
+            id: "sheet2",
+            cells: {
+                A1: { content: `=PIVOT("1", "probability")` },
+            },
+        }],
+        pivots: {
+            1: {
+                id: 1,
+                colGroupBys: ["foo"],
+                domain: [],
+                measures: [{ field: "probability", operator: "avg" }],
+                model: "partner",
+                rowGroupBys: ["bar"],
+            },
+        },
+    };
+    const model = await createModelWithDataSource({
+        spreadsheetData,
+        mockRPC: function (route, { model, method, kwargs }) {
+            if (!["partner", "ir.model"].includes(model)) {
+                return;
+            }
+            assert.step(`${model}/${method}`);
+        },
+    });
+    assert.verifySteps([]);
+    model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: "sheet1", sheetIdTo: "sheet2" });
+    assert.equal(getCellValue(model, "A1"), "Loading...");
+    await nextTick();
+    assert.verifySteps([
+        "partner/fields_get",
+        "ir.model/search_read",
+        "partner/read_group",
+        "partner/read_group",
+        "partner/read_group",
+        "partner/read_group",
+    ]);
+    assert.equal(getCellValue(model, "A1"), 131);
+});
+
 test("user context is combined with pivot context to fetch data", async function (assert) {
     const context = {
         allowed_company_ids: [15],
@@ -438,6 +483,12 @@ test("user context is combined with pivot context to fetch data", async function
         user_context: context,
     };
     const spreadsheetData = {
+        sheets: [{
+            id: "sheet1",
+            cells: {
+                A1: { content: `=PIVOT("1", "probability")` },
+            },
+        }],
         pivots: {
             1: {
                 id: 1,

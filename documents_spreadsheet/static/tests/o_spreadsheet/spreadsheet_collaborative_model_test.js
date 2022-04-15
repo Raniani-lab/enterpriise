@@ -1,5 +1,7 @@
 /** @odoo-module */
 
+import { nextTick } from "@web/../tests/helpers/utils";
+
 import { getBasicServerData } from "../utils/spreadsheet_test_data";
 import { getCellContent, getCellFormula, getCellValue } from "../utils/getters_helpers";
 import {
@@ -203,9 +205,7 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
         (user) => getCellFormula(user, "B26"),
         `=PIVOT.HEADER("2","foo","1")`
     );
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
 
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     assert.spreadsheetIsSynchronized(
@@ -217,6 +217,60 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
         [alice, bob, charlie],
         (user) => Object.keys(user.config.dataSources._dataSources).length,
         2
+    );
+});
+
+
+QUnit.test("Add a pivot in another sheet", async (assert) => {
+    const { definition: def1, dataSource: ds1, pivotModel: pm1 } = await getPivotReady(alice);
+    alice.dispatch("CREATE_SHEET", {
+        sheetId: "sheetId",
+        name: "Sheet",
+    });
+    alice.dispatch("ACTIVATE_SHEET", {
+        sheetIdFrom: alice.getters.getActiveSheetId(),
+        sheetIdTo: "sheetId",
+    })
+    insertPreloadedPivot(alice, {
+        definition: def1,
+        dataSource: ds1,
+        dataSourceId: "data1",
+        pivotModel: pm1,
+    });
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.getters.getPivotIds(),
+        ["1"]
+    );
+    // Let the evaluation and the data sources do what they need to do
+    // before Bob and Charlie activate the second sheet to see the new pivot.
+    await nextTick();
+    bob.dispatch("ACTIVATE_SHEET", {
+        sheetIdFrom: alice.getters.getActiveSheetId(),
+        sheetIdTo: "sheetId",
+    });
+    charlie.dispatch("ACTIVATE_SHEET", {
+        sheetIdFrom: alice.getters.getActiveSheetId(),
+        sheetIdTo: "sheetId",
+    })
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => getCellFormula(user, "B1"),
+        `=PIVOT.HEADER("1","foo","1")`
+    );
+    // values should not be loaded yet (lazy load)
+    assert.spreadsheetIsSynchronized([bob, charlie], (user) => getCellValue(user, "B4"), "Loading...");
+    assert.spreadsheetIsSynchronized(
+        [bob, charlie],
+        (user) => getCellValue(user, "B1"),
+        "Loading..."
+    );
+    await nextTick();
+    assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => getCellValue(user, "B1"),
+        1
     );
 });
 

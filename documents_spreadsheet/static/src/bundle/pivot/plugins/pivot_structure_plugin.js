@@ -25,7 +25,6 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
             case "REFRESH_PIVOT":
                 this._refreshOdooPivot(cmd.id);
                 break;
-            case "START":
             case "REFRESH_ALL_DATA_SOURCES":
                 this._refreshOdooPivots();
                 break;

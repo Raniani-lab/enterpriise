@@ -386,6 +386,44 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         controller.destroy();
     });
 
+    QUnit.test("don't fetch list data if no formula use it", async function (assert) {
+        const spreadsheetData = {
+            sheets: [{
+                id: "sheet1",
+            }, {
+                id: "sheet2",
+                cells: {
+                    A1: { content: `=LIST("1", "1", "foo")` },
+                },
+            }],
+            lists: {
+                1: {
+                    id: 1,
+                    columns: ["foo", "contact_name"],
+                    domain: [],
+                    model: "partner",
+                    orderBy: [],
+                    context: {},
+                },
+            },
+        };
+        const model = await createModelWithDataSource({
+            spreadsheetData,
+            mockRPC: function (route, { model, method, kwargs }) {
+                if (!["partner", "ir.model"].includes(model)) {
+                    return;
+                }
+                assert.step(`${model}/${method}`);
+            },
+        });
+        assert.verifySteps([]);
+        model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: "sheet1", sheetIdTo: "sheet2" });
+        assert.equal(getCellValue(model, "A1"), "Loading...");
+        await nextTick();
+        assert.equal(getCellValue(model, "A1"), 12);
+        assert.verifySteps(["partner/fields_get", "ir.model/search_read", "partner/search_read"]);
+    });
+
     QUnit.test("user context is combined with list context to fetch data", async function (assert) {
         const context = {
             allowed_company_ids: [15],
@@ -407,6 +445,12 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
             user_context: context,
         };
         const spreadsheetData = {
+            sheets: [{
+                id: "sheet1",
+                cells: {
+                    A1: { content: `=LIST("1", "1", "name")` },
+                },
+            }],
             lists: {
                 1: {
                     id: 1,

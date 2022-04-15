@@ -58,21 +58,22 @@ class SaleOrderLine(models.Model):
 
     @api.depends('order_id.is_subscription', 'temporal_type')
     def _compute_invoice_status(self):
-        subscription_lines = self.filtered(lambda l: l.order_id.is_subscription and l.temporal_type == 'subscription')
-        super(SaleOrderLine, self - subscription_lines)._compute_invoice_status()
+        super(SaleOrderLine, self)._compute_invoice_status()
         today = fields.Datetime.today()
-        for line in subscription_lines:
+        for line in self:
+            if not line.order_id.is_subscription and line.temporal_type == 'subscription':
+                continue
             to_invoice_check = line.next_invoice_date and line.order_id.end_date and line.state in ('sale', 'done')
             if to_invoice_check and line.next_invoice_date >= today and line.order_id.end_date > today.date():
                 line.invoice_status = 'to invoice'
 
-    @api.depends('order_id.is_subscription', 'temporal_type', 'pricing_id')
+    @api.depends('order_id.is_subscription', 'temporal_type')
     def _compute_start_date(self):
         """ Behave line a default for recurring lines. """
         subscription_lines = self.filtered(lambda l: (l.order_id.is_subscription or l.order_id.subscription_management == 'upsell') and l.temporal_type == 'subscription')
         super(SaleOrderLine, self - subscription_lines)._compute_start_date()
         for line in subscription_lines:
-            if not line.start_date:
+            if not line.start_date and line.order_id.state in ['sale', 'done']:
                 line.start_date = fields.Datetime.today()
 
     @api.depends('order_id.is_subscription', 'temporal_type', 'start_date', 'pricing_id')
@@ -85,9 +86,8 @@ class SaleOrderLine(models.Model):
                 other_line_ids |= line
             elif line.order_id.subscription_management == 'upsell' and line.order_id.subscription_id:
                 upsell_line_ids |= line
-            elif line.pricing_id:
-                # default value
-                line.next_invoice_date = line.start_date and line.start_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
+            elif line.pricing_id and not line.next_invoice_date:
+                line.next_invoice_date = line.start_date
         upsell_line_ids._set_upsell_next_invoice_date()
         return super(SaleOrderLine, other_line_ids)._compute_next_invoice_date()
 
@@ -101,17 +101,24 @@ class SaleOrderLine(models.Model):
             pricing_id = line.pricing_id
             if not line.pricing_id:
                 continue
-            naive_nid = None
             if line.parent_line_id.next_invoice_date:
                 # We keep the existing value if the line has a parent
                 line.next_invoice_date = line.parent_line_id.next_invoice_date
                 continue
-            if line.start_date and line.pricing_id:
-                # value used for new lines with a periodicity not defined on the parent order
-                naive_nid = line.start_date and line.start_date + get_timedelta(pricing_id.duration, pricing_id.unit)
             order_default_values = default_dates.get(line.order_id, {})
             previous_line_values = order_default_values.get((pricing_id.duration, pricing_id.unit))
-            line.next_invoice_date = previous_line_values and previous_line_values['next_invoice_date'] or naive_nid
+            if previous_line_values:
+                line.next_invoice_date = previous_line_values and previous_line_values['next_invoice_date']
+            # If we have monthly lines and add a new yearly line:
+            #  --> we set the nid when the monthly are invoiced
+            # If we have yearly lines and add a new monthly line:
+            #  --> we let the user decide
+            else:
+                naive_nid = line.pricing_id and line.start_date and line.start_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
+                next_invoice_dates = [val['next_invoice_date'] for key, val in order_default_values.items() if val['next_invoice_date'] <= naive_nid]
+                if next_invoice_dates:
+                    # We only set a value if we have next_invoice_dates available. We let the user define one in the other case
+                    line.next_invoice_date = next_invoice_dates[0]
 
     @api.depends('order_id.subscription_management', 'start_date', 'next_invoice_date')
     def _compute_discount(self):
@@ -124,14 +131,21 @@ class SaleOrderLine(models.Model):
                 other_lines |= line
                 continue
             order_default_values = default_dates.get(line.order_id, {})
-            if line.parent_line_id:
+            period_end = line.next_invoice_date
+            if line.parent_line_id: # existing lines
                 current_period_start = line.parent_line_id.last_invoice_date or line.parent_line_id.start_date
             else: # use the default values
                 previous_line_values = order_default_values.get((line.pricing_id.duration, line.pricing_id.unit))
-                current_period_start = previous_line_values and previous_line_values['start_date'] or today
+                if previous_line_values:
+                    current_period_start = previous_line_values and previous_line_values['start_date']
+                else:
+                    # No other line has the current periodicity. We need to get the theoretical start of the period
+                    # According to the next_invoice_date value and periodicity
+                    period_end = line.pricing_id and line.start_date and line.start_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit) or line.next_invoice_date
+                    current_period_start = today
             time_to_invoice = line.next_invoice_date - today
-            if line.next_invoice_date != current_period_start:
-                ratio = float(time_to_invoice.days) / float((line.next_invoice_date - current_period_start).days)
+            if line.next_invoice_date and (period_end - current_period_start).days != 0:
+                ratio = float(time_to_invoice.days) / float((period_end - current_period_start).days)
             else:
                 ratio = 1
             if ratio < 0 or ratio > 1:
@@ -165,7 +179,7 @@ class SaleOrderLine(models.Model):
             default_values[line.order_id] = pricing_dates
         return default_values
 
-    def _update_next_invoice_date(self, force=False):
+    def _update_next_invoice_date(self):
         """ Update the next_invoice_date according to the periodicity of the line.
         At quotation confirmation, last_invoice_date is false, next_invoice is false and start_date is today.
         The next_invoice_date should be bumped up each time an invoice is created except for the first period.
@@ -174,7 +188,7 @@ class SaleOrderLine(models.Model):
         for line in self.filtered(lambda l: l.temporal_type == 'subscription'):
             # don't update next_invoice date if the invoice_count is 0. First period invoiced: the next_invoice_date was set by the confirm action
             update_needed = line.order_id.invoice_count > 1 or (line.next_invoice_date and line.next_invoice_date <= today)
-            if force or update_needed:
+            if update_needed:
                 last_invoice_date = line.next_invoice_date or line.start_date
                 if last_invoice_date:
                     line.next_invoice_date = last_invoice_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
@@ -189,22 +203,30 @@ class SaleOrderLine(models.Model):
         super(SaleOrderLine, self - subscription_lines)._compute_pricing()
         previous_lines = self.order_id.order_line.filtered('is_subscription_product')
         for line in subscription_lines:
+            if not line.product_id:
+                continue
             other_lines = previous_lines.filtered(lambda l: l.order_id == line.order_id) - line
             latest_pricing_id = other_lines and other_lines[-1].pricing_id
+            best_pricing_id = line.product_id.product_tmpl_id.product_pricing_ids and line.product_id.product_tmpl_id.product_pricing_ids[0]
             if latest_pricing_id:
-                best_pricing_id = line.product_id._get_best_pricing_rule(duration=latest_pricing_id.duration, unit=latest_pricing_id.unit)
-                if (best_pricing_id.duration, best_pricing_id.unit) == (latest_pricing_id.duration, latest_pricing_id.unit):
-                    line.pricing_id = best_pricing_id.id
+                pricing_match = line.product_id._get_best_pricing_rule(duration=latest_pricing_id.duration,
+                                                                       unit=latest_pricing_id.unit)
+                if (pricing_match.duration, pricing_match.unit) == (latest_pricing_id.duration, latest_pricing_id.unit):
+                    best_pricing_id = pricing_match
+            line.pricing_id = best_pricing_id.id
 
     @api.depends('start_date', 'order_id.state', 'invoice_lines')
     def _compute_last_invoice_date(self):
         for line in self:
             if line.pricing_id and line.order_id.state in ['sale', 'done'] and line.invoice_lines:
-                line.last_invoice_date = line.invoice_lines and line.invoice_lines[-1].date
+                # we use get_timedelta and not the effective invoice date because
+                # we don't want gaps. Invoicing date could be shifted because of technical issues.
+                line.last_invoice_date = line.next_invoice_date and line.next_invoice_date - get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
             else:
                 line.last_invoice_date = False
 
-    @api.depends('temporal_type', 'invoice_lines.subscription_start_date', 'invoice_lines.subscription_end_date', 'next_invoice_date', 'last_invoice_date')
+    @api.depends('temporal_type', 'invoice_lines.subscription_start_date', 'invoice_lines.subscription_end_date',
+                 'next_invoice_date', 'last_invoice_date')
     def _compute_qty_to_invoice(self):
         return super()._compute_qty_to_invoice()
 
@@ -236,7 +258,7 @@ class SaleOrderLine(models.Model):
             if line.temporal_type != 'subscription' or line.order_id.state not in ['sale', 'done']:
                 continue
             qty_invoiced = 0.0
-            last_period_start = line.next_invoice_date and line.next_invoice_date - get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
+            last_period_start = line.next_invoice_date and line.pricing_id and line.next_invoice_date - get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
             start_date = last_invoice_date or last_period_start and last_period_start.date()
             end_date = next_invoice_date or line.next_invoice_date and line.next_invoice_date.date()
             day_before_end_date = end_date - relativedelta(days=1)
@@ -250,7 +272,8 @@ class SaleOrderLine(models.Model):
             result[line.id] = qty_invoiced
         return result
 
-    @api.depends('temporal_type', 'invoice_lines', 'invoice_lines.subscription_start_date', 'invoice_lines.subscription_end_date', 'next_invoice_date', 'last_invoice_date')
+    @api.depends('temporal_type', 'invoice_lines', 'invoice_lines.subscription_start_date',
+                 'invoice_lines.subscription_end_date', 'next_invoice_date', 'last_invoice_date')
     def _compute_qty_invoiced(self):
         non_subscription_lines = self.filtered(lambda l: l.temporal_type != 'subscription')
         super(SaleOrderLine, non_subscription_lines)._compute_qty_invoiced()
@@ -293,12 +316,12 @@ class SaleOrderLine(models.Model):
                 new_period_start = self.start_date or fields.Datetime.today()
             format_start = format_date(self.env, new_period_start, lang_code=lang_code)
             default_next_invoice_date = new_period_start + get_timedelta(self.pricing_id.duration, self.pricing_id.unit)
-            if self.order_id.subscription_management == 'upsell' and self.parent_line_id.next_invoice_date:
+            if self.order_id.subscription_management == 'upsell':
                 next_invoice_date = self.next_invoice_date
             else:
                 next_invoice_date = default_next_invoice_date
-            format_invoice = format_date(self.env, next_invoice_date, lang_code=lang_code)
-            description += _("\n%s to %s", format_start, format_invoice)
+                format_invoice = format_date(self.env, next_invoice_date, lang_code=lang_code)
+                description += _("\n%s to %s", format_start, format_invoice)
             qty_to_invoice = self._get_subscription_qty_to_invoice(last_invoice_date=new_period_start,
                                                                    next_invoice_date=next_invoice_date)
             subscription_end_date = next_invoice_date - relativedelta(days=1) # remove 1 day as normal people thinks in terms of inclusive ranges.
@@ -335,16 +358,24 @@ class SaleOrderLine(models.Model):
                 result[line['id']] = {'id': line_pricing_id.id, 'display_name': line_pricing_id.name}
         return result
 
+    def _reset_subscription_qty_to_invoice(self, to_invoice=True):
+        """ Define the qty to invoice on subscription lines equal to product_uom_qty for recurring lines
+            It allows to avoid using the _compute_qty_to_invoice with a context_today
+        """
+        for line in self:
+            if not line.temporal_type == 'subscription' or line.product_id.invoice_policy == 'delivery':
+                continue
+            line.qty_to_invoice = line.product_uom_qty
+
+    def _reset_subscription_quantity_post_invoice(self):
+        """ Update the Delivered quantity value of recurring line according to the periods
+        """
+        # arj todo: reset only timesheet things. So reset nothing in standard but override in sale-subscription_timesheet (to be recreated...)
+        return
+
     ####################
     # CRUD             #
     ####################
-
-    @api.model_create_multi
-    def create(self, val_list):
-        new_lines = super().create(val_list)
-        confirmed_lines = new_lines.filtered(lambda line: line.order_id.state in ['sale', 'done'] and not line.display_type)
-        confirmed_lines._update_next_invoice_date(force=True)
-        return new_lines
 
     def write(self, values):
         if 'pricing_id' in values:
@@ -383,11 +414,6 @@ class SaleOrderLine(models.Model):
                 'pricing_id': line.pricing_id.id
             }))
         return order_lines
-
-    def _reset_subscription_quantity_post_invoice(self):
-        """ Update the Delivered/Invoiced value of subscription line according to the periods
-        """
-        self.filtered(lambda sol: sol.temporal_type == 'subscription' and sol.qty_delivered_method == 'manual' and sol.product_id.invoice_policy == 'delivery').write({'qty_delivered': 0})
 
     def _subscription_update_line_data(self, subscription):
         """

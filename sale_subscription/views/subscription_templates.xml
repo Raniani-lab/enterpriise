@@ -5,7 +5,7 @@
             <div class="pb-2">
                 <div style="white-space: nowrap;display: inline;">
                     <span class="font-weight-bold">Untaxed /
-                        <span><t t-out="val['periodicity']"/><t t-out="val['unit']"/></span>:
+                        <span><t t-out="val['periodicity']"/> <t t-out="val['unit']"/></span>:
                     </span>
                     <span>
                         <t t-out="val['untaxed_amount']"/>
@@ -13,7 +13,7 @@
                 </div>
                 <div style="white-space: nowrap;display: inline;">
                     <span class="font-weight-bold text-left">Total /
-                        <span><t t-out="val['periodicity']"/><t t-out="val['unit']"/></span>:
+                        <span><t t-out="val['periodicity']"/> <t t-out="val['unit']"/></span>:
                     </span>
                     <span class="text-right">
                         <t t-out="val['total_amount']"/>

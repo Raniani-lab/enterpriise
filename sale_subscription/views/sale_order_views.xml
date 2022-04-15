@@ -23,19 +23,30 @@
                 <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), '|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}</attribute>
             </button>
             <button id="create_invoice" position="after">
-                <button name="action_invoice_subscription" string="Create Recurring Invoice"
-                        id="create_recurring_invoice" type="object" class="btn-secondary" data-hotkey="q"
+                <button name="action_invoice_subscription" string="Create Invoice"
+                        id="create_recurring_invoice" type="object" class="btn-primary" data-hotkey="q"
                         attrs="{'invisible': ['|', '|', ('state', '!=', 'sale'), ('is_subscription', '=', False), ('payment_mode', 'in', ['validate_send', 'success_payment'])]}"
                 />
             </button>
             <button name="action_draft" position="after">
                 <button string="Upsell" name="prepare_upsell_order" type="object"
-                            attrs="{'invisible': ['|', '|', ('is_subscription', '=', False), ('stage_category', '!=', 'progress'), ('state', 'not in', ['sale', 'done'])]}" data-hotkey="z"/>
+                            attrs="{'invisible': [
+                            '|',
+                            '|',
+                            '|',
+                            ('is_subscription', '=', False),
+                            ('stage_category', '!=', 'progress'),
+                            ('state', 'not in', ['sale', 'done']),
+                            ('invoice_count', '=', 0),
+                            ]}" data-hotkey="z"/>
                     <button string="Renew" name="prepare_renewal_order" type="object" data-hotkey="w"
                         attrs="{'invisible': [
-                        '|','|',
+                        '|',
+                        '|',
+                        '|',
                         ('state', '!=', 'sale'),
                         ('is_subscription', '=', False),
+                        ('invoice_count', '=', 0),
                         '&amp;','&amp;',
                         ('recurring_rule_boundary','=','unlimited'),
                         ('stage_category','not in',['closed', 'draft']),
@@ -75,7 +86,7 @@
                  </button>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="after">
-                <div class="badge-pill badge-warning float-right" attrs="{'invisible': [('to_renew', '=', False)]}">To Renew</div>
+                <div class="badge-pill badge-warning float-right" attrs="{'invisible': ['|', '|', ('is_subscription', '=', False), ('to_renew', '=', False), ('invoice_count', '=', 0)]}">To Renew</div>
                 <div class="badge-pill badge-danger float-right" attrs="{'invisible': [('payment_exception', '=', False)]}">Payment Failure</div>
             </xpath>
             <xpath expr="//header" position="after">
@@ -110,9 +121,13 @@
                 <field name="is_subscription_product" invisible="1"/>
                 <field name="product_pricing_ids" invisible="1"/>
                 <field name="pricelist_id" invisible="1"/>
-                <field name="pricing_id" string="Recurrency" optional="hide" widget="subscription_pricing" options="{'no_open': True}"/>
-                <field name="start_date" optional="hide" widget="subscription_date"/>
-                <field name="next_invoice_date" optional="hide" widget="subscription_date"/>
+                <field name="pricelist_id" invisible="1"/>
+                <field name="pricing_id" string="Recurrency" optional="hide"
+                       widget="subscription_pricing" options="{'no_open': True, 'no_create': True,}"
+                       attrs="{'readonly': [('is_subscription_product', '=', False)], 'required': [('is_subscription_product', '=', True)]}"
+                       />
+                <field name="start_date" optional="hide" widget="subscription_date" attrs="{'readonly': [('temporal_type', '=', False)]}"/>
+                <field name="next_invoice_date" optional="hide" widget="subscription_date" attrs="{'readonly': [('temporal_type', '=', False)]}"/>
             </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='price_subtotal']" position='replace'>
                 <field name="price_subtotal" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded" decoration-info="temporal_type == 'subscription'"/>

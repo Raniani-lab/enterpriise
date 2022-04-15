@@ -531,8 +531,6 @@ class SaleOrder(models.Model):
         renew = child_subscriptions.filtered(lambda s: s.subscription_management == 'renew')
         upsell = child_subscriptions.filtered(lambda s: s.subscription_management == 'upsell')
         confirmed_subscription._confirm_subscription()
-        # renew have already the right invoice dates
-        (confirmed_subscription - renew).order_line.filtered(lambda l: not l.next_invoice_date)._update_next_invoice_date(force=True)
         upsell._confirm_upsell()
         renew._confirm_renew()
         return res
@@ -545,11 +543,12 @@ class SaleOrder(models.Model):
             if sub.sale_order_template_id.recurring_rule_boundary == 'limited' and not sub.end_date:
                 end_date = today + get_timedelta(sub.sale_order_template_id.recurring_rule_count, sub.sale_order_template_id.recurring_rule_type) - relativedelta(days=1)
             sub.write({'end_date': end_date})
-            # We set the start date and invoice date at the date of confirmation to allow computing 'next_invoice_date'
+            # We set the start date and invoice date at the date of confirmation and qty_to_invoice
             for line in sub.order_line:
-                if not line.start_date:
+                if not line.start_date and line.temporal_type == 'subscription':
                     line.start_date = today
-                line.qty_to_invoice = line.product_uom_qty
+            # arj todo: inefficient: we loop over the lines two times but _reset_qty_to_invoice is needed in invoice creation
+            sub.order_line._reset_subscription_qty_to_invoice()
 
     def _confirm_upsell(self):
         """
@@ -558,22 +557,23 @@ class SaleOrder(models.Model):
         today = fields.Date.today()
         self.order_line.filtered(lambda l: not l.start_date and not l.display_type).write({'start_date': today})
         new_lines = self.order_line.filtered(lambda l: not l.parent_line_id)
-        create_values, update_values = self.update_existing_subscriptions()
+        dummy, update_values = self.update_existing_subscriptions()
         updated_line_ids = [val[1] for val in update_values]
         # When a new line is created with a start_date, the next_invoice_date will be recomputed and will be shifted.
         # Example: with a new yearly line starting in june when the expected next invoice date is december,
         # discount is 50% and the default next_invoice_date will be in june too.
-        # We need to save the default next_invoice_date that was saved on the upsell because the compute has no way
+        # We need to get the default next_invoice_date that was saved on the upsell because the compute has no way
         # to differentiate new line created by an upsell and new line created by the user.
         for line in self.subscription_id.order_line:
             if line.id in updated_line_ids:
+                # Existing lines have already the right values
                 continue
             upsell_line = new_lines.filtered(lambda l:
                                              (l.product_id, l.pricing_id, l.product_uom_qty, l.product_uom) ==
                                              (line.product_id, line.pricing_id, line.product_uom_qty, line.product_uom)
                                              and not line.parent_line_id)
-            if upsell_line:
-                line.next_invoice_date = upsell_line.next_invoice_date
+            if upsell_line and line.pricing_id:
+                # line.next_invoice_date = upsell_line.next_invoice_date # and upsell_line.next_invoice_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
                 # The upsell invoice will take care of the invoicing for this period
                 line.qty_to_invoice = 0
 
@@ -866,12 +866,12 @@ class SaleOrder(models.Model):
         today = fields.Date.today()
         res = res.filtered(lambda l: l.temporal_type != 'subscription')
         automatic_invoice = self.env.context.get('recurring_automatic')
-
         def filter_sub_lines(line):
+            time_condition = line.next_invoice_date and line.next_invoice_date.date() <= today
             if line.display_type or (not line.start_date or line.start_date.date() > today):
                 # Avoid invoicing section/notes or lines starting in the future or not starting at all
                 return False
-            elif line.next_invoice_date and line.next_invoice_date.date() <= today:
+            elif time_condition and line.product_id.invoice_policy == 'order':
                 # Invoice due lines
                 return True
             elif not line.invoice_lines and line.qty_to_invoice:
@@ -879,7 +879,7 @@ class SaleOrder(models.Model):
                 return True
             elif float_is_zero(line.product_uom_qty, precision_rounding=line.product_id.uom_id.rounding):
                 return False
-            elif line.product_id.invoice_policy == 'delivery' and not float_is_zero(line.qty_delivered, precision_rounding=line.product_id.uom_id.rounding):
+            elif time_condition and line.product_id.invoice_policy == 'delivery' and not float_is_zero(line.qty_delivered, precision_rounding=line.product_id.uom_id.rounding):
                 return True
             else:
                 return False
@@ -888,7 +888,6 @@ class SaleOrder(models.Model):
         else:
             # We invoice all the subscription lines
             subscription_lines = self.order_line.filtered(lambda l: l.temporal_type == 'subscription')
-
         return res | subscription_lines
 
     def _subscription_post_success_payment(self, invoice, transaction):
@@ -985,8 +984,12 @@ class SaleOrder(models.Model):
         all_invoiceable_lines = all_subscriptions.with_context(recurring_automatic=automatic)._get_invoiceable_lines(final=False)
         auto_close_subscription._subscription_auto_close_and_renew(all_invoiceable_lines)
         batch_tag = self.env.ref('sale_subscription.invoice_batch', raise_if_not_found=False)
-        lines_to_reset_qty = self.env['sale.order.line'] # qty_delivered is set to 0 after invoicing for invoice_policy = delivery
+        lines_to_reset_qty = self.env['sale.order.line'] # qty_delivered is set to 0 after invoicing for some categories of products (timesheets etc)
         account_moves = self.env['account.move']
+        # Set quantity to invoice before the invoice creation. If something goes wrong, the line will appear as "to invoice"
+        # It prevent to use the _compute method and compare the today date and the next_invoice_date in the compute.
+        # That would be bad for perfs
+        all_invoiceable_lines._reset_subscription_qty_to_invoice(to_invoice=True)
         if auto_commit:
             self.env.cr.commit()
         for subscription in all_subscriptions:
@@ -1011,7 +1014,8 @@ class SaleOrder(models.Model):
                     # Only update the invoice date if there is already one invoice for the lines and when the so is not done
                     # done contract are finished or renewed
                     if invoiceable_lines.order_id.state == 'sale':
-                        invoiceable_lines._update_next_invoice_date(force=False)
+                        invoiceable_lines._update_next_invoice_date()
+                        invoiceable_lines._reset_subscription_qty_to_invoice(to_invoice=False)
                     lines_to_reset_qty |= invoiceable_lines
                 except TransactionRollbackError:
                     raise
@@ -1027,6 +1031,7 @@ class SaleOrder(models.Model):
                     continue
                 if auto_commit:
                     self.env.cr.commit()
+
                 # Handle automatic payment or invoice posting
                 existing_invoices = subscription._handle_automatic_invoices(auto_commit, invoice)
                 account_moves |= existing_invoices
@@ -1071,9 +1076,9 @@ class SaleOrder(models.Model):
             auto_close_days = contract.sale_order_template_id and contract.sale_order_template_id.auto_close_limit or 15
             if contract.sale_order_template_id.payment_mode == 'success_payment' and not contract.payment_token_id:
                 # Auto close subscription when payment mode is token, no token is set and the auto close period is passed
-                next_invoice_dates = [line.next_invoice_date for line in contract.order_line]
+                next_invoice_dates = [line.next_invoice_date for line in contract.order_line if line.next_invoice_date]
             else:
-                next_invoice_dates = [line.next_invoice_date for line in contract.order_line if line.id not in all_invoiceable_lines.ids]
+                next_invoice_dates = [line.next_invoice_date for line in contract.order_line if line.id not in all_invoiceable_lines.ids and line.next_invoice_date]
             last_next_invoice_date = next_invoice_dates and max(next_invoice_dates)
             auto_close_date = last_next_invoice_date and last_next_invoice_date.date() + relativedelta(days=auto_close_days)
             if auto_close_date and current_date >= auto_close_date:

@@ -157,7 +157,7 @@ class TestSubscription(TestSubscriptionCommon):
             sub.action_confirm()
             self.assertFalse(sub.order_line.last_invoice_date)
             self.assertEqual("2021-01-03", sub.order_line.start_date.strftime("%Y-%m-%d"))
-            self.assertEqual("2021-02-03", sub.order_line.next_invoice_date.strftime("%Y-%m-%d"))
+            self.assertEqual("2021-01-03", sub.order_line.next_invoice_date.strftime("%Y-%m-%d"))
 
             sub._create_recurring_invoice(automatic=True)
             # Next invoice date should not be bumped up because it is the first period
@@ -212,6 +212,7 @@ class TestSubscription(TestSubscriptionCommon):
                                                 'price_unit': 42})
 
             self.subscription.action_confirm()
+            self.subscription._create_recurring_invoice(automatic=True)
             self.assertEqual(self.subscription.end_date, datetime.date(2024, 11, 17), 'The end date of the subscription should be updated according to the template')
             self.assertFalse(self.subscription.to_renew)
             next_invoice_dates = self.subscription.mapped('order_line').sorted('id').mapped('next_invoice_date')
@@ -248,7 +249,7 @@ class TestSubscription(TestSubscriptionCommon):
     def test_upsell_via_so(self):
         # Test the upsell flow using an intermediary upsell quote.
         princing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month', 'price': 50, 'product_template_id': self.product.product_tmpl_id.id})
-        princing_6_month2 = self.env['product.pricing'].create({'duration': 6, 'unit': 'month', 'price': 20, 'product_template_id': self.product2.product_tmpl_id.id})
+        pricing_6_month2 = self.env['product.pricing'].create({'duration': 6, 'unit': 'month', 'price': 20, 'product_template_id': self.product2.product_tmpl_id.id})
         princing_6_month3 = self.env['product.pricing'].create({'duration': 6, 'unit': 'month', 'price': 15, 'product_template_id': self.product3.product_tmpl_id.id})
         with freeze_time("2021-01-01"):
             self.subscription.order_line = False
@@ -284,15 +285,15 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_so.order_line.product_uom_qty = 1
             # When the upsell order is created, all quantities are equal to 0
             # add line to quote manually, it must be taken into account in the subscription after validation
-            so_line_vals = [{
+            upsell_so.order_line = [(0, 0, {
                 'name': self.product2.name,
                 'order_id': upsell_so.id,
                 'product_id': self.product2.id,
                 'product_uom_qty': 2,
                 'product_uom': self.product2.uom_id.id,
                 'price_unit': self.product2.list_price,
-                'pricing_id': princing_6_month2.id # start now, will be next invoiced in 6 months, on the 15 of July
-            }, {
+                'pricing_id': pricing_6_month2.id # start now, will be next invoiced in 6 months, on the 15 of July
+            }), (0, 0, {
                 'name': self.product3.name,
                 'order_id': upsell_so.id,
                 'product_id': self.product3.id,
@@ -301,24 +302,27 @@ class TestSubscription(TestSubscriptionCommon):
                 'price_unit': self.product3.list_price,
                 'pricing_id': princing_6_month3.id,
                 'start_date': datetime.datetime(2021, 6, 1), # start in june
-            }]
-
-            new_line = self.env['sale.order.line'].create(so_line_vals)
+            })]
+            # During the test, the next_invoice_date of the added line are not set because _get_previous_order_default_dates
+            # do not recompute the values of the other lines.
+            upsell_so.order_line._compute_next_invoice_date()
+            upsell_so.order_line._compute_discount()
             upsell_so.action_confirm()
+            self.subscription._create_recurring_invoice(automatic=True)
             discounts = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('discount')]
-            self.assertEqual(discounts, [45.16, 23.73, 0.0, 0.0], 'Prorated prices should be applied')
+            self.assertEqual(discounts, [45.16, 23.73, 90.61, 94.69], 'Prorated prices should be applied')
             prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
-            self.assertEqual(prices, [27.42, 38.14, 40, 42], 'Prorated prices should be applied')
+            self.assertEqual(prices, [27.42, 38.14, 3.76, 2.23], 'Prorated prices should be applied')
 
             upsell_so._create_invoices()
             last_invoice_line_name = upsell_so.invoice_ids.line_ids.sorted('id')[2].name.split('\n')[1]
-            self.assertEqual(last_invoice_line_name, '01/15/2021 to 07/14/2021 - 6 month',
-                             "The upsell invoice take into account the first period, the line is valid 6 months.")
+            self.assertEqual(last_invoice_line_name, '01/15/2021 to 01/31/2021 - 6 month',
+                             "The upsell invoice take into account the first period, until the next invoice.")
 
             sorted_lines = self.subscription.order_line.sorted('pricing_id')
             self.assertEqual(sorted_lines.mapped('product_uom_qty'), [3, 4, 2, 1], "Quantities should be equal to 3, 4, 2")
             new_line_starting_now = sorted_lines[2]
-            self.assertEqual([new_line_starting_now.start_date, new_line_starting_now.next_invoice_date], [datetime.datetime(2021, 1, 15), datetime.datetime(2021, 7, 15)], "The upsell invoice take into account the first period")
+            self.assertEqual([new_line_starting_now.start_date, new_line_starting_now.next_invoice_date], [datetime.datetime(2021, 1, 15), datetime.datetime(2021, 2, 1)], "The upsell invoice take into account the first period")
 
         with freeze_time("2021-02-01"):
             self.env['sale.order']._cron_recurring_create_invoice()
@@ -338,19 +342,32 @@ class TestSubscription(TestSubscriptionCommon):
             second_period = invoice_periods[1].split('\n')[1]
             self.assertEqual(second_period, "06/01/2021 to 12/01/2021")
 
-        self.assertEqual(self.subscription, new_line.order_id.subscription_id,
-                         'sale_subscription: upsell line added to quote after creation but before validation must be automatically  linked to correct subscription')
         self.assertEqual(len(self.subscription.order_line), 4)
 
     def test_upsell_prorata(self):
         """ Test the prorated values obtained when creating an upsell. complementary to the previous one where new
          lines had no existing default values.
         """
-        princing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month'})
+        princing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month', 'price': 50})
+        usd_currency = self.env.ref('base.USD')
+        usd_currency.active = True
+        pricelist_id = self.env['product.pricelist'].create({
+            'name': 'Super Pricelist',
+            'currency_id': usd_currency.id,
+        })
+        partner = self.env['res.partner'].create({
+            'name': 'Subscription client',
+            'country_id': self.env.ref('base.us').id,
+            'property_product_pricelist': pricelist_id.id
+        })
+        # make sure to have the right currency on product to avoid conversion.
+        (self.product | self.product2 | self.product3).currency_id = usd_currency.id
+
         with freeze_time("2021-01-01"):
             self.subscription.order_line = False
             self.subscription.write({
-                'partner_id': self.partner.id,
+                'partner_id': partner.id,
+                'pricelist_id': pricelist_id.id,
                 'order_line': [
                     Command.create({
                         'product_id': self.product.id,
@@ -374,11 +391,13 @@ class TestSubscription(TestSubscriptionCommon):
                         'price_unit': 50,
                         'product_uom_qty': 1,
                         'pricing_id': self.pricing_month.id,
-                        'start_date': '2021-01-10',
+                        'start_date': '2021-01-01',
                     }),
                 ]
             })
+
             self.subscription.action_confirm()
+            self.subscription._create_recurring_invoice(automatic=True)
 
         with freeze_time("2021-01-20"):
             action = self.subscription.prepare_upsell_order()
@@ -403,11 +422,21 @@ class TestSubscription(TestSubscriptionCommon):
             }]
             self.env['sale.order.line'].create(so_line_vals)
             upsell_so.order_line.product_uom_qty = 1
+            # During the test, the next_invoice_date of the added line are not set because _get_previous_order_default_dates
+            # do not recompute the values of the other lines.
+            upsell_so.order_line.tax_id = False
+            upsell_so.order_line._compute_next_invoice_date()
+            upsell_so.order_line._compute_discount()
             discounts = [round(v) for v in upsell_so.order_line.sorted('pricing_id').mapped('discount')]
             # discounts for: 12d/31d; 40d/59d; 21d/31d (shifted); 31d/41d; 59d/78d;
-            self.assertEqual(discounts, [61, 32, 32, 24, 24], 'Prorated prices should be applied')
+            self.assertEqual(discounts, [61, 32, 61, 61, 32], 'Prorated prices should be applied')
             prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
-            self.assertEqual(prices, [19.36, 33.9, 13.55, 15.12, 31.77], 'Prorated prices should be applied')
+            self.assertEqual(upsell_so.order_line.sorted('pricing_id').pricing_id.mapped('price'), [50, 50], 'Prorated prices should be applied')
+            self.assertEqual(upsell_so.currency_id.name, 'USD', 'The Currency should be USD (to verify the price_unit)')
+            expected_price_unit = [50, 50, 20, 20, 42]
+            self.assertEqual(upsell_so.order_line.sorted('pricing_id').mapped('price_unit'), expected_price_unit, "Price unit should not change")
+            expected_prices = [19.36, 33.9, 7.74, 7.74, 28.48]
+            self.assertEqual(prices, expected_prices, 'Prorated prices should be applied')
 
     def test_recurring_revenue(self):
         """Test computation of recurring revenue"""
@@ -566,6 +595,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub_form = Form(self.subscription)
         with sub_form.order_line.new() as line:
             line.product_id = self.product
+            line.pricing_id = self.pricing_month
         sub = sub_form.save()
         self.assertEqual(sub.order_line.product_id.taxes_id, self.tax_10, 'Default tax for product should have been applied.')
         self.assertEqual(sub.amount_tax, 5.0,
@@ -783,6 +813,7 @@ class TestSubscription(TestSubscriptionCommon):
                                               'pricing_id': self.pricing_month.id,
                                               })]
             sub.action_confirm()
+            sub._create_recurring_invoice(automatic=True)
             self.assertFalse(sub.order_line.qty_delivered)
             # We only invoice what we deliver
             self.assertFalse(sub.order_line.qty_to_invoice)
@@ -795,7 +826,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(sub.order_line.qty_to_invoice, 1)
             sub._create_recurring_invoice(automatic=True)
             # The quantity to invoice and delivered are reset after the creation of the invoice
-            self.assertFalse(sub.order_line.qty_delivered)
+            self.assertTrue(sub.order_line.qty_delivered)
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.invoice_line_ids.quantity, 1)
 
@@ -803,7 +834,7 @@ class TestSubscription(TestSubscriptionCommon):
             # February
             sub.order_line.qty_delivered = 1
             sub._create_recurring_invoice(automatic=True)
-            self.assertEqual(sub.order_line.qty_delivered, 0)
+            self.assertEqual(sub.order_line.qty_delivered, 1)
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.invoice_line_ids.quantity, 1)
         with freeze_time("2021-03-03"):
@@ -1089,15 +1120,16 @@ class TestSubscription(TestSubscriptionCommon):
         self.product.write({
             'taxes_id': [(6, 0, [sale_tax_percentage_incl_1.id, sale_tax_percentage_incl_2.id])],
         })
+        simple_product = self.product.copy({'recurring_invoice': False})
         simple_so = self.env['sale.order'].create({
             'partner_id': self.partner_a.id,
             'company_id': self.company_data['company'].id,
             'order_line': [
                 (0, 0, {
                     'name': self.product.name,
-                    'product_id': self.product.id,
+                    'product_id': simple_product.id,
                     'product_uom_qty': 2.0,
-                    'product_uom': self.product.uom_id.id,
+                    'product_uom': simple_product.uom_id.id,
                     'price_unit': 12,
                 })],
         })
@@ -1283,6 +1315,10 @@ class TestSubscription(TestSubscriptionCommon):
                 'product_uom': self.product.uom_id.id,
                 'pricing_id': pricing_year_3.id,
             })]
+            # During the test, the next_invoice_date of the added line are not set because _get_previous_order_default_dates
+            # do not recompute the values of the other lines.
+            upsell_so.order_line._compute_next_invoice_date()
+            upsell_so.order_line._compute_discount()
             nid = upsell_so.order_line.mapped('next_invoice_date')[0]
             self.assertEqual(nid, datetime.datetime(2023, 1, 1), "The end date is the the same than the parent sub")
             discount = upsell_so.order_line.mapped('discount')[0]
@@ -1296,7 +1332,7 @@ class TestSubscription(TestSubscriptionCommon):
             for idx in range(3):
                 self.assertEqual(periods[idx], expected_values[idx], 'the first year should be invoiced')
             # We trigger the invoice cron before the generation of the upsell invoice
-            self.env['sale.order']._cron_recurring_create_invoice()
+            self.env['sale.order'].with_context(arj=True)._cron_recurring_create_invoice()
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")
         with freeze_time("2022-07-01"):

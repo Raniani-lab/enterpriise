@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="homeworking_exception_view_form" model="ir.ui.view">
+        <field name="name">homeworking.exception.view.form</field>
+        <field name="model">homeworking.exception</field>
+        <field name="arch" type="xml">
+            <form string="Homeworking Exceptions">
+                <sheet>
+                    <group col="4">
+                        <field name="date"/>
+                        <field name="homeworking_location_id" string="Location" domain="[('location_type', '!=', 'unspecified')]"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="homeworking_exception_view_tree" model="ir.ui.view">
+        <field name="name">homeworking.exception.view.tree</field>
+        <field name="model">homeworking.exception</field>
+        <field name="arch" type="xml">
+            <tree string="Homeworking Exceptions" editable="bottom">
+                    <field name="date"/>
+                    <field name="homeworking_location_id" string="Location" domain="[('location_type', '!=', 'unspecified')]"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

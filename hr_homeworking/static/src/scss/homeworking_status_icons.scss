@@ -1,0 +1,7 @@
+// Due a custom scss function for the fa-circle icon in 
+// addons/web/static/src/legacy/scss/bs_mixins_overrides_backend.scss,
+// the styling of the homeworking status icons in this module need to
+// follow this styling to appear consistent.
+.o-homeworking-status-icon {
+    @extend .fa-circle;
+}

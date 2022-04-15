@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="HomeworkingGanttView.Row" t-extend="GanttView.Row">
+        <t t-jquery=".o_gantt_pill_title" t-operation="replace">
+            <p class="position-relative mb-0 o_gantt_pill_title" 
+               t-esc="pill.display_name"/>
+        </t>
+    </t>
+</templates>

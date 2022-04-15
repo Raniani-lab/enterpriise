@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="homeworking_entry_view_gantt" model="ir.ui.view">
+            <field name="name">homeworking.entry.view.gantt</field>
+            <field name="model">homeworking.entry</field>
+            <field name="arch" type="xml">
+                <gantt string="Homeworking Locations"
+                       js_class="homeworking_gantt"
+                       date_start="date"
+                       date_stop="date"
+                       permanent_group_by="employee_id"
+                       scales="day,week,month,year"
+                       precision="{'week':'day:full', 'month':'day:full'}"
+                       default_scale="week"
+                       color="location_color"
+                       disable_drag_drop="1"
+                       create="0"
+                       plan="0"
+                       delete="0"
+                       sample="1">
+                    <templates>
+                        <div t-name="gantt-popover">
+                            <div>
+                                <t t-esc="employee_id[1]"/>
+                            </div>
+                            <div>
+                                <t t-esc="userTimezoneStartDate.format('l')"/>
+                            </div>
+                        </div>
+                    </templates>
+                    <field name="location_color" invisible="1"/>
+                    <field name="employee_id"/>
+                    <field name="location_id"/>
+                </gantt>
+            </field>
+        </record>
+
+        <record id="homeworking_entry_filter" model="ir.ui.view">
+            <field name="name">homeworking.entry.filter</field>
+            <field name="model">homeworking.entry</field>
+            <field name="arch" type="xml">
+                <search string="Search Attendances">
+                    <field name='employee_id'/>
+                    <field name='department_id'/>
+                    <field name='location_id'/>
+                    <field name='job_id'/>
+                    <filter name="home" string="At home today"
+                            domain="[('employee_id.homeworking_current_location_id.location_type', '=', 'home')]"/>
+                    <filter name="office" string="In the office today"
+                            domain="[('employee_id.homeworking_current_location_id.location_type', '=', 'office')]"/>
+                    <filter name="homeworking_location_unspecified" string="Homeworking Unspecified"
+                            domain="[('employee_id.homeworking_current_location_id.location_type', '=', 'unspecified')]"/>
+                    <separator/>
+                    <filter name="team" string="My Team" domain="[('employee_id.parent_id.user_id', '=', uid)]"/>
+                    <filter name="department" string="My Department"
+                        domain="[('employee_id.member_of_department', '=', True)]"
+                        help="My Department"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="Department" name="department" domain="[]"
+                                context="{'group_by': 'department_id'}"/>
+                        <filter string="Job Position" name="job_id" domain="[]"
+                                context="{'group_by': 'job_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+        
+        <record id="hr_homeworking_report_action" model="ir.actions.act_window">
+            <field name="name">Homeworking</field>
+            <field name="res_model">homeworking.entry</field>
+            <field name="view_mode">gantt</field>
+        </record>
+
+        <menuitem
+            id="hr_homeworking_report_menu"
+            name="Homeworking"
+            action="hr_homeworking_report_action"
+            parent="hr.hr_menu_hr_reports"
+            sequence="16"/>
+    </data>
+</odoo>

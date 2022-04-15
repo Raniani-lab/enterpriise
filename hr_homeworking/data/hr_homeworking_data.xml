@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Homeworking locations -->
+        <record id="homeworking_location_home" model="homeworking.location">
+            <field name="location_type">home</field>
+            <field name="name">Home</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="homeworking_location_unspecified" model="homeworking.location">
+            <field name="location_type">unspecified</field>
+            <field name="name">Unspecified</field>
+            <field name="color">0</field>
+        </record>
+
+        <record id="homeworking_location_office" model="homeworking.location">
+            <field name="location_type">office</field>
+            <field name="name">Office</field>
+            <field name="color">1</field>
+        </record>
+    </data>
+</odoo>

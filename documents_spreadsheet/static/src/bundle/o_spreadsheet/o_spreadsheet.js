@@ -3498,6 +3498,20 @@
         };
     }
     /**
+     * Compute the intersection of two zones. Returns nothing if the two zones don't overlap
+     */
+    function intersection(z1, z2) {
+        if (!overlap(z1, z2)) {
+            return undefined;
+        }
+        return {
+            top: Math.max(z1.top, z2.top),
+            left: Math.max(z1.left, z2.left),
+            bottom: Math.min(z1.bottom, z2.bottom),
+            right: Math.min(z1.right, z2.right),
+        };
+    }
+    /**
      * Two zones are equal if they represent the same area, so we clearly cannot use
      * reference equality.
      */
@@ -18614,6 +18628,8 @@
                 cell = getters.getCell(range.sheetId, range.zone.left, range.zone.top);
                 if (!cell || cell.isEmpty()) {
                     // magic "empty" value
+                    // Returning null instead of undefined will ensure that we don't
+                    // fall back on the default value of the argument provided to the formula's compute function
                     return null;
                 }
                 return getCellValue(cell, range.sheetId);
@@ -18634,15 +18650,35 @@
              * Note that each col is possibly sparse: it only contain the values of cells
              * that are actually present in the grid.
              */
-            function _range(range$1) {
-                const sheetId = range$1.sheetId;
-                if (!isZoneValid(range$1.zone)) {
+            function _range(range) {
+                const sheetId = range.sheetId;
+                if (!isZoneValid(range.zone)) {
                     throw new InvalidReferenceError();
                 }
-                const zone = range$1.zone;
-                return range(zone.left, zone.right + 1).map((col) => getters
-                    .getCellsInZone(sheetId, { ...zone, left: col, right: col })
-                    .map((cell) => (cell ? getCellValue(cell, range$1.sheetId) : undefined)));
+                // Performance issue: Avoid fetching data on positions that are out of the spreadsheet
+                // e.g. A1:ZZZ9999 in a sheet with 10 cols and 10 rows should ignore everything past J10 and return a 10x10 array
+                const sheetZone = {
+                    top: 0,
+                    bottom: getters.getNumberRows(sheetId) - 1,
+                    left: 0,
+                    right: getters.getNumberCols(sheetId) - 1,
+                };
+                const result = [];
+                const zone = intersection(range.zone, sheetZone);
+                if (!zone) {
+                    result.push([]);
+                    return result;
+                }
+                // Performance issue: nested loop is faster than a map here
+                for (let col = zone.left; col <= zone.right; col++) {
+                    const rowValues = [];
+                    for (let row = zone.top; row <= zone.bottom; row++) {
+                        const cell = evalContext.getters.getCell(range.sheetId, col, row);
+                        rowValues.push(cell ? getCellValue(cell, range.sheetId) : undefined);
+                    }
+                    result.push(rowValues);
+                }
+                return result;
             }
             /**
              * Returns the value of the cell(s) used in reference
@@ -18681,10 +18717,10 @@
              *
              * the parameters are the same as refFn, except that these parameters cannot be Meta
              */
-            function range$1(position, references, sheetId) {
+            function range(position, references, sheetId) {
                 return _range(references[position]);
             }
-            return [refFn, range$1, evalContext];
+            return [refFn, range, evalContext];
         }
         /**
          * Triggers an evaluation of all cells on all sheets.
@@ -27231,10 +27267,10 @@
             }
 
             &.o-format-tool {
-              width: 180px;
               padding: 7px 0;
               > div {
                 padding-left: 25px;
+                white-space: nowrap;
 
                 &.active:before {
                   content: "✓";
@@ -32029,8 +32065,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-04-14T05:53:46.454Z';
-    exports.__info__.hash = '10db754';
+    exports.__info__.date = '2022-04-15T12:46:38.053Z';
+    exports.__info__.hash = 'ef133d4';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

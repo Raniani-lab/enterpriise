@@ -41,46 +41,6 @@ class SaleOrderLine(models.Model):
     def _compute_temporal_type(self):
         self.temporal_type = False
 
-    @api.depends('temporal_type')
-    def _compute_price_unit(self):
-        temporal_lines = self.filtered('temporal_type')
-        super(SaleOrderLine, self - temporal_lines)._compute_price_unit()
-        temporal_lines._update_temporal_prices()
-
-    def _update_temporal_prices(self):
-        # Apply correct temporal prices with respect to pricelist
-        for sol in self:
-            if not sol.temporal_type:
-                continue
-            pricing_args = {'pricelist': sol.order_id.pricelist_id, 'company': sol.company_id,
-                            'currency': sol.currency_id}
-            duration_dict = {}
-            if sol.pricing_id:
-                pricing_args.update(duration=sol.pricing_id.duration, unit=sol.pricing_id.unit)
-            elif sol.start_date and sol.next_invoice_date:
-                pricing_args.update(start_date=sol.start_date, end_date=sol.next_invoice_date)
-                duration_dict = self.env['product.pricing']._compute_duration_vals(sol.start_date,
-                                                                                   sol.next_invoice_date)
-            else:
-                sol.price_unit = sol.product_id.lst_price
-                continue
-            pricing = sol.product_id._get_best_pricing_rule(**pricing_args)
-            if not pricing:
-                sol.price_unit = sol.product_id.lst_price
-                continue
-            if duration_dict:
-                price = pricing._compute_price(duration_dict[pricing.unit], pricing.unit)
-            else:
-                price = pricing._compute_price(sol.pricing_id.duration, sol.pricing_id.unit)
-            if pricing.currency_id != sol.currency_id:
-                price = pricing.currency_id._convert(
-                    from_amount=price,
-                    to_currency=sol.currency_id,
-                    company=sol.company_id,
-                    date=fields.Date.today(),
-                )
-            sol.price_unit = price
-
     def _get_clean_up_values(self):
         return {'start_date': False, 'next_invoice_date': False}
 
@@ -96,3 +56,17 @@ class SaleOrderLine(models.Model):
         temporal_lines = self.filtered('temporal_type')
         super(SaleOrderLine, self - temporal_lines)._compute_product_updatable()
         temporal_lines.product_updatable = True
+
+    def _get_price_rule_id(self, **product_context):
+        self.ensure_one()
+
+        price_computing_kwargs = self._get_price_computing_kwargs()
+        if self.temporal_type\
+           and self.order_id.pricelist_id._enable_temporal_price(**price_computing_kwargs):
+            order_date = self.order_id.date_order or fields.Date.today()
+            product = self.product_id.with_context(**product_context)
+            qty = self.product_uom_qty or 1.0
+            return self.order_id.pricelist_id._compute_price_rule(
+                product, qty, self.product_uom, order_date, **price_computing_kwargs)[product.id]
+
+        return super()._get_price_rule_id(**product_context)

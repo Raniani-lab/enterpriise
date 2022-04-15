@@ -343,3 +343,15 @@ class SaleOrderLine(models.Model):
 
         values += [(1, sub_id, {'product_uom_qty': dict_changes[sub_id]}) for sub_id in dict_changes]
         return values
+
+    #=== PRICE COMPUTING HOOKS ===#
+
+    def _get_price_computing_kwargs(self):
+        """ Override to add the pricing duration or the start and end date of temporal line """
+        price_computing_kwargs = super()._get_price_computing_kwargs()
+        if self.temporal_type != 'subscription':
+            return price_computing_kwargs
+        if self.pricing_id:
+            price_computing_kwargs['duration'] = self.pricing_id.duration
+            price_computing_kwargs['unit'] = self.pricing_id.unit
+        return price_computing_kwargs

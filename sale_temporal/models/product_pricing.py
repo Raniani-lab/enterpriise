@@ -113,3 +113,35 @@ class ProductPricing(models.Model):
         for period in available_periodicities:
             result |= self.filtered(lambda p: p.duration == period[0] and p.unit == period[1])[:1]
         return result
+
+    @api.model
+    def _get_first_suitable_pricing(self, product, pricelist=None):
+        """ Get the first suitable pricing for given product and pricelist.
+
+        Note: model method
+        """
+        return self._get_suitable_pricings(product, pricelist=pricelist, first=True)
+
+    @api.model
+    def _get_suitable_pricings(self, product, pricelist=None, first=False):
+        """ Get the suitable pricings for given product and pricelist.
+
+        Note: model method
+        """
+        is_product_template = product._name == "product.template"
+        available_pricings = self.env['product.pricing']
+        if pricelist:
+            for pricing in product.product_pricing_ids:
+                if pricing.pricelist_id == pricelist\
+                   and (is_product_template or pricing._applies_to(product)):
+                    if first:
+                        return pricing
+                    available_pricings |= pricing
+
+        for pricing in product.product_pricing_ids:
+            if not pricing.pricelist_id and (is_product_template or pricing._applies_to(product)):
+                if first:
+                    return pricing
+                available_pricings |= pricing
+
+        return available_pricings

@@ -17,6 +17,11 @@ class TestLead(crm_common.TestCrmCommon):
             'name': 'Rent Product',
             'rent_ok': True,
             'type': 'consu',
+            'product_pricing_ids': self.env['product.pricing'].sudo().create({
+                'duration': 1,
+                'unit': 'day',
+                'price': 100,
+            }),
         })
 
         base_order_vals = {

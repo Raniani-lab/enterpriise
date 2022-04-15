@@ -101,12 +101,12 @@ class RentalProcessingLine(models.TransientModel):
         for wizard_line in self:
             order_line = wizard_line.order_line_id
             if wizard_line.status == 'pickup' and wizard_line.qty_delivered > 0:
-                order_line.update({
-                    'product_uom_qty': max(order_line.product_uom_qty, order_line.qty_delivered + wizard_line.qty_delivered),
-                    'qty_delivered': order_line.qty_delivered + wizard_line.qty_delivered
-                })
+                vals = {'qty_delivered': order_line.qty_delivered + wizard_line.qty_delivered}
+                if order_line.qty_delivered + wizard_line.qty_delivered > order_line.product_uom_qty:
+                    vals['product_uom_qty'] = order_line.qty_delivered + wizard_line.qty_delivered
                 if order_line.start_date > fields.Datetime.now():
-                    order_line.start_date = fields.Datetime.now()
+                    vals['start_date'] = fields.Datetime.now()
+                order_line.update(vals)
 
             elif wizard_line.status == 'return' and wizard_line.qty_returned > 0:
                 if wizard_line.is_late:

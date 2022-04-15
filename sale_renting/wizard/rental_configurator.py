@@ -4,7 +4,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 import math
-from datetime import date
 
 class RentalWizard(models.TransientModel):
     _name = 'rental.wizard'
@@ -60,7 +59,9 @@ class RentalWizard(models.TransientModel):
                     start_date=wizard.pickup_date,
                     end_date=wizard.return_date,
                     pricelist=wizard.pricelist_id,
-                    company=wizard.company_id)
+                    company=wizard.company_id,
+                    currency=wizard.currency_id
+                )
 
     @api.depends('pricelist_id', 'pricing_id')
     def _compute_displayed_currency(self):
@@ -91,14 +92,19 @@ class RentalWizard(models.TransientModel):
     @api.onchange('pricing_id', 'currency_id', 'duration', 'duration_unit')
     def _compute_unit_price(self):
         for wizard in self:
-            if wizard.pricing_id and wizard.duration > 0:
+            if wizard.pricelist_id:
+                wizard.unit_price = wizard.pricelist_id._get_product_price(
+                    wizard.product_id, 1, start_date=wizard.pickup_date,
+                    end_date=wizard.return_date
+                )
+            elif wizard.pricing_id and wizard.duration > 0:
                 unit_price = wizard.pricing_id._compute_price(wizard.duration, wizard.duration_unit)
                 if wizard.currency_id != wizard.pricing_id.currency_id:
                     wizard.unit_price = wizard.pricing_id.currency_id._convert(
                         from_amount=unit_price,
                         to_currency=wizard.currency_id,
                         company=wizard.company_id,
-                        date=date.today())
+                        date=fields.Date.today())
                 else:
                     wizard.unit_price = unit_price
             elif wizard.duration > 0:
@@ -119,7 +125,7 @@ class RentalWizard(models.TransientModel):
                         self.env['ir.qweb.field.monetary'].value_to_html(
                             wizard.pricing_id.price, {
                                 'from_currency': wizard.pricing_id.currency_id,
-                                'display_currency': wizard.pricing_id.currency_id,
+                                'display_currency': wizard.currency_id,
                                 'company_id': self.env.company.id,
                             }))
                 else:
@@ -131,7 +137,7 @@ class RentalWizard(models.TransientModel):
                         self.env['ir.qweb.field.monetary'].value_to_html(
                             wizard.product_id.extra_hourly, {
                                 'from_currency': wizard.product_id.currency_id,
-                                'display_currency': wizard.product_id.currency_id,
+                                'display_currency': wizard.currency_id,
                                 'company_id': self.env.company.id,
                             }),
                         _("/hour"))
@@ -140,7 +146,7 @@ class RentalWizard(models.TransientModel):
                         self.env['ir.qweb.field.monetary'].value_to_html(
                             wizard.product_id.extra_daily, {
                                 'from_currency': wizard.product_id.currency_id,
-                                'display_currency': wizard.product_id.currency_id,
+                                'display_currency': wizard.currency_id,
                                 'company_id': self.env.company.id,
                             }),
                         _("/day"))

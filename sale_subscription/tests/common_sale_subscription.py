@@ -37,14 +37,23 @@ class TestSubscriptionCommon(TestSaleCommon):
         cls.journal = cls.company_data['default_journal_sale']
 
         # Test products
+        cls.pricing_month = cls.env['product.pricing'].create({
+            'duration': 1,
+            'unit': 'month',
+            'price': 50
+        })
+        cls.pricing_year = cls.env['product.pricing'].create({
+            'duration': 1,
+            'unit': 'year',
+            'price': 50,
+        })
         cls.sub_product_tmpl = ProductTmpl.create({
             'name': 'BaseTestProduct',
             'type': 'service',
             'recurring_invoice': True,
             'uom_id': cls.env.ref('uom.product_uom_unit').id,
+            'product_pricing_ids': [Command.set((cls.pricing_month + cls.pricing_year).ids)]
         })
-        cls.pricing_month = cls.env['product.pricing'].create({'duration': 1, 'unit': 'month'})
-        cls.pricing_year = cls.env['product.pricing'].create({'duration': 1, 'unit': 'year'})
         cls.product = cls.sub_product_tmpl.product_variant_id
         cls.product.write({
             'list_price': 50.0,

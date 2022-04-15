@@ -202,7 +202,7 @@ class TestSubscription(TestSubscriptionCommon):
             # add an so line with a different uom
             uom_dozen = self.env.ref('uom.product_uom_dozen').id
             self.subscription_tmpl.recurring_rule_count = 3 # end after 3 years to adapt to the following line
-            pricing_3_year = self.env['product.pricing'].create({'duration': 3, 'unit': 'year'})
+            pricing_3_year = self.env['product.pricing'].create({'duration': 3, 'unit': 'year', 'price': 50, 'product_template_id': self.product.product_tmpl_id.id})
             self.env['sale.order.line'].create({'name': self.product.name,
                                                 'order_id': self.subscription.id,
                                                 'product_id': self.product.id,
@@ -247,8 +247,9 @@ class TestSubscription(TestSubscriptionCommon):
 
     def test_upsell_via_so(self):
         # Test the upsell flow using an intermediary upsell quote.
-        princing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month'})
-        princing_6_month = self.env['product.pricing'].create({'duration': 6, 'unit': 'month'})
+        princing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month', 'price': 50, 'product_template_id': self.product.product_tmpl_id.id})
+        princing_6_month2 = self.env['product.pricing'].create({'duration': 6, 'unit': 'month', 'price': 20, 'product_template_id': self.product2.product_tmpl_id.id})
+        princing_6_month3 = self.env['product.pricing'].create({'duration': 6, 'unit': 'month', 'price': 15, 'product_template_id': self.product3.product_tmpl_id.id})
         with freeze_time("2021-01-01"):
             self.subscription.order_line = False
             self.subscription.write({
@@ -290,7 +291,7 @@ class TestSubscription(TestSubscriptionCommon):
                 'product_uom_qty': 2,
                 'product_uom': self.product2.uom_id.id,
                 'price_unit': self.product2.list_price,
-                'pricing_id': princing_6_month.id # start now, will be next invoiced in 6 months, on the 15 of July
+                'pricing_id': princing_6_month2.id # start now, will be next invoiced in 6 months, on the 15 of July
             }, {
                 'name': self.product3.name,
                 'order_id': upsell_so.id,
@@ -298,7 +299,7 @@ class TestSubscription(TestSubscriptionCommon):
                 'product_uom_qty': 1,
                 'product_uom': self.product3.uom_id.id,
                 'price_unit': self.product3.list_price,
-                'pricing_id': princing_6_month.id,
+                'pricing_id': princing_6_month3.id,
                 'start_date': datetime.datetime(2021, 6, 1), # start in june
             }]
 
@@ -342,8 +343,8 @@ class TestSubscription(TestSubscriptionCommon):
 
     def test_recurring_revenue(self):
         """Test computation of recurring revenue"""
-        pricing_4_year = self.env['product.pricing'].create({'duration': 4, 'unit': 'year'})
-        pricing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month'})
+        pricing_4_year = self.env['product.pricing'].create({'duration': 4, 'unit': 'year', 'price': 50, 'product_template_id': self.product.product_tmpl_id.id})
+        pricing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month', 'price': 50, 'product_template_id': self.product.product_tmpl_id.id})
         # Initial subscription is $100/y
         self.subscription_tmpl.write({'recurring_rule_count': 1, 'recurring_rule_type': 'year'})
         self.subscription.write({
@@ -1066,7 +1067,6 @@ class TestSubscription(TestSubscriptionCommon):
         line = self.subscription.order_line
         self.assertEqual(line.price_unit, 50, 'Price unit should not have changed')
         line.currency_id = self.currency_data['currency']
-        line._update_temporal_prices()
         conversion_rate = self.env['res.currency']._get_conversion_rate(
             self.product.currency_id,
             self.subscription.pricelist_id.currency_id,

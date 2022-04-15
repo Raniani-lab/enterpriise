@@ -28,6 +28,7 @@ class TestSubscriptionController(HttpCase):
             'type': 'service',
             'recurring_invoice': True,
             'uom_id': self.env.ref('uom.product_uom_unit').id,
+            'product_pricing_ids': [Command.set((self.pricing_month + self.pricing_year).ids)],
         })
         self.subscription_tmpl = self.env['sale.order.template'].create({
             'name': 'Subscription template without discount',

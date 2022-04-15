@@ -224,6 +224,123 @@ class TestRentalCommon(SingleTransactionCase):
 
     # TODO availability testing with sale_rental functions? (no stock)
 
+    def test_no_pickup_nor_return(self):
+        partner = self.env['res.partner'].create({'name': 'A partner'})
+
+        PRICINGS = [
+            {
+                'duration': 1.0,
+                'unit': 'hour',
+                'price': 3.5,
+            }
+        ]
+        self.product_template_id.product_pricing_ids.unlink()
+        for pricing in PRICINGS:
+            pricing.update(product_template_id=self.product_template_id.id)
+            pricing = self.env['product.pricing'].create(pricing)
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': partner.id,
+        })
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'order_id': sale_order.id,
+        })
+
+        self.assertEqual(sol.price_unit, 1, "No pricing should be taken into account if no pickup nor return date.")
+        sale_order.update_prices()
+        self.assertEqual(sol.price_unit, 1, "Update price should not alter first computed price.")
+
+    def test_no_price_update_on_pickup_return_update(self):
+        partner = self.env['res.partner'].create({'name': 'A partner'})
+
+        PRICINGS = [
+            {
+                'duration': 1.0,
+                'unit': 'hour',
+                'price': 3.5,
+            }
+        ]
+        self.product_template_id.product_pricing_ids.unlink()
+        for pricing in PRICINGS:
+            pricing.update(product_template_id=self.product_template_id.id)
+            pricing = self.env['product.pricing'].create(pricing)
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': partner.id,
+        })
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'order_id': sale_order.id,
+        })
+
+        self.assertEqual(sol.price_unit, 1, "No pricing should be taken into account if no pickup nor return date.")
+        sol.write({
+            'start_date': fields.Datetime.now() + relativedelta(days=1),
+            'return_date': fields.Datetime.now() + relativedelta(days=1, hours=1),
+            'next_invoice_date': fields.Datetime.now() + relativedelta(days=1, hours=1),
+            'is_rental': True,
+        })
+        self.assertEqual(sol.price_unit, 1, "Update price should not alter first computed price.")
+        sale_order.update_prices()
+        self.assertEqual(sol.price_unit, 3.5, "Update price should not alter first computed price.")
+
+    def test_no_pricing_for_pricelist(self):
+        partner = self.env['res.partner'].create({'name': 'A partner'})
+        pricelist_A = self.env['product.pricelist'].create({
+            'name': 'Pricelist A',
+        })
+
+        PRICINGS = [
+            {
+                'duration': 1.0,
+                'unit': 'hour',
+                'price': 3.5,
+                'pricelist_id': pricelist_A.id,
+            }
+        ]
+        self.product_template_id.product_pricing_ids.unlink()
+        for pricing in PRICINGS:
+            pricing.update(product_template_id=self.product_template_id.id)
+            pricing = self.env['product.pricing'].create(pricing)
+
+        sale_order = self.env['sale.order'].create({
+            'partner_id': partner.id,
+        })
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.product_id.id,
+            'order_id': sale_order.id,
+            'start_date': fields.Datetime.now() + relativedelta(days=1),
+            'return_date': fields.Datetime.now() + relativedelta(days=1, hours=1),
+            'next_invoice_date': fields.Datetime.now() + relativedelta(days=1, hours=1),
+            'is_rental': True,
+        })
+
+        self.assertEqual(sol.price_unit, 1, "No pricing should be taken into account if no pricing corresponds to a given pricelist.")
+
+    def test_contextual_price_is_pickup_return_dependant(self):
+        pricelist_A = self.env['product.pricelist'].create({
+            'name': 'Pricelist A',
+        })
+        PRICINGS = [
+            {
+                'duration': 1.0,
+                'unit': 'hour',
+                'price': 3.5,
+            }
+        ]
+        self.product_template_id.product_pricing_ids.unlink()
+        for pricing in PRICINGS:
+            pricing.update(product_template_id=self.product_template_id.id)
+            pricing = self.env['product.pricing'].create(pricing)
+
+        price = self.product_template_id.with_context(
+            start_date=fields.Datetime.now() + relativedelta(days=1),
+            end_date=fields.Datetime.now() + relativedelta(days=1, hours=2),
+            pricelist=pricelist_A.id
+        )._get_contextual_price()
+        self.assertEqual(price, 7, "Contextual price should take pickup and return date into account")
+
 @tagged('post_install', '-at_install')
 class TestUi(HttpCase):
 

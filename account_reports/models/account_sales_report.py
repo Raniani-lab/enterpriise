@@ -22,7 +22,7 @@ class ECSalesReport(models.AbstractModel):
     _name = 'account.sales.report'
     _description = 'EC Sales List'
     _inherit = 'account.report'
-    filter_date = {'mode': 'range', 'filter': 'this_month'}
+    filter_date = {'mode': 'range', 'filter': 'last_month'}
     filter_journals = True
     filter_multi_company = None
     filter_ec_sale_code = None

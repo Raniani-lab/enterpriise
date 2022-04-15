@@ -13,7 +13,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
     _description = "Partner VAT Listing"
     _inherit = 'account.report'
 
-    filter_date = {'mode': 'range', 'filter': 'this_month'}
+    filter_date = {'mode': 'range', 'filter': 'last_month'}
 
     def _get_templates(self):
         res = super()._get_templates()

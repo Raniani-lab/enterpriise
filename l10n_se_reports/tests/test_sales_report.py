@@ -39,6 +39,7 @@ class SwedishSalesReportTest(AccountSalesReportCommon):
             (self.partner_b, triangular_tax, 2000),
         ])
         report = self.env['account.sales.report']
+        report.filter_date['filter'] = 'this_month'
         options = report._get_options(None)
         self.assertEqual(report._get_report_country_code(options), 'SE', "The country chosen for EC Sales list should be Sweden")
         lines = report._get_lines(options)

@@ -77,6 +77,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
             (self.partner_b, s_tax, 700),
         ])
         report = self.env['account.sales.report']
+        report.filter_date['filter'] = 'this_month'
         options = report._get_options(None)
         self.assertEqual(report._get_report_country_code(options), 'LU', "The country chosen for EC Sales list should be Luxembourg")
         lines = report._get_lines(options)

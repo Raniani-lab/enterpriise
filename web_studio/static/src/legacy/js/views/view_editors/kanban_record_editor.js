@@ -40,7 +40,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
 
             // prevent the color dropdown to be displayed
             self.$('.o_dropdown_kanban > a')
-                .removeAttr('data-toggle')
+                .removeAttr('data-bs-toggle')
                 .click(function (event) {
                     event.preventDefault();
                 });

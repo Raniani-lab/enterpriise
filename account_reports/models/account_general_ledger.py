@@ -239,26 +239,11 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         return new_options
 
     @api.model
-    def _get_filter_accounts_domain(self, options, prefix=''):
-        if options.get('filter_accounts'):
-            account_name_label = 'name'
-            account_code_label = 'code'
-            if prefix:
-                account_name_label = '%s.%s' % (prefix, account_name_label)
-                account_code_label = '%s.%s' % (prefix, account_code_label)
-            return [
-                '|',
-                (account_name_label, '=ilike', options['filter_accounts'] + '%'),
-                (account_code_label, '=ilike', options['filter_accounts'] + '%')
-            ]
-        return []
-
-    @api.model
     def _get_options_domain(self, options):
         # OVERRIDE
         domain = super(AccountGeneralLedgerReport, self)._get_options_domain(options)
         # Filter accounts based on the search bar.
-        domain += self._get_filter_accounts_domain(options, 'account_id')
+        domain += [('account_id', 'ilike', options.get('filter_accounts'))]
         return domain
 
     @api.model
@@ -653,11 +638,12 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         if groupby_companies:
             options = options_list[0]
             unaffected_earnings_type = self.env.ref('account.data_unaffected_earnings')
-            search_domain = [('user_type_id', '=', unaffected_earnings_type.id),
-                             ('company_id', 'in', list(groupby_companies.keys()))] + self._get_filter_accounts_domain(options)
 
-            candidates_accounts = self.env['account.account'].search(search_domain)
-            for account in candidates_accounts:
+            candidates_account_ids = self.env['account.account']._name_search(options.get('filter_accounts'), [
+                ('user_type_id', '=', unaffected_earnings_type.id),
+                ('company_id', 'in', list(groupby_companies)),
+            ])
+            for account in self.env['account.account'].browse(candidates_account_ids):
                 company_unaffected_earnings = groupby_companies.get(account.company_id.id)
                 if not company_unaffected_earnings:
                     continue
@@ -709,6 +695,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         return {
             'id': 'account_%d' % account.id,
             'name': name,
+            'code': account.code,
             'columns': columns,
             'level': 1,
             'unfoldable': has_lines,

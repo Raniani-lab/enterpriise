@@ -469,14 +469,14 @@ var accountReportsWidget = AbstractAction.extend({
             var line_id = $accountReportLineFoldable.find('.o_account_report_line').data('id');
             var $childs = self.$('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
 
+            const lineNameEl = $accountReportLineFoldable.find('.account_report_line_name')[0];
             // Only the direct text node, not text situated in other child nodes
-            const lineContent = $accountReportLineFoldable.find('.account_report_line_name').contents();
-            const lineText = lineContent.get(0).nodeValue.trim();
+            const displayName = lineNameEl.childNodes[0].nodeValue.trim().toLowerCase();
+            const accountCode = lineNameEl.dataset.accountCode || '';
+            const accountName = displayName.slice(accountCode ? accountCode.length + 1 : 0);
 
             // The python does this too
-            var queryFound = lineText.split(' ').some(function (str) {
-                return str.toLowerCase().startsWith(query);
-            });
+            const queryFound = accountCode.startsWith(query.split(' ')[0]) || accountName.includes(query);
 
             $accountReportLineFoldable.toggleClass('o_account_reports_filtered_lines', !queryFound);
             $childs.toggleClass('o_account_reports_filtered_lines', !queryFound);

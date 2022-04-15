@@ -17,15 +17,14 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
     const pyEnv = await startServer();
     const mailChannelId1 = pyEnv['mail.channel'].create({
         channel_type: 'channel',
-        is_pinned: true,
-        message_unread_counter: 0,
         name: "General",
     });
     const mailMessageId1 = pyEnv['mail.message'].create({
         model: 'mail.channel',
         res_id: mailChannelId1,
     });
-    pyEnv['mail.channel'].write([mailChannelId1], { seen_message_id: mailMessageId1 });
+    const [mailChannelPartnerId] = pyEnv['mail.channel.partner'].search([['channel_id', '=', mailChannelId1], ['partner_id', '=', pyEnv.currentPartnerId]]);
+    pyEnv['mail.channel.partner'].write([mailChannelPartnerId], { seen_message_id: mailMessageId1 });
     const { createThreadViewComponent, messaging } = await start({
         mockRPC(route, { model, method, kwargs }) {
             if (model === 'mail.channel' && method === 'execute_command_helpdesk') {

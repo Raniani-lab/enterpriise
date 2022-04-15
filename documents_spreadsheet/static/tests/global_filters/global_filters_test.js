@@ -1256,4 +1256,117 @@ module("documents_spreadsheet > global_filters",
         });
         assert.verifySteps([]);
     })
+
+    test("don't load data if a filter is added but the data is not needed", async function (assert) {
+        const spreadsheetData = {
+            sheets: [{
+                id: "sheet1",
+            }, {
+                id: "sheet2",
+                cells: {
+                    A1: { content: `=PIVOT("1", "probability")` },
+                },
+            }],
+            pivots: {
+                1: {
+                    id: 1,
+                    colGroupBys: ["foo"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "avg" }],
+                    model: "partner",
+                    rowGroupBys: ["bar"],
+                    context: {},
+                },
+            },
+        };
+        const model = await createModelWithDataSource({
+            spreadsheetData,
+            mockRPC: function (route, { model, method, kwargs }) {
+                if (model === "partner" && method === "read_group") {
+                    assert.step(`${model}/${method}`);
+                }
+            },
+        });
+        assert.verifySteps([]);
+        model.dispatch("ADD_GLOBAL_FILTER", {
+          filter: {
+            id: "42",
+            type: "date",
+            rangeType: "month",
+            label: "This month",
+            pivotFields: {
+              1: { field: "date", type: "date" },
+            },
+            defaultValue: { period: "january" },
+          },
+        });
+        assert.verifySteps([]);
+        model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: "sheet1", sheetIdTo: "sheet2" });
+        assert.equal(getCellValue(model, "A1"), "Loading...");
+        await nextTick();
+        assert.equal(getCellValue(model, "A1"), "");
+        assert.verifySteps(["partner/read_group"]);
+    });
+
+    test("don't load data if a filter is activated but the data is not needed", async function (assert) {
+        const spreadsheetData = {
+            sheets: [
+                {
+                    id: "sheet1",
+                },
+                {
+                    id: "sheet2",
+                    cells: {
+                        A1: { content: `=PIVOT("1", "probability")` },
+                    },
+                },
+            ],
+            pivots: {
+                1: {
+                    id: 1,
+                    colGroupBys: ["foo"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "avg" }],
+                    model: "partner",
+                    rowGroupBys: ["bar"],
+                    context: {},
+                },
+            },
+            globalFilters: [
+                {
+                    id: "filterId",
+                    type: "date",
+                    label: "my filter",
+                    defaultValue: {},
+                    rangeType: "year",
+                    pivotFields: {
+                        1: { field: "date", type: "date" },
+                    },
+                    listFields: {},
+                    fields: {
+                        1: { field: "date", type: "date" },
+                    },
+                },
+            ],
+        };
+        const model = await createModelWithDataSource({
+            spreadsheetData,
+            mockRPC: function (route, { model, method, kwargs }) {
+                if (model === "partner" && method === "read_group") {
+                    assert.step(`${model}/${method}`);
+                }
+            },
+        });
+        assert.verifySteps([]);
+        model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            id: "filterId",
+            value: { year: "this_year" },
+        });
+        assert.verifySteps([]);
+        model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: "sheet1", sheetIdTo: "sheet2" });
+        assert.equal(getCellValue(model, "A1"), "Loading...");
+        await nextTick();
+        assert.equal(getCellValue(model, "A1"), "");
+        assert.verifySteps(["partner/read_group"]);
+    });
 });

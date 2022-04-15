@@ -62,6 +62,11 @@ export class OdooViewsDataSource extends DataSource {
             return;
         }
         this._customDomain = newDomain.toList();
+        if (this._loadPromise === undefined) {
+            // if the data source has never been loaded, there's no point
+            // at reloading it now.
+            return
+        }
         this.load({ reload: true });
     }
 }

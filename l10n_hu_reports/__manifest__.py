@@ -5,7 +5,10 @@
     'icon': '/l10n_hu/static/description/icon.png',
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
-    'description': """ Base module for Hungary reports """,
+    'author': 'Odoo S.A.',
+    'description': """
+        Accounting reports for Hungary
+    """,
     'depends': [
         'l10n_hu',
         'account_reports',

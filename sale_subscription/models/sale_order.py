@@ -600,9 +600,7 @@ class SaleOrder(models.Model):
     def action_invoice_subscription(self):
         account_move = self._create_recurring_invoice()
         if account_move:
-            action = self.env.ref('sale.action_invoice_salesteams')
-            action['domain'] = [('id', 'in', account_move.ids)]
-            return action
+            return self.action_view_invoice()
         else:
             raise UserError(self._nothing_to_invoice_error_message())
 

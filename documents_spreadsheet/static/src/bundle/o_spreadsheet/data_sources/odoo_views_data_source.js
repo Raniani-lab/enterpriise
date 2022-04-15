@@ -44,7 +44,7 @@ export class OdooViewsDataSource extends DataSource {
         const searchParams = {
             ...this._searchParams,
             domain: this._customDomain,
-        }
+        };
         await this._model.load(searchParams);
     }
 
@@ -57,7 +57,11 @@ export class OdooViewsDataSource extends DataSource {
     }
 
     addDomain(domain) {
-        this._customDomain = Domain.and([this._searchParams.domain, domain]).toList();
+        const newDomain = Domain.and([this._searchParams.domain, domain]);
+        if (newDomain.toString() === new Domain(this._customDomain).toString()) {
+            return;
+        }
+        this._customDomain = newDomain.toList();
         this.load({ reload: true });
     }
 }

@@ -1103,4 +1103,157 @@ module("documents_spreadsheet > global_filters",
         assert.equal(getCellValue(model, "A4"), "xpad");
         assert.equal(getCellValue(model, "B4"), "121");
     });
+
+    test("load data only once if filter is not active (without default value)", async function (assert) {
+        const spreadsheetData = {
+            sheets: [{
+                id: "sheet1",
+                cells: {
+                    A1: { content: `=PIVOT("1", "probability")` },
+                },
+            }],
+            pivots: {
+                1: {
+                    id: 1,
+                    colGroupBys: ["foo"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "avg" }],
+                    model: "partner",
+                    rowGroupBys: ["bar"],
+                    context: {},
+                },
+            },
+            globalFilters: [
+                {
+                    id: "filterId",
+                    type: "date",
+                    label: "my filter",
+                    defaultValue: {},
+                    rangeType: "year",
+                    pivotFields: {
+                        1: { field: "date", type: "date" },
+                    },
+                    listFields: {},
+                    fields: {
+                        1: { field: "date", type: "date" },
+                    },
+                },
+            ],
+        };
+        const model = await createModelWithDataSource({
+            spreadsheetData,
+            mockRPC: function (route, { model, method, kwargs }) {
+                if (model === "partner" && method === "read_group") {
+                    assert.step(`${model}/${method}`);
+                }
+            },
+        });
+        assert.verifySteps([
+            "partner/read_group",
+            "partner/read_group",
+            "partner/read_group",
+            "partner/read_group",
+        ]);
+        assert.equal(getCellValue(model, "A1"), 131);
+    });
+
+
+    test("load data only once if filter is active (with a default value)", async function (assert) {
+        const spreadsheetData = {
+            sheets: [{
+                id: "sheet1",
+                cells: {
+                    A1: { content: `=PIVOT("1", "probability")` },
+                },
+            }],
+            pivots: {
+                1: {
+                    id: 1,
+                    colGroupBys: ["foo"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "avg" }],
+                    model: "partner",
+                    rowGroupBys: ["bar"],
+                    context: {},
+                },
+            },
+            globalFilters: [
+                {
+                    id: "filterId",
+                    type: "date",
+                    label: "my filter",
+                    defaultValue: { year: "this_year" },
+                    rangeType: "year",
+                    pivotFields: {
+                        1: { field: "date", type: "date" },
+                    },
+                    listFields: {},
+                    fields: {
+                        1: { field: "date", type: "date" },
+                    },
+                },
+            ],
+        };
+        const model = await createModelWithDataSource({
+            spreadsheetData,
+            mockRPC: function (route, { model, method, kwargs }) {
+                if (model === "partner" && method === "read_group") {
+                    assert.step(`${model}/${method}`);
+                }
+            },
+        });
+        assert.verifySteps([
+            "partner/read_group",
+        ]);
+        assert.equal(getCellValue(model, "A1"), "");
+    });
+
+    test("don't reload data if an empty filter is added", async function (assert) {
+        const spreadsheetData = {
+            sheets: [{
+                id: "sheet1",
+                cells: {
+                    A1: { content: `=PIVOT("1", "probability")` },
+                },
+            }],
+            pivots: {
+                1: {
+                    id: 1,
+                    colGroupBys: ["foo"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "avg" }],
+                    model: "partner",
+                    rowGroupBys: ["bar"],
+                    context: {},
+                },
+            },
+        };
+        const model = await createModelWithDataSource({
+            spreadsheetData,
+            mockRPC: function (route, { model, method, kwargs }) {
+                if (model === "partner" && method === "read_group") {
+                    assert.step(`${model}/${method}`);
+                }
+            },
+        });
+        assert.verifySteps([
+            "partner/read_group",
+            "partner/read_group",
+            "partner/read_group",
+            "partner/read_group",
+        ]);
+        model.dispatch("ADD_GLOBAL_FILTER", {
+          filter: {
+            id: "42",
+            type: "date",
+            rangeType: "month",
+            label: "This month",
+            pivotFields: {
+              1: { field: "date", type: "date" },
+            },
+            defaultValue: {}, // no default value!
+          },
+        });
+        assert.verifySteps([]);
+    })
 });

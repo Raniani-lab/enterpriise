@@ -15,6 +15,9 @@
                             groups="account.group_account_invoice"/>
                 </div>
             </xpath>
+            <xpath expr="//tree/field[@name='tax_id']" position="attributes">
+                <attribute name="attrs">{'column_invisible': [('parent.is_avatax', '=', True)]}</attribute>
+            </xpath>
             <group name="sales_person" position="inside">
                 <field name="avatax_unique_code"/>
             </group>

@@ -16,6 +16,9 @@
                         attrs="{'invisible':['|', '|', '|', ('state', '!=', 'draft'), ('is_move_sent', '=', True), ('move_type', 'not in', ('out_invoice', 'out_refund')), ('is_avatax', '=', False)]}"
                         groups="account.group_account_invoice"/>
             </xpath>
+            <xpath expr="//tree/field[@name='tax_ids']" position="attributes">
+                <attribute name="attrs">{'column_invisible': [('parent.is_avatax', '=', True)]}</attribute>
+            </xpath>
             <group name="accounting_info_group" position="inside">
                 <field name="avatax_unique_code" attrs="{'invisible': [('is_avatax', '=', False)]}"/>
             </group>

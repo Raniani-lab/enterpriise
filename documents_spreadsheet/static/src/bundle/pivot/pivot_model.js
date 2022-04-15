@@ -381,20 +381,6 @@ export class SpreadsheetPivotModel extends PivotModel {
     }
 
     /**
-     * Add the default group (month) to the given group by, if it's a date
-     */
-    _addDefaultDateGroup(groupBy) {
-        let [fieldName, group] = groupBy.split(":");
-        if (this._isDateField(fieldName)) {
-            if (!group) {
-                group = "month";
-            }
-            return `${fieldName}:${group}`;
-        }
-        return fieldName;
-    }
-
-    /**
      * @override
      */
     _getGroupValues(group, groupBys) {
@@ -407,7 +393,8 @@ export class SpreadsheetPivotModel extends PivotModel {
      * @override
      */
     _sanitizeValue(value, groupBy) {
-        const [fieldName, group] = groupBy.split(":");
+        let [fieldName, group] = groupBy.split(":");
+        group = group || "month";
         if (this._isDateField(fieldName)) {
             const fIn = formats[group]["in"];
             const fOut = formats[group]["out"];

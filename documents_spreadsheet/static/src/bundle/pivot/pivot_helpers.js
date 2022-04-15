@@ -26,7 +26,7 @@ export const PERIODS = {
  * @param {string} value
  */
 export function formatDate(field, value) {
-  const interval = field.split(":")[1];
+  const interval = field.split(":")[1] || "month";
   const output = formats[interval].display;
   const input = formats[interval].out;
   const date = moment(value, input);

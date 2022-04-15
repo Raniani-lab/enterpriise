@@ -111,6 +111,46 @@ test("pivot with two measures: total cells above measures totals are merged in o
     assert.strictEqual(merges[4], "J1:K1");
 });
 
+test("groupby date field without interval defaults to month", async (assert) => {
+    const { model } = await createSpreadsheetFromPivot({
+        serverData: {
+            models: getBasicData(),
+            views: {
+                "partner,false,pivot": /* xml */ `
+                    <pivot string="Partners">
+                        <field name="foo" type="col"/>
+                        <!-- no interval specified -->
+                        <field name="date" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                "partner,false,search": /* xml */ `<search/>`,
+            },
+        },
+    });
+    const pivot = model.getters.getPivotDefinition("1");
+    assert.deepEqual(pivot, {
+        colGroupBys: ["foo"],
+        context: {},
+        domain: [],
+        id: "1",
+        measures: ["probability"],
+        model: "partner",
+        rowGroupBys: ["date"],
+    });
+    assert.equal(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","date","04/2016")');
+    assert.equal(getCellFormula(model, "A4"), '=PIVOT.HEADER("1","date","10/2016")');
+    assert.equal(getCellFormula(model, "A5"), '=PIVOT.HEADER("1","date","12/2016")');
+    assert.equal(getCellFormula(model, "B3"), '=PIVOT("1","probability","date","04/2016","foo","1")');
+    assert.equal(getCellFormula(model, "B4"), '=PIVOT("1","probability","date","10/2016","foo","1")');
+    assert.equal(getCellFormula(model, "B5"), '=PIVOT("1","probability","date","12/2016","foo","1")');
+    assert.equal(getCellValue(model, "A3"), "April 2016");
+    assert.equal(getCellValue(model, "A4"), "October 2016");
+    assert.equal(getCellValue(model, "A5"), "December 2016");
+    assert.equal(getCellValue(model, "B3"), "");
+    assert.equal(getCellValue(model, "B4"), "11");
+    assert.equal(getCellValue(model, "B5"), "");
+});
+
 test("pivot with one level of group bys", async (assert) => {
     assert.expect(7);
     const { model } = await createSpreadsheetFromPivot();

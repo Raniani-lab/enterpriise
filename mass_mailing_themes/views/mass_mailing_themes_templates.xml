@@ -267,7 +267,7 @@
             </div>
         </div>
         <div class="s_hr o_mail_snippet_general pt0 pb0" data-snippet="s_hr" data-name="Separator">
-            <hr class="s_hr_1px s_hr_solid mx-auto"/>
+            <hr class="s_hr_1px s_hr_solid"/>
         </div>
         <div class="s_text_image o_mail_snippet_general" data-snippet="s_text_image" data-name="Text - Image">
             <div class="container">
@@ -285,7 +285,7 @@
             </div>
         </div>
         <div class="s_hr o_mail_snippet_general pt0 pb16" data-snippet="s_hr" data-name="Separator">
-            <hr class="s_hr_1px s_hr_solid mx-auto"/>
+            <hr class="s_hr_1px s_hr_solid"/>
         </div>
         <div class="s_media_list o_cc o_cc2 o_mail_snippet_general pb0 pt0 bg-white" data-vcss="001" data-snippet="s_media_list"  data-name="Media List">
             <div class="container">
@@ -308,7 +308,7 @@
                         <div class="row s_col_no_resize s_col_no_bgcolor no-gutters align-items-center o_cc o_cc1">
                             <div class="align-self-stretch s_media_list_img_wrapper col-lg-12">
                                 <div class="s_hr o_mail_snippet_general pt16 pb16" data-snippet="s_hr" data-name="Separator">
-                                    <hr class="s_hr_1px s_hr_solid mx-auto"/>
+                                    <hr class="s_hr_1px s_hr_solid"/>
                                 </div>
                             </div>
                         </div>
@@ -329,7 +329,7 @@
                         <div class="row s_col_no_resize s_col_no_bgcolor no-gutters align-items-center o_cc o_cc1">
                             <div class="align-self-stretch s_media_list_img_wrapper col-lg-12">
                                 <div class="s_hr o_mail_snippet_general pt16 pb16" data-snippet="s_hr" data-name="Separator">
-                                    <hr class="s_hr_1px s_hr_solid mx-auto"/>
+                                    <hr class="s_hr_1px s_hr_solid"/>
                                 </div>
                             </div>
                         </div>
@@ -350,7 +350,7 @@
             </div>
         </div>
         <div class="s_hr o_mail_snippet_general pt16 pb0" data-snippet="s_hr" data-name="Separator">
-            <hr class="s_hr_1px s_hr_solid mx-auto"/>
+            <hr class="s_hr_1px s_hr_solid"/>
         </div>
         <div class="s_footer_social o_mail_block_footer_social o_mail_footer_social_center o_mail_snippet_general" data-snippet="s_mail_block_footer_social" data-name="Footer Social Center">
             <div cellspacing="0" cellpadding="0" class="container o_mail_table_styles">
@@ -445,7 +445,7 @@
             <img src="/mass_mailing_themes/static/src/img/theme_vip/vip_banner_part1.png" alt="Cover" class="img-fluid w-100"/>
         </div>
         <div class="s_hr o_mail_snippet_general pt0 pb16" data-snippet="s_hr" data-name="Separator" style="background-color: rgb(36, 37, 48) !important;">
-            <hr class="s_hr_1px s_hr_solid w-100 mx-auto"/>
+            <hr class="s_hr_1px s_hr_solid"/>
         </div>
         <div class="s_title o_mail_snippet_general pb8 pt8" data-snippet="s_title" data-name="Title" style="background-color: rgb(36, 37, 48) !important;">
             <div class="container s_allow_columns" style="">
@@ -454,7 +454,7 @@
             </div>
         </div>
         <div class="s_hr o_mail_snippet_general pt16 pb0" data-snippet="s_hr" data-name="Separator" style="background-color: rgb(36, 37, 48) !important;">
-            <hr class="s_hr_1px s_hr_solid mx-auto"/>
+            <hr class="s_hr_1px s_hr_solid"/>
         </div>
         <div class="s_cover o_mail_snippet_general" data-snippet="s_cover" data-name="Cover" style="background-color: rgb(36, 37, 48) !important;">
             <img src="/mass_mailing_themes/static/src/img/theme_vip/vip_banner_part2.png" alt="Cover" class="img-fluid w-100"/>
@@ -965,7 +965,7 @@
             </p>
         </div>
         <div class="s_hr pt16 pb16" data-snippet="s_hr" data-name="Separator">
-            <hr class="s_hr_1px s_hr_solid mx-auto"/>
+            <hr class="s_hr_1px s_hr_solid"/>
         </div>
         <div class="s_features pb32 o_mail_snippet_general pt32" data-snippet="s_features" data-name="Features">
             <div class="container">

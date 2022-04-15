@@ -353,7 +353,7 @@
                                 <field name="code">FIBS_ASS_BII</field>
                                 <field name="level" eval="2"/>
                                 <field name="sequence" eval="1"/>
-                                <field name="formulas">FIBS_ASS_BII_1 + FIBS_ASS_BII_2 + FIBS_ASS_BIII + FIBS_ASS_BIV</field>
+                                <field name="formulas">FIBS_ASS_BII_1 + FIBS_ASS_BII_2</field>
                                 <field name="children_ids">
                                     <record id="account_financial_report_l10n_fi_bs_line_1_2_2_1" model="account.financial.html.report.line">
                                         <field name="name">1. Pitkäaikaiset</field>

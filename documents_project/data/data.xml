@@ -11,6 +11,8 @@
             <field name="excluded_tag_ids" eval="[(4, ref('documents.documents_internal_status_deprecated'))]"/>
             <field name="activity_type_id" ref="documents.mail_documents_activity_data_tv"/>
             <field name="create_model">project.task</field>
+            <field name="condition_type">domain</field>
+            <field name="domain" eval="[('res_model', '!=', 'project.task')]"/>
             <field name="domain_folder_id" ref="documents.documents_internal_folder"/>
         </record>
 

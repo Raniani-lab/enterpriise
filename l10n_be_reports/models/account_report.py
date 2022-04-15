@@ -23,7 +23,7 @@ class AccountReport(models.AbstractModel):
         if representative:
             vat_no, country_from_vat = self.env['account.generic.tax.report']._split_vat_number_and_country_code(representative.vat or "")
             country = self.env['res.country'].search([('code', '=', country_from_vat)], limit=1)
-            phone = representative.phone or representative.mobile
+            phone = representative.phone or representative.mobile or ''
             node_values = {
                 'vat': stdnum.get_cc_module('be', 'vat').compact(vat_no),   # Sanitize VAT number
                 'name': representative.name,

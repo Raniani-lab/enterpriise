@@ -163,7 +163,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
         addr = company.partner_id.address_get(['invoice'])
         if addr.get('invoice', False):
             ads = self.env['res.partner'].browse([addr['invoice']])[0]
-            phone = ads.phone and self._raw_phonenumber(ads.phone) or ''
+            phone = ads.phone and self._raw_phonenumber(ads.phone) or address.phone and self._raw_phonenumber(address.phone)
             email = ads.email or ''
             city = ads.city or ''
             zip = ads.zip or ''

@@ -33,13 +33,6 @@ export function formatDate(field, value) {
   return date.isValid() ? date.format(output) : _t("(Undefined)");
 }
 
-export function formatGroupBy(groupBy, fields) {
-  let [name, period] = groupBy.split(":");
-  period = PERIODS[period];
-  const fieldName = fields[name] ? fields[name].string : name;
-  return fieldName + (period ? ` (${period})` : "");
-}
-
 /**
  * Parse a spreadsheet formula and detect the number of PIVOT functions that are
  * present in the given formula.

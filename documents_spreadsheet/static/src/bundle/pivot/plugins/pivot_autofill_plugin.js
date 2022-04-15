@@ -6,7 +6,6 @@ import { formats } from "../../o_spreadsheet/constants";
 import {
     getFirstPivotFunction,
     getNumberOfPivotFormulas,
-    formatGroupBy,
 } from "../pivot_helpers";
 
 const { astToFormula } = spreadsheet;
@@ -18,7 +17,6 @@ const _t = core._t;
  * @property {Array<string>} rows
  *
  * @typedef TooltipFormula
- * @property {string} title
  * @property {string} value
  *
  * @typedef GroupByDate
@@ -530,7 +528,6 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 (definition.rowGroupBys.includes(field) && !isColumn)
             ) {
                 tooltips.push({
-                    title: formatGroupBy(field, model.getFields()),
                     value: model.getPivotHeaderValue(field, value),
                 });
             }
@@ -538,7 +535,6 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         if (definition.measures.length !== 1 && isColumn) {
             const measure = args[1];
             tooltips.push({
-                title: _t("Measure"),
                 value: model.getPivotHeaderValue("measure", measure),
             });
         }
@@ -559,14 +555,10 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         const values = this._parseArgs(args.slice(1));
         const model = this.getters.getSpreadsheetPivotModel(pivotId);
         if (Object.keys(values).length === 0) {
-            return [{ title: _t("Total"), value: _t("Total") }];
+            return [{ value: _t("Total") }];
         }
         for (let [field, value] of Object.entries(values)) {
             tooltips.push({
-                title:
-                    field === "measure"
-                        ? _t("Measure")
-                        : formatGroupBy(field, model.getFields()),
                 value: model.getPivotHeaderValue(field, value)
             });
         }

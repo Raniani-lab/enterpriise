@@ -13,18 +13,18 @@ class HrPlanWizard(models.TransientModel):
     def action_launch(self):
         res = super().action_launch()
 
-        employee = self.employee_id
-        for signature_request in self.plan_id.plan_activity_type_ids - self._get_activities_to_schedule():
-            employee_role = signature_request.employee_role_id
-            responsible = signature_request.get_responsible_id(employee)
+        for employee in self.employee_ids:
+            for signature_request in self.plan_id.plan_activity_type_ids - self._get_activities_to_schedule():
+                employee_role = signature_request.employee_role_id
+                responsible = signature_request.get_responsible_id(employee)['responsible']
 
-            self.env['hr.contract.sign.document.wizard'].create({
-                'contract_id': employee.contract_id.id,
-                'employee_ids': [(4, employee.id)],
-                'responsible_id': responsible.id,
-                'employee_role_id': employee_role and employee_role.id,
-                'sign_template_ids': [(4, signature_request.sign_template_id.id)],
-                'subject': _('Signature Request'),
-            }).validate_signature()
+                self.env['hr.contract.sign.document.wizard'].create({
+                    'contract_id': employee.contract_id.id,
+                    'employee_ids': [(4, employee.id)],
+                    'responsible_id': responsible.id,
+                    'employee_role_id': employee_role and employee_role.id,
+                    'sign_template_ids': [(4, signature_request.sign_template_id.id)],
+                    'subject': _('Signature Request'),
+                }).validate_signature()
 
         return res

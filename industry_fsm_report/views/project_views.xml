@@ -208,20 +208,6 @@
         </field>
     </record>
 
-    <record id="project_project_view_form_simplified_inherit" model="ir.ui.view">
-        <field name="name">project.project.view.form.simplified.inherit</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
-        <field name="priority">31</field>
-        <field name="arch" type="xml">
-            <field name="user_id" position="after">
-                <field name="allow_worksheets"/>
-                <field name="company_id" invisible="1"/>
-                <field name="worksheet_template_id" invisible="1"/>
-            </field>
-        </field>
-    </record>
-
     <!-- Project Task form view -->
     <record id="view_task_form2_inherit" model="ir.ui.view">
         <field name="name">task.form.inherit</field>

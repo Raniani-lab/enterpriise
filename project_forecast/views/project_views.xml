@@ -25,9 +25,19 @@
         <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
         <field name="priority">32</field>
         <field name="arch" type="xml">
-            <field name="user_id" position="after">
-                <field name="allow_forecast" groups="planning.group_planning_user"/>
-            </field>
+            <xpath expr="//div[hasclass('o_settings_container')]" position="inside">
+                <div class="col-lg-6 o_setting_box" groups="planning.group_planning_user">
+                    <div class="o_setting_left_pane">
+                        <field name="allow_forecast"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="allow_forecast"/>
+                        <div class="text-muted" id="allow_forecast_setting">
+                            Plan your resources on project tasks
+                        </div>
+                    </div>
+                </div>
+            </xpath>
         </field>
     </record>
 

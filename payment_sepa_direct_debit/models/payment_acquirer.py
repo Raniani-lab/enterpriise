@@ -148,7 +148,6 @@ class PaymentAcquirer(models.Model):
         :param str iban: The sanitized IBAN number of the partner's bank account
         :return: The partner bank
         :rtype: recordset of `res.partner.bank`
-        :raise: ValidationError if the IBAN is already registered for another partner bank
         """
         self.ensure_one()
 
@@ -159,20 +158,6 @@ class PaymentAcquirer(models.Model):
             ('partner_id', 'child_of', commercial_partner_id),
         ])
         if not partner_bank:
-            # As the bank account must be unique, we detect conflicting bank account numbers before
-            # that the unique constraint is raised, so that we can show a clear error to the user.
-            conflicting_bank = ResPartnerBank.search([
-                ('sanitized_acc_number', '=', iban),
-                '!', ('partner_id', 'child_of', commercial_partner_id)
-            ])
-            if conflicting_bank:
-                raise ValidationError(
-                    "SEPA: " + _(
-                        "The mandate could not be created. Please verify your IBAN and that you "
-                        "have not already created an account with this bank number. If that is the "
-                        "case, log in under that account."
-                    )
-                )
             partner_bank = ResPartnerBank.create({
                 'acc_number': iban,
                 'partner_id': partner_id,

@@ -42,7 +42,7 @@
                                 </thead>
                                 <tbody class="sale_tbody">
                                     <t t-foreach="doc.timesheet_ids" t-as="line">
-                                        <tr>
+                                        <tr t-att-style="'background-color: #F1F1F1;' if line_index % 2 == 0 else ''">
                                             <td>
                                                 <span t-field="line.date"/>
                                             </td>

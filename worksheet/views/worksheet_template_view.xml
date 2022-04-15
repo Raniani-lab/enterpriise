@@ -22,7 +22,7 @@
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <group>
                         <group>
-                            <field name="name"/>
+                            <field name="name" placeholder="e.g Device Installation"/>
                             <field name="active" invisible="1"/>
                             <field name="company_ids" widget="many2many_tags" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
                             <field name="color"  widget="color_picker"/>

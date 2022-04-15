@@ -31,4 +31,7 @@
     &:hover div[name="priority"] .fa-star-o {
         visibility: visible;
     }
+    .o_kanban_tags_section .o_field_many2manytags > span {
+        @include o-text-overflow;
+    }
 }

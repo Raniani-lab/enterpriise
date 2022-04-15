@@ -144,6 +144,7 @@
                 <field name="is_fsm" invisible="1"/>
                 <field name="allow_worksheets" invisible="1"/>
                 <field name="partner_id" attrs="{'required': [('is_fsm', '=', True)], 'invisible': [('is_fsm', '=', False)]}" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
+                <field name="project_id" attrs="{'invisible': [('is_fsm', '=', False)]}" domain="[('is_fsm', '=', True)]"/>
             </field>
         </field>
     </record>

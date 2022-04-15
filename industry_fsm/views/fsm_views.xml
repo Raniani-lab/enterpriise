@@ -40,9 +40,9 @@
                 <field name="user_ids" filter_domain="[('user_ids', 'ilike', self), ('user_ids.active', 'in', [True, False])]"/>
                 <field name="stage_id"/>
                 <field name="project_id"/>
+                <field name="ancestor_id" groups="project.group_subtask_project"/>
                 <field name="partner_id" operator="child_of"/>
                 <field name="active"/>
-                <field name="parent_id"/>
                 <filter string="My Tasks" name="my_tasks" domain="[('user_ids', 'in', uid)]"/>
                 <filter string="My Team's Tasks" name="my_team_tasks" domain="[('user_ids.employee_parent_id.user_id', '=', uid)]" />
                 <filter string="My Department's Tasks" name="my_department_tasks" domain="[('user_ids.employee_id.member_of_department', '=', True)]"/>
@@ -94,6 +94,7 @@
                     <filter string="Assignees" name="groupby_user" context="{'group_by':'user_ids'}"/>
                     <filter string="Stage" name="groupby_stage" context="{'group_by':'stage_id'}"/>
                     <filter string="Project" name="groupby_project" context="{'group_by':'project_id'}"/>
+                    <filter string="Ancestor Task" name="groupby_ancestor_task" context="{'group_by': 'ancestor_id'}" groups="project.group_subtask_project"/>
                     <filter string="Customer" name="groupby_customer" context="{'group_by': 'partner_id'}"/>
                     <filter string="Start Date" name="groupby_planned_date_begin" context="{'group_by': 'planned_date_begin:day'}"/>
                 </group>

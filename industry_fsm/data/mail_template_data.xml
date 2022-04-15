@@ -39,7 +39,7 @@
         <field name="body_html" type="html">
             <p>
                 Dear <t t-out="object.partner_id.name or 'Customer'">Customer</t>,<br/><br/>
-                Please find attached the worksheet of our onsite operation. <br/><br/>
+                Please find attached the worksheet for our onsite operation. <br/><br/>
                 Feel free to contact us if you have any questions.<br/><br/>
                 Best regards,<br/><br/>
             </p>

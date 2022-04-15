@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="task_custom_report" model="ir.actions.report">
-            <field name="name">Worksheet Report (PDF)</field>
+            <field name="name">Task Report</field>
             <field name="model">project.task</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">industry_fsm.worksheet_custom</field>

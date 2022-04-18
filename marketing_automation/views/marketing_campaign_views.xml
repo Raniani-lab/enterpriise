@@ -103,6 +103,7 @@
                                         options="{'no_create': '1', 'no_open': '1', 'domain_field': 'domain', 'model_field': 'model_id'}"
                                         placeholder="Reload a favorite filter" class="w-auto"/>
                                     <field name="mailing_filter_domain" invisible="1"/>
+                                    <field name="mailing_filter_count" invisible="1"/>
                                 </div>
                             </div>
                         </div>

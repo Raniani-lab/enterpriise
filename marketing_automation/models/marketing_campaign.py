@@ -38,9 +38,13 @@ class MarketingCampaign(models.Model):
                 For model 'Customers', select email field here if you don't
                 want to process records which have the same email address""")
     domain = fields.Char(string="Filter", compute='_compute_domain', readonly=False, store=True)
-    mailing_filter_id = fields.Many2one('mailing.filter', string='Favorite Filter',
-        domain="[('mailing_model_name', '=', model_name)]")
+    # Mailing Filter
+    mailing_filter_id = fields.Many2one(
+        'mailing.filter', string='Favorite Filter',
+        domain="[('mailing_model_name', '=', model_name)]",
+        compute='_compute_mailing_filter_id', readonly=False, store=True)
     mailing_filter_domain = fields.Char('Favorite filter domain', related='mailing_filter_id.mailing_domain')
+    mailing_filter_count = fields.Integer('# Favorite Filters', compute='_compute_mailing_filter_count')
     # activities
     marketing_activity_ids = fields.One2many('marketing.activity', 'campaign_id', string='Activities', copy=False)
     mass_mailing_count = fields.Integer('# Mailings', compute='_compute_mass_mailing_count')
@@ -84,6 +88,20 @@ class MarketingCampaign(models.Model):
                 campaign.require_sync = bool(activities_changed)
             else:
                 campaign.require_sync = False
+
+    @api.depends('model_id', 'domain')
+    def _compute_mailing_filter_count(self):
+        filter_data = self.env['mailing.filter']._read_group([
+            ('mailing_model_id', 'in', self.model_id.ids)
+        ], ['mailing_model_id'], ['mailing_model_id'])
+        mapped_data = {data['mailing_model_id'][0]: data['mailing_model_id_count'] for data in filter_data}
+        for campaign in self:
+            campaign.mailing_filter_count = mapped_data.get(campaign.model_id.id, 0)
+
+    @api.depends('model_name')
+    def _compute_mailing_filter_id(self):
+        for mailing in self:
+            mailing.mailing_filter_id = False
 
     @api.depends('marketing_activity_ids.mass_mailing_id')
     def _compute_mass_mailing_count(self):

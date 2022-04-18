@@ -882,7 +882,7 @@ class SignRequestItem(models.Model):
             SignItemValue = self.env['sign.request.item.value']
             sign_request = self.sign_request_id
             new_item_values_list = []
-            item_values_dict = {str(sign_item_value.id): sign_item_value for sign_item_value in self.sign_item_value_ids}
+            item_values_dict = {str(sign_item_value.sign_item_id.id): sign_item_value for sign_item_value in self.sign_item_value_ids}
             signature_item_ids = set(sign_request.template_id.sign_item_ids.filtered(lambda r: r.type_id.item_type == 'signature').ids)
             for itemId in signature:
                 if itemId not in item_values_dict:

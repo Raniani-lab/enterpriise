@@ -501,7 +501,7 @@ msgstr "Suscripción"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_subscription_order_line
 #, python-format
 msgid "Subscriptions"
-msgstr "Documentos periódicos"
+msgstr "Suscripciones"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__tag_ids

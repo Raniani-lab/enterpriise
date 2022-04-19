@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server 15.4alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:05+0000\n"
-"PO-Revision-Date: 2022-02-11 15:05+0000\n"
+"POT-Creation-Date: 2022-04-21 08:56+0000\n"
+"PO-Revision-Date: 2022-04-21 08:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,13 +19,6 @@ msgstr ""
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "%s Spent"
-msgstr ""
-
-#. module: timesheet_grid
-#. openerp-web
-#: code:addons/timesheet_grid/static/src/xml/task_gantt.xml:0
-#, python-format
-msgid "&nbsp;"
 msgstr ""
 
 #. module: timesheet_grid
@@ -511,8 +504,7 @@ msgstr ""
 
 #. module: timesheet_grid
 #. openerp-web
-#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_model.js:0
-#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_timer_grid_model.js:0
+#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_group_by_no_date_mixin.js:0
 #, python-format
 msgid "Grouping by date is not supported"
 msgstr ""
@@ -601,8 +593,8 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid ""
-"Launch the <b>timer</b> for this project by hitting the <b>[a] key</b>. You "
-"can easily switch from one project to another using those keys. <i>Tip: you "
+"Launch the <b>timer</b> for this project by pressing the <b>[a] key</b>. "
+"Easily switch from one project to another by using those keys. <i>Tip: you "
 "can also directly add 15 minutes to this project by hitting the <b>shift + "
 "[A] keys</b>.</i>"
 msgstr ""
@@ -672,6 +664,11 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Projects"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+msgid "My Tasks"
 msgstr ""
 
 #. module: timesheet_grid
@@ -878,13 +875,18 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid ""
-"Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> from the"
-" description to automatically log your entry.</i>"
+"Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> in the "
+"description to automatically log your activity.</i>"
 msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Stop timer"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+msgid "Suspicious Durations"
 msgstr ""
 
 #. module: timesheet_grid
@@ -948,6 +950,13 @@ msgstr ""
 msgid ""
 "There are no timesheet entries to reset to draft or they have already been "
 "invoiced."
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/task.py:0
+#, python-format
+msgid ""
+"This project isn't expected to have task during this period. Planned hours :"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1272,6 +1281,14 @@ msgstr ""
 
 #. module: timesheet_grid
 #. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/no_content_helpers.xml:0
+#: code:addons/timesheet_grid/static/src/xml/no_content_helpers.xml:0
+#, python-format
+msgid "noContentHelper"
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
@@ -1283,6 +1300,20 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press"
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timeheet_pivot.xml:0
+#, python-format
+msgid "timesheet_grid.ActionHelper"
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timeheet_pivot.xml:0
+#, python-format
+msgid "timesheet_grid.NoContentHelper"
 msgstr ""
 
 #. module: timesheet_grid

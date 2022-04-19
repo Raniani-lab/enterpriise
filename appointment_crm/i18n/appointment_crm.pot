@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:07+0000\n"
-"PO-Revision-Date: 2022-02-11 15:07+0000\n"
+"POT-Creation-Date: 2022-04-19 14:03+0000\n"
+"PO-Revision-Date: 2022-04-19 14:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: appointment_crm
-#: model:ir.model,name:appointment_crm.model_calendar_appointment_type
+#. openerp-web
+#: code:addons/appointment_crm/static/src/xml/calendar_appointment_scheduling.xml:0
+#, python-format
+msgid "!opportunity_name"
+msgstr ""
+
+#. module: appointment_crm
+#: model:ir.model,name:appointment_crm.model_appointment_type
 msgid "Appointment Type"
 msgstr ""
 
@@ -26,18 +33,42 @@ msgid "Calendar Event"
 msgstr ""
 
 #. module: appointment_crm
-#: model:ir.model.fields,field_description:appointment_crm.field_calendar_appointment_type__lead_create
+#. openerp-web
+#: code:addons/appointment_crm/static/src/xml/calendar_appointment_scheduling.xml:0
+#, python-format
+msgid "Click in your calendar to pick meeting time proposals for"
+msgstr ""
+
+#. module: appointment_crm
+#: model:ir.model.fields,field_description:appointment_crm.field_appointment_type__lead_create
 msgid "Create Opportunities"
 msgstr ""
 
 #. module: appointment_crm
-#: model:ir.model.fields,help:appointment_crm.field_calendar_appointment_type__lead_create
+#: model:ir.model.fields,help:appointment_crm.field_appointment_type__lead_create
 msgid ""
 "For each scheduled appointment, create a new opportunity and assign it to "
 "the responsible user."
 msgstr ""
 
 #. module: appointment_crm
+#: model:ir.model.fields,help:appointment_crm.field_appointment_type__opportunity_id
+msgid ""
+"Link an opportunity/lead to the appointment type created.\n"
+"Used when creating a custom appointment type from the Meeting action in the crm form view."
+msgstr ""
+
+#. module: appointment_crm
 #: model:crm.tag,name:appointment_crm.appointment_crm_tag
 msgid "Online Appointment"
+msgstr ""
+
+#. module: appointment_crm
+#: model:ir.model.fields,field_description:appointment_crm.field_calendar_event__opportunity_id
+msgid "Opportunity"
+msgstr ""
+
+#. module: appointment_crm
+#: model:ir.model.fields,field_description:appointment_crm.field_appointment_type__opportunity_id
+msgid "Opportunity/Lead"
 msgstr ""

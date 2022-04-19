@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:07+0000\n"
-"PO-Revision-Date: 2022-02-11 15:07+0000\n"
+"POT-Creation-Date: 2022-04-19 14:03+0000\n"
+"PO-Revision-Date: 2022-04-19 14:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,16 +17,16 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/legacy/xml/base.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
-msgid "(Enterprise Edition)"
+msgid "%s days"
 msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/burger_menu/mobile_switch_company_menu/mobile_switch_company_menu.xml:0
+#: code:addons/web_enterprise/static/src/legacy/xml/base.xml:0
 #, python-format
-msgid "(current)"
+msgid "(Enterprise Edition)"
 msgstr ""
 
 #. module: web_enterprise
@@ -38,23 +38,7 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
-#, python-format
-msgid ""
-"- Contact your sales representative to help you to unlink your previous "
-"database"
-msgstr ""
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
-#, python-format
-msgid "- Login to your Odoo.com dashboard then unlink your previous database:"
-msgstr ""
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "1 month"
 msgstr ""
@@ -139,23 +123,17 @@ msgid "Close"
 msgstr ""
 
 #. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/burger_menu/burger_menu.xml:0
-#: code:addons/web_enterprise/static/src/webclient/burger_menu/burger_menu.xml:0
-#, python-format
-msgid "Close menu"
-msgstr ""
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/burger_menu/mobile_switch_company_menu/mobile_switch_company_menu.xml:0
-#, python-format
-msgid "Companies"
-msgstr ""
-
-#. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_res_partner
 msgid "Contact"
+msgstr ""
+
+#. module: web_enterprise
+#. openerp-web
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#, python-format
+msgid ""
+"Contact your sales representative to help you to unlink your previous "
+"database"
 msgstr ""
 
 #. module: web_enterprise
@@ -236,9 +214,13 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/burger_menu/burger_menu.xml:0
-#: model:ir.model,name:web_enterprise.model_ir_ui_menu
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
+msgid "Login to your Odoo.com dashboard then unlink your previous database:"
+msgstr ""
+
+#. module: web_enterprise
+#: model:ir.model,name:web_enterprise.model_ir_ui_menu
 msgid "Menu"
 msgstr ""
 
@@ -409,6 +391,15 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
+#: code:addons/web_enterprise/static/src/webclient/home_menu/enterprise_subscription_service.js:0
+#, python-format
+msgid ""
+"Thank you, your registration was successful! Your database is valid until "
+"%s."
+msgstr ""
+
+#. module: web_enterprise
+#. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid ""
@@ -418,23 +409,23 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
-msgid "This database has expired."
+msgid "This database has expired. "
 msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
-msgid "This database will expire in"
+msgid "This database will expire in %s. "
 msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
-msgid "This demo database will expire in"
+msgid "This demo database will expire in %s. "
 msgstr ""
 
 #. module: web_enterprise
@@ -450,14 +441,6 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
 #, python-format
 msgid "Today"
-msgstr ""
-
-#. module: web_enterprise
-#. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/burger_menu/burger_menu.xml:0
-#: code:addons/web_enterprise/static/src/webclient/burger_menu/burger_menu.xml:0
-#, python-format
-msgid "Toggle menu"
 msgstr ""
 
 #. module: web_enterprise
@@ -542,9 +525,9 @@ msgstr ""
 
 #. module: web_enterprise
 #. openerp-web
-#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
+#: code:addons/web_enterprise/static/src/webclient/navbar/navbar.xml:0
 #, python-format
-msgid "days"
+msgid "nav"
 msgstr ""
 
 #. module: web_enterprise

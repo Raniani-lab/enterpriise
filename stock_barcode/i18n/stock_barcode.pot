@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:05+0000\n"
-"PO-Revision-Date: 2022-02-11 15:05+0000\n"
+"POT-Creation-Date: 2022-04-19 14:01+0000\n"
+"PO-Revision-Date: 2022-04-19 14:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -122,11 +122,6 @@ msgid "<i class=\"fa fa-print\"/> Print barcode demo sheet"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
-msgid "<span> / </span>"
-msgstr ""
-
-#. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #, python-format
@@ -173,7 +168,6 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/stock_barcode_menu.xml:0
 #: code:addons/stock_barcode/static/src/stock_barcode_menu.xml:0
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_action_main_menu
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__product_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap__product_barcode
 #: model:ir.ui.menu,name:stock_barcode.stock_barcode_menu
@@ -197,9 +191,6 @@ msgid "Barcode Picking Client Action"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot___barcode_scanned
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line___barcode_scanned
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_picking___barcode_scanned
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap___barcode_scanned
 msgid "Barcode Scanned"
 msgstr ""
@@ -222,7 +213,6 @@ msgstr ""
 #. openerp-web
 #: code:addons/stock_barcode/static/src/components/main.xml:0
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
-#: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 #, python-format
 msgid "Cancel"
 msgstr ""
@@ -241,6 +231,11 @@ msgstr ""
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Cancel this operation ?"
+msgstr ""
+
+#. module: stock_barcode
+#: model:ir.model.fields,help:stock_barcode.field_stock_move_line__is_completed
+msgid "Check if the quantity done matches the demand"
 msgstr ""
 
 #. module: stock_barcode
@@ -287,21 +282,12 @@ msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__create_uid
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__create_uid
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__create_date
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__create_date
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__create_date
 msgid "Created on"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__default_move_id
-msgid "Default Move"
 msgstr ""
 
 #. module: stock_barcode
@@ -314,11 +300,6 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__stock_barcode_demo_active
 msgid "Demo Data Active"
-msgstr ""
-
-#. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_barcode
-msgid "Description"
 msgstr ""
 
 #. module: stock_barcode
@@ -340,8 +321,6 @@ msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__display_name
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__display_name
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -389,8 +368,6 @@ msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__id
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__id
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__id
 msgid "ID"
 msgstr ""
 
@@ -432,28 +409,22 @@ msgid "Inventory adjustment was saved"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model,name:stock_barcode.model_stock_barcode_lot_line
-msgid "LN/SN Product Lines"
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__is_completed
+msgid "Is Completed"
 msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation____last_update
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot____last_update
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__write_uid
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__write_uid
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__write_date
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__write_date
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -475,24 +446,8 @@ msgid "Location Processed"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__lot_name
-msgid "Lot"
-msgstr ""
-
-#. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_lot
 msgid "Lot/Serial"
-msgstr ""
-
-#. module: stock_barcode
-#: code:addons/stock_barcode/models/stock_picking.py:0
-#, python-format
-msgid "Lot/Serial Number Details"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__move_line_id
-msgid "Move Line"
 msgstr ""
 
 #. module: stock_barcode
@@ -595,7 +550,6 @@ msgstr ""
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__picking_id
 msgid "Picking"
 msgstr ""
 
@@ -661,7 +615,6 @@ msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_product_product
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__product_id
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Product"
@@ -701,30 +654,13 @@ msgid "Put In Pack"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__qty_done
-msgid "Qty Done"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__qty_reserved
-msgid "Qty Reserved"
-msgstr ""
-
-#. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Quantity"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_done
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
-#: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 msgid "Quantity Done"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_reserved
-msgid "Quantity Reserved"
 msgstr ""
 
 #. module: stock_barcode
@@ -867,16 +803,6 @@ msgid "Source Package"
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__stock_barcode_lot_id
-msgid "Stock Barcode Lot"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__stock_barcode_lot_line_ids
-msgid "Stock Barcode Lot Line"
-msgstr ""
-
-#. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_package_type
 msgid "Stock package type"
 msgstr ""
@@ -889,26 +815,11 @@ msgid "Tap to scan"
 msgstr ""
 
 #. module: stock_barcode
-#: code:addons/stock_barcode/models/stock_picking.py:0
-#, python-format
-msgid ""
-"The barcode \"%(barcode)s\" doesn't correspond to a proper product, package "
-"or location."
-msgstr ""
-
-#. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "The inventory adjustment has been validated"
-msgstr ""
-
-#. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/legacy/forms/picking_barcode_handler.js:0
-#, python-format
-msgid "The picking is %s and cannot be edited"
 msgstr ""
 
 #. module: stock_barcode
@@ -1029,14 +940,6 @@ msgid "Validate"
 msgstr ""
 
 #. module: stock_barcode
-#: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
-msgid "Validate Lot"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.model.fields,help:stock_barcode.field_stock_barcode_lot___barcode_scanned
-#: model:ir.model.fields,help:stock_barcode.field_stock_move_line___barcode_scanned
-#: model:ir.model.fields,help:stock_barcode.field_stock_picking___barcode_scanned
 #: model:ir.model.fields,help:stock_barcode.field_stock_scrap___barcode_scanned
 msgid "Value of the last barcode scanned."
 msgstr ""
@@ -1051,23 +954,12 @@ msgid ""
 msgstr ""
 
 #. module: stock_barcode
-#: model:ir.model,name:stock_barcode.model_stock_barcode_lot
-msgid "Wizard to scan SN/LN for specific product"
-msgstr ""
-
-#. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Wrong Unit of Measure"
-msgstr ""
-
-#. module: stock_barcode
-#: code:addons/stock_barcode/models/stock_picking.py:0
-#, python-format
-msgid "Wrong barcode"
 msgstr ""
 
 #. module: stock_barcode
@@ -1091,13 +983,6 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You can't apply a package type. First, scan product or select a line"
-msgstr ""
-
-#. module: stock_barcode
-#: code:addons/stock_barcode/wizard/stock_barcode_lot.py:0
-#: code:addons/stock_barcode/wizard/stock_barcode_lot.py:0
-#, python-format
-msgid "You cannot scan two times the same serial number"
 msgstr ""
 
 #. module: stock_barcode

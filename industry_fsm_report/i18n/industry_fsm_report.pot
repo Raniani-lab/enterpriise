@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.1+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-07 10:57+0000\n"
-"PO-Revision-Date: 2021-12-07 10:57+0000\n"
+"POT-Creation-Date: 2022-04-19 14:02+0000\n"
+"PO-Revision-Date: 2022-04-19 14:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr ""
 
 #. module: industry_fsm_report
 #: model:ir.ui.menu,name:industry_fsm_report.project_task_menu_planning_by_project_fsm
-msgid "By Worksheet"
+msgid "By Worksheet Template"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -60,11 +60,6 @@ msgid "Create reports to be signed off by your customers"
 msgstr ""
 
 #. module: industry_fsm_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_sharing_project_task_inherit_view_form
-msgid "Customer Preview"
-msgstr ""
-
-#. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.fsm_worksheets_action_settings
 msgid "Customize worksheet templates for each type of intervention.<br>"
 msgstr ""
@@ -81,6 +76,11 @@ msgid "Dropdown menu"
 msgstr ""
 
 #. module: industry_fsm_report
+#: model:ir.model,name:industry_fsm_report.model_report_project_task_user_fsm
+msgid "FSM Tasks Analysis"
+msgstr ""
+
+#. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
 msgid "No tasks found. Let's create one!"
 msgstr ""
@@ -92,7 +92,7 @@ msgstr ""
 
 #. module: industry_fsm_report
 #: model:ir.actions.act_window,name:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
-msgid "Planning by Worksheet"
+msgid "Planning by Worksheet Template"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -126,14 +126,8 @@ msgid "Task Worksheet Custom Report"
 msgstr ""
 
 #. module: industry_fsm_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_sharing_project_task_inherit_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
 msgid "Worksheet"
-msgstr ""
-
-#. module: industry_fsm_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_sharing_project_task_inherit_view_form
-msgid "Worksheet Completed"
 msgstr ""
 
 #. module: industry_fsm_report
@@ -149,9 +143,12 @@ msgstr ""
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_worksheet_template
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_template_id
+#: model:ir.model.fields,field_description:industry_fsm_report.field_report_project_task_user_fsm__worksheet_template_id
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_project_form_inherit_industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_map_view_inherit_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_view_search_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_project_task_user_fsm_view_search
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_project_project_filter_inherit_industry_fsm_report
 msgid "Worksheet Template"
 msgstr ""
 

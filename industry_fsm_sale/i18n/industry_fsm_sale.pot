@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:06+0000\n"
-"PO-Revision-Date: 2022-02-11 15:06+0000\n"
+"POT-Creation-Date: 2022-04-19 14:02+0000\n"
+"PO-Revision-Date: 2022-04-19 14:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -42,6 +42,15 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit_sale_timesheet
+msgid ""
+"<span class=\"fa fa-exclamation-triangle text-warning oe_edit_only\" "
+"title=\"By saving this change, the customer phone number will also be "
+"updated.\" attrs=\"{'invisible': ['|', ('partner_id', '=', False), "
+"('is_task_phone_update', '=', False)]}\"/>"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
@@ -54,14 +63,14 @@ msgid "Added Products"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: code:addons/industry_fsm_sale/wizard/sale_make_invoice_advance.py:0
-#, python-format
-msgid "An %sinvoice%s has been created."
+#: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
+msgid "An FSM project must be billed at task rate or employee rate."
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
-msgid "An FSM project must be billed at task rate or employee rate."
+#: code:addons/industry_fsm_sale/wizard/sale_make_invoice_advance.py:0
+#, python-format
+msgid "An invoice has been created: %s"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -178,6 +187,11 @@ msgid "FSM Product Quantity"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model,name:industry_fsm_sale.model_report_project_task_user_fsm
+msgid "FSM Tasks Analysis"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Favorites"
 msgstr ""
@@ -186,6 +200,11 @@ msgstr ""
 #: model:product.product,name:industry_fsm_sale.field_service_product
 #: model:product.template,name:industry_fsm_sale.field_service_product_product_template
 msgid "Field Service"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__invoiced
+msgid "Fully Invoiced"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -211,7 +230,13 @@ msgid "Invoice"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_invoice_count
+msgid "Invoice Count"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__invoice_status
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_report_project_task_user_fsm__invoice_status
 msgid "Invoice Status"
 msgstr ""
 
@@ -232,6 +257,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_form_quotation
 #, python-format
 msgid "Invoices"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__is_task_phone_update
+msgid "Is Task Phone Update"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -276,6 +306,21 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.project_task_action_to_invoice_fsm
 msgid "No tasks found. Let's create one!"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__no
+msgid "Nothing to Invoice"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__invoice_count
+msgid "Number of invoices"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_quotation_count
+msgid "Portal Quotation Count"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -361,6 +406,11 @@ msgid "Related Task"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_report_project_task_user_fsm__remaining_hours_so
+msgid "Remaining Hours on SO"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_advance_payment_inv
 msgid "Sales Advance Payment Invoice"
 msgstr ""
@@ -372,6 +422,7 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__sale_line_id
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_report_project_task_user_fsm__sale_line_id
 msgid "Sales Order Item"
 msgstr ""
 
@@ -431,6 +482,12 @@ msgid "Task from which quotation have been created"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.report_project_task_user_fsm_view_search_inherit_sale
+msgid "Tasks in Overtime"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_material_imply_billable
 msgid "The material can be allowed only when the task can be billed."
 msgstr ""
@@ -451,9 +508,11 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.actions.act_window,name:industry_fsm_sale.project_task_action_to_invoice_fsm
+#: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__to_invoice
 #: model:ir.ui.menu,name:industry_fsm_sale.fsm_menu_all_tasks_invoice
 #: model:project.task.type,name:industry_fsm_sale.field_service_project_stage_0
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.report_project_task_user_fsm_view_search_inherit_sale
 msgid "To Invoice"
 msgstr ""
 
@@ -470,6 +529,11 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__price_unit
 msgid "Unit Price"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__upselling
+msgid "Upselling Opportunity"
 msgstr ""
 
 #. module: industry_fsm_sale

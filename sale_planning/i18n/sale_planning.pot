@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.1+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-07 10:57+0000\n"
-"PO-Revision-Date: 2021-12-07 10:57+0000\n"
+"POT-Creation-Date: 2022-04-19 14:02+0000\n"
+"PO-Revision-Date: 2022-04-19 14:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,12 @@ msgstr ""
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__allocated_hours
-msgid "Allocated Hours"
+msgid "Allocated Time"
+msgstr ""
+
+#. module: sale_planning
+#: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
+msgid "Billable"
 msgstr ""
 
 #. module: sale_planning
@@ -68,13 +73,18 @@ msgid ""
 msgstr ""
 
 #. module: sale_planning
-#: model_terms:ir.actions.act_window,help:sale_planning.sale_planning_action_schedule_by_sale_order
-msgid "Let's start your planning by adding a new shift."
+#: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
+msgid "My Sales Orders"
 msgstr ""
 
 #. module: sale_planning
 #: model_terms:ir.actions.act_window,help:sale_planning.sale_planning_action_schedule_by_sale_order
 msgid "No shifts found. Let's create one!"
+msgstr ""
+
+#. module: sale_planning
+#: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
+msgid "Non Billable"
 msgstr ""
 
 #. module: sale_planning
@@ -86,6 +96,8 @@ msgstr ""
 
 #. module: sale_planning
 #. openerp-web
+#: code:addons/sale_planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/sale_planning/static/src/xml/planning_calendar.xml:0
 #: code:addons/sale_planning/static/src/xml/planning_gantt.xml:0
 #: code:addons/sale_planning/static/src/xml/planning_gantt.xml:0
 #, python-format
@@ -184,6 +196,18 @@ msgid "Schedule by Sales Order"
 msgstr ""
 
 #. module: sale_planning
+#: model_terms:ir.actions.act_window,help:sale_planning.sale_planning_action_schedule_by_sale_order
+msgid ""
+"Schedule your human and material resources across roles, projects and sales "
+"orders."
+msgstr ""
+
+#. module: sale_planning
+#: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
+msgid "Service"
+msgstr ""
+
+#. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_role__product_ids
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__role_product_ids
 msgid "Services"
@@ -202,14 +226,14 @@ msgstr ""
 
 #. module: sale_planning
 #. openerp-web
-#: code:addons/sale_planning/static/src/js/backend/planning_gantt_controller.js:0
+#: code:addons/sale_planning/static/src/js/backend/sale_planning_mixin.js:0
 #, python-format
 msgid "The sales orders have successfully been assigned."
 msgstr ""
 
 #. module: sale_planning
 #. openerp-web
-#: code:addons/sale_planning/static/src/js/backend/planning_gantt_controller.js:0
+#: code:addons/sale_planning/static/src/js/backend/sale_planning_mixin.js:0
 #, python-format
 msgid "There are no sales orders to assign or no employees are available."
 msgstr ""

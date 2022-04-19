@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 11:00+0000\n"
-"PO-Revision-Date: 2021-09-14 11:00+0000\n"
+"POT-Creation-Date: 2022-04-19 14:02+0000\n"
+"PO-Revision-Date: 2022-04-19 14:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,13 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: helpdesk_fsm
-#: model:project.task,legend_blocked:helpdesk_fsm.helpdesk_fsm_task_1
-#: model:project.task,legend_blocked:helpdesk_fsm.helpdesk_fsm_task_2
-msgid "Blocked"
+#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__company_id
+msgid "Company"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__company_id
-msgid "Company"
+#: model:ir.model,name:helpdesk_fsm.model_helpdesk_ticket_convert_wizard
+msgid "Convert Helpdesk Tickets to Tasks"
 msgstr ""
 
 #. module: helpdesk_fsm
@@ -38,6 +37,7 @@ msgstr ""
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
 msgid "Create Task"
 msgstr ""
 
@@ -74,6 +74,11 @@ msgid "Display Name"
 msgstr ""
 
 #. module: helpdesk_fsm
+#: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__display_helpdesk_ticket_button
+msgid "Display Ticket"
+msgstr ""
+
+#. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__fsm_project_id
 msgid "FSM Project"
 msgstr ""
@@ -104,12 +109,6 @@ msgid "ID"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model:project.task,legend_normal:helpdesk_fsm.helpdesk_fsm_task_1
-#: model:project.task,legend_normal:helpdesk_fsm.helpdesk_fsm_task_2
-msgid "In Progress"
-msgstr ""
-
-#. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task____last_update
 msgid "Last Modified on"
 msgstr ""
@@ -125,11 +124,6 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
-msgid "Plan Intervention"
-msgstr ""
-
-#. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
 msgid "Project"
@@ -138,12 +132,6 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
 msgid "Project in which to create the task"
-msgstr ""
-
-#. module: helpdesk_fsm
-#: model:project.task,legend_done:helpdesk_fsm.helpdesk_fsm_task_1
-#: model:project.task,legend_done:helpdesk_fsm.helpdesk_fsm_task_2
-msgid "Ready"
 msgstr ""
 
 #. module: helpdesk_fsm
@@ -165,13 +153,14 @@ msgid "Task Done"
 msgstr ""
 
 #. module: helpdesk_fsm
+#: code:addons/helpdesk_fsm/models/helpdesk.py:0
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__fsm_task_ids
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
+#, python-format
 msgid "Tasks"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: code:addons/helpdesk_fsm/models/helpdesk.py:0
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0
 #, python-format
 msgid "Tasks from Tickets"
@@ -201,11 +190,6 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_create_fsm_task__partner_id
 msgid "Ticket's customer, will be linked to the task"
-msgstr ""
-
-#. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_sharing_inherit_project_task_view_form
-msgid "Tickets"
 msgstr ""
 
 #. module: helpdesk_fsm

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:05+0000\n"
-"PO-Revision-Date: 2022-02-11 15:05+0000\n"
+"POT-Creation-Date: 2022-04-19 14:01+0000\n"
+"PO-Revision-Date: 2022-04-19 14:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,6 +41,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
+msgid "<b>Congratulations!</b>, You are now a master of planning."
+msgstr ""
+
+#. module: planning
+#. openerp-web
+#: code:addons/planning/static/src/js/tours/planning.js:0
+#, python-format
 msgid ""
 "<b>Drag & drop</b> your shift to reschedule it. <i>Tip: hit CTRL (or Cmd) to"
 " duplicate it instead.</i> <b>Adjust the size</b> of the shift to modify its"
@@ -51,8 +58,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
-msgid ""
-"<b>Publish & send</b> your planning to make it available to your employees."
+msgid "<b>Publish & send</b> your employee's planning."
 msgstr ""
 
 #. module: planning
@@ -250,7 +256,7 @@ msgstr ""
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_gantt
-msgid "<strong>Allocated Hours — </strong>"
+msgid "<strong>Allocated Time — </strong>"
 msgstr ""
 
 #. module: planning
@@ -297,14 +303,22 @@ msgid ""
 msgstr ""
 
 #. module: planning
-#: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_hours
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 #: model_terms:ir.ui.view,arch_db:planning.resource_planning
 msgid "Allocated Hours"
 msgstr ""
 
 #. module: planning
+#: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_hours
+msgid "Allocated Time"
+msgstr ""
+
+#. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_percentage
+msgid "Allocated Time %"
+msgstr ""
+
+#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.resource_planning
 msgid "Allocated Time (%)"
 msgstr ""
@@ -333,6 +347,13 @@ msgstr ""
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "An shift must be in the same company as its recurrency."
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
+msgid ""
+"Analyze the allocation of your resources across roles, projects, and sales "
+"orders, and estimate future needs."
 msgstr ""
 
 #. module: planning
@@ -518,7 +539,9 @@ msgstr ""
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
-msgid "Define the different roles filled by your employees."
+msgid ""
+"Define the roles that your employees perform so you can assign the right "
+"people to the right shifts."
 msgstr ""
 
 #. module: planning
@@ -562,6 +585,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_tag__display_name
 #: model:ir.model.fields,field_description:planning.field_slot_planning_select_send__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.actions.act_window,help:planning.planning_action_resources
+msgid "Distribute your material resources across projects and sales orders."
 msgstr ""
 
 #. module: planning
@@ -624,11 +652,6 @@ msgid ""
 msgstr ""
 
 #. module: planning
-#: model_terms:ir.actions.act_window,help:planning.planning_action_shift_template
-msgid "Encode your shifts in one click by using templates."
-msgstr ""
-
-#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.resource_planning
 msgid "End"
 msgstr ""
@@ -659,6 +682,13 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_send__note
 msgid "Extra Message"
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.actions.act_window,help:planning.planning_action_my_calendar
+msgid ""
+"Find here your planning. Assign yourself open shifts that match your roles, "
+"or indicate your unavailability."
 msgstr ""
 
 #. module: planning
@@ -694,16 +724,12 @@ msgid "Generate shifts"
 msgstr ""
 
 #. module: planning
-#: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
-msgid "Get statistics on the allocation of your employees across roles."
-msgstr ""
-
-#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.brand_promotion
 msgid "Give depth to your"
 msgstr ""
 
 #. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Group By"
@@ -720,6 +746,12 @@ msgid "Human"
 msgstr ""
 
 #. module: planning
+#: model:ir.model.fields,field_description:planning.field_planning_role__employee_ids
+#: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
+msgid "Human Resources"
+msgstr ""
+
+#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "I Am Unavailable"
@@ -727,7 +759,6 @@ msgstr ""
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
-#: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "I Take It"
 msgstr ""
 
@@ -891,9 +922,8 @@ msgid "Let's start managing your employees' schedule!"
 msgstr ""
 
 #. module: planning
-#: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_resource
-#: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_role
-msgid "Let's start your planning by adding a new shift."
+#: model_terms:ir.actions.act_window,help:planning.planning_action_shift_template
+msgid "Make encoding shifts easy with templates."
 msgstr ""
 
 #. module: planning
@@ -908,11 +938,18 @@ msgid "Material"
 msgstr ""
 
 #. module: planning
+#: model:ir.actions.act_window,name:planning.planning_action_resources
+#: model:ir.ui.menu,name:planning.planning_menu_settings_resource
+msgid "Material Resources"
+msgstr ""
+
+#. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__publication_warning
 msgid "Modified Since Last Publication"
 msgstr ""
 
 #. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Department"
 msgstr ""
@@ -925,11 +962,19 @@ msgid "My Planning"
 msgstr ""
 
 #. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
+#: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
+#: model_terms:ir.ui.view,arch_db:planning.planning_view_search
+msgid "My Roles"
+msgstr ""
+
+#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Shifts"
 msgstr ""
 
 #. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Team"
 msgstr ""
@@ -943,6 +988,11 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
 msgid "No data yet!"
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.actions.act_window,help:planning.planning_action_resources
+msgid "No material resources found. Let's create one!"
 msgstr ""
 
 #. module: planning
@@ -993,11 +1043,6 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Open Shifts Available"
-msgstr ""
-
-#. module: planning
-#: model_terms:ir.ui.view,arch_db:planning.planning_view_search
-msgid "Open Shifts for my Roles"
 msgstr ""
 
 #. module: planning
@@ -1228,11 +1273,8 @@ msgid "Resource"
 msgstr ""
 
 #. module: planning
-#: model:ir.actions.act_window,name:planning.planning_action_resources
 #: model:ir.model,name:planning.model_resource_resource
-#: model:ir.model.fields,field_description:planning.field_planning_role__employee_ids
 #: model:ir.model.fields,field_description:planning.field_planning_send__employee_ids
-#: model:ir.ui.menu,name:planning.planning_menu_settings_resource
 msgid "Resources"
 msgstr ""
 
@@ -1284,6 +1326,14 @@ msgstr ""
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_role
 msgid "Schedule by Role"
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_resource
+#: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_role
+msgid ""
+"Schedule your human and material resources across roles, projects and sales "
+"orders."
 msgstr ""
 
 #. module: planning
@@ -1384,13 +1434,6 @@ msgid "Shifts"
 msgstr ""
 
 #. module: planning
-#: model_terms:ir.actions.act_window,help:planning.planning_action_my_calendar
-msgid ""
-"Shifts are periods allocated to your resources for a specific role. "
-"Together, they constitute your resources' planning."
-msgstr ""
-
-#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Shifts from"
 msgstr ""
@@ -1438,12 +1481,8 @@ msgstr ""
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__start_time
-msgid "Start Hour"
-msgstr ""
-
-#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
-msgid "Start Time"
+msgid "Start Hour"
 msgstr ""
 
 #. module: planning
@@ -1648,6 +1687,11 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "To Resend"
+msgstr ""
+
+#. module: planning
+#: model_terms:ir.ui.view,arch_db:planning.planning_view_search
+msgid "Today"
 msgstr ""
 
 #. module: planning

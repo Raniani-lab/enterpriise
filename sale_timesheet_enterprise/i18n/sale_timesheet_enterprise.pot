@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:07+0000\n"
-"PO-Revision-Date: 2022-02-11 15:07+0000\n"
+"POT-Creation-Date: 2022-04-19 14:02+0000\n"
+"PO-Revision-Date: 2022-04-19 14:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -51,8 +51,23 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
+#: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_progress
+msgid "Display progress of current task."
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
+msgid "Effective Hours"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_account_analytic_line__has_so_access
 msgid "Has So Access"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
+msgid "Hours Spent"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
@@ -73,8 +88,40 @@ msgid "Month"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
-#: model:ir.model,name:sale_timesheet_enterprise.model_project_project
-msgid "Project"
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_effective_hours
+msgid "Portal Effective Hours"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_progress
+msgid "Portal Progress"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_remaining_hours
+msgid "Portal Remaining Hours"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
+msgid "Portal Subtask Effective Hours"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
+msgid "Portal Total Hours Spent"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
+msgid "Progress"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
+msgid "Remaining Hours"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
@@ -89,6 +136,11 @@ msgid "Sales Order Line"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
+msgid "Sub-tasks Hours Spent"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_project_task
 msgid "Task"
 msgstr ""
@@ -99,6 +151,21 @@ msgstr ""
 msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
+msgid "Time spent on the sub-tasks (and their own sub-tasks) of this task."
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_effective_hours
+msgid "Time spent on this task, excluding its sub-tasks."
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
+msgid "Time spent on this task, including its sub-tasks."
 msgstr ""
 
 #. module: sale_timesheet_enterprise
@@ -117,6 +184,18 @@ msgid "Timesheets taken into account when invoicing your time"
 msgstr ""
 
 #. module: sale_timesheet_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
+msgid "Total Hours"
+msgstr ""
+
+#. module: sale_timesheet_enterprise
+#: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_remaining_hours
+msgid ""
+"Total remaining time, can be re-estimated periodically by the assignee of "
+"the task."
+msgstr ""
+
+#. module: sale_timesheet_enterprise
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__approved
 msgid "Validated timesheets only"
 msgstr ""
@@ -131,13 +210,4 @@ msgstr ""
 msgid ""
 "With the 'all recorded timesheets' option, all timesheets will be invoiced without distinction, even if they haven't been validated. Additionally, all timesheets will be accessible in your customers' portal. \n"
 "When you choose the 'validated timesheets only' option, only the validated timesheets will be invoiced and appear in your customers' portal."
-msgstr ""
-
-#. module: sale_timesheet_enterprise
-#. openerp-web
-#: code:addons/sale_timesheet_enterprise/static/src/xml/project_enterprise.xml:0
-#: code:addons/sale_timesheet_enterprise/static/src/xml/project_enterprise.xml:0
-#: code:addons/sale_timesheet_enterprise/static/src/xml/project_enterprise.xml:0
-#, python-format
-msgid "_onClickSection"
 msgstr ""

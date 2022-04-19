@@ -4,23 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.1+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-07 10:56+0000\n"
-"PO-Revision-Date: 2021-12-07 10:56+0000\n"
+"POT-Creation-Date: 2022-04-19 14:01+0000\n"
+"PO-Revision-Date: 2022-04-19 14:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: project_timesheet_forecast
-#. openerp-web
-#: code:addons/project_timesheet_forecast/static/src/xml/forecast_gantt.xml:0
-#, python-format
-msgid "&nbsp;"
-msgstr ""
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_forecast_view_form_inherit_project_timesheet_forecast
@@ -47,6 +40,11 @@ msgstr ""
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__allow_timesheets
 msgid "Allow timesheets"
+msgstr ""
+
+#. module: project_timesheet_forecast
+#: model:ir.model,name:project_timesheet_forecast.model_account_analytic_line
+msgid "Analytic Line"
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -98,6 +96,11 @@ msgid "Encode Uom In Days"
 msgstr ""
 
 #. module: project_timesheet_forecast
+#: model:ir.actions.server,name:project_timesheet_forecast.planning_slot_generate_timesheet_action
+msgid "Generate Timesheets"
+msgstr ""
+
+#. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Group By"
 msgstr ""
@@ -108,8 +111,18 @@ msgid "ID"
 msgstr ""
 
 #. module: project_timesheet_forecast
+#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__is_published
+msgid "Is Published"
+msgstr ""
+
+#. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis____last_update
 msgid "Last Modified on"
+msgstr ""
+
+#. module: project_timesheet_forecast
+#: model:ir.model,name:project_timesheet_forecast.model_ir_ui_menu
+msgid "Menu"
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -125,6 +138,11 @@ msgstr ""
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "My Team"
+msgstr ""
+
+#. module: project_timesheet_forecast
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_forecast_view_search_inherit_project_timesheet_forecast
+msgid "No Timesheets"
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -156,6 +174,7 @@ msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_planning_slot
+#: model:ir.model.fields,field_description:project_timesheet_forecast.field_account_analytic_line__slot_id
 msgid "Planning Shift"
 msgstr ""
 
@@ -183,8 +202,8 @@ msgstr ""
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_action_schedule_by_role
 msgid ""
-"Shifts are periods allocated to your employees for a specific role. "
-"Together, they constitute your employees' planning."
+"Schedule your human and material resources across roles, projects and sales "
+"orders."
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -206,6 +225,26 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__task_id
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Task"
+msgstr ""
+
+#. module: project_timesheet_forecast
+#: code:addons/project_timesheet_forecast/models/project_forecast.py:0
+#, python-format
+msgid "The timesheet entries have successfully been generated."
+msgstr ""
+
+#. module: project_timesheet_forecast
+#: code:addons/project_timesheet_forecast/models/project_forecast.py:0
+#: code:addons/project_timesheet_forecast/models/project_forecast.py:0
+#, python-format
+msgid "There are no timesheets to generate or you don't have the right."
+msgstr ""
+
+#. module: project_timesheet_forecast
+#: code:addons/project_timesheet_forecast/models/project_forecast.py:0
+#, python-format
+msgid ""
+"This project isn't expected to have slot during this period. Planned hours :"
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -259,4 +298,10 @@ msgstr ""
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__line_type
 msgid "Type"
+msgstr ""
+
+#. module: project_timesheet_forecast
+#: code:addons/project_timesheet_forecast/models/project_forecast.py:0
+#, python-format
+msgid "You do not have the right to create timesheets."
 msgstr ""

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:05+0000\n"
-"PO-Revision-Date: 2022-02-11 15:05+0000\n"
+"POT-Creation-Date: 2022-04-19 14:01+0000\n"
+"PO-Revision-Date: 2022-04-19 14:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,15 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
 msgid "# of Cases"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"A hardware error occured while trying to access audio recording device. "
+"Please make sure your drivers are up to date and try again."
 msgstr ""
 
 #. module: voip
@@ -56,6 +65,15 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_always_transfer
 msgid "Always Redirect to Handset"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"An error occured involving the audio recording device "
+"(%(errorName)s):</br>%(errorMessage)s"
 msgstr ""
 
 #. module: voip
@@ -127,7 +145,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
-msgid "Call rejected (reason: \"%s\")"
+msgid "Call rejected (reason: \"%(reasonPhrase)s\")"
 msgstr ""
 
 #. module: voip
@@ -160,13 +178,6 @@ msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:0
-#, python-format
-msgid "Cancel failed: %s"
-msgstr ""
-
-#. module: voip
-#. openerp-web
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
@@ -177,6 +188,17 @@ msgstr ""
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__cancel
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__cancel
 msgid "Cancelled"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"Cannot access audio recording device. If you have denied access to your "
+"microphone, please grant it and try again. Otherwise, make sure this website"
+" runs over HTTPS and that your browser is not set to deny access to media "
+"devices."
 msgstr ""
 
 #. module: voip
@@ -246,13 +268,6 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Customer"
-msgstr ""
-
-#. module: voip
-#. openerp-web
-#: code:addons/voip/static/src/js/dialing_panel.js:0
-#, python-format
-msgid "Customer unavailable. Please try later."
 msgstr ""
 
 #. module: voip
@@ -338,6 +353,16 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Enter the number..."
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"Failed to start the user agent. The URL of the websocket server may be "
+"wrong. Please have an administrator verify the websocket server URL in the "
+"General Settings."
 msgstr ""
 
 #. module: voip
@@ -588,6 +613,15 @@ msgid "NEXT ACTIVITIES"
 msgstr ""
 
 #. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"No audio recording device available. The application requires a microphone "
+"in order to be used."
+msgstr ""
+
+#. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__pending
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__pending
 msgid "Not Held"
@@ -674,16 +708,18 @@ msgstr ""
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:0
+#: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
-msgid "Please Allow the use of the microphone"
+msgid "Please accept the use of the microphone."
 msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:0
-#: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
-msgid "Please accept the use of the microphone."
+msgid ""
+"Please try again later. If the problem persists, you may want to ask an "
+"administrator to check the configuration."
 msgstr ""
 
 #. module: voip
@@ -879,8 +915,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
-msgid ""
-"The call was rejected as access rights to the microphone were not given"
+msgid "The connection cannot be made.</br> Please check your configuration."
 msgstr ""
 
 #. module: voip
@@ -888,8 +923,19 @@ msgstr ""
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
-"The connection cannot be made.</br> Please check your configuration.</br> "
-"(Reason received: %s)"
+"The error may come from the transport layer. Please have an administrator "
+"verify the websocket server URL in the General Settings. If the problem "
+"persists, this is probably an issue with the server."
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"The number is incorrect, the user credentials could be wrong or the "
+"connection cannot be made. Please check your configuration.</br> (Reason "
+"received: %(reasonPhrase)s)"
 msgstr ""
 
 #. module: voip
@@ -911,7 +957,9 @@ msgstr ""
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
-"The server configuration could be wrong. Please check your configuration."
+"The server failed to authenticate you. Please have an administrator verify "
+"that you are reaching the right server (PBX server IP in the General "
+"Settings) and that the credentials in your user preferences are correct."
 msgstr ""
 
 #. module: voip
@@ -926,15 +974,9 @@ msgstr ""
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
-msgid "The websocket uri could be wrong. Please check your configuration."
-msgstr ""
-
-#. module: voip
-#. openerp-web
-#: code:addons/voip/static/src/js/user_agent.js:0
-#, python-format
 msgid ""
-"There was an error with your registration: Please check your configuration."
+"The websocket connection with the server has been lost. Please try to "
+"refresh the page."
 msgstr ""
 
 #. module: voip

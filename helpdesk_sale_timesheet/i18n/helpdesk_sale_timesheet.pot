@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 11:00+0000\n"
-"PO-Revision-Date: 2021-09-14 11:00+0000\n"
+"POT-Creation-Date: 2022-04-19 14:02+0000\n"
+"PO-Revision-Date: 2022-04-19 14:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,16 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_account_analytic_line
 msgid "Analytic Line"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket_convert_wizard
+msgid "Convert Helpdesk Tickets to Tasks"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.model,name:helpdesk_sale_timesheet.model_project_task_convert_wizard
+msgid "Convert Project Tasks to Tickets"
 msgstr ""
 
 #. module: helpdesk_sale_timesheet

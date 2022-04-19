@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:59+0000\n"
-"PO-Revision-Date: 2021-09-14 10:59+0000\n"
+"POT-Creation-Date: 2022-04-19 14:01+0000\n"
+"PO-Revision-Date: 2022-04-19 14:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -43,6 +43,11 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: hr_payroll_holidays
+#: model:ir.actions.server,name:hr_payroll_holidays.ir_actions_server_report_to_next_month
+msgid "Defer to Next Month"
+msgstr ""
+
+#. module: hr_payroll_holidays
 #: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.res_config_settings_view_form
 msgid "Deferred Time Off"
 msgstr ""
@@ -59,8 +64,25 @@ msgid "Leave to Defer"
 msgstr ""
 
 #. module: hr_payroll_holidays
+#: model:ir.actions.server,name:hr_payroll_holidays.ir_actions_server_mark_as_reported
+msgid "Mark as defered"
+msgstr ""
+
+#. module: hr_payroll_holidays
 #: model_terms:ir.actions.act_window,help:hr_payroll_holidays.hr_leave_work_entry_action
 msgid "Meet the time off dashboard."
+msgstr ""
+
+#. module: hr_payroll_holidays
+#: code:addons/hr_payroll_holidays/models/hr_leave.py:0
+#, python-format
+msgid "No attendance work entry found to report the time off %s"
+msgstr ""
+
+#. module: hr_payroll_holidays
+#: code:addons/hr_payroll_holidays/models/hr_leave.py:0
+#, python-format
+msgid "Only an employee time off to defer can be reported to next month"
 msgstr ""
 
 #. module: hr_payroll_holidays
@@ -76,9 +98,7 @@ msgstr ""
 #. module: hr_payroll_holidays
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
-msgid ""
-"Please create manually the work entry for <a href=\"#\" data-oe-model=\"%s\""
-" data-oe-id=\"%s\">%s</a>"
+msgid "Please create manually the work entry for %s"
 msgstr ""
 
 #. module: hr_payroll_holidays
@@ -87,8 +107,21 @@ msgid "Postpone time off after payslip validation"
 msgstr ""
 
 #. module: hr_payroll_holidays
+#: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.hr_leave_view_form_inherit
+msgid "Report to Next Month"
+msgstr ""
+
+#. module: hr_payroll_holidays
 #: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.res_config_settings_view_form
 msgid "Responsible"
+msgstr ""
+
+#. module: hr_payroll_holidays
+#: code:addons/hr_payroll_holidays/models/hr_leave.py:0
+#, python-format
+msgid ""
+"The next month work entries are not generated yet or are validated already "
+"for time off %s"
 msgstr ""
 
 #. module: hr_payroll_holidays
@@ -113,6 +146,18 @@ msgstr ""
 #: model:ir.model,name:hr_payroll_holidays.model_hr_leave
 #: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.res_config_settings_view_form
 msgid "Time Off"
+msgstr ""
+
+#. module: hr_payroll_holidays
+#: code:addons/hr_payroll_holidays/models/hr_payslip.py:0
+#, python-format
+msgid "Time Off To Defer"
+msgstr ""
+
+#. module: hr_payroll_holidays
+#: code:addons/hr_payroll_holidays/models/hr_payslip.py:0
+#, python-format
+msgid "Time Off Without Joined Document"
 msgstr ""
 
 #. module: hr_payroll_holidays

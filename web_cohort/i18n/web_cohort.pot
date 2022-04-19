@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 11:01+0000\n"
-"PO-Revision-Date: 2021-09-14 11:01+0000\n"
+"POT-Creation-Date: 2022-04-19 14:03+0000\n"
+"PO-Revision-Date: 2022-04-19 14:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_renderer.xml:0
+#: code:addons/web_cohort/static/src/cohort_renderer.xml:0
 #: code:addons/web_cohort/static/src/legacy/xml/web_cohort.xml:0
 #, python-format
 msgid "- By"
@@ -36,9 +36,14 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/controllers/main.py:0
-#: code:addons/web_cohort/static/src/cohort_view/cohort_renderer.xml:0
+#: code:addons/web_cohort/static/src/cohort_renderer.xml:0
 #: code:addons/web_cohort/static/src/legacy/xml/web_cohort.xml:0
+#, python-format
+msgid "Average"
+msgstr ""
+
+#. module: web_cohort
+#: code:addons/web_cohort/controllers/main.py:0
 #, python-format
 msgid "Average Value"
 msgstr ""
@@ -65,7 +70,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_arch_parser.js:0
+#: code:addons/web_cohort/static/src/cohort_arch_parser.js:0
 #: code:addons/web_cohort/static/src/legacy/js/cohort_view.js:0
 #, python-format
 msgid "Cohort view has not defined \"date_start\" attribute."
@@ -73,7 +78,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_arch_parser.js:0
+#: code:addons/web_cohort/static/src/cohort_arch_parser.js:0
 #: code:addons/web_cohort/static/src/legacy/js/cohort_view.js:0
 #, python-format
 msgid "Cohort view has not defined \"date_stop\" attribute."
@@ -90,7 +95,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_model.js:0
+#: code:addons/web_cohort/static/src/cohort_model.js:0
 #: code:addons/web_cohort/static/src/legacy/js/cohort_view.js:0
 #, python-format
 msgid "Day"
@@ -98,7 +103,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_view.xml:0
+#: code:addons/web_cohort/static/src/cohort_view.xml:0
 #, python-format
 msgid "Download as Excel file"
 msgstr ""
@@ -112,7 +117,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_view.xml:0
+#: code:addons/web_cohort/static/src/cohort_view.xml:0
 #, python-format
 msgid "Main actions"
 msgstr ""
@@ -126,7 +131,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_model.js:0
+#: code:addons/web_cohort/static/src/cohort_model.js:0
 #: code:addons/web_cohort/static/src/legacy/js/cohort_view.js:0
 #, python-format
 msgid "Month"
@@ -134,7 +139,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_renderer.xml:0
+#: code:addons/web_cohort/static/src/cohort_renderer.xml:0
 #: code:addons/web_cohort/static/src/legacy/xml/web_cohort.xml:0
 #: code:addons/web_cohort/static/src/legacy/xml/web_cohort.xml:0
 #, python-format
@@ -161,7 +166,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_model.js:0
+#: code:addons/web_cohort/static/src/cohort_model.js:0
 #: code:addons/web_cohort/static/src/legacy/js/cohort_view.js:0
 #, python-format
 msgid "Week"
@@ -169,7 +174,7 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/cohort_view/cohort_model.js:0
+#: code:addons/web_cohort/static/src/cohort_model.js:0
 #: code:addons/web_cohort/static/src/legacy/js/cohort_view.js:0
 #, python-format
 msgid "Year"

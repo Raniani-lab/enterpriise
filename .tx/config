@@ -37,6 +37,11 @@ file_filter = account_avatax/i18n/<lang>.po
 source_file = account_avatax/i18n/account_avatax.pot
 source_lang = en
 
+[odoo-master.account_avatax_sale]
+file_filter = account_avatax_sale/i18n/<lang>.po
+source_file = account_avatax_sale/i18n/account_avatax_sale.pot
+source_lang = en
+
 [odoo-master.account_bank_statement_import]
 file_filter = account_bank_statement_import/i18n/<lang>.po
 source_file = account_bank_statement_import/i18n/account_bank_statement_import.pot
@@ -285,11 +290,6 @@ source_lang = en
 [odoo-master.documents_hr_recruitment]
 file_filter = documents_hr_recruitment/i18n/<lang>.po
 source_file = documents_hr_recruitment/i18n/documents_hr_recruitment.pot
-source_lang = en
-
-[odoo-master.documents_l10n_be_hr_payroll]
-file_filter = documents_l10n_be_hr_payroll/i18n/<lang>.po
-source_file = documents_l10n_be_hr_payroll/i18n/documents_l10n_be_hr_payroll.pot
 source_lang = en
 
 [odoo-master.documents_product]
@@ -1035,11 +1035,6 @@ source_lang = en
 [odoo-master.website_helpdesk_slides]
 file_filter = website_helpdesk_slides/i18n/<lang>.po
 source_file = website_helpdesk_slides/i18n/website_helpdesk_slides.pot
-source_lang = en
-
-[odoo-master.website_sale_account_avatax]
-file_filter = website_sale_account_avatax/i18n/<lang>.po
-source_file = website_sale_account_avatax/i18n/website_sale_account_avatax.pot
 source_lang = en
 
 [odoo-master.website_sale_dashboard]

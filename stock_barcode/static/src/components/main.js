@@ -2,6 +2,7 @@
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
+import config from 'web.config';
 import core from 'web.core';
 import GroupedLineComponent from '@stock_barcode/components/grouped_line';
 import LineComponent from '@stock_barcode/components/line';
@@ -47,6 +48,7 @@ class MainComponent extends LegacyComponent {
         const model = this._getModel(this.props);
         useSubEnv({model});
         this._scrollBehavior = 'smooth';
+        this.isMobile = config.device.isMobile;
 
         onWillStart(async () => {
             const barcodeData = await this.rpc(
@@ -212,7 +214,8 @@ class MainComponent extends LegacyComponent {
             const header = document.querySelector('.o_barcode_header');
             const lineRect = selectedLine.getBoundingClientRect();
             const navbar = document.querySelector('.o_main_navbar');
-            const page = document.querySelector('.o_barcode_lines');
+            // On mobile, overflow is on the html.
+            const page = document.querySelector(this.isMobile ? 'html' : '.o_barcode_lines');
             // Computes the real header's height (the navbar is present if the page was refreshed).
             const headerHeight = navbar ? navbar.offsetHeight + header.offsetHeight : header.offsetHeight;
             let scrollCoordY = false;
@@ -221,6 +224,10 @@ class MainComponent extends LegacyComponent {
             } else if (lineRect.bottom > window.innerHeight - footer.offsetHeight) {
                 const pageRect = page.getBoundingClientRect();
                 scrollCoordY = page.scrollTop - (pageRect.bottom - lineRect.bottom);
+                if (this.isMobile) {
+                    // The footer can hide the line on mobile, we increase the scroll coord to avoid that.
+                    scrollCoordY += footer.offsetHeight;
+                }
             }
             if (scrollCoordY !== false) { // Scrolls to the line only if it's not entirely visible.
                 page.scroll({ left: 0, top: scrollCoordY, behavior: this._scrollBehavior });

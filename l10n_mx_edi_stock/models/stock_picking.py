@@ -137,6 +137,12 @@ class Picking(models.Model):
     # -------------------------------------------------------------------------
     # XML
     # -------------------------------------------------------------------------
+    def _l10n_mx_edi_get_cadena_xslt(self):
+        return CFDI_XSLT_CADENA
+
+    def _l10n_mx_edi_dg_render(self, values):
+        return self.env['ir.qweb']._render('l10n_mx_edi_stock.cfdi_cartaporte', values)
+
     def _l10n_mx_edi_create_delivery_guide(self):
         def format_float(val, digits=2):
             return '%.*f' % (digits, val)
@@ -167,10 +173,10 @@ class Picking(models.Model):
                 'format_float': format_float,
                 'weight_uom': self.env['product.template']._get_weight_uom_id_from_ir_config_parameter(),
             }
-            xml = self.env['ir.qweb']._render('l10n_mx_edi_stock.cfdi_cartaporte', values)
+            xml = self._l10n_mx_edi_dg_render(values)
             certificate = record.company_id.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
             if certificate:
-                xml = certificate._certify_and_stamp(xml, CFDI_XSLT_CADENA)
+                xml = certificate._certify_and_stamp(xml, self._l10n_mx_edi_get_cadena_xslt())
             return xml
 
     def _l10n_mx_edi_validate_with_xsd(self, xml_str, raise_error=False):
@@ -235,7 +241,7 @@ class Picking(models.Model):
             'bank_account': cfdi_node.get('NumCtaPago'),
             'sello': cfdi_node.get('sello', cfdi_node.get('Sello', 'No identificado')),
             'sello_sat': tfd_node is not None and tfd_node.get('selloSAT', tfd_node.get('SelloSAT', 'No identificado')),
-            'cadena': self.env['l10n_mx_edi.certificate']._get_cadena_chain(cfdi_node, CFDI_XSLT_CADENA),
+            'cadena': self.env['l10n_mx_edi.certificate']._get_cadena_chain(cfdi_node, self._l10n_mx_edi_get_cadena_xslt()),
             'certificate_number': cfdi_node.get('noCertificado', cfdi_node.get('NoCertificado')),
             'certificate_sat_number': tfd_node is not None and tfd_node.get('NoCertificadoSAT'),
             'expedition': cfdi_node.get('LugarExpedicion'),

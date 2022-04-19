@@ -1591,6 +1591,9 @@ QUnit.module("Views", (hooks) => {
      */
     QUnit.test("Content of the marker popup with one field", async function (assert) {
         assert.expect(5);
+        serverData.views = {
+            "project.task,false,form": "<form/>",
+        };
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         const map = await makeView({
             config: { views: [[false, "form"]] },
@@ -1639,6 +1642,9 @@ QUnit.module("Views", (hooks) => {
      */
     QUnit.test("Content of the marker with no field", async function (assert) {
         assert.expect(2);
+        serverData.views = {
+            "project.task,false,form": "<form/>",
+        };
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         await makeView({
             config: { views: [[false, "form"]] },
@@ -2170,6 +2176,9 @@ QUnit.module("Views", (hooks) => {
             },
             { force: true }
         );
+        serverData.views = {
+            "project.task,false,form": "<form/>",
+        };
 
         await makeView({
             config: { views: [[false, "form"]] },

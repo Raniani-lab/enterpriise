@@ -5460,7 +5460,7 @@ QUnit.module('ViewEditorManager', {
             <form>
                 <sheet>
                     <field name='display_name'/>
-                    <field name='product_ids'/>
+                    <field name='product_ids' widget="one2many"/>
                 </sheet>
             </form>`;
         serverData.views["coucou,false,search"] = `<search></search>`;
@@ -5611,7 +5611,7 @@ QUnit.module('ViewEditorManager', {
             <form>
                 <sheet>
                     <field name='display_name'/>
-                    <field name='product_ids' context="{'tree_view_ref': 'module.tree_view_ref'}" />
+                    <field name='product_ids' widget="one2many" context="{'tree_view_ref': 'module.tree_view_ref'}" />
                 </sheet>
             </form>`;
 

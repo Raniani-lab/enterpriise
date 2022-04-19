@@ -471,7 +471,13 @@ QUnit.module("Views", (hooks) => {
             arch:
                 '<cohort string="Leads" date_start="start" date_stop="stop" interval="week" mode="churn" />',
             mockRPC: function (route, args) {
-                assert.strictEqual(args.kwargs.mode, "churn", "churn mode should be sent via RPC");
+                if (args.method === "get_cohort_data") {
+                    assert.strictEqual(
+                        args.kwargs.mode,
+                        "churn",
+                        "churn mode should be sent via RPC"
+                    );
+                }
             },
         });
 
@@ -498,11 +504,13 @@ QUnit.module("Views", (hooks) => {
             arch:
                 '<cohort string="Attendees" date_start="event_begin_date" date_stop="registration_date" interval="day" timeline="backward" mode="churn"/>',
             mockRPC: function (route, args) {
-                assert.strictEqual(
-                    args.kwargs.timeline,
-                    "backward",
-                    "backward timeline should be sent via RPC"
-                );
+                if (args.method === "get_cohort_data") {
+                    assert.strictEqual(
+                        args.kwargs.timeline,
+                        "backward",
+                        "backward timeline should be sent via RPC"
+                    );
+                }
             },
         });
         const columnsTh = target.querySelectorAll(".table thead tr:nth-child(2) th");

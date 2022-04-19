@@ -72,13 +72,14 @@ const { EventBus } = owl;
    * @param {string} model Technical name
    * @returns {Promise<string>} Display name of the model
    */
-  async modelDisplayName(model) {
-      if (!(model in this._modelNameGet)) {
-          const result = await this.orm.searchRead("ir.model", [["model", "=", model]], ["name"]);
-          this._modelNameGet[model] = (result && result[0] && result[0].name) || "";
-      }
-      return this._modelNameGet[model];
-  }
+    async modelDisplayName(model) {
+        if (!(model in this._modelNameGet)) {
+            this._modelNameGet[model] = this.orm
+                .searchRead("ir.model", [["model", "=", model]], ["name"])
+                .then((result) => (result && result[0] && result[0].name) || "");
+        }
+        return this._modelNameGet[model];
+    }
 
   /**
    * Get the list of fields for the given model
@@ -88,7 +89,7 @@ const { EventBus } = owl;
    */
   async fieldsGet(model) {
       if (!(model in this._fieldsGet)) {
-          this._fieldsGet[model] = await this.orm.call(model, "fields_get");
+          this._fieldsGet[model] = this.orm.call(model, "fields_get");
       }
       return this._fieldsGet[model];
   }

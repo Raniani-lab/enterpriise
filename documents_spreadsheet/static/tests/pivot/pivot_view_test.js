@@ -417,6 +417,52 @@ test("user related context is not saved in the spreadsheet", async function (ass
     );
 });
 
+test("fetch metadata only once per model", async function (assert) {
+    const spreadsheetData = {
+        sheets: [{
+            id: "sheet1",
+            cells: {
+                A1: { content: `=PIVOT("1", "probability")` },
+                A2: { content: `=PIVOT("2", "probability")` },
+            },
+        }],
+        pivots: {
+            1: {
+                id: 1,
+                colGroupBys: ["foo"],
+                domain: [],
+                measures: [{ field: "probability", operator: "avg" }],
+                model: "partner",
+                rowGroupBys: ["bar"],
+                context: {},
+            },
+            2: {
+                id: 2,
+                colGroupBys: ["bar"],
+                domain: [],
+                measures: [{ field: "probability", operator: "max" }],
+                model: "partner",
+                rowGroupBys: ["foo"],
+                context: {},
+            },
+        },
+    };
+    await createModelWithDataSource({
+        spreadsheetData,
+        mockRPC: function (route, { model, method, kwargs }) {
+            if (model === "partner" && method === "fields_get") {
+                assert.step(`${model}/${method}`);
+            } else if (model === "ir.model" && method === "search_read") {
+                assert.step(`${model}/${method}`);
+            }
+        },
+    });
+    assert.verifySteps([
+        "partner/fields_get",
+        "ir.model/search_read",
+    ]);
+});
+
 test("don't fetch pivot data if no formula use it", async function (assert) {
     const spreadsheetData = {
         sheets: [{

@@ -634,7 +634,9 @@ p.o_account_reports_contact_info {
     background-color: white;
 }
 
-.o_account_reports_filter_currency {
+[class*='o_account_reports_filter'] {
+    // TODO A more general fix might be warranted. The solution provided here
+    // still entails some minor glitches.
     > .dropdown-menu {
         overflow-y: auto;
         max-height: calc(100vh - #{$o-navbar-height} - 100px);  // 100px for the control panel

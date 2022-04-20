@@ -76,8 +76,6 @@
     const MIN_CF_ICON_MARGIN = 4;
     const MIN_CELL_TEXT_MARGIN = 4;
     const CF_ICON_EDGE_LENGTH = 15;
-    const LINK_TOOLTIP_HEIGHT = 43;
-    const LINK_TOOLTIP_WIDTH = 220;
     // Menus
     const MENU_WIDTH = 200;
     const MENU_ITEM_HEIGHT = 24;
@@ -13747,10 +13745,6 @@
     });
 
     const CfTerms = {
-        CfTitle: _lt("Format rules"),
-        IsRule: _lt("Format cells if..."),
-        FormattingStyle: _lt("Formatting style"),
-        PreviewText: _lt("Preview text"),
         Errors: {
             [20 /* InvalidRange */]: _lt("The range is invalid"),
             [34 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
@@ -13772,32 +13766,8 @@
             [19 /* EmptyRange */]: _lt("A range needs to be defined"),
             Unexpected: _lt("The rule is invalid for an unknown reason"),
         },
-        SingleColor: _lt("Single color"),
         ColorScale: _lt("Color scale"),
         IconSet: _lt("Icon set"),
-        NewRule: _lt("Add another rule"),
-        ReorderRules: _lt("Reorder rules"),
-        ExitReorderMode: _lt("Stop reordering rules"),
-        FixedNumber: _lt("Number"),
-        Percentage: _lt("Percentage"),
-        Percentile: _lt("Percentile"),
-        Formula: _lt("Formula"),
-        ApplyToRange: _lt("Apply to range"),
-    };
-    const ColorScale = {
-        CellValues: _lt("Cell values"),
-        None: _lt("None"),
-        Preview: _lt("Preview"),
-        Minpoint: _lt("Minpoint"),
-        MaxPoint: _lt("Maxpoint"),
-        MidPoint: _lt("Midpoint"),
-    };
-    const IconSetRule = {
-        WhenValueIs: _lt("When value is"),
-        Else: _lt("Else"),
-        ReverseIcons: _lt("Reverse icons"),
-        Icons: _lt("Icons"),
-        Type: _lt("Type"),
     };
     const CellIsOperators = {
         IsEmpty: _lt("Is empty"),
@@ -13816,68 +13786,13 @@
         NotBetween: _lt("Is not between"),
     };
     const ChartTerms = {
-        ChartType: _lt("Chart type"),
-        Line: _lt("Line"),
-        Bar: _lt("Bar"),
-        Pie: _lt("Pie"),
-        StackedBar: _lt("Stacked barchart"),
-        Title: _lt("Title"),
         Series: _lt("Series"),
-        DataSeries: _lt("Data Series"),
-        MyDataHasTitle: _lt("Data series include title"),
-        DataCategories: _lt("Categories / Labels"),
-        UpdateChart: _lt("Update chart"),
-        CreateChart: _lt("Create chart"),
-        TitlePlaceholder: _lt("New Chart"),
-        BackgroundColor: _lt("Background color"),
-        SelectColor: _lt("Select a color..."),
-        VerticalAxisPosition: _lt("Vertical axis position"),
-        LegendPosition: _lt("Legend position"),
-        Left: _lt("Left"),
-        Right: _lt("Right"),
-        None: _lt("None"),
-        Top: _lt("Top"),
-        Bottom: _lt("Bottom"),
-        Center: _lt("Center"),
-        Linear: _lt("Linear"),
-        Exponential: _lt("Exponential"),
-        Logarithmic: _lt("Logarithmic"),
         Errors: {
             [25 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
             [26 /* InvalidDataSet */]: _lt("The dataset is invalid"),
             [27 /* InvalidLabelRange */]: _lt("Labels are invalid"),
             Unexpected: _lt("The chart definition is invalid for an unknown reason"),
         },
-    };
-    const FindAndReplaceTerms = {
-        Search: _lt("Search"),
-        Replace: _lt("Replace"),
-        Next: _lt("Next"),
-        Previous: _lt("Previous"),
-        MatchCase: _lt("Match case"),
-        ExactMatch: _lt("Match entire cell content"),
-        SearchFormulas: _lt("Search in formulas"),
-        ReplaceAll: _lt("Replace all"),
-        ReplaceFormulas: _lt("Also modify formulas"),
-    };
-    const LinkEditorTerms = {
-        Text: _lt("Text"),
-        Link: _lt("Link"),
-        Edit: _lt("Edit link"),
-        Remove: _lt("Remove link"),
-    };
-    const TopBarTerms = {
-        ReadonlyAccess: _lt("Readonly Access"),
-        PaintFormat: _lt("Paint Format"),
-        ClearFormat: _lt("Clear Format"),
-        FormatPercent: _lt("Format as percent"),
-        DecreaseDecimal: _lt("Decrease decimal places"),
-        IncreaseDecimal: _lt("Increase decimal places"),
-        MoreFormat: _lt("More formats"),
-        FontSize: _lt("Font Size"),
-        Borders: _lt("Borders"),
-        MergeCells: _lt("Merge Cells"),
-        HorizontalAlign: _lt("Horizontal align"),
     };
     const NumberFormatTerms = {
         General: _lt("General"),
@@ -13892,31 +13807,8 @@
         Duration: _lt("Duration"),
         CustomCurrency: _lt("Custom currency"),
     };
-    const GenericTerms = {
-        Undo: _lt("Undo"),
-        Redo: _lt("Redo"),
-        Bold: _lt("Bold"),
-        Italic: _lt("Italic"),
-        Strikethrough: _lt("Strikethrough"),
-        Underline: _lt("Underline"),
-        FillColor: _lt("Fill Color"),
-        TextColor: _lt("Text Color"),
-        Cancel: _lt("Cancel"),
-        Save: _lt("Save"),
-        Confirm: _lt("Confirm"),
-        Value: _lt("Value"),
-        AndValue: _lt("and value"),
-    };
-    const GenericWords = {
-        And: _lt("and"),
-    };
     const CustomCurrencyTerms = {
-        Currency: _lt("Currency"),
         Custom: _lt("Custom"),
-        Symbol: _lt("Symbol"),
-        Code: _lt("Code"),
-        Format: _lt("Format"),
-        Apply: _lt("Apply"),
     };
 
     const topbarMenuRegistry = new MenuItemRegistry();
@@ -14475,170 +14367,9 @@
             }
         }
     }
-    ColorPicker.template = owl.xml /* xml */ `
-  <div class="o-color-picker"
-    t-att-class="props.dropdownDirection || 'right'"
-    t-on-click="onColorClick">
-    <div class="o-color-picker-line" t-foreach="COLORS" t-as="colors" t-key="colors">
-      <t t-foreach="colors" t-as="color" t-key="color">
-        <div class="o-color-picker-line-item" t-att-data-color="color" t-attf-style="background-color:{{color}};"></div>
-      </t>
-    </div>
-  </div>`;
-
-    // -----------------------------------------------------------------------------
-    // -----------------------------------------------------------------------------
-    const UNDO_ICON = `<svg class="o-icon"><path fill="#000000" d="M11.5656391,4.43436088 L9,7 L16,7 L16,0 L13.0418424,2.95815758 C11.5936787,1.73635959 9.72260775,1 7.67955083,1 C4.22126258,1 1.25575599,3.10984908 0,6 L2,7 C2.93658775,4.60974406 5.12943697,3.08011229 7.67955083,3 C9.14881247,3.0528747 10.4994783,3.57862053 11.5656391,4.43436088 Z" transform="matrix(-1 0 0 1 17 5)"/></svg>`;
-    const REDO_ICON = `<svg class="o-icon"><path fill="#000000" d="M11.5656391,4.43436088 L9,7 L16,7 L16,0 L13.0418424,2.95815758 C11.5936787,1.73635959 9.72260775,1 7.67955083,1 C4.22126258,1 1.25575599,3.10984908 0,6 L2,7 C2.93658775,4.60974406 5.12943697,3.08011229 7.67955083,3 C9.14881247,3.0528747 10.4994783,3.57862053 11.5656391,4.43436088 Z" transform="translate(1 5)"/></svg>`;
-    const PAINT_FORMAT_ICON = `<svg class="o-icon"><path fill="#000000" d="M9,0 L1,0 C0.45,0 0,0.45 0,1 L0,4 C0,4.55 0.45,5 1,5 L9,5 C9.55,5 10,4.55 10,4 L10,3 L11,3 L11,6 L4,6 L4,14 L6,14 L6,8 L13,8 L13,2 L10,2 L10,1 C10,0.45 9.55,0 9,0 Z" transform="translate(3 2)"/></svg>`;
-    const CLEAR_FORMAT_ICON = `<svg class="o-icon"><path fill="#000000" d="M0.27,1.55 L5.43,6.7 L3,12 L5.5,12 L7.14,8.42 L11.73,13 L13,11.73 L1.55,0.27 L0.27,1.55 L0.27,1.55 Z M3.82,0 L5.82,2 L7.58,2 L7.03,3.21 L8.74,4.92 L10.08,2 L14,2 L14,0 L3.82,0 L3.82,0 Z" transform="translate(2 3)"/></svg>`;
-    const TRIANGLE_DOWN_ICON = `<svg class="o-icon"><polygon fill="#000000" points="0 0 4 4 8 0" transform="translate(5 7)"/></svg>`;
-    const TRIANGLE_UP_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 8 4" transform="translate(5 7)"/></svg>`;
-    const TRIANGLE_RIGHT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="0 0 4 4 0 8" transform="translate(5 5)"/></svg>`;
-    const TRIANGLE_LEFT_ICON = `<svg class="o-icon"><polygon fill="#000000" points="4 0 0 4 4 8" transform="translate(5 5)"/></svg>`;
-    const BOLD_ICON = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M9,3.5 C9,1.57 7.43,0 5.5,0 L1.77635684e-15,0 L1.77635684e-15,12 L6.25,12 C8.04,12 9.5,10.54 9.5,8.75 C9.5,7.45 8.73,6.34 7.63,5.82 C8.46,5.24 9,4.38 9,3.5 Z M5,2 C5.82999992,2 6.5,2.67 6.5,3.5 C6.5,4.33 5.82999992,5 5,5 L3,5 L3,2 L5,2 Z M3,10 L3,7 L5.5,7 C6.32999992,7 7,7.67 7,8.5 C7,9.33 6.32999992,10 5.5,10 L3,10 Z" transform="translate(4 3)"/></svg>`;
-    const ITALIC_ICON = `<svg class="o-icon"><polygon fill="#000000" fill-rule="evenodd" points="4 0 4 2 6.58 2 2.92 10 0 10 0 12 8 12 8 10 5.42 10 9.08 2 12 2 12 0" transform="translate(3 3)"/></svg>`;
-    const UNDERLINE_ICON = `<svg class="o-icon"><path fill="#000000" d="M6,12 C8.76,12 11,9.76 11,7 L11,0 L9,0 L9,7 C9,8.75029916 7.49912807,10 6,10 C4.50087193,10 3,8.75837486 3,7 L3,0 L1,0 L1,7 C1,9.76 3.24,12 6,12 Z M0,13 L0,15 L12,15 L12,13 L0,13 Z" transform="translate(3 3)"/></svg>`;
-    const STRIKE_ICON = `<svg class="o-icon"><path fill="#010101" fill-rule="evenodd" d="M2.8875,3.06 C2.8875,2.6025 2.985,2.18625 3.18375,1.8075 C3.3825,1.42875 3.66,1.10625 4.02,0.84 C4.38,0.57375 4.80375,0.3675 5.29875,0.22125 C5.79375,0.075 6.33375,0 6.92625,0 C7.53375,0 8.085,0.0825 8.58,0.25125 C9.075,0.42 9.49875,0.6525 9.85125,0.95625 C10.20375,1.25625 10.47375,1.6125 10.665,2.02875 C10.85625,2.44125 10.95,2.895 10.95,3.38625 L8.6925,3.38625 C8.6925,3.1575 8.655,2.94375 8.58375,2.74875 C8.5125,2.55 8.4,2.38125 8.25,2.2425 C8.1,2.10375 7.9125,1.99125 7.6875,1.91625 C7.4625,1.8375 7.19625,1.8 6.88875,1.8 C6.5925,1.8 6.3375,1.83375 6.11625,1.8975 C5.89875,1.96125 5.71875,2.05125 5.57625,2.1675 C5.43375,2.28375 5.325,2.41875 5.25375,2.5725 C5.1825,2.72625 5.145,2.895 5.145,3.0675 C5.145,3.4275 5.32875,3.73125 5.69625,3.975 C5.71780203,3.98908066 5.73942012,4.00311728 5.76118357,4.01733315 C6.02342923,4.18863185 6.5,4.5 7,5 L4,5 C4,5 3.21375,4.37625 3.17625,4.30875 C2.985,3.9525 2.8875,3.53625 2.8875,3.06 Z M14,6 L0,6 L0,8 L7.21875,8 C7.35375,8.0525 7.51875,8.105 7.63125,8.15375 C7.90875,8.2775 8.12625,8.40875 8.28375,8.53625 C8.44125,8.6675 8.54625,8.81 8.6025,8.96 C8.65875,9.11375 8.685,9.28625 8.685,9.47375 C8.685,9.65 8.65125,9.815 8.58375,9.965 C8.51625,10.11875 8.41125,10.25 8.2725,10.35875 C8.13375,10.4675 7.95375,10.55375 7.74,10.6175 C7.5225,10.68125 7.27125,10.71125 6.97875,10.71125 C6.6525,10.71125 6.35625,10.6775 6.09,10.61375 C5.82375,10.55 5.59875,10.445 5.41125,10.3025 C5.22375,10.16 5.0775,9.9725 4.9725,9.74375 C4.8675,9.515 4.78125,9.17 4.78125,9 L2.55,9 C2.55,9.2525 2.61,9.6875 2.72625,10.025 C2.8425,10.3625 3.0075,10.66625 3.21375,10.9325 C3.42,11.19875 3.6675,11.4275 3.94875,11.6225 C4.23,11.8175 4.53375,11.9825 4.86375,12.11 C5.19375,12.24125 5.535,12.33875 5.89875,12.39875 C6.25875,12.4625 6.6225,12.4925 6.9825,12.4925 C7.5825,12.4925 8.13,12.425 8.6175,12.28625 C9.105,12.1475 9.525,11.94875 9.87,11.69375 C10.215,11.435 10.48125,11.12 10.6725,10.74125 C10.86375,10.3625 10.95375,9.935 10.95375,9.455 C10.95375,9.005 10.875,8.6 10.72125,8.24375 C10.68375,8.1575 10.6425,8.075 10.59375,7.9925 L14,8 L14,6 Z" transform="translate(2 3)"/></svg>`;
-    const TEXT_COLOR_ICON = `<svg class="o-icon"><path fill="#000000" d="M7,0 L5,0 L0.5,12 L2.5,12 L3.62,9 L8.37,9 L9.49,12 L11.49,12 L7,0 L7,0 Z M4.38,7 L6,2.67 L7.62,7 L4.38,7 L4.38,7 Z" transform="translate(3 1)"/></svg>`;
-    const FILL_COLOR_ICON = `<svg class="o-icon"><path fill="#000000" d="M14.5,8.87 C14.5,8.87 13,10.49 13,11.49 C13,12.32 13.67,12.99 14.5,12.99 C15.33,12.99 16,12.32 16,11.49 C16,10.5 14.5,8.87 14.5,8.87 L14.5,8.87 Z M12.71,6.79 L5.91,0 L4.85,1.06 L6.44,2.65 L2.29,6.79 C1.9,7.18 1.9,7.81 2.29,8.2 L6.79,12.7 C6.99,12.9 7.24,13 7.5,13 C7.76,13 8.01,12.9 8.21,12.71 L12.71,8.21 C13.1,7.82 13.1,7.18 12.71,6.79 L12.71,6.79 Z M4.21,7 L7.5,3.71 L10.79,7 L4.21,7 L4.21,7 Z"/></svg>`;
-    const MERGE_CELL_ICON = `<svg class="o-icon"><path fill="#000000" d="M3,6 L1,6 L1,2 L8,2 L8,4 L3,4 L3,6 Z M10,4 L10,2 L17,2 L17,6 L15,6 L15,4 L10,4 Z M10,14 L15,14 L15,12 L17,12 L17,16 L10,16 L10,14 Z M1,12 L3,12 L3,14 L8,14 L8,16 L1,16 L1,12 Z M1,8 L5,8 L5,6 L8,9 L5,12 L5,10 L1,10 L1,8 Z M10,9 L13,6 L13,8 L17,8 L17,10 L13,10 L13,12 L10,9 Z"/></svg>`;
-    const ALIGN_LEFT_ICON = `<svg class="o-icon"><path fill="#000000" d="M0,14 L10,14 L10,12 L0,12 L0,14 Z M10,4 L0,4 L0,6 L10,6 L10,4 Z M0,0 L0,2 L14,2 L14,0 L0,0 Z M0,10 L14,10 L14,8 L0,8 L0,10 Z" transform="translate(2 2)"/></svg>`;
-    const ALIGN_CENTER_ICON = `<svg class="o-icon"><path fill="#000000" d="M2,12 L2,14 L12,14 L12,12 L2,12 Z M2,4 L2,6 L12,6 L12,4 L2,4 Z M0,10 L14,10 L14,8 L0,8 L0,10 Z M0,0 L0,2 L14,2 L14,0 L0,0 Z" transform="translate(2 2)"/></svg>`;
-    const ALIGN_RIGHT_ICON = `<svg class="o-icon"><path fill="#000000" d="M4,14 L14,14 L14,12 L4,12 L4,14 Z M0,10 L14,10 L14,8 L0,8 L0,10 Z M0,0 L0,2 L14,2 L14,0 L0,0 Z M4,6 L14,6 L14,4 L4,4 L4,6 Z" transform="translate(2 2)"/></svg>`;
-    // export const ALIGN_TOP_ICON = `<svg class="o-icon"><path fill="#000000" d="M0,0 L0,2 L12,2 L12,0 L0,0 L0,0 Z M2.5,7 L5,7 L5,14 L7,14 L7,7 L9.5,7 L6,3.5 L2.5,7 L2.5,7 Z" transform="translate(3 2)"/></svg>`;
-    const ALIGN_MIDDLE_ICON = `<svg class="o-icon"><path fill="#000000" d="M9.5,3 L7,3 L7,0 L5,0 L5,3 L2.5,3 L6,6.5 L9.5,3 L9.5,3 Z M0,8 L0,10 L12,10 L12,8 L0,8 L0,8 Z M2.5,15 L5,15 L5,18 L7,18 L7,15 L9.5,15 L6,11.5 L2.5,15 L2.5,15 Z" transform="translate(3)"/></svg>`;
-    // export const ALIGN_BOTTOM_ICON = `<svg class="o-icon"><path fill="#000000" d="M9.5,7 L7,7 L7,0 L5,0 L5,7 L2.5,7 L6,10.5 L9.5,7 L9.5,7 Z M0,12 L0,14 L12,14 L12,12 L0,12 L0,12 Z" transform="translate(3 2)"/></svg>`;
-    const TEXT_WRAPPING_ICON = `<svg class="o-icon"><path fill="#000000" d="M14,0 L0,0 L0,2 L14,2 L14,0 Z M0,12 L4,12 L4,10 L0,10 L0,12 Z M11.5,5 L0,5 L0,7 L11.75,7 C12.58,7 13.25,7.67 13.25,8.5 C13.25,9.33 12.58,10 11.75,10 L9,10 L9,8 L6,11 L9,14 L9,12 L11.5,12 C13.43,12 15,10.43 15,8.5 C15,6.57 13.43,5 11.5,5 Z" transform="translate(2 3)"/></svg>`;
-    const BORDERS_ICON = `<svg class="o-icon"><path fill="#000000" d="M0,0 L0,14 L14,14 L14,0 L0,0 L0,0 Z M6,12 L2,12 L2,8 L6,8 L6,12 L6,12 Z M6,6 L2,6 L2,2 L6,2 L6,6 L6,6 Z M12,12 L8,12 L8,8 L12,8 L12,12 L12,12 Z M12,6 L8,6 L8,2 L12,2 L12,6 L12,6 Z" transform="translate(2 2)"/></svg>`;
-    const BORDER_HV = `<svg class="o-icon"><g fill="#000000"><path d="M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M2,3 L0,3 L0,5 L2,5 L2,3 L2,3 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M11,0 L9,0 L9,2 L11,2 L11,0 L11,0 Z M2,0 L0,0 L0,2 L2,2 L2,0 L2,0 Z M5,0 L3,0 L3,2 L5,2 L5,0 L5,0 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z" opacity=".54"/><polygon points="8 0 6 0 6 6 0 6 0 8 6 8 6 14 8 14 8 8 14 8 14 6 8 6"/></g></svg>`;
-    const BORDER_H = `<svg class="o-icon"><g fill="#000000"><path d="M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z" opacity=".54"/><polygon points="0 8 14 8 14 6 0 6"/></g></svg>`;
-    const BORDER_V = `<svg class="o-icon"><g fill="#000000"><path d="M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z" opacity=".54"/><polygon points="6 14 8 14 8 0 6 0"/></g></svg>`;
-    const BORDER_EXTERNAL = `<svg class="o-icon"><g fill="#000000"><path d="M8,3 L6,3 L6,5 L8,5 L8,3 L8,3 Z M11,6 L9,6 L9,8 L11,8 L11,6 L11,6 Z M8,6 L6,6 L6,8 L8,8 L8,6 L8,6 Z M8,9 L6,9 L6,11 L8,11 L8,9 L8,9 Z M5,6 L3,6 L3,8 L5,8 L5,6 L5,6 Z" opacity=".54"/><path d="M0,0 L14,0 L14,14 L0,14 L0,0 Z M12,12 L12,2 L2,2 L2,12 L12,12 Z"/></g></svg>`;
-    const BORDER_LEFT = `<svg class="o-icon"><g fill="#000000"><path d="M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z" opacity=".54"/><polygon points="0 14 2 14 2 0 0 0"/></g></svg>`;
-    const BORDER_TOP = `<svg class="o-icon"><g fill="#000000"><path d="M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z" opacity=".54"/><polygon points="0 0 0 2 14 2 14 0"/></g></svg>`;
-    const BORDER_RIGHT = `<svg class="o-icon"><g fill="#000000"><path d="M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z" opacity=".54"/><polygon points="12 0 12 14 14 14 14 0"/></g></svg>`;
-    const BORDER_BOTTOM = `<svg class="o-icon"><g fill="#000000"><path d="M5,0 L3,0 L3,2 L5,2 L5,0 L5,0 Z M8,6 L6,6 L6,8 L8,8 L8,6 L8,6 Z M8,9 L6,9 L6,11 L8,11 L8,9 L8,9 Z M11,6 L9,6 L9,8 L11,8 L11,6 L11,6 Z M5,6 L3,6 L3,8 L5,8 L5,6 L5,6 Z M11,0 L9,0 L9,2 L11,2 L11,0 L11,0 Z M8,3 L6,3 L6,5 L8,5 L8,3 L8,3 Z M8,0 L6,0 L6,2 L8,2 L8,0 L8,0 Z M2,9 L0,9 L0,11 L2,11 L2,9 L2,9 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M2,0 L0,0 L0,2 L2,2 L2,0 L2,0 Z M2,3 L0,3 L0,5 L2,5 L2,3 L2,3 Z M2,6 L0,6 L0,8 L2,8 L2,6 L2,6 Z" opacity=".54"/><polygon points="0 14 14 14 14 12 0 12"/></g></svg>`;
-    const BORDER_CLEAR = `<svg class="o-icon"><path fill="#000000" fill-rule="evenodd" d="M6,14 L8,14 L8,12 L6,12 L6,14 L6,14 Z M3,8 L5,8 L5,6 L3,6 L3,8 L3,8 Z M3,2 L5,2 L5,0 L3,0 L3,2 L3,2 Z M6,11 L8,11 L8,9 L6,9 L6,11 L6,11 Z M3,14 L5,14 L5,12 L3,12 L3,14 L3,14 Z M0,5 L2,5 L2,3 L0,3 L0,5 L0,5 Z M0,14 L2,14 L2,12 L0,12 L0,14 L0,14 Z M0,2 L2,2 L2,0 L0,0 L0,2 L0,2 Z M0,8 L2,8 L2,6 L0,6 L0,8 L0,8 Z M6,8 L8,8 L8,6 L6,6 L6,8 L6,8 Z M0,11 L2,11 L2,9 L0,9 L0,11 L0,11 Z M12,11 L14,11 L14,9 L12,9 L12,11 L12,11 Z M12,14 L14,14 L14,12 L12,12 L12,14 L12,14 Z M12,8 L14,8 L14,6 L12,6 L12,8 L12,8 Z M12,5 L14,5 L14,3 L12,3 L12,5 L12,5 Z M12,0 L12,2 L14,2 L14,0 L12,0 L12,0 Z M6,2 L8,2 L8,0 L6,0 L6,2 L6,2 Z M9,2 L11,2 L11,0 L9,0 L9,2 L9,2 Z M6,5 L8,5 L8,3 L6,3 L6,5 L6,5 Z M9,14 L11,14 L11,12 L9,12 L9,14 L9,14 Z M9,8 L11,8 L11,6 L9,6 L9,8 L9,8 Z" transform="translate(2 2)" opacity=".54"/></svg>`;
-    const PLUS = `<svg class="o-icon"><path fill="#000000" d="M8,0 L10,0 L10,8 L18,8 L18,10 L10,10 L10,18 L8,18 L8,10 L0,10 L0,8 L8,8"/></svg>`;
-    const LIST = `<svg class="o-icon" viewBox="0 0 384 384"><rect x="0" y="277.333" width="384" height="42.667"/><rect x="0" y="170.667" width="384" height="42.667"/><rect x="0" y="64" width="384" height="42.667"/></svg>`;
-    const EDIT = `<svg class="o-icon" viewBox="0 0 576 512"><path fill="currentColor" d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"></path></svg>`;
-    const UNLINK = `<svg class="o-icon" viewBox="0 0 512 512"><path fill="currentColor" d="M304.083 405.907c4.686 4.686 4.686 12.284 0 16.971l-44.674 44.674c-59.263 59.262-155.693 59.266-214.961 0-59.264-59.265-59.264-155.696 0-214.96l44.675-44.675c4.686-4.686 12.284-4.686 16.971 0l39.598 39.598c4.686 4.686 4.686 12.284 0 16.971l-44.675 44.674c-28.072 28.073-28.072 73.75 0 101.823 28.072 28.072 73.75 28.073 101.824 0l44.674-44.674c4.686-4.686 12.284-4.686 16.971 0l39.597 39.598zm-56.568-260.216c4.686 4.686 12.284 4.686 16.971 0l44.674-44.674c28.072-28.075 73.75-28.073 101.824 0 28.072 28.073 28.072 73.75 0 101.823l-44.675 44.674c-4.686 4.686-4.686 12.284 0 16.971l39.598 39.598c4.686 4.686 12.284 4.686 16.971 0l44.675-44.675c59.265-59.265 59.265-155.695 0-214.96-59.266-59.264-155.695-59.264-214.961 0l-44.674 44.674c-4.686 4.686-4.686 12.284 0 16.971l39.597 39.598zm234.828 359.28l22.627-22.627c9.373-9.373 9.373-24.569 0-33.941L63.598 7.029c-9.373-9.373-24.569-9.373-33.941 0L7.029 29.657c-9.373 9.373-9.373 24.569 0 33.941l441.373 441.373c9.373 9.372 24.569 9.372 33.941 0z"></path></svg>`;
-    /** Font Awesome by Dave Gandy
-     *  http://fontawesome.io/
-     *  https://fontawesome.com/license
-     */
-    const CARET_UP = '<svg class="caret-up" viewBox="0 0 320 512"><path fill="currentColor" d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"></path></svg>';
-    const CARET_DOWN = '<svg class="caret-down"  viewBox="0 0 320 512"><path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path></svg>';
-    const TRASH = '<svg class="o-cf-icon trash" viewBox = "0 0 448 512" > <path fill="currentColor" d = "M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z" > </path></svg >';
-    const REFRESH = '<svg class="o-cf-icon refresh" viewBox="0 0 512 512"><path fill="currentColor" d="M440.65 12.57l4 82.77A247.16 247.16 0 0 0 255.83 8C134.73 8 33.91 94.92 12.29 209.82A12 12 0 0 0 24.09 224h49.05a12 12 0 0 0 11.67-9.26 175.91 175.91 0 0 1 317-56.94l-101.46-4.86a12 12 0 0 0-12.57 12v47.41a12 12 0 0 0 12 12H500a12 12 0 0 0 12-12V12a12 12 0 0 0-12-12h-47.37a12 12 0 0 0-11.98 12.57zM255.83 432a175.61 175.61 0 0 1-146-77.8l101.8 4.87a12 12 0 0 0 12.57-12v-47.4a12 12 0 0 0-12-12H12a12 12 0 0 0-12 12V500a12 12 0 0 0 12 12h47.35a12 12 0 0 0 12-12.6l-4.15-82.57A247.17 247.17 0 0 0 255.83 504c121.11 0 221.93-86.92 243.55-201.82a12 12 0 0 0-11.8-14.18h-49.05a12 12 0 0 0-11.67 9.26A175.86 175.86 0 0 1 255.83 432z"></path></svg>';
-    const ARROW_DOWN = '<svg class="o-cf-icon arrow-down" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#DC6965" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>';
-    const ARROW_UP = '<svg class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#00A04A" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>';
-    const ARROW_RIGHT = '<svg class="o-cf-icon arrow-right" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#F0AD4E" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>';
-    const SMILE = '<svg class="o-cf-icon smile" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#00A04A" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>';
-    const MEH = '<svg class="o-cf-icon meh" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#F0AD4E" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"></path></svg>';
-    const FROWN = '<svg class="o-cf-icon frown" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#DC6965" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"></path></svg>';
-    const GREEN_DOT = '<svg class="o-cf-icon green-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#00A04A" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    const YELLOW_DOT = '<svg class="o-cf-icon yellow-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#F0AD4E" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    const RED_DOT = '<svg class="o-cf-icon red-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#DC6965" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    function loadIconImage(svg) {
-        /** We have to add xmlns, as it's not added by owl in the canvas */
-        svg = `<svg xmlns="http://www.w3.org/2000/svg" ${svg.slice(4)}`;
-        const image = new Image();
-        image.src = "data:image/svg+xml; charset=utf8, " + encodeURIComponent(svg);
-        return image;
-    }
-    const ICONS = {
-        arrowGood: {
-            img: loadIconImage(ARROW_UP),
-            svg: owl.markup(ARROW_UP),
-        },
-        arrowNeutral: {
-            img: loadIconImage(ARROW_RIGHT),
-            svg: owl.markup(ARROW_RIGHT),
-        },
-        arrowBad: {
-            img: loadIconImage(ARROW_DOWN),
-            svg: owl.markup(ARROW_DOWN),
-        },
-        smileyGood: {
-            img: loadIconImage(SMILE),
-            svg: owl.markup(SMILE),
-        },
-        smileyNeutral: {
-            img: loadIconImage(MEH),
-            svg: owl.markup(MEH),
-        },
-        smileyBad: {
-            img: loadIconImage(FROWN),
-            svg: owl.markup(FROWN),
-        },
-        dotGood: {
-            img: loadIconImage(GREEN_DOT),
-            svg: owl.markup(GREEN_DOT),
-        },
-        dotNeutral: {
-            img: loadIconImage(YELLOW_DOT),
-            svg: owl.markup(YELLOW_DOT),
-        },
-        dotBad: {
-            img: loadIconImage(RED_DOT),
-            svg: owl.markup(RED_DOT),
-        },
-    };
-    const ICON_SETS = {
-        arrows: {
-            good: "arrowGood",
-            neutral: "arrowNeutral",
-            bad: "arrowBad",
-        },
-        smiley: {
-            good: "smileyGood",
-            neutral: "smileyNeutral",
-            bad: "smileyBad",
-        },
-        dots: {
-            good: "dotGood",
-            neutral: "dotNeutral",
-            bad: "dotBad",
-        },
-    };
+    ColorPicker.template = "o-spreadsheet.ColorPicker";
 
     const uuidGenerator$1 = new UuidGenerator();
-    const TEMPLATE$o = owl.xml /* xml */ `
-  <div class="o-selection">
-    <div t-foreach="ranges" t-as="range" t-key="range.id" class="o-selection-input" t-att-class="props.class">
-      <input
-        type="text"
-        spellcheck="false"
-        t-on-change="(ev) => this.onInputChanged(range.id, ev)"
-        t-on-focus="() => this.focus(range.id)"
-        t-att-value="range.xc"
-        t-att-style="getColor(range)"
-        t-att-class="{
-          'o-focused' : range.isFocused,
-          'o-required': props.required,
-          'o-invalid': isInvalid || !range.isValidRange,
-        }"
-      />
-      <button
-        class="o-btn o-remove-selection"
-        t-if="ranges.length > 1"
-        t-on-click="() => this.removeInput(range.id)">✖</button>
-    </div>
-
-    <div class="o-selection-input">
-      <button
-        class="o-btn-action o-add-selection"
-        t-if="canAddRange"
-        t-on-click="addEmptyInput">Add range</button>
-      <button
-          class="o-btn-action o-selection-ok"
-          t-if="hasFocus"
-          t-on-click="disable">Confirm</button>
-    </div>
-
-  </div>`;
     css /* scss */ `
   .o-selection {
     .o-selection-input {
@@ -14802,106 +14533,8 @@
             (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
         }
     }
-    SelectionInput.template = TEMPLATE$o;
+    SelectionInput.template = "o-spreadsheet.SelectionInput";
 
-    const CONFIGURATION_TEMPLATE = owl.xml /* xml */ `
-<div>
-  <div class="o-section">
-    <div class="o-section-title" t-esc="env._t('${ChartTerms.ChartType}')"/>
-    <select t-model="state.chart.type" class="o-input o-type-selector" t-on-change="(ev) => this.updateSelect('type', ev)">
-      <option value="bar" t-esc="env._t('${ChartTerms.Bar}')"/>
-      <option value="line" t-esc="env._t('${ChartTerms.Line}')"/>
-      <option value="pie" t-esc="env._t('${ChartTerms.Pie}')"/>
-    </select>
-    <t t-if="state.chart.type === 'bar'">
-      <div class="o_checkbox">
-        <input type="checkbox" name="stackedBar" t-model="state.chart.stackedBar" t-on-change="updateStacked"/>
-        <t t-esc="env._t('${ChartTerms.StackedBar}')"/>
-      </div>
-    </t>
-  </div>
-  <div class="o-section o-data-series">
-    <div class="o-section-title" t-esc="env._t('${ChartTerms.DataSeries}')"/>
-    <SelectionInput t-key="getKey('dataSets')"
-                    ranges="state.chart.dataSets"
-                    isInvalid="isDatasetInvalid"
-                    required="true"
-                    onSelectionChanged="(ranges) => this.onSeriesChanged(ranges)"
-                    onSelectionConfirmed="() => this.updateDataSet()" />
-    <input type="checkbox" t-model="state.chart.dataSetsHaveTitle" t-on-change="() => this.updateDataSet()"/><t t-esc="env._t('${ChartTerms.MyDataHasTitle}')"/>
-  </div>
-  <div class="o-section o-data-labels">
-    <div class="o-section-title" t-esc="env._t('${ChartTerms.DataCategories}')"/>
-    <SelectionInput t-key="getKey('label')"
-                    ranges="[state.chart.labelRange || '']"
-                    isInvalid="isLabelInvalid"
-                    hasSingleRange="true"
-                    onSelectionChanged="(ranges) => this.onLabelRangeChanged(ranges)"
-                    onSelectionConfirmed="() => this.updateLabelRange()" />
-  </div>
-  <div class="o-section o-sidepanel-error" t-if="errorMessages">
-    <div t-foreach="errorMessages" t-as="error" t-key="error">
-      <t t-esc="error"/>
-    </div>
-  </div>
-</div>
-`;
-    const DESIGN_TEMPLATE = owl.xml /* xml */ `
-<div>
-  <div class="o-section o-chart-title">
-    <div class="o-section-title" t-esc="env._t('${ChartTerms.BackgroundColor}')"/>
-    <div class="o-with-color-picker">
-      <t t-esc="env._t('${ChartTerms.SelectColor}')"/>
-      <span t-attf-style="border-color:{{state.chart.background}}"
-            t-on-click.stop="toggleColorPicker">${FILL_COLOR_ICON}</span>
-      <ColorPicker t-if="state.fillColorTool" onColorPicked="(color) => this.setColor(color)" t-key="backgroundColor"/>
-    </div>
-  </div>
-  <div class="o-section o-chart-title">
-    <div class="o-section-title" t-esc="env._t('${ChartTerms.Title}')"/>
-    <input type="text" t-model="state.chart.title" t-on-change="updateTitle" class="o-input" placeholder="${ChartTerms.TitlePlaceholder}"/>
-  </div>
-  <div class="o-section">
-    <div class="o-section-title"><t t-esc="env._t('${ChartTerms.VerticalAxisPosition}')"/></div>
-    <select t-model="state.chart.verticalAxisPosition" class="o-input o-type-selector" t-on-change="(ev) => this.updateSelect('verticalAxisPosition', ev)">
-      <option value="left" t-esc="env._t('${ChartTerms.Left}')"/>
-      <option value="right" t-esc="env._t('${ChartTerms.Right}')"/>
-    </select>
-  </div>
-  <div class="o-section">
-    <div class="o-section-title"><t t-esc="env._t('${ChartTerms.LegendPosition}')"/></div>
-    <select t-model="state.chart.legendPosition" class="o-input o-type-selector" t-on-change="(ev) => this.updateSelect('legendPosition', ev)">
-      <option value="top" t-esc="env._t('${ChartTerms.Top}')"/>
-      <option value="bottom" t-esc="env._t('${ChartTerms.Bottom}')"/>
-      <option value="left" t-esc="env._t('${ChartTerms.Left}')"/>
-      <option value="right" t-esc="env._t('${ChartTerms.Right}')"/>
-    </select>
-  </div>
-</div>
-`;
-    const TEMPLATE$n = owl.xml /* xml */ `
-  <div class="o-chart">
-    <div class="o-panel">
-      <div class="o-panel-element"
-          t-att-class="state.panel !== 'configuration' ? 'inactive' : ''"
-          t-on-click="() => this.activate('configuration')">
-        <i class="fa fa-sliders"/>Configuration
-      </div>
-      <div class="o-panel-element"
-          t-att-class="state.panel !== 'design' ? 'inactive' : ''"
-          t-on-click="() => this.activate('design')">
-        <i class="fa fa-paint-brush"/>Design
-      </div>
-    </div>
-
-    <t t-if="state.panel === 'configuration'">
-      <t t-call="${CONFIGURATION_TEMPLATE}"/>
-    </t>
-    <t t-else="">
-      <t t-call="${DESIGN_TEMPLATE}"/>
-    </t>
-  </div>
-`;
     css /* scss */ `
   .o-chart {
     .o-panel {
@@ -15026,7 +14659,7 @@
             };
         }
     }
-    ChartPanel.template = TEMPLATE$n;
+    ChartPanel.template = "o-spreadsheet.ChartPanel";
     ChartPanel.components = { SelectionInput, ColorPicker };
 
     /**
@@ -15042,6 +14675,81 @@
         }
         return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
     }
+
+    // -----------------------------------------------------------------------------
+    // We need here the svg of the icons that we need to convert to images for the renderer
+    // -----------------------------------------------------------------------------
+    const ARROW_DOWN = '<svg class="o-cf-icon arrow-down" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#DC6965" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>';
+    const ARROW_UP = '<svg class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#00A04A" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>';
+    const ARROW_RIGHT = '<svg class="o-cf-icon arrow-right" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#F0AD4E" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>';
+    const SMILE = '<svg class="o-cf-icon smile" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#00A04A" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>';
+    const MEH = '<svg class="o-cf-icon meh" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#F0AD4E" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"></path></svg>';
+    const FROWN = '<svg class="o-cf-icon frown" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#DC6965" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"></path></svg>';
+    const GREEN_DOT = '<svg class="o-cf-icon green-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#00A04A" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const YELLOW_DOT = '<svg class="o-cf-icon yellow-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#F0AD4E" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const RED_DOT = '<svg class="o-cf-icon red-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#DC6965" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    function loadIconImage(svg) {
+        /** We have to add xmlns, as it's not added by owl in the canvas */
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" ${svg.slice(4)}`;
+        const image = new Image();
+        image.src = "data:image/svg+xml; charset=utf8, " + encodeURIComponent(svg);
+        return image;
+    }
+    const ICONS = {
+        arrowGood: {
+            template: "ARROW_UP",
+            img: loadIconImage(ARROW_UP),
+        },
+        arrowNeutral: {
+            template: "ARROW_RIGHT",
+            img: loadIconImage(ARROW_RIGHT),
+        },
+        arrowBad: {
+            template: "ARROW_DOWN",
+            img: loadIconImage(ARROW_DOWN),
+        },
+        smileyGood: {
+            template: "SMILE",
+            img: loadIconImage(SMILE),
+        },
+        smileyNeutral: {
+            template: "MEH",
+            img: loadIconImage(MEH),
+        },
+        smileyBad: {
+            template: "FROWN",
+            img: loadIconImage(FROWN),
+        },
+        dotGood: {
+            template: "GREEN_DOT",
+            img: loadIconImage(GREEN_DOT),
+        },
+        dotNeutral: {
+            template: "YELLOW_DOT",
+            img: loadIconImage(YELLOW_DOT),
+        },
+        dotBad: {
+            template: "RED_DOT",
+            img: loadIconImage(RED_DOT),
+        },
+    };
+    const ICON_SETS = {
+        arrows: {
+            good: "arrowGood",
+            neutral: "arrowNeutral",
+            bad: "arrowBad",
+        },
+        smiley: {
+            good: "smileyGood",
+            neutral: "smileyNeutral",
+            bad: "smileyBad",
+        },
+        dots: {
+            good: "dotGood",
+            neutral: "dotNeutral",
+            bad: "dotBad",
+        },
+    };
 
     css /* scss */ `
   .o-icon-picker {
@@ -15075,425 +14783,9 @@
             }
         }
     }
-    IconPicker.template = owl.xml /* xml */ `
-  <div class="o-icon-picker" >
-    <t t-foreach="iconSets" t-as="iconSet" t-key="iconSet">
-      <div class="o-cf-icon-line">
-        <div class="o-icon-picker-item" t-on-click="() => this.onIconClick(iconSets[iconSet].good)">
-          <t t-out="icons[iconSets[iconSet].good].svg"/>
-        </div>
-        <div class="o-icon-picker-item" t-on-click="() => this.onIconClick(iconSets[iconSet].neutral)">
-          <t t-out="icons[iconSets[iconSet].neutral].svg"/>
-        </div>
-        <div class="o-icon-picker-item" t-on-click="() => this.onIconClick(iconSets[iconSet].bad)">
-          <t t-out="icons[iconSets[iconSet].bad].svg"/>
-        </div>
-      </div>
-    </t>
-  </div>`;
-
-    const PREVIEW_TEMPLATE$2 = owl.xml /* xml */ `
-    <div class="o-cf-preview-line"
-         t-attf-style="font-weight:{{currentStyle.bold ?'bold':'normal'}};
-                       text-decoration:{{getTextDecoration(currentStyle)}};
-                       font-style:{{currentStyle.italic?'italic':'normal'}};
-                       color:{{currentStyle.textColor}};
-                       border-radius: 4px;
-                       background-color:{{currentStyle.fillColor}};"
-         t-esc="previewText || env._t('${CfTerms.PreviewText}')" />
-`;
-    const TEMPLATE_CELL_IS_RULE_EDITOR = owl.xml /* xml */ `
-<div class="o-cf-cell-is-rule">
-    <div class="o-section-subtitle" t-esc="env._t('${CfTerms.IsRule}')"></div>
-    <select t-model="rule.operator" class="o-input o-cell-is-operator">
-        <t t-foreach="Object.keys(cellIsOperators)" t-as="op" t-key="op_index">
-            <option t-att-value="op" t-esc="cellIsOperators[op]"/>
-        </t>
-    </select>
-    <t t-if="rule.operator !== 'IsEmpty' and rule.operator !== 'IsNotEmpty'">
-      <input type="text"
-             placeholder="${GenericTerms.Value}"
-             t-model="rule.values[0]"
-             t-att-class="{ 'o-invalid': isValue1Invalid }"
-             class="o-input o-cell-is-value o-required"/>
-      <t t-if="rule.operator === 'Between' || rule.operator === 'NotBetween'">
-          <input type="text"
-                 placeholder="${GenericTerms.AndValue}"
-                 t-model="rule.values[1]"
-                 t-att-class="{ 'o-invalid': isValue2Invalid }"
-                 class="o-input o-cell-is-value o-required"/>
-      </t>
-    </t>
-    <div class="o-section-subtitle" t-esc="env._t('${CfTerms.FormattingStyle}')"></div>
-
-    <t t-call="${PREVIEW_TEMPLATE$2}">
-        <t t-set="currentStyle" t-value="rule.style"/>
-    </t>
-    <div class="o-tools">
-        <div class="o-tool" title="${GenericTerms.Bold}" t-att-class="{active:rule.style.bold}" t-on-click="() => this.toggleStyle('bold')">
-            ${BOLD_ICON}
-        </div>
-        <div class="o-tool" title="${GenericTerms.Italic}" t-att-class="{active:rule.style.italic}" t-on-click="() => this.toggleStyle('italic')">
-            ${ITALIC_ICON}
-        </div>
-        <div class="o-tool" title="${GenericTerms.Underline}" t-att-class="{active:rule.style.underline}"
-             t-on-click="(ev) => this.toggleStyle('underline', ev)">${UNDERLINE_ICON}
-        </div>
-        <div class="o-tool" title="${GenericTerms.Strikethrough}" t-att-class="{active:rule.style.strikethrough}"
-             t-on-click="(ev) => this.toggleStyle('strikethrough', ev)">${STRIKE_ICON}
-        </div>
-        <div class="o-tool o-dropdown o-with-color">
-              <span title="${GenericTerms.TextColor}" t-attf-style="border-color:{{rule.style.textColor}}"
-                    t-on-click.stop="(ev) => this.toggleMenu('cellIsRule-textColor', ev)">
-                    ${TEXT_COLOR_ICON}
-              </span>
-              <ColorPicker t-if="state.openedMenu === 'cellIsRule-textColor'" dropdownDirection="'center'" onColorPicked="(color) => this.setColor('textColor', color)" t-key="textColor"/>
-        </div>
-        <div class="o-divider"/>
-        <div class="o-tool o-dropdown o-with-color">
-          <span title="${GenericTerms.FillColor}" t-attf-style="border-color:{{rule.style.fillColor}}"
-                t-on-click.stop="(ev) => this.toggleMenu('cellIsRule-fillColor', ev)">
-                ${FILL_COLOR_ICON}
-          </span>
-          <ColorPicker t-if="state.openedMenu === 'cellIsRule-fillColor'" dropdownDirection="'center'" onColorPicked="(color) => this.setColor('fillColor', color)" t-key="fillColor"/>
-        </div>
-    </div>
-</div>
-`;
-
-    const PREVIEW_TEMPLATE$1 = owl.xml /* xml */ `
-  <div class="o-cf-preview-gradient" t-attf-style="{{getPreviewGradient()}}">
-    <t t-esc="env._t('${CfTerms.PreviewText}')"/>
-  </div>
-`;
-    const THRESHOLD_TEMPLATE = owl.xml /* xml */ `
-  <div t-attf-class="o-threshold o-threshold-{{thresholdType}}">
-      <t t-if="thresholdType === 'midpoint'">
-        <t t-set="type" t-value="threshold and threshold.type"/>
-        <select class="o-input" name="valueType" t-on-change="onMidpointChange" t-on-click="closeMenus">
-          <option value="none" t-esc="env._t('${ColorScale.None}')" t-att-selected="threshold === undefined"/>
-          <option value="number" t-esc="env._t('${CfTerms.FixedNumber}')" t-att-selected="type === 'number'"/>
-          <option value="percentage" t-esc="env._t('${CfTerms.Percentage}')" t-att-selected="type === 'percentage'"/>
-          <option value="percentile" t-esc="env._t('${CfTerms.Percentile}')" t-att-selected="type === 'percentile'"/>
-          <option value="formula" t-esc="env._t('${CfTerms.Formula}')" t-att-selected="type === 'formula'"/>
-        </select>
-      </t>
-      <t t-else="">
-        <select class="o-input" name="valueType" t-model="threshold.type" t-on-click="closeMenus">
-          <option value="value" t-esc="env._t('${ColorScale.CellValues}')"/>
-          <option value="number" t-esc="env._t('${CfTerms.FixedNumber}')"/>
-          <option value="percentage" t-esc="env._t('${CfTerms.Percentage}')"/>
-          <option value="percentile" t-esc="env._t('${CfTerms.Percentile}')"/>
-          <option value="formula" t-esc="env._t('${CfTerms.Formula}')"/>
-        </select>
-      </t>
-      <input type="text" class="o-input o-threshold-value o-required"
-        t-model="rule[thresholdType].value"
-        t-att-class="{ 'o-invalid': isValueInvalid(thresholdType) }"
-        t-if="threshold !== undefined and threshold.type !== 'value'"
-      />
-      <input type="text" class="o-input o-threshold-value"
-        t-else="" disabled="1"
-      />
-      <div class="o-tools">
-        <div class="o-tool  o-dropdown o-with-color" t-att-disabled="threshold === undefined" >
-          <span title="Fill Color"  t-attf-style="border-color:#{{getThresholdColor(threshold)}}"
-                t-on-click.stop="(ev) => this.toggleMenu('colorScale-'+thresholdType+'Color', ev)">${FILL_COLOR_ICON}</span>
-          <ColorPicker t-if="state.openedMenu === 'colorScale-'+thresholdType+'Color'" dropdownDirection="'left'" onColorPicked="(color) => this.setColorScaleColor(thresholdType, color)"/>
-        </div>
-      </div>
-  </div>`;
-    const TEMPLATE_COLOR_SCALE_EDITOR = owl.xml /* xml */ `
-  <div class="o-cf-color-scale-editor">
-      <div class="o-section-subtitle">
-        <t t-esc="env._t('${ColorScale.Preview}')"/>
-      </div>
-      <t t-call="${PREVIEW_TEMPLATE$1}"/>
-      <div class="o-section-subtitle">
-        <t t-esc="env._t('${ColorScale.Minpoint}')"/>
-      </div>
-      <t t-call="${THRESHOLD_TEMPLATE}">
-          <t t-set="threshold" t-value="rule.minimum" ></t>
-          <t t-set="thresholdType" t-value="'minimum'" ></t>
-      </t>
-      <div class="o-section-subtitle">
-        <t t-esc="env._t('${ColorScale.MidPoint}')"/>
-      </div>
-      <t t-call="${THRESHOLD_TEMPLATE}">
-          <t t-set="threshold" t-value="rule.midpoint" ></t>
-          <t t-set="thresholdType" t-value="'midpoint'" ></t>
-      </t>
-      <div class="o-section-subtitle">
-        <t t-esc="env._t('${ColorScale.MaxPoint}')"/>
-      </div>
-      <t t-call="${THRESHOLD_TEMPLATE}">
-          <t t-set="threshold" t-value="rule.maximum" ></t>
-          <t t-set="thresholdType" t-value="'maximum'" ></t>
-      </t>
-  </div>`;
-
-    const ICON_SETS_TEMPLATE = owl.xml /* xml */ `
-  <div>
-  <div class="o-section-subtitle">
-    <t t-esc="env._t('${IconSetRule.Icons}')"/>
-  </div>
-    <div class="o-cf-iconsets">
-      <div class="o-cf-iconset" t-foreach="['arrows', 'smiley', 'dots']" t-as="iconSet" t-key="iconSet" t-on-click="(ev) => this.setIconSet(iconSet, ev)">
-        <div class="o-cf-icon">
-          <t t-out="icons[iconSets[iconSet].good].svg"/>
-        </div>
-        <div class="o-cf-icon">
-          <t t-out="icons[iconSets[iconSet].neutral].svg"/>
-        </div>
-        <div class="o-cf-icon">
-          <t t-out="icons[iconSets[iconSet].bad].svg"/>
-        </div>
-      </div>
-    </div>
-  </div>
-`;
-    const INFLECTION_POINTS_TEMPLATE_ROW = owl.xml /* xml */ `
-  <tr>
-    <td>
-      <div t-on-click.stop="(ev) => this.toggleMenu('iconSet-'+icon+'Icon', ev)">
-        <div class="o-cf-icon-button">
-          <t t-out="icons[iconValue].svg"/>
-        </div>
-      </div>
-      <IconPicker t-if="state.openedMenu === 'iconSet-'+icon+'Icon'" onIconPicked="(i) => this.setIcon(icon, i)"/>
-    </td>
-    <td>
-      <t t-esc="env._t('${IconSetRule.WhenValueIs}')"/>
-    </td>
-    <td>
-      <select class="o-input" name="valueType" t-model="inflectionPointValue.operator">
-        <option value="gt">
-          <span>&#62;</span>
-        </option>
-        <option value="ge">
-          <span>&#8805;</span>
-        </option>
-      </select>
-    </td>
-    <td>
-      <input type="text" class="o-input"
-        t-att-class="{ 'o-invalid': isInflectionPointInvalid(inflectionPoint) }"
-        t-model="rule[inflectionPoint].value"
-      />
-    </td>
-    <td>
-      <select class="o-input" name="valueType" t-model="inflectionPointValue.type">
-      <option value="number">
-        <t t-esc="env._t('${CfTerms.FixedNumber}')"/>
-      </option>
-      <option value="percentage">
-        <t t-esc="env._t('${CfTerms.Percentage}')"/>
-      </option>
-      <option value="percentile">
-        <t t-esc="env._t('${CfTerms.Percentile}')"/>
-      </option>
-      <option value="formula">
-        <t t-esc="env._t('${CfTerms.Formula}')"/>
-      </option>
-      </select>
-    </td>
-  </tr>
-`;
-    const INFLECTION_POINTS_TEMPLATE = owl.xml /* xml */ `
-  <div class="o-inflection">
-    <table>
-    <tr>
-      <th class="o-cf-iconset-icons"></th>
-      <th class="o-cf-iconset-text"></th>
-      <th class="o-cf-iconset-operator"></th>
-      <th class="o-cf-iconset-value">
-      <t t-esc="env._t('${GenericTerms.Value}')"/>
-      </th>
-      <th class="o-cf-iconset-type">
-      <t t-esc="env._t('${IconSetRule.Type}')"/>
-      </th>
-    </tr>
-    <t t-call="${INFLECTION_POINTS_TEMPLATE_ROW}">
-      <t t-set="iconValue" t-value="rule.icons.upper" ></t>
-      <t t-set="icon" t-value="'upper'" ></t>
-      <t t-set="inflectionPointValue" t-value="rule.upperInflectionPoint" ></t>
-      <t t-set="inflectionPoint" t-value="'upperInflectionPoint'" ></t>
-    </t>
-    <t t-call="${INFLECTION_POINTS_TEMPLATE_ROW}">
-      <t t-set="iconValue" t-value="rule.icons.middle" ></t>
-      <t t-set="icon" t-value="'middle'" ></t>
-      <t t-set="inflectionPointValue" t-value="rule.lowerInflectionPoint" ></t>
-      <t t-set="inflectionPoint" t-value="'lowerInflectionPoint'" ></t>
-    </t>
-    <tr>
-      <td>
-        <div t-on-click.stop="(ev) => this.toggleMenu('iconSet-lowerIcon', ev)">
-          <div class="o-cf-icon-button" >
-            <t t-out="icons[rule.icons.lower].svg"/>
-          </div>
-        </div>
-        <IconPicker t-if="state.openedMenu === 'iconSet-lowerIcon'" onIconPicked="(icon) => setIcon('lower', icon)"/>
-      </td>
-      <td><t t-esc="env._t('${IconSetRule.Else}')"/></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
-  </div>`;
-    const TEMPLATE_ICON_SET_EDITOR = owl.xml /* xml */ `
-  <div class="o-cf-iconset-rule">
-      <t t-call="${ICON_SETS_TEMPLATE}"/>
-      <t t-call="${INFLECTION_POINTS_TEMPLATE}"/>
-      <div class="btn btn-link o_refresh_measures o-cf-iconset-reverse" t-on-click="reverseIcons">
-        <div class="mr-1 d-inline-block">
-          ${REFRESH}
-        </div>
-        <t t-esc="env._t('${IconSetRule.ReverseIcons}')"/>
-      </div>
-  </div>`;
+    IconPicker.template = "o-spreadsheet.IconPicker";
 
     // TODO vsc: add ordering of rules
-    const PREVIEW_TEMPLATE = owl.xml /* xml */ `
-<div class="o-cf-preview" t-att-class="{ 'o-cf-cursor-ptr': state.mode !== 'reorder' }">
-  <t t-if="cf.rule.type==='IconSetRule'">
-    <div class="o-cf-preview-icon">
-      <t t-out="icons[cf.rule.icons.upper].svg"/>
-      <t t-out="icons[cf.rule.icons.middle].svg"/>
-      <t t-out="icons[cf.rule.icons.lower].svg"/>
-    </div>
-  </t>
-  <t t-else="">
-    <div t-att-style="getStyle(cf.rule)" class="o-cf-preview-image">
-      123
-    </div>
-  </t>
-  <div class="o-cf-preview-description">
-    <div class="o-cf-preview-ruletype">
-      <div class="o-cf-preview-description-rule">
-        <t t-esc="getDescription(cf)" />
-        <t t-if="cf.rule.values">
-          <t t-esc="' ' + cf.rule.values[0]" />
-          <t t-if="cf.rule.values[1]">
-            <t t-esc="' ' + env._t('${GenericWords.And}')"/> <t t-esc="cf.rule.values[1]"/>
-          </t>
-        </t>
-      </div>
-    </div>
-    <div class="o-cf-preview-range" t-esc="cf.ranges"/>
-  </div>
-  <t t-if="state.mode === 'reorder'">
-    <div class="o-cf-reorder">
-      <t t-if="!cf_first">
-        <div class="o-cf-reorder-button-up o-cf-reorder-button" t-on-click="(ev) => this.reorderRule(cf, 'up', ev)">
-          ${CARET_UP}
-        </div>
-      </t>
-      <t t-if="!cf_last">
-        <div class="o-cf-reorder-button-down o-cf-reorder-button" t-on-click="(ev) => this.reorderRule(cf, 'down', ev)">
-          ${CARET_DOWN}
-        </div>
-      </t>
-    </div>
-  </t>
-  <t t-else="">
-    <div class="o-cf-delete">
-      <div class="o-cf-delete-button" t-on-click.stop="(ev) => this.deleteConditionalFormat(cf, ev)" aria-label="Remove rule">
-        ${TRASH}
-      </div>
-    </div>
-  </t>
-</div>
-`;
-    const TEMPLATE$m = owl.xml /* xml */ `
-  <div class="o-cf">
-    <t t-if="state.mode === 'list' || state.mode === 'reorder'">
-      <div class="o-cf-preview-list" >
-        <div t-on-click="(ev) => this.editConditionalFormat(cf, ev)" t-foreach="conditionalFormats" t-as="cf" t-key="cf.id">
-            <t t-call="${PREVIEW_TEMPLATE}"/>
-        </div>
-      </div>
-      <t t-if="state.mode === 'list'">
-        <div class="btn btn-link o-cf-btn-link o-cf-add" t-on-click.prevent.stop="addConditionalFormat">
-          <t t-esc="'+ ' + env._t('${CfTerms.NewRule}')"/>
-        </div>
-        <div class="btn btn-link o-cf-btn-link o-cf-reorder" t-on-click="reorderConditionalFormats">
-          <t t-esc="env._t('${CfTerms.ReorderRules}')"/>
-        </div>
-      </t>
-      <t t-if="state.mode === 'reorder'">
-        <div class="btn btn-link o-cf-btn-link o-cf-exit-reorder" t-on-click="switchToList">
-            <t t-esc="env._t('${CfTerms.ExitReorderMode}')"/>
-        </div>
-      </t>
-    </t>
-    <t t-if="state.mode === 'edit' || state.mode === 'add'" t-key="state.currentCF.id">
-        <div class="o-cf-ruleEditor">
-            <div class="o-section o-cf-range">
-              <div class="o-section-title" t-esc="env._t('${CfTerms.ApplyToRange}')"></div>
-              <div class="o-selection-cf">
-                <SelectionInput
-                  ranges="state.currentCF.ranges"
-                  class="'o-range'"
-                  isInvalid="isRangeValid"
-                  onSelectionChanged="(ranges) => this.onRangesChanged(ranges)"
-                  required="true"/>
-              </div>
-              <div class="o-section-title" t-esc="env._t('${CfTerms.CfTitle}')"></div>
-              <div class="o_field_radio o_horizontal o_field_widget o-cf-type-selector">
-                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="() => this.changeRuleType('CellIsRule')">
-                  <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'CellIsRule'}}" type="radio" id="cellIsRule" name="ruleType" value="CellIsRule"/>
-                  <label for="cellIsRule" class="custom-control-label o_form_label">
-                    <t t-esc="env._t('${CfTerms.SingleColor}')"/>
-                  </label>
-                </div>
-                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="() => this.changeRuleType('ColorScaleRule')">
-                  <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'ColorScaleRule'}}" type="radio" id="colorScaleRule" name="ruleType" value="ColorScaleRule"/>
-                  <label for="colorScaleRule" class="custom-control-label o_form_label">
-                  <t t-esc="env._t('${CfTerms.ColorScale}')"/>
-                  </label>
-                </div>
-
-                <div class="custom-control custom-radio o_cf_radio_item" t-on-click="() => this.changeRuleType('IconSetRule')">
-                  <input class="custom-control-input o_radio_input" t-attf-checked="{{state.currentCFType === 'IconSetRule'}}" type="radio" id="iconSetRule" name="ruleType" value="IconSetRule"/>
-                  <label for="iconSetRule" class="custom-control-label o_form_label">
-                  <t t-esc="env._t('${CfTerms.IconSet}')"/>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="o-section o-cf-editor">
-              <t t-if="state.currentCFType === 'CellIsRule'"
-                 t-call="${TEMPLATE_CELL_IS_RULE_EDITOR}">
-                <t t-set="rule" t-value="state.rules.cellIs"/>
-              </t>
-              <t t-if="state.currentCFType === 'ColorScaleRule'"
-                 t-call="${TEMPLATE_COLOR_SCALE_EDITOR}">
-                <t t-set="rule" t-value="state.rules.colorScale"/>
-              </t>
-              <t t-if="state.currentCFType === 'IconSetRule'"
-                 t-call="${TEMPLATE_ICON_SET_EDITOR}">
-                <t t-set="rule" t-value="state.rules.iconSet"/>
-              </t>
-              <div class="o-sidePanelButtons">
-                <button
-                  t-on-click="switchToList"
-                  class="o-sidePanelButton o-cf-cancel"
-                  t-esc="env._t('${GenericTerms.Cancel}')"></button>
-                <button
-                  t-on-click="saveConditionalFormat"
-                  class="o-sidePanelButton o-cf-save"
-                  t-esc="env._t('${GenericTerms.Save}')"></button>
-              </div>
-            </div>
-            <div class="o-section">
-              <div class="o-cf-error" t-foreach="state.errors || []" t-as="error" t-key="error_index">
-                <t t-esc="errorMessage(error)"/>
-              </div>
-            </div>
-        </div>
-    </t>
-  </div>`;
     css /* scss */ `
   label {
     vertical-align: middle;
@@ -16196,69 +15488,9 @@
             this.state.rules.iconSet.icons[target] = icon;
         }
     }
-    ConditionalFormattingPanel.template = TEMPLATE$m;
+    ConditionalFormattingPanel.template = "o-spreadsheet.ConditionalFormattingPanel";
     ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
 
-    const TEMPLATE$l = owl.xml /* xml */ `
-<div class="o-custom-currency">
-    <div class="o-section" t-if="availableCurrencies.length > 1">
-        <div class="o-section-title" t-esc="env._t('${CustomCurrencyTerms.Currency}')"/>
-        <select class="o-input o-available-currencies" t-on-change="(ev) => this.updateSelectCurrency(ev)">
-            <t t-foreach="availableCurrencies" t-as="currency" t-key="currency_index">
-                <option
-                  t-att-value="currency_index"
-                  t-esc="currencyDisplayName(currency)"
-                  t-att-selected="currency_index === state.selectedCurrencyIndex"
-                />
-            </t>
-        </select>
-    </div>
-    <div class="o-section">
-        <div class="o-subsection-left">
-            <div class="o-section-title" t-esc="env._t('${CustomCurrencyTerms.Code}')"/>
-            <input
-              type="text"
-              class="o-input"
-              t-model="state.currencyCode"
-              t-on-input="(ev) => this.updateCode(ev)"
-            />
-        </div>
-        <div class="o-subsection-right">
-            <div class="o-section-title" t-esc="env._t('${CustomCurrencyTerms.Symbol}')"/>
-            <input
-              type="text"
-              class="o-input"
-              t-model="state.currencySymbol"
-              t-on-input="(ev) => this.updateSymbol(ev)"
-            />
-        </div>
-    </div>
-    <div class="o-section">
-        <div class="o-section-title" t-esc="env._t('${CustomCurrencyTerms.Format}')"/>
-        <select
-          class="o-input o-format-proposals"
-          t-on-change="(ev) => this.updateSelectFormat(ev)"
-          t-att-disabled="!formatProposals.length"
-        >
-            <t t-foreach="formatProposals" t-as="proposal" t-key="proposal_index">
-                <option
-                  t-att-value="proposal_index"
-                  t-esc="proposal.example"
-                  t-att-selected="proposal_index === state.selectedFormatIndex"
-                />
-            </t>
-        </select>
-    </div>
-    <div class="o-sidePanelButtons">
-        <button
-          class="o-sidePanelButton"
-          t-on-click="() => this.apply()"
-          t-esc="env._t('${CustomCurrencyTerms.Apply}')"
-          t-att-disabled="!formatProposals.length || isSameFormat"
-        />
-    </div>
-</div>
-`;
     css /* scss */ `
   .o-custom-currency {
     .o-format-proposals {
@@ -16392,75 +15624,8 @@
             return currency.name + (currency.code ? ` (${currency.code})` : "");
         }
     }
-    CustomCurrencyPanel.template = TEMPLATE$l;
+    CustomCurrencyPanel.template = "o-spreadsheet.CustomCurrencyPanel";
 
-    const TEMPLATE$k = owl.xml /* xml */ `
-<div class="o-find-and-replace" tabindex="0" t-on-focusin="onFocusSidePanel" t-ref="findAndReplace">
-  <div class="o-section">
-    <div class="o-section-title" t-esc="env._t('${FindAndReplaceTerms.Search}')"/>
-    <div class="o-input-search-container">
-      <input type="text" class="o-input o-input-with-count" t-on-input="onInput" t-on-keydown="onKeydownSearch"/>
-      <div class="o-input-count" t-if="hasSearchResult">
-        <t t-esc="env.model.getters.getCurrentSelectedMatchIndex()+1"/>
-        /
-        <t t-esc="env.model.getters.getSearchMatches().length"/>
-      </div>
-    </div>
-    <div>
-      <div class="o-far-item">
-        <label class="o-far-checkbox">
-          <input t-model="state.searchOptions.matchCase" t-on-change="updateSearch" class="o-far-input" type="checkbox"/>
-          <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.MatchCase}')"/></span>
-        </label>
-      </div>
-      <div class="o-far-item">
-        <label class="o-far-checkbox">
-          <input t-model="state.searchOptions.exactMatch" t-on-change="updateSearch" class="o-far-input" type="checkbox"/>
-          <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.ExactMatch}')"/></span>
-        </label>
-      </div>
-      <div class="o-far-item">
-        <label class="o-far-checkbox">
-          <input t-model="state.searchOptions.searchFormulas" t-on-change="searchFormulas" class="o-far-input" type="checkbox" />
-          <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.SearchFormulas}')"/></span>
-        </label>
-      </div>
-    </div>
-  </div>
-  <div class="o-sidePanelButtons">
-    <button t-att-disabled="!hasSearchResult"
-            t-on-click="onSelectPreviousCell"
-            class="o-sidePanelButton"
-            t-esc="env._t('${FindAndReplaceTerms.Previous}')"/>
-    <button t-att-disabled="!hasSearchResult"
-            t-on-click="onSelectNextCell"
-            class="o-sidePanelButton"
-            t-esc="env._t('${FindAndReplaceTerms.Next}')"/>
-  </div>
-  <div class="o-section" t-if="!env.model.getters.isReadonly()">
-    <div t-esc="env._t('${FindAndReplaceTerms.Replace}')" class="o-section-title"/>
-    <div class="o-input-search-container">
-      <input type="text" class="o-input o-input-without-count" t-model="state.replaceWith" t-on-keydown="onKeydownReplace"/>
-    </div>
-
-    <div class="o-far-item">
-      <label class="o-far-checkbox">
-        <input class="o-far-input" t-att-disabled="state.searchOptions.searchFormulas" type="checkbox"
-        t-model="state.replaceOptions.modifyFormulas"/>
-        <span class="o-far-label"><t t-esc="env._t('${FindAndReplaceTerms.ReplaceFormulas}')"/></span>
-      </label>
-    </div>
-  </div>
-
-  <div class="o-sidePanelButtons" t-if="!env.model.getters.isReadonly()">
-    <button t-att-disabled="env.model.getters.getCurrentSelectedMatchIndex() === null" t-on-click="replace"
-            class="o-sidePanelButton" t-esc="env._t('${FindAndReplaceTerms.Replace}')"/>
-    <button t-att-disabled="env.model.getters.getCurrentSelectedMatchIndex() === null" t-on-click="replaceAll"
-            class="o-sidePanelButton" t-esc="env._t('${FindAndReplaceTerms.ReplaceAll}')"/>
-  </div>
-
-</div>
-`;
     css /* scss */ `
   .o-find-and-replace {
     .o-far-item {
@@ -16593,7 +15758,7 @@
             };
         }
     }
-    FindAndReplacePanel.template = TEMPLATE$k;
+    FindAndReplacePanel.template = "o-spreadsheet.FindAndReplacePanel";
 
     const sidePanelRegistry = new Registry();
     sidePanelRegistry.add("ConditionalFormatting", {
@@ -22749,13 +21914,6 @@
         return position;
     }
 
-    const TEMPLATE$j = owl.xml /* xml */ `
-  <t t-portal="'.o-spreadsheet'">
-    <div t-att-style="style">
-      <t t-slot="default"/>
-    </div>
-  </t>
-`;
     class Popover extends owl.Component {
         get style() {
             const horizontalPosition = `left:${this.horizontalPosition()}`;
@@ -22799,7 +21957,7 @@
             return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
         }
     }
-    Popover.template = TEMPLATE$j;
+    Popover.template = "o-spreadsheet.Popover";
     Popover.defaultProps = {
         flipHorizontalOffset: 0,
         flipVerticalOffset: 0,
@@ -22810,48 +21968,6 @@
     //------------------------------------------------------------------------------
     // Context Menu Component
     //------------------------------------------------------------------------------
-    const TEMPLATE$i = owl.xml /* xml */ `
-    <Popover
-      position="props.position"
-      childWidth="${MENU_WIDTH}"
-      childHeight="menuHeight"
-      flipHorizontalOffset="popover.flipHorizontalOffset"
-      flipVerticalOffset="popover.flipVerticalOffset"
-      marginTop="popover.marginTop"
-      >
-      <div t-ref="menu" class="o-menu" t-on-scroll="onScroll" t-on-wheel.stop="" t-on-click.stop="">
-        <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
-          <t t-set="isMenuRoot" t-value="isRoot(menuItem)"/>
-          <t t-set="isMenuEnabled" t-value="isEnabled(menuItem)"/>
-          <div
-            t-att-title="getName(menuItem)"
-            t-att-data-name="menuItem.id"
-            t-on-click="() => this.onClickMenu(menuItem, menuItem_index)"
-            t-on-mouseover="() => this.onMouseOver(menuItem, menuItem_index)"
-            class="o-menu-item"
-            t-att-class="{
-              'o-menu-root': isMenuRoot,
-              'disabled': !isMenuEnabled,
-            }">
-            <t t-esc="getName(menuItem)"/>
-            <span class="o-menu-item-shortcut" t-esc="getShortCut(menuItem)"/>
-            <t t-if="isMenuRoot">
-              ${TRIANGLE_RIGHT_ICON}
-            </t>
-            <t t-elif="menuItem.icon">
-              <i t-att-class="menuItem.icon" class="o-menu-item-icon"/>
-            </t>
-          </div>
-          <div t-if="menuItem.separator and !menuItem_last" class="o-separator"/>
-        </t>
-      </div>
-      <Menu t-if="subMenu.isOpen"
-        position="subMenuPosition"
-        menuItems="subMenu.menuItems"
-        depth="props.depth + 1"
-        onMenuClicked="props.onMenuClicked"
-        onClose="() => this.close()"/>
-    </Popover>`;
     css /* scss */ `
   .o-menu {
     background-color: white;
@@ -22904,6 +22020,7 @@
     class Menu extends owl.Component {
         constructor() {
             super(...arguments);
+            this.MENU_WIDTH = MENU_WIDTH;
             this.subMenu = owl.useState({
                 isOpen: false,
                 position: null,
@@ -23037,7 +22154,7 @@
             }
         }
     }
-    Menu.template = TEMPLATE$i;
+    Menu.template = "o-spreadsheet.Menu";
     Menu.components = { Menu, Popover };
     Menu.defaultProps = {
         depth: 1,
@@ -23046,34 +22163,6 @@
     // -----------------------------------------------------------------------------
     // SpreadSheet
     // -----------------------------------------------------------------------------
-    const TEMPLATE$h = owl.xml /* xml */ `
-  <div class="o-spreadsheet-bottom-bar o-two-columns" t-on-click="props.onClick" t-ref="bottomBar">
-    <div class="o-sheet-item o-add-sheet" t-att-class="{'disabled': env.model.getters.isReadonly()}" t-on-click="addSheet">${PLUS}</div>
-    <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">${LIST}</div>
-    <div class="o-all-sheets">
-      <t t-foreach="env.model.getters.getSheets()" t-as="sheet" t-key="sheet.id">
-        <div class="o-sheet-item o-sheet" t-on-click="(ev) => this.activateSheet(sheet.id, ev)"
-             t-on-contextmenu.prevent="(ev) => this.onContextMenu(sheet.id, ev)"
-             t-att-title="sheet.name"
-             t-att-data-id="sheet.id"
-             t-att-class="{active: sheet.id === env.model.getters.getActiveSheetId()}">
-          <span class="o-sheet-name" t-esc="sheet.name" t-on-dblclick="(ev) => this.onDblClick(sheet.id, ev)"/>
-          <span class="o-sheet-icon" t-on-click.stop="(ev) => this.onIconClick(sheet.id, ev)">${TRIANGLE_DOWN_ICON}</span>
-        </div>
-      </t>
-    </div>
-
-    <t t-set="selectedStatistic" t-value="getSelectedStatistic()"/>
-    <div t-if="selectedStatistic !== undefined" class="o-selection-statistic" t-on-click="listSelectionStatistics">
-      <t t-esc="selectedStatistic"/>
-      <span>${TRIANGLE_DOWN_ICON}</span>
-    </div>
-
-    <Menu t-if="menuState.isOpen"
-          position="menuState.position"
-          menuItems="menuState.menuItems"
-          onClose="() => this.menuState.isOpen=false"/>
-  </div>`;
     css /* scss */ `
   .o-spreadsheet-bottom-bar {
     background-color: ${BACKGROUND_GRAY_COLOR};
@@ -23271,7 +22360,7 @@
             return fnName + ": " + (fnValue !== undefined ? formatValue(fnValue) : "__");
         }
     }
-    BottomBar.template = TEMPLATE$h;
+    BottomBar.template = "o-spreadsheet.BottomBar";
     BottomBar.components = { Menu };
 
     function startDnd(onMouseMove, onMouseUp) {
@@ -23359,15 +22448,6 @@
     // -----------------------------------------------------------------------------
     // Autofill
     // -----------------------------------------------------------------------------
-    const TEMPLATE$g = owl.xml /* xml */ `
-  <div class="o-autofill" t-on-mousedown="onMouseDown" t-att-style="style" t-on-dblclick="onDblClick">
-    <div class="o-autofill-handler" t-att-style="styleHandler"/>
-    <t t-set="tooltip" t-value="getTooltip()"/>
-    <div t-if="tooltip" class="o-autofill-nextvalue" t-att-style="styleNextvalue">
-      <t t-component="tooltip.component" t-props="tooltip.props"/>
-    </div>
-  </div>
-`;
     css /* scss */ `
   .o-autofill {
     height: 6px;
@@ -23462,22 +22542,13 @@
             this.env.model.dispatch("AUTOFILL_AUTO");
         }
     }
-    Autofill.template = TEMPLATE$g;
+    Autofill.template = "o-spreadsheet.Autofill";
     class TooltipComponent extends owl.Component {
     }
     TooltipComponent.template = owl.xml /* xml */ `
     <div t-esc="props.content"/>
   `;
 
-    const TEMPLATE$f = owl.xml /* xml */ `
-  <div>
-    <div
-      class="o-client-tag"
-      t-att-style="tagStyle"
-      t-esc="props.name"
-    />
-  </div>
-`;
     css /* scss */ `
   .o-client-tag {
     position: absolute;
@@ -23498,7 +22569,7 @@
             return `bottom: ${height - y + 15}px;left: ${x - 1}px;border: 1px solid ${color};background-color: ${color};${this.props.active ? "opacity:1 !important" : ""}`;
         }
     }
-    ClientTag.template = TEMPLATE$f;
+    ClientTag.template = "o-spreadsheet.ClientTag";
 
     const functions$1 = functionRegistry.content;
     const providerRegistry = new Registry();
@@ -23513,17 +22584,6 @@
     // -----------------------------------------------------------------------------
     // Autocomplete DropDown component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$e = owl.xml /* xml */ `
-  <div t-att-class="{'o-autocomplete-dropdown':state.values.length}"
-       t-att-style="state.values.length > 0 ? props.borderStyle : null"
-    >
-    <t t-foreach="state.values" t-as="v" t-key="v.text">
-        <div t-att-class="{'o-autocomplete-value-focus': state.selectedIndex === v_index}" t-on-click.stop.prevent="() => this.fillValue(v_index)">
-             <div class="o-autocomplete-value" t-esc="v.text"/>
-             <div class="o-autocomplete-description" t-esc="v.description" t-if="state.selectedIndex === v_index"/>
-        </div>
-    </t>
-  </div>`;
     css /* scss */ `
   .o-autocomplete-dropdown {
     pointer-events: auto;
@@ -23605,7 +22665,7 @@
             return undefined;
         }
     }
-    TextValueProvider.template = TEMPLATE$e;
+    TextValueProvider.template = "o-spreadsheet.TextValueProvider";
 
     class ContentEditableHelper {
         constructor(el) {
@@ -23749,69 +22809,9 @@
         }
     }
 
-    const formulaAssistantTerms = {
-        ABOUT: _lt("ABOUT"),
-        OPTIONAL: _lt("optional"),
-        BY_DEFAULT: _lt("by default"),
-        REPEATABLE: _lt("repeatable"),
-    };
-
     // -----------------------------------------------------------------------------
     // Formula Assistant component
     // -----------------------------------------------------------------------------
-    const TEMPLATE$d = owl.xml /* xml */ `
-  <div class="o-formula-assistant-container"
-       t-att-style="props.borderStyle"
-       t-att-class="{
-         'o-formula-assistant-event-none': assistantState.allowCellSelectionBehind,
-         'o-formula-assistant-event-auto': !assistantState.allowCellSelectionBehind
-         }">
-    <t t-set="context" t-value="getContext()"/>
-    <div class="o-formula-assistant" t-if="context.functionName" t-on-mousemove="onMouseMove"
-         t-att-class="{'o-formula-assistant-transparency': assistantState.allowCellSelectionBehind}">
-
-      <div class="o-formula-assistant-head">
-        <span t-esc="context.functionName"/> (
-        <t t-foreach="context.functionDescription.args" t-as="arg" t-key="arg.name" >
-          <span t-if="arg_index > '0'" >, </span>
-          <span t-att-class="{ 'o-formula-assistant-focus': context.argToFocus === arg_index }" >
-            <span>
-              <span t-if="arg.optional || arg.repeating || arg.default">[</span>
-              <span t-esc="arg.name" />
-              <span t-if="arg.repeating">, ...</span>
-              <span t-if="arg.optional || arg.repeating || arg.default">]</span>
-            </span>
-          </span>
-        </t> )
-      </div>
-
-      <div class="o-formula-assistant-core">
-        <div class="o-formula-assistant-gray" t-esc="env._t('${formulaAssistantTerms.ABOUT}')"/>
-        <div t-esc="context.functionDescription.description"/>
-      </div>
-
-      <t t-foreach="context.functionDescription.args" t-as="arg" t-key="arg.name">
-        <div class="o-formula-assistant-arg"
-            t-att-class="{
-              'o-formula-assistant-gray': context.argToFocus >= '0',
-              'o-formula-assistant-focus': context.argToFocus === arg_index,
-            }" >
-          <div>
-            <span t-esc="arg.name" />
-            <span t-if="arg.optional || arg.repeating || arg.default "> - [<t t-esc="env._t('${formulaAssistantTerms.OPTIONAL}')"/>] </span>
-            <span t-if="arg.default">
-              <t t-esc="arg.defaultValue" />
-              <t t-esc="env._t(' ${formulaAssistantTerms.BY_DEFAULT}')"/>
-            </span>
-            <span t-if="arg.repeating" t-esc="env._t('${formulaAssistantTerms.REPEATABLE}')"/>
-          </div>
-          <div class="o-formula-assistant-arg-description" t-esc="arg.description"/>
-        </div>
-      </t>
-
-    </div>
-  </div>
-`;
     css /* scss */ `
   .o-formula-assistant {
     white-space: normal;
@@ -23888,7 +22888,7 @@
             }, 2000);
         }
     }
-    FunctionDescriptionProvider.template = TEMPLATE$d;
+    FunctionDescriptionProvider.template = "o-spreadsheet.FunctionDescriptionProvider";
 
     const functions = functionRegistry.content;
     const ASSISTANT_WIDTH = 300;
@@ -23909,44 +22909,6 @@
         RIGHT_PAREN: FunctionColor,
         COMMA: FunctionColor,
     };
-    const TEMPLATE$c = owl.xml /* xml */ `
-<div class="o-composer-container">
-  <div
-    t-att-class="{ 'o-composer': true, 'text-muted': env.model.getters.isReadonly(), 'unfocusable': env.model.getters.isReadonly() }"
-    t-att-style="props.inputStyle"
-    t-ref="o_composer"
-    tabindex="1"
-    t-att-contenteditable="env.model.getters.isReadonly() ? 'false' : 'true'"
-    spellcheck="false"
-
-    t-on-keydown="onKeydown"
-    t-on-mousedown="onMousedown"
-    t-on-input="onInput"
-    t-on-keyup="onKeyup"
-    t-on-click.stop="onClick"
-    t-on-blur="onBlur"
-  />
-
-  <div t-if="props.focus !== 'inactive' and (autoCompleteState.showProvider or functionDescriptionState.showDescription)"
-    class="o-composer-assistant" t-att-style="assistantStyle">
-    <TextValueProvider
-        t-if="autoCompleteState.showProvider"
-        exposeAPI="(api) => this.autocompleteAPI = api"
-        search="autoCompleteState.search"
-        provider="autoCompleteState.provider"
-        onCompleted="(text) => this.onCompleted(text)"
-        borderStyle="borderStyle"
-    />
-    <FunctionDescriptionProvider
-        t-if="functionDescriptionState.showDescription"
-        functionName = "functionDescriptionState.functionName"
-        functionDescription = "functionDescriptionState.functionDescription"
-        argToFocus = "functionDescriptionState.argToFocus"
-        borderStyle="borderStyle"
-    />
-  </div>
-</div>
-  `;
     css /* scss */ `
   .o-composer-container {
     padding: 0;
@@ -24376,7 +23338,7 @@
             this.processTokenAtCursor();
         }
     }
-    Composer.template = TEMPLATE$c;
+    Composer.template = "o-spreadsheet.Composer";
     Composer.components = { TextValueProvider, FunctionDescriptionProvider };
     Composer.defaultProps = {
         inputStyle: "",
@@ -24385,18 +23347,6 @@
 
     const SCROLLBAR_WIDTH = 14;
     const SCROLLBAR_HIGHT = 15;
-    const TEMPLATE$b = owl.xml /* xml */ `
-  <div class="o-grid-composer" t-att-style="containerStyle" t-ref="gridComposer">
-    <Composer
-      focus = "props.focus"
-      inputStyle = "composerStyle"
-      rect = "composerState.rect"
-      delimitation = "composerState.delimitation"
-      onComposerUnmounted="props.onComposerUnmounted"
-      onComposerContentFocused="props.onComposerContentFocused"
-    />
-  </div>
-`;
     const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
     css /* scss */ `
   div.o-grid-composer {
@@ -24483,14 +23433,9 @@
     `;
         }
     }
-    GridComposer.template = TEMPLATE$b;
+    GridComposer.template = "o-spreadsheet.GridComposer";
     GridComposer.components = { Composer };
 
-    const TEMPLATE$a = owl.xml /* xml */ `
-    <div class="o-error-tooltip"> 
-      <t t-esc="props.text"/>
-    </div>
-`;
     css /* scss */ `
   .o-error-tooltip {
     font-size: 13px;
@@ -24501,17 +23446,8 @@
 `;
     class ErrorToolTip extends owl.Component {
     }
-    ErrorToolTip.template = TEMPLATE$a;
+    ErrorToolTip.template = "o-spreadsheet.ErrorToolTip";
 
-    const TEMPLATE$9 = owl.xml /* xml */ `
-<div class="o-chart-container" t-ref="chartContainer">
-  <div class="o-chart-menu" t-on-click="showMenu">${LIST}</div>
-  <canvas t-att-style="canvasStyle" t-ref="graphContainer"/>
-  <Menu t-if="menuState.isOpen"
-    position="menuState.position"
-    menuItems="menuState.menuItems"
-    onClose="() => this.menuState.isOpen=false"/>
-</div>`;
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
@@ -24644,41 +23580,9 @@
             };
         }
     }
-    ChartFigure.template = TEMPLATE$9;
+    ChartFigure.template = "o-spreadsheet.ChartFigure";
     ChartFigure.components = { Menu };
 
-    const TEMPLATE$8 = owl.xml /* xml */ `<div>
-    <t t-foreach="getVisibleFigures()" t-as="info" t-key="info.id">
-        <div class="o-figure-wrapper"
-             t-att-style="getStyle(info)"
-             t-on-mousedown="(ev) => this.onMouseDown(info.figure, ev)"
-             >
-            <div class="o-figure"
-                 t-att-class="{active: info.isSelected, 'o-dragging': info.id === dnd.figureId}"
-                 t-att-style="getDims(info)"
-                 tabindex="0"
-                 t-on-keydown.stop="(ev) => this.onKeyDown(info.figure, ev)"
-                 t-on-keyup.stop="">
-                <t t-component="figureRegistry.get(info.figure.tag).Component"
-                   t-key="info.id"
-                   sidePanelIsOpen="props.sidePanelIsOpen"
-                   onFigureDeleted="props.onFigureDeleted"
-                   figure="info.figure"/>
-                <t t-if="info.isSelected">
-                    <div class="o-anchor o-top" t-on-mousedown.stop="(ev) => this.resize(info.figure, 0,-1, ev)"/>
-                    <div class="o-anchor o-topRight" t-on-mousedown.stop="(ev) => this.resize(info.figure, 1,-1, ev)"/>
-                    <div class="o-anchor o-right" t-on-mousedown.stop="(ev) => this.resize(info.figure, 1,0, ev)"/>
-                    <div class="o-anchor o-bottomRight" t-on-mousedown.stop="(ev) => this.resize(info.figure, 1,1, ev)"/>
-                    <div class="o-anchor o-bottom" t-on-mousedown.stop="(ev) => this.resize(info.figure, 0,1, ev)"/>
-                    <div class="o-anchor o-bottomLeft" t-on-mousedown.stop="(ev) => this.resize(info.figure, -1,1, ev)"/>
-                    <div class="o-anchor o-left" t-on-mousedown.stop="(ev) => this.resize(info.figure, -1,0, ev)"/>
-                    <div class="o-anchor o-topLeft" t-on-mousedown.stop="(ev) => this.resize(info.figure, -1,-1, ev)"/>
-                </t>
-            </div>
-        </div>
-    </t>
-</div>
-`;
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
@@ -24922,24 +23826,10 @@
             }
         }
     }
-    FiguresContainer.template = TEMPLATE$8;
+    FiguresContainer.template = "o-spreadsheet.FiguresContainer";
     FiguresContainer.components = {};
     figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
 
-    const TEMPLATE$7 = owl.xml /* xml */ `
-    <div class="o-border"
-        t-on-mousedown="onMouseDown"
-        t-att-style="style"
-        t-att-class="{
-          'o-moving': props.isMoving,
-          'o-border-n': props.orientation === 'n',
-          'o-border-s': props.orientation === 's',
-          'o-border-w': props.orientation === 'w',
-          'o-border-e': props.orientation === 'e',
-        }"
-        >
-    </div>
-`;
     css /* scss */ `
   .o-border {
     position: absolute;
@@ -24981,22 +23871,8 @@
             this.props.onMoveHighlight(ev.clientX, ev.clientY);
         }
     }
-    Border.template = TEMPLATE$7;
+    Border.template = "o-spreadsheet.Border";
 
-    const TEMPLATE$6 = owl.xml /* xml */ `
-    <div class="o-corner"
-        t-on-mousedown="onMouseDown"
-        t-att-style="style"
-        t-att-class="{
-          'o-resizing': props.isResizing,
-          'o-corner-nw': props.orientation === 'nw',
-          'o-corner-ne': props.orientation === 'ne',
-          'o-corner-sw': props.orientation === 'sw',
-          'o-corner-se': props.orientation === 'se',
-        }"
-        >
-    </div>
-`;
     css /* scss */ `
   .o-corner {
     position: absolute;
@@ -25042,29 +23918,8 @@
             this.props.onResizeHighlight(this.isLeft, this.isTop);
         }
     }
-    Corner.template = TEMPLATE$6;
+    Corner.template = "o-spreadsheet.Corner";
 
-    const TEMPLATE$5 = owl.xml /* xml */ `
-  <div class="o-highlight" t-ref="highlight">
-    <t t-foreach="['nw', 'ne', 'sw', 'se']" t-as="orientation" t-key="orientation">
-      <Corner
-        onResizeHighlight="(isLeft, isTop) => this.onResizeHighlight(isLeft, isTop)"
-        isResizing='highlightState.shiftingMode === "isResizing"'
-        orientation="orientation"
-        zone="props.zone"
-        color="props.color"
-      />
-    </t>
-    <t t-foreach="['n', 's', 'w', 'e']" t-as="orientation" t-key="orientation">
-      <Border
-        onMoveHighlight="(x, y) => this.onMoveHighlight(x,y)"
-        isMoving='highlightState.shiftingMode === "isMoving"'
-        orientation="orientation"
-        zone="props.zone"
-      />
-    </t>
-  </div>
-`;
     class Highlight extends owl.Component {
         constructor() {
             super(...arguments);
@@ -25155,33 +24010,12 @@
             dragAndDropBeyondTheViewport(parent, this.env, mouseMove, mouseUp);
         }
     }
-    Highlight.template = TEMPLATE$5;
+    Highlight.template = "o-spreadsheet.Highlight";
     Highlight.components = {
         Corner,
         Border,
     };
 
-    const TEMPLATE$4 = owl.xml /* xml */ `
-  <div class="o-link-tool">
-    <t t-set="link" t-value="cell.link"/>
-    <a t-if="link.isExternal"
-      class="o-link"
-      t-att-href="link.url"
-      target="_blank"
-      t-on-click.prevent="openLink"
-      t-att-title="link.url">
-      <t t-esc="cell.urlRepresentation"/>
-    </a>
-    <a t-else=""
-      class="o-link"
-      t-on-click.prevent="openLink"
-      t-att-title="cell.urlRepresentation">
-      <t t-esc="cell.urlRepresentation"/>
-    </a>
-    <span class="o-link-icon o-unlink" t-on-click="unlink" title="${LinkEditorTerms.Remove}">${UNLINK}</span>
-    <span class="o-link-icon o-edit-link" t-on-click="edit" title="${LinkEditorTerms.Edit}">${EDIT}</span>
-  </div>
-`;
     css /* scss */ `
   .o-link-tool {
     font-size: 13px;
@@ -25251,43 +24085,12 @@
             });
         }
     }
-    LinkDisplay.template = TEMPLATE$4;
     LinkDisplay.components = { Menu };
+    LinkDisplay.template = "o-spreadsheet.LinkDisplay";
 
     const MENU_OFFSET_X = 320;
     const MENU_OFFSET_Y = 100;
     const PADDING = 12;
-    const TEMPLATE$3 = owl.xml /* xml */ `
-    <div class="o-link-editor" t-on-click.stop="() => this.menu.isOpen=false" t-on-keydown.stop="onKeyDown" t-ref="linkEditor">
-      <div class="o-section">
-        <div t-esc="env._t('${LinkEditorTerms.Text}')" class="o-section-title"/>
-        <div class="d-flex">
-          <input type="text" class="o-input flex-grow-1" t-model="state.link.label"></input>
-        </div>
-
-        <div t-esc="env._t('${LinkEditorTerms.Link}')" class="o-section-title mt-3"/>
-        <div class="o-link-url">
-          <t t-if="state.isUrlEditable">
-            <input type="text" t-ref="urlInput" t-model="state.link.url"></input>
-          </t>
-          <t t-else="">
-            <input type="text" t-att-value="state.urlRepresentation" disabled="1"></input>
-          </t>
-          <button t-if="state.link.url" t-on-click="removeLink" class="o-remove-url">✖</button>
-          <button t-if="!state.link.url" t-on-click.stop="openMenu" class="o-special-link">${LIST}</button>
-        </div>
-      </div>
-      <Menu
-        t-if="menu.isOpen"
-        position="menuPosition"
-        menuItems="menuItems"
-        onMenuClicked="(ev) => this.onSpecialLink(ev)"
-        onClose="() => this.menu.isOpen=false"/>
-      <div class="o-buttons">
-        <button t-on-click="cancel" class="o-button o-cancel" t-esc="env._t('${GenericTerms.Cancel}')"></button>
-        <button t-on-click="save" class="o-button o-save" t-esc="env._t('${GenericTerms.Confirm}')" t-att-disabled="!state.link.url" ></button>
-      </div>
-    </div>`;
     css /* scss */ `
   .o-link-editor {
     font-size: 13px;
@@ -25439,7 +24242,7 @@
             }
         }
     }
-    LinkEditor.template = TEMPLATE$3;
+    LinkEditor.template = "o-spreadsheet.LinkEditor";
     LinkEditor.components = { Menu };
 
     // -----------------------------------------------------------------------------
@@ -25863,30 +24666,7 @@
             return col.start - offset - this._getHeaderSize();
         }
     }
-    ColResizer.template = owl.xml /* xml */ `
-    <div class="o-col-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select" t-ref="colResizer"
-      t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving, }">
-      <div t-if="state.isMoving" class="dragging-col-line" t-attf-style="left:{{state.draggerLinePosition}}px;"/>
-      <div t-if="state.isMoving" class="dragging-col-shadow" t-attf-style="left:{{state.draggerShadowPosition}}px; width:{{state.draggerShadowThickness}}px"/>
-      <t t-if="state.resizerIsActive">
-        <div class="o-handle" t-on-mousedown="onMouseDown" t-on-dblclick="onDblClick" t-on-contextmenu.prevent=""
-        t-attf-style="left:{{state.draggerLinePosition - 2}}px;">
-        <div class="dragging-resizer" t-if="state.isResizing"/>
-        </div>
-      </t>
-      <t t-foreach="env.model.getters.getHiddenColsGroups(env.model.getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
-        <t t-if="!hiddenItem.includes(0)">
-          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) - 17}}px; margin-right:6px;" t-on-click="() => this.unhide(hiddenItem)">
-          ${TRIANGLE_LEFT_ICON}
-          </div>
-        </t>
-        <t t-if="!hiddenItem.includes(env.model.getters.getActiveSheet().cols.length-1)">
-          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="() => this.unhide(hiddenItem)">
-          ${TRIANGLE_RIGHT_ICON}
-          </div>
-        </t>
-      </t>
-    </div>`;
+    ColResizer.template = "o-spreadsheet.ColResizer";
     css /* scss */ `
   .o-row-resizer {
     position: absolute;
@@ -26071,30 +24851,7 @@
             return row.start - offset - this._getHeaderSize();
         }
     }
-    RowResizer.template = owl.xml /* xml */ `
-    <div class="o-row-resizer" t-on-mousemove.self="onMouseMove" t-on-mouseleave="onMouseLeave" t-on-mousedown.self.prevent="select" t-ref="rowResizer"
-    t-on-mouseup.self="onMouseUp" t-on-contextmenu.self="onContextMenu" t-att-class="{'o-grab': state.waitingForMove, 'o-dragging': state.isMoving}">
-      <div t-if="state.isMoving" class="dragging-row-line" t-attf-style="top:{{state.draggerLinePosition}}px;"/>
-      <div t-if="state.isMoving" class="dragging-row-shadow" t-attf-style="top:{{state.draggerShadowPosition}}px; height:{{state.draggerShadowThickness}}px;"/>
-      <t t-if="state.resizerIsActive">
-        <div class="o-handle" t-on-mousedown="onMouseDown" t-on-dblclick="onDblClick" t-on-contextmenu.prevent=""
-          t-attf-style="top:{{state.draggerLinePosition - 2}}px;">
-          <div class="dragging-resizer" t-if="state.isResizing"/>
-        </div>
-      </t>
-      <t t-foreach="env.model.getters.getHiddenRowsGroups(env.model.getters.getActiveSheetId())" t-as="hiddenItem" t-key="hiddenItem_index">
-        <t t-if="!hiddenItem.includes(0)">
-          <div class="o-unhide" t-att-data-index="hiddenItem_index" t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) - 17}}px;" t-on-click="() => this.unhide(hiddenItem)">
-          ${TRIANGLE_UP_ICON}
-          </div>
-        </t>
-        <t t-if="!hiddenItem.includes(env.model.getters.getActiveSheet().rows.length-1)">
-         <div class="o-unhide" t-att-data-index="hiddenItem_index"  t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) + 3}}px;" t-on-click="() => this.unhide(hiddenItem)">
-         ${TRIANGLE_DOWN_ICON}
-         </div>
-        </t>
-      </t>
-    </div>`;
+    RowResizer.template = "o-spreadsheet.RowResizer";
     css /* scss */ `
   .o-overlay {
     .all {
@@ -26112,12 +24869,7 @@
             this.env.model.selection.selectAll();
         }
     }
-    Overlay.template = owl.xml /* xml */ `
-    <div class="o-overlay">
-      <ColResizer onOpenContextMenu="props.onOpenContextMenu" />
-      <RowResizer onOpenContextMenu="props.onOpenContextMenu" />
-      <div class="all" t-on-mousedown.self="selectAll"/>
-    </div>`;
+    Overlay.template = "o-spreadsheet.Overlay";
     Overlay.components = { ColResizer, RowResizer };
 
     class ScrollBar {
@@ -26143,10 +24895,6 @@
         COL: colMenuRegistry,
         CELL: cellMenuRegistry,
     };
-    const LINK_EDITOR_WIDTH = 340;
-    const LINK_EDITOR_HEIGHT = 180;
-    const ERROR_TOOLTIP_HEIGHT = 40;
-    const ERROR_TOOLTIP_WIDTH = 180;
     // copy and paste are specific events that should not be managed by the keydown event,
     // but they shouldn't be preventDefault and stopped (else copy and paste events will not trigger)
     // and also should not result in typing the character C or V in the composer
@@ -26239,79 +24987,6 @@
     // -----------------------------------------------------------------------------
     // TEMPLATE
     // -----------------------------------------------------------------------------
-    const TEMPLATE$2 = owl.xml /* xml */ `
-  <div class="o-grid" t-att-class="{'o-two-columns': !props.sidePanelIsOpen}" t-on-click="focus" t-on-keydown="onKeydown" t-on-wheel="onMouseWheel" t-ref="grid">
-    <t t-if="env.model.getters.getEditionMode() !== 'inactive'">
-      <GridComposer
-        onComposerUnmounted="() => this.focus()"
-        onComposerContentFocused="props.onComposerContentFocused"
-        focus="props.focusComposer"
-        />
-    </t>
-    <canvas t-ref="canvas"
-      t-on-mousedown="onMouseDown"
-      t-on-dblclick="onDoubleClick"
-      tabindex="-1"
-      t-on-contextmenu="onCanvasContextMenu"
-       />
-    <t t-foreach="env.model.getters.getClientsToDisplay()" t-as="client" t-key="getClientPositionKey(client)">
-      <ClientTag name="client.name"
-                 color="client.color"
-                 col="client.position.col"
-                 row="client.position.row"
-                 active="isCellHovered(client.position.col, client.position.row)"
-                 />
-    </t>
-    <Popover
-      t-if="errorTooltip.isOpen"
-      position="errorTooltip.position"
-      flipHorizontalOffset="errorTooltip.cellWidth"
-      childWidth="${ERROR_TOOLTIP_WIDTH}"
-      childHeight="${ERROR_TOOLTIP_HEIGHT}">
-      <ErrorToolTip text="errorTooltip.text"/>
-    </Popover>
-    <Popover
-      t-if="shouldDisplayLink"
-      position="popoverPosition.position"
-      flipHorizontalOffset="-popoverPosition.cellWidth"
-      flipVerticalOffset="-popoverPosition.cellHeight"
-      childWidth="${LINK_TOOLTIP_WIDTH}"
-      childHeight="${LINK_TOOLTIP_HEIGHT}">
-      <LinkDisplay cellPosition="activeCellPosition"/>
-    </Popover>
-    <Popover
-      t-if="props.linkEditorIsOpen"
-      position="popoverPosition.position"
-      flipHorizontalOffset="-popoverPosition.cellWidth"
-      flipVerticalOffset="-popoverPosition.cellHeight"
-      childWidth="${LINK_EDITOR_WIDTH}"
-      childHeight="${LINK_EDITOR_HEIGHT}">
-      <LinkEditor cellPosition="activeCellPosition" onLinkEditorClosed="props.onLinkEditorClosed"/>
-    </Popover>
-    <t t-if="env.model.getters.getEditionMode() === 'inactive'">
-      <Autofill position="getAutofillPosition()" getGridBoundingClientRect="() => this.getGridBoundingClientRect()"/>
-    </t>
-    <t t-if="env.model.getters.getEditionMode() !== 'inactive'">
-      <t t-foreach="env.model.getters.getHighlights()" t-as="highlight" t-key="highlight_index">
-        <t t-if="highlight.sheet === env.model.getters.getActiveSheetId()">
-          <Highlight zone="highlight.zone" color="highlight.color"/>
-        </t>
-      </t>
-    </t>
-    <Overlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)" />
-    <Menu t-if="menuState.isOpen"
-      menuItems="menuState.menuItems"
-      position="menuState.position"
-      onClose="() => this.closeMenu()"/>
-    <t t-set="gridSize" t-value="env.model.getters.getMaxViewportSize(env.model.getters.getActiveSheet())"/>
-    <FiguresContainer model="props.model" sidePanelIsOpen="props.sidePanelIsOpen" onFigureDeleted="() => this.focus()" />
-    <div class="o-scrollbar vertical" t-on-scroll="onScroll" t-ref="vscrollbar">
-      <div t-attf-style="width:1px;height:{{gridSize.height}}px"/>
-    </div>
-    <div class="o-scrollbar horizontal" t-on-scroll="onScroll" t-ref="hscrollbar">
-      <div t-attf-style="height:1px;width:{{gridSize.width}}px"/>
-    </div>
-  </div>`;
     // -----------------------------------------------------------------------------
     // STYLE
     // -----------------------------------------------------------------------------
@@ -26356,6 +25031,12 @@
     class Grid extends owl.Component {
         constructor() {
             super(...arguments);
+            this.LINK_EDITOR_WIDTH = 340;
+            this.LINK_EDITOR_HEIGHT = 180;
+            this.ERROR_TOOLTIP_HEIGHT = 40;
+            this.ERROR_TOOLTIP_WIDTH = 180;
+            this.LINK_TOOLTIP_HEIGHT = 43;
+            this.LINK_TOOLTIP_WIDTH = 220;
             // this map will handle most of the actions that should happen on key down. The arrow keys are managed in the key
             // down itself
             this.keyDownMapping = {
@@ -26922,7 +25603,7 @@
             this.focus();
         }
     }
-    Grid.template = TEMPLATE$2;
+    Grid.template = "o-spreadsheet.Grid";
     Grid.components = {
         GridComposer,
         Overlay,
@@ -26937,19 +25618,6 @@
         Popover,
     };
 
-    const TEMPLATE$1 = owl.xml /* xml */ `
-  <div class="o-sidePanel" >
-    <div class="o-sidePanelHeader">
-        <div class="o-sidePanelTitle" t-esc="getTitle()"/>
-        <div class="o-sidePanelClose" t-on-click="() => this.props.onCloseSidePanel()">×</div>
-    </div>
-    <div class="o-sidePanelBody">
-      <t t-component="state.panel.Body" t-props="props.panelProps" onCloseSidePanel="props.onCloseSidePanel" t-key="'Body_' + props.component"/>
-    </div>
-    <div class="o-sidePanelFooter" t-if="state.panel.Footer">
-      <t t-component="state.panel.Footer" t-props="props.panelProps" t-key="'Footer_' + props.component"/>
-    </div>
-  </div>`;
     css /* scss */ `
   .o-sidePanel {
     display: flex;
@@ -27084,7 +25752,7 @@
                 : this.state.panel.title;
         }
     }
-    SidePanel.template = TEMPLATE$1;
+    SidePanel.template = "o-spreadsheet.SidePanel";
 
     const FORMATS = [
         { name: "general", text: `${NumberFormatTerms.General} (${NumberFormatTerms.NoSpecificFormat})` },
@@ -27300,6 +25968,7 @@
     class TopBar extends owl.Component {
         constructor() {
             super(...arguments);
+            this.DEFAULT_FONT_SIZE = DEFAULT_FONT_SIZE;
             this.formats = FORMATS;
             this.customFormats = CUSTOM_FORMATS;
             this.currentFormat = "general";
@@ -27496,146 +26165,9 @@
             this.env.model.dispatch("REQUEST_REDO");
         }
     }
-    TopBar.template = owl.xml /* xml */ `
-    <div class="o-spreadsheet-topbar o-two-columns" t-on-click="props.onClick">
-      <div class="o-topbar-top">
-        <!-- Menus -->
-        <div class="o-topbar-topleft">
-          <t t-foreach="menus" t-as="menu" t-key="menu_index">
-            <div t-if="menu.children.length !== 0"
-              class="o-topbar-menu"
-              t-on-click="(ev) => this.toggleContextMenu(menu, ev)"
-              t-on-mouseover="(ev) => this.onMenuMouseOver(menu, ev)"
-              t-att-data-id="menu.id">
-            <t t-esc="getMenuName(menu)"/>
-          </div>
-          </t>
-          <Menu t-if="state.menuState.isOpen"
-                position="state.menuState.position"
-                menuItems="state.menuState.menuItems"
-                onClose="() => this.state.menuState.isOpen=false"/>
-        </div>
-        <div class="o-topbar-topright">
-          <div t-foreach="topbarComponents" t-as="comp" t-key="comp.id">
-            <t t-component="comp.component"/>
-          </div>
-        </div>
-      </div>
-      <!-- Toolbar and Cell Content -->
-      <div class="o-topbar-toolbar">
-        <!-- Toolbar -->
-        <div t-if="env.model.getters.isReadonly()" class="o-readonly-toolbar text-muted">
-          <span>
-            <i class="fa fa-eye" /> <t t-esc="env._t('${TopBarTerms.ReadonlyAccess}')" />
-          </span>
-        </div>
-        <div t-else="" class="o-toolbar-tools">
-          <div class="o-tool" title="${GenericTerms.Undo}" t-att-class="{'o-disabled': !undoTool}" t-on-click="undo" >${UNDO_ICON}</div>
-          <div class="o-tool" t-att-class="{'o-disabled': !redoTool}" title="${GenericTerms.Redo}"  t-on-click="redo">${REDO_ICON}</div>
-          <div class="o-tool" title="${TopBarTerms.PaintFormat}" t-att-class="{active:paintFormatTool}" t-on-click="paintFormat">${PAINT_FORMAT_ICON}</div>
-          <div class="o-tool" title="${TopBarTerms.ClearFormat}" t-on-click="clearFormatting">${CLEAR_FORMAT_ICON}</div>
-          <div class="o-divider"/>
-          <div class="o-tool" title="${TopBarTerms.FormatPercent}" t-on-click="(ev) => this.toogleFormat('percent', ev)">%</div>
-          <div class="o-tool" title="${TopBarTerms.DecreaseDecimal}" t-on-click="(ev) => this.setDecimal(-1, ev)">.0</div>
-          <div class="o-tool" title="${TopBarTerms.IncreaseDecimal}" t-on-click="(ev) => this.setDecimal(+1, ev)">.00</div>
-          <div class="o-tool o-dropdown" title="${TopBarTerms.MoreFormat}" t-on-click="(ev) => this.toggleDropdownTool('formatTool', ev)">
-            <div class="o-text-icon">123${TRIANGLE_DOWN_ICON}</div>
-            <div class="o-dropdown-content o-text-options  o-format-tool "  t-if="state.activeTool === 'formatTool'" t-on-click="setFormat">
-              <t t-foreach="formats" t-as="format" t-key="format.name">
-                <div t-att-data-format="format.name" t-att-class="{active: currentFormat === format.name}"><t t-esc="format.text"/></div>
-              </t>
-              <t t-foreach="customFormats" t-as="customFormat" t-key="customFormat.name">
-                <div t-att-data-custom="customFormat.name"><t t-esc="customFormat.text"/></div>
-              </t>
-            </div>
-          </div>
-          <div class="o-divider"/>
-          <!-- <div class="o-tool" title="Font"><span>Roboto</span> ${TRIANGLE_DOWN_ICON}</div> -->
-          <div class="o-tool o-dropdown" title="${TopBarTerms.FontSize}" t-on-click="(ev) => this.toggleDropdownTool('fontSizeTool', ev)">
-            <div class="o-text-icon"><t t-esc="style.fontSize || ${DEFAULT_FONT_SIZE}"/> ${TRIANGLE_DOWN_ICON}</div>
-            <div class="o-dropdown-content o-text-options "  t-if="state.activeTool === 'fontSizeTool'" t-on-click="setSize">
-              <t t-foreach="fontSizes" t-as="font" t-key="font_index">
-                <div t-esc="font.pt" t-att-data-size="font.pt"/>
-              </t>
-            </div>
-          </div>
-          <div class="o-divider"/>
-          <div class="o-tool" title="${GenericTerms.Bold}" t-att-class="{active:style.bold}" t-on-click="(ev) => this.toogleStyle('bold', ev)">${BOLD_ICON}</div>
-          <div class="o-tool" title="${GenericTerms.Italic}" t-att-class="{active:style.italic}" t-on-click="(ev) => this.toogleStyle('italic', ev)">${ITALIC_ICON}</div>
-          <div class="o-tool" title="${GenericTerms.Strikethrough}"  t-att-class="{active:style.strikethrough}" t-on-click="(ev) => this.toogleStyle('strikethrough', ev)">${STRIKE_ICON}</div>
-          <div class="o-tool o-dropdown o-with-color">
-            <span t-attf-style="border-color:{{textColor}}" title="${GenericTerms.TextColor}" t-on-click="(ev) => this.toggleDropdownTool('textColorTool', ev)">${TEXT_COLOR_ICON}</span>
-            <ColorPicker t-if="state.activeTool === 'textColorTool'" onColorPicked="(color) => this.setColor('textColor', color)" t-key="textColor"/>
-          </div>
-          <div class="o-divider"/>
-          <div class="o-tool  o-dropdown o-with-color">
-            <span t-attf-style="border-color:{{fillColor}}" title="${GenericTerms.FillColor}" t-on-click="(ev) => this.toggleDropdownTool('fillColorTool', ev)">${FILL_COLOR_ICON}</span>
-            <ColorPicker t-if="state.activeTool === 'fillColorTool'" onColorPicked="(color) => this.setColor('fillColor', color)" t-key="fillColor"/>
-          </div>
-          <div class="o-tool o-dropdown">
-            <span title="${TopBarTerms.Borders}" t-on-click="(ev) => this.toggleDropdownTool('borderTool', ev)">${BORDERS_ICON}</span>
-            <div class="o-dropdown-content o-border" t-if="state.activeTool === 'borderTool'">
-              <div class="o-dropdown-line">
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('all', ev)">${BORDERS_ICON}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('hv', ev)">${BORDER_HV}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('h', ev)">${BORDER_H}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('v', ev)">${BORDER_V}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('external', ev)">${BORDER_EXTERNAL}</span>
-              </div>
-              <div class="o-dropdown-line">
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('left', ev)">${BORDER_LEFT}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('top', ev)">${BORDER_TOP}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('right', ev)">${BORDER_RIGHT}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('bottom', ev)">${BORDER_BOTTOM}</span>
-                <span class="o-line-item" t-on-click="(ev) => this.setBorder('clear', ev)">${BORDER_CLEAR}</span>
-              </div>
-            </div>
-          </div>
-          <div class="o-tool o-merge-tool" title="${TopBarTerms.MergeCells}"  t-att-class="{active:inMerge, 'o-disabled': cannotMerge}" t-on-click="toggleMerge">${MERGE_CELL_ICON}</div>
-          <div class="o-divider"/>
-          <div class="o-tool o-dropdown" title="${TopBarTerms.HorizontalAlign}" t-on-click="(ev) => this.toggleDropdownTool('alignTool', ev)">
-            <span>
-              <t t-if="style.align === 'right'">${ALIGN_RIGHT_ICON}</t>
-              <t t-elif="style.align === 'center'">${ALIGN_CENTER_ICON}</t>
-              <t t-else="">${ALIGN_LEFT_ICON}</t>
-              ${TRIANGLE_DOWN_ICON}
-            </span>
-            <div t-if="state.activeTool === 'alignTool'" class="o-dropdown-content">
-              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('left', ev)">${ALIGN_LEFT_ICON}</div>
-              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('center', ev)">${ALIGN_CENTER_ICON}</div>
-              <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('right', ev)">${ALIGN_RIGHT_ICON}</div>
-            </div>
-          </div>
-          <!-- <div class="o-tool" title="Vertical align"><span>${ALIGN_MIDDLE_ICON}</span> ${TRIANGLE_DOWN_ICON}</div> -->
-          <!-- <div class="o-tool" title="Text Wrapping">${TEXT_WRAPPING_ICON}</div> -->
-        </div>
-        <Composer inputStyle="composerStyle" focus="props.focusComposer" onComposerContentFocused="props.onComposerContentFocused"/>
-
-      </div>
-    </div>`;
+    TopBar.template = "o-spreadsheet.TopBar";
     TopBar.components = { ColorPicker, Menu, Composer };
 
-    const TEMPLATE = owl.xml /* xml */ `
-  <div class="o-spreadsheet"  t-on-keydown="onKeydown">
-    <TopBar
-      onClick="() => this.focusGrid()"
-      onComposerContentFocused="(selection) => this.onTopBarComposerFocused(selection)"
-      focusComposer="focusTopBarComposer"/>
-    <Grid
-      sidePanelIsOpen="sidePanel.isOpen"
-      linkEditorIsOpen="linkEditor.isOpen"
-      onLinkEditorClosed="() => this.closeLinkEditor()"
-      onSaveRequested="() => this.save()"
-      focusComposer="focusGridComposer"
-      exposeFocus="(focus) => this._focusGrid = focus"
-      onComposerContentFocused="() => this.onGridComposerContentFocused()"
-      onGridComposerCellFocused="(content, selection) => this.onGridComposerCellFocused(content, selection)"/>
-    <SidePanel t-if="sidePanel.isOpen"
-      onCloseSidePanel="() => this.closeSidePanel()"
-      component="sidePanel.component"
-      panelProps="sidePanel.panelProps"/>
-    <BottomBar onClick="() => this.focusGrid()"/>
-  </div>`;
     css /* scss */ `
   .o-spreadsheet {
     position: relative;
@@ -27821,7 +26353,7 @@
             }
         }
     }
-    Spreadsheet.template = TEMPLATE;
+    Spreadsheet.template = "o-spreadsheet.Spreadsheet";
     Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel, LinkEditor };
     Spreadsheet._t = t;
 
@@ -32065,8 +30597,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-04-15T12:46:38.053Z';
-    exports.__info__.hash = 'ef133d4';
+    exports.__info__.date = '2022-04-20T11:48:45.177Z';
+    exports.__info__.hash = '35870db';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

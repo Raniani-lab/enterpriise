@@ -43,6 +43,8 @@ class TestPurchaseOrder(TestCommissionsSetup):
         # Case: OK.
         with patch('odoo.fields.Date.today', today):
             with patch('odoo.addons.mail.models.mail_template.MailTemplate.send_mail', _patched_send_mail):
+                # We test the non recurring flow: recurring_invoice is False on the product
+                self.crm.recurring_invoice = False
                 po = make_po(days_offset=-1)
                 self.env['purchase.order']._cron_confirm_purchase_orders()
                 self.assertEqual(po.state, 'purchase')
@@ -126,7 +128,8 @@ class TestPurchaseOrder(TestCommissionsSetup):
                 line.name = product.name
                 line.product_id = product
                 line.product_uom_qty = 1
-                line.pricing_id = product.product_tmpl_id.product_pricing_ids[-1]
+                if product.recurring_invoice:
+                    line.pricing_id = product.product_tmpl_id.product_pricing_ids[-1]
 
             so = form.save()
             so.action_confirm()

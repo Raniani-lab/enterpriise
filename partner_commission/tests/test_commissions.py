@@ -11,6 +11,9 @@ class TestCommissions(TestCommissionsSetup):
 
     def test_commissions(self):
         """Commissions should be computed based on matching rules."""
+        # We override the products to avoid dealing with subscriptions and mandatory pricings
+        self.worker.recurring_invoice = False
+        self.crm.recurring_invoice = False
         specs = [
             # learning: EUR
             Spec(self.learning, [Line(self.worker, 10), Line(self.crm, 1)], pricelist=self.eur_20, commission=102),
@@ -72,6 +75,8 @@ class TestCommissions(TestCommissionsSetup):
 
     def test_partial_payments(self):
         """The PO should not be created unless the invoice is fully paid"""
+        # We override the crm product to avoid dealing with subscription and mandatory pricing
+        self.crm.recurring_invoice = False
         self.referrer.grade_id = self.gold.id
         self.referrer._onchange_grade_id()
 
@@ -110,6 +115,8 @@ class TestCommissions(TestCommissionsSetup):
 
     def test_refund(self):
         """A refund should add a negative line to the PO"""
+        # We override the products to avoid dealing with subscriptions and mandatory pricings
+        self.crm.recurring_invoice = False
         inv = self.purchase(Spec(self.gold, [Line(self.crm, 1)]))
 
         # refund
@@ -138,6 +145,9 @@ class TestCommissions(TestCommissionsSetup):
         self.learning_plan.commission_rule_ids.write({'is_capped': True, 'max_commission': 150})
 
         spec = Spec(self.learning, [Line(self.crm, 50), Line(self.invoicing, 50)], pricelist=self.eur_20, commission=150)
+        # We test the non recurring flow: recurring_invoice is False on the products
+        self.crm.recurring_invoice = False
+        self.invoicing.recurring_invoice = False
         inv = self.purchase(spec)
 
         po = inv.commission_po_line_id.order_id

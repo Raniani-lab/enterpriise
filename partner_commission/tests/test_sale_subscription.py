@@ -111,7 +111,8 @@ class TestSaleSubscription(TestCommissionsSetup):
         form.partner_id = self.customer
         form.referrer_id = self.referrer
         form.commission_plan_frozen = False
-
+        # We test the non recurring flow: recurring_invoice is False on the product
+        self.worker.recurring_invoice = False
         with form.order_line.new() as line:
             line.name = self.worker.name
             line.product_id = self.worker

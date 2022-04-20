@@ -5,7 +5,7 @@ import pytz
 import re
 import uuid
 
-from babel.dates import format_datetime, format_date
+from babel.dates import format_datetime, format_date, format_time
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from werkzeug.exceptions import Forbidden, NotFound
@@ -366,8 +366,10 @@ class Appointment(http.Controller):
             raise NotFound()
         partner = self._get_customer_partner()
         partner_data = partner.read(fields=['name', 'mobile', 'email'])[0] if partner else {}
-        day_name = format_datetime(datetime.strptime(date_time, dtf), 'EEE', locale=get_lang(request.env).code)
-        date_formated = format_datetime(datetime.strptime(date_time, dtf), locale=get_lang(request.env).code)
+        date_time_object = datetime.strptime(date_time, dtf)
+        day_name = format_datetime(date_time_object, 'EEE', locale=get_lang(request.env).code)
+        date_formated = format_date(date_time_object.date(), locale=get_lang(request.env).code)
+        time_locale = format_time(date_time_object.time(), locale=get_lang(request.env).code, format='short')
         return request.render("appointment.appointment_form", {
             'partner_data': partner_data,
             'appointment_type': appointment_type,
@@ -378,10 +380,12 @@ class Appointment(http.Controller):
             ),
             'main_object': appointment_type,
             'datetime': date_time,
-            'datetime_locale': day_name + ' ' + date_formated,
+            'date_locale': day_name + ' ' + date_formated,
+            'time_locale': time_locale,
             'datetime_str': date_time,
             'duration_str': duration,
-            'staff_user_id': staff_user_id,
+            'duration': float(duration),
+            'staff_user': request.env['res.users'].browse(int(staff_user_id)),
             'timezone': request.session['timezone'] or appointment_type.timezone,  # bw compatibility
             'users_possible': self._get_possible_staff_users(appointment_type, json.loads(kwargs.get('filter_staff_user_ids') or '[]')),
         })

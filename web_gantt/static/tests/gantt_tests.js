@@ -2618,7 +2618,7 @@ document.createElement("a").classList.contains
         if(!dstDate) {
             // we can't really do the test if there is no DST :(
             // unfortunately, the runbot tests are executed on UTC, so we need to dummy the test in that case...
-            // it would be ideal if we could pass a timezone to use for unit tests instead 
+            // it would be ideal if we could pass a timezone to use for unit tests instead
             // (it's possible with the moment-timezone library, but we don't want to add an external dependency
             // as part of a bugfix...)
             dstDate = moment('2020-03-28 12:00:00');
@@ -4023,6 +4023,25 @@ document.createElement("a").classList.contains
             "there should be 2 rows");
         assert.strictEqual(gantt.$('.o_gantt_row:last .o_gantt_row_title').text().trim(), 'User 2',
             'should be grouped by user');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('default_group_by attribute with 2 fields', async function (assert) {
+        assert.expect(2);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" default_group_by="user_id,project_id"/>',
+            viewOptions: {
+                initialDate,
+            },
+        });
+
+        assert.containsN(gantt, '.o_gantt_row_group', 2, 'there should be 2 rows.');
+        assert.containsN(gantt, '.o_gantt_row_nogroup', 4, 'there should be 4 sub rows.');
 
         gantt.destroy();
     });

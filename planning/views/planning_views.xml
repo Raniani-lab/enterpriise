@@ -377,7 +377,7 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <gantt position="attributes">
-                <attribute name="default_group_by">role_id</attribute>
+                <attribute name="default_group_by">role_id,resource_id</attribute>
             </gantt>
         </field>
     </record>

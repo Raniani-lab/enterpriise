@@ -236,12 +236,12 @@
                 <tr><td valign="top" style="font-size: 13px;">
                     Dear <t t-out="object.partner_id.name or ''">Brandon Freeman</t>,<br/><br/>
                     Your Subscription (<t t-out="ctx.get('code') or ''">CODE</t>) has just been renewed
-                    <t t-f="ctx.get('total_amount') and ctx.get('payment_token')">
+                    <t t-if="ctx.get('total_amount') and ctx.get('payment_token')">
                         via a payment of <t t-out="ctx.get('total_amount') or ''">100</t> <t t-out="ctx.get('currency_name') or ''">$</t> charged on <t t-out="ctx.get('payment_token') or ''">PAYMENT_TOKEN</t>.
                     </t>
                     <br/><br/>
                     You will find your invoice attached.
-                    <t t-f="ctx.get('next_date')">
+                    <t t-if="ctx.get('next_date')">
                         Your next invoice will be on <t t-out="format_date(ctx.get('next_date')) or ''">05/05/2021</t>.
                     </t>
                     <br/><br/>

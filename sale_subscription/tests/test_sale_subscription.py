@@ -1136,3 +1136,24 @@ class TestSubscription(TestSubscriptionCommon):
         invoice_id = subscription._create_recurring_invoice()
         self.assertEqual(invoice_id.partner_shipping_id.id, partner2.id)
         self.assertEqual(invoice_id.partner_id.id, partner.id)
+
+    def test_portal_pay_subscription(self):
+        # When portal pays a subscription, a success mail is sent.
+        # This calls AccountMove.amount_by_group, which triggers _compute_invoice_taxes_by_group().
+        # As this method writes on this field and also reads tax_ids, which portal has no rights to,
+        # it might cause some access rights issues. This test checks that no error is raised.
+        portal_partner = self.user_portal.partner_id
+        portal_partner.country_id = self.env['res.country'].search([('code', '=', 'US')])
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+        })
+        acquirer = self.env['payment.acquirer'].create({
+            'name': 'Test',
+        })
+        tx = self.env['payment.transaction'].create({
+            'amount': 100,
+            'acquirer_id': acquirer.id,
+            'currency_id': self.env.company.currency_id.id,
+            'partner_id': portal_partner.id,
+        })
+        self.subscription.with_user(self.user_portal).sudo().send_success_mail(tx, invoice)

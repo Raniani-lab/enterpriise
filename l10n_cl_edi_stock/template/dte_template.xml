@@ -6,7 +6,7 @@
                 <IdDoc>
                     <TipoDTE t-esc="picking.l10n_latam_document_type_id.code"/>
                     <Folio t-esc="int(picking.l10n_latam_document_number)"/>
-                    <FchEmis t-esc="picking.scheduled_date.date()"/>
+                    <FchEmis t-esc="picking.date_done.date()"/>
                     <IndTraslado t-esc="picking.l10n_cl_delivery_guide_reason"/>
                 </IdDoc>
                 <Emisor>
@@ -51,7 +51,7 @@
                 </Totales>
             </Encabezado>
         <t t-set="line_number" t-value="1"/>
-        <t t-foreach="picking.move_ids" t-as="line">
+        <t t-foreach="picking.move_ids.filtered(lambda x: x.quantity_done > 0)" t-as="line">
             <t t-set="line_amounts" t-value="total_line_amounts.get(line, {})"/>
             <Detalle>
                 <NroLinDet t-esc="line_number"/>

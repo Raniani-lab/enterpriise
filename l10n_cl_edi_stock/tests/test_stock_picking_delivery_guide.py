@@ -18,6 +18,7 @@ _logger = logging.getLogger(__name__)
 @patch('odoo.tools.xml_utils._check_with_xsd', _check_with_xsd_patch)
 class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 
+    @freeze_time('2019-10-24')
     @patch('odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util.L10nClEdiUtilMixin._get_cl_current_strftime')
     def test_l10n_cl_edi_delivery_with_taxes_from_inventory(self, get_cl_current_strftime):
         get_cl_current_strftime.return_value = '2019-10-24T20:00:00'
@@ -27,12 +28,14 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
             'picking_type_id': self.picking_type_out,
             'location_id': self.stock_location,
             'location_dest_id': self.customer_location,
+            'picking_type_id': self.warehouse.out_type_id.id,
         })
         self.MoveObj.create({
             'name': self.product_with_taxes_a.name,
             'product_id': self.product_with_taxes_a.id,
             'product_uom': self.product_with_taxes_a.uom_id.id,
             'product_uom_qty': 10.00,
+            'quantity_done': 10.00,
             'procure_method': 'make_to_stock',
             'picking_id': picking.id,
             'location_id': self.stock_location,
@@ -44,14 +47,14 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
             'product_id': self.product_with_taxes_b.id,
             'product_uom': self.product_with_taxes_b.uom_id.id,
             'product_uom_qty': 1,
+            'quantity_done': 1,
             'procure_method': 'make_to_stock',
             'picking_id': picking.id,
             'location_id': self.stock_location,
             'location_dest_id': self.customer_location,
             'company_id': self.company.id
         })
-        picking.company_id = self.company.id
-        picking.scheduled_date = datetime(2019, 10, 24, 20, 0, 0)
+        picking.button_validate()
         picking.create_delivery_guide()
 
         self.assertEqual(picking.l10n_cl_dte_status, False)

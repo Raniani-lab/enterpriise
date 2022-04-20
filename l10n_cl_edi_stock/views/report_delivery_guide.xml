@@ -214,7 +214,7 @@
                                 <tbody>
                                     <t t-set="total_line_amounts" t-value="prepared_amounts.get('total_line_amounts', {})"/>
                                     <t t-set="float_repr" t-value="prepared_amounts['float_repr']"/>
-                                    <t t-foreach="o.move_ids" t-as="line">
+                                    <t t-foreach="o.move_ids.filtered(lambda x: x.quantity_done > 0)" t-as="line">
                                         <t t-set="line_amounts" t-value="total_line_amounts.get(line, {})"/>
                                         <tr>
                                             <td>

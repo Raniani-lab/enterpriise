@@ -6,7 +6,7 @@ import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
-const { useState } = owl;
+const { Component, useState } = owl;
 const formatValue = spreadsheet.helpers.formatValue;
 
 /**
@@ -35,16 +35,11 @@ const formatValue = spreadsheet.helpers.formatValue;
  * @property {boolean} isMissing True if the value is missing from the sheet
  */
 
-export class PivotDialog extends Dialog {
+export class PivotDialog extends Component {
     setup() {
-        super.setup();
         this.state = useState({
             showMissingValuesOnly: false,
         });
-        this.title = this.props.title;
-        this.renderHeader = true;
-        this.renderFooter = false;
-        this.size = "large";
         this.pivotModel = this.props.getters.getSpreadsheetPivotModel(this.props.pivotId);
 
         const table = this.pivotModel.getTableStructure();
@@ -58,7 +53,7 @@ export class PivotDialog extends Dialog {
 
     _onCellClicked(detail) {
         this.props.insertPivotValueCallback(detail.formula);
-        this.close();
+        this.props.close();
     }
 
     // ---------------------------------------------------------------------
@@ -374,5 +369,5 @@ export class PivotDialog extends Dialog {
     }
 }
 
-PivotDialog.bodyTemplate = "documents_spreadsheet.PivotDialog";
-PivotDialog.components = { PivotDialogTable };
+PivotDialog.template = "documents_spreadsheet.PivotDialog";
+PivotDialog.components = { Dialog, PivotDialogTable };

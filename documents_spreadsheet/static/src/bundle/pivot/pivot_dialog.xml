@@ -1,21 +1,23 @@
 
 <templates xml:space="preserve">
     <t t-name="documents_spreadsheet.PivotDialog" owl="1">
-        <div class="o_missing_values_dialog">
-            <div class="custom-control custom-checkbox">
-                <input id="missing_values" type="checkbox" t-model="state.showMissingValuesOnly" class="custom-control-input " />
-                <label for="missing_values" class="custom-control-label">Display missing cells only</label>
+        <Dialog footer="false" title="props.title">
+            <div class="o_missing_values_dialog">
+                <div class="custom-control custom-checkbox">
+                    <input id="missing_values" type="checkbox" t-model="state.showMissingValuesOnly" class="custom-control-input " />
+                    <label for="missing_values" class="custom-control-label">Display missing cells only</label>
+                </div>
+                <t t-set="tableData" t-value="getTableData()"/>
+                <PivotDialogTable  t-if="tableData.values.length > 0 or tableData.rows.length > 0"
+                    colHeaders="tableData.columns"
+                    rowHeaders="tableData.rows"
+                    values="tableData.values"
+                    onCellSelected.bind="_onCellClicked" />
+
+                <div class="alert alert-info" role="alert" t-else="1"><span t-esc="props.title" /> has no cell missing from this sheet</div>
+
             </div>
-            <t t-set="tableData" t-value="getTableData()"/>
-            <PivotDialogTable  t-if="tableData.values.length > 0 or tableData.rows.length > 0"
-                colHeaders="tableData.columns"
-                rowHeaders="tableData.rows"
-                values="tableData.values"
-                onCellSelected.bind="_onCellClicked" />
-
-            <div class="alert alert-info" role="alert" t-else="1"><span t-esc="props.title" /> has no cell missing from this sheet</div>
-
-        </div>
+        </Dialog>
     </t>
 
     <t t-name="documents_spreadsheet.PivotDialogTable" owl="1">

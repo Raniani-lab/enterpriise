@@ -6,7 +6,7 @@ import { _lt } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { StandaloneMany2OneField } from "../../widgets/standalone_many2one_field";
 
-const { Component, onMounted, onWillStart, useState, useExternalListener, xml } = owl;
+const { Component, onMounted, onWillStart, useState, useExternalListener } = owl;
 
 export class MenuSelectorWidgetAdapter extends ComponentAdapter {
     setup() {
@@ -44,9 +44,8 @@ export class MenuSelectorWidgetAdapter extends ComponentAdapter {
     }
 }
 
-export class IrMenuSelector extends Dialog {
+export class IrMenuSelector extends Component {
     setup() {
-        super.setup();
         this.StandaloneMany2OneField = StandaloneMany2OneField;
         this.user = useService("user");
         this.orm = useService("orm");
@@ -74,16 +73,6 @@ export class IrMenuSelector extends Dialog {
         this.selectedMenu.id = value;
     }
 }
-IrMenuSelector.components = { MenuSelectorWidgetAdapter };
+IrMenuSelector.components = { Dialog, MenuSelectorWidgetAdapter };
 IrMenuSelector.title = _lt("Select an Odoo menu to link in your spreadsheet");
-IrMenuSelector.size = "model-sm";
-
-IrMenuSelector.bodyTemplate = xml/* xml */ `
-    <MenuSelectorWidgetAdapter
-        class="'o-ir-menu-selector'"
-        Component="StandaloneMany2OneField"
-        menuId="props.menuId"
-        userGroups="userGroups"
-        onValueChanged.bind="_onValueChanged"
-    />`;
-IrMenuSelector.footerTemplate = "documents_spreadsheet.IrMenuSelectorFooter";
+IrMenuSelector.template = "documents_spreadsheet.IrMenuSelector";

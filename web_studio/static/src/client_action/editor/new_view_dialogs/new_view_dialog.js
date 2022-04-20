@@ -89,13 +89,11 @@ export class NewViewDialog extends ConfirmationDialog {
         super._confirm();
     }
 }
-NewViewDialog.bodyTemplate = "web_studio.NewViewFieldsSelector";
-NewViewDialog.footerTemplate = "web_studio.OwlNewViewDialogFooter";
+NewViewDialog.template = "web_studio.NewViewDialog";
 NewViewDialog.GROUPABLE_TYPES = ["many2one", "char", "boolean", "selection", "date", "datetime"];
 NewViewDialog.MEASURABLE_TYPES = ["integer", "float"];
-NewViewDialog.size = "modal-md";
-NewViewDialog.props = Object.assign(Object.create(ConfirmationDialog.props), {
+NewViewDialog.props = {
+    ...ConfirmationDialog.props,
     viewType: String,
-    title: { type: String, optional: true },
-    body: { type: String, optional: true },
-});
+};
+delete NewViewDialog.props.body;

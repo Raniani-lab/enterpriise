@@ -230,6 +230,12 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: l10n_cl_edi_boletas
+#: code:addons/l10n_cl_edi_boletas/models/account_move.py:0
+#, python-format
+msgid "It will be resent. "
+msgstr ""
+
+#. module: l10n_cl_edi_boletas
 #: model:ir.model,name:l10n_cl_edi_boletas.model_account_move
 msgid "Journal Entry"
 msgstr ""
@@ -435,7 +441,8 @@ msgid ""
 "       - Ask For Status: The daily sales book is asking for its status to the SII.\n"
 "       - Accepted: The daily sales book has been accepted by SII.\n"
 "       - Accepted With Objections: The daily sales book has been accepted with objections by SII.\n"
-"       - Rejected: The daily sales book has been rejected by SII."
+"       - Rejected: The daily sales book has been rejected by SII.\n"
+"       - To resend: Boletas were added after the last send so it needs to be resent."
 msgstr ""
 
 #. module: l10n_cl_edi_boletas
@@ -485,9 +492,7 @@ msgstr ""
 #. module: l10n_cl_edi_boletas
 #: code:addons/l10n_cl_edi_boletas/models/account_move.py:0
 #, python-format
-msgid ""
-"The Daily Sales Book for this ticket has already been sent. Please select a "
-"different date for this ticket."
+msgid "This boleta was added on the already sent salesbook for "
 msgstr ""
 
 #. module: l10n_cl_edi_boletas
@@ -495,6 +500,11 @@ msgstr ""
 #: code:addons/l10n_cl_edi_boletas/models/l10n_cl_daily_sales_book.py:0
 #, python-format
 msgid "This electronic document is being processed already."
+msgstr ""
+
+#. module: l10n_cl_edi_boletas
+#: model:ir.model.fields.selection,name:l10n_cl_edi_boletas.selection__l10n_cl_daily_sales_book__l10n_cl_dte_status__to_resend
+msgid "To Resend"
 msgstr ""
 
 #. module: l10n_cl_edi_boletas
@@ -547,14 +557,13 @@ msgid "You cannot delete a validated book."
 msgstr ""
 
 #. module: l10n_cl_edi_boletas
-#: code:addons/l10n_cl_edi_boletas/models/l10n_cl_daily_sales_book.py:0
-#, python-format
-msgid "You cannot retry a daily sales book with status other than Rejected"
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_boletas.l10n_cl_daily_sales_book_form
+msgid "⇒ Retry"
 msgstr ""
 
 #. module: l10n_cl_edi_boletas
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_boletas.l10n_cl_daily_sales_book_form
-msgid "⇒ Retry"
+msgid "⇒ Send Correction"
 msgstr ""
 
 #. module: l10n_cl_edi_boletas

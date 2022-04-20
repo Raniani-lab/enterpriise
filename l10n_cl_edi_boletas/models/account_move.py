@@ -21,12 +21,6 @@ class AccountMove(models.Model):
             if any(self.invoice_line_ids.mapped('tax_ids.price_include')):
                 raise UserError(_('Tax included in price is not supported for boletas. '
                                   'Please change the tax to not included in price.'))
-
-            daily_sales_book = self.env['l10n_cl.daily.sales.book'].search([
-                ('l10n_cl_dte_status', '!=', 'rejected'), ('date', '=', self.invoice_date)])
-            if daily_sales_book:
-                raise UserError(_('The Daily Sales Book for this ticket has already been sent. '
-                                  'Please select a different date for this ticket.'))
         super()._l10n_cl_edi_post_validation()
 
     def _l10n_cl_edi_validate_boletas(self):
@@ -80,11 +74,21 @@ class AccountMove(models.Model):
             return None
 
         self.l10n_cl_dte_status = self._analyze_sii_result_rest(response)
+        message_body = self._l10n_cl_get_verify_status_msg_rest(response)
         if self.l10n_cl_dte_status in ['accepted', 'objected']:
             self.l10n_cl_dte_partner_status = 'not_sent'
             if send_dte_to_partner:
                 self._l10n_cl_send_dte_to_partner()
-        self.message_post(body=self._l10n_cl_get_verify_status_msg_rest(response))
+            book = self.env['l10n_cl.daily.sales.book'].search(
+                [('date', '=', self.invoice_date),
+                 ('l10n_cl_dte_status', 'in', ['accepted', 'objected', 'to_resend'])],
+                limit=1)
+            if book:
+                message_body += "<br/>" +  html_escape(_("This boleta was added on the already sent salesbook for "))
+                message_body += "<a href=# data-oe-model=l10n_cl.daily.sales.book data-oe-id=%s> %s </a>. " % (book.id, book.display_name)
+                message_body += html_escape(_('It will be resent. '))
+                book.l10n_cl_dte_status = 'to_resend'
+        self.message_post(body=message_body)
 
     def _l10n_cl_get_verify_status_msg_rest(self, data):
         msg = _('Asking for DTE status with response:')

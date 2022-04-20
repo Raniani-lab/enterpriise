@@ -40,13 +40,15 @@ class L10nClDailySalesBook(models.Model):
         ('accepted', 'Accepted'),
         ('objected', 'Accepted With Objections'),
         ('rejected', 'Rejected'),
+        ('to_resend', 'To Resend'),
     ], string='SII Daily Sales Book Status', default='not_sent', copy=False, tracking=True,
         help="""Status of sending the DTE to the SII:
        - Not sent: the daily sales book has not been sent to SII but it has created.
        - Ask For Status: The daily sales book is asking for its status to the SII.
        - Accepted: The daily sales book has been accepted by SII.
        - Accepted With Objections: The daily sales book has been accepted with objections by SII.
-       - Rejected: The daily sales book has been rejected by SII.""")
+       - Rejected: The daily sales book has been rejected by SII.
+       - To resend: Boletas were added after the last send so it needs to be resent.""")
     l10n_cl_sii_send_file = fields.Many2one('ir.attachment', string='SII Send file', copy=False)
 
     def name_get(self):
@@ -57,7 +59,7 @@ class L10nClDailySalesBook(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_already_accepted(self):
-        if self.filtered(lambda x: x.l10n_cl_dte_status in ('accepted', 'objected', 'ask_for_status')):
+        if self.filtered(lambda x: x.l10n_cl_dte_status in ('accepted', 'objected', 'ask_for_status', 'to_resend')):
             raise UserError(_('You cannot delete a validated book.'))
 
     def _get_ranges(self, data):
@@ -319,12 +321,10 @@ class L10nClDailySalesBook(models.Model):
                 book.l10n_cl_verify_dte_status()
 
     def _send_pending_sales_book_report_to_sii(self):
-        for report in self.search([('l10n_cl_dte_status', '=', 'not_sent')]):
+        for report in self.search([('l10n_cl_dte_status', 'in', ['not_sent', 'to_resend'])]):
             report.l10n_cl_send_dte_to_sii()
 
     def l10n_cl_retry_daily_sales_book_report(self):
-        if self.l10n_cl_dte_status != 'rejected':
-            raise UserError(_('You cannot retry a daily sales book with status other than Rejected'))
         self._update_report()
         self.l10n_cl_send_dte_to_sii()
         self.l10n_cl_verify_dte_status()

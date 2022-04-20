@@ -236,6 +236,12 @@ msgid "Is Follower"
 msgstr "Es un seguidor"
 
 #. module: l10n_cl_edi_boletas
+#: code:addons/l10n_cl_edi_boletas/models/account_move.py:0
+#, python-format
+msgid "It will be resent. "
+msgstr "Será reenviada"
+
+#. module: l10n_cl_edi_boletas
 #: model:ir.model,name:l10n_cl_edi_boletas.model_account_move
 msgid "Journal Entry"
 msgstr "Asiento contable"
@@ -445,6 +451,7 @@ msgid ""
 "       - Accepted With Objections: The daily sales book has been accepted "
 "with objections by SII.\n"
 "       - Rejected: The daily sales book has been rejected by SII."
+"       - To resend: Boletas were added after the last send so it needs to be resent."
 msgstr ""
 "Estado de envío del DTE al SII:\n"
 "    - No enviado: el DTE no ha sido enviado al SII pero ha sido creado.\n"
@@ -454,6 +461,7 @@ msgstr ""
 "    - Aceptado con reparos: El DTE ha sido aceptado con algún reparo por el "
 "SII.\n"
 "    - Rechazado: El DTE ha sido rechazado por el SII."
+"    - Para volver a enviar: Las boletas se añadieron después del último envío, por lo que hay que volver a enviarlas."
 
 #. module: l10n_cl_edi_boletas
 #: code:addons/l10n_cl_edi_boletas/models/account_move.py:0
@@ -504,12 +512,8 @@ msgstr "El fichero .xml no fue encontrado"
 #. module: l10n_cl_edi_boletas
 #: code:addons/l10n_cl_edi_boletas/models/account_move.py:0
 #, python-format
-msgid ""
-"The Daily Sales Book for this ticket has already been sent. Please select a "
-"different date for this ticket."
-msgstr ""
-"El libro de ventas para esta boleta ya ha sido enviado. Por favor selecciona "
-"una fecha diferente para esta boleta."
+msgid "This boleta was added on the already sent salesbook for "
+msgstr "Esta boleta fue añadida en el libro de ventas ya enviado el "
 
 #. module: l10n_cl_edi_boletas
 #: code:addons/l10n_cl_edi_boletas/models/account_move.py:0
@@ -517,6 +521,11 @@ msgstr ""
 #, python-format
 msgid "This electronic document is being processed already."
 msgstr "Este documento electrónico ya se encuentra en proceso."
+
+#. module: l10n_cl_edi_boletas
+#: model:ir.model.fields.selection,name:l10n_cl_edi_boletas.selection__l10n_cl_daily_sales_book__l10n_cl_dte_status__to_resend
+msgid "To Resend"
+msgstr "Para reenviar"
 
 #. module: l10n_cl_edi_boletas
 #: code:addons/l10n_cl_edi_boletas/models/l10n_cl_edi_util.py:0
@@ -568,17 +577,14 @@ msgid "You cannot delete a validated book."
 msgstr "No puedes eliminar un libro validado."
 
 #. module: l10n_cl_edi_boletas
-#: code:addons/l10n_cl_edi_boletas/models/l10n_cl_daily_sales_book.py:0
-#, python-format
-msgid "You cannot retry a daily sales book with status other than Rejected"
-msgstr ""
-"No puede hacer un reintento de un libro de ventas con estado diferente a "
-"rechazado"
-
-#. module: l10n_cl_edi_boletas
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_boletas.l10n_cl_daily_sales_book_form
 msgid "⇒ Retry"
 msgstr "⇒ Reintentar"
+
+#. module: l10n_cl_edi_boletas
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi_boletas.l10n_cl_daily_sales_book_form
+msgid "⇒ Send Correction"
+msgstr "⇒ Enviar corrección"
 
 #. module: l10n_cl_edi_boletas
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_boletas.l10n_cl_daily_sales_book_form

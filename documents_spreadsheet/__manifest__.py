@@ -34,6 +34,8 @@
             'documents_spreadsheet/static/src/scss/**/*',
         ],
         'web.assets_qweb': [
+            # Load all o_spreadsheet templates first to allow to inherit them
+            'documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.xml',
             'documents_spreadsheet/static/src/**/*.xml',
         ],
         'web.assets_tests': [

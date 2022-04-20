@@ -149,7 +149,8 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, account_invoice_ext
             invoice._check_status()
 
         self.assertTrue(invoice.id in self.purchase_order.invoice_ids.ids)
-        self.assertEqual(invoice.amount_total, 150)
+        # The PO should be used instead of the OCR result
+        self.assertEqual(invoice.amount_total, 300)
 
     def test_no_match(self):
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})

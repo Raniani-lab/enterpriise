@@ -89,9 +89,7 @@ class AccountMove(models.Model):
             common_domain = [('company_id', '=', self.company_id.id), ('state', '=', 'purchase'), ('invoice_status', 'in', ('to invoice', 'no'))]
             purchase_orders_ocr = ocr_results['purchase_order']['selected_values'] if 'purchase_order' in ocr_results else []
             total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else 0.0
-            subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
             invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
-            invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
             matching_pos = self.env['purchase.order']
             if purchase_orders_ocr:
@@ -136,30 +134,5 @@ class AccountMove(models.Model):
                                     if line.purchase_line_id and line.purchase_line_id not in subset_purchase_order_line_ids:
                                         line.quantity = 0
                     else:
-                        for po in matching_pos:
-                            self.invoice_line_ids = [(0, 0, {
-                                'name': 'Purchase Order {}'.format(po.name),
-                                'display_type': 'line_section',
-                                'account_id': False,
-                            })]
-                            self._set_purchase_orders(po, invoice_id_ocr)
-                            self.invoice_line_ids = [(0, 0, {
-                                'name': _("The data extraction couldn't match the bill lines to the purchase order lines. You may have to check it manually."),
-                                'display_type': 'line_note',
-                                'account_id': False,
-                            })]
-
-                        self.invoice_line_ids = [(0, 0, {
-                            'name': _('Data extracted'),
-                            'display_type': 'line_section',
-                            'account_id': False,
-                        })]
-                        patched_process_fvg, move_form = self.get_form_context_manager()
-                        with patched_process_fvg, move_form:
-                            for i in range(len(move_form.invoice_line_ids)):
-                                with move_form.invoice_line_ids.edit(i) as line:
-                                    line.quantity = 0
-                            vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
-                            self._set_invoice_lines(move_form, vals_invoice_lines)
-
+                        self._set_purchase_orders(matching_pos, invoice_id_ocr)
         return super(AccountMove, self)._save_form(ocr_results, no_ref=no_ref)

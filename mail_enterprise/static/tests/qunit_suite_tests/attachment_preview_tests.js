@@ -5,12 +5,12 @@ import {
     afterNextRender,
     dragenterFiles,
     dropFiles,
+    nextTick,
     start,
     startServer,
 } from '@mail/../tests/helpers/test_utils';
 
 import testUtils, { file } from 'web.test_utils';
-import FormView from 'web.FormView';
 const { createFile, inputFiles } = file;
 
 QUnit.module('mail_enterprise', {}, function () {
@@ -21,40 +21,36 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
 
         const pyEnv = await startServer();
         const resPartnerId1 = pyEnv['res.partner'].create({});
+        const views = {
+            'res.partner,false,form':
+                '<form string="Partners">' +
+                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="oe_chatter">' +
+                        '<field name="message_ids"/>' +
+                    '</div>' +
+                '</form>',
+        };
         patchUiSize({ size: SIZES.XXL });
-        let form, env;
+        let env;
         await afterNextRender(async () => { // because of chatter container
-            const { env: environment, widget } = await start({
-                hasView: true,
-                View: FormView,
-                model: 'res.partner',
-                arch: '<form string="Partners">' +
-                        '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
-                        '<div class="oe_chatter">' +
-                            '<field name="message_ids"/>' +
-                        '</div>' +
-                    '</form>',
-                // FIXME could be removed once task-2248306 is done
-                archs: {
-                    'mail.message,false,list': '<tree/>',
-                },
-                res_id: resPartnerId1,
+            const { env: environment, openView } = await start({
                 async mockRPC(route, args) {
                     if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
                         assert.step("pdf viewer");
                     }
-                    return this._super.apply(this, arguments);
-                },
-                async mockFetch(resource, init) {
-                    const res = this._super(...arguments);
-                    if (resource === '/mail/attachment/upload') {
+                    if (route === '/mail/attachment/upload') {
                         await new Promise(() => {});
                     }
-                    return res;
-                }
+                },
+                serverData: { views },
             });
             env = environment;
-            form = widget;
+            await openView({
+                res_id: resPartnerId1,
+                res_model: 'res.partner',
+                views: [[false, 'form']],
+            });
+
         });
 
         await afterNextRender(() =>
@@ -68,7 +64,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         await afterNextRender(() =>
             inputFiles(chatter.attachmentBoxView.fileUploader.fileInput, files)
         );
-        assert.containsNone(form, '.o_attachment_preview_container');
+        assert.containsNone(document.body, '.o_attachment_preview_container');
         assert.verifySteps([], "The page should never render a PDF while it is uploading, as the uploading is blocked in this test we should never render a PDF preview");
     });
 
@@ -87,28 +83,23 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             model: 'res.partner',
             res_id: resPartnerId1,
         });
+        const views = {
+            'res.partner,false,form':
+                '<form string="Partners">' +
+                    '<sheet>' +
+                        '<field name="name"/>' +
+                    '</sheet>' +
+                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="oe_chatter">' +
+                        '<field name="message_ids"/>' +
+                    '</div>' +
+                '</form>',
+        };
         patchUiSize({ size: SIZES.XXL });
         let env;
         await afterNextRender(async () => { // because of chatter container
-            const { env: environment } = await start({
-                hasView: true,
-                View: FormView,
-                model: 'res.partner',
-                arch: '<form string="Partners">' +
-                        '<sheet>' +
-                            '<field name="name"/>' +
-                        '</sheet>' +
-                        '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
-                        '<div class="oe_chatter">' +
-                            '<field name="message_ids"/>' +
-                        '</div>' +
-                    '</form>',
-                // FIXME could be removed once task-2248306 is done
-                archs: {
-                    'mail.message,false,list': '<tree/>',
-                },
-                res_id: resPartnerId1,
-                async mockRPC(route, args) {
+            const { env: environment, openView } = await start({
+                mockRPC(route, args) {
                     if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
                         var canvas = document.createElement('canvas');
                         return canvas.toDataURL();
@@ -116,10 +107,15 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     if (args.method === 'register_as_main_attachment') {
                         return true;
                     }
-                    return this._super.apply(this, arguments);
                 },
+                serverData: { views },
             });
             env = environment;
+            await openView({
+                res_id: resPartnerId1,
+                res_model: 'res.partner',
+                views: [[false, 'form']],
+            });
         });
 
         assert.containsOnce(document.body, '.o_attachment_preview_img > img',
@@ -153,6 +149,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         await afterNextRender(() =>
             document.querySelector('.o_Composer_buttonSend').click()
         );
+        await nextTick();
 
         assert.containsN(document.body, '.arrow', 2,
             "Display arrows if there multiple attachments");
@@ -206,15 +203,9 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 message_attachment_count: 0
             });
 
-            patchUiSize({ size: SIZES.XXL });
-            const { click } = await start({
-                hasView: true,
-                View: FormView,
-                model: 'res.partner',
-                data: this.data,
-                debug: 1,
-                arch: `
-                    <form string="Partners">
+            const views = {
+                'res.partner,false,form':
+                    `<form string="Partners">
                         <sheet>
                             <field name="name"/>
                         </sheet>
@@ -223,15 +214,10 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                             <field name="message_ids"/>
                         </div>
                     </form>`,
-                // FIXME could be removed once task-2248306 is done
-                archs: {
-                    'mail.message,false,list': '<tree/>',
-                },
-                res_id: resPartnerId1,
-                viewOptions: {
-                    ids: [resPartnerId1, resPartnerId2],
-                    index: 0,
-                },
+            };
+            patchUiSize({ size: SIZES.XXL });
+            const { click, openView } = await start({
+                serverData: { views },
                 async mockRPC(route, args) {
                     if (route.includes('/web/static/lib/pdfjs/web/viewer.html')) {
                         return document.createElement('canvas').toDataURL();
@@ -239,9 +225,19 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     if (args.method === 'register_as_main_attachment') {
                         return true;
                     }
-                    return this._super(...arguments);
                 },
             });
+            await openView(
+                {
+                    res_id: resPartnerId1,
+                    res_model: 'res.partner',
+                    views: [[false, 'form']]
+                },
+                {
+                    resIds: [resPartnerId1, resPartnerId2],
+                    index: 0,
+                }
+            );
 
             assert.strictEqual($('.o_pager_counter').text(), '1 / 2',
                 'The form view pager should display 1 / 2');
@@ -263,25 +259,26 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
     QUnit.test('Attachment on side on new record', async function (assert) {
         assert.expect(3);
 
+        const views = {
+            'res.partner,false,form':
+                '<form string="Partners">' +
+                    '<sheet>' +
+                        '<field name="name"/>' +
+                    '</sheet>' +
+                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="oe_chatter">' +
+                        '<field name="message_ids"/>' +
+                    '</div>' +
+                '</form>',
+        };
         patchUiSize({ size: SIZES.XXL });
         await afterNextRender(async () => { // because of chatter container
-            await start({
-                hasView: true,
-                View: FormView,
-                model: 'res.partner',
-                arch: '<form string="Partners">' +
-                        '<sheet>' +
-                            '<field name="name"/>' +
-                        '</sheet>' +
-                        '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
-                        '<div class="oe_chatter">' +
-                            '<field name="message_ids"/>' +
-                        '</div>' +
-                    '</form>',
-                // FIXME could be removed once task-2248306 is done
-                archs: {
-                    'mail.message,false,list': '<tree/>',
-                },
+            const { openView } = await start({
+                serverData: { views },
+            });
+            await openView({
+                res_model: 'res.partner',
+                views: [[false, 'form']],
             });
         });
 
@@ -308,26 +305,27 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             model: 'res.partner',
             res_id: resPartnerId1,
         });
+        const views = {
+            'res.partner,false,form':
+                '<form string="Partners">' +
+                    '<sheet>' +
+                        '<field name="name"/>' +
+                    '</sheet>' +
+                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="oe_chatter">' +
+                        '<field name="message_ids"/>' +
+                    '</div>' +
+                '</form>',
+        };
         patchUiSize({ size: SIZES.XL });
         await afterNextRender(async () => { // because of chatter container
-            await start({
-                hasView: true,
-                View: FormView,
-                model: 'res.partner',
-                arch: '<form string="Partners">' +
-                        '<sheet>' +
-                            '<field name="name"/>' +
-                        '</sheet>' +
-                        '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
-                        '<div class="oe_chatter">' +
-                            '<field name="message_ids"/>' +
-                        '</div>' +
-                    '</form>',
-                // FIXME could be removed once task-2248306 is done
-                archs: {
-                    'mail.message,false,list': '<tree/>',
-                },
+            const { openView } = await start({
+                serverData: { views },
+            });
+            await openView({
                 res_id: resPartnerId1,
+                res_model: 'res.partner',
+                views: [[false, 'form']],
             });
         });
         assert.strictEqual(document.querySelector('.o_attachment_preview').children.length, 0,
@@ -344,11 +342,9 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             name: new Array(100).fill().map(_ => 'name').join(),
         });
         const resPartnerId1 = pyEnv['res.partner'].create({ channel_ids: [mailChannelId1] });
-        patchUiSize({ size: SIZES.XXL });
-        const { click } = await start({
-            hasView: true,
-            arch: `
-                <form string="Whatever">
+        const views = {
+            'res.partner,false,form':
+                `<form string="Whatever">
                     <sheet>
                         <field name="channel_ids"/>
                     </sheet>
@@ -357,25 +353,25 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                         <field name="message_ids"/>
                     </div>
                 </form>`,
-            archs: {
-                // FIXME could be removed once task-2248306 is done
-                'mail.message,false,list': '<tree/>',
-                'mail.channel,false,list': `
-                    <tree>
-                        <field name="name"/>
-                    </tree>`,
-            },
+            'mail.channel,false,list':
+                `<tree>
+                    <field name="name"/>
+                </tree>`,
+        };
+        patchUiSize({ size: SIZES.XXL });
+        const { click, openView } = await start({
             async mockRPC(route, { method }) {
-                const _super = this._super.bind(this, ...arguments); // limitation of class.js
                 switch (method) {
                     case 'register_as_main_attachment':
                         return true;
                 }
-                return _super();
             },
-            model: 'res.partner',
+            serverData: { views },
+        });
+        await openView({
             res_id: resPartnerId1,
-            View: FormView,
+            res_model: 'res.partner',
+            views: [[false, 'form']],
         });
 
         // Sets an arbitrary width to check if it is correctly overriden.
@@ -395,7 +391,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             }),
         ];
         await afterNextRender(() =>
-            dropFiles( document.querySelector('.o_AttachmentBox_dropZone'), files)
+            dropFiles(document.querySelector('.o_AttachmentBox_dropZone'), files)
         );
         assert.containsOnce(document.body, 'img#attachment_img');
         assert.notEqual(document.querySelector('table th').style.width, '0px',

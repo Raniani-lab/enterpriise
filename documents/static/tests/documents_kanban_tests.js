@@ -5,8 +5,9 @@ const AbstractStorageService = require('web.AbstractStorageService');
 const DocumentsKanbanController = require('documents.DocumentsKanbanController');
 const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const DocumentsListView = require('documents.DocumentsListView');
-const { createDocumentsView } = require('documents.test_utils');
-const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const { createDocumentsView: originalCreateDocumentsView, createDocumentsViewWithMessaging } = require('documents.test_utils');
+const { registry } = require('@web/core/registry');
+const { legacyExtraNextTick, patchWithCleanup } = require("@web/../tests/helpers/utils");
 
 const {
     afterNextRender,
@@ -18,13 +19,13 @@ const {
     toggleMenuItem,
 } = require("@web/../tests/search/helpers");
 
-const Bus = require('web.Bus');
 const concurrency = require('web.concurrency');
 const KanbanView = require('web.KanbanView');
 const RamStorage = require('web.RamStorage');
 const relationalFields = require('web.relational_fields');
 const testUtils = require('web.test_utils');
 const { str_to_datetime } = require('web.time');
+const legacyViewRegistry = require('web.view_registry');
 
 function autocompleteLength() {
     var $el = $('.ui-autocomplete');
@@ -43,6 +44,13 @@ function searchValue(el, value) {
 }
 
 let pyEnv;
+function createDocumentsView(params) {
+    return originalCreateDocumentsView({
+        data: pyEnv.getData(),
+        ...params,
+    });
+}
+
 QUnit.module('documents', {}, function () {
 QUnit.module('documents_kanban_tests.js', {
     async beforeEach() {
@@ -138,6 +146,10 @@ QUnit.module('documents_kanban_tests.js', {
                 partner_id: resPartnerIds[2],
             },
         ]);
+        // replace the basic kanban view by the custom one, this used to be easier
+        // with createView but now that a webClient is used, it's a bit tricky.
+        registry.category('views').remove('kanban');
+        legacyViewRegistry.add("kanban", DocumentsKanbanView);
     },
     afterEach() {
         DocumentsKanbanController.prototype._createXHR = this.ORIGINAL_CREATE_XHR;
@@ -1966,14 +1978,25 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: open and close chatter', async function (assert) {
         assert.expect(7);
 
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const views = {
+            'documents.document,false,kanban':
+                `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         assert.containsNone(document.body, '.o_Chatter',
@@ -2017,14 +2040,25 @@ QUnit.module('documents_kanban_tests.js', {
             { body: "Message 1", model: 'documents.document', res_id: documentsDocumentId1 },
         ]);
 
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const views = {
+            'documents.document,false,kanban':
+                `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         await testUtils.dom.click(
@@ -2063,14 +2097,25 @@ QUnit.module('documents_kanban_tests.js', {
                 res_model: 'documents.document',
             },
         ]);
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const views = {
+            'documents.document,false,kanban':
+                `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         await testUtils.dom.click(
@@ -2101,8 +2146,29 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: render the activity button', async function (assert) {
         assert.expect(3);
 
-        const bus = new Bus();
-        bus.on('do-action', null, ({ action }) => {
+        const views = {
+            'documents.document,false,kanban':
+                `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        };
+        const { env, openView } = await createDocumentsViewWithMessaging({
+            hasWebClient: true,
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
+        });
+        patchWithCleanup(env.services.action, {
+            doAction(action) {
                 assert.deepEqual(action, {
                     context: {
                         default_res_id: 1,
@@ -2118,17 +2184,7 @@ QUnit.module('documents_kanban_tests.js', {
                     },
                     "the activity button should trigger do_action with the correct args"
                 );
-        });
-
-        await createDocumentsView({
-            env: { bus },
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+            },
         });
 
         await testUtils.dom.click(
@@ -2162,14 +2218,25 @@ QUnit.module('documents_kanban_tests.js', {
             user_id: pyEnv.currentUserId,
         });
 
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const views = {
+            'documents.document,false,kanban':
+                `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         await testUtils.dom.click(
@@ -2211,14 +2278,20 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: can write messages in the chatter', async function (assert) {
         assert.expect(7);
 
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const views = {
+            'documents.document,false,kanban':
+                `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
             async mockRPC(route, args) {
                 if (route === '/mail/get_suggested_recipients') {
                     return { 1: [] };
@@ -2228,10 +2301,13 @@ QUnit.module('documents_kanban_tests.js', {
                         "should post message on correct record");
                     assert.strictEqual(args.post_data.body, 'Some message',
                         "should post correct message");
-                    return this._super(...arguments);
                 }
-                return this._super.apply(this, arguments);
             },
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         // select a record and open the chatter
@@ -2279,14 +2355,25 @@ QUnit.module('documents_kanban_tests.js', {
             { body: "Message on 'blip'", model: 'documents.document', res_id: documentsDocumentId2 }
         ]);
 
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const views = {
+            'documents.document,false,kanban':
+                `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         // select a record and open the chatter
@@ -2324,20 +2411,29 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: keep chatter open after a reload', async function (assert) {
         assert.expect(3);
 
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            archs: {
-                "documents.document,false,search": `
-                    <search>
-                        <filter name="owo" string="OwO" domain="[['id', '&lt;', 4]]"/>
-                    </search>`
-            },
+        const views = {
+            'documents.document,false,kanban':
+                `<kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+            'documents.document,false,search':
+                `<search>
+                    <filter name="owo" string="OwO" domain="[['id', '&lt;', 4]]"/>
+                </search>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         // select a record and open the chatter
@@ -2367,15 +2463,25 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: close chatter when more than one record selected', async function (assert) {
         assert.expect(2);
 
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const views = {
+            'documents.document,false,kanban':
+            `<kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <i class="fa fa-circle-thin o_record_selector"/>
+                            <field name="name"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         // select a record and open the chatter
@@ -2406,20 +2512,29 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: close chatter when no more selected record', async function (assert) {
         assert.expect(3);
 
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            archs: {
-                "documents.document,false,search": `
-                    <search>
-                        <filter name="owo" string="OwO" domain="[['id', '&gt;', 4]]"/>
-                    </search>`
-            },
+        const views = {
+            'documents.document,false,kanban':
+            `<kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <i class="fa fa-circle-thin o_record_selector"/>
+                            <field name="name"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`,
+        'documents.document,false,search':
+            `<search>
+                <filter name="owo" string="OwO" domain="[['id', '&gt;', 4]]"/>
+            </search>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         // select a record and open the chatter

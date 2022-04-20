@@ -2,28 +2,40 @@
 
 import { start } from '@mail/../tests/helpers/test_utils';
 
-import mobile from 'web_mobile.core';
 import DialingPanel from 'voip.DialingPanel';
 import UserAgent from 'voip.UserAgent';
 
+import mobile from 'web_mobile.core';
+
 import core from 'web.core';
+import { registry } from '@web/core/registry';
+import { ComponentAdapter } from "web.OwlCompatibility";
 import testUtils from 'web.test_utils';
 
+class DialingPanelComponent extends ComponentAdapter {
+    setup() {
+        super.setup(...arguments);
+        this.env = owl.Component.env;
+    }
+}
+
 /**
- * Create a dialing Panel and attach it to a parent. Uses params to create the parent
- * and to define if mode debug is set
+ * Create a dialing Panel. Params are used to create the underlying web client.
  *
  * @param {Object} params
- * @return {Promise<DialingPanel>} resolve with dialingPanel
+ * @returns {Object} The value returned by the start method.
  */
- async function createDialingPanel(params) {
-    const result = await start(params);
-    const { widget: parent } = result;
-    const dialingPanel = new DialingPanel(parent);
-    const container = params.debug ? $('body') : $('#qunit-fixture');
-    await dialingPanel.appendTo(container);
-    dialingPanel._onToggleDisplay(); // show panel
-    await dialingPanel._refreshPhoneCallsStatus();
+async function createDialingPanel(params) {
+    registry.category('main_components').add('DialingPanel', {
+        Component: DialingPanelComponent,
+        props: {
+            Component: DialingPanel,
+        }
+    });
+    const result = await start({
+        ...params,
+    });
+    core.bus.trigger('voip_onToggleDisplay');
     await testUtils.nextTick();
     return result;
 }
@@ -33,8 +45,7 @@ QUnit.module('DialingPanel', {
     beforeEach() {
         this.onaccepted = undefined;
         this.recentList = {};
-        // generate 3 records
-        this.phoneCallDetailsData = [10,23,42].map(id => {
+        this.mockPhoneCallDetails = id => {
             return {
                 activity_id: 50+id,
                 activity_model_name: "A model",
@@ -53,7 +64,11 @@ QUnit.module('DialingPanel', {
                 partner_name: `Partner ${100+id}`,
                 phone: "(215)-379-4865",
                 state: 'open',
-             };
+            }
+        };
+        // generate 3 records
+        this.phoneCallDetailsData = [10,23,42].map(id => {
+            return this.mockPhoneCallDetails(id);
         });
         testUtils.mock.patch(UserAgent, {
             /**
@@ -76,6 +91,17 @@ QUnit.module('DialingPanel', {
                 this.onaccepted = func;
             }
         });
+
+        const mockServerRegistry = registry.category('mock_server');
+        if (!mockServerRegistry.contains('get_missed_call_info')) {
+            mockServerRegistry.add('get_missed_call_info', () => []);
+        }
+        if (!mockServerRegistry.contains('hangup_call')) {
+            mockServerRegistry.add('hangup_call', () => []);
+        }
+        if (!mockServerRegistry.contains('get_recent_list')) {
+            mockServerRegistry.add('get_recent_list', () => []);
+        }
     },
     afterEach() {
         testUtils.mock.unpatch(UserAgent);
@@ -83,7 +109,7 @@ QUnit.module('DialingPanel', {
 }, function () {
 
 QUnit.test('autocall flow', async function (assert) {
-    assert.expect(34);
+    assert.expect(35);
 
     const self = this;
     let counterNextActivities = 0;
@@ -129,10 +155,10 @@ QUnit.test('autocall flow', async function (assert) {
                     return {id: 200};
                 case 'create_from_incoming_call_accepted':
                     assert.step('incoming_call_accepted');
+                    self.phoneCallDetailsData.push(self.mockPhoneCallDetails(201));
                     return {id: 201};
                 }
             }
-            return this._super(...arguments);
         },
     });
 
@@ -272,7 +298,7 @@ QUnit.test('autocall flow', async function (assert) {
         "The list should be empty");
     assert.strictEqual(
         counterNextActivities,
-        9,
+        8,
         "avoid to much call to get_next_activities_list, would be great to lower this counter");
 
     const incomingCallParams = {
@@ -314,7 +340,7 @@ QUnit.test('autocall flow', async function (assert) {
         'hangup_call',
         'incoming_call',
         'incoming_call_accepted',
-        // 'hangup_call', // disabled due to prevent crash from phonecall with no Id
+        'hangup_call',
         'incoming_call',
         'rejected_call'
     ]);
@@ -366,7 +392,6 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
                     return;
                 }
             }
-            return this._super(...arguments);
         },
     });
 
@@ -482,7 +507,6 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
                     return [];
                 }
             }
-            return this._super(...arguments);
         },
     });
 
@@ -542,14 +566,10 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
                 return { mode: 'demo' };
             }
             if (args.model === 'voip.phonecall') {
-                if (args.method === 'get_missed_call_info') {
-                    return [];
-                }
                 if (args.method === 'get_next_activities_list') {
                     return [];
                 }
             }
-            return this._super(...arguments);
         },
     });
 

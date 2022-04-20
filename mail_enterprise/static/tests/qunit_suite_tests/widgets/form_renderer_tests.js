@@ -1,14 +1,14 @@
 /** @odoo-module **/
 
+import { patchUiSize, SIZES } from '@mail/../tests/helpers/patch_ui_size';
 import {
     afterNextRender,
     isScrolledToBottom,
     start,
     startServer,
 } from '@mail/../tests/helpers/test_utils';
+import { getFixture } from "@web/../tests/helpers/utils";
 
-import config from 'web.config';
-import FormView from 'web.FormView';
 import { fields } from 'web.test_utils';
 const { editInput } = fields;
 
@@ -16,24 +16,7 @@ QUnit.module('mail_enterprise', {}, function () {
 QUnit.module('widgets', {}, function () {
 QUnit.module('form_renderer_tests.js', {
     beforeEach() {
-        // FIXME archs could be removed once task-2248306 is done
-        // The mockServer will try to get the list view
-        // of every relational fields present in the main view.
-        // In the case of mail fields, we don't really need them,
-        // but they still need to be defined.
-        this.createView = async (viewParams, ...args) => {
-            const viewArgs = Object.assign(
-                {
-                    archs: {
-                        'mail.activity,false,list': '<tree/>',
-                        'mail.followers,false,list': '<tree/>',
-                        'mail.message,false,list': '<tree/>',
-                    },
-                },
-                viewParams,
-            );
-            return start(viewArgs, ...args);
-        };
+        patchUiSize({ size: SIZES.XXL });
     },
 });
 
@@ -52,13 +35,9 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
             res_id: resPartnerId1,
         });
     }
-    const { afterEvent } = await this.createView({
-        hasView: true,
-        // View params
-        View: FormView,
-        model: 'res.partner',
-        arch: `
-            <form string="Partners">
+    const views = {
+        'res.partner,false,form':
+            `<form string="Partners">
                 <sheet>
                     <field name="name"/>
                     <field name="description"/>
@@ -66,33 +45,36 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
                 <div class="oe_chatter">
                     <field name="message_ids" />
                 </div>
-            </form>
-        `,
-        viewOptions: {
-            currentId: resPartnerId1,
-        },
-        config: {
-            device: { size_class: config.device.SIZES.XXL },
-        },
-        env: {
-            device: { size_class: config.device.SIZES.XXL },
-        },
+            </form>`,
+    };
+    const target = getFixture();
+    target.classList.add('o_web_client');
+    const { afterEvent, openView } = await start({
         async mockRPC(route, args) {
             if (route === '/mail/thread/messages') {
                 assert.step('/mail/thread/messages');
             }
-            return this._super.call(this, ...arguments);
         },
-        waitUntilEvent: {
-            eventName: 'o-thread-view-hint-processed',
-            message: "should wait until partner 11 thread displayed its messages",
-            predicate: ({ hint, threadViewer }) => {
-                return (
-                    hint.type === 'messages-loaded' &&
-                    threadViewer.thread.model === 'res.partner' &&
-                    threadViewer.thread.id === resPartnerId1
-                );
-            },
+        serverData: { views },
+        target,
+    });
+
+    await afterEvent({
+        eventName: 'o-thread-view-hint-processed',
+        func() {
+            openView({
+                res_id: resPartnerId1,
+                res_model: 'res.partner',
+                views: [[false, 'form']],
+            });
+        },
+        message: "should wait until partner 11 thread displayed its messages",
+        predicate: ({ hint, threadViewer }) => {
+            return (
+                hint.type === 'messages-loaded' &&
+                threadViewer.thread.model === 'res.partner' &&
+                threadViewer.thread.id === resPartnerId1
+            );
         },
     });
     assert.verifySteps(
@@ -167,13 +149,9 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
             res_id: resPartnerId1,
         });
     }
-    const { afterEvent } = await this.createView({
-        hasView: true,
-        // View params
-        View: FormView,
-        model: 'res.partner',
-        arch: `
-            <form string="Partners">
+    const views = {
+        'res.partner,false,form':
+            `<form string="Partners">
                 <header>
                     <button name="primaryButton" string="Primary" type="object" class="oe_highlight" />
                 </header>
@@ -184,33 +162,35 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
                 <div class="oe_chatter">
                     <field name="message_ids" options="{'post_refresh': 'always'}"/>
                 </div>
-            </form>
-        `,
-        viewOptions: {
-            currentId: resPartnerId1,
-        },
-        config: {
-            device: { size_class: config.device.SIZES.XXL },
-        },
-        env: {
-            device: { size_class: config.device.SIZES.XXL },
-        },
+            </form>`,
+    };
+    const target = getFixture();
+    target.classList.add('o_web_client');
+    const { afterEvent, openView } = await start({
         async mockRPC(route, args) {
             if (route === '/mail/message/post') {
                 assert.step('/mail/message/post');
             }
-            return this._super.call(this, ...arguments);
         },
-        waitUntilEvent: {
-            eventName: 'o-thread-view-hint-processed',
-            message: "should wait until partner 11 thread displayed its messages",
-            predicate: ({ hint, threadViewer }) => {
-                return (
-                    hint.type === 'messages-loaded' &&
-                    threadViewer.thread.model === 'res.partner' &&
-                    threadViewer.thread.id === resPartnerId1
-                );
-            },
+        serverData: { views },
+        target,
+    });
+    await afterEvent({
+        eventName: 'o-thread-view-hint-processed',
+        async func() {
+            await openView({
+                res_id: resPartnerId1,
+                res_model: 'res.partner',
+                views: [[false, 'form']],
+            });
+        },
+        message: "should wait until partner 11 thread displayed its messages",
+        predicate: ({ hint, threadViewer }) => {
+            return (
+                hint.type === 'messages-loaded' &&
+                threadViewer.thread.model === 'res.partner' &&
+                threadViewer.thread.id === resPartnerId1
+            );
         },
     });
     const controllerContentEl = document.querySelector('.o_content');

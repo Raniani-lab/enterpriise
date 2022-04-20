@@ -1,16 +1,13 @@
 /** @odoo-module **/
 
-import '@mail/../tests/helpers/mock_server'; // ensure mail overrides are applied first
-import { patch } from "@web/core/utils/patch";
-import { MockServer } from "@web/../tests/helpers/mock_server";
-
 import Domain from 'web.Domain';
+import MockServer from 'web.MockServer';
 
 const FACET_ORDER_COLORS = [
     '#F06050', '#6CC1ED', '#F7CD1F', '#814968', '#30C381', '#D6145F', '#475577', '#F4A460', '#EB7E7F', '#2C8397',
 ];
 
-patch(MockServer.prototype, 'documents', {
+MockServer.include({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -19,7 +16,7 @@ patch(MockServer.prototype, 'documents', {
      * @override
      * @private
      */
-    async _performRPC(route, args) {
+    async _performRpc(route, args) {
         if (route.indexOf('/documents/image') >= 0 ||
             _.contains(['.png', '.jpg'], route.substr(route.length - 4))) {
             return Promise.resolve();
@@ -27,7 +24,7 @@ patch(MockServer.prototype, 'documents', {
         if (args.model === 'documents.share' && args.method === 'check_access_rights') {
             return true;
         }
-        return this._super(...arguments);
+        return this._super.apply(this, arguments);
     },
     /**
      * Mocks the '_get_models' method of the model 'documents.document'.
@@ -39,7 +36,7 @@ patch(MockServer.prototype, 'documents', {
         const notAFile = [];
         const notAttached = [];
         const models = [];
-        const groups = this.mockReadGroup(model, {
+        const groups = this._mockReadGroup(model, {
             domain: domain,
             fields: ['res_model'],
             groupby: ['res_model'],
@@ -58,7 +55,7 @@ patch(MockServer.prototype, 'documents', {
                     __count: group.res_model_count,
                 });
             } else {
-                const { res_model_name } = this.models['documents.document'].records.find(
+                const { res_model_name } = this.data['documents.document'].records.find(
                     record => record.res_model === group.res_model
                 );
                 models.push({
@@ -77,8 +74,8 @@ patch(MockServer.prototype, 'documents', {
      * Mocks the '_get_tags' method of the model 'documents.tag'.
      */
     _mockDocumentsTag_GetTags(domain, folderId) {
-        const facets = this.models['documents.facet'].records;
-        const orderedTags = this.models['documents.tag'].records.sort((firstTag, secondTag) => {
+        const facets = this.data['documents.facet'].records;
+        const orderedTags = this.data['documents.tag'].records.sort((firstTag, secondTag) => {
             const firstTagFacet = facets.find(facet => facet.id === firstTag.facet_id);
             const secondTagFacet = facets.find(facet => facet.id === secondTag.facet_id);
             return firstTagFacet.sequence === secondTagFacet.sequence
@@ -86,7 +83,7 @@ patch(MockServer.prototype, 'documents', {
                 : firstTagFacet.sequence - secondTagFacet.sequence;
         });
         return orderedTags.map(tag => {
-            const [facet] = this.mockSearchRead('documents.facet', [[['id', '=', tag['facet_id']]]], {});
+            const [facet] = this._mockSearchRead('documents.facet', [[['id', '=', tag['facet_id']]]], {});
             return {
                 display_name: tag.display_name,
                 group_hex_color: FACET_ORDER_COLORS[facet.id % FACET_ORDER_COLORS.length],
@@ -104,11 +101,11 @@ patch(MockServer.prototype, 'documents', {
      *
      * @override
      */
-    mockSearchPanelSelectRange: function (model, [fieldName], kwargs) {
+    _mockSearchPanelSelectRange: function (model, [fieldName], kwargs) {
         if (model === 'documents.document' && fieldName === 'folder_id') {
             const enableCounters = kwargs.enable_counters || false;
             const fields = ['display_name', 'description', 'parent_folder_id'];
-            const records = this.mockSearchRead('documents.folder', [[], fields], {});
+            const records = this._mockSearchRead('documents.folder', [[], fields], {});
 
             let domainImage = new Map();
             if (enableCounters) {
@@ -118,7 +115,7 @@ patch(MockServer.prototype, 'documents', {
                     ...(kwargs.filter_domain, []),
                     [fieldName, '!=', false],
                 ]);
-                domainImage = this.mockSearchPanelFieldImage(model, fieldName, modelDomain, enableCounters);
+                domainImage = this._mockSearchPanelDomainImage(model, fieldName, modelDomain, enableCounters);
             }
 
             const valuesRange = new Map();
@@ -131,7 +128,7 @@ patch(MockServer.prototype, 'documents', {
                 valuesRange.set(record.id, record);
             }
             if (kwargs.enable_counters) {
-                this.mockSearchPanelGlobalCounters(valuesRange, 'parent_folder_id');
+                this._mockSearchPanelGlobalCounters(valuesRange, 'parent_folder_id');
             }
             return {
                 parent_field: 'parent_folder_id',
@@ -145,7 +142,7 @@ patch(MockServer.prototype, 'documents', {
      *
      * @override
      */
-    mockSearchPanelSelectMultiRange: function (model, [fieldName], kwargs) {
+    _mockSearchPanelSelectMultiRange: function (model, [fieldName], kwargs) {
         const searchDomain = kwargs.search_domain || [];
         const categoryDomain = kwargs.category_domain || [];
         const filterDomain = kwargs.filter_domain || [];

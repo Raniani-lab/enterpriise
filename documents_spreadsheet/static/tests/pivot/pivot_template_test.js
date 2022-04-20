@@ -3,7 +3,7 @@
 
 import { nextTick, dom, fields, createView } from "web.test_utils";
 import { registry } from "@web/core/registry";
-import { startServer, TEST_USER_IDS } from "@mail/../tests/helpers/test_utils";
+import { startServer } from "@mail/../tests/helpers/test_utils";
 
 import { jsonToBase64, base64ToJson } from "@documents_spreadsheet/bundle/o_spreadsheet/helpers";
 import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
@@ -79,7 +79,7 @@ module(
                 { name: "Template 1", data: btoa("{}") },
                 { name: "Template 2", data: btoa("{}") },
             ]);
-            this.data = Object.assign(pyEnv.mockServer.data, TEST_USER_IDS);
+            this.data = pyEnv.getData();
             Object.assign(this.data, {
                 partner: {
                     fields: {

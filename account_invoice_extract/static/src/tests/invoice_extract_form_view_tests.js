@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { patchUiSize, SIZES } from '@mail/../tests/helpers/patch_ui_size';
 import {
     afterNextRender,
     nextAnimationFrame,
@@ -11,12 +12,15 @@ import FormRenderer from '@account_invoice_extract/js/invoice_extract_form_rende
 import FormView from '@account_invoice_extract/js/invoice_extract_form_view';
 import invoiceExtractTestUtils from '@account_invoice_extract/tests/helpers/invoice_extract_test_utils';
 
-import config from 'web.config';
+import { registry } from '@web/core/registry';
+
 import testUtils from 'web.test_utils';
+import legacyViewRegistry from 'web.view_registry';
 
 QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('invoice_extract_form_view_tests.js', {
     beforeEach() {
+        patchUiSize({ size: SIZES.XXL });
         testUtils.mock.patch(FormRenderer, {
             /**
              * Called when chatter is rendered
@@ -29,6 +33,10 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                 this._startInvoiceExtract($attachment);
             },
         });
+
+        // replace the basic form view by the custom one.
+        registry.category('views').remove('form');
+        legacyViewRegistry.add("form", FormView);
     },
     afterEach: function () {
         testUtils.mock.unpatch(FormRenderer);
@@ -58,46 +66,42 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             model: 'account.move',
             res_id: accountMoveId1,
         });
-        await start({
-            hasView: true,
-            View: FormView,
-            model: 'account.move',
-            arch: '<form string="Account Invoice">' +
+        const views = {
+            'account.move,false,form':
+                '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
                 '</form>',
-            // FIXME could be removed once task-2248306 is done
-            archs: {
-                'mail.message,false,list': '<tree/>',
-            },
-            res_id: accountMoveId1,
-            services: this.services,
-            config: {
-                device: {
-                    size_class: config.device.SIZES.XXL,
-                },
-            },
+        };
+        const { afterEvent, openView } = await start({
+            serverData: { views },
             mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
                 } else if (args.method === 'register_as_main_attachment') {
                     return Promise.resolve(true);
                 }
-                return this._super.apply(this, arguments);
             },
-            waitUntilEvent: {
-                eventName: 'o-thread-view-hint-processed',
-                message: "should wait until account.move 2 thread displayed its messages",
-                predicate: ({ hint, threadViewer }) => {
-                    return (
-                        hint.type === 'messages-loaded' &&
-                        threadViewer.thread.model === 'account.move' &&
-                        threadViewer.thread.id === accountMoveId1
-                    );
-                },
+        });
+        await afterEvent({
+            eventName: 'o-thread-view-hint-processed',
+            async func() {
+                await openView({
+                    res_id: accountMoveId1,
+                    res_model: 'account.move',
+                    views: [[false, 'form']],
+                });
+            },
+            message: "should wait until account.move thread displayed its messages",
+            predicate: ({ hint, threadViewer }) => {
+                return (
+                    hint.type === 'messages-loaded' &&
+                    threadViewer.thread.model === 'account.move' &&
+                    threadViewer.thread.id === accountMoveId1
+                );
             },
         });
 
@@ -205,45 +209,42 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             model: 'account.move',
             res_id: accountMoveId1,
         });
-        await start({
-            hasView: true,
-            View: FormView,
-            model: 'account.move',
-            arch: '<form string="Account Invoice">' +
+        const views = {
+            'account.move,false,form':
+                '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
                 '</form>',
-            // FIXME could be removed once task-2248306 is done
-            archs: {
-                'mail.message,false,list': '<tree/>',
-            },
-            res_id: accountMoveId1,
-            config: {
-                device: {
-                    size_class: config.device.SIZES.XXL,
-                },
-            },
+        };
+        const { afterEvent, openView } = await start({
+            serverData: { views },
             mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
                 } else if (args.method === 'register_as_main_attachment') {
                     return Promise.resolve(true);
                 }
-                return this._super.apply(this, arguments);
             },
-            waitUntilEvent: {
-                eventName: 'o-thread-view-hint-processed',
-                message: "should wait until account.move 2 thread displayed its messages",
-                predicate: ({ hint, threadViewer }) => {
-                    return (
-                        hint.type === 'messages-loaded' &&
-                        threadViewer.thread.model === 'account.move' &&
-                        threadViewer.thread.id === accountMoveId1
-                    );
-                },
+        });
+        await afterEvent({
+            eventName: 'o-thread-view-hint-processed',
+            async func() {
+                await openView({
+                    res_id: accountMoveId1,
+                    res_model: 'account.move',
+                    views: [[false, 'form']],
+                });
+            },
+            message: "should wait until account.move thread displayed its messages",
+            predicate: ({ hint, threadViewer }) => {
+                return (
+                    hint.type === 'messages-loaded' &&
+                    threadViewer.thread.model === 'account.move' &&
+                    threadViewer.thread.id === accountMoveId1
+                );
             },
         });
 
@@ -319,45 +320,42 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             model: 'account.move',
             res_id: accountMoveId1,
         });
-        const { click } = await start({
-            hasView: true,
-            View: FormView,
-            model: 'account.move',
-            arch: '<form string="Account Invoice">' +
+        const views = {
+            'account.move,false,form':
+                '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
                 '</form>',
-            // FIXME could be removed once task-2248306 is done
-            archs: {
-                'mail.message,false,list': '<tree/>',
-            },
-            res_id: accountMoveId1,
-            config: {
-                device: {
-                    size_class: config.device.SIZES.XXL,
-                },
-            },
+        };
+        const { afterEvent, click, openView } = await start({
+            serverData: { views },
             mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
                 } else if (args.method === 'register_as_main_attachment') {
                     return Promise.resolve(true);
                 }
-                return this._super.apply(this, arguments);
             },
-            waitUntilEvent: {
-                eventName: 'o-thread-view-hint-processed',
-                message: "should wait until account.move 2 thread displayed its messages",
-                predicate: ({ hint, threadViewer }) => {
-                    return (
-                        hint.type === 'messages-loaded' &&
-                        threadViewer.thread.model === 'account.move' &&
-                        threadViewer.thread.id === accountMoveId1
-                    );
-                },
+        });
+        await afterEvent({
+            eventName: 'o-thread-view-hint-processed',
+            async func() {
+                await openView({
+                    res_id: accountMoveId1,
+                    res_model: 'account.move',
+                    views: [[false, 'form']],
+                });
+            },
+            message: "should wait until account.move 2 thread displayed its messages",
+            predicate: ({ hint, threadViewer }) => {
+                return (
+                    hint.type === 'messages-loaded' &&
+                    threadViewer.thread.model === 'account.move' &&
+                    threadViewer.thread.id === accountMoveId1
+                );
             },
         });
 
@@ -422,45 +420,42 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             model: 'account.move',
             res_id: accountMoveId1,
         });
-        await start({
-            hasView: true,
-            View: FormView,
-            model: 'account.move',
-            arch: `<form string="Account Invoice">
-                    <div class="o_success_ocr"/>
-                    <div class="o_attachment_preview" options="{'order': 'desc'}"></div>
-                    <div class="oe_chatter">
-                        <field name="message_ids"/>
-                    </div>
-                </form>`,
-            // FIXME could be removed once task-2248306 is done
-            archs: {
-                'mail.message,false,list': '<tree/>',
-            },
-            res_id: accountMoveId1,
-            config: {
-                device: {
-                    size_class: config.device.SIZES.XXL,
-                },
-            },
+        const views = {
+            'account.move,false,form':
+                '<form string="Account Invoice">' +
+                    '<div class="o_success_ocr"/>' +
+                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="oe_chatter">' +
+                        '<field name="message_ids"/>' +
+                    '</div>' +
+                '</form>',
+        };
+        const { afterEvent, openView } = await start({
+            serverData: { views },
             async mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return invoiceExtractTestUtils.createBoxesData();
                 } else if (args.method === 'register_as_main_attachment') {
                     return true;
                 }
-                return this._super(...arguments);
             },
-            waitUntilEvent: {
-                eventName: 'o-thread-view-hint-processed',
-                message: "should wait until account.move 2 thread displayed its messages",
-                predicate: ({ hint, threadViewer }) => {
-                    return (
-                        hint.type === 'messages-loaded' &&
-                        threadViewer.thread.model === 'account.move' &&
-                        threadViewer.thread.id === accountMoveId1
-                    );
-                },
+        });
+        await afterEvent({
+            eventName: 'o-thread-view-hint-processed',
+            async func() {
+                await openView({
+                    res_id: accountMoveId1,
+                    res_model: 'account.move',
+                    views: [[false, 'form']],
+                });
+            },
+            message: "should wait until account.move 2 thread displayed its messages",
+            predicate: ({ hint, threadViewer }) => {
+                return (
+                    hint.type === 'messages-loaded' &&
+                    threadViewer.thread.model === 'account.move' &&
+                    threadViewer.thread.id === accountMoveId1
+                );
             },
         });
 

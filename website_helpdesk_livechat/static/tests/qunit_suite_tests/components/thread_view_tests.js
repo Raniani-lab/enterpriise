@@ -29,9 +29,9 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
         mockRPC(route, { model, method, kwargs }) {
             if (model === 'mail.channel' && method === 'execute_command_helpdesk') {
                 assert.step(`execute command helpdesk. body: ${kwargs.body}`);
-                return Promise.resolve();
+                // random value returned in order for the mock server to know that this route is implemented.
+                return true;
             }
-            return this._super(...arguments);
         },
     });
     await openDiscuss();

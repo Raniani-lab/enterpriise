@@ -3,11 +3,13 @@ odoo.define('documents.mobile_tests', function (require) {
 
 const DocumentsKanbanView = require('documents.DocumentsKanbanView');
 const DocumentsListView = require('documents.DocumentsListView');
-const { createDocumentsView } = require('documents.test_utils');
+const { createDocumentsView, createDocumentsViewWithMessaging } = require('documents.test_utils');
 
 const { startServer } = require('@mail/../tests/helpers/test_utils');
 
+const { registry } = require('@web/core/registry');
 const { dom, nextTick } = require('web.test_utils');
+const legacyViewRegistry = require('web.view_registry');
 
 QUnit.module('documents', {}, function () {
 QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
@@ -32,6 +34,7 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
                     </templates>
                 </kanban>
             `,
+            data: pyEnv.getData(),
         });
 
         assert.containsOnce(kanban, '.o_documents_kanban_view',
@@ -83,17 +86,18 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
     QUnit.test('toggle inspector based on selection', async function (assert) {
         assert.expect(13);
 
+        // replace the basic kanban view by the custom one.
+        registry.category('views').remove('kanban');
+        legacyViewRegistry.add("kanban", DocumentsKanbanView);
         const pyEnv = await startServer();
         const documentsFolderId1 = pyEnv['documents.folder'].create({ name: 'Workspace1', description: '_F1-test-description_' });
         pyEnv['documents.document'].create([
             { folder_id: documentsFolderId1 },
             { folder_id: documentsFolderId1 },
         ]);
-        await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: `
-                <kanban>
+        const views = {
+            'documents.document,false,kanban':
+                `<kanban>
                     <templates>
                         <t t-name="kanban-box">
                             <div>
@@ -102,8 +106,14 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
                             </div>
                         </t>
                     </templates>
-                </kanban>
-            `,
+                </kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
         });
 
         assert.isNotVisible(document.querySelector('.o_documents_mobile_inspector'),
@@ -167,6 +177,7 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
                     <field name="name"/>
                 </tree>
             `,
+            data: pyEnv.getData(),
         });
 
         assert.containsOnce(list, '.o_documents_list_view',
@@ -218,20 +229,27 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
     QUnit.test('toggle inspector based on selection', async function (assert) {
         assert.expect(13);
 
+        // replace the basic list view by the custom one.
+        registry.category('views').remove('list');
+        legacyViewRegistry.add("list", DocumentsListView);
         const pyEnv = await startServer();
         const documentsFolderId1 = pyEnv['documents.folder'].create({ name: 'Workspace1', description: '_F1-test-description_' });
         pyEnv['documents.document'].create([
             { folder_id: documentsFolderId1 },
             { folder_id: documentsFolderId1 },
         ]);
-        await createDocumentsView({
-            View: DocumentsListView,
-            model: 'documents.document',
-            arch: `
-                <tree>
+        const views = {
+            'documents.document,false,list':
+                `<tree>
                     <field name="name"/>
-                </tree>
-            `,
+                </tree>`,
+        };
+         const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'list']],
         });
 
         assert.isNotVisible(document.querySelector('.o_documents_mobile_inspector'),

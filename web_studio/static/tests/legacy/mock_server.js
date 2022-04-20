@@ -1,9 +1,13 @@
-odoo.define('web_studio.MockServer', function (require) {
-'use strict';
+/** @odoo-module */
 
-var MockServer = require('web.MockServer');
+import MockServer from 'web.MockServer';
 
 MockServer.include({
+    init() {
+        this._super(...arguments);
+        MockServer.currentMockServer = this;
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -44,6 +48,4 @@ MockServer.include({
             views: { [view.type]: view },
         });
     },
-});
-
 });

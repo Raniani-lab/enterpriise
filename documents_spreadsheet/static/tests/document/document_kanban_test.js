@@ -31,6 +31,7 @@ test("download spreadsheet from the document inspector", async function (assert)
               </div>
           </t></templates></kanban>
       `,
+        data: pyEnv.getData(),
         intercepts: {
             do_action: function ({ data }) {
                 assert.step("redirect_to_spreadsheet");
@@ -91,6 +92,7 @@ test("thumbnail size in document side panel", async function (assert) {
               </div>
           </t></templates></kanban>
       `,
+      data: pyEnv.getData(),
     });
     await dom.click(".o_kanban_record:nth(0) .o_record_selector");
     await nextTick();
@@ -139,6 +141,7 @@ test("Can create a blank spreadsheet from template dialog", async function (asse
         archs: {
             "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
         },
+        data: pyEnv.getData(),
         intercepts: {
             do_action: function (ev) {
                 assert.step("redirect");

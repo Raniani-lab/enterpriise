@@ -26,8 +26,7 @@ QUnit.module('documents', {}, function () {
         });
         legacySystrayItems.push(ActivityMenu);
         registerCleanup(() => legacySystrayItems.pop());
-        const { wowlEnv: env } = await start({
-            hasWebClient: true,
+        const { env } = await start({
             async mockRPC(route, args) {
                 if (args.method === 'systray_get_activities') {
                     return [];

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import { VoipService } from "@voip/voip_service";
+import { voipService } from "@voip/voip_service";
 
-import { serviceRegistry } from "web.core";
+import { registry } from "@web/core/registry";
 
-serviceRegistry.add("voip_service", VoipService);
+registry.category('services').add("voip", voipService);

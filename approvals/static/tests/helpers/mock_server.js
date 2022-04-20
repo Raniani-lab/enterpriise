@@ -1,9 +1,11 @@
 /** @odoo-module **/
 
-import '@mail/../tests/helpers/mock_server'; // ensure mail overrides are applied first
-import MockServer from 'web.MockServer';
+import '@mail/../tests/helpers/mock_server'; // ensure mail override is applied first.
 
-MockServer.include({
+import { patch } from '@web/core/utils/patch';
+import { MockServer } from '@web/../tests/helpers/mock_server';
+
+patch(MockServer.prototype, 'approvals', {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -11,7 +13,7 @@ MockServer.include({
     /**
      * @override
      */
-    async _performRpc(route, args) {
+    async _performRPC(route, args) {
         if (args.model === 'approval.approver' && args.method === 'action_approve') {
             const ids = args.args[0];
             return this._mockApprovalApproverActionApprove(ids);

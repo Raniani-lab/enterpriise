@@ -7,8 +7,6 @@ var Dialog = require('web.Dialog');
 var dom = require('web.dom');
 var FormRenderer = require('web.FormRenderer');
 
-const { Component } = owl;
-
 var QWeb = core.qweb;
 
 var FollowupFormRenderer = FormRenderer.extend({
@@ -45,7 +43,7 @@ var FollowupFormRenderer = FormRenderer.extend({
      * Remove the mail alert above the report.
      */
     removeMailAlert: function () {
-        Component.env.services.messaging.get().then(messaging => {
+        owl.Component.env.services.messaging.get().then(messaging => {
             const thread = messaging.models['Thread'].findFromIdentifyingData({
                 id: this.state.res_id,
                 model: this.state.model,

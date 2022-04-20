@@ -2,6 +2,7 @@ odoo.define('web_studio.ViewEditorManager_tests', function (require) {
 "use strict";
 
 const { start, startServer } = require('@mail/../tests/helpers/test_utils');
+const { WEBCLIENT_LOAD_ROUTES } = require('@mail/../tests/helpers/webclient_setup');
 
 var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');
@@ -11,19 +12,25 @@ var fieldRegistryOwl = require('web.field_registry_owl');
 var framework = require('web.framework');
 var ListRenderer = require('web.ListRenderer');
 var testUtils = require('web.test_utils');
-var session = require('web.session');
+var { session } = require('@web/session');
 
 var studioTestUtils = require('web_studio.testUtils');
 
 const { patchWithCleanup } = require("@web/../tests/helpers/utils");
+const { registerCleanup } = require("@web/../tests/helpers/cleanup");
 
 const { openStudio, registerStudioDependencies } = require("@web_studio/../tests/helpers");
 const { getFixture, legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 const { doAction } = require("@web/../tests/webclient/helpers");
 const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
 const { MockServer } = require("@web/../tests/helpers/mock_server");
+const LegacyMockServer = require('web.MockServer');
 
 const { xml } = owl;
+
+function getCurrentMockServer() {
+    return LegacyMockServer.currentMockServer;
+}
 
 let serverData;
 let target;
@@ -32,7 +39,7 @@ QUnit.module('web_studio', {}, function () {
 QUnit.module('ViewEditorManager', {
     async beforeEach() {
         pyEnv = await startServer();
-        this.data = pyEnv.mockServer.data;
+        this.data = pyEnv.getData();
         const resPartnerId1 = pyEnv['res.partner'].create({ display_name: 'Dustin', avatar_128: 'D Artagnan' });
         const [partnerId1, partnerId2] = pyEnv['partner'].create([
             { display_name: 'jean' },
@@ -96,6 +103,12 @@ QUnit.module('ViewEditorManager', {
         serverData.views["coucou,false,search"] = `<search></search>`;
 
         target = getFixture();
+
+        // unblockUI fadeout delay can lead to undesirable elements remaining in the DOM
+        // at the end of the test, let's make it synchronous so that this can never happened.
+        const originalUnblokcUI = framework.unblockUI;
+        framework.unblockUI = () => originalUnblokcUI({ fadeOut: 0 });
+        registerCleanup(() => framework.unblockUI = originalUnblokcUI);
     },
     afterEach() {
         pyEnv = undefined;
@@ -274,9 +287,8 @@ QUnit.module('ViewEditorManager', {
                     ], "the target should be the field of the second group");
                     assert.deepEqual(args.operations[0].new_attrs, {string: "Foo"},
                         "the string attribute should be changed from default to 'Foo'");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -319,9 +331,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].node.attrs.optional,
                         "show", "default value of optional should be 'show'");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -361,9 +372,8 @@ QUnit.module('ViewEditorManager', {
                             }
                         ]
                     });
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -404,9 +414,8 @@ QUnit.module('ViewEditorManager', {
                             }
                         ]
                     });
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -479,9 +488,8 @@ QUnit.module('ViewEditorManager', {
             mockRPC(route, args) {
                 if (route === "/web_studio/edit_view") {
                     assert.deepEqual(args.operations, operations);
-                    return this._mockReturnView(archReturn, "coucou");
+                    return getCurrentMockServer()._mockReturnView(archReturn, "coucou");
                 }
-                return this._super(...arguments);
             }
         });
         await testUtils.dom.click(vem.$('.o_web_studio_view'));
@@ -543,9 +551,8 @@ QUnit.module('ViewEditorManager', {
                         <tree editable='bottom'>
                             <field name='display_name'/>
                         </tree>`;
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super(...arguments);
             },
         });
 
@@ -607,9 +614,8 @@ QUnit.module('ViewEditorManager', {
                                 <field name="start"/>
                             </tree>`;
                     }
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 }
-                return this._super(...arguments);
             },
         });
 
@@ -794,7 +800,6 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     return Promise.resolve({});
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -914,9 +919,11 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('list editor invisible to visible on field', async function (assert) {
         assert.expect(3);
 
-        testUtils.mock.patch(session.user_context, {
-            lang: 'fr_FR',
-            tz: 'Europe/Brussels',
+        patchWithCleanup(session, {
+            user_context: {
+                lang: 'fr_FR',
+                tz: 'Europe/Brussels',
+            },
         });
 
         var archReturn = '<tree><field name="char_field" modifiers="{}" attrs="{}"/></tree>';
@@ -934,9 +941,8 @@ QUnit.module('ViewEditorManager', {
                         'The lang in context should be false explicitly');
                     assert.ok(!('column_invisible' in args.operations[0].new_attrs),
                             'we shouldn\'t send "column_invisible"');
-                    return this._mockReturnView(archReturn, "coucou");
+                    return getCurrentMockServer()._mockReturnView(archReturn, "coucou");
                 }
-                return this._super.apply(this, arguments);
             }
         });
 
@@ -948,7 +954,6 @@ QUnit.module('ViewEditorManager', {
         // disable invisible
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
 
-        testUtils.mock.unpatch(session.user_context);
         vem.destroy();
     });
 
@@ -968,9 +973,8 @@ QUnit.module('ViewEditorManager', {
                         'we shouldn\'t send "readonly"');
                     assert.equal(args.operations[0].new_attrs.invisible, 1,
                         'we should send "invisible"');
-                    return this._mockReturnView(archReturn, "coucou");
+                    return getCurrentMockServer()._mockReturnView(archReturn, "coucou");
                 }
-                return this._super.apply(this, arguments);
             }
         });
 
@@ -1048,9 +1052,8 @@ QUnit.module('ViewEditorManager', {
                     const arch = "<tree>"
                             + "<field name='display_name' studio_groups='[{&quot;id&quot;:4, &quot;name&quot;: &quot;Admin&quot;}]'/>"
                         +"</tree>";
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             }
         });
 
@@ -1155,9 +1158,8 @@ QUnit.module('ViewEditorManager', {
                         "<field name='display_name'/>" +
                         "<field name='char_field'/>" +
                     "</tree>";
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -1205,9 +1207,8 @@ QUnit.module('ViewEditorManager', {
                         newArch = arch;
                         assert.ok('neither "sum" nor "avg" selected for aggregation');
                     }
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             }
         });
 
@@ -1338,7 +1339,6 @@ QUnit.module('ViewEditorManager', {
                 if (args.method === 'get_formview_action') {
                     throw new Error("The many2one form view should not be opened");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -1391,9 +1391,8 @@ QUnit.module('ViewEditorManager', {
                             "<field name='image' widget='image' options='{\"size\": [0, 270]}'/>" +
                         "</sheet>" +
                     "</form>";
-                    return this._mockReturnView(arch, "partner");
+                    return getCurrentMockServer()._mockReturnView(arch, "partner");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -1485,9 +1484,8 @@ QUnit.module('ViewEditorManager', {
                             "</group>" +
                         "</form>";
                     }
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -1542,9 +1540,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].new_attrs.options, '{"size":[0,90]}',
                         "appropriate default options for 'image' widget should be passed");
-                    return this._mockReturnView(arch, "partner");
+                    return getCurrentMockServer()._mockReturnView(arch, "partner");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -1577,9 +1574,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].node.field_description.default_value,
                         '0', "related arg should be correct");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -1639,7 +1635,6 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/get_email_alias') {
                     return Promise.resolve({email_alias: 'coucou'});
                 }
-                return this._super(route, args);
             },
         });
 
@@ -1723,9 +1718,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.equal(args.operations[0].new_attrs.invisible, 1,
                         'we should send "invisible"');
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -1845,8 +1839,8 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('correctly display hook at the end of tabs', async function(assert) {
-        assert.expect(2);
+    QUnit.test('correctly display hook at the end of tabs -- empty group', async function(assert) {
+        assert.expect(1);
 
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -1868,6 +1862,10 @@ QUnit.module('ViewEditorManager', {
         );
 
         vem.destroy();
+    });
+
+    QUnit.test('correctly display hook at the end of tabs -- multiple groups with content and an empty group', async function(assert) {
+        assert.expect(1);
 
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -1925,9 +1923,8 @@ QUnit.module('ViewEditorManager', {
                         "a page should be added inside the notebook");
                     assert.strictEqual(args.operations[0].target.tag, 'notebook',
                         "the target should be the notebook in edit_view");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -1985,9 +1982,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.equal(args.operations[0].new_attrs.invisible, 1,
                         'we should send "invisible"');
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -2058,9 +2054,8 @@ QUnit.module('ViewEditorManager', {
                     }, "the target should be set in edit_view");
                     assert.deepEqual(args.operations[0].new_attrs, {string: 'Yeah'},
                         "the string attribute should be set in edit_view");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -2109,9 +2104,8 @@ QUnit.module('ViewEditorManager', {
                     assert.deepEqual(args.operations[1].node.attrs, {widget: 'statusbar', options: "{'clickable': '1'}"},
                         "the options should be correctly set");
 
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -2185,9 +2179,8 @@ QUnit.module('ViewEditorManager', {
                             "</group>" +
                         "</sheet>" +
                     "</form>";
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -2215,6 +2208,7 @@ QUnit.module('ViewEditorManager', {
             </form>`;
         let editViewCount = 0;
 
+        const self = this;
         const vem = await studioTestUtils.createViewEditorManager({
             model: 'partner',
             arch: arch,
@@ -2265,7 +2259,7 @@ QUnit.module('ViewEditorManager', {
                             field: '',
                             type: 'avatar_image',
                         }, "Proper field name and operation type should be passed");
-                        this.data.partner.fields['x_avatar_image'] = {
+                        self.data.partner.fields['x_avatar_image'] = {
                             string: "Image",
                             type: "binary"
                         };
@@ -2278,9 +2272,8 @@ QUnit.module('ViewEditorManager', {
                                 </sheet>
                             </form>`;
                     }
-                    return this._mockReturnView(newArch, "partner");
+                    return getCurrentMockServer()._mockReturnView(newArch, "partner");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -2588,9 +2581,8 @@ QUnit.module('ViewEditorManager', {
                         field: 'priority',
                         type: 'kanban_priority',
                     }, "Proper field name and operation type should be passed");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -2707,9 +2699,8 @@ QUnit.module('ViewEditorManager', {
                         );
                         newArch = arch;
                     }
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -2864,9 +2855,8 @@ QUnit.module('ViewEditorManager', {
                         {tag: 'div', indice: 2}],
                         'Should have correct xpath_info as we do not have any tag identifier attribute on drop-down div'
                     );
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
         assert.containsOnce(vem, '.o_dropdown_kanban', "there should be one dropdown node");
@@ -2917,9 +2907,8 @@ QUnit.module('ViewEditorManager', {
                         },
                         type: 'remove',
                     }, "Proper field name and operation type should be passed");
-                    return this._mockReturnView(arch, "partner");
+                    return getCurrentMockServer()._mockReturnView(arch, "partner");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -2953,9 +2942,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.deepEqual(args.operations[0], {field: 'displayed_image_id', type: 'kanban_set_cover'},
                         "Proper field name and operation type should be passed");
-                    return this._mockReturnView(arch, "partner");
+                    return getCurrentMockServer()._mockReturnView(arch, "partner");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -3027,15 +3015,14 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.deepEqual(args.operations[0].node.attrs, {name: 'display_name'},
                         "we should only specify the name (in attrs) when adding a field");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
 
         // try to add a field in the autocompletion section
-        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields > .ui-draggable:first'), $('.o_web_studio_search_autocompletion_fields .o_web_studio_hook:first'));
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields > .ui-draggable[title="Display Name"]'), $('.o_web_studio_search_autocompletion_fields .o_web_studio_hook:first'));
 
         assert.strictEqual(vem.view_type, 'search',
             "view type should be search");
@@ -3100,9 +3087,8 @@ QUnit.module('ViewEditorManager', {
                         },
                         type: 'remove',
                     });
-                    return this._mockReturnView("<search/>", "coucou");
+                    return getCurrentMockServer()._mockReturnView("<search/>", "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -3145,7 +3131,7 @@ QUnit.module('ViewEditorManager', {
 
 
         // try to add a stored char field in the filters section
-        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields > .ui-draggable:first'), $('.o_web_studio_search_filters .o_web_studio_hook:first'), {disableDrop: true});
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields > .ui-draggable[title="Display Name"]'), $('.o_web_studio_search_filters .o_web_studio_hook:first'), {disableDrop: true});
 
         assert.hasClass(vem.$('.o_web_studio_search_filters'), 'text-muted',
             "filter section should be muted");
@@ -3228,9 +3214,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].node.attrs.context, "{'group_by': 'm2m'}",
                         "should date attribute in attrs when adding a date/datetime field");
-                    return this._mockReturnView(arch, "product");
+                    return getCurrentMockServer()._mockReturnView(arch, "product");
                 }
-                return this._super(...arguments);
             },
         });
 
@@ -3357,9 +3342,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].node.attrs.date, 'start',
                         "should date attribute in attrs when adding a date/datetime field");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -3372,7 +3356,7 @@ QUnit.module('ViewEditorManager', {
             'should have two filters inside filters dropdown');
 
         // try to add a date field in the filters section
-        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields .o_web_studio_field_datetime:first'), vem.$('.o_web_studio_search_sub_item .o_web_studio_search_filters .o_web_studio_hook').eq(1));
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields .o_web_studio_field_datetime[title="Start Date"]'), vem.$('.o_web_studio_search_sub_item .o_web_studio_search_filters .o_web_studio_hook').eq(1));
         assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_filters.table tbody tr.o_web_studio_hook', 4,
             "there should be four hooks in the filters dropdown");
         assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_filters [data-node-id]', 3,
@@ -3459,9 +3443,8 @@ QUnit.module('ViewEditorManager', {
                                 <field name='m2o' type='row'/>
                             </pivot>`;
                     }
-                    return this._mockReturnView(newArch, "product");
+                    return getCurrentMockServer()._mockReturnView(newArch, "product");
                 }
-                return this._super(...arguments);
             },
         });
 
@@ -3481,7 +3464,7 @@ QUnit.module('ViewEditorManager', {
                 "the first row field should contain correct value");
             assert.strictEqual(pivot.$('select#second_row_groupby option:selected').val(), 'toughness',
                 "the second row field should contain correct value");
-            assert.strictEqual(pivot.$('th').slice(0, 5).text(), "TotaljacquesUndefined",
+            assert.strictEqual(pivot.$('th').slice(0, 5).text(), "TotalUndefinedjacques",
                 "the col headers should be as expected");
             assert.strictEqual(pivot.$('th').slice(8).text(), "TotalUndefinedUndefined",
                 "the row headers should be as expected");
@@ -3509,7 +3492,7 @@ QUnit.module('ViewEditorManager', {
                 "the second row field should contain correct value");
             assert.strictEqual(pivot.$('th').slice(0, 5).text(), "Totalxpadxpod",
                 "the col headers should be as expected");
-            assert.strictEqual(pivot.$('th').slice(8).text(), "TotaljacquesUndefined",
+            assert.strictEqual(pivot.$('th').slice(8).text(), "TotalUndefinedjacques",
                 "the row headers should be as expected");
 
             pivot.destroy();
@@ -3584,9 +3567,8 @@ QUnit.module('ViewEditorManager', {
                                 <field name='char_field' type='row'/>
                             </graph>`;
                     }
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 }
-                return this._super(...arguments);
             },
         });
 
@@ -3629,9 +3611,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].new_attrs.precision, '{"day":"hour:quarter"}',
                         "should correctly set the precision");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -3675,9 +3656,8 @@ QUnit.module('ViewEditorManager', {
                     const newArch = `<map res_partner='request_partner_id' routing='true' studio_map_field_ids='[${irModelFieldsIds[1]}]' hide_name='true' hide_address='true'>` +
                         "<field name='summary' string='Description'/>" +
                     "</map>";
-                    return this._mockReturnView(newArch, "mail.activity");
+                    return getCurrentMockServer()._mockReturnView(newArch, "mail.activity");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -3730,9 +3710,8 @@ QUnit.module('ViewEditorManager', {
             arch: "<tree><field name='id'/></tree>",
             mockRPC: function (route) {
                 if (route === '/web_studio/edit_view') {
-                    return this._mockReturnView("<tree><field name='id'/></tree>", "coucou");
+                    return getCurrentMockServer()._mockReturnView("<tree><field name='id'/></tree>", "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -3784,12 +3763,11 @@ QUnit.module('ViewEditorManager', {
                     if (firstExecution) {
                         firstExecution = false;
                         // simulate a failed route
-                        return Promise.reject();
+                        return false;
                     } else {
-                        return this._mockReturnView("<tree><field name='id'/></tree>", "coucou");
+                        return getCurrentMockServer()._mockReturnView("<tree><field name='id'/></tree>", "coucou");
                     }
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -3834,9 +3812,8 @@ QUnit.module('ViewEditorManager', {
                         relation: 'res.currency',
                         type: 'many2one',
                     });
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -3885,9 +3862,8 @@ QUnit.module('ViewEditorManager', {
             mockRPC: function (route) {
                 if (route === '/web_studio/edit_view') {
                     nbEdit++;
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -3972,9 +3948,8 @@ QUnit.module('ViewEditorManager', {
                             false, "store arg should be correct");
                     }
                     nbEdit++;
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4056,9 +4031,8 @@ QUnit.module('ViewEditorManager', {
                 }
                 if (route === '/web_studio/edit_view') {
                     assert.step('edit');
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4097,7 +4071,6 @@ QUnit.module('ViewEditorManager', {
                     assert.deepEqual(args.args, [[['relation', '=', 'partner'], ['ttype', '=', 'many2one']]],
                         "the domain should be correctly set when checking if the m2o for o2m exists or not");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4127,9 +4100,8 @@ QUnit.module('ViewEditorManager', {
                 }
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].node.field_description.special, 'lines');
-                    return this._mockReturnView(arch, "partner");
+                    return getCurrentMockServer()._mockReturnView(arch, "partner");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4156,9 +4128,8 @@ QUnit.module('ViewEditorManager', {
                 }
                 if (route === '/web_studio/edit_view') {
                     assert.step('edit');
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4201,9 +4172,8 @@ QUnit.module('ViewEditorManager', {
                 }
                 if (route === '/web_studio/edit_view') {
                     assert.step('edit');
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4240,9 +4210,8 @@ QUnit.module('ViewEditorManager', {
                     // by the ViewEditorManager
                     assert.ok(true, "should edit the view to delete the field");
                     const newArch = "<tree><field name='display_name'/></tree>";
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4304,7 +4273,6 @@ QUnit.module('ViewEditorManager', {
                         js: [],
                     });
                 }
-                return this._super.apply(this, arguments);
             },
             viewID: 1,
         });
@@ -4359,9 +4327,9 @@ QUnit.module('ViewEditorManager', {
             debug: 1,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_view') {
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 } else if (route === '/web_studio/edit_view_arch') {
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 } else if (route === '/web_editor/get_assets_editor_resources') {
                     assert.strictEqual(args.key, 1, "the correct view should be fetched");
                     return Promise.resolve({
@@ -4382,7 +4350,6 @@ QUnit.module('ViewEditorManager', {
                         js: [],
                     });
                 }
-                return this._super.apply(this, arguments);
             },
             viewID: 1,
             studioViewID: 42,
@@ -4478,9 +4445,8 @@ QUnit.module('ViewEditorManager', {
                         assert.strictEqual(_.last(args.operations[3].target.xpath_info).tag, 'notebook',
                             'should have the notebook as xpath last element');
                     }
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4534,9 +4500,8 @@ QUnit.module('ViewEditorManager', {
             mockRPC: function (route) {
                 if (route === '/web_studio/edit_view') {
                     editViewCount++;
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4578,7 +4543,6 @@ QUnit.module('ViewEditorManager', {
                         return Promise.resolve({default_value: '1'});
                     }
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4616,9 +4580,8 @@ QUnit.module('ViewEditorManager', {
                         assert.ok(args.operations[1].node.field_description.name.startsWith('x_studio_float_field_'),
                             "default new field name should start with x_studio_float_field_*");
                     }
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4653,11 +4616,11 @@ QUnit.module('ViewEditorManager', {
                         string: "Hello",
                         type: "char"
                     };
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 } else if (route === '/web_studio/rename_field') {
-                    return Promise.resolve();
+                    // random value returned in order for the mock server to know that this route is implemented.
+                    return true;
                 }
-                return this._super(...arguments);
             },
         });
 
@@ -4690,7 +4653,6 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     editViewCount++;
                 }
-                return this._super.apply(this, arguments);
             },
         });
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_tabs'), $('.o_group .o_web_studio_hook'));
@@ -4731,9 +4693,8 @@ QUnit.module('ViewEditorManager', {
                     assert.strictEqual(args.operations[0].node.field_description.selection,
                         "[[\"Value 1\",\"Miramar\"]]",
                         "the selection value should be set correctly");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4788,9 +4749,8 @@ QUnit.module('ViewEditorManager', {
                         "[[\"Value 2\",\"Value 2\"],[\"Value 1\",\"My Value\"],[\"Sulochan\",\"Sulochan\"]]",
                         "the selection should be set");
                     assert.ok(true, "should have refreshed the view");
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4863,9 +4823,8 @@ QUnit.module('ViewEditorManager', {
                     assert.strictEqual(args.operations[0].node.attrs.widget, "priority",
                         "the widget should be correctly set");
 
-                    return this._mockReturnView(arch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -4900,7 +4859,7 @@ QUnit.module('ViewEditorManager', {
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
             mockRPC: function(route, args) {
-                if (!['/mail/init_messaging', '/mail/load_message_failures'].includes(route)) {
+                if (!['/mail/init_messaging', '/mail/load_message_failures', ...WEBCLIENT_LOAD_ROUTES].includes(route)) {
                     assert.step(route);
                 }
                 if (route === '/web_studio/edit_view') {
@@ -4910,11 +4869,11 @@ QUnit.module('ViewEditorManager', {
                         string: "Coucou",
                         type: "char"
                     };
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 } else if (route === '/web_studio/rename_field') {
-                    return Promise.resolve();
+                    // random value returned in order for the mock server to know that this route is implemented.
+                    return true;
                 }
-                return this._super.apply(this, arguments);
             }
         });
 
@@ -4976,9 +4935,8 @@ QUnit.module('ViewEditorManager', {
                         string: "Coucou",
                         type: "char"
                     };
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             }
         });
 
@@ -5258,7 +5216,6 @@ QUnit.module('ViewEditorManager', {
                 </sheet>
             </form>`;
         serverData.views["coucou,false,search"] = `<search></search>`;
-        serverData.models = pyEnv.mockServer.data;
 
         serverData.views["ir.ui.view,false,form"] = /*xml */ `<form><field name="model" /></form>`;
         serverData.views["ir.ui.view,false,search"] = /*xml */ `<search />`;
@@ -5386,9 +5343,8 @@ QUnit.module('ViewEditorManager', {
                 if (route === '/web_studio/edit_view') {
                     assert.equal(args.operations[0].new_attrs.options, '{"no_create":true}',
                         'no_create options should send with true value');
-                    return this._mockReturnView(arch, "product");
+                    return getCurrentMockServer()._mockReturnView(arch, "product");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -5668,7 +5624,6 @@ QUnit.module('ViewEditorManager', {
         action.views = [[1, "form"]];
         action.res_model = "coucou";
         action.res_id = coucouId1;
-        serverData.models = undefined;
         serverData.views["coucou,1,form"] = /*xml */ `
             <form>
                 <sheet>
@@ -5716,8 +5671,7 @@ QUnit.module('ViewEditorManager', {
             }
         };
 
-        const { widget: webClient } = await start({
-            hasWebClient: true,
+        const { webClient } = await start({
             serverData,
             mockRPC,
         });
@@ -6036,20 +5990,17 @@ QUnit.module('ViewEditorManager', {
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
             arch: arch,
-            intercepts: {
-                view_change(ev) {
-                    assert.equal(ev.data.new_attrs.options, '{"enable_sms":false}',
-                        'Writing the enable_sms option workds');
-                }
-            },
             mockRPC(route, args) {
                 if (route === '/web_studio/edit_view') {
                     return Promise.resolve();
                 }
-                return this._super.apply(this, arguments);
             }
         });
 
+        testUtils.mock.intercept(vem, 'view_change', ev => {
+            assert.equal(ev.data.new_attrs.options, '{"enable_sms":false}',
+            'Writing the enable_sms option workds');
+        });
         await testUtils.dom.click(vem.$('.o_form_label:contains(Display Name)'));
         assert.containsOnce(vem, 'input[name="enable_sms"]');
         assert.ok(vem.$('input[name="enable_sms"]').is(':checked'),
@@ -6079,9 +6030,8 @@ QUnit.module('ViewEditorManager', {
                             <field name="display_name"/>
                         </group>
                     </form>`;
-                    return this._mockReturnView(newArch, "coucou");
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
@@ -6164,7 +6114,6 @@ QUnit.module('ViewEditorManager', {
                         js: [],
                     });
                 }
-                return this._super(...arguments);
             },
             viewID: 1,
             studioViewID: 42,
@@ -6266,7 +6215,6 @@ QUnit.module('ViewEditorManager', {
                         js: [],
                     });
                 }
-                return this._super(...arguments);
             },
             viewID: 1,
             studioViewID: 42,

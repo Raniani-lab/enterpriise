@@ -84,6 +84,7 @@
         ],
         'web.tests_assets': [
             'documents/static/tests/helpers/*',
+            'documents/static/tests/legacy/helpers/*',
         ],
         'web.qunit_suite_tests': [
             'documents/static/tests/documents_test_utils.js',

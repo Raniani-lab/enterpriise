@@ -228,7 +228,6 @@ QUnit.test('approve approval', async function (assert) {
                 assert.strictEqual(args.args[0][0], approvalRequestId1);
                 assert.step('action_approve');
             }
-            return this._super(...arguments);
         },
     });
     await createChatterContainerComponent({
@@ -274,7 +273,6 @@ QUnit.test('refuse approval', async function (assert) {
                 assert.strictEqual(args.args[0][0], approvalRequestId1);
                 assert.step('action_refuse');
             }
-            return this._super(...arguments);
         },
     });
     await createChatterContainerComponent({

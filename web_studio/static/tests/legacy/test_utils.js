@@ -4,7 +4,10 @@ odoo.define('web_studio.testUtils', function (require) {
 const { start } = require('@mail/../tests/helpers/test_utils');
 
 var dom = require('web.dom');
+const MockServer = require('web.MockServer');
+const { ComponentAdapter } = require('web.OwlCompatibility');
 var QWeb = require('web.QWeb');
+const { registry } = require('@web/core/registry');
 var testUtils = require('web.test_utils');
 var utils = require('web.utils');
 var Widget = require('web.Widget');
@@ -143,6 +146,24 @@ async function createSidebar(params) {
 }
 
 /**
+ * This class let us instanciate a widget via createWebClient and get it
+ * afterwards in order to use it during tests.
+ */
+const { onMounted, onWillUnmount } = owl;
+class StudioEnvironmentComponent extends ComponentAdapter {
+    constructor() {
+        super(...arguments);
+        this.env = owl.Component.env;
+        onMounted(() => {
+            StudioEnvironmentComponent.currentWidget = this.widget;
+        });
+        onWillUnmount(() => {
+            StudioEnvironmentComponent.currentWidget = undefined;
+        });
+    }
+}
+
+/**
  * Create a ViewEditorManager widget.
  *
  * @param {Object} params
@@ -150,9 +171,19 @@ async function createSidebar(params) {
  */
 async function createViewEditorManager(params) {
     weTestUtils.patch();
-    const { mockServer, widget } = await start(params);
-    const parent = new StudioEnvironment(widget);
-    const fieldsView = testUtils.mock.getView(mockServer, params);
+    params.serverData = params.serverData || {};
+    params.serverData.models = params.serverData.models || {};
+    params.serverData.models = weTestUtils.wysiwygData(params.serverData.models);
+    registry.category('main_components').add('StudioEnvironmentContainer', {
+        Component: StudioEnvironmentComponent,
+        props: { Component: StudioEnvironment },
+    });
+    await start({
+        ...params,
+        legacyParams: { withLegacyMockServer: true },
+    });
+    const parent = StudioEnvironmentComponent.currentWidget;
+    const fieldsView = testUtils.mock.getView(MockServer.currentMockServer, params);
     if (params.viewID) {
         fieldsView.view_id = params.viewID;
     }
@@ -172,11 +203,9 @@ async function createViewEditorManager(params) {
         chatter_allowed: params.chatter_allowed,
     });
 
-    // also destroy to parent widget to avoid memory leak
     const originalDestroy = ViewEditorManager.prototype.destroy;
     vem.destroy = function () {
         vem.destroy = originalDestroy;
-        widget.destroy();
         weTestUtils.unpatch();
     };
 

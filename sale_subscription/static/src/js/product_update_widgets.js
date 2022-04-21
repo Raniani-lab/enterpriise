@@ -10,7 +10,6 @@ odoo.define('sale_subscription.subscription_widgets', function (require) {
     const ProductUpdateDateWidget = BasicFields.FieldDate.extend(SaleOrderLineMixin, {
         _renderReadonly: function () {
            const value = field_utils.format.date(this.value, this.field, {});
-           console.log(value);
            this.$el.text(value);
         },
         _getUpdateAllLinesAction: function () {

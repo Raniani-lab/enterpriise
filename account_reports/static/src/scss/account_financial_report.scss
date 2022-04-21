@@ -74,7 +74,7 @@
     // Clearfix the floats (prevent the element height to collapse)
     .o_account_reports_header {
         clear: both;
-        overflow: hidden;
+        overflow: visible;
     }
 
     .dropdown-toggle::after {

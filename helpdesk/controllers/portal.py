@@ -95,7 +95,8 @@ class CustomerPortal(portal.CustomerPortal):
 
             last_message_cust = []
             last_message_sup = []
-            for ticket_id in last_author_dict.keys():
+            ticket_ids = set(last_author_dict.keys()) & set(ticket_author_dict.keys())
+            for ticket_id in ticket_ids:
                 if last_author_dict[ticket_id] == ticket_author_dict[ticket_id]:
                     last_message_cust.append(ticket_id)
                 else:

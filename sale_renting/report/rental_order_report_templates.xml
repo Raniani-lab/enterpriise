@@ -51,7 +51,7 @@
                         <t t-foreach="doc.order_line" t-as="line">
                             <tr t-if="line.qty_delivered > 0">
                                 <td><span t-field="line.product_id.name"/></td>
-                                <td class="text-left"><span t-field="line.pickup_date"/></td>
+                                <td class="text-left"><span t-field="line.start_date"/></td>
                                 <td class="text-left"><span t-field="line.return_date"/></td>
                                 <td class="text-right"><span t-field="line.qty_delivered"/></td>
                                 <td class="text-right"><span t-field="line.qty_returned"/></td>

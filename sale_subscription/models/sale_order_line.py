@@ -73,7 +73,7 @@ class SaleOrderLine(models.Model):
         subscription_lines = self.filtered(lambda l: (l.order_id.is_subscription or l.order_id.subscription_management == 'upsell') and l.temporal_type == 'subscription')
         super(SaleOrderLine, self - subscription_lines)._compute_start_date()
         for line in subscription_lines:
-            if not line.start_date and line.order_id.state in ['sale', 'done']:
+            if not line.start_date:
                 line.start_date = fields.Datetime.today()
 
     @api.depends('order_id.is_subscription', 'temporal_type', 'start_date', 'pricing_id')

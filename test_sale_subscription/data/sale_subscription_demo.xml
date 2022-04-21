@@ -13,16 +13,30 @@
         <field name="uom_po_id" ref="uom.product_uom_unit"/>
     </record>
 
-    <record id="product_pricing_insurance" model="product.pricing">
+    <record id="product_pricing_insurance1" model="product.pricing">
         <field name="duration" eval="1"/>
         <field name="unit">month</field>
-        <field name="price" eval="10"/>
+        <field name="price" eval="30"/>
+        <field name="currency_id" ref="base.USD"/>
+    </record>
+
+    <record id="product_pricing_insurance2" model="product.pricing">
+        <field name="duration" eval="1"/>
+        <field name="unit">year</field>
+        <field name="price" eval="300"/>
+        <field name="currency_id" ref="base.USD"/>
+    </record>
+
+    <record id="product_pricing_insurance3" model="product.pricing">
+        <field name="duration" eval="3"/>
+        <field name="unit">year</field>
+        <field name="price" eval="750"/>
         <field name="currency_id" ref="base.USD"/>
     </record>
 
     <record id="product_fire_insurance" model="product.product">
             <field name="product_pricing_ids"
-                   eval="[(6,0,[ref('product_pricing_insurance')])]"/>
+                   eval="[(6,0,[ref('product_pricing_insurance1'), ref('product_pricing_insurance2'), ref('product_pricing_insurance3')])]"/>
     </record>
 
     <record id="template_draft_multi" model="sale.order.template">
@@ -58,7 +72,7 @@
         <field name="product_id" ref="product_fire_insurance"/>
         <field name="product_uom_qty">1</field>
         <field name="product_uom_id" ref="uom.product_uom_unit"/>
-        <field name="pricing_id" ref="product_pricing_insurance"/>
+        <field name="pricing_id" ref="product_pricing_insurance1"/>
     </record>
 
     <record id="test_subscription_portal_0" model="sale.order">
@@ -129,7 +143,7 @@
         <field name="product_id" ref="product_fire_insurance"/>
         <field name="product_uom_qty">3</field>
         <field name="price_unit">20.0</field>
-        <field name="pricing_id" ref="product_pricing_insurance"/>
+        <field name="pricing_id" ref="product_pricing_insurance1"/>
         <field name="product_uom" ref="uom.product_uom_unit"/>
     </record>
 

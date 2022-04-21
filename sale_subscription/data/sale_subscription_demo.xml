@@ -22,15 +22,15 @@
         </record>
 
         <record id="product_pricing_2" model="product.pricing">
-            <field name="duration" eval="2"/>
-            <field name="unit">month</field>
+            <field name="duration" eval="1"/>
+            <field name="unit">year</field>
             <field name="price" eval="100"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
         <record id="product_pricing_3" model="product.pricing">
             <field name="duration" eval="3"/>
-            <field name="unit">month</field>
+            <field name="unit">year</field>
             <field name="price" eval="250"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
@@ -49,21 +49,21 @@
         <record id="product_pricing_4" model="product.pricing">
             <field name="duration" eval="1"/>
             <field name="unit">month</field>
-            <field name="price" eval="10"/>
+            <field name="price" eval="20"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
         <record id="product_pricing_5" model="product.pricing">
             <field name="duration" eval="1"/>
             <field name="unit">year</field>
-            <field name="price" eval="100"/>
+            <field name="price" eval="200"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
         <record id="product_pricing_6" model="product.pricing">
             <field name="duration" eval="3"/>
             <field name="unit">year</field>
-            <field name="price" eval="250"/>
+            <field name="price" eval="500"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
@@ -104,7 +104,7 @@
             <field name="payment_mode">draft_invoice</field>
             <field name="recurring_rule_boundary">limited</field>
             <field name="recurring_rule_type">year</field>
-            <field name="recurring_rule_count">5</field>
+            <field name="recurring_rule_count">6</field>
         </record>
 
         <record id="yearly_template_line" model="sale.order.template.line">

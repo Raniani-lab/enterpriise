@@ -691,7 +691,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             target: [{ top: 0, bottom: 1, left: 0, right: 0 }],
         });
         selectCell(model, "A2"); // A1 and A2 are merged; select A2
-        assert.ok(model.getters.isInMerge(sheetId, ...toCartesian("A2")));
+        const { col, row } = toCartesian("A2");
+        assert.ok(model.getters.isInMerge(sheetId, col, row));
         const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
         const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
         await reinsertPivot1.action(env);
@@ -1477,7 +1478,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await nextTick();
         assert.containsOnce(document.body, ".o_pivot_table_dialog");
         await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
-        assert.equal(document.activeElement.tagName, "CANVAS");
+        assert.strictEqual(document.activeElement.className, "o-grid-overlay");
     });
 
     test("One col header as missing value should be displayed", async function (assert) {
@@ -1602,7 +1603,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await nextTick();
         await dom.click(document.body.querySelector(".modal-footer .btn-primary"));
         await nextTick();
-        assert.strictEqual(document.activeElement.tagName, "CANVAS");
+        assert.strictEqual(document.activeElement.className, "o-grid-overlay");
     });
 
     test("Open pivot properties properties with non-loaded field", async function (assert) {

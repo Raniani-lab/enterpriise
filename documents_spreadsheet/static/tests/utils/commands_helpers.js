@@ -9,7 +9,7 @@ const { toCartesian, toZone } = spreadsheet.helpers;
  * Select a cell
  */
 export function selectCell(model, xc) {
-    const [col, row] = toCartesian(xc);
+    const { col, row } = toCartesian(xc);
     return model.selection.selectCell(col, row);
 }
 
@@ -63,8 +63,7 @@ export function setSelection(model, xc) {
  */
 export function autofill(model, from, to) {
     setSelection(model, from);
-    const [col, row] = toCartesian(to);
-    model.dispatch("AUTOFILL_SELECT", { col, row });
+    model.dispatch("AUTOFILL_SELECT", toCartesian(to));
     model.dispatch("AUTOFILL");
 }
 
@@ -78,6 +77,5 @@ export function setCellContent(model, xc, content, sheetId = undefined) {
                 ? model.getters.getVisibleSheets()[0]
                 : model.getters.getActiveSheetId();
     }
-    const [col, row] = toCartesian(xc);
-    model.dispatch("UPDATE_CELL", { col, row, sheetId, content });
+    model.dispatch("UPDATE_CELL", { ...toCartesian(xc), sheetId, content });
 }

@@ -47,14 +47,14 @@ cellMenuRegistry
         name: _lt("List properties"),
         sequence: 190,
         action(env) {
-            const [col, row] = env.model.getters.getPosition();
+            const { col, row } = env.model.getters.getPosition();
             const sheetId = env.model.getters.getActiveSheetId();
             const listId = env.model.getters.getListIdFromPosition(sheetId, col, row);
             env.model.dispatch("SELECT_ODOO_LIST", { listId });
             env.openSidePanel("LIST_PROPERTIES_PANEL", {});
         },
         isVisible: (env) => {
-            const [col, row] = env.model.getters.getPosition();
+            const { col, row } = env.model.getters.getPosition();
             const sheetId = env.model.getters.getActiveSheetId();
             return env.model.getters.getListIdFromPosition(sheetId, col, row) !== undefined;
         },

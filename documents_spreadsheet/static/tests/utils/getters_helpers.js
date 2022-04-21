@@ -8,7 +8,8 @@ const { toCartesian } = spreadsheet.helpers;
  * Get the value of the given cell
  */
 export function getCellValue(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    const cell = model.getters.getCell(sheetId, ...toCartesian(xc));
+    const { col, row } = toCartesian(xc);
+    const cell = model.getters.getCell(sheetId, col, row);
     if (!cell) {
         return undefined;
     }
@@ -41,7 +42,8 @@ export function getListAutofillValue(model, xc, { direction, steps }) {
  * Get the cell of the given xc
  */
 export function getCell(model, xc, sheetId = model.getters.getActiveSheetId()) {
-    return model.getters.getCell(sheetId, ...toCartesian(xc));
+    const { col, row } = toCartesian(xc);
+    return model.getters.getCell(sheetId, col, row);
 }
 
 /**

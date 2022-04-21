@@ -56,7 +56,7 @@ cellMenuRegistry
         name: _lt("Pivot properties"),
         sequence: 170,
         action(env) {
-            const [col, row] = env.model.getters.getPosition();
+            const { col, row } = env.model.getters.getPosition();
             const sheetId = env.model.getters.getActiveSheetId();
             const pivotId = env.model.getters.getPivotIdFromPosition(sheetId, col, row);
             env.model.dispatch("SELECT_PIVOT", { pivotId });
@@ -71,7 +71,7 @@ cellMenuRegistry
         name: _lt("See records"),
         sequence: 175,
         async action(env) {
-            const [col, row] = env.model.getters.getPosition();
+            const { col, row } = env.model.getters.getPosition();
             const sheetId = env.model.getters.getActiveSheetId();
             const cell = env.model.getters.getCell(sheetId, col, row);
             const { args } = getFirstPivotFunction(cell.content);

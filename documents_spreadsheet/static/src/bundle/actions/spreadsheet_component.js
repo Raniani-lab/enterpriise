@@ -195,7 +195,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
         this.state.dialog.isDisplayed = false;
         this.state.dialog.isEditText = false;
         this.state.dialog.isEditInteger = false;
-        document.querySelector("canvas").focus();
+        document.querySelector(".o-grid-overlay").focus();
     }
 
     /**

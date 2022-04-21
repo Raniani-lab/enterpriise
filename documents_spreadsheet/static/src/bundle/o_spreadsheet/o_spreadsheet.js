@@ -2803,7 +2803,7 @@
             if (m === xc) {
                 const col = lettersToNumber(letters);
                 const row = parseInt(numbers, 10) - 1;
-                return [col, row];
+                return { col, row };
             }
         }
         throw new Error(`Invalid cell description: ${xc}`);
@@ -3323,11 +3323,11 @@
         }
     }
 
-    function getNextVisibleCellCoords(sheet, col, row) {
-        return [
-            findVisibleHeader(sheet, "cols", range(col, sheet.cols.length)),
-            findVisibleHeader(sheet, "rows", range(row, sheet.rows.length)),
-        ];
+    function getNextVisibleCellPosition(sheet, col, row) {
+        return {
+            col: findVisibleHeader(sheet, "cols", range(col, sheet.cols.length)),
+            row: findVisibleHeader(sheet, "rows", range(row, sheet.rows.length)),
+        };
     }
     function findVisibleHeader(sheet, dimension, indexes) {
         const headers = sheet[dimension];
@@ -3360,12 +3360,12 @@
         const ranges = xc.replace(/\$/g, "").split(":");
         let top, bottom, left, right;
         let c = toCartesian(ranges[0].trim());
-        left = right = c[0];
-        top = bottom = c[1];
+        left = right = c.col;
+        top = bottom = c.row;
         if (ranges.length === 2) {
             let d = toCartesian(ranges[1].trim());
-            right = d[0];
-            bottom = d[1];
+            right = d.col;
+            bottom = d.row;
         }
         return { top, bottom, left, right };
     }
@@ -3700,7 +3700,7 @@
         const [top, bottom] = [zone.top, zone.bottom].sort((a, b) => a - b);
         for (const col of range(left, right + 1)) {
             for (const row of range(top, bottom + 1)) {
-                positions.push([col, row]);
+                positions.push({ col, row });
             }
         }
         return positions;
@@ -3773,7 +3773,7 @@
         else {
             row = viewport.top;
         }
-        return [col, row];
+        return { col, row };
     }
     function organizeZone(zone) {
         return {
@@ -9557,7 +9557,7 @@
                     for (let [xc, cell] of Object.entries(sheet.cells)) {
                         if (cell === null || cell === void 0 ? void 0 : cell.border) {
                             const border = data.borders[cell.border];
-                            const [col, row] = toCartesian(xc);
+                            const { col, row } = toCartesian(xc);
                             this.setBorder(sheet.id, col, row, border);
                         }
                     }
@@ -9799,7 +9799,7 @@
                 // cells
                 for (let xc in sheet.cells) {
                     const cellData = sheet.cells[xc];
-                    const [col, row] = toCartesian(xc);
+                    const { col, row } = toCartesian(xc);
                     if ((cellData === null || cellData === void 0 ? void 0 : cellData.content) || (cellData === null || cellData === void 0 ? void 0 : cellData.format) || (cellData === null || cellData === void 0 ? void 0 : cellData.style)) {
                         const cell = this.importCell(imported_sheet, cellData, data.styles, data.formats);
                         this.history.update("cells", sheet.id, cell.id, cell);
@@ -9846,7 +9846,7 @@
             this.export(data);
             for (let sheet of data.sheets) {
                 for (const xc in sheet.cells) {
-                    const [col, row] = toCartesian(xc);
+                    const { col, row } = toCartesian(xc);
                     const cell = this.getters.getCell(sheet.id, col, row);
                     const exportedCellData = sheet.cells[xc];
                     exportedCellData.value = cell.evaluated.value;
@@ -9940,9 +9940,9 @@
             zone = this.getters.expandZone(sheetId, zone);
             const topLeft = toXC(zone.left, zone.top, fixedParts[0]);
             const botRight = toXC(zone.right, zone.bottom, fixedParts.length > 1 ? fixedParts[1] : fixedParts[0]);
-            const cellTopLeft = this.getters.getMainCell(sheetId, zone.left, zone.top);
-            const cellBotRight = this.getters.getMainCell(sheetId, zone.right, zone.bottom);
-            const sameCell = cellTopLeft[0] == cellBotRight[0] && cellTopLeft[1] == cellBotRight[1];
+            const cellTopLeft = this.getters.getMainCellPosition(sheetId, zone.left, zone.top);
+            const cellBotRight = this.getters.getMainCellPosition(sheetId, zone.right, zone.bottom);
+            const sameCell = cellTopLeft.col === cellBotRight.col && cellTopLeft.row === cellBotRight.row;
             if (topLeft != botRight && !sameCell) {
                 return topLeft + ":" + botRight;
             }
@@ -9994,7 +9994,7 @@
          */
         getFormat(sheetId, col, row) {
             const format = {};
-            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
+            const { col: mainCol, row: mainRow } = this.getters.getMainCellPosition(sheetId, col, row);
             const cell = this.getters.getCell(sheetId, mainCol, mainRow);
             if (cell) {
                 if (cell.style) {
@@ -11098,19 +11098,19 @@
             const sheetMap = this.mergeCellMap[sheetId];
             return sheetMap ? col in sheetMap && Boolean((_a = sheetMap[col]) === null || _a === void 0 ? void 0 : _a[row]) : false;
         }
-        getMainCell(sheetId, col, row) {
+        getMainCellPosition(sheetId, col, row) {
             if (!this.isInMerge(sheetId, col, row)) {
-                return [col, row];
+                return { col, row };
             }
             const mergeTopLeftPos = this.getMerge(sheetId, col, row).topLeft;
-            return [mergeTopLeftPos.col, mergeTopLeftPos.row];
+            return { col: mergeTopLeftPos.col, row: mergeTopLeftPos.row };
         }
         getBottomLeftCell(sheetId, col, row) {
             if (!this.isInMerge(sheetId, col, row)) {
-                return [col, row];
+                return { col, row };
             }
             const { bottom, left } = this.getMerge(sheetId, col, row);
-            return [left, bottom];
+            return { col: left, row: bottom };
         }
         isMergeHidden(sheetId, merge) {
             const hiddenColsGroups = this.getters.getHiddenColsGroups(sheetId);
@@ -11193,7 +11193,7 @@
             if (content === undefined) {
                 return 0 /* Success */;
             }
-            const [mainCol, mainRow] = this.getMainCell(sheetId, col, row);
+            const { col: mainCol, row: mainRow } = this.getMainCellPosition(sheetId, col, row);
             if (mainCol === col && mainRow === row) {
                 return 0 /* Success */;
             }
@@ -11296,7 +11296,7 @@
             }
             this.history.update("mergeCellMap", sheetId, {});
             for (const merge of this.getMerges(sheetId)) {
-                for (const [col, row] of positions(merge)) {
+                for (const { col, row } of positions(merge)) {
                     this.history.update("mergeCellMap", sheetId, col, row, merge.id);
                 }
             }
@@ -11336,7 +11336,7 @@
         "isInMerge",
         "isInSameMerge",
         "isMergeHidden",
-        "getMainCell",
+        "getMainCellPosition",
         "getBottomLeftCell",
         "expandZone",
         "doesIntersectMerge",
@@ -11554,7 +11554,7 @@
             return this.getSheet(sheetId).name;
         }
         getCellsInZone(sheetId, zone) {
-            return positions(zone).map(([col, row]) => this.getCell(sheetId, col, row));
+            return positions(zone).map(({ col, row }) => this.getCell(sheetId, col, row));
         }
         /**
          * Return the sheet name or undefined if the sheet doesn't exist.
@@ -12177,10 +12177,13 @@
         }
         getImportedSheetSize(data) {
             const positions = Object.keys(data.cells).map(toCartesian);
-            return {
-                rowNumber: Math.max(data.rowNumber, ...new Set(positions.map(([col, row]) => row + 1))),
-                colNumber: Math.max(data.colNumber, ...new Set(positions.map(([col, row]) => col + 1))),
-            };
+            let rowNumber = data.rowNumber;
+            let colNumber = data.colNumber;
+            for (let { col, row } of positions) {
+                rowNumber = Math.max(rowNumber, row + 1);
+                colNumber = Math.max(colNumber, col + 1);
+            }
+            return { rowNumber, colNumber };
         }
         // ----------------------------------------------------
         //  HIDE / SHOW
@@ -12681,7 +12684,7 @@
                 }
             }
         }
-        const [col, row] = anchor;
+        const { col, row } = anchor;
         if (multiColumns) {
             result = env.model.dispatch("SORT_CELLS", { sheetId, col, row, zone, sortDirection });
         }
@@ -12720,7 +12723,7 @@
             }
         }
         if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
-            const [col, row] = anchor;
+            const { col, row } = anchor;
             env.model.selection.selectZone({ cell: { col, row }, zone });
             env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
         }
@@ -13305,12 +13308,12 @@
     const SORT_CELLS_ASCENDING = (env) => {
         const { anchor, zones } = env.model.getters.getSelection();
         const sheetId = env.model.getters.getActiveSheetId();
-        interactiveSortSelection(env, sheetId, anchor, zones[0], "ascending");
+        interactiveSortSelection(env, sheetId, anchor.cell, zones[0], "ascending");
     };
     const SORT_CELLS_DESCENDING = (env) => {
         const { anchor, zones } = env.model.getters.getSelection();
         const sheetId = env.model.getters.getActiveSheetId();
-        interactiveSortSelection(env, sheetId, anchor, zones[0], "descending");
+        interactiveSortSelection(env, sheetId, anchor.cell, zones[0], "descending");
     };
     const IS_ONLY_ONE_RANGE = (env) => {
         return env.model.getters.getSelectedZones().length === 1;
@@ -16098,7 +16101,7 @@
             const cellsData = [];
             const sheetId = this.getters.getActiveSheetId();
             for (let xc of source) {
-                const [col, row] = toCartesian(xc);
+                const { col, row } = toCartesian(xc);
                 const cell = this.getters.getCell(sheetId, col, row);
                 cellsData.push({
                     col,
@@ -16205,7 +16208,7 @@
                     const sheetId = this.getters.getActiveSheetId();
                     const { zones, anchor } = this.getters.getSelection();
                     for (const zone of zones) {
-                        const sums = this.getAutomaticSums(sheetId, zone, anchor);
+                        const sums = this.getAutomaticSums(sheetId, zone, anchor.cell);
                         this.dispatchCellUpdates(sheetId, sums);
                     }
                     break;
@@ -16228,14 +16231,16 @@
             return sums;
         }
         sumAdjacentData(sheetId, zone, anchor) {
-            const [col, row] = isInside(anchor[0], anchor[1], zone) ? anchor : [zone.left, zone.top];
+            const { col, row } = isInside(anchor.col, anchor.row, zone)
+                ? anchor
+                : { col: zone.left, row: zone.top };
             const dataZone = this.findAdjacentData(sheetId, col, row);
             if (!dataZone) {
                 return [];
             }
             if (this.getters.isSingleCellOrMerge(sheetId, zone) ||
                 isOneDimensional(union(dataZone, zone))) {
-                return [{ position: [col, row], zone: dataZone }];
+                return [{ position: { col, row }, zone: dataZone }];
             }
             else {
                 return this.sumDimensions(sheetId, union(dataZone, zone), this.transpose(this.dimensionsToSum(sheetId, zone)));
@@ -16275,7 +16280,8 @@
          */
         findAdjacentData(sheetId, col, row) {
             const sheet = this.getters.getSheet(sheetId);
-            const zone = this.findSuitableZoneToSum(sheet, ...this.getters.getMainCell(sheetId, col, row));
+            const mainCellPosition = this.getters.getMainCellPosition(sheetId, col, row);
+            const zone = this.findSuitableZoneToSum(sheet, mainCellPosition.col, mainCellPosition.row);
             if (zone) {
                 return this.getters.expandZone(sheetId, zone);
             }
@@ -16395,14 +16401,17 @@
          */
         sumTotal(zone) {
             const { bottom, right } = zone;
-            return { position: [right, bottom], zone: { ...zone, top: bottom, right: right - 1 } };
+            return {
+                position: { col: right, row: bottom },
+                zone: { ...zone, top: bottom, right: right - 1 },
+            };
         }
         sumColumns(zone, sheetId) {
             const target = this.nextEmptyRow(sheetId, { ...zone, bottom: zone.bottom - 1 });
             zone = { ...zone, bottom: Math.min(zone.bottom, target.bottom - 1) };
             return positions(target).map((position) => ({
                 position,
-                zone: { ...zone, right: position[0], left: position[0] },
+                zone: { ...zone, right: position.col, left: position.col },
             }));
         }
         sumRows(zone, sheetId) {
@@ -16410,12 +16419,12 @@
             zone = { ...zone, right: Math.min(zone.right, target.right - 1) };
             return positions(target).map((position) => ({
                 position,
-                zone: { ...zone, top: position[1], bottom: position[1] },
+                zone: { ...zone, top: position.row, bottom: position.row },
             }));
         }
         dispatchCellUpdates(sheetId, sums) {
             for (const sum of sums) {
-                const [col, row] = sum.position;
+                const { col, row } = sum.position;
                 this.dispatch("UPDATE_CELL", {
                     sheetId,
                     col,
@@ -16632,7 +16641,7 @@
          */
         removeMergeIfTopLeft(position) {
             const { sheetId, col, row } = position;
-            const [left, top] = this.getters.getMainCell(sheetId, col, row);
+            const { col: left, row: top } = this.getters.getMainCellPosition(sheetId, col, row);
             if (top === row && left === col) {
                 const merge = this.getters.getMerge(sheetId, col, row);
                 if (merge) {
@@ -16646,7 +16655,7 @@
          */
         pasteMergeIfExist(origin, target) {
             let { sheetId, col, row } = origin;
-            const [mainCellColOrigin, mainCellRowOrigin] = this.getters.getMainCell(sheetId, col, row);
+            const { col: mainCellColOrigin, row: mainCellRowOrigin } = this.getters.getMainCellPosition(sheetId, col, row);
             if (mainCellColOrigin === col && mainCellRowOrigin === row) {
                 const merge = this.getters.getMerge(sheetId, col, row);
                 if (!merge) {
@@ -16709,8 +16718,8 @@
                 ? mergeOverlappingZones(zones)
                 : [zones[zones.length - 1]];
             const cellsPosition = clippedZones.map((zone) => positions(zone)).flat();
-            const columnsIndex = [...new Set(cellsPosition.map((p) => p[0]))].sort((a, b) => a - b);
-            const rowsIndex = [...new Set(cellsPosition.map((p) => p[1]))].sort((a, b) => a - b);
+            const columnsIndex = [...new Set(cellsPosition.map((p) => p.col))].sort((a, b) => a - b);
+            const rowsIndex = [...new Set(cellsPosition.map((p) => p.row))].sort((a, b) => a - b);
             const cellsInClipboard = [];
             const merges = [];
             const sheetId = this.getters.getActiveSheetId();
@@ -17406,7 +17415,7 @@
             }
             this.initialContent = (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
             this.mode = "editing";
-            const [col, row] = this.getters.getPosition();
+            const { col, row } = this.getters.getPosition();
             this.col = col;
             this.row = row;
             this.sheetId = this.getters.getActiveSheetId();
@@ -17422,7 +17431,7 @@
             if (this.mode !== "inactive") {
                 const activeSheetId = this.getters.getActiveSheetId();
                 this.cancelEdition();
-                const [col, row] = this.getters.getMainCell(this.sheetId, this.col, this.row);
+                const { col, row } = this.getters.getMainCellPosition(this.sheetId, this.col, this.row);
                 let content = this.currentContent;
                 const didChange = this.initialContent !== content;
                 if (!didChange) {
@@ -19030,19 +19039,19 @@
          * It returns -1 if no column is found.
          */
         getColIndex(x, left, sheet) {
-            if (x < HEADER_WIDTH) {
+            if (x < 0) {
                 return -1;
             }
             const cols = (sheet || this.getters.getActiveSheet()).cols;
-            const adjustedX = x - HEADER_WIDTH + cols[left].start + 1;
+            const adjustedX = x + cols[left].start + 1;
             return searchIndex(cols, adjustedX);
         }
         getRowIndex(y, top, sheet) {
-            if (y < HEADER_HEIGHT) {
+            if (y < 0) {
                 return -1;
             }
             const rows = (sheet || this.getters.getActiveSheet()).rows;
-            const adjustedY = y - HEADER_HEIGHT + rows[top].start + 1;
+            const adjustedY = y + rows[top].start + 1;
             return searchIndex(rows, adjustedY);
         }
         getRect(zone, viewport) {
@@ -19066,13 +19075,13 @@
             let canEdgeScroll = false;
             let direction = 0;
             let delay = 0;
-            const { width } = this.getters.getViewportDimensionWithHeaders();
+            const { width } = this.getters.getViewportDimension();
             const { width: gridWidth } = this.getters.getMaxViewportSize(this.getters.getActiveSheet());
             const { left, offsetX } = this.getters.getActiveSnappedViewport();
-            if (x < HEADER_WIDTH && left > 0) {
+            if (x < 0 && left > 0) {
                 canEdgeScroll = true;
                 direction = -1;
-                delay = scrollDelay(HEADER_WIDTH - x);
+                delay = scrollDelay(-x);
             }
             else if (x > width && offsetX < gridWidth - width) {
                 canEdgeScroll = true;
@@ -19085,13 +19094,13 @@
             let canEdgeScroll = false;
             let direction = 0;
             let delay = 0;
-            const { height } = this.getters.getViewportDimensionWithHeaders();
+            const { height } = this.getters.getViewportDimension();
             const { height: gridHeight } = this.getters.getMaxViewportSize(this.getters.getActiveSheet());
             const { top, offsetY } = this.getters.getActiveSnappedViewport();
-            if (y < HEADER_HEIGHT && top > 0) {
+            if (y < 0 && top > 0) {
                 canEdgeScroll = true;
                 direction = -1;
-                delay = scrollDelay(HEADER_HEIGHT - y);
+                delay = scrollDelay(-y);
             }
             else if (y > height && offsetY < gridHeight - height) {
                 canEdgeScroll = true;
@@ -19673,8 +19682,8 @@
                         sheetIdTo: firstSheet.id,
                         sheetIdFrom: firstSheet.id,
                     });
-                    const firstVisiblePosition = getNextVisibleCellCoords(firstSheet, 0, 0);
-                    this.selectCell(...firstVisiblePosition);
+                    const { col, row } = getNextVisibleCellPosition(firstSheet, 0, 0);
+                    this.selectCell(col, row);
                     this.moveClient({ sheetId: firstSheet.id, col: 0, row: 0 });
                     break;
                 case "ACTIVATE_SHEET": {
@@ -19690,7 +19699,8 @@
                         this.selection.resetDefaultAnchor(this, this.gridSelection.anchor);
                     }
                     else {
-                        this.selectCell(...getNextVisibleCellCoords(this.getters.getSheets()[0], 0, 0));
+                        const { col, row } = getNextVisibleCellPosition(this.getters.getSheets()[0], 0, 0);
+                        this.selectCell(col, row);
                     }
                     break;
                 }
@@ -19775,7 +19785,7 @@
         getActiveCell() {
             const sheetId = this.getters.getActiveSheetId();
             const { col, row } = this.gridSelection.anchor.cell;
-            const [mainCol, mainRow] = this.getters.getMainCell(sheetId, col, row);
+            const { col: mainCol, row: mainRow } = this.getters.getMainCellPosition(sheetId, col, row);
             return this.getters.getCell(sheetId, mainCol, mainRow);
         }
         getActiveCols() {
@@ -19805,24 +19815,19 @@
             return cell ? this.getters.getCellStyle(cell) : {};
         }
         getSelectedZones() {
-            return this.gridSelection.zones;
+            return deepCopy(this.gridSelection.zones);
         }
         getSelectedZone() {
-            return this.gridSelection.anchor.zone;
+            return deepCopy(this.gridSelection.anchor.zone);
         }
         getSelection() {
-            const { col, row } = this.gridSelection.anchor.cell;
-            return {
-                anchor: [col, row],
-                anchorZone: this.gridSelection.anchor.zone,
-                zones: this.getSelectedZones(),
-            };
+            return deepCopy(this.gridSelection);
         }
         getSelectedFigureId() {
             return this.selectedFigureId;
         }
         getPosition() {
-            return [this.gridSelection.anchor.cell.col, this.gridSelection.anchor.cell.row];
+            return { col: this.gridSelection.anchor.cell.col, row: this.gridSelection.anchor.cell.row };
         }
         getSheetPosition(sheetId) {
             if (sheetId === this.getters.getActiveSheetId()) {
@@ -19831,8 +19836,11 @@
             else {
                 const sheetData = this.sheetsData[sheetId];
                 return sheetData
-                    ? [sheetData.gridSelection.anchor.cell.col, sheetData.gridSelection.anchor.cell.row]
-                    : getNextVisibleCellCoords(this.getters.getSheet(sheetId), 0, 0);
+                    ? {
+                        col: sheetData.gridSelection.anchor.cell.col,
+                        row: sheetData.gridSelection.anchor.cell.row,
+                    }
+                    : getNextVisibleCellPosition(this.getters.getSheet(sheetId), 0, 0);
             }
         }
         getStatisticFnResults() {
@@ -19867,7 +19875,7 @@
             let n = 0;
             const sheetId = this.getters.getActiveSheetId();
             const cellPositions = this.gridSelection.zones.map(positions).flat();
-            for (const [col, row] of cellPositions) {
+            for (const { col, row } of cellPositions) {
                 const cell = this.getters.getCell(sheetId, col, row);
                 if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number) {
                     n++;
@@ -20132,7 +20140,7 @@
             ctx.globalCompositeOperation = "source-over";
             // active zone
             const activeSheet = this.getters.getActiveSheetId();
-            const [col, row] = this.getPosition();
+            const { col, row } = this.getPosition();
             ctx.strokeStyle = SELECTION_BORDER_COLOR;
             ctx.lineWidth = 3 * thinLineWidth;
             let zone;
@@ -21103,7 +21111,7 @@
                 const { left, right, top, bottom } = expandedZone;
                 for (let c = left; c <= right; c++) {
                     for (let r = top; r <= bottom; r++) {
-                        const [mainCellCol, mainCellRow] = this.getters.getMainCell(sheetId, c, r);
+                        const { col: mainCellCol, row: mainCellRow } = this.getters.getMainCellPosition(sheetId, c, r);
                         cell = this.getters.getCell(sheetId, mainCellCol, mainCellRow);
                         if (cell === null || cell === void 0 ? void 0 : cell.formattedValue) {
                             return true;
@@ -21248,7 +21256,7 @@
         }
         sortZone(sheetId, anchor, zone, sortDirection) {
             const [stepX, stepY] = this.mainCellsSteps(sheetId, zone);
-            let sortingCol = this.getters.getMainCell(sheetId, anchor.col, anchor.row)[0]; // fetch anchor
+            let sortingCol = this.getters.getMainCellPosition(sheetId, anchor.col, anchor.row).col; // fetch anchor
             let sortZone = Object.assign({}, zone);
             // Update in case of merges in the zone
             let cells = this.mainCells(sheetId, zone);
@@ -21496,8 +21504,8 @@
                 case "ZonesSelected":
                     if (event.mode === "updateAnchor") {
                         // altering a zone should not move the viewport
-                        const [col, row] = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone, this.getActiveSnappedViewport());
-                        this.refreshViewport(this.getters.getActiveSheetId(), { col, row });
+                        const cellPosition = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone, this.getActiveSnappedViewport());
+                        this.refreshViewport(this.getters.getActiveSheetId(), cellPosition);
                     }
                     else {
                         this.refreshViewport(this.getters.getActiveSheetId());
@@ -21574,6 +21582,12 @@
                 height: this.viewportHeight + HEADER_HEIGHT,
             };
         }
+        getViewportDimension() {
+            return {
+                width: this.viewportWidth,
+                height: this.viewportHeight,
+            };
+        }
         getActiveViewport() {
             const sheetId = this.getters.getActiveSheetId();
             return this.getViewport(sheetId);
@@ -21638,10 +21652,10 @@
         }
         resetViewports() {
             for (let [sheetId, viewport] of Object.entries(this.viewports)) {
-                const [col, row] = this.getters.getSheetPosition(sheetId);
+                const position = this.getters.getSheetPosition(sheetId);
                 this.adjustViewportOffsetX(sheetId, viewport);
                 this.adjustViewportOffsetY(sheetId, viewport);
-                this.adjustViewportsPosition(sheetId, { col, row });
+                this.adjustViewportsPosition(sheetId, position);
             }
         }
         /** Corrects the viewport's horizontal offset based on the current structure
@@ -21724,7 +21738,7 @@
         adjustViewportZoneX(sheetId, viewport) {
             const sheet = this.getters.getSheet(sheetId);
             const cols = sheet.cols;
-            viewport.left = this.getters.getColIndex(viewport.offsetX + HEADER_WIDTH, 0, sheet);
+            viewport.left = this.getters.getColIndex(viewport.offsetX, 0, sheet);
             const x = this.viewportWidth + viewport.offsetX;
             viewport.right = cols.length - 1;
             for (let i = viewport.left; i < cols.length; i++) {
@@ -21739,7 +21753,7 @@
         adjustViewportZoneY(sheetId, viewport) {
             const sheet = this.getters.getSheet(sheetId);
             const rows = sheet.rows;
-            viewport.top = this.getters.getRowIndex(viewport.offsetY + HEADER_HEIGHT, 0, sheet);
+            viewport.top = this.getters.getRowIndex(viewport.offsetY, 0, sheet);
             const y = this.viewportHeight + viewport.offsetY;
             viewport.bottom = rows.length - 1;
             for (let i = viewport.top; i < rows.length; i++) {
@@ -21762,10 +21776,10 @@
             const { cols, rows } = sheet;
             const adjustedViewport = this.getSnappedViewport(sheetId);
             if (!position) {
-                const sheetPosition = this.getters.getSheetPosition(sheetId);
-                position = { col: sheetPosition[0], row: sheetPosition[1] };
+                position = this.getters.getSheetPosition(sheetId);
             }
-            const [col, row] = getNextVisibleCellCoords(sheet, ...this.getters.getMainCell(sheetId, position.col, position.row));
+            const mainCellPosition = this.getters.getMainCellPosition(sheetId, position.col, position.row);
+            const { col, row } = getNextVisibleCellPosition(sheet, mainCellPosition.col, mainCellPosition.row);
             while (cols[col].end > adjustedViewport.offsetX + this.viewportWidth &&
                 adjustedViewport.offsetX < cols[col].start) {
                 adjustedViewport.offsetX = cols[adjustedViewport.left].end;
@@ -21821,7 +21835,7 @@
             this.setViewportOffset(offsetX, offset);
             const { anchor } = this.getters.getSelection();
             const deltaRow = this.getActiveSnappedViewport().top - top;
-            this.selection.selectCell(anchor[0], anchor[1] + deltaRow);
+            this.selection.selectCell(anchor.cell.col, anchor.cell.row + deltaRow);
         }
         /**
          * Return the row at the viewport's top
@@ -21835,6 +21849,7 @@
     ViewportPlugin.getters = [
         "getActiveViewport",
         "getActiveSnappedViewport",
+        "getViewportDimension",
         "getViewportDimensionWithHeaders",
         "getMaxViewportSize",
         "getMaximumViewportOffset",
@@ -21875,6 +21890,7 @@
     function useSpreadsheetPosition() {
         const position = owl.useState({ x: 0, y: 0 });
         let spreadsheetElement = document.querySelector(".o-spreadsheet");
+        updatePosition();
         function updatePosition() {
             if (!spreadsheetElement) {
                 spreadsheetElement = document.querySelector(".o-spreadsheet");
@@ -21891,22 +21907,22 @@
     }
     /**
      * Return the component (or ref's component) top left position (in pixels) relative
-     * to the upper left corner of the spreadsheet.
+     * to the upper left corner of the screen (<body> element).
      *
      * Note: when used with a <Portal/> component, it will
      * return the portal position, not the teleported position.
      */
     function useAbsolutePosition(ref) {
         const position = owl.useState({ x: 0, y: 0 });
-        const spreadsheet = useSpreadsheetPosition();
         function updateElPosition() {
             const el = ref.el;
+            if (el === null) {
+                return;
+            }
             const { top, left } = el.getBoundingClientRect();
-            const x = left - spreadsheet.x;
-            const y = top - spreadsheet.y;
-            if (x !== position.x || y !== position.y) {
-                position.x = x;
-                position.y = y;
+            if (left !== position.x || top !== position.y) {
+                position.x = left;
+                position.y = top;
             }
         }
         owl.onMounted(updateElPosition);
@@ -21915,9 +21931,16 @@
     }
 
     class Popover extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.spreadsheetPosition = useSpreadsheetPosition();
+        }
         get style() {
-            const horizontalPosition = `left:${this.horizontalPosition()}`;
-            const verticalPosition = `top:${this.verticalPosition()}`;
+            // the props's position is expressed relative to the "body" element
+            // but we teleport the element in ".o-spreadsheet" to keep everything
+            // within our control and to avoid leaking into external DOM
+            const horizontalPosition = `left:${this.horizontalPosition() - this.spreadsheetPosition.x}`;
+            const verticalPosition = `top:${this.verticalPosition() - this.spreadsheetPosition.y}`;
             const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
             return `
       position: absolute;
@@ -22293,7 +22316,8 @@
                 i++;
             }
             const target = ev.currentTarget;
-            this.openContextMenu(target.offsetLeft, target.offsetTop, registry);
+            const { top, left } = target.getBoundingClientRect();
+            this.openContextMenu(left, top, registry);
         }
         activateSheet(name) {
             this.env.model.dispatch("ACTIVATE_SHEET", {
@@ -22318,7 +22342,8 @@
             }
             else {
                 const target = ev.currentTarget.parentElement;
-                this.openContextMenu(target.offsetLeft, target.offsetTop, sheetMenuRegistry);
+                const { top, left } = target.getBoundingClientRect();
+                this.openContextMenu(left, top, sheetMenuRegistry);
             }
         }
         onContextMenu(sheet, ev) {
@@ -22326,7 +22351,8 @@
                 this.activateSheet(sheet);
             }
             const target = ev.currentTarget;
-            this.openContextMenu(target.offsetLeft, target.offsetTop, sheetMenuRegistry);
+            const { top, left } = target.getBoundingClientRect();
+            this.openContextMenu(left, top, sheetMenuRegistry);
         }
         getSelectedStatistic() {
             const statisticFnResults = this.env.model.getters.getStatisticFnResults();
@@ -22354,7 +22380,8 @@
                 i++;
             }
             const target = ev.currentTarget;
-            this.openContextMenu(target.offsetLeft + target.offsetWidth, target.offsetTop, registry);
+            const { top, left, width } = target.getBoundingClientRect();
+            this.openContextMenu(left + width, top, registry);
         }
         getComposedFnName(fnName, fnValue) {
             return fnName + ": " + (fnValue !== undefined ? formatValue(fnValue) : "__");
@@ -22399,22 +22426,22 @@
             }
             const offsetX = currentEv.clientX - position.left;
             const offsetY = currentEv.clientY - position.top;
-            const edgeScrollInfoX = env.model.getters.getEdgeScrollCol(offsetX);
-            const edgeScrollInfoY = env.model.getters.getEdgeScrollRow(offsetY);
+            const edgeScrollInfoX = env.model.getters.getEdgeScrollCol(offsetX - HEADER_WIDTH);
+            const edgeScrollInfoY = env.model.getters.getEdgeScrollRow(offsetY - HEADER_HEIGHT);
             const { top, left, bottom, right } = env.model.getters.getActiveSnappedViewport();
             let colIndex;
             if (edgeScrollInfoX.canEdgeScroll) {
                 colIndex = edgeScrollInfoX.direction > 0 ? right : left - 1;
             }
             else {
-                colIndex = env.model.getters.getColIndex(offsetX, left);
+                colIndex = env.model.getters.getColIndex(offsetX - HEADER_WIDTH, left);
             }
             let rowIndex;
             if (edgeScrollInfoY.canEdgeScroll) {
                 rowIndex = edgeScrollInfoY.direction > 0 ? bottom : top - 1;
             }
             else {
-                rowIndex = env.model.getters.getRowIndex(offsetY, top);
+                rowIndex = env.model.getters.getRowIndex(offsetY - HEADER_HEIGHT, top);
             }
             cbMouseMove(colIndex, rowIndex);
             if (edgeScrollInfoX.canEdgeScroll) {
@@ -22525,8 +22552,8 @@
                     left: ev.clientX - start.left + offsetX,
                     top: ev.clientY - start.top + offsetY,
                 };
-                const col = this.env.model.getters.getColIndex(ev.clientX - position.left, viewportLeft);
-                const row = this.env.model.getters.getRowIndex(ev.clientY - position.top, viewportTop);
+                const col = this.env.model.getters.getColIndex(ev.clientX - position.left - HEADER_WIDTH, viewportLeft);
+                const row = this.env.model.getters.getRowIndex(ev.clientY - position.top - HEADER_HEIGHT, viewportTop);
                 if (lastCol !== col || lastRow !== row) {
                     const activeSheet = this.env.model.getters.getActiveSheet();
                     lastCol = col === -1 ? lastCol : clip(col, 0, activeSheet.cols.length);
@@ -23367,7 +23394,7 @@
                 rect: null,
                 delimitation: null,
             });
-            const [col, row] = this.env.model.getters.getPosition();
+            const { col, row } = this.env.model.getters.getPosition();
             this.zone = this.env.model.getters.expandZone(this.env.model.getters.getActiveSheetId(), {
                 left: col,
                 right: col,
@@ -23830,421 +23857,6 @@
     FiguresContainer.components = {};
     figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
 
-    css /* scss */ `
-  .o-border {
-    position: absolute;
-    &:hover {
-      cursor: grab;
-    }
-  }
-  .o-moving {
-    cursor: grabbing;
-  }
-`;
-    class Border extends owl.Component {
-        get style() {
-            const isTop = ["n", "w", "e"].includes(this.props.orientation);
-            const isLeft = ["n", "w", "s"].includes(this.props.orientation);
-            const isHorizontal = ["n", "s"].includes(this.props.orientation);
-            const isVertical = ["w", "e"].includes(this.props.orientation);
-            const s = this.env.model.getters.getActiveSheet();
-            const z = this.props.zone;
-            const margin = 2;
-            const left = s.cols[z.left].start + margin;
-            const right = s.cols[z.right].end - 2 * margin;
-            const top = s.rows[z.top].start + margin;
-            const bottom = s.rows[z.bottom].end - 2 * margin;
-            const lineWidth = 4;
-            const leftValue = isLeft ? left : right;
-            const topValue = isTop ? top : bottom;
-            const widthValue = isHorizontal ? right - left : lineWidth;
-            const heightValue = isVertical ? bottom - top : lineWidth;
-            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
-            return `
-        left:${leftValue + HEADER_WIDTH - offsetX}px;
-        top:${topValue + HEADER_HEIGHT - offsetY}px;
-        width:${widthValue}px;
-        height:${heightValue}px;
-    `;
-        }
-        onMouseDown(ev) {
-            this.props.onMoveHighlight(ev.clientX, ev.clientY);
-        }
-    }
-    Border.template = "o-spreadsheet.Border";
-
-    css /* scss */ `
-  .o-corner {
-    position: absolute;
-    height: 6px;
-    width: 6px;
-    border: 1px solid white;
-  }
-  .o-corner-nw,
-  .o-corner-se {
-    &:hover {
-      cursor: nwse-resize;
-    }
-  }
-  .o-corner-ne,
-  .o-corner-sw {
-    &:hover {
-      cursor: nesw-resize;
-    }
-  }
-  .o-resizing {
-    cursor: grabbing;
-  }
-`;
-    class Corner extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.isTop = this.props.orientation[0] === "n";
-            this.isLeft = this.props.orientation[1] === "w";
-        }
-        get style() {
-            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
-            const s = this.env.model.getters.getActiveSheet();
-            const z = this.props.zone;
-            const leftValue = this.isLeft ? s.cols[z.left].start : s.cols[z.right].end;
-            const topValue = this.isTop ? s.rows[z.top].start : s.rows[z.bottom].end;
-            return `
-      left:${leftValue + HEADER_WIDTH - offsetX - AUTOFILL_EDGE_LENGTH / 2}px;
-      top:${topValue + HEADER_HEIGHT - offsetY - AUTOFILL_EDGE_LENGTH / 2}px;
-      background-color:${this.props.color};
-    `;
-        }
-        onMouseDown(ev) {
-            this.props.onResizeHighlight(this.isLeft, this.isTop);
-        }
-    }
-    Corner.template = "o-spreadsheet.Corner";
-
-    class Highlight extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.highlightRef = owl.useRef("highlight");
-            this.highlightState = owl.useState({
-                shiftingMode: "none",
-            });
-        }
-        onResizeHighlight(isLeft, isTop) {
-            this.highlightState.shiftingMode = "isResizing";
-            const z = this.props.zone;
-            const pivotCol = isLeft ? z.right : z.left;
-            const pivotRow = isTop ? z.bottom : z.top;
-            let lastCol = isLeft ? z.left : z.right;
-            let lastRow = isTop ? z.top : z.bottom;
-            let currentZone = z;
-            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
-            const mouseMove = (col, row) => {
-                if (lastCol !== col || lastRow !== row) {
-                    const activeSheet = this.env.model.getters.getActiveSheet();
-                    lastCol = clip(col === -1 ? lastCol : col, 0, activeSheet.cols.length - 1);
-                    lastRow = clip(row === -1 ? lastRow : row, 0, activeSheet.rows.length - 1);
-                    let newZone = {
-                        left: Math.min(pivotCol, lastCol),
-                        top: Math.min(pivotRow, lastRow),
-                        right: Math.max(pivotCol, lastCol),
-                        bottom: Math.max(pivotRow, lastRow),
-                    };
-                    newZone = this.env.model.getters.expandZone(activeSheet.id, newZone);
-                    if (!isEqual(newZone, currentZone)) {
-                        this.env.model.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
-                        currentZone = newZone;
-                    }
-                }
-            };
-            const mouseUp = () => {
-                this.highlightState.shiftingMode = "none";
-                // To do:
-                // Command used here to restore focus to the current composer,
-                // to be changed when refactoring the 'edition' plugin
-                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            };
-            dragAndDropBeyondTheViewport(this.highlightRef.el.parentElement, this.env, mouseMove, mouseUp);
-        }
-        onMoveHighlight(clientX, clientY) {
-            this.highlightState.shiftingMode = "isMoving";
-            const z = this.props.zone;
-            const parent = this.highlightRef.el.parentElement;
-            const position = parent.getBoundingClientRect();
-            const activeSheet = this.env.model.getters.getActiveSheet();
-            const { top: viewportTop, left: viewportLeft } = this.env.model.getters.getActiveSnappedViewport();
-            const initCol = this.env.model.getters.getColIndex(clientX - position.left, viewportLeft);
-            const initRow = this.env.model.getters.getRowIndex(clientY - position.top, viewportTop);
-            const deltaColMin = -z.left;
-            const deltaColMax = activeSheet.cols.length - z.right - 1;
-            const deltaRowMin = -z.top;
-            const deltaRowMax = activeSheet.rows.length - z.bottom - 1;
-            let currentZone = z;
-            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
-            let lastCol = initCol;
-            let lastRow = initRow;
-            const mouseMove = (col, row) => {
-                if (lastCol !== col || lastRow !== row) {
-                    lastCol = col === -1 ? lastCol : col;
-                    lastRow = row === -1 ? lastRow : row;
-                    const deltaCol = clip(lastCol - initCol, deltaColMin, deltaColMax);
-                    const deltaRow = clip(lastRow - initRow, deltaRowMin, deltaRowMax);
-                    let newZone = {
-                        left: z.left + deltaCol,
-                        top: z.top + deltaRow,
-                        right: z.right + deltaCol,
-                        bottom: z.bottom + deltaRow,
-                    };
-                    newZone = this.env.model.getters.expandZone(activeSheet.id, newZone);
-                    if (!isEqual(newZone, currentZone)) {
-                        this.env.model.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
-                        currentZone = newZone;
-                    }
-                }
-            };
-            const mouseUp = () => {
-                this.highlightState.shiftingMode = "none";
-                // To do:
-                // Command used here to restore focus to the current composer,
-                // to be changed when refactoring the 'edition' plugin
-                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            };
-            dragAndDropBeyondTheViewport(parent, this.env, mouseMove, mouseUp);
-        }
-    }
-    Highlight.template = "o-spreadsheet.Highlight";
-    Highlight.components = {
-        Corner,
-        Border,
-    };
-
-    css /* scss */ `
-  .o-link-tool {
-    font-size: 13px;
-    background-color: white;
-    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    padding: 12px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    a.o-link {
-      color: #007bff;
-      flex-grow: 2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    a.o-link:hover {
-      text-decoration: underline;
-      color: #0056b3;
-      cursor: pointer;
-    }
-  }
-  .o-link-icon {
-    float: right;
-    padding-left: 4%;
-    .o-icon {
-      height: 16px;
-    }
-  }
-  .o-link-icon.o-unlink .o-icon {
-    padding-top: 1px;
-    height: 14px;
-  }
-  .o-link-icon:hover {
-    cursor: pointer;
-    color: #000;
-  }
-`;
-    class LinkDisplay extends owl.Component {
-        get cell() {
-            const { col, row } = this.props.cellPosition;
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const cell = this.env.model.getters.getCell(sheetId, col, row);
-            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
-                return cell;
-            }
-            throw new Error(`LinkDisplay Component can only be used with link cells. ${toXC(col, row)} is not a link.`);
-        }
-        openLink() {
-            this.cell.action(this.env);
-        }
-        edit() {
-            this.env.openLinkEditor();
-        }
-        unlink() {
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const [col, row] = this.env.model.getters.getPosition();
-            const [mainCol, mainRow] = this.env.model.getters.getMainCell(sheetId, col, row);
-            const style = this.cell.style;
-            const textColor = (style === null || style === void 0 ? void 0 : style.textColor) === LINK_COLOR ? undefined : style === null || style === void 0 ? void 0 : style.textColor;
-            this.env.model.dispatch("UPDATE_CELL", {
-                col: mainCol,
-                row: mainRow,
-                sheetId,
-                content: this.cell.link.label,
-                style: { ...style, textColor, underline: undefined },
-            });
-        }
-    }
-    LinkDisplay.components = { Menu };
-    LinkDisplay.template = "o-spreadsheet.LinkDisplay";
-
-    const MENU_OFFSET_X = 320;
-    const MENU_OFFSET_Y = 100;
-    const PADDING = 12;
-    css /* scss */ `
-  .o-link-editor {
-    font-size: 13px;
-    background-color: white;
-    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    padding: ${PADDING}px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 4px;
-    .o-section {
-      .o-section-title {
-        font-weight: bold;
-        color: dimgrey;
-        margin-bottom: 5px;
-      }
-    }
-    .o-buttons {
-      padding-left: 16px;
-      padding-top: 16px;
-      padding-bottom: 16px;
-      text-align: right;
-      .o-button {
-        border: 1px solid lightgrey;
-        padding: 0px 20px 0px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        font-size: 14px;
-        height: 30px;
-        line-height: 16px;
-        background: white;
-        margin-right: 8px;
-        &:hover:enabled {
-          background-color: rgba(0, 0, 0, 0.08);
-        }
-      }
-      .o-button:enabled {
-        cursor: pointer;
-      }
-      .o-button:last-child {
-        margin-right: 0px;
-      }
-    }
-    input {
-      box-sizing: border-box;
-      width: 100%;
-      border-radius: 4px;
-      padding: 4px 23px 4px 10px;
-      border: none;
-      height: 24px;
-      border: 1px solid lightgrey;
-    }
-    .o-link-url {
-      position: relative;
-      flex-grow: 1;
-      button {
-        position: absolute;
-        right: 0px;
-        top: 0px;
-        border: none;
-        height: 20px;
-        width: 20px;
-        background-color: #fff;
-        margin: 2px 3px 1px 0px;
-        padding: 0px 1px 0px 0px;
-      }
-      button:hover {
-        cursor: pointer;
-      }
-    }
-  }
-`;
-    class LinkEditor extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.menuItems = linkMenuRegistry.getAll();
-            this.state = owl.useState(this.defaultState);
-            this.menu = owl.useState({
-                isOpen: false,
-            });
-            this.linkEditorRef = owl.useRef("linkEditor");
-            this.position = useAbsolutePosition(this.linkEditorRef);
-            this.urlInput = owl.useRef("urlInput");
-        }
-        setup() {
-            owl.onMounted(() => { var _a; return (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus(); });
-        }
-        get defaultState() {
-            const { col, row } = this.props.cellPosition;
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const cell = this.env.model.getters.getCell(sheetId, col, row);
-            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
-                return {
-                    link: { url: cell.link.url, label: cell.formattedValue },
-                    urlRepresentation: cell.urlRepresentation,
-                    isUrlEditable: cell.isUrlEditable,
-                };
-            }
-            return {
-                link: { url: "", label: (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "" },
-                isUrlEditable: true,
-                urlRepresentation: "",
-            };
-        }
-        get menuPosition() {
-            return {
-                x: this.position.x + MENU_OFFSET_X - PADDING - 2,
-                y: this.position.y + MENU_OFFSET_Y,
-            };
-        }
-        onSpecialLink(ev) {
-            const { detail } = ev;
-            this.state.link.url = detail.link.url;
-            this.state.link.label = detail.link.label;
-            this.state.isUrlEditable = detail.isUrlEditable;
-            this.state.urlRepresentation = detail.urlRepresentation;
-        }
-        openMenu() {
-            this.menu.isOpen = true;
-        }
-        removeLink() {
-            this.state.link.url = "";
-            this.state.urlRepresentation = "";
-            this.state.isUrlEditable = true;
-        }
-        save() {
-            const { col, row } = this.props.cellPosition;
-            const label = this.state.link.label || this.state.link.url;
-            this.env.model.dispatch("UPDATE_CELL", {
-                col: col,
-                row: row,
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                content: markdownLink(label, this.state.link.url),
-            });
-            this.props.onLinkEditorClosed();
-        }
-        cancel() {
-            this.props.onLinkEditorClosed();
-        }
-        onKeyDown(ev) {
-            switch (ev.key) {
-                case "Enter":
-                    if (this.state.link.url) {
-                        this.save();
-                    }
-                    break;
-                case "Escape":
-                    this.cancel();
-                    break;
-            }
-        }
-    }
-    LinkEditor.template = "o-spreadsheet.LinkEditor";
-    LinkEditor.components = { Menu };
-
     // -----------------------------------------------------------------------------
     // Resizer component
     // -----------------------------------------------------------------------------
@@ -24434,11 +24046,13 @@
             const initialPosition = this._getClientPosition(ev);
             const initialOffset = this._getEvOffset(ev);
             const onMouseMove = (ev) => {
+                // currentEv.target can be any DOM element
                 currentEv = ev;
                 if (timeOutId) {
                     return;
                 }
-                const position = this._getClientPosition(currentEv) - initialPosition + initialOffset;
+                const delta = this._getClientPosition(currentEv) - initialPosition;
+                const position = initialOffset + delta;
                 const EdgeScrollInfo = this._getEdgeScroll(position);
                 const { first, last } = this._getBoundaries();
                 let elementIndex;
@@ -24476,9 +24090,8 @@
                 this._selectElement(index, false);
             }
             const type = this._getType();
-            const { x, y } = this._getXY(ev);
             // todo: define props
-            this.props.onOpenContextMenu(type, x, y);
+            this.props.onOpenContextMenu(type, ev.clientX, ev.clientY);
         }
     }
     css /* scss */ `
@@ -24550,7 +24163,7 @@
             this.MIN_ELEMENT_SIZE = MIN_COL_WIDTH;
         }
         _getEvOffset(ev) {
-            return ev.offsetX + HEADER_WIDTH;
+            return ev.offsetX;
         }
         _getStateOffset() {
             return this.env.model.getters.getActiveSnappedViewport().offsetX - HEADER_WIDTH;
@@ -24642,12 +24255,6 @@
         _getActiveElements() {
             return this.env.model.getters.getActiveCols();
         }
-        _getXY(ev) {
-            return {
-                x: ev.offsetX + HEADER_WIDTH,
-                y: ev.offsetY,
-            };
-        }
         _getPreviousVisibleElement(index) {
             const cols = this.env.model.getters.getActiveSheet().cols.slice(0, index);
             const step = cols.reverse().findIndex((col) => !col.isHidden);
@@ -24738,7 +24345,7 @@
             this.MIN_ELEMENT_SIZE = MIN_ROW_HEIGHT;
         }
         _getEvOffset(ev) {
-            return ev.offsetY + HEADER_HEIGHT;
+            return ev.offsetY;
         }
         _getStateOffset() {
             return this.env.model.getters.getActiveSnappedViewport().offsetY - HEADER_HEIGHT;
@@ -24827,12 +24434,6 @@
         _getActiveElements() {
             return this.env.model.getters.getActiveRows();
         }
-        _getXY(ev) {
-            return {
-                x: ev.offsetX,
-                y: ev.offsetY + HEADER_HEIGHT,
-            };
-        }
         _getPreviousVisibleElement(index) {
             const rows = this.env.model.getters.getActiveSheet().rows.slice(0, index);
             const step = rows.reverse().findIndex((row) => !row.isHidden);
@@ -24864,13 +24465,428 @@
     }
   }
 `;
-    class Overlay extends owl.Component {
+    class HeadersOverlay extends owl.Component {
         selectAll() {
             this.env.model.selection.selectAll();
         }
     }
-    Overlay.template = "o-spreadsheet.Overlay";
-    Overlay.components = { ColResizer, RowResizer };
+    HeadersOverlay.template = "o-spreadsheet.HeadersOverlay";
+    HeadersOverlay.components = { ColResizer, RowResizer };
+
+    css /* scss */ `
+  .o-border {
+    position: absolute;
+    &:hover {
+      cursor: grab;
+    }
+  }
+  .o-moving {
+    cursor: grabbing;
+  }
+`;
+    class Border extends owl.Component {
+        get style() {
+            const isTop = ["n", "w", "e"].includes(this.props.orientation);
+            const isLeft = ["n", "w", "s"].includes(this.props.orientation);
+            const isHorizontal = ["n", "s"].includes(this.props.orientation);
+            const isVertical = ["w", "e"].includes(this.props.orientation);
+            const s = this.env.model.getters.getActiveSheet();
+            const z = this.props.zone;
+            const margin = 2;
+            const left = s.cols[z.left].start + margin;
+            const right = s.cols[z.right].end - 2 * margin;
+            const top = s.rows[z.top].start + margin;
+            const bottom = s.rows[z.bottom].end - 2 * margin;
+            const lineWidth = 4;
+            const leftValue = isLeft ? left : right;
+            const topValue = isTop ? top : bottom;
+            const widthValue = isHorizontal ? right - left : lineWidth;
+            const heightValue = isVertical ? bottom - top : lineWidth;
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            return `
+        left:${leftValue + HEADER_WIDTH - offsetX}px;
+        top:${topValue + HEADER_HEIGHT - offsetY}px;
+        width:${widthValue}px;
+        height:${heightValue}px;
+    `;
+        }
+        onMouseDown(ev) {
+            this.props.onMoveHighlight(ev.clientX, ev.clientY);
+        }
+    }
+    Border.template = "o-spreadsheet.Border";
+
+    css /* scss */ `
+  .o-corner {
+    position: absolute;
+    height: 6px;
+    width: 6px;
+    border: 1px solid white;
+  }
+  .o-corner-nw,
+  .o-corner-se {
+    &:hover {
+      cursor: nwse-resize;
+    }
+  }
+  .o-corner-ne,
+  .o-corner-sw {
+    &:hover {
+      cursor: nesw-resize;
+    }
+  }
+  .o-resizing {
+    cursor: grabbing;
+  }
+`;
+    class Corner extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.isTop = this.props.orientation[0] === "n";
+            this.isLeft = this.props.orientation[1] === "w";
+        }
+        get style() {
+            const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const s = this.env.model.getters.getActiveSheet();
+            const z = this.props.zone;
+            const leftValue = this.isLeft ? s.cols[z.left].start : s.cols[z.right].end;
+            const topValue = this.isTop ? s.rows[z.top].start : s.rows[z.bottom].end;
+            return `
+      left:${leftValue + HEADER_WIDTH - offsetX - AUTOFILL_EDGE_LENGTH / 2}px;
+      top:${topValue + HEADER_HEIGHT - offsetY - AUTOFILL_EDGE_LENGTH / 2}px;
+      background-color:${this.props.color};
+    `;
+        }
+        onMouseDown(ev) {
+            this.props.onResizeHighlight(this.isLeft, this.isTop);
+        }
+    }
+    Corner.template = "o-spreadsheet.Corner";
+
+    class Highlight extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.highlightRef = owl.useRef("highlight");
+            this.highlightState = owl.useState({
+                shiftingMode: "none",
+            });
+        }
+        onResizeHighlight(isLeft, isTop) {
+            this.highlightState.shiftingMode = "isResizing";
+            const z = this.props.zone;
+            const pivotCol = isLeft ? z.right : z.left;
+            const pivotRow = isTop ? z.bottom : z.top;
+            let lastCol = isLeft ? z.left : z.right;
+            let lastRow = isTop ? z.top : z.bottom;
+            let currentZone = z;
+            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
+            const mouseMove = (col, row) => {
+                if (lastCol !== col || lastRow !== row) {
+                    const activeSheet = this.env.model.getters.getActiveSheet();
+                    lastCol = clip(col === -1 ? lastCol : col, 0, activeSheet.cols.length - 1);
+                    lastRow = clip(row === -1 ? lastRow : row, 0, activeSheet.rows.length - 1);
+                    let newZone = {
+                        left: Math.min(pivotCol, lastCol),
+                        top: Math.min(pivotRow, lastRow),
+                        right: Math.max(pivotCol, lastCol),
+                        bottom: Math.max(pivotRow, lastRow),
+                    };
+                    newZone = this.env.model.getters.expandZone(activeSheet.id, newZone);
+                    if (!isEqual(newZone, currentZone)) {
+                        this.env.model.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
+                        currentZone = newZone;
+                    }
+                }
+            };
+            const mouseUp = () => {
+                this.highlightState.shiftingMode = "none";
+                // To do:
+                // Command used here to restore focus to the current composer,
+                // to be changed when refactoring the 'edition' plugin
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            };
+            dragAndDropBeyondTheViewport(this.highlightRef.el.parentElement, this.env, mouseMove, mouseUp);
+        }
+        onMoveHighlight(clientX, clientY) {
+            this.highlightState.shiftingMode = "isMoving";
+            const z = this.props.zone;
+            const parent = this.highlightRef.el.parentElement;
+            const position = parent.getBoundingClientRect();
+            const activeSheet = this.env.model.getters.getActiveSheet();
+            const { top: viewportTop, left: viewportLeft } = this.env.model.getters.getActiveSnappedViewport();
+            const initCol = this.env.model.getters.getColIndex(clientX - position.left - HEADER_WIDTH, viewportLeft);
+            const initRow = this.env.model.getters.getRowIndex(clientY - position.top - HEADER_HEIGHT, viewportTop);
+            const deltaColMin = -z.left;
+            const deltaColMax = activeSheet.cols.length - z.right - 1;
+            const deltaRowMin = -z.top;
+            const deltaRowMax = activeSheet.rows.length - z.bottom - 1;
+            let currentZone = z;
+            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
+            let lastCol = initCol;
+            let lastRow = initRow;
+            const mouseMove = (col, row) => {
+                if (lastCol !== col || lastRow !== row) {
+                    lastCol = col === -1 ? lastCol : col;
+                    lastRow = row === -1 ? lastRow : row;
+                    const deltaCol = clip(lastCol - initCol, deltaColMin, deltaColMax);
+                    const deltaRow = clip(lastRow - initRow, deltaRowMin, deltaRowMax);
+                    let newZone = {
+                        left: z.left + deltaCol,
+                        top: z.top + deltaRow,
+                        right: z.right + deltaCol,
+                        bottom: z.bottom + deltaRow,
+                    };
+                    newZone = this.env.model.getters.expandZone(activeSheet.id, newZone);
+                    if (!isEqual(newZone, currentZone)) {
+                        this.env.model.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
+                        currentZone = newZone;
+                    }
+                }
+            };
+            const mouseUp = () => {
+                this.highlightState.shiftingMode = "none";
+                // To do:
+                // Command used here to restore focus to the current composer,
+                // to be changed when refactoring the 'edition' plugin
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            };
+            dragAndDropBeyondTheViewport(parent, this.env, mouseMove, mouseUp);
+        }
+    }
+    Highlight.template = "o-spreadsheet.Highlight";
+    Highlight.components = {
+        Corner,
+        Border,
+    };
+
+    css /* scss */ `
+  .o-link-tool {
+    font-size: 13px;
+    background-color: white;
+    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+    padding: 12px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    a.o-link {
+      color: #007bff;
+      flex-grow: 2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    a.o-link:hover {
+      text-decoration: underline;
+      color: #0056b3;
+      cursor: pointer;
+    }
+  }
+  .o-link-icon {
+    float: right;
+    padding-left: 4%;
+    .o-icon {
+      height: 16px;
+    }
+  }
+  .o-link-icon.o-unlink .o-icon {
+    padding-top: 1px;
+    height: 14px;
+  }
+  .o-link-icon:hover {
+    cursor: pointer;
+    color: #000;
+  }
+`;
+    class LinkDisplay extends owl.Component {
+        get cell() {
+            const { col, row } = this.props.cellPosition;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const cell = this.env.model.getters.getCell(sheetId, col, row);
+            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
+                return cell;
+            }
+            throw new Error(`LinkDisplay Component can only be used with link cells. ${toXC(col, row)} is not a link.`);
+        }
+        openLink() {
+            this.cell.action(this.env);
+        }
+        edit() {
+            this.env.openLinkEditor();
+        }
+        unlink() {
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const { col, row } = this.env.model.getters.getPosition();
+            const { col: mainCol, row: mainRow } = this.env.model.getters.getMainCellPosition(sheetId, col, row);
+            const style = this.cell.style;
+            const textColor = (style === null || style === void 0 ? void 0 : style.textColor) === LINK_COLOR ? undefined : style === null || style === void 0 ? void 0 : style.textColor;
+            this.env.model.dispatch("UPDATE_CELL", {
+                col: mainCol,
+                row: mainRow,
+                sheetId,
+                content: this.cell.link.label,
+                style: { ...style, textColor, underline: undefined },
+            });
+        }
+    }
+    LinkDisplay.components = { Menu };
+    LinkDisplay.template = "o-spreadsheet.LinkDisplay";
+
+    const MENU_OFFSET_X = 320;
+    const MENU_OFFSET_Y = 100;
+    const PADDING = 12;
+    css /* scss */ `
+  .o-link-editor {
+    font-size: 13px;
+    background-color: white;
+    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+    padding: ${PADDING}px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    .o-section {
+      .o-section-title {
+        font-weight: bold;
+        color: dimgrey;
+        margin-bottom: 5px;
+      }
+    }
+    .o-buttons {
+      padding-left: 16px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      text-align: right;
+      .o-button {
+        border: 1px solid lightgrey;
+        padding: 0px 20px 0px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 14px;
+        height: 30px;
+        line-height: 16px;
+        background: white;
+        margin-right: 8px;
+        &:hover:enabled {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
+      .o-button:enabled {
+        cursor: pointer;
+      }
+      .o-button:last-child {
+        margin-right: 0px;
+      }
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      border-radius: 4px;
+      padding: 4px 23px 4px 10px;
+      border: none;
+      height: 24px;
+      border: 1px solid lightgrey;
+    }
+    .o-link-url {
+      position: relative;
+      flex-grow: 1;
+      button {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        border: none;
+        height: 20px;
+        width: 20px;
+        background-color: #fff;
+        margin: 2px 3px 1px 0px;
+        padding: 0px 1px 0px 0px;
+      }
+      button:hover {
+        cursor: pointer;
+      }
+    }
+  }
+`;
+    class LinkEditor extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.menuItems = linkMenuRegistry.getAll();
+            this.state = owl.useState(this.defaultState);
+            this.menu = owl.useState({
+                isOpen: false,
+            });
+            this.linkEditorRef = owl.useRef("linkEditor");
+            this.position = useAbsolutePosition(this.linkEditorRef);
+            this.urlInput = owl.useRef("urlInput");
+        }
+        setup() {
+            owl.onMounted(() => { var _a; return (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus(); });
+        }
+        get defaultState() {
+            const { col, row } = this.props.cellPosition;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const cell = this.env.model.getters.getCell(sheetId, col, row);
+            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
+                return {
+                    link: { url: cell.link.url, label: cell.formattedValue },
+                    urlRepresentation: cell.urlRepresentation,
+                    isUrlEditable: cell.isUrlEditable,
+                };
+            }
+            return {
+                link: { url: "", label: (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "" },
+                isUrlEditable: true,
+                urlRepresentation: "",
+            };
+        }
+        get menuPosition() {
+            return {
+                x: this.position.x + MENU_OFFSET_X - PADDING - 2,
+                y: this.position.y + MENU_OFFSET_Y,
+            };
+        }
+        onSpecialLink(ev) {
+            const { detail } = ev;
+            this.state.link.url = detail.link.url;
+            this.state.link.label = detail.link.label;
+            this.state.isUrlEditable = detail.isUrlEditable;
+            this.state.urlRepresentation = detail.urlRepresentation;
+        }
+        openMenu() {
+            this.menu.isOpen = true;
+        }
+        removeLink() {
+            this.state.link.url = "";
+            this.state.urlRepresentation = "";
+            this.state.isUrlEditable = true;
+        }
+        save() {
+            const { col, row } = this.props.cellPosition;
+            const label = this.state.link.label || this.state.link.url;
+            this.env.model.dispatch("UPDATE_CELL", {
+                col: col,
+                row: row,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                content: markdownLink(label, this.state.link.url),
+            });
+            this.props.onLinkEditorClosed();
+        }
+        cancel() {
+            this.props.onLinkEditorClosed();
+        }
+        onKeyDown(ev) {
+            switch (ev.key) {
+                case "Enter":
+                    if (this.state.link.url) {
+                        this.save();
+                    }
+                    break;
+                case "Escape":
+                    this.cancel();
+                    break;
+            }
+        }
+    }
+    LinkEditor.template = "o-spreadsheet.LinkEditor";
+    LinkEditor.components = { Menu };
 
     class ScrollBar {
         constructor(el, direction) {
@@ -24902,7 +24918,7 @@
     function useCellHovered(env, getViewPort) {
         const hoveredPosition = owl.useState({});
         const { Date, setInterval, clearInterval } = window;
-        const canvasRef = owl.useRef("canvas");
+        const gridRef = owl.useRef("gridOverlay");
         let x = 0;
         let y = 0;
         let lastMoved = 0;
@@ -24911,10 +24927,10 @@
             const viewport = getViewPort();
             const col = env.model.getters.getColIndex(x, viewport.left);
             const row = env.model.getters.getRowIndex(y, viewport.top);
-            return [col, row];
+            return { col, row };
         }
         function checkTiming() {
-            const [col, row] = getPosition();
+            const { col, row } = getPosition();
             const delta = Date.now() - lastMoved;
             if (col !== hoveredPosition.col || row !== hoveredPosition.row) {
                 hoveredPosition.col = undefined;
@@ -24934,11 +24950,11 @@
             lastMoved = Date.now();
         }
         owl.onMounted(() => {
-            canvasRef.el.addEventListener("mousemove", updateMousePosition);
+            gridRef.el.addEventListener("mousemove", updateMousePosition);
             interval = setInterval(checkTiming, 200);
         });
         owl.onWillUnmount(() => {
-            canvasRef.el.removeEventListener("mousemove", updateMousePosition);
+            gridRef.el.removeEventListener("mousemove", updateMousePosition);
             clearInterval(interval);
         });
         return hoveredPosition;
@@ -25023,6 +25039,15 @@
         overflow-y: hidden;
       }
     }
+
+    .o-grid-overlay {
+      position: absolute;
+      top: ${HEADER_HEIGHT}px;
+      left: ${HEADER_WIDTH}px;
+      height: calc(100% - ${HEADER_HEIGHT}px);
+      width: calc(100% - ${HEADER_WIDTH}px);
+      outline: none;
+    }
   }
 `;
     // -----------------------------------------------------------------------------
@@ -25086,7 +25111,8 @@
                     var _a;
                     const sheetId = this.env.model.getters.getActiveSheetId();
                     const mainSelectedZone = this.env.model.getters.getSelectedZone();
-                    const sums = this.env.model.getters.getAutomaticSums(sheetId, mainSelectedZone, this.env.model.getters.getPosition());
+                    const { anchor } = this.env.model.getters.getSelection();
+                    const sums = this.env.model.getters.getAutomaticSums(sheetId, mainSelectedZone, anchor.cell);
                     if (this.env.model.getters.isSingleCellOrMerge(sheetId, mainSelectedZone) ||
                         (this.env.model.getters.isEmpty(sheetId, mainSelectedZone) && sums.length <= 1)) {
                         const zone = (_a = sums[0]) === null || _a === void 0 ? void 0 : _a.zone;
@@ -25100,7 +25126,7 @@
                 },
                 "CTRL+HOME": () => {
                     const sheet = this.env.model.getters.getActiveSheet();
-                    const [col, row] = getNextVisibleCellCoords(sheet, 0, 0);
+                    const { col, row } = getNextVisibleCellPosition(sheet, 0, 0);
                     this.env.model.selection.selectCell(col, row);
                 },
                 "CTRL+END": () => {
@@ -25116,8 +25142,8 @@
                         left: 0,
                         right: cols.length - 1,
                     };
-                    const [col, row] = this.env.model.getters.getPosition();
-                    this.env.model.selection.selectZone({ cell: { col, row }, zone: newZone });
+                    const position = this.env.model.getters.getPosition();
+                    this.env.model.selection.selectZone({ cell: position, zone: newZone });
                 },
                 "CTRL+ ": () => {
                     const { rows } = this.env.model.getters.getActiveSheet();
@@ -25126,8 +25152,8 @@
                         top: 0,
                         bottom: rows.length - 1,
                     };
-                    const [col, row] = this.env.model.getters.getPosition();
-                    this.env.model.selection.selectZone({ cell: { col, row }, zone: newZone });
+                    const position = this.env.model.getters.getPosition();
+                    this.env.model.selection.selectZone({ cell: position, zone: newZone });
                 },
                 "CTRL+SHIFT+ ": () => {
                     this.env.model.selection.selectAll();
@@ -25151,7 +25177,9 @@
             this.vScrollbarRef = owl.useRef("vscrollbar");
             this.hScrollbarRef = owl.useRef("hscrollbar");
             this.gridRef = owl.useRef("grid");
+            this.gridOverlay = owl.useRef("gridOverlay");
             this.canvas = owl.useRef("canvas");
+            this.canvasPosition = useAbsolutePosition(this.canvas);
             this.vScrollbar = new ScrollBar(this.vScrollbarRef.el, "vertical");
             this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
             this.currentSheet = this.env.model.getters.getActiveSheetId();
@@ -25183,14 +25211,17 @@
                 return { isOpen: false };
             }
             const sheetId = this.env.model.getters.getActiveSheetId();
-            const [mainCol, mainRow] = this.env.model.getters.getMainCell(sheetId, col, row);
+            const { col: mainCol, row: mainRow } = this.env.model.getters.getMainCellPosition(sheetId, col, row);
             const cell = this.env.model.getters.getCell(sheetId, mainCol, mainRow);
             if (cell && cell.evaluated.type === CellValueType.error) {
                 const viewport = this.env.model.getters.getActiveSnappedViewport();
                 const [x, y, width] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
                 return {
                     isOpen: true,
-                    position: { x: x + width, y: y + TOPBAR_HEIGHT },
+                    position: {
+                        x: x + width + this.canvasPosition.x,
+                        y: y + this.canvasPosition.y,
+                    },
                     text: cell.evaluated.error,
                     cellWidth: width,
                 };
@@ -25198,8 +25229,8 @@
             return { isOpen: false };
         }
         get activeCellPosition() {
-            const [col, row] = this.env.model.getters.getMainCell(this.env.model.getters.getActiveSheetId(), ...this.env.model.getters.getPosition());
-            return { col, row };
+            const { col, row } = this.env.model.getters.getPosition();
+            return this.env.model.getters.getMainCellPosition(this.env.model.getters.getActiveSheetId(), col, row);
         }
         get shouldDisplayLink() {
             const sheetId = this.env.model.getters.getActiveSheetId();
@@ -25218,18 +25249,22 @@
          * Used by link popover components.
          */
         get popoverPosition() {
-            const [col, row] = this.env.model.getters.getBottomLeftCell(this.env.model.getters.getActiveSheetId(), ...this.env.model.getters.getPosition());
+            const position = this.env.model.getters.getPosition();
+            const { col, row } = this.env.model.getters.getBottomLeftCell(this.env.model.getters.getActiveSheetId(), position.col, position.row);
             const viewport = this.env.model.getters.getActiveSnappedViewport();
             const [x, y, width, height] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
             return {
-                position: { x, y: y + height + TOPBAR_HEIGHT },
+                position: {
+                    x: x + this.canvasPosition.x,
+                    y: y + height + this.canvasPosition.y,
+                },
                 cellWidth: width,
                 cellHeight: height,
             };
         }
         focus() {
             if (!this.env.model.getters.getSelectedFigureId()) {
-                this.canvas.el.focus();
+                this.gridOverlay.el.focus();
             }
         }
         get gridEl() {
@@ -25339,7 +25374,7 @@
          * Get the coordinates in pixels, with 0,0 being the top left of the grid itself
          */
         getCoordinates(ev) {
-            const rect = this.gridEl.getBoundingClientRect();
+            const rect = this.gridOverlay.el.getBoundingClientRect();
             const x = ev.pageX - rect.left;
             const y = ev.pageY - rect.top;
             return [x, y];
@@ -25363,7 +25398,7 @@
             this.clickedCol = col;
             this.clickedRow = row;
             const sheetId = this.env.model.getters.getActiveSheetId();
-            const [mainCol, mainRow] = this.env.model.getters.getMainCell(sheetId, col, row);
+            const { col: mainCol, row: mainRow } = this.env.model.getters.getMainCellPosition(sheetId, col, row);
             const cell = this.env.model.getters.getCell(sheetId, mainCol, mainRow);
             if (!(cell === null || cell === void 0 ? void 0 : cell.isLink())) {
                 this.closeLinkEditor();
@@ -25434,7 +25469,7 @@
             const onMouseUp = (ev) => {
                 clearTimeout(timeOutId);
                 this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_INPUT_EXPANSION" : "STOP_SELECTION_INPUT");
-                this.canvas.el.removeEventListener("mousemove", onMouseMove);
+                this.gridOverlay.el.removeEventListener("mousemove", onMouseMove);
                 if (this.env.model.getters.isPaintingFormat()) {
                     this.env.model.dispatch("PASTE", {
                         target: this.env.model.getters.getSelectedZones(),
@@ -25475,7 +25510,7 @@
                 const newZone = this.env.model.getters.getSelectedZone();
                 const viewport = this.env.model.getters.getActiveSnappedViewport();
                 const sheet = this.env.model.getters.getActiveSheet();
-                const [col, row] = findCellInNewZone(oldZone, newZone, viewport);
+                const { col, row } = findCellInNewZone(oldZone, newZone, viewport);
                 const { left, right, top, bottom, offsetX, offsetY } = viewport;
                 const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
                 const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
@@ -25552,12 +25587,12 @@
                     type = "ROW";
                 }
             }
-            this.toggleContextMenu(type, ev.offsetX, ev.offsetY);
+            this.toggleContextMenu(type, ev.clientX, ev.clientY);
         }
         toggleContextMenu(type, x, y) {
             this.closeLinkEditor();
             this.menuState.isOpen = true;
-            this.menuState.position = { x, y: y + TOPBAR_HEIGHT };
+            this.menuState.position = { x, y };
             this.menuState.menuItems = registries$1[type]
                 .getAll()
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
@@ -25606,7 +25641,7 @@
     Grid.template = "o-spreadsheet.Grid";
     Grid.components = {
         GridComposer,
-        Overlay,
+        HeadersOverlay,
         Menu,
         Autofill,
         FiguresContainer,
@@ -26035,10 +26070,9 @@
         }
         toggleContextMenu(menu, ev) {
             this.closeMenus();
-            const x = ev.target.offsetLeft;
-            const y = ev.target.clientHeight + ev.target.offsetTop;
+            const { left, top, height } = ev.target.getBoundingClientRect();
             this.state.menuState.isOpen = true;
-            this.state.menuState.position = { x, y };
+            this.state.menuState.position = { x: left, y: top + height };
             this.state.menuState.menuItems = topbarMenuRegistry
                 .getChildren(menu, this.env)
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
@@ -26057,7 +26091,7 @@
             this.cannotMerge = zones.length > 1 || (top === bottom && left === right);
             this.inMerge = false;
             if (!this.cannotMerge) {
-                const [col, row] = this.env.model.getters.getPosition();
+                const { col, row } = this.env.model.getters.getPosition();
                 const zone = this.env.model.getters.expandZone(this.env.model.getters.getActiveSheetId(), {
                     left: col,
                     right: col,
@@ -28019,7 +28053,7 @@
          */
         addCellToSelection(col, row) {
             const sheetId = this.getters.getActiveSheetId();
-            [col, row] = this.getters.getMainCell(sheetId, col, row);
+            ({ col, row } = this.getters.getMainCellPosition(sheetId, col, row));
             const zone = positionToZone({ col, row });
             return this.processEvent({
                 type: "ZonesSelected",
@@ -28283,7 +28317,7 @@
         }
         // TODO rename this
         getStartingPosition(direction) {
-            let [col, row] = this.getPosition();
+            let { col, row } = this.getPosition();
             const zone = this.anchor.zone;
             switch (direction) {
                 case "down":
@@ -28338,7 +28372,8 @@
          * check if the merge containing the cell is empty.
          */
         isCellEmpty({ col, row }, sheetId) {
-            const cell = this.getters.getCell(sheetId, ...this.getters.getMainCell(sheetId, col, row));
+            const mainCellPosition = this.getters.getMainCellPosition(sheetId, col, row);
+            const cell = this.getters.getCell(sheetId, mainCellPosition.col, mainCellPosition.row);
             return !cell || cell.isEmpty();
         }
         /** Computes the next cell position in the given direction by crossing through merges and skipping hidden cells.
@@ -28357,7 +28392,7 @@
             return { col: startingPosition.col, row: startingPosition.row };
         }
         getPosition() {
-            return [this.anchor.cell.col, this.anchor.cell.row];
+            return { ...this.anchor.cell };
         }
     }
 
@@ -30597,8 +30632,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-04-20T11:48:45.177Z';
-    exports.__info__.hash = '35870db';
+    exports.__info__.date = '2022-04-21T08:30:38.074Z';
+    exports.__info__.hash = 'a71c5d8';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

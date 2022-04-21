@@ -37,10 +37,8 @@ export const INSERT_PIVOT_CELL_CHILDREN = (env) =>
         env.model.dispatch("REFRESH_PIVOT", { id: pivotId });
         const sheetId = env.model.getters.getActiveSheetId();
         await env.model.getters.getAsyncSpreadsheetPivotModel(pivotId);
-        const [col, row] = env.model.getters.getMainCell(
-          sheetId,
-          ...env.model.getters.getPosition()
-        );
+        let { col, row } = env.model.getters.getPosition();
+        ({ col, row } = env.model.getters.getMainCellPosition(sheetId, col, row));
         const insertPivotValueCallback = (formula) => {
           env.model.dispatch("UPDATE_CELL", {
             sheetId,
@@ -57,24 +55,21 @@ export const INSERT_PIVOT_CELL_CHILDREN = (env) =>
             return `${title} - ${pivotTitle}`;
           }
           return title;
-        }
+        };
 
         const getPivotTitle = () => {
           if (pivotId) {
             return env.model.getters.getPivotDisplayName(pivotId);
           }
           return "";
-        }
+        };
 
-        env.services.dialog.add(
-          PivotDialog,
-          {
-            title: getMissingValueDialogTitle(),
-            pivotId,
-            insertPivotValueCallback,
-            getters: env.model.getters,
-          },
-        );
+        env.services.dialog.add(PivotDialog, {
+          title: getMissingValueDialogTitle(),
+          pivotId,
+          insertPivotValueCallback,
+          getters: env.model.getters,
+        });
       },
     })
   );

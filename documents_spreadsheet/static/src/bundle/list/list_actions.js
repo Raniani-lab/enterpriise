@@ -37,7 +37,7 @@ export const REINSERT_LIST_CHILDREN = (env) =>
 
 export const SEE_RECORD_LIST = async (env) => {
     const sheetId = env.model.getters.getActiveSheetId();
-    const [col, row] = env.model.getters.getPosition();
+    const {col, row} = env.model.getters.getPosition();
     const cell = env.model.getters.getCell(sheetId, col, row);
     if (!cell) {
         return;

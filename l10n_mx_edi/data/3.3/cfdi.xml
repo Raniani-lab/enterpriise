@@ -92,7 +92,7 @@
                     <cfdi:Impuestos
                         t-att-TotalImpuestosTrasladados="format_float(balance_multiplicator * tax_details_transferred['tax_amount_currency'], currency_precision) if tax_details_transferred['tax_details'] else None"
                         t-att-TotalImpuestosRetenidos="format_float(-balance_multiplicator * tax_details_withholding['tax_amount_currency'], currency_precision) if tax_details_withholding['tax_details'] else None">
-                        <t t-if="tax_details_withholding['tax_details']">
+                        <t t-if="has_tax_details_withholding_no_exento">
                             <cfdi:Retenciones>
                                 <t t-foreach="tax_details_withholding['tax_details'].values()" t-as="tax_detail_vals">
                                     <t t-set="tax" t-value="tax_detail_vals['tax']"/>
@@ -104,7 +104,7 @@
                                 </t>
                             </cfdi:Retenciones>
                         </t>
-                        <t t-if="tax_details_transferred['tax_details']">
+                        <t t-if="has_tax_details_transferred_no_exento">
                             <cfdi:Traslados>
                                 <t t-foreach="tax_details_transferred['tax_details'].values()" t-as="tax_detail_vals">
                                     <t t-set="tax" t-value="tax_detail_vals['tax']"/>

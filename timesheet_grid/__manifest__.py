@@ -59,6 +59,9 @@
             'timesheet_grid/static/src/js/tours/timesheet_grid.js',
             'timesheet_grid/static/src/js/widgets/timesheets_m2o_avatar_employee.js',
         ],
+        "web.assets_backend_legacy_lazy": [
+            'timesheet_grid/static/src/js/timesheet_pivot/timesheet_pivot_legacy.js',
+        ],
         'web.assets_tests': [
             'timesheet_grid/static/tests/tours/timesheet_record_time.js',
         ],

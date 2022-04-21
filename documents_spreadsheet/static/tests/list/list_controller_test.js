@@ -4,7 +4,7 @@
 import ListView from "web.ListView";
 import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet_extended";
 import { createView } from "web.test_utils";
-import { getBasicData, getBasicListArch, getBasicServerData } from "../utils/spreadsheet_test_data";
+import { getBasicData, getBasicListArch } from "../utils/spreadsheet_test_data";
 import { insertList } from "../../src/bundle/list/list_init_callback";
 import {
     getCell,
@@ -17,7 +17,7 @@ import { selectCell, setCellContent } from "../utils/commands_helpers";
 import { createSpreadsheetFromList } from "../utils/list_helpers";
 import { nextTick, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { session } from "@web/session";
-import { createSpreadsheet, waitForEvaluation } from "../spreadsheet_test_utils";
+import { createModelWithDataSource, waitForEvaluation } from "../spreadsheet_test_utils";
 
 const { toZone } = spreadsheet.helpers;
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
@@ -425,13 +425,6 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
                 },
             },
         };
-        const serverData = getBasicServerData();
-        serverData.models["documents.document"].records.push({
-            id: 45,
-            raw: JSON.stringify(spreadsheetData),
-            name: "Spreadsheet",
-            handler: "spreadsheet",
-        });
         const expectedFetchContext = {
             allowed_company_ids: [15],
             default_stage_id: 9,
@@ -441,9 +434,8 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
             uid: 4,
         };
         patchWithCleanup(session, testSession);
-        await createSpreadsheet({
-            serverData,
-            spreadsheetId: 45,
+        await createModelWithDataSource({
+            spreadsheetData,
             mockRPC: function (route, { model, method, kwargs }) {
                 if (model !== "partner") {
                     return;

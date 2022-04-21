@@ -515,7 +515,7 @@ module("documents_spreadsheet > global_filters",
     test("Get active filters with multiple filters", async function (assert) {
         assert.expect(2);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -550,7 +550,7 @@ module("documents_spreadsheet > global_filters",
     test("Get active filters with text filter enabled", async function (assert) {
         assert.expect(2);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -570,7 +570,7 @@ module("documents_spreadsheet > global_filters",
     test("Get active filters with relation filter enabled", async function (assert) {
         assert.expect(2);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -590,7 +590,7 @@ module("documents_spreadsheet > global_filters",
     test("Get active filters with date filter enabled", async function (assert) {
         assert.expect(4);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -630,7 +630,7 @@ module("documents_spreadsheet > global_filters",
     test("FILTER.VALUE text filter", async function (assert) {
         assert.expect(3);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         setCellContent(model, "A10", `=FILTER.VALUE("Text Filter")`);
         await nextTick();
         assert.equal(getCellValue(model, "A10"), "#ERROR");
@@ -661,7 +661,7 @@ module("documents_spreadsheet > global_filters",
     test("FILTER.VALUE date filter", async function (assert) {
         assert.expect(4);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         setCellContent(model, "A10", `=FILTER.VALUE("Date Filter")`);
         await nextTick();
         await addGlobalFilter(model, {
@@ -778,7 +778,7 @@ module("documents_spreadsheet > global_filters",
     test("FILTER.VALUE formulas are updated when filter label is changed", async function (assert) {
         assert.expect(1);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -814,7 +814,7 @@ module("documents_spreadsheet > global_filters",
     test("Exporting data does not remove value from model", async function (assert) {
         assert.expect(2);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -877,7 +877,7 @@ module("documents_spreadsheet > global_filters",
     test("Can undo-redo a ADD_GLOBAL_FILTER", async function (assert) {
         assert.expect(3);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -901,7 +901,7 @@ module("documents_spreadsheet > global_filters",
     test("Can undo-redo a REMOVE_GLOBAL_FILTER", async function (assert) {
         assert.expect(3);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",
@@ -926,7 +926,7 @@ module("documents_spreadsheet > global_filters",
     test("Can undo-redo a EDIT_GLOBAL_FILTER", async function (assert) {
         assert.expect(3);
 
-        const model = createModelWithDataSource();
+        const model = await createModelWithDataSource();
         await addGlobalFilter(model, {
             filter: {
                 id: "42",

@@ -30,7 +30,7 @@ import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
 
 import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet_extended";
-import { createSpreadsheet } from "../spreadsheet_test_utils";
+import { createModelWithDataSource } from "../spreadsheet_test_utils";
 
 const { cellMenuRegistry } = spreadsheet.registries;
 
@@ -457,13 +457,6 @@ test("user context is combined with pivot context to fetch data", async function
             },
         },
     };
-    const serverData = getBasicServerData();
-    serverData.models["documents.document"].records.push({
-        id: 45,
-        raw: JSON.stringify(spreadsheetData),
-        name: "Spreadsheet",
-        handler: "spreadsheet",
-    });
     const expectedFetchContext = {
         allowed_company_ids: [15],
         default_stage_id: 9,
@@ -473,9 +466,8 @@ test("user context is combined with pivot context to fetch data", async function
         uid: 4,
     };
     patchWithCleanup(session, testSession);
-    await createSpreadsheet({
-        serverData,
-        spreadsheetId: 45,
+    await createModelWithDataSource({
+        spreadsheetData,
         mockRPC: function (route, { model, method, kwargs }) {
             if (model !== "partner") {
                 return;

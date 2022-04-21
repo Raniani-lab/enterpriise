@@ -1,7 +1,11 @@
 /** @odoo-module alias=documents_spreadsheet.TestUtils default=0 */
+
+import { ormService } from "@web/core/orm_service";
+import { registry } from "@web/core/registry";
 import { jsonToBase64 } from "@documents_spreadsheet/bundle/o_spreadsheet/helpers";
 import { getBasicServerData } from "./utils/spreadsheet_test_data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
+import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { patchWithCleanup, click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { SpreadsheetTemplateAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_template/spreadsheet_template_action";
@@ -193,12 +197,25 @@ export function setupDataSourceEvaluation(model) {
     });
 }
 
-export function createModelWithDataSource(orm = {}) {
-    const withSilent = {
-        ...orm,
-        silent: orm,
-    }
-    const model = new Model({}, { dataSources: new DataSources(withSilent)});
+/**
+ * Create a spreadsheet model with a mocked server environnement
+ *
+ * @param {Object} params
+ * @param {Object|undefined} params.spreadsheetData Date to be injected in the webclient
+ * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {Function|undefined} params.mockRPC Mock rpc function
+ */
+export async function createModelWithDataSource(params = {}) {
+    registry.category("services").add("orm", ormService);
+    const env = await makeTestEnv({
+        serverData: params.serverData || getBasicServerData(),
+        mockRPC: params.mockRPC,
+    });
+    const model = new Model(params.spreadsheetData, {
+        evalContext: { env },
+        dataSources: new DataSources(env.services.orm.silent),
+    });
     setupDataSourceEvaluation(model);
+    await nextTick(); // initial async formulas loading
     return model;
 }

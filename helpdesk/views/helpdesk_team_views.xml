@@ -95,6 +95,10 @@
                                 <div>
                                     <field name="privacy_visibility" class="mt16 o_light_label" widget="radio"/>
                                 </div>
+                                <span colspan="2" class="text-muted" attrs="{'invisible':[('privacy_visibility_warning', '=', '')]}">
+                                    <i class="fa fa-warning">&amp;nbsp;</i>
+                                    <field class="align-top" name="privacy_visibility_warning" nolabel="1"/>  
+                                </span>
                             </div>
                         </div>
                         <div class="col-lg-6 o_setting_box">

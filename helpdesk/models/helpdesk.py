@@ -75,6 +75,7 @@ class HelpdeskTeam(models.Model):
             "- Invited portal users and all internal users: all internal users can access the team and all of its tickets without distinction.\n"
             "Portal users can only access the tickets they are following. "
             "This access can be modified on each ticket individually by adding or removing the portal user as follower.")
+    privacy_visibility_warning = fields.Char('Privacy Visibility Warning', compute='_compute_privacy_visibility_warning')
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
     use_alias = fields.Boolean('Email Alias', default=True)
@@ -266,6 +267,18 @@ class HelpdeskTeam(models.Model):
     def _compute_show_knowledge_base(self):
         self.show_knowledge_base = False
 
+    @api.depends('privacy_visibility')
+    def _compute_privacy_visibility_warning(self):
+        for team in self:
+            if not team.ids:
+                team.privacy_visibility_warning = ''
+            elif team.privacy_visibility == 'portal' and team._origin.privacy_visibility != 'portal':
+                team.privacy_visibility_warning = _('Customers will be added to the followers of their tickets.')
+            elif team.privacy_visibility != 'portal' and team._origin.privacy_visibility == 'portal':
+                team.privacy_visibility_warning = _('Portal users will be removed from the followers of the team and its tickets.')
+            else:
+                team.privacy_visibility_warning = ''
+
     def get_knowledge_base_url(self):
         self.ensure_one()
         return self.get_portal_url()
@@ -297,11 +310,12 @@ class HelpdeskTeam(models.Model):
         return teams
 
     def write(self, vals):
+        if vals.get('privacy_visibility'):
+            self._change_privacy_visibility(vals['privacy_visibility'])
+
         result = super(HelpdeskTeam, self).write(vals)
         if 'active' in vals:
             self.with_context(active_test=False).mapped('ticket_ids').write({'active': vals['active']})
-        if vals.get('privacy_visibility'):
-            self._change_privacy_visibility()
         if 'use_sla' in vals:
             self.sudo()._check_sla_group()
         if 'use_rating' in vals:
@@ -323,17 +337,19 @@ class HelpdeskTeam(models.Model):
             default['name'] = _("%s (copy)") % (self.name)
         return super().copy(default)
 
-    def _change_privacy_visibility(self):
+    def _change_privacy_visibility(self, new_visibility):
         """
-        Unsubscribe non-internal users from the team and tickets if the project privacy visibility
-        goes to a value different than 'portal'.
-        If the privacy visibility is set to 'portal', subscribe back ticket partners.
+        Unsubscribe non-internal users from the team and tickets if the team privacy visibility
+        goes from 'portal' to a different value.
+        If the privacy visibility is set to 'portal', subscribe back tickets partners.
         """
         for team in self:
-            if team.privacy_visibility == 'portal':
+            if team.privacy_visibility == new_visibility:
+                continue
+            if new_visibility == 'portal':
                 for ticket in team.mapped('ticket_ids').filtered('partner_id'):
                     ticket.message_subscribe(partner_ids=ticket.partner_id.ids)
-            else:
+            elif team.privacy_visibility == 'portal':
                 portal_users = team.message_partner_ids.user_ids.filtered('share')
                 team.message_unsubscribe(partner_ids=portal_users.partner_id.ids)
                 team.mapped('ticket_ids')._unsubscribe_portal_users()

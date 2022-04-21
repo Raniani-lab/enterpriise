@@ -674,15 +674,8 @@ class HelpdeskTicket(models.Model):
             default['name'] = _("%s (copy)") % (self.name)
         return super().copy(default)
 
-    def message_subscribe(self, partner_ids=None, subtype_ids=None):
-        res = super(HelpdeskTicket, self).message_subscribe(partner_ids=partner_ids, subtype_ids=subtype_ids)
-        tickets_to_unsubscribe = self.filtered(lambda t: t.team_privacy_visibility != 'portal')
-        tickets_to_unsubscribe._unsubscribe_portal_users()
-        return res
-
     def _unsubscribe_portal_users(self):
-        portal_users = self.message_partner_ids.user_ids.filtered('share')
-        self.message_unsubscribe(partner_ids=portal_users.partner_id.ids)
+        self.message_unsubscribe(partner_ids=self.message_partner_ids.filtered('user_ids.share').ids)
 
     # ------------------------------------------------------------
     # Actions and Business methods

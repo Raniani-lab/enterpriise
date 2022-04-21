@@ -18,7 +18,7 @@ import { waitForEvaluation } from "../spreadsheet_test_utils";
  *
  * @param {Object|undefined} params
  * @param {string|undefined} params.model Model name of the list
- * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {Object|undefined} params.serverData Data to be injected in the mock server
  * @param {Function|undefined} params.mockRPC Mock rpc function
  * @returns Webclient
  */
@@ -44,7 +44,7 @@ export async function spawnListViewForSpreadsheet(params = {}) {
  *
  * @param {Object} params
  * @param {string|undefined} params.model Model name of the list
- * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {Object|undefined} params.serverData Data to be injected in the mock server
  * @param {Function|undefined} params.mockRPC Mock rpc function
  * @param {number|undefined} params.linesNumber
  *

@@ -25,7 +25,7 @@ const { Model } = spreadsheet;
  * @param {string} actionTag Action tag ("action_open_spreadsheet" or "action_open_template")
  * @param {Object} params
  * @param {Object|undefined} params.webClient Webclient already configured
- * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {Object|undefined} params.serverData Data to be injected in the mock server
  * @param {number} params.spreadsheetId Id of the spreadsheet
  * @param {Function|undefined} params.mockRPC Mock rpc function
  * @param {Object|undefined} params.legacyServicesRegistry
@@ -73,7 +73,7 @@ async function createSpreadsheetAction(actionTag, params) {
  *
  * @param {Object} params
  * @param {Object|undefined} params.webClient Webclient already configured
- * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {Object|undefined} params.serverData Data to be injected in the mock server
  * @param {number} params.spreadsheetId Id of the spreadsheet
  * @param {Function|undefined} params.mockRPC Mock rpc function
  * @param {Object|undefined} params.legacyServicesRegistry
@@ -100,7 +100,7 @@ export async function createSpreadsheet(params = {}) {
  *
  * @param {Object} params
  * @param {Object|undefined} params.webClient Webclient already configured
- * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {Object|undefined} params.serverData Data to be injected in the mock server
  * @param {number} params.spreadsheetId Id of the spreadsheet
  * @param {Function|undefined} params.mockRPC Mock rpc function
  * @param {Object|undefined} params.legacyServicesRegistry
@@ -201,8 +201,8 @@ export function setupDataSourceEvaluation(model) {
  * Create a spreadsheet model with a mocked server environnement
  *
  * @param {Object} params
- * @param {Object|undefined} params.spreadsheetData Date to be injected in the webclient
- * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {Object|undefined} params.spreadsheetData Spreadsheet data to import
+ * @param {Object|undefined} params.serverData Data to be injected in the mock server
  * @param {Function|undefined} params.mockRPC Mock rpc function
  */
 export async function createModelWithDataSource(params = {}) {

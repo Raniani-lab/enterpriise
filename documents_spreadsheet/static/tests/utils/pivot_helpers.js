@@ -24,7 +24,7 @@ import { waitForEvaluation } from "../spreadsheet_test_utils";
  *
  * @param {Object|undefined} params
  * @param {string|undefined} params.model Model name of the pivot
- * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {Object|undefined} params.serverData Data to be injected in the mock server
  * @param {Function|undefined} params.mockRPC Mock rpc function
  * @param {Array|undefined} params.domain Domain of the pivot
  * @param {Object|undefined} params.legacyServicesRegistry
@@ -56,7 +56,7 @@ export async function spawnPivotViewForSpreadsheet(params = {}) {
  *
  * @param {Object} params
  * @param {string|undefined} params.model Model name of the pivot
- * @param {Object|undefined} params.serverData Date to be injected in the webclient
+ * @param {Object|undefined} params.serverData Data to be injected in the mock server
  * @param {Function|undefined} params.mockRPC Mock rpc function
  * @param {Object|undefined} params.webClient Webclient to use
  * @param {Array|undefined} params.domain Domain of the pivot

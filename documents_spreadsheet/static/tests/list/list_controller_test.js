@@ -19,6 +19,7 @@ import { nextTick, getFixture, patchWithCleanup } from "@web/../tests/helpers/ut
 import { session } from "@web/session";
 import { createSpreadsheet, waitForEvaluation } from "../spreadsheet_test_utils";
 
+const { toZone } = spreadsheet.helpers;
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 
 QUnit.module("documents_spreadsheet > list_controller", {}, () => {
@@ -485,6 +486,16 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         assert.verifySteps(["partner", listModel.getIdFromPosition(0).toString()]);
 
         selectCell(model, "A3");
+        await root.action(env);
+        assert.verifySteps(["partner", listModel.getIdFromPosition(1).toString()]);
+
+        // From a cell inside a merge
+        model.dispatch("ADD_MERGE", {
+            sheetId: model.getters.getActiveSheetId(),
+            target: [toZone("A3:B3")],
+            force: true // there are data in B3
+        });
+        selectCell(model, "B3");
         await root.action(env);
         assert.verifySteps(["partner", listModel.getIdFromPosition(1).toString()]);
     });

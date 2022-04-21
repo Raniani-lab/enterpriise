@@ -28,7 +28,7 @@ import { createSpreadsheetFromPivot } from "./utils/pivot_helpers";
 import PivotPlugin from "../src/bundle/pivot/plugins/pivot_plugin";
 
 const { Model } = spreadsheet;
-const { toCartesian, createEmptyWorkbookData } = spreadsheet.helpers;
+const { toCartesian, createEmptyWorkbookData, toZone } = spreadsheet.helpers;
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
 
 const { module, test } = QUnit;
@@ -1012,6 +1012,33 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             2,
             "[Cell D3] There are two distinct products for 'foo - 17' and 'bar - true'"
         );
+    });
+
+    test("Can rebuild the Odoo domain of records based on the according merged pivot cell", async function (assert) {
+        const { webClient, model } = await createSpreadsheetFromPivot();
+        const env = {
+            ...webClient.env,
+            model,
+            services: {
+                ...model.config.evalContext.env.services,
+                action: {
+                    doAction: (params) => {
+                        assert.step(params.res_model);
+                        assert.step(JSON.stringify(params.domain));
+                    }
+                }
+            }
+        };
+        model.dispatch("ADD_MERGE", {
+            sheetId: model.getters.getActiveSheetId(),
+            target: [toZone("C3:D3")],
+            force: true // there are data in D3
+        });
+        selectCell(model, "D3");
+        await nextTick();
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+        await root.action(env);
+        assert.verifySteps(["partner", `[["foo","=",2],["bar","=",false]]`]);
     });
 
     module("Global filters panel");

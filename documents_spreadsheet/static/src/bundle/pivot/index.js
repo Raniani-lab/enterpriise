@@ -71,9 +71,8 @@ cellMenuRegistry
         name: _lt("See records"),
         sequence: 175,
         async action(env) {
-            const { col, row } = env.model.getters.getPosition();
-            const sheetId = env.model.getters.getActiveSheetId();
-            const cell = env.model.getters.getCell(sheetId, col, row);
+            const cell = env.model.getters.getActiveCell();
+            const {col, row, sheetId } = env.model.getters.getCellPosition(cell.id);
             const { args } = getFirstPivotFunction(cell.content);
             const evaluatedArgs = args
                 .map(astToFormula)

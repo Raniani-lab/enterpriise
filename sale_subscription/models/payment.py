@@ -20,7 +20,7 @@ class PaymentAcquirer(models.Model):
         """
         if sale_order_id:
             sale_order = self.env['sale.order'].browse(sale_order_id).exists()
-            if sale_order.is_subscription:
+            if sale_order.payment_mode == 'success_payment' or sale_order.subscription_id.payment_mode == 'success_payment':
                 return True
         return super()._is_tokenization_required(sale_order_id=sale_order_id, **kwargs)
 

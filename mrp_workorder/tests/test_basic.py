@@ -368,6 +368,63 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
         self.assertEqual(workorder1.state, 'done')
         self.assertEqual(workorder2.state, 'done')
 
+    def test_backorder_2(self):
+        """Test if all the quality checks are retained when a backorder is created from the tablet view"""
+
+        finished_product = self.env['product.product'].create({
+            'name': 'finished_product',
+            'type': 'product',
+            'tracking': 'serial',
+        })
+        component = self.env['product.product'].create({
+            'name': 'component',
+            'type': 'product',
+        })
+        workcenter = self.env['mrp.workcenter'].create({
+            'name': 'workcenter',
+        })
+        bom = self.env['mrp.bom'].create({
+            'product_id': finished_product.id,
+            'product_tmpl_id': finished_product.product_tmpl_id.id,
+            'product_uom_id': self.uom_unit.id,
+            'product_qty': 1,
+            'consumption': 'flexible',
+            'type': 'normal',
+            'bom_line_ids': [
+                (0, 0, {'product_id': component.id, 'product_qty': 1}),
+            ],
+            'operation_ids': [
+                (0, 0, {'sequence': 1, 'name': 'finished operation 1', 'workcenter_id': workcenter.id}),
+            ],
+        })
+        bom.bom_line_ids[0].operation_id = bom.operation_ids[0].id
+
+        self.env['quality.point'].create({
+            'product_ids': [(4, finished_product.id)],
+            'picking_type_ids': [
+                (4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
+            'operation_id': bom.operation_ids[0].id,
+            'test_type_id': self.env.ref('quality.test_type_instructions').id,
+            'note': 'Installing VIM (pcs xi ipzth adi du ixbt)',
+        })
+
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = finished_product
+        mo_form.bom_id = bom
+        mo_form.product_qty = 2.0
+        mo = mo_form.save()
+        mo.action_confirm()
+        mo.button_plan()
+
+        wo = mo.workorder_ids[0]
+        wo.button_start()
+        wo.action_generate_serial()
+        wo.action_next()
+        wo.action_next()
+        result = wo.do_finish()
+        wo_backorder = self.env['mrp.workorder'].browse(result['res_id'])
+        self.assertEqual(len(wo_backorder.check_ids), len(wo.check_ids))
+
 class TestWorkOrderProcess(TestWorkOrderProcessCommon):
     def full_availability(self):
         """set full availability for all calendars"""

@@ -4,7 +4,9 @@
         <t t-set="def" t-value="pivotDefinition"/>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Pivot name</div>
-            <div t-esc="def.pivotDisplayName"/>
+            <EditableName name="env.model.getters.getPivotName(props.pivotId)"
+                          displayName="env.model.getters.getPivotDisplayName(props.pivotId)"
+                          onChanged.bind="onNameChanged"/>
         </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Model</div>

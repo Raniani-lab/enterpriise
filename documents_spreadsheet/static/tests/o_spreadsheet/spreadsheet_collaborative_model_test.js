@@ -33,6 +33,7 @@ async function getPivotReady(model) {
             groupBy: [],
             orderBy: [],
         },
+        name: "Partner",
     }
     const dataSource = model.config.dataSources.create(PivotDataSource, definition);
     await dataSource.loadModel();
@@ -144,6 +145,17 @@ QUnit.test("A simple test", (assert) => {
         [alice, bob, charlie],
         (user) => getCellContent(user, "A1"),
         "hello"
+    );
+});
+
+QUnit.test("Rename a pivot", async (assert) => {
+    assert.expect(1);
+    await insertPivot(alice);
+    alice.dispatch("RENAME_ODOO_PIVOT", { pivotId: 1, name: "Test" });
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.getters.getPivotName(1),
+        "Test"
     );
 });
 

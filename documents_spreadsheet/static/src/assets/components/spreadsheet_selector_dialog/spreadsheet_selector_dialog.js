@@ -12,17 +12,21 @@ odoo.define("documents_spreadsheet.SpreadsheetSelectorDialog", function (require
          * @param {Widget} parent
          * @param {Object} params
          * @param {Object} params.spreadsheets
-         * @param {string|undefined} params.title
+         * @param {string} params.type PIVOT or LIST or LINK
+         * @param {string} params.title
+         * @param {string} params.name Name of the list/pivot/link
          * @param {number|undefined} params.threshold
          * @param {number|undefined} params.maxThreshold
          */
         init: function (parent, params) {
+            this.type = params.type;
             this.spreadsheets = params.spreadsheets;
             this.threshold = params.threshold;
             this.maxThreshold = params.maxThreshold;
+            this.name = params.name;
 
             const options = {
-                title: params.title || _t("Select a spreadsheet to insert your pivot"),
+                title: params.title,
                 buttons: [
                     {
                         text: _t("Confirm"),
@@ -56,8 +60,10 @@ odoo.define("documents_spreadsheet.SpreadsheetSelectorDialog", function (require
             const threshold = this.threshold
                 ? Math.min(this.el.querySelector("input[id='threshold']").value, this.maxThreshold)
                 : 0;
+            const nameEl = this.el.querySelector("input[id='name']");
+            const name = (nameEl && nameEl.value) || this.name;
             // TODO `selectedSpreadsheet` is not actually an id
-            this.trigger("confirm", { id: selectedSpreadsheet, threshold });
+            this.trigger("confirm", { id: selectedSpreadsheet, threshold, name });
         },
         /**
          * @private

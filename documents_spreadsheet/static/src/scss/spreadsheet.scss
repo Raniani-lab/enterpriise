@@ -78,6 +78,10 @@
                             background-color: #f1f3f4;
                         }
                     }
+
+                    .o_sp_en_display_name {
+                        margin-bottom: 3px;
+                    }
                 }
 
                 // Align spreadsheet menus and toolbar with the breadcrumb in Odoo
@@ -357,7 +361,7 @@ article.spreadsheet_fade {
 
 .o_spreadsheet_selector_dialog {
 
-    .o_threshold_list {
+    div {
         padding-top: 10px;
 
         .o_input {

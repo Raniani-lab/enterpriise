@@ -8,8 +8,20 @@
                 <t t-esc="spreadsheet.name"/>
             </option>
         </select>
-        <div t-if="widget.threshold !== undefined" class="o_threshold_list">
-          Insert the first <input id="threshold" t-att-max="widget.maxThreshold" type="number" class="o_input" t-att-value="widget.threshold"/> records of the list.
+        <div>
+            <t t-if="widget.type === 'PIVOT'">
+                Name of the pivot:
+            </t>
+            <t t-elif="widget.type === 'LIST'">
+                Name of the list:
+            </t>
+            <t t-else="">
+                Name of the link:
+            </t>
+            <input id="name" type="text" class="o_input o_spreadsheet_name" t-att-value="widget.name"/>
+        </div>
+        <div t-if="widget.threshold !== undefined and widget.type === 'LIST'">
+            Insert the first <input id="threshold" t-att-max="widget.maxThreshold" type="number" class="o_input o_spreadsheet_threshold" t-att-value="widget.threshold"/> records of the list.
         </div>
     </div>
 

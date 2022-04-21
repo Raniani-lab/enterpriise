@@ -4,6 +4,7 @@ import { _t } from "web.core";
 import DomainSelector from "web.DomainSelector";
 import { time_to_str } from "web.time";
 import DomainComponentAdapter from "../../legacy/domain_component_adapter";
+import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 
 const { Component, onWillStart } = owl;
 
@@ -21,13 +22,19 @@ export default class PivotDetailsSidePanel extends Component {
             this.pivotDefinition = {
                 model: definition.model,
                 modelDisplayName: this.spreadsheetModel.getModelLabel(),
-                pivotDisplayName: this.env.model.getters.getPivotDisplayName(this.props.pivotId),
                 domain: definition.domain,
                 dimensions: [...definition.rowGroupBys, ...definition.colGroupBys],
                 measures: definition.measures.map((measure) =>
                     this.spreadsheetModel.getPivotHeaderValue("measure", measure)
                 ),
             };
+        });
+    }
+
+    onNameChanged(name) {
+        this.env.model.dispatch("RENAME_ODOO_PIVOT", {
+            pivotId: this.props.pivotId,
+            name,
         });
     }
 
@@ -55,7 +62,7 @@ export default class PivotDetailsSidePanel extends Component {
     }
 }
 PivotDetailsSidePanel.template = "documents_spreadsheet.PivotDetailsSidePanel";
-PivotDetailsSidePanel.components = { DomainComponentAdapter };
+PivotDetailsSidePanel.components = { DomainComponentAdapter, EditableName };
 PivotDetailsSidePanel.props = {
     pivotId: {
         type: String,

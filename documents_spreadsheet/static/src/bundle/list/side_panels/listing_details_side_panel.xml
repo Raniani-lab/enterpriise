@@ -4,7 +4,9 @@
         <t t-set="def" t-value="listDefinition"/>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">List Name</div>
-            <div t-esc="getters.getListDisplayName(props.listId)"/>
+            <EditableName name="env.model.getters.getListName(props.listId)"
+                          displayName="env.model.getters.getListDisplayName(props.listId)"
+                          onChanged.bind="onNameChanged"/>
         </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Model</div>

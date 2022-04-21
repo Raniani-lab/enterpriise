@@ -15,5 +15,6 @@ otRegistry
 
 inverseCommandRegistry
   .add("INSERT_PIVOT", identity)
+  .add("RENAME_ODOO_PIVOT", identity)
   .add("RE_INSERT_PIVOT", identity)
 

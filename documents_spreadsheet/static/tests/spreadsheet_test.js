@@ -727,7 +727,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                 models: getBasicData(),
                 views: {
                     "partner,false,pivot": `
-                            <pivot display_quantity="true">
+                            <pivot string="Partner" display_quantity="true">
                                 <field name="foo" type="col"/>
                                 <field name="bar" type="row"/>
                                 <field name="probability" type="measure"/>
@@ -753,10 +753,10 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const [pivotName, pivotModel, domain, dimensions, measures] = sections;
 
         assert.equal(pivotName.children[0].innerText, "Pivot name");
-        assert.equal(pivotName.children[1].innerText, "(#1) partner");
+        assert.equal(pivotName.children[1].innerText, "(#1) Partner");
 
         assert.equal(pivotModel.children[0].innerText, "Model");
-        assert.equal(pivotModel.children[1].innerText, "partner (partner)");
+        assert.equal(pivotModel.children[1].innerText, "Partner (partner)");
 
         assert.equal(domain.children[0].innerText, "Domain");
         assert.equal(domain.children[1].innerText, "Match all records");
@@ -812,8 +812,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const root = topbarMenuRegistry.getAll().find((item) => item.id === "data");
         const children = topbarMenuRegistry.getChildren(root, env);
         assert.equal(children.length, 6, "There should be 6 children in the menu");
-        assert.equal(children[0].name, "(#1) partner");
-        assert.equal(children[1].name, "(#2) partner");
+        assert.equal(children[0].name, "(#1) Partners");
+        assert.equal(children[1].name, "(#2) Partners");
         // bottom children
         assert.equal(children[2].name, "Refresh all data");
         assert.equal(children[3].name, "Re-insert pivot");
@@ -1766,5 +1766,25 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await customCurrencies.action(env);
         await nextTick();
         assert.verifySteps(["currencies-loaded"]);
+    });
+
+    test("Update the pivot title from the side panel", async function (assert) {
+        assert.expect(1);
+
+        const { model, env } = await createSpreadsheetFromPivot();
+        // opening from a pivot cell
+        const sheetId = model.getters.getActiveSheetId();
+        const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+        await waitForEvaluation(model);
+        model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
+        env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
+            pivot: pivotA3,
+        });
+        await nextTick();
+        await click(document.body.querySelector(".o_sp_en_rename"));
+        document.body.querySelector(".o_sp_en_name").value = "new name";
+        await dom.triggerEvent(document.body.querySelector(".o_sp_en_name"), "input");
+        await click(document.body.querySelector(".o_sp_en_save"));
+        assert.equal(model.getters.getPivotName(pivotA3), "new name");
     });
 });

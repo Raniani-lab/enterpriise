@@ -14,6 +14,7 @@ export function insertPivot(pivotData) {
             fields: pivotData.metaData.fields,
         },
         searchParams: { ...pivotData.searchParams},
+        name: pivotData.name,
     }
     return async (model) => {
         const dataSourceId = uuidGenerator.uuidv4();

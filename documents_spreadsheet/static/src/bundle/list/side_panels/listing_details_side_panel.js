@@ -4,6 +4,7 @@ import DomainSelector from "web.DomainSelector";
 import { _t } from "web.core";
 import { time_to_str } from "web.time";
 
+import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 import DomainComponentAdapter from "../../legacy/domain_component_adapter";
 
 const { Component } = owl;
@@ -40,13 +41,20 @@ export class ListingDetailsSidePanel extends Component {
         return _t("never");
     }
 
+    onNameChanged(name) {
+        this.env.model.dispatch("RENAME_ODOO_LIST", {
+            listId: this.props.listId,
+            name,
+        });
+    }
+
     async refresh() {
         this.env.model.dispatch("REFRESH_ODOO_LIST", { listId: this.props.listId });
         this.env.model.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
     }
 }
 ListingDetailsSidePanel.template = "documents_spreadsheet.ListingDetailsSidePanel";
-ListingDetailsSidePanel.components = { DomainComponentAdapter };
+ListingDetailsSidePanel.components = { DomainComponentAdapter, EditableName };
 ListingDetailsSidePanel.props = {
     listId: {
         type: String,

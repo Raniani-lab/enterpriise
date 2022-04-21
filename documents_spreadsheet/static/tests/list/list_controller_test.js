@@ -3,7 +3,7 @@
 
 import ListView from "web.ListView";
 import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet_extended";
-import { createView } from "web.test_utils";
+import { createView, dom } from "web.test_utils";
 import { getBasicData, getBasicListArch } from "../utils/spreadsheet_test_data";
 import { insertList } from "../../src/bundle/list/list_init_callback";
 import {
@@ -15,9 +15,10 @@ import {
 } from "../utils/getters_helpers";
 import { selectCell, setCellContent } from "../utils/commands_helpers";
 import { createSpreadsheetFromList } from "../utils/list_helpers";
-import { nextTick, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { nextTick, getFixture, patchWithCleanup, click } from "@web/../tests/helpers/utils";
 import { session } from "@web/session";
 import { createModelWithDataSource, waitForEvaluation } from "../spreadsheet_test_utils";
+import CommandResult from "@documents_spreadsheet/bundle/o_spreadsheet/cancelled_reason";
 
 const { toZone } = spreadsheet.helpers;
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
@@ -137,10 +138,10 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         const [pivotName, pivotModel, domain] = sections;
 
         assert.equal(pivotName.children[0].innerText, "List Name");
-        assert.equal(pivotName.children[1].innerText, "(#1) partner");
+        assert.equal(pivotName.children[1].innerText, "(#1) Partners");
 
         assert.equal(pivotModel.children[0].innerText, "Model");
-        assert.equal(pivotModel.children[1].innerText, "partner (partner)");
+        assert.equal(pivotModel.children[1].innerText, "Partner (partner)");
 
         assert.equal(domain.children[0].innerText, "Domain");
         assert.equal(domain.children[1].innerText, "Match all records");
@@ -205,7 +206,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         await waitForEvaluation(model);
         const listModel = await model.getters.getAsyncSpreadsheetListModel("1");
         const list = model.getters.getListDefinition("1");
-        const columns = list.columns.map((name) => ({ name, type: listModel.getField(name).type}));
+        const columns = list.columns.map((name) => ({ name, type: listModel.getField(name).type }));
         model.dispatch("RE_INSERT_ODOO_LIST", {
             sheetId: model.getters.getActiveSheetId(),
             col: 0,
@@ -300,7 +301,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         await nextTick();
         const input = document.body.querySelector(".modal-body input");
         assert.ok(input);
-        assert.strictEqual(input.type, "number")
+        assert.strictEqual(input.type, "number");
     });
 
     QUnit.test("Referencing non-existing fields does not crash", async function (assert) {
@@ -343,7 +344,10 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         setCellContent(model, "A1", `=LIST.HEADER("1", "${forbiddenFieldName}")`);
         setCellContent(model, "A2", `=LIST("1","1","${forbiddenFieldName}")`);
 
-        assert.equal(model.getters.getSpreadsheetListModel(listId).getFields()[forbiddenFieldName], undefined);
+        assert.equal(
+            model.getters.getSpreadsheetListModel(listId).getFields()[forbiddenFieldName],
+            undefined
+        );
         assert.strictEqual(getCellValue(model, "A1"), forbiddenFieldName);
         const A2 = getCell(model, "A2");
         assert.equal(A2.evaluated.type, "error");
@@ -388,14 +392,17 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
 
     QUnit.test("don't fetch list data if no formula use it", async function (assert) {
         const spreadsheetData = {
-            sheets: [{
-                id: "sheet1",
-            }, {
-                id: "sheet2",
-                cells: {
-                    A1: { content: `=LIST("1", "1", "foo")` },
+            sheets: [
+                {
+                    id: "sheet1",
                 },
-            }],
+                {
+                    id: "sheet2",
+                    cells: {
+                        A1: { content: `=LIST("1", "1", "foo")` },
+                    },
+                },
+            ],
             lists: {
                 1: {
                     id: 1,
@@ -445,16 +452,18 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
             user_context: context,
         };
         const spreadsheetData = {
-            sheets: [{
-                id: "sheet1",
-                cells: {
-                    A1: { content: `=LIST("1", "1", "name")` },
+            sheets: [
+                {
+                    id: "sheet1",
+                    cells: {
+                        A1: { content: `=LIST("1", "1", "name")` },
+                    },
                 },
-            }],
+            ],
             lists: {
                 1: {
                     id: 1,
-                    columns: ['name', 'contact_name'],
+                    columns: ["name", "contact_name"],
                     domain: [],
                     model: "partner",
                     orderBy: [],
@@ -500,7 +509,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
     });
 
     QUnit.test("Can see record of a list", async function (assert) {
-        const { webClient, model} = await createSpreadsheetFromList();
+        const { webClient, model } = await createSpreadsheetFromList();
         const listId = model.getters.getListIds()[0];
         const listModel = model.getters.getSpreadsheetListModel(listId);
         const env = {
@@ -512,9 +521,9 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
                     doAction: (params) => {
                         assert.step(params.res_model);
                         assert.step(params.res_id.toString());
-                    }
-                }
-            }
+                    },
+                },
+            },
         };
         selectCell(model, "A2");
         const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
@@ -529,30 +538,84 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         model.dispatch("ADD_MERGE", {
             sheetId: model.getters.getActiveSheetId(),
             target: [toZone("A3:B3")],
-            force: true // there are data in B3
+            force: true, // there are data in B3
         });
         selectCell(model, "B3");
         await root.action(env);
         assert.verifySteps(["partner", listModel.getIdFromPosition(1).toString()]);
     });
 
-    QUnit.test("See record of list is only displayed on list formula with only one list formula", async function (assert) {
-        const { webClient, model} = await createSpreadsheetFromList();
-        const env = {
-            ...webClient.env,
-            model,
-            services: model.config.evalContext.env.services,
-        };
-        setCellContent(model, "A1", "test");
-        setCellContent(model, "A2", `=LIST("1","1","foo")`);
-        setCellContent(model, "A3", `=LIST("1","1","foo")+LIST("1","1","foo")`);
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
+    QUnit.test(
+        "See record of list is only displayed on list formula with only one list formula",
+        async function (assert) {
+            const { webClient, model } = await createSpreadsheetFromList();
+            const env = {
+                ...webClient.env,
+                model,
+                services: model.config.evalContext.env.services,
+            };
+            setCellContent(model, "A1", "test");
+            setCellContent(model, "A2", `=LIST("1","1","foo")`);
+            setCellContent(model, "A3", `=LIST("1","1","foo")+LIST("1","1","foo")`);
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
 
-        selectCell(model, "A1");
-        assert.strictEqual(root.isVisible(env), false);
-        selectCell(model, "A2");
-        assert.strictEqual(root.isVisible(env), true);
-        selectCell(model, "A3");
-        assert.strictEqual(root.isVisible(env), false);
+            selectCell(model, "A1");
+            assert.strictEqual(root.isVisible(env), false);
+            selectCell(model, "A2");
+            assert.strictEqual(root.isVisible(env), true);
+            selectCell(model, "A3");
+            assert.strictEqual(root.isVisible(env), false);
+        }
+    );
+
+    QUnit.test("Update the list title from the side panel", async function (assert) {
+        assert.expect(1);
+
+        const { model, env } = await createSpreadsheetFromList();
+        // opening from a pivot cell
+        const sheetId = model.getters.getActiveSheetId();
+        const listA3 = model.getters.getListIdFromPosition(sheetId, 0, 2);
+        model.dispatch("SELECT_ODOO_LIST", { listId: listA3 });
+        env.openSidePanel("LIST_PROPERTIES_PANEL", {
+            listId: listA3,
+        });
+        await nextTick();
+        await click(document.body.querySelector(".o_sp_en_rename"));
+        document.body.querySelector(".o_sp_en_name").value = "new name";
+        await dom.triggerEvent(document.body.querySelector(".o_sp_en_name"), "input");
+        await click(document.body.querySelector(".o_sp_en_save"));
+        assert.equal(model.getters.getListName(listA3), "new name");
+    });
+
+
+
+    QUnit.test("rename list with empty name is refused", async (assert) => {
+        const { model } = await createSpreadsheetFromList();
+        const result = model.dispatch("RENAME_ODOO_LIST", {
+            listId: "1",
+            name: "",
+        });
+        assert.deepEqual(result.reasons, [CommandResult.EmptyName]);
+    });
+
+    QUnit.test("rename list with incorrect id is refused", async (assert) => {
+        const { model } = await createSpreadsheetFromList();
+        const result = model.dispatch("RENAME_ODOO_LIST", {
+            listId: "invalid",
+            name: "name",
+        });
+        assert.deepEqual(result.reasons, [CommandResult.ListIdNotFound]);
+    });
+
+    QUnit.test("Undo/Redo for RENAME_ODOO_LIST", async function (assert) {
+        assert.expect(4);
+        const { model } = await createSpreadsheetFromList();
+        assert.equal(model.getters.getListName("1"), "Partners");
+        model.dispatch("RENAME_ODOO_LIST", { listId: "1", name: "test" });
+        assert.equal(model.getters.getListName("1"), "test");
+        model.dispatch("REQUEST_UNDO");
+        assert.equal(model.getters.getListName("1"), "Partners");
+        model.dispatch("REQUEST_REDO");
+        assert.equal(model.getters.getListName("1"), "test");
     });
 });

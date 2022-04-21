@@ -26,11 +26,17 @@ import {
     getMerges,
 } from "../utils/getters_helpers";
 import { selectCell, setCellContent } from "../utils/commands_helpers";
-import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
-import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
+import {
+    getSpreadsheetActionModel,
+    prepareWebClientForSpreadsheet,
+} from "../utils/webclient_helpers";
+import { createSpreadsheetFromPivot, spawnPivotViewForSpreadsheet } from "../utils/pivot_helpers";
+import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 
 import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet_extended";
-import { createModelWithDataSource } from "../spreadsheet_test_utils";
+import { createModelWithDataSource, waitForEvaluation } from "../spreadsheet_test_utils";
+import CommandResult from "@documents_spreadsheet/bundle/o_spreadsheet/cancelled_reason";
+
 
 const { cellMenuRegistry } = spreadsheet.registries;
 
@@ -136,6 +142,7 @@ test("groupby date field without interval defaults to month", async (assert) => 
         measures: ["probability"],
         model: "partner",
         rowGroupBys: ["date"],
+        name: "Partners",
     });
     assert.equal(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","date","04/2016")');
     assert.equal(getCellFormula(model, "A4"), '=PIVOT.HEADER("1","date","10/2016")');
@@ -1139,4 +1146,75 @@ QUnit.test("Can reopen a sheet after see records", async function (assert) {
     await nextTick();
     await legacyExtraNextTick();
     assert.strictEqual(model.getters.getPivotIds().length, 2);
+});
+
+test("Pivot name can be changed from the dialog", async (assert) => {
+    assert.expect(2);
+
+    await spawnPivotViewForSpreadsheet();
+
+    let spreadsheetAction;
+    patchWithCleanup(SpreadsheetAction.prototype, {
+        setup() {
+            this._super();
+            spreadsheetAction = this;
+        },
+    });
+    await click(document.body.querySelector(".o_pivot_add_spreadsheet"));
+    document.body.querySelector(".o_spreadsheet_name").value = "New name";
+    await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
+    const model = getSpreadsheetActionModel(spreadsheetAction);
+    await waitForEvaluation(model);
+    assert.equal(model.getters.getPivotName("1"), "New name");
+    assert.equal(model.getters.getPivotDisplayName("1"), "(#1) New name");
+});
+
+test("Pivot name is not changed if the name is empty", async (assert) => {
+    assert.expect(1);
+
+    await spawnPivotViewForSpreadsheet();
+
+    let spreadsheetAction;
+    patchWithCleanup(SpreadsheetAction.prototype, {
+        setup() {
+            this._super();
+            spreadsheetAction = this;
+        },
+    });
+    await click(document.body.querySelector(".o_pivot_add_spreadsheet"));
+    document.body.querySelector(".o_spreadsheet_name").value = "";
+    await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
+    const model = getSpreadsheetActionModel(spreadsheetAction);
+    await waitForEvaluation(model);
+    assert.equal(model.getters.getPivotName("1"), "Partners");
+});
+
+test("rename pivot with empty name is refused", async (assert) => {
+    const { model } = await createSpreadsheetFromPivot();
+    const result = model.dispatch("RENAME_ODOO_PIVOT", {
+        pivotId: "1",
+        name: "",
+    });
+    assert.deepEqual(result.reasons, [CommandResult.EmptyName]);
+});
+
+test("rename pivot with incorrect id is refused", async (assert) => {
+    const { model } = await createSpreadsheetFromPivot();
+    const result = model.dispatch("RENAME_ODOO_PIVOT", {
+        pivotId: "invalid",
+        name: "name",
+    });
+    assert.deepEqual(result.reasons, [CommandResult.PivotIdNotFound]);
+});
+
+test("Undo/Redo for RENAME_ODOO_PIVOT", async function (assert) {
+    assert.expect(4);
+    const { model } = await createSpreadsheetFromPivot();
+    assert.equal(model.getters.getPivotName("1"), "Partners");
+    model.dispatch("RENAME_ODOO_PIVOT", { pivotId: "1", name: "test" });
+    assert.equal(model.getters.getPivotName("1"), "test");
+    model.dispatch("REQUEST_UNDO");
+    assert.equal(model.getters.getPivotName("1"), "Partners");
+    model.dispatch("REQUEST_REDO");
+    assert.equal(model.getters.getPivotName("1"), "test");
 });

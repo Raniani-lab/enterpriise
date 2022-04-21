@@ -31,6 +31,8 @@ patch(PivotView.prototype, "pivot_spreadsheet", {
         const params = {
             spreadsheets,
             title: this.env._t("Select a spreadsheet to insert your pivot"),
+            type: "PIVOT",
+            name: this.model.metaData.title,
         };
         const dialog = new SpreadsheetSelectorDialog(this, params).open();
         dialog.on("confirm", this, this.insertInSpreadsheet);
@@ -44,9 +46,10 @@ patch(PivotView.prototype, "pivot_spreadsheet", {
      *                                  it's a new sheet
      * @param {number} spreadsheet.id the id of the selected spreadsheet
      * @param {string} spreadsheet.name the name of the selected spreadsheet
+     * @param {string} name Name of the pivot
      *
      */
-    async insertInSpreadsheet({ id: spreadsheet }) {
+    async insertInSpreadsheet({ id: spreadsheet, name }) {
         let notificationMessage;
         const actionOptions = {
             preProcessingAsyncAction: "insertPivot",
@@ -57,6 +60,7 @@ patch(PivotView.prototype, "pivot_spreadsheet", {
                     ...this.model.searchParams,
                     context: removeContextUserInfo(this.model.searchParams.context),
                 },
+                name,
             }
         };
 

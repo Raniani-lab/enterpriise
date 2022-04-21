@@ -8,6 +8,7 @@ import { useService } from "@web/core/utils/hooks";
 import { useModel } from "web.Model";
 import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
 import { sprintf } from "@web/core/utils/strings"
+import { _t } from "@web/core/l10n/translation";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
 
@@ -30,7 +31,12 @@ export class InsertViewSpreadsheet extends LegacyComponent {
             method: "get_spreadsheets_to_display",
             args: [],
         });
-        const dialog = new SpreadsheetSelectorDialog(this, { spreadsheets }).open();
+        const dialog = new SpreadsheetSelectorDialog(this, {
+            spreadsheets,
+            type: "LINK",
+            title: _t("Select a spreadsheet to insert your link"),
+            name: this.env.action.name,
+        }).open();
         dialog.on("confirm", this, this._insertInSpreadsheet);
     }
 
@@ -38,8 +44,9 @@ export class InsertViewSpreadsheet extends LegacyComponent {
      * Open a new spreadsheet or an existing one and insert a link to the action.
      * @private
      */
-    async _insertInSpreadsheet({ id: spreadsheet }) {
+    async _insertInSpreadsheet({ id: spreadsheet, name }) {
         const actionToLink = this._getViewDescription();
+        actionToLink.name = name;
         // do action with action link
         let notificationMessage;
         const actionOptions = {
@@ -83,7 +90,6 @@ export class InsertViewSpreadsheet extends LegacyComponent {
         return {
             viewType: this.env.view.type,
             action: action,
-            name: this.env.action.name,
         };
     }
 

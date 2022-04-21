@@ -31,7 +31,7 @@ export async function spawnListViewForSpreadsheet(params = {}) {
     });
 
     await doAction(webClient, {
-        name: "list view",
+        name: "Partners",
         res_model: model || "partner",
         type: "ir.actions.act_window",
         views: [[false, "list"]],
@@ -71,7 +71,7 @@ export async function createSpreadsheetFromList(params = {}) {
     /** Put the current list in a new spreadsheet */
     await click(target.querySelector(".o_favorite_menu button"));
     await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
-    target.querySelector(`.o_threshold_list input`).value = params.linesNumber
+    target.querySelector(`.o_spreadsheet_threshold`).value = params.linesNumber
         ? params.linesNumber
         : 10;
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));

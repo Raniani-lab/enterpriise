@@ -16,4 +16,5 @@ otRegistry
 
 inverseCommandRegistry
     .add("INSERT_ODOO_LIST", identity)
-    .add("RE_INSERT_ODOO_LIST", identity);
+    .add("RE_INSERT_ODOO_LIST", identity)
+    .add("RENAME_ODOO_LIST", identity);

@@ -12,12 +12,12 @@ export const MAXIMUM_CELLS_TO_INSERT = 20000;
 
 ListController.include({
     async _insertListSpreadsheet() {
+        const model = this.model.get(this.handle);
         const spreadsheets = await this._rpc({
             model: "documents.document",
             method: "get_spreadsheets_to_display",
             args: [],
         });
-        const model = this.model.get(this.handle);
         const threshold = Math.min(model.count, model.limit);
         const columns = this._getColumnsForSpreadsheet();
         // This maxThreshold is used to ensure that there is not more than
@@ -32,6 +32,8 @@ ListController.include({
             title: _t("Select a spreadsheet to insert your list"),
             threshold,
             maxThreshold,
+            type: "LIST",
+            name: this._title,
         };
         const dialog = new SpreadsheetSelectorDialog(this, params).open();
         dialog.on("confirm", this, this._insertInSpreadsheet);
@@ -57,9 +59,10 @@ ListController.include({
      * Retrieves the list object from an existing view instance.
      *
      * @private
+     * @param {string} name Name of the list
      *
      */
-    _getListForSpreadsheet() {
+    _getListForSpreadsheet(name) {
         const data = this.model.get(this.handle);
         return {
             list: {
@@ -68,6 +71,7 @@ ListController.include({
                 orderBy: data.orderedBy,
                 context: removeContextUserInfo(data.context),
                 columns: this._getColumnsForSpreadsheet(),
+                name,
             },
             fields: data.fields,
         };
@@ -85,11 +89,13 @@ ListController.include({
      *                                  it's a new sheet. Might be null is no spreadsheet was selected
      * @param {number} params.spreadsheet.id the id of the selected spreadsheet
      * @param {string} params.spreadsheet.name the name of the selected spreadsheet
+     * @param {number} params.threshold Number of records to insert
+     * @param {string} params.name Name of the list
      *
      */
-    async _insertInSpreadsheet({ id: spreadsheet, threshold }) {
+    async _insertInSpreadsheet({ id: spreadsheet, threshold, name }) {
         let notificationMessage;
-        const { list, fields } = this._getListForSpreadsheet();
+        const { list, fields } = this._getListForSpreadsheet(name);
         const actionOptions = {
             preProcessingAsyncAction: "insertList",
             preProcessingAsyncActionData: { list, threshold, fields }

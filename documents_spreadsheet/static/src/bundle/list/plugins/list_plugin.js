@@ -17,6 +17,7 @@ const { astToFormula } = spreadsheet;
  * @property {Array<Array<string>>} domain
  * @property {string} id The id of the list
  * @property {string} model The technical name of the model we are listing
+ * @property {string} name Name of the list
  * @property {Array<string>} orderBy
  *
  */
@@ -34,6 +35,14 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
             case "INSERT_ODOO_LIST":
                 if (this.lists[cmd.id]) {
                     return CommandResult.ListIdDuplicated;
+                }
+                break;
+            case "RENAME_ODOO_LIST":
+                if (!(cmd.listId in this.lists)) {
+                    return CommandResult.ListIdNotFound;
+                }
+                if (cmd.name === "") {
+                    return CommandResult.EmptyName;
                 }
                 break;
         }
@@ -58,6 +67,10 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
                 const { sheetId, col, row, id, linesNumber, columns } = cmd;
                 const anchor = [col, row];
                 this._insertList(sheetId, anchor, id, linesNumber, columns);
+                break;
+            }
+            case "RENAME_ODOO_LIST": {
+                this.history.update("lists", cmd.listId, "definition", "name", cmd.name);
                 break;
             }
         }
@@ -90,7 +103,15 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
      * @returns {string}
      */
     getListDisplayName(id) {
-        return `(#${id}) ${this.getSpreadsheetListModel(id).getModelLabel()}`;
+        return `(#${id}) ${this.getListName(id)}`;
+    }
+
+    /**
+     * @param {number} id
+     * @returns {string}
+     */
+    getListName(id) {
+        return this.lists[id].definition.name;
     }
 
     /**
@@ -157,6 +178,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
             context: {...def.searchParams.context},
             orderBy: [...def.searchParams.orderBy],
             id,
+            name: def.name,
         }
     }
 
@@ -313,7 +335,12 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
                         domain: list.domain,
                         context: list.context,
                         orderBy: list.orderBy,
-                    }
+                    },
+                    /**
+                     * As we are not able to migrate the json, we have to fallback
+                     * in the case where the name is not yet present
+                     */
+                    name: list.name || list.model,
                 }
                 this._addList(id, definition, this.uuidGenerator.uuidv4());
             }
@@ -342,5 +369,6 @@ ListPlugin.getters = [
     "getListDefinition",
     "getListIdFromPosition",
     "getListIds",
+    "getListName",
     "getNextListId",
 ];

@@ -29,6 +29,7 @@ export function insertList({list, threshold, fields}) {
             context: list.context,
             orderBy: list.orderBy,
         },
+        name: list.name,
     }
     return async (model) => {
         const dataSourceId = uuidGenerator.uuidv4();

@@ -8,6 +8,7 @@
  * @property {string} model
  * @property {Array} domain
  * @property {Object} context
+ * @property {string} name
  * @property {string} id
  *
  * @typedef {Object} Pivot
@@ -21,6 +22,7 @@ import { getMaxObjectId } from "../../o_spreadsheet/helpers";
 import { HEADER_STYLE, TOP_LEVEL_STYLE, MEASURE_STYLE } from "../../o_spreadsheet/constants";
 import PivotDataSource from "../pivot_data_source";
 import { SpreadsheetPivotTable } from "../pivot_table";
+import CommandResult from "../../o_spreadsheet/cancelled_reason";
 
 const { astToFormula } = spreadsheet;
 
@@ -31,6 +33,20 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
 
         /** @type {Object.<number, Pivot>} */
         this.pivots = {};
+    }
+
+    allowDispatch(cmd) {
+        switch (cmd.type) {
+            case "RENAME_ODOO_PIVOT":
+                if (!(cmd.pivotId in this.pivots)) {
+                    return CommandResult.PivotIdNotFound;
+                }
+                if (cmd.name === "") {
+                    return CommandResult.EmptyName;
+                }
+                break;
+        }
+        return CommandResult.Success;
     }
 
     /**
@@ -55,6 +71,10 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
                 const { cols, rows, measures } = cmd.table;
                 const table = new SpreadsheetPivotTable(cols, rows, measures);
                 this._insertPivot(sheetId, anchor, id, table);
+                break;
+            }
+            case "RENAME_ODOO_PIVOT": {
+                this.history.update("pivots", cmd.pivotId, "definition", "name", cmd.name);
                 break;
             }
         }
@@ -87,10 +107,16 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
      * @returns {string}
      */
     getPivotDisplayName(id) {
-        const model = this.getSpreadsheetPivotModel(id)
-        // fallback on the technical name
-        const modelName  = model ? model.getModelLabel() : this.getPivotDefinition(id).model
-        return `(#${id}) ${modelName}`;
+        return `(#${id}) ${this.getPivotName(id)}`;
+    }
+
+
+    /**
+     * @param {number} id
+     * @returns {string}
+     */
+    getPivotName(id) {
+        return this.pivots[id].definition.name;
     }
 
     /**
@@ -127,6 +153,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
             measures: [...def.metaData.activeMeasures],
             model: def.metaData.resModel,
             rowGroupBys: [...def.metaData.rowGroupBys],
+            name: def.name,
         };
     }
 
@@ -414,6 +441,11 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
                         domain: pivot.domain,
                         context: pivot.context,
                     },
+                    /**
+                     * As we are not able to migrate the json, we have to fallback
+                     * in the case where the name is not yet present
+                     */
+                    name: pivot.name || pivot.model,
                 };
                 this._addPivot(id, definition, this.uuidGenerator.uuidv4());
             }
@@ -440,6 +472,7 @@ PivotPlugin.getters = [
     "getPivotDisplayName",
     "getPivotIdFromPosition",
     "getPivotIds",
+    "getPivotName",
     "getSpreadsheetPivotModel",
     "getAsyncSpreadsheetPivotModel",
     "isExistingPivot",

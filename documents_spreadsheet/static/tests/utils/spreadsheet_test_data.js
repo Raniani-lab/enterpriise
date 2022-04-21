@@ -125,7 +125,7 @@ export function getBasicData() {
                 },
                 {
                     id: 40,
-                    name: "partner",
+                    name: "Partner",
                     model: "partner",
                 },
             ],

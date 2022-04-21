@@ -4,6 +4,7 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
+import { _t } from "@web/core/l10n/translation";
 
 import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog"
 
@@ -27,15 +28,21 @@ export class InsertViewSpreadsheet extends Component {
 
     async linkInSpreadsheet() {
         const spreadsheets = await this.orm.call("documents.document", "get_spreadsheets_to_display");
-        const dialog = new SpreadsheetSelectorDialog(this, { spreadsheets }).open();
+        const dialog = new SpreadsheetSelectorDialog(this, {
+            spreadsheets,
+            type: "LINK",
+            title: _t("Select a spreadsheet to insert your link"),
+            name: this.env.config.displayName,
+        }).open();
         dialog.on("confirm", this, this.insertInSpreadsheet);
     }
 
     /**
      * Open a new spreadsheet or an existing one and insert a link to the action.
      */
-    async insertInSpreadsheet({ id: spreadsheet }) {
+    async insertInSpreadsheet({ id: spreadsheet, name }) {
         const actionToLink = this.getViewDescription();
+        actionToLink.name = name;
         // do action with action link
         let notificationMessage;
         const actionOptions = {
@@ -64,7 +71,7 @@ export class InsertViewSpreadsheet extends Component {
 
     getViewDescription() {
         const { resModel } = this.env.searchModel;
-        const { displayName, views = [] } = this.env.config;
+        const { views = [] } = this.env.config;
         const { context, domain } = this.env.searchModel.getIrFilterValues();
         const action = {
             domain,
@@ -75,7 +82,6 @@ export class InsertViewSpreadsheet extends Component {
         return {
             viewType: this.env.config.viewType,
             action,
-            name: displayName,
         };
     }
 }

@@ -382,15 +382,15 @@ class Form325(models.Model):
               FROM account_move_line line
              WHERE line.partner_id = ANY(%(partners)s)
                AND line.account_id = ANY(%(accounts)s)
-               AND line.date BETWEEN %(date_from)s AND %(date_to)s
+               AND line.date BETWEEN %(move_date_from)s AND %(move_date_to)s
                AND line.parent_state = 'posted'
                AND line.company_id = %(company)s
           GROUP BY line.partner_id
         """, {
             'partners': partners.ids,
             'accounts': accounts.ids,
-            'date_from': f'{self.reference_year}-01-01',
-            'date_to': f'{self.reference_year}-12-31',
+            'move_date_from': f'{self.reference_year}-01-01',
+            'move_date_to': f'{self.reference_year}-12-31',
             'company': self.env.company.id,
             'decimal_places': self.env.company.currency_id.decimal_places,
         })
@@ -421,7 +421,7 @@ class Form325(models.Model):
             :param tags: Which tags to get paid amount for
             :return: A dict of paid amount (for the specific year and the previous year) per partner.
         """
-        query = """
+        self.env.cr.execute("""
         WITH paid_expense_line AS (
             SELECT aml_payable.id AS payable_id,
                    aml_payable.partner_id,
@@ -435,8 +435,8 @@ class Form325(models.Model):
                AND account.internal_type IN ('payable', 'receivable')
                AND aml_payable.parent_state = 'posted'
                AND aml_payable.company_id = %(company_id)s
-               AND aml_payable.date BETWEEN %(date_from)s AND %(date_to)s
-               AND aml_expense.date BETWEEN %(date_from)s AND %(date_to)s
+               AND aml_payable.date BETWEEN %(invoice_date_from)s AND %(invoice_date_to)s
+               AND aml_expense.date BETWEEN %(invoice_date_from)s AND %(invoice_date_to)s
                AND aml_payable.partner_id = ANY(%(partner_ids)s)
         ),
         amount_paid_per_partner_based_on_bill_reconciled AS (
@@ -447,7 +447,7 @@ class Form325(models.Model):
               JOIN account_partial_reconcile apr ON paid_expense_line.payable_id = apr.credit_move_id
               JOIN account_move_line aml_payment ON aml_payment.id = apr.debit_move_id
              WHERE aml_payment.parent_state = 'posted'
-               AND apr.max_date BETWEEN %(max_date_from)s AND %(max_date_to)s
+               AND apr.max_date BETWEEN %(payment_date_from)s AND %(payment_date_to)s
           GROUP BY paid_expense_line.partner_id
         ),
         amount_send_to_expense_without_bill AS (
@@ -460,7 +460,7 @@ class Form325(models.Model):
                AND journal.type IN ('bank', 'cash')
                AND line.parent_state = 'posted'
                AND account_tag_rel.account_account_tag_id = ANY(%(tag_ids)s)
-               AND line.date BETWEEN %(date_from)s AND %(date_to)s
+               AND line.date BETWEEN %(payment_date_from)s AND %(payment_date_to)s
         ),
         amount_paid AS (
             SELECT * FROM amount_paid_per_partner_based_on_bill_reconciled
@@ -470,23 +470,17 @@ class Form325(models.Model):
         SELECT sub.partner_id, ROUND(SUM(sub.paid_amount), %(decimal_places)s) AS paid_amount
           FROM amount_paid AS sub
       GROUP BY sub.partner_id
-        """
-
-        amount_paid_per_partner = Counter()
-        for year in (self.reference_year, self.reference_year - 1):
-            self.env.cr.execute(query, {
-                'company_id': self.env.company.id,
-                'max_date_from': f'{self.reference_year}-01-01',
-                'max_date_to': f'{self.reference_year}-12-31',
-                'date_from': f'{int(year)}-01-01',
-                'date_to': f'{int(year)}-12-31',
-                'tag_ids': tags.ids,
-                'partner_ids': partner_ids.ids,
-                'decimal_places': self.env.company.currency_id.decimal_places,
-            })
-            amount_paid_per_partner += Counter(dict(self.env.cr.fetchall()))
-
-        return amount_paid_per_partner
+        """, {
+            'company_id': self.company_id.id,
+            'payment_date_from': f'{self.reference_year}-01-01',
+            'payment_date_to': f'{self.reference_year}-12-31',
+            'invoice_date_from': f'{int(self.reference_year) - 1}-01-01',
+            'invoice_date_to': f'{self.reference_year}-12-31',
+            'tag_ids': tags.ids,
+            'partner_ids': partner_ids.ids,
+            'decimal_places': self.currency_id.decimal_places,
+        })
+        return dict(self.env.cr.fetchall())
 
     def action_generate_281_50_form_file(self, file_types=('xml', 'pdf')):
         self.ensure_one()

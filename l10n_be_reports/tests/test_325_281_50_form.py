@@ -519,6 +519,36 @@ class TestResPartner(AccountTestInvoicingCommon):
             }
         ])
 
+    def test_281_50_partner_remuneration_should_not_include_amount_from_last_year_directly_put_as_expense(self):
+        expense_account_atn_281_50 = self.copy_account(self.company_data['default_account_expense'])
+        expense_account_atn_281_50.tag_ids = self.tag_281_50_atn
+
+        statement = self.env['account.bank.statement'].create({
+            'name': '281.50 test',
+            'date': fields.Date.from_string('1999-05-12'),
+            'balance_end_real': -1000.0,
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'line_ids': [
+                (0, 0, {
+                    'payment_ref': 'line2',
+                    'partner_id': self.partner_b.id,
+                    'amount': -1000.0,
+                    'date': fields.Date.from_string('1999-05-12'),
+                }),
+            ],
+        })
+        statement.button_post()
+        statement.line_ids.reconcile([{
+            'balance': 1000.0,
+            'account_id': expense_account_atn_281_50.id,
+            'name': "Payment sent without any invoice for atn reason",
+        }])
+
+        form_325 = self.create_325_form()
+        form_281_50_partner_b = form_325.form_281_50_ids.filtered(lambda f: f.partner_id == self.partner_b)
+
+        self.assertEqual(len(form_281_50_partner_b), 0, "Amount paid in 1999 shouldn't be taken into account for ref_year 2020")
+
     def test_281_50_partner_remuneration_should_not_include_commission_from_previous_year(self):
         previous_year_bill = self.create_and_post_bill(self.partner_b, self.product_b, 500.0, '1999-05-12')
         self.pay_bill(bill=previous_year_bill, amount=250, date='1999-05-12')
@@ -814,7 +844,7 @@ class TestResPartner(AccountTestInvoicingCommon):
         })
         bill.action_post()
         payments = self.env['account.payment']
-        for date in ['2000-06-01', '2000-07-02', '2000-08-03', '2001-06-04', '2001-07-05', '2001-08-06']:
+        for date in ['1995-06-01', '2000-07-02', '2000-08-03', '2001-06-04', '2001-07-05', '2001-08-06']:
             payments |= self.env['account.payment'].create({
                 'payment_type': 'outbound',
                 'amount': 1000.0,

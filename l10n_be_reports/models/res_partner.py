@@ -11,10 +11,7 @@ class ResPartner(models.Model):
 
     citizen_identification = fields.Char(
         string="Citizen Identification",
-        help="This code corresponds to the personal identification number for the tax authorities.\n"
-             "More information here:\n"
-             "https://ec.europa.eu/taxation_customs/tin/pdf/fr/TIN_-_subject_sheet_-_3_examples_fr.pdf"
-    )
+        help="This code corresponds to the personal identification number for the tax authorities.")
     form_file = fields.Binary(readonly=True, help="Technical field to store all forms file.")
     forms_281_50 = fields.One2many(
         comodel_name='l10n_be.form.281.50',

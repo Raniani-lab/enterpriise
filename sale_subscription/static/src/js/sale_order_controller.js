@@ -20,13 +20,19 @@ odoo.define('sale_subscription.SaleOrderFormController', function (require) {
          */
         _onOpenPricingWizard(ev) {
             const orderLines = this._DialogReady(ev, 'one2many');
+            const customValuesCommands = [];
             const confirmCallback = () => {
                 if (! ev.data.value) { // write false for all values
                     orderLines.slice(1).forEach((line) => {
-                        this.trigger_up('field_changed', {
-                            dataPointID: this.renderer.state.id,
-                            changes: {order_line: {operation: "UPDATE", id: line.id, data: {[ev.data.fieldName]: ev.data.value}}},
+                        customValuesCommands.push({
+                            operation: "UPDATE",
+                            id: line.id,
+                            data: {[ev.data.fieldName]: ev.data.value},
                         });
+                    });
+                    this.trigger_up('field_changed', {
+                            dataPointID: this.renderer.state.id,
+                            changes: {order_line: {operation: "MULTI", commands: customValuesCommands}},
                     });
                 } else {
                     const linesData = orderLines.map(elem => ({id: elem.id, product_id: elem.data.product_id.data.id, }));
@@ -42,12 +48,17 @@ odoo.define('sale_subscription.SaleOrderFormController', function (require) {
                         for (const [line_id, pricing_id] of Object.entries(result)) {
                             const line = orderLines.filter(line => line.id === line_id);
                             if (line) {
-                                this.trigger_up('field_changed', {
-                                    dataPointID: this.renderer.state.id,
-                                    changes: {order_line: {operation: "UPDATE", id: line[0].id, data: {[ev.data.fieldName]: pricing_id}}},
-                                    });
+                                customValuesCommands.push({
+                                    operation: "UPDATE",
+                                    id: line[0].id,
+                                    data: {[ev.data.fieldName]: pricing_id},
+                                });
                             }
                         }
+                        this.trigger_up('field_changed', {
+                            dataPointID: this.renderer.state.id,
+                            changes: {order_line: {operation: "MULTI", commands: customValuesCommands}},
+                        });
                     });
                 }
             };

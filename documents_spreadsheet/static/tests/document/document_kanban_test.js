@@ -147,6 +147,7 @@ test("Can create a blank spreadsheet from template dialog", async function (asse
                     alwaysCreate: true,
                     createFromTemplateId: null,
                     createFromTemplateName: undefined,
+                    createInFolderId: 1,
                 });
             },
         },

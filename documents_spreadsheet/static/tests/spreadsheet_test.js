@@ -156,6 +156,11 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                         "Untitled spreadsheet",
                         "It should have the default name"
                     );
+                    assert.equal(
+                        args.args[0].folder_id,
+                        1,
+                        "It should be in the correct folder"
+                    );
                 }
             },
         });
@@ -165,6 +170,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             params: {
                 alwaysCreate: true,
                 createFromTemplateId: null,
+                createInFolderId: 1,
             },
         });
         assert.verifySteps(["create_sheet"]);

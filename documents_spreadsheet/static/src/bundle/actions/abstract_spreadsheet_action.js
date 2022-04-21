@@ -69,7 +69,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
                 mimetype: "application/o-spreadsheet",
                 handler: "spreadsheet",
                 raw: JSON.stringify(data),
-                folder_id: this.params.folder_id,
+                folder_id: this.params.createInFolderId,
             });
         }
         if (this.params.preProcessingAction) {

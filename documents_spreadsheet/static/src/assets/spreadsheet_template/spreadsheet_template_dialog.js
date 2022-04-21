@@ -105,6 +105,7 @@ odoo.define("documents_spreadsheet.TemplateDialog", function (require) {
                 tag: "action_open_spreadsheet",
                 params: {
                   alwaysCreate: true,
+                  createInFolderId: this.props.folderId,
                   createFromTemplateId: templateId,
                   createFromTemplateName: template && template.name,
                 },

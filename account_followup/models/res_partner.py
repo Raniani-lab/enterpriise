@@ -19,19 +19,24 @@ class ResPartner(models.Model):
     unreconciled_aml_ids = fields.One2many('account.move.line', compute='_compute_unreconciled_aml_ids')
 
     unpaid_invoices = fields.One2many('account.move', compute='_compute_unpaid_invoices')
-    total_due = fields.Monetary(compute='_compute_for_followup')
-    total_overdue = fields.Monetary(compute='_compute_for_followup')
+    total_due = fields.Monetary(
+        compute='_compute_for_followup',
+        groups='account.group_account_readonly,account.group_account_invoice')
+    total_overdue = fields.Monetary(
+        compute='_compute_for_followup',
+        groups='account.group_account_readonly,account.group_account_invoice')
     followup_status = fields.Selection(
         [('in_need_of_action', 'In need of action'), ('with_overdue_invoices', 'With overdue invoices'), ('no_action_needed', 'No action needed')],
         compute='_compute_for_followup',
         string='Follow-up Status',
-        search='_search_status')
+        search='_search_status',
+        groups='account.group_account_readonly,account.group_account_invoice')
     followup_level = fields.Many2one(
         comodel_name='account_followup.followup.line',
         compute="_compute_for_followup",
         string="Follow-up Level",
         search='_search_followup_level',
-    )
+        groups='account.group_account_readonly,account.group_account_invoice')
     payment_responsible_id = fields.Many2one('res.users', ondelete='set null', string='Follow-up Responsible',
                                              help="Optionally you can assign a user to this field, which will make him responsible for the action.",
                                              tracking=True, copy=False, company_dependent=True)
@@ -237,6 +242,7 @@ class ResPartner(models.Model):
         today = fields.Date.context_today(self)
         if not self.ids and not all_partners:
             return {}
+        self.env['account.move.line'].check_access_rights('read')
 
         where = "" if all_partners else "AND aml.partner_id in %(partner_ids)s"
         sql = f"""

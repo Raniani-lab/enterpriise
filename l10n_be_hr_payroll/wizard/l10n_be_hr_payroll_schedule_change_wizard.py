@@ -105,12 +105,13 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
         # An allocation's number of days may never be below the number of leaves taken
         return max(min(new_allocation, max_allocation) + leave_allocation.leaves_taken, leave_allocation.leaves_taken)
 
-    @api.depends('leave_allocation_id', 'resource_calendar_id')
+    @api.depends('leave_allocation_id', 'resource_calendar_id', 'date_start')
     def _compute_time_off_allocation(self):
         for wizard in self:
+            date_start = wizard.date_start or fields.Date().today()
             wizard.time_off_allocation = self._compute_new_allocation(
                 wizard.leave_allocation_id, wizard.current_resource_calendar_id,
-                wizard.resource_calendar_id, wizard.date_start,
+                wizard.resource_calendar_id, date_start,
             )
 
     @api.depends('leave_type_id')

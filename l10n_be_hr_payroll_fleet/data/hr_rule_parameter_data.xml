@@ -176,7 +176,7 @@
         <record id="rule_parameter_tax_deduction_fuel_2021" model="hr.rule.parameter.value">
             <field name="parameter_value">{
                 'diesel': 1, 'gasoline': 0.95,
-                'hybrid': 1, 'full_hybrid_gasoline': 0.95,
+                'full_hybrid': 0.95,
                 'plug_in_hybrid_diesel': 1, 'plug_in_hybrid_gasoline': 0.95,
                 'cng': 0.95, 'lpg': 0.95, 'hydrogen': 0.95,
                 'cng_hp_lower_bound': 12, 'cng_low': 0.9}</field>

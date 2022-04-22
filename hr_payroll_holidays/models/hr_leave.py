@@ -68,6 +68,11 @@ class HrLeave(models.Model):
         self._recompute_payslips()
         return res
 
+    def _action_user_cancel(self, reason):
+        res = super()._action_user_cancel(reason)
+        self.sudo()._recompute_payslips()
+        return res
+
     def _recompute_payslips(self):
         # Recompute draft/waiting payslips
         all_payslips = self.env['hr.payslip'].sudo().search([

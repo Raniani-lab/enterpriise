@@ -20,7 +20,6 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "click a[name='recompute']": "recompute",
         "click button[name='toggle_personal_information']": "togglePersonalInformation",
         "change input.bg-danger": "checkFormValidity",
-        "change select": "checkFormValidity",
         "change div.invalid_radio": "checkFormValidity",
         "change input.document": "onchangeDocument",
         "input input[type='range']": "onchangeSlider",

@@ -428,6 +428,12 @@ class SaleOrder(models.Model):
             self._create_mrr_log(values, initial_values)
         return res
 
+    def _prepare_invoice(self):
+        vals = super()._prepare_invoice()
+        if self.sale_order_template_id.journal_id:
+            vals['journal_id'] = self.sale_order_template_id.journal_id.id
+        return vals
+
     ###########
     # CRUD    #
     ###########

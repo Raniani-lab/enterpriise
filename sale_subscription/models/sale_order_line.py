@@ -63,9 +63,15 @@ class SaleOrderLine(models.Model):
         for line in self:
             if not line.order_id.is_subscription and line.temporal_type == 'subscription':
                 continue
-            to_invoice_check = line.next_invoice_date and line.order_id.end_date and line.state in ('sale', 'done')
-            if to_invoice_check and line.next_invoice_date >= today and line.order_id.end_date > today.date():
-                line.invoice_status = 'to invoice'
+            to_invoice_check = line.next_invoice_date and line.state in ('sale', 'done') and line.next_invoice_date >= today
+            if line.end_date:
+                to_invoice_check = to_invoice_check and line.order_id.end_date > today.date()
+            if to_invoice_check:
+                if not line.last_invoice_date:
+                    invoice_status = 'to invoice'
+                else:
+                    invoice_status = 'no'
+                line.invoice_status = invoice_status
 
     @api.depends('order_id.is_subscription', 'temporal_type')
     def _compute_start_date(self):

@@ -554,6 +554,7 @@ class SaleOrder(models.Model):
                 if not line.start_date and line.temporal_type == 'subscription':
                     line.start_date = today
             # arj todo: inefficient: we loop over the lines two times but _reset_qty_to_invoice is needed in invoice creation
+
             sub.order_line._reset_subscription_qty_to_invoice()
 
     def _confirm_upsell(self):
@@ -579,9 +580,12 @@ class SaleOrder(models.Model):
                                              (line.product_id, line.pricing_id, line.product_uom_qty, line.product_uom)
                                              and not line.parent_line_id)
             if upsell_line and line.pricing_id:
-                # line.next_invoice_date = upsell_line.next_invoice_date # and upsell_line.next_invoice_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
                 # The upsell invoice will take care of the invoicing for this period
                 line.qty_to_invoice = 0
+                line.qty_invoiced = line.product_uom_qty
+                # We force the invoice status because the current period will be invoiced by the upsell flow
+                # when the upsell so is invoiced
+                line.invoice_status = 'no'
 
     def _confirm_renew(self):
         """

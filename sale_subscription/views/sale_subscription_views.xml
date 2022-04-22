@@ -132,7 +132,6 @@
                     <filter string="Customer" name="customer" domain="[]" context="{'group_by':'partner_id'}"/>
                     <filter string="Template" name="template" domain="[]" context="{'group_by':'sale_order_template_id'}"/>
                     <filter string="Stage" name="stage" domain="[]" context="{'group_by':'stage_id'}"/>
-<!--                    <filter string="Start Date" name="start_month" domain="[]" context="{'group_by' : 'start_date'}" />-->
                     <filter string="End Date" name="end_month" domain="[]" context="{'group_by' : 'end_date'}" />
                 </group>
             </search>
@@ -647,12 +646,12 @@
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position="after">
                 <field name="recurring_invoice" invisible="1"/>
                 <field name="product_pricing_ids" invisible="1"/>
-                <field name="pricing_id" attrs="{'invisible': [('recurring_invoice', '=', False)]}" options="{'no_open': True}"/>
+                <field name="pricing_id" string="Recurrency" attrs="{'invisible': [('recurring_invoice', '=', False)]}" options="{'no_open': True}"/>
             </xpath>
             <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position="after">
                 <field name="recurring_invoice" invisible="1"/>
                 <field name="product_pricing_ids" invisible="1"/>
-                <field name="option_pricing_id" attrs="{'invisible': [('recurring_invoice', '=', False)]}" options="{'no_open': True}"/>
+                <field name="option_pricing_id" string="Recurrency" attrs="{'invisible': [('recurring_invoice', '=', False)]}" options="{'no_open': True}"/>
             </xpath>
             <xpath expr="//page[@name='confirmation']" position="after">
                 <page string="Subscription" name="subscription">
@@ -678,9 +677,8 @@
                                         <field name="auto_close_limit"/>
                                         <span class="ml-1">days</span>
                                     </div>
-                                    <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field': 'color'}" />
+                                    <field name="tag_ids" string="Account Tags" widget="many2many_tags" options="{'color_field': 'color'}" />
                                     <field name="journal_id" options="{'no_create': True}" groups="account.group_account_manager"/>
-                                    <field name="company_id" groups="base.group_multi_company"/>
                                 </group>
                             </group>
                     </group>

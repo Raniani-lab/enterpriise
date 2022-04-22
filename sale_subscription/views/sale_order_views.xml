@@ -129,11 +129,11 @@
                 <field name="start_date" optional="hide" widget="subscription_date" attrs="{'readonly': [('temporal_type', '=', False)]}"/>
                 <field name="next_invoice_date" optional="hide" widget="subscription_date" attrs="{'readonly': [('temporal_type', '=', False)]}"/>
             </xpath>
-            <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='price_subtotal']" position='replace'>
-                <field name="price_subtotal" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded" decoration-info="temporal_type == 'subscription'"/>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position='attributes'>
+                <attribute name="decoration-info">temporal_type == 'subscription'</attribute>
             </xpath>
-            <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='price_total']" position='replace'>
-                <field name="price_total" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded" decoration-info="temporal_type == 'subscription'"/>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_total']" position="attributes">
+                <attribute name="decoration-info">temporal_type == 'subscription'</attribute>
             </xpath>
             <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position='after'>
                 <field name="option_pricelist_id" invisible="1"/>

@@ -1347,4 +1347,3 @@ class TestSubscription(TestSubscriptionCommon):
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.date, datetime.date(2023, 1, 1), "A new invoice should be created")
             self.assertEqual(inv.amount_untaxed, 800, "A new invoice should be created, all the lines should be invoiced")
-

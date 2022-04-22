@@ -18,7 +18,7 @@
         </attribute>
       </xpath>
       <xpath expr="//group[@name='pricing']" position="after">
-          <group string="Reservations" name="extra_rental">
+          <group string="Reservations" name="extra_rental" attrs="{'invisible': [('rent_ok', '=', False)]}">
             <field name="extra_hourly" widget="monetary"/>
             <field name="extra_daily" widget="monetary"/>
             <field name="currency_id" invisible="1"/>

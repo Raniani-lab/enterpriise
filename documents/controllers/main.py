@@ -21,55 +21,17 @@ class ShareRoute(http.Controller):
 
     # util methods #################################################################################
 
-    def binary_content(self, id, env=None, field='datas', share_id=None, share_token=None,
-                       download=False, unique=False, filename_field='name'):
-        env = env or request.env
-        record = env['documents.document'].browse(int(id))
-        filehash = None
+    def _get_file_response(self, res_id, share_id=None, share_token=None, field='raw'):
+        """ returns the http response to download one file. """
+        record = request.env['documents.document'].browse(int(res_id))
 
         if share_id:
-            share = env['documents.share'].sudo().browse(int(share_id))
-            record = share._get_documents_and_check_access(share_token, [int(id)], operation='read')
+            share = request.env['documents.share'].sudo().browse(int(share_id))
+            record = share._get_documents_and_check_access(share_token, [int(res_id)], operation='read')
         if not record or not record.exists():
-            return (404, [], None)
+            raise request.not_found()
 
-        #check access right
-        try:
-            last_update = record['__last_update']
-        except AccessError:
-            return (404, [], None)
-
-        mimetype = False
-        if record.type == 'url' and record.url:
-            module_resource_path = record.url
-            filename = os.path.basename(module_resource_path)
-            status = 301
-            content = module_resource_path
-        else:
-            status, content, filename, mimetype, filehash = env['ir.http']._binary_record_content(
-                record, field=field, filename=None, filename_field=filename_field,
-                default_mimetype='application/octet-stream')
-        status, headers = env['ir.http']._binary_set_headers(
-            status, filename, mimetype, unique, filehash=filehash, download=download)
-
-        return status, headers, content
-
-    def _get_file_response(self, id, field='datas', share_id=None, share_token=None):
-        """
-        returns the http response to download one file.
-
-        """
-
-        status, headers, content = self.binary_content(
-            id, field=field, share_id=share_id, share_token=share_token, download=True)
-
-        if status != 200:
-            return request.env['ir.http']._response_by_status(status, headers, content)
-        else:
-            headers.append(('Content-Length', len(content)))
-            response = request.make_response(content, headers)
-
-        return response
+        return request.env['ir.binary']._get_stream_from(record, field).get_response()
 
     def _get_downloadable_documents(self, documents):
         """ to override to filter out documents that cannot be downloaded """
@@ -82,20 +44,25 @@ class ShareRoute(http.Controller):
         :param documents: files (documents.document) to be zipped.
         :return: a http response to download a zip file.
         """
+        # TODO: zip on-the-fly while streaming instead of loading the
+        #       entire zip in memory and sending it all at once.
+
         stream = io.BytesIO()
         try:
             with zipfile.ZipFile(stream, 'w') as doc_zip:
                 for document in self._get_downloadable_documents(documents):
                     if document.type != 'binary':
                         continue
-                    status, content, filename, mimetype, filehash = request.env['ir.http']._binary_record_content(
-                        document, field='datas', filename=None, filename_field='name',
-                        default_mimetype='application/octet-stream')
-                    doc_zip.writestr(filename, content, compress_type=zipfile.ZIP_DEFLATED)
+                    binary_stream = request.env['ir.binary']._get_stream_from(document, 'raw')
+                    doc_zip.writestr(
+                        binary_stream.download_name,
+                        binary_stream.read(),  # Cf Todo: this is bad
+                        compress_type=zipfile.ZIP_DEFLATED
+                    )
         except zipfile.BadZipfile:
             logger.exception("BadZipfile exception")
 
-        content = stream.getvalue()
+        content = stream.getvalue()  # Cf Todo: this is bad
         headers = [
             ('Content-Type', 'zip'),
             ('X-Content-Type-Options', 'nosniff'),
@@ -217,28 +184,20 @@ class ShareRoute(http.Controller):
     def documents_content(self, id):
         return self._get_file_response(id)
 
-    @http.route(['/documents/image/<int:id>',
-                 '/documents/image/<int:id>/<int:width>x<int:height>',
+    @http.route(['/documents/image/<int:res_id>',
+                 '/documents/image/<int:res_id>/<int:width>x<int:height>',
                  ], type='http', auth="public")
-    def content_image(self, id=None, field='datas', share_id=None, width=0, height=0, crop=False, share_token=None,
-                      unique=False, **kwargs):
-        status, headers, image = self.binary_content(
-            id=id, field=field, share_id=share_id, share_token=share_token, unique=unique)
-        if status != 200:
-            return request.env['ir.http']._response_by_status(status, headers, image)
-
-        try:
-            content = image_process(image, size=(int(width), int(height)), crop=crop)
-        except Exception:
+    def content_image(self, res_id=None, field='datas', share_id=None, width=0, height=0, crop=False, share_token=None, **kwargs):
+        record = request.env['documents.document'].browse(int(res_id))
+        if share_id:
+            share = request.env['documents.share'].sudo().browse(int(share_id))
+            record = share._get_documents_and_check_access(share_token, [int(res_id)], operation='read')
+        if not record or not record.exists():
             raise request.not_found()
 
-        if not content:
-            raise request.not_found()
-
-        headers = http.set_safe_image_headers(headers, content)
-        response = request.make_response(content, headers)
-        response.status_code = status
-        return response
+        return request.env['ir.binary']._get_image_stream_from(
+            record, field, width=int(width), height=int(height), crop=crop
+        ).get_response()
 
     @http.route(['/document/zip'], type='http', auth='user')
     def get_zip(self, file_ids, zip_name, **kw):
@@ -288,7 +247,7 @@ class ShareRoute(http.Controller):
                 image = env['res.users'].sudo().browse(user_id).avatar_128
 
                 if not image:
-                    return env['ir.http']._placeholder()
+                    return env['ir.binary']._image_placeholder()
 
                 return base64.b64decode(image)
             else:
@@ -326,7 +285,7 @@ class ShareRoute(http.Controller):
         :return: a portal page to preview and download a single file.
         """
         try:
-            document = self._get_file_response(id, share_id=share_id, share_token=access_token, field='datas')
+            document = self._get_file_response(id, share_id=share_id, share_token=access_token, field='raw')
             return document or request.not_found()
         except Exception:
             logger.exception("Failed to download document %s" % id)

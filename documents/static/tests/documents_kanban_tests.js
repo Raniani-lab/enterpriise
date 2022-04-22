@@ -142,7 +142,7 @@ QUnit.module('documents_kanban_tests.js', {
                 res_id: irAttachmentId1, res_model: 'ir.attachment', res_model_name: 'Attachment',
             },
             {
-                active: false, file_size: 20000, folder_id: documentsFolderIds[0], mimetype: 'image/png', name: 'zorro', owner_id: resUsersIds[2],
+                active: false, file_size: 20000, folder_id: documentsFolderIds[0], mimetype: 'text/plain', name: 'zorro', owner_id: resUsersIds[2],
                 partner_id: resPartnerIds[2],
             },
         ]);

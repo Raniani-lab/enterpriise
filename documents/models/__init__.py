@@ -4,6 +4,7 @@
 from . import mail_activity
 from . import mail_activity_type
 from . import ir_attachment
+from . import ir_binary
 from . import document
 from . import documents_mixin
 from . import folder

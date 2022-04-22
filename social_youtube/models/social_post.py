@@ -24,6 +24,9 @@ class SocialPostYoutube(models.Model):
         compute='_compute_youtube_accounts_count')
     youtube_accounts_other_count = fields.Integer('Selected Other Accounts',
         compute='_compute_youtube_accounts_count')
+    youtube_video_privacy = fields.Selection([('public', 'Public'), ('unlisted', 'Unlisted'), ('private', 'Private')],
+        string='Video Privacy', default='public', required=True,
+        help='Once posted, set the video as Public/Private/Unlisted')
     youtube_video_url = fields.Char('YouTube Video Url', compute="_compute_youtube_video_url")
     youtube_thumbnail_url = fields.Char('YouTube Thumbnail Url', compute="_compute_youtube_thumbnail_url")
 

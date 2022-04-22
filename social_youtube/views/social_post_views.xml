@@ -73,6 +73,8 @@
                 <field name="youtube_description" string="Video Description" options="{'onchange_on_keydown': true}"
                     widget="text_emojis" placeholder="e.g. Engage your entire community with a single app! https://www.odoo.com/trial"
                     attrs="{'invisible': [('youtube_accounts_count', '!=', 1)], 'readonly': [('state', '!=', 'draft')], 'required': [('youtube_video_id', '!=', False)]}"/>
+                <field name="youtube_video_privacy"
+                    attrs="{'invisible': [('youtube_accounts_count', '!=', 1)], 'readonly': [('state', '!=', 'draft')]}"/>
                 <field name="youtube_video" widget="youtube_upload"
                     attrs="{'invisible': [('youtube_accounts_count', '!=', 1)], 'readonly': [('state', '!=', 'draft')]}"/>
             </xpath>

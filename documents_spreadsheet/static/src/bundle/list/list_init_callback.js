@@ -46,7 +46,7 @@ export function insertList({list, threshold, fields}) {
             const sheetIdFrom = model.getters.getActiveSheetId();
             model.dispatch("CREATE_SHEET", {
                 sheetId,
-                position: model.getters.getVisibleSheets().length,
+                position: model.getters.getSheetIds().length,
             });
             model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo: sheetId });
         }

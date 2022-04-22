@@ -74,7 +74,7 @@ export function setCellContent(model, xc, content, sheetId = undefined) {
     if (sheetId === undefined) {
         sheetId =
             model.config.mode === "headless"
-                ? model.getters.getVisibleSheets()[0]
+                ? model.getters.getSheetIds()[0]
                 : model.getters.getActiveSheetId();
     }
     model.dispatch("UPDATE_CELL", { ...toCartesian(xc), sheetId, content });

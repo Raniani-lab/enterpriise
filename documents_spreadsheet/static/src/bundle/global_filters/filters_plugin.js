@@ -279,10 +279,10 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
      * @param {string} newLabel
      */
     _updateFilterLabelInFormulas(currentLabel, newLabel) {
-        const sheets = this.getters.getSheets();
+        const sheetIds = this.getters.getSheetIds();
         currentLabel = currentLabel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        for (let sheet of sheets) {
-            for (let cell of Object.values(this.getters.getCells(sheet.id))) {
+        for (let sheetId of sheetIds) {
+            for (let cell of Object.values(this.getters.getCells(sheetId))) {
                 if (cell.isFormula()) {
                     const newContent = cell.content.replace(
                         new RegExp(`FILTER\\.VALUE\\(\\s*"${currentLabel}"\\s*\\)`, "g"),
@@ -291,7 +291,7 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
                     if (newContent !== cell.content) {
                         const { col, row } = this.getters.getCellPosition(cell.id);
                         this.dispatch("UPDATE_CELL", {
-                            sheetId: sheet.id,
+                            sheetId,
                             content: newContent,
                             col,
                             row,

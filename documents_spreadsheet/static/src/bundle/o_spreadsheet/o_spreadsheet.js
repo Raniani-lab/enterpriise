@@ -11363,8 +11363,8 @@
     class SheetPlugin extends CorePlugin {
         constructor() {
             super(...arguments);
-            this.sheetIds = {};
-            this.visibleSheets = []; // ids of visible sheets
+            this.sheetIdsMapName = {};
+            this.orderedSheetIds = [];
             this.sheets = {};
             this.cellPosition = {};
         }
@@ -11381,15 +11381,15 @@
                     return this.checkValidations(cmd, this.checkSheetName, this.checkSheetPosition);
                 }
                 case "MOVE_SHEET":
-                    const currentIndex = this.visibleSheets.findIndex((id) => id === cmd.sheetId);
+                    const currentIndex = this.orderedSheetIds.indexOf(cmd.sheetId);
                     return (cmd.direction === "left" && currentIndex === 0) ||
-                        (cmd.direction === "right" && currentIndex === this.visibleSheets.length - 1)
+                        (cmd.direction === "right" && currentIndex === this.orderedSheetIds.length - 1)
                         ? 12 /* WrongSheetMove */
                         : 0 /* Success */;
                 case "RENAME_SHEET":
                     return this.isRenameAllowed(cmd);
                 case "DELETE_SHEET":
-                    return this.visibleSheets.length > 1
+                    return this.orderedSheetIds.length > 1
                         ? 0 /* Success */
                         : 8 /* NotEnoughSheets */;
                 case "REMOVE_COLUMNS_ROWS":
@@ -11420,7 +11420,7 @@
                     break;
                 case "CREATE_SHEET":
                     const sheet = this.createSheet(cmd.sheetId, cmd.name || this.getNextSheetName(), cmd.cols || 26, cmd.rows || 100, cmd.position);
-                    this.history.update("sheetIds", sheet.name, sheet.id);
+                    this.history.update("sheetIdsMapName", sheet.name, sheet.id);
                     break;
                 case "RESIZE_COLUMNS_ROWS":
                     const dimension = cmd.dimension === "COL" ? "cols" : "rows";
@@ -11487,7 +11487,7 @@
             // that depends on a sheet not already imported will not be able to be
             // compiled
             for (let sheet of data.sheets) {
-                this.sheetIds[sheet.name] = sheet.id;
+                this.sheetIdsMapName[sheet.name] = sheet.id;
             }
             for (let sheetData of data.sheets) {
                 const name = sheetData.name || _t("Sheet") + (Object.keys(this.sheets).length + 1);
@@ -11501,14 +11501,14 @@
                     hiddenRowsGroups: [],
                     areGridLinesVisible: sheetData.areGridLinesVisible === undefined ? true : sheetData.areGridLinesVisible,
                 };
-                this.visibleSheets.push(sheet.id);
+                this.orderedSheetIds.push(sheet.id);
                 this.sheets[sheet.id] = sheet;
                 this.updateHiddenElementsGroups(sheet.id, "cols");
                 this.updateHiddenElementsGroups(sheet.id, "rows");
             }
         }
         exportSheets(data, exportDefaultSizes = false) {
-            data.sheets = this.visibleSheets.filter(isDefined).map((id) => {
+            data.sheets = this.orderedSheetIds.filter(isDefined).map((id) => {
                 const sheet = this.sheets[id];
                 return {
                     id: sheet.id,
@@ -11566,20 +11566,16 @@
         getSheetIdByName(name) {
             if (name) {
                 const unquotedName = getUnquotedSheetName(name);
-                for (const key in this.sheetIds) {
+                for (const key in this.sheetIdsMapName) {
                     if (key.toUpperCase() === unquotedName.toUpperCase()) {
-                        return this.sheetIds[key];
+                        return this.sheetIdsMapName[key];
                     }
                 }
             }
             return undefined;
         }
-        getSheets() {
-            const { visibleSheets, sheets } = this;
-            return visibleSheets.map((id) => sheets[id]).filter(isDefined);
-        }
-        getVisibleSheets() {
-            return this.visibleSheets;
+        getSheetIds() {
+            return this.orderedSheetIds;
         }
         getEvaluationSheets() {
             return this.sheets;
@@ -11664,7 +11660,7 @@
         }
         getNextSheetName(baseName = "Sheet") {
             let i = 1;
-            const names = this.getSheets().map((s) => s.name);
+            const names = this.orderedSheetIds.map(this.getSheetName.bind(this));
             let name = `${baseName}${i}`;
             while (names.includes(name)) {
                 name = `${baseName}${i}`;
@@ -11765,24 +11761,24 @@
                 hiddenRowsGroups: [],
                 areGridLinesVisible: true,
             };
-            const visibleSheets = this.visibleSheets.slice();
-            visibleSheets.splice(position, 0, sheet.id);
+            const orderedSheetIds = this.orderedSheetIds.slice();
+            orderedSheetIds.splice(position, 0, sheet.id);
             const sheets = this.sheets;
-            this.history.update("visibleSheets", visibleSheets);
+            this.history.update("orderedSheetIds", orderedSheetIds);
             this.history.update("sheets", Object.assign({}, sheets, { [sheet.id]: sheet }));
             return sheet;
         }
         moveSheet(sheetId, direction) {
-            const visibleSheets = this.visibleSheets.slice();
-            const currentIndex = visibleSheets.findIndex((id) => id === sheetId);
-            const sheet = visibleSheets.splice(currentIndex, 1);
-            visibleSheets.splice(currentIndex + (direction === "left" ? -1 : 1), 0, sheet[0]);
-            this.history.update("visibleSheets", visibleSheets);
+            const orderedSheetIds = this.orderedSheetIds.slice();
+            const currentIndex = orderedSheetIds.findIndex((id) => id === sheetId);
+            const sheet = orderedSheetIds.splice(currentIndex, 1);
+            orderedSheetIds.splice(currentIndex + (direction === "left" ? -1 : 1), 0, sheet[0]);
+            this.history.update("orderedSheetIds", orderedSheetIds);
         }
         checkSheetName(cmd) {
-            const { visibleSheets, sheets } = this;
+            const { orderedSheetIds, sheets } = this;
             const name = cmd.name && cmd.name.trim().toLowerCase();
-            if (visibleSheets.find((id) => { var _a; return ((_a = sheets[id]) === null || _a === void 0 ? void 0 : _a.name.toLowerCase()) === name; })) {
+            if (orderedSheetIds.find((id) => { var _a; return ((_a = sheets[id]) === null || _a === void 0 ? void 0 : _a.name.toLowerCase()) === name; })) {
                 return 10 /* DuplicatedSheetName */;
             }
             if (FORBIDDEN_IN_EXCEL_REGEX.test(name)) {
@@ -11791,8 +11787,8 @@
             return 0 /* Success */;
         }
         checkSheetPosition(cmd) {
-            const { visibleSheets } = this;
-            if (cmd.position > visibleSheets.length || cmd.position < 0) {
+            const { orderedSheetIds } = this;
+            if (cmd.position > orderedSheetIds.length || cmd.position < 0) {
                 return 13 /* WrongSheetPosition */;
             }
             return 0 /* Success */;
@@ -11807,10 +11803,10 @@
         renameSheet(sheet, name) {
             const oldName = sheet.name;
             this.history.update("sheets", sheet.id, "name", name.trim());
-            const sheetIds = Object.assign({}, this.sheetIds);
-            sheetIds[name] = sheet.id;
-            delete sheetIds[oldName];
-            this.history.update("sheetIds", sheetIds);
+            const sheetIdsMapName = Object.assign({}, this.sheetIdsMapName);
+            sheetIdsMapName[name] = sheet.id;
+            delete sheetIdsMapName[oldName];
+            this.history.update("sheetIdsMapName", sheetIdsMapName);
         }
         duplicateSheet(fromId, toId) {
             const sheet = this.getSheet(fromId);
@@ -11825,10 +11821,10 @@
                     }
                 }
             }
-            const visibleSheets = this.visibleSheets.slice();
-            const currentIndex = visibleSheets.findIndex((id) => id === fromId);
-            visibleSheets.splice(currentIndex + 1, 0, newSheet.id);
-            this.history.update("visibleSheets", visibleSheets);
+            const orderedSheetIds = this.orderedSheetIds.slice();
+            const currentIndex = orderedSheetIds.indexOf(fromId);
+            orderedSheetIds.splice(currentIndex + 1, 0, newSheet.id);
+            this.history.update("orderedSheetIds", orderedSheetIds);
             this.history.update("sheets", Object.assign({}, this.sheets, { [newSheet.id]: newSheet }));
             for (const cell of Object.values(this.getters.getCells(fromId))) {
                 const { col, row } = this.getCellPosition(cell.id);
@@ -11841,13 +11837,13 @@
                     style: cell.style,
                 });
             }
-            const sheetIds = Object.assign({}, this.sheetIds);
-            sheetIds[newSheet.name] = newSheet.id;
-            this.history.update("sheetIds", sheetIds);
+            const sheetIdsMapName = Object.assign({}, this.sheetIdsMapName);
+            sheetIdsMapName[newSheet.name] = newSheet.id;
+            this.history.update("sheetIdsMapName", sheetIdsMapName);
         }
         getDuplicateSheetName(sheetName) {
             let i = 1;
-            const names = this.getters.getSheets().map((s) => s.name);
+            const names = this.orderedSheetIds.map(this.getSheetName.bind(this));
             const baseName = _lt("Copy of %s", sheetName);
             let name = baseName.toString();
             while (names.includes(name)) {
@@ -11861,13 +11857,13 @@
             const sheets = Object.assign({}, this.sheets);
             delete sheets[sheet.id];
             this.history.update("sheets", sheets);
-            const visibleSheets = this.visibleSheets.slice();
-            const currentIndex = visibleSheets.findIndex((id) => id === sheet.id);
-            visibleSheets.splice(currentIndex, 1);
-            this.history.update("visibleSheets", visibleSheets);
-            const sheetIds = Object.assign({}, this.sheetIds);
-            delete sheetIds[name];
-            this.history.update("sheetIds", sheetIds);
+            const orderedSheetIds = this.orderedSheetIds.slice();
+            const currentIndex = orderedSheetIds.indexOf(sheet.id);
+            orderedSheetIds.splice(currentIndex, 1);
+            this.history.update("orderedSheetIds", orderedSheetIds);
+            const sheetIdsMapName = Object.assign({}, this.sheetIdsMapName);
+            delete sheetIdsMapName[name];
+            this.history.update("sheetIdsMapName", sheetIdsMapName);
         }
         /**
          * Delete column. This requires a lot of handling:
@@ -12265,8 +12261,7 @@
         "getSheet",
         "tryGetSheet",
         "getSheetIdByName",
-        "getSheets",
-        "getVisibleSheets",
+        "getSheetIds",
         "getEvaluationSheets",
         "tryGetCol",
         "getCol",
@@ -13214,7 +13209,7 @@
     //------------------------------------------------------------------------------
     const CREATE_SHEET_ACTION = (env) => {
         const activeSheetId = env.model.getters.getActiveSheetId();
-        const position = env.model.getters.getVisibleSheets().findIndex((sheetId) => sheetId === activeSheetId) + 1;
+        const position = env.model.getters.getSheetIds().indexOf(activeSheetId) + 1;
         const sheetId = env.model.uuidGenerator.uuidv4();
         env.model.dispatch("CREATE_SHEET", { sheetId, position });
         env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
@@ -13565,7 +13560,9 @@
         name: _lt("Link sheet"),
         sequence: 10,
         children: (env) => {
-            const sheets = env.model.getters.getSheets();
+            const sheets = env.model.getters
+                .getSheetIds()
+                .map((sheetId) => env.model.getters.getSheet(sheetId));
             return sheets.map((sheet, i) => createFullMenuItem(sheet.id, {
                 name: sheet.name,
                 sequence: i,
@@ -13697,7 +13694,7 @@
         name: _lt("Delete"),
         sequence: 10,
         isVisible: (env) => {
-            return env.model.getters.getSheets().length > 1;
+            return env.model.getters.getSheetIds().length > 1;
         },
         action: (env) => env.askConfirmation(_lt("Are you sure you want to delete this sheet ?"), () => {
             env.model.dispatch("DELETE_SHEET", { sheetId: env.model.getters.getActiveSheetId() });
@@ -13725,9 +13722,9 @@
         name: _lt("Move right"),
         sequence: 40,
         isVisible: (env) => {
-            const sheet = env.model.getters.getActiveSheetId();
-            const sheets = env.model.getters.getSheets();
-            return sheets.findIndex((s) => s.id === sheet) !== sheets.length - 1;
+            const sheetId = env.model.getters.getActiveSheetId();
+            const sheetIds = env.model.getters.getSheetIds();
+            return sheetIds.indexOf(sheetId) !== sheetIds.length - 1;
         },
         action: (env) => env.model.dispatch("MOVE_SHEET", {
             sheetId: env.model.getters.getActiveSheetId(),
@@ -13738,8 +13735,8 @@
         name: _lt("Move left"),
         sequence: 50,
         isVisible: (env) => {
-            const sheet = env.model.getters.getActiveSheetId();
-            return env.model.getters.getSheets().findIndex((s) => s.id === sheet) !== 0;
+            const sheetId = env.model.getters.getActiveSheetId();
+            return env.model.getters.getSheetIds()[0] !== sheetId;
         },
         action: (env) => env.model.dispatch("MOVE_SHEET", {
             sheetId: env.model.getters.getActiveSheetId(),
@@ -17900,7 +17897,7 @@
          * Triggers an evaluation of all cells on all sheets.
          */
         evaluateAllSheets() {
-            for (const sheetId of this.getters.getVisibleSheets()) {
+            for (const sheetId of this.getters.getSheetIds()) {
                 this.evaluate(sheetId);
                 this.isUpToDate.add(sheetId);
             }
@@ -19674,17 +19671,18 @@
             }
             switch (cmd.type) {
                 case "START":
-                    const firstSheet = this.getters.getSheets()[0];
+                    const firstSheetId = this.getters.getSheetIds()[0];
                     this.selection.registerAsDefault(this, this.gridSelection.anchor, {
                         handleEvent: this.handleEvent.bind(this),
                     });
                     this.dispatch("ACTIVATE_SHEET", {
-                        sheetIdTo: firstSheet.id,
-                        sheetIdFrom: firstSheet.id,
+                        sheetIdTo: firstSheetId,
+                        sheetIdFrom: firstSheetId,
                     });
+                    const firstSheet = this.getters.getSheet(firstSheetId);
                     const { col, row } = getNextVisibleCellPosition(firstSheet, 0, 0);
                     this.selectCell(col, row);
-                    this.moveClient({ sheetId: firstSheet.id, col: 0, row: 0 });
+                    this.moveClient({ sheetId: firstSheetId, col: 0, row: 0 });
                     break;
                 case "ACTIVATE_SHEET": {
                     this.setActiveSheet(cmd.sheetIdTo);
@@ -19699,7 +19697,9 @@
                         this.selection.resetDefaultAnchor(this, this.gridSelection.anchor);
                     }
                     else {
-                        const { col, row } = getNextVisibleCellPosition(this.getters.getSheets()[0], 0, 0);
+                        const firstSheetId = this.getters.getSheetIds()[0];
+                        const firstSheet = this.getters.getSheet(firstSheetId);
+                        const { col, row } = getNextVisibleCellPosition(firstSheet, 0, 0);
                         this.selectCell(col, row);
                     }
                     break;
@@ -19746,7 +19746,7 @@
                 case "REDO":
                 case "DELETE_SHEET":
                     if (!this.getters.tryGetSheet(this.getters.getActiveSheetId())) {
-                        const currentSheets = this.getters.getVisibleSheets();
+                        const currentSheets = this.getters.getSheetIds();
                         this.activeSheet = this.getters.getSheet(currentSheets[0]);
                         this.selectCell(0, 0);
                         this.moveClient({
@@ -19958,7 +19958,7 @@
             this.activeSheet = sheet;
         }
         activateNextSheet(direction) {
-            const sheetIds = this.getters.getSheets().map((sheet) => sheet.id);
+            const sheetIds = this.getters.getSheetIds();
             const oldSheetPosition = sheetIds.findIndex((id) => id === this.activeSheet.id);
             const delta = direction === "left" ? sheetIds.length - 1 : 1;
             const newPosition = (oldSheetPosition + delta) % sheetIds.length;
@@ -21643,7 +21643,7 @@
         }
         /** gets rid of deprecated sheetIds */
         cleanViewports() {
-            const sheets = this.getters.getVisibleSheets();
+            const sheets = this.getters.getSheetIds();
             for (let sheetId of Object.keys(this.viewports)) {
                 if (!sheets.includes(sheetId)) {
                     delete this.viewports[sheetId];
@@ -22295,23 +22295,28 @@
         }
         addSheet() {
             const activeSheetId = this.env.model.getters.getActiveSheetId();
-            const position = this.env.model.getters.getVisibleSheets().findIndex((sheetId) => sheetId === activeSheetId) +
-                1;
+            const position = this.env.model.getters.getSheetIds().findIndex((sheetId) => sheetId === activeSheetId) + 1;
             const sheetId = this.env.model.uuidGenerator.uuidv4();
             const name = this.env.model.getters.getNextSheetName(this.env._t("Sheet"));
             this.env.model.dispatch("CREATE_SHEET", { sheetId, position, name });
             this.env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
         }
+        getOrderedSheets() {
+            return this.env.model.getters
+                .getSheetIds()
+                .map((sheetId) => this.env.model.getters.getSheet(sheetId));
+        }
         listSheets(ev) {
             const registry = new MenuItemRegistry();
             const from = this.env.model.getters.getActiveSheetId();
             let i = 0;
-            for (let sheet of this.env.model.getters.getSheets()) {
-                registry.add(sheet.id, {
+            for (const sheetID of this.env.model.getters.getSheetIds()) {
+                const sheet = this.env.model.getters.getSheet(sheetID);
+                registry.add(sheetID, {
                     name: sheet.name,
                     sequence: i,
                     isReadonlyAllowed: true,
-                    action: (env) => env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: from, sheetIdTo: sheet.id }),
+                    action: (env) => env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: from, sheetIdTo: sheetID }),
                 });
                 i++;
             }
@@ -30632,8 +30637,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-04-21T08:30:38.074Z';
-    exports.__info__.hash = 'a71c5d8';
+    exports.__info__.date = '2022-04-22T09:44:33.192Z';
+    exports.__info__.hash = 'a1d601e';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

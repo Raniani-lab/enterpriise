@@ -611,11 +611,11 @@ test("Add pivot sheet at the end of existing spreadsheet", async (assert) => {
     );
     model.dispatch("CREATE_SHEET", { sheetId: "42", position: 1 });
     const activeSheetId = model.getters.getActiveSheetId();
-    assert.deepEqual(model.getters.getVisibleSheets(), [activeSheetId, "42"]);
+    assert.deepEqual(model.getters.getSheetIds(), [activeSheetId, "42"]);
     await callback(model);
-    assert.strictEqual(model.getters.getSheets().length, 3);
-    assert.deepEqual(model.getters.getVisibleSheets()[0], activeSheetId);
-    assert.deepEqual(model.getters.getVisibleSheets()[1], "42");
+    assert.strictEqual(model.getters.getSheetIds().length, 3);
+    assert.deepEqual(model.getters.getSheetIds()[0], activeSheetId);
+    assert.deepEqual(model.getters.getSheetIds()[1], "42");
 });
 
 test("pivot with a domain", async (assert) => {

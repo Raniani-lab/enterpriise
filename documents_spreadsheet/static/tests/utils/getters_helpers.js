@@ -68,7 +68,7 @@ export function getCellContent(model, xc, sheetId = undefined) {
     if (sheetId === undefined) {
         sheetId =
             model.config.mode === "headless"
-                ? model.getters.getVisibleSheets()[0]
+                ? model.getters.getSheetIds()[0]
                 : model.getters.getActiveSheetId();
     }
     const cell = getCell(model, xc, sheetId);

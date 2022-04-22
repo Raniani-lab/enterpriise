@@ -94,12 +94,12 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          */
         _getCells(regex) {
             return this.getters
-                .getSheets()
-                .map((sheet) =>
-                    Object.values(this.getters.getCells(sheet.id)).filter(
+                .getSheetIds()
+                .map((sheetId) =>
+                    Object.values(this.getters.getCells(sheetId)).filter(
                         (cell) =>
                             cell.isFormula() &&
-                            regex.test(this.getters.getFormulaCellContent(sheet.id, cell))
+                            regex.test(this.getters.getFormulaCellContent(sheetId, cell))
                     )
                 )
                 .flat();
@@ -296,10 +296,11 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          * Invalid formulas next to valid ones (in the same row) are simply removed.
          */
         _removeInvalidPivotRows() {
-            for (let sheet of this.getters.getSheets()) {
+            for (let sheetId of this.getters.getSheetIds()) {
                 const invalidRows = [];
-                for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
-                    const cellIds = Object.values(this.getters.getRow(sheet.id, rowIndex).cells);
+
+                for (let rowIndex = 0; rowIndex < this.getters.getNumberRows(sheetId); rowIndex++) {
+                    const cellIds = Object.values(this.getters.getRow(sheetId, rowIndex).cells);
                     const [valid, invalid] = cellIds
                         .map((id) => this.getters.getCellById(id))
                         .filter((cell) => cell.isFormula() && /^\s*=.*PIVOT/.test(cell.content))
@@ -322,7 +323,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                 this.dispatch("REMOVE_COLUMNS_ROWS", {
                     dimension: "ROW",
                     elements: invalidRows,
-                    sheetId: sheet.id,
+                    sheetId,
                 });
             }
             this._convertFormulas(this._getCells(/^\s*=.*PIVOT.*#IDNOTFOUND/), () => null);

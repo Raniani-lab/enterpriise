@@ -7,6 +7,7 @@ import {
     toggleFilterMenu,
     toggleMenuItem,
     toggleGroupByMenu,
+    toggleMenuItemOption,
 } from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
 import { dialogService } from "@web/core/dialog/dialog_service";
@@ -2048,6 +2049,48 @@ QUnit.module("Views", (hooks) => {
             details.map((d) => d.innerText),
             ["BarProject"]
         );
+    });
+
+    QUnit.test("Check groupBy on datetime field", async function (assert) {
+        assert.expect(1);
+        patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+        serverData.models["project.task"].fields['scheduled_date'] = { string: "Schedule date", type: "datetime"};
+        serverData.models["project.task"].records = [
+            { id: 1, name: "FooProject", sequence: 1, partner_id: 1, scheduled_date: false },
+        ];
+
+        await makeView({
+            serverData,
+            type: "map",
+            resModel: "project.task",
+            arch: `<map res_partner="partner_id" />`,
+            async mockRPC(route) {
+                switch (route) {
+                    case "/web/dataset/call_kw/res.partner/search_read":
+                        return serverData.models["res.partner"].twoRecordsAddressCoordinates;
+                }
+            },
+            searchViewId: false,
+            searchViewArch: `
+                <search>
+                    <group expand='0' string='Group By'>
+                        <filter string="scheduled_date" name="scheduled_date" context="{'group_by': 'scheduled_date'}"/>
+                    </group>
+                </search>
+            `,
+        });
+
+        assert.containsNone(
+            target,
+            ".o-map-renderer--pin-list-group-header",
+            "Should not have any groups"
+        );
+
+        await toggleGroupByMenu(target);
+
+        // don't throw an error when grouping a field with a false value
+        await toggleMenuItem(target, "scheduled_date");
+        await toggleMenuItemOption(target, "scheduled_date", "year");
     });
 
     QUnit.test("Change groupBy", async function (assert) {

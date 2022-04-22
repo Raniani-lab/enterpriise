@@ -327,7 +327,7 @@ export class MapModel extends Model {
             const value = record[fieldName];
             let id, name;
             const fieldType = metaData.fields[fieldName].type;
-            if (["date", "datetime"].includes(fieldType)) {
+            if (["date", "datetime"].includes(fieldType) && value) {
                 const date = fieldType === "date" ? parseDate(value) : parseDateTime(value);
                 id = name = date.toFormat(DATE_GROUP_FORMATS[subGroup]);
             } else if (fieldType === 'boolean') {

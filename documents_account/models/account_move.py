@@ -38,7 +38,7 @@ class AccountMove(models.Model):
         domain = super(AccountMove, self)._get_domain_matching_suspense_moves()
         return expression.OR([
             domain,
-            [('reconciliation_invoice_id', '=', self.id)]
+            [('id', '=', self.document_request_line_id.id)]
         ])
 
     def write(self, vals):

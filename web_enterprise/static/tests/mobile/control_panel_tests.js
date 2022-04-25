@@ -1,8 +1,12 @@
 /** @odoo-module **/
 
-import { click, getFixture, triggerEvent } from "@web/../tests/helpers/utils";
+import { click, getFixture, triggerEvent, triggerScroll } from "@web/../tests/helpers/utils";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { editSearch, makeWithSearch, setupControlPanelServiceRegistry } from "@web/../tests/search/helpers";
+import {
+    editSearch,
+    makeWithSearch,
+    setupControlPanelServiceRegistry,
+} from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 
@@ -116,5 +120,30 @@ QUnit.module("Search", (hooks) => {
 
         await click(target, ".o_enable_searchview");
         assert.containsNone(target, ".o_searchview");
+    });
+
+    QUnit.test("Control panel is shown/hide on top when scrolling", async (assert) => {
+        await makeWithSearch({
+            serverData,
+            resModel: "foo",
+            Component: ControlPanel,
+            searchMenuTypes: ["filter"],
+        });
+        document.body.style.minHeight = `${2 * window.innerHeight}px`;
+        await triggerScroll(document.body, { top: 50 });
+
+        assert.hasClass(
+            target.querySelector(".o_control_panel"),
+            "o_mobile_sticky",
+            "control panel becomes sticky when the target is not on top"
+        );
+        await triggerScroll(document.body, { top: -50 });
+        assert.doesNotHaveClass(
+            target.querySelector(".o_control_panel"),
+            "o_mobile_sticky",
+            "control panel is not sticky anymore"
+        );
+
+        document.body.style.minHeight = "unset";
     });
 });

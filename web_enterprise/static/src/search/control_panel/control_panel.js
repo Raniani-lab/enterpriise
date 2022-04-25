@@ -65,9 +65,9 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
 
         if (scrollTop > this.initialScrollTop) {
             // Beneath initial position => sticky display
-            const elRect = this.el.getBoundingClientRect();
-            this.el.classList.add(STICKY_CLASS);
-            this.el.style.top =
+            const elRect = this.mobileControlPanelRef.el.getBoundingClientRect();
+            this.mobileControlPanelRef.el.classList.add(STICKY_CLASS);
+            this.mobileControlPanelRef.el.style.top =
                 delta < 0
                     ? // Going up
                       `${Math.min(0, elRect.top - delta)}px`
@@ -75,7 +75,7 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
                       `${Math.max(-elRect.height, elRect.top - delta)}px`;
         } else {
             // Above intial position => standard display
-            this.el.classList.remove(STICKY_CLASS);
+            this.mobileControlPanelRef.el.classList.remove(STICKY_CLASS);
         }
 
         this.oldScrollTop = scrollTop;

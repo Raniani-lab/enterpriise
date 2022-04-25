@@ -86,8 +86,8 @@
             <field name="account_depreciation_id" position="attributes">
                 <attribute name="string">Deferred Expense Account</attribute>
                 <attribute name="help">Account used to record the deferred expense</attribute>
-                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_current_assets)d])]</attribute>
-                <attribute name="context">{'default_user_type_id': %(account.data_account_type_current_assets)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_current_assets)d])]}</attribute>
+                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_current_assets)d, %(account.data_account_type_prepayments)d])]</attribute>
+                <attribute name="context">{'default_user_type_id': %(account.data_account_type_current_assets)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_current_assets)d, %(account.data_account_type_prepayments)d])]}</attribute>
             </field>
             <field name="book_value" position="attributes">
                 <attribute name="string">Deferred Expense Amount</attribute>

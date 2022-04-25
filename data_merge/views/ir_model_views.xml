@@ -51,7 +51,7 @@
 
     <menuitem id="ir_model_menu_merge_action_manager"
               name="Merge Action Manager"
-              parent="data_cleaning.menu_data_cleaning_config"
+              parent="data_recycle.menu_data_cleaning_config"
               action="ir_model_action_merge"
               sequence="1"
               groups="base.group_no_one"/>

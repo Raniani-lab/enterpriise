@@ -8,7 +8,7 @@
     'sequence': 135,
     'summary': """Easily format text data across multiple records. Find duplicate records and easily merge them.""",
     'description': """Easily format text data across multiple records. Find duplicate records and easily merge them.""",
-    'depends': ['web', 'mail', 'phone_validation'],
+    'depends': ['data_recycle', 'phone_validation'],
     'data': [
         'security/ir_rule.xml',
         'security/ir.model.access.csv',
@@ -20,8 +20,9 @@
         'data/data_cleaning_data.xml',
         'data/data_cleaning_cron.xml',
     ],
+    'auto_install': ['data_recycle'],
     'installable': True,
-    'application': True,
+    'application': False,
     'assets': {
         'web.assets_backend': [
             'data_cleaning/static/src/js/**/*',

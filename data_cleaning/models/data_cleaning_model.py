@@ -13,6 +13,7 @@ from odoo.tools import split_every
 DR_CREATE_STEP_AUTO = 5000
 DR_CREATE_STEP_MANUAL = 50000
 
+
 class DataCleaningModel(models.Model):
     _name = 'data_cleaning.model'
     _description = 'Cleaning Model'
@@ -181,7 +182,7 @@ class DataCleaningModel(models.Model):
                 continue
 
             if cleaning_model.notify_frequency_period == 'days':
-                delta = relativedelta(day=cleaning_model.notify_frequency)
+                delta = relativedelta(days=cleaning_model.notify_frequency)
             elif cleaning_model.notify_frequency_period == 'weeks':
                 delta = relativedelta(weeks=cleaning_model.notify_frequency)
             else:

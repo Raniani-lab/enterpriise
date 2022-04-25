@@ -4,7 +4,7 @@ odoo.define('data_cleaning.ListView', function (require) {
     var ListView = require('web.ListView');
     var session = require('web.session');
     var viewRegistry = require('web.view_registry');
-    var DataCommonListController = require('data_cleaning.CommonListController');
+    var DataCommonListController = require('data_recycle.CommonListController');
 
     var DataCleaningListController = DataCommonListController.extend({
         buttons_template: 'DataCleaning.buttons',

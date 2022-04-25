@@ -6,7 +6,7 @@ odoo.define('data_merge.ListView', function (require) {
     var ListRenderer = require('web.ListRenderer');
     var ListView = require('web.ListView');
     var viewRegistry = require('web.view_registry');
-    var DataCommonListController = require('data_cleaning.CommonListController');
+    var DataCommonListController = require('data_recycle.CommonListController');
     var _t = core._t;
 
 

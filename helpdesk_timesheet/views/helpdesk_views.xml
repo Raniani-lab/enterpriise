@@ -169,7 +169,7 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
         <field name="arch" type="xml">
             <field name='partner_id' position="after">
-                <field name="total_hours_spent" widget="timesheet_uom" optional="hide"/>
+                <field name="total_hours_spent" widget="timesheet_uom" optional="hide" attrs="{'invisible': [('total_hours_spent', '=', 0)]}"/>
             </field>
         </field>
     </record>

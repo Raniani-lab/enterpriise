@@ -130,8 +130,7 @@
                                 <div attrs="{'invisible': [('use_alias','=',False)]}" class="mt16">
                                     <div class="oe_edit_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
                                         <strong>Alias </strong>
-                                        <field name="alias_name" class="w-25"/>@
-                                        <field name="alias_domain" class="oe_inline" readonly="1"/>
+                                        <field name="alias_name" class="w-25"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>
                                     </div>
                                     <p class="oe_read_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
                                     <strong>Alias </strong><field name="alias_id" class="oe_read_only oe_inline" required="False"/>

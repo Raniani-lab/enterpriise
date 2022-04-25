@@ -63,7 +63,7 @@
         <field name="arch" type="xml">
             <tree editable="top" string="Tag" sample="1">
                 <field name="sequence" widget="handle"/>
-                <field name="name"/>
+                <field name="name" placeholder="e.g. Question"/>
             </tree>
         </field>
     </record>
@@ -445,7 +445,6 @@
                 <field name="sla_ids" groups="helpdesk.group_use_sla"/>
                 <field name="company_id" groups="base.group_multi_company" invisible="context.get('default_team_id', False)"/>
                 <field name="priority" invisible="1"/>
-                <field name="sla_deadline" groups="helpdesk.group_use_sla"/>
                 <field name="rating_last_text"/>
 
                 <filter string="My Tickets" domain="[('user_id','=',uid)]" name="my_ticket"/>

@@ -789,11 +789,10 @@ class HelpdeskTicket(models.Model):
         """
         stage = self.env['helpdesk.stage'].browse(stage_id)
         stages = self.env['helpdesk.stage'].search([('sequence', '<=', stage.sequence), ('team_ids', 'in', self.mapped('team_id').ids)])  # take previous stages
-        self.env['helpdesk.sla.status'].search([
-            ('ticket_id', 'in', self.ids),
-            ('sla_stage_id', 'in', stages.ids),
-            ('reached_datetime', '=', False),
-        ]).write({'reached_datetime': fields.Datetime.now()})
+        sla_status = self.env['helpdesk.sla.status'].search([('ticket_id', 'in', self.ids)])
+        sla_not_reached = sla_status.filtered(lambda sla: not sla.reached_datetime and sla.sla_stage_id in stages)
+        sla_not_reached.write({'reached_datetime': fields.Datetime.now()})
+        (sla_status - sla_not_reached).filtered(lambda x: x.sla_stage_id not in stages).write({'reached_datetime': False})
 
     def assign_ticket_to_self(self):
         self.ensure_one()

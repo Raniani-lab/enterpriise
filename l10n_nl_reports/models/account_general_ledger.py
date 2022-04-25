@@ -63,83 +63,95 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         def get_vals_dict():
             new_options = self.env['account.partner.ledger']._get_options_sum_balance(options)
             tables, where_clause, where_params = self._query_get(new_options)
-            self.env.cr.execute(f"""
-                SELECT DISTINCT ON (account_move_line.id)
-                       journal.id AS journal_id,
-                       journal.name AS journal_name,
-                       journal.code AS journal_code,
-                       journal.type AS journal_type,
-                       account_move_line__move_id.id AS move_id,
-                       account_move_line__move_id.name AS move_name,
-                       account_move_line__move_id.date AS move_date,
-                       account_move_line__move_id.amount_total AS move_amount,
-                       account_move_line__move_id.move_type IN ('out_invoice', 'out_refund', 'in_refund', 'in_invoice', 'out_receipt', 'in_receipt') AS move_is_invoice,
-                       account_move_line.id AS line_id,
-                       account_move_line.name AS line_name,
-                       account_move_line.display_type AS line_display_type,
-                       account_move_line.ref AS line_ref,
-                       account_move_line.date AS line_date,
-                       account_move_line.credit AS line_credit,
-                       account_move_line.debit AS line_debit,
-                       account_move_line.full_reconcile_id AS line_reconcile_id,
-                       account_move_line.partner_id AS line_partner_id,
-                       account_move_line.move_id AS line_move_id,
-                       account_move_line.move_name AS line_move_name,
-                       account_move_line.amount_currency AS line_amount_currency,
-                       account.id AS account_id,
-                       account.name AS account_name,
-                       account.code AS account_code,
-                       account.write_uid AS account_write_uid,
-                       account.write_date AS account_write_date,
-                       account_type.type AS account_type,
-                       reconcile.name AS line_reconcile_name,
-                       currency.name AS line_currency_name,
-                       partner.id AS partner_id,
-                       partner.name AS partner_name,
-                       partner.commercial_company_name AS partner_commercial_company_name,
-                       partner.commercial_partner_id AS partner_commercial_partner_id,
-                       partner.is_company AS partner_is_company,
-                       parent_partner.name AS partner_contact_name,
-                       partner.phone AS partner_phone,
-                       partner.email AS partner_email,
-                       partner.website AS partner_website,
-                       partner.vat AS partner_vat,
-                       credit_limit.value_float AS partner_credit_limit,
-                       partner.street AS partner_street,
-                       partner.city AS partner_city,
-                       partner.zip AS partner_zip,
-                       state.name AS partner_state_name,
-                       partner.country_id AS partner_country_id,
-                       partner_bank.id AS partner_bank_id,
-                       partner_bank.sanitized_acc_number AS partner_sanitized_acc_number,
-                       bank.bic AS partner_bic,
-                       partner.write_uid AS partner_write_uid,
-                       partner.write_date AS partner_write_date,
-                       partner.customer_rank AS partner_customer_rank,
-                       partner.supplier_rank AS partner_supplier_rank,
-                       country.code AS partner_country_code,
-                       tax.id AS tax_id,
-                       tax.name AS tax_name
-                  FROM {tables}
-                  JOIN account_journal journal ON account_move_line.journal_id = journal.id
-                  JOIN account_account account ON account_move_line.account_id = account.id
-                  JOIN account_account_type account_type ON account.user_type_id = account_type.id
-                  JOIN res_partner partner ON account_move_line.partner_id = partner.id
-                  LEFT JOIN account_tax tax ON account_move_line.tax_line_id = tax.id
-                  LEFT JOIN account_full_reconcile reconcile ON account_move_line.full_reconcile_id = reconcile.id
-                  LEFT JOIN res_currency currency ON account_move_line.currency_id = currency.id
-                  LEFT JOIN res_country country ON partner.country_id = country.id
-                  LEFT JOIN res_partner_bank partner_bank ON partner.id = partner_bank.partner_id
-                  LEFT JOIN res_bank bank ON partner_bank.bank_id = bank.id
-                  LEFT JOIN res_country_state state ON partner.state_id = state.id
-                  LEFT JOIN ir_property credit_limit ON credit_limit.res_id = 'res.partner,' || partner.id AND credit_limit.name = 'credit_limit'
-                  LEFT JOIN res_partner parent_partner ON parent_partner.id = partner.parent_id
-                 WHERE {where_clause}
-                 ORDER BY account_move_line.id
-            """, where_params)
+
+            # Count the total number of lines to be used in the batching
+            self.env.cr.execute(f"SELECT COUNT(*) FROM {tables} WHERE {where_clause}", where_params)
+            count = self.env.cr.fetchone()[0]
+            batch_size = 10**4
+            # Create a list to store the query results during the batching
+            res_list = []
+
+            for offset in range(0, count, batch_size):
+                self.env.cr.execute(f"""
+                    SELECT DISTINCT ON (account_move_line.id)
+                           journal.id AS journal_id,
+                           journal.name AS journal_name,
+                           journal.code AS journal_code,
+                           journal.type AS journal_type,
+                           account_move_line__move_id.id AS move_id,
+                           account_move_line__move_id.name AS move_name,
+                           account_move_line__move_id.date AS move_date,
+                           account_move_line__move_id.amount_total AS move_amount,
+                           account_move_line__move_id.move_type IN ('out_invoice', 'out_refund', 'in_refund', 'in_invoice', 'out_receipt', 'in_receipt') AS move_is_invoice,
+                           account_move_line.id AS line_id,
+                           account_move_line.name AS line_name,
+                           account_move_line.display_type AS line_display_type,
+                           account_move_line.ref AS line_ref,
+                           account_move_line.date AS line_date,
+                           account_move_line.credit AS line_credit,
+                           account_move_line.debit AS line_debit,
+                           account_move_line.full_reconcile_id AS line_reconcile_id,
+                           account_move_line.partner_id AS line_partner_id,
+                           account_move_line.move_id AS line_move_id,
+                           account_move_line.move_name AS line_move_name,
+                           account_move_line.amount_currency AS line_amount_currency,
+                           account.id AS account_id,
+                           account.name AS account_name,
+                           account.code AS account_code,
+                           account.write_uid AS account_write_uid,
+                           account.write_date AS account_write_date,
+                           account_type.type AS account_type,
+                           reconcile.name AS line_reconcile_name,
+                           currency.name AS line_currency_name,
+                           partner.id AS partner_id,
+                           partner.name AS partner_name,
+                           partner.commercial_company_name AS partner_commercial_company_name,
+                           partner.commercial_partner_id AS partner_commercial_partner_id,
+                           partner.is_company AS partner_is_company,
+                           parent_partner.name AS partner_contact_name,
+                           partner.phone AS partner_phone,
+                           partner.email AS partner_email,
+                           partner.website AS partner_website,
+                           partner.vat AS partner_vat,
+                           credit_limit.value_float AS partner_credit_limit,
+                           partner.street AS partner_street,
+                           partner.city AS partner_city,
+                           partner.zip AS partner_zip,
+                           state.name AS partner_state_name,
+                           partner.country_id AS partner_country_id,
+                           partner_bank.id AS partner_bank_id,
+                           partner_bank.sanitized_acc_number AS partner_sanitized_acc_number,
+                           bank.bic AS partner_bic,
+                           partner.write_uid AS partner_write_uid,
+                           partner.write_date AS partner_write_date,
+                           partner.customer_rank AS partner_customer_rank,
+                           partner.supplier_rank AS partner_supplier_rank,
+                           country.code AS partner_country_code,
+                           tax.id AS tax_id,
+                           tax.name AS tax_name
+                      FROM {tables}
+                      JOIN account_journal journal ON account_move_line.journal_id = journal.id
+                      JOIN account_account account ON account_move_line.account_id = account.id
+                      JOIN account_account_type account_type ON account.user_type_id = account_type.id
+                      JOIN res_partner partner ON account_move_line.partner_id = partner.id
+                      LEFT JOIN account_tax tax ON account_move_line.tax_line_id = tax.id
+                      LEFT JOIN account_full_reconcile reconcile ON account_move_line.full_reconcile_id = reconcile.id
+                      LEFT JOIN res_currency currency ON account_move_line.currency_id = currency.id
+                      LEFT JOIN res_country country ON partner.country_id = country.id
+                      LEFT JOIN res_partner_bank partner_bank ON partner.id = partner_bank.partner_id
+                      LEFT JOIN res_bank bank ON partner_bank.bank_id = bank.id
+                      LEFT JOIN res_country_state state ON partner.state_id = state.id
+                      LEFT JOIN ir_property credit_limit ON credit_limit.res_id = 'res.partner,' || partner.id AND credit_limit.name = 'credit_limit'
+                      LEFT JOIN res_partner parent_partner ON parent_partner.id = partner.parent_id
+                     WHERE {where_clause}
+                     ORDER BY account_move_line.id
+                     LIMIT {batch_size}
+                    OFFSET {offset}
+                """, where_params)
+                res_list += self.env.cr.dictfetchall()
 
             vals_dict = {}
-            for row in self.env.cr.dictfetchall():
+            for row in res_list:
                 # Aggregate taxes' values
                 if row['tax_id']:
                     vals_dict.setdefault('tax_data', {})

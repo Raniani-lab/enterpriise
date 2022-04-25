@@ -8,7 +8,7 @@ class HelpdeskTicketCreateTimesheet(models.TransientModel):
     _name = 'helpdesk.ticket.create.timesheet'
     _description = "Create Timesheet from ticket"
 
-    time_spent = fields.Float('Time', digits=(16, 2))
+    time_spent = fields.Float('Time')
     description = fields.Char('Description')
     ticket_id = fields.Many2one(
         'helpdesk.ticket', "Ticket", required=True,

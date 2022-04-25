@@ -32,11 +32,11 @@ class ProductPricing(models.Model):
     unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks"), ("month", "Months"), ('year', 'Years')],
                             string="Unit", required=True, default='day')
     price = fields.Monetary(string="Price", required=True, default=1.0)
-    currency_id = fields.Many2one('res.currency', 'Currency', default=lambda self: self.env.company.currency_id.id, required=True)
+    currency_id = fields.Many2one('res.currency', 'Currency', compute='_compute_currency_id', store=True)
     product_template_id = fields.Many2one('product.template', string="Product Templates", help="Select products on which this pricing will be applied.")
     product_variant_ids = fields.Many2many('product.product', string="Product Variants",
                                            help="Select Variants of the Product for which this rule applies. Leave empty if this rule applies for any variant of this template.")
-    pricelist_id = fields.Many2one('product.pricelist', compute='_compute_pricelist_id', store=True, readonly=False)
+    pricelist_id = fields.Many2one('product.pricelist')
     company_id = fields.Many2one('res.company', related='pricelist_id.company_id')
 
     _sql_constraints = [
@@ -59,9 +59,13 @@ class ProductPricing(models.Model):
             description += _("/%s", pricing.unit)
             pricing.description = description
 
-    def _compute_pricelist_id(self):
-        for pricing in self.filtered('pricelist_id'):
-            pricing.currency_id = pricing.pricelist_id.currency_id
+    @api.depends('pricelist_id')
+    def _compute_currency_id(self):
+        for pricing in self:
+            if pricing.pricelist_id:
+                pricing.currency_id = pricing.pricelist_id.currency_id
+            else:
+                pricing.currency_id = self.env.company.currency_id
 
     def _compute_price(self, duration, unit):
         """Compute the price for a specified duration of the current pricing rule.

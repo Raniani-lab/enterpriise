@@ -295,7 +295,7 @@ class DHLProvider():
             item.Quantity = int(rounded_qty)
             item.QuantityUnit = 'PCS'  # Pieces - very generic
             if len(line.product_id.name) > 75:
-                raise UserError(_("DHL doens't support products with name greater than 75 characters."))
+                raise UserError(_("DHL doesn't support products with name greater than 75 characters."))
             item.Description = line.product_id.name
             item.Value = line.sale_price
             item.Weight = item.GrossWeight = {

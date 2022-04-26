@@ -11,7 +11,7 @@
                         <field name="youtube_use_own_account"/>
                     </div>
                     <div class="o_setting_right_pane">
-                        <label for="youtube_use_own_account" class="oe_inline o_form_label" string="Youtube Developper Account"/>
+                        <label for="youtube_use_own_account" class="oe_inline o_form_label" string="Youtube Developer Account"/>
                         <div class="content-group" attrs="{'invisible': [('youtube_use_own_account', '=', False)]}">
                             <div class="mt16">
                                 <label for="youtube_oauth_client_id" string="OAuth Client ID" class="col-3 col-lg-3 o_form_label"/>

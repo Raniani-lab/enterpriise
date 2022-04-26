@@ -382,7 +382,7 @@ class HrPayslip(models.Model):
         if invalid_payslips:
             raise ValidationError(_('The following employees have a contract outside of the payslip period:\n%s', '\n'.join(invalid_payslips.mapped('employee_id.name'))))
         if any(slip.contract_id.state == 'cancel' for slip in self):
-            raise ValidationError(_('You cannot valide a payslip on which the contract is cancelled'))
+            raise ValidationError(_('You cannot validate a payslip on which the contract is cancelled'))
         if any(slip.state == 'cancel' for slip in self):
             raise ValidationError(_("You can't validate a cancelled payslip."))
         self.write({'state' : 'done'})

@@ -12,7 +12,7 @@ class RentalProcessing(models.TransientModel):
         string="Has lines with tracked products", compute='_compute_has_tracked_lines')
 
     has_lines_missing_stock = fields.Boolean(
-        string="Has lines whose products have unsufficient stock", compute="_compute_has_lines_missing_stock")
+        string="Has lines whose products have insufficient stock", compute="_compute_has_lines_missing_stock")
 
     @api.depends('rental_wizard_line_ids')
     def _compute_has_tracked_lines(self):

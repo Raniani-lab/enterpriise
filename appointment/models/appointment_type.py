@@ -44,7 +44,7 @@ class AppointmentType(models.Model):
         ], string="Category", default="website",
         help="""Used to define this appointment type's category.
         Can be one of:
-            - Website: the default category, the people can access and shedule the appointment with users from the website
+            - Website: the default category, the people can access and schedule the appointment with users from the website
             - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots """)
     min_schedule_hours = fields.Float('Schedule before (hours)', required=True, default=1.0)
     max_schedule_days = fields.Integer('Schedule not after (days)', required=True, default=15)

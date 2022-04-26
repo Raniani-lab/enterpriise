@@ -76,7 +76,7 @@ class IrModel(models.Model):
 
     abstract = fields.Boolean(compute='_compute_abstract',
                               store=False,
-                              help="Wheter this model is abstract",
+                              help="Whether this model is abstract",
                               search='_search_abstract')
 
     def _compute_abstract(self):

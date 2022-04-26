@@ -232,7 +232,7 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
             workers_data[contract_type]['fte'] += 1 * calendar.work_time_rate / 100.0
 
             if (gender, contract.employee_id.certificate) not in mapped_certificates:
-                raise UserError(_("The employee %s doens't have a specified certificate", contract.employee_id.name))
+                raise UserError(_("The employee %s doesn't have a specified certificate", contract.employee_id.name))
             gender_code = '120' if gender == 'male' else '121'
             workers_data[gender_code][contract_time] += 1
             workers_data[gender_code]['fte'] += 1 * calendar.work_time_rate / 100.0

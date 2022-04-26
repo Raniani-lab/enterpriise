@@ -64,7 +64,7 @@
 
     <t t-name="Appointment.appointment_info_no_slot">
         <div class="mx-auto">
-            <p class="text-center">Sorry, we have no availabilty for an appointment.<br/></p>
+            <p class="text-center">Sorry, we have no availability for an appointment.<br/></p>
             <t t-call="Appointment.no_slot_svg"/>
         </div>
     </t>
@@ -72,7 +72,7 @@
     <t t-name="Appointment.appointment_info_no_slot_month">
         <p class="text-center">
             Sorry, we have no more slot available for this month.
-            Our first availabilty is<br/>
+            Our first availability is<br/>
             <a href="#" id="next_available_slot" t-esc="date_first_availability"/>
         </p>
         <t t-call="Appointment.no_slot_svg"/>

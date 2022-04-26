@@ -139,7 +139,7 @@ class AccountOnlineLink(models.Model):
     refresh_token = fields.Char(help="Token used to sign API request, Never disclose it",
                                 readonly=True, groups="base.group_system")
     access_token = fields.Char(help="Token used to access API.", readonly=True, groups="account.group_account_user")
-    provider_data = fields.Char(help="Information needed to interract with third party provider", readonly=True)
+    provider_data = fields.Char(help="Information needed to interact with third party provider", readonly=True)
     expiring_synchronization_date = fields.Date(help="Date when the consent for this connection expires",
                                                 readonly=True)
 

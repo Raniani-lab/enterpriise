@@ -253,7 +253,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
     def test_flexible_consumption_1c(self):
         """ Production with a strict consumption
-        Check that consuming the right amount of component doens't trigger any error"""
+        Check that consuming the right amount of component doesn't trigger any error"""
 
         self.env['quality.point'].create({
             'product_ids': [(4, self.submarine_pod.id)],

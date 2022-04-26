@@ -51,7 +51,7 @@ class SDDMandate(models.Model):
         help="Invoices paid using this mandate.")
     paid_invoices_nber = fields.Integer(string='Paid Invoices Number',
         compute='_compute_from_moves',
-        help="Number of invoices paid with thid mandate.")
+        help="Number of invoices paid with this mandate.")
     payment_ids = fields.One2many(string='Payments', comodel_name='account.payment',
         compute='_compute_from_moves',
         help="Payments generated thanks to this mandate.")

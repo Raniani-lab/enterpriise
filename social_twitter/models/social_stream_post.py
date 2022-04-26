@@ -320,7 +320,7 @@ class SocialStreamPostTwitter(models.Model):
             account.write({'is_media_disconnected': True})
             raise UserError(_('You are not authenticated'))
 
-        raise UserError(_('Unkown error'))
+        raise UserError(_('Unknown error'))
 
     # ========================================================
     # UTILITY / MISC

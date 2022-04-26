@@ -35,9 +35,9 @@
                             </div>
                         </div>
                     </div>
-                    <h2>Developper Accounts</h2>
+                    <h2>Developer Accounts</h2>
                     <h3 class="text-muted">Use your own Developer Accounts on our Social app.
-                        Those credentials are provided in the developper section of your professional social media account.</h3>
+                        Those credentials are provided in the developer section of your professional social media account.</h3>
                     <div class="row mt16 o_settings_container o_social_developper_settings"></div>
                 </div>
             </xpath>

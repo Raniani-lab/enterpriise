@@ -17,7 +17,7 @@ class HrSalaryAttachmentReport(models.Model):
     payslip_end_date = fields.Date(readonly=True)
     company_id = fields.Many2one('res.company', readonly=True)
     attachment_amount = fields.Float(string="Attachment of Salary", readonly=True)
-    assignment_amount = fields.Float(string="Assigment of Salary", readonly=True)
+    assignment_amount = fields.Float(string="Assignment of Salary", readonly=True)
     child_support_amount = fields.Float(string="Child Support", readonly=True)
 
     def init(self):

@@ -29,7 +29,7 @@ class AccountBankStatementImport(models.TransientModel):
         help="Technical field used to ask the user for the date format used in the QIF file, as this format is ambiguous.")
     qif_date_format = fields.Selection([('month_first', "mm/dd/yy"), ('day_first', "dd/mm/yy")], string='Dates format', store=False,
         help="Although the historic QIF date format is month-first (mm/dd/yy), many financial institutions use the local format."
-             "Therefore, it is frequent outside the US to have QIF date formated day-first (dd/mm/yy).")
+             "Therefore, it is frequent outside the US to have QIF date formatted day-first (dd/mm/yy).")
 
     @api.onchange('attachment_ids')
     def _onchange_data_file(self):

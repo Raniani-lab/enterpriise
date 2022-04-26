@@ -62,7 +62,7 @@ class HelpdeskSLAStatus(models.Model):
     reached_datetime = fields.Datetime("Reached Date", help="Datetime at which the SLA stage was reached for the first time")
     status = fields.Selection([('failed', 'Failed'), ('reached', 'Reached'), ('ongoing', 'Ongoing')], string="Status", compute='_compute_status', compute_sudo=True, search='_search_status')
     color = fields.Integer("Color Index", compute='_compute_color')
-    exceeded_hours = fields.Float("Excedeed Working Hours", compute='_compute_exceeded_hours', compute_sudo=True, store=True, help="Working hours exceeded for reached SLAs compared with deadline. Positive number means the SLA was reached after the deadline.")
+    exceeded_hours = fields.Float("Exceeded Working Hours", compute='_compute_exceeded_hours', compute_sudo=True, store=True, help="Working hours exceeded for reached SLAs compared with deadline. Positive number means the SLA was reached after the deadline.")
 
     @api.depends('ticket_id.create_date', 'sla_id', 'ticket_id.stage_id')
     def _compute_deadline(self):

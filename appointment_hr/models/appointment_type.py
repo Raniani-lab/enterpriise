@@ -26,7 +26,7 @@ class AppointmentType(models.Model):
         selection_add=[('work_hours', 'Work Hours')],
         help="""Used to define this appointment type's category.
         Can be one of:
-            - Website: the default category, the people can access and shedule the appointment with users from the website
+            - Website: the default category, the people can access and schedule the appointment with users from the website
             - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots
             - Work Hours: a special type of appointment type that is used by one user and which takes the working hours of this
                 user as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots

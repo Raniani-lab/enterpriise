@@ -139,6 +139,6 @@ class HrLeave(models.Model):
                         found = True
                         break
                 if not found:
-                    raise UserError(_('Not enough attendance work entries to report the time off %s. Plase make the operation manually', leave.display_name))
+                    raise UserError(_('Not enough attendance work entries to report the time off %s. Please make the operation manually', leave.display_name))
         # Should change payslip_state to 'done' at the same time
         self.activity_feedback(['hr_payroll_holidays.mail_activity_data_hr_leave_to_defer'])

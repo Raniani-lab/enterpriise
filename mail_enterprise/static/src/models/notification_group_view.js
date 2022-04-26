@@ -23,6 +23,6 @@ addRecordMethods('NotificationGroupView', {
      * @returns {FieldCommand}
      */
     _computeSwiperView() {
-        return (this.messaging.device.isMobile && this.notificationGroup.notifications.length) > 0 ? insertAndReplace() : clear();
+        return (this.messaging.device.isSmall && this.notificationGroup.notifications.length) > 0 ? insertAndReplace() : clear();
     },
 });

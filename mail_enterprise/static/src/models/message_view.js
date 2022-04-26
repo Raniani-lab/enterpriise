@@ -27,7 +27,7 @@ addRecordMethods('MessageView', {
         return (
             this.messaging &&
             this.messaging.device &&
-            this.messaging.device.isMobile &&
+            this.messaging.device.isSmall &&
             this.message &&
             this.message.isNeedaction &&
             this.threadView &&

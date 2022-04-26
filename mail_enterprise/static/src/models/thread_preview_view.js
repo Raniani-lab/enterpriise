@@ -24,7 +24,7 @@ addRecordMethods('ThreadPreviewView', {
      */
     _computeSwiperView() {
         return (
-            this.messaging.device.isMobile &&
+            this.messaging.device.isSmall &&
             (
                 (this.thread.isChatChannel && this.thread.isPinned) ||
                 (this.thread.localMessageUnreadCounter > 0)

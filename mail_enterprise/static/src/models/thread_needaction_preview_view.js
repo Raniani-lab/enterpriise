@@ -23,6 +23,6 @@ addRecordMethods('ThreadNeedactionPreviewView', {
      * @returns {FieldCommand}
      */
     _computeSwiperView() {
-        return this.messaging.device.isMobile ? insertAndReplace() : clear();
+        return this.messaging.device.isSmall ? insertAndReplace() : clear();
     },
 });

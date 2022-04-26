@@ -187,10 +187,7 @@ class IrModel(models.Model):
 
     def _setup_one2many_lines(self):
         # create the Line model
-        model_name = self.model.replace('.', '_')
-        if model_name[:2] != 'x_':
-            model_name = 'x_' + model_name
-        model_values, field_values = self._values_lines(model_name)
+        model_values, field_values = self._values_lines(self.model)
         line_model = self.create(model_values)
         line_model._setup_access_rights()
         self.env['ir.ui.view'].create_automatic_views(line_model.model)
@@ -203,6 +200,8 @@ class IrModel(models.Model):
         """
         # create the Line model
         model_table = model_name.replace('.', '_')
+        if not model_table.startswith('x_'):
+            model_table = 'x_' + model_table
         model_line_name = model_table[2:] + '_line'
         model_line_model = model_table + '_line_' + uuid.uuid4().hex[:5]
         relation_field_name = model_table + '_id'
@@ -230,7 +229,7 @@ class IrModel(models.Model):
             ],
         }
         field_values = {
-            'name': model_name + '_line_ids_' + uuid.uuid4().hex[:5],
+            'name': model_table + '_line_ids_' + uuid.uuid4().hex[:5],
             'ttype': 'one2many',
             'relation': model_line_model,
             'relation_field': relation_field_name,

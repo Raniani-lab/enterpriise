@@ -401,7 +401,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
                 'account_id': self.company_data['default_account_revenue'].id,
             })],
         })
-        self.env['res.partner'].create({'name': 'Test', 'vat': 'BE0000000000'})     # this match the partner found in the server response
+        self.env['res.partner'].create({'name': 'Test', 'vat': 'BE0477472701'})     # this match the partner found in the server response
         extract_response = self.get_default_extract_response()
 
         with self.mock_iap_extract(extract_response, {}):

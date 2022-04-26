@@ -8,7 +8,7 @@ class TestReportEditor(TransactionCase):
 
     def setUp(self):
         super(TestReportEditor, self).setUp()
-        self.session = DotDict({'debug': False})
+        self.session = DotDict({'debug': ''})
         self.is_frontend = False
         _request_stack.push(self)  # crappy hack to use a fake Request
         self.WebStudioController = WebStudioController()

@@ -13,7 +13,7 @@ class TestStudioController(TransactionCase):
         super().setUp()
         self.env = api.Environment(self.cr, odoo.SUPERUSER_ID, {'load_all_views': True})
         _request_stack.push(self)
-        self.session = DotDict({'debug': False})
+        self.session = DotDict({'debug': ''})
         self.studio_controller = WebStudioController()
 
     def tearDown(self):

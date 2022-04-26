@@ -53,7 +53,7 @@ MockServer.include({
         for (const activity of activities) {
             if (activity.res_model === 'approval.request') {
                 // check on activity type being approval not done here for simplicity
-                const approver = this._getRecords('approval.approver', [
+                const approver = this.getRecords('approval.approver', [
                     ['request_id', '=', activity.res_id],
                     ['user_id', '=', activity.user_id[0]],
                 ])[0];

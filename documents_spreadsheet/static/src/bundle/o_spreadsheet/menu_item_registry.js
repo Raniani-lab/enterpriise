@@ -34,6 +34,16 @@ topbarMenuRegistry.addChild("download", ["file"], {
     isReadonlyAllowed: true,
 });
 
+topbarMenuRegistry.addChild("clear_history", ["file"], {
+    name: _lt("Clear history"),
+    sequence: 60,
+    isVisible: (env) => env.debug,
+    action: (env) => {
+        env.model.session.snapshot(env.model.exportData());
+        window.location.reload();
+    },
+});
+
 topbarMenuRegistry.add("data", {
     name: _lt("Data"),
     sequence: 60,

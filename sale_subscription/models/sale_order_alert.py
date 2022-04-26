@@ -72,7 +72,7 @@ class SaleOrderAlert(models.Model):
         for alert in self:
             domain = [('is_subscription', '=', True)]
             if alert.subscription_template_ids:
-                domain += [('template_id', 'in', alert.subscription_template_ids.ids)]
+                domain += [('sale_order_template_id', 'in', alert.subscription_template_ids.ids)]
             if alert.customer_ids:
                 domain += [('partner_id', 'in', alert.customer_ids.ids)]
             if alert.team_ids:

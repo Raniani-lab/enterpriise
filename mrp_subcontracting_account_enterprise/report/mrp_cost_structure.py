@@ -26,7 +26,7 @@ class MrpCostStructure(models.AbstractModel):
                 move_fin = mos_subcontracted.move_finished_ids.filtered(lambda m: m.state != 'cancel' and m.product_id == m.production_id.product_id)
                 if not move_fin:
                     continue
-                unit_cost = subcontracted_move.price_unit
+                unit_cost = mos_subcontracted.extra_cost
                 partner = subcontracted_move.partner_id or subcontracted_move.picking_id.partner_id
                 vals['subcontracting'].append({
                     'cost': unit_cost * subcontracted_move.product_qty,

@@ -102,7 +102,7 @@
                     </div>
                     <div class="clearfix"/>
                     <div class="col pr-0">
-                        <form id="slots_form" class="form o_website_appointment_form">
+                        <form id="slots_form" class="form o_website_appointment_form" autocomplete="off">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <input type="hidden" name="appointment_type_id" t-att-value="appointment_type.id"/>
                             <input type="hidden" name="invite_token" t-att-value="invite_token"/>
@@ -196,11 +196,13 @@
                 <div class="mt-lg-0 mt-3">
                     <div class="d-flex">
                         <label for="timezone" class="col-form-label">Timezone: </label>
-                        <select class="text-primary form-control border-0 px-1" id="timezone" name="timezone" style="cursor: pointer; appearance:none">
-                            <t t-foreach="appointment_type._fields['appointment_tz'].selection(appointment_type)" t-as="tz">
-                                <option t-att-value="tz[0]" t-out="tz[1]" t-att-selected="(tz[0] == timezone) or None" />
-                            </t>
-                        </select>
+                        <form autocomplete="off">
+                            <select class="text-primary form-control border-0 px-1" id="timezone" name="timezone" style="cursor: pointer; appearance:none">
+                                <t t-foreach="appointment_type._fields['appointment_tz'].selection(appointment_type)" t-as="tz">
+                                    <option t-att-value="tz[0]" t-out="tz[1]" t-att-selected="(tz[0] == timezone) or None" />
+                                </t>
+                            </select>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@ class HrPlanWizard(models.TransientModel):
 
             self.env['hr.contract.sign.document.wizard'].create({
                 'contract_id': employee.contract_id.id,
-                'employee_id': employee.id,
+                'employee_ids': [(4, employee.id)],
                 'responsible_id': responsible.id,
                 'employee_role_id': employee_role and employee_role.id,
                 'sign_template_ids': [(4, signature_request.sign_template_id.id)],

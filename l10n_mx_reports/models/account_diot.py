@@ -58,8 +58,7 @@ class MxReportPartnerLedger(models.AbstractModel):
             ('date', '>=', options['date']['date_from']),
             ('move_id.state', '=', 'posted'),
         ]
-        tables, where_clause, where_params = self.env[
-            'account.move.line']._query_get(domain)
+        tables, where_clause, where_params = self._query_get(options, domain=domain)
         tables += ',"account_move_line_account_tax_rel"'
         line_clause = line_id and\
             ' AND \"account_move_line\".partner_id = ' + str(line_id) or ''

@@ -73,14 +73,20 @@ cellMenuRegistry
         async action(env) {
             const cell = env.model.getters.getActiveCell();
             const {col, row, sheetId } = env.model.getters.getCellPosition(cell.id);
-            const { args } = getFirstPivotFunction(cell.content);
+            const { args, functionName } = getFirstPivotFunction(cell.content);
             const evaluatedArgs = args
                 .map(astToFormula)
                 .map((arg) => env.model.getters.evaluateFormula(arg));
             const pivotId = env.model.getters.getPivotIdFromPosition(sheetId, col, row);
             const { model } = env.model.getters.getPivotDefinition(pivotId);
             const pivotModel = await env.model.getters.getAsyncSpreadsheetPivotModel(pivotId);
-            const domain = pivotModel.getPivotCellDomain(evaluatedArgs.slice(2));
+            const slice = functionName === "PIVOT.HEADER" ? 1 : 2
+            let argsDomain = evaluatedArgs.slice(slice);
+            if (argsDomain[argsDomain.length - 2] === "measure") {
+                // We have to remove the measure from the domain
+                argsDomain = argsDomain.slice(0, argsDomain.length - 2)
+            }
+            const domain = pivotModel.getPivotCellDomain(argsDomain);
             const name = pivotModel.getModelLabel();
             await env.services.action.doAction({
                 type: "ir.actions.act_window",

@@ -1079,6 +1079,45 @@ test("Format header correctly works with non-existing field", async function (as
     assert.equal(getCellValue(model, "G11"), "(Undefined)");
 });
 
+QUnit.test("Can open see records on headers col", async function (assert) {
+    const { env, model } = await createSpreadsheetFromPivot();
+    selectCell(model, "B1");
+    await nextTick();
+    const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+    await root.action(env);
+    const currentAction = env.services.action.currentController.action;
+    assert.equal(
+        JSON.stringify(currentAction.domain),
+        `[["foo","=",1]]`
+    );
+});
+
+QUnit.test("Can open see records on headers row", async function (assert) {
+    const { env, model } = await createSpreadsheetFromPivot();
+    selectCell(model, "A3");
+    await nextTick();
+    const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+    await root.action(env);
+    const currentAction = env.services.action.currentController.action;
+    assert.equal(
+        JSON.stringify(currentAction.domain),
+        `[["bar","=",false]]`
+    );
+});
+
+QUnit.test("Can open see records on measure headers", async function (assert) {
+    const { env, model } = await createSpreadsheetFromPivot();
+    selectCell(model, "B2");
+    await nextTick();
+    const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+    await root.action(env);
+    const currentAction = env.services.action.currentController.action;
+    assert.equal(
+        JSON.stringify(currentAction.domain),
+        `[["foo","=",1]]`
+    );
+});
+
 QUnit.test("Can reopen a sheet after see records", async function (assert) {
     assert.expect(1);
     const { webClient, spreadsheetAction } = await createSpreadsheetFromPivot();

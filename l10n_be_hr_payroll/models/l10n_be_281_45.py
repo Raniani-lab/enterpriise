@@ -367,7 +367,7 @@ class L10nBe28145Line(models.Model):
                 sheet_filename = '%s-%s-281_45' % (sheet_data['f2002_inkomstenjaar'], sheet_data['f2013_naam'])
                 employee_lang = sheet_data['employee'].sudo().address_home_id.lang
                 sheet_file, dummy = template_sudo.with_context(lang=employee_lang)._render_qweb_pdf(
-                    sheet_data['employee_id'], data={**sheet_data, **rendering_data['data']})
+                    [sheet_data['employee_id']], data={**sheet_data, **rendering_data['data']})
                 pdf_files.append((sheet_data['employee'], sheet_filename, sheet_file))
 
             if pdf_files:

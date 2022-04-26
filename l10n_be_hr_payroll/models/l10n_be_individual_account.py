@@ -162,7 +162,7 @@ class L10nBeIndividualAccountLine(models.Model):
                 employee_lang = employee.sudo().address_home_id.lang
                 sheet_filename = _('%s-individual-account-%s', employee.name, sheet.year)
                 sheet_file, dummy = template_sudo.with_context(lang=employee_lang)._render_qweb_pdf(
-                    employee.id, data={
+                    [employee.id], data={
                         'year': int(sheet.year),
                         'employee_data': {employee: employee_data}})
                 pdf_files.append((employee, sheet_filename, sheet_file))

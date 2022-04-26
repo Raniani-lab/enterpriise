@@ -545,7 +545,11 @@ class L10nBe28110Line(models.Model):
             rendering_data = sheet.with_context(no_round_281_10=True)._get_rendering_data(lines.employee_id)
             for sheet_values in rendering_data['employees_data']:
                 for key, value in sheet_values.items():
-                    if not value:
+                    if isinstance(value, int) and value == 0:
+                        sheet_values[key] = '0.00 €'
+                    elif isinstance(value, float):
+                        sheet_values[key] = '{:,.2f} €'.format(value)
+                    elif not value:
                         sheet_values[key] = _('None')
             template_sudo = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_10').sudo()
 
@@ -557,8 +561,8 @@ class L10nBe28110Line(models.Model):
                 counter += 1
                 sheet_filename = '%s-%s-281_10' % (sheet_data['f2002_inkomstenjaar'], sheet_data['f2013_naam'])
                 employee_lang = sheet_data['employee'].sudo().address_home_id.lang
-                sheet_file, dummy = template_sudo.with_context(lang=employee_lang)._render_qweb_pdf(
-                    sheet_data['employee_id'], data={**sheet_data, **rendering_data['data']})
+                sheet_file, dummy = template_sudo.with_context(lang=employee_lang, allowed_company_ids=sheet_data['employee'].company_id.ids)._render_qweb_pdf(
+                    [sheet_data['employee_id']], data={**sheet_data, **rendering_data['data']})
                 pdf_files.append((sheet_data['employee'], sheet_filename, sheet_file))
 
             if pdf_files:

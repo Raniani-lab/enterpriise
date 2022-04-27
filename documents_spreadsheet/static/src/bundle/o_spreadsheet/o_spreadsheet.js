@@ -17208,6 +17208,7 @@
                     break;
                 case "START_EDITION":
                     this.startEdition(cmd.text, cmd.selection);
+                    this.updateRangeColor();
                     break;
                 case "STOP_EDITION":
                     if (cmd.cancel) {
@@ -17217,9 +17218,11 @@
                     else {
                         this.stopEdition();
                     }
+                    this.colorIndexByRange = {};
                     break;
                 case "SET_CURRENT_CONTENT":
                     this.setContent(cmd.content, cmd.selection);
+                    this.updateRangeColor();
                     break;
                 case "REPLACE_COMPOSER_CURSOR_SELECTION":
                     this.replaceSelection(cmd.text);
@@ -17347,9 +17350,12 @@
             const end = tokens[tokens.length - 1].end;
             const newContent = content.slice(0, start) + updatedReferences + content.slice(end);
             const lengthDiff = newContent.length - content.length;
-            this.setContent(newContent, {
-                start: refTokens[0].start,
-                end: refTokens[refTokens.length - 1].end + lengthDiff,
+            this.dispatch("SET_CURRENT_CONTENT", {
+                content: newContent,
+                selection: {
+                    start: refTokens[0].start,
+                    end: refTokens[refTokens.length - 1].end + lengthDiff,
+                },
             });
         }
         validateSelection(length, start, end) {
@@ -17558,6 +17564,32 @@
                 selection: { start: end, end },
             });
         }
+        updateRangeColor() {
+            if (!this.currentContent.startsWith("=") || this.mode === "inactive") {
+                return;
+            }
+            const editionSheetId = this.getters.getEditionSheet();
+            const XCs = this.getReferencedRanges().map((range) => this.getters.getRangeString(range, editionSheetId));
+            const colorsToKeep = {};
+            for (const xc of XCs) {
+                if (this.colorIndexByRange[xc] !== undefined) {
+                    colorsToKeep[xc] = this.colorIndexByRange[xc];
+                }
+            }
+            const usedIndexes = new Set(Object.values(colorsToKeep));
+            let currentIndex = 0;
+            const nextIndex = () => {
+                while (usedIndexes.has(currentIndex))
+                    currentIndex++;
+                usedIndexes.add(currentIndex);
+                return currentIndex;
+            };
+            for (const xc of XCs) {
+                const colorIndex = xc in colorsToKeep ? colorsToKeep[xc] : nextIndex();
+                colorsToKeep[xc] = colorIndex;
+            }
+            this.colorIndexByRange = colorsToKeep;
+        }
         /**
          * Highlight all ranges that can be found in the composer content.
          */
@@ -17565,34 +17597,28 @@
             if (!this.currentContent.startsWith("=") || this.mode === "inactive") {
                 return [];
             }
-            const ranges = [];
-            const colorIndexByRange = {};
-            for (let token of this.currentTokens.filter((token) => token.type === "REFERENCE")) {
-                let value = token.value;
-                const [xc, sheet] = value.split("!").reverse();
-                if (rangeReference.test(xc)) {
-                    const refSanitized = (sheet ? `${sheet}!` : `${this.getters.getSheetName(this.getters.getEditionSheet())}!`) +
-                        xc.replace(/\$/g, "");
-                    ranges.push(refSanitized);
-                    const colorIndex = this.colorIndexByRange[refSanitized];
-                    if (colorIndex !== undefined) {
-                        colorIndexByRange[refSanitized] = colorIndex;
-                    }
-                }
-            }
-            this.colorIndexByRange = colorIndexByRange;
-            let colorIndexes = Object.values(colorIndexByRange);
-            let nextColorIndex = 0;
-            return ranges.map((r) => {
-                if (this.colorIndexByRange[r] === undefined) {
-                    while (colorIndexes.includes(nextColorIndex)) {
-                        nextColorIndex++;
-                    }
-                    colorIndexes.push(nextColorIndex);
-                    this.colorIndexByRange[r] = nextColorIndex;
-                }
-                return [r, colors$1[this.colorIndexByRange[r] % colors$1.length]];
+            const editionSheetId = this.getters.getEditionSheet();
+            const rangeColor = (rangeString) => {
+                const colorIndex = this.colorIndexByRange[rangeString];
+                return colors$1[colorIndex % colors$1.length];
+            };
+            return this.getReferencedRanges().map((range) => {
+                const rangeString = this.getters.getRangeString(range, editionSheetId);
+                return {
+                    zone: range.zone,
+                    color: rangeColor(rangeString),
+                    sheetId: range.sheetId,
+                };
             });
+        }
+        /**
+         * Return ranges currently referenced in the composer
+         */
+        getReferencedRanges() {
+            const editionSheetId = this.getters.getEditionSheet();
+            return this.currentTokens
+                .filter((token) => token.type === "REFERENCE")
+                .map((token) => this.getters.getRangeFromSheetXC(editionSheetId, token.value));
         }
         /**
          * Function used to determine when composer selection can start.
@@ -18946,24 +18972,16 @@
         // ---------------------------------------------------------------------------
         // Other
         // ---------------------------------------------------------------------------
-        prepareHighlights(ranges) {
-            if (ranges.length === 0) {
-                return [];
-            }
-            const activeSheetId = this.getters.getActiveSheetId();
-            const preparedHighlights = [];
-            for (let [r1c1, color] of ranges) {
-                const [xc, sheet] = r1c1.split("!").reverse();
-                const sheetId = sheet ? this.getters.getSheetIdByName(sheet) : activeSheetId;
-                if (sheetId) {
-                    const zone = this.getters.expandZone(activeSheetId, toZone(xc));
-                    preparedHighlights.push({ zone, color, sheet: sheetId });
-                }
-            }
-            return preparedHighlights.filter((x) => x.zone.top >= 0 &&
+        prepareHighlights(highlights) {
+            return highlights
+                .filter((x) => x.zone.top >= 0 &&
                 x.zone.left >= 0 &&
-                x.zone.bottom < this.getters.getSheet(x.sheet).rows.length &&
-                x.zone.right < this.getters.getSheet(x.sheet).cols.length);
+                x.zone.bottom < this.getters.getSheet(x.sheetId).rows.length &&
+                x.zone.right < this.getters.getSheet(x.sheetId).cols.length)
+                .map((highlight) => ({
+                ...highlight,
+                zone: this.getters.expandZone(highlight.sheetId, highlight.zone),
+            }));
         }
         // ---------------------------------------------------------------------------
         // Grid rendering
@@ -18983,7 +19001,7 @@
              */
             for (let h of this.getHighlights().filter((highlight, index) => 
             // For every highlight in the sheet, deduplicated by zone
-            this.getHighlights().findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheet === sheetId) === index)) {
+            this.getHighlights().findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheetId === sheetId) === index)) {
                 const [x, y, width, height] = this.getters.getRect(h.zone, viewport);
                 if (width > 0 && height > 0) {
                     ctx.strokeStyle = h.color;
@@ -20350,18 +20368,15 @@
          * Invalid ranges and ranges from other sheets than the active sheets
          * are ignored.
          */
-        inputToHighlights({ xc, color, }) {
-            const ranges = this.cleanInputs([xc])
+        inputToHighlights({ xc, color }) {
+            const XCs = this.cleanInputs([xc])
                 .filter((range) => this.getters.isRangeValid(range))
                 .filter((reference) => this.shouldBeHighlighted(this.activeSheet, reference));
-            if (ranges.length === 0)
-                return [];
-            const [fromInput, ...otherRanges] = ranges;
-            const highlights = [[fromInput, color || getNextColor()]];
-            for (const range of otherRanges) {
-                highlights.push([range, getNextColor()]);
-            }
-            return highlights;
+            return XCs.map((xc) => ({
+                zone: toZone(xc),
+                sheetId: this.activeSheet,
+                color,
+            }));
         }
         cleanInputs(ranges) {
             return ranges
@@ -23065,12 +23080,15 @@
                 ev.preventDefault();
                 return;
             }
-            // only for arrow up and down
-            if (this.props.focus === "cellFocus" && !this.autoCompleteState.showProvider) {
+            const content = this.env.model.getters.getCurrentContent();
+            if (this.props.focus === "cellFocus" &&
+                !this.autoCompleteState.showProvider &&
+                !content.startsWith("=")) {
                 this.env.model.dispatch("STOP_EDITION");
                 return;
             }
             ev.stopPropagation();
+            // only for arrow up and down
             if (["ArrowUp", "ArrowDown"].includes(ev.key) &&
                 this.autoCompleteState.showProvider &&
                 this.autocompleteAPI) {
@@ -23300,7 +23318,7 @@
             const refSheet = sheetName
                 ? this.env.model.getters.getSheetIdByName(sheetName)
                 : this.env.model.getters.getEditionSheet();
-            const highlight = highlights.find((highlight) => highlight.sheet === refSheet &&
+            const highlight = highlights.find((highlight) => highlight.sheetId === refSheet &&
                 isEqual(this.env.model.getters.expandZone(refSheet, toZone(xc)), highlight.zone));
             return highlight && highlight.color ? highlight.color : undefined;
         }
@@ -23569,7 +23587,7 @@
                 this.state.background = def.background;
             }
         }
-        showMenu(ev) {
+        getMenuItemRegistry() {
             const registry = new MenuItemRegistry();
             registry.add("edit", {
                 name: _lt("Edit"),
@@ -23599,17 +23617,28 @@
                     });
                 },
             });
-            this.openContextMenu(ev.currentTarget, registry);
+            return registry;
         }
-        openContextMenu(target, registry) {
+        onContextMenu(ev) {
+            ev.preventDefault();
+            const position = {
+                x: this.position.x + ev.offsetX,
+                y: this.position.y + ev.offsetY,
+            };
+            this.openContextMenu(position);
+        }
+        showMenu(ev) {
+            const target = ev.currentTarget;
             const x = target.offsetLeft;
             const y = target.offsetTop;
+            const position = { x: this.position.x + x - MENU_WIDTH, y: this.position.y + y };
+            this.openContextMenu(position);
+        }
+        openContextMenu(position) {
+            const registry = this.getMenuItemRegistry();
             this.menuState.isOpen = true;
             this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
-            this.menuState.position = {
-                x: this.position.x + x - MENU_WIDTH,
-                y: this.position.y + y,
-            };
+            this.menuState.position = position;
         }
     }
     ChartFigure.template = "o-spreadsheet.ChartFigure";
@@ -30637,8 +30666,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-04-22T09:44:33.192Z';
-    exports.__info__.hash = 'a1d601e';
+    exports.__info__.date = '2022-04-27T07:08:13.101Z';
+    exports.__info__.hash = '4c088fc';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

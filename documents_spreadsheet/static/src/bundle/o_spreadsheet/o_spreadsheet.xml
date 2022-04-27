@@ -230,7 +230,7 @@
   </t>
 
   <t t-name="o-spreadsheet.ChartFigure" owl="1">
-    <div class="o-chart-container" t-ref="chartContainer">
+    <div class="o-chart-container" t-ref="chartContainer" t-on-contextmenu="onContextMenu">
       <div class="o-chart-menu" t-on-click="showMenu">
         <t t-call="o-spreadsheet.Icon.LIST"/>
       </div>
@@ -381,7 +381,7 @@
       </t>
       <t t-if="env.model.getters.getEditionMode() !== 'inactive'">
         <t t-foreach="env.model.getters.getHighlights()" t-as="highlight" t-key="highlight_index">
-          <t t-if="highlight.sheet === env.model.getters.getActiveSheetId()">
+          <t t-if="highlight.sheetId === env.model.getters.getActiveSheetId()">
             <Highlight zone="highlight.zone" color="highlight.color"/>
           </t>
         </t>

@@ -358,3 +358,22 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
             self.assertEqual(picking.state, 'done')
             self.assertEqual(len(picking.move_line_ids_without_package), 1)
             self.assertEqual(picking.move_line_ids_without_package.qty_done, 1)
+
+    def test_fsm_qty(self):
+        """ Making sure industry_fsm_stock/Product.set_fsm_quantity()
+            returns the same result as industry_fsm_sale/Product.set_fsm_quantity()
+        """
+        self.task.write({'partner_id': self.partner_1.id})
+        product = self.product_ordered.with_context({'fsm_task_id': self.task.id})
+
+        product.type = 'consu'
+        self.assertEqual(product.set_fsm_quantity(-1), None)
+        self.assertTrue(product.set_fsm_quantity(1))
+
+        product.tracking = 'lot'
+        self.assertIn('name', product.set_fsm_quantity(2))
+
+        product.tracking = 'none'
+        self.task.with_user(self.project_user).action_fsm_validate()
+        self.task.sale_order_id.sudo().state = 'done'
+        self.assertFalse(product.set_fsm_quantity(3))

@@ -108,3 +108,22 @@ class ProductProduct(models.Model):
             'res_id': validation.id,
             'views': [(False, 'form')]
         }
+
+    def set_fsm_quantity(self, quantity):
+        old_qty = self.fsm_quantity
+        res = super().set_fsm_quantity(quantity)
+
+        if res and old_qty > quantity:
+            # Check if we can remove from delivery order, else raise an error.
+            qty2remove = old_qty - quantity
+            delivery = self._get_contextual_fsm_task().sale_order_id.picking_ids
+            if delivery:
+                available_moves = delivery.move_lines.filtered(lambda d: d.state != 'done' and d.product_id == self)
+                for move in available_moves:
+                    removable = min(move.product_uom_qty - move.quantity_done, qty2remove)
+                    qty2remove -= removable
+                    move.product_uom_qty -= removable
+                if qty2remove > 0:
+                    raise UserError(_("You cannot have a quantity inferior to the number of items which have already been delivered."))
+
+        return res

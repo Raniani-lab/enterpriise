@@ -78,6 +78,15 @@ class AccountAvatax(models.AbstractModel):
         """
         raise NotImplementedError()  # implement in business document
 
+    def _get_avatax_ship_to_partner(self):
+        """Get the customer's shipping address.
+
+        This assumes that partner_id exists on models using this class.
+
+        :return (Model): a `res.partner` record
+        """
+        return self.partner_id
+
     # #############################################################################################
     # HELPERS
     # #############################################################################################
@@ -151,7 +160,7 @@ class AccountAvatax(models.AbstractModel):
         partner = self.partner_id.commercial_partner_id
         document_date, tax_date = self._get_avatax_dates()
         taxes = {
-            'addresses': self._get_avatax_addresses(self.partner_id),
+            'addresses': self._get_avatax_addresses(self._get_avatax_ship_to_partner()),
             'companyCode': self.company_id.partner_id.avalara_partner_code or '',
             'customerCode': partner.avalara_partner_code or partner.avatax_unique_code,
             'entityUseCode': partner.with_company(self.company_id).avalara_exemption_id.code or '',

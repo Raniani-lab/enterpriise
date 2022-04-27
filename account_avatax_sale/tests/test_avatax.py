@@ -83,9 +83,19 @@ class TestAccountAvalaraSalesTaxItemsIntegration(TestAccountAvataxCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
         res = super().setUpClass(chart_template_ref)
+        shipping_partner = cls.env["res.partner"].create({
+            'name': "Shipping Partner",
+            'street': "234 W 18th Ave",
+            'city': "Columbus",
+            'state_id': cls.env.ref("base.state_us_30").id, # Ohio
+            'country_id': cls.env.ref("base.us").id,
+            'zip': "43210",
+        })
+
         with cls._capture_request(return_value={'lines': [], 'summary': []}) as capture:
             cls.sale_order = cls.env['sale.order'].create({
                 'partner_id': cls.partner.id,
+                'partner_shipping_id': shipping_partner.id,
                 'fiscal_position_id': cls.fp_avatax.id,
                 'date_order': '2021-01-01',
                 'order_line': [
@@ -149,11 +159,11 @@ class TestAccountAvalaraSalesTaxItemsIntegration(TestAccountAvataxCommon):
         """Value that is sent to AvaTax for Destination Address at the header level."""
         destination_address = self.captured_arguments['json']['addresses']['shipTo']
         self.assertEqual(destination_address, {
-            'city': 'San Francisco',
+            'city': 'Columbus',
             'country': 'US',
-            'line1': '2280 Market St',
-            'postalCode': '94114',
-            'region': 'CA',
+            'line1': '234 W 18th Ave',
+            'postalCode': '43210',
+            'region': 'OH',
         })
 
     def test_header_level_origin_address(self):

@@ -575,7 +575,7 @@ class ResCompany(models.Model):
         res.raise_for_status()
 
         root = etree.fromstring(res.text.encode())
-        rate_date = fields.Date.to_string(datetime.datetime.strptime(root.attrib['Date'], '%d/%m/%Y'))
+        rate_date = fields.Date.to_string(datetime.datetime.strptime(root.attrib['Date'], '%m/%d/%Y'))
         rslt = {
             currency.attrib['Kod']: (2 / (float(currency.find('ForexBuying').text) + float(currency.find('ForexSelling').text)), rate_date)
             for currency in root

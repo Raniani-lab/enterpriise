@@ -36,6 +36,7 @@ class DataMergeRecord(models.Model):
     record_create_uid = fields.Char(string='Created By', compute='_compute_fields')
     record_write_date = fields.Datetime(string='Updated On', compute='_compute_fields')
     record_write_uid = fields.Char(string='Updated By', compute='_compute_fields')
+    company_id = fields.Many2one('res.company', compute='_compute_fields', search='_search_company_id')
 
     differences = fields.Char(string='Differences',
         help='Differences with the master record', compute='_compute_differences', store=True)
@@ -44,6 +45,18 @@ class DataMergeRecord(models.Model):
     used_in = fields.Char(string='Used In',
         help='List of other models referencing this record', compute='_compute_usage', store=True)
 
+    #############
+    ### Searchs
+    #############
+    def _search_company_id(self, operator, value):
+        records = self.search([])
+        if operator == 'in':
+            records = records.filtered(lambda r: r.company_id.id in value)
+        elif operator == '=':
+            records = records.filtered(lambda r: r.company_id.id == value)
+        else:
+            raise NotImplementedError()
+        return [('id', 'in', records.ids)]
 
     #############
     ### Computes
@@ -175,6 +188,7 @@ class DataMergeRecord(models.Model):
 
             record.is_deleted = record.res_id not in existing_records.keys()
             record.name = name if name else '*Record Deleted*'
+            record.company_id = original_record._fields.get('company_id') and original_record.company_id
             record.record_create_date = original_record.create_date
             record.record_create_uid = original_record.create_uid.name or '*Deleted*'
             record.record_write_date = original_record.write_date

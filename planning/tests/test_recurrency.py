@@ -383,6 +383,53 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             recurrency.action_remove_all()
             self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 0, 'calling remove after on any slot from the recurrency remove all slots linked to the recurrency')
 
+    def test_recurrency_interval_type(self):
+        """ Since the recurrency cron is meant to run every week, make sure generation works accordingly when
+            both the company's repeat span and the repeat interval are much larger
+            Company's span is 12 month and repeat_interval is 1 and repeat_unit are day/week/month/year
+            Test Case:
+            ---------
+                - create slot with repeat_unit set as day
+                - delete extra slots except original one
+                - update repeat_unit to week and repeat_until according slots we need to generate
+                - delete extra slots except original one
+                - date repeat_unit to month and repeat_until according slots we need to generate
+                - delete extra slots except original one
+                - update repeat_unit to year and repeat_until according slots we need to generates
+        """
+
+        with self._patch_now('2020-04-20 08:00:00'):
+            self.configure_recurrency_span(12)
+
+            slot = self.env['planning.slot'].create({
+                        'start_datetime': datetime(2020, 4, 20, 8, 0, 0),
+                        'end_datetime': datetime(2020, 4, 20, 17, 0, 0),
+                        'resource_id': self.resource_joseph.id,
+                        'repeat': True,
+                        'repeat_interval': 1,
+                        'repeat_unit': 'day',
+                        'repeat_type': 'until',
+                        'repeat_until': datetime(2020, 4, 24, 8, 0, 0),
+                    })
+
+            # generated 5 slots
+            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 5, 'first run should generated 5 slots')
+
+            def _modify_slot(repeat_unit, repeat_until):
+                slot.write({
+                    'repeat_unit': repeat_unit,
+                    'repeat_until': repeat_until,
+                })
+
+            _modify_slot('week', datetime(2020, 5, 11, 8, 0, 0)) # generated 4 slots
+            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 4, 'After change unit to week generated slots should be 4')
+
+            _modify_slot('month', datetime(2020, 8, 31, 8, 0, 0)) # generated 5 slots
+            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 5, 'After change unit to month generated slots should be 5')
+
+            _modify_slot('year', datetime(2020, 4, 26, 8, 0, 0)) # generated 1 slot
+            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 1, 'After change unit to year generated slots should be 1')
+
     # ---------------------------------------------------------
     # Recurring Slot Misc
     # ---------------------------------------------------------

@@ -13,6 +13,12 @@ class PlanningRecurrency(models.Model):
 
     slot_ids = fields.One2many('planning.slot', 'recurrency_id', string="Related Planning Entries")
     repeat_interval = fields.Integer("Repeat Every", default=1, required=True)
+    repeat_unit = fields.Selection([
+        ('day', 'Days'),
+        ('week', 'Weeks'),
+        ('month', 'Months'),
+        ('year', 'Years'),
+    ], default='week', required=True)
     repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until'), ('x_times', 'Number of Repetitions')], string='Weeks', default='forever')
     repeat_until = fields.Datetime(string="Repeat Until", help="Up to which date should the plannings be repeated")
     repeat_number = fields.Integer(string="Repetitions", help="No Of Repetitions of the plannings")
@@ -83,7 +89,7 @@ class PlanningRecurrency(models.Model):
                 range_limit = min([dt for dt in [recurrence_end_dt, stop_datetime] if dt])
 
                 # generate recurring slots
-                recurrency_delta = get_timedelta(recurrency.repeat_interval, 'week')
+                recurrency_delta = get_timedelta(recurrency.repeat_interval, recurrency.repeat_unit)
                 next_start = PlanningSlot._add_delta_with_dst(slot.start_datetime, recurrency_delta)
 
                 slot_values_list = []
@@ -117,4 +123,4 @@ class PlanningRecurrency(models.Model):
     def _get_recurrence_last_datetime(self):
         self.ensure_one()
         end_datetime = self.env['planning.slot'].search_read([('recurrency_id', '=', self.id)], ['end_datetime'], order='end_datetime', limit=1)
-        return end_datetime[0]['end_datetime'] + timedelta(weeks=self.repeat_number * self.repeat_interval)
+        return end_datetime[0]['end_datetime'] + get_timedelta(self.repeat_number * self.repeat_interval, self.repeat_unit)

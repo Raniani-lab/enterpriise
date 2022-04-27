@@ -108,7 +108,7 @@
                                     <div class="d-flex">
                                         <label for="repeat_interval" string="Every"/>
                                         <field name="repeat_interval" class="flex-shrink-1"/>
-                                        <span class="ml-1">Weeks</span>
+                                        <field name="repeat_unit" class="col-2 col-lg-1 mx-2"/>
                                     </div>
                                     <div class="d-flex">
                                         <field name="repeat_type" nolabel="1" attrs="{'required': [('repeat', '=', True)]}" class="flex-shrink-1" />

@@ -17,11 +17,8 @@ class ResPartner(models.Model):
 
     payment_next_action_date = fields.Date('Next Action Date', copy=False, company_dependent=True,
                                            help="The date before which no action should be taken.")
-    unreconciled_aml_ids = fields.One2many('account.move.line', 'partner_id',
-                                           domain=[('reconciled', '=', False),
-                                                   ('account_id.deprecated', '=', False),
-                                                   ('account_id.internal_type', '=', 'receivable'),
-                                                   ('move_id.state', '=', 'posted')])
+    unreconciled_aml_ids = fields.One2many('account.move.line', compute='_compute_unreconciled_aml_ids')
+
     unpaid_invoices = fields.One2many('account.move', compute='_compute_unpaid_invoices')
     total_due = fields.Monetary(compute='_compute_for_followup')
     total_overdue = fields.Monetary(compute='_compute_for_followup')
@@ -109,6 +106,27 @@ class ResPartner(models.Model):
                 ('payment_state', 'in', ('not_paid', 'partial')),
                 ('move_type', 'in', self.env['account.move'].get_sale_types())
             ]).filtered(lambda inv: not any(inv.line_ids.mapped('blocked')))
+
+    @api.depends('invoice_ids')
+    @api.depends_context('company', 'allowed_company_ids')
+    def _compute_unreconciled_aml_ids(self):
+        values = {
+            read['partner_id'][0]: read['line_ids']
+            for read in self.env['account.move.line'].read_group(
+                domain=[
+                    ('reconciled', '=', False),
+                    ('account_id.deprecated', '=', False),
+                    ('account_id.internal_type', '=', 'receivable'),
+                    ('move_id.state', '=', 'posted'),
+                    ('partner_id', 'in', self.ids),
+                    ('company_id', '=', self.env.company.id),
+                ],
+                fields=['line_ids:array_agg(id)'],
+                groupby=['partner_id']
+            )
+        }
+        for partner in self:
+            partner.unreconciled_aml_ids = values.get(partner.id, False)
 
     def get_next_action(self, followup_line):
         """

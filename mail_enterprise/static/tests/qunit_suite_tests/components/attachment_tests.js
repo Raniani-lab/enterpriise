@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { link } from '@mail/model/model_field_command';
+import { link, replace } from '@mail/model/model_field_command';
 
 import {
     afterNextRender,
@@ -40,7 +40,7 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
     });
     const message = messaging.models['Message'].create({
         attachments: link(attachment),
-        author: link(messaging.currentPartner),
+        author: replace(messaging.currentPartner),
         body: "<p>Test</p>",
         id: 100,
     });
@@ -86,7 +86,7 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
     });
     const message = messaging.models['Message'].create({
         attachments: link(attachment),
-        author: link(messaging.currentPartner),
+        author: replace(messaging.currentPartner),
         body: "<p>Test</p>",
         id: 100,
     });

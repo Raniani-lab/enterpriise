@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { insertAndReplace, link } from '@mail/model/model_field_command';
+import { insertAndReplace, replace } from '@mail/model/model_field_command';
 import {
     afterNextRender,
     start,
@@ -41,7 +41,7 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
     const threadViewer = messaging.models['ThreadViewer'].create({
         hasThreadView: true,
         qunitTest: insertAndReplace(),
-        thread: link(thread),
+        thread: replace(thread),
     });
     await createThreadViewComponent(threadViewer.threadView);
 

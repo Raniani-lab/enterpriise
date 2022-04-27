@@ -1,13 +1,13 @@
 /** @odoo-module **/
 
-import { PivotView } from "@web/views/pivot/pivot_view";
+import { pivotView } from "@web/views/pivot/pivot_view";
 import { registry } from "@web/core/registry";
 
 const { onMounted, onPatched, useRef } = owl;
 
 const viewRegistry = registry.category("views");
 
-class TimesheetPivotView extends PivotView {
+class TimesheetPivotController extends pivotView.Controller {
     setup() {
         super.setup();
         onMounted(this.bindPlayStoreIcon);
@@ -56,6 +56,9 @@ class TimesheetPivotView extends PivotView {
     }
 }
 
-TimesheetPivotView.template = "timesheet_grid.PivotView";
+TimesheetPivotController.template = "timesheet_grid.PivotView";
 
-viewRegistry.add("timesheet_pivot_view", TimesheetPivotView);
+viewRegistry.add("timesheet_pivot_view", {
+    ...pivotView,
+    Controller: TimesheetPivotController,
+});

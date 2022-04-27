@@ -35,7 +35,7 @@ import { browser } from "@web/core/browser/browser";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
-import { GraphView } from "@web/views/graph/graph_view";
+import { graphView } from "@web/views/graph/graph_view";
 import { actionService } from "@web/webclient/actions/action_service";
 import { companyService } from "@web/webclient/company_service";
 import { DashboardModel } from "@web_dashboard/dashboard_model";
@@ -2053,7 +2053,7 @@ QUnit.module("Views", (hooks) => {
         assert.expect(9);
 
         let graph = null;
-        patchWithCleanup(GraphView.prototype, {
+        patchWithCleanup(graphView.Controller.prototype, {
             setup() {
                 graph = this;
                 this._super();
@@ -2716,7 +2716,7 @@ QUnit.module("Views", (hooks) => {
         assert.expect(6);
 
         let graph = null;
-        patchWithCleanup(GraphView.prototype, {
+        patchWithCleanup(graphView.Controller.prototype, {
             setup() {
                 graph = this;
                 this._super();

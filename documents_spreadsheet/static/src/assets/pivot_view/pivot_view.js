@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
-import { PivotView } from "@web/views/pivot/pivot_view";
+import { PivotController} from "@web/views/pivot/pivot_controller";
+import { pivotView } from "@web/views/pivot/pivot_view";
 import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
@@ -9,7 +10,7 @@ import { removeContextUserInfo } from "../helpers";
 
 const { onWillStart } = owl;
 
-patch(PivotView.prototype, "pivot_spreadsheet", {
+patch(PivotController.prototype, "pivot_spreadsheet", {
     setup() {
         this._super.apply(this, arguments);
         this.userService = useService("user");
@@ -84,4 +85,4 @@ patch(PivotView.prototype, "pivot_spreadsheet", {
     },
 });
 
-PivotView.buttonTemplate = "documents_spreadsheet.PivotView.buttons";
+pivotView.buttonTemplate = "documents_spreadsheet.PivotView.buttons";

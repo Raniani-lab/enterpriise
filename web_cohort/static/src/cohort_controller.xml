@@ -42,7 +42,7 @@
         <div t-att-class="props.className">
             <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''">
                 <t t-set-slot="control-panel-bottom-left">
-                    <t t-call="{{ constructor.buttonTemplate }}"/>
+                    <t t-call="{{ props.buttonTemplate }}"/>
                 </t>
                 <t t-set="displayNoContent" t-value="
                     props.info.noContentHelp !== false and (
@@ -56,7 +56,7 @@
                     <t t-else="" t-call="web.NoContentHelper"/>
                 </t>
                 <t t-if="model.hasData()">
-                    <Renderer class="'o_renderer'" model="model" onRowClicked="(row) => this.onRowClicked(row)"/>
+                    <t t-component="props.Renderer" class="'o_renderer'" model="model" onRowClicked="(row) => this.onRowClicked(row)"/>
                 </t>
             </Layout>
         </div>

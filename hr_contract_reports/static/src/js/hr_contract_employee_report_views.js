@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
 import { registry } from '@web/core/registry';
-import { GraphView } from '@web/views/graph/graph_view';
-import { PivotView } from '@web/views/pivot/pivot_view';
+import { graphView } from '@web/views/graph/graph_view';
+import { pivotView } from '@web/views/pivot/pivot_view';
 import { useService } from "@web/core/utils/hooks";
 
 import Widget from 'web.Widget';
@@ -37,7 +37,7 @@ function openView(title, domain, context, orm, actionService) {
     })
 }
 
-export class HrContractEmployeeReportGraphView extends GraphView {
+export class HrContractEmployeeReportGraphController extends graphView.Controller {
     /**
      * @override
      */
@@ -54,9 +54,12 @@ export class HrContractEmployeeReportGraphView extends GraphView {
     }
 }
 
-viewRegistry.add("contract_employee_report_graph", HrContractEmployeeReportGraphView);
+viewRegistry.add("contract_employee_report_graph", {
+    ...graphView,
+    Controller: HrContractEmployeeReportGraphController,
+});
 
-export class HrContractEmployeeReportPivotView extends PivotView {
+export class HrContractEmployeeReportPivotController extends pivotView.Controller {
     /**
      * @override
      */
@@ -73,7 +76,10 @@ export class HrContractEmployeeReportPivotView extends PivotView {
     }
 }
 
-viewRegistry.add("contract_employee_report_pivot", HrContractEmployeeReportPivotView);
+viewRegistry.add("contract_employee_report_pivot", {
+    ...pivotView,
+    Controller: HrContractEmployeeReportPivotController
+});
 
 export const HrContractEmployeeReportPieChart = PieChart.extend({
     /**

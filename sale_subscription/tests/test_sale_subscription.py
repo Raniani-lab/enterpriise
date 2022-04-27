@@ -1326,21 +1326,21 @@ class TestSubscription(TestSubscriptionCommon):
             periods = sub.order_line.mapped('next_invoice_date')
             for p in periods:
                 self.assertEqual(p, datetime.datetime(2023, 1, 1), 'the first year should be invoiced')
-            upsell_so.with_context(arj=True).action_confirm()
-            periods = sub.order_line.with_context(arj=True).mapped('next_invoice_date')
+            upsell_so.action_confirm()
+            periods = sub.order_line.mapped('next_invoice_date')
             expected_values = [datetime.datetime(2023, 1, 1), datetime.datetime(2023, 1, 1), datetime.datetime(2023, 1, 1)]
             for idx in range(3):
                 self.assertEqual(periods[idx], expected_values[idx], 'the first year should be invoiced')
             # We trigger the invoice cron before the generation of the upsell invoice
-            self.env['sale.order'].with_context(arj=True)._cron_recurring_create_invoice()
-            inv = sub.invoice_ids.sorted('date')[-1]
-            self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")
-        with freeze_time("2022-07-01"):
-            upsell_invoice = upsell_so.with_context(arj=True)._create_invoices()
             self.env['sale.order']._cron_recurring_create_invoice()
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")
-            self.assertEqual(upsell_invoice.amount_untaxed, 252.05, "The upsell amount should be equal to 252.05")
+        with freeze_time("2022-07-01"):
+            upsell_invoice = upsell_so._create_invoices()
+            self.env['sale.order']._cron_recurring_create_invoice()
+            inv = sub.invoice_ids.sorted('date')[-1]
+            self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")
+            self.assertEqual(upsell_invoice.amount_untaxed, 267.1, "The upsell amount should be equal to 267.1")
 
         with freeze_time("2023-01-01"):
             self.env['sale.order']._cron_recurring_create_invoice()

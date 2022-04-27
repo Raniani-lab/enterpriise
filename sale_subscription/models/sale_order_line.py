@@ -76,26 +76,28 @@ class SaleOrderLine(models.Model):
     @api.depends('order_id.is_subscription', 'temporal_type')
     def _compute_start_date(self):
         """ Behave line a default for recurring lines. """
-        subscription_lines = self.filtered(lambda l: (l.order_id.is_subscription or l.order_id.subscription_management == 'upsell') and l.temporal_type == 'subscription')
-        super(SaleOrderLine, self - subscription_lines)._compute_start_date()
-        for line in subscription_lines:
+        other_lines = self.env['sale.order.line']
+        for line in self:
+            if not line.temporal_type == 'subscription':
+                other_lines |= line
+                continue
             if not line.start_date:
                 line.start_date = fields.Datetime.today()
+        super(SaleOrderLine, other_lines)._compute_start_date()
 
     @api.depends('order_id.is_subscription', 'temporal_type', 'start_date', 'pricing_id')
     def _compute_next_invoice_date(self):
-        other_line_ids = self.env['sale.order.line']
         upsell_line_ids = self.env['sale.order.line']
+        other_lines = self.env['sale.order.line']
         for line in self:
             if not (line.order_id.is_subscription or line.order_id.subscription_management == 'upsell') and not line.temporal_type == 'subscription':
-                # regular sale order line should be handled by super
-                other_line_ids |= line
+                line |= other_lines
             elif line.order_id.subscription_management == 'upsell' and line.order_id.subscription_id:
                 upsell_line_ids |= line
             elif line.pricing_id and not line.next_invoice_date:
                 line.next_invoice_date = line.start_date
         upsell_line_ids._set_upsell_next_invoice_date()
-        return super(SaleOrderLine, other_line_ids)._compute_next_invoice_date()
+        return super(SaleOrderLine, other_lines)._compute_next_invoice_date()
 
     def _set_upsell_next_invoice_date(self):
         """ Set the next invoice date according to the other values """
@@ -120,7 +122,8 @@ class SaleOrderLine(models.Model):
             # If we have yearly lines and add a new monthly line:
             #  --> we let the user decide
             else:
-                naive_nid = line.pricing_id and line.start_date and line.start_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
+                start_date = line.start_date or fields.Datetime.today()
+                naive_nid = line.pricing_id and start_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
                 next_invoice_dates = [val['next_invoice_date'] for key, val in order_default_values.items() if val['next_invoice_date'] <= naive_nid]
                 if next_invoice_dates:
                     # We only set a value if we have next_invoice_dates available. We let the user define one in the other case
@@ -129,9 +132,8 @@ class SaleOrderLine(models.Model):
     @api.depends('order_id.subscription_management', 'start_date', 'next_invoice_date')
     def _compute_discount(self):
         default_dates = self.order_id.order_line._get_previous_order_default_dates()
-        other_lines = self.env['sale.order.line']
-
         today = fields.Datetime.today()
+        other_lines = self.env['sale.order.line']
         for line in self:
             if not line.next_invoice_date or line.temporal_type != 'subscription' or line.order_id.subscription_management != 'upsell':
                 other_lines |= line
@@ -205,21 +207,25 @@ class SaleOrderLine(models.Model):
 
     @api.depends('product_id')
     def _compute_pricing(self):
-        subscription_lines = self.filtered('is_subscription_product')
-        super(SaleOrderLine, self - subscription_lines)._compute_pricing()
+        other_lines = self.env['sale.order.line']
         previous_lines = self.order_id.order_line.filtered('is_subscription_product')
-        for line in subscription_lines:
-            if not line.product_id:
+        for line in self:
+            if not line.is_subscription_product:
+                other_lines |= line
+                continue
+            if line.id:
+                # We don't compute pricings for existing lines. This compute is only used for default values of new lines
                 continue
             other_lines = previous_lines.filtered(lambda l: l.order_id == line.order_id) - line
             latest_pricing_id = other_lines and other_lines[-1].pricing_id
-            best_pricing_id = line.product_id.product_tmpl_id.product_pricing_ids and line.product_id.product_tmpl_id.product_pricing_ids[0]
+            best_pricing_id = line.product_id.product_tmpl_id.product_pricing_ids[:1]
             if latest_pricing_id:
                 pricing_match = line.product_id._get_best_pricing_rule(duration=latest_pricing_id.duration,
                                                                        unit=latest_pricing_id.unit)
                 if (pricing_match.duration, pricing_match.unit) == (latest_pricing_id.duration, latest_pricing_id.unit):
                     best_pricing_id = pricing_match
             line.pricing_id = best_pricing_id.id
+        super(SaleOrderLine, other_lines)._compute_pricing()
 
     @api.depends('start_date', 'order_id.state', 'invoice_lines')
     def _compute_last_invoice_date(self):

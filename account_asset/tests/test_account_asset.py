@@ -680,6 +680,8 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         # I check the proper depreciation lines created.
         self.assertEqual(10, len(self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')))
+        # Check if the future deprecation moves are set to be auto posted
+        self.assertTrue(all([move.auto_post for move in self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')]))
         # The values are unchanged
         self.assertRecordValues(self.truck, [values])
 

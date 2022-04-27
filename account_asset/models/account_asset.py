@@ -422,6 +422,7 @@ class AccountAsset(models.Model):
             del(newline_vals['amount_total'])
             newline_vals_list.append(newline_vals)
         new_moves = self.env['account.move'].create(newline_vals_list)
+        new_moves._post()
         for move in new_moves:
             commands.append((4, move.id))
         return self.write({'depreciation_move_ids': commands})

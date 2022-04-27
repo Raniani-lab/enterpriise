@@ -11,7 +11,7 @@ registerModel({
          * Approves the current `approval.approver`.
          */
         async approve() {
-            await this.async(() => this.env.services.rpc({
+            await this.async(() => this.messaging.rpc({
                 model: 'approval.approver',
                 method: 'action_approve',
                 args: [[this.id]],
@@ -25,7 +25,7 @@ registerModel({
          * Refuses the current `approval.approver`.
          */
         async refuse() {
-            await this.async(() => this.env.services.rpc({
+            await this.async(() => this.messaging.rpc({
                 model: 'approval.approver',
                 method: 'action_refuse',
                 args: [[this.id]],

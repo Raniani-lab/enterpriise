@@ -583,7 +583,3 @@ class TestPeEdiCommon(AccountEdiTestCommon):
                 'tax_ids': [(6, 0, self.tax_18.ids)],
             })],
         })
-
-    def _action_process_edi_web_services(self, moves):
-        docs = moves.edi_document_ids.filtered(lambda d: d.state in ('to_send', 'to_cancel') and d.blocking_level != 'error')
-        docs._process_documents_web_services(with_commit=False)

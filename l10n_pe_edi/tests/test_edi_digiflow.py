@@ -16,7 +16,7 @@ class TestEdiDigiflow(TestPeEdiCommon):
         move.action_post()
 
         # Send
-        self._action_process_edi_web_services(move)
+        move.action_process_edi_web_services(with_commit=False)
         generated_files = self._process_documents_web_services(move, {'pe_ubl_2_1'})
         self.assertTrue(generated_files)
         self.assertRecordValues(move, [{'edi_state': 'sent'}])
@@ -25,12 +25,12 @@ class TestEdiDigiflow(TestPeEdiCommon):
         move.l10n_pe_edi_cancel_reason = 'abc'
         move.button_cancel_posted_moves()
         self.assertFalse(move.l10n_pe_edi_cancel_cdr_number)
-        self._action_process_edi_web_services(move)
+        move.action_process_edi_web_services(with_commit=False)
         self.assertTrue(move.l10n_pe_edi_cancel_cdr_number)
         self.assertRecordValues(move, [{'edi_state': 'to_cancel'}])
 
         # Cancel step 2
-        self._action_process_edi_web_services(move)
+        move.action_process_edi_web_services(with_commit=False)
         self.assertRecordValues(move, [{'edi_state': 'cancelled'}])
 
     def test_20_refund_edi_flow(self):
@@ -38,7 +38,7 @@ class TestEdiDigiflow(TestPeEdiCommon):
         (move.reversed_entry_id + move).action_post()
 
         # Send
-        self._action_process_edi_web_services((move.reversed_entry_id + move))
+        (move.reversed_entry_id + move).action_process_edi_web_services(with_commit=False)
         generated_files = self._process_documents_web_services(move, {'pe_ubl_2_1'})
         self.assertTrue(generated_files)
         self.assertRecordValues(move, [{'edi_state': 'sent'}])
@@ -47,12 +47,12 @@ class TestEdiDigiflow(TestPeEdiCommon):
         move.l10n_pe_edi_cancel_reason = 'abc'
         move.button_cancel_posted_moves()
         self.assertFalse(move.l10n_pe_edi_cancel_cdr_number)
-        self._action_process_edi_web_services(move)
+        move.action_process_edi_web_services(with_commit=False)
         self.assertTrue(move.l10n_pe_edi_cancel_cdr_number)
         self.assertRecordValues(move, [{'edi_state': 'to_cancel'}])
 
         # Cancel step 2
-        self._action_process_edi_web_services(move)
+        move.action_process_edi_web_services(with_commit=False)
         self.assertRecordValues(move, [{'edi_state': 'cancelled'}])
 
     def test_30_debit_note_edi_flow(self):
@@ -60,7 +60,7 @@ class TestEdiDigiflow(TestPeEdiCommon):
         (move.debit_origin_id + move).action_post()
 
         # Send
-        self._action_process_edi_web_services((move.debit_origin_id + move))
+        (move.debit_origin_id + move).action_process_edi_web_services(with_commit=False)
         generated_files = self._process_documents_web_services(move, {'pe_ubl_2_1'})
         self.assertTrue(generated_files)
         self.assertRecordValues(move, [{'edi_state': 'sent'}])
@@ -69,10 +69,10 @@ class TestEdiDigiflow(TestPeEdiCommon):
         move.l10n_pe_edi_cancel_reason = 'abc'
         move.button_cancel_posted_moves()
         self.assertFalse(move.l10n_pe_edi_cancel_cdr_number)
-        self._action_process_edi_web_services(move)
+        move.action_process_edi_web_services(with_commit=False)
         self.assertTrue(move.l10n_pe_edi_cancel_cdr_number)
         self.assertRecordValues(move, [{'edi_state': 'to_cancel'}])
 
         # Cancel step 2
-        self._action_process_edi_web_services(move)
+        move.action_process_edi_web_services(with_commit=False)
         self.assertRecordValues(move, [{'edi_state': 'cancelled'}])

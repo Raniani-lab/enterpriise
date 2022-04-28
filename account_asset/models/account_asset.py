@@ -288,7 +288,7 @@ class AccountAsset(models.Model):
     @api.onchange('depreciation_move_ids')
     def _onchange_depreciation_move_ids(self):
         seq = 0
-        asset_remaining_value = self.original_value - self.already_depreciated_amount_import
+        asset_remaining_value = self.original_value - self.salvage_value - self.already_depreciated_amount_import
         cumulated_depreciation = 0
         for m in self.depreciation_move_ids.sorted(lambda x: x.date):
             seq += 1

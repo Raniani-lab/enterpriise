@@ -471,7 +471,7 @@ var accountReportsWidget = AbstractAction.extend({
 
             // Only the direct text node, not text situated in other child nodes
             const lineContent = $accountReportLineFoldable.find('.account_report_line_name').contents();
-            const lineText = lineContent.length > 0 ? lineContent.get(0).nodeValue.trim() : '';
+            const lineText = lineContent.get(0).nodeValue.trim();
 
             // The python does this too
             var queryFound = lineText.split(' ').some(function (str) {
@@ -484,6 +484,13 @@ var accountReportsWidget = AbstractAction.extend({
             if (!queryFound) {
                 self.filterOn = true;
             }
+        });
+        // Make sure all ancestors are displayed.
+        const $matchingChilds = this.$('tr[data-parent-id]:not(.o_account_reports_filtered_lines)');
+        $($matchingChilds.get().reverse()).each(function(index, el) {
+            const id = $.escapeSelector(String(el.dataset.parentId));
+            const $parent = self.$('.o_account_report_line[data-id="' + id + '"]');
+            $parent.closest('tr').toggleClass('o_account_reports_filtered_lines', false);
         });
         if (this.filterOn) {
             this.$('.o_account_reports_level1.total').hide();

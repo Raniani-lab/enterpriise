@@ -161,7 +161,7 @@
         </t>
         <t t-if="line.get('caret_options')">
             <t t-if="line.get('level')">
-                <t t-set="domainClass" t-value="'o_account_reports_domain_line_'+str(line['level'])"/>
+                <t t-set="domainClass" t-value="'o_account_reports_domain_line_' + str(line['level']) + ' account_report_line_name'"/>
             </t>
         </t>
 

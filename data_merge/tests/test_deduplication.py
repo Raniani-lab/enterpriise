@@ -76,6 +76,39 @@ class TestDeduplication(test_common.TestCommon):
         self.assertEqual(self.MyModel.records_to_merge_count, 7, '7 records should have been found')
         self.assertEqual(self.DMGroup.search_count([('model_id', '=', self.MyModel.id)]), 2, '2 groups should have been created')
 
+    def test_deduplication_threshold(self):
+        self._create_rule('x_name', 'exact')
+        self._create_rule('x_email', 'exact')
+
+        self._create_record('x_dm_test_model', x_name='toto', x_email='toto@example.com')
+        self._create_record('x_dm_test_model', x_name='toto', x_email='real_toto@example.com')
+
+        self.assertEqual(self.MyModel.create_threshold, 0, 'Suggestion Threshold shoud be at 0')
+
+        # Ensure that groups added both records
+        self.MyModel.find_duplicates()
+        self.MyModel._compute_records_to_merge_count()
+
+        self.assertEqual(self.MyModel.records_to_merge_count, 2, '2 record should have been found')
+
+        # Ensure that groups are removed after suggested threshold is changed to above similarity
+        self.MyModel.create_threshold = 70
+        self.MyModel._compute_records_to_merge_count()
+
+        self.assertEqual(self.MyModel.records_to_merge_count, 0, '0 record should have been found')
+
+        # Ensure that groups are not updated after suggested threshold is changed to bellow similarity
+        self.MyModel.create_threshold = 40
+        self.MyModel._compute_records_to_merge_count()
+
+        self.assertEqual(self.MyModel.records_to_merge_count, 0, '0 record should have been found')
+
+        # Ensure that groups are updated after find_duplicates
+        self.MyModel.find_duplicates()
+        self.MyModel._compute_records_to_merge_count()
+
+        self.assertEqual(self.MyModel.records_to_merge_count, 2, '2 record should have been found')
+
     def test_record_references(self):
         self._create_rule('x_name', 'exact')
 

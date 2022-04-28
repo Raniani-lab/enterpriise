@@ -1,25 +1,29 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* l10n_ch_reports
-#
+# 
+# Translators:
+# Martin Trigaux, 2022
+# Camille Spiritus, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-11 08:18+0000\n"
-"PO-Revision-Date: 2021-03-08 10:10+0000\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: \n"
+"POT-Creation-Date: 2021-03-08 09:38+0000\n"
+"PO-Revision-Date: 2022-04-28 11:40+0000\n"
+"Last-Translator: Camille Spiritus, 2022\n"
+"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: l10n_ch_reports
-#: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_1
-msgid "ASSETS"
-msgstr "AKTIVEN"
+#: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_10
+msgid "Current Assets"
+msgstr "UMLAUFVERMÖGEN"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_200
@@ -39,12 +43,12 @@ msgstr "Aktive Rechnungsabgrenzungen"
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_R
 msgid "Annual (net) profit or loss"
-msgstr "'= Jahresgewinn oder Jahresverlust"
+msgstr "Jahresgewinn oder Jahresverlust"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_rai
 msgid "Annual (net) profit or loss before taxes"
-msgstr "'= Jahresgewinn oder Jahresverlust vor Steuern"
+msgstr "Jahresgewinn oder Jahresverlust vor Steuern"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_299
@@ -52,9 +56,14 @@ msgid "Annual profit or annual loss"
 msgstr "Jahresgewinn oder Jahresverlust"
 
 #. module: l10n_ch_reports
+#: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_1
+msgid "ASSETS"
+msgstr "AKTIVEN"
+
+#. module: l10n_ch_reports
 #: model:account.financial.html.report,name:l10n_ch_reports.account_financial_report_l10n_ch_bilan
-#: model:ir.actions.client,name:l10n_ch_reports.account_financial_html_report_action_7
-#: model:ir.ui.menu,name:l10n_ch_reports.account_financial_html_report_menu_7
+#: model:ir.actions.client,name:l10n_ch_reports.account_financial_html_report_action_4
+#: model:ir.ui.menu,name:l10n_ch_reports.account_financial_html_report_menu_4
 msgid "Balance Sheet"
 msgstr "Bilanz"
 
@@ -74,13 +83,15 @@ msgid ""
 "Changes in inventories of unfinished and finished products and in non-"
 "invoiced services"
 msgstr ""
-"'+/- Bestandesänderungen an unfertigen und fertigen Erzeugnissen sowie an "
-"nicht fakturierten Dienstleistungen"
+"Bestandesänderungen an unfertigen und fertigen Erzeugnissen sowie an nicht "
+"fakturierten Dienstleistungen"
 
 #. module: l10n_ch_reports
-#: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_10
-msgid "Current Assets"
-msgstr "UMLAUFVERMÖGEN"
+#: model:account.financial.html.report,name:l10n_ch_reports.account_financial_report_l10n_ch_cdr
+#: model:ir.actions.client,name:l10n_ch_reports.account_financial_html_report_action_5
+#: model:ir.ui.menu,name:l10n_ch_reports.account_financial_html_report_menu_5
+msgid "Profit And Loss"
+msgstr "Erfolgsrechnung"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_20
@@ -101,22 +112,31 @@ msgstr "Passive Rechnungsabgrenzungen und kurzfristige Rückstellungen"
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_68
 msgid "Depreciation and valuation adjustments on capital asset items"
 msgstr ""
-"'- Abschreibungen und Wertberichtigungen auf Positionen des Anlagevermögens"
+"Abschreibungen und Wertberichtigungen auf Positionen des Anlagevermögens"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_89
 msgid "Direct Taxes"
-msgstr "'- Direkte Steuern"
+msgstr "Direkte Steuern"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_ebit
 msgid "Earnings before interest and taxes (EBIT)"
-msgstr "'= Betriebliches Ergebnis vor Finanzerfolg und Steuern (EBIT)"
+msgstr "Betriebliches Ergebnis vor Finanzerfolg und Steuern (EBIT)"
+
+#. module: l10n_ch_reports
+#: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_ebitda
+msgid ""
+"Earnings before interest, tax and depreciation and amortisation\n"
+"(EBITDA)"
+msgstr ""
+"Betriebliches Ergebnis vor Abschreibungen und Wertberichtigungen, "
+"Finanzerfolg und Steuern (EBITDA)"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_ebt
 msgid "Earnings before taxes (EBT)"
-msgstr "'= Betriebliches Ergebnis vor Steuern (EBT)"
+msgstr "Betriebliches Ergebnis vor Steuern (EBT)"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_28
@@ -126,19 +146,19 @@ msgstr "EIGENKAPITAL"
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_4
 msgid "Expenses for materials, goods and services"
-msgstr "'- Material- und Warenaufwand"
+msgstr "Material- und Warenaufwand"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_85
 msgid "Extraordinary, non-recurring or prior-period result"
 msgstr ""
-"'+/- Ausserordentlicher, einmaliger oder periodenfremder Ertrag / \n"
+"Ausserordentlicher, einmaliger oder periodenfremder Ertrag / \n"
 "Aufwand"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_69
 msgid "Financial Result"
-msgstr "'+/- Finanzertrag / -aufwand"
+msgstr "Finanzertrag / -aufwand"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_140
@@ -193,7 +213,7 @@ msgstr "Nettoerlöse aus Lieferungen und Leistungen"
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_80
 msgid "Non-operational result"
-msgstr "'+/- Betriebsfremder Ertrag / Aufwand"
+msgstr "Betriebsfremder Ertrag / Aufwand"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_180
@@ -203,7 +223,7 @@ msgstr "Nicht einbezahltes Grund-, Gesellschafter- oder Stiftungs kapital"
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_3
 msgid "Operating revenue from goods and services"
-msgstr "'= Betrieblicher Ertrag aus Lieferungen und Leistungen"
+msgstr "Betrieblicher Ertrag aus Lieferungen und Leistungen"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_220
@@ -218,7 +238,7 @@ msgstr "Übrige langfristige Verbindlichkeiten"
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_60
 msgid "Other operating expenses (without depreciation and financial result)"
-msgstr "'- Übriger betrieblicher Aufwand"
+msgstr "Übriger betrieblicher Aufwand"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_114
@@ -231,17 +251,9 @@ msgid "Participations"
 msgstr "Beteiligungen"
 
 #. module: l10n_ch_reports
-#: model:account.financial.html.report,name:l10n_ch_reports.account_financial_report_l10n_ch_cdr
-#: model:ir.actions.client,name:l10n_ch_reports.account_financial_html_report_action_6
-#: model:ir.actions.client,name:l10n_ch_reports.account_financial_report_l10n_ch_pl_action
-#: model:ir.ui.menu,name:l10n_ch_reports.account_financial_html_report_menu_6
-msgid "Profit And Loss"
-msgstr "Erfolgsrechnung"
-
-#. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_7
 msgid "Profit and loss from non-core business"
-msgstr "'+/- Betrieblicher Nebenerfolg"
+msgstr "Betrieblicher Nebenerfolg"
 
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_260
@@ -261,4 +273,4 @@ msgstr "Kurzfristig gehaltene Aktiven mit Börsenkurs"
 #. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_5
 msgid "Staff cost"
-msgstr "'- Personalaufwand"
+msgstr "Personalaufwand"

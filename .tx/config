@@ -1131,3 +1131,8 @@ source_lang = en
 file_filter = l10n_be_reports_post_wizard/i18n/<lang>.po
 source_file = l10n_be_reports_post_wizard/i18n/l10n_be_reports_post_wizard.pot
 source_lang = en
+
+[odoo-15-l10n.l10n_ch_reports]
+file_filter = l10n_ch_reports/i18n/<lang>.po
+source_file = l10n_ch_reports/i18n/l10n_ch_reports.pot
+source_lang = en

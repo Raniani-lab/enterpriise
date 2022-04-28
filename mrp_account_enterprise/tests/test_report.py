@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 from odoo.addons.mrp_account.tests.test_mrp_account import TestMrpAccount
 from odoo.tests.common import Form
+from freezegun import freeze_time
 
 
 class TestReportsCommon(TestMrpAccount):
@@ -111,6 +112,7 @@ class TestReportsCommon(TestMrpAccount):
         self.assertEqual(report_values['component_cost_by_product'][byproduct], total_component_cost * byproduct_cost_share / 100 / exchange_rate)
         self.assertEqual(report_values['operation_cost_by_product'][byproduct], total_operation_cost * byproduct_cost_share / 100 / exchange_rate)
 
+    @freeze_time('2022-05-28')
     def test_mrp_avg_cost_calculation(self):
         """
             Check that the average cost is calculated based on the quantity produced in each MO
@@ -173,7 +175,6 @@ class TestReportsCommon(TestMrpAccount):
         wo.button_start()
         wo.duration = 300
         wo.qty_producing = 10
-        wo.do_finish()
 
         mo_1.button_mark_done()
 
@@ -190,7 +191,6 @@ class TestReportsCommon(TestMrpAccount):
         wo.button_start()
         wo.duration = 600
         wo.qty_producing = 20
-        wo.do_finish()
 
         mo_2.button_mark_done()
 

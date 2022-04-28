@@ -1,11 +1,13 @@
 # -*- encoding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import datetime
+from freezegun import freeze_time
 
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.tests import common
 
 
+@freeze_time('2020-01-01')
 class TestProjectLeaves(common.TransactionCase):
 
     def setUp(self):
@@ -23,6 +25,9 @@ class TestProjectLeaves(common.TransactionCase):
             'requires_allocation': 'no',
             'request_unit': 'hour',
         })
+        self.project = self.env['project.project'].create({
+            'name': "Coucoubre",
+        })
 
     def test_simple_employee_leave(self):
 
@@ -35,28 +40,30 @@ class TestProjectLeaves(common.TransactionCase):
 
         task_1 = self.env['project.task'].create({
             'name': "Task 1",
+            'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 1, 8, 0),
             'planned_date_end': datetime.datetime(2020, 1, 1, 17, 0),
         })
         task_2 = self.env['project.task'].create({
             'name': "Task 2",
+            'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 2, 8, 0),
             'planned_date_end': datetime.datetime(2020, 1, 2, 17, 0),
         })
 
-        self.assertNotEqual(task_1.with_context(include_past=True).leave_warning, False,
+        self.assertNotEqual(task_1.leave_warning, False,
                             "leave is not validated , but warning for requested time off")
 
         leave.action_validate()
 
-        self.assertNotEqual(task_1.with_context(include_past=True).leave_warning, False,
+        self.assertNotEqual(task_1.leave_warning, False,
                             "employee is on leave, should have a warning")
-        self.assertNotEqual(task_1.with_context(include_past=True).leave_warning.startswith(
+        self.assertNotEqual(task_1.leave_warning.startswith(
             "Test HrUser is on time off on that day"), "single day task, should show date")
 
-        self.assertEqual(task_2.with_context(include_past=True).leave_warning, False,
+        self.assertEqual(task_2.leave_warning, False,
                          "employee is not on leave, no warning")
 
     def test_multiple_leaves(self):
@@ -76,30 +83,33 @@ class TestProjectLeaves(common.TransactionCase):
 
         task_1 = self.env['project.task'].create({
             'name': "Task 1",
+            'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 6, 8, 0),
             'planned_date_end': datetime.datetime(2020, 1, 6, 17, 0),
         })
 
-        self.assertNotEqual(task_1.with_context(include_past=True).leave_warning, False,
+        self.assertNotEqual(task_1.leave_warning, False,
                             "employee is on leave, should have a warning")
         self.assertTrue(task_1.leave_warning.startswith(
             "Test HrUser is on time off from the 01/06/2020 to the 01/07/2020. \n"), "single day task, should show date")
 
         task_2 = self.env['project.task'].create({
             'name': "Task 2",
+            'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 6, 8, 0),
             'planned_date_end': datetime.datetime(2020, 1, 7, 17, 0),
         })
-        self.assertEqual(task_2.with_context(include_past=True).leave_warning,
+        self.assertEqual(task_2.leave_warning,
                          "Test HrUser is on time off from the 01/06/2020 to the 01/07/2020. \n")
 
         task_3 = self.env['project.task'].create({
             'name': "Task 3",
+            'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 6, 8, 0),
             'planned_date_end': datetime.datetime(2020, 1, 10, 17, 0),
         })
-        self.assertEqual(task_3.with_context(include_past=True).leave_warning, "Test HrUser is on time off from the 01/06/2020 to the 01/10/2020. \n",
+        self.assertEqual(task_3.leave_warning, "Test HrUser is on time off from the 01/06/2020 to the 01/10/2020. \n",
                          "should show the start of the 1st leave and end of the 2nd")

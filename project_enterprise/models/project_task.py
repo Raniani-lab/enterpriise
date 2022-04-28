@@ -31,6 +31,7 @@ class Task(models.Model):
     # Task Dependencies fields
     display_warning_dependency_in_gantt = fields.Boolean(compute="_compute_display_warning_dependency_in_gantt")
     planning_overlap = fields.Integer(compute='_compute_planning_overlap', search='_search_planning_overlap')
+    overlap_warning = fields.Char(compute='_compute_planning_overlap')
 
     # User names in popovers
     user_names = fields.Char(compute='_compute_user_names')
@@ -79,15 +80,17 @@ class Task(models.Model):
     def _get_planning_overlap_per_task(self):
         if not self.ids:
             return {}
-        self.flush_model(['active', 'planned_date_begin', 'planned_date_end', 'user_ids', 'project_id'])
+        self.flush_model(['active', 'planned_date_begin', 'planned_date_end', 'user_ids', 'project_id', 'is_closed'])
         query = """
             SELECT T.id, COUNT(T2.id)
               FROM project_task T
         INNER JOIN project_task_user_rel U1 ON T.id = U1.task_id
         INNER JOIN project_task T2 ON T.id != T2.id
                AND T2.active = 't'
+               And T2.is_closed IS FALSE
                AND T2.planned_date_begin IS NOT NULL
                AND T2.planned_date_end IS NOT NULL
+               AND T2.planned_date_end > NOW()
                AND T2.project_id IS NOT NULL
                AND (T.planned_date_begin::TIMESTAMP, T.planned_date_end::TIMESTAMP)
           OVERLAPS (T2.planned_date_begin::TIMESTAMP, T2.planned_date_end::TIMESTAMP)
@@ -95,8 +98,10 @@ class Task(models.Model):
                AND U2.user_id = U1.user_id
              WHERE T.id IN %s
                AND T.active = 't'
+               And T.is_closed IS FALSE
                AND T.planned_date_begin IS NOT NULL
                AND T.planned_date_end IS NOT NULL
+               AND T.planned_date_end > NOW()
                AND T.project_id IS NOT NULL
           GROUP BY T.id
         """
@@ -109,9 +114,12 @@ class Task(models.Model):
         overlap_mapping = self._get_planning_overlap_per_task()
         if overlap_mapping:
             for task in self:
-                task.planning_overlap = overlap_mapping.get(task.id, 0)
+                overlaps = overlap_mapping.get(task.id, 0)
+                task.planning_overlap = overlaps
+                task.overlap_warning = _("%s other task(s) for the same employee at the same time.") % overlaps if overlaps else False
         else:
-            self.planning_overlap = False
+            self.planning_overlap = 0
+            self.overlap_warning = False
 
     @api.model
     def _search_planning_overlap(self, operator, value):
@@ -130,12 +138,16 @@ class Task(models.Model):
                 AND T1.planned_date_end > T2.planned_date_begin
                 AND T1.planned_date_begin IS NOT NULL
                 AND T1.planned_date_end IS NOT NULL
+                AND T1.planned_date_end > NOW()
                 AND T1.active = 't'
+                AND T1.is_closed IS FALSE
                 AND T1.project_id IS NOT NULL
                 AND T2.planned_date_begin IS NOT NULL
                 AND T2.planned_date_end IS NOT NULL
+                AND T2.planned_date_end > NOW()
                 AND T2.project_id IS NOT NULL
                 AND T2.active = 't'
+                AND T2.is_closed IS FALSE
         """
         operator_new = (operator == ">") and "inselect" or "not inselect"
         return [('id', operator_new, (query, ()))]

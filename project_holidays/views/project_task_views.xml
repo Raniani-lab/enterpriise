@@ -6,9 +6,9 @@
         <field name="inherit_id" ref="project_enterprise.project_task_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@role='alert']" position="attributes">
-                <attribute name="attrs">{'invisible': [('planning_overlap', '=', 0), '|', ('leave_warning', '=', False), ('user_ids', '=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': [('overlap_warning', '=', False), '|', ('leave_warning', '=', False), ('user_ids', '=', False)]}</attribute>
             </xpath>
-            <xpath expr="//span[@name='planning_overlap']" position="before">
+            <xpath expr="//button[@name='action_fsm_view_overlapping_tasks']" position="before">
                 <p class="align-middle mb-0" attrs="{'invisible': ['|', ('leave_warning', '=', False), ('user_ids', '=', False)]}">
                     <field name="leave_warning" nolabel="1"/>
                 </p>
@@ -22,12 +22,13 @@
         <field name="inherit_id" ref="project_enterprise.project_task_view_gantt"/>
         <field name="arch" type="xml">
             <xpath expr="//gantt" position="attributes">
-                <attribute name="decoration-danger">planning_overlap &gt; 0 or leave_warning</attribute>
+                <attribute name="decoration-danger">overlap_warning or leave_warning</attribute>
             </xpath>
             <xpath expr="//gantt" position="inside">
                 <field name="leave_warning"/>
+                <field name="overlap_warning"/>
             </xpath>
-            <xpath expr="//div[@t-if='planning_overlap']" position="after">
+            <xpath expr="//div[@t-if='overlap_warning']" position="after">
                 <p t-if="leave_warning" class="text-danger mt-2 mb-0">
                     <t t-esc="leave_warning"/>
                 </p>

@@ -15,8 +15,13 @@ class Task(models.Model):
     @api.depends_context('lang')
     @api.depends('planned_date_begin', 'planned_date_end', 'user_ids')
     def _compute_leave_warning(self):
-
-        assigned_tasks = self.filtered(lambda t: t.user_ids.employee_id and t.planned_date_begin and t.planned_date_end)
+        assigned_tasks = self.filtered(
+            lambda t: t.user_ids.employee_id
+            and t.project_id
+            and t.planned_date_begin
+            and t.planned_date_end
+            and not t.is_closed
+        )
         (self - assigned_tasks).leave_warning = False
         (self - assigned_tasks).is_absent = False
 
@@ -24,8 +29,7 @@ class Task(models.Model):
             return
 
         min_date = min(assigned_tasks.mapped('planned_date_begin'))
-        include_past = self.env.context.get('include_past', False)
-        date_from = min_date if (include_past or min_date > fields.Datetime.today()) else fields.Datetime.today()
+        date_from = min_date if min_date > fields.Datetime.today() else fields.Datetime.today()
         leaves = self.env['hr.leave']._get_leave_interval(
             date_from=date_from,
             date_to=max(assigned_tasks.mapped('planned_date_end')),
@@ -53,7 +57,13 @@ class Task(models.Model):
         if operator not in ['=', '!='] or not isinstance(value, bool):
             raise NotImplementedError(_('Operation not supported'))
 
-        tasks = self.search([('user_ids.employee_id', '!=', False), ('planned_date_begin', '!=', False), ('planned_date_end', '!=', False)])
+        tasks = self.search([
+            ('user_ids.employee_id', '!=', False),
+            ('project_id', '!=', False),
+            ('planned_date_begin', '!=', False),
+            ('planned_date_end', '!=', False),
+            ('is_closed', '!=', True),
+        ])
         if not tasks:
             return []
 

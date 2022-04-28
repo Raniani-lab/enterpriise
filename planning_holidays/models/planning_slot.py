@@ -24,8 +24,7 @@ class Slot(models.Model):
             return
 
         min_date = min(assigned_slots.mapped('start_datetime'))
-        include_past = self.env.context.get('include_past', False)
-        date_from = min_date if (include_past or min_date > fields.Datetime.today()) else fields.Datetime.today()
+        date_from = min_date if min_date > fields.Datetime.today() else fields.Datetime.today()
         leaves = self.env['hr.leave']._get_leave_interval(
             date_from=date_from,
             date_to=max(assigned_slots.mapped('end_datetime')),

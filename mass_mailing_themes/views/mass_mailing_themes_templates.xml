@@ -161,10 +161,10 @@
             p, p > *, li, li > * {
                 color: #adadad;
             }
-            a:not(.btn), a.btn-link {
+            a:not(.btn), a.btn.btn-link {
                 color: #36a6d2;
             }
-            a.btn-primary, a.btn-outline-primary, a.btn-fill-primary {
+            a.btn.btn-primary, a.btn.btn-outline-primary, a.btn.btn-fill-primary {
                 background-color: #36a6d2;
                 border-color: #36a6d2;
             }
@@ -331,14 +331,14 @@
                 color: #ffffff;
                 font-family: Georgia, Times, "Times New Roman", serif;
             }
-            a:not(.btn), a.btn-link {
+            a:not(.btn), a.btn.btn-link {
                 color: #C69678;
             }
-            a.btn-primary, a.btn-outline-primary, a.btn-fill-primary {
+            a.btn.btn-primary, a.btn.btn-outline-primary, a.btn.btn-fill-primary {
                 background-color: #C69678;
                 border-color: #C69678;
             }
-            a.btn-secondary, a.btn-outline-secondary, a.btn-fill-secondary {
+            a.btn.btn-secondary, a.btn.btn-outline-secondary, a.btn.btn-fill-secondary {
                 background-color: #fadcc0;
                 color: #242530;
                 border-color: #c69678;
@@ -469,7 +469,7 @@
             p, p > *, li, li > * {
                 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             }
-            a:not(.btn), a.btn-link {
+            a:not(.btn), a.btn.btn-link {
                 color: #6c757d;
             }
             hr {
@@ -660,10 +660,10 @@
             p, p > *, li, li > * {
                 color: #6c757d;
             }
-            a:not(.btn), a.btn-link{
+            a:not(.btn), a.btn.btn-link{
                 color: #BA0013;
             }
-            a.btn-primary, a.btn-outline-primary, a.btn-fill-primary {
+            a.btn.btn-primary, a.btn.btn-outline-primary, a.btn.btn-fill-primary {
                 background-color: #BA0013;
                 border-color: #BA0013;
             }
@@ -755,10 +755,10 @@
                 font-size: 18px;
                 font-weight: bolder;
             }
-            a:not(.btn), a.btn-link {
+            a:not(.btn), a.btn.btn-link {
                 color: #000000;
             }
-            a.btn-primary, a.btn-outline-primary, a.btn-fill-primary {
+            a.btn.btn-primary, a.btn.btn-outline-primary, a.btn.btn-fill-primary {
                 background-color: #000000;
                 border-color: #000000;
             }

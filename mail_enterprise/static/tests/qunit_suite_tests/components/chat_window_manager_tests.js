@@ -30,7 +30,7 @@ QUnit.test("'backbutton' event should close chat window", async function (assert
             partner_id: pyEnv.currentPartnerId,
         }]],
     });
-    await start({ hasChatWindow: true });
+    await start();
     await afterNextRender(() => {
         // simulate 'backbutton' event triggered by the mobile app
         const backButtonEvent = new Event('backbutton');
@@ -62,7 +62,6 @@ QUnit.test('[technical] chat window should properly override the back button', a
                 isMobile: true,
             },
         },
-        hasChatWindow: true,
     });
     await createMessagingMenuComponent();
     await afterNextRender(() => document.querySelector(`.o_MessagingMenu_toggler`).click());

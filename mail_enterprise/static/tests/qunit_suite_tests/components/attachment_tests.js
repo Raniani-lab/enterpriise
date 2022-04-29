@@ -30,7 +30,6 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
                 isMobile: true,
             },
         },
-        hasDialog: true,
     });
     const attachment = messaging.models['Attachment'].create({
         filename: "test.png",
@@ -76,7 +75,6 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
                 isMobile: true,
             },
         },
-        hasDialog: true,
     });
     const attachment = messaging.models['Attachment'].create({
         filename: "test.png",

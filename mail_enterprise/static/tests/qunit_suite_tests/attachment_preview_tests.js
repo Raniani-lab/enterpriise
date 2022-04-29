@@ -2,6 +2,8 @@
 
 import {
     afterNextRender,
+    dragenterFiles,
+    dropFiles,
     start,
     startServer,
 } from '@mail/../tests/helpers/test_utils';
@@ -277,13 +279,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             name: new Array(100).fill().map(_ => 'name').join(),
         });
         const resPartnerId1 = pyEnv['res.partner'].create({ channel_ids: [mailChannelId1] });
-        pyEnv['ir.attachment'].create({
-            mimetype: 'image/jpeg',
-            name: 'Test Image 1',
-            res_id: resPartnerId1,
-            res_model: 'res.partner',
-        });
-        const { widget: form } = await start({
+        const { click, widget: form } = await start({
             hasView: true,
             arch: `
                 <form string="Whatever">
@@ -324,18 +320,20 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
 
         assert.containsNone(form, 'img#attachment_img');
 
-        // Wait for image to be loaded
-        await new Promise(resolve => {
-            const loadHandler = async ev => {
-                if (ev.target.dataset.src === "/web/image/1?unique=1") {
-                    await testUtils.nextTick();
-                    document.body.removeEventListener("load", loadHandler, { capture: true });
-                    resolve();
-                }
-            };
-            document.body.addEventListener("load", loadHandler, { capture: true });
-        });
-
+        await click('.o_ChatterTopbar_buttonAttachments');
+        await afterNextRender(() =>
+            dragenterFiles(document.querySelector('.o_AttachmentBox'))
+        );
+        const files = [
+            await createFile({
+                content: 'hello, world',
+                contentType: 'image/jpeg',
+                name: 'image.jpeg',
+            }),
+        ];
+        await afterNextRender(() =>
+            dropFiles( document.querySelector('.o_AttachmentBox_dropZone'), files)
+        );
         assert.containsOnce(form, 'img#attachment_img');
         assert.notEqual(form.el.querySelector('table th').style.width, '0px',
             "List should have been resized after the attachment has been appended.");

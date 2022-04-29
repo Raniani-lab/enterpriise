@@ -11,13 +11,17 @@ registerModel({
          * Approves the current `approval.approver`.
          */
         async approve() {
-            await this.async(() => this.messaging.rpc({
+            const activity = this.activity;
+            await this.messaging.rpc({
                 model: 'approval.approver',
                 method: 'action_approve',
                 args: [[this.id]],
-            }));
-            if (this.activity) {
-                this.activity.delete();
+            });
+            if (activity.exists()) {
+                activity.delete();
+            }
+            if (!this.exists()) {
+                return;
             }
             this.delete();
         },
@@ -25,13 +29,17 @@ registerModel({
          * Refuses the current `approval.approver`.
          */
         async refuse() {
-            await this.async(() => this.messaging.rpc({
+            const activity = this.activity;
+            await this.messaging.rpc({
                 model: 'approval.approver',
                 method: 'action_refuse',
                 args: [[this.id]],
-            }));
-            if (this.activity) {
-                this.activity.delete();
+            });
+            if (activity.exists()) {
+                activity.delete();
+            }
+            if (!this.exists()) {
+                return;
             }
             this.delete();
         },

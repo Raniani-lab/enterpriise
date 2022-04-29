@@ -8,6 +8,7 @@ from .carvajal_request import CarvajalRequest
 
 import pytz
 import base64
+import re
 
 from collections import defaultdict
 from datetime import timedelta
@@ -182,7 +183,10 @@ class AccountEdiFormat(models.Model):
 
             withholding_amount = invoice.amount_untaxed + sum(invoice.line_ids.filtered(lambda line: line.tax_line_id and not line.tax_line_id.l10n_co_edi_type.retention).mapped('price_total'))
             amount_in_words = invoice.currency_id.with_context(lang=invoice.partner_id.lang or 'es_ES').amount_to_text(withholding_amount)
-            narration = (html2plaintext(invoice.narration or '') and html2plaintext(invoice.narration) + ' ') + (invoice.invoice_origin or '')
+
+            reg_a_tag = re.compile('<a.*?>')
+            clean_narration = re.sub(reg_a_tag, '', invoice.narration) if invoice.narration else False
+            narration = (html2plaintext(clean_narration or '') and html2plaintext(clean_narration) + ' ') + (invoice.invoice_origin or '')
             notas = [
                 '1.-%s|%s|%s|%s|%s|%s' % (invoice.company_id.l10n_co_edi_header_gran_contribuyente or '',
                                           invoice.company_id.l10n_co_edi_header_tipo_de_regimen or '',

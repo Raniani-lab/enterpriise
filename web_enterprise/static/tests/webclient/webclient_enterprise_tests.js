@@ -79,7 +79,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/action/load",
-                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/search_read",
             ]);
             assert.notOk(document.body.classList.contains("o_home_menu_background"));
@@ -98,7 +98,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/action/load",
-                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/search_read",
             ]);
             await click(fixture.querySelector(".o_kanban_record"));
@@ -121,7 +121,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/action/load",
-                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/search_read",
             ]);
             await click(fixture.querySelector(".o_kanban_record"));
@@ -133,7 +133,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
-                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/call_kw/partner/read",
             ]);
             assert.containsOnce(fixture, ".o_form_view");
@@ -154,7 +154,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 await legacyExtraNextTick();
                 assert.verifySteps([
                     "/web/action/load",
-                    "/web/dataset/call_kw/partner/load_views",
+                    "/web/dataset/call_kw/partner/get_views",
                     "/web/dataset/search_read",
                 ]);
                 await click(fixture.querySelector(".o_kanban_record"));
@@ -166,7 +166,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 await legacyExtraNextTick();
                 assert.verifySteps([
                     "/web/dataset/call_kw/partner/get_formview_action",
-                    "/web/dataset/call_kw/partner/load_views",
+                    "/web/dataset/call_kw/partner/get_views",
                     "/web/dataset/call_kw/partner/read",
                 ]);
                 const menuToggle = fixture.querySelector(".o_menu_toggle");
@@ -187,7 +187,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/action/load",
-                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/search_read",
             ]);
             await click(fixture.querySelector(".o_kanban_record"));
@@ -199,7 +199,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
-                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/call_kw/partner/read",
             ]);
             const menuToggle = fixture.querySelector(".o_menu_toggle");

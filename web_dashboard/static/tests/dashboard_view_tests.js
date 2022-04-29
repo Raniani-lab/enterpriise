@@ -489,7 +489,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("basic rendering of an aggregate tag inside a group", async function (assert) {
-        assert.expect(8);
+        assert.expect(9);
         await makeView({
             type: "dashboard",
             resModel: "test_report",
@@ -526,13 +526,13 @@ QUnit.module("Views", (hooks) => {
             "8.00",
             "should correctly display the aggregate's value"
         );
-        assert.verifySteps(["read_group"]);
+        assert.verifySteps(["get_views", "read_group"]);
     });
 
     QUnit.test(
         "aggregate group_operator from the arch overrides the one on the field",
         async function (assert) {
-            assert.expect(3);
+            assert.expect(4);
 
             serverData.models.test_report.fields.sold.group_operator = "fromField";
             await makeView({
@@ -558,12 +558,12 @@ QUnit.module("Views", (hooks) => {
                     }
                 },
             });
-            assert.verifySteps(["read_group"]);
+            assert.verifySteps(["get_views", "read_group"]);
         }
     );
 
     QUnit.test("aggregate group_operator from field", async function (assert) {
-        assert.expect(3);
+        assert.expect(4);
 
         serverData.models.test_report.fields.sold.group_operator = "fromField";
         await makeView({
@@ -589,7 +589,7 @@ QUnit.module("Views", (hooks) => {
                 }
             },
         });
-        assert.verifySteps(["read_group"]);
+        assert.verifySteps(["get_views", "read_group"]);
     });
 
     QUnit.test("basic rendering of a aggregate tag with widget attribute", async function (assert) {
@@ -636,7 +636,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("basic rendering of a formula tag inside a group", async function (assert) {
-        assert.expect(8);
+        assert.expect(9);
 
         await makeView({
             type: "dashboard",
@@ -676,11 +676,11 @@ QUnit.module("Views", (hooks) => {
             "240.00",
             "should have correctly computed the formula value"
         );
-        assert.verifySteps(["read_group"]);
+        assert.verifySteps(["get_views", "read_group"]);
     });
 
     QUnit.test("basic rendering of a graph tag", async function (assert) {
-        assert.expect(9);
+        assert.expect(10);
 
         serverData.views["test_report,some_xmlid,graph"] = `
             <graph>
@@ -726,7 +726,7 @@ QUnit.module("Views", (hooks) => {
             "should have rendered an additional switch button"
         );
 
-        assert.verifySteps(["load_views", "web_read_group"]);
+        assert.verifySteps(["get_views", "get_views", "web_read_group"]);
     });
 
     QUnit.test("graph tag without aggregate and invisible field", async function (assert) {
@@ -859,7 +859,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("basic rendering of a pivot tag", async function (assert) {
-        assert.expect(10);
+        assert.expect(11);
         serverData.views["test_report,some_xmlid,pivot"] = `
             <pivot>
                 <field name="categ_id" type="row"/>
@@ -902,7 +902,7 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(target, ".o_subview .o_pivot", "should have rendered a pivot view");
 
-        assert.verifySteps(["load_views", "read_group", "read_group"]);
+        assert.verifySteps(["get_views", "get_views", "read_group", "read_group"]);
     });
 
     QUnit.test("pivot tag without aggregate and invisible field", async function (assert) {
@@ -966,7 +966,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("basic rendering of a cohort tag", async function (assert) {
-        assert.expect(5);
+        assert.expect(6);
         serverData.views["test_report,some_xmlid,cohort"] = `
             <cohort string="Cohort" date_start="create_date" date_stop="transformation_date" interval="week"/>
         `;
@@ -1023,7 +1023,7 @@ QUnit.module("Views", (hooks) => {
             "should have rendered a cohort view"
         );
 
-        assert.verifySteps(["load_views", "get_cohort_data"]);
+        assert.verifySteps(["get_views", "get_views", "get_cohort_data"]);
     });
 
     QUnit.test("cohort tag without aggregate and invisible field", async function (assert) {
@@ -1413,7 +1413,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("rendering of aggregates with domain attribute", async function (assert) {
-        assert.expect(11);
+        assert.expect(12);
 
         let nbReadGroup = 0;
         await makeView({
@@ -1476,13 +1476,13 @@ QUnit.module("Views", (hooks) => {
             "should correctly display the aggregate's value"
         );
 
-        assert.verifySteps(["read_group", "read_group"]);
+        assert.verifySteps(["get_views", "read_group", "read_group"]);
     });
 
     QUnit.test(
         "two aggregates with the same field attribute with different domain",
         async function (assert) {
-            assert.expect(11);
+            assert.expect(12);
 
             let nbReadGroup = 0;
             await makeView({
@@ -1552,7 +1552,7 @@ QUnit.module("Views", (hooks) => {
                 "should correctly display the aggregate's value"
             );
 
-            assert.verifySteps(["read_group", "read_group"]);
+            assert.verifySteps(["get_views", "read_group", "read_group"]);
         }
     );
 

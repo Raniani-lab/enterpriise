@@ -145,8 +145,8 @@ export class DashboardView extends Component {
             loadViewProms.push(
                 this._viewService
                     .loadViews({ context, views, resModel }, {})
-                    .then((viewDescriptions) => {
-                        Object.entries(viewDescriptions).forEach(([type, viewInfo]) => {
+                    .then(({ fields, views }) => {
+                        Object.entries(views).forEach(([type, viewInfo]) => {
                             const subView = this.subViews[type];
                             if (!subView) {
                                 return;
@@ -156,10 +156,9 @@ export class DashboardView extends Component {
                                 this.props.context[type] || {}
                             );
                             delete context[type];
-                            const { viewId, arch, fields } = viewInfo;
                             subView.props = {
-                                viewId,
-                                arch,
+                                viewId: viewInfo.id,
+                                arch: viewInfo.arch,
                                 fields,
                                 additionalMeasures,
                                 context,

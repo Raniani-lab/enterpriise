@@ -8,6 +8,7 @@ var dom = require('web.dom');
 var framework = require('web.framework');
 var session = require('web.session');
 var view_registry = require('web.view_registry');
+const { processArch } = require("@web/legacy/legacy_load_views");
 
 var AbstractEditorManager = require('web_studio.AbstractEditorManager');
 var bus = require('web_studio.bus');
@@ -827,9 +828,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
     /**
      * @override
      */
-    _editView: function (view_id, studio_view_arch, operations) {
+    _editView: async function (view_id, studio_view_arch, operations) {
         core.bus.trigger('clear_cache');
-        return this._rpc({
+        const { models, studio_view_id, views } = await this._rpc({
             route: '/web_studio/edit_view',
             params: {
                 view_id: view_id,
@@ -841,13 +842,32 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 context: _.extend({}, session.user_context, {lang: false}),
             },
         });
+        if (!views) {
+            return {};
+        }
+        const viewType = this.mainViewType;
+        const view = views[viewType];
+        const { arch, viewFields } = processArch(view.arch, viewType, this.model_name, models);
+        return {
+            fields: models[this.model_name],
+            fields_views: {
+                [viewType]: {
+                    arch,
+                    fields: viewFields,
+                    model: view.model,
+                    type: viewType,
+                    view_id: view.id,
+                }
+            },
+            studio_view_id,
+        };
     },
     /**
      * @override
      */
-    _editViewArch: function (view_id, view_arch) {
+    _editViewArch: async function (view_id, view_arch) {
         core.bus.trigger('clear_cache');
-        return this._rpc({
+        const result = await this._rpc({
             route: '/web_studio/edit_view_arch',
             params: {
                 view_id: view_id,
@@ -857,6 +877,25 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 context: _.extend({}, session.user_context, {lang: false}),
             },
         });
+        if (!result) {
+            return result;
+        }
+        const { models, views } = result;
+        const viewType = this.mainViewType;
+        const view = views[viewType];
+        const { arch, viewFields } = processArch(view.arch, viewType, this.model_name, models);
+        return {
+            fields: models[this.model_name],
+            fields_views: {
+                [viewType]: {
+                    arch,
+                    fields: viewFields,
+                    model: view.model,
+                    type: viewType,
+                    view_id: view.view_id,
+                }
+            },
+        };
     },
     /**
      * @private

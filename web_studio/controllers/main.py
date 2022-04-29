@@ -437,7 +437,7 @@ class WebStudioController(http.Controller):
                 model.write({'is_mail_activity': True})
 
         try:
-            request.env[res_model].fields_view_get(view_type=view_type)
+            request.env[res_model].get_view(view_type=view_type)
         except UserError:
             return False
         self.edit_action(action_type, action_id, args)
@@ -519,13 +519,14 @@ class WebStudioController(http.Controller):
 
     def _return_view(self, view, studio_view):
         ViewModel = request.env[view.model]
-        fields_view = ViewModel.with_context(studio=True).fields_view_get(view.id, view.type)
+        fields_view = ViewModel.with_context(studio=True).get_view(view.id, view.type)
         view_type = 'list' if view.type == 'tree' else view.type
+        models = fields_view['models']
 
         return {
-            'fields_views': {view_type: fields_view},
-            'fields': ViewModel.fields_get(),
+            'views': {view_type: fields_view},
             'studio_view_id': studio_view.id,
+            'models': {model: request.env[model].fields_get() for model in models}
         }
 
     @http.route('/web_studio/restore_default_view', type='json', auth='user')
@@ -739,13 +740,12 @@ Are you sure you want to remove the selection values of those records?""") % len
             view.write({'arch': view_arch})
             ViewModel = request.env[view.model]
             try:
-                fields_view = ViewModel.with_context(studio=True).fields_view_get(view.id, view.type)
+                fields_view = ViewModel.with_context(studio=True).get_view(view.id, view.type)
                 view_type = 'list' if view.type == 'tree' else view.type
+                models = fields_view['models']
                 return {
-                    'fields_views': {
-                        view_type: fields_view,
-                    },
-                    'fields': ViewModel.fields_get(),
+                    'views': {view_type: fields_view},
+                    'model_fields': {model: request.env[model].fields_get() for model in models}
                 }
             except Exception:
                 return False
@@ -921,7 +921,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         btn_name = operation.get('btn_name')
         view_id = operation.get('view_id')
         parser = etree.XMLParser(remove_blank_text=True)
-        raw_base_arch = request.env[model].fields_view_get(view_id, 'form')['arch']
+        raw_base_arch = request.env[model].get_view(view_id, 'form')['arch']
         base_arch = etree.fromstring(raw_base_arch, parser=parser)
 
         # if no rule is found, create one on the fly
@@ -1065,7 +1065,7 @@ Are you sure you want to remove the selection values of those records?""") % len
     def _operation_buttonbox(self, arch, operation, model=None):
         studio_view_arch = arch  # The actual arch is the studio view arch
         # Get the arch of the form view with inherited views applied
-        arch = request.env[model].fields_view_get(view_type='form')['arch']
+        arch = request.env[model].get_view(view_type='form')['arch']
         parser = etree.XMLParser(remove_blank_text=True)
         arch = etree.fromstring(arch, parser=parser)
 
@@ -1223,7 +1223,7 @@ Are you sure you want to remove the selection values of those records?""") % len
 
         # check if there's already a bottom right section
         # boy o boy i sure hope there's only one kanban!
-        base_arch = request.env[model].fields_view_get(view_type='kanban')['arch']
+        base_arch = request.env[model].get_view(view_type='kanban')['arch']
         base_tree = etree.fromstring(base_arch)
         has_br_container = base_tree.xpath('//div[hasclass("oe_kanban_bottom_right")]')
 
@@ -1301,7 +1301,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             """ % (field_id.name))
         )
         studio_view_arch = arch
-        arch = request.env[model]._fields_view_get(view_type='kanban')['arch']
+        arch = request.env[model].get_view(view_type='kanban')['arch']
         parser = etree.XMLParser(remove_blank_text=True)
         arch = etree.fromstring(arch, parser=parser)
 
@@ -1371,7 +1371,7 @@ Are you sure you want to remove the selection values of those records?""") % len
 
     def _operation_avatar_image(self, arch, operation, model):
         studio_view_arch = arch  # The actual arch is the studio view arch
-        arch = request.env[model].fields_view_get(view_type='form')['arch']
+        arch = request.env[model].get_view(view_type='form')['arch']
         parser = etree.XMLParser(remove_blank_text=True)
         arch = etree.fromstring(arch, parser=parser)
 
@@ -1598,7 +1598,7 @@ Are you sure you want to remove the selection values of those records?""") % len
                 'expr': expr,
                 'position': position
             })
-        inline_view = request.env[model]._fields_view_get(view_type=subview_type)
+        inline_view = request.env[model].get_view(view_type=subview_type)
         view_arch = inline_view['arch']
         xml_node = self._inline_view_filter_nodes(etree.fromstring(view_arch))
         xpath_node.insert(0, xml_node)

@@ -839,9 +839,9 @@ class HrPayslip(models.Model):
         return sum([line.amount for line in lines])
 
     @api.model
-    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-        res = super().fields_view_get(view_id, view_type, toolbar, submenu)
-        if toolbar and 'print' in res['toolbar']:
+    def get_view(self, view_id=None, view_type='form', **options):
+        res = super().get_view(view_id, view_type, **options)
+        if options.get('toolbar') and 'print' in res['toolbar']:
             res['toolbar'].pop('print')
         return res
 

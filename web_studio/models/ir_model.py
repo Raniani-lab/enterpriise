@@ -540,7 +540,7 @@ class IrModel(models.Model):
         if view_id:
             view = View.browse(view_id)
         elif create:
-            arch = self.env[self.model].fields_view_get(view_id, view_type)['arch']
+            arch = self.env[self.model].get_view(view_id, view_type)['arch']
             # set sample data when activating a pivot/graph view through studio
             if view_type in ['graph', 'pivot']:
                 sample_view_arch = ET.fromstring(arch)

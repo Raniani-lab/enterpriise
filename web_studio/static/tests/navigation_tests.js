@@ -128,7 +128,7 @@ QUnit.module("Studio", (hooks) => {
             [
                 "/web/webclient/load_menus",
                 "/web/action/load",
-                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/search_read",
             ],
             "should have loaded the action"
@@ -141,7 +141,7 @@ QUnit.module("Studio", (hooks) => {
             [
                 "/web_studio/activity_allowed",
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/partner", // load_views with studio in context (from legacy code)
+                "/web/dataset/call_kw/partner", // get_views with studio in context (from legacy code)
                 "/web/dataset/search_read",
             ],
             "should have opened the action in Studio"
@@ -164,7 +164,7 @@ QUnit.module("Studio", (hooks) => {
         assert.verifySteps(
             [
                 "/web/action/load",
-                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/search_read",
             ],
             "should have reloaded the previous action edited by Studio"
@@ -259,7 +259,7 @@ QUnit.module("Studio", (hooks) => {
             [
                 "/web/webclient/load_menus",
                 "/web/action/load",
-                "/web/dataset/call_kw/partner/load_views",
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/search_read",
             ],
             "should have loaded the action"
@@ -271,7 +271,7 @@ QUnit.module("Studio", (hooks) => {
             [
                 "/web_studio/activity_allowed",
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/partner", // load_views with studio in context
+                "/web/dataset/call_kw/partner", // get_views with studio in context
                 "/web/dataset/search_read",
             ],
             "should have opened the action in Studio"
@@ -301,7 +301,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web/action/load",
                 "/web_studio/activity_allowed",
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/pony", // load_views with studio in context
+                "/web/dataset/call_kw/pony", // get_views with studio in context
                 "/web/dataset/search_read",
             ],
             "should have opened the navigated action in Studio"
@@ -323,7 +323,7 @@ QUnit.module("Studio", (hooks) => {
         assert.verifySteps(
             [
                 "/web/action/load",
-                "/web/dataset/call_kw/pony/load_views",
+                "/web/dataset/call_kw/pony/get_views",
                 "/web/dataset/search_read",
             ],
             "should have reloaded the previous action edited by Studio"

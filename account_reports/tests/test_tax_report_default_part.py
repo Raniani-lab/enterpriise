@@ -918,3 +918,75 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
 
         expected_amls = (invoice + refund).line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
         self.checkAmlsRedirection(report, options, tax, expected_amls)
+
+    def test_tax_report_entry_move_2_opposite_invoice_lines(self):
+        tax = self.env['account.tax'].create({
+            'name': "tax",
+            'amount_type': 'percent',
+            'amount': 10.0,
+            'type_tax_use': 'sale',
+        })
+
+        # Form is used here for the dynamic tax line to get created automatically
+        move_form = Form(self.env['account.move']\
+                         .with_context(default_move_type='entry', account_predictive_bills_disable_prediction=True))
+        move_form.partner_id = self.partner_a
+        move_form.invoice_date = '2022-02-01'
+        move_form.date = move_form.invoice_date
+
+        for name, account_id, debit, credit, tax_to_apply in (
+                ("invoice line in entry", self.company_data['default_account_revenue'], 0.0, 20.0, tax),
+                ("refund line in entry", self.company_data['default_account_revenue'], 10.0, 0.0, tax),
+                ("Receivable line in entry", self.company_data['default_account_receivable'], 11.0, 0.0, None),
+        ):
+            with move_form.line_ids.new() as line_form:
+                line_form.name = name
+                line_form.account_id = account_id
+                line_form.debit = debit
+                line_form.credit = credit
+                if tax_to_apply:
+                    line_form.tax_ids.clear()
+                    line_form.tax_ids.add(tax_to_apply)
+
+        move = move_form.save()
+        move.action_post()
+
+        report = self.env['account.generic.tax.report']
+        options = self._init_options(report, fields.Date.from_string('2022-02-01'), fields.Date.from_string('2022-02-01'))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    NET           TAX
+            [   0,                                      1,             2],
+            [
+                ('Sales',                               '',          1.0),
+                ('tax (10.0%)',                       10.0,          1.0),
+            ],
+        )
+
+        options['tax_report'] = 'generic_grouped_account_tax'
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    NET           TAX
+            [   0,                                      1,             2],
+            [
+                ('Sales',                               '',          1.0),
+                ('400000 Product Sales',                '',          1.0),
+                ('tax (10.0%)',                       10.0,          1.0),
+            ],
+        )
+
+        options['tax_report'] = 'generic_grouped_tax_account'
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    NET            TAX
+            [   0,                                      1,              2],
+            [
+                ('Sales',                               '',           1.0),
+                ('tax (10.0%)',                         '',           1.0),
+                ('400000 Product Sales',              10.0,           1.0),
+            ],
+        )
+
+        expected_amls = move.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
+        self.checkAmlsRedirection(report, options, tax, expected_amls)

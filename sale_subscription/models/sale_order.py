@@ -159,6 +159,7 @@ class SaleOrder(models.Model):
                 lambda l: l.start_date and l.next_invoice_date and l.start_date <= today <= l.next_invoice_date)
             order.recurring_monthly = sum(order_lines.mapped('recurring_monthly'))
 
+    @api.depends('sale_order_template_id.recurring_rule_boundary', 'is_subscription')
     def _compute_recurring_rule_boundary(self):
         for order in self:
             if not order.is_subscription:
@@ -702,7 +703,7 @@ class SaleOrder(models.Model):
     # Business Methods #
     ####################
 
-    def update_existing_subscriptions(self, ):
+    def update_existing_subscriptions(self):
         """
         Update subscriptions already linked to the order by updating or creating lines.
 

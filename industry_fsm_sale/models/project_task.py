@@ -28,6 +28,9 @@ class Task(models.Model):
     # Project Sharing fields
     portal_quotation_count = fields.Integer(compute='_compute_portal_quotation_count')
     portal_invoice_count = fields.Integer('Invoice Count', compute='_compute_portal_invoice_count')
+    sale_line_id = fields.Many2one('sale.order.line', domain="[('company_id', '=', company_id),\
+            '|', ('order_partner_id', '=?', partner_id), ('order_id.partner_shipping_id', '=?', partner_id), \
+            ('is_service', '=', True), ('order_partner_id', '=?', partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]")
 
     @property
     def SELF_READABLE_FIELDS(self):

@@ -6,6 +6,7 @@ import json
 from datetime import datetime, timedelta
 from freezegun import freeze_time
 
+from odoo import http
 from odoo.addons.appointment.tests.common import AppointmentCommon
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.tests import common, tagged, users
@@ -84,6 +85,57 @@ class AppointmentUITest(AppointmentUICommon):
         self.authenticate(None, None)
         res = self.url_open(self.invite_all_apts.book_url)
         self.assertEqual(res.status_code, 200, "Response should = OK")
+
+    @users('apt_manager')
+    def test_appointment_meeting_url(self):
+        """ Test if a meeting linked to an appointment having location set,
+        it should have a meeting URL (and visa versa).
+        """
+        CalendarEvent = self.env['calendar.event']
+        self.authenticate(self.env.user.login, self.env.user.login)
+
+        online_demo = self.env['appointment.type'].create({
+            'name': 'Schedule a Demo (online - one hour)',
+            'staff_user_ids': self.staff_user_bxls,
+        })
+
+        # Case 1: without location
+        meeting_without_location_data = {
+            'datetime_str': '2022-07-04 12:30:00',
+            'duration_str': '1.0',
+            'staff_user_id': self.staff_user_bxls.id,
+            'name': 'Online Meeting',
+            'phone': '2025550999',
+            'email': 'test1@test.example.com',
+            'csrf_token': http.Request.csrf_token(self)
+        }
+        url = f"/appointment/{online_demo.id}/submit"
+        res = self.url_open(url, data=meeting_without_location_data)
+        self.assertEqual(res.status_code, 200, "Response should = OK")
+        access_token = res.url.split('?')[0].split('/calendar/view/')[-1]
+        self.assertTrue(
+            CalendarEvent.search([('access_token', '=', access_token)]).videocall_location,
+            "Should have videocall_location set as the appointment type does not have a location"
+        )
+
+        # Case 2: with location
+        meeting_with_location_data = {
+            'datetime_str': '2022-07-04 10:30:00',
+            'duration_str': '1.0',
+            'staff_user_id': self.staff_user_bxls.id,
+            'name': 'Doctor Appointment',
+            'phone': '2025550888',
+            'email': 'test2@test.example.com',
+            'csrf_token': http.Request.csrf_token(self),
+        }
+        url = f"{self.base_url()}/appointment/{self.apt_type_bxls_2days.id}/submit"
+        res = self.url_open(url, data=meeting_with_location_data)
+        self.assertEqual(res.status_code, 200, "Response should = OK")
+        access_token = res.url.split('?')[0].split('/calendar/view/')[-1]
+        self.assertFalse(
+            CalendarEvent.search([('access_token', '=', access_token)]).videocall_location,
+            "Should not have videocall_location set as the appointment type has a location"
+        )
 
 
 @tagged('appointment_ui', '-at_install', 'post_install')

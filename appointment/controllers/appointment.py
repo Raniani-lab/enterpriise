@@ -3,6 +3,7 @@
 import json
 import pytz
 import re
+import uuid
 
 from babel.dates import format_datetime, format_date
 from datetime import datetime, date
@@ -329,7 +330,7 @@ class Appointment(http.Controller):
         )
         if not appointment_type:
             raise NotFound()
-        timezone = request.session['timezone'] or appointment_type.appointment_tz
+        timezone = request.session.get('timezone') or appointment_type.appointment_tz
         tz_session = pytz.timezone(timezone)
         date_start = tz_session.localize(fields.Datetime.from_string(datetime_str)).astimezone(pytz.utc).replace(tzinfo=None)
         duration = float(duration_str)
@@ -470,7 +471,7 @@ class Appointment(http.Controller):
             appointment_invite_id = request.env['appointment.invite'].sudo().search([('access_token', '=', invite_token)]).id
         else:
             appointment_invite_id = False
-        return {
+        calendar_event_values = {
             'name': _('%s with %s', appointment_type.name, name),
             'start': date_start.strftime(dtf),
             # FIXME master
@@ -492,6 +493,15 @@ class Appointment(http.Controller):
             'user_id': staff_user.id,
             'appointment_invite_id': appointment_invite_id,
         }
+        if not appointment_type.location_id:
+            CalendarEvent = request.env['calendar.event']
+            access_token = uuid.uuid4().hex
+            calendar_event_values.update({
+                'access_token': access_token,
+                'videocall_location': f'{CalendarEvent.get_base_url()}/{CalendarEvent.DISCUSS_ROUTE}/{access_token}',
+            })
+
+        return calendar_event_values
 
     # ------------------------------------------------------------
     # APPOINTMENT TYPE JSON DATA

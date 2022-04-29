@@ -9,14 +9,10 @@
         'hr_contract_salary',
         'hr_payroll',
     ],
-    'description': """
-    """,
     'data': [
         'data/hr_contract_salary_resume_data.xml',
         'views/menuitems.xml',
         'views/hr_contract_views.xml',
-    ],
-    'demo': [
     ],
     'license': 'OEEL-1',
     'auto_install': True,

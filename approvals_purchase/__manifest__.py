@@ -19,7 +19,6 @@
     'demo': [
         'data/approval_demo.xml',
     ],
-    'application': False,
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

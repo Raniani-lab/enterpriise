@@ -14,10 +14,7 @@ Contains advanced features for CRM such as new views
         'views/crm_lead_views.xml',
         'report/crm_activity_report_views.xml',
     ],
-    'demo': [
-    ],
     'installable': True,
-    'application': False,
     'auto_install': ['crm'],
     'license': 'OEEL-1',
     'assets': {

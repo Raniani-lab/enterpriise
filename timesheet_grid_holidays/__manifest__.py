@@ -13,6 +13,5 @@ This module prevents taking time offs into account when computing employee overt
 
     'depends': ['project_timesheet_holidays', 'timesheet_grid'],
     'auto_install': True,
-    'application': False,
     'license': 'OEEL-1',
 }

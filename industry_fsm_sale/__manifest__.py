@@ -19,9 +19,7 @@ Create Sales order with timesheets and products from tasks
         "views/project_sharing_views.xml",
         'report/project_report_views.xml',
     ],
-    'application': False,
     'auto_install': True,
-    'demo': [],
     'post_init_hook': 'post_init',
     'assets': {
         'web.assets_backend': [

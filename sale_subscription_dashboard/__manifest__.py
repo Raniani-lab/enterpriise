@@ -18,8 +18,6 @@ It adds dashboards to :
         'views/sale_subscription_dashboard_views.xml',
         'views/report_dashboard.xml',
     ],
-    'demo': [
-    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

@@ -14,6 +14,5 @@ tests independently to functional aspects of other models. """,
         'security/ir.model.access.csv',
     ],
     'installable': True,
-    'application': False,
     'license': 'OEEL-1',
 }

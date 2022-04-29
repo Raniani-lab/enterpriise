@@ -37,7 +37,6 @@
     ],
     'installable': True,
     'application': True,
-    'auto_install': False,
     'license': 'OEEL-1',
     'assets': {
         'web_editor.assets_wysiwyg': [

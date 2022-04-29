@@ -4,7 +4,6 @@
     'name': 'Disallowed Expenses on Fleets',
     'category': 'Accounting/Accounting',
     'summary': 'Manage disallowed expenses with fleets',
-    'description': "",
     'version': '1.0',
     'depends': ['account_fleet', 'account_disallowed_expenses'],
     'data': [
@@ -16,6 +15,5 @@
     ],
     'installable': True,
     'auto_install': True,
-    'application': False,
     'license': 'OEEL-1',
 }

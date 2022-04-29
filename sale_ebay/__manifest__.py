@@ -50,9 +50,6 @@ Key Features
       'data/product_data.xml',
       'data/mail_data.xml',
   ],
-  # only loaded in demonstration mode
-  'demo': [
-  ],
   'license': 'OEEL-1',
   'uninstall_hook': 'uninstall_hook',
 }

@@ -36,7 +36,6 @@ creates next activities for the related approvers.
     ],
     'application': True,
     'installable': True,
-    'auto_install': False,
     'assets': {
         'mail.assets_discuss_public': [
             'approvals/static/src/components/*/*',

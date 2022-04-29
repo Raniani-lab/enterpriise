@@ -11,7 +11,6 @@
     'data': [
         'views/project_project_views.xml',
     ],
-    'demo': [],
     'auto_install': True,
     'license': 'OEEL-1',
 }

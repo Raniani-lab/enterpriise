@@ -5,7 +5,6 @@
     'icon': '/l10n_mx/static/description/icon.png',
     'version': '0.1',
     'category': 'Hidden',
-    'description': """""",
     'depends': [
         'l10n_mx_edi',
         'base_address_extended',
@@ -33,7 +32,6 @@
         'demo/demo_cfdi.xml',
     ],
     'installable': True,
-    'auto_install': False,
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
     'license': 'OEEL-1',

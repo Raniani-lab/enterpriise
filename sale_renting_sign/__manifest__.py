@@ -2,10 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     "name": "Rental/Sign Bridge",
-    "summary": """
-            Bridge Sign functionalities with the Rental application
-        """,
-    "author": "Odoo S.A.",
+    "summary": """Bridge Sign functionalities with the Rental application""",
     "website": "https://www.odoo.com",
     "category": "Sales/Sales",
     "version": "1.0",
@@ -21,6 +18,5 @@
     "demo": [
         "data/demo.xml",
     ],
-    "auto_install": False,
     'license': 'OEEL-1',
 }

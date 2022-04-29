@@ -6,7 +6,6 @@
     'version': '1.0',
     'category': 'Inventory/Inventory',
     'summary': "Add the support of batch transfers into the barcode view",
-    'description': "",
     'depends': ['stock_barcode', 'stock_picking_batch'],
     'data': [
         'views/stock_barcode_picking.xml',
@@ -19,7 +18,6 @@
     'demo': [
         'data/stock_barcode_picking_batch_demo.xml',
     ],
-    'application': False,
     'auto_install': True,
     'assets': {
         'web.assets_backend': [

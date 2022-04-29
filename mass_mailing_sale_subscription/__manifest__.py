@@ -11,10 +11,6 @@
         'mass_mailing',
         'sale_subscription',
     ],
-    'data': [
-    ],
-    'demo': [
-    ],
     'auto_install': True,
     'license': 'OEEL-1',
 }

@@ -13,7 +13,6 @@
         'security/ir.model.access.csv',
         'security/helpdesk_sms_security.xml',
     ],
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

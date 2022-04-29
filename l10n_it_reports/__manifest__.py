@@ -16,7 +16,6 @@ Accounting reports for Italy
         'data/account_reduce_balance_sheet_report_data.xml',
         'data/account_profit_and_loss_data.xml',
     ],
-    'demo': [],
     'auto_install': ['l10n_it', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',

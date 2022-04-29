@@ -37,7 +37,6 @@ No modified version is certified and supported by Odoo SA.
         'data/pos_blackbox_be_demo.xml',
     ],
     'installable': False,
-    'auto_install': False,
     'license': 'OEEL-1',
     'assets': {
         'web.assets_qweb': [

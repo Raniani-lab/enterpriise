@@ -10,7 +10,6 @@
         'views/approval_product_line_views.xml',
         'views/approval_request_views.xml',
     ],
-    'application': False,
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Account TaxCloud - Sale",
-    'summary': """""",
-    'description': """
-    """,
     'category': 'Accounting/Accounting',
     'depends': ['account_taxcloud', 'sale'],
     'data': [

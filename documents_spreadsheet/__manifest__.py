@@ -20,7 +20,6 @@
         'demo/documents_demo_data.xml'
     ],
 
-    'application': False,
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

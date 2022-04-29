@@ -15,7 +15,6 @@
         'data/balance_sheet.xml',
         'data/profit_and_loss.xml',
     ],
-    'demo': [],
     'auto_install': ['l10n_pk', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',

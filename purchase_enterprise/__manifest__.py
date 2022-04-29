@@ -17,7 +17,6 @@ Contains advanced features for purchase management
         'data/purchase_order_demo.xml',
     ],
     'installable': True,
-    'application': False,
     'auto_install': ['purchase'],
     'license': 'OEEL-1',
 }

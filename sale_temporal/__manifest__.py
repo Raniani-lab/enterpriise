@@ -7,7 +7,6 @@
     'description': """This technical module allows to define lease prices on a product template and use them in sale order according to a duration, a quantity, a price list.""",
     'category': 'Sales/Sales',
     'version': '1.0',
-    'auto_install': False,
     'installable': True,
     'license': 'OEEL-1',
     'depends': ['sale'],

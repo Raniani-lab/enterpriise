@@ -6,8 +6,6 @@
     'version': '1.0',
     'category': 'Human Resources',
     'summary': 'Manage your documents to sign in contracts',
-    'description': "",
-    'website': ' ',
     'depends': ['hr_contract', 'sign'],
     'data': [
         'security/security.xml',

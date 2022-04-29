@@ -13,8 +13,6 @@
         'hr_recruitment',
         'sign',
     ],
-    'description': """
-    """,
     'data': [
         'security/hr_contract_salary_security.xml',
         'security/ir.model.access.csv',

@@ -13,10 +13,7 @@ Contains the enterprise views for Stock account
     'data': [
         'report/stock_report_views.xml',
     ],
-    'demo': [
-    ],
     'installable': True,
-    'application': False,
     'auto_install': ['stock_account'],
     'license': 'OEEL-1',
 }

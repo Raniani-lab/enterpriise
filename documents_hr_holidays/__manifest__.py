@@ -9,9 +9,7 @@
     'description': """
 Time off documents will be automatically integrated to the Document app.
 """,
-    'website': '',
     'depends': ['documents_hr', 'hr_holidays'],
-    'data': [],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

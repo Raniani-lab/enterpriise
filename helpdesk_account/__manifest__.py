@@ -6,7 +6,6 @@
     'category': 'Services/Helpdesk',
     'summary': 'Project, Tasks, Account',
     'depends': ['helpdesk_sale', 'account'],
-    'auto_install': False,
     'description': """
 Create Credit Notes from Helpdesk tickets
     """,

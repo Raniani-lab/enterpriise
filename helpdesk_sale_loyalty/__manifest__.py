@@ -5,7 +5,6 @@
     'category': 'Services/Helpdesk',
     'summary': 'Project, Tasks, Sale Loyalty',
     'depends': ['helpdesk_sale', 'sale_loyalty'],
-    'auto_install': False,
     'description': """
 Generate Coupons from Helpdesks tickets
     """,

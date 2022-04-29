@@ -7,7 +7,5 @@
     'summary': 'Helpdesk, Stock, Account',
     'depends': ['helpdesk_stock', 'helpdesk_account'],
     'auto_install': True,
-    'description': """
-    """,
     'license': 'OEEL-1',
 }

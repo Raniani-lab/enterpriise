@@ -14,7 +14,6 @@
         'views/stock_picking_batch_views.xml',
     ],
     'auto_install': True,
-    'application': False,
     'installable': True,
     'license': 'OEEL-1',
 }

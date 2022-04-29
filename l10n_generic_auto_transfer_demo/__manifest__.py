@@ -11,11 +11,9 @@ Account Automatic Transfers Demo
 Demo data for account automatic transfers module
     """,
     'category': 'Accounting/Localizations',
-    'data': [],
     'demo': [
         'data/data.xml'
     ],
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

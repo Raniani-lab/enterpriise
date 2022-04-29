@@ -9,7 +9,6 @@
     'version': '1.1',
     'summary': 'Bridge module to configure a twitter wall on your event',
     'website': 'https://www.odoo.com/app/events',
-    'description': "",
     'depends': [
         'website_twitter_wall',
         'website_event',
@@ -22,7 +21,6 @@
     'demo': [
         'data/event_twitter_wall_demo.xml'
     ],
-    'application': False,
     'installable': True,
     'auto_install': True,
     'assets': {

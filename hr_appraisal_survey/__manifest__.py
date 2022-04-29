@@ -29,7 +29,6 @@ This module adds an integration with Survey to ask feedbacks to any employee, ba
         'data/hr_appraisal_survey_demo.xml',
     ],
     'installable': True,
-    'application': False,
     'license': 'OEEL-1',
     'post_init_hook': '_setup_survey_template',
     'uninstall_hook': 'uninstall_hook',

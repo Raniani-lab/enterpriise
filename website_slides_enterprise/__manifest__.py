@@ -7,7 +7,6 @@
     """,
     'depends': ['website_slides', 'web_dashboard'],
     'installable': True,
-    'application': False,
     'auto_install': ['website_slides'],
     'data': [
         'views/slide_channel_views.xml'

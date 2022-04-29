@@ -4,8 +4,6 @@
 {
     'name': 'Cohort View',
     'summary': 'Basic Cohort view for odoo',
-    'description': """
-    """,
     'category': 'Hidden',
     'depends': ['web'],
     'assets': {

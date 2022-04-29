@@ -12,7 +12,6 @@
     'data': [
         'views/project_project_views.xml',
     ],
-    'demo': [],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

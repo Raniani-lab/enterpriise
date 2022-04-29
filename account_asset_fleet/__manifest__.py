@@ -5,7 +5,6 @@
     'name': 'Assets/Fleet bridge',
     'category': 'Accounting/Accounting',
     'summary': 'Manage assets with fleets',
-    'description': "",
     'version': '1.0',
     'depends': ['account_fleet', 'account_asset'],
     'data': [

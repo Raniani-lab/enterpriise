@@ -32,7 +32,6 @@ Main Features
     ],
 
     'installable': True,
-    'application': False,
     'auto_install': True,
     'uninstall_hook': 'uninstall_hook',
     'license': 'OEEL-1',

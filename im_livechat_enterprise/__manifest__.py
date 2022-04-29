@@ -13,10 +13,7 @@ Contains advanced features for Live Chat such as new views
     'data': [
         'views/im_livechat_views.xml',
     ],
-    'demo': [
-    ],
     'installable': True,
-    'application': False,
     'auto_install': ['im_livechat'],
     'license': 'OEEL-1',
 }

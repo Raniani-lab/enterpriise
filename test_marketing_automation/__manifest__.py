@@ -17,8 +17,5 @@
     'data': [
         'security/ir.model.access.csv',
     ],
-    'demo': [
-    ],
-    'application': False,
     'license': 'OEEL-1',
 }

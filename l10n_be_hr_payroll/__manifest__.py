@@ -103,7 +103,6 @@ Belgian Payroll Rules.
     'demo':[
         'data/l10n_be_hr_payroll_demo.xml'
     ],
-    'auto_install': False,
     'assets': {
         'web.assets_backend': [
             'l10n_be_hr_payroll/static/src/js/**/*',

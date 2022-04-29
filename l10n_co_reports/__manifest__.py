@@ -25,7 +25,6 @@ Accounting reports for Colombia
         'wizard/retention_report_views.xml',
         'report/certification_report_templates.xml',
     ],
-    'demo': [],
     'auto_install': ['l10n_co', 'account_reports'],
     'installable': True,
     'website': 'https://xoe.solutions',

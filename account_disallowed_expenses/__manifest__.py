@@ -15,7 +15,5 @@
         'views/account_disallowed_expenses_category_views.xml',
     ],
     'installable': True,
-    'auto_install': False,
-    'application': False,
     'license': 'OEEL-1',
 }

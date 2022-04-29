@@ -10,7 +10,6 @@ Allows use of stock application to manage rentals inventory
 
     """,
 
-    'author': "Odoo S.A.",
     'website': "https://www.odoo.com",
 
     'category': 'Sales/Sales',

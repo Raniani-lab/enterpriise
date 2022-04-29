@@ -9,6 +9,5 @@
         'data_cleaning',
     ],
     'data': ['security/ir.model.access.csv'],
-    'application': False,
     'license': 'OEEL-1',
 }

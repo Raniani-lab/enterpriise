@@ -16,7 +16,6 @@ Take into account the working schedule (sick leaves, part time, ...) of employee
     'data': [
         'views/appointment_type_views.xml'
     ],
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {

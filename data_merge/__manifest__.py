@@ -22,7 +22,6 @@
     ],
     'auto_install': True,
     'installable': True,
-    'application': False,
     'post_init_hook': 'post_init',
     'uninstall_hook': 'uninstall_hook',
     'assets': {

@@ -34,7 +34,5 @@ Luxembourg Payroll Rules.
     'demo': [
         'data/l10n_lu_hr_payroll_demo.xml',
     ],
-    'auto_install': False,
-    'assets': {},
     'license': 'OEEL-1',
 }

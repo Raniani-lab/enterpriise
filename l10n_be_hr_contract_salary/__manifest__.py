@@ -10,8 +10,6 @@
         'hr_contract_salary_payroll',
         'l10n_be_hr_payroll_fleet',
     ],
-    'description': """
-    """,
     'data': [
         'data/hr_contract_salary_advantage_data.xml',
         'data/hr_contract_salary_resume_data.xml',

@@ -6,8 +6,6 @@
     'icon': '/l10n_be/static/description/icon.png',
     'category': 'Human Resources',
     'depends': ['l10n_be_hr_payroll', 'fleet'],
-    'description': """
-    """,
     'version': '1.0',
     'data': [
         'security/ir.model.access.csv',

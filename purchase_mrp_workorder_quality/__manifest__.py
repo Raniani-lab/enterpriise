@@ -13,9 +13,7 @@
 Full Traceability Report Demo Data
 ==================================
 """,
-    'data': [],
     'demo': ['data/purchase_mrp_workorder_quality_demo.xml'],
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

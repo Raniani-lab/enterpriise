@@ -6,7 +6,6 @@
     'category': 'Services/Helpdesk',
     'summary': 'Project, Tasks, Repair',
     'depends': ['helpdesk_stock', 'repair'],
-    'auto_install': False,
     'description': """
 Repair Products from helpdesk tickets
     """,

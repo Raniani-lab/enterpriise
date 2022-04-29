@@ -17,7 +17,6 @@ Accounting reports for Portugal
         'data/balance_sheet.xml',
         'data/profit_loss.xml',
     ],
-    'demo': [],
     'auto_install': ['l10n_pt', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',

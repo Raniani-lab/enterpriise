@@ -3,15 +3,12 @@
 
 {
     'name': "Barcode/Quality/Batch Transfer bridge module",
-    'summary': """""",
-    'description': """""",
     'category': 'Hidden',
     'version': '1.0',
     'depends': [
         'quality_control_picking_batch',
         'stock_barcode_quality_control',
     ],
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {

@@ -29,7 +29,6 @@ Product Life Management
         'views/mrp_production_views.xml',
         'report/mrp_report_bom_structure.xml',
     ],
-    'demo': [],
     'application': True,
     'license': 'OEEL-1',
     'assets': {

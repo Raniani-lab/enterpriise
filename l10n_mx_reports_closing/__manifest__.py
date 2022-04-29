@@ -17,8 +17,6 @@
     "depends": [
         "l10n_mx_reports",
     ],
-    "demo": [
-    ],
     "data": [
         "data/l10n_mx_reports_closing_data.xml",
         "views/account_view.xml",

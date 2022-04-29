@@ -14,7 +14,6 @@ Accounting reports for India
     'data': [
         'data/account_financial_html_report_data.xml',
     ],
-    'demo': [],
     'auto_install': ['l10n_in', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',

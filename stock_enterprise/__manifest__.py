@@ -18,10 +18,7 @@ Contains the enterprise views for Stock management
         'report/stock_report_views.xml',
         'report/report_stock_quantity.xml',
     ],
-    'demo': [
-    ],
     'installable': True,
-    'application': False,
     'auto_install': ['stock'],
     'license': 'OEEL-1',
     'assets': {

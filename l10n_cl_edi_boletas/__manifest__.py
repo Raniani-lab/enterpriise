@@ -16,8 +16,6 @@
         'views/l10n_cl_daily_sales_book_views.xml',
     ],
     'installable': True,
-    'auto_install': False,
-    'application': False,
     'description': """
 Purpose of the Module:
 ======================

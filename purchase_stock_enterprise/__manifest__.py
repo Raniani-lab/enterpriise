@@ -6,13 +6,11 @@
     'version': "1.0",
     'category': "Inventory/Purchase",
     'summary': "Customized Dashboard for Purchase Stock",
-    'description': "",
     'depends': ['purchase_enterprise', 'purchase_stock'],
     'data': [
         'report/purchase_report_views.xml',
     ],
     'installable': True,
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

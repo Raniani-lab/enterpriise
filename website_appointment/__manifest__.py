@@ -30,7 +30,6 @@ Allow clients to Schedule Appointments through your Website
         'data/appointment_demo.xml',
     ],
     'installable': True,
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {

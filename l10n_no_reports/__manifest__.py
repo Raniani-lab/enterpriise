@@ -15,7 +15,6 @@ Accounting reports for Norway
         'data/profit_loss.xml',
         'data/balance_sheet.xml',
     ],
-    'demo': [],
     'auto_install': ['l10n_no', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',

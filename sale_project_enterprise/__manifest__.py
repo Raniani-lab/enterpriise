@@ -5,10 +5,6 @@
     'name': 'Sale Project Enterprise',
     'category': 'Hidden',
     'depends': ['sale_project', 'project_enterprise'],
-    'data': [
-    ],
-    'demo': [
-    ],
     'assets': {
         'web.assets_backend': [
             'sale_project_enterprise/static/src/project_right_panel/**/*.js',

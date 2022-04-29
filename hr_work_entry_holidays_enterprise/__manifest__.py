@@ -19,7 +19,6 @@ This application allows you to integrate time off in payslips.
         'views/hr_work_entry_views.xml',
     ],
     'installable': True,
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

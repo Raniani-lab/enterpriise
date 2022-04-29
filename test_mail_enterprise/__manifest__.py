@@ -32,9 +32,6 @@ in order to test the whole mail codebase. """,
     'data': [
         'security/ir.model.access.csv',
     ],
-    'demo': [
-    ],
     'installable': True,
-    'application': False,
     'license': 'OEEL-1',
 }

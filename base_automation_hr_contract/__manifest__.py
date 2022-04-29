@@ -13,7 +13,6 @@ Bridge to add contract calendar on automated actions
     'data': [
         'views/base_automation_views.xml',
     ],
-    'demo': [],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

@@ -6,8 +6,6 @@
     """,
     'category': 'Accounting/Accounting',
     'depends': ['website_sale_delivery', 'website_sale_account_taxcloud'],
-    'data': [
-    ],
     'auto_install': True,
     'license': 'OEEL-1',
 }

@@ -14,7 +14,6 @@ Contains advanced features for sale management
         'report/sale_report_views.xml',
     ],
     'installable': True,
-    'application': False,
     'auto_install': ['sale'],
     'license': 'OEEL-1',
     'assets': {

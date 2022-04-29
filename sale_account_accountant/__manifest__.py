@@ -11,7 +11,6 @@ Notify that a matching sale order exists in the reconciliation widget.
     """,
     'depends': ['sale', 'account_accountant'],
     'installable': True,
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {

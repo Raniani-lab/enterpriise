@@ -9,8 +9,6 @@
     'category': 'Sales/Point of Sale',
     'version': '0.1',
     'depends': ['point_of_sale', 'account_reports'],
-    'data': [
-    ],
     'auto_install': True,
     'license': 'OEEL-1',
 }

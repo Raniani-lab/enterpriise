@@ -28,7 +28,6 @@
         'data/mrp_production_demo.xml',
         'data/mrp_workorder_demo.xml'
     ],
-    'application': False,
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [

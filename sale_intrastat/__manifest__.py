@@ -8,8 +8,6 @@
         Bridge module between sale and intrastat.
     """,
     'depends': ['sale', 'account_intrastat'],
-    'data': [
-    ],
     'auto_install': True,
     'license': 'OEEL-1',
 }

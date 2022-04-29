@@ -22,6 +22,5 @@ This application allows you to reimburse expenses in payslips.
     ],
     'demo': ['data/hr_payroll_expense_demo.xml'],
     'installable': True,
-    'application': False,
     'license': 'OEEL-1',
 }

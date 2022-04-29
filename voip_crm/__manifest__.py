@@ -20,6 +20,5 @@ Adds the lead partner to phonecall list
     'data': [
         'views/crm_lead_views.xml'
     ],
-    'application': False,
     'license': 'OEEL-1',
 }

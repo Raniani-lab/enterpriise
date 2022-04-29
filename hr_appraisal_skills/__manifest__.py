@@ -24,7 +24,6 @@
     ],
     'auto_install': True,
     'installable': True,
-    'application': False,
     'post_init_hook': '_populate_skills_for_confirmed',
     'assets': {
         'web.assets_backend': [

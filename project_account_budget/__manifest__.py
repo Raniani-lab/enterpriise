@@ -5,7 +5,6 @@
     'name': "Project Budget",
     'version': '1.0',
     'summary': "Project account budget",
-    'description': "",
     'category': 'Services/Project',
     'depends': ['account_budget', 'project_enterprise'],
     'data': [
@@ -23,7 +22,6 @@
             'project_account_budget/static/src/right_panel/project_right_panel.xml',
         ],
     },
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

@@ -5,7 +5,6 @@
     'name': 'Field Service Reports - Sale',
     'category': 'Hidden',
     'summary': 'Create Reports for Field service workers',
-    'description': """""",
     'depends': ['industry_fsm_sale', 'industry_fsm_report'],
     'data': [
         'report/worksheet_custom_report_templates.xml',

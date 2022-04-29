@@ -18,7 +18,6 @@ PLM for workorder.
         'views/mrp_eco_views.xml',
     ],
     'installable': True,
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

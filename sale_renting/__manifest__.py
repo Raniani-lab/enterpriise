@@ -10,7 +10,6 @@
         Manage user and manager notifications
     """,
 
-    'author': "Odoo S.A.",
     'website': "https://www.odoo.com",
 
     'category': 'Sales/Sales',

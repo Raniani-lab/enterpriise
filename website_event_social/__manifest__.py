@@ -9,7 +9,6 @@
     'version': '1.1',
     'summary': 'Bridge module to push notifications to event attendees',
     'website': 'https://www.odoo.com/app/events',
-    'description': "",
     'depends': [
         'website_event',
         'social_push_notifications',
@@ -18,9 +17,6 @@
         'views/event_event_views.xml',
         'views/event_templates_registration.xml'
     ],
-    'demo': [
-    ],
-    'application': False,
     'installable': True,
     'auto_install': True,
     'assets': {

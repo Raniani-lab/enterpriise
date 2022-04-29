@@ -13,7 +13,6 @@
 Account Consolidation Demo Data
 ==================================
 """,
-    'data': [],
     'demo': [
         'data/consolidation_config.xml',
         'data/liaison_accounts.xml',
@@ -22,7 +21,6 @@ Account Consolidation Demo Data
         'data/consolidation_generate.xml',
         'data/consolidation_of_consolidation.xml'
     ],
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

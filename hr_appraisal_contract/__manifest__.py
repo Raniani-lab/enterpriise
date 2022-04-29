@@ -10,6 +10,5 @@
     'depends': ['hr_appraisal', 'hr_contract'],
     'auto_install': True,
     'installable': True,
-    'application': False,
     'license': 'OEEL-1',
 }

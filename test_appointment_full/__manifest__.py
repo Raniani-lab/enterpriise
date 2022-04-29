@@ -17,8 +17,5 @@ Take into account the working schedule (sick leaves, part time, ...) of employee
         'appointment_hr',
         'website_appointment',
     ],
-    'data': [
-    ],
-    'application': False,
     'license': 'OEEL-1',
 }

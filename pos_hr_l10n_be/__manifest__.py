@@ -19,6 +19,5 @@ This module allows Employees (and not users) to log in to the Point of Sale appl
         'data/pos_hr_l10n_be_data.xml',
     ],
     'installable': False,
-    'auto_install': False,
     'license': 'OEEL-1',
 }

@@ -27,7 +27,6 @@ When you reconcile, simply select the corresponding batch payment to reconcile a
         'wizard/download_wizard_views.xml',
         'wizard/batch_error_views.xml',
     ],
-    'test': [],
     'installable': True,
     'license': 'OEEL-1',
     'assets': {

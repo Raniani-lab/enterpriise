@@ -16,7 +16,6 @@ Employee payslips will be automatically integrated to the Document app.
         'views/documents_views.xml',
         'security/security.xml'
     ],
-    'demo': [],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

@@ -841,7 +841,7 @@ class HrPayslip(models.Model):
     @api.model
     def get_view(self, view_id=None, view_type='form', **options):
         res = super().get_view(view_id, view_type, **options)
-        if options.get('toolbar') and 'print' in res['toolbar']:
+        if options.get('toolbar') and 'print' in res.get('toolbar', []):
             res['toolbar'].pop('print')
         return res
 

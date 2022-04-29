@@ -271,6 +271,1274 @@
     }
 
     /**
+     *  Constant used to indicate the maximum of digits that is possible to display
+     *  in a cell with standard size.
+     */
+    const MAX_DECIMAL_PLACES = 20;
+    //from https://stackoverflow.com/questions/721304/insert-commas-into-number-string @Thomas/Alan Moore
+    const thousandsGroupsRegexp = /(\d+?)(?=(\d{3})+(?!\d)|$)/g;
+    const zeroRegexp = /0/g;
+    // -----------------------------------------------------------------------------
+    // FORMAT REPRESENTATION CACHE
+    // -----------------------------------------------------------------------------
+    const internalFormatByFormatString = {};
+    function parseFormat(formatString) {
+        let internalFormat = internalFormatByFormatString[formatString];
+        if (internalFormat === undefined) {
+            internalFormat = convertFormatToInternalFormat(formatString);
+            internalFormatByFormatString[formatString] = internalFormat;
+        }
+        return internalFormat;
+    }
+    // -----------------------------------------------------------------------------
+    // APPLY FORMAT
+    // -----------------------------------------------------------------------------
+    /**
+     * Formats a cell value with its format.
+     */
+    function formatValue(value, format) {
+        switch (typeof value) {
+            case "string":
+                return value;
+            case "boolean":
+                return value ? "TRUE" : "FALSE";
+            case "number":
+                // transform to internalNumberFormat
+                if (!format) {
+                    format = createDefaultFormat(value);
+                }
+                const internalFormat = parseFormat(format);
+                return applyInternalFormat(value, internalFormat);
+            case "object":
+                return "0";
+        }
+    }
+    function applyInternalFormat(value, internalFormat) {
+        if (internalFormat[0].type === "DATE") {
+            return applyDateTimeFormat(value, internalFormat[0].format);
+        }
+        let formattedValue = value < 0 ? "-" : "";
+        for (let part of internalFormat) {
+            switch (part.type) {
+                case "NUMBER":
+                    formattedValue += applyInternalNumberFormat(Math.abs(value), part.format);
+                    break;
+                case "CURRENCY":
+                    formattedValue += part.format;
+                    break;
+            }
+        }
+        return formattedValue;
+    }
+    function applyInternalNumberFormat(value, format) {
+        if (format.isPercent) {
+            value = value * 100;
+        }
+        let maxDecimals = 0;
+        if (format.decimalPart !== undefined) {
+            maxDecimals = format.decimalPart.length;
+        }
+        const { integerDigits, decimalDigits } = splitNumber(value, maxDecimals);
+        let formattedValue = applyIntegerFormat(integerDigits, format.integerPart, format.thousandsSeparator);
+        if (format.decimalPart !== undefined) {
+            formattedValue += "." + applyDecimalFormat(decimalDigits || "", format.decimalPart);
+        }
+        if (format.isPercent) {
+            formattedValue += "%";
+        }
+        return formattedValue;
+    }
+    function applyIntegerFormat(integerDigits, integerFormat, hasSeparator) {
+        var _a;
+        const _integerDigits = integerDigits === "0" ? "" : integerDigits;
+        let formattedInteger = _integerDigits;
+        const delta = integerFormat.length - _integerDigits.length;
+        if (delta > 0) {
+            // ex: format = "0#000000" and integerDigit: "123"
+            const restIntegerFormat = integerFormat.substring(0, delta); // restIntegerFormat = "0#00"
+            const countZero = (restIntegerFormat.match(zeroRegexp) || []).length; // countZero = 3
+            formattedInteger = "0".repeat(countZero) + formattedInteger; // return "000123"
+        }
+        if (hasSeparator) {
+            formattedInteger = ((_a = formattedInteger.match(thousandsGroupsRegexp)) === null || _a === void 0 ? void 0 : _a.join(",")) || formattedInteger;
+        }
+        return formattedInteger;
+    }
+    function applyDecimalFormat(decimalDigits, decimalFormat) {
+        // assume the format is valid (no commas)
+        let formattedDecimals = decimalDigits;
+        if (decimalFormat.length - decimalDigits.length > 0) {
+            const restDecimalFormat = decimalFormat.substring(decimalDigits.length, decimalFormat.length + 1);
+            const countZero = (restDecimalFormat.match(zeroRegexp) || []).length;
+            formattedDecimals = formattedDecimals + "0".repeat(countZero);
+        }
+        return formattedDecimals;
+    }
+    /**
+     * this is a cache that can contains number representation formats
+     * from 0 (minimum) to 20 (maximum) digits after the decimal point
+     */
+    const numberRepresentation = [];
+    /** split a number into two strings that contain respectively:
+     * - all digit stored in the integer part of the number
+     * - all digit stored in the decimal part of the number
+     *
+     * The 'maxDecimal' parameter allows to indicate the number of digits to not
+     * exceed in the decimal part, in which case digits are rounded
+     *
+     * Intl.Numberformat is used to properly handle all the roundings.
+     * e.g. 1234.7  with format ### (<> maxDecimals=0) should become 1235, not 1234
+     **/
+    function splitNumber(value, maxDecimals = MAX_DECIMAL_PLACES) {
+        let formatter = numberRepresentation[maxDecimals];
+        if (!formatter) {
+            formatter = new Intl.NumberFormat("en-US", {
+                maximumFractionDigits: maxDecimals,
+                useGrouping: false,
+            });
+            numberRepresentation[maxDecimals] = formatter;
+        }
+        const [integerDigits, decimalDigits] = formatter.format(value).split(".");
+        return { integerDigits, decimalDigits };
+    }
+    function applyDateTimeFormat(value, format) {
+        // TODO: unify the format functions for date and datetime
+        // This requires some code to 'parse' or 'tokenize' the format, keep it in a
+        // cache, and use it in a single mapping, that recognizes the special list
+        // of tokens dd,d,m,y,h, ... and preserves the rest
+        const jsDate = numberToJsDate(value);
+        const indexH = format.indexOf("h");
+        let strDate = "";
+        let strTime = "";
+        if (indexH > 0) {
+            strDate = formatJSDate(jsDate, format.substring(0, indexH - 1));
+            strTime = formatJSTime(jsDate, format.substring(indexH));
+        }
+        else if (indexH === 0) {
+            strTime = formatJSTime(jsDate, format);
+        }
+        else if (indexH < 0) {
+            strDate = formatJSDate(jsDate, format);
+        }
+        return strDate + (strDate && strTime ? " " : "") + strTime;
+    }
+    function formatJSDate(jsDate, format) {
+        const sep = format.match(/\/|-|\s/)[0];
+        const parts = format.split(sep);
+        return parts
+            .map((p) => {
+            switch (p) {
+                case "d":
+                    return jsDate.getDate();
+                case "dd":
+                    return jsDate.getDate().toString().padStart(2, "0");
+                case "m":
+                    return jsDate.getMonth() + 1;
+                case "mm":
+                    return String(jsDate.getMonth() + 1).padStart(2, "0");
+                case "yyyy":
+                    return jsDate.getFullYear();
+                default:
+                    throw new Error(`invalid format: ${format}`);
+            }
+        })
+            .join(sep);
+    }
+    function formatJSTime(jsDate, format) {
+        let parts = format.split(/:|\s/);
+        const dateHours = jsDate.getHours();
+        const isMeridian = parts[parts.length - 1] === "a";
+        let hours = dateHours;
+        let meridian = "";
+        if (isMeridian) {
+            hours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+            meridian = dateHours >= 12 ? " PM" : " AM";
+            parts.pop();
+        }
+        return (parts
+            .map((p) => {
+            switch (p) {
+                case "hhhh":
+                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY$1) / (60 * 60 * 1000));
+                    return helapsedHours.toString();
+                case "hh":
+                    return hours.toString().padStart(2, "0");
+                case "mm":
+                    return jsDate.getMinutes().toString().padStart(2, "0");
+                case "ss":
+                    return jsDate.getSeconds().toString().padStart(2, "0");
+                default:
+                    throw new Error(`invalid format: ${format}`);
+            }
+        })
+            .join(":") + meridian);
+    }
+    // -----------------------------------------------------------------------------
+    // CREATE / MODIFY FORMAT
+    // -----------------------------------------------------------------------------
+    function createDefaultFormat(value) {
+        let { decimalDigits } = splitNumber(value, 10);
+        return decimalDigits ? "0." + "0".repeat(decimalDigits.length) : "0";
+    }
+    function changeDecimalPlaces(format, step) {
+        const internalFormat = parseFormat(format);
+        const newInternalFormat = internalFormat.map((intFmt) => {
+            if (intFmt.type === "NUMBER") {
+                return { ...intFmt, format: changeInternalNumberFormatDecimalPlaces(intFmt.format, step) };
+            }
+            else {
+                return intFmt;
+            }
+        });
+        const newFormat = convertInternalFormatToFormat(newInternalFormat);
+        internalFormatByFormatString[newFormat] = newInternalFormat;
+        return newFormat;
+    }
+    function changeInternalNumberFormatDecimalPlaces(format, step) {
+        var _a;
+        const _format = { ...format };
+        const sign = Math.sign(step);
+        const decimalLength = ((_a = _format.decimalPart) === null || _a === void 0 ? void 0 : _a.length) || 0;
+        const countZero = Math.min(Math.max(0, decimalLength + sign), MAX_DECIMAL_PLACES);
+        _format.decimalPart = "0".repeat(countZero);
+        if (_format.decimalPart === "") {
+            delete _format.decimalPart;
+        }
+        return _format;
+    }
+    // -----------------------------------------------------------------------------
+    // MANAGING FORMAT
+    // -----------------------------------------------------------------------------
+    /**
+     * Validates the provided format string and returns an InternalFormat Object.
+     */
+    function convertFormatToInternalFormat(format) {
+        if (format === "") {
+            throw new Error("A format cannot be empty");
+        }
+        let currentIndex = 0;
+        let result = [];
+        while (currentIndex < format.length) {
+            let closingIndex;
+            if (format.charAt(currentIndex) === "[") {
+                if (format.charAt(currentIndex + 1) !== "$") {
+                    throw new Error(`Currency formats have to be prefixed by a $: ${format}`);
+                }
+                // manage brackets/customStrings
+                closingIndex = format.substring(currentIndex).lastIndexOf("]") + currentIndex + 1;
+                if (closingIndex === 0) {
+                    throw new Error(`Invalid currency brackets format: ${format}`);
+                }
+                result.push({
+                    type: "CURRENCY",
+                    format: format.substring(currentIndex + 2, closingIndex - 1),
+                }); // remove leading "[$"" and ending "]".
+            }
+            else {
+                // rest of the time
+                const nextPartIndex = format.substring(currentIndex).indexOf("[");
+                closingIndex = nextPartIndex > -1 ? nextPartIndex + currentIndex : format.length;
+                const subFormat = format.substring(currentIndex, closingIndex);
+                if (subFormat.match(DATETIME_FORMAT)) {
+                    result.push({ type: "DATE", format: subFormat });
+                }
+                else {
+                    result.push({
+                        type: "NUMBER",
+                        format: convertToInternalNumberFormat(subFormat),
+                    });
+                }
+            }
+            currentIndex = closingIndex;
+        }
+        return result;
+    }
+    /**
+     * @param format a formatString that is only applicable to numbers. I.e. composed of characters 0 # , . %
+     */
+    function convertToInternalNumberFormat(format) {
+        const isPercent = format.includes("%");
+        const thousandsSeparator = format.includes(",");
+        if (format.match(/\..*,/)) {
+            throw new Error("A format can't contain ',' symbol in the decimal part");
+        }
+        const _format = format.replace("%", "").replace(",", "");
+        const extraSigns = _format.match(/[\%|,]/);
+        if (extraSigns) {
+            throw new Error(`A format can only contain a single '${extraSigns[0]}' symbol`);
+        }
+        const [integerPart, decimalPart] = _format.split(".");
+        if (decimalPart && decimalPart.length > 20) {
+            throw new Error("A format can't contain more than 20 decimal places");
+        }
+        if (decimalPart !== undefined) {
+            return {
+                integerPart,
+                isPercent,
+                thousandsSeparator,
+                decimalPart,
+            };
+        }
+        else {
+            return {
+                integerPart,
+                isPercent,
+                thousandsSeparator,
+            };
+        }
+    }
+    function convertInternalFormatToFormat(internalFormat) {
+        let format = "";
+        for (let part of internalFormat) {
+            let currentFormat;
+            switch (part.type) {
+                case "NUMBER":
+                    const fmt = part.format;
+                    currentFormat = fmt.integerPart;
+                    if (fmt.thousandsSeparator) {
+                        currentFormat = currentFormat.slice(0, -3) + "," + currentFormat.slice(-3);
+                    }
+                    if (fmt.decimalPart !== undefined) {
+                        currentFormat += "." + fmt.decimalPart;
+                    }
+                    if (fmt.isPercent) {
+                        currentFormat += "%";
+                    }
+                    break;
+                case "CURRENCY":
+                    currentFormat = `[$${part.format}]`;
+                    break;
+                case "DATE":
+                    currentFormat = part.format;
+                    break;
+            }
+            format += currentFormat;
+        }
+        return format;
+    }
+
+    /**
+     * Registry
+     *
+     * The Registry class is basically just a mapping from a string key to an object.
+     * It is really not much more than an object. It is however useful for the
+     * following reasons:
+     *
+     * 1. it let us react and execute code when someone add something to the registry
+     *   (for example, the FunctionRegistry subclass this for this purpose)
+     * 2. it throws an error when the get operation fails
+     * 3. it provides a chained API to add items to the registry.
+     */
+    class Registry {
+        constructor() {
+            this.content = {};
+        }
+        /**
+         * Add an item to the registry
+         *
+         * Note that this also returns the registry, so another add method call can
+         * be chained
+         */
+        add(key, value) {
+            this.content[key] = value;
+            return this;
+        }
+        /**
+         * Get an item from the registry
+         */
+        get(key) {
+            /**
+             * Note: key in {} is ~12 times slower than {}[key].
+             * So, we check the absence of key only when the direct access returns
+             * a falsy value. It's done to ensure that the registry can contains falsy values
+             */
+            const content = this.content[key];
+            if (!content) {
+                if (!(key in this.content)) {
+                    throw new Error(`Cannot find ${key} in this registry!`);
+                }
+            }
+            return content;
+        }
+        /**
+         * Get a list of all elements in the registry
+         */
+        getAll() {
+            return Object.values(this.content);
+        }
+        /**
+         * Get a list of all keys in the registry
+         */
+        getKeys() {
+            return Object.keys(this.content);
+        }
+        /**
+         * Remove an item from the registry
+         */
+        remove(key) {
+            delete this.content[key];
+        }
+    }
+
+    /**
+     * An AutofillModifierImplementation is used to describe how to handle a
+     * AutofillModifier.
+     */
+    const autofillModifiersRegistry = new Registry();
+    autofillModifiersRegistry
+        .add("INCREMENT_MODIFIER", {
+        apply: (rule, data) => {
+            var _a;
+            rule.current += rule.increment;
+            const content = rule.current.toString();
+            const tooltipValue = formatValue(rule.current, (_a = data.cell) === null || _a === void 0 ? void 0 : _a.format);
+            return {
+                cellData: {
+                    border: data.border,
+                    style: data.cell && data.cell.style,
+                    format: data.cell && data.cell.format,
+                    content,
+                },
+                tooltip: content ? { props: { content: tooltipValue } } : undefined,
+            };
+        },
+    })
+        .add("COPY_MODIFIER", {
+        apply: (rule, data, getters) => {
+            var _a, _b;
+            const content = ((_a = data.cell) === null || _a === void 0 ? void 0 : _a.content) || "";
+            return {
+                cellData: {
+                    border: data.border,
+                    style: data.cell && data.cell.style,
+                    format: data.cell && data.cell.format,
+                    content,
+                },
+                tooltip: content ? { props: { content: (_b = data.cell) === null || _b === void 0 ? void 0 : _b.formattedValue } } : undefined,
+            };
+        },
+    })
+        .add("FORMULA_MODIFIER", {
+        apply: (rule, data, getters, direction) => {
+            rule.current += rule.increment;
+            let x = 0;
+            let y = 0;
+            switch (direction) {
+                case 0 /* UP */:
+                    x = 0;
+                    y = -rule.current;
+                    break;
+                case 1 /* DOWN */:
+                    x = 0;
+                    y = rule.current;
+                    break;
+                case 2 /* LEFT */:
+                    x = -rule.current;
+                    y = 0;
+                    break;
+                case 3 /* RIGHT */:
+                    x = rule.current;
+                    y = 0;
+                    break;
+            }
+            if (!data.cell || !data.cell.isFormula()) {
+                return { cellData: {} };
+            }
+            const sheetId = data.sheetId;
+            const ranges = getters.createAdaptedRanges(data.cell.dependencies, x, y, sheetId);
+            const content = getters.buildFormulaContent(sheetId, data.cell, ranges);
+            return {
+                cellData: {
+                    border: data.border,
+                    style: data.cell.style,
+                    format: data.cell.format,
+                    content,
+                },
+                tooltip: content ? { props: { content } } : undefined,
+            };
+        },
+    });
+
+    var CellValueType;
+    (function (CellValueType) {
+        CellValueType["boolean"] = "boolean";
+        CellValueType["number"] = "number";
+        CellValueType["text"] = "text";
+        CellValueType["empty"] = "empty";
+        CellValueType["error"] = "error";
+    })(CellValueType || (CellValueType = {}));
+
+    function isSheetDependent(cmd) {
+        return "sheetId" in cmd;
+    }
+    function isGridDependent(cmd) {
+        return "dimension" in cmd;
+    }
+    function isTargetDependent(cmd) {
+        return "target" in cmd;
+    }
+    function isPositionDependent(cmd) {
+        return "col" in cmd && "row" in cmd;
+    }
+    const invalidateEvaluationCommands = new Set([
+        "RENAME_SHEET",
+        "DELETE_SHEET",
+        "CREATE_SHEET",
+        "ADD_COLUMNS_ROWS",
+        "REMOVE_COLUMNS_ROWS",
+        "DELETE_CELL",
+        "INSERT_CELL",
+        "UNDO",
+        "REDO",
+    ]);
+    const readonlyAllowedCommands = new Set([
+        "START",
+        "ACTIVATE_SHEET",
+        "COPY",
+        "PREPARE_SELECTION_INPUT_EXPANSION",
+        "STOP_SELECTION_INPUT",
+        "RESIZE_VIEWPORT",
+        "SET_VIEWPORT_OFFSET",
+        "SELECT_SEARCH_NEXT_MATCH",
+        "SELECT_SEARCH_PREVIOUS_MATCH",
+        "REFRESH_SEARCH",
+        "UPDATE_SEARCH",
+        "CLEAR_SEARCH",
+        "EVALUATE_CELLS",
+        "SET_CURRENT_CONTENT",
+        "SET_FORMULA_VISIBILITY",
+    ]);
+    const coreTypes = new Set([
+        /** CELLS */
+        "UPDATE_CELL",
+        "UPDATE_CELL_POSITION",
+        "CLEAR_CELL",
+        "DELETE_CONTENT",
+        /** GRID SHAPE */
+        "ADD_COLUMNS_ROWS",
+        "REMOVE_COLUMNS_ROWS",
+        "RESIZE_COLUMNS_ROWS",
+        "HIDE_COLUMNS_ROWS",
+        "UNHIDE_COLUMNS_ROWS",
+        "SET_GRID_LINES_VISIBILITY",
+        /** MERGE */
+        "ADD_MERGE",
+        "REMOVE_MERGE",
+        /** SHEETS MANIPULATION */
+        "CREATE_SHEET",
+        "DELETE_SHEET",
+        "DUPLICATE_SHEET",
+        "MOVE_SHEET",
+        "RENAME_SHEET",
+        /** CONDITIONAL FORMAT */
+        "ADD_CONDITIONAL_FORMAT",
+        "REMOVE_CONDITIONAL_FORMAT",
+        "MOVE_CONDITIONAL_FORMAT",
+        /** FIGURES */
+        "CREATE_FIGURE",
+        "DELETE_FIGURE",
+        "UPDATE_FIGURE",
+        /** FORMATTING */
+        "SET_FORMATTING",
+        "CLEAR_FORMATTING",
+        "SET_BORDER",
+        "SET_DECIMAL",
+        /** CHART */
+        "CREATE_CHART",
+        "UPDATE_CHART",
+    ]);
+    function isCoreCommand(cmd) {
+        return coreTypes.has(cmd.type);
+    }
+    function canExecuteInReadonly(cmd) {
+        return readonlyAllowedCommands.has(cmd.type);
+    }
+    /**
+     * Holds the result of a command dispatch.
+     * The command may have been successfully dispatched or cancelled
+     * for one or more reasons.
+     */
+    class DispatchResult {
+        constructor(results = []) {
+            if (!Array.isArray(results)) {
+                results = [results];
+            }
+            results = [...new Set(results)];
+            this.reasons = results.filter((result) => result !== 0 /* Success */);
+        }
+        /**
+         * Static helper which returns a successful DispatchResult
+         */
+        static get Success() {
+            return new DispatchResult();
+        }
+        get isSuccessful() {
+            return this.reasons.length === 0;
+        }
+        /**
+         * Check if the dispatch has been cancelled because of
+         * the given reason.
+         */
+        isCancelledBecause(reason) {
+            return this.reasons.includes(reason);
+        }
+    }
+    exports.CommandResult = void 0;
+    (function (CommandResult) {
+        CommandResult[CommandResult["Success"] = 0] = "Success";
+        CommandResult[CommandResult["CancelledForUnknownReason"] = 1] = "CancelledForUnknownReason";
+        CommandResult[CommandResult["WillRemoveExistingMerge"] = 2] = "WillRemoveExistingMerge";
+        CommandResult[CommandResult["MergeIsDestructive"] = 3] = "MergeIsDestructive";
+        CommandResult[CommandResult["CellIsMerged"] = 4] = "CellIsMerged";
+        CommandResult[CommandResult["EmptyUndoStack"] = 5] = "EmptyUndoStack";
+        CommandResult[CommandResult["EmptyRedoStack"] = 6] = "EmptyRedoStack";
+        CommandResult[CommandResult["NotEnoughElements"] = 7] = "NotEnoughElements";
+        CommandResult[CommandResult["NotEnoughSheets"] = 8] = "NotEnoughSheets";
+        CommandResult[CommandResult["MissingSheetName"] = 9] = "MissingSheetName";
+        CommandResult[CommandResult["DuplicatedSheetName"] = 10] = "DuplicatedSheetName";
+        CommandResult[CommandResult["ForbiddenCharactersInSheetName"] = 11] = "ForbiddenCharactersInSheetName";
+        CommandResult[CommandResult["WrongSheetMove"] = 12] = "WrongSheetMove";
+        CommandResult[CommandResult["WrongSheetPosition"] = 13] = "WrongSheetPosition";
+        CommandResult[CommandResult["InvalidAnchorZone"] = 14] = "InvalidAnchorZone";
+        CommandResult[CommandResult["SelectionOutOfBound"] = 15] = "SelectionOutOfBound";
+        CommandResult[CommandResult["TargetOutOfSheet"] = 16] = "TargetOutOfSheet";
+        CommandResult[CommandResult["WrongPasteSelection"] = 17] = "WrongPasteSelection";
+        CommandResult[CommandResult["EmptyClipboard"] = 18] = "EmptyClipboard";
+        CommandResult[CommandResult["EmptyRange"] = 19] = "EmptyRange";
+        CommandResult[CommandResult["InvalidRange"] = 20] = "InvalidRange";
+        CommandResult[CommandResult["InvalidSheetId"] = 21] = "InvalidSheetId";
+        CommandResult[CommandResult["InputAlreadyFocused"] = 22] = "InputAlreadyFocused";
+        CommandResult[CommandResult["MaximumRangesReached"] = 23] = "MaximumRangesReached";
+        CommandResult[CommandResult["InvalidChartDefinition"] = 24] = "InvalidChartDefinition";
+        CommandResult[CommandResult["EmptyDataSet"] = 25] = "EmptyDataSet";
+        CommandResult[CommandResult["InvalidDataSet"] = 26] = "InvalidDataSet";
+        CommandResult[CommandResult["InvalidLabelRange"] = 27] = "InvalidLabelRange";
+        CommandResult[CommandResult["InvalidAutofillSelection"] = 28] = "InvalidAutofillSelection";
+        CommandResult[CommandResult["WrongComposerSelection"] = 29] = "WrongComposerSelection";
+        CommandResult[CommandResult["MinBiggerThanMax"] = 30] = "MinBiggerThanMax";
+        CommandResult[CommandResult["LowerBiggerThanUpper"] = 31] = "LowerBiggerThanUpper";
+        CommandResult[CommandResult["MidBiggerThanMax"] = 32] = "MidBiggerThanMax";
+        CommandResult[CommandResult["MinBiggerThanMid"] = 33] = "MinBiggerThanMid";
+        CommandResult[CommandResult["FirstArgMissing"] = 34] = "FirstArgMissing";
+        CommandResult[CommandResult["SecondArgMissing"] = 35] = "SecondArgMissing";
+        CommandResult[CommandResult["MinNaN"] = 36] = "MinNaN";
+        CommandResult[CommandResult["MidNaN"] = 37] = "MidNaN";
+        CommandResult[CommandResult["MaxNaN"] = 38] = "MaxNaN";
+        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 39] = "ValueUpperInflectionNaN";
+        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 40] = "ValueLowerInflectionNaN";
+        CommandResult[CommandResult["MinInvalidFormula"] = 41] = "MinInvalidFormula";
+        CommandResult[CommandResult["MidInvalidFormula"] = 42] = "MidInvalidFormula";
+        CommandResult[CommandResult["MaxInvalidFormula"] = 43] = "MaxInvalidFormula";
+        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 44] = "ValueUpperInvalidFormula";
+        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 45] = "ValueLowerInvalidFormula";
+        CommandResult[CommandResult["InvalidSortZone"] = 46] = "InvalidSortZone";
+        CommandResult[CommandResult["WaitingSessionConfirmation"] = 47] = "WaitingSessionConfirmation";
+        CommandResult[CommandResult["MergeOverlap"] = 48] = "MergeOverlap";
+        CommandResult[CommandResult["TooManyHiddenElements"] = 49] = "TooManyHiddenElements";
+        CommandResult[CommandResult["Readonly"] = 50] = "Readonly";
+        CommandResult[CommandResult["InvalidOffset"] = 51] = "InvalidOffset";
+        CommandResult[CommandResult["InvalidViewportSize"] = 52] = "InvalidViewportSize";
+        CommandResult[CommandResult["FigureDoesNotExist"] = 53] = "FigureDoesNotExist";
+        CommandResult[CommandResult["InvalidConditionalFormatId"] = 54] = "InvalidConditionalFormatId";
+    })(exports.CommandResult || (exports.CommandResult = {}));
+
+    var ReturnFormatType;
+    (function (ReturnFormatType) {
+        ReturnFormatType["FormatFromArgument"] = "FormatFromArgument";
+    })(ReturnFormatType || (ReturnFormatType = {}));
+
+    var DIRECTION;
+    (function (DIRECTION) {
+        DIRECTION[DIRECTION["UP"] = 0] = "UP";
+        DIRECTION[DIRECTION["DOWN"] = 1] = "DOWN";
+        DIRECTION[DIRECTION["LEFT"] = 2] = "LEFT";
+        DIRECTION[DIRECTION["RIGHT"] = 3] = "RIGHT";
+    })(DIRECTION || (DIRECTION = {}));
+
+    var LAYERS;
+    (function (LAYERS) {
+        LAYERS[LAYERS["Background"] = 0] = "Background";
+        LAYERS[LAYERS["Highlights"] = 1] = "Highlights";
+        LAYERS[LAYERS["Clipboard"] = 2] = "Clipboard";
+        LAYERS[LAYERS["Search"] = 3] = "Search";
+        LAYERS[LAYERS["Chart"] = 4] = "Chart";
+        LAYERS[LAYERS["Selection"] = 5] = "Selection";
+        LAYERS[LAYERS["Autofill"] = 6] = "Autofill";
+        LAYERS[LAYERS["Headers"] = 7] = "Headers";
+    })(LAYERS || (LAYERS = {}));
+
+    const autofillRulesRegistry = new Registry();
+    /**
+     * Get the consecutive xc that are of type "number" or "date".
+     * Return the one which contains the given cell
+     */
+    function getGroup(cell, cells) {
+        let group = [];
+        let found = false;
+        for (let x of cells) {
+            if (x === cell) {
+                found = true;
+            }
+            if ((x === null || x === void 0 ? void 0 : x.evaluated.type) === CellValueType.number) {
+                group.push(x.evaluated.value);
+            }
+            else {
+                if (found) {
+                    return group;
+                }
+                group = [];
+            }
+        }
+        return group;
+    }
+    /**
+     * Get the average steps between numbers
+     */
+    function getAverageIncrement(group) {
+        const averages = [];
+        let last = group[0];
+        for (let i = 1; i < group.length; i++) {
+            const current = group[i];
+            averages.push(current - last);
+            last = current;
+        }
+        return averages.reduce((a, b) => a + b, 0) / averages.length;
+    }
+    autofillRulesRegistry
+        .add("simple_value_copy", {
+        condition: (cell, cells) => {
+            var _a;
+            return cells.length === 1 && !cell.isFormula() && !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
+        },
+        generateRule: () => {
+            return { type: "COPY_MODIFIER" };
+        },
+        sequence: 10,
+    })
+        .add("copy_text", {
+        condition: (cell) => !cell.isFormula() && cell.evaluated.type === CellValueType.text,
+        generateRule: () => {
+            return { type: "COPY_MODIFIER" };
+        },
+        sequence: 20,
+    })
+        .add("update_formula", {
+        condition: (cell) => cell.isFormula(),
+        generateRule: (_, cells) => {
+            return { type: "FORMULA_MODIFIER", increment: cells.length, current: 0 };
+        },
+        sequence: 30,
+    })
+        .add("increment_number", {
+        condition: (cell) => cell.evaluated.type === CellValueType.number,
+        generateRule: (cell, cells) => {
+            const group = getGroup(cell, cells);
+            let increment = 1;
+            if (group.length == 2) {
+                increment = (group[1] - group[0]) * 2;
+            }
+            else if (group.length > 2) {
+                increment = getAverageIncrement(group) * group.length;
+            }
+            return {
+                type: "INCREMENT_MODIFIER",
+                increment,
+                current: cell.evaluated.type === CellValueType.number ? cell.evaluated.value : 0,
+            };
+        },
+        sequence: 40,
+    });
+
+    /**
+     * This registry is intended to map a cell content (raw string) to
+     * an instance of a cell.
+     */
+    const cellRegistry = new Registry();
+
+    /**
+     * Registry intended to support usual currencies. It is mainly used to create
+     * currency formats that can be selected or modified when customizing formats.
+     */
+    const currenciesRegistry = new Registry();
+
+    const figureRegistry = new Registry();
+
+    const fontSizes = [
+        { pt: 7.5, px: 10 },
+        { pt: 8, px: 11 },
+        { pt: 9, px: 12 },
+        { pt: 10, px: 13 },
+        { pt: 10.5, px: 14 },
+        { pt: 11, px: 15 },
+        { pt: 12, px: 16 },
+        { pt: 14, px: 18.7 },
+        { pt: 15, px: 20 },
+        { pt: 16, px: 21.3 },
+        { pt: 18, px: 24 },
+        { pt: 22, px: 29.3 },
+        { pt: 24, px: 32 },
+        { pt: 26, px: 34.7 },
+        { pt: 36, px: 48 },
+    ];
+    const fontSizeMap = {};
+    for (let font of fontSizes) {
+        fontSizeMap[font.pt] = font.px;
+    }
+
+    //------------------------------------------------------------------------------
+    /**
+     * Stringify an object, like JSON.stringify, except that the first level of keys
+     * is ordered.
+     */
+    function stringify(obj) {
+        return JSON.stringify(obj, Object.keys(obj).sort());
+    }
+    /**
+     * Remove quotes from a quoted string
+     * ```js
+     * removeStringQuotes('"Hello"')
+     * > 'Hello'
+     * ```
+     */
+    function removeStringQuotes(str) {
+        if (str[0] === '"' && str[str.length - 1] === '"') {
+            return str.slice(1).slice(0, str.length - 2);
+        }
+        return str;
+    }
+    /**
+     * Deep copy arrays, plain objects and primitive values.
+     * Throws an error for other types such as class instances.
+     * Sparse arrays remain sparse.
+     */
+    function deepCopy(obj) {
+        const result = Array.isArray(obj) ? [] : {};
+        switch (typeof obj) {
+            case "object": {
+                if (obj === null) {
+                    return obj;
+                }
+                else if (!(isPlainObject(obj) || obj instanceof Array)) {
+                    throw new Error("Unsupported type: only objects and arrays are supported");
+                }
+                for (const key in obj) {
+                    result[key] = deepCopy(obj[key]);
+                }
+                return result;
+            }
+            case "number":
+            case "string":
+            case "boolean":
+            case "function":
+            case "undefined":
+                return obj;
+            default:
+                throw new Error(`Unsupported type: ${typeof obj}`);
+        }
+    }
+    /**
+     * Check if the object is a plain old javascript object.
+     */
+    function isPlainObject(obj) {
+        return typeof obj === "object" && (obj === null || obj === void 0 ? void 0 : obj.constructor) === Object;
+    }
+    /**
+     * Sanitize the name of a sheet, by eventually removing quotes
+     * @param sheetName name of the sheet, potentially quoted with single quotes
+     */
+    function getUnquotedSheetName(sheetName) {
+        if (sheetName.startsWith("'")) {
+            sheetName = sheetName.slice(1, -1).replace(/''/g, "'");
+        }
+        return sheetName;
+    }
+    /**
+     * Add quotes around the sheet name if it contains at least one non alphanumeric character
+     * '\w' captures [0-9][a-z][A-Z] and _.
+     * @param sheetName Name of the sheet
+     */
+    function getComposerSheetName(sheetName) {
+        var _a;
+        if (((_a = sheetName.match(/\w/g)) === null || _a === void 0 ? void 0 : _a.length) !== sheetName.length) {
+            sheetName = `'${sheetName}'`;
+        }
+        return sheetName;
+    }
+    function clip(val, min, max) {
+        return val < min ? min : val > max ? max : val;
+    }
+    function computeTextWidth(context, text, style) {
+        const italic = style.italic ? "italic " : "";
+        const weight = style.bold ? "bold" : DEFAULT_FONT_WEIGHT;
+        const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
+        const size = fontSizeMap[sizeInPt];
+        context.font = `${italic}${weight} ${size}px ${DEFAULT_FONT}`;
+        return context.measureText(text).width;
+    }
+    function computeIconWidth(context, style) {
+        const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
+        const size = fontSizeMap[sizeInPt];
+        return size + 2 * MIN_CF_ICON_MARGIN;
+    }
+    /**
+     * Create a range from start (included) to end (excluded).
+     * range(10, 13) => [10, 11, 12]
+     * range(2, 8, 2) => [2, 4, 6]
+     */
+    function range(start, end, step = 1) {
+        if (end <= start && step > 0) {
+            return [];
+        }
+        if (step === 0) {
+            throw new Error("range() step must not be zero");
+        }
+        const length = Math.ceil(Math.abs((end - start) / step));
+        const array = Array(length);
+        for (let i = 0; i < length; i++) {
+            array[i] = start + i * step;
+        }
+        return array;
+    }
+    /**
+     * Groups consecutive numbers.
+     * The input array is assumed to be sorted
+     * @param numbers
+     */
+    function groupConsecutive(numbers) {
+        return numbers.reduce((groups, currentRow, index, rows) => {
+            if (Math.abs(currentRow - rows[index - 1]) === 1) {
+                const lastGroup = groups[groups.length - 1];
+                lastGroup.push(currentRow);
+            }
+            else {
+                groups.push([currentRow]);
+            }
+            return groups;
+        }, []);
+    }
+    /**
+     * Create one generator from two generators by linking
+     * each item of the first generator to the next item of
+     * the second generator.
+     *
+     * Let's say generator G1 yields A, B, C and generator G2 yields X, Y, Z.
+     * The resulting generator of `linkNext(G1, G2)` will yield A', B', C'
+     * where `A' = A & {next: Y}`, `B' = B & {next: Z}` and `C' = C & {next: undefined}`
+     * @param generator
+     * @param nextGenerator
+     */
+    function* linkNext(generator, nextGenerator) {
+        nextGenerator.next();
+        for (const item of generator) {
+            const nextItem = nextGenerator.next();
+            yield {
+                ...item,
+                next: nextItem.done ? undefined : nextItem.value,
+            };
+        }
+    }
+    function isBoolean(str) {
+        const upperCased = str.toUpperCase();
+        return upperCased === "TRUE" || upperCased === "FALSE";
+    }
+    function isDateTime(str) {
+        return parseDateTime(str) !== null;
+    }
+    const MARKDOWN_LINK_REGEX = /^\[([^\[]+)\]\((.+)\)$/;
+    //link must start with http or https
+    //https://stackoverflow.com/a/3809435/4760614
+    const WEB_LINK_REGEX = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
+    function isMarkdownLink(str) {
+        return MARKDOWN_LINK_REGEX.test(str);
+    }
+    /**
+     * Check if the string is a web link.
+     * e.g. http://odoo.com
+     */
+    function isWebLink(str) {
+        return WEB_LINK_REGEX.test(str);
+    }
+    /**
+     * Build a markdown link from a label and an url
+     */
+    function markdownLink(label, url) {
+        return `[${label}](${url})`;
+    }
+    function parseMarkdownLink(str) {
+        const matches = str.match(MARKDOWN_LINK_REGEX) || [];
+        const label = matches[1];
+        const url = matches[2];
+        if (!label || !url) {
+            throw new Error(`Could not parse markdown link ${str}.`);
+        }
+        return {
+            label,
+            url,
+        };
+    }
+    const O_SPREADSHEET_LINK_PREFIX = "o-spreadsheet://";
+    function isMarkdownSheetLink(str) {
+        if (!isMarkdownLink(str)) {
+            return false;
+        }
+        const { url } = parseMarkdownLink(str);
+        return url.startsWith(O_SPREADSHEET_LINK_PREFIX);
+    }
+    function buildSheetLink(sheetId) {
+        return `${O_SPREADSHEET_LINK_PREFIX}${sheetId}`;
+    }
+    /**
+     * Parse a sheet link and return the sheet id
+     */
+    function parseSheetLink(sheetLink) {
+        if (sheetLink.startsWith(O_SPREADSHEET_LINK_PREFIX)) {
+            return sheetLink.substr(O_SPREADSHEET_LINK_PREFIX.length);
+        }
+        throw new Error(`${sheetLink} is not a valid sheet link`);
+    }
+    /**
+     * This helper function can be used as a type guard when filtering arrays.
+     * const foo: number[] = [1, 2, undefined, 4].filter(isDefined)
+     */
+    function isDefined$1(argument) {
+        return argument !== undefined;
+    }
+    /**
+     * Get the id of the given item (its key in the given dictionnary).
+     * If the given item does not exist in the dictionary, it creates one with a new id.
+     */
+    function getItemId(item, itemsDic) {
+        for (let [key, value] of Object.entries(itemsDic)) {
+            if (stringify(value) === stringify(item)) {
+                return parseInt(key, 10);
+            }
+        }
+        // Generate new Id if the item didn't exist in the dictionary
+        const ids = Object.keys(itemsDic);
+        const maxId = ids.length === 0 ? 0 : Math.max(...ids.map((id) => parseInt(id, 10)));
+        itemsDic[maxId + 1] = item;
+        return maxId + 1;
+    }
+    /**
+     * This method comes from owl 1 as it was removed in owl 2
+     *
+     * Returns a function, that, as long as it continues to be invoked, will not
+     * be triggered. The function will be called after it stops being called for
+     * N milliseconds. If `immediate` is passed, trigger the function on the
+     * leading edge, instead of the trailing.
+     *
+     * Inspired by https://davidwalsh.name/javascript-debounce-function
+     */
+    function debounce(func, wait, immediate) {
+        let timeout;
+        return function () {
+            const context = this;
+            const args = arguments;
+            function later() {
+                timeout = null;
+                if (!immediate) {
+                    func.apply(context, args);
+                }
+            }
+            const callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) {
+                func.apply(context, args);
+            }
+        };
+    }
+    /*
+     * Concatenate an array of strings.
+     */
+    function concat(chars) {
+        // ~40% faster than chars.join("")
+        let output = "";
+        for (let i = 0, len = chars.length; i < len; i++) {
+            output += chars[i];
+        }
+        return output;
+    }
+    /**
+     * Lazy value computed by the provided function.
+     */
+    function lazy(fn) {
+        let isMemoized = false;
+        let memo;
+        const lazyValue = () => {
+            if (!isMemoized) {
+                memo = fn();
+                isMemoized = true;
+            }
+            return memo;
+        };
+        lazyValue.map = (callback) => lazy(() => callback(lazyValue()));
+        return lazyValue;
+    }
+
+    const colors$1 = [
+        "#eb6d00",
+        "#0074d9",
+        "#ad8e00",
+        "#169ed4",
+        "#b10dc9",
+        "#00a82d",
+        "#00a3a3",
+        "#f012be",
+        "#3d9970",
+        "#111111",
+        "#62A300",
+        "#ff4136",
+        "#949494",
+        "#85144b",
+        "#001f3f",
+    ];
+    /*
+     * transform a color number (R * 256^2 + G * 256 + B) into classic RGB
+     * */
+    function colorNumberString(color) {
+        return color.toString(16).padStart(6, "0");
+    }
+    let colorIndex = 0;
+    function getNextColor() {
+        colorIndex = ++colorIndex % colors$1.length;
+        return colors$1[colorIndex];
+    }
+    /**
+     * Converts any CSS color value to a standardized hex6 value.
+     * Accepts: hex3, hex6 and rgb (rgba is not supported)
+     *
+     * toHex6("#ABC")
+     * >> "AABBCC"
+     *
+     * toHex6("#AAAFFF")
+     * >> "AAAFFF"
+     *
+     * toHex6("rgb(30, 80, 16)")
+     * >> "1E5010"
+     *
+     * (note: number sign is dropped as it is not supported in xlsx format)
+     */
+    function toHex6(color) {
+        if (color.includes("rgb")) {
+            return rgbToHex6(color);
+        }
+        color = color.replace("#", "").toUpperCase();
+        if (color.length === 3) {
+            color = color.split("").reduce((acc, h) => acc + h + h, "");
+        }
+        return color;
+    }
+    /**
+     * Convert a CSS rgb color string to a standardized hex6 color value.
+     *
+     * rgbToHex6("rgb(30, 80, 16)")
+     * >> "1E5010"
+     */
+    function rgbToHex6(color) {
+        return concat(color
+            .slice(4, -1)
+            .split(",")
+            .map((valueString) => parseInt(valueString, 10).toString(16).padStart(2, "0"))).toUpperCase();
+    }
+
+    /**
+     * Regex that detect cell reference and a range reference (without the sheetName)
+     */
+    const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
+    const rangeReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7})?$/, "i");
+
+    //------------------------------------------------------------------------------
+    /**
+     * Convert a (col) number to the corresponding letter.
+     *
+     * Examples:
+     *     0 => 'A'
+     *     25 => 'Z'
+     *     26 => 'AA'
+     *     27 => 'AB'
+     */
+    function numberToLetters(n) {
+        if (n < 0) {
+            throw new Error(`number must be positive. Got ${n}`);
+        }
+        if (n < 26) {
+            return String.fromCharCode(65 + n);
+        }
+        else {
+            return numberToLetters(Math.floor(n / 26) - 1) + numberToLetters(n % 26);
+        }
+    }
+    /**
+     * Convert a string (describing a column) to its number value.
+     *
+     * Examples:
+     *     'A' => 0
+     *     'Z' => 25
+     *     'AA' => 26
+     */
+    function lettersToNumber(letters) {
+        let result = 0;
+        const l = letters.length;
+        for (let i = 0; i < l; i++) {
+            let n = letters.charCodeAt(i) - 65 + (i < l - 1 ? 1 : 0);
+            result += n * 26 ** (l - i - 1);
+        }
+        return result;
+    }
+    /**
+     * Convert a "XC" coordinate to cartesian coordinates.
+     *
+     * Examples:
+     *   A1 => [0,0]
+     *   B3 => [1,2]
+     *
+     * Note: it also accepts lowercase coordinates, but not fixed references
+     */
+    function toCartesian(xc) {
+        xc = xc.toUpperCase().trim();
+        const match = xc.match(cellReference);
+        if (match !== null) {
+            const [m, letters, numbers] = match;
+            if (m === xc) {
+                const col = lettersToNumber(letters);
+                const row = parseInt(numbers, 10) - 1;
+                return { col, row };
+            }
+        }
+        throw new Error(`Invalid cell description: ${xc}`);
+    }
+    /**
+     * Convert from cartesian coordinate to the "XC" coordinate system.
+     *
+     * Examples:
+     *   - 0,0 => A1
+     *   - 1,2 => B3
+     *   - 0,0, {colFixed: false, rowFixed: true} => A$1
+     *   - 1,2, {colFixed: true, rowFixed: false} => $B3
+     */
+    function toXC(col, row, rangePart = { colFixed: false, rowFixed: false }) {
+        return ((rangePart.colFixed ? "$" : "") +
+            numberToLetters(col) +
+            (rangePart.rowFixed ? "$" : "") +
+            String(row + 1));
+    }
+
+    const MAX_DELAY = 140;
+    const MIN_DELAY = 20;
+    const ACCELERATION = 0.035;
+    /**
+     * Decreasing exponential function used to determine the "speed" of edge-scrolling
+     * as the timeout delay.
+     *
+     * Returns a timeout delay in milliseconds.
+     */
+    function scrollDelay(value) {
+        // decreasing exponential from MAX_DELAY to MIN_DELAY
+        return MIN_DELAY + (MAX_DELAY - MIN_DELAY) * Math.exp(-ACCELERATION * (value - 1));
+    }
+
+    /**
      * This regexp is supposed to be as close as possible as the numberRegexp, but
      * its purpose is to be used by the tokenizer.
      *
@@ -322,6 +1590,4400 @@
         }
         return n;
     }
+
+    function createDefaultCols(colNumber) {
+        const cols = [];
+        let current = 0;
+        for (let i = 0; i < colNumber; i++) {
+            const size = DEFAULT_CELL_WIDTH;
+            const col = {
+                start: current,
+                end: current + size,
+                size: size,
+                name: numberToLetters(i),
+            };
+            cols.push(col);
+            current = col.end;
+        }
+        return cols;
+    }
+    function createDefaultRows(rowNumber) {
+        const rows = [];
+        let current = 0;
+        for (let i = 0; i < rowNumber; i++) {
+            const size = DEFAULT_CELL_HEIGHT;
+            const row = {
+                start: current,
+                end: current + size,
+                size: size,
+                name: String(i + 1),
+                cells: {},
+            };
+            rows.push(row);
+            current = row.end;
+        }
+        return rows;
+    }
+    function createCols(savedCols, colNumber) {
+        var _a;
+        const cols = [];
+        let current = 0;
+        for (let i = 0; i < colNumber; i++) {
+            const size = savedCols[i] ? savedCols[i].size || DEFAULT_CELL_WIDTH : DEFAULT_CELL_WIDTH;
+            const hidden = ((_a = savedCols[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
+            const end = hidden ? current : current + size;
+            const col = {
+                start: current,
+                end: end,
+                size: size,
+                name: numberToLetters(i),
+            };
+            if (hidden) {
+                col.isHidden = hidden;
+            }
+            cols.push(col);
+            current = col.end;
+        }
+        return cols;
+    }
+    function createRows(savedRows, rowNumber) {
+        var _a;
+        const rows = [];
+        let current = 0;
+        for (let i = 0; i < rowNumber; i++) {
+            const size = savedRows[i] ? savedRows[i].size || DEFAULT_CELL_HEIGHT : DEFAULT_CELL_HEIGHT;
+            const hidden = ((_a = savedRows[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
+            const end = hidden ? current : current + size;
+            const row = {
+                start: current,
+                end: end,
+                size: size,
+                name: String(i + 1),
+                cells: {},
+            };
+            if (hidden) {
+                row.isHidden = hidden;
+            }
+            rows.push(row);
+            current = row.end;
+        }
+        return rows;
+    }
+    function exportCols(cols, exportDefaults = false) {
+        const exportedCols = {};
+        for (let i in cols) {
+            const col = cols[i];
+            if (col.size !== DEFAULT_CELL_WIDTH || exportDefaults) {
+                exportedCols[i] = { size: col.size };
+            }
+            if (col.isHidden) {
+                exportedCols[i] = exportedCols[i] || {};
+                exportedCols[i]["isHidden"] = col.isHidden;
+            }
+        }
+        return exportedCols;
+    }
+    function exportRows(rows, exportDefaults = false) {
+        const exportedRows = {};
+        for (let i in rows) {
+            const row = rows[i];
+            if (row.size !== DEFAULT_CELL_HEIGHT || exportDefaults) {
+                exportedRows[i] = { size: row.size };
+            }
+            if (row.isHidden) {
+                exportedRows[i] = exportedRows[i] || {};
+                exportedRows[i]["isHidden"] = row.isHidden;
+            }
+        }
+        return exportedRows;
+    }
+
+    /*
+     * https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+     * */
+    class UuidGenerator {
+        constructor() {
+            this.isFastIdStrategy = false;
+            this.fastIdStart = 0;
+        }
+        setIsFastStrategy(isFast) {
+            this.isFastIdStrategy = isFast;
+        }
+        uuidv4() {
+            if (this.isFastIdStrategy) {
+                this.fastIdStart++;
+                return String(this.fastIdStart);
+                //@ts-ignore
+            }
+            else if (window.crypto && window.crypto.getRandomValues) {
+                //@ts-ignore
+                return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
+            }
+            else {
+                // mainly for jest and other browsers that do not have the crypto functionality
+                return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+                    var r = (Math.random() * 16) | 0, v = c == "x" ? r : (r & 0x3) | 0x8;
+                    return v.toString(16);
+                });
+            }
+        }
+    }
+
+    function getNextVisibleCellPosition(sheet, col, row) {
+        return {
+            col: findVisibleHeader(sheet, "cols", range(col, sheet.cols.length)),
+            row: findVisibleHeader(sheet, "rows", range(row, sheet.rows.length)),
+        };
+    }
+    function findVisibleHeader(sheet, dimension, indexes) {
+        const headers = sheet[dimension];
+        return indexes.find((index) => headers[index] && !headers[index].isHidden);
+    }
+    function findLastVisibleColRow(sheet, dimension) {
+        let lastIndex = sheet[dimension].length - 1;
+        while (lastIndex >= 0 && sheet[dimension][lastIndex].isHidden === true) {
+            lastIndex--;
+        }
+        return sheet[dimension][lastIndex];
+    }
+
+    /**
+     * Convert from a cartesian reference to a Zone
+     * The range boundaries will be kept in the same order as the
+     * ones in the text.
+     * Examples:
+     *    "A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
+     *    "B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
+     *    "Sheet1!A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
+     *    "Sheet1!B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
+     *    "C3:A1" ==> Top 2, Bottom 0, Left 2, Right 0}
+     *
+     * @param xc the string reference to convert
+     *
+     */
+    function toZoneWithoutBoundaryChanges(xc) {
+        xc = xc.split("!").pop();
+        const ranges = xc.replace(/\$/g, "").split(":");
+        let top, bottom, left, right;
+        let c = toCartesian(ranges[0].trim());
+        left = right = c.col;
+        top = bottom = c.row;
+        if (ranges.length === 2) {
+            let d = toCartesian(ranges[1].trim());
+            right = d.col;
+            bottom = d.row;
+        }
+        return { top, bottom, left, right };
+    }
+    /**
+     * Convert from a cartesian reference to a Zone
+     *
+     * Examples:
+     *    "A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
+     *    "B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
+     *    "Sheet1!A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
+     *    "Sheet1!B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
+     *
+     * @param xc the string reference to convert
+     *
+     */
+    function toZone(xc) {
+        let { top, bottom, left, right } = toZoneWithoutBoundaryChanges(xc);
+        if (right < left) {
+            [right, left] = [left, right];
+        }
+        if (bottom < top) {
+            [bottom, top] = [top, bottom];
+        }
+        return { top, bottom, left, right };
+    }
+    /**
+     * Check that the zone has valid coordinates and in
+     * the correct order.
+     */
+    function isZoneValid(zone) {
+        const { bottom, top, left, right } = zone;
+        // Typescript *should* prevent this kind of errors but
+        // it's better to be on the safe side at runtime as well.
+        if (isNaN(bottom) || isNaN(top) || isNaN(left) || isNaN(right)) {
+            return false;
+        }
+        return bottom >= top && right >= left && bottom >= 0 && top >= 0 && right >= 0 && left >= 0;
+    }
+    /**
+     * Convert from zone to a cartesian reference
+     *
+     */
+    function zoneToXc(zone) {
+        const { top, bottom, left, right } = zone;
+        const isOneCell = top === bottom && left === right;
+        return isOneCell ? toXC(left, top) : `${toXC(left, top)}:${toXC(right, bottom)}`;
+    }
+    /**
+     * Expand a zone after inserting columns or rows.
+     */
+    function expandZoneOnInsertion(zone, start, base, position, quantity) {
+        const dimension = start === "left" ? "columns" : "rows";
+        const baseElement = position === "before" ? base - 1 : base;
+        const end = start === "left" ? "right" : "bottom";
+        const shouldIncludeEnd = position === "before" ? zone[end] > baseElement : zone[end] >= baseElement;
+        if (zone[start] <= baseElement && shouldIncludeEnd) {
+            return createAdaptedZone(zone, dimension, "RESIZE", quantity);
+        }
+        if (baseElement < zone[start]) {
+            return createAdaptedZone(zone, dimension, "MOVE", quantity);
+        }
+        return { ...zone };
+    }
+    /**
+     * Update the selection after column/row addition
+     */
+    function updateSelectionOnInsertion(selection, start, base, position, quantity) {
+        const dimension = start === "left" ? "columns" : "rows";
+        const baseElement = position === "before" ? base - 1 : base;
+        const end = start === "left" ? "right" : "bottom";
+        if (selection[start] <= baseElement && selection[end] > baseElement) {
+            return createAdaptedZone(selection, dimension, "RESIZE", quantity);
+        }
+        if (baseElement < selection[start]) {
+            return createAdaptedZone(selection, dimension, "MOVE", quantity);
+        }
+        return { ...selection };
+    }
+    /**
+     * Update the selection after column/row deletion
+     */
+    function updateSelectionOnDeletion(zone, start, elements) {
+        const end = start === "left" ? "right" : "bottom";
+        let newStart = zone[start];
+        let newEnd = zone[end];
+        for (let removedElement of elements.sort((a, b) => b - a)) {
+            if (zone[start] > removedElement) {
+                newStart--;
+                newEnd--;
+            }
+            if (zone[start] < removedElement && zone[end] >= removedElement) {
+                newEnd--;
+            }
+        }
+        return { ...zone, [start]: newStart, [end]: newEnd };
+    }
+    /**
+     * Reduce a zone after deletion of elements
+     */
+    function reduceZoneOnDeletion(zone, start, elements) {
+        const end = start === "left" ? "right" : "bottom";
+        let newStart = zone[start];
+        let newEnd = zone[end];
+        for (let removedElement of elements.sort((a, b) => b - a)) {
+            if (zone[start] > removedElement) {
+                newStart--;
+                newEnd--;
+            }
+            if (zone[start] <= removedElement && zone[end] >= removedElement) {
+                newEnd--;
+            }
+        }
+        if (newStart > newEnd) {
+            return undefined;
+        }
+        return { ...zone, [start]: newStart, [end]: newEnd };
+    }
+    /**
+     * Compute the union of two zones. It is the smallest zone which contains the
+     * two arguments.
+     */
+    function union(z1, z2) {
+        return {
+            top: Math.min(z1.top, z2.top),
+            left: Math.min(z1.left, z2.left),
+            bottom: Math.max(z1.bottom, z2.bottom),
+            right: Math.max(z1.right, z2.right),
+        };
+    }
+    /**
+     * Compute the intersection of two zones. Returns nothing if the two zones don't overlap
+     */
+    function intersection(z1, z2) {
+        if (!overlap(z1, z2)) {
+            return undefined;
+        }
+        return {
+            top: Math.max(z1.top, z2.top),
+            left: Math.max(z1.left, z2.left),
+            bottom: Math.min(z1.bottom, z2.bottom),
+            right: Math.min(z1.right, z2.right),
+        };
+    }
+    /**
+     * Two zones are equal if they represent the same area, so we clearly cannot use
+     * reference equality.
+     */
+    function isEqual(z1, z2) {
+        return (z1.left === z2.left && z1.right === z2.right && z1.top === z2.top && z1.bottom === z2.bottom);
+    }
+    /**
+     * Return true if two zones overlap, false otherwise.
+     */
+    function overlap(z1, z2) {
+        if (z1.bottom < z2.top || z2.bottom < z1.top) {
+            return false;
+        }
+        if (z1.right < z2.left || z2.right < z1.left) {
+            return false;
+        }
+        return true;
+    }
+    function isInside(col, row, zone) {
+        const { left, right, top, bottom } = zone;
+        return col >= left && col <= right && row >= top && row <= bottom;
+    }
+    /**
+     * Check if a zone is inside another
+     */
+    function isZoneInside(smallZone, biggerZone) {
+        return isEqual(union(biggerZone, smallZone), biggerZone);
+    }
+    /**
+     * Recompute the ranges of the zone to contain all the cells in zones, without the cells in toRemoveZones
+     * Also regroup zones together to shorten the string
+     * (A1, A2, B1, B2, [C1:C2], C3 => [A1:B2],[C1:C3])
+     * To do so, the cells are separated and remerged in zones by columns, and then
+     * if possible zones in adjacent columns are merged together.
+     */
+    function recomputeZones(zones, toRemoveZones) {
+        const zonesPerColumn = {};
+        //separate the existing zones per column
+        for (let z of zones) {
+            if (z) {
+                const zone = toZone(z);
+                for (let col = zone.left; col <= zone.right; col++) {
+                    if (zonesPerColumn[col] === undefined) {
+                        zonesPerColumn[col] = [];
+                    }
+                    zonesPerColumn[col].push({
+                        top: zone.top,
+                        bottom: zone.bottom,
+                        remove: false,
+                    });
+                }
+            }
+        }
+        //separate the to deleted zones per column
+        for (let z of toRemoveZones) {
+            const zone = toZone(z);
+            for (let col = zone.left; col <= zone.right; col++) {
+                if (zonesPerColumn[col] === undefined) {
+                    zonesPerColumn[col] = [];
+                }
+                zonesPerColumn[col].push({
+                    top: zone.top,
+                    bottom: zone.bottom,
+                    remove: true,
+                });
+            }
+        }
+        const OptimizedZonePerColumn = [];
+        //regroup zones per column
+        for (let [col, zones] of Object.entries(zonesPerColumn)) {
+            OptimizedZonePerColumn.push({
+                col: parseInt(col),
+                ranges: optimiseColumn(zones),
+            });
+        }
+        //merge zones that spread over multiple columns that can be merged
+        const result = mergeColumns(OptimizedZonePerColumn);
+        return result.map(zoneToXc);
+    }
+    /**
+     * Recompute the ranges of a column, without the remove cells.
+     * takes as input a array of {top, bottom, remove} where top and bottom
+     * are the start and end of ranges in the column and remove expresses if the
+     * cell should be kept or not.
+     */
+    function optimiseColumn(zones) {
+        const toKeep = new Set();
+        const toRemove = new Set();
+        for (let zone of zones) {
+            for (let x = zone.top; x <= zone.bottom; x++) {
+                zone.remove ? toRemove.add(x) : toKeep.add(x);
+            }
+        }
+        const finalElements = [...toKeep]
+            .filter((x) => !toRemove.has(x))
+            .sort((a, b) => {
+            return a - b;
+        });
+        const newZones = [];
+        let currentZone;
+        for (let x of finalElements) {
+            if (!currentZone) {
+                currentZone = { top: x, bottom: x };
+            }
+            else if (x === currentZone.bottom + 1) {
+                currentZone.bottom = x;
+            }
+            else {
+                newZones.push({ top: currentZone.top, bottom: currentZone.bottom });
+                currentZone = { top: x, bottom: x };
+            }
+        }
+        if (currentZone) {
+            newZones.push({ top: currentZone.top, bottom: currentZone.bottom });
+        }
+        return newZones;
+    }
+    /**
+     * Verify if ranges in two adjacent columns can be merged in one in one range,
+     * and if they can, merge them in the same range.
+     */
+    function mergeColumns(zonePerCol) {
+        const orderedZones = zonePerCol.sort((a, b) => {
+            return a.col - b.col;
+        });
+        const finalZones = [];
+        let inProgressZones = [];
+        let currentCol = 0;
+        for (let index = 0; index <= orderedZones.length - 1; index++) {
+            let newInProgress = [];
+            if (currentCol + 1 === orderedZones[index].col) {
+                for (let z1 of orderedZones[index].ranges) {
+                    let merged = false;
+                    for (let z2 of inProgressZones) {
+                        //extend existing zone with the adjacent col
+                        if (z1.top == z2.top && z1.bottom == z2.bottom) {
+                            newInProgress.push(z2);
+                            merged = true;
+                        }
+                    }
+                    // create new zone as it could not be merged with a previous one
+                    if (!merged) {
+                        newInProgress.push({ top: z1.top, bottom: z1.bottom, startCol: orderedZones[index].col });
+                    }
+                }
+            }
+            else {
+                // create new zone as it was not adjacent to the previous zones
+                newInProgress = orderedZones[index].ranges.map((zone) => {
+                    return {
+                        top: zone.top,
+                        bottom: zone.bottom,
+                        startCol: orderedZones[index].col,
+                    };
+                });
+            }
+            //All the zones from inProgressZones that are not transferred in newInProgress
+            //are zones that were not extended and are therefore final.
+            const difference = inProgressZones.filter((x) => !newInProgress.includes(x));
+            for (let x of difference) {
+                finalZones.push({ top: x.top, bottom: x.bottom, left: x.startCol, right: currentCol });
+            }
+            currentCol = orderedZones[index].col;
+            inProgressZones = newInProgress;
+        }
+        //after the last iteration, the unfinished zones need to be finalized to.
+        for (let x of inProgressZones) {
+            finalZones.push({ top: x.top, bottom: x.bottom, left: x.startCol, right: currentCol });
+        }
+        return finalZones;
+    }
+    function zoneToDimension(zone) {
+        return {
+            height: zone.bottom - zone.top + 1,
+            width: zone.right - zone.left + 1,
+        };
+    }
+    function isOneDimensional(zone) {
+        const { width, height } = zoneToDimension(zone);
+        return width === 1 || height === 1;
+    }
+    /**
+     * Array of all positions in the zone.
+     */
+    function positions(zone) {
+        const positions = [];
+        const [left, right] = [zone.right, zone.left].sort((a, b) => a - b);
+        const [top, bottom] = [zone.top, zone.bottom].sort((a, b) => a - b);
+        for (const col of range(left, right + 1)) {
+            for (const row of range(top, bottom + 1)) {
+                positions.push({ col, row });
+            }
+        }
+        return positions;
+    }
+    function createAdaptedZone(zone, dimension, operation, by) {
+        const start = dimension === "columns" ? "left" : "top";
+        const end = dimension === "columns" ? "right" : "bottom";
+        const newZone = { ...zone };
+        if (operation === "MOVE") {
+            newZone[start] += by;
+        }
+        newZone[end] += by;
+        return newZone;
+    }
+    /**
+     * Returns a Zone array with unique occurrence of each zone.
+     * For each multiple occurrence, the occurrence with the largest index is kept.
+     * This allows to always have the last selection made in the last position.
+     * */
+    function uniqueZones(zones) {
+        return zones
+            .reverse()
+            .filter((zone, index, self) => index ===
+            self.findIndex((z) => z.top === zone.top &&
+                z.bottom === zone.bottom &&
+                z.left === zone.left &&
+                z.right === zone.right))
+            .reverse();
+    }
+    /**
+     * This function will find all overlapping zones in an array and transform them
+     * into an union of each one.
+     * */
+    function mergeOverlappingZones(zones) {
+        return zones.reduce((dissociatedZones, zone) => {
+            const nextIndex = dissociatedZones.length;
+            for (let i = 0; i < nextIndex; i++) {
+                if (overlap(dissociatedZones[i], zone)) {
+                    dissociatedZones[i] = union(dissociatedZones[i], zone);
+                    return dissociatedZones;
+                }
+            }
+            dissociatedZones[nextIndex] = zone;
+            return dissociatedZones;
+        }, []);
+    }
+    /**
+     * This function will compare the modifications of selection to determine
+     * a cell that is part of the new zone and not the previous one.
+     */
+    function findCellInNewZone(oldZone, currentZone, viewport) {
+        let col, row;
+        const { left: oldLeft, right: oldRight, top: oldTop, bottom: oldBottom } = oldZone;
+        const { left, right, top, bottom } = currentZone;
+        if (left != oldLeft) {
+            col = left;
+        }
+        else if (right != oldRight) {
+            col = right;
+        }
+        else {
+            col = viewport.left;
+        }
+        if (top != oldTop) {
+            row = top;
+        }
+        else if (bottom != oldBottom) {
+            row = bottom;
+        }
+        else {
+            row = viewport.top;
+        }
+        return { col, row };
+    }
+    function organizeZone(zone) {
+        return {
+            top: Math.min(zone.top, zone.bottom),
+            bottom: Math.max(zone.top, zone.bottom),
+            left: Math.min(zone.left, zone.right),
+            right: Math.max(zone.left, zone.right),
+        };
+    }
+    function positionToZone(position) {
+        return { left: position.col, right: position.col, top: position.row, bottom: position.row };
+    }
+
+    const inverseCommandRegistry = new Registry()
+        .add("ADD_COLUMNS_ROWS", inverseAddColumnsRows)
+        .add("REMOVE_COLUMNS_ROWS", inverseRemoveColumnsRows)
+        .add("ADD_MERGE", inverseAddMerge)
+        .add("REMOVE_MERGE", inverseRemoveMerge)
+        .add("CREATE_SHEET", inverseCreateSheet)
+        .add("DELETE_SHEET", inverseDeleteSheet)
+        .add("DUPLICATE_SHEET", inverseDuplicateSheet)
+        .add("CREATE_FIGURE", inverseCreateFigure)
+        .add("CREATE_CHART", inverseCreateChart)
+        .add("HIDE_COLUMNS_ROWS", inverseHideColumnsRows)
+        .add("UNHIDE_COLUMNS_ROWS", inverseUnhideColumnsRows);
+    for (const cmd of coreTypes.values()) {
+        try {
+            inverseCommandRegistry.get(cmd);
+        }
+        catch (_) {
+            inverseCommandRegistry.add(cmd, identity);
+        }
+    }
+    function identity(cmd) {
+        return [cmd];
+    }
+    function inverseAddColumnsRows(cmd) {
+        const elements = [];
+        let start = cmd.base;
+        if (cmd.position === "after") {
+            start++;
+        }
+        for (let i = 0; i < cmd.quantity; i++) {
+            elements.push(i + start);
+        }
+        return [
+            {
+                type: "REMOVE_COLUMNS_ROWS",
+                dimension: cmd.dimension,
+                elements,
+                sheetId: cmd.sheetId,
+            },
+        ];
+    }
+    function inverseAddMerge(cmd) {
+        return [{ type: "REMOVE_MERGE", sheetId: cmd.sheetId, target: cmd.target }];
+    }
+    function inverseRemoveMerge(cmd) {
+        return [{ type: "ADD_MERGE", sheetId: cmd.sheetId, target: cmd.target }];
+    }
+    function inverseCreateSheet(cmd) {
+        return [{ type: "DELETE_SHEET", sheetId: cmd.sheetId }];
+    }
+    function inverseDuplicateSheet(cmd) {
+        return [{ type: "DELETE_SHEET", sheetId: cmd.sheetIdTo }];
+    }
+    function inverseRemoveColumnsRows(cmd) {
+        const commands = [];
+        const elements = [...cmd.elements].sort((a, b) => a - b);
+        for (let group of groupConsecutive(elements)) {
+            const column = group[0] === 0 ? 0 : group[0] - 1;
+            const position = group[0] === 0 ? "before" : "after";
+            commands.push({
+                type: "ADD_COLUMNS_ROWS",
+                dimension: cmd.dimension,
+                quantity: group.length,
+                base: column,
+                sheetId: cmd.sheetId,
+                position,
+            });
+        }
+        return commands;
+    }
+    function inverseDeleteSheet(cmd) {
+        return [{ type: "CREATE_SHEET", sheetId: cmd.sheetId, position: 1 }];
+    }
+    function inverseCreateFigure(cmd) {
+        return [{ type: "DELETE_FIGURE", id: cmd.figure.id, sheetId: cmd.sheetId }];
+    }
+    function inverseCreateChart(cmd) {
+        return [{ type: "DELETE_FIGURE", id: cmd.id, sheetId: cmd.sheetId }];
+    }
+    function inverseHideColumnsRows(cmd) {
+        return [
+            {
+                type: "UNHIDE_COLUMNS_ROWS",
+                sheetId: cmd.sheetId,
+                dimension: cmd.dimension,
+                elements: cmd.elements,
+            },
+        ];
+    }
+    function inverseUnhideColumnsRows(cmd) {
+        return [
+            {
+                type: "HIDE_COLUMNS_ROWS",
+                sheetId: cmd.sheetId,
+                dimension: cmd.dimension,
+                elements: cmd.elements,
+            },
+        ];
+    }
+
+    const DEFAULT_MENU_ITEM = (key) => ({
+        isVisible: () => true,
+        isEnabled: () => true,
+        isReadonlyAllowed: false,
+        shortCut: "",
+        action: false,
+        children: [],
+        separator: false,
+        icon: false,
+        id: key,
+    });
+    function createFullMenuItem(key, value) {
+        return Object.assign({}, DEFAULT_MENU_ITEM(key), value);
+    }
+    /**
+     * The class Registry is extended in order to add the function addChild
+     *
+     */
+    class MenuItemRegistry extends Registry {
+        /**
+         * @override
+         */
+        add(key, value) {
+            this.content[key] = createFullMenuItem(key, value);
+            return this;
+        }
+        /**
+         * Add a subitem to an existing item
+         * @param path Path of items to add this subitem
+         * @param value Subitem to add
+         */
+        addChild(key, path, value) {
+            const root = path.splice(0, 1)[0];
+            let node = this.content[root];
+            if (!node) {
+                throw new Error(`Path ${root + ":" + path.join(":")} not found`);
+            }
+            for (let p of path) {
+                if (typeof node.children === "function") {
+                    node = undefined;
+                }
+                else {
+                    node = node.children.find((elt) => elt.id === p);
+                }
+                if (!node) {
+                    throw new Error(`Path ${root + ":" + path.join(":")} not found`);
+                }
+            }
+            node.children.push(createFullMenuItem(key, value));
+            return this;
+        }
+        getChildren(node, env) {
+            if (typeof node.children === "function") {
+                return node.children(env).sort((a, b) => a.sequence - b.sequence);
+            }
+            return node.children.sort((a, b) => a.sequence - b.sequence);
+        }
+        getName(node, env) {
+            if (typeof node.name === "function") {
+                return node.name(env);
+            }
+            return node.name;
+        }
+        getShortCut(node) {
+            return node.shortCut ? node.shortCut : "";
+        }
+        /**
+         * Get a list of all elements in the registry, ordered by sequence
+         * @override
+         */
+        getAll() {
+            return super.getAll().sort((a, b) => a.sequence - b.sequence);
+        }
+    }
+
+    const SORT_TYPES = [
+        CellValueType.number,
+        CellValueType.error,
+        CellValueType.text,
+        CellValueType.boolean,
+    ];
+    function convertCell(cell, index) {
+        return {
+            index,
+            type: cell ? cell.evaluated.type : CellValueType.empty,
+            value: cell ? cell.evaluated.value : "",
+        };
+    }
+    function sortCells(cells, sortDirection) {
+        const cellsWithIndex = cells.map(convertCell);
+        const emptyCells = cellsWithIndex.filter((x) => x.type === CellValueType.empty);
+        const nonEmptyCells = cellsWithIndex.filter((x) => x.type !== CellValueType.empty);
+        const inverse = sortDirection === "descending" ? -1 : 1;
+        return nonEmptyCells
+            .sort((left, right) => {
+            let typeOrder = SORT_TYPES.indexOf(left.type) - SORT_TYPES.indexOf(right.type);
+            if (typeOrder === 0) {
+                if (left.type === CellValueType.text || left.type === CellValueType.error) {
+                    typeOrder = left.value.localeCompare(right.value);
+                }
+                else
+                    typeOrder = left.value - right.value;
+            }
+            return inverse * typeOrder;
+        })
+            .concat(emptyCells);
+    }
+    function interactiveSortSelection(env, sheetId, anchor, zone, sortDirection) {
+        let result = DispatchResult.Success;
+        //several columns => bypass the contiguity check
+        let multiColumns = zone.right > zone.left;
+        if (env.model.getters.doesIntersectMerge(sheetId, zone)) {
+            multiColumns = false;
+            let table;
+            for (let r = zone.top; r <= zone.bottom; r++) {
+                table = [];
+                for (let c = zone.left; c <= zone.right; c++) {
+                    let merge = env.model.getters.getMerge(sheetId, c, r);
+                    if (merge && !table.includes(merge.id.toString())) {
+                        table.push(merge.id.toString());
+                    }
+                }
+                if (table.length >= 2) {
+                    multiColumns = true;
+                    break;
+                }
+            }
+        }
+        const { col, row } = anchor;
+        if (multiColumns) {
+            result = env.model.dispatch("SORT_CELLS", { sheetId, col, row, zone, sortDirection });
+        }
+        else {
+            // check contiguity
+            const contiguousZone = env.model.getters.getContiguousZone(sheetId, zone);
+            if (isEqual(contiguousZone, zone)) {
+                // merge as it is
+                result = env.model.dispatch("SORT_CELLS", {
+                    sheetId,
+                    col,
+                    row,
+                    zone,
+                    sortDirection,
+                });
+            }
+            else {
+                env.askConfirmation(_lt("We found data next to your selection. Since this data was not selected, it will not be sorted. Do you want to extend your selection?"), () => {
+                    zone = contiguousZone;
+                    result = env.model.dispatch("SORT_CELLS", {
+                        sheetId,
+                        col,
+                        row,
+                        zone,
+                        sortDirection,
+                    });
+                }, () => {
+                    result = env.model.dispatch("SORT_CELLS", {
+                        sheetId,
+                        col,
+                        row,
+                        zone,
+                        sortDirection,
+                    });
+                });
+            }
+        }
+        if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
+            const { col, row } = anchor;
+            env.model.selection.selectZone({ cell: { col, row }, zone });
+            env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
+        }
+    }
+
+    function handlePasteResult(env, result) {
+        if (!result.isSuccessful) {
+            if (result.reasons.includes(17 /* WrongPasteSelection */)) {
+                env.notifyUser(_lt("This operation is not allowed with multiple selections."));
+            }
+            if (result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
+                env.notifyUser(_lt("This operation is not possible due to a merge. Please remove the merges first than try again."));
+            }
+        }
+    }
+    function interactivePaste(env, target, pasteOption) {
+        const result = env.model.dispatch("PASTE", { target, pasteOption });
+        handlePasteResult(env, result);
+    }
+
+    //------------------------------------------------------------------------------
+    // Helpers
+    //------------------------------------------------------------------------------
+    function getColumnsNumber(env) {
+        const activeCols = env.model.getters.getActiveCols();
+        if (activeCols.size) {
+            return activeCols.size;
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            return zone.right - zone.left + 1;
+        }
+    }
+    function getRowsNumber(env) {
+        const activeRows = env.model.getters.getActiveRows();
+        if (activeRows.size) {
+            return activeRows.size;
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            return zone.bottom - zone.top + 1;
+        }
+    }
+    function setFormatter(env, format) {
+        env.model.dispatch("SET_FORMATTING", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            target: env.model.getters.getSelectedZones(),
+            format,
+        });
+    }
+    function setStyle(env, style) {
+        env.model.dispatch("SET_FORMATTING", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            target: env.model.getters.getSelectedZones(),
+            style,
+        });
+    }
+    //------------------------------------------------------------------------------
+    // Simple actions
+    //------------------------------------------------------------------------------
+    const UNDO_ACTION = (env) => env.model.dispatch("REQUEST_UNDO");
+    const REDO_ACTION = (env) => env.model.dispatch("REQUEST_REDO");
+    const COPY_ACTION = async (env) => {
+        env.model.dispatch("COPY", { target: env.model.getters.getSelectedZones() });
+        await env.clipboard.writeText(env.model.getters.getClipboardContent());
+    };
+    const CUT_ACTION = async (env) => {
+        env.model.dispatch("CUT", { target: env.model.getters.getSelectedZones() });
+        await env.clipboard.writeText(env.model.getters.getClipboardContent());
+    };
+    const PASTE_ACTION = async (env) => {
+        const spreadsheetClipboard = env.model.getters.getClipboardContent();
+        let osClipboard;
+        try {
+            osClipboard = await env.clipboard.readText();
+        }
+        catch (e) {
+            // Permission is required to read the clipboard.
+            console.warn("The OS clipboard could not be read.");
+            console.error(e);
+        }
+        const target = env.model.getters.getSelectedZones();
+        if (osClipboard && osClipboard !== spreadsheetClipboard) {
+            env.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
+                target,
+                text: osClipboard,
+            });
+        }
+        else {
+            interactivePaste(env, target);
+        }
+    };
+    const PASTE_VALUE_ACTION = (env) => env.model.dispatch("PASTE", {
+        target: env.model.getters.getSelectedZones(),
+        pasteOption: "onlyValue",
+    });
+    const PASTE_FORMAT_ACTION = (env) => env.model.dispatch("PASTE", {
+        target: env.model.getters.getSelectedZones(),
+        pasteOption: "onlyFormat",
+    });
+    const DELETE_CONTENT_ACTION = (env) => env.model.dispatch("DELETE_CONTENT", {
+        sheetId: env.model.getters.getActiveSheetId(),
+        target: env.model.getters.getSelectedZones(),
+    });
+    const SET_FORMULA_VISIBILITY_ACTION = (env) => env.model.dispatch("SET_FORMULA_VISIBILITY", { show: !env.model.getters.shouldShowFormulas() });
+    const SET_GRID_LINES_VISIBILITY_ACTION = (env) => {
+        const sheetId = env.model.getters.getActiveSheetId();
+        env.model.dispatch("SET_GRID_LINES_VISIBILITY", {
+            sheetId,
+            areGridLinesVisible: !env.model.getters.getGridLinesVisibility(sheetId),
+        });
+    };
+    //------------------------------------------------------------------------------
+    // Grid manipulations
+    //------------------------------------------------------------------------------
+    const DELETE_CONTENT_ROWS_NAME = (env) => {
+        if (env.model.getters.getSelectedZones().length > 1) {
+            return _lt("Clear rows");
+        }
+        let first;
+        let last;
+        const activesRows = env.model.getters.getActiveRows();
+        if (activesRows.size !== 0) {
+            first = Math.min(...activesRows);
+            last = Math.max(...activesRows);
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            first = zone.top;
+            last = zone.bottom;
+        }
+        if (first === last) {
+            return _lt("Clear row %s", (first + 1).toString());
+        }
+        return _lt("Clear rows %s - %s", (first + 1).toString(), (last + 1).toString());
+    };
+    const DELETE_CONTENT_ROWS_ACTION = (env) => {
+        const sheetId = env.model.getters.getActiveSheetId();
+        const target = [...env.model.getters.getActiveRows()].map((index) => env.model.getters.getRowsZone(sheetId, index, index));
+        env.model.dispatch("DELETE_CONTENT", {
+            target,
+            sheetId: env.model.getters.getActiveSheetId(),
+        });
+    };
+    const DELETE_CONTENT_COLUMNS_NAME = (env) => {
+        if (env.model.getters.getSelectedZones().length > 1) {
+            return _lt("Clear columns");
+        }
+        let first;
+        let last;
+        const activeCols = env.model.getters.getActiveCols();
+        if (activeCols.size !== 0) {
+            first = Math.min(...activeCols);
+            last = Math.max(...activeCols);
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            first = zone.left;
+            last = zone.right;
+        }
+        if (first === last) {
+            return _lt("Clear column %s", numberToLetters(first));
+        }
+        return _lt("Clear columns %s - %s", numberToLetters(first), numberToLetters(last));
+    };
+    const DELETE_CONTENT_COLUMNS_ACTION = (env) => {
+        const sheetId = env.model.getters.getActiveSheetId();
+        const target = [...env.model.getters.getActiveCols()].map((index) => env.model.getters.getColsZone(sheetId, index, index));
+        env.model.dispatch("DELETE_CONTENT", {
+            target,
+            sheetId: env.model.getters.getActiveSheetId(),
+        });
+    };
+    const REMOVE_ROWS_NAME = (env) => {
+        if (env.model.getters.getSelectedZones().length > 1) {
+            return _lt("Delete rows");
+        }
+        let first;
+        let last;
+        const activesRows = env.model.getters.getActiveRows();
+        if (activesRows.size !== 0) {
+            first = Math.min(...activesRows);
+            last = Math.max(...activesRows);
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            first = zone.top;
+            last = zone.bottom;
+        }
+        if (first === last) {
+            return _lt("Delete row %s", (first + 1).toString());
+        }
+        return _lt("Delete rows %s - %s", (first + 1).toString(), (last + 1).toString());
+    };
+    const REMOVE_ROWS_ACTION = (env) => {
+        let rows = [...env.model.getters.getActiveRows()];
+        if (!rows.length) {
+            const zone = env.model.getters.getSelectedZones()[0];
+            for (let i = zone.top; i <= zone.bottom; i++) {
+                rows.push(i);
+            }
+        }
+        env.model.dispatch("REMOVE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            dimension: "ROW",
+            elements: rows,
+        });
+    };
+    const REMOVE_COLUMNS_NAME = (env) => {
+        if (env.model.getters.getSelectedZones().length > 1) {
+            return _lt("Delete columns");
+        }
+        let first;
+        let last;
+        const activeCols = env.model.getters.getActiveCols();
+        if (activeCols.size !== 0) {
+            first = Math.min(...activeCols);
+            last = Math.max(...activeCols);
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            first = zone.left;
+            last = zone.right;
+        }
+        if (first === last) {
+            return _lt("Delete column %s", numberToLetters(first));
+        }
+        return _lt("Delete columns %s - %s", numberToLetters(first), numberToLetters(last));
+    };
+    const REMOVE_COLUMNS_ACTION = (env) => {
+        let columns = [...env.model.getters.getActiveCols()];
+        if (!columns.length) {
+            const zone = env.model.getters.getSelectedZones()[0];
+            for (let i = zone.left; i <= zone.right; i++) {
+                columns.push(i);
+            }
+        }
+        env.model.dispatch("REMOVE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            dimension: "COL",
+            elements: columns,
+        });
+    };
+    const INSERT_CELL_SHIFT_DOWN = (env) => {
+        const zone = env.model.getters.getSelectedZone();
+        const result = env.model.dispatch("INSERT_CELL", { zone, shiftDimension: "ROW" });
+        handlePasteResult(env, result);
+    };
+    const INSERT_CELL_SHIFT_RIGHT = (env) => {
+        const zone = env.model.getters.getSelectedZone();
+        const result = env.model.dispatch("INSERT_CELL", { zone, shiftDimension: "COL" });
+        handlePasteResult(env, result);
+    };
+    const DELETE_CELL_SHIFT_UP = (env) => {
+        const zone = env.model.getters.getSelectedZone();
+        const result = env.model.dispatch("DELETE_CELL", { zone, shiftDimension: "ROW" });
+        handlePasteResult(env, result);
+    };
+    const DELETE_CELL_SHIFT_LEFT = (env) => {
+        const zone = env.model.getters.getSelectedZone();
+        const result = env.model.dispatch("DELETE_CELL", { zone, shiftDimension: "COL" });
+        handlePasteResult(env, result);
+    };
+    const MENU_INSERT_ROWS_BEFORE_NAME = (env) => {
+        const number = getRowsNumber(env);
+        if (number === 1) {
+            return _lt("Row above");
+        }
+        return _lt("%s Rows above", number.toString());
+    };
+    const ROW_INSERT_ROWS_BEFORE_NAME = (env) => {
+        const number = getRowsNumber(env);
+        return number === 1 ? _lt("Insert row above") : _lt("Insert %s rows above", number.toString());
+    };
+    const CELL_INSERT_ROWS_BEFORE_NAME = (env) => {
+        const number = getRowsNumber(env);
+        if (number === 1) {
+            return _lt("Insert row");
+        }
+        return _lt("Insert %s rows", number.toString());
+    };
+    const INSERT_ROWS_BEFORE_ACTION = (env) => {
+        const activeRows = env.model.getters.getActiveRows();
+        let row;
+        let quantity;
+        if (activeRows.size) {
+            row = Math.min(...activeRows);
+            quantity = activeRows.size;
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            row = zone.top;
+            quantity = zone.bottom - zone.top + 1;
+        }
+        env.model.dispatch("ADD_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            position: "before",
+            base: row,
+            quantity,
+            dimension: "ROW",
+        });
+    };
+    const MENU_INSERT_ROWS_AFTER_NAME = (env) => {
+        const number = getRowsNumber(env);
+        if (number === 1) {
+            return _lt("Row below");
+        }
+        return _lt("%s Rows below", number.toString());
+    };
+    const ROW_INSERT_ROWS_AFTER_NAME = (env) => {
+        const number = getRowsNumber(env);
+        return number === 1 ? _lt("Insert row below") : _lt("Insert %s rows below", number.toString());
+    };
+    const INSERT_ROWS_AFTER_ACTION = (env) => {
+        const activeRows = env.model.getters.getActiveRows();
+        let row;
+        let quantity;
+        if (activeRows.size) {
+            row = Math.max(...activeRows);
+            quantity = activeRows.size;
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            row = zone.bottom;
+            quantity = zone.bottom - zone.top + 1;
+        }
+        env.model.dispatch("ADD_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            position: "after",
+            base: row,
+            quantity,
+            dimension: "ROW",
+        });
+    };
+    const MENU_INSERT_COLUMNS_BEFORE_NAME = (env) => {
+        const number = getColumnsNumber(env);
+        if (number === 1) {
+            return _lt("Column left");
+        }
+        return _lt("%s Columns left", number.toString());
+    };
+    const COLUMN_INSERT_COLUMNS_BEFORE_NAME = (env) => {
+        const number = getColumnsNumber(env);
+        return number === 1
+            ? _lt("Insert column left")
+            : _lt("Insert %s columns left", number.toString());
+    };
+    const CELL_INSERT_COLUMNS_BEFORE_NAME = (env) => {
+        const number = getColumnsNumber(env);
+        if (number === 1) {
+            return _lt("Insert column");
+        }
+        return _lt("Insert %s columns", number.toString());
+    };
+    const INSERT_COLUMNS_BEFORE_ACTION = (env) => {
+        const activeCols = env.model.getters.getActiveCols();
+        let column;
+        let quantity;
+        if (activeCols.size) {
+            column = Math.min(...activeCols);
+            quantity = activeCols.size;
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            column = zone.left;
+            quantity = zone.right - zone.left + 1;
+        }
+        env.model.dispatch("ADD_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            position: "before",
+            dimension: "COL",
+            base: column,
+            quantity,
+        });
+    };
+    const MENU_INSERT_COLUMNS_AFTER_NAME = (env) => {
+        const number = getColumnsNumber(env);
+        if (number === 1) {
+            return _lt("Column right");
+        }
+        return _lt("%s Columns right", number.toString());
+    };
+    const COLUMN_INSERT_COLUMNS_AFTER_NAME = (env) => {
+        const number = getColumnsNumber(env);
+        return number === 1
+            ? _lt("Insert column right")
+            : _lt("Insert %s columns right", number.toString());
+    };
+    const INSERT_COLUMNS_AFTER_ACTION = (env) => {
+        const activeCols = env.model.getters.getActiveCols();
+        let column;
+        let quantity;
+        if (activeCols.size) {
+            column = Math.max(...activeCols);
+            quantity = activeCols.size;
+        }
+        else {
+            const zone = env.model.getters.getSelectedZones()[0];
+            column = zone.right;
+            quantity = zone.right - zone.left + 1;
+        }
+        env.model.dispatch("ADD_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            position: "after",
+            dimension: "COL",
+            base: column,
+            quantity,
+        });
+    };
+    const HIDE_COLUMNS_NAME = (env) => {
+        const cols = env.model.getters.getElementsFromSelection("COL");
+        let first = cols[0];
+        let last = cols[cols.length - 1];
+        if (cols.length === 1) {
+            return _lt("Hide column %s", numberToLetters(first).toString());
+        }
+        else if (last - first + 1 === cols.length) {
+            return _lt("Hide columns %s - %s", numberToLetters(first).toString(), numberToLetters(last).toString());
+        }
+        else {
+            return _lt("Hide columns");
+        }
+    };
+    const HIDE_COLUMNS_ACTION = (env) => {
+        const columns = env.model.getters.getElementsFromSelection("COL");
+        env.model.dispatch("HIDE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            dimension: "COL",
+            elements: columns,
+        });
+    };
+    const UNHIDE_ALL_COLUMNS_ACTION = (env) => {
+        const sheet = env.model.getters.getActiveSheet();
+        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+            sheetId: sheet.id,
+            dimension: "COL",
+            elements: Array.from(Array(sheet.cols.length).keys()),
+        });
+    };
+    const UNHIDE_COLUMNS_ACTION = (env) => {
+        const columns = env.model.getters.getElementsFromSelection("COL");
+        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            dimension: "COL",
+            elements: columns,
+        });
+    };
+    const HIDE_ROWS_NAME = (env) => {
+        const rows = env.model.getters.getElementsFromSelection("ROW");
+        let first = rows[0];
+        let last = rows[rows.length - 1];
+        if (rows.length === 1) {
+            return _lt("Hide row %s", (first + 1).toString());
+        }
+        else if (last - first + 1 === rows.length) {
+            return _lt("Hide rows %s - %s", (first + 1).toString(), (last + 1).toString());
+        }
+        else {
+            return _lt("Hide rows");
+        }
+    };
+    const HIDE_ROWS_ACTION = (env) => {
+        const rows = env.model.getters.getElementsFromSelection("ROW");
+        env.model.dispatch("HIDE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            dimension: "ROW",
+            elements: rows,
+        });
+    };
+    const UNHIDE_ALL_ROWS_ACTION = (env) => {
+        const sheet = env.model.getters.getActiveSheet();
+        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+            sheetId: sheet.id,
+            dimension: "ROW",
+            elements: Array.from(Array(sheet.rows.length).keys()),
+        });
+    };
+    const UNHIDE_ROWS_ACTION = (env) => {
+        const columns = env.model.getters.getElementsFromSelection("ROW");
+        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            dimension: "ROW",
+            elements: columns,
+        });
+    };
+    //------------------------------------------------------------------------------
+    // Sheets
+    //------------------------------------------------------------------------------
+    const CREATE_SHEET_ACTION = (env) => {
+        const activeSheetId = env.model.getters.getActiveSheetId();
+        const position = env.model.getters.getSheetIds().indexOf(activeSheetId) + 1;
+        const sheetId = env.model.uuidGenerator.uuidv4();
+        env.model.dispatch("CREATE_SHEET", { sheetId, position });
+        env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
+    };
+    //------------------------------------------------------------------------------
+    // Charts
+    //------------------------------------------------------------------------------
+    const CREATE_CHART = (env) => {
+        var _a, _b;
+        const zone = env.model.getters.getSelectedZone();
+        let dataSetZone = zone;
+        const id = env.model.uuidGenerator.uuidv4();
+        let labelRange;
+        if (zone.left !== zone.right) {
+            dataSetZone = { ...zone, left: zone.left + 1 };
+        }
+        const dataSets = [zoneToXc(dataSetZone)];
+        const sheetId = env.model.getters.getActiveSheetId();
+        const position = {
+            x: ((_a = env.model.getters.tryGetCol(sheetId, zone.right + 1)) === null || _a === void 0 ? void 0 : _a.start) || 0,
+            y: ((_b = env.model.getters.tryGetRow(sheetId, zone.top)) === null || _b === void 0 ? void 0 : _b.start) || 0,
+        };
+        let dataSetsHaveTitle = false;
+        for (let x = dataSetZone.left; x <= dataSetZone.right; x++) {
+            const cell = env.model.getters.getCell(sheetId, x, zone.top);
+            if (cell && cell.evaluated.type !== CellValueType.number) {
+                dataSetsHaveTitle = true;
+                break;
+            }
+        }
+        if (zone.left !== zone.right) {
+            labelRange = zoneToXc({
+                ...zone,
+                right: zone.left,
+                top: dataSetsHaveTitle ? zone.top + 1 : zone.top,
+            });
+        }
+        env.model.dispatch("CREATE_CHART", {
+            sheetId,
+            id,
+            position,
+            definition: {
+                title: "",
+                dataSets,
+                labelRange,
+                type: "bar",
+                stackedBar: false,
+                dataSetsHaveTitle,
+                background: BACKGROUND_CHART_COLOR,
+                verticalAxisPosition: "left",
+                legendPosition: "top",
+            },
+        });
+        const figure = env.model.getters.getFigure(sheetId, id);
+        env.openSidePanel("ChartPanel", { figure });
+    };
+    //------------------------------------------------------------------------------
+    // Style/Format
+    //------------------------------------------------------------------------------
+    const FORMAT_GENERAL_ACTION = (env) => setFormatter(env, "");
+    const FORMAT_NUMBER_ACTION = (env) => setFormatter(env, "#,##0.00");
+    const FORMAT_PERCENT_ACTION = (env) => setFormatter(env, "0.00%");
+    const FORMAT_CURRENCY_ACTION = (env) => setFormatter(env, "[$$]#,##0.00");
+    const FORMAT_CURRENCY_ROUNDED_ACTION = (env) => setFormatter(env, "[$$]#,##0");
+    const FORMAT_DATE_ACTION = (env) => setFormatter(env, "m/d/yyyy");
+    const FORMAT_TIME_ACTION = (env) => setFormatter(env, "hh:mm:ss a");
+    const FORMAT_DATE_TIME_ACTION = (env) => setFormatter(env, "m/d/yyyy hh:mm:ss");
+    const FORMAT_DURATION_ACTION = (env) => setFormatter(env, "hhhh:mm:ss");
+    const FORMAT_BOLD_ACTION = (env) => setStyle(env, { bold: !env.model.getters.getCurrentStyle().bold });
+    const FORMAT_ITALIC_ACTION = (env) => setStyle(env, { italic: !env.model.getters.getCurrentStyle().italic });
+    const FORMAT_STRIKETHROUGH_ACTION = (env) => setStyle(env, { strikethrough: !env.model.getters.getCurrentStyle().strikethrough });
+    const FORMAT_UNDERLINE_ACTION = (env) => setStyle(env, { underline: !env.model.getters.getCurrentStyle().underline });
+    //------------------------------------------------------------------------------
+    // Side panel
+    //------------------------------------------------------------------------------
+    const OPEN_CF_SIDEPANEL_ACTION = (env) => {
+        env.openSidePanel("ConditionalFormatting", { selection: env.model.getters.getSelectedZones() });
+    };
+    const OPEN_FAR_SIDEPANEL_ACTION = (env) => {
+        env.openSidePanel("FindAndReplace", {});
+    };
+    const OPEN_CUSTOM_CURRENCY_SIDEPANEL_ACTION = (env) => {
+        env.openSidePanel("CustomCurrency", {});
+    };
+    const INSERT_LINK = (env) => {
+        env.openLinkEditor();
+    };
+    //------------------------------------------------------------------------------
+    // Sorting action
+    //------------------------------------------------------------------------------
+    const SORT_CELLS_ASCENDING = (env) => {
+        const { anchor, zones } = env.model.getters.getSelection();
+        const sheetId = env.model.getters.getActiveSheetId();
+        interactiveSortSelection(env, sheetId, anchor.cell, zones[0], "ascending");
+    };
+    const SORT_CELLS_DESCENDING = (env) => {
+        const { anchor, zones } = env.model.getters.getSelection();
+        const sheetId = env.model.getters.getActiveSheetId();
+        interactiveSortSelection(env, sheetId, anchor.cell, zones[0], "descending");
+    };
+    const IS_ONLY_ONE_RANGE = (env) => {
+        return env.model.getters.getSelectedZones().length === 1;
+    };
+
+    //------------------------------------------------------------------------------
+    // Context Menu Registry
+    //------------------------------------------------------------------------------
+    const cellMenuRegistry = new MenuItemRegistry();
+    cellMenuRegistry
+        .add("cut", {
+        name: _lt("Cut"),
+        shortCut: "Ctrl+X",
+        sequence: 10,
+        action: CUT_ACTION,
+    })
+        .add("copy", {
+        name: _lt("Copy"),
+        shortCut: "Ctrl+C",
+        sequence: 20,
+        isReadonlyAllowed: true,
+        action: COPY_ACTION,
+    })
+        .add("paste", {
+        name: _lt("Paste"),
+        shortCut: "Ctrl+V",
+        sequence: 30,
+        action: PASTE_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
+    })
+        .add("paste_special", {
+        name: _lt("Paste special"),
+        sequence: 40,
+        separator: true,
+        isVisible: IS_ONLY_ONE_RANGE,
+    })
+        .addChild("paste_value_only", ["paste_special"], {
+        name: _lt("Paste values only"),
+        sequence: 10,
+        action: PASTE_VALUE_ACTION,
+    })
+        .addChild("paste_format_only", ["paste_special"], {
+        name: _lt("Paste format only"),
+        sequence: 20,
+        action: PASTE_FORMAT_ACTION,
+    })
+        .add("sort_range", {
+        name: _lt("Sort range"),
+        sequence: 50,
+        isVisible: IS_ONLY_ONE_RANGE,
+        separator: true,
+    })
+        .addChild("sort_ascending", ["sort_range"], {
+        name: _lt("Ascending (A ⟶ Z)"),
+        sequence: 10,
+        action: SORT_CELLS_ASCENDING,
+    })
+        .addChild("sort_descending", ["sort_range"], {
+        name: _lt("Descending (Z ⟶ A)"),
+        sequence: 20,
+        action: SORT_CELLS_DESCENDING,
+    })
+        .add("add_row_before", {
+        name: CELL_INSERT_ROWS_BEFORE_NAME,
+        sequence: 70,
+        action: INSERT_ROWS_BEFORE_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
+    })
+        .add("add_column_before", {
+        name: CELL_INSERT_COLUMNS_BEFORE_NAME,
+        sequence: 90,
+        action: INSERT_COLUMNS_BEFORE_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
+    })
+        .add("insert_cell", {
+        name: _lt("Insert cells"),
+        sequence: 100,
+        isVisible: IS_ONLY_ONE_RANGE,
+        separator: true,
+    })
+        .addChild("insert_cell_down", ["insert_cell"], {
+        name: _lt("Shift down"),
+        sequence: 10,
+        action: INSERT_CELL_SHIFT_DOWN,
+    })
+        .addChild("insert_cell_right", ["insert_cell"], {
+        name: _lt("Shift right"),
+        sequence: 20,
+        action: INSERT_CELL_SHIFT_RIGHT,
+    })
+        .add("delete_row", {
+        name: REMOVE_ROWS_NAME,
+        sequence: 110,
+        action: REMOVE_ROWS_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
+    })
+        .add("delete_column", {
+        name: REMOVE_COLUMNS_NAME,
+        sequence: 120,
+        action: REMOVE_COLUMNS_ACTION,
+        isVisible: IS_ONLY_ONE_RANGE,
+    })
+        .add("delete_cell", {
+        name: _lt("Delete cells"),
+        sequence: 130,
+        isVisible: IS_ONLY_ONE_RANGE,
+    })
+        .addChild("delete_cell_up", ["delete_cell"], {
+        name: _lt("Shift up"),
+        sequence: 10,
+        action: DELETE_CELL_SHIFT_UP,
+    })
+        .addChild("delete_cell_down", ["delete_cell"], {
+        name: _lt("Shift left"),
+        sequence: 20,
+        action: DELETE_CELL_SHIFT_LEFT,
+    })
+        .add("clear_cell", {
+        name: _lt("Clear cells"),
+        sequence: 140,
+        action: DELETE_CONTENT_ACTION,
+        isEnabled: (env) => {
+            const cell = env.model.getters.getActiveCell();
+            return Boolean(cell);
+        },
+        separator: true,
+    })
+        .add("insert_link", {
+        name: _lt("Insert link"),
+        separator: true,
+        sequence: 150,
+        action: INSERT_LINK,
+    })
+        .add("conditional_formatting", {
+        name: _lt("Conditional formatting"),
+        sequence: 160,
+        action: OPEN_CF_SIDEPANEL_ACTION,
+        separator: true,
+    });
+
+    const colMenuRegistry = new MenuItemRegistry();
+    colMenuRegistry
+        .add("cut", {
+        name: _lt("Cut"),
+        shortCut: "Ctrl+X",
+        sequence: 10,
+        action: CUT_ACTION,
+    })
+        .add("copy", {
+        name: _lt("Copy"),
+        shortCut: "Ctrl+C",
+        sequence: 20,
+        isReadonlyAllowed: true,
+        action: COPY_ACTION,
+    })
+        .add("paste", {
+        name: _lt("Paste"),
+        shortCut: "Ctrl+V",
+        sequence: 30,
+        action: PASTE_ACTION,
+    })
+        .add("paste_special", {
+        name: _lt("Paste special"),
+        sequence: 40,
+        separator: true,
+    })
+        .addChild("paste_value_only", ["paste_special"], {
+        name: _lt("Paste value only"),
+        sequence: 10,
+        action: PASTE_VALUE_ACTION,
+    })
+        .addChild("paste_format_only", ["paste_special"], {
+        name: _lt("Paste format only"),
+        sequence: 20,
+        action: PASTE_FORMAT_ACTION,
+    })
+        .add("sort_columns", {
+        name: (env) => env.model.getters.getActiveCols().size > 1 ? _lt("Sort columns") : _lt("Sort column"),
+        sequence: 50,
+        isVisible: IS_ONLY_ONE_RANGE,
+        separator: true,
+    })
+        .addChild("sort_ascending", ["sort_columns"], {
+        name: _lt("Ascending (A ⟶ Z)"),
+        sequence: 10,
+        action: SORT_CELLS_ASCENDING,
+    })
+        .addChild("sort_descending", ["sort_columns"], {
+        name: _lt("Descending (Z ⟶ A)"),
+        sequence: 20,
+        action: SORT_CELLS_DESCENDING,
+    })
+        .add("add_column_before", {
+        name: COLUMN_INSERT_COLUMNS_BEFORE_NAME,
+        sequence: 70,
+        action: INSERT_COLUMNS_BEFORE_ACTION,
+    })
+        .add("add_column_after", {
+        name: COLUMN_INSERT_COLUMNS_AFTER_NAME,
+        sequence: 80,
+        action: INSERT_COLUMNS_AFTER_ACTION,
+    })
+        .add("delete_column", {
+        name: REMOVE_COLUMNS_NAME,
+        sequence: 90,
+        action: REMOVE_COLUMNS_ACTION,
+    })
+        .add("clear_column", {
+        name: DELETE_CONTENT_COLUMNS_NAME,
+        sequence: 100,
+        action: DELETE_CONTENT_COLUMNS_ACTION,
+    })
+        .add("hide_columns", {
+        name: HIDE_COLUMNS_NAME,
+        sequence: 85,
+        action: HIDE_COLUMNS_ACTION,
+        isVisible: (env) => {
+            const sheet = env.model.getters.getActiveSheet();
+            const hiddenCols = env.model.getters.getHiddenColsGroups(sheet.id).flat();
+            return (sheet.cols.length >
+                hiddenCols.length + env.model.getters.getElementsFromSelection("COL").length);
+        },
+        separator: true,
+    })
+        .add("unhide_columns", {
+        name: "Unhide columns",
+        sequence: 86,
+        action: UNHIDE_COLUMNS_ACTION,
+        isVisible: (env) => {
+            const hiddenCols = env.model.getters
+                .getHiddenColsGroups(env.model.getters.getActiveSheetId())
+                .flat();
+            const currentCols = env.model.getters.getElementsFromSelection("COL");
+            return currentCols.some((col) => hiddenCols.includes(col));
+        },
+        separator: true,
+    })
+        .add("conditional_formatting", {
+        name: _lt("Conditional formatting"),
+        sequence: 110,
+        action: OPEN_CF_SIDEPANEL_ACTION,
+    });
+
+    //------------------------------------------------------------------------------
+    // Link Menu Registry
+    //------------------------------------------------------------------------------
+    const linkMenuRegistry = new MenuItemRegistry();
+    linkMenuRegistry.add("sheet", {
+        name: _lt("Link sheet"),
+        sequence: 10,
+        children: (env) => {
+            const sheets = env.model.getters
+                .getSheetIds()
+                .map((sheetId) => env.model.getters.getSheet(sheetId));
+            return sheets.map((sheet, i) => createFullMenuItem(sheet.id, {
+                name: sheet.name,
+                sequence: i,
+                action: () => ({
+                    link: { label: sheet.name, url: buildSheetLink(sheet.id) },
+                    urlRepresentation: sheet.name,
+                    isUrlEditable: false,
+                }),
+            }));
+        },
+    });
+
+    const rowMenuRegistry = new MenuItemRegistry();
+    rowMenuRegistry
+        .add("cut", {
+        name: _lt("Cut"),
+        sequence: 10,
+        shortCut: "Ctrl+X",
+        action: CUT_ACTION,
+    })
+        .add("copy", {
+        name: _lt("Copy"),
+        shortCut: "Ctrl+C",
+        sequence: 20,
+        isReadonlyAllowed: true,
+        action: COPY_ACTION,
+    })
+        .add("paste", {
+        name: _lt("Paste"),
+        shortCut: "Ctrl+V",
+        sequence: 30,
+        action: PASTE_ACTION,
+    })
+        .add("paste_special", {
+        name: _lt("Paste special"),
+        sequence: 40,
+        separator: true,
+    })
+        .addChild("paste_value_only", ["paste_special"], {
+        name: _lt("Paste value only"),
+        sequence: 10,
+        action: PASTE_VALUE_ACTION,
+    })
+        .addChild("paste_format_only", ["paste_special"], {
+        name: _lt("Paste format only"),
+        sequence: 20,
+        action: PASTE_FORMAT_ACTION,
+    })
+        .add("add_row_before", {
+        name: ROW_INSERT_ROWS_BEFORE_NAME,
+        sequence: 50,
+        action: INSERT_ROWS_BEFORE_ACTION,
+    })
+        .add("add_row_after", {
+        name: ROW_INSERT_ROWS_AFTER_NAME,
+        sequence: 60,
+        action: INSERT_ROWS_AFTER_ACTION,
+    })
+        .add("delete_row", {
+        name: REMOVE_ROWS_NAME,
+        sequence: 70,
+        action: REMOVE_ROWS_ACTION,
+    })
+        .add("clear_row", {
+        name: DELETE_CONTENT_ROWS_NAME,
+        sequence: 80,
+        action: DELETE_CONTENT_ROWS_ACTION,
+    })
+        .add("hide_rows", {
+        name: HIDE_ROWS_NAME,
+        sequence: 85,
+        action: HIDE_ROWS_ACTION,
+        isVisible: (env) => {
+            const sheet = env.model.getters.getActiveSheet();
+            const hiddenRows = env.model.getters.getHiddenRowsGroups(sheet.id).flat();
+            return (sheet.rows.length >
+                hiddenRows.length + env.model.getters.getElementsFromSelection("ROW").length);
+        },
+        separator: true,
+    })
+        .add("unhide_rows", {
+        name: "Unhide rows",
+        sequence: 86,
+        action: UNHIDE_ROWS_ACTION,
+        isVisible: (env) => {
+            const hiddenRows = env.model.getters
+                .getHiddenRowsGroups(env.model.getters.getActiveSheetId())
+                .flat();
+            const currentRows = env.model.getters.getElementsFromSelection("ROW");
+            return currentRows.some((col) => hiddenRows.includes(col));
+        },
+        separator: true,
+    })
+        .add("conditional_formatting", {
+        name: _lt("Conditional formatting"),
+        sequence: 90,
+        action: OPEN_CF_SIDEPANEL_ACTION,
+    });
+
+    function interactiveRenameSheet(env, sheetId, errorText) {
+        const placeholder = env.model.getters.getSheetName(sheetId);
+        const title = _lt("Rename Sheet");
+        const callback = (name) => {
+            if (name === null || name === placeholder) {
+                return;
+            }
+            if (name === "") {
+                interactiveRenameSheet(env, sheetId, _lt("The sheet name cannot be empty."));
+            }
+            const result = env.model.dispatch("RENAME_SHEET", { sheetId, name });
+            if (!result.isSuccessful) {
+                if (result.reasons.includes(10 /* DuplicatedSheetName */)) {
+                    interactiveRenameSheet(env, sheetId, _lt("A sheet with the name %s already exists. Please select another name.", name));
+                }
+                if (result.reasons.includes(11 /* ForbiddenCharactersInSheetName */)) {
+                    interactiveRenameSheet(env, sheetId, _lt("Some used characters are not allowed in a sheet name (Forbidden characters are %s).", FORBIDDEN_SHEET_CHARS.join(" ")));
+                }
+            }
+        };
+        env.editText(title, callback, {
+            placeholder: placeholder,
+            error: errorText,
+        });
+    }
+
+    const sheetMenuRegistry = new MenuItemRegistry();
+    sheetMenuRegistry
+        .add("delete", {
+        name: _lt("Delete"),
+        sequence: 10,
+        isVisible: (env) => {
+            return env.model.getters.getSheetIds().length > 1;
+        },
+        action: (env) => env.askConfirmation(_lt("Are you sure you want to delete this sheet ?"), () => {
+            env.model.dispatch("DELETE_SHEET", { sheetId: env.model.getters.getActiveSheetId() });
+        }),
+    })
+        .add("duplicate", {
+        name: _lt("Duplicate"),
+        sequence: 20,
+        action: (env) => {
+            const sheetIdFrom = env.model.getters.getActiveSheetId();
+            const sheetIdTo = env.model.uuidGenerator.uuidv4();
+            env.model.dispatch("DUPLICATE_SHEET", {
+                sheetId: sheetIdFrom,
+                sheetIdTo,
+            });
+            env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo });
+        },
+    })
+        .add("rename", {
+        name: _lt("Rename"),
+        sequence: 30,
+        action: (env) => interactiveRenameSheet(env, env.model.getters.getActiveSheetId()),
+    })
+        .add("move_right", {
+        name: _lt("Move right"),
+        sequence: 40,
+        isVisible: (env) => {
+            const sheetId = env.model.getters.getActiveSheetId();
+            const sheetIds = env.model.getters.getSheetIds();
+            return sheetIds.indexOf(sheetId) !== sheetIds.length - 1;
+        },
+        action: (env) => env.model.dispatch("MOVE_SHEET", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            direction: "right",
+        }),
+    })
+        .add("move_left", {
+        name: _lt("Move left"),
+        sequence: 50,
+        isVisible: (env) => {
+            const sheetId = env.model.getters.getActiveSheetId();
+            return env.model.getters.getSheetIds()[0] !== sheetId;
+        },
+        action: (env) => env.model.dispatch("MOVE_SHEET", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            direction: "left",
+        }),
+    });
+
+    const CfTerms = {
+        Errors: {
+            [20 /* InvalidRange */]: _lt("The range is invalid"),
+            [34 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
+            [35 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
+            [36 /* MinNaN */]: _lt("The minpoint must be a number"),
+            [37 /* MidNaN */]: _lt("The midpoint must be a number"),
+            [38 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [39 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
+            [40 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
+            [30 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
+            [33 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [32 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [31 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
+            [41 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [43 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [42 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [44 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
+            [45 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
+            [19 /* EmptyRange */]: _lt("A range needs to be defined"),
+            Unexpected: _lt("The rule is invalid for an unknown reason"),
+        },
+        ColorScale: _lt("Color scale"),
+        IconSet: _lt("Icon set"),
+    };
+    const CellIsOperators = {
+        IsEmpty: _lt("Is empty"),
+        IsNotEmpty: _lt("Is not empty"),
+        ContainsText: _lt("Contains"),
+        NotContains: _lt("Does not contain"),
+        BeginsWith: _lt("Starts with"),
+        EndsWith: _lt("Ends with"),
+        Equal: _lt("Is equal to"),
+        NotEqual: _lt("Is not equal to"),
+        GreaterThan: _lt("Is greater than"),
+        GreaterThanOrEqual: _lt("Is greater than or equal to"),
+        LessThan: _lt("Is less than"),
+        LessThanOrEqual: _lt("Is less than or equal to"),
+        Between: _lt("Is between"),
+        NotBetween: _lt("Is not between"),
+    };
+    const ChartTerms = {
+        Series: _lt("Series"),
+        Errors: {
+            [25 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
+            [26 /* InvalidDataSet */]: _lt("The dataset is invalid"),
+            [27 /* InvalidLabelRange */]: _lt("Labels are invalid"),
+            Unexpected: _lt("The chart definition is invalid for an unknown reason"),
+        },
+    };
+    const NumberFormatTerms = {
+        General: _lt("General"),
+        NoSpecificFormat: _lt("no specific format"),
+        Number: _lt("Number"),
+        Percent: _lt("Percent"),
+        Currency: _lt("Currency"),
+        CurrencyRounded: _lt("Currency rounded"),
+        Date: _lt("Date"),
+        Time: _lt("Time"),
+        DateTime: _lt("Date time"),
+        Duration: _lt("Duration"),
+        CustomCurrency: _lt("Custom currency"),
+    };
+    const CustomCurrencyTerms = {
+        Custom: _lt("Custom"),
+    };
+
+    const topbarMenuRegistry = new MenuItemRegistry();
+    topbarMenuRegistry
+        .add("file", { name: _lt("File"), sequence: 10 })
+        .add("edit", { name: _lt("Edit"), sequence: 20 })
+        .add("view", { name: _lt("View"), sequence: 30 })
+        .add("insert", { name: _lt("Insert"), sequence: 40 })
+        .add("format", { name: _lt("Format"), sequence: 50 })
+        .add("data", { name: _lt("Data"), sequence: 60 })
+        .addChild("save", ["file"], {
+        name: _lt("Save"),
+        shortCut: "Ctrl+S",
+        sequence: 10,
+        action: () => console.log("Not implemented"),
+    })
+        .addChild("undo", ["edit"], {
+        name: _lt("Undo"),
+        shortCut: "Ctrl+Z",
+        sequence: 10,
+        action: UNDO_ACTION,
+    })
+        .addChild("redo", ["edit"], {
+        name: _lt("Redo"),
+        shortCut: "Ctrl+Y",
+        sequence: 20,
+        action: REDO_ACTION,
+        separator: true,
+    })
+        .addChild("copy", ["edit"], {
+        name: _lt("Copy"),
+        shortCut: "Ctrl+C",
+        sequence: 30,
+        isReadonlyAllowed: true,
+        action: COPY_ACTION,
+    })
+        .addChild("cut", ["edit"], {
+        name: _lt("Cut"),
+        shortCut: "Ctrl+X",
+        sequence: 40,
+        action: CUT_ACTION,
+    })
+        .addChild("paste", ["edit"], {
+        name: _lt("Paste"),
+        shortCut: "Ctrl+V",
+        sequence: 50,
+        action: PASTE_ACTION,
+    })
+        .addChild("paste_special", ["edit"], {
+        name: _lt("Paste special"),
+        sequence: 60,
+        separator: true,
+    })
+        .addChild("paste_special_value", ["edit", "paste_special"], {
+        name: _lt("Paste value only"),
+        sequence: 10,
+        action: PASTE_VALUE_ACTION,
+    })
+        .addChild("paste_special_format", ["edit", "paste_special"], {
+        name: _lt("Paste format only"),
+        sequence: 20,
+        action: PASTE_FORMAT_ACTION,
+    })
+        .addChild("sort_range", ["edit"], {
+        name: _lt("Sort range"),
+        sequence: 62,
+        isVisible: IS_ONLY_ONE_RANGE,
+        separator: true,
+    })
+        .addChild("sort_ascending", ["edit", "sort_range"], {
+        name: _lt("Ascending (A ⟶ Z)"),
+        sequence: 10,
+        action: SORT_CELLS_ASCENDING,
+    })
+        .addChild("sort_descending", ["edit", "sort_range"], {
+        name: _lt("Descending (Z ⟶ A)"),
+        sequence: 20,
+        action: SORT_CELLS_DESCENDING,
+    })
+        .addChild("find_and_replace", ["edit"], {
+        name: _lt("Find and replace"),
+        shortCut: "Ctrl+H",
+        sequence: 65,
+        isReadonlyAllowed: true,
+        action: OPEN_FAR_SIDEPANEL_ACTION,
+        separator: true,
+    })
+        .addChild("edit_delete_cell_values", ["edit"], {
+        name: _lt("Delete values"),
+        sequence: 70,
+        action: DELETE_CONTENT_ACTION,
+    })
+        .addChild("edit_delete_row", ["edit"], {
+        name: REMOVE_ROWS_NAME,
+        sequence: 80,
+        action: REMOVE_ROWS_ACTION,
+    })
+        .addChild("edit_delete_column", ["edit"], {
+        name: REMOVE_COLUMNS_NAME,
+        sequence: 90,
+        action: REMOVE_COLUMNS_ACTION,
+    })
+        .addChild("edit_delete_cell_shift_up", ["edit"], {
+        name: _lt("Delete cell and shift up"),
+        sequence: 93,
+        action: DELETE_CELL_SHIFT_UP,
+    })
+        .addChild("edit_delete_cell_shift_left", ["edit"], {
+        name: _lt("Delete cell and shift left"),
+        sequence: 97,
+        action: DELETE_CELL_SHIFT_LEFT,
+    })
+        .addChild("edit_unhide_columns", ["edit"], {
+        name: _lt("Unhide all columns"),
+        sequence: 100,
+        action: UNHIDE_ALL_COLUMNS_ACTION,
+        isVisible: (env) => env.model.getters.getHiddenColsGroups(env.model.getters.getActiveSheetId()).length > 0,
+    })
+        .addChild("edit_unhide_rows", ["edit"], {
+        name: _lt("Unhide all rows"),
+        sequence: 100,
+        action: UNHIDE_ALL_ROWS_ACTION,
+        isVisible: (env) => env.model.getters.getHiddenRowsGroups(env.model.getters.getActiveSheetId()).length > 0,
+    })
+        .addChild("insert_row_before", ["insert"], {
+        name: MENU_INSERT_ROWS_BEFORE_NAME,
+        sequence: 10,
+        action: INSERT_ROWS_BEFORE_ACTION,
+        isVisible: (env) => env.model.getters.getActiveCols().size === 0,
+    })
+        .addChild("insert_row_after", ["insert"], {
+        name: MENU_INSERT_ROWS_AFTER_NAME,
+        sequence: 20,
+        action: INSERT_ROWS_AFTER_ACTION,
+        isVisible: (env) => env.model.getters.getActiveCols().size === 0,
+        separator: true,
+    })
+        .addChild("insert_column_before", ["insert"], {
+        name: MENU_INSERT_COLUMNS_BEFORE_NAME,
+        sequence: 30,
+        action: INSERT_COLUMNS_BEFORE_ACTION,
+        isVisible: (env) => env.model.getters.getActiveRows().size === 0,
+    })
+        .addChild("insert_column_after", ["insert"], {
+        name: MENU_INSERT_COLUMNS_AFTER_NAME,
+        sequence: 40,
+        action: INSERT_COLUMNS_AFTER_ACTION,
+        isVisible: (env) => env.model.getters.getActiveRows().size === 0,
+        separator: true,
+    })
+        .addChild("insert_insert_cell_shift_down", ["insert"], {
+        name: _lt("Insert cells and shift down"),
+        sequence: 43,
+        action: INSERT_CELL_SHIFT_DOWN,
+    })
+        .addChild("insert_insert_cell_shift_right", ["insert"], {
+        name: _lt("Insert cells and shift right"),
+        sequence: 47,
+        action: INSERT_CELL_SHIFT_RIGHT,
+        separator: true,
+    })
+        .addChild("insert_chart", ["insert"], {
+        name: _lt("Chart"),
+        sequence: 50,
+        action: CREATE_CHART,
+    })
+        .addChild("insert_link", ["insert"], {
+        name: _lt("Link"),
+        separator: true,
+        sequence: 60,
+        action: INSERT_LINK,
+    })
+        .addChild("insert_sheet", ["insert"], {
+        name: _lt("New sheet"),
+        sequence: 70,
+        action: CREATE_SHEET_ACTION,
+        separator: true,
+    })
+        .addChild("view_gridlines", ["view"], {
+        name: (env) => env.model.getters.getGridLinesVisibility(env.model.getters.getActiveSheetId())
+            ? _lt("Hide gridlines")
+            : _lt("Show gridlines"),
+        action: SET_GRID_LINES_VISIBILITY_ACTION,
+        sequence: 5,
+        separator: true,
+    })
+        .addChild("view_formulas", ["view"], {
+        name: (env) => env.model.getters.shouldShowFormulas() ? _lt("Hide formulas") : _lt("Show formulas"),
+        action: SET_FORMULA_VISIBILITY_ACTION,
+        isReadonlyAllowed: true,
+        sequence: 10,
+    })
+        .addChild("format_number", ["format"], {
+        name: _lt("Numbers"),
+        sequence: 10,
+        separator: true,
+    })
+        .addChild("format_number_general", ["format", "format_number"], {
+        name: `${NumberFormatTerms.General} (${NumberFormatTerms.NoSpecificFormat})`,
+        sequence: 10,
+        separator: true,
+        action: FORMAT_GENERAL_ACTION,
+    })
+        .addChild("format_number_number", ["format", "format_number"], {
+        name: `${NumberFormatTerms.Number} (1,000.12)`,
+        sequence: 20,
+        action: FORMAT_NUMBER_ACTION,
+    })
+        .addChild("format_number_percent", ["format", "format_number"], {
+        name: `${NumberFormatTerms.Percent} (10.12%)`,
+        sequence: 30,
+        separator: true,
+        action: FORMAT_PERCENT_ACTION,
+    })
+        .addChild("format_number_currency", ["format", "format_number"], {
+        name: `${NumberFormatTerms.Currency} ($1,000.12)`,
+        sequence: 37,
+        action: FORMAT_CURRENCY_ACTION,
+    })
+        .addChild("format_number_currency_rounded", ["format", "format_number"], {
+        name: `${NumberFormatTerms.CurrencyRounded} ($1,000)`,
+        sequence: 38,
+        action: FORMAT_CURRENCY_ROUNDED_ACTION,
+    })
+        .addChild("format_custom_currency", ["format", "format_number"], {
+        name: NumberFormatTerms.CustomCurrency,
+        sequence: 39,
+        separator: true,
+        action: OPEN_CUSTOM_CURRENCY_SIDEPANEL_ACTION,
+    })
+        .addChild("format_number_date", ["format", "format_number"], {
+        name: `${NumberFormatTerms.Date} (9/26/2008)`,
+        sequence: 40,
+        action: FORMAT_DATE_ACTION,
+    })
+        .addChild("format_number_time", ["format", "format_number"], {
+        name: `${NumberFormatTerms.Time} (10:43:00 PM)`,
+        sequence: 50,
+        action: FORMAT_TIME_ACTION,
+    })
+        .addChild("format_number_date_time", ["format", "format_number"], {
+        name: `${NumberFormatTerms.DateTime} (9/26/2008 22:43:00)`,
+        sequence: 60,
+        action: FORMAT_DATE_TIME_ACTION,
+    })
+        .addChild("format_number_duration", ["format", "format_number"], {
+        name: `${NumberFormatTerms.Duration} (27:51:38)`,
+        sequence: 70,
+        separator: true,
+        action: FORMAT_DURATION_ACTION,
+    })
+        .addChild("format_bold", ["format"], {
+        name: _lt("Bold"),
+        sequence: 20,
+        shortCut: "Ctrl+B",
+        action: FORMAT_BOLD_ACTION,
+    })
+        .addChild("format_italic", ["format"], {
+        name: _lt("Italic"),
+        sequence: 30,
+        shortCut: "Ctrl+I",
+        action: FORMAT_ITALIC_ACTION,
+    })
+        .addChild("format_underline", ["format"], {
+        name: _lt("Underline"),
+        shortCut: "Ctrl+U",
+        sequence: 40,
+        action: FORMAT_UNDERLINE_ACTION,
+    })
+        .addChild("format_strikethrough", ["format"], {
+        name: _lt("Strikethrough"),
+        sequence: 50,
+        action: FORMAT_STRIKETHROUGH_ACTION,
+        separator: true,
+    })
+        .addChild("format_font_size", ["format"], {
+        name: _lt("Font size"),
+        sequence: 60,
+        separator: true,
+    })
+        .addChild("format_cf", ["format"], {
+        name: _lt("Conditional formatting"),
+        sequence: 70,
+        action: OPEN_CF_SIDEPANEL_ACTION,
+        separator: true,
+    });
+    // Font-sizes
+    for (let fs of fontSizes) {
+        topbarMenuRegistry.addChild(`format_font_size_${fs.pt}`, ["format", "format_font_size"], {
+            name: fs.pt.toString(),
+            sequence: fs.pt,
+            action: (env) => setStyle(env, { fontSize: fs.pt }),
+        });
+    }
+
+    class OTRegistry extends Registry {
+        /**
+         * Add a transformation function to the registry. When the executed command
+         * happened, all the commands in toTransforms should be transformed using the
+         * transformation function given
+         */
+        addTransformation(executed, toTransforms, fn) {
+            for (let toTransform of toTransforms) {
+                if (!this.content[toTransform]) {
+                    this.content[toTransform] = new Map();
+                }
+                this.content[toTransform].set(executed, fn);
+            }
+            return this;
+        }
+        /**
+         * Get the transformation function to transform the command toTransform, after
+         * that the executed command happened.
+         */
+        getTransformation(toTransform, executed) {
+            return this.content[toTransform] && this.content[toTransform].get(executed);
+        }
+    }
+    const otRegistry = new OTRegistry();
+
+    /**
+     * This file is largely inspired by owl 1.
+     * `css` tag has been removed from owl 2 without workaround to manage css.
+     * So, the solution was to import the behavior of owl 1 directly in our
+     * codebase, with one difference: the css is added to the sheet as soon as the
+     * css tag is executed. In owl 1, the css was added as soon as a Component was
+     * created for the first time.
+     */
+    const STYLESHEETS = {};
+    let nextId = 0;
+    /**
+     * CSS tag helper for defining inline stylesheets.  With this, one can simply define
+     * an inline stylesheet with just the following code:
+     * ```js
+     *     css`.component-a { color: red; }`;
+     * ```
+     */
+    function css(strings, ...args) {
+        const name = `__sheet__${nextId++}`;
+        const value = String.raw(strings, ...args);
+        registerSheet(name, value);
+        activateSheet(name);
+        return name;
+    }
+    function processSheet(str) {
+        const tokens = str.split(/(\{|\}|;)/).map((s) => s.trim());
+        const selectorStack = [];
+        const parts = [];
+        let rules = [];
+        function generateSelector(stackIndex, parentSelector) {
+            const parts = [];
+            for (const selector of selectorStack[stackIndex]) {
+                let part = (parentSelector && parentSelector + " " + selector) || selector;
+                if (part.includes("&")) {
+                    part = selector.replace(/&/g, parentSelector || "");
+                }
+                if (stackIndex < selectorStack.length - 1) {
+                    part = generateSelector(stackIndex + 1, part);
+                }
+                parts.push(part);
+            }
+            return parts.join(", ");
+        }
+        function generateRules() {
+            if (rules.length) {
+                parts.push(generateSelector(0) + " {");
+                parts.push(...rules);
+                parts.push("}");
+                rules = [];
+            }
+        }
+        while (tokens.length) {
+            let token = tokens.shift();
+            if (token === "}") {
+                generateRules();
+                selectorStack.pop();
+            }
+            else {
+                if (tokens[0] === "{") {
+                    generateRules();
+                    selectorStack.push(token.split(/\s*,\s*/));
+                    tokens.shift();
+                }
+                if (tokens[0] === ";") {
+                    rules.push("  " + token + ";");
+                }
+            }
+        }
+        return parts.join("\n");
+    }
+    function registerSheet(id, css) {
+        const sheet = document.createElement("style");
+        sheet.textContent = processSheet(css);
+        STYLESHEETS[id] = sheet;
+    }
+    function activateSheet(id) {
+        const sheet = STYLESHEETS[id];
+        sheet.setAttribute("component", id);
+        document.head.appendChild(sheet);
+    }
+
+    const COLORS = [
+        [
+            "#000000",
+            "#434343",
+            "#666666",
+            "#999999",
+            "#b7b7b7",
+            "#cccccc",
+            "#d9d9d9",
+            "#efefef",
+            "#f3f3f3",
+            "#ffffff",
+        ],
+        [
+            "#980000",
+            "#ff0000",
+            "#ff9900",
+            "#ffff00",
+            "#00ff00",
+            "#00ffff",
+            "#4a86e8",
+            "#0000ff",
+            "#9900ff",
+            "#ff00ff",
+        ],
+        [
+            "#e6b8af",
+            "#f4cccc",
+            "#fce5cd",
+            "#fff2cc",
+            "#d9ead3",
+            "#d0e0e3",
+            "#c9daf8",
+            "#cfe2f3",
+            "#d9d2e9",
+            "#ead1dc",
+        ],
+        [
+            "#dd7e6b",
+            "#ea9999",
+            "#f9cb9c",
+            "#ffe599",
+            "#b6d7a8",
+            "#a2c4c9",
+            "#a4c2f4",
+            "#9fc5e8",
+            "#b4a7d6",
+            "#d5a6bd",
+        ],
+        [
+            "#cc4125",
+            "#e06666",
+            "#f6b26b",
+            "#ffd966",
+            "#93c47d",
+            "#76a5af",
+            "#6d9eeb",
+            "#6fa8dc",
+            "#8e7cc3",
+            "#c27ba0",
+        ],
+        [
+            "#a61c00",
+            "#cc0000",
+            "#e69138",
+            "#f1c232",
+            "#6aa84f",
+            "#45818e",
+            "#3c78d8",
+            "#3d85c6",
+            "#674ea7",
+            "#a64d79",
+        ],
+        [
+            "#85200c",
+            "#990000",
+            "#b45f06",
+            "#bf9000",
+            "#38761d",
+            "#134f5c",
+            "#1155cc",
+            "#0b5394",
+            "#351c75",
+            "#741b47",
+        ],
+        [
+            "#5b0f00",
+            "#660000",
+            "#783f04",
+            "#7f6000",
+            "#274e13",
+            "#0c343d",
+            "#1c4587",
+            "#073763",
+            "#20124d",
+            "#4c1130",
+        ],
+    ];
+    const PICKER_VERTICAL_PADDING = 6;
+    const LINE_VERTICAL_PADDING = 3;
+    const LINE_HORIZONTAL_PADDING = 6;
+    const ITEM_HORIZONTAL_MARGIN = 2;
+    const ITEM_EDGE_LENGTH = 18;
+    const ITEM_BORDER_WIDTH = 1;
+    const ITEMS_PER_LINE = Math.max(...COLORS.map((line) => line.length));
+    const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
+        2 * LINE_HORIZONTAL_PADDING;
+    css /* scss */ `
+  .o-color-picker {
+    position: absolute;
+    top: calc(100% + 5px);
+    z-index: 10;
+    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+    background-color: white;
+    padding: ${PICKER_VERTICAL_PADDING}px 0px;
+
+    .o-color-picker-line {
+      display: flex;
+      padding: ${LINE_VERTICAL_PADDING}px ${LINE_HORIZONTAL_PADDING}px;
+      .o-color-picker-line-item {
+        width: ${ITEM_EDGE_LENGTH}px;
+        height: ${ITEM_EDGE_LENGTH}px;
+        margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
+        border-radius: 50px;
+        border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
+        &:hover {
+          cursor: pointer;
+          background-color: rgba(0, 0, 0, 0.08);
+          outline: 1px solid gray;
+        }
+      }
+    }
+
+    &.right {
+      left: 0;
+    }
+
+    &.left {
+      right: 0;
+    }
+    &.center {
+      left: calc(50% - ${PICKER_WIDTH / 2}px);
+    }
+  }
+`;
+    class ColorPicker extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.COLORS = COLORS;
+        }
+        onColorClick(ev) {
+            const color = ev.target.dataset.color;
+            if (color) {
+                this.props.onColorPicked(color);
+            }
+        }
+    }
+    ColorPicker.template = "o-spreadsheet.ColorPicker";
+
+    const uuidGenerator$1 = new UuidGenerator();
+    css /* scss */ `
+  .o-selection {
+    .o-selection-input {
+      display: flex;
+      flex-direction: row;
+
+      input {
+        padding: 4px 6px;
+        border-radius: 4px;
+        box-sizing: border-box;
+        border: 1px solid #dadce0;
+        flex-grow: 2;
+      }
+      input:focus {
+        outline: none;
+      }
+      input.o-required,
+      input.o-focused {
+        border-width: 2px;
+        padding: 3px 5px;
+      }
+      input.o-focused {
+        border-color: ${SELECTION_BORDER_COLOR};
+      }
+      input.o-invalid {
+        border-color: red;
+      }
+      button.o-btn {
+        background: transparent;
+        border: none;
+        color: #333;
+        cursor: pointer;
+      }
+      button.o-btn-action {
+        margin: 8px 1px;
+        border-radius: 4px;
+        background: transparent;
+        border: 1px solid #dadce0;
+        color: #188038;
+        font-weight: bold;
+        font-size: 14px;
+        height: 25px;
+      }
+    }
+  }
+`;
+    /**
+     * This component can be used when the user needs to input some
+     * ranges. He can either input the ranges with the regular DOM `<input/>`
+     * displayed or by selecting zones on the grid.
+     *
+     * onSelectionChanged is called every time the input value
+     * changes.
+     */
+    class SelectionInput extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.id = uuidGenerator$1.uuidv4();
+            this.previousRanges = this.props.ranges || [];
+            this.originSheet = this.env.model.getters.getActiveSheetId();
+            this.state = owl.useState({
+                isMissing: false,
+            });
+        }
+        get ranges() {
+            const existingSelectionRange = this.env.model.getters.getSelectionInput(this.id);
+            const ranges = existingSelectionRange.length
+                ? existingSelectionRange
+                : this.props.ranges
+                    ? this.props.ranges.map((xc, i) => ({
+                        xc,
+                        id: i.toString(),
+                        isFocused: false,
+                    }))
+                    : [];
+            return ranges.map((range) => ({
+                ...range,
+                isValidRange: range.xc === "" || this.env.model.getters.isRangeValid(range.xc),
+            }));
+        }
+        get hasFocus() {
+            return this.ranges.filter((i) => i.isFocused).length > 0;
+        }
+        get canAddRange() {
+            return !this.props.hasSingleRange;
+        }
+        get isInvalid() {
+            return this.props.isInvalid || this.state.isMissing;
+        }
+        setup() {
+            owl.onMounted(() => this.enableNewSelectionInput());
+            owl.onWillUnmount(async () => this.disableNewSelectionInput());
+            owl.onPatched(() => this.checkChange());
+        }
+        enableNewSelectionInput() {
+            this.env.model.dispatch("ENABLE_NEW_SELECTION_INPUT", {
+                id: this.id,
+                initialRanges: this.props.ranges,
+                hasSingleRange: this.props.hasSingleRange,
+            });
+        }
+        disableNewSelectionInput() {
+            this.env.model.dispatch("DISABLE_SELECTION_INPUT", { id: this.id });
+        }
+        checkChange() {
+            const value = this.env.model.getters.getSelectionInputValue(this.id);
+            if (this.previousRanges.join() !== value.join()) {
+                this.triggerChange();
+            }
+        }
+        getColor(range) {
+            const color = range.color || "#000";
+            return "color: " + color + ";";
+        }
+        triggerChange() {
+            var _a, _b;
+            const ranges = this.env.model.getters.getSelectionInputValue(this.id);
+            (_b = (_a = this.props).onSelectionChanged) === null || _b === void 0 ? void 0 : _b.call(_a, ranges);
+            this.previousRanges = ranges;
+        }
+        focus(rangeId) {
+            this.state.isMissing = false;
+            this.env.model.dispatch("FOCUS_RANGE", {
+                id: this.id,
+                rangeId,
+            });
+        }
+        addEmptyInput() {
+            this.env.model.dispatch("ADD_EMPTY_RANGE", { id: this.id });
+        }
+        removeInput(rangeId) {
+            var _a, _b;
+            this.env.model.dispatch("REMOVE_RANGE", { id: this.id, rangeId });
+            this.triggerChange();
+            (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
+        }
+        onInputChanged(rangeId, ev) {
+            const target = ev.target;
+            this.env.model.dispatch("CHANGE_RANGE", {
+                id: this.id,
+                rangeId,
+                value: target.value,
+            });
+            target.blur();
+            this.triggerChange();
+        }
+        disable() {
+            var _a, _b;
+            this.env.model.dispatch("UNFOCUS_SELECTION_INPUT");
+            const ranges = this.env.model.getters.getSelectionInputValue(this.id);
+            if (this.props.required && ranges.length === 0) {
+                this.state.isMissing = true;
+            }
+            const activeSheetId = this.env.model.getters.getActiveSheetId();
+            if (this.originSheet !== activeSheetId) {
+                this.env.model.dispatch("ACTIVATE_SHEET", {
+                    sheetIdFrom: activeSheetId,
+                    sheetIdTo: this.originSheet,
+                });
+            }
+            (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
+        }
+    }
+    SelectionInput.template = "o-spreadsheet.SelectionInput";
+
+    css /* scss */ `
+  .o-chart {
+    .o-panel {
+      display: flex;
+      .o-panel-element {
+        flex: 1 0 auto;
+        padding: 8px 0px;
+        text-align: center;
+        cursor: pointer;
+        border-right: 1px solid darkgray;
+        &.inactive {
+          background-color: ${BACKGROUND_HEADER_COLOR};
+          border-bottom: 1px solid darkgray;
+        }
+        .fa {
+          margin-right: 4px;
+        }
+      }
+      .o-panel-element:last-child {
+        border-right: none;
+      }
+    }
+
+    .o-with-color-picker {
+      position: relative;
+    }
+    .o-with-color-picker > span {
+      border-bottom: 4px solid;
+    }
+  }
+`;
+    class ChartPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState(this.initialState(this.props.figure));
+        }
+        setup() {
+            owl.onWillUpdateProps((nextProps) => {
+                if (!this.env.model.getters.getChartDefinition(nextProps.figure.id)) {
+                    this.props.onCloseSidePanel();
+                    return;
+                }
+                if (nextProps.figure.id !== this.props.figure.id) {
+                    this.state.panel = "configuration";
+                    this.state.fillColorTool = false;
+                    this.state.datasetDispatchResult = undefined;
+                    this.state.labelsDispatchResult = undefined;
+                    this.state.chart = this.env.model.getters.getChartDefinitionUI(this.env.model.getters.getActiveSheetId(), nextProps.figure.id);
+                }
+            });
+        }
+        get errorMessages() {
+            var _a, _b;
+            const cancelledReasons = [
+                ...(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || []),
+                ...(((_b = this.state.labelsDispatchResult) === null || _b === void 0 ? void 0 : _b.reasons) || []),
+            ];
+            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
+        }
+        get isDatasetInvalid() {
+            var _a, _b;
+            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(25 /* EmptyDataSet */)) ||
+                ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(26 /* InvalidDataSet */)));
+        }
+        get isLabelInvalid() {
+            var _a;
+            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(27 /* InvalidLabelRange */));
+        }
+        onSeriesChanged(ranges) {
+            this.state.chart.dataSets = ranges;
+        }
+        updateDataSet() {
+            this.state.datasetDispatchResult = this.updateChart({
+                dataSets: this.state.chart.dataSets,
+                dataSetsHaveTitle: this.state.chart.dataSetsHaveTitle,
+            });
+        }
+        updateStacked() {
+            this.updateChart({ stackedBar: this.state.chart.stackedBar });
+        }
+        updateTitle() {
+            this.updateChart({ title: this.state.chart.title });
+        }
+        updateSelect(attr, ev) {
+            this.state.chart[attr] = ev.target.value;
+            this.updateChart({ [attr]: ev.target.value });
+        }
+        updateLabelRange() {
+            this.state.labelsDispatchResult = this.updateChart({
+                labelRange: this.state.chart.labelRange || null,
+            });
+        }
+        updateChart(definition) {
+            return this.env.model.dispatch("UPDATE_CHART", {
+                id: this.props.figure.id,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                definition,
+            });
+        }
+        onLabelRangeChanged(ranges) {
+            this.state.chart.labelRange = ranges[0];
+        }
+        getKey(label) {
+            return label + this.props.figure.id;
+        }
+        toggleColorPicker() {
+            this.state.fillColorTool = !this.state.fillColorTool;
+        }
+        setColor(color) {
+            this.state.chart.background = color;
+            this.state.fillColorTool = false;
+            this.updateChart({ background: this.state.chart.background });
+        }
+        activate(panel) {
+            this.state.panel = panel;
+        }
+        initialState(figure) {
+            return {
+                chart: this.env.model.getters.getChartDefinitionUI(this.env.model.getters.getActiveSheetId(), figure.id),
+                panel: "configuration",
+                fillColorTool: false,
+            };
+        }
+    }
+    ChartPanel.template = "o-spreadsheet.ChartPanel";
+    ChartPanel.components = { SelectionInput, ColorPicker };
+
+    /**
+     * Return true if the event was triggered from
+     * a child element.
+     */
+    function isChildEvent(parent, ev) {
+        return !!ev.target && parent.contains(ev.target);
+    }
+    function getTextDecoration({ strikethrough, underline, }) {
+        if (!strikethrough && !underline) {
+            return "none";
+        }
+        return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
+    }
+
+    // -----------------------------------------------------------------------------
+    // We need here the svg of the icons that we need to convert to images for the renderer
+    // -----------------------------------------------------------------------------
+    const ARROW_DOWN = '<svg class="o-cf-icon arrow-down" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#DC6965" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>';
+    const ARROW_UP = '<svg class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#00A04A" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>';
+    const ARROW_RIGHT = '<svg class="o-cf-icon arrow-right" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#F0AD4E" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>';
+    const SMILE = '<svg class="o-cf-icon smile" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#00A04A" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>';
+    const MEH = '<svg class="o-cf-icon meh" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#F0AD4E" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"></path></svg>';
+    const FROWN = '<svg class="o-cf-icon frown" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#DC6965" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"></path></svg>';
+    const GREEN_DOT = '<svg class="o-cf-icon green-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#00A04A" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const YELLOW_DOT = '<svg class="o-cf-icon yellow-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#F0AD4E" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const RED_DOT = '<svg class="o-cf-icon red-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#DC6965" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    function loadIconImage(svg) {
+        /** We have to add xmlns, as it's not added by owl in the canvas */
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" ${svg.slice(4)}`;
+        const image = new Image();
+        image.src = "data:image/svg+xml; charset=utf8, " + encodeURIComponent(svg);
+        return image;
+    }
+    const ICONS = {
+        arrowGood: {
+            template: "ARROW_UP",
+            img: loadIconImage(ARROW_UP),
+        },
+        arrowNeutral: {
+            template: "ARROW_RIGHT",
+            img: loadIconImage(ARROW_RIGHT),
+        },
+        arrowBad: {
+            template: "ARROW_DOWN",
+            img: loadIconImage(ARROW_DOWN),
+        },
+        smileyGood: {
+            template: "SMILE",
+            img: loadIconImage(SMILE),
+        },
+        smileyNeutral: {
+            template: "MEH",
+            img: loadIconImage(MEH),
+        },
+        smileyBad: {
+            template: "FROWN",
+            img: loadIconImage(FROWN),
+        },
+        dotGood: {
+            template: "GREEN_DOT",
+            img: loadIconImage(GREEN_DOT),
+        },
+        dotNeutral: {
+            template: "YELLOW_DOT",
+            img: loadIconImage(YELLOW_DOT),
+        },
+        dotBad: {
+            template: "RED_DOT",
+            img: loadIconImage(RED_DOT),
+        },
+    };
+    const ICON_SETS = {
+        arrows: {
+            good: "arrowGood",
+            neutral: "arrowNeutral",
+            bad: "arrowBad",
+        },
+        smiley: {
+            good: "smileyGood",
+            neutral: "smileyNeutral",
+            bad: "smileyBad",
+        },
+        dots: {
+            good: "dotGood",
+            neutral: "dotNeutral",
+            bad: "dotBad",
+        },
+    };
+
+    css /* scss */ `
+  .o-icon-picker {
+    position: absolute;
+    z-index: 10;
+    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+    background-color: white;
+    padding: 2px 1px;
+  }
+  .o-cf-icon-line {
+    display: flex;
+    padding: 3px 6px;
+  }
+  .o-icon-picker-item {
+    margin: 0px 2px;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+      outline: 1px solid gray;
+    }
+  }
+`;
+    class IconPicker extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.icons = ICONS;
+            this.iconSets = ICON_SETS;
+        }
+        onIconClick(icon) {
+            if (icon) {
+                this.props.onIconPicked(icon);
+            }
+        }
+    }
+    IconPicker.template = "o-spreadsheet.IconPicker";
+
+    // TODO vsc: add ordering of rules
+    css /* scss */ `
+  label {
+    vertical-align: middle;
+  }
+  .o_cf_radio_item {
+    margin-right: 10%;
+  }
+  .radio input:checked {
+    color: #e9ecef;
+    border-color: #00a09d;
+    background-color: #00a09d;
+  }
+  .o-cf-editor {
+    border-bottom: solid;
+    border-color: lightgrey;
+  }
+  .o-cf {
+    .o-cf-type-selector {
+      *,
+      ::after,
+      ::before {
+        box-sizing: border-box;
+      }
+      margin-top: 10px;
+      display: flex;
+    }
+    .o-section-subtitle:first-child {
+      margin-top: 0px;
+    }
+    .o-cf-cursor-ptr {
+      cursor: pointer;
+    }
+    .o-cf-preview {
+      background-color: #fff;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      height: 60px;
+      padding: 10px;
+      position: relative;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      &:not(:hover) .o-cf-delete-button {
+        display: none;
+      }
+      .o-cf-preview-image {
+        border: 1px solid lightgrey;
+        height: 50px;
+        line-height: 50px;
+        margin-right: 15px;
+        margin-top: 3px;
+        position: absolute;
+        text-align: center;
+        width: 50px;
+      }
+      .o-cf-preview-icon {
+        border: 1px solid lightgrey;
+        position: absolute;
+        height: 50px;
+        line-height: 50px;
+        margin-right: 15px;
+        margin-top: 3px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .o-cf-preview-description {
+        left: 65px;
+        margin-bottom: auto;
+        margin-right: 8px;
+        margin-top: auto;
+        position: relative;
+        width: 142px;
+        .o-cf-preview-description-rule {
+          margin-bottom: 4px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-weight: 600;
+          color: #303030;
+          max-height: 2.8em;
+          line-height: 1.4em;
+        }
+        .o-cf-preview-range {
+          text-overflow: ellipsis;
+          font-size: 12px;
+          overflow: hidden;
+        }
+      }
+      .o-cf-delete {
+        color: dimgrey;
+        left: 90%;
+        top: 39%;
+        position: absolute;
+      }
+      .o-cf-reorder {
+        color: gray;
+        left: 90%;
+        position: absolute;
+        height: 100%;
+        width: 10%;
+      }
+      .o-cf-reorder-button:hover {
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      .o-cf-reorder-button-up {
+        width: 15px;
+        height: 20px;
+        padding: 5px;
+        padding-top: 0px;
+      }
+      .o-cf-reorder-button-down {
+        width: 15px;
+        height: 20px;
+        bottom: 20px;
+        padding: 5px;
+        padding-top: 0px;
+        position: absolute;
+      }
+    }
+    .o-cf-ruleEditor {
+      font-size: 12px;
+      line-height: 1.5;
+      .o-selection-cf {
+        margin-bottom: 3%;
+      }
+      .o-dropdown {
+        position: relative;
+        .o-dropdown-content {
+          position: absolute;
+          top: calc(100% + 5px);
+          left: 0;
+          z-index: 10;
+          box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+          background-color: #f6f6f6;
+
+          .o-dropdown-item {
+            padding: 7px 10px;
+          }
+          .o-dropdown-item:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+          }
+          .o-dropdown-line {
+            display: flex;
+            padding: 3px 6px;
+            .o-line-item {
+              width: 16px;
+              height: 16px;
+              margin: 1px 3px;
+              &:hover {
+                background-color: rgba(0, 0, 0, 0.08);
+              }
+            }
+          }
+        }
+      }
+
+      .o-tools {
+        color: #333;
+        font-size: 13px;
+        cursor: default;
+        display: flex;
+
+        .o-tool {
+          display: flex;
+          align-items: center;
+          margin: 2px;
+          padding: 0 3px;
+          border-radius: 2px;
+        }
+
+        .o-tool.active,
+        .o-tool:not(.o-disabled):hover {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .o-with-color > span {
+          border-bottom: 4px solid;
+          height: 16px;
+          margin-top: 2px;
+        }
+        .o-with-color {
+          .o-line-item:hover {
+            outline: 1px solid gray;
+          }
+        }
+        .o-border {
+          .o-line-item {
+            padding: 4px;
+            margin: 1px;
+          }
+        }
+      }
+      .o-cell-content {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 0 12px;
+        margin: 0;
+        line-height: 35px;
+      }
+    }
+    .o-cf-btn-link {
+      font-size: 14px;
+      padding: 20px 24px 11px 24px;
+      height: 44px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .o-cf-btn-link:hover {
+      color: #003a39;
+      text-decoration: none;
+    }
+    .o-cf-error {
+      color: red;
+      margin-top: 10px;
+    }
+  }
+  .o-cf-cell-is-rule {
+    .o-cf-preview-line {
+      border: 1px solid darkgrey;
+      padding: 10px;
+    }
+    .o-cell-is-operator {
+      margin-bottom: 5px;
+      width: 96%;
+    }
+    .o-cell-is-value {
+      margin-bottom: 5px;
+      width: 96%;
+    }
+    .o-color-picker {
+      pointer-events: all;
+    }
+  }
+  .o-cf-color-scale-editor {
+    .o-threshold {
+      display: flex;
+      flex-direction: horizontal;
+      select {
+        width: 100%;
+      }
+      .o-threshold-value {
+        margin-left: 2%;
+        width: 20%;
+        min-width: 0px; // input overflows in Firefox otherwise
+      }
+      .o-threshold-value:disabled {
+        background-color: #edebed;
+      }
+    }
+    .o-cf-preview-gradient {
+      border: 1px solid darkgrey;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  }
+  .o-cf-iconset-rule {
+    font-size: 12;
+    .o-cf-iconsets {
+      display: flex;
+      justify-content: space-between;
+      .o-cf-iconset {
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        display: inline-flex;
+        padding: 5px 8px;
+        width: 25%;
+        cursor: pointer;
+        justify-content: space-between;
+        .o-cf-icon {
+          display: inline;
+          margin-left: 1%;
+          margin-right: 1%;
+        }
+        svg {
+          vertical-align: baseline;
+        }
+      }
+      .o-cf-iconset:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+    }
+    .o-inflection {
+      .o-cf-icon-button {
+        display: inline-block;
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 1px 2px;
+      }
+      .o-cf-icon-button:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      table {
+        table-layout: fixed;
+        margin-top: 2%;
+        display: table;
+        text-align: left;
+        font-size: 12px;
+        line-height: 18px;
+        width: 100%;
+      }
+      th.o-cf-iconset-icons {
+        width: 8%;
+      }
+      th.o-cf-iconset-text {
+        width: 28%;
+      }
+      th.o-cf-iconset-operator {
+        width: 14%;
+      }
+      th.o-cf-iconset-type {
+        width: 28%;
+      }
+      th.o-cf-iconset-value {
+        width: 26%;
+      }
+      input,
+      select {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+    }
+    .o-cf-iconset-reverse {
+      margin-bottom: 2%;
+      margin-top: 2%;
+      .o-cf-label {
+        display: inline-block;
+        vertical-align: bottom;
+        margin-bottom: 2px;
+      }
+    }
+  }
+`;
+    class ConditionalFormattingPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.icons = ICONS;
+            this.cellIsOperators = CellIsOperators;
+            this.iconSets = ICON_SETS;
+            this.getTextDecoration = getTextDecoration;
+            this.colorNumberString = colorNumberString;
+        }
+        setup() {
+            this.activeSheetId = this.env.model.getters.getActiveSheetId();
+            this.state = owl.useState({
+                mode: "list",
+                errors: [],
+                rules: this.getDefaultRules(),
+            });
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const rules = this.env.model.getters.getRulesSelection(sheetId, this.props.selection || []);
+            if (rules.length === 1) {
+                const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
+                if (cf) {
+                    this.editConditionalFormat(cf);
+                }
+            }
+            owl.onWillUpdateProps((nextProps) => {
+                const newActiveSheetId = this.env.model.getters.getActiveSheetId();
+                if (newActiveSheetId !== this.activeSheetId) {
+                    this.activeSheetId = newActiveSheetId;
+                    this.switchToList();
+                }
+                else if (nextProps.selection !== this.props.selection) {
+                    const sheetId = this.env.model.getters.getActiveSheetId();
+                    const rules = this.env.model.getters.getRulesSelection(sheetId, nextProps.selection || []);
+                    if (rules.length === 1) {
+                        const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
+                        if (cf) {
+                            this.editConditionalFormat(cf);
+                        }
+                    }
+                    else {
+                        this.switchToList();
+                    }
+                }
+            });
+            owl.useExternalListener(window, "click", this.closeMenus);
+        }
+        get conditionalFormats() {
+            return this.env.model.getters.getConditionalFormats(this.env.model.getters.getActiveSheetId());
+        }
+        get isRangeValid() {
+            return this.state.errors.includes(19 /* EmptyRange */);
+        }
+        errorMessage(error) {
+            return CfTerms.Errors[error] || CfTerms.Errors.Unexpected;
+        }
+        /**
+         * Switch to the list view
+         */
+        switchToList() {
+            this.state.mode = "list";
+            this.state.currentCF = undefined;
+            this.state.currentCFType = undefined;
+            this.state.errors = [];
+            this.state.rules = this.getDefaultRules();
+        }
+        getStyle(rule) {
+            if (rule.type === "CellIsRule") {
+                const fontWeight = rule.style.bold ? "bold" : "normal";
+                const fontDecoration = getTextDecoration(rule.style);
+                const fontStyle = rule.style.italic ? "italic" : "normal";
+                const color = rule.style.textColor || "none";
+                const backgroundColor = rule.style.fillColor || "none";
+                return `font-weight:${fontWeight};
+               text-decoration:${fontDecoration};
+               font-style:${fontStyle};
+               color:${color};
+               background-color:${backgroundColor};`;
+            }
+            else if (rule.type === "ColorScaleRule") {
+                const minColor = colorNumberString(rule.minimum.color);
+                const midColor = rule.midpoint ? colorNumberString(rule.midpoint.color) : null;
+                const maxColor = colorNumberString(rule.maximum.color);
+                const baseString = "background-image: linear-gradient(to right, #";
+                return midColor
+                    ? baseString + minColor + ", #" + midColor + ", #" + maxColor + ")"
+                    : baseString + minColor + ", #" + maxColor + ")";
+            }
+            return "";
+        }
+        getDescription(cf) {
+            switch (cf.rule.type) {
+                case "CellIsRule":
+                    return CellIsOperators[cf.rule.operator];
+                case "ColorScaleRule":
+                    return CfTerms.ColorScale;
+                case "IconSetRule":
+                    return CfTerms.IconSet;
+                default:
+                    return "";
+            }
+        }
+        saveConditionalFormat() {
+            if (this.state.currentCF) {
+                const invalidRanges = this.state.currentCF.ranges.some((xc) => !xc.match(rangeReference));
+                if (invalidRanges) {
+                    this.state.errors = [20 /* InvalidRange */];
+                    return;
+                }
+                const result = this.env.model.dispatch("ADD_CONDITIONAL_FORMAT", {
+                    cf: {
+                        rule: this.getEditorRule(),
+                        id: this.state.mode === "edit"
+                            ? this.state.currentCF.id
+                            : this.env.model.uuidGenerator.uuidv4(),
+                    },
+                    target: this.state.currentCF.ranges.map(toZone),
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                });
+                if (!result.isSuccessful) {
+                    this.state.errors = result.reasons;
+                }
+                else {
+                    this.switchToList();
+                }
+            }
+        }
+        /**
+         * Get the rule currently edited with the editor
+         */
+        getEditorRule() {
+            switch (this.state.currentCFType) {
+                case "CellIsRule":
+                    return this.state.rules.cellIs;
+                case "ColorScaleRule":
+                    return this.state.rules.colorScale;
+                case "IconSetRule":
+                    return this.state.rules.iconSet;
+            }
+            throw new Error(`Invalid cf type: ${this.state.currentCFType}`);
+        }
+        getDefaultRules() {
+            return {
+                cellIs: {
+                    type: "CellIsRule",
+                    operator: "IsNotEmpty",
+                    values: [],
+                    style: { fillColor: "#b6d7a8" },
+                },
+                colorScale: {
+                    type: "ColorScaleRule",
+                    minimum: { type: "value", color: 0xffffff },
+                    midpoint: undefined,
+                    maximum: { type: "value", color: 0x6aa84f },
+                },
+                iconSet: {
+                    type: "IconSetRule",
+                    icons: {
+                        upper: "arrowGood",
+                        middle: "arrowNeutral",
+                        lower: "arrowBad",
+                    },
+                    upperInflectionPoint: {
+                        type: "percentage",
+                        value: "66",
+                        operator: "gt",
+                    },
+                    lowerInflectionPoint: {
+                        type: "percentage",
+                        value: "33",
+                        operator: "gt",
+                    },
+                },
+            };
+        }
+        /**
+         * Create a new CF, a CellIsRule by default
+         */
+        addConditionalFormat() {
+            this.state.mode = "add";
+            this.state.currentCFType = "CellIsRule";
+            this.state.currentCF = {
+                id: this.env.model.uuidGenerator.uuidv4(),
+                ranges: this.env.model.getters
+                    .getSelectedZones()
+                    .map((zone) => this.env.model.getters.zoneToXC(this.env.model.getters.getActiveSheetId(), zone)),
+            };
+        }
+        /**
+         * Delete a CF
+         */
+        deleteConditionalFormat(cf) {
+            this.env.model.dispatch("REMOVE_CONDITIONAL_FORMAT", {
+                id: cf.id,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+            });
+        }
+        /**
+         * Edit an existing CF. Return without doing anything in reorder mode.
+         */
+        editConditionalFormat(cf) {
+            if (this.state.mode === "reorder")
+                return;
+            this.state.mode = "edit";
+            this.state.currentCF = cf;
+            this.state.currentCFType = cf.rule.type;
+            switch (cf.rule.type) {
+                case "CellIsRule":
+                    this.state.rules.cellIs = cf.rule;
+                    break;
+                case "ColorScaleRule":
+                    this.state.rules.colorScale = cf.rule;
+                    break;
+                case "IconSetRule":
+                    this.state.rules.iconSet = cf.rule;
+                    break;
+            }
+        }
+        /**
+         * Reorder existing CFs
+         */
+        reorderConditionalFormats() {
+            this.state.mode = "reorder";
+        }
+        reorderRule(cf, direction) {
+            this.env.model.dispatch("MOVE_CONDITIONAL_FORMAT", {
+                cfId: cf.id,
+                direction: direction,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+            });
+        }
+        changeRuleType(ruleType) {
+            if (this.state.currentCFType === ruleType || !this.state.rules) {
+                return;
+            }
+            this.state.errors = [];
+            this.state.currentCFType = ruleType;
+        }
+        onRangesChanged(ranges) {
+            if (this.state.currentCF) {
+                this.state.currentCF.ranges = ranges;
+            }
+        }
+        /*****************************************************************************
+         * Common
+         ****************************************************************************/
+        toggleMenu(menu) {
+            const isSelected = this.state.openedMenu === menu;
+            this.closeMenus();
+            if (!isSelected) {
+                this.state.openedMenu = menu;
+            }
+        }
+        closeMenus() {
+            this.state.openedMenu = undefined;
+        }
+        /*****************************************************************************
+         * Cell Is Rule
+         ****************************************************************************/
+        get isValue1Invalid() {
+            var _a;
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(34 /* FirstArgMissing */));
+        }
+        get isValue2Invalid() {
+            var _a;
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(35 /* SecondArgMissing */));
+        }
+        toggleStyle(tool) {
+            const style = this.state.rules.cellIs.style;
+            style[tool] = !style[tool];
+            this.closeMenus();
+        }
+        setColor(target, color) {
+            this.state.rules.cellIs.style[target] = color;
+            this.closeMenus();
+        }
+        /*****************************************************************************
+         * Color Scale Rule
+         ****************************************************************************/
+        isValueInvalid(threshold) {
+            switch (threshold) {
+                case "minimum":
+                    return (this.state.errors.includes(41 /* MinInvalidFormula */) ||
+                        this.state.errors.includes(33 /* MinBiggerThanMid */) ||
+                        this.state.errors.includes(30 /* MinBiggerThanMax */) ||
+                        this.state.errors.includes(36 /* MinNaN */));
+                case "midpoint":
+                    return (this.state.errors.includes(42 /* MidInvalidFormula */) ||
+                        this.state.errors.includes(37 /* MidNaN */) ||
+                        this.state.errors.includes(32 /* MidBiggerThanMax */));
+                case "maximum":
+                    return (this.state.errors.includes(43 /* MaxInvalidFormula */) ||
+                        this.state.errors.includes(38 /* MaxNaN */));
+                default:
+                    return false;
+            }
+        }
+        setColorScaleColor(target, color) {
+            const point = this.state.rules.colorScale[target];
+            if (point) {
+                point.color = Number.parseInt(color.substr(1), 16);
+            }
+            this.closeMenus();
+        }
+        getPreviewGradient() {
+            var _a;
+            const rule = this.state.rules.colorScale;
+            const minColor = colorNumberString(rule.minimum.color);
+            const midColor = colorNumberString(((_a = rule.midpoint) === null || _a === void 0 ? void 0 : _a.color) || DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
+            const maxColor = colorNumberString(rule.maximum.color);
+            const baseString = "background-image: linear-gradient(to right, #";
+            return rule.midpoint === undefined
+                ? baseString + minColor + ", #" + maxColor + ")"
+                : baseString + minColor + ", #" + midColor + ", #" + maxColor + ")";
+        }
+        getThresholdColor(threshold) {
+            return threshold
+                ? colorNumberString(threshold.color)
+                : colorNumberString(DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
+        }
+        onMidpointChange(ev) {
+            const type = ev.target.value;
+            const rule = this.state.rules.colorScale;
+            if (type === "none") {
+                rule.midpoint = undefined;
+            }
+            else {
+                rule.midpoint = {
+                    color: DEFAULT_COLOR_SCALE_MIDPOINT_COLOR,
+                    value: "",
+                    ...rule.midpoint,
+                    type,
+                };
+            }
+        }
+        /*****************************************************************************
+         * Icon Set
+         ****************************************************************************/
+        isInflectionPointInvalid(inflectionPoint) {
+            switch (inflectionPoint) {
+                case "lowerInflectionPoint":
+                    return (this.state.errors.includes(40 /* ValueLowerInflectionNaN */) ||
+                        this.state.errors.includes(45 /* ValueLowerInvalidFormula */) ||
+                        this.state.errors.includes(31 /* LowerBiggerThanUpper */));
+                case "upperInflectionPoint":
+                    return (this.state.errors.includes(39 /* ValueUpperInflectionNaN */) ||
+                        this.state.errors.includes(44 /* ValueUpperInvalidFormula */) ||
+                        this.state.errors.includes(31 /* LowerBiggerThanUpper */));
+                default:
+                    return true;
+            }
+        }
+        reverseIcons() {
+            const icons = this.state.rules.iconSet.icons;
+            const upper = icons.upper;
+            icons.upper = icons.lower;
+            icons.lower = upper;
+        }
+        setIconSet(iconSet) {
+            const icons = this.state.rules.iconSet.icons;
+            icons.upper = this.iconSets[iconSet].good;
+            icons.middle = this.iconSets[iconSet].neutral;
+            icons.lower = this.iconSets[iconSet].bad;
+        }
+        setIcon(target, icon) {
+            this.state.rules.iconSet.icons[target] = icon;
+        }
+    }
+    ConditionalFormattingPanel.template = "o-spreadsheet.ConditionalFormattingPanel";
+    ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
+
+    css /* scss */ `
+  .o-custom-currency {
+    .o-format-proposals {
+      color: black;
+    }
+  }
+`;
+    class CustomCurrencyPanel extends owl.Component {
+        setup() {
+            this.availableCurrencies = [];
+            this.state = owl.useState({
+                selectedCurrencyIndex: 0,
+                currencyCode: "",
+                currencySymbol: "",
+                selectedFormatIndex: 0,
+            });
+            owl.onWillStart(() => this.updateAvailableCurrencies());
+        }
+        get formatProposals() {
+            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
+            const proposalBases = this.initProposalBases(currency.decimalPlaces);
+            const firstPosition = currency.position;
+            const secondPosition = currency.position === "before" ? "after" : "before";
+            const symbol = this.state.currencySymbol.trim() ? this.state.currencySymbol : "";
+            const code = this.state.currencyCode.trim() ? this.state.currencyCode : "";
+            return code || symbol
+                ? [
+                    ...this.createFormatProposals(proposalBases, symbol, code, firstPosition),
+                    ...this.createFormatProposals(proposalBases, symbol, code, secondPosition),
+                ]
+                : [];
+        }
+        get isSameFormat() {
+            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
+            return selectedFormat ? selectedFormat.format === this.getCommonFormat() : false;
+        }
+        async updateAvailableCurrencies() {
+            var _a, _b;
+            if (currenciesRegistry.getAll().length === 0) {
+                const currencies = (await ((_b = (_a = this.env).loadCurrencies) === null || _b === void 0 ? void 0 : _b.call(_a))) || [];
+                currencies.forEach((currency, index) => {
+                    currenciesRegistry.add(index.toString(), currency);
+                });
+            }
+            const emptyCurrency = {
+                name: this.env._t(CustomCurrencyTerms.Custom),
+                code: "",
+                symbol: "",
+                decimalPlaces: 2,
+                position: "after",
+            };
+            this.availableCurrencies = [emptyCurrency, ...currenciesRegistry.getAll()];
+        }
+        updateSelectCurrency(ev) {
+            this.state.selectedCurrencyIndex = ev.target.value;
+            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
+            this.state.currencyCode = currency.code;
+            this.state.currencySymbol = currency.symbol;
+        }
+        updateCode(ev) {
+            this.state.currencyCode = ev.target.value;
+            this.initAvailableCurrencies();
+        }
+        updateSymbol(ev) {
+            this.state.currencySymbol = ev.target.value;
+            this.initAvailableCurrencies();
+        }
+        updateSelectFormat(ev) {
+            this.state.selectedFormatIndex = ev.target.value;
+        }
+        apply() {
+            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
+            this.env.model.dispatch("SET_FORMATTING", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                target: this.env.model.getters.getSelectedZones(),
+                format: selectedFormat.format,
+            });
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        initAvailableCurrencies() {
+            this.state.selectedCurrencyIndex = 0;
+        }
+        initProposalBases(decimalPlaces) {
+            const result = [{ format: "#,##0", example: "1,000" }];
+            const decimalRepresentation = decimalPlaces ? "." + "0".repeat(decimalPlaces) : "";
+            if (decimalRepresentation) {
+                result.push({
+                    format: "#,##0" + decimalRepresentation,
+                    example: "1,000" + decimalRepresentation,
+                });
+            }
+            return result;
+        }
+        createFormatProposals(proposalBases, symbol, code, position) {
+            let formatProposals = [];
+            // 1 - add proposal with symbol and without code
+            if (symbol) {
+                for (let base of proposalBases) {
+                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, symbol));
+                }
+            }
+            // 2 - if code exist --> add more proposal with symbol and with code
+            if (code) {
+                for (let base of proposalBases) {
+                    const expression = (position === "after" ? " " : "") + code + " " + symbol;
+                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, expression));
+                }
+            }
+            return formatProposals;
+        }
+        createFormatProposal(position, baseExample, formatBase, expression) {
+            const formatExpression = "[$" + expression + "]";
+            return {
+                example: position === "before" ? expression + baseExample : baseExample + expression,
+                format: position === "before" ? formatExpression + formatBase : formatBase + formatExpression,
+            };
+        }
+        getCommonFormat() {
+            var _a;
+            const selectedZones = this.env.model.getters.getSelectedZones();
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const cells = selectedZones
+                .map((zone) => this.env.model.getters.getCellsInZone(sheetId, zone))
+                .flat();
+            const firstFormat = (_a = cells[0]) === null || _a === void 0 ? void 0 : _a.format;
+            return cells.every((cell) => (cell === null || cell === void 0 ? void 0 : cell.format) === firstFormat) ? firstFormat : undefined;
+        }
+        currencyDisplayName(currency) {
+            return currency.name + (currency.code ? ` (${currency.code})` : "");
+        }
+    }
+    CustomCurrencyPanel.template = "o-spreadsheet.CustomCurrencyPanel";
+
+    css /* scss */ `
+  .o-find-and-replace {
+    .o-far-item {
+      display: block;
+      .o-far-checkbox {
+        display: inline-block;
+        .o-far-input {
+          vertical-align: middle;
+        }
+        .o-far-label {
+          position: relative;
+          top: 1.5px;
+          padding-left: 4px;
+        }
+      }
+    }
+    outline: none;
+    height: 100%;
+    .o-input-search-container {
+      display: flex;
+      .o-input-with-count {
+        flex-grow: 1;
+        width: auto;
+      }
+      .o-input-without-count {
+        width: 100%;
+      }
+      .o-input-count {
+        width: fit-content;
+        padding: 4 0 4 4;
+      }
+    }
+  }
+`;
+    class FindAndReplacePanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState(this.initialState());
+            this.findAndReplaceRef = owl.useRef("findAndReplace");
+        }
+        get hasSearchResult() {
+            return this.env.model.getters.getCurrentSelectedMatchIndex() !== null;
+        }
+        setup() {
+            owl.onMounted(() => this.focusInput());
+            owl.onWillUnmount(() => this.env.model.dispatch("CLEAR_SEARCH"));
+        }
+        onInput(ev) {
+            this.state.toSearch = ev.target.value;
+            this.debouncedUpdateSearch();
+        }
+        onKeydownSearch(ev) {
+            if (ev.key === "Enter") {
+                ev.preventDefault();
+                this.onSelectNextCell();
+            }
+        }
+        onKeydownReplace(ev) {
+            if (ev.key === "Enter") {
+                ev.preventDefault();
+                this.replace();
+            }
+        }
+        onFocusSidePanel() {
+            this.state.searchOptions.searchFormulas = this.env.model.getters.shouldShowFormulas();
+            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas
+                ? this.state.searchOptions.searchFormulas
+                : this.state.replaceOptions.modifyFormulas;
+            this.env.model.dispatch("REFRESH_SEARCH");
+        }
+        searchFormulas() {
+            this.env.model.dispatch("SET_FORMULA_VISIBILITY", {
+                show: this.state.searchOptions.searchFormulas,
+            });
+            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas;
+            this.updateSearch();
+        }
+        onSelectPreviousCell() {
+            this.env.model.dispatch("SELECT_SEARCH_PREVIOUS_MATCH");
+        }
+        onSelectNextCell() {
+            this.env.model.dispatch("SELECT_SEARCH_NEXT_MATCH");
+        }
+        updateSearch() {
+            if (this.state.toSearch) {
+                this.env.model.dispatch("UPDATE_SEARCH", {
+                    toSearch: this.state.toSearch,
+                    searchOptions: this.state.searchOptions,
+                });
+            }
+        }
+        debouncedUpdateSearch() {
+            clearTimeout(this.inDebounce);
+            this.inDebounce = setTimeout(() => this.updateSearch.call(this), 400);
+        }
+        replace() {
+            this.env.model.dispatch("REPLACE_SEARCH", {
+                replaceWith: this.state.replaceWith,
+                replaceOptions: this.state.replaceOptions,
+            });
+        }
+        replaceAll() {
+            this.env.model.dispatch("REPLACE_ALL_SEARCH", {
+                replaceWith: this.state.replaceWith,
+                replaceOptions: this.state.replaceOptions,
+            });
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        focusInput() {
+            const el = this.findAndReplaceRef.el;
+            const input = el.querySelector(`input`);
+            if (input) {
+                input.focus();
+            }
+        }
+        initialState() {
+            return {
+                toSearch: "",
+                replaceWith: "",
+                searchOptions: {
+                    matchCase: false,
+                    exactMatch: false,
+                    searchFormulas: false,
+                },
+                replaceOptions: {
+                    modifyFormulas: false,
+                },
+            };
+        }
+    }
+    FindAndReplacePanel.template = "o-spreadsheet.FindAndReplacePanel";
+
+    const sidePanelRegistry = new Registry();
+    sidePanelRegistry.add("ConditionalFormatting", {
+        title: _lt("Conditional formatting"),
+        Body: ConditionalFormattingPanel,
+    });
+    sidePanelRegistry.add("ChartPanel", {
+        title: _lt("Chart"),
+        Body: ChartPanel,
+    });
+    sidePanelRegistry.add("FindAndReplace", {
+        title: _lt("Find and Replace"),
+        Body: FindAndReplacePanel,
+    });
+    sidePanelRegistry.add("CustomCurrency", {
+        title: _lt("Custom currency format"),
+        Body: CustomCurrencyPanel,
+    });
+
+    class TopBarComponentRegistry extends Registry {
+        constructor() {
+            super(...arguments);
+            this.mapping = {};
+            this.uuidGenerator = new UuidGenerator();
+        }
+        add(name, value) {
+            const component = { ...value, id: this.uuidGenerator.uuidv4() };
+            return super.add(name, component);
+        }
+    }
+    const topbarComponentRegistry = new TopBarComponentRegistry();
+
+    /**
+     * Return the o-spreadsheet element position relative
+     * to the browser viewport.
+     */
+    function useSpreadsheetPosition() {
+        const position = owl.useState({ x: 0, y: 0 });
+        let spreadsheetElement = document.querySelector(".o-spreadsheet");
+        updatePosition();
+        function updatePosition() {
+            if (!spreadsheetElement) {
+                spreadsheetElement = document.querySelector(".o-spreadsheet");
+            }
+            if (spreadsheetElement) {
+                const { top, left } = spreadsheetElement.getBoundingClientRect();
+                position.x = left;
+                position.y = top;
+            }
+        }
+        owl.onMounted(updatePosition);
+        owl.onPatched(updatePosition);
+        return position;
+    }
+    /**
+     * Return the component (or ref's component) top left position (in pixels) relative
+     * to the upper left corner of the screen (<body> element).
+     *
+     * Note: when used with a <Portal/> component, it will
+     * return the portal position, not the teleported position.
+     */
+    function useAbsolutePosition(ref) {
+        const position = owl.useState({ x: 0, y: 0 });
+        function updateElPosition() {
+            const el = ref.el;
+            if (el === null) {
+                return;
+            }
+            const { top, left } = el.getBoundingClientRect();
+            if (left !== position.x || top !== position.y) {
+                position.x = left;
+                position.y = top;
+            }
+        }
+        owl.onMounted(updateElPosition);
+        owl.onPatched(updateElPosition);
+        return position;
+    }
+
+    class Popover extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.spreadsheetPosition = useSpreadsheetPosition();
+        }
+        get style() {
+            // the props's position is expressed relative to the "body" element
+            // but we teleport the element in ".o-spreadsheet" to keep everything
+            // within our control and to avoid leaking into external DOM
+            const horizontalPosition = `left:${this.horizontalPosition() - this.spreadsheetPosition.x}`;
+            const verticalPosition = `top:${this.verticalPosition() - this.spreadsheetPosition.y}`;
+            const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
+            return `
+      position: absolute;
+      z-index: 5;
+      ${verticalPosition}px;
+      ${horizontalPosition}px;
+      ${height}px;
+      width:${this.props.childWidth}px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
+    `;
+        }
+        get viewportDimension() {
+            return this.env.model.getters.getViewportDimensionWithHeaders();
+        }
+        get shouldRenderRight() {
+            const { x } = this.props.position;
+            return x + this.props.childWidth < this.viewportDimension.width;
+        }
+        get shouldRenderBottom() {
+            const { y } = this.props.position;
+            return y + this.props.childHeight < this.viewportDimension.height + TOPBAR_HEIGHT;
+        }
+        horizontalPosition() {
+            const { x } = this.props.position;
+            if (this.shouldRenderRight) {
+                return x;
+            }
+            return x - this.props.childWidth - this.props.flipHorizontalOffset;
+        }
+        verticalPosition() {
+            const { y } = this.props.position;
+            if (this.shouldRenderBottom) {
+                return y;
+            }
+            return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
+        }
+    }
+    Popover.template = "o-spreadsheet.Popover";
+    Popover.defaultProps = {
+        flipHorizontalOffset: 0,
+        flipVerticalOffset: 0,
+        verticalOffset: 0,
+        marginTop: 0,
+    };
+
+    //------------------------------------------------------------------------------
+    // Context Menu Component
+    //------------------------------------------------------------------------------
+    css /* scss */ `
+  .o-menu {
+    background-color: white;
+    padding: 8px 0px;
+    .o-menu-item {
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+      height: ${MENU_ITEM_HEIGHT}px;
+      padding: 4px 16px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      user-select: none;
+
+      &.o-menu-root {
+        display: flex;
+        justify-content: space-between;
+      }
+      .o-menu-item-icon {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+      .o-icon {
+        width: 10px;
+      }
+
+      &:not(.disabled) {
+        &:hover {
+          background-color: #ebebeb;
+        }
+        .o-menu-item-shortcut {
+          color: grey;
+        }
+      }
+      &.disabled {
+        color: ${MENU_ITEM_DISABLED_COLOR};
+        cursor: not-allowed;
+      }
+    }
+
+    .o-separator {
+      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
+      margin-top: ${MENU_SEPARATOR_PADDING}px;
+      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
+    }
+  }
+`;
+    class Menu extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.MENU_WIDTH = MENU_WIDTH;
+            this.subMenu = owl.useState({
+                isOpen: false,
+                position: null,
+                scrollOffset: 0,
+                menuItems: [],
+            });
+            this.menuRef = owl.useRef("menu");
+            this.position = useAbsolutePosition(this.menuRef);
+        }
+        setup() {
+            owl.useExternalListener(window, "click", this.onClick);
+            owl.useExternalListener(window, "contextmenu", this.onContextMenu);
+            owl.onWillUpdateProps((nextProps) => {
+                if (nextProps.menuItems !== this.props.menuItems) {
+                    this.subMenu.isOpen = false;
+                }
+            });
+        }
+        get subMenuPosition() {
+            const position = Object.assign({}, this.subMenu.position);
+            position.y -= this.subMenu.scrollOffset || 0;
+            return position;
+        }
+        get menuHeight() {
+            return this.menuComponentHeight(this.props.menuItems);
+        }
+        get subMenuHeight() {
+            return this.menuComponentHeight(this.subMenu.menuItems);
+        }
+        get popover() {
+            const isRoot = this.props.depth === 1;
+            return {
+                // some margin between the header and the component
+                marginTop: HEADER_HEIGHT + 6 + TOPBAR_HEIGHT,
+                flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
+                flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
+            };
+        }
+        async activateMenu(menu) {
+            var _a, _b;
+            const result = await menu.action(this.env);
+            this.close();
+            (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
+        }
+        close() {
+            this.subMenu.isOpen = false;
+            this.props.onClose();
+        }
+        /**
+         * Return the number of pixels between the top of the menu
+         * and the menu item at a given index.
+         */
+        subMenuVerticalPosition(position) {
+            const menusAbove = this.props.menuItems.slice(0, position);
+            return this.menuComponentHeight(menusAbove) + this.position.y;
+        }
+        onClick(ev) {
+            // Don't close a root menu when clicked to open the submenus.
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
+                return;
+            }
+            this.close();
+        }
+        onContextMenu(ev) {
+            // Don't close a root menu when clicked to open the submenus.
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
+                return;
+            }
+            this.subMenu.isOpen = false;
+        }
+        /**
+         * Return the total height (in pixels) needed for some
+         * menu items
+         */
+        menuComponentHeight(menuItems) {
+            const separators = menuItems.filter((m) => m.separator);
+            const others = menuItems;
+            return MENU_ITEM_HEIGHT * others.length + separators.length * MENU_SEPARATOR_HEIGHT;
+        }
+        getName(menu) {
+            return cellMenuRegistry.getName(menu, this.env);
+        }
+        getShortCut(menu) {
+            return cellMenuRegistry.getShortCut(menu);
+        }
+        isRoot(menu) {
+            return !menu.action;
+        }
+        isEnabled(menu) {
+            if (menu.isEnabled(this.env)) {
+                return this.env.model.getters.isReadonly() ? menu.isReadonlyAllowed : true;
+            }
+            return false;
+        }
+        onScroll(ev) {
+            this.subMenu.scrollOffset = ev.target.scrollTop;
+        }
+        /**
+         * If the given menu is not disabled, open it's submenu at the
+         * correct position according to available surrounding space.
+         */
+        openSubMenu(menu, position) {
+            const y = this.subMenuVerticalPosition(position);
+            this.subMenu.position = {
+                x: this.position.x + MENU_WIDTH,
+                y: y - (this.subMenu.scrollOffset || 0),
+            };
+            this.subMenu.menuItems = cellMenuRegistry.getChildren(menu, this.env);
+            this.subMenu.isOpen = true;
+        }
+        onClickMenu(menu, position) {
+            if (this.isEnabled(menu)) {
+                if (this.isRoot(menu)) {
+                    this.openSubMenu(menu, position);
+                }
+                else {
+                    this.activateMenu(menu);
+                }
+            }
+        }
+        onMouseOver(menu, position) {
+            if (menu.isEnabled(this.env)) {
+                if (this.isRoot(menu)) {
+                    this.openSubMenu(menu, position);
+                }
+                else {
+                    this.subMenu.isOpen = false;
+                }
+            }
+        }
+    }
+    Menu.template = "o-spreadsheet.Menu";
+    Menu.components = { Menu, Popover };
+    Menu.defaultProps = {
+        depth: 1,
+    };
+
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    css /* scss */ `
+  .o-chart-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .o-chart-menu {
+      right: 0px;
+      display: none;
+      position: absolute;
+      padding: 5px;
+    }
+
+    .o-chart-menu-item {
+      cursor: pointer;
+    }
+  }
+  .o-figure.active:focus,
+  .o-figure:hover {
+    .o-chart-container {
+      .o-chart-menu {
+        display: flex;
+      }
+    }
+  }
+`;
+    class ChartFigure extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
+            this.canvas = owl.useRef("graphContainer");
+            this.chartContainerRef = owl.useRef("chartContainer");
+            this.menuButtonRef = owl.useRef("menuButton");
+            this.menuButtonPosition = useAbsolutePosition(this.menuButtonRef);
+            this.state = { background: BACKGROUND_CHART_COLOR };
+            this.position = useAbsolutePosition(this.chartContainerRef);
+        }
+        get canvasStyle() {
+            return `background-color: ${this.state.background}`;
+        }
+        setup() {
+            owl.onMounted(() => {
+                const figure = this.props.figure;
+                const chartData = this.env.model.getters.getChartRuntime(figure.id);
+                if (chartData) {
+                    this.createChart(chartData);
+                }
+            });
+            owl.onPatched(() => {
+                var _a, _b, _c;
+                const figure = this.props.figure;
+                const chartData = this.env.model.getters.getChartRuntime(figure.id);
+                if (chartData) {
+                    if (chartData.type !== this.chart.config.type) {
+                        // Updating a chart type requires to update its options accordingly, if feasible at all.
+                        // Since we trust Chart.js to generate most of its options, it is safer to just start from scratch.
+                        // See https://www.chartjs.org/docs/latest/developers/updates.html
+                        // and https://stackoverflow.com/questions/36949343/chart-js-dynamic-changing-of-chart-type-line-to-bar-as-example
+                        this.chart && this.chart.destroy();
+                        this.createChart(chartData);
+                    }
+                    else if (chartData.data && chartData.data.datasets) {
+                        this.chart.data = chartData.data;
+                        if ((_a = chartData.options) === null || _a === void 0 ? void 0 : _a.title) {
+                            this.chart.config.options.title = chartData.options.title;
+                        }
+                    }
+                    else {
+                        this.chart.data.datasets = undefined;
+                    }
+                    this.chart.config.options.legend = (_b = chartData.options) === null || _b === void 0 ? void 0 : _b.legend;
+                    this.chart.config.options.scales = (_c = chartData.options) === null || _c === void 0 ? void 0 : _c.scales;
+                    this.chart.update({ duration: 0 });
+                }
+                else {
+                    this.chart && this.chart.destroy();
+                }
+                const def = this.env.model.getters.getChartDefinition(figure.id);
+                if (def) {
+                    this.state.background = def.background;
+                }
+            });
+        }
+        createChart(chartData) {
+            const canvas = this.canvas.el;
+            const ctx = canvas.getContext("2d");
+            this.chart = new window.Chart(ctx, chartData);
+            const def = this.env.model.getters.getChartDefinition(this.props.figure.id);
+            if (def) {
+                this.state.background = def.background;
+            }
+        }
+        getMenuItemRegistry() {
+            const registry = new MenuItemRegistry();
+            registry.add("edit", {
+                name: _lt("Edit"),
+                sequence: 1,
+                action: () => this.env.openSidePanel("ChartPanel", { figure: this.props.figure }),
+            });
+            registry.add("delete", {
+                name: _lt("Delete"),
+                sequence: 10,
+                action: () => {
+                    this.env.model.dispatch("DELETE_FIGURE", {
+                        sheetId: this.env.model.getters.getActiveSheetId(),
+                        id: this.props.figure.id,
+                    });
+                    if (this.props.sidePanelIsOpen) {
+                        this.env.toggleSidePanel("ChartPanel", { figure: this.props.figure });
+                    }
+                    this.props.onFigureDeleted();
+                },
+            });
+            registry.add("refresh", {
+                name: _lt("Refresh"),
+                sequence: 11,
+                action: () => {
+                    this.env.model.dispatch("REFRESH_CHART", {
+                        id: this.props.figure.id,
+                    });
+                },
+            });
+            return registry;
+        }
+        onContextMenu(ev) {
+            ev.preventDefault();
+            const position = {
+                x: this.position.x + ev.offsetX,
+                y: this.position.y + ev.offsetY,
+            };
+            this.openContextMenu(position);
+        }
+        showMenu() {
+            const position = {
+                x: this.menuButtonPosition.x - MENU_WIDTH,
+                y: this.menuButtonPosition.y,
+            };
+            this.openContextMenu(position);
+        }
+        openContextMenu(position) {
+            const registry = this.getMenuItemRegistry();
+            this.menuState.isOpen = true;
+            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
+            this.menuState.position = position;
+        }
+    }
+    ChartFigure.template = "o-spreadsheet.ChartFigure";
+    ChartFigure.components = { Menu };
 
     // HELPERS
     function assert(condition, message) {
@@ -819,69 +6481,6 @@
         return valMaxIndex !== undefined ? valMaxIndex : -1;
     }
 
-    /**
-     * Registry
-     *
-     * The Registry class is basically just a mapping from a string key to an object.
-     * It is really not much more than an object. It is however useful for the
-     * following reasons:
-     *
-     * 1. it let us react and execute code when someone add something to the registry
-     *   (for example, the FunctionRegistry subclass this for this purpose)
-     * 2. it throws an error when the get operation fails
-     * 3. it provides a chained API to add items to the registry.
-     */
-    class Registry {
-        constructor() {
-            this.content = {};
-        }
-        /**
-         * Add an item to the registry
-         *
-         * Note that this also returns the registry, so another add method call can
-         * be chained
-         */
-        add(key, value) {
-            this.content[key] = value;
-            return this;
-        }
-        /**
-         * Get an item from the registry
-         */
-        get(key) {
-            /**
-             * Note: key in {} is ~12 times slower than {}[key].
-             * So, we check the absence of key only when the direct access returns
-             * a falsy value. It's done to ensure that the registry can contains falsy values
-             */
-            const content = this.content[key];
-            if (!content) {
-                if (!(key in this.content)) {
-                    throw new Error(`Cannot find ${key} in this registry!`);
-                }
-            }
-            return content;
-        }
-        /**
-         * Get a list of all elements in the registry
-         */
-        getAll() {
-            return Object.values(this.content);
-        }
-        /**
-         * Get a list of all keys in the registry
-         */
-        getKeys() {
-            return Object.keys(this.content);
-        }
-        /**
-         * Remove an item from the registry
-         */
-        remove(key) {
-            delete this.content[key];
-        }
-    }
-
     //------------------------------------------------------------------------------
     // Arg description DSL
     //------------------------------------------------------------------------------
@@ -1058,214 +6657,6 @@
             previousArgDefault = current.default;
         }
     }
-
-    var CellValueType;
-    (function (CellValueType) {
-        CellValueType["boolean"] = "boolean";
-        CellValueType["number"] = "number";
-        CellValueType["text"] = "text";
-        CellValueType["empty"] = "empty";
-        CellValueType["error"] = "error";
-    })(CellValueType || (CellValueType = {}));
-
-    function isSheetDependent(cmd) {
-        return "sheetId" in cmd;
-    }
-    function isGridDependent(cmd) {
-        return "dimension" in cmd;
-    }
-    function isTargetDependent(cmd) {
-        return "target" in cmd;
-    }
-    function isPositionDependent(cmd) {
-        return "col" in cmd && "row" in cmd;
-    }
-    const invalidateEvaluationCommands = new Set([
-        "RENAME_SHEET",
-        "DELETE_SHEET",
-        "CREATE_SHEET",
-        "ADD_COLUMNS_ROWS",
-        "REMOVE_COLUMNS_ROWS",
-        "DELETE_CELL",
-        "INSERT_CELL",
-        "UNDO",
-        "REDO",
-    ]);
-    const readonlyAllowedCommands = new Set([
-        "START",
-        "ACTIVATE_SHEET",
-        "COPY",
-        "PREPARE_SELECTION_INPUT_EXPANSION",
-        "STOP_SELECTION_INPUT",
-        "RESIZE_VIEWPORT",
-        "SET_VIEWPORT_OFFSET",
-        "SELECT_SEARCH_NEXT_MATCH",
-        "SELECT_SEARCH_PREVIOUS_MATCH",
-        "REFRESH_SEARCH",
-        "UPDATE_SEARCH",
-        "CLEAR_SEARCH",
-        "EVALUATE_CELLS",
-        "SET_CURRENT_CONTENT",
-        "SET_FORMULA_VISIBILITY",
-    ]);
-    const coreTypes = new Set([
-        /** CELLS */
-        "UPDATE_CELL",
-        "UPDATE_CELL_POSITION",
-        "CLEAR_CELL",
-        "DELETE_CONTENT",
-        /** GRID SHAPE */
-        "ADD_COLUMNS_ROWS",
-        "REMOVE_COLUMNS_ROWS",
-        "RESIZE_COLUMNS_ROWS",
-        "HIDE_COLUMNS_ROWS",
-        "UNHIDE_COLUMNS_ROWS",
-        "SET_GRID_LINES_VISIBILITY",
-        /** MERGE */
-        "ADD_MERGE",
-        "REMOVE_MERGE",
-        /** SHEETS MANIPULATION */
-        "CREATE_SHEET",
-        "DELETE_SHEET",
-        "DUPLICATE_SHEET",
-        "MOVE_SHEET",
-        "RENAME_SHEET",
-        /** CONDITIONAL FORMAT */
-        "ADD_CONDITIONAL_FORMAT",
-        "REMOVE_CONDITIONAL_FORMAT",
-        "MOVE_CONDITIONAL_FORMAT",
-        /** FIGURES */
-        "CREATE_FIGURE",
-        "DELETE_FIGURE",
-        "UPDATE_FIGURE",
-        /** FORMATTING */
-        "SET_FORMATTING",
-        "CLEAR_FORMATTING",
-        "SET_BORDER",
-        "SET_DECIMAL",
-        /** CHART */
-        "CREATE_CHART",
-        "UPDATE_CHART",
-    ]);
-    function isCoreCommand(cmd) {
-        return coreTypes.has(cmd.type);
-    }
-    function canExecuteInReadonly(cmd) {
-        return readonlyAllowedCommands.has(cmd.type);
-    }
-    /**
-     * Holds the result of a command dispatch.
-     * The command may have been successfully dispatched or cancelled
-     * for one or more reasons.
-     */
-    class DispatchResult {
-        constructor(results = []) {
-            if (!Array.isArray(results)) {
-                results = [results];
-            }
-            results = [...new Set(results)];
-            this.reasons = results.filter((result) => result !== 0 /* Success */);
-        }
-        /**
-         * Static helper which returns a successful DispatchResult
-         */
-        static get Success() {
-            return new DispatchResult();
-        }
-        get isSuccessful() {
-            return this.reasons.length === 0;
-        }
-        /**
-         * Check if the dispatch has been cancelled because of
-         * the given reason.
-         */
-        isCancelledBecause(reason) {
-            return this.reasons.includes(reason);
-        }
-    }
-    exports.CommandResult = void 0;
-    (function (CommandResult) {
-        CommandResult[CommandResult["Success"] = 0] = "Success";
-        CommandResult[CommandResult["CancelledForUnknownReason"] = 1] = "CancelledForUnknownReason";
-        CommandResult[CommandResult["WillRemoveExistingMerge"] = 2] = "WillRemoveExistingMerge";
-        CommandResult[CommandResult["MergeIsDestructive"] = 3] = "MergeIsDestructive";
-        CommandResult[CommandResult["CellIsMerged"] = 4] = "CellIsMerged";
-        CommandResult[CommandResult["EmptyUndoStack"] = 5] = "EmptyUndoStack";
-        CommandResult[CommandResult["EmptyRedoStack"] = 6] = "EmptyRedoStack";
-        CommandResult[CommandResult["NotEnoughElements"] = 7] = "NotEnoughElements";
-        CommandResult[CommandResult["NotEnoughSheets"] = 8] = "NotEnoughSheets";
-        CommandResult[CommandResult["MissingSheetName"] = 9] = "MissingSheetName";
-        CommandResult[CommandResult["DuplicatedSheetName"] = 10] = "DuplicatedSheetName";
-        CommandResult[CommandResult["ForbiddenCharactersInSheetName"] = 11] = "ForbiddenCharactersInSheetName";
-        CommandResult[CommandResult["WrongSheetMove"] = 12] = "WrongSheetMove";
-        CommandResult[CommandResult["WrongSheetPosition"] = 13] = "WrongSheetPosition";
-        CommandResult[CommandResult["InvalidAnchorZone"] = 14] = "InvalidAnchorZone";
-        CommandResult[CommandResult["SelectionOutOfBound"] = 15] = "SelectionOutOfBound";
-        CommandResult[CommandResult["TargetOutOfSheet"] = 16] = "TargetOutOfSheet";
-        CommandResult[CommandResult["WrongPasteSelection"] = 17] = "WrongPasteSelection";
-        CommandResult[CommandResult["EmptyClipboard"] = 18] = "EmptyClipboard";
-        CommandResult[CommandResult["EmptyRange"] = 19] = "EmptyRange";
-        CommandResult[CommandResult["InvalidRange"] = 20] = "InvalidRange";
-        CommandResult[CommandResult["InvalidSheetId"] = 21] = "InvalidSheetId";
-        CommandResult[CommandResult["InputAlreadyFocused"] = 22] = "InputAlreadyFocused";
-        CommandResult[CommandResult["MaximumRangesReached"] = 23] = "MaximumRangesReached";
-        CommandResult[CommandResult["InvalidChartDefinition"] = 24] = "InvalidChartDefinition";
-        CommandResult[CommandResult["EmptyDataSet"] = 25] = "EmptyDataSet";
-        CommandResult[CommandResult["InvalidDataSet"] = 26] = "InvalidDataSet";
-        CommandResult[CommandResult["InvalidLabelRange"] = 27] = "InvalidLabelRange";
-        CommandResult[CommandResult["InvalidAutofillSelection"] = 28] = "InvalidAutofillSelection";
-        CommandResult[CommandResult["WrongComposerSelection"] = 29] = "WrongComposerSelection";
-        CommandResult[CommandResult["MinBiggerThanMax"] = 30] = "MinBiggerThanMax";
-        CommandResult[CommandResult["LowerBiggerThanUpper"] = 31] = "LowerBiggerThanUpper";
-        CommandResult[CommandResult["MidBiggerThanMax"] = 32] = "MidBiggerThanMax";
-        CommandResult[CommandResult["MinBiggerThanMid"] = 33] = "MinBiggerThanMid";
-        CommandResult[CommandResult["FirstArgMissing"] = 34] = "FirstArgMissing";
-        CommandResult[CommandResult["SecondArgMissing"] = 35] = "SecondArgMissing";
-        CommandResult[CommandResult["MinNaN"] = 36] = "MinNaN";
-        CommandResult[CommandResult["MidNaN"] = 37] = "MidNaN";
-        CommandResult[CommandResult["MaxNaN"] = 38] = "MaxNaN";
-        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 39] = "ValueUpperInflectionNaN";
-        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 40] = "ValueLowerInflectionNaN";
-        CommandResult[CommandResult["MinInvalidFormula"] = 41] = "MinInvalidFormula";
-        CommandResult[CommandResult["MidInvalidFormula"] = 42] = "MidInvalidFormula";
-        CommandResult[CommandResult["MaxInvalidFormula"] = 43] = "MaxInvalidFormula";
-        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 44] = "ValueUpperInvalidFormula";
-        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 45] = "ValueLowerInvalidFormula";
-        CommandResult[CommandResult["InvalidSortZone"] = 46] = "InvalidSortZone";
-        CommandResult[CommandResult["WaitingSessionConfirmation"] = 47] = "WaitingSessionConfirmation";
-        CommandResult[CommandResult["MergeOverlap"] = 48] = "MergeOverlap";
-        CommandResult[CommandResult["TooManyHiddenElements"] = 49] = "TooManyHiddenElements";
-        CommandResult[CommandResult["Readonly"] = 50] = "Readonly";
-        CommandResult[CommandResult["InvalidOffset"] = 51] = "InvalidOffset";
-        CommandResult[CommandResult["InvalidViewportSize"] = 52] = "InvalidViewportSize";
-        CommandResult[CommandResult["FigureDoesNotExist"] = 53] = "FigureDoesNotExist";
-        CommandResult[CommandResult["InvalidConditionalFormatId"] = 54] = "InvalidConditionalFormatId";
-    })(exports.CommandResult || (exports.CommandResult = {}));
-
-    var ReturnFormatType;
-    (function (ReturnFormatType) {
-        ReturnFormatType["FormatFromArgument"] = "FormatFromArgument";
-    })(ReturnFormatType || (ReturnFormatType = {}));
-
-    var DIRECTION;
-    (function (DIRECTION) {
-        DIRECTION[DIRECTION["UP"] = 0] = "UP";
-        DIRECTION[DIRECTION["DOWN"] = 1] = "DOWN";
-        DIRECTION[DIRECTION["LEFT"] = 2] = "LEFT";
-        DIRECTION[DIRECTION["RIGHT"] = 3] = "RIGHT";
-    })(DIRECTION || (DIRECTION = {}));
-
-    var LAYERS;
-    (function (LAYERS) {
-        LAYERS[LAYERS["Background"] = 0] = "Background";
-        LAYERS[LAYERS["Highlights"] = 1] = "Highlights";
-        LAYERS[LAYERS["Clipboard"] = 2] = "Clipboard";
-        LAYERS[LAYERS["Search"] = 3] = "Search";
-        LAYERS[LAYERS["Chart"] = 4] = "Chart";
-        LAYERS[LAYERS["Selection"] = 5] = "Selection";
-        LAYERS[LAYERS["Autofill"] = 6] = "Autofill";
-        LAYERS[LAYERS["Headers"] = 7] = "Headers";
-    })(LAYERS || (LAYERS = {}));
 
     const DEFAULT_FACTOR = 1;
     const DEFAULT_MODE = 0;
@@ -1613,7 +7004,7 @@
     // -----------------------------------------------------------------------------
     // COUNTUNIQUE
     // -----------------------------------------------------------------------------
-    function isDefined$1(value) {
+    function isDefined(value) {
         switch (value) {
             case undefined:
                 return false;
@@ -1633,7 +7024,7 @@
   `),
         returns: ["NUMBER"],
         compute: function (...argsValues) {
-            return reduceAny(argsValues, (acc, a) => (isDefined$1(a) ? acc.add(a) : acc), new Set()).size;
+            return reduceAny(argsValues, (acc, a) => (isDefined(a) ? acc.add(a) : acc), new Set()).size;
         },
     };
     // -----------------------------------------------------------------------------
@@ -1653,7 +7044,7 @@
             let uniqueValues = new Set();
             visitMatchingRanges(argsValues, (i, j) => {
                 const value = range[i][j];
-                if (isDefined$1(value)) {
+                if (isDefined(value)) {
                     uniqueValues.add(value);
                 }
             });
@@ -2362,1430 +7753,6 @@
         TANH: TANH,
         TRUNC: TRUNC
     });
-
-    const fontSizes = [
-        { pt: 7.5, px: 10 },
-        { pt: 8, px: 11 },
-        { pt: 9, px: 12 },
-        { pt: 10, px: 13 },
-        { pt: 10.5, px: 14 },
-        { pt: 11, px: 15 },
-        { pt: 12, px: 16 },
-        { pt: 14, px: 18.7 },
-        { pt: 15, px: 20 },
-        { pt: 16, px: 21.3 },
-        { pt: 18, px: 24 },
-        { pt: 22, px: 29.3 },
-        { pt: 24, px: 32 },
-        { pt: 26, px: 34.7 },
-        { pt: 36, px: 48 },
-    ];
-    const fontSizeMap = {};
-    for (let font of fontSizes) {
-        fontSizeMap[font.pt] = font.px;
-    }
-
-    //------------------------------------------------------------------------------
-    /**
-     * Stringify an object, like JSON.stringify, except that the first level of keys
-     * is ordered.
-     */
-    function stringify(obj) {
-        return JSON.stringify(obj, Object.keys(obj).sort());
-    }
-    /**
-     * Remove quotes from a quoted string
-     * ```js
-     * removeStringQuotes('"Hello"')
-     * > 'Hello'
-     * ```
-     */
-    function removeStringQuotes(str) {
-        if (str[0] === '"' && str[str.length - 1] === '"') {
-            return str.slice(1).slice(0, str.length - 2);
-        }
-        return str;
-    }
-    /**
-     * Deep copy arrays, plain objects and primitive values.
-     * Throws an error for other types such as class instances.
-     * Sparse arrays remain sparse.
-     */
-    function deepCopy(obj) {
-        const result = Array.isArray(obj) ? [] : {};
-        switch (typeof obj) {
-            case "object": {
-                if (obj === null) {
-                    return obj;
-                }
-                else if (!(isPlainObject(obj) || obj instanceof Array)) {
-                    throw new Error("Unsupported type: only objects and arrays are supported");
-                }
-                for (const key in obj) {
-                    result[key] = deepCopy(obj[key]);
-                }
-                return result;
-            }
-            case "number":
-            case "string":
-            case "boolean":
-            case "function":
-            case "undefined":
-                return obj;
-            default:
-                throw new Error(`Unsupported type: ${typeof obj}`);
-        }
-    }
-    /**
-     * Check if the object is a plain old javascript object.
-     */
-    function isPlainObject(obj) {
-        return typeof obj === "object" && (obj === null || obj === void 0 ? void 0 : obj.constructor) === Object;
-    }
-    /**
-     * Sanitize the name of a sheet, by eventually removing quotes
-     * @param sheetName name of the sheet, potentially quoted with single quotes
-     */
-    function getUnquotedSheetName(sheetName) {
-        if (sheetName.startsWith("'")) {
-            sheetName = sheetName.slice(1, -1).replace(/''/g, "'");
-        }
-        return sheetName;
-    }
-    /**
-     * Add quotes around the sheet name if it contains at least one non alphanumeric character
-     * '\w' captures [0-9][a-z][A-Z] and _.
-     * @param sheetName Name of the sheet
-     */
-    function getComposerSheetName(sheetName) {
-        var _a;
-        if (((_a = sheetName.match(/\w/g)) === null || _a === void 0 ? void 0 : _a.length) !== sheetName.length) {
-            sheetName = `'${sheetName}'`;
-        }
-        return sheetName;
-    }
-    function clip(val, min, max) {
-        return val < min ? min : val > max ? max : val;
-    }
-    function computeTextWidth(context, text, style) {
-        const italic = style.italic ? "italic " : "";
-        const weight = style.bold ? "bold" : DEFAULT_FONT_WEIGHT;
-        const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
-        const size = fontSizeMap[sizeInPt];
-        context.font = `${italic}${weight} ${size}px ${DEFAULT_FONT}`;
-        return context.measureText(text).width;
-    }
-    function computeIconWidth(context, style) {
-        const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
-        const size = fontSizeMap[sizeInPt];
-        return size + 2 * MIN_CF_ICON_MARGIN;
-    }
-    /**
-     * Create a range from start (included) to end (excluded).
-     * range(10, 13) => [10, 11, 12]
-     * range(2, 8, 2) => [2, 4, 6]
-     */
-    function range(start, end, step = 1) {
-        if (end <= start && step > 0) {
-            return [];
-        }
-        if (step === 0) {
-            throw new Error("range() step must not be zero");
-        }
-        const length = Math.ceil(Math.abs((end - start) / step));
-        const array = Array(length);
-        for (let i = 0; i < length; i++) {
-            array[i] = start + i * step;
-        }
-        return array;
-    }
-    /**
-     * Groups consecutive numbers.
-     * The input array is assumed to be sorted
-     * @param numbers
-     */
-    function groupConsecutive(numbers) {
-        return numbers.reduce((groups, currentRow, index, rows) => {
-            if (Math.abs(currentRow - rows[index - 1]) === 1) {
-                const lastGroup = groups[groups.length - 1];
-                lastGroup.push(currentRow);
-            }
-            else {
-                groups.push([currentRow]);
-            }
-            return groups;
-        }, []);
-    }
-    /**
-     * Create one generator from two generators by linking
-     * each item of the first generator to the next item of
-     * the second generator.
-     *
-     * Let's say generator G1 yields A, B, C and generator G2 yields X, Y, Z.
-     * The resulting generator of `linkNext(G1, G2)` will yield A', B', C'
-     * where `A' = A & {next: Y}`, `B' = B & {next: Z}` and `C' = C & {next: undefined}`
-     * @param generator
-     * @param nextGenerator
-     */
-    function* linkNext(generator, nextGenerator) {
-        nextGenerator.next();
-        for (const item of generator) {
-            const nextItem = nextGenerator.next();
-            yield {
-                ...item,
-                next: nextItem.done ? undefined : nextItem.value,
-            };
-        }
-    }
-    function isBoolean(str) {
-        const upperCased = str.toUpperCase();
-        return upperCased === "TRUE" || upperCased === "FALSE";
-    }
-    function isDateTime(str) {
-        return parseDateTime(str) !== null;
-    }
-    const MARKDOWN_LINK_REGEX = /^\[([^\[]+)\]\((.+)\)$/;
-    //link must start with http or https
-    //https://stackoverflow.com/a/3809435/4760614
-    const WEB_LINK_REGEX = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
-    function isMarkdownLink(str) {
-        return MARKDOWN_LINK_REGEX.test(str);
-    }
-    /**
-     * Check if the string is a web link.
-     * e.g. http://odoo.com
-     */
-    function isWebLink(str) {
-        return WEB_LINK_REGEX.test(str);
-    }
-    /**
-     * Build a markdown link from a label and an url
-     */
-    function markdownLink(label, url) {
-        return `[${label}](${url})`;
-    }
-    function parseMarkdownLink(str) {
-        const matches = str.match(MARKDOWN_LINK_REGEX) || [];
-        const label = matches[1];
-        const url = matches[2];
-        if (!label || !url) {
-            throw new Error(`Could not parse markdown link ${str}.`);
-        }
-        return {
-            label,
-            url,
-        };
-    }
-    const O_SPREADSHEET_LINK_PREFIX = "o-spreadsheet://";
-    function isMarkdownSheetLink(str) {
-        if (!isMarkdownLink(str)) {
-            return false;
-        }
-        const { url } = parseMarkdownLink(str);
-        return url.startsWith(O_SPREADSHEET_LINK_PREFIX);
-    }
-    function buildSheetLink(sheetId) {
-        return `${O_SPREADSHEET_LINK_PREFIX}${sheetId}`;
-    }
-    /**
-     * Parse a sheet link and return the sheet id
-     */
-    function parseSheetLink(sheetLink) {
-        if (sheetLink.startsWith(O_SPREADSHEET_LINK_PREFIX)) {
-            return sheetLink.substr(O_SPREADSHEET_LINK_PREFIX.length);
-        }
-        throw new Error(`${sheetLink} is not a valid sheet link`);
-    }
-    /**
-     * This helper function can be used as a type guard when filtering arrays.
-     * const foo: number[] = [1, 2, undefined, 4].filter(isDefined)
-     */
-    function isDefined(argument) {
-        return argument !== undefined;
-    }
-    /**
-     * Get the id of the given item (its key in the given dictionnary).
-     * If the given item does not exist in the dictionary, it creates one with a new id.
-     */
-    function getItemId(item, itemsDic) {
-        for (let [key, value] of Object.entries(itemsDic)) {
-            if (stringify(value) === stringify(item)) {
-                return parseInt(key, 10);
-            }
-        }
-        // Generate new Id if the item didn't exist in the dictionary
-        const ids = Object.keys(itemsDic);
-        const maxId = ids.length === 0 ? 0 : Math.max(...ids.map((id) => parseInt(id, 10)));
-        itemsDic[maxId + 1] = item;
-        return maxId + 1;
-    }
-    /**
-     * This method comes from owl 1 as it was removed in owl 2
-     *
-     * Returns a function, that, as long as it continues to be invoked, will not
-     * be triggered. The function will be called after it stops being called for
-     * N milliseconds. If `immediate` is passed, trigger the function on the
-     * leading edge, instead of the trailing.
-     *
-     * Inspired by https://davidwalsh.name/javascript-debounce-function
-     */
-    function debounce(func, wait, immediate) {
-        let timeout;
-        return function () {
-            const context = this;
-            const args = arguments;
-            function later() {
-                timeout = null;
-                if (!immediate) {
-                    func.apply(context, args);
-                }
-            }
-            const callNow = immediate && !timeout;
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-            if (callNow) {
-                func.apply(context, args);
-            }
-        };
-    }
-    /*
-     * Concatenate an array of strings.
-     */
-    function concat(chars) {
-        // ~40% faster than chars.join("")
-        let output = "";
-        for (let i = 0, len = chars.length; i < len; i++) {
-            output += chars[i];
-        }
-        return output;
-    }
-    /**
-     * Lazy value computed by the provided function.
-     */
-    function lazy(fn) {
-        let isMemoized = false;
-        let memo;
-        const lazyValue = () => {
-            if (!isMemoized) {
-                memo = fn();
-                isMemoized = true;
-            }
-            return memo;
-        };
-        lazyValue.map = (callback) => lazy(() => callback(lazyValue()));
-        return lazyValue;
-    }
-
-    const colors$1 = [
-        "#eb6d00",
-        "#0074d9",
-        "#ad8e00",
-        "#169ed4",
-        "#b10dc9",
-        "#00a82d",
-        "#00a3a3",
-        "#f012be",
-        "#3d9970",
-        "#111111",
-        "#62A300",
-        "#ff4136",
-        "#949494",
-        "#85144b",
-        "#001f3f",
-    ];
-    /*
-     * transform a color number (R * 256^2 + G * 256 + B) into classic RGB
-     * */
-    function colorNumberString(color) {
-        return color.toString(16).padStart(6, "0");
-    }
-    let colorIndex = 0;
-    function getNextColor() {
-        colorIndex = ++colorIndex % colors$1.length;
-        return colors$1[colorIndex];
-    }
-    /**
-     * Converts any CSS color value to a standardized hex6 value.
-     * Accepts: hex3, hex6 and rgb (rgba is not supported)
-     *
-     * toHex6("#ABC")
-     * >> "AABBCC"
-     *
-     * toHex6("#AAAFFF")
-     * >> "AAAFFF"
-     *
-     * toHex6("rgb(30, 80, 16)")
-     * >> "1E5010"
-     *
-     * (note: number sign is dropped as it is not supported in xlsx format)
-     */
-    function toHex6(color) {
-        if (color.includes("rgb")) {
-            return rgbToHex6(color);
-        }
-        color = color.replace("#", "").toUpperCase();
-        if (color.length === 3) {
-            color = color.split("").reduce((acc, h) => acc + h + h, "");
-        }
-        return color;
-    }
-    /**
-     * Convert a CSS rgb color string to a standardized hex6 color value.
-     *
-     * rgbToHex6("rgb(30, 80, 16)")
-     * >> "1E5010"
-     */
-    function rgbToHex6(color) {
-        return concat(color
-            .slice(4, -1)
-            .split(",")
-            .map((valueString) => parseInt(valueString, 10).toString(16).padStart(2, "0"))).toUpperCase();
-    }
-
-    /**
-     * Regex that detect cell reference and a range reference (without the sheetName)
-     */
-    const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
-    const rangeReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7})?$/, "i");
-
-    //------------------------------------------------------------------------------
-    /**
-     * Convert a (col) number to the corresponding letter.
-     *
-     * Examples:
-     *     0 => 'A'
-     *     25 => 'Z'
-     *     26 => 'AA'
-     *     27 => 'AB'
-     */
-    function numberToLetters(n) {
-        if (n < 0) {
-            throw new Error(`number must be positive. Got ${n}`);
-        }
-        if (n < 26) {
-            return String.fromCharCode(65 + n);
-        }
-        else {
-            return numberToLetters(Math.floor(n / 26) - 1) + numberToLetters(n % 26);
-        }
-    }
-    /**
-     * Convert a string (describing a column) to its number value.
-     *
-     * Examples:
-     *     'A' => 0
-     *     'Z' => 25
-     *     'AA' => 26
-     */
-    function lettersToNumber(letters) {
-        let result = 0;
-        const l = letters.length;
-        for (let i = 0; i < l; i++) {
-            let n = letters.charCodeAt(i) - 65 + (i < l - 1 ? 1 : 0);
-            result += n * 26 ** (l - i - 1);
-        }
-        return result;
-    }
-    /**
-     * Convert a "XC" coordinate to cartesian coordinates.
-     *
-     * Examples:
-     *   A1 => [0,0]
-     *   B3 => [1,2]
-     *
-     * Note: it also accepts lowercase coordinates, but not fixed references
-     */
-    function toCartesian(xc) {
-        xc = xc.toUpperCase().trim();
-        const match = xc.match(cellReference);
-        if (match !== null) {
-            const [m, letters, numbers] = match;
-            if (m === xc) {
-                const col = lettersToNumber(letters);
-                const row = parseInt(numbers, 10) - 1;
-                return { col, row };
-            }
-        }
-        throw new Error(`Invalid cell description: ${xc}`);
-    }
-    /**
-     * Convert from cartesian coordinate to the "XC" coordinate system.
-     *
-     * Examples:
-     *   - 0,0 => A1
-     *   - 1,2 => B3
-     *   - 0,0, {colFixed: false, rowFixed: true} => A$1
-     *   - 1,2, {colFixed: true, rowFixed: false} => $B3
-     */
-    function toXC(col, row, rangePart = { colFixed: false, rowFixed: false }) {
-        return ((rangePart.colFixed ? "$" : "") +
-            numberToLetters(col) +
-            (rangePart.rowFixed ? "$" : "") +
-            String(row + 1));
-    }
-
-    const MAX_DELAY = 140;
-    const MIN_DELAY = 20;
-    const ACCELERATION = 0.035;
-    /**
-     * Decreasing exponential function used to determine the "speed" of edge-scrolling
-     * as the timeout delay.
-     *
-     * Returns a timeout delay in milliseconds.
-     */
-    function scrollDelay(value) {
-        // decreasing exponential from MAX_DELAY to MIN_DELAY
-        return MIN_DELAY + (MAX_DELAY - MIN_DELAY) * Math.exp(-ACCELERATION * (value - 1));
-    }
-
-    /**
-     *  Constant used to indicate the maximum of digits that is possible to display
-     *  in a cell with standard size.
-     */
-    const MAX_DECIMAL_PLACES = 20;
-    //from https://stackoverflow.com/questions/721304/insert-commas-into-number-string @Thomas/Alan Moore
-    const thousandsGroupsRegexp = /(\d+?)(?=(\d{3})+(?!\d)|$)/g;
-    const zeroRegexp = /0/g;
-    // -----------------------------------------------------------------------------
-    // FORMAT REPRESENTATION CACHE
-    // -----------------------------------------------------------------------------
-    const internalFormatByFormatString = {};
-    function parseFormat(formatString) {
-        let internalFormat = internalFormatByFormatString[formatString];
-        if (internalFormat === undefined) {
-            internalFormat = convertFormatToInternalFormat(formatString);
-            internalFormatByFormatString[formatString] = internalFormat;
-        }
-        return internalFormat;
-    }
-    // -----------------------------------------------------------------------------
-    // APPLY FORMAT
-    // -----------------------------------------------------------------------------
-    /**
-     * Formats a cell value with its format.
-     */
-    function formatValue(value, format) {
-        switch (typeof value) {
-            case "string":
-                return value;
-            case "boolean":
-                return value ? "TRUE" : "FALSE";
-            case "number":
-                // transform to internalNumberFormat
-                if (!format) {
-                    format = createDefaultFormat(value);
-                }
-                const internalFormat = parseFormat(format);
-                return applyInternalFormat(value, internalFormat);
-            case "object":
-                return "0";
-        }
-    }
-    function applyInternalFormat(value, internalFormat) {
-        if (internalFormat[0].type === "DATE") {
-            return applyDateTimeFormat(value, internalFormat[0].format);
-        }
-        let formattedValue = value < 0 ? "-" : "";
-        for (let part of internalFormat) {
-            switch (part.type) {
-                case "NUMBER":
-                    formattedValue += applyInternalNumberFormat(Math.abs(value), part.format);
-                    break;
-                case "CURRENCY":
-                    formattedValue += part.format;
-                    break;
-            }
-        }
-        return formattedValue;
-    }
-    function applyInternalNumberFormat(value, format) {
-        if (format.isPercent) {
-            value = value * 100;
-        }
-        let maxDecimals = 0;
-        if (format.decimalPart !== undefined) {
-            maxDecimals = format.decimalPart.length;
-        }
-        const { integerDigits, decimalDigits } = splitNumber(value, maxDecimals);
-        let formattedValue = applyIntegerFormat(integerDigits, format.integerPart, format.thousandsSeparator);
-        if (format.decimalPart !== undefined) {
-            formattedValue += "." + applyDecimalFormat(decimalDigits || "", format.decimalPart);
-        }
-        if (format.isPercent) {
-            formattedValue += "%";
-        }
-        return formattedValue;
-    }
-    function applyIntegerFormat(integerDigits, integerFormat, hasSeparator) {
-        var _a;
-        const _integerDigits = integerDigits === "0" ? "" : integerDigits;
-        let formattedInteger = _integerDigits;
-        const delta = integerFormat.length - _integerDigits.length;
-        if (delta > 0) {
-            // ex: format = "0#000000" and integerDigit: "123"
-            const restIntegerFormat = integerFormat.substring(0, delta); // restIntegerFormat = "0#00"
-            const countZero = (restIntegerFormat.match(zeroRegexp) || []).length; // countZero = 3
-            formattedInteger = "0".repeat(countZero) + formattedInteger; // return "000123"
-        }
-        if (hasSeparator) {
-            formattedInteger = ((_a = formattedInteger.match(thousandsGroupsRegexp)) === null || _a === void 0 ? void 0 : _a.join(",")) || formattedInteger;
-        }
-        return formattedInteger;
-    }
-    function applyDecimalFormat(decimalDigits, decimalFormat) {
-        // assume the format is valid (no commas)
-        let formattedDecimals = decimalDigits;
-        if (decimalFormat.length - decimalDigits.length > 0) {
-            const restDecimalFormat = decimalFormat.substring(decimalDigits.length, decimalFormat.length + 1);
-            const countZero = (restDecimalFormat.match(zeroRegexp) || []).length;
-            formattedDecimals = formattedDecimals + "0".repeat(countZero);
-        }
-        return formattedDecimals;
-    }
-    /**
-     * this is a cache that can contains number representation formats
-     * from 0 (minimum) to 20 (maximum) digits after the decimal point
-     */
-    const numberRepresentation = [];
-    /** split a number into two strings that contain respectively:
-     * - all digit stored in the integer part of the number
-     * - all digit stored in the decimal part of the number
-     *
-     * The 'maxDecimal' parameter allows to indicate the number of digits to not
-     * exceed in the decimal part, in which case digits are rounded
-     *
-     * Intl.Numberformat is used to properly handle all the roundings.
-     * e.g. 1234.7  with format ### (<> maxDecimals=0) should become 1235, not 1234
-     **/
-    function splitNumber(value, maxDecimals = MAX_DECIMAL_PLACES) {
-        let formatter = numberRepresentation[maxDecimals];
-        if (!formatter) {
-            formatter = new Intl.NumberFormat("en-US", {
-                maximumFractionDigits: maxDecimals,
-                useGrouping: false,
-            });
-            numberRepresentation[maxDecimals] = formatter;
-        }
-        const [integerDigits, decimalDigits] = formatter.format(value).split(".");
-        return { integerDigits, decimalDigits };
-    }
-    function applyDateTimeFormat(value, format) {
-        // TODO: unify the format functions for date and datetime
-        // This requires some code to 'parse' or 'tokenize' the format, keep it in a
-        // cache, and use it in a single mapping, that recognizes the special list
-        // of tokens dd,d,m,y,h, ... and preserves the rest
-        const jsDate = numberToJsDate(value);
-        const indexH = format.indexOf("h");
-        let strDate = "";
-        let strTime = "";
-        if (indexH > 0) {
-            strDate = formatJSDate(jsDate, format.substring(0, indexH - 1));
-            strTime = formatJSTime(jsDate, format.substring(indexH));
-        }
-        else if (indexH === 0) {
-            strTime = formatJSTime(jsDate, format);
-        }
-        else if (indexH < 0) {
-            strDate = formatJSDate(jsDate, format);
-        }
-        return strDate + (strDate && strTime ? " " : "") + strTime;
-    }
-    function formatJSDate(jsDate, format) {
-        const sep = format.match(/\/|-|\s/)[0];
-        const parts = format.split(sep);
-        return parts
-            .map((p) => {
-            switch (p) {
-                case "d":
-                    return jsDate.getDate();
-                case "dd":
-                    return jsDate.getDate().toString().padStart(2, "0");
-                case "m":
-                    return jsDate.getMonth() + 1;
-                case "mm":
-                    return String(jsDate.getMonth() + 1).padStart(2, "0");
-                case "yyyy":
-                    return jsDate.getFullYear();
-                default:
-                    throw new Error(`invalid format: ${format}`);
-            }
-        })
-            .join(sep);
-    }
-    function formatJSTime(jsDate, format) {
-        let parts = format.split(/:|\s/);
-        const dateHours = jsDate.getHours();
-        const isMeridian = parts[parts.length - 1] === "a";
-        let hours = dateHours;
-        let meridian = "";
-        if (isMeridian) {
-            hours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-            meridian = dateHours >= 12 ? " PM" : " AM";
-            parts.pop();
-        }
-        return (parts
-            .map((p) => {
-            switch (p) {
-                case "hhhh":
-                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY$1) / (60 * 60 * 1000));
-                    return helapsedHours.toString();
-                case "hh":
-                    return hours.toString().padStart(2, "0");
-                case "mm":
-                    return jsDate.getMinutes().toString().padStart(2, "0");
-                case "ss":
-                    return jsDate.getSeconds().toString().padStart(2, "0");
-                default:
-                    throw new Error(`invalid format: ${format}`);
-            }
-        })
-            .join(":") + meridian);
-    }
-    // -----------------------------------------------------------------------------
-    // CREATE / MODIFY FORMAT
-    // -----------------------------------------------------------------------------
-    function createDefaultFormat(value) {
-        let { decimalDigits } = splitNumber(value, 10);
-        return decimalDigits ? "0." + "0".repeat(decimalDigits.length) : "0";
-    }
-    function changeDecimalPlaces(format, step) {
-        const internalFormat = parseFormat(format);
-        const newInternalFormat = internalFormat.map((intFmt) => {
-            if (intFmt.type === "NUMBER") {
-                return { ...intFmt, format: changeInternalNumberFormatDecimalPlaces(intFmt.format, step) };
-            }
-            else {
-                return intFmt;
-            }
-        });
-        const newFormat = convertInternalFormatToFormat(newInternalFormat);
-        internalFormatByFormatString[newFormat] = newInternalFormat;
-        return newFormat;
-    }
-    function changeInternalNumberFormatDecimalPlaces(format, step) {
-        var _a;
-        const _format = { ...format };
-        const sign = Math.sign(step);
-        const decimalLength = ((_a = _format.decimalPart) === null || _a === void 0 ? void 0 : _a.length) || 0;
-        const countZero = Math.min(Math.max(0, decimalLength + sign), MAX_DECIMAL_PLACES);
-        _format.decimalPart = "0".repeat(countZero);
-        if (_format.decimalPart === "") {
-            delete _format.decimalPart;
-        }
-        return _format;
-    }
-    // -----------------------------------------------------------------------------
-    // MANAGING FORMAT
-    // -----------------------------------------------------------------------------
-    /**
-     * Validates the provided format string and returns an InternalFormat Object.
-     */
-    function convertFormatToInternalFormat(format) {
-        if (format === "") {
-            throw new Error("A format cannot be empty");
-        }
-        let currentIndex = 0;
-        let result = [];
-        while (currentIndex < format.length) {
-            let closingIndex;
-            if (format.charAt(currentIndex) === "[") {
-                if (format.charAt(currentIndex + 1) !== "$") {
-                    throw new Error(`Currency formats have to be prefixed by a $: ${format}`);
-                }
-                // manage brackets/customStrings
-                closingIndex = format.substring(currentIndex).lastIndexOf("]") + currentIndex + 1;
-                if (closingIndex === 0) {
-                    throw new Error(`Invalid currency brackets format: ${format}`);
-                }
-                result.push({
-                    type: "CURRENCY",
-                    format: format.substring(currentIndex + 2, closingIndex - 1),
-                }); // remove leading "[$"" and ending "]".
-            }
-            else {
-                // rest of the time
-                const nextPartIndex = format.substring(currentIndex).indexOf("[");
-                closingIndex = nextPartIndex > -1 ? nextPartIndex + currentIndex : format.length;
-                const subFormat = format.substring(currentIndex, closingIndex);
-                if (subFormat.match(DATETIME_FORMAT)) {
-                    result.push({ type: "DATE", format: subFormat });
-                }
-                else {
-                    result.push({
-                        type: "NUMBER",
-                        format: convertToInternalNumberFormat(subFormat),
-                    });
-                }
-            }
-            currentIndex = closingIndex;
-        }
-        return result;
-    }
-    /**
-     * @param format a formatString that is only applicable to numbers. I.e. composed of characters 0 # , . %
-     */
-    function convertToInternalNumberFormat(format) {
-        const isPercent = format.includes("%");
-        const thousandsSeparator = format.includes(",");
-        if (format.match(/\..*,/)) {
-            throw new Error("A format can't contain ',' symbol in the decimal part");
-        }
-        const _format = format.replace("%", "").replace(",", "");
-        const extraSigns = _format.match(/[\%|,]/);
-        if (extraSigns) {
-            throw new Error(`A format can only contain a single '${extraSigns[0]}' symbol`);
-        }
-        const [integerPart, decimalPart] = _format.split(".");
-        if (decimalPart && decimalPart.length > 20) {
-            throw new Error("A format can't contain more than 20 decimal places");
-        }
-        if (decimalPart !== undefined) {
-            return {
-                integerPart,
-                isPercent,
-                thousandsSeparator,
-                decimalPart,
-            };
-        }
-        else {
-            return {
-                integerPart,
-                isPercent,
-                thousandsSeparator,
-            };
-        }
-    }
-    function convertInternalFormatToFormat(internalFormat) {
-        let format = "";
-        for (let part of internalFormat) {
-            let currentFormat;
-            switch (part.type) {
-                case "NUMBER":
-                    const fmt = part.format;
-                    currentFormat = fmt.integerPart;
-                    if (fmt.thousandsSeparator) {
-                        currentFormat = currentFormat.slice(0, -3) + "," + currentFormat.slice(-3);
-                    }
-                    if (fmt.decimalPart !== undefined) {
-                        currentFormat += "." + fmt.decimalPart;
-                    }
-                    if (fmt.isPercent) {
-                        currentFormat += "%";
-                    }
-                    break;
-                case "CURRENCY":
-                    currentFormat = `[$${part.format}]`;
-                    break;
-                case "DATE":
-                    currentFormat = part.format;
-                    break;
-            }
-            format += currentFormat;
-        }
-        return format;
-    }
-
-    function createDefaultCols(colNumber) {
-        const cols = [];
-        let current = 0;
-        for (let i = 0; i < colNumber; i++) {
-            const size = DEFAULT_CELL_WIDTH;
-            const col = {
-                start: current,
-                end: current + size,
-                size: size,
-                name: numberToLetters(i),
-            };
-            cols.push(col);
-            current = col.end;
-        }
-        return cols;
-    }
-    function createDefaultRows(rowNumber) {
-        const rows = [];
-        let current = 0;
-        for (let i = 0; i < rowNumber; i++) {
-            const size = DEFAULT_CELL_HEIGHT;
-            const row = {
-                start: current,
-                end: current + size,
-                size: size,
-                name: String(i + 1),
-                cells: {},
-            };
-            rows.push(row);
-            current = row.end;
-        }
-        return rows;
-    }
-    function createCols(savedCols, colNumber) {
-        var _a;
-        const cols = [];
-        let current = 0;
-        for (let i = 0; i < colNumber; i++) {
-            const size = savedCols[i] ? savedCols[i].size || DEFAULT_CELL_WIDTH : DEFAULT_CELL_WIDTH;
-            const hidden = ((_a = savedCols[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
-            const end = hidden ? current : current + size;
-            const col = {
-                start: current,
-                end: end,
-                size: size,
-                name: numberToLetters(i),
-            };
-            if (hidden) {
-                col.isHidden = hidden;
-            }
-            cols.push(col);
-            current = col.end;
-        }
-        return cols;
-    }
-    function createRows(savedRows, rowNumber) {
-        var _a;
-        const rows = [];
-        let current = 0;
-        for (let i = 0; i < rowNumber; i++) {
-            const size = savedRows[i] ? savedRows[i].size || DEFAULT_CELL_HEIGHT : DEFAULT_CELL_HEIGHT;
-            const hidden = ((_a = savedRows[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
-            const end = hidden ? current : current + size;
-            const row = {
-                start: current,
-                end: end,
-                size: size,
-                name: String(i + 1),
-                cells: {},
-            };
-            if (hidden) {
-                row.isHidden = hidden;
-            }
-            rows.push(row);
-            current = row.end;
-        }
-        return rows;
-    }
-    function exportCols(cols, exportDefaults = false) {
-        const exportedCols = {};
-        for (let i in cols) {
-            const col = cols[i];
-            if (col.size !== DEFAULT_CELL_WIDTH || exportDefaults) {
-                exportedCols[i] = { size: col.size };
-            }
-            if (col.isHidden) {
-                exportedCols[i] = exportedCols[i] || {};
-                exportedCols[i]["isHidden"] = col.isHidden;
-            }
-        }
-        return exportedCols;
-    }
-    function exportRows(rows, exportDefaults = false) {
-        const exportedRows = {};
-        for (let i in rows) {
-            const row = rows[i];
-            if (row.size !== DEFAULT_CELL_HEIGHT || exportDefaults) {
-                exportedRows[i] = { size: row.size };
-            }
-            if (row.isHidden) {
-                exportedRows[i] = exportedRows[i] || {};
-                exportedRows[i]["isHidden"] = row.isHidden;
-            }
-        }
-        return exportedRows;
-    }
-
-    /*
-     * https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-     * */
-    class UuidGenerator {
-        constructor() {
-            this.isFastIdStrategy = false;
-            this.fastIdStart = 0;
-        }
-        setIsFastStrategy(isFast) {
-            this.isFastIdStrategy = isFast;
-        }
-        uuidv4() {
-            if (this.isFastIdStrategy) {
-                this.fastIdStart++;
-                return String(this.fastIdStart);
-                //@ts-ignore
-            }
-            else if (window.crypto && window.crypto.getRandomValues) {
-                //@ts-ignore
-                return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
-            }
-            else {
-                // mainly for jest and other browsers that do not have the crypto functionality
-                return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-                    var r = (Math.random() * 16) | 0, v = c == "x" ? r : (r & 0x3) | 0x8;
-                    return v.toString(16);
-                });
-            }
-        }
-    }
-
-    function getNextVisibleCellPosition(sheet, col, row) {
-        return {
-            col: findVisibleHeader(sheet, "cols", range(col, sheet.cols.length)),
-            row: findVisibleHeader(sheet, "rows", range(row, sheet.rows.length)),
-        };
-    }
-    function findVisibleHeader(sheet, dimension, indexes) {
-        const headers = sheet[dimension];
-        return indexes.find((index) => headers[index] && !headers[index].isHidden);
-    }
-    function findLastVisibleColRow(sheet, dimension) {
-        let lastIndex = sheet[dimension].length - 1;
-        while (lastIndex >= 0 && sheet[dimension][lastIndex].isHidden === true) {
-            lastIndex--;
-        }
-        return sheet[dimension][lastIndex];
-    }
-
-    /**
-     * Convert from a cartesian reference to a Zone
-     * The range boundaries will be kept in the same order as the
-     * ones in the text.
-     * Examples:
-     *    "A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
-     *    "B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
-     *    "Sheet1!A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
-     *    "Sheet1!B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
-     *    "C3:A1" ==> Top 2, Bottom 0, Left 2, Right 0}
-     *
-     * @param xc the string reference to convert
-     *
-     */
-    function toZoneWithoutBoundaryChanges(xc) {
-        xc = xc.split("!").pop();
-        const ranges = xc.replace(/\$/g, "").split(":");
-        let top, bottom, left, right;
-        let c = toCartesian(ranges[0].trim());
-        left = right = c.col;
-        top = bottom = c.row;
-        if (ranges.length === 2) {
-            let d = toCartesian(ranges[1].trim());
-            right = d.col;
-            bottom = d.row;
-        }
-        return { top, bottom, left, right };
-    }
-    /**
-     * Convert from a cartesian reference to a Zone
-     *
-     * Examples:
-     *    "A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
-     *    "B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
-     *    "Sheet1!A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
-     *    "Sheet1!B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
-     *
-     * @param xc the string reference to convert
-     *
-     */
-    function toZone(xc) {
-        let { top, bottom, left, right } = toZoneWithoutBoundaryChanges(xc);
-        if (right < left) {
-            [right, left] = [left, right];
-        }
-        if (bottom < top) {
-            [bottom, top] = [top, bottom];
-        }
-        return { top, bottom, left, right };
-    }
-    /**
-     * Check that the zone has valid coordinates and in
-     * the correct order.
-     */
-    function isZoneValid(zone) {
-        const { bottom, top, left, right } = zone;
-        // Typescript *should* prevent this kind of errors but
-        // it's better to be on the safe side at runtime as well.
-        if (isNaN(bottom) || isNaN(top) || isNaN(left) || isNaN(right)) {
-            return false;
-        }
-        return bottom >= top && right >= left && bottom >= 0 && top >= 0 && right >= 0 && left >= 0;
-    }
-    /**
-     * Convert from zone to a cartesian reference
-     *
-     */
-    function zoneToXc(zone) {
-        const { top, bottom, left, right } = zone;
-        const isOneCell = top === bottom && left === right;
-        return isOneCell ? toXC(left, top) : `${toXC(left, top)}:${toXC(right, bottom)}`;
-    }
-    /**
-     * Expand a zone after inserting columns or rows.
-     */
-    function expandZoneOnInsertion(zone, start, base, position, quantity) {
-        const dimension = start === "left" ? "columns" : "rows";
-        const baseElement = position === "before" ? base - 1 : base;
-        const end = start === "left" ? "right" : "bottom";
-        const shouldIncludeEnd = position === "before" ? zone[end] > baseElement : zone[end] >= baseElement;
-        if (zone[start] <= baseElement && shouldIncludeEnd) {
-            return createAdaptedZone(zone, dimension, "RESIZE", quantity);
-        }
-        if (baseElement < zone[start]) {
-            return createAdaptedZone(zone, dimension, "MOVE", quantity);
-        }
-        return { ...zone };
-    }
-    /**
-     * Update the selection after column/row addition
-     */
-    function updateSelectionOnInsertion(selection, start, base, position, quantity) {
-        const dimension = start === "left" ? "columns" : "rows";
-        const baseElement = position === "before" ? base - 1 : base;
-        const end = start === "left" ? "right" : "bottom";
-        if (selection[start] <= baseElement && selection[end] > baseElement) {
-            return createAdaptedZone(selection, dimension, "RESIZE", quantity);
-        }
-        if (baseElement < selection[start]) {
-            return createAdaptedZone(selection, dimension, "MOVE", quantity);
-        }
-        return { ...selection };
-    }
-    /**
-     * Update the selection after column/row deletion
-     */
-    function updateSelectionOnDeletion(zone, start, elements) {
-        const end = start === "left" ? "right" : "bottom";
-        let newStart = zone[start];
-        let newEnd = zone[end];
-        for (let removedElement of elements.sort((a, b) => b - a)) {
-            if (zone[start] > removedElement) {
-                newStart--;
-                newEnd--;
-            }
-            if (zone[start] < removedElement && zone[end] >= removedElement) {
-                newEnd--;
-            }
-        }
-        return { ...zone, [start]: newStart, [end]: newEnd };
-    }
-    /**
-     * Reduce a zone after deletion of elements
-     */
-    function reduceZoneOnDeletion(zone, start, elements) {
-        const end = start === "left" ? "right" : "bottom";
-        let newStart = zone[start];
-        let newEnd = zone[end];
-        for (let removedElement of elements.sort((a, b) => b - a)) {
-            if (zone[start] > removedElement) {
-                newStart--;
-                newEnd--;
-            }
-            if (zone[start] <= removedElement && zone[end] >= removedElement) {
-                newEnd--;
-            }
-        }
-        if (newStart > newEnd) {
-            return undefined;
-        }
-        return { ...zone, [start]: newStart, [end]: newEnd };
-    }
-    /**
-     * Compute the union of two zones. It is the smallest zone which contains the
-     * two arguments.
-     */
-    function union(z1, z2) {
-        return {
-            top: Math.min(z1.top, z2.top),
-            left: Math.min(z1.left, z2.left),
-            bottom: Math.max(z1.bottom, z2.bottom),
-            right: Math.max(z1.right, z2.right),
-        };
-    }
-    /**
-     * Compute the intersection of two zones. Returns nothing if the two zones don't overlap
-     */
-    function intersection(z1, z2) {
-        if (!overlap(z1, z2)) {
-            return undefined;
-        }
-        return {
-            top: Math.max(z1.top, z2.top),
-            left: Math.max(z1.left, z2.left),
-            bottom: Math.min(z1.bottom, z2.bottom),
-            right: Math.min(z1.right, z2.right),
-        };
-    }
-    /**
-     * Two zones are equal if they represent the same area, so we clearly cannot use
-     * reference equality.
-     */
-    function isEqual(z1, z2) {
-        return (z1.left === z2.left && z1.right === z2.right && z1.top === z2.top && z1.bottom === z2.bottom);
-    }
-    /**
-     * Return true if two zones overlap, false otherwise.
-     */
-    function overlap(z1, z2) {
-        if (z1.bottom < z2.top || z2.bottom < z1.top) {
-            return false;
-        }
-        if (z1.right < z2.left || z2.right < z1.left) {
-            return false;
-        }
-        return true;
-    }
-    function isInside(col, row, zone) {
-        const { left, right, top, bottom } = zone;
-        return col >= left && col <= right && row >= top && row <= bottom;
-    }
-    /**
-     * Check if a zone is inside another
-     */
-    function isZoneInside(smallZone, biggerZone) {
-        return isEqual(union(biggerZone, smallZone), biggerZone);
-    }
-    /**
-     * Recompute the ranges of the zone to contain all the cells in zones, without the cells in toRemoveZones
-     * Also regroup zones together to shorten the string
-     * (A1, A2, B1, B2, [C1:C2], C3 => [A1:B2],[C1:C3])
-     * To do so, the cells are separated and remerged in zones by columns, and then
-     * if possible zones in adjacent columns are merged together.
-     */
-    function recomputeZones(zones, toRemoveZones) {
-        const zonesPerColumn = {};
-        //separate the existing zones per column
-        for (let z of zones) {
-            if (z) {
-                const zone = toZone(z);
-                for (let col = zone.left; col <= zone.right; col++) {
-                    if (zonesPerColumn[col] === undefined) {
-                        zonesPerColumn[col] = [];
-                    }
-                    zonesPerColumn[col].push({
-                        top: zone.top,
-                        bottom: zone.bottom,
-                        remove: false,
-                    });
-                }
-            }
-        }
-        //separate the to deleted zones per column
-        for (let z of toRemoveZones) {
-            const zone = toZone(z);
-            for (let col = zone.left; col <= zone.right; col++) {
-                if (zonesPerColumn[col] === undefined) {
-                    zonesPerColumn[col] = [];
-                }
-                zonesPerColumn[col].push({
-                    top: zone.top,
-                    bottom: zone.bottom,
-                    remove: true,
-                });
-            }
-        }
-        const OptimizedZonePerColumn = [];
-        //regroup zones per column
-        for (let [col, zones] of Object.entries(zonesPerColumn)) {
-            OptimizedZonePerColumn.push({
-                col: parseInt(col),
-                ranges: optimiseColumn(zones),
-            });
-        }
-        //merge zones that spread over multiple columns that can be merged
-        const result = mergeColumns(OptimizedZonePerColumn);
-        return result.map(zoneToXc);
-    }
-    /**
-     * Recompute the ranges of a column, without the remove cells.
-     * takes as input a array of {top, bottom, remove} where top and bottom
-     * are the start and end of ranges in the column and remove expresses if the
-     * cell should be kept or not.
-     */
-    function optimiseColumn(zones) {
-        const toKeep = new Set();
-        const toRemove = new Set();
-        for (let zone of zones) {
-            for (let x = zone.top; x <= zone.bottom; x++) {
-                zone.remove ? toRemove.add(x) : toKeep.add(x);
-            }
-        }
-        const finalElements = [...toKeep]
-            .filter((x) => !toRemove.has(x))
-            .sort((a, b) => {
-            return a - b;
-        });
-        const newZones = [];
-        let currentZone;
-        for (let x of finalElements) {
-            if (!currentZone) {
-                currentZone = { top: x, bottom: x };
-            }
-            else if (x === currentZone.bottom + 1) {
-                currentZone.bottom = x;
-            }
-            else {
-                newZones.push({ top: currentZone.top, bottom: currentZone.bottom });
-                currentZone = { top: x, bottom: x };
-            }
-        }
-        if (currentZone) {
-            newZones.push({ top: currentZone.top, bottom: currentZone.bottom });
-        }
-        return newZones;
-    }
-    /**
-     * Verify if ranges in two adjacent columns can be merged in one in one range,
-     * and if they can, merge them in the same range.
-     */
-    function mergeColumns(zonePerCol) {
-        const orderedZones = zonePerCol.sort((a, b) => {
-            return a.col - b.col;
-        });
-        const finalZones = [];
-        let inProgressZones = [];
-        let currentCol = 0;
-        for (let index = 0; index <= orderedZones.length - 1; index++) {
-            let newInProgress = [];
-            if (currentCol + 1 === orderedZones[index].col) {
-                for (let z1 of orderedZones[index].ranges) {
-                    let merged = false;
-                    for (let z2 of inProgressZones) {
-                        //extend existing zone with the adjacent col
-                        if (z1.top == z2.top && z1.bottom == z2.bottom) {
-                            newInProgress.push(z2);
-                            merged = true;
-                        }
-                    }
-                    // create new zone as it could not be merged with a previous one
-                    if (!merged) {
-                        newInProgress.push({ top: z1.top, bottom: z1.bottom, startCol: orderedZones[index].col });
-                    }
-                }
-            }
-            else {
-                // create new zone as it was not adjacent to the previous zones
-                newInProgress = orderedZones[index].ranges.map((zone) => {
-                    return {
-                        top: zone.top,
-                        bottom: zone.bottom,
-                        startCol: orderedZones[index].col,
-                    };
-                });
-            }
-            //All the zones from inProgressZones that are not transferred in newInProgress
-            //are zones that were not extended and are therefore final.
-            const difference = inProgressZones.filter((x) => !newInProgress.includes(x));
-            for (let x of difference) {
-                finalZones.push({ top: x.top, bottom: x.bottom, left: x.startCol, right: currentCol });
-            }
-            currentCol = orderedZones[index].col;
-            inProgressZones = newInProgress;
-        }
-        //after the last iteration, the unfinished zones need to be finalized to.
-        for (let x of inProgressZones) {
-            finalZones.push({ top: x.top, bottom: x.bottom, left: x.startCol, right: currentCol });
-        }
-        return finalZones;
-    }
-    function zoneToDimension(zone) {
-        return {
-            height: zone.bottom - zone.top + 1,
-            width: zone.right - zone.left + 1,
-        };
-    }
-    function isOneDimensional(zone) {
-        const { width, height } = zoneToDimension(zone);
-        return width === 1 || height === 1;
-    }
-    /**
-     * Array of all positions in the zone.
-     */
-    function positions(zone) {
-        const positions = [];
-        const [left, right] = [zone.right, zone.left].sort((a, b) => a - b);
-        const [top, bottom] = [zone.top, zone.bottom].sort((a, b) => a - b);
-        for (const col of range(left, right + 1)) {
-            for (const row of range(top, bottom + 1)) {
-                positions.push({ col, row });
-            }
-        }
-        return positions;
-    }
-    function createAdaptedZone(zone, dimension, operation, by) {
-        const start = dimension === "columns" ? "left" : "top";
-        const end = dimension === "columns" ? "right" : "bottom";
-        const newZone = { ...zone };
-        if (operation === "MOVE") {
-            newZone[start] += by;
-        }
-        newZone[end] += by;
-        return newZone;
-    }
-    /**
-     * Returns a Zone array with unique occurrence of each zone.
-     * For each multiple occurrence, the occurrence with the largest index is kept.
-     * This allows to always have the last selection made in the last position.
-     * */
-    function uniqueZones(zones) {
-        return zones
-            .reverse()
-            .filter((zone, index, self) => index ===
-            self.findIndex((z) => z.top === zone.top &&
-                z.bottom === zone.bottom &&
-                z.left === zone.left &&
-                z.right === zone.right))
-            .reverse();
-    }
-    /**
-     * This function will find all overlapping zones in an array and transform them
-     * into an union of each one.
-     * */
-    function mergeOverlappingZones(zones) {
-        return zones.reduce((dissociatedZones, zone) => {
-            const nextIndex = dissociatedZones.length;
-            for (let i = 0; i < nextIndex; i++) {
-                if (overlap(dissociatedZones[i], zone)) {
-                    dissociatedZones[i] = union(dissociatedZones[i], zone);
-                    return dissociatedZones;
-                }
-            }
-            dissociatedZones[nextIndex] = zone;
-            return dissociatedZones;
-        }, []);
-    }
-    /**
-     * This function will compare the modifications of selection to determine
-     * a cell that is part of the new zone and not the previous one.
-     */
-    function findCellInNewZone(oldZone, currentZone, viewport) {
-        let col, row;
-        const { left: oldLeft, right: oldRight, top: oldTop, bottom: oldBottom } = oldZone;
-        const { left, right, top, bottom } = currentZone;
-        if (left != oldLeft) {
-            col = left;
-        }
-        else if (right != oldRight) {
-            col = right;
-        }
-        else {
-            col = viewport.left;
-        }
-        if (top != oldTop) {
-            row = top;
-        }
-        else if (bottom != oldBottom) {
-            row = bottom;
-        }
-        else {
-            row = viewport.top;
-        }
-        return { col, row };
-    }
-    function organizeZone(zone) {
-        return {
-            top: Math.min(zone.top, zone.bottom),
-            bottom: Math.max(zone.top, zone.bottom),
-            left: Math.min(zone.left, zone.right),
-            right: Math.max(zone.left, zone.right),
-        };
-    }
-    function positionToZone(position) {
-        return { left: position.col, right: position.col, top: position.row, bottom: position.row };
-    }
 
     // Note: dataY and dataX may not have the same dimension
     function covariance(dataY, dataX, isSample) {
@@ -8255,12 +12222,6 @@
     }
 
     /**
-     * This registry is intended to map a cell content (raw string) to
-     * an instance of a cell.
-     */
-    const cellRegistry = new Registry();
-
-    /**
      * Abstract base implementation of a cell.
      * Concrete cell classes are responsible to build the raw cell `content` based on
      * whatever data they have (formula, string, ...).
@@ -10925,7 +14886,7 @@
         // Getters
         // ---------------------------------------------------------------------------
         getFigures(sheetId) {
-            return Object.values(this.figures[sheetId] || {}).filter(isDefined);
+            return Object.values(this.figures[sheetId] || {}).filter(isDefined$1);
         }
         getFigure(sheetId, figureId) {
             var _a;
@@ -10996,7 +14957,7 @@
                     if (!merges)
                         break;
                     const sheet = this.getters.getSheet(cmd.sheetIdTo);
-                    for (const range of Object.values(merges).filter(isDefined)) {
+                    for (const range of Object.values(merges).filter(isDefined$1)) {
                         this.addMerge(sheet, range.zone);
                     }
                     break;
@@ -11024,7 +14985,7 @@
         getMerges(sheetId) {
             return Object.keys(this.merges[sheetId] || {})
                 .map((mergeId) => this.getMergeById(sheetId, parseInt(mergeId, 10)))
-                .filter(isDefined);
+                .filter(isDefined$1);
         }
         getMerge(sheetId, col, row) {
             var _a;
@@ -11349,7 +15310,7 @@
     function exportMerges(merges) {
         return Object.entries(merges)
             .map(([mergeId, range]) => (range ? rangeToMerge(parseInt(mergeId, 10), range) : undefined))
-            .filter(isDefined)
+            .filter(isDefined$1)
             .map((merge) => toXC(merge.left, merge.top) + ":" + toXC(merge.right, merge.bottom));
     }
     function rangeToMerge(mergeId, range) {
@@ -11508,7 +15469,7 @@
             }
         }
         exportSheets(data, exportDefaultSizes = false) {
-            data.sheets = this.orderedSheetIds.filter(isDefined).map((id) => {
+            data.sheets = this.orderedSheetIds.filter(isDefined$1).map((id) => {
                 const sheet = this.sheets[id];
                 return {
                     id: sheet.id,
@@ -11617,9 +15578,9 @@
         getColCells(sheetId, col) {
             return this.getSheet(sheetId)
                 .rows.map((row) => row.cells[col])
-                .filter(isDefined)
+                .filter(isDefined$1)
                 .map((cellId) => this.getters.getCellById(cellId))
-                .filter(isDefined);
+                .filter(isDefined$1);
         }
         getColsZone(sheetId, start, end) {
             return {
@@ -12281,3515 +16242,6 @@
         "getNextSheetName",
         "isEmpty",
     ];
-
-    /**
-     * An AutofillModifierImplementation is used to describe how to handle a
-     * AutofillModifier.
-     */
-    const autofillModifiersRegistry = new Registry();
-    autofillModifiersRegistry
-        .add("INCREMENT_MODIFIER", {
-        apply: (rule, data) => {
-            var _a;
-            rule.current += rule.increment;
-            const content = rule.current.toString();
-            const tooltipValue = formatValue(rule.current, (_a = data.cell) === null || _a === void 0 ? void 0 : _a.format);
-            return {
-                cellData: {
-                    border: data.border,
-                    style: data.cell && data.cell.style,
-                    format: data.cell && data.cell.format,
-                    content,
-                },
-                tooltip: content ? { props: { content: tooltipValue } } : undefined,
-            };
-        },
-    })
-        .add("COPY_MODIFIER", {
-        apply: (rule, data, getters) => {
-            var _a, _b;
-            const content = ((_a = data.cell) === null || _a === void 0 ? void 0 : _a.content) || "";
-            return {
-                cellData: {
-                    border: data.border,
-                    style: data.cell && data.cell.style,
-                    format: data.cell && data.cell.format,
-                    content,
-                },
-                tooltip: content ? { props: { content: (_b = data.cell) === null || _b === void 0 ? void 0 : _b.formattedValue } } : undefined,
-            };
-        },
-    })
-        .add("FORMULA_MODIFIER", {
-        apply: (rule, data, getters, direction) => {
-            rule.current += rule.increment;
-            let x = 0;
-            let y = 0;
-            switch (direction) {
-                case 0 /* UP */:
-                    x = 0;
-                    y = -rule.current;
-                    break;
-                case 1 /* DOWN */:
-                    x = 0;
-                    y = rule.current;
-                    break;
-                case 2 /* LEFT */:
-                    x = -rule.current;
-                    y = 0;
-                    break;
-                case 3 /* RIGHT */:
-                    x = rule.current;
-                    y = 0;
-                    break;
-            }
-            if (!data.cell || !data.cell.isFormula()) {
-                return { cellData: {} };
-            }
-            const sheetId = data.sheetId;
-            const ranges = getters.createAdaptedRanges(data.cell.dependencies, x, y, sheetId);
-            const content = getters.buildFormulaContent(sheetId, data.cell, ranges);
-            return {
-                cellData: {
-                    border: data.border,
-                    style: data.cell.style,
-                    format: data.cell.format,
-                    content,
-                },
-                tooltip: content ? { props: { content } } : undefined,
-            };
-        },
-    });
-
-    const autofillRulesRegistry = new Registry();
-    /**
-     * Get the consecutive xc that are of type "number" or "date".
-     * Return the one which contains the given cell
-     */
-    function getGroup(cell, cells) {
-        let group = [];
-        let found = false;
-        for (let x of cells) {
-            if (x === cell) {
-                found = true;
-            }
-            if ((x === null || x === void 0 ? void 0 : x.evaluated.type) === CellValueType.number) {
-                group.push(x.evaluated.value);
-            }
-            else {
-                if (found) {
-                    return group;
-                }
-                group = [];
-            }
-        }
-        return group;
-    }
-    /**
-     * Get the average steps between numbers
-     */
-    function getAverageIncrement(group) {
-        const averages = [];
-        let last = group[0];
-        for (let i = 1; i < group.length; i++) {
-            const current = group[i];
-            averages.push(current - last);
-            last = current;
-        }
-        return averages.reduce((a, b) => a + b, 0) / averages.length;
-    }
-    autofillRulesRegistry
-        .add("simple_value_copy", {
-        condition: (cell, cells) => {
-            var _a;
-            return cells.length === 1 && !cell.isFormula() && !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
-        },
-        generateRule: () => {
-            return { type: "COPY_MODIFIER" };
-        },
-        sequence: 10,
-    })
-        .add("copy_text", {
-        condition: (cell) => !cell.isFormula() && cell.evaluated.type === CellValueType.text,
-        generateRule: () => {
-            return { type: "COPY_MODIFIER" };
-        },
-        sequence: 20,
-    })
-        .add("update_formula", {
-        condition: (cell) => cell.isFormula(),
-        generateRule: (_, cells) => {
-            return { type: "FORMULA_MODIFIER", increment: cells.length, current: 0 };
-        },
-        sequence: 30,
-    })
-        .add("increment_number", {
-        condition: (cell) => cell.evaluated.type === CellValueType.number,
-        generateRule: (cell, cells) => {
-            const group = getGroup(cell, cells);
-            let increment = 1;
-            if (group.length == 2) {
-                increment = (group[1] - group[0]) * 2;
-            }
-            else if (group.length > 2) {
-                increment = getAverageIncrement(group) * group.length;
-            }
-            return {
-                type: "INCREMENT_MODIFIER",
-                increment,
-                current: cell.evaluated.type === CellValueType.number ? cell.evaluated.value : 0,
-            };
-        },
-        sequence: 40,
-    });
-
-    /**
-     * Registry intended to support usual currencies. It is mainly used to create
-     * currency formats that can be selected or modified when customizing formats.
-     */
-    const currenciesRegistry = new Registry();
-
-    const figureRegistry = new Registry();
-
-    const inverseCommandRegistry = new Registry()
-        .add("ADD_COLUMNS_ROWS", inverseAddColumnsRows)
-        .add("REMOVE_COLUMNS_ROWS", inverseRemoveColumnsRows)
-        .add("ADD_MERGE", inverseAddMerge)
-        .add("REMOVE_MERGE", inverseRemoveMerge)
-        .add("CREATE_SHEET", inverseCreateSheet)
-        .add("DELETE_SHEET", inverseDeleteSheet)
-        .add("DUPLICATE_SHEET", inverseDuplicateSheet)
-        .add("CREATE_FIGURE", inverseCreateFigure)
-        .add("CREATE_CHART", inverseCreateChart)
-        .add("HIDE_COLUMNS_ROWS", inverseHideColumnsRows)
-        .add("UNHIDE_COLUMNS_ROWS", inverseUnhideColumnsRows);
-    for (const cmd of coreTypes.values()) {
-        try {
-            inverseCommandRegistry.get(cmd);
-        }
-        catch (_) {
-            inverseCommandRegistry.add(cmd, identity);
-        }
-    }
-    function identity(cmd) {
-        return [cmd];
-    }
-    function inverseAddColumnsRows(cmd) {
-        const elements = [];
-        let start = cmd.base;
-        if (cmd.position === "after") {
-            start++;
-        }
-        for (let i = 0; i < cmd.quantity; i++) {
-            elements.push(i + start);
-        }
-        return [
-            {
-                type: "REMOVE_COLUMNS_ROWS",
-                dimension: cmd.dimension,
-                elements,
-                sheetId: cmd.sheetId,
-            },
-        ];
-    }
-    function inverseAddMerge(cmd) {
-        return [{ type: "REMOVE_MERGE", sheetId: cmd.sheetId, target: cmd.target }];
-    }
-    function inverseRemoveMerge(cmd) {
-        return [{ type: "ADD_MERGE", sheetId: cmd.sheetId, target: cmd.target }];
-    }
-    function inverseCreateSheet(cmd) {
-        return [{ type: "DELETE_SHEET", sheetId: cmd.sheetId }];
-    }
-    function inverseDuplicateSheet(cmd) {
-        return [{ type: "DELETE_SHEET", sheetId: cmd.sheetIdTo }];
-    }
-    function inverseRemoveColumnsRows(cmd) {
-        const commands = [];
-        const elements = [...cmd.elements].sort((a, b) => a - b);
-        for (let group of groupConsecutive(elements)) {
-            const column = group[0] === 0 ? 0 : group[0] - 1;
-            const position = group[0] === 0 ? "before" : "after";
-            commands.push({
-                type: "ADD_COLUMNS_ROWS",
-                dimension: cmd.dimension,
-                quantity: group.length,
-                base: column,
-                sheetId: cmd.sheetId,
-                position,
-            });
-        }
-        return commands;
-    }
-    function inverseDeleteSheet(cmd) {
-        return [{ type: "CREATE_SHEET", sheetId: cmd.sheetId, position: 1 }];
-    }
-    function inverseCreateFigure(cmd) {
-        return [{ type: "DELETE_FIGURE", id: cmd.figure.id, sheetId: cmd.sheetId }];
-    }
-    function inverseCreateChart(cmd) {
-        return [{ type: "DELETE_FIGURE", id: cmd.id, sheetId: cmd.sheetId }];
-    }
-    function inverseHideColumnsRows(cmd) {
-        return [
-            {
-                type: "UNHIDE_COLUMNS_ROWS",
-                sheetId: cmd.sheetId,
-                dimension: cmd.dimension,
-                elements: cmd.elements,
-            },
-        ];
-    }
-    function inverseUnhideColumnsRows(cmd) {
-        return [
-            {
-                type: "HIDE_COLUMNS_ROWS",
-                sheetId: cmd.sheetId,
-                dimension: cmd.dimension,
-                elements: cmd.elements,
-            },
-        ];
-    }
-
-    const DEFAULT_MENU_ITEM = (key) => ({
-        isVisible: () => true,
-        isEnabled: () => true,
-        isReadonlyAllowed: false,
-        shortCut: "",
-        action: false,
-        children: [],
-        separator: false,
-        icon: false,
-        id: key,
-    });
-    function createFullMenuItem(key, value) {
-        return Object.assign({}, DEFAULT_MENU_ITEM(key), value);
-    }
-    /**
-     * The class Registry is extended in order to add the function addChild
-     *
-     */
-    class MenuItemRegistry extends Registry {
-        /**
-         * @override
-         */
-        add(key, value) {
-            this.content[key] = createFullMenuItem(key, value);
-            return this;
-        }
-        /**
-         * Add a subitem to an existing item
-         * @param path Path of items to add this subitem
-         * @param value Subitem to add
-         */
-        addChild(key, path, value) {
-            const root = path.splice(0, 1)[0];
-            let node = this.content[root];
-            if (!node) {
-                throw new Error(`Path ${root + ":" + path.join(":")} not found`);
-            }
-            for (let p of path) {
-                if (typeof node.children === "function") {
-                    node = undefined;
-                }
-                else {
-                    node = node.children.find((elt) => elt.id === p);
-                }
-                if (!node) {
-                    throw new Error(`Path ${root + ":" + path.join(":")} not found`);
-                }
-            }
-            node.children.push(createFullMenuItem(key, value));
-            return this;
-        }
-        getChildren(node, env) {
-            if (typeof node.children === "function") {
-                return node.children(env).sort((a, b) => a.sequence - b.sequence);
-            }
-            return node.children.sort((a, b) => a.sequence - b.sequence);
-        }
-        getName(node, env) {
-            if (typeof node.name === "function") {
-                return node.name(env);
-            }
-            return node.name;
-        }
-        getShortCut(node) {
-            return node.shortCut ? node.shortCut : "";
-        }
-        /**
-         * Get a list of all elements in the registry, ordered by sequence
-         * @override
-         */
-        getAll() {
-            return super.getAll().sort((a, b) => a.sequence - b.sequence);
-        }
-    }
-
-    const SORT_TYPES = [
-        CellValueType.number,
-        CellValueType.error,
-        CellValueType.text,
-        CellValueType.boolean,
-    ];
-    function convertCell(cell, index) {
-        return {
-            index,
-            type: cell ? cell.evaluated.type : CellValueType.empty,
-            value: cell ? cell.evaluated.value : "",
-        };
-    }
-    function sortCells(cells, sortDirection) {
-        const cellsWithIndex = cells.map(convertCell);
-        const emptyCells = cellsWithIndex.filter((x) => x.type === CellValueType.empty);
-        const nonEmptyCells = cellsWithIndex.filter((x) => x.type !== CellValueType.empty);
-        const inverse = sortDirection === "descending" ? -1 : 1;
-        return nonEmptyCells
-            .sort((left, right) => {
-            let typeOrder = SORT_TYPES.indexOf(left.type) - SORT_TYPES.indexOf(right.type);
-            if (typeOrder === 0) {
-                if (left.type === CellValueType.text || left.type === CellValueType.error) {
-                    typeOrder = left.value.localeCompare(right.value);
-                }
-                else
-                    typeOrder = left.value - right.value;
-            }
-            return inverse * typeOrder;
-        })
-            .concat(emptyCells);
-    }
-    function interactiveSortSelection(env, sheetId, anchor, zone, sortDirection) {
-        let result = DispatchResult.Success;
-        //several columns => bypass the contiguity check
-        let multiColumns = zone.right > zone.left;
-        if (env.model.getters.doesIntersectMerge(sheetId, zone)) {
-            multiColumns = false;
-            let table;
-            for (let r = zone.top; r <= zone.bottom; r++) {
-                table = [];
-                for (let c = zone.left; c <= zone.right; c++) {
-                    let merge = env.model.getters.getMerge(sheetId, c, r);
-                    if (merge && !table.includes(merge.id.toString())) {
-                        table.push(merge.id.toString());
-                    }
-                }
-                if (table.length >= 2) {
-                    multiColumns = true;
-                    break;
-                }
-            }
-        }
-        const { col, row } = anchor;
-        if (multiColumns) {
-            result = env.model.dispatch("SORT_CELLS", { sheetId, col, row, zone, sortDirection });
-        }
-        else {
-            // check contiguity
-            const contiguousZone = env.model.getters.getContiguousZone(sheetId, zone);
-            if (isEqual(contiguousZone, zone)) {
-                // merge as it is
-                result = env.model.dispatch("SORT_CELLS", {
-                    sheetId,
-                    col,
-                    row,
-                    zone,
-                    sortDirection,
-                });
-            }
-            else {
-                env.askConfirmation(_lt("We found data next to your selection. Since this data was not selected, it will not be sorted. Do you want to extend your selection?"), () => {
-                    zone = contiguousZone;
-                    result = env.model.dispatch("SORT_CELLS", {
-                        sheetId,
-                        col,
-                        row,
-                        zone,
-                        sortDirection,
-                    });
-                }, () => {
-                    result = env.model.dispatch("SORT_CELLS", {
-                        sheetId,
-                        col,
-                        row,
-                        zone,
-                        sortDirection,
-                    });
-                });
-            }
-        }
-        if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
-            const { col, row } = anchor;
-            env.model.selection.selectZone({ cell: { col, row }, zone });
-            env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
-        }
-    }
-
-    function handlePasteResult(env, result) {
-        if (!result.isSuccessful) {
-            if (result.reasons.includes(17 /* WrongPasteSelection */)) {
-                env.notifyUser(_lt("This operation is not allowed with multiple selections."));
-            }
-            if (result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
-                env.notifyUser(_lt("This operation is not possible due to a merge. Please remove the merges first than try again."));
-            }
-        }
-    }
-    function interactivePaste(env, target, pasteOption) {
-        const result = env.model.dispatch("PASTE", { target, pasteOption });
-        handlePasteResult(env, result);
-    }
-
-    //------------------------------------------------------------------------------
-    // Helpers
-    //------------------------------------------------------------------------------
-    function getColumnsNumber(env) {
-        const activeCols = env.model.getters.getActiveCols();
-        if (activeCols.size) {
-            return activeCols.size;
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            return zone.right - zone.left + 1;
-        }
-    }
-    function getRowsNumber(env) {
-        const activeRows = env.model.getters.getActiveRows();
-        if (activeRows.size) {
-            return activeRows.size;
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            return zone.bottom - zone.top + 1;
-        }
-    }
-    function setFormatter(env, format) {
-        env.model.dispatch("SET_FORMATTING", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            target: env.model.getters.getSelectedZones(),
-            format,
-        });
-    }
-    function setStyle(env, style) {
-        env.model.dispatch("SET_FORMATTING", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            target: env.model.getters.getSelectedZones(),
-            style,
-        });
-    }
-    //------------------------------------------------------------------------------
-    // Simple actions
-    //------------------------------------------------------------------------------
-    const UNDO_ACTION = (env) => env.model.dispatch("REQUEST_UNDO");
-    const REDO_ACTION = (env) => env.model.dispatch("REQUEST_REDO");
-    const COPY_ACTION = async (env) => {
-        env.model.dispatch("COPY", { target: env.model.getters.getSelectedZones() });
-        await env.clipboard.writeText(env.model.getters.getClipboardContent());
-    };
-    const CUT_ACTION = async (env) => {
-        env.model.dispatch("CUT", { target: env.model.getters.getSelectedZones() });
-        await env.clipboard.writeText(env.model.getters.getClipboardContent());
-    };
-    const PASTE_ACTION = async (env) => {
-        const spreadsheetClipboard = env.model.getters.getClipboardContent();
-        let osClipboard;
-        try {
-            osClipboard = await env.clipboard.readText();
-        }
-        catch (e) {
-            // Permission is required to read the clipboard.
-            console.warn("The OS clipboard could not be read.");
-            console.error(e);
-        }
-        const target = env.model.getters.getSelectedZones();
-        if (osClipboard && osClipboard !== spreadsheetClipboard) {
-            env.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
-                target,
-                text: osClipboard,
-            });
-        }
-        else {
-            interactivePaste(env, target);
-        }
-    };
-    const PASTE_VALUE_ACTION = (env) => env.model.dispatch("PASTE", {
-        target: env.model.getters.getSelectedZones(),
-        pasteOption: "onlyValue",
-    });
-    const PASTE_FORMAT_ACTION = (env) => env.model.dispatch("PASTE", {
-        target: env.model.getters.getSelectedZones(),
-        pasteOption: "onlyFormat",
-    });
-    const DELETE_CONTENT_ACTION = (env) => env.model.dispatch("DELETE_CONTENT", {
-        sheetId: env.model.getters.getActiveSheetId(),
-        target: env.model.getters.getSelectedZones(),
-    });
-    const SET_FORMULA_VISIBILITY_ACTION = (env) => env.model.dispatch("SET_FORMULA_VISIBILITY", { show: !env.model.getters.shouldShowFormulas() });
-    const SET_GRID_LINES_VISIBILITY_ACTION = (env) => {
-        const sheetId = env.model.getters.getActiveSheetId();
-        env.model.dispatch("SET_GRID_LINES_VISIBILITY", {
-            sheetId,
-            areGridLinesVisible: !env.model.getters.getGridLinesVisibility(sheetId),
-        });
-    };
-    //------------------------------------------------------------------------------
-    // Grid manipulations
-    //------------------------------------------------------------------------------
-    const DELETE_CONTENT_ROWS_NAME = (env) => {
-        if (env.model.getters.getSelectedZones().length > 1) {
-            return _lt("Clear rows");
-        }
-        let first;
-        let last;
-        const activesRows = env.model.getters.getActiveRows();
-        if (activesRows.size !== 0) {
-            first = Math.min(...activesRows);
-            last = Math.max(...activesRows);
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            first = zone.top;
-            last = zone.bottom;
-        }
-        if (first === last) {
-            return _lt("Clear row %s", (first + 1).toString());
-        }
-        return _lt("Clear rows %s - %s", (first + 1).toString(), (last + 1).toString());
-    };
-    const DELETE_CONTENT_ROWS_ACTION = (env) => {
-        const sheetId = env.model.getters.getActiveSheetId();
-        const target = [...env.model.getters.getActiveRows()].map((index) => env.model.getters.getRowsZone(sheetId, index, index));
-        env.model.dispatch("DELETE_CONTENT", {
-            target,
-            sheetId: env.model.getters.getActiveSheetId(),
-        });
-    };
-    const DELETE_CONTENT_COLUMNS_NAME = (env) => {
-        if (env.model.getters.getSelectedZones().length > 1) {
-            return _lt("Clear columns");
-        }
-        let first;
-        let last;
-        const activeCols = env.model.getters.getActiveCols();
-        if (activeCols.size !== 0) {
-            first = Math.min(...activeCols);
-            last = Math.max(...activeCols);
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            first = zone.left;
-            last = zone.right;
-        }
-        if (first === last) {
-            return _lt("Clear column %s", numberToLetters(first));
-        }
-        return _lt("Clear columns %s - %s", numberToLetters(first), numberToLetters(last));
-    };
-    const DELETE_CONTENT_COLUMNS_ACTION = (env) => {
-        const sheetId = env.model.getters.getActiveSheetId();
-        const target = [...env.model.getters.getActiveCols()].map((index) => env.model.getters.getColsZone(sheetId, index, index));
-        env.model.dispatch("DELETE_CONTENT", {
-            target,
-            sheetId: env.model.getters.getActiveSheetId(),
-        });
-    };
-    const REMOVE_ROWS_NAME = (env) => {
-        if (env.model.getters.getSelectedZones().length > 1) {
-            return _lt("Delete rows");
-        }
-        let first;
-        let last;
-        const activesRows = env.model.getters.getActiveRows();
-        if (activesRows.size !== 0) {
-            first = Math.min(...activesRows);
-            last = Math.max(...activesRows);
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            first = zone.top;
-            last = zone.bottom;
-        }
-        if (first === last) {
-            return _lt("Delete row %s", (first + 1).toString());
-        }
-        return _lt("Delete rows %s - %s", (first + 1).toString(), (last + 1).toString());
-    };
-    const REMOVE_ROWS_ACTION = (env) => {
-        let rows = [...env.model.getters.getActiveRows()];
-        if (!rows.length) {
-            const zone = env.model.getters.getSelectedZones()[0];
-            for (let i = zone.top; i <= zone.bottom; i++) {
-                rows.push(i);
-            }
-        }
-        env.model.dispatch("REMOVE_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            dimension: "ROW",
-            elements: rows,
-        });
-    };
-    const REMOVE_COLUMNS_NAME = (env) => {
-        if (env.model.getters.getSelectedZones().length > 1) {
-            return _lt("Delete columns");
-        }
-        let first;
-        let last;
-        const activeCols = env.model.getters.getActiveCols();
-        if (activeCols.size !== 0) {
-            first = Math.min(...activeCols);
-            last = Math.max(...activeCols);
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            first = zone.left;
-            last = zone.right;
-        }
-        if (first === last) {
-            return _lt("Delete column %s", numberToLetters(first));
-        }
-        return _lt("Delete columns %s - %s", numberToLetters(first), numberToLetters(last));
-    };
-    const REMOVE_COLUMNS_ACTION = (env) => {
-        let columns = [...env.model.getters.getActiveCols()];
-        if (!columns.length) {
-            const zone = env.model.getters.getSelectedZones()[0];
-            for (let i = zone.left; i <= zone.right; i++) {
-                columns.push(i);
-            }
-        }
-        env.model.dispatch("REMOVE_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            dimension: "COL",
-            elements: columns,
-        });
-    };
-    const INSERT_CELL_SHIFT_DOWN = (env) => {
-        const zone = env.model.getters.getSelectedZone();
-        const result = env.model.dispatch("INSERT_CELL", { zone, shiftDimension: "ROW" });
-        handlePasteResult(env, result);
-    };
-    const INSERT_CELL_SHIFT_RIGHT = (env) => {
-        const zone = env.model.getters.getSelectedZone();
-        const result = env.model.dispatch("INSERT_CELL", { zone, shiftDimension: "COL" });
-        handlePasteResult(env, result);
-    };
-    const DELETE_CELL_SHIFT_UP = (env) => {
-        const zone = env.model.getters.getSelectedZone();
-        const result = env.model.dispatch("DELETE_CELL", { zone, shiftDimension: "ROW" });
-        handlePasteResult(env, result);
-    };
-    const DELETE_CELL_SHIFT_LEFT = (env) => {
-        const zone = env.model.getters.getSelectedZone();
-        const result = env.model.dispatch("DELETE_CELL", { zone, shiftDimension: "COL" });
-        handlePasteResult(env, result);
-    };
-    const MENU_INSERT_ROWS_BEFORE_NAME = (env) => {
-        const number = getRowsNumber(env);
-        if (number === 1) {
-            return _lt("Row above");
-        }
-        return _lt("%s Rows above", number.toString());
-    };
-    const ROW_INSERT_ROWS_BEFORE_NAME = (env) => {
-        const number = getRowsNumber(env);
-        return number === 1 ? _lt("Insert row above") : _lt("Insert %s rows above", number.toString());
-    };
-    const CELL_INSERT_ROWS_BEFORE_NAME = (env) => {
-        const number = getRowsNumber(env);
-        if (number === 1) {
-            return _lt("Insert row");
-        }
-        return _lt("Insert %s rows", number.toString());
-    };
-    const INSERT_ROWS_BEFORE_ACTION = (env) => {
-        const activeRows = env.model.getters.getActiveRows();
-        let row;
-        let quantity;
-        if (activeRows.size) {
-            row = Math.min(...activeRows);
-            quantity = activeRows.size;
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            row = zone.top;
-            quantity = zone.bottom - zone.top + 1;
-        }
-        env.model.dispatch("ADD_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            position: "before",
-            base: row,
-            quantity,
-            dimension: "ROW",
-        });
-    };
-    const MENU_INSERT_ROWS_AFTER_NAME = (env) => {
-        const number = getRowsNumber(env);
-        if (number === 1) {
-            return _lt("Row below");
-        }
-        return _lt("%s Rows below", number.toString());
-    };
-    const ROW_INSERT_ROWS_AFTER_NAME = (env) => {
-        const number = getRowsNumber(env);
-        return number === 1 ? _lt("Insert row below") : _lt("Insert %s rows below", number.toString());
-    };
-    const INSERT_ROWS_AFTER_ACTION = (env) => {
-        const activeRows = env.model.getters.getActiveRows();
-        let row;
-        let quantity;
-        if (activeRows.size) {
-            row = Math.max(...activeRows);
-            quantity = activeRows.size;
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            row = zone.bottom;
-            quantity = zone.bottom - zone.top + 1;
-        }
-        env.model.dispatch("ADD_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            position: "after",
-            base: row,
-            quantity,
-            dimension: "ROW",
-        });
-    };
-    const MENU_INSERT_COLUMNS_BEFORE_NAME = (env) => {
-        const number = getColumnsNumber(env);
-        if (number === 1) {
-            return _lt("Column left");
-        }
-        return _lt("%s Columns left", number.toString());
-    };
-    const COLUMN_INSERT_COLUMNS_BEFORE_NAME = (env) => {
-        const number = getColumnsNumber(env);
-        return number === 1
-            ? _lt("Insert column left")
-            : _lt("Insert %s columns left", number.toString());
-    };
-    const CELL_INSERT_COLUMNS_BEFORE_NAME = (env) => {
-        const number = getColumnsNumber(env);
-        if (number === 1) {
-            return _lt("Insert column");
-        }
-        return _lt("Insert %s columns", number.toString());
-    };
-    const INSERT_COLUMNS_BEFORE_ACTION = (env) => {
-        const activeCols = env.model.getters.getActiveCols();
-        let column;
-        let quantity;
-        if (activeCols.size) {
-            column = Math.min(...activeCols);
-            quantity = activeCols.size;
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            column = zone.left;
-            quantity = zone.right - zone.left + 1;
-        }
-        env.model.dispatch("ADD_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            position: "before",
-            dimension: "COL",
-            base: column,
-            quantity,
-        });
-    };
-    const MENU_INSERT_COLUMNS_AFTER_NAME = (env) => {
-        const number = getColumnsNumber(env);
-        if (number === 1) {
-            return _lt("Column right");
-        }
-        return _lt("%s Columns right", number.toString());
-    };
-    const COLUMN_INSERT_COLUMNS_AFTER_NAME = (env) => {
-        const number = getColumnsNumber(env);
-        return number === 1
-            ? _lt("Insert column right")
-            : _lt("Insert %s columns right", number.toString());
-    };
-    const INSERT_COLUMNS_AFTER_ACTION = (env) => {
-        const activeCols = env.model.getters.getActiveCols();
-        let column;
-        let quantity;
-        if (activeCols.size) {
-            column = Math.max(...activeCols);
-            quantity = activeCols.size;
-        }
-        else {
-            const zone = env.model.getters.getSelectedZones()[0];
-            column = zone.right;
-            quantity = zone.right - zone.left + 1;
-        }
-        env.model.dispatch("ADD_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            position: "after",
-            dimension: "COL",
-            base: column,
-            quantity,
-        });
-    };
-    const HIDE_COLUMNS_NAME = (env) => {
-        const cols = env.model.getters.getElementsFromSelection("COL");
-        let first = cols[0];
-        let last = cols[cols.length - 1];
-        if (cols.length === 1) {
-            return _lt("Hide column %s", numberToLetters(first).toString());
-        }
-        else if (last - first + 1 === cols.length) {
-            return _lt("Hide columns %s - %s", numberToLetters(first).toString(), numberToLetters(last).toString());
-        }
-        else {
-            return _lt("Hide columns");
-        }
-    };
-    const HIDE_COLUMNS_ACTION = (env) => {
-        const columns = env.model.getters.getElementsFromSelection("COL");
-        env.model.dispatch("HIDE_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            dimension: "COL",
-            elements: columns,
-        });
-    };
-    const UNHIDE_ALL_COLUMNS_ACTION = (env) => {
-        const sheet = env.model.getters.getActiveSheet();
-        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
-            sheetId: sheet.id,
-            dimension: "COL",
-            elements: Array.from(Array(sheet.cols.length).keys()),
-        });
-    };
-    const UNHIDE_COLUMNS_ACTION = (env) => {
-        const columns = env.model.getters.getElementsFromSelection("COL");
-        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            dimension: "COL",
-            elements: columns,
-        });
-    };
-    const HIDE_ROWS_NAME = (env) => {
-        const rows = env.model.getters.getElementsFromSelection("ROW");
-        let first = rows[0];
-        let last = rows[rows.length - 1];
-        if (rows.length === 1) {
-            return _lt("Hide row %s", (first + 1).toString());
-        }
-        else if (last - first + 1 === rows.length) {
-            return _lt("Hide rows %s - %s", (first + 1).toString(), (last + 1).toString());
-        }
-        else {
-            return _lt("Hide rows");
-        }
-    };
-    const HIDE_ROWS_ACTION = (env) => {
-        const rows = env.model.getters.getElementsFromSelection("ROW");
-        env.model.dispatch("HIDE_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            dimension: "ROW",
-            elements: rows,
-        });
-    };
-    const UNHIDE_ALL_ROWS_ACTION = (env) => {
-        const sheet = env.model.getters.getActiveSheet();
-        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
-            sheetId: sheet.id,
-            dimension: "ROW",
-            elements: Array.from(Array(sheet.rows.length).keys()),
-        });
-    };
-    const UNHIDE_ROWS_ACTION = (env) => {
-        const columns = env.model.getters.getElementsFromSelection("ROW");
-        env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            dimension: "ROW",
-            elements: columns,
-        });
-    };
-    //------------------------------------------------------------------------------
-    // Sheets
-    //------------------------------------------------------------------------------
-    const CREATE_SHEET_ACTION = (env) => {
-        const activeSheetId = env.model.getters.getActiveSheetId();
-        const position = env.model.getters.getSheetIds().indexOf(activeSheetId) + 1;
-        const sheetId = env.model.uuidGenerator.uuidv4();
-        env.model.dispatch("CREATE_SHEET", { sheetId, position });
-        env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
-    };
-    //------------------------------------------------------------------------------
-    // Charts
-    //------------------------------------------------------------------------------
-    const CREATE_CHART = (env) => {
-        var _a, _b;
-        const zone = env.model.getters.getSelectedZone();
-        let dataSetZone = zone;
-        const id = env.model.uuidGenerator.uuidv4();
-        let labelRange;
-        if (zone.left !== zone.right) {
-            dataSetZone = { ...zone, left: zone.left + 1 };
-        }
-        const dataSets = [zoneToXc(dataSetZone)];
-        const sheetId = env.model.getters.getActiveSheetId();
-        const position = {
-            x: ((_a = env.model.getters.tryGetCol(sheetId, zone.right + 1)) === null || _a === void 0 ? void 0 : _a.start) || 0,
-            y: ((_b = env.model.getters.tryGetRow(sheetId, zone.top)) === null || _b === void 0 ? void 0 : _b.start) || 0,
-        };
-        let dataSetsHaveTitle = false;
-        for (let x = dataSetZone.left; x <= dataSetZone.right; x++) {
-            const cell = env.model.getters.getCell(sheetId, x, zone.top);
-            if (cell && cell.evaluated.type !== CellValueType.number) {
-                dataSetsHaveTitle = true;
-                break;
-            }
-        }
-        if (zone.left !== zone.right) {
-            labelRange = zoneToXc({
-                ...zone,
-                right: zone.left,
-                top: dataSetsHaveTitle ? zone.top + 1 : zone.top,
-            });
-        }
-        env.model.dispatch("CREATE_CHART", {
-            sheetId,
-            id,
-            position,
-            definition: {
-                title: "",
-                dataSets,
-                labelRange,
-                type: "bar",
-                stackedBar: false,
-                dataSetsHaveTitle,
-                background: BACKGROUND_CHART_COLOR,
-                verticalAxisPosition: "left",
-                legendPosition: "top",
-            },
-        });
-        const figure = env.model.getters.getFigure(sheetId, id);
-        env.openSidePanel("ChartPanel", { figure });
-    };
-    //------------------------------------------------------------------------------
-    // Style/Format
-    //------------------------------------------------------------------------------
-    const FORMAT_GENERAL_ACTION = (env) => setFormatter(env, "");
-    const FORMAT_NUMBER_ACTION = (env) => setFormatter(env, "#,##0.00");
-    const FORMAT_PERCENT_ACTION = (env) => setFormatter(env, "0.00%");
-    const FORMAT_CURRENCY_ACTION = (env) => setFormatter(env, "[$$]#,##0.00");
-    const FORMAT_CURRENCY_ROUNDED_ACTION = (env) => setFormatter(env, "[$$]#,##0");
-    const FORMAT_DATE_ACTION = (env) => setFormatter(env, "m/d/yyyy");
-    const FORMAT_TIME_ACTION = (env) => setFormatter(env, "hh:mm:ss a");
-    const FORMAT_DATE_TIME_ACTION = (env) => setFormatter(env, "m/d/yyyy hh:mm:ss");
-    const FORMAT_DURATION_ACTION = (env) => setFormatter(env, "hhhh:mm:ss");
-    const FORMAT_BOLD_ACTION = (env) => setStyle(env, { bold: !env.model.getters.getCurrentStyle().bold });
-    const FORMAT_ITALIC_ACTION = (env) => setStyle(env, { italic: !env.model.getters.getCurrentStyle().italic });
-    const FORMAT_STRIKETHROUGH_ACTION = (env) => setStyle(env, { strikethrough: !env.model.getters.getCurrentStyle().strikethrough });
-    const FORMAT_UNDERLINE_ACTION = (env) => setStyle(env, { underline: !env.model.getters.getCurrentStyle().underline });
-    //------------------------------------------------------------------------------
-    // Side panel
-    //------------------------------------------------------------------------------
-    const OPEN_CF_SIDEPANEL_ACTION = (env) => {
-        env.openSidePanel("ConditionalFormatting", { selection: env.model.getters.getSelectedZones() });
-    };
-    const OPEN_FAR_SIDEPANEL_ACTION = (env) => {
-        env.openSidePanel("FindAndReplace", {});
-    };
-    const OPEN_CUSTOM_CURRENCY_SIDEPANEL_ACTION = (env) => {
-        env.openSidePanel("CustomCurrency", {});
-    };
-    const INSERT_LINK = (env) => {
-        env.openLinkEditor();
-    };
-    //------------------------------------------------------------------------------
-    // Sorting action
-    //------------------------------------------------------------------------------
-    const SORT_CELLS_ASCENDING = (env) => {
-        const { anchor, zones } = env.model.getters.getSelection();
-        const sheetId = env.model.getters.getActiveSheetId();
-        interactiveSortSelection(env, sheetId, anchor.cell, zones[0], "ascending");
-    };
-    const SORT_CELLS_DESCENDING = (env) => {
-        const { anchor, zones } = env.model.getters.getSelection();
-        const sheetId = env.model.getters.getActiveSheetId();
-        interactiveSortSelection(env, sheetId, anchor.cell, zones[0], "descending");
-    };
-    const IS_ONLY_ONE_RANGE = (env) => {
-        return env.model.getters.getSelectedZones().length === 1;
-    };
-
-    //------------------------------------------------------------------------------
-    // Context Menu Registry
-    //------------------------------------------------------------------------------
-    const cellMenuRegistry = new MenuItemRegistry();
-    cellMenuRegistry
-        .add("cut", {
-        name: _lt("Cut"),
-        shortCut: "Ctrl+X",
-        sequence: 10,
-        action: CUT_ACTION,
-    })
-        .add("copy", {
-        name: _lt("Copy"),
-        shortCut: "Ctrl+C",
-        sequence: 20,
-        isReadonlyAllowed: true,
-        action: COPY_ACTION,
-    })
-        .add("paste", {
-        name: _lt("Paste"),
-        shortCut: "Ctrl+V",
-        sequence: 30,
-        action: PASTE_ACTION,
-        isVisible: IS_ONLY_ONE_RANGE,
-    })
-        .add("paste_special", {
-        name: _lt("Paste special"),
-        sequence: 40,
-        separator: true,
-        isVisible: IS_ONLY_ONE_RANGE,
-    })
-        .addChild("paste_value_only", ["paste_special"], {
-        name: _lt("Paste values only"),
-        sequence: 10,
-        action: PASTE_VALUE_ACTION,
-    })
-        .addChild("paste_format_only", ["paste_special"], {
-        name: _lt("Paste format only"),
-        sequence: 20,
-        action: PASTE_FORMAT_ACTION,
-    })
-        .add("sort_range", {
-        name: _lt("Sort range"),
-        sequence: 50,
-        isVisible: IS_ONLY_ONE_RANGE,
-        separator: true,
-    })
-        .addChild("sort_ascending", ["sort_range"], {
-        name: _lt("Ascending (A ⟶ Z)"),
-        sequence: 10,
-        action: SORT_CELLS_ASCENDING,
-    })
-        .addChild("sort_descending", ["sort_range"], {
-        name: _lt("Descending (Z ⟶ A)"),
-        sequence: 20,
-        action: SORT_CELLS_DESCENDING,
-    })
-        .add("add_row_before", {
-        name: CELL_INSERT_ROWS_BEFORE_NAME,
-        sequence: 70,
-        action: INSERT_ROWS_BEFORE_ACTION,
-        isVisible: IS_ONLY_ONE_RANGE,
-    })
-        .add("add_column_before", {
-        name: CELL_INSERT_COLUMNS_BEFORE_NAME,
-        sequence: 90,
-        action: INSERT_COLUMNS_BEFORE_ACTION,
-        isVisible: IS_ONLY_ONE_RANGE,
-    })
-        .add("insert_cell", {
-        name: _lt("Insert cells"),
-        sequence: 100,
-        isVisible: IS_ONLY_ONE_RANGE,
-        separator: true,
-    })
-        .addChild("insert_cell_down", ["insert_cell"], {
-        name: _lt("Shift down"),
-        sequence: 10,
-        action: INSERT_CELL_SHIFT_DOWN,
-    })
-        .addChild("insert_cell_right", ["insert_cell"], {
-        name: _lt("Shift right"),
-        sequence: 20,
-        action: INSERT_CELL_SHIFT_RIGHT,
-    })
-        .add("delete_row", {
-        name: REMOVE_ROWS_NAME,
-        sequence: 110,
-        action: REMOVE_ROWS_ACTION,
-        isVisible: IS_ONLY_ONE_RANGE,
-    })
-        .add("delete_column", {
-        name: REMOVE_COLUMNS_NAME,
-        sequence: 120,
-        action: REMOVE_COLUMNS_ACTION,
-        isVisible: IS_ONLY_ONE_RANGE,
-    })
-        .add("delete_cell", {
-        name: _lt("Delete cells"),
-        sequence: 130,
-        isVisible: IS_ONLY_ONE_RANGE,
-    })
-        .addChild("delete_cell_up", ["delete_cell"], {
-        name: _lt("Shift up"),
-        sequence: 10,
-        action: DELETE_CELL_SHIFT_UP,
-    })
-        .addChild("delete_cell_down", ["delete_cell"], {
-        name: _lt("Shift left"),
-        sequence: 20,
-        action: DELETE_CELL_SHIFT_LEFT,
-    })
-        .add("clear_cell", {
-        name: _lt("Clear cells"),
-        sequence: 140,
-        action: DELETE_CONTENT_ACTION,
-        isEnabled: (env) => {
-            const cell = env.model.getters.getActiveCell();
-            return Boolean(cell);
-        },
-        separator: true,
-    })
-        .add("insert_link", {
-        name: _lt("Insert link"),
-        separator: true,
-        sequence: 150,
-        action: INSERT_LINK,
-    })
-        .add("conditional_formatting", {
-        name: _lt("Conditional formatting"),
-        sequence: 160,
-        action: OPEN_CF_SIDEPANEL_ACTION,
-        separator: true,
-    });
-
-    const colMenuRegistry = new MenuItemRegistry();
-    colMenuRegistry
-        .add("cut", {
-        name: _lt("Cut"),
-        shortCut: "Ctrl+X",
-        sequence: 10,
-        action: CUT_ACTION,
-    })
-        .add("copy", {
-        name: _lt("Copy"),
-        shortCut: "Ctrl+C",
-        sequence: 20,
-        isReadonlyAllowed: true,
-        action: COPY_ACTION,
-    })
-        .add("paste", {
-        name: _lt("Paste"),
-        shortCut: "Ctrl+V",
-        sequence: 30,
-        action: PASTE_ACTION,
-    })
-        .add("paste_special", {
-        name: _lt("Paste special"),
-        sequence: 40,
-        separator: true,
-    })
-        .addChild("paste_value_only", ["paste_special"], {
-        name: _lt("Paste value only"),
-        sequence: 10,
-        action: PASTE_VALUE_ACTION,
-    })
-        .addChild("paste_format_only", ["paste_special"], {
-        name: _lt("Paste format only"),
-        sequence: 20,
-        action: PASTE_FORMAT_ACTION,
-    })
-        .add("sort_columns", {
-        name: (env) => env.model.getters.getActiveCols().size > 1 ? _lt("Sort columns") : _lt("Sort column"),
-        sequence: 50,
-        isVisible: IS_ONLY_ONE_RANGE,
-        separator: true,
-    })
-        .addChild("sort_ascending", ["sort_columns"], {
-        name: _lt("Ascending (A ⟶ Z)"),
-        sequence: 10,
-        action: SORT_CELLS_ASCENDING,
-    })
-        .addChild("sort_descending", ["sort_columns"], {
-        name: _lt("Descending (Z ⟶ A)"),
-        sequence: 20,
-        action: SORT_CELLS_DESCENDING,
-    })
-        .add("add_column_before", {
-        name: COLUMN_INSERT_COLUMNS_BEFORE_NAME,
-        sequence: 70,
-        action: INSERT_COLUMNS_BEFORE_ACTION,
-    })
-        .add("add_column_after", {
-        name: COLUMN_INSERT_COLUMNS_AFTER_NAME,
-        sequence: 80,
-        action: INSERT_COLUMNS_AFTER_ACTION,
-    })
-        .add("delete_column", {
-        name: REMOVE_COLUMNS_NAME,
-        sequence: 90,
-        action: REMOVE_COLUMNS_ACTION,
-    })
-        .add("clear_column", {
-        name: DELETE_CONTENT_COLUMNS_NAME,
-        sequence: 100,
-        action: DELETE_CONTENT_COLUMNS_ACTION,
-    })
-        .add("hide_columns", {
-        name: HIDE_COLUMNS_NAME,
-        sequence: 85,
-        action: HIDE_COLUMNS_ACTION,
-        isVisible: (env) => {
-            const sheet = env.model.getters.getActiveSheet();
-            const hiddenCols = env.model.getters.getHiddenColsGroups(sheet.id).flat();
-            return (sheet.cols.length >
-                hiddenCols.length + env.model.getters.getElementsFromSelection("COL").length);
-        },
-        separator: true,
-    })
-        .add("unhide_columns", {
-        name: "Unhide columns",
-        sequence: 86,
-        action: UNHIDE_COLUMNS_ACTION,
-        isVisible: (env) => {
-            const hiddenCols = env.model.getters
-                .getHiddenColsGroups(env.model.getters.getActiveSheetId())
-                .flat();
-            const currentCols = env.model.getters.getElementsFromSelection("COL");
-            return currentCols.some((col) => hiddenCols.includes(col));
-        },
-        separator: true,
-    })
-        .add("conditional_formatting", {
-        name: _lt("Conditional formatting"),
-        sequence: 110,
-        action: OPEN_CF_SIDEPANEL_ACTION,
-    });
-
-    //------------------------------------------------------------------------------
-    // Link Menu Registry
-    //------------------------------------------------------------------------------
-    const linkMenuRegistry = new MenuItemRegistry();
-    linkMenuRegistry.add("sheet", {
-        name: _lt("Link sheet"),
-        sequence: 10,
-        children: (env) => {
-            const sheets = env.model.getters
-                .getSheetIds()
-                .map((sheetId) => env.model.getters.getSheet(sheetId));
-            return sheets.map((sheet, i) => createFullMenuItem(sheet.id, {
-                name: sheet.name,
-                sequence: i,
-                action: () => ({
-                    link: { label: sheet.name, url: buildSheetLink(sheet.id) },
-                    urlRepresentation: sheet.name,
-                    isUrlEditable: false,
-                }),
-            }));
-        },
-    });
-
-    const rowMenuRegistry = new MenuItemRegistry();
-    rowMenuRegistry
-        .add("cut", {
-        name: _lt("Cut"),
-        sequence: 10,
-        shortCut: "Ctrl+X",
-        action: CUT_ACTION,
-    })
-        .add("copy", {
-        name: _lt("Copy"),
-        shortCut: "Ctrl+C",
-        sequence: 20,
-        isReadonlyAllowed: true,
-        action: COPY_ACTION,
-    })
-        .add("paste", {
-        name: _lt("Paste"),
-        shortCut: "Ctrl+V",
-        sequence: 30,
-        action: PASTE_ACTION,
-    })
-        .add("paste_special", {
-        name: _lt("Paste special"),
-        sequence: 40,
-        separator: true,
-    })
-        .addChild("paste_value_only", ["paste_special"], {
-        name: _lt("Paste value only"),
-        sequence: 10,
-        action: PASTE_VALUE_ACTION,
-    })
-        .addChild("paste_format_only", ["paste_special"], {
-        name: _lt("Paste format only"),
-        sequence: 20,
-        action: PASTE_FORMAT_ACTION,
-    })
-        .add("add_row_before", {
-        name: ROW_INSERT_ROWS_BEFORE_NAME,
-        sequence: 50,
-        action: INSERT_ROWS_BEFORE_ACTION,
-    })
-        .add("add_row_after", {
-        name: ROW_INSERT_ROWS_AFTER_NAME,
-        sequence: 60,
-        action: INSERT_ROWS_AFTER_ACTION,
-    })
-        .add("delete_row", {
-        name: REMOVE_ROWS_NAME,
-        sequence: 70,
-        action: REMOVE_ROWS_ACTION,
-    })
-        .add("clear_row", {
-        name: DELETE_CONTENT_ROWS_NAME,
-        sequence: 80,
-        action: DELETE_CONTENT_ROWS_ACTION,
-    })
-        .add("hide_rows", {
-        name: HIDE_ROWS_NAME,
-        sequence: 85,
-        action: HIDE_ROWS_ACTION,
-        isVisible: (env) => {
-            const sheet = env.model.getters.getActiveSheet();
-            const hiddenRows = env.model.getters.getHiddenRowsGroups(sheet.id).flat();
-            return (sheet.rows.length >
-                hiddenRows.length + env.model.getters.getElementsFromSelection("ROW").length);
-        },
-        separator: true,
-    })
-        .add("unhide_rows", {
-        name: "Unhide rows",
-        sequence: 86,
-        action: UNHIDE_ROWS_ACTION,
-        isVisible: (env) => {
-            const hiddenRows = env.model.getters
-                .getHiddenRowsGroups(env.model.getters.getActiveSheetId())
-                .flat();
-            const currentRows = env.model.getters.getElementsFromSelection("ROW");
-            return currentRows.some((col) => hiddenRows.includes(col));
-        },
-        separator: true,
-    })
-        .add("conditional_formatting", {
-        name: _lt("Conditional formatting"),
-        sequence: 90,
-        action: OPEN_CF_SIDEPANEL_ACTION,
-    });
-
-    function interactiveRenameSheet(env, sheetId, errorText) {
-        const placeholder = env.model.getters.getSheetName(sheetId);
-        const title = _lt("Rename Sheet");
-        const callback = (name) => {
-            if (name === null || name === placeholder) {
-                return;
-            }
-            if (name === "") {
-                interactiveRenameSheet(env, sheetId, _lt("The sheet name cannot be empty."));
-            }
-            const result = env.model.dispatch("RENAME_SHEET", { sheetId, name });
-            if (!result.isSuccessful) {
-                if (result.reasons.includes(10 /* DuplicatedSheetName */)) {
-                    interactiveRenameSheet(env, sheetId, _lt("A sheet with the name %s already exists. Please select another name.", name));
-                }
-                if (result.reasons.includes(11 /* ForbiddenCharactersInSheetName */)) {
-                    interactiveRenameSheet(env, sheetId, _lt("Some used characters are not allowed in a sheet name (Forbidden characters are %s).", FORBIDDEN_SHEET_CHARS.join(" ")));
-                }
-            }
-        };
-        env.editText(title, callback, {
-            placeholder: placeholder,
-            error: errorText,
-        });
-    }
-
-    const sheetMenuRegistry = new MenuItemRegistry();
-    sheetMenuRegistry
-        .add("delete", {
-        name: _lt("Delete"),
-        sequence: 10,
-        isVisible: (env) => {
-            return env.model.getters.getSheetIds().length > 1;
-        },
-        action: (env) => env.askConfirmation(_lt("Are you sure you want to delete this sheet ?"), () => {
-            env.model.dispatch("DELETE_SHEET", { sheetId: env.model.getters.getActiveSheetId() });
-        }),
-    })
-        .add("duplicate", {
-        name: _lt("Duplicate"),
-        sequence: 20,
-        action: (env) => {
-            const sheetIdFrom = env.model.getters.getActiveSheetId();
-            const sheetIdTo = env.model.uuidGenerator.uuidv4();
-            env.model.dispatch("DUPLICATE_SHEET", {
-                sheetId: sheetIdFrom,
-                sheetIdTo,
-            });
-            env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo });
-        },
-    })
-        .add("rename", {
-        name: _lt("Rename"),
-        sequence: 30,
-        action: (env) => interactiveRenameSheet(env, env.model.getters.getActiveSheetId()),
-    })
-        .add("move_right", {
-        name: _lt("Move right"),
-        sequence: 40,
-        isVisible: (env) => {
-            const sheetId = env.model.getters.getActiveSheetId();
-            const sheetIds = env.model.getters.getSheetIds();
-            return sheetIds.indexOf(sheetId) !== sheetIds.length - 1;
-        },
-        action: (env) => env.model.dispatch("MOVE_SHEET", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            direction: "right",
-        }),
-    })
-        .add("move_left", {
-        name: _lt("Move left"),
-        sequence: 50,
-        isVisible: (env) => {
-            const sheetId = env.model.getters.getActiveSheetId();
-            return env.model.getters.getSheetIds()[0] !== sheetId;
-        },
-        action: (env) => env.model.dispatch("MOVE_SHEET", {
-            sheetId: env.model.getters.getActiveSheetId(),
-            direction: "left",
-        }),
-    });
-
-    const CfTerms = {
-        Errors: {
-            [20 /* InvalidRange */]: _lt("The range is invalid"),
-            [34 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
-            [35 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
-            [36 /* MinNaN */]: _lt("The minpoint must be a number"),
-            [37 /* MidNaN */]: _lt("The midpoint must be a number"),
-            [38 /* MaxNaN */]: _lt("The maxpoint must be a number"),
-            [39 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
-            [40 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
-            [30 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [33 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [32 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [31 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
-            [41 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [43 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [42 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [44 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
-            [45 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
-            [19 /* EmptyRange */]: _lt("A range needs to be defined"),
-            Unexpected: _lt("The rule is invalid for an unknown reason"),
-        },
-        ColorScale: _lt("Color scale"),
-        IconSet: _lt("Icon set"),
-    };
-    const CellIsOperators = {
-        IsEmpty: _lt("Is empty"),
-        IsNotEmpty: _lt("Is not empty"),
-        ContainsText: _lt("Contains"),
-        NotContains: _lt("Does not contain"),
-        BeginsWith: _lt("Starts with"),
-        EndsWith: _lt("Ends with"),
-        Equal: _lt("Is equal to"),
-        NotEqual: _lt("Is not equal to"),
-        GreaterThan: _lt("Is greater than"),
-        GreaterThanOrEqual: _lt("Is greater than or equal to"),
-        LessThan: _lt("Is less than"),
-        LessThanOrEqual: _lt("Is less than or equal to"),
-        Between: _lt("Is between"),
-        NotBetween: _lt("Is not between"),
-    };
-    const ChartTerms = {
-        Series: _lt("Series"),
-        Errors: {
-            [25 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
-            [26 /* InvalidDataSet */]: _lt("The dataset is invalid"),
-            [27 /* InvalidLabelRange */]: _lt("Labels are invalid"),
-            Unexpected: _lt("The chart definition is invalid for an unknown reason"),
-        },
-    };
-    const NumberFormatTerms = {
-        General: _lt("General"),
-        NoSpecificFormat: _lt("no specific format"),
-        Number: _lt("Number"),
-        Percent: _lt("Percent"),
-        Currency: _lt("Currency"),
-        CurrencyRounded: _lt("Currency rounded"),
-        Date: _lt("Date"),
-        Time: _lt("Time"),
-        DateTime: _lt("Date time"),
-        Duration: _lt("Duration"),
-        CustomCurrency: _lt("Custom currency"),
-    };
-    const CustomCurrencyTerms = {
-        Custom: _lt("Custom"),
-    };
-
-    const topbarMenuRegistry = new MenuItemRegistry();
-    topbarMenuRegistry
-        .add("file", { name: _lt("File"), sequence: 10 })
-        .add("edit", { name: _lt("Edit"), sequence: 20 })
-        .add("view", { name: _lt("View"), sequence: 30 })
-        .add("insert", { name: _lt("Insert"), sequence: 40 })
-        .add("format", { name: _lt("Format"), sequence: 50 })
-        .add("data", { name: _lt("Data"), sequence: 60 })
-        .addChild("save", ["file"], {
-        name: _lt("Save"),
-        shortCut: "Ctrl+S",
-        sequence: 10,
-        action: () => console.log("Not implemented"),
-    })
-        .addChild("undo", ["edit"], {
-        name: _lt("Undo"),
-        shortCut: "Ctrl+Z",
-        sequence: 10,
-        action: UNDO_ACTION,
-    })
-        .addChild("redo", ["edit"], {
-        name: _lt("Redo"),
-        shortCut: "Ctrl+Y",
-        sequence: 20,
-        action: REDO_ACTION,
-        separator: true,
-    })
-        .addChild("copy", ["edit"], {
-        name: _lt("Copy"),
-        shortCut: "Ctrl+C",
-        sequence: 30,
-        isReadonlyAllowed: true,
-        action: COPY_ACTION,
-    })
-        .addChild("cut", ["edit"], {
-        name: _lt("Cut"),
-        shortCut: "Ctrl+X",
-        sequence: 40,
-        action: CUT_ACTION,
-    })
-        .addChild("paste", ["edit"], {
-        name: _lt("Paste"),
-        shortCut: "Ctrl+V",
-        sequence: 50,
-        action: PASTE_ACTION,
-    })
-        .addChild("paste_special", ["edit"], {
-        name: _lt("Paste special"),
-        sequence: 60,
-        separator: true,
-    })
-        .addChild("paste_special_value", ["edit", "paste_special"], {
-        name: _lt("Paste value only"),
-        sequence: 10,
-        action: PASTE_VALUE_ACTION,
-    })
-        .addChild("paste_special_format", ["edit", "paste_special"], {
-        name: _lt("Paste format only"),
-        sequence: 20,
-        action: PASTE_FORMAT_ACTION,
-    })
-        .addChild("sort_range", ["edit"], {
-        name: _lt("Sort range"),
-        sequence: 62,
-        isVisible: IS_ONLY_ONE_RANGE,
-        separator: true,
-    })
-        .addChild("sort_ascending", ["edit", "sort_range"], {
-        name: _lt("Ascending (A ⟶ Z)"),
-        sequence: 10,
-        action: SORT_CELLS_ASCENDING,
-    })
-        .addChild("sort_descending", ["edit", "sort_range"], {
-        name: _lt("Descending (Z ⟶ A)"),
-        sequence: 20,
-        action: SORT_CELLS_DESCENDING,
-    })
-        .addChild("find_and_replace", ["edit"], {
-        name: _lt("Find and replace"),
-        shortCut: "Ctrl+H",
-        sequence: 65,
-        isReadonlyAllowed: true,
-        action: OPEN_FAR_SIDEPANEL_ACTION,
-        separator: true,
-    })
-        .addChild("edit_delete_cell_values", ["edit"], {
-        name: _lt("Delete values"),
-        sequence: 70,
-        action: DELETE_CONTENT_ACTION,
-    })
-        .addChild("edit_delete_row", ["edit"], {
-        name: REMOVE_ROWS_NAME,
-        sequence: 80,
-        action: REMOVE_ROWS_ACTION,
-    })
-        .addChild("edit_delete_column", ["edit"], {
-        name: REMOVE_COLUMNS_NAME,
-        sequence: 90,
-        action: REMOVE_COLUMNS_ACTION,
-    })
-        .addChild("edit_delete_cell_shift_up", ["edit"], {
-        name: _lt("Delete cell and shift up"),
-        sequence: 93,
-        action: DELETE_CELL_SHIFT_UP,
-    })
-        .addChild("edit_delete_cell_shift_left", ["edit"], {
-        name: _lt("Delete cell and shift left"),
-        sequence: 97,
-        action: DELETE_CELL_SHIFT_LEFT,
-    })
-        .addChild("edit_unhide_columns", ["edit"], {
-        name: _lt("Unhide all columns"),
-        sequence: 100,
-        action: UNHIDE_ALL_COLUMNS_ACTION,
-        isVisible: (env) => env.model.getters.getHiddenColsGroups(env.model.getters.getActiveSheetId()).length > 0,
-    })
-        .addChild("edit_unhide_rows", ["edit"], {
-        name: _lt("Unhide all rows"),
-        sequence: 100,
-        action: UNHIDE_ALL_ROWS_ACTION,
-        isVisible: (env) => env.model.getters.getHiddenRowsGroups(env.model.getters.getActiveSheetId()).length > 0,
-    })
-        .addChild("insert_row_before", ["insert"], {
-        name: MENU_INSERT_ROWS_BEFORE_NAME,
-        sequence: 10,
-        action: INSERT_ROWS_BEFORE_ACTION,
-        isVisible: (env) => env.model.getters.getActiveCols().size === 0,
-    })
-        .addChild("insert_row_after", ["insert"], {
-        name: MENU_INSERT_ROWS_AFTER_NAME,
-        sequence: 20,
-        action: INSERT_ROWS_AFTER_ACTION,
-        isVisible: (env) => env.model.getters.getActiveCols().size === 0,
-        separator: true,
-    })
-        .addChild("insert_column_before", ["insert"], {
-        name: MENU_INSERT_COLUMNS_BEFORE_NAME,
-        sequence: 30,
-        action: INSERT_COLUMNS_BEFORE_ACTION,
-        isVisible: (env) => env.model.getters.getActiveRows().size === 0,
-    })
-        .addChild("insert_column_after", ["insert"], {
-        name: MENU_INSERT_COLUMNS_AFTER_NAME,
-        sequence: 40,
-        action: INSERT_COLUMNS_AFTER_ACTION,
-        isVisible: (env) => env.model.getters.getActiveRows().size === 0,
-        separator: true,
-    })
-        .addChild("insert_insert_cell_shift_down", ["insert"], {
-        name: _lt("Insert cells and shift down"),
-        sequence: 43,
-        action: INSERT_CELL_SHIFT_DOWN,
-    })
-        .addChild("insert_insert_cell_shift_right", ["insert"], {
-        name: _lt("Insert cells and shift right"),
-        sequence: 47,
-        action: INSERT_CELL_SHIFT_RIGHT,
-        separator: true,
-    })
-        .addChild("insert_chart", ["insert"], {
-        name: _lt("Chart"),
-        sequence: 50,
-        action: CREATE_CHART,
-    })
-        .addChild("insert_link", ["insert"], {
-        name: _lt("Link"),
-        separator: true,
-        sequence: 60,
-        action: INSERT_LINK,
-    })
-        .addChild("insert_sheet", ["insert"], {
-        name: _lt("New sheet"),
-        sequence: 70,
-        action: CREATE_SHEET_ACTION,
-        separator: true,
-    })
-        .addChild("view_gridlines", ["view"], {
-        name: (env) => env.model.getters.getGridLinesVisibility(env.model.getters.getActiveSheetId())
-            ? _lt("Hide gridlines")
-            : _lt("Show gridlines"),
-        action: SET_GRID_LINES_VISIBILITY_ACTION,
-        sequence: 5,
-        separator: true,
-    })
-        .addChild("view_formulas", ["view"], {
-        name: (env) => env.model.getters.shouldShowFormulas() ? _lt("Hide formulas") : _lt("Show formulas"),
-        action: SET_FORMULA_VISIBILITY_ACTION,
-        isReadonlyAllowed: true,
-        sequence: 10,
-    })
-        .addChild("format_number", ["format"], {
-        name: _lt("Numbers"),
-        sequence: 10,
-        separator: true,
-    })
-        .addChild("format_number_general", ["format", "format_number"], {
-        name: `${NumberFormatTerms.General} (${NumberFormatTerms.NoSpecificFormat})`,
-        sequence: 10,
-        separator: true,
-        action: FORMAT_GENERAL_ACTION,
-    })
-        .addChild("format_number_number", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Number} (1,000.12)`,
-        sequence: 20,
-        action: FORMAT_NUMBER_ACTION,
-    })
-        .addChild("format_number_percent", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Percent} (10.12%)`,
-        sequence: 30,
-        separator: true,
-        action: FORMAT_PERCENT_ACTION,
-    })
-        .addChild("format_number_currency", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Currency} ($1,000.12)`,
-        sequence: 37,
-        action: FORMAT_CURRENCY_ACTION,
-    })
-        .addChild("format_number_currency_rounded", ["format", "format_number"], {
-        name: `${NumberFormatTerms.CurrencyRounded} ($1,000)`,
-        sequence: 38,
-        action: FORMAT_CURRENCY_ROUNDED_ACTION,
-    })
-        .addChild("format_custom_currency", ["format", "format_number"], {
-        name: NumberFormatTerms.CustomCurrency,
-        sequence: 39,
-        separator: true,
-        action: OPEN_CUSTOM_CURRENCY_SIDEPANEL_ACTION,
-    })
-        .addChild("format_number_date", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Date} (9/26/2008)`,
-        sequence: 40,
-        action: FORMAT_DATE_ACTION,
-    })
-        .addChild("format_number_time", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Time} (10:43:00 PM)`,
-        sequence: 50,
-        action: FORMAT_TIME_ACTION,
-    })
-        .addChild("format_number_date_time", ["format", "format_number"], {
-        name: `${NumberFormatTerms.DateTime} (9/26/2008 22:43:00)`,
-        sequence: 60,
-        action: FORMAT_DATE_TIME_ACTION,
-    })
-        .addChild("format_number_duration", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Duration} (27:51:38)`,
-        sequence: 70,
-        separator: true,
-        action: FORMAT_DURATION_ACTION,
-    })
-        .addChild("format_bold", ["format"], {
-        name: _lt("Bold"),
-        sequence: 20,
-        shortCut: "Ctrl+B",
-        action: FORMAT_BOLD_ACTION,
-    })
-        .addChild("format_italic", ["format"], {
-        name: _lt("Italic"),
-        sequence: 30,
-        shortCut: "Ctrl+I",
-        action: FORMAT_ITALIC_ACTION,
-    })
-        .addChild("format_underline", ["format"], {
-        name: _lt("Underline"),
-        shortCut: "Ctrl+U",
-        sequence: 40,
-        action: FORMAT_UNDERLINE_ACTION,
-    })
-        .addChild("format_strikethrough", ["format"], {
-        name: _lt("Strikethrough"),
-        sequence: 50,
-        action: FORMAT_STRIKETHROUGH_ACTION,
-        separator: true,
-    })
-        .addChild("format_font_size", ["format"], {
-        name: _lt("Font size"),
-        sequence: 60,
-        separator: true,
-    })
-        .addChild("format_cf", ["format"], {
-        name: _lt("Conditional formatting"),
-        sequence: 70,
-        action: OPEN_CF_SIDEPANEL_ACTION,
-        separator: true,
-    });
-    // Font-sizes
-    for (let fs of fontSizes) {
-        topbarMenuRegistry.addChild(`format_font_size_${fs.pt}`, ["format", "format_font_size"], {
-            name: fs.pt.toString(),
-            sequence: fs.pt,
-            action: (env) => setStyle(env, { fontSize: fs.pt }),
-        });
-    }
-
-    class OTRegistry extends Registry {
-        /**
-         * Add a transformation function to the registry. When the executed command
-         * happened, all the commands in toTransforms should be transformed using the
-         * transformation function given
-         */
-        addTransformation(executed, toTransforms, fn) {
-            for (let toTransform of toTransforms) {
-                if (!this.content[toTransform]) {
-                    this.content[toTransform] = new Map();
-                }
-                this.content[toTransform].set(executed, fn);
-            }
-            return this;
-        }
-        /**
-         * Get the transformation function to transform the command toTransform, after
-         * that the executed command happened.
-         */
-        getTransformation(toTransform, executed) {
-            return this.content[toTransform] && this.content[toTransform].get(executed);
-        }
-    }
-    const otRegistry = new OTRegistry();
-
-    /**
-     * This file is largely inspired by owl 1.
-     * `css` tag has been removed from owl 2 without workaround to manage css.
-     * So, the solution was to import the behavior of owl 1 directly in our
-     * codebase, with one difference: the css is added to the sheet as soon as the
-     * css tag is executed. In owl 1, the css was added as soon as a Component was
-     * created for the first time.
-     */
-    const STYLESHEETS = {};
-    let nextId = 0;
-    /**
-     * CSS tag helper for defining inline stylesheets.  With this, one can simply define
-     * an inline stylesheet with just the following code:
-     * ```js
-     *     css`.component-a { color: red; }`;
-     * ```
-     */
-    function css(strings, ...args) {
-        const name = `__sheet__${nextId++}`;
-        const value = String.raw(strings, ...args);
-        registerSheet(name, value);
-        activateSheet(name);
-        return name;
-    }
-    function processSheet(str) {
-        const tokens = str.split(/(\{|\}|;)/).map((s) => s.trim());
-        const selectorStack = [];
-        const parts = [];
-        let rules = [];
-        function generateSelector(stackIndex, parentSelector) {
-            const parts = [];
-            for (const selector of selectorStack[stackIndex]) {
-                let part = (parentSelector && parentSelector + " " + selector) || selector;
-                if (part.includes("&")) {
-                    part = selector.replace(/&/g, parentSelector || "");
-                }
-                if (stackIndex < selectorStack.length - 1) {
-                    part = generateSelector(stackIndex + 1, part);
-                }
-                parts.push(part);
-            }
-            return parts.join(", ");
-        }
-        function generateRules() {
-            if (rules.length) {
-                parts.push(generateSelector(0) + " {");
-                parts.push(...rules);
-                parts.push("}");
-                rules = [];
-            }
-        }
-        while (tokens.length) {
-            let token = tokens.shift();
-            if (token === "}") {
-                generateRules();
-                selectorStack.pop();
-            }
-            else {
-                if (tokens[0] === "{") {
-                    generateRules();
-                    selectorStack.push(token.split(/\s*,\s*/));
-                    tokens.shift();
-                }
-                if (tokens[0] === ";") {
-                    rules.push("  " + token + ";");
-                }
-            }
-        }
-        return parts.join("\n");
-    }
-    function registerSheet(id, css) {
-        const sheet = document.createElement("style");
-        sheet.textContent = processSheet(css);
-        STYLESHEETS[id] = sheet;
-    }
-    function activateSheet(id) {
-        const sheet = STYLESHEETS[id];
-        sheet.setAttribute("component", id);
-        document.head.appendChild(sheet);
-    }
-
-    const COLORS = [
-        [
-            "#000000",
-            "#434343",
-            "#666666",
-            "#999999",
-            "#b7b7b7",
-            "#cccccc",
-            "#d9d9d9",
-            "#efefef",
-            "#f3f3f3",
-            "#ffffff",
-        ],
-        [
-            "#980000",
-            "#ff0000",
-            "#ff9900",
-            "#ffff00",
-            "#00ff00",
-            "#00ffff",
-            "#4a86e8",
-            "#0000ff",
-            "#9900ff",
-            "#ff00ff",
-        ],
-        [
-            "#e6b8af",
-            "#f4cccc",
-            "#fce5cd",
-            "#fff2cc",
-            "#d9ead3",
-            "#d0e0e3",
-            "#c9daf8",
-            "#cfe2f3",
-            "#d9d2e9",
-            "#ead1dc",
-        ],
-        [
-            "#dd7e6b",
-            "#ea9999",
-            "#f9cb9c",
-            "#ffe599",
-            "#b6d7a8",
-            "#a2c4c9",
-            "#a4c2f4",
-            "#9fc5e8",
-            "#b4a7d6",
-            "#d5a6bd",
-        ],
-        [
-            "#cc4125",
-            "#e06666",
-            "#f6b26b",
-            "#ffd966",
-            "#93c47d",
-            "#76a5af",
-            "#6d9eeb",
-            "#6fa8dc",
-            "#8e7cc3",
-            "#c27ba0",
-        ],
-        [
-            "#a61c00",
-            "#cc0000",
-            "#e69138",
-            "#f1c232",
-            "#6aa84f",
-            "#45818e",
-            "#3c78d8",
-            "#3d85c6",
-            "#674ea7",
-            "#a64d79",
-        ],
-        [
-            "#85200c",
-            "#990000",
-            "#b45f06",
-            "#bf9000",
-            "#38761d",
-            "#134f5c",
-            "#1155cc",
-            "#0b5394",
-            "#351c75",
-            "#741b47",
-        ],
-        [
-            "#5b0f00",
-            "#660000",
-            "#783f04",
-            "#7f6000",
-            "#274e13",
-            "#0c343d",
-            "#1c4587",
-            "#073763",
-            "#20124d",
-            "#4c1130",
-        ],
-    ];
-    const PICKER_VERTICAL_PADDING = 6;
-    const LINE_VERTICAL_PADDING = 3;
-    const LINE_HORIZONTAL_PADDING = 6;
-    const ITEM_HORIZONTAL_MARGIN = 2;
-    const ITEM_EDGE_LENGTH = 18;
-    const ITEM_BORDER_WIDTH = 1;
-    const ITEMS_PER_LINE = Math.max(...COLORS.map((line) => line.length));
-    const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
-        2 * LINE_HORIZONTAL_PADDING;
-    css /* scss */ `
-  .o-color-picker {
-    position: absolute;
-    top: calc(100% + 5px);
-    z-index: 10;
-    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-    background-color: white;
-    padding: ${PICKER_VERTICAL_PADDING}px 0px;
-
-    .o-color-picker-line {
-      display: flex;
-      padding: ${LINE_VERTICAL_PADDING}px ${LINE_HORIZONTAL_PADDING}px;
-      .o-color-picker-line-item {
-        width: ${ITEM_EDGE_LENGTH}px;
-        height: ${ITEM_EDGE_LENGTH}px;
-        margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
-        border-radius: 50px;
-        border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
-        &:hover {
-          cursor: pointer;
-          background-color: rgba(0, 0, 0, 0.08);
-          outline: 1px solid gray;
-        }
-      }
-    }
-
-    &.right {
-      left: 0;
-    }
-
-    &.left {
-      right: 0;
-    }
-    &.center {
-      left: calc(50% - ${PICKER_WIDTH / 2}px);
-    }
-  }
-`;
-    class ColorPicker extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.COLORS = COLORS;
-        }
-        onColorClick(ev) {
-            const color = ev.target.dataset.color;
-            if (color) {
-                this.props.onColorPicked(color);
-            }
-        }
-    }
-    ColorPicker.template = "o-spreadsheet.ColorPicker";
-
-    const uuidGenerator$1 = new UuidGenerator();
-    css /* scss */ `
-  .o-selection {
-    .o-selection-input {
-      display: flex;
-      flex-direction: row;
-
-      input {
-        padding: 4px 6px;
-        border-radius: 4px;
-        box-sizing: border-box;
-        border: 1px solid #dadce0;
-        flex-grow: 2;
-      }
-      input:focus {
-        outline: none;
-      }
-      input.o-required,
-      input.o-focused {
-        border-width: 2px;
-        padding: 3px 5px;
-      }
-      input.o-focused {
-        border-color: ${SELECTION_BORDER_COLOR};
-      }
-      input.o-invalid {
-        border-color: red;
-      }
-      button.o-btn {
-        background: transparent;
-        border: none;
-        color: #333;
-        cursor: pointer;
-      }
-      button.o-btn-action {
-        margin: 8px 1px;
-        border-radius: 4px;
-        background: transparent;
-        border: 1px solid #dadce0;
-        color: #188038;
-        font-weight: bold;
-        font-size: 14px;
-        height: 25px;
-      }
-    }
-  }
-`;
-    /**
-     * This component can be used when the user needs to input some
-     * ranges. He can either input the ranges with the regular DOM `<input/>`
-     * displayed or by selecting zones on the grid.
-     *
-     * onSelectionChanged is called every time the input value
-     * changes.
-     */
-    class SelectionInput extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.id = uuidGenerator$1.uuidv4();
-            this.previousRanges = this.props.ranges || [];
-            this.originSheet = this.env.model.getters.getActiveSheetId();
-            this.state = owl.useState({
-                isMissing: false,
-            });
-        }
-        get ranges() {
-            const existingSelectionRange = this.env.model.getters.getSelectionInput(this.id);
-            const ranges = existingSelectionRange.length
-                ? existingSelectionRange
-                : this.props.ranges
-                    ? this.props.ranges.map((xc, i) => ({
-                        xc,
-                        id: i.toString(),
-                        isFocused: false,
-                    }))
-                    : [];
-            return ranges.map((range) => ({
-                ...range,
-                isValidRange: range.xc === "" || this.env.model.getters.isRangeValid(range.xc),
-            }));
-        }
-        get hasFocus() {
-            return this.ranges.filter((i) => i.isFocused).length > 0;
-        }
-        get canAddRange() {
-            return !this.props.hasSingleRange;
-        }
-        get isInvalid() {
-            return this.props.isInvalid || this.state.isMissing;
-        }
-        setup() {
-            owl.onMounted(() => this.enableNewSelectionInput());
-            owl.onWillUnmount(async () => this.disableNewSelectionInput());
-            owl.onPatched(() => this.checkChange());
-        }
-        enableNewSelectionInput() {
-            this.env.model.dispatch("ENABLE_NEW_SELECTION_INPUT", {
-                id: this.id,
-                initialRanges: this.props.ranges,
-                hasSingleRange: this.props.hasSingleRange,
-            });
-        }
-        disableNewSelectionInput() {
-            this.env.model.dispatch("DISABLE_SELECTION_INPUT", { id: this.id });
-        }
-        checkChange() {
-            const value = this.env.model.getters.getSelectionInputValue(this.id);
-            if (this.previousRanges.join() !== value.join()) {
-                this.triggerChange();
-            }
-        }
-        getColor(range) {
-            const color = range.color || "#000";
-            return "color: " + color + ";";
-        }
-        triggerChange() {
-            var _a, _b;
-            const ranges = this.env.model.getters.getSelectionInputValue(this.id);
-            (_b = (_a = this.props).onSelectionChanged) === null || _b === void 0 ? void 0 : _b.call(_a, ranges);
-            this.previousRanges = ranges;
-        }
-        focus(rangeId) {
-            this.state.isMissing = false;
-            this.env.model.dispatch("FOCUS_RANGE", {
-                id: this.id,
-                rangeId,
-            });
-        }
-        addEmptyInput() {
-            this.env.model.dispatch("ADD_EMPTY_RANGE", { id: this.id });
-        }
-        removeInput(rangeId) {
-            var _a, _b;
-            this.env.model.dispatch("REMOVE_RANGE", { id: this.id, rangeId });
-            this.triggerChange();
-            (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
-        }
-        onInputChanged(rangeId, ev) {
-            const target = ev.target;
-            this.env.model.dispatch("CHANGE_RANGE", {
-                id: this.id,
-                rangeId,
-                value: target.value,
-            });
-            target.blur();
-            this.triggerChange();
-        }
-        disable() {
-            var _a, _b;
-            this.env.model.dispatch("UNFOCUS_SELECTION_INPUT");
-            const ranges = this.env.model.getters.getSelectionInputValue(this.id);
-            if (this.props.required && ranges.length === 0) {
-                this.state.isMissing = true;
-            }
-            const activeSheetId = this.env.model.getters.getActiveSheetId();
-            if (this.originSheet !== activeSheetId) {
-                this.env.model.dispatch("ACTIVATE_SHEET", {
-                    sheetIdFrom: activeSheetId,
-                    sheetIdTo: this.originSheet,
-                });
-            }
-            (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
-        }
-    }
-    SelectionInput.template = "o-spreadsheet.SelectionInput";
-
-    css /* scss */ `
-  .o-chart {
-    .o-panel {
-      display: flex;
-      .o-panel-element {
-        flex: 1 0 auto;
-        padding: 8px 0px;
-        text-align: center;
-        cursor: pointer;
-        border-right: 1px solid darkgray;
-        &.inactive {
-          background-color: ${BACKGROUND_HEADER_COLOR};
-          border-bottom: 1px solid darkgray;
-        }
-        .fa {
-          margin-right: 4px;
-        }
-      }
-      .o-panel-element:last-child {
-        border-right: none;
-      }
-    }
-
-    .o-with-color-picker {
-      position: relative;
-    }
-    .o-with-color-picker > span {
-      border-bottom: 4px solid;
-    }
-  }
-`;
-    class ChartPanel extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState(this.initialState(this.props.figure));
-        }
-        setup() {
-            owl.onWillUpdateProps((nextProps) => {
-                if (!this.env.model.getters.getChartDefinition(nextProps.figure.id)) {
-                    this.props.onCloseSidePanel();
-                    return;
-                }
-                if (nextProps.figure.id !== this.props.figure.id) {
-                    this.state.panel = "configuration";
-                    this.state.fillColorTool = false;
-                    this.state.datasetDispatchResult = undefined;
-                    this.state.labelsDispatchResult = undefined;
-                    this.state.chart = this.env.model.getters.getChartDefinitionUI(this.env.model.getters.getActiveSheetId(), nextProps.figure.id);
-                }
-            });
-        }
-        get errorMessages() {
-            var _a, _b;
-            const cancelledReasons = [
-                ...(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || []),
-                ...(((_b = this.state.labelsDispatchResult) === null || _b === void 0 ? void 0 : _b.reasons) || []),
-            ];
-            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
-        }
-        get isDatasetInvalid() {
-            var _a, _b;
-            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(25 /* EmptyDataSet */)) ||
-                ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(26 /* InvalidDataSet */)));
-        }
-        get isLabelInvalid() {
-            var _a;
-            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(27 /* InvalidLabelRange */));
-        }
-        onSeriesChanged(ranges) {
-            this.state.chart.dataSets = ranges;
-        }
-        updateDataSet() {
-            this.state.datasetDispatchResult = this.updateChart({
-                dataSets: this.state.chart.dataSets,
-                dataSetsHaveTitle: this.state.chart.dataSetsHaveTitle,
-            });
-        }
-        updateStacked() {
-            this.updateChart({ stackedBar: this.state.chart.stackedBar });
-        }
-        updateTitle() {
-            this.updateChart({ title: this.state.chart.title });
-        }
-        updateSelect(attr, ev) {
-            this.state.chart[attr] = ev.target.value;
-            this.updateChart({ [attr]: ev.target.value });
-        }
-        updateLabelRange() {
-            this.state.labelsDispatchResult = this.updateChart({
-                labelRange: this.state.chart.labelRange || null,
-            });
-        }
-        updateChart(definition) {
-            return this.env.model.dispatch("UPDATE_CHART", {
-                id: this.props.figure.id,
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                definition,
-            });
-        }
-        onLabelRangeChanged(ranges) {
-            this.state.chart.labelRange = ranges[0];
-        }
-        getKey(label) {
-            return label + this.props.figure.id;
-        }
-        toggleColorPicker() {
-            this.state.fillColorTool = !this.state.fillColorTool;
-        }
-        setColor(color) {
-            this.state.chart.background = color;
-            this.state.fillColorTool = false;
-            this.updateChart({ background: this.state.chart.background });
-        }
-        activate(panel) {
-            this.state.panel = panel;
-        }
-        initialState(figure) {
-            return {
-                chart: this.env.model.getters.getChartDefinitionUI(this.env.model.getters.getActiveSheetId(), figure.id),
-                panel: "configuration",
-                fillColorTool: false,
-            };
-        }
-    }
-    ChartPanel.template = "o-spreadsheet.ChartPanel";
-    ChartPanel.components = { SelectionInput, ColorPicker };
-
-    /**
-     * Return true if the event was triggered from
-     * a child element.
-     */
-    function isChildEvent(parent, ev) {
-        return !!ev.target && parent.contains(ev.target);
-    }
-    function getTextDecoration({ strikethrough, underline, }) {
-        if (!strikethrough && !underline) {
-            return "none";
-        }
-        return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
-    }
-
-    // -----------------------------------------------------------------------------
-    // We need here the svg of the icons that we need to convert to images for the renderer
-    // -----------------------------------------------------------------------------
-    const ARROW_DOWN = '<svg class="o-cf-icon arrow-down" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#DC6965" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>';
-    const ARROW_UP = '<svg class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#00A04A" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>';
-    const ARROW_RIGHT = '<svg class="o-cf-icon arrow-right" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#F0AD4E" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>';
-    const SMILE = '<svg class="o-cf-icon smile" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#00A04A" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>';
-    const MEH = '<svg class="o-cf-icon meh" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#F0AD4E" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"></path></svg>';
-    const FROWN = '<svg class="o-cf-icon frown" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#DC6965" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"></path></svg>';
-    const GREEN_DOT = '<svg class="o-cf-icon green-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#00A04A" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    const YELLOW_DOT = '<svg class="o-cf-icon yellow-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#F0AD4E" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    const RED_DOT = '<svg class="o-cf-icon red-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#DC6965" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    function loadIconImage(svg) {
-        /** We have to add xmlns, as it's not added by owl in the canvas */
-        svg = `<svg xmlns="http://www.w3.org/2000/svg" ${svg.slice(4)}`;
-        const image = new Image();
-        image.src = "data:image/svg+xml; charset=utf8, " + encodeURIComponent(svg);
-        return image;
-    }
-    const ICONS = {
-        arrowGood: {
-            template: "ARROW_UP",
-            img: loadIconImage(ARROW_UP),
-        },
-        arrowNeutral: {
-            template: "ARROW_RIGHT",
-            img: loadIconImage(ARROW_RIGHT),
-        },
-        arrowBad: {
-            template: "ARROW_DOWN",
-            img: loadIconImage(ARROW_DOWN),
-        },
-        smileyGood: {
-            template: "SMILE",
-            img: loadIconImage(SMILE),
-        },
-        smileyNeutral: {
-            template: "MEH",
-            img: loadIconImage(MEH),
-        },
-        smileyBad: {
-            template: "FROWN",
-            img: loadIconImage(FROWN),
-        },
-        dotGood: {
-            template: "GREEN_DOT",
-            img: loadIconImage(GREEN_DOT),
-        },
-        dotNeutral: {
-            template: "YELLOW_DOT",
-            img: loadIconImage(YELLOW_DOT),
-        },
-        dotBad: {
-            template: "RED_DOT",
-            img: loadIconImage(RED_DOT),
-        },
-    };
-    const ICON_SETS = {
-        arrows: {
-            good: "arrowGood",
-            neutral: "arrowNeutral",
-            bad: "arrowBad",
-        },
-        smiley: {
-            good: "smileyGood",
-            neutral: "smileyNeutral",
-            bad: "smileyBad",
-        },
-        dots: {
-            good: "dotGood",
-            neutral: "dotNeutral",
-            bad: "dotBad",
-        },
-    };
-
-    css /* scss */ `
-  .o-icon-picker {
-    position: absolute;
-    z-index: 10;
-    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-    background-color: white;
-    padding: 2px 1px;
-  }
-  .o-cf-icon-line {
-    display: flex;
-    padding: 3px 6px;
-  }
-  .o-icon-picker-item {
-    margin: 0px 2px;
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.08);
-      outline: 1px solid gray;
-    }
-  }
-`;
-    class IconPicker extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.icons = ICONS;
-            this.iconSets = ICON_SETS;
-        }
-        onIconClick(icon) {
-            if (icon) {
-                this.props.onIconPicked(icon);
-            }
-        }
-    }
-    IconPicker.template = "o-spreadsheet.IconPicker";
-
-    // TODO vsc: add ordering of rules
-    css /* scss */ `
-  label {
-    vertical-align: middle;
-  }
-  .o_cf_radio_item {
-    margin-right: 10%;
-  }
-  .radio input:checked {
-    color: #e9ecef;
-    border-color: #00a09d;
-    background-color: #00a09d;
-  }
-  .o-cf-editor {
-    border-bottom: solid;
-    border-color: lightgrey;
-  }
-  .o-cf {
-    .o-cf-type-selector {
-      *,
-      ::after,
-      ::before {
-        box-sizing: border-box;
-      }
-      margin-top: 10px;
-      display: flex;
-    }
-    .o-section-subtitle:first-child {
-      margin-top: 0px;
-    }
-    .o-cf-cursor-ptr {
-      cursor: pointer;
-    }
-    .o-cf-preview {
-      background-color: #fff;
-      border-bottom: 1px solid #ccc;
-      display: flex;
-      height: 60px;
-      padding: 10px;
-      position: relative;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-      &:not(:hover) .o-cf-delete-button {
-        display: none;
-      }
-      .o-cf-preview-image {
-        border: 1px solid lightgrey;
-        height: 50px;
-        line-height: 50px;
-        margin-right: 15px;
-        margin-top: 3px;
-        position: absolute;
-        text-align: center;
-        width: 50px;
-      }
-      .o-cf-preview-icon {
-        border: 1px solid lightgrey;
-        position: absolute;
-        height: 50px;
-        line-height: 50px;
-        margin-right: 15px;
-        margin-top: 3px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-      }
-      .o-cf-preview-description {
-        left: 65px;
-        margin-bottom: auto;
-        margin-right: 8px;
-        margin-top: auto;
-        position: relative;
-        width: 142px;
-        .o-cf-preview-description-rule {
-          margin-bottom: 4px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          font-weight: 600;
-          color: #303030;
-          max-height: 2.8em;
-          line-height: 1.4em;
-        }
-        .o-cf-preview-range {
-          text-overflow: ellipsis;
-          font-size: 12px;
-          overflow: hidden;
-        }
-      }
-      .o-cf-delete {
-        color: dimgrey;
-        left: 90%;
-        top: 39%;
-        position: absolute;
-      }
-      .o-cf-reorder {
-        color: gray;
-        left: 90%;
-        position: absolute;
-        height: 100%;
-        width: 10%;
-      }
-      .o-cf-reorder-button:hover {
-        cursor: pointer;
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-      .o-cf-reorder-button-up {
-        width: 15px;
-        height: 20px;
-        padding: 5px;
-        padding-top: 0px;
-      }
-      .o-cf-reorder-button-down {
-        width: 15px;
-        height: 20px;
-        bottom: 20px;
-        padding: 5px;
-        padding-top: 0px;
-        position: absolute;
-      }
-    }
-    .o-cf-ruleEditor {
-      font-size: 12px;
-      line-height: 1.5;
-      .o-selection-cf {
-        margin-bottom: 3%;
-      }
-      .o-dropdown {
-        position: relative;
-        .o-dropdown-content {
-          position: absolute;
-          top: calc(100% + 5px);
-          left: 0;
-          z-index: 10;
-          box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-          background-color: #f6f6f6;
-
-          .o-dropdown-item {
-            padding: 7px 10px;
-          }
-          .o-dropdown-item:hover {
-            background-color: rgba(0, 0, 0, 0.08);
-          }
-          .o-dropdown-line {
-            display: flex;
-            padding: 3px 6px;
-            .o-line-item {
-              width: 16px;
-              height: 16px;
-              margin: 1px 3px;
-              &:hover {
-                background-color: rgba(0, 0, 0, 0.08);
-              }
-            }
-          }
-        }
-      }
-
-      .o-tools {
-        color: #333;
-        font-size: 13px;
-        cursor: default;
-        display: flex;
-
-        .o-tool {
-          display: flex;
-          align-items: center;
-          margin: 2px;
-          padding: 0 3px;
-          border-radius: 2px;
-        }
-
-        .o-tool.active,
-        .o-tool:not(.o-disabled):hover {
-          background-color: rgba(0, 0, 0, 0.08);
-        }
-
-        .o-with-color > span {
-          border-bottom: 4px solid;
-          height: 16px;
-          margin-top: 2px;
-        }
-        .o-with-color {
-          .o-line-item:hover {
-            outline: 1px solid gray;
-          }
-        }
-        .o-border {
-          .o-line-item {
-            padding: 4px;
-            margin: 1px;
-          }
-        }
-      }
-      .o-cell-content {
-        font-size: 12px;
-        font-weight: 500;
-        padding: 0 12px;
-        margin: 0;
-        line-height: 35px;
-      }
-    }
-    .o-cf-btn-link {
-      font-size: 14px;
-      padding: 20px 24px 11px 24px;
-      height: 44px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .o-cf-btn-link:hover {
-      color: #003a39;
-      text-decoration: none;
-    }
-    .o-cf-error {
-      color: red;
-      margin-top: 10px;
-    }
-  }
-  .o-cf-cell-is-rule {
-    .o-cf-preview-line {
-      border: 1px solid darkgrey;
-      padding: 10px;
-    }
-    .o-cell-is-operator {
-      margin-bottom: 5px;
-      width: 96%;
-    }
-    .o-cell-is-value {
-      margin-bottom: 5px;
-      width: 96%;
-    }
-    .o-color-picker {
-      pointer-events: all;
-    }
-  }
-  .o-cf-color-scale-editor {
-    .o-threshold {
-      display: flex;
-      flex-direction: horizontal;
-      select {
-        width: 100%;
-      }
-      .o-threshold-value {
-        margin-left: 2%;
-        width: 20%;
-        min-width: 0px; // input overflows in Firefox otherwise
-      }
-      .o-threshold-value:disabled {
-        background-color: #edebed;
-      }
-    }
-    .o-cf-preview-gradient {
-      border: 1px solid darkgrey;
-      padding: 10px;
-      border-radius: 4px;
-    }
-  }
-  .o-cf-iconset-rule {
-    font-size: 12;
-    .o-cf-iconsets {
-      display: flex;
-      justify-content: space-between;
-      .o-cf-iconset {
-        border: 1px solid #dadce0;
-        border-radius: 4px;
-        display: inline-flex;
-        padding: 5px 8px;
-        width: 25%;
-        cursor: pointer;
-        justify-content: space-between;
-        .o-cf-icon {
-          display: inline;
-          margin-left: 1%;
-          margin-right: 1%;
-        }
-        svg {
-          vertical-align: baseline;
-        }
-      }
-      .o-cf-iconset:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-    }
-    .o-inflection {
-      .o-cf-icon-button {
-        display: inline-block;
-        border: 1px solid #dadce0;
-        border-radius: 4px;
-        cursor: pointer;
-        padding: 1px 2px;
-      }
-      .o-cf-icon-button:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-      table {
-        table-layout: fixed;
-        margin-top: 2%;
-        display: table;
-        text-align: left;
-        font-size: 12px;
-        line-height: 18px;
-        width: 100%;
-      }
-      th.o-cf-iconset-icons {
-        width: 8%;
-      }
-      th.o-cf-iconset-text {
-        width: 28%;
-      }
-      th.o-cf-iconset-operator {
-        width: 14%;
-      }
-      th.o-cf-iconset-type {
-        width: 28%;
-      }
-      th.o-cf-iconset-value {
-        width: 26%;
-      }
-      input,
-      select {
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-      }
-    }
-    .o-cf-iconset-reverse {
-      margin-bottom: 2%;
-      margin-top: 2%;
-      .o-cf-label {
-        display: inline-block;
-        vertical-align: bottom;
-        margin-bottom: 2px;
-      }
-    }
-  }
-`;
-    class ConditionalFormattingPanel extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.icons = ICONS;
-            this.cellIsOperators = CellIsOperators;
-            this.iconSets = ICON_SETS;
-            this.getTextDecoration = getTextDecoration;
-            this.colorNumberString = colorNumberString;
-        }
-        setup() {
-            this.activeSheetId = this.env.model.getters.getActiveSheetId();
-            this.state = owl.useState({
-                mode: "list",
-                errors: [],
-                rules: this.getDefaultRules(),
-            });
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const rules = this.env.model.getters.getRulesSelection(sheetId, this.props.selection || []);
-            if (rules.length === 1) {
-                const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
-                if (cf) {
-                    this.editConditionalFormat(cf);
-                }
-            }
-            owl.onWillUpdateProps((nextProps) => {
-                const newActiveSheetId = this.env.model.getters.getActiveSheetId();
-                if (newActiveSheetId !== this.activeSheetId) {
-                    this.activeSheetId = newActiveSheetId;
-                    this.switchToList();
-                }
-                else if (nextProps.selection !== this.props.selection) {
-                    const sheetId = this.env.model.getters.getActiveSheetId();
-                    const rules = this.env.model.getters.getRulesSelection(sheetId, nextProps.selection || []);
-                    if (rules.length === 1) {
-                        const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
-                        if (cf) {
-                            this.editConditionalFormat(cf);
-                        }
-                    }
-                    else {
-                        this.switchToList();
-                    }
-                }
-            });
-            owl.useExternalListener(window, "click", this.closeMenus);
-        }
-        get conditionalFormats() {
-            return this.env.model.getters.getConditionalFormats(this.env.model.getters.getActiveSheetId());
-        }
-        get isRangeValid() {
-            return this.state.errors.includes(19 /* EmptyRange */);
-        }
-        errorMessage(error) {
-            return CfTerms.Errors[error] || CfTerms.Errors.Unexpected;
-        }
-        /**
-         * Switch to the list view
-         */
-        switchToList() {
-            this.state.mode = "list";
-            this.state.currentCF = undefined;
-            this.state.currentCFType = undefined;
-            this.state.errors = [];
-            this.state.rules = this.getDefaultRules();
-        }
-        getStyle(rule) {
-            if (rule.type === "CellIsRule") {
-                const fontWeight = rule.style.bold ? "bold" : "normal";
-                const fontDecoration = getTextDecoration(rule.style);
-                const fontStyle = rule.style.italic ? "italic" : "normal";
-                const color = rule.style.textColor || "none";
-                const backgroundColor = rule.style.fillColor || "none";
-                return `font-weight:${fontWeight};
-               text-decoration:${fontDecoration};
-               font-style:${fontStyle};
-               color:${color};
-               background-color:${backgroundColor};`;
-            }
-            else if (rule.type === "ColorScaleRule") {
-                const minColor = colorNumberString(rule.minimum.color);
-                const midColor = rule.midpoint ? colorNumberString(rule.midpoint.color) : null;
-                const maxColor = colorNumberString(rule.maximum.color);
-                const baseString = "background-image: linear-gradient(to right, #";
-                return midColor
-                    ? baseString + minColor + ", #" + midColor + ", #" + maxColor + ")"
-                    : baseString + minColor + ", #" + maxColor + ")";
-            }
-            return "";
-        }
-        getDescription(cf) {
-            switch (cf.rule.type) {
-                case "CellIsRule":
-                    return CellIsOperators[cf.rule.operator];
-                case "ColorScaleRule":
-                    return CfTerms.ColorScale;
-                case "IconSetRule":
-                    return CfTerms.IconSet;
-                default:
-                    return "";
-            }
-        }
-        saveConditionalFormat() {
-            if (this.state.currentCF) {
-                const invalidRanges = this.state.currentCF.ranges.some((xc) => !xc.match(rangeReference));
-                if (invalidRanges) {
-                    this.state.errors = [20 /* InvalidRange */];
-                    return;
-                }
-                const result = this.env.model.dispatch("ADD_CONDITIONAL_FORMAT", {
-                    cf: {
-                        rule: this.getEditorRule(),
-                        id: this.state.mode === "edit"
-                            ? this.state.currentCF.id
-                            : this.env.model.uuidGenerator.uuidv4(),
-                    },
-                    target: this.state.currentCF.ranges.map(toZone),
-                    sheetId: this.env.model.getters.getActiveSheetId(),
-                });
-                if (!result.isSuccessful) {
-                    this.state.errors = result.reasons;
-                }
-                else {
-                    this.switchToList();
-                }
-            }
-        }
-        /**
-         * Get the rule currently edited with the editor
-         */
-        getEditorRule() {
-            switch (this.state.currentCFType) {
-                case "CellIsRule":
-                    return this.state.rules.cellIs;
-                case "ColorScaleRule":
-                    return this.state.rules.colorScale;
-                case "IconSetRule":
-                    return this.state.rules.iconSet;
-            }
-            throw new Error(`Invalid cf type: ${this.state.currentCFType}`);
-        }
-        getDefaultRules() {
-            return {
-                cellIs: {
-                    type: "CellIsRule",
-                    operator: "IsNotEmpty",
-                    values: [],
-                    style: { fillColor: "#b6d7a8" },
-                },
-                colorScale: {
-                    type: "ColorScaleRule",
-                    minimum: { type: "value", color: 0xffffff },
-                    midpoint: undefined,
-                    maximum: { type: "value", color: 0x6aa84f },
-                },
-                iconSet: {
-                    type: "IconSetRule",
-                    icons: {
-                        upper: "arrowGood",
-                        middle: "arrowNeutral",
-                        lower: "arrowBad",
-                    },
-                    upperInflectionPoint: {
-                        type: "percentage",
-                        value: "66",
-                        operator: "gt",
-                    },
-                    lowerInflectionPoint: {
-                        type: "percentage",
-                        value: "33",
-                        operator: "gt",
-                    },
-                },
-            };
-        }
-        /**
-         * Create a new CF, a CellIsRule by default
-         */
-        addConditionalFormat() {
-            this.state.mode = "add";
-            this.state.currentCFType = "CellIsRule";
-            this.state.currentCF = {
-                id: this.env.model.uuidGenerator.uuidv4(),
-                ranges: this.env.model.getters
-                    .getSelectedZones()
-                    .map((zone) => this.env.model.getters.zoneToXC(this.env.model.getters.getActiveSheetId(), zone)),
-            };
-        }
-        /**
-         * Delete a CF
-         */
-        deleteConditionalFormat(cf) {
-            this.env.model.dispatch("REMOVE_CONDITIONAL_FORMAT", {
-                id: cf.id,
-                sheetId: this.env.model.getters.getActiveSheetId(),
-            });
-        }
-        /**
-         * Edit an existing CF. Return without doing anything in reorder mode.
-         */
-        editConditionalFormat(cf) {
-            if (this.state.mode === "reorder")
-                return;
-            this.state.mode = "edit";
-            this.state.currentCF = cf;
-            this.state.currentCFType = cf.rule.type;
-            switch (cf.rule.type) {
-                case "CellIsRule":
-                    this.state.rules.cellIs = cf.rule;
-                    break;
-                case "ColorScaleRule":
-                    this.state.rules.colorScale = cf.rule;
-                    break;
-                case "IconSetRule":
-                    this.state.rules.iconSet = cf.rule;
-                    break;
-            }
-        }
-        /**
-         * Reorder existing CFs
-         */
-        reorderConditionalFormats() {
-            this.state.mode = "reorder";
-        }
-        reorderRule(cf, direction) {
-            this.env.model.dispatch("MOVE_CONDITIONAL_FORMAT", {
-                cfId: cf.id,
-                direction: direction,
-                sheetId: this.env.model.getters.getActiveSheetId(),
-            });
-        }
-        changeRuleType(ruleType) {
-            if (this.state.currentCFType === ruleType || !this.state.rules) {
-                return;
-            }
-            this.state.errors = [];
-            this.state.currentCFType = ruleType;
-        }
-        onRangesChanged(ranges) {
-            if (this.state.currentCF) {
-                this.state.currentCF.ranges = ranges;
-            }
-        }
-        /*****************************************************************************
-         * Common
-         ****************************************************************************/
-        toggleMenu(menu) {
-            const isSelected = this.state.openedMenu === menu;
-            this.closeMenus();
-            if (!isSelected) {
-                this.state.openedMenu = menu;
-            }
-        }
-        closeMenus() {
-            this.state.openedMenu = undefined;
-        }
-        /*****************************************************************************
-         * Cell Is Rule
-         ****************************************************************************/
-        get isValue1Invalid() {
-            var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(34 /* FirstArgMissing */));
-        }
-        get isValue2Invalid() {
-            var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(35 /* SecondArgMissing */));
-        }
-        toggleStyle(tool) {
-            const style = this.state.rules.cellIs.style;
-            style[tool] = !style[tool];
-            this.closeMenus();
-        }
-        setColor(target, color) {
-            this.state.rules.cellIs.style[target] = color;
-            this.closeMenus();
-        }
-        /*****************************************************************************
-         * Color Scale Rule
-         ****************************************************************************/
-        isValueInvalid(threshold) {
-            switch (threshold) {
-                case "minimum":
-                    return (this.state.errors.includes(41 /* MinInvalidFormula */) ||
-                        this.state.errors.includes(33 /* MinBiggerThanMid */) ||
-                        this.state.errors.includes(30 /* MinBiggerThanMax */) ||
-                        this.state.errors.includes(36 /* MinNaN */));
-                case "midpoint":
-                    return (this.state.errors.includes(42 /* MidInvalidFormula */) ||
-                        this.state.errors.includes(37 /* MidNaN */) ||
-                        this.state.errors.includes(32 /* MidBiggerThanMax */));
-                case "maximum":
-                    return (this.state.errors.includes(43 /* MaxInvalidFormula */) ||
-                        this.state.errors.includes(38 /* MaxNaN */));
-                default:
-                    return false;
-            }
-        }
-        setColorScaleColor(target, color) {
-            const point = this.state.rules.colorScale[target];
-            if (point) {
-                point.color = Number.parseInt(color.substr(1), 16);
-            }
-            this.closeMenus();
-        }
-        getPreviewGradient() {
-            var _a;
-            const rule = this.state.rules.colorScale;
-            const minColor = colorNumberString(rule.minimum.color);
-            const midColor = colorNumberString(((_a = rule.midpoint) === null || _a === void 0 ? void 0 : _a.color) || DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
-            const maxColor = colorNumberString(rule.maximum.color);
-            const baseString = "background-image: linear-gradient(to right, #";
-            return rule.midpoint === undefined
-                ? baseString + minColor + ", #" + maxColor + ")"
-                : baseString + minColor + ", #" + midColor + ", #" + maxColor + ")";
-        }
-        getThresholdColor(threshold) {
-            return threshold
-                ? colorNumberString(threshold.color)
-                : colorNumberString(DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
-        }
-        onMidpointChange(ev) {
-            const type = ev.target.value;
-            const rule = this.state.rules.colorScale;
-            if (type === "none") {
-                rule.midpoint = undefined;
-            }
-            else {
-                rule.midpoint = {
-                    color: DEFAULT_COLOR_SCALE_MIDPOINT_COLOR,
-                    value: "",
-                    ...rule.midpoint,
-                    type,
-                };
-            }
-        }
-        /*****************************************************************************
-         * Icon Set
-         ****************************************************************************/
-        isInflectionPointInvalid(inflectionPoint) {
-            switch (inflectionPoint) {
-                case "lowerInflectionPoint":
-                    return (this.state.errors.includes(40 /* ValueLowerInflectionNaN */) ||
-                        this.state.errors.includes(45 /* ValueLowerInvalidFormula */) ||
-                        this.state.errors.includes(31 /* LowerBiggerThanUpper */));
-                case "upperInflectionPoint":
-                    return (this.state.errors.includes(39 /* ValueUpperInflectionNaN */) ||
-                        this.state.errors.includes(44 /* ValueUpperInvalidFormula */) ||
-                        this.state.errors.includes(31 /* LowerBiggerThanUpper */));
-                default:
-                    return true;
-            }
-        }
-        reverseIcons() {
-            const icons = this.state.rules.iconSet.icons;
-            const upper = icons.upper;
-            icons.upper = icons.lower;
-            icons.lower = upper;
-        }
-        setIconSet(iconSet) {
-            const icons = this.state.rules.iconSet.icons;
-            icons.upper = this.iconSets[iconSet].good;
-            icons.middle = this.iconSets[iconSet].neutral;
-            icons.lower = this.iconSets[iconSet].bad;
-        }
-        setIcon(target, icon) {
-            this.state.rules.iconSet.icons[target] = icon;
-        }
-    }
-    ConditionalFormattingPanel.template = "o-spreadsheet.ConditionalFormattingPanel";
-    ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
-
-    css /* scss */ `
-  .o-custom-currency {
-    .o-format-proposals {
-      color: black;
-    }
-  }
-`;
-    class CustomCurrencyPanel extends owl.Component {
-        setup() {
-            this.availableCurrencies = [];
-            this.state = owl.useState({
-                selectedCurrencyIndex: 0,
-                currencyCode: "",
-                currencySymbol: "",
-                selectedFormatIndex: 0,
-            });
-            owl.onWillStart(() => this.updateAvailableCurrencies());
-        }
-        get formatProposals() {
-            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
-            const proposalBases = this.initProposalBases(currency.decimalPlaces);
-            const firstPosition = currency.position;
-            const secondPosition = currency.position === "before" ? "after" : "before";
-            const symbol = this.state.currencySymbol.trim() ? this.state.currencySymbol : "";
-            const code = this.state.currencyCode.trim() ? this.state.currencyCode : "";
-            return code || symbol
-                ? [
-                    ...this.createFormatProposals(proposalBases, symbol, code, firstPosition),
-                    ...this.createFormatProposals(proposalBases, symbol, code, secondPosition),
-                ]
-                : [];
-        }
-        get isSameFormat() {
-            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
-            return selectedFormat ? selectedFormat.format === this.getCommonFormat() : false;
-        }
-        async updateAvailableCurrencies() {
-            var _a, _b;
-            if (currenciesRegistry.getAll().length === 0) {
-                const currencies = (await ((_b = (_a = this.env).loadCurrencies) === null || _b === void 0 ? void 0 : _b.call(_a))) || [];
-                currencies.forEach((currency, index) => {
-                    currenciesRegistry.add(index.toString(), currency);
-                });
-            }
-            const emptyCurrency = {
-                name: this.env._t(CustomCurrencyTerms.Custom),
-                code: "",
-                symbol: "",
-                decimalPlaces: 2,
-                position: "after",
-            };
-            this.availableCurrencies = [emptyCurrency, ...currenciesRegistry.getAll()];
-        }
-        updateSelectCurrency(ev) {
-            this.state.selectedCurrencyIndex = ev.target.value;
-            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
-            this.state.currencyCode = currency.code;
-            this.state.currencySymbol = currency.symbol;
-        }
-        updateCode(ev) {
-            this.state.currencyCode = ev.target.value;
-            this.initAvailableCurrencies();
-        }
-        updateSymbol(ev) {
-            this.state.currencySymbol = ev.target.value;
-            this.initAvailableCurrencies();
-        }
-        updateSelectFormat(ev) {
-            this.state.selectedFormatIndex = ev.target.value;
-        }
-        apply() {
-            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
-            this.env.model.dispatch("SET_FORMATTING", {
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                target: this.env.model.getters.getSelectedZones(),
-                format: selectedFormat.format,
-            });
-        }
-        // ---------------------------------------------------------------------------
-        // Private
-        // ---------------------------------------------------------------------------
-        initAvailableCurrencies() {
-            this.state.selectedCurrencyIndex = 0;
-        }
-        initProposalBases(decimalPlaces) {
-            const result = [{ format: "#,##0", example: "1,000" }];
-            const decimalRepresentation = decimalPlaces ? "." + "0".repeat(decimalPlaces) : "";
-            if (decimalRepresentation) {
-                result.push({
-                    format: "#,##0" + decimalRepresentation,
-                    example: "1,000" + decimalRepresentation,
-                });
-            }
-            return result;
-        }
-        createFormatProposals(proposalBases, symbol, code, position) {
-            let formatProposals = [];
-            // 1 - add proposal with symbol and without code
-            if (symbol) {
-                for (let base of proposalBases) {
-                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, symbol));
-                }
-            }
-            // 2 - if code exist --> add more proposal with symbol and with code
-            if (code) {
-                for (let base of proposalBases) {
-                    const expression = (position === "after" ? " " : "") + code + " " + symbol;
-                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, expression));
-                }
-            }
-            return formatProposals;
-        }
-        createFormatProposal(position, baseExample, formatBase, expression) {
-            const formatExpression = "[$" + expression + "]";
-            return {
-                example: position === "before" ? expression + baseExample : baseExample + expression,
-                format: position === "before" ? formatExpression + formatBase : formatBase + formatExpression,
-            };
-        }
-        getCommonFormat() {
-            var _a;
-            const selectedZones = this.env.model.getters.getSelectedZones();
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const cells = selectedZones
-                .map((zone) => this.env.model.getters.getCellsInZone(sheetId, zone))
-                .flat();
-            const firstFormat = (_a = cells[0]) === null || _a === void 0 ? void 0 : _a.format;
-            return cells.every((cell) => (cell === null || cell === void 0 ? void 0 : cell.format) === firstFormat) ? firstFormat : undefined;
-        }
-        currencyDisplayName(currency) {
-            return currency.name + (currency.code ? ` (${currency.code})` : "");
-        }
-    }
-    CustomCurrencyPanel.template = "o-spreadsheet.CustomCurrencyPanel";
-
-    css /* scss */ `
-  .o-find-and-replace {
-    .o-far-item {
-      display: block;
-      .o-far-checkbox {
-        display: inline-block;
-        .o-far-input {
-          vertical-align: middle;
-        }
-        .o-far-label {
-          position: relative;
-          top: 1.5px;
-          padding-left: 4px;
-        }
-      }
-    }
-    outline: none;
-    height: 100%;
-    .o-input-search-container {
-      display: flex;
-      .o-input-with-count {
-        flex-grow: 1;
-        width: auto;
-      }
-      .o-input-without-count {
-        width: 100%;
-      }
-      .o-input-count {
-        width: fit-content;
-        padding: 4 0 4 4;
-      }
-    }
-  }
-`;
-    class FindAndReplacePanel extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState(this.initialState());
-            this.findAndReplaceRef = owl.useRef("findAndReplace");
-        }
-        get hasSearchResult() {
-            return this.env.model.getters.getCurrentSelectedMatchIndex() !== null;
-        }
-        setup() {
-            owl.onMounted(() => this.focusInput());
-            owl.onWillUnmount(() => this.env.model.dispatch("CLEAR_SEARCH"));
-        }
-        onInput(ev) {
-            this.state.toSearch = ev.target.value;
-            this.debouncedUpdateSearch();
-        }
-        onKeydownSearch(ev) {
-            if (ev.key === "Enter") {
-                ev.preventDefault();
-                this.onSelectNextCell();
-            }
-        }
-        onKeydownReplace(ev) {
-            if (ev.key === "Enter") {
-                ev.preventDefault();
-                this.replace();
-            }
-        }
-        onFocusSidePanel() {
-            this.state.searchOptions.searchFormulas = this.env.model.getters.shouldShowFormulas();
-            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas
-                ? this.state.searchOptions.searchFormulas
-                : this.state.replaceOptions.modifyFormulas;
-            this.env.model.dispatch("REFRESH_SEARCH");
-        }
-        searchFormulas() {
-            this.env.model.dispatch("SET_FORMULA_VISIBILITY", {
-                show: this.state.searchOptions.searchFormulas,
-            });
-            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas;
-            this.updateSearch();
-        }
-        onSelectPreviousCell() {
-            this.env.model.dispatch("SELECT_SEARCH_PREVIOUS_MATCH");
-        }
-        onSelectNextCell() {
-            this.env.model.dispatch("SELECT_SEARCH_NEXT_MATCH");
-        }
-        updateSearch() {
-            if (this.state.toSearch) {
-                this.env.model.dispatch("UPDATE_SEARCH", {
-                    toSearch: this.state.toSearch,
-                    searchOptions: this.state.searchOptions,
-                });
-            }
-        }
-        debouncedUpdateSearch() {
-            clearTimeout(this.inDebounce);
-            this.inDebounce = setTimeout(() => this.updateSearch.call(this), 400);
-        }
-        replace() {
-            this.env.model.dispatch("REPLACE_SEARCH", {
-                replaceWith: this.state.replaceWith,
-                replaceOptions: this.state.replaceOptions,
-            });
-        }
-        replaceAll() {
-            this.env.model.dispatch("REPLACE_ALL_SEARCH", {
-                replaceWith: this.state.replaceWith,
-                replaceOptions: this.state.replaceOptions,
-            });
-        }
-        // ---------------------------------------------------------------------------
-        // Private
-        // ---------------------------------------------------------------------------
-        focusInput() {
-            const el = this.findAndReplaceRef.el;
-            const input = el.querySelector(`input`);
-            if (input) {
-                input.focus();
-            }
-        }
-        initialState() {
-            return {
-                toSearch: "",
-                replaceWith: "",
-                searchOptions: {
-                    matchCase: false,
-                    exactMatch: false,
-                    searchFormulas: false,
-                },
-                replaceOptions: {
-                    modifyFormulas: false,
-                },
-            };
-        }
-    }
-    FindAndReplacePanel.template = "o-spreadsheet.FindAndReplacePanel";
-
-    const sidePanelRegistry = new Registry();
-    sidePanelRegistry.add("ConditionalFormatting", {
-        title: _lt("Conditional formatting"),
-        Body: ConditionalFormattingPanel,
-    });
-    sidePanelRegistry.add("ChartPanel", {
-        title: _lt("Chart"),
-        Body: ChartPanel,
-    });
-    sidePanelRegistry.add("FindAndReplace", {
-        title: _lt("Find and Replace"),
-        Body: FindAndReplacePanel,
-    });
-    sidePanelRegistry.add("CustomCurrency", {
-        title: _lt("Custom currency format"),
-        Body: CustomCurrencyPanel,
-    });
-
-    class TopBarComponentRegistry extends Registry {
-        constructor() {
-            super(...arguments);
-            this.mapping = {};
-            this.uuidGenerator = new UuidGenerator();
-        }
-        add(name, value) {
-            const component = { ...value, id: this.uuidGenerator.uuidv4() };
-            return super.add(name, component);
-        }
-    }
-    const topbarComponentRegistry = new TopBarComponentRegistry();
 
     /**
      * UI plugins handle any transient data required to display a spreadsheet.
@@ -18168,7 +18620,7 @@
             const ranges = [
                 ...chartDefinition.dataSets.map((ds) => ds.dataRange),
                 chartDefinition.labelRange,
-            ].filter(isDefined);
+            ].filter(isDefined$1);
             for (let zone of zones) {
                 for (let range of ranges) {
                     if (range.sheetId === sheetId && overlap(range.zone, zone)) {
@@ -18186,7 +18638,7 @@
             const ranges = [
                 ...chartDefinition.dataSets.map((ds) => ds.dataRange),
                 chartDefinition.labelRange,
-            ].filter(isDefined);
+            ].filter(isDefined$1);
             for (let range of ranges) {
                 if (range.sheetId === sheetId && isInside(col, row, range.zone)) {
                     return true;
@@ -18333,51 +18785,51 @@
                     const values = rule.values.map(parsePrimitiveContent);
                     switch (rule.operator) {
                         case "IsEmpty":
-                            return !isDefined(cell) || cell.evaluated.value.toString().trim() === "";
+                            return !isDefined$1(cell) || cell.evaluated.value.toString().trim() === "";
                         case "IsNotEmpty":
-                            return isDefined(cell) && cell.evaluated.value.toString().trim() !== "";
+                            return isDefined$1(cell) && cell.evaluated.value.toString().trim() !== "";
                         case "BeginsWith":
                             if (!cell && values[0] === "") {
                                 return false;
                             }
-                            return (isDefined(cell) && (cell === null || cell === void 0 ? void 0 : cell.evaluated.value.toString().startsWith(values[0].toString())));
+                            return (isDefined$1(cell) && (cell === null || cell === void 0 ? void 0 : cell.evaluated.value.toString().startsWith(values[0].toString())));
                         case "EndsWith":
                             if (!cell && values[0] === "") {
                                 return false;
                             }
-                            return isDefined(cell) && cell.evaluated.value.toString().endsWith(values[0].toString());
+                            return isDefined$1(cell) && cell.evaluated.value.toString().endsWith(values[0].toString());
                         case "Between":
-                            return (isDefined(cell) &&
+                            return (isDefined$1(cell) &&
                                 cell.evaluated.value >= values[0] &&
                                 cell.evaluated.value <= values[1]);
                         case "NotBetween":
-                            return !(isDefined(cell) &&
+                            return !(isDefined$1(cell) &&
                                 cell.evaluated.value >= values[0] &&
                                 cell.evaluated.value <= values[1]);
                         case "ContainsText":
-                            return (isDefined(cell) && cell.evaluated.value.toString().indexOf(values[0].toString()) > -1);
+                            return (isDefined$1(cell) && cell.evaluated.value.toString().indexOf(values[0].toString()) > -1);
                         case "NotContains":
-                            return (!isDefined(cell) ||
+                            return (!isDefined$1(cell) ||
                                 !cell.evaluated.value ||
                                 cell.evaluated.value.toString().indexOf(values[0].toString()) == -1);
                         case "GreaterThan":
-                            return isDefined(cell) && cell.evaluated.value > values[0];
+                            return isDefined$1(cell) && cell.evaluated.value > values[0];
                         case "GreaterThanOrEqual":
-                            return isDefined(cell) && cell.evaluated.value >= values[0];
+                            return isDefined$1(cell) && cell.evaluated.value >= values[0];
                         case "LessThan":
-                            return isDefined(cell) && cell.evaluated.value < values[0];
+                            return isDefined$1(cell) && cell.evaluated.value < values[0];
                         case "LessThanOrEqual":
-                            return isDefined(cell) && cell.evaluated.value <= values[0];
+                            return isDefined$1(cell) && cell.evaluated.value <= values[0];
                         case "NotEqual":
-                            if (!isDefined(cell) && values[0] === "") {
+                            if (!isDefined$1(cell) && values[0] === "") {
                                 return false;
                             }
-                            return isDefined(cell) && cell.evaluated.value !== values[0];
+                            return isDefined$1(cell) && cell.evaluated.value !== values[0];
                         case "Equal":
                             if (!cell && values[0] === "") {
                                 return true;
                             }
-                            return isDefined(cell) && cell.evaluated.value === values[0];
+                            return isDefined$1(cell) && cell.evaluated.value === values[0];
                         default:
                             console.warn(_lt("Not implemented operator %s for kind of conditional formatting:  %s", rule.operator, rule.type));
                     }
@@ -20761,7 +21213,7 @@
             return client;
         }
         getConnectedClients() {
-            return new Set(Object.values(this.clients).filter(isDefined));
+            return new Set(Object.values(this.clients).filter(isDefined$1));
         }
         getRevisionId() {
             return this.serverRevisionId;
@@ -21461,7 +21913,7 @@
         getRowMaxHeight(sheetId, index) {
             const sheet = this.getters.getSheet(sheetId);
             const cells = Object.values(sheet.rows[index].cells)
-                .filter(isDefined)
+                .filter(isDefined$1)
                 .map((cellId) => this.getters.getCellById(cellId));
             const sizes = cells.map((cell) => this.getCellHeight(cell));
             return Math.max(0, ...sizes);
@@ -21897,306 +22349,6 @@
         .add("sort", SortPlugin)
         .add("automatic_sum", AutomaticSumPlugin)
         .add("selection_multiuser", SelectionMultiUserPlugin);
-
-    /**
-     * Return the o-spreadsheet element position relative
-     * to the browser viewport.
-     */
-    function useSpreadsheetPosition() {
-        const position = owl.useState({ x: 0, y: 0 });
-        let spreadsheetElement = document.querySelector(".o-spreadsheet");
-        updatePosition();
-        function updatePosition() {
-            if (!spreadsheetElement) {
-                spreadsheetElement = document.querySelector(".o-spreadsheet");
-            }
-            if (spreadsheetElement) {
-                const { top, left } = spreadsheetElement.getBoundingClientRect();
-                position.x = left;
-                position.y = top;
-            }
-        }
-        owl.onMounted(updatePosition);
-        owl.onPatched(updatePosition);
-        return position;
-    }
-    /**
-     * Return the component (or ref's component) top left position (in pixels) relative
-     * to the upper left corner of the screen (<body> element).
-     *
-     * Note: when used with a <Portal/> component, it will
-     * return the portal position, not the teleported position.
-     */
-    function useAbsolutePosition(ref) {
-        const position = owl.useState({ x: 0, y: 0 });
-        function updateElPosition() {
-            const el = ref.el;
-            if (el === null) {
-                return;
-            }
-            const { top, left } = el.getBoundingClientRect();
-            if (left !== position.x || top !== position.y) {
-                position.x = left;
-                position.y = top;
-            }
-        }
-        owl.onMounted(updateElPosition);
-        owl.onPatched(updateElPosition);
-        return position;
-    }
-
-    class Popover extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.spreadsheetPosition = useSpreadsheetPosition();
-        }
-        get style() {
-            // the props's position is expressed relative to the "body" element
-            // but we teleport the element in ".o-spreadsheet" to keep everything
-            // within our control and to avoid leaking into external DOM
-            const horizontalPosition = `left:${this.horizontalPosition() - this.spreadsheetPosition.x}`;
-            const verticalPosition = `top:${this.verticalPosition() - this.spreadsheetPosition.y}`;
-            const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
-            return `
-      position: absolute;
-      z-index: 5;
-      ${verticalPosition}px;
-      ${horizontalPosition}px;
-      ${height}px;
-      width:${this.props.childWidth}px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
-    `;
-        }
-        get viewportDimension() {
-            return this.env.model.getters.getViewportDimensionWithHeaders();
-        }
-        get shouldRenderRight() {
-            const { x } = this.props.position;
-            return x + this.props.childWidth < this.viewportDimension.width;
-        }
-        get shouldRenderBottom() {
-            const { y } = this.props.position;
-            return y + this.props.childHeight < this.viewportDimension.height + TOPBAR_HEIGHT;
-        }
-        horizontalPosition() {
-            const { x } = this.props.position;
-            if (this.shouldRenderRight) {
-                return x;
-            }
-            return x - this.props.childWidth - this.props.flipHorizontalOffset;
-        }
-        verticalPosition() {
-            const { y } = this.props.position;
-            if (this.shouldRenderBottom) {
-                return y;
-            }
-            return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
-        }
-    }
-    Popover.template = "o-spreadsheet.Popover";
-    Popover.defaultProps = {
-        flipHorizontalOffset: 0,
-        flipVerticalOffset: 0,
-        verticalOffset: 0,
-        marginTop: 0,
-    };
-
-    //------------------------------------------------------------------------------
-    // Context Menu Component
-    //------------------------------------------------------------------------------
-    css /* scss */ `
-  .o-menu {
-    background-color: white;
-    padding: 8px 0px;
-    .o-menu-item {
-      display: flex;
-      justify-content: space-between;
-      box-sizing: border-box;
-      height: ${MENU_ITEM_HEIGHT}px;
-      padding: 4px 16px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      cursor: pointer;
-      user-select: none;
-
-      &.o-menu-root {
-        display: flex;
-        justify-content: space-between;
-      }
-      .o-menu-item-icon {
-        margin-top: auto;
-        margin-bottom: auto;
-      }
-      .o-icon {
-        width: 10px;
-      }
-
-      &:not(.disabled) {
-        &:hover {
-          background-color: #ebebeb;
-        }
-        .o-menu-item-shortcut {
-          color: grey;
-        }
-      }
-      &.disabled {
-        color: ${MENU_ITEM_DISABLED_COLOR};
-        cursor: not-allowed;
-      }
-    }
-
-    .o-separator {
-      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
-      margin-top: ${MENU_SEPARATOR_PADDING}px;
-      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
-    }
-  }
-`;
-    class Menu extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.MENU_WIDTH = MENU_WIDTH;
-            this.subMenu = owl.useState({
-                isOpen: false,
-                position: null,
-                scrollOffset: 0,
-                menuItems: [],
-            });
-            this.menuRef = owl.useRef("menu");
-            this.position = useAbsolutePosition(this.menuRef);
-        }
-        setup() {
-            owl.useExternalListener(window, "click", this.onClick);
-            owl.useExternalListener(window, "contextmenu", this.onContextMenu);
-            owl.onWillUpdateProps((nextProps) => {
-                if (nextProps.menuItems !== this.props.menuItems) {
-                    this.subMenu.isOpen = false;
-                }
-            });
-        }
-        get subMenuPosition() {
-            const position = Object.assign({}, this.subMenu.position);
-            position.y -= this.subMenu.scrollOffset || 0;
-            return position;
-        }
-        get menuHeight() {
-            return this.menuComponentHeight(this.props.menuItems);
-        }
-        get subMenuHeight() {
-            return this.menuComponentHeight(this.subMenu.menuItems);
-        }
-        get popover() {
-            const isRoot = this.props.depth === 1;
-            return {
-                // some margin between the header and the component
-                marginTop: HEADER_HEIGHT + 6 + TOPBAR_HEIGHT,
-                flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
-                flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
-            };
-        }
-        async activateMenu(menu) {
-            var _a, _b;
-            const result = await menu.action(this.env);
-            this.close();
-            (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
-        }
-        close() {
-            this.subMenu.isOpen = false;
-            this.props.onClose();
-        }
-        /**
-         * Return the number of pixels between the top of the menu
-         * and the menu item at a given index.
-         */
-        subMenuVerticalPosition(position) {
-            const menusAbove = this.props.menuItems.slice(0, position);
-            return this.menuComponentHeight(menusAbove) + this.position.y;
-        }
-        onClick(ev) {
-            // Don't close a root menu when clicked to open the submenus.
-            const el = this.menuRef.el;
-            if (el && isChildEvent(el, ev)) {
-                return;
-            }
-            this.close();
-        }
-        onContextMenu(ev) {
-            // Don't close a root menu when clicked to open the submenus.
-            const el = this.menuRef.el;
-            if (el && isChildEvent(el, ev)) {
-                return;
-            }
-            this.subMenu.isOpen = false;
-        }
-        /**
-         * Return the total height (in pixels) needed for some
-         * menu items
-         */
-        menuComponentHeight(menuItems) {
-            const separators = menuItems.filter((m) => m.separator);
-            const others = menuItems;
-            return MENU_ITEM_HEIGHT * others.length + separators.length * MENU_SEPARATOR_HEIGHT;
-        }
-        getName(menu) {
-            return cellMenuRegistry.getName(menu, this.env);
-        }
-        getShortCut(menu) {
-            return cellMenuRegistry.getShortCut(menu);
-        }
-        isRoot(menu) {
-            return !menu.action;
-        }
-        isEnabled(menu) {
-            if (menu.isEnabled(this.env)) {
-                return this.env.model.getters.isReadonly() ? menu.isReadonlyAllowed : true;
-            }
-            return false;
-        }
-        onScroll(ev) {
-            this.subMenu.scrollOffset = ev.target.scrollTop;
-        }
-        /**
-         * If the given menu is not disabled, open it's submenu at the
-         * correct position according to available surrounding space.
-         */
-        openSubMenu(menu, position) {
-            const y = this.subMenuVerticalPosition(position);
-            this.subMenu.position = {
-                x: this.position.x + MENU_WIDTH,
-                y: y - (this.subMenu.scrollOffset || 0),
-            };
-            this.subMenu.menuItems = cellMenuRegistry.getChildren(menu, this.env);
-            this.subMenu.isOpen = true;
-        }
-        onClickMenu(menu, position) {
-            if (this.isEnabled(menu)) {
-                if (this.isRoot(menu)) {
-                    this.openSubMenu(menu, position);
-                }
-                else {
-                    this.activateMenu(menu);
-                }
-            }
-        }
-        onMouseOver(menu, position) {
-            if (menu.isEnabled(this.env)) {
-                if (this.isRoot(menu)) {
-                    this.openSubMenu(menu, position);
-                }
-                else {
-                    this.subMenu.isOpen = false;
-                }
-            }
-        }
-    }
-    Menu.template = "o-spreadsheet.Menu";
-    Menu.components = { Menu, Popover };
-    Menu.defaultProps = {
-        depth: 1,
-    };
 
     // -----------------------------------------------------------------------------
     // SpreadSheet
@@ -23497,152 +23649,6 @@
     class ErrorToolTip extends owl.Component {
     }
     ErrorToolTip.template = "o-spreadsheet.ErrorToolTip";
-
-    // -----------------------------------------------------------------------------
-    // STYLE
-    // -----------------------------------------------------------------------------
-    css /* scss */ `
-  .o-chart-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-
-    .o-chart-menu {
-      right: 0px;
-      display: none;
-      position: absolute;
-      padding: 5px;
-      cursor: pointer;
-    }
-  }
-  .o-figure.active:focus {
-    .o-chart-container {
-      .o-chart-menu {
-        display: flex;
-      }
-    }
-  }
-`;
-    class ChartFigure extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
-            this.canvas = owl.useRef("graphContainer");
-            this.chartContainerRef = owl.useRef("chartContainer");
-            this.state = { background: BACKGROUND_CHART_COLOR };
-            this.position = useAbsolutePosition(this.chartContainerRef);
-        }
-        get canvasStyle() {
-            return `background-color: ${this.state.background}`;
-        }
-        setup() {
-            owl.onMounted(() => {
-                const figure = this.props.figure;
-                const chartData = this.env.model.getters.getChartRuntime(figure.id);
-                if (chartData) {
-                    this.createChart(chartData);
-                }
-            });
-            owl.onPatched(() => {
-                var _a, _b, _c;
-                const figure = this.props.figure;
-                const chartData = this.env.model.getters.getChartRuntime(figure.id);
-                if (chartData) {
-                    if (chartData.type !== this.chart.config.type) {
-                        // Updating a chart type requires to update its options accordingly, if feasible at all.
-                        // Since we trust Chart.js to generate most of its options, it is safer to just start from scratch.
-                        // See https://www.chartjs.org/docs/latest/developers/updates.html
-                        // and https://stackoverflow.com/questions/36949343/chart-js-dynamic-changing-of-chart-type-line-to-bar-as-example
-                        this.chart && this.chart.destroy();
-                        this.createChart(chartData);
-                    }
-                    else if (chartData.data && chartData.data.datasets) {
-                        this.chart.data = chartData.data;
-                        if ((_a = chartData.options) === null || _a === void 0 ? void 0 : _a.title) {
-                            this.chart.config.options.title = chartData.options.title;
-                        }
-                    }
-                    else {
-                        this.chart.data.datasets = undefined;
-                    }
-                    this.chart.config.options.legend = (_b = chartData.options) === null || _b === void 0 ? void 0 : _b.legend;
-                    this.chart.config.options.scales = (_c = chartData.options) === null || _c === void 0 ? void 0 : _c.scales;
-                    this.chart.update({ duration: 0 });
-                }
-                else {
-                    this.chart && this.chart.destroy();
-                }
-                const def = this.env.model.getters.getChartDefinition(figure.id);
-                if (def) {
-                    this.state.background = def.background;
-                }
-            });
-        }
-        createChart(chartData) {
-            const canvas = this.canvas.el;
-            const ctx = canvas.getContext("2d");
-            this.chart = new window.Chart(ctx, chartData);
-            const def = this.env.model.getters.getChartDefinition(this.props.figure.id);
-            if (def) {
-                this.state.background = def.background;
-            }
-        }
-        getMenuItemRegistry() {
-            const registry = new MenuItemRegistry();
-            registry.add("edit", {
-                name: _lt("Edit"),
-                sequence: 1,
-                action: () => this.env.openSidePanel("ChartPanel", { figure: this.props.figure }),
-            });
-            registry.add("delete", {
-                name: _lt("Delete"),
-                sequence: 10,
-                action: () => {
-                    this.env.model.dispatch("DELETE_FIGURE", {
-                        sheetId: this.env.model.getters.getActiveSheetId(),
-                        id: this.props.figure.id,
-                    });
-                    if (this.props.sidePanelIsOpen) {
-                        this.env.toggleSidePanel("ChartPanel", { figure: this.props.figure });
-                    }
-                    this.props.onFigureDeleted();
-                },
-            });
-            registry.add("refresh", {
-                name: _lt("Refresh"),
-                sequence: 11,
-                action: () => {
-                    this.env.model.dispatch("REFRESH_CHART", {
-                        id: this.props.figure.id,
-                    });
-                },
-            });
-            return registry;
-        }
-        onContextMenu(ev) {
-            ev.preventDefault();
-            const position = {
-                x: this.position.x + ev.offsetX,
-                y: this.position.y + ev.offsetY,
-            };
-            this.openContextMenu(position);
-        }
-        showMenu(ev) {
-            const target = ev.currentTarget;
-            const x = target.offsetLeft;
-            const y = target.offsetTop;
-            const position = { x: this.position.x + x - MENU_WIDTH, y: this.position.y + y };
-            this.openContextMenu(position);
-        }
-        openContextMenu(position) {
-            const registry = this.getMenuItemRegistry();
-            this.menuState.isOpen = true;
-            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
-            this.menuState.position = position;
-        }
-    }
-    ChartFigure.template = "o-spreadsheet.ChartFigure";
-    ChartFigure.components = { Menu };
 
     // -----------------------------------------------------------------------------
     // STYLE
@@ -26477,7 +26483,7 @@
             dataSets = definition.dataSets
                 .map(toZone)
                 .map((zone) => transformZone(zone, executed))
-                .filter(isDefined)
+                .filter(isDefined$1)
                 .map(zoneToXc);
         }
         return {
@@ -26555,7 +26561,7 @@
         for (const executedCommand of executed) {
             transformedCommands = transformedCommands
                 .map((cmd) => transform(cmd, executedCommand))
-                .filter(isDefined);
+                .filter(isDefined$1);
         }
         return transformedCommands;
     }
@@ -26620,7 +26626,7 @@
                     }
                     return element;
                 })
-                    .filter(isDefined);
+                    .filter(isDefined$1);
             }
             if (executed.type === "ADD_COLUMNS_ROWS") {
                 const base = executed.position === "before" ? executed.base - 1 : executed.base;
@@ -29791,7 +29797,7 @@
   `;
     }
     function addFont(font) {
-        if (Object.values(font).filter(isDefined).length === 0) {
+        if (Object.values(font).filter(isDefined$1).length === 0) {
             return escapeXml /*xml*/ ``;
         }
         return escapeXml /*xml*/ `
@@ -30639,6 +30645,10 @@
         markdownLink,
         createEmptyWorkbookData,
     };
+    const components = {
+        ChartFigure,
+        ChartPanel,
+    };
 
     exports.CorePlugin = CorePlugin;
     exports.DATETIME_FORMAT = DATETIME_FORMAT;
@@ -30653,6 +30663,7 @@
     exports.astToFormula = astToFormula;
     exports.cellTypes = cellTypes;
     exports.compile = compile;
+    exports.components = components;
     exports.convertAstNodes = convertAstNodes;
     exports.coreTypes = coreTypes;
     exports.functionCache = functionCache;
@@ -30666,8 +30677,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-04-27T07:08:13.101Z';
-    exports.__info__.hash = '4c088fc';
+    exports.__info__.date = '2022-04-29T05:51:06.373Z';
+    exports.__info__.hash = 'ec08a52';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

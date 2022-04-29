@@ -1012,8 +1012,8 @@ class SaleOrder(models.Model):
                 if auto_commit:
                     self.env.cr.commit()
                 # Handle automatic payment or invoice posting
-                subscription._handle_automatic_invoices(auto_commit, invoice)
-                account_moves |= invoice
+                existing_invoices = subscription._handle_automatic_invoices(auto_commit, invoice)
+                account_moves |= existing_invoices
                 subscription.with_context(mail_notrack=True).write({'payment_exception': False})
             except Exception:
                 _logger.exception("Error during renewal of contract %s", subscription.client_order_ref)
@@ -1074,6 +1074,7 @@ class SaleOrder(models.Model):
         """ This method handle the subscription whose template payment_method is set to validate_send and success_payment """
         Mail = self.env['mail.mail']
         automatic_values = self._get_automatic_subscription_values()
+        existing_invoices = invoices
         for order in self:
             invoice = invoices.filtered(lambda inv: inv.invoice_origin == order.name)
             email_context = self._get_subscription_mail_payment_context()
@@ -1092,6 +1093,7 @@ class SaleOrder(models.Model):
                             order.message_post(body=msg_body)
                             order.with_context(mail_notrack=True).write(automatic_values)
                             invoice.unlink()
+                            existing_invoices -= invoice
                             if auto_commit:
                                 self.env.cr.commit()
                             continue
@@ -1111,6 +1113,7 @@ class SaleOrder(models.Model):
                             # prevent rollback during tests
                             self.env.cr.rollback()
                         order._handle_subscription_payment_failure(invoice, transaction, email_context)
+                        existing_invoices -= invoice  # It will be unlinked in the call above
                 except Exception:
                     if auto_commit:
                         # prevent rollback during tests
@@ -1124,6 +1127,8 @@ class SaleOrder(models.Model):
                     mail = Mail.create({'body_html': '%s\n<pre>%s</pre>' % (error_message), 'subject': error_message,
                                         'email_to': email_context.get('responsible_email'), 'auto_delete': True})
                     mail.send()
+
+        return existing_invoices
 
     def cron_subscription_expiration(self):
         today = fields.Date.today()

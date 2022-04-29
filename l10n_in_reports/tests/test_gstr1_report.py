@@ -3,6 +3,8 @@ from odoo import fields
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 from odoo.tests import tagged
 import logging
+from odoo.tools.misc import NON_BREAKING_SPACE
+
 
 _logger = logging.getLogger(__name__)
 
@@ -51,8 +53,8 @@ class TestReports(TestAccountReportsCommon):
         # For B2B Invoice - 4A, AB, 4C, 6B, 6C
         expected = [
             {"name": 1, "class": ""},
-            {"name": "₹ 25.00", "class": "number"},
-            {"name": "₹ 25.00", "class": "number"},
+            {"name": f"₹{NON_BREAKING_SPACE}25.00", "class": "number"},
+            {"name": f"₹{NON_BREAKING_SPACE}25.00", "class": "number"},
             {"name": "", "class": "number"},
             {"name": "", "class": "number"}
             ]

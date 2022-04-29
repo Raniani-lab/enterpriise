@@ -3,6 +3,7 @@
 
 from odoo.addons.account_reports.tests.account_sales_report_common import AccountSalesReportCommon
 from odoo.tests import tagged
+from odoo.tools.misc import NON_BREAKING_SPACE
 from freezegun import freeze_time
 
 
@@ -48,8 +49,8 @@ class SwedishSalesReportTest(AccountSalesReportCommon):
             # Partner, VAT Number, Goods_Amount, Triangular_Amount, Service_Amount
             [0, 1, 2, 3, 4],
             [
-                (self.partner_a.name, self.partner_a.vat, '6,000.00 kr', '', '7,000.00 kr'),
-                (self.partner_b.name, self.partner_b.vat, '', '2,000.00 kr', '4,000.00 kr'),
+                (self.partner_a.name, self.partner_a.vat, f'6,000.00{NON_BREAKING_SPACE}kr', '', f'7,000.00{NON_BREAKING_SPACE}kr'),
+                (self.partner_b.name, self.partner_b.vat, '', f'2,000.00{NON_BREAKING_SPACE}kr', f'4,000.00{NON_BREAKING_SPACE}kr'),
             ],
         )
         self.assertTrue(report._get_kvr(options), "Error creating KVR")

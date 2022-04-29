@@ -3,6 +3,7 @@ import odoo.tests
 import time
 from odoo.addons.account.tests.common import TestAccountReconciliationCommon
 from odoo import fields
+from odoo.tools.misc import NON_BREAKING_SPACE
 
 _logger = logging.getLogger(__name__)
 
@@ -35,7 +36,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
         bank_stmt.button_post()
 
         result = self.env['account.reconciliation.widget'].get_bank_statement_line_data(bank_stmt.line_ids.ids)
-        self.assertEqual(result['lines'][0]['reconciliation_proposition'][0]['amount_str'], '$ 50.00')
+        self.assertEqual(result['lines'][0]['reconciliation_proposition'][0]['amount_str'], f'${NON_BREAKING_SPACE}50.00')
 
     def test_filter_partner1(self):
         inv1 = self.create_invoice(currency_id=self.currency_euro_id)

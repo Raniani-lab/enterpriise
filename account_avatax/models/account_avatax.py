@@ -85,7 +85,7 @@ class AccountAvatax(models.AbstractModel):
 
         :return (Model): a `res.partner` record
         """
-        return self.partner_id
+        return self.partner_shipping_id or self.partner_id
 
     # #############################################################################################
     # HELPERS

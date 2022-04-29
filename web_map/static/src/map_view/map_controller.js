@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { useAssets } from "@web/core/assets";
+import { loadJS, loadCSS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
 import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
@@ -8,7 +8,7 @@ import { useSetupView } from "@web/views/helpers/view_hook";
 import { Layout } from "@web/search/layout";
 import { usePager } from "@web/search/pager_hook";
 
-const { Component, onWillUnmount } = owl;
+const { Component, onWillUnmount, onWillStart } = owl;
 
 export class MapController extends Component {
     setup() {
@@ -30,10 +30,10 @@ export class MapController extends Component {
             },
         });
 
-        useAssets({
-            jsLibs: ["/web_map/static/lib/leaflet/leaflet.js"],
-            cssLibs: ["/web_map/static/lib/leaflet/leaflet.css"],
-        });
+        onWillStart(() => Promise.all([
+            loadJS("/web_map/static/lib/leaflet/leaflet.js"),
+            loadCSS("/web_map/static/lib/leaflet/leaflet.css"),
+        ]));
 
         usePager(() => {
             return {

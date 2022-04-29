@@ -3,7 +3,7 @@
 
 import Dialog from "web.OwlDialog";
 import { delay } from "web.concurrency";
-import { loadAssets } from "@web/core/assets";
+import { loadJS } from "@web/core/assets";
 
 const { App, Component, EventBus, onMounted, onWillStart, onWillUnmount, useRef } = owl;
 import { _t } from "web.core";
@@ -146,9 +146,7 @@ class BarcodeDialog extends Component {
             if ("BarcodeDetector" in window) {
                 DetectorClass = BarcodeDetector;
             } else {
-                await loadAssets({
-                    jsLibs: ["/web/static/lib/zxing-library/zxing-library.js"],
-                });
+                await loadJS("/web/static/lib/zxing-library/zxing-library.js");
                 DetectorClass = buildZXingBarcodeDetector(window.ZXing);
             }
             const formats = await DetectorClass.getSupportedFormats();

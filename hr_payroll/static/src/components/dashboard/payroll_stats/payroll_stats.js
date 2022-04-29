@@ -1,16 +1,16 @@
 /** @odoo-module **/
 
-import { useAssets } from "@web/core/assets";
+import { loadJS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
 
-const { Component, onWillUnmount, useEffect, useRef, useState } = owl;
+const { Component, onWillUnmount, useEffect, useRef, useState, onWillStart } = owl;
 
 export class PayrollDashboardStats extends Component {
     setup() {
         this.actionService = useService("action");
         this.canvasRef = useRef('canvas');
         this.state = useState({ monthly: true });
-        useAssets({ jsLibs: ["/web/static/lib/Chart/Chart.js"] });
+        onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         useEffect(() => this.renderChart());
         onWillUnmount(() => {
             if (this.chart) {

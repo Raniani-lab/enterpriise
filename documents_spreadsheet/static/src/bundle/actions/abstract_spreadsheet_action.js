@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import { useService } from "@web/core/utils/hooks";
-import { loadAssets } from "@web/core/assets";
+import { loadJS } from "@web/core/assets";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 
 import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants"
@@ -45,9 +45,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
     }
 
     async onWillStart() {
-        const chartLibPromise = loadAssets({
-            jsLibs: ["/web/static/lib/Chart/Chart.js"],
-        });
+        const chartLibPromise = loadJS("/web/static/lib/Chart/Chart.js");
 
         // if we are returning to the spreadsheet via the breadcrumb, we don't want
         // to do all the "creation" options of the actions

@@ -8,7 +8,7 @@ const actionRegistry = registry.category("actions");
 
 
 async function loadAndVerifyAction(env, actionName, actionLazyLoader) {
-    await loadBundle("documents_spreadsheet.o_spreadsheet", { js: true, css: true });
+    await loadBundle("documents_spreadsheet.o_spreadsheet");
 
     if (actionRegistry.get(actionName) === actionLazyLoader) {
         // At this point, the real spreadsheet client action should be loaded and have

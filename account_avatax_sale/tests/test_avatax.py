@@ -62,6 +62,13 @@ class TestSaleAvalara(TestAccountAvataxCommon):
             ]
         })
 
+    def test_compute_on_send(self):
+        order = self._create_sale_order()
+        mocked_response = generate_response(order.order_line)
+        with self._capture_request(return_value=mocked_response):
+            order.action_quotation_send()
+        self.assertOrder(order, mocked_response=mocked_response)
+
     def test_01_odoo_sale_order(self):
         order = self._create_sale_order()
         mocked_response = generate_response(order.order_line)
@@ -195,8 +202,8 @@ class TestAccountAvalaraSalesTaxItemsIntegration(TestAccountAvataxCommon):
     def test_sales_order(self):
         """Ensure that invoices are processed through a logical document lifecycle."""
         self.assertEqual(self.captured_arguments['json']['type'], 'SalesOrder')
-        self.sale_order.action_quotation_send()
         with self._capture_request({'lines': [], 'summary': []}) as capture:
+            self.sale_order.action_quotation_send()
             self.sale_order.action_confirm()
             invoice = self.sale_order._create_invoices()
             invoice.button_update_avatax()
@@ -208,8 +215,8 @@ class TestAccountAvalaraSalesTaxItemsIntegration(TestAccountAvataxCommon):
 
     def test_commit_tax(self):
         """Ensure that invoices are committed/posted for reporting appropriately."""
-        self.sale_order.action_quotation_send()
         with self._capture_request({'lines': [], 'summary': []}) as capture:
+            self.sale_order.action_quotation_send()
             self.sale_order.action_confirm()
             invoice = self.sale_order._create_invoices()
             invoice.action_post()

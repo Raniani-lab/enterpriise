@@ -8,6 +8,10 @@ class SaleOrder(models.Model):
         self.button_update_avatax()
         return super()._action_confirm()
 
+    def action_quotation_send(self):
+        self.button_update_avatax()
+        return super().action_quotation_send()
+
     def button_update_avatax(self):
         mapped_taxes, _ = self.filtered(lambda m: m.fiscal_position_id.is_avatax)._map_avatax(False)
         to_flush = self.env['sale.order.line']

@@ -35,3 +35,14 @@ class TestWebsiteSaleRentingCommon(TransactionCase):
         cls.partner = cls.env['res.partner'].create({
             'name': 'partner_a',
         })
+
+    def setUp(self):
+        super().setUp()
+        # Allow renting on any day for tests, avoids unexpected error
+        self.env.company.renting_forbidden_mon = False
+        self.env.company.renting_forbidden_tue = False
+        self.env.company.renting_forbidden_wed = False
+        self.env.company.renting_forbidden_thu = False
+        self.env.company.renting_forbidden_fri = False
+        self.env.company.renting_forbidden_sat = False
+        self.env.company.renting_forbidden_sun = False

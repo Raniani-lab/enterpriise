@@ -19,7 +19,7 @@
                 <attribute name="attrs">{'column_invisible': [('parent.is_avatax', '=', True)]}</attribute>
             </xpath>
             <group name="sales_person" position="inside">
-                <field name="avatax_unique_code"/>
+                <field name="avatax_unique_code" attrs="{'invisible': [('is_avatax', '=', False)]}"/>
             </group>
         </field>
     </record>

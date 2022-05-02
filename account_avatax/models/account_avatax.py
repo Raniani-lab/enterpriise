@@ -8,7 +8,7 @@ from odoo.addons.account_avatax.lib.avatax_client import AvataxClient
 from odoo import models, fields, api, registry, _, SUPERUSER_ID
 from odoo.release import version
 from odoo.exceptions import UserError, RedirectWarning, ValidationError
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_round, float_repr
 
 logger = logging.getLogger(__name__)
 
@@ -228,10 +228,12 @@ class AccountAvatax(models.AbstractModel):
                     'company_id': doc.company_id.id,
                     'account_id': account and account.id,
                 })
+            # 4 precision digits is the same as is used on the amount field of account.tax
+            name_precision = 4
             tax_name = '%s [%s] (%s %%)' % (
                 detail['taxName'],
                 detail['jurisCode'],
-                detail['rate'] * 100,
+                float_repr(float_round(detail['rate'] * 100, name_precision), name_precision),
             )
             key = (tax_name, doc.company_id)
             if key not in tax_cache:

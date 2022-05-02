@@ -384,7 +384,6 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
 
 }
 
-ListPlugin.modes = ["normal", "headless"];
 ListPlugin.getters = [
     "getSpreadsheetListModel",
     "getSpreadsheetListDataSource",

@@ -67,7 +67,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
                     name: user.name,
                     userId: user.uid,
                 },
-                isReadonly: this.props.isReadonly,
+                mode: this.props.isReadonly ? "readonly" : "normal",
                 snapshotRequested: this.props.snapshotRequested,
                 dataSources,
             },
@@ -299,7 +299,6 @@ export default class SpreadsheetComponent extends LegacyComponent {
      */
     async _saveAsTemplate() {
         const model = new Model(this.model.exportData(), {
-            mode: "headless",
             evalContext: { env: this.env },
             dataSources: this.model.config.dataSources,
         });

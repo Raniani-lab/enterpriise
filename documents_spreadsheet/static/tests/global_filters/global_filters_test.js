@@ -239,7 +239,7 @@ module("documents_spreadsheet > global_filters",
                 listFields: {},
             },
         });
-        model.updateReadOnly(true);
+        model.updateMode("readonly");
         await nextTick();
 
         const searchIcon = target.querySelector(".o_topbar_filter_icon");
@@ -283,7 +283,7 @@ module("documents_spreadsheet > global_filters",
                 listFields: {},
             },
         });
-        model.updateReadOnly(true);
+        model.updateMode("readonly");
         await nextTick();
 
         const searchIcon = target.querySelector(".o_topbar_filter_icon");
@@ -343,7 +343,7 @@ module("documents_spreadsheet > global_filters",
             },
         });
         assert.equal(model.getters.getGlobalFilters().length, 1);
-        model.updateReadOnly(true);
+        model.updateMode("readonly");
         await nextTick();
 
         const searchIcon = target.querySelector(".o_topbar_filter_icon");

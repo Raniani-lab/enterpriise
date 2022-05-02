@@ -480,7 +480,6 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
     }
 }
 
-PivotPlugin.modes = ["normal", "headless"];
 PivotPlugin.getters = [
     "getNextPivotId",
     "getPivotDefinition",

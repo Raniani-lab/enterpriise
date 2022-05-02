@@ -224,15 +224,6 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
         if (this.getGlobalFilters().length === 0) {
             return;
         }
-        /**
-         * In order to get the evaluate data of a filter (the value), we have to
-         * make some calls to UI plugins. In order to avoid issues when the
-         * spreadsheet is instantiated in headless mode, we introduce the
-         * following check
-         */
-        if (!("getActiveSheetId" in this.getters)) {
-            return;
-        }
         const styles = Object.entries(data.styles);
         let titleStyleId =
             styles.findIndex((el) => JSON.stringify(el[1]) === JSON.stringify({ bold: true })) + 1;
@@ -318,7 +309,6 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
     }
 }
 
-FiltersPlugin.modes = ["normal", "headless"];
 FiltersPlugin.getters = [
     "getGlobalFilter",
     "getGlobalFilters",

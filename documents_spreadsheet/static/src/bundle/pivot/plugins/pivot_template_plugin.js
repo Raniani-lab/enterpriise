@@ -330,7 +330,6 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
         }
     }
 
-    PivotTemplatePlugin.modes = ["headless"];
     PivotTemplatePlugin.getters = [];
 
     return PivotTemplatePlugin;

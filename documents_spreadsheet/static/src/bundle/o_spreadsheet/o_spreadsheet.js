@@ -3294,6 +3294,8 @@
         action: OPEN_CF_SIDEPANEL_ACTION,
     });
 
+    const dashboardMenuRegistry = new MenuItemRegistry();
+
     //------------------------------------------------------------------------------
     // Link Menu Registry
     //------------------------------------------------------------------------------
@@ -5613,7 +5615,8 @@
         }
         get shouldRenderBottom() {
             const { y } = this.props.position;
-            return y + this.props.childHeight < this.viewportDimension.height + TOPBAR_HEIGHT;
+            return (y + this.props.childHeight <
+                this.viewportDimension.height + (this.env.isDashboard() ? 0 : TOPBAR_HEIGHT));
         }
         horizontalPosition() {
             const { x } = this.props.position;
@@ -5725,9 +5728,13 @@
         }
         get popover() {
             const isRoot = this.props.depth === 1;
+            let marginTop = 6;
+            if (!this.env.isDashboard()) {
+                marginTop += TOPBAR_HEIGHT + HEADER_HEIGHT;
+            }
             return {
                 // some margin between the header and the component
-                marginTop: HEADER_HEIGHT + 6 + TOPBAR_HEIGHT,
+                marginTop,
                 flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
                 flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
             };
@@ -5961,7 +5968,6 @@
             return registry;
         }
         onContextMenu(ev) {
-            ev.preventDefault();
             const position = {
                 x: this.position.x + ev.offsetX,
                 y: this.position.y + ev.offsetY,
@@ -13002,7 +13008,6 @@
                 selectCell: () => { },
             });
             this.dispatch = dispatch;
-            this.currentMode = config.mode;
         }
         // ---------------------------------------------------------------------------
         // Command handling
@@ -13066,7 +13071,6 @@
         }
     }
     BasePlugin.getters = [];
-    BasePlugin.modes = ["headless", "normal"];
 
     /**
      * Core plugins handle spreadsheet data.
@@ -16648,7 +16652,6 @@
     }
     AutofillPlugin.layers = [6 /* Autofill */];
     AutofillPlugin.getters = ["getAutofillTooltip"];
-    AutofillPlugin.modes = ["normal"];
 
     class AutomaticSumPlugin extends UIPlugin {
         handle(cmd) {
@@ -16922,7 +16925,6 @@
         }
     }
     AutomaticSumPlugin.getters = ["getAutomaticSums"];
-    AutomaticSumPlugin.modes = ["normal", "headless"];
 
     /**
      * Clipboard Plugin
@@ -17500,7 +17502,6 @@
     }
     ClipboardPlugin.layers = [2 /* Clipboard */];
     ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat"];
-    ClipboardPlugin.modes = ["normal"];
 
     /**
      * Change the reference types inside the given token, if the token represent a range or a cell
@@ -18132,7 +18133,6 @@
         "getTokenAtCursor",
         "getComposerHighlights",
     ];
-    EditionPlugin.modes = ["normal"];
 
     const functionMap = functionRegistry.mapping;
     class EvaluationPlugin extends UIPlugin {
@@ -18382,7 +18382,6 @@
         }
     }
     EvaluationPlugin.getters = ["evaluateFormula", "getRangeFormattedValues", "getRangeValues"];
-    EvaluationPlugin.modes = ["normal"];
 
     const GraphColors = [
         // the same colors as those used in odoo reporting
@@ -18762,7 +18761,6 @@
         }
     }
     EvaluationChartPlugin.getters = ["getChartRuntime"];
-    EvaluationChartPlugin.modes = ["normal"];
 
     // -----------------------------------------------------------------------------
     // Constants
@@ -19137,7 +19135,6 @@
         }
     }
     EvaluationConditionalFormatPlugin.getters = ["getConditionalStyle", "getConditionalIcon"];
-    EvaluationConditionalFormatPlugin.modes = ["normal"];
 
     const BORDER_COLOR = "#8B008B";
     const BACKGROUND_COLOR = "#8B008B33";
@@ -19465,7 +19462,6 @@
             }
         }
     }
-    HighlightPlugin.modes = ["normal"];
     HighlightPlugin.layers = [1 /* Highlights */];
     HighlightPlugin.getters = ["getHighlights"];
 
@@ -19590,6 +19586,9 @@
                     this.drawIcon(renderingContext);
                     break;
                 case 7 /* Headers */:
+                    if (this.getters.isDashboard()) {
+                        return;
+                    }
                     this.drawHeaders(renderingContext);
                     break;
             }
@@ -19603,7 +19602,7 @@
             ctx.fillRect(0, 0, width, height);
             // background grid
             const { right, left, top, bottom, offsetX, offsetY } = this.getShiftedViewport(viewport);
-            if (!this.getters.getGridLinesVisibility(sheetId)) {
+            if (!this.getters.getGridLinesVisibility(sheetId) || this.getters.isDashboard()) {
                 return;
             }
             ctx.lineWidth = 2 * thinLineWidth;
@@ -19840,10 +19839,12 @@
          * Adapt the current viewport with the headers sizes
          */
         getShiftedViewport(viewport) {
+            const shiftX = this.getters.isDashboard() ? 0 : HEADER_WIDTH;
+            const shiftY = this.getters.isDashboard() ? 0 : HEADER_HEIGHT;
             return {
                 ...viewport,
-                offsetX: viewport.offsetX - HEADER_WIDTH,
-                offsetY: viewport.offsetY - HEADER_HEIGHT,
+                offsetX: viewport.offsetX - shiftX,
+                offsetY: viewport.offsetY - shiftY,
             };
         }
         findNextEmptyCol(base, max, row) {
@@ -20020,7 +20021,6 @@
         "getEdgeScrollCol",
         "getEdgeScrollRow",
     ];
-    RendererPlugin.modes = ["normal"];
 
     const selectionStatisticFunctions = [
         {
@@ -20593,6 +20593,9 @@
         // Grid rendering
         // ---------------------------------------------------------------------------
         drawGrid(renderingContext) {
+            if (this.getters.isDashboard()) {
+                return;
+            }
             const { viewport, ctx, thinLineWidth } = renderingContext;
             // selection
             const zones = this.getSelectedZones();
@@ -20632,7 +20635,6 @@
         }
     }
     GridSelectionPlugin.layers = [5 /* Selection */];
-    GridSelectionPlugin.modes = ["normal"];
     GridSelectionPlugin.getters = [
         "getActiveSheet",
         "getActiveSheetId",
@@ -20861,7 +20863,6 @@
             return index >= 0 ? index : null;
         }
     }
-    SelectionInputPlugin.modes = ["normal"];
     SelectionInputPlugin.layers = [1 /* Highlights */];
     SelectionInputPlugin.getters = [];
 
@@ -20989,7 +20990,6 @@
             this.focusedInputId = null;
         }
     }
-    SelectionInputsManagerPlugin.modes = ["normal"];
     SelectionInputsManagerPlugin.layers = [1 /* Highlights */];
     SelectionInputsManagerPlugin.getters = [
         "getSelectionInput",
@@ -21469,6 +21469,9 @@
             return clients;
         }
         drawGrid(renderingContext) {
+            if (this.getters.isDashboard()) {
+                return;
+            }
             const { viewport, ctx, thinLineWidth } = renderingContext;
             const activeSheetId = this.getters.getActiveSheetId();
             for (const client of this.getClientsToDisplay()) {
@@ -21501,7 +21504,6 @@
     }
     SelectionMultiUserPlugin.getters = ["getClientsToDisplay"];
     SelectionMultiUserPlugin.layers = [5 /* Selection */];
-    SelectionMultiUserPlugin.modes = ["normal"];
 
     class SortPlugin extends UIPlugin {
         allowDispatch(cmd) {
@@ -21818,7 +21820,6 @@
             return this.showFormulas;
         }
     }
-    UIOptionsPlugin.modes = ["normal"];
     UIOptionsPlugin.getters = ["shouldShowFormulas"];
 
     class SheetUIPlugin extends UIPlugin {
@@ -22045,8 +22046,8 @@
         // ---------------------------------------------------------------------------
         getViewportDimensionWithHeaders() {
             return {
-                width: this.viewportWidth + HEADER_WIDTH,
-                height: this.viewportHeight + HEADER_HEIGHT,
+                width: this.viewportWidth + (this.getters.isDashboard() ? 0 : HEADER_WIDTH),
+                height: this.viewportHeight + (this.getters.isDashboard() ? 0 : HEADER_HEIGHT),
             };
         }
         getViewportDimension() {
@@ -22321,7 +22322,6 @@
         "getMaxViewportSize",
         "getMaximumViewportOffset",
     ];
-    ViewportPlugin.modes = ["normal"];
 
     const corePluginRegistry = new Registry()
         .add("sheet", SheetPlugin)
@@ -23762,19 +23762,13 @@
             const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
             const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
             const { width, height } = target;
-            let x = target.x - offsetX + HEADER_WIDTH - 1;
-            let y = target.y - offsetY + HEADER_HEIGHT - 1;
-            // width and height of wrapper need to be adjusted so we do not overlap
-            // with headers
-            const correctionX = Math.max(0, HEADER_WIDTH - x);
-            x += correctionX;
-            const correctionY = Math.max(0, HEADER_HEIGHT - y);
-            y += correctionY;
+            let x = target.x - offsetX - 1;
+            let y = target.y - offsetY - 1;
             if (width < 0 || height < 0) {
                 return `position:absolute;display:none;`;
             }
             const offset = ANCHOR_SIZE + ACTIVE_BORDER_WIDTH + (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
-            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px`;
+            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width + offset}px; height:${height + offset}px`;
         }
         setup() {
             owl.onMounted(() => {
@@ -23830,7 +23824,7 @@
             startDnd(onMouseMove, onMouseUp);
         }
         onMouseDown(figure, ev) {
-            if (ev.button > 0) {
+            if (ev.button > 0 || this.env.model.getters.isReadonly()) {
                 // not main button, probably a context menu
                 return;
             }
@@ -24950,6 +24944,7 @@
         ROW: rowMenuRegistry,
         COL: colMenuRegistry,
         CELL: cellMenuRegistry,
+        DASHBOARD: dashboardMenuRegistry,
     };
     // copy and paste are specific events that should not be managed by the keydown event,
     // but they shouldn't be preventDefault and stopped (else copy and paste events will not trigger)
@@ -25066,7 +25061,6 @@
       z-index: 2;
       &.vertical {
         right: 0;
-        top: ${HEADER_HEIGHT}px;
         bottom: ${SCROLLBAR_WIDTH$1}px;
         width: ${SCROLLBAR_WIDTH$1}px;
         overflow-x: hidden;
@@ -25075,17 +25069,12 @@
         bottom: 0;
         height: ${SCROLLBAR_WIDTH$1}px;
         right: ${SCROLLBAR_WIDTH$1 + 1}px;
-        left: ${HEADER_WIDTH}px;
         overflow-y: hidden;
       }
     }
 
     .o-grid-overlay {
       position: absolute;
-      top: ${HEADER_HEIGHT}px;
-      left: ${HEADER_WIDTH}px;
-      height: calc(100% - ${HEADER_HEIGHT}px);
-      width: calc(100% - ${HEADER_WIDTH}px);
       outline: none;
     }
   }
@@ -25245,6 +25234,22 @@
             this.resizeGrid();
             this.drawGrid();
         }
+        get gridOverlayStyle() {
+            return `
+      top: ${this.env.isDashboard() ? 0 : HEADER_HEIGHT}px;
+      left: ${this.env.isDashboard() ? 0 : HEADER_WIDTH}px;
+      height: calc(100% - ${this.env.isDashboard() ? 0 : HEADER_HEIGHT}px);
+      width: calc(100% - ${this.env.isDashboard() ? 0 : HEADER_WIDTH}px);
+    `;
+        }
+        get vScrollbarStyle() {
+            return `
+      top: ${this.env.isDashboard() ? 0 : HEADER_HEIGHT}px;`;
+        }
+        get hScrollbarStyle() {
+            return `
+      left: ${this.env.isDashboard() ? 0 : HEADER_WIDTH}px;`;
+        }
         get errorTooltip() {
             const { col, row } = this.hoveredCell;
             if (col === undefined || row === undefined) {
@@ -25322,8 +25327,8 @@
             const { height: viewportHeight, width: viewportWidth } = this.env.model.getters.getViewportDimensionWithHeaders();
             if (currentHeight != viewportHeight || currentWidth !== viewportWidth) {
                 this.env.model.dispatch("RESIZE_VIEWPORT", {
-                    height: currentHeight - HEADER_HEIGHT,
-                    width: currentWidth - HEADER_WIDTH,
+                    height: currentHeight - (this.env.isDashboard() ? 0 : HEADER_HEIGHT),
+                    width: currentWidth - (this.env.isDashboard() ? 0 : HEADER_WIDTH),
                 });
             }
         }
@@ -25427,7 +25432,7 @@
             return [colIndex, rowIndex];
         }
         onMouseDown(ev) {
-            if (ev.button > 0) {
+            if (ev.button > 0 || this.env.isDashboard()) {
                 // not main button, probably a context menu
                 return;
             }
@@ -25571,6 +25576,9 @@
             }
         }
         onKeydown(ev) {
+            if (this.env.isDashboard()) {
+                return;
+            }
             if (ev.key.startsWith("Arrow")) {
                 this.processArrows(ev);
                 return;
@@ -25631,6 +25639,9 @@
         }
         toggleContextMenu(type, x, y) {
             this.closeLinkEditor();
+            if (this.env.model.getters.isDashboard()) {
+                type = "DASHBOARD";
+            }
             this.menuState.isOpen = true;
             this.menuState.position = { x, y };
             this.menuState.menuItems = registries$1[type]
@@ -26246,7 +26257,6 @@
   .o-spreadsheet {
     position: relative;
     display: grid;
-    grid-template-rows: ${TOPBAR_HEIGHT}px auto ${BOTTOMBAR_HEIGHT + 1}px;
     grid-template-columns: auto 350px;
     * {
       font-family: "Roboto", "RobotoDraft", Helvetica, Arial, sans-serif;
@@ -26278,6 +26288,12 @@
 `;
     const t = (s) => s;
     class Spreadsheet extends owl.Component {
+        getStyle() {
+            if (this.env.isDashboard()) {
+                return `grid-template-rows: auto;`;
+            }
+            return `grid-template-rows: ${TOPBAR_HEIGHT}px auto ${BOTTOMBAR_HEIGHT + 1}px`;
+        }
         setup() {
             var _a, _b;
             (_b = (_a = this.props).exposeSpreadsheet) === null || _b === void 0 ? void 0 : _b.call(_a, this);
@@ -26294,6 +26310,7 @@
             };
             owl.useSubEnv({
                 model: this.model,
+                isDashboard: () => this.model.getters.isDashboard(),
                 openSidePanel: this.openSidePanel.bind(this),
                 toggleSidePanel: this.toggleSidePanel.bind(this),
                 openLinkEditor: this.openLinkEditor.bind(this),
@@ -30296,7 +30313,7 @@
             this.dispatch = (type, payload) => {
                 const command = { type, ...payload };
                 let status = this.status;
-                if (this.config.isReadonly && !canExecuteInReadonly(command)) {
+                if (this.getters.isReadonly() && !canExecuteInReadonly(command)) {
                     return new DispatchResult(50 /* Readonly */);
                 }
                 switch (status) {
@@ -30315,9 +30332,7 @@
                         });
                         this.session.save(commands, changes);
                         this.status = 0 /* Ready */;
-                        if (this.config.mode !== "headless") {
-                            this.trigger("update");
-                        }
+                        this.trigger("update");
                         break;
                     case 1 /* Running */:
                         if (isCoreCommand(command)) {
@@ -30360,7 +30375,8 @@
             this.config.moveClient = this.session.move.bind(this.session);
             this.history = new LocalHistory(this.dispatchFromCorePlugin, this.session);
             this.getters = {
-                isReadonly: () => this.config.isReadonly,
+                isReadonly: () => this.config.mode === "readonly" || this.config.mode === "dashboard",
+                isDashboard: () => this.config.mode === "dashboard",
                 canUndo: this.history.canUndo.bind(this.history),
                 canRedo: this.history.canRedo.bind(this.history),
                 getClient: this.session.getClient.bind(this.session),
@@ -30412,19 +30428,17 @@
             this.session.leave();
         }
         setupUiPlugin(Plugin) {
-            if (Plugin.modes.includes(this.config.mode)) {
-                const plugin = new Plugin(this.getters, this.state, this.dispatch, this.config, this.selection);
-                for (let name of Plugin.getters) {
-                    if (!(name in plugin)) {
-                        throw new Error(`Invalid getter name: ${name} for plugin ${plugin.constructor}`);
-                    }
-                    this.getters[name] = plugin[name].bind(plugin);
+            const plugin = new Plugin(this.getters, this.state, this.dispatch, this.config, this.selection);
+            for (let name of Plugin.getters) {
+                if (!(name in plugin)) {
+                    throw new Error(`Invalid getter name: ${name} for plugin ${plugin.constructor}`);
                 }
-                this.uiPlugins.push(plugin);
-                const layers = Plugin.layers.map((l) => [plugin, l]);
-                this.renderers.push(...layers);
-                this.renderers.sort((p1, p2) => p1[1] - p2[1]);
+                this.getters[name] = plugin[name].bind(plugin);
             }
+            this.uiPlugins.push(plugin);
+            const layers = Plugin.layers.map((l) => [plugin, l]);
+            this.renderers.push(...layers);
+            this.renderers.sort((p1, p2) => p1[1] - p2[1]);
         }
         /**
          * Initialize and properly configure a plugin.
@@ -30433,17 +30447,15 @@
          * reason why the model could not add dynamically a plugin while it is running.
          */
         setupCorePlugin(Plugin, data) {
-            if (Plugin.modes.includes(this.config.mode)) {
-                const plugin = new Plugin(this.getters, this.state, this.range, this.dispatchFromCorePlugin, this.config, this.uuidGenerator);
-                for (let name of Plugin.getters) {
-                    if (!(name in plugin)) {
-                        throw new Error(`Invalid getter name: ${name} for plugin ${plugin.constructor}`);
-                    }
-                    this.getters[name] = plugin[name].bind(plugin);
+            const plugin = new Plugin(this.getters, this.state, this.range, this.dispatchFromCorePlugin, this.config, this.uuidGenerator);
+            for (let name of Plugin.getters) {
+                if (!(name in plugin)) {
+                    throw new Error(`Invalid getter name: ${name} for plugin ${plugin.constructor}`);
                 }
-                plugin.import(data);
-                this.corePlugins.push(plugin);
+                this.getters[name] = plugin[name].bind(plugin);
             }
+            plugin.import(data);
+            this.corePlugins.push(plugin);
         }
         onRemoteRevisionReceived({ commands }) {
             for (let command of commands) {
@@ -30479,8 +30491,6 @@
                 transportService,
                 client,
                 moveClient: () => { },
-                isHeadless: config.mode === "headless" || false,
-                isReadonly: config.isReadonly || false,
                 snapshotRequested: false,
                 notifyUI: (payload) => this.trigger("notify-ui", payload),
             };
@@ -30555,15 +30565,11 @@
             data = JSON.parse(JSON.stringify(data));
             return data;
         }
-        /**
-         * Change the configuration of the model to put it in readonly or read-write mode
-         * @param isReadonly
-         */
-        updateReadOnly(isReadonly) {
-            if (isReadonly) {
+        updateMode(mode) {
+            if (mode !== "normal") {
                 this.dispatch("STOP_EDITION", { cancel: true });
             }
-            this.config.isReadonly = isReadonly || false;
+            this.config.mode = mode;
             this.trigger("update");
         }
         /**
@@ -30611,6 +30617,7 @@
         autofillRulesRegistry,
         cellMenuRegistry,
         colMenuRegistry,
+        dashboardMenuRegistry,
         linkMenuRegistry,
         functionRegistry,
         uiPluginRegistry,
@@ -30677,8 +30684,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-04-29T05:51:06.373Z';
-    exports.__info__.hash = 'ec08a52';
+    exports.__info__.date = '2022-05-02T10:55:11.923Z';
+    exports.__info__.hash = 'd2bf35a';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

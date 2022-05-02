@@ -70,12 +70,6 @@ export function autofill(model, from, to) {
 /**
  * Set the content of a cell
  */
-export function setCellContent(model, xc, content, sheetId = undefined) {
-    if (sheetId === undefined) {
-        sheetId =
-            model.config.mode === "headless"
-                ? model.getters.getSheetIds()[0]
-                : model.getters.getActiveSheetId();
-    }
+export function setCellContent(model, xc, content, sheetId = model.getters.getActiveSheetId()) {
     model.dispatch("UPDATE_CELL", { ...toCartesian(xc), sheetId, content });
 }

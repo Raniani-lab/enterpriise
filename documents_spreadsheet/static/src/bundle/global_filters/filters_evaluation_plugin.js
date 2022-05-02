@@ -333,7 +333,6 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
     }
 }
 
-FiltersEvaluationPlugin.modes = ["normal"];
 FiltersEvaluationPlugin.getters = [
     "getFilterDisplayValue",
     "getGlobalFilterValue",

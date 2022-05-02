@@ -64,13 +64,7 @@ export function getCellFormula(model, xc, sheetId = model.getters.getActiveSheet
 /**
  * Get the content of the given xc
  */
-export function getCellContent(model, xc, sheetId = undefined) {
-    if (sheetId === undefined) {
-        sheetId =
-            model.config.mode === "headless"
-                ? model.getters.getSheetIds()[0]
-                : model.getters.getActiveSheetId();
-    }
+export function getCellContent(model, xc, sheetId = model.getters.getActiveSheetId()) {
     const cell = getCell(model, xc, sheetId);
     return cell ? model.getters.getCellText(cell, sheetId, true) : "";
 }

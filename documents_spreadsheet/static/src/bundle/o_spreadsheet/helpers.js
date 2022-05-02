@@ -105,7 +105,6 @@ export async function getDataFromTemplate(env, orm, templateId) {
   data = base64ToJson(data);
 
   const model = new Model(data, {
-    mode: "headless",
     dataSources: new DataSources(orm),
   });
   await model.config.dataSources.waitForAllLoaded();

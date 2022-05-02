@@ -23,6 +23,7 @@ import { setCellContent, setSelection } from "../utils/commands_helpers";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
 import { getBasicServerData } from "../utils/spreadsheet_test_data";
+import { DataSources } from "@documents_spreadsheet/bundle/o_spreadsheet/data_sources/data_sources";
 
 const { Model } = spreadsheet;
 const { topbarMenuRegistry } = spreadsheet.registries;
@@ -34,16 +35,9 @@ const { onMounted } = owl;
 let serverData;
 
 async function convertFormula(config) {
-    const { env, model: m1 } = await createSpreadsheetFromPivot({
+    const { model } = await createSpreadsheetFromPivot({
         serverData: config.serverData || getBasicServerData(),
         webClient: config.webClient,
-    });
-
-    //reload the model in headless mode, with the conversion plugin
-    const model = new Model(m1.exportData(), {
-        mode: "headless",
-        dataSources: m1.config.dataSources,
-        evalContext: { env },
     });
 
     await waitForEvaluation(model);
@@ -155,13 +149,8 @@ module(
         module("Template");
         test("Dispatch template command is not allowed if cache is not loaded", async function (assert) {
             assert.expect(2);
-            const { model: m1, env } = await createSpreadsheetFromPivot();
-            //reload the model in headless mode, with the conversion plugin
-            const model = new Model(m1.exportData(), {
-                mode: "headless",
-                evalContext: { env },
-                dataSources: m1.config.dataSources,
-            });
+            const { model: m1 } = await createSpreadsheetFromPivot();
+            const model = new Model(m1.exportData(), { dataSources: new DataSources(m1.config.dataSources._orm)});
             assert.deepEqual(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE").reasons, [
                 CommandResult.PivotCacheNotLoaded,
             ]);

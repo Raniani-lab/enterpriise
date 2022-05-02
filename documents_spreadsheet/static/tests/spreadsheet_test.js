@@ -1787,4 +1787,20 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await click(document.body.querySelector(".o_sp_en_save"));
         assert.equal(model.getters.getPivotName(pivotA3), "new name");
     });
+
+    QUnit.test("Can open a spreadsheet in readonly", async function (assert) {
+        const { model } = await createSpreadsheet({
+            mockRPC: async function (route, args) {
+                if (args.method === "join_spreadsheet_session") {
+                    return {
+                        raw: "{}",
+                        name: "name",
+                        revisions: [],
+                        isReadonly: true,
+                    };
+                }
+            },
+        });
+        assert.ok(model.getters.isReadonly());
+    });
 });

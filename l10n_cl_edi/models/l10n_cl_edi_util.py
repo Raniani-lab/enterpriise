@@ -221,7 +221,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             return True
         xsd_fname = validation_types[validation_type]
         try:
-            return xml_utils._check_with_xsd(xml_to_validate, xsd_fname, self.env)
+            return xml_utils._check_with_xsd(xml_to_validate, xsd_fname, self.sudo().env)
         except FileNotFoundError:
             _logger.warning(
                 _('The XSD validation files from SII has not been found, please run manually the cron: "Download XSD"'))

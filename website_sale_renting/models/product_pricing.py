@@ -17,4 +17,4 @@ class ProductPricing(models.Model):
         }
         if self.unit in labels:
             return labels[self.unit]
-        return dict(self.env['rental.pricing']._fields['unit']._description_selection(self.env))[self.unit]
+        return dict(self.env['product.pricing']._fields['unit']._description_selection(self.env))[self.unit]

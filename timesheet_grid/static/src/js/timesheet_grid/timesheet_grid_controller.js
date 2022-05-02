@@ -9,14 +9,6 @@ odoo.define('timesheet_grid.GridController', function (require) {
         /**
          * @override
          */
-        _cellHasBeenUpdated(ev) {
-            this._super(...arguments);
-            this.update({ onlyHoursData: true });
-        },
-
-        /**
-         * @override
-         */
         renderButtons($node) {
             this._super(...arguments);
             this.$buttons.on('click', '.o_timesheet_validate', this._onValidateButtonClicked.bind(this));

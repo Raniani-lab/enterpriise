@@ -14,7 +14,7 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         """ Employee's leave is not calculated as overtime hours when employee is on time off."""
 
         HrEmployee = self.env['hr.employee']
-        employees_grid_data = [{'employee_id': self.empl_employee.id}]
+        employees_grid_data = [{'id': self.empl_employee.id}]
         self.empl_employee.write({
             'create_date': date(2021, 1, 1),
             'employee_type': 'freelance',  # Avoid searching the contract if hr_contract module is installed before this module.

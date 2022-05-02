@@ -6,12 +6,13 @@ table > tbody.o_grid_section > tr {
     > th {
         width: 30rem !important;
 
-        div {
-            width: 100%;
+        div > div {
+            overflow: unset !important;
         }
 
         div > :first-child {
             width: 20rem;
+            max-width: 100%;
         }
 
         @include media-breakpoint-up(md) {
@@ -57,7 +58,7 @@ table > tbody.o_grid_section > tr {
 }
 
 .o_grid_view {
-    .o_standalone_avatar_employee {
+    .o_standalone_avatar_employee, .o_standalone_timesheets_m2o_widget {
         display: inline-flex;
     }
 
@@ -134,14 +135,34 @@ table > tbody.o_grid_section > tr {
     &:before {
         content: "\00a0\00a0";
     }
+    flex: none;
+    margin-right: 0.5rem;
+}
+
+.o_grid_section_subtext_name {
+    min-width: 0;
+    overflow: hidden;
+    flex: initial;
+    text-overflow: ellipsis;
+}
+
+.o_grid_section_subtext_container {
+    width: inherit;
+    max-width: inherit;
+    display: flex;
 }
 
 .o_grid_section_subtext_not_enough_hours {
-    color: rgb(220, 105, 101) !important;
+    color: rgb(220, 100, 100) !important;
+    opacity: 0.8;
+}
+
+.o_grid_section_subtext_warning {
+    color: rgb(220, 160, 100) !important;
     opacity: 0.8;
 }
 
 .o_grid_section_subtext_overtime {
-    color: green !important;
-    opacity: 0.8;
+    color: rgb(0, 100, 0) !important;
+    opacity: 0.5;
 }

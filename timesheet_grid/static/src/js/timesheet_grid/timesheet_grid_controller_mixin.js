@@ -74,6 +74,10 @@ const TimesheetGridControllerMixin = {
         action.help = markup(qWeb.render('timesheet_grid.detailActionHelp'));
         return action;
     },
+
+    _cellHasBeenUpdated(ev) {
+        this.update({ onlyHoursData: true });
+    },
 };
 
 return TimesheetGridControllerMixin;

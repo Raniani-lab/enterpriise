@@ -5,6 +5,18 @@ var TimesheetTimerGridView = require('timesheet_grid.TimerGridView');
 var testUtils = require('web.test_utils');
 
 var createView = testUtils.createView;
+const get_planned_and_worked_hours = function (args) {
+    const ids = [...new Set(args[0].map(item => item.id))];
+    const result = {};
+    for (const id of ids) {
+        result[id] = {
+            'planned_hours': 8,
+            'uom': 'hours',
+            'worked_hours': 7,
+        };
+    }
+    return result;
+};
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -31,7 +43,10 @@ QUnit.module('Views', {
                 records: [
                     {id: 31, display_name: "P1"},
                     {id: 142, display_name: "Webocalypse Now"},
-                ]
+                ],
+                get_planned_and_worked_hours(args) {
+                    return get_planned_and_worked_hours(args);
+                }
             },
             'project.task': {
                 fields: {
@@ -42,7 +57,10 @@ QUnit.module('Views', {
                     {id: 1, display_name: "BS task", project_id: 31},
                     {id: 12, display_name: "Another BS task", project_id: 142},
                     {id: 54, display_name: "yet another task", project_id: 142},
-                ]
+                ],
+                get_planned_and_worked_hours(args) {
+                    return get_planned_and_worked_hours(args);
+                }
             },
         };
         this.arch = '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
@@ -56,6 +74,9 @@ QUnit.module('Views', {
                     '<field name="unit_amount" type="measure" widget="float_time"/>' +
                     '<button string="Action" type="action" name="action_name"/>' +
                 '</grid>';
+        this.context = {
+            grid_range: 'week',
+        };
         // patch debounce to be fast and synchronous
         this.underscoreDebounce = _.debounce;
         _.debounce = _.identity;
@@ -76,6 +97,7 @@ QUnit.module('Views', {
             data: this.data,
             arch: this.arch,
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -124,6 +146,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -170,6 +193,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -224,6 +248,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -277,6 +302,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -312,6 +338,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -374,6 +401,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -434,6 +462,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -477,6 +506,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -528,6 +558,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({
@@ -573,6 +604,7 @@ QUnit.module('Views', {
             arch: this.arch,
             groupBy: ["task_id", "project_id"],
             currentDate: "2017-01-25",
+            context: this.context,
             mockRPC: function (route, args) {
                 if (args.method === 'get_timer_data') {
                     return Promise.resolve({

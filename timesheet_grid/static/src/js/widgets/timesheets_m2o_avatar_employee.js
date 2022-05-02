@@ -128,7 +128,7 @@ import { qweb, _lt } from 'web.core';
                 'unit': this.cacheUnit,
                 'range': this.rangeContext,
                 'not_enough_hours': this._shouldShowHoursInRed(),
-                'title': this.title
+                'title': this.title,
             }));
         },
 

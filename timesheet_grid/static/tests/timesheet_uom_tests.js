@@ -12,6 +12,19 @@ const { registry } = require("@web/core/registry");
 const { timesheetUomGridService } = GridTimesheetUOM;
 const { timesheetUomTimerService } = TimerTimesheetUOM;
 
+const get_planned_and_worked_hours = function (args) {
+    const ids = [...new Set(args[0].map(item => item.id))];
+    const result = {};
+    for (const id of ids) {
+        result[id] = {
+            'planned_hours': 8,
+            'uom': 'hours',
+            'worked_hours': 7,
+        };
+    }
+    return result;
+};
+
 
 QUnit.module('Timesheet UOM Widgets', function (hooks) {
     let env;
@@ -21,6 +34,8 @@ QUnit.module('Timesheet UOM Widgets', function (hooks) {
     let sessionUIDBackup;
     hooks.beforeEach(function (assert) {
         env = new SetupTimesheetUOMWidgetsTestEnvironment();
+        env.data['project.task'].get_planned_and_worked_hours = get_planned_and_worked_hours;
+        env.data['project.project'].get_planned_and_worked_hours = get_planned_and_worked_hours;
         const originalPatch = env.patchSessionAndStartServices.bind(env);
         env.patchSessionAndStartServices = (...args) => {
             const serviceRegistry = registry.category("services");

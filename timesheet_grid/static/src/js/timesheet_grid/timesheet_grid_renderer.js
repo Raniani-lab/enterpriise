@@ -2,7 +2,7 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
     "use strict";
 
     const { ComponentAdapter } = require('web.OwlCompatibility');
-    const GridRenderer = require('web_grid.GridRenderer');
+    const CommonTimesheetGridRenderer = require('timesheet_grid.CommonTimesheetGridRenderer');
     const TimesheetM2OAvatarEmployee = require('timesheet_grid.TimesheetM2OAvatarEmployee');
 
     class TimesheetM2OAvatarEmployeeAdapter extends ComponentAdapter {
@@ -21,14 +21,16 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
             return [this.props.value, this.props.rowIndex, this.props.rangeContext, this.props.timeBoundariesContext, this.props.workingHoursData];
         }
 
+        renderWidget() {}
+
     }
 
-    class TimesheetGridRenderer extends GridRenderer {
+    class TimesheetGridRenderer extends CommonTimesheetGridRenderer {
         setup() {
             super.setup();
-            this.widgetComponents = {
-                TimesheetM2OAvatarEmployee: TimesheetM2OAvatarEmployee
-            };
+            Object.assign(this.widgetComponents, {
+                TimesheetM2OAvatarEmployee: TimesheetM2OAvatarEmployee,
+            });
         }
 
         //----------------------------------------------------------------------
@@ -58,11 +60,11 @@ odoo.define('timesheet_grid.GridRenderer', function (require) {
         }
     }
 
-    TimesheetGridRenderer.components = {
-        TimesheetM2OAvatarEmployeeAdapter
-    };
+    Object.assign(CommonTimesheetGridRenderer.components, {
+        TimesheetM2OAvatarEmployeeAdapter,
+    });
 
-    TimesheetGridRenderer.props = Object.assign({}, GridRenderer.props, {
+    TimesheetGridRenderer.props = Object.assign({}, CommonTimesheetGridRenderer.props, {
         workingHoursData: Object,
         timeBoundariesContext: {
             type: Object,

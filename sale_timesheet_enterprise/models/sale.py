@@ -7,7 +7,8 @@ DEFAULT_INVOICED_TIMESHEET = 'all'
 
 
 class SaleOrderLine(models.Model):
-    _inherit = 'sale.order.line'
+    _name = 'sale.order.line'
+    _inherit = ['sale.order.line', 'timesheet.grid.mixin']
 
     @api.depends('analytic_line_ids.validated')
     def _compute_qty_delivered(self):
@@ -26,3 +27,12 @@ class SaleOrderLine(models.Model):
         if param_invoiced_timesheet == 'approved':
             domain = expression.AND([domain, [('validated', '=', True)]])
         return domain
+
+    def get_planned_hours_field(self):
+        return 'product_uom_qty'
+
+    def get_worked_hours_fields(self):
+        return ['qty_delivered']
+
+    def get_planned_and_worked_hours_domain(self, ids):
+        return super().get_planned_and_worked_hours_domain(ids) + [('qty_delivered_method', 'not in', ['manual', 'milestones'])]

@@ -39,6 +39,8 @@
             'timesheet_grid/static/src/js/timesheet_uom.js',
             'timesheet_grid/static/src/js/timesheet_uom_timer.js',
             'timesheet_grid/static/src/js/timesheet_config_mixin.js',
+            'timesheet_grid/static/src/js/timesheet_grid/common_timesheet_grid_model.js',
+            'timesheet_grid/static/src/js/timesheet_grid/common_timesheet_grid_renderer.js',
             'timesheet_grid/static/src/js/timesheet_gantt/task_progress_gantt_view.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller_mixin.js',
             'timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_model.js',
@@ -59,6 +61,9 @@
             'timesheet_grid/static/src/js/timesheet_pivot/timesheet_pivot_view.js',
             'timesheet_grid/static/src/js/tours/timesheet_grid.js',
             'timesheet_grid/static/src/js/widgets/timesheets_m2o_avatar_employee.js',
+            'timesheet_grid/static/src/js/widgets/timesheets_m2o_widget.js',
+            'timesheet_grid/static/src/js/widgets/timesheets_m2o_task.js',
+            'timesheet_grid/static/src/js/widgets/timesheets_m2o_project.js',
         ],
         "web.assets_backend_legacy_lazy": [
             'timesheet_grid/static/src/js/timesheet_pivot/timesheet_pivot_legacy.js',

@@ -5,6 +5,19 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
     const testUtils = require('web.test_utils');
     const createView = testUtils.createView;
 
+    const get_planned_and_worked_hours = function (args) {
+        const ids = [...new Set(args[0].map(item => item.id))];
+        const result = {};
+        for (const id of ids) {
+            result[id] = {
+                'planned_hours': 8,
+                'uom': 'hours',
+                'worked_hours': 7,
+            };
+        }
+        return result;
+    };
+
     QUnit.module('Views', {
         beforeEach: function () {
             this.data = {
@@ -30,7 +43,10 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                     records: [
                         {id: 31, display_name: "P1"},
                         {id: 142, display_name: "Webocalypse Now"},
-                    ]
+                    ],
+                    get_planned_and_worked_hours(args) {
+                        return get_planned_and_worked_hours(args);
+                    }
                 },
                 'project.task': {
                     fields: {
@@ -40,7 +56,10 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                         {id: 1, display_name: "BS task", project_id: 31},
                         {id: 12, display_name: "Another BS task", project_id: 142},
                         {id: 54, display_name: "yet another task", project_id: 142},
-                    ]
+                    ],
+                    get_planned_and_worked_hours(args) {
+                        return get_planned_and_worked_hours(args);
+                    }
                 },
                 'hr.employee': {
                     fields: {},
@@ -58,7 +77,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                         name: "Toad",
                     }],
                     get_timesheet_and_working_hours_for_employees(args) {
-                        const employeeIds = [...new Set(args[0].map(item => item.employee_id))];
+                        const employeeIds = [...new Set(args[0].map(item => item.id))];
                         const result = {};
                         employeeIds.forEach(employeeId => {
 
@@ -122,6 +141,9 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                                   '<field name="unit_amount" string="Time spent"/>' +
                                 '</group></group></form>',
             };
+            this.context = {
+                grid_range: 'week',
+            };
         }
     }, function () {
         QUnit.module('TimesheetGridView');
@@ -135,13 +157,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 6,
-                'should have 6 employee avatars');
-
-            assert.containsN(grid, '.o_grid_section_subtext', 6,
-                'should have 6 timesheet employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 6, 'should have 6 employee avatars');
+            assert.containsN(grid, '.o_grid_section_subtext', 12, 'should have 12 m2o widgets in total');
 
             grid.destroy();
         });
@@ -155,20 +175,18 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
                 groupBy: ['employee_id'],
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 4,
-                'should have 4 employee avatars');
-
-            assert.containsN(grid, '.o_grid_section_subtext', 4,
-                'should have 4 timesheet employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 4, 'should have 4 employee avatars');
+            assert.containsN(grid, '.o_grid_section_subtext', 4, 'should have 4 m2o widgets in total');
 
             grid.destroy();
         });
 
         QUnit.test('basic timesheet - groupby employees>task', async function (assert) {
-            assert.expect(2);
+            assert.expect(3);
 
             const grid = await createView({
                 View: TimesheetGridView,
@@ -176,20 +194,19 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
                 groupBy: ['employee_id', 'task_id'],
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 6,
-                'should have 6 employee avatars');
-
-            assert.containsN(grid, '.o_grid_section_subtext', 6,
-                'should have 6 timesheet employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 6, 'should have 6 employee avatars');
+            assert.containsN(grid, '.o_standalone_timesheets_m2o_widget', 5, 'should have 5 other m2o widgets');
+            assert.containsN(grid, '.o_grid_section_subtext', 11, 'should have 11 timesheet employee/task avatars');
 
             grid.destroy();
         });
 
         QUnit.test('basic timesheet - groupby task>employees', async function (assert) {
-            assert.expect(2);
+            assert.expect(3);
 
             const grid = await createView({
                 View: TimesheetGridView,
@@ -197,20 +214,19 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
                 groupBy: ['task_id', 'employee_id'],
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 6,
-                'should have 6 employee avatars');
-
-            assert.containsN(grid, '.o_grid_section_subtext', 6,
-                'should have 6 timesheet employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 6, 'should have 6 employee avatars');
+            assert.containsN(grid, '.o_standalone_timesheets_m2o_widget', 5, 'should have 5 other m2o widgets');
+            assert.containsN(grid, '.o_grid_section_subtext', 11, 'should have 11 m2o widgets in total');
 
             grid.destroy();
         });
 
         QUnit.test('timesheet with employee section - no groupby', async function (assert) {
-            assert.expect(2);
+            assert.expect(3);
 
             this.arch = this.arch.replace(
                 '<field name="employee_id" type="row"/>',
@@ -223,13 +239,12 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
             });
 
-            assert.containsN(grid, '.o_grid_section > tr > th > .o_standalone_avatar_employee', 4,
-                'should have 4 employee avatars');
-
-            assert.containsN(grid, '.o_grid_section_subtext', 4,
-                'should have 4 timesheet employee avatars');
+            assert.containsN(grid, '.o_grid_section > tr > th > .o_standalone_avatar_employee', 4, 'should have 4 employee avatars');
+            assert.containsN(grid, '.o_standalone_timesheets_m2o_widget', 11, 'should have 11 other m2o widgets');
+            assert.containsN(grid, '.o_grid_section_subtext', 15, 'should have 15 m2o widgets in total');
 
             grid.destroy();
         });
@@ -263,7 +278,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
         });
 
         QUnit.test('timesheet with employee section - groupby employee>task', async function (assert) {
-            assert.expect(2);
+            assert.expect(3);
 
             this.arch = this.arch.replace(
                 '<field name="employee_id" type="row"/>',
@@ -276,20 +291,20 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
                 groupBy: ['employee_id', 'task_id'],
             });
 
-            assert.containsN(grid, '.o_grid_section > tr > th > .o_standalone_avatar_employee', 4,
-                'should have 4 employee avatars');
 
-            assert.containsN(grid, '.o_grid_section_subtext', 4,
-                'should have 4 timesheet employee avatars');
+            assert.containsN(grid, '.o_grid_section > tr > th > .o_standalone_avatar_employee', 4, 'should have 4 employee avatars');
+            assert.containsN(grid, '.o_standalone_timesheets_m2o_widget', 5, 'should have 5 other m2o widgets');
+            assert.containsN(grid, '.o_grid_section_subtext', 9, 'should have 9 m2o widgets in total');
 
             grid.destroy();
         });
 
         QUnit.test('timesheet with employee section - groupby task>employee', async function (assert) {
-            assert.expect(2);
+            assert.expect(3);
 
             this.arch = this.arch.replace(
                 '<field name="employee_id" type="row"/>',
@@ -302,14 +317,13 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
                 groupBy: ['task_id', 'employee_id'],
             });
 
-            assert.containsN(grid, '.o_standalone_avatar_employee', 6,
-                'should have 6 employee avatars');
-
-            assert.containsN(grid, '.o_grid_section_subtext', 6,
-                'should have 6 timesheet employee avatars');
+            assert.containsN(grid, '.o_standalone_avatar_employee', 6, 'should have 6 employee avatars');
+            assert.containsN(grid, '.o_standalone_timesheets_m2o_widget', 5, 'should have 5 other m2o widgets');
+            assert.containsN(grid, '.o_grid_section_subtext', 11, 'should have 11 m2o widgets in total');
 
             grid.destroy();
         });
@@ -326,11 +340,12 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
             });
 
 
             const numberOfAvatarWidget = grid.$('.o_standalone_avatar_employee').length;
-            const numberOfTimesheetHoursAvatarWidgetWithoutHoursRedAlert = grid.$('.o_grid_section_subtext:not(.o_grid_section_subtext_not_enough_hours)').length;
+            const numberOfTimesheetHoursAvatarWidgetWithoutHoursRedAlert = grid.$('.o_standalone_avatar_employee:not(.o_grid_section_subtext_not_enough_hours)').length;
 
             assert.ok(numberOfAvatarWidget === numberOfTimesheetHoursAvatarWidgetWithoutHoursRedAlert,
                 'All the hours should be displayed in gray');
@@ -349,6 +364,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
             });
             // worked_hours - units_to_work = 0 => we add d-none class (for the employee who has not done all his hours (employee.id = 7))
             const numberOfSpanWhereAllHoursCompleted = grid.$(`span.d-none`).length;
@@ -370,6 +386,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
             });
 
             const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('+04:00')").length;
@@ -391,6 +408,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
             });
 
             const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('-1.00 days')").length;
@@ -412,6 +430,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
                 archs: this.archs,
             });
 
@@ -438,6 +457,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 data: this.data,
                 arch: this.arch,
                 currentDate: "2017-01-25",
+                context: this.context,
                 archs: this.archs,
             });
 

@@ -2,16 +2,16 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
     "use strict";
 
     const utils = require('web.utils');
-    const GridRenderer = require('web_grid.GridRenderer');
+    const CommonTimesheetGridRenderer = require('timesheet_grid.CommonTimesheetGridRenderer');
     const TimerHeaderComponent = require('timesheet_grid.TimerHeaderComponent');
     const TimerStartComponent = require('timesheet_grid.TimerStartComponent');
     const { useListener } = require("@web/core/utils/hooks");
 
     const { EventBus, onMounted, onWillUpdateProps, useState, useExternalListener } = owl;
 
-    class TimerGridRenderer extends GridRenderer {
+    class TimerGridRenderer extends CommonTimesheetGridRenderer {
         setup() {
-            super.setup(...arguments);
+            super.setup();
             useExternalListener(window, 'keydown', this._onKeydown);
             useExternalListener(window, 'keyup', this._onKeyup);
 
@@ -358,7 +358,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
         }
     }
 
-    TimerGridRenderer.props = Object.assign({}, GridRenderer.props, {
+    TimerGridRenderer.props = Object.assign({}, CommonTimesheetGridRenderer.props, {
         serverTime: {
             type: String,
             optional: true
@@ -384,10 +384,10 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
         },
     });
 
-    TimerGridRenderer.components = {
+    Object.assign(TimerGridRenderer.components, {
         TimerHeaderComponent,
         TimerStartComponent,
-    };
+    });
 
     return TimerGridRenderer;
 });

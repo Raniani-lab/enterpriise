@@ -1,10 +1,9 @@
 odoo.define('timesheet_grid.TimerGridModel', function (require) {
     "use strict";
 
-    const GridModel = require('web_grid.GridModel');
-    const GroupByNoDateMixin = require('timesheet_grid.GroupByNoDateMixin');
+    const CommonTimesheetGridModel = require('timesheet_grid.CommonTimesheetGridModel');
 
-    const TimerGridModel = GridModel.extend(GroupByNoDateMixin).extend({
+    const TimerGridModel = CommonTimesheetGridModel.extend({
         /**
          * Update state
          *

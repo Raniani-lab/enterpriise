@@ -8,6 +8,12 @@
                     <t t-if="showEmployeeAvatar">
                         <TimesheetM2OAvatarEmployeeAdapter Component="widgetComponents.TimesheetM2OAvatarEmployee" value="grid.__label" workingHoursData="props.workingHoursData[grid.__label[0]]" timeBoundariesContext="props.timeBoundariesContext" rowIndex="grid_index" rangeContext="props.range" />
                     </t>
+                    <t t-elif="widgetToShow === 'task_id'">
+                        <TimesheetM2OWidgetAdapter Component="widgetComponents.TimesheetM2OTask" value="grid.__label" workingHoursData="props.taskHoursData[grid.__label[0]]" rowIndex="grid_index" />
+                    </t>
+                    <t t-elif="widgetToShow === 'project_id'">
+                        <TimesheetM2OWidgetAdapter Component="widgetComponents.TimesheetM2OProject" value="grid.__label" workingHoursData="props.projectHoursData[grid.__label[0]]" rowIndex="grid_index" />
+                    </t>
                     <t t-else="" t-esc="grid.__label[1]"/>
                 </t>
                 <t t-else="">Undefined</t>
@@ -109,6 +115,14 @@
                 <t t-if="showEmployeeAvatar">
                     <t t-set="employee" t-value="grid.rows[rowlabel_index].values.employee_id" />
                     <TimesheetM2OAvatarEmployeeAdapter Component="widgetComponents.TimesheetM2OAvatarEmployee" value="employee" workingHoursData="props.workingHoursData[employee[0]]" timeBoundariesContext="props.timeBoundariesContext" rowIndex="rowlabel_index" rangeContext="props.range"/>
+                </t>
+                <t t-elif="widgetToShow === 'task_id'">
+                    <t t-set="task" t-value="grid.rows[rowlabel_index].values.task_id" />
+                    <TimesheetM2OWidgetAdapter Component="widgetComponents.TimesheetM2OTask" value="task" workingHoursData="props.taskHoursData[task[0]]" rowIndex="grid_index" />
+                </t>
+                <t t-elif="widgetToShow === 'project_id'">
+                    <t t-set="project" t-value="grid.rows[rowlabel_index].values.project_id" />
+                    <TimesheetM2OWidgetAdapter Component="widgetComponents.TimesheetM2OProject" value="project" workingHoursData="props.projectHoursData[project[0]]" rowIndex="grid_index" />
                 </t>
                 <t t-else="" t-esc="label"/>
             </t>

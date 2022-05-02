@@ -6,4 +6,12 @@
             <t t-esc="overtime_indication"/>
         </span>
     </t>
+
+    <t t-name="timesheet_grid.Many2OneTimesheetSubfield">
+        <span t-attf-class="o_grid_section_subtext_container"><span t-attf-class="o_grid_section_subtext_name">
+            <t t-esc="value"/>
+        </span><span t-if="overtime_indication" t-attf-class="o_grid_section_subtext mt-auto {{ color_class }}" t-att-title="title">
+            <t t-esc="overtime_indication"/>
+        </span></span>
+    </t>
 </templates>

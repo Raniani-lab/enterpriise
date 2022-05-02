@@ -5,7 +5,8 @@ from odoo import _, models
 
 
 class Project(models.Model):
-    _inherit = "project.project"
+    _name = 'project.project'
+    _inherit = ["project.project", "timesheet.grid.mixin"]
 
     def check_can_start_timer(self):
         self.ensure_one()
@@ -29,3 +30,9 @@ class Project(models.Model):
                 ('res_id', 'in', self.with_context(active_test=False).task_ids.ids)
             ]).unlink()
         return result
+
+    def get_planned_hours_field(self):
+        return 'allocated_hours'
+
+    def get_worked_hours_fields(self):
+        return ['total_timesheet_time']

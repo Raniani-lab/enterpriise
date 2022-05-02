@@ -6,7 +6,7 @@ from odoo import models, fields, api, _
 
 class Task(models.Model):
     _name = "project.task"
-    _inherit = ["project.task", "timer.mixin"]
+    _inherit = ["project.task", "timer.mixin", "timesheet.grid.mixin"]
 
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
 
@@ -116,3 +116,9 @@ class Task(models.Model):
                 'default_time_spent': time_spent,
             },
         }
+
+    def get_planned_hours_field(self):
+        return 'planned_hours'
+
+    def get_worked_hours_fields(self):
+        return ['effective_hours', 'subtask_effective_hours']

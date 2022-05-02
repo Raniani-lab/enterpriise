@@ -228,8 +228,8 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
             'employee_type': 'freelance',  # Avoid searching the contract if hr_contract module is installed before this module.
         })
         employees_grid_data = [{
-            'employee_id': employee.id,
-            'employee_display_name': employee.name,
+            'id': employee.id,
+            'display_name': employee.name,
             'grid_row_index': 0}]
 
         working_hours = employee.get_timesheet_and_working_hours_for_employees(employees_grid_data, '2021-12-01', '2021-12-31')

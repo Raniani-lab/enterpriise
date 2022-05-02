@@ -8,7 +8,8 @@ var testUtils = require('web.test_utils');
 const cpHelpers = require('@web/../tests/search/helpers');
 var createView = testUtils.createView;
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
-const { getFixture, mockTimeout } = require("@web/../tests/helpers/utils");
+const { getFixture, patchWithCleanup } = require("@web/../tests/helpers/utils");
+const { browser } = require("@web/core/browser/browser");
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -1383,7 +1384,12 @@ QUnit.module('Views', {
             },
         });
 
-        mockTimeout();
+        // Bypass debounce on cell clicks
+        patchWithCleanup(browser, {
+            setTimeout(cb) {
+                return setTimeout(cb, 0);
+            }
+        });
 
         // first section
         assert.strictEqual(grid.$('.o_grid_section:eq(0) button.o_grid_float_toggle').length, 7,
@@ -1485,7 +1491,12 @@ QUnit.module('Views', {
             },
         });
 
-        mockTimeout();
+        // Bypass debounce on cell clicks
+        patchWithCleanup(browser, {
+            setTimeout(cb) {
+                return setTimeout(cb, 0);
+            }
+        });
 
         // clicking on empty cell button
         assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container:eq(2) button').text(), '0,00',

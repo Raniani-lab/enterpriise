@@ -6,8 +6,8 @@ from odoo import api, fields, models
 class TimesheetForecastReport(models.Model):
     _inherit = "project.timesheet.forecast.report.analysis"
 
-    sale_line_id = fields.Many2one('sale.order.line', string='Sale Order Line', readonly=True)
-    sale_order_id = fields.Many2one('sale.order', string='Sale Order', readonly=True)
+    sale_line_id = fields.Many2one('sale.order.line', string='Sales Order Item', readonly=True)
+    sale_order_id = fields.Many2one('sale.order', string='Sales Order', readonly=True)
 
     @api.model
     def _select(self):

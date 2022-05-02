@@ -116,6 +116,7 @@
     <record id="view_task_search_form_inherit_enterprise" model="ir.ui.view">
         <field name="name">project.task.search.inherit.enterprise</field>
         <field name="model">project.task</field>
+        <field name="priority">10</field>
         <field name="inherit_id" ref="project.view_task_search_form"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='late']" position="before">

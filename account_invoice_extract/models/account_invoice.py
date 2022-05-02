@@ -587,7 +587,13 @@ class AccountMove(models.Model):
                 ], limit=100, order='id desc')
                 lines = related_documents.mapped('invoice_line_ids')
                 taxes_ids = related_documents.mapped('invoice_line_ids.tax_ids')
-                taxes_ids.filtered(lambda tax: tax.amount == taxes and tax.amount_type == taxes_type and tax.type_tax_use == type_tax_use)
+                taxes_ids = taxes_ids.filtered(
+                    lambda tax:
+                        tax.active and
+                        tax.amount == taxes and
+                        tax.amount_type == taxes_type and
+                        tax.type_tax_use == type_tax_use
+                )
                 taxes_by_document = []
                 for tax in taxes_ids:
                     taxes_by_document.append((tax, lines.filtered(lambda line: tax in line.tax_ids)))

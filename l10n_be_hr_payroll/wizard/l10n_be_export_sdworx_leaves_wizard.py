@@ -142,16 +142,18 @@ class L10nBeExportSDWorxLeavesWizard(models.TransientModel):
                         date_str = leave_date.strftime('%Y%m%d')
                         if date_str in prestations[employee]:
                             prestation = prestations[employee][date_str]
-                            prestation['am'] = format_line(
-                                employee,
-                                leave_date,
-                                leave.holiday_status_id.work_entry_type_id,
-                                prestation['am'][-4:])
-                            prestation['pm'] = format_line(
-                                employee,
-                                leave_date,
-                                leave.holiday_status_id.work_entry_type_id,
-                                prestation['pm'][-4:])
+                            if 'am' in prestation:
+                                prestation['am'] = format_line(
+                                    employee,
+                                    leave_date,
+                                    leave.holiday_status_id.work_entry_type_id,
+                                    prestation['am'][-4:])
+                            if 'pm' in prestation:
+                                prestation['pm'] = format_line(
+                                    employee,
+                                    leave_date,
+                                    leave.holiday_status_id.work_entry_type_id,
+                                    prestation['pm'][-4:])
                 else:
                     leave_date = leave.date_from
                     date_str = leave_date.strftime('%Y%m%d')

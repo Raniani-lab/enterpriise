@@ -9,10 +9,16 @@ class TestCommon(TransactionCase):
     def setUp(self):
         super(TestCommon, self).setUp()
 
+        self.calendar = self.env['resource.calendar'].create({
+            'name': 'Calendar',
+        })
+        self.env.company.resource_calendar_id = self.calendar
+
         # Employees
         self.patrick = self.env['hr.employee'].create({
             'name': 'patrick',
             'tz': 'UTC',
+            'resource_calendar_id': self.calendar.id,
         })
         self.res_patrick = self.patrick.resource_id
         self.bob = self.env['hr.employee'].create({

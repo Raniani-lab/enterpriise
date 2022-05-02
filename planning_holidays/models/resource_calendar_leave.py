@@ -69,7 +69,8 @@ class ResourceCalendarLeaves(models.Model):
 
     def write(self, vals):
         res = super().write(vals)
-        self._recompute_shifts_in_leave_periods()
+        if any(field in vals for field in ['resource_id', 'start_datetime', 'end_datetime']):
+            self._recompute_shifts_in_leave_periods()
         return res
 
     def unlink(self):

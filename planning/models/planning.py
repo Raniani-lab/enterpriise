@@ -11,6 +11,7 @@ from random import randint
 
 from odoo import api, fields, models, _
 from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
+from odoo.addons.resource.models.resource_mixin import timezone_datetime
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_utils, format_datetime
@@ -256,15 +257,39 @@ class Planning(models.Model):
                     resource_work_intervals, calendar_work_intervals, has_allocated_hours=False
                 )
 
-    @api.depends('start_datetime', 'end_datetime', 'employee_id')
+    @api.depends('start_datetime', 'end_datetime', 'resource_id')
     def _compute_working_days_count(self):
+        slots_per_calendar = defaultdict(set)
+        planned_dates_per_calendar_id = defaultdict(lambda: (datetime.max, datetime.min))
         for slot in self:
-            if slot.employee_id:
-                slot.working_days_count = slot.employee_id._get_work_days_data_batch(
-                    slot.start_datetime, slot.end_datetime, compute_leaves=True
-                )[slot.employee_id.id]['days']
-            else:
+            if not slot.employee_id:
                 slot.working_days_count = 0
+                continue
+            slots_per_calendar[slot.resource_id.calendar_id].add(slot.id)
+            datetime_begin, datetime_end = planned_dates_per_calendar_id[slot.resource_id.calendar_id.id]
+            datetime_begin = min(datetime_begin, slot.start_datetime)
+            datetime_end = max(datetime_end, slot.end_datetime)
+            planned_dates_per_calendar_id[slot.resource_id.calendar_id.id] = datetime_begin, datetime_end
+        for calendar, slot_ids in slots_per_calendar.items():
+            slots = self.env['planning.slot'].browse(list(slot_ids))
+            if not calendar:
+                slots.working_days_count = 0
+                continue
+            datetime_begin, datetime_end = planned_dates_per_calendar_id[calendar.id]
+            datetime_begin = timezone_datetime(datetime_begin)
+            datetime_end = timezone_datetime(datetime_end)
+            resources = slots.resource_id
+            day_total = calendar._get_resources_day_total(datetime_begin, datetime_end, resources)
+            intervals = calendar._work_intervals_batch(datetime_begin, datetime_end, resources)
+            for slot in slots:
+                slot.working_days_count = calendar._get_days_data(
+                    intervals[slot.resource_id.id] & Intervals([(
+                        timezone_datetime(slot.start_datetime),
+                        timezone_datetime(slot.end_datetime),
+                        self.env['resource.calendar.attendance']
+                    )]),
+                    day_total[slot.resource_id.id]
+                )['days']
 
     @api.depends('start_datetime', 'end_datetime', 'resource_id')
     def _compute_overlap_slot_count(self):

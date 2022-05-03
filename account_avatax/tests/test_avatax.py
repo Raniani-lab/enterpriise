@@ -102,6 +102,26 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
             else:
                 self.assertLess(line['amount'], 0)
 
+    def test_unlink(self):
+        invoice, _ = self._create_invoice_01_and_expected_response()
+
+        mock_response = {'error': {'code': 'EntityNotFoundError',
+           'details': [{'code': 'EntityNotFoundError',
+                        'description': "The Document with code 'Journal Entry "
+                                       "2180' was not found.",
+                        'faultCode': 'Client',
+                        'helpLink': 'http://developer.avalara.com/avatax/errors/EntityNotFoundError',
+                        'message': 'Document not found.',
+                        'number': 4,
+                        'severity': 'Error'}],
+           'message': 'Document not found.',
+           'target': 'HttpRequest'}}
+
+        with self._capture_request(return_value=mock_response) as capture:
+            invoice.unlink()
+
+        self.assertEqual(capture.val['json']['code'], 'DocVoided', 'Should have tried to void without raising on EntityNotFoundError.')
+
 
 @tagged("-at_install", "post_install")
 class TestAccountAvalaraSalesTaxAdministration(TestAccountAvataxCommon):

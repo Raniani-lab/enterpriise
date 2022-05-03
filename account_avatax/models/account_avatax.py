@@ -323,6 +323,12 @@ class AccountAvatax(models.AbstractModel):
                 transactionCode=self.avatax_unique_code,
                 model={"code": "DocVoided"},
             )
+
+            # There's nothing to void when a draft record is deleted without ever being sent to Avatax.
+            if query_result.get('error', {}).get('code') == 'EntityNotFoundError':
+                logger.info(pformat(query_result))
+                continue
+
             error = self._handle_response(query_result, _(
                 'Odoo could not void the transaction related to %(document)s in AvaTax\nPlease '
                 'check the status of `%(technical)s` in the AvaTax portal.',

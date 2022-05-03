@@ -344,13 +344,13 @@ class AccountAvatax(models.AbstractModel):
 
     def _handle_response(self, response, title):
         if response.get('errors'):  # http error
-            logger.warning(pformat(response))
+            logger.warning(pformat(response), stack_info=True)
             return '%s\n%s' % (title, _(
                 '%(response)s',
                 response=response.get('title', ''),
             ))
         if response.get('error'):  # avatax error
-            logger.warning(pformat(response))
+            logger.warning(pformat(response), stack_info=True)
             messages = '\n'.join(detail['message'] for detail in response['error']['details'])
             return '%s\n%s' % (title, messages)
 

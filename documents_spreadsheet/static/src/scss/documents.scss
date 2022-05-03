@@ -1,0 +1,11 @@
+/* Document share page, for some reason uses backend assets */
+article.spreadsheet_fade {
+    cursor: default;
+    opacity: 50%;
+}
+
+.o_image {
+    &[data-mimetype="application/o-spreadsheet"] {
+        background-image: url("/documents_spreadsheet/static/img/spreadsheet.svg");
+    }
+}

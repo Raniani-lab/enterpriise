@@ -1,0 +1,14 @@
+.o_spreadsheet_selector_dialog {
+    div {
+        padding-top: 10px;
+
+        .o_input {
+            display: inline;
+            padding-left: 5px;
+            width: fit-content;
+        }
+    }
+    option.o_new {
+        font-style: italic;
+    }
+}

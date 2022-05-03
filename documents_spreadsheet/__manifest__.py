@@ -30,7 +30,9 @@
         ],
         'web.assets_backend': [
             'documents_spreadsheet/static/src/assets/**/*.js',
+            'documents_spreadsheet/static/src/assets/**/*.scss',
             'documents_spreadsheet/static/src/scss/**/*',
+            'documents_spreadsheet/static/src/bundle/**/*.scss',
         ],
         'web.assets_qweb': [
             # Load all o_spreadsheet templates first to allow to inherit them

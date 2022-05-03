@@ -23,9 +23,18 @@ class AccountAvataxUniqueCode(models.AbstractModel):
         help="Use this code to cross-reference in the Avalara portal."
     )
 
+    def _get_avatax_description(self):
+        """This is used to describe records in Avatax.
+
+        E.g. 'Customer 10' with this function returning 'Customer'.
+
+        :return (string): a name for this model
+        """
+        raise NotImplementedError()
+
     def _compute_avatax_unique_code(self):
         for record in self:
-            record.avatax_unique_code = '%s %s' % (record._description, record.id)
+            record.avatax_unique_code = '%s %s' % (record._get_avatax_description(), record.id)
 
     def _search_avatax_unique_code(self, operator, value):
         unsupported_operators = ('in', 'not in', '<', '<=', '>', '>=')
@@ -35,7 +44,7 @@ class AccountAvataxUniqueCode(models.AbstractModel):
         value = value.lower()
 
         # allow searching with or without prefix
-        prefix = self._description.lower() + " "
+        prefix = self._get_avatax_description().lower() + " "
         if value.startswith(prefix):
             value = value[len(prefix):]
 

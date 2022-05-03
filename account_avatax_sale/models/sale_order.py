@@ -45,6 +45,9 @@ class SaleOrder(models.Model):
     def _get_avatax_document_type(self):
         return 'SalesOrder'
 
+    def _get_avatax_description(self):
+        return 'Sales Order'
+
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"

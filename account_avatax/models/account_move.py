@@ -104,3 +104,6 @@ class AccountMove(models.Model):
             'in_refund': 'ReturnInvoice',
             'entry': 'Any',
         }[self.move_type]
+
+    def _get_avatax_description(self):
+        return 'Journal Entry'

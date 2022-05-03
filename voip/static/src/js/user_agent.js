@@ -837,7 +837,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             method: 'search_read',
             domain: [['user_ids', '!=', false]].concat(domain),
             fields: ['id', 'display_name'],
-            limit: 1,
         });
         if (!contacts.length) {
             contacts = await this._rpc({
@@ -845,7 +844,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 method: 'search_read',
                 domain: domain,
                 fields: ['id', 'display_name'],
-                limit: 1,
             });
         }
         /* Fallback if inviteSession.remoteIdentity.uri.type didn't give the correct country prefix
@@ -861,7 +859,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                     ['sanitized_mobile', '=like', '%'+lastSixDigitsNumber],
                 ],
                 fields: ['id', 'display_name'],
-                limit: 1,
             });
         }
         const incomingCallParams = { number };

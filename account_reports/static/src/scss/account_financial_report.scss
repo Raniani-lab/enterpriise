@@ -200,11 +200,15 @@
     .o_account_reports_table {
         &#table_header_clone {
             position: fixed;
+            pointer-events: none;
             tbody {
                 visibility: collapse;
                 tr {
                     border: none;
                 }
+            }
+            thead {
+                pointer-events: auto;
             }
         }
 
@@ -551,7 +555,6 @@
 // -----------------------------------------
 .o_account_reports_body .o_account_reports_summary {
     display: inline-block;
-    position: relative;
 
     .o_account_report_summary_placeholder{
         opacity: .5;

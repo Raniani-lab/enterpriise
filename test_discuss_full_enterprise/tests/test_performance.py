@@ -1,0 +1,19 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo.addons.test_discuss_full.tests.test_performance import TestDiscussFullPerformance
+
+old_method = TestDiscussFullPerformance._get_init_messaging_result
+
+def _get_init_messaging_result(self):
+    res = old_method(self)
+    res['current_user_settings'].update({
+        'how_to_call_on_mobile': 'ask',
+        'external_device_number': False,
+        'should_call_from_another_device': False,
+        'should_auto_reject_incoming_calls': False,
+        'voip_secret': False,
+        'voip_username': False,
+    })
+    return res
+
+TestDiscussFullPerformance._get_init_messaging_result = _get_init_messaging_result

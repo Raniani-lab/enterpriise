@@ -539,7 +539,7 @@ const DialingPanel = Widget.extend({
     },
     /**
      * Check if the user wants to use voip to make the call.
-     * It's check the value res_user field `mobile_call_method` and
+     * It's check the value res_user field `how_to_call_on_mobile` and
      * ask to the end user is choice and update the value as needed
      * @return {Promise<boolean>}
      * @private

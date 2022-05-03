@@ -99,7 +99,7 @@ const PhoneCallDetails = Widget.extend({
             container: 'body',
             html: true,
             content: function(){
-                var $content = $(QWeb.render('voip.PhoneCallTransfer', {'sip_external_phone': number}));
+                var $content = $(QWeb.render('voip.PhoneCallTransfer', {'external_device_number': number}));
                 $content.find('#input_transfer').on('input', self._onInputNumberDebounced);
                 $content.find('#transfer_call').on('click', self._onClickTransferCall);
                 return $content;

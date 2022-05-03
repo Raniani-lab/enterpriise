@@ -40,8 +40,8 @@ Phone.include({
         (
             pbxConfiguration.pbx_ip &&
             pbxConfiguration.wsServer &&
-            pbxConfiguration.login &&
-            pbxConfiguration.password
+            pbxConfiguration.voip_username &&
+            pbxConfiguration.voip_secret
         );
     },
     //--------------------------------------------------------------------------

@@ -6,7 +6,7 @@
       <field name="inherit_id" ref="voip.res_user_form"/>
       <field name="arch" type="xml">
         <data>
-          <xpath expr="//field[@name='sip_login']" position="after">
+          <xpath expr="//field[@name='voip_username']" position="after">
             <field name="onsip_auth_user" class="oe_inline" readonly="0"/>
           </xpath>
         </data>

@@ -1,53 +1,45 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models, fields
 
-# Add 'sip_password' field to the private fields.
-# Only users who can modify the res_user (incl. the user himself) see the private fields real content
-from odoo.addons.base.models import res_users
-res_users.USER_PRIVATE_FIELDS.append('sip_password')
 
-VOIP_FIELDS = [
-    'sip_login',
-    'sip_password',
-    'sip_external_phone',
-    'sip_always_transfer',
-    'sip_ignore_incoming',
-    'mobile_call_method',
+# List of the VoIP-related fields that are configurable by the user using the
+# `res.users` form view. Useful to override SELF_READABLE/WRITABLE_FIELDS.
+VOIP_USER_CONFIGURATION_FIELDS = [
+    'external_device_number',
+    'how_to_call_on_mobile',
+    'should_auto_reject_incoming_calls',
+    'should_call_from_another_device',
+    'voip_secret',
+    'voip_username',
 ]
-
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
-    mobile_call_method = fields.Selection(
-        [('ask', 'Ask'), ('voip', 'Voip'), ('phone', 'Phone')],
-        string="Mobile call",
-        groups="base.group_user",
-        default='ask',
-        required=True,
-        help="""Method to use to made a call on mobile:
-        * VoIP: Always used as a softphone
-        * Phone: Always use the device's phone
-        * Ask: Always prompt""")
-    sip_login = fields.Char("SIP Login / Browser's Extension", groups="base.group_user")
-    sip_password = fields.Char('SIP Password', groups="base.group_user")
-    sip_external_phone = fields.Char("Handset Extension", groups="base.group_user")
-    sip_always_transfer = fields.Boolean("Always Redirect to Handset", default=False,
-                                         groups="base.group_user")
-    sip_ignore_incoming = fields.Boolean("Reject All Incoming Calls", default=False,
-                                         groups="base.group_user")
-
     last_seen_phone_call = fields.Many2one('voip.phonecall')
+    # --------------------------------------------------------------------------
+    # VoIP User Configuration Fields
+    # --------------------------------------------------------------------------
+    # These fields mirror those defined in `res.users.settings`. The reason they
+    # are not directly defined in here is that we want these fields to have
+    # different access rights than the rest of the fields of `res.users`. See
+    # their definition in `res.users.settings` for comprehensive documentation.
+    # --------------------------------------------------------------------------
+    external_device_number = fields.Char(related='res_users_settings_id.external_device_number', inverse='_reflect_change_in_res_users_settings', related_sudo=False)
+    how_to_call_on_mobile = fields.Selection(related='res_users_settings_id.how_to_call_on_mobile', inverse='_reflect_change_in_res_users_settings', related_sudo=False)
+    should_auto_reject_incoming_calls = fields.Boolean(related='res_users_settings_id.should_auto_reject_incoming_calls', inverse='_reflect_change_in_res_users_settings', related_sudo=False)
+    should_call_from_another_device = fields.Boolean(related='res_users_settings_id.should_call_from_another_device', inverse='_reflect_change_in_res_users_settings', related_sudo=False)
+    voip_secret = fields.Char(related='res_users_settings_id.voip_secret', inverse='_reflect_change_in_res_users_settings', related_sudo=False)
+    voip_username = fields.Char(related='res_users_settings_id.voip_username', inverse='_reflect_change_in_res_users_settings', related_sudo=False)
 
     @property
     def SELF_READABLE_FIELDS(self):
-        return super().SELF_READABLE_FIELDS + VOIP_FIELDS
+        return super().SELF_READABLE_FIELDS + VOIP_USER_CONFIGURATION_FIELDS
 
     @property
     def SELF_WRITEABLE_FIELDS(self):
-        return super().SELF_WRITEABLE_FIELDS + VOIP_FIELDS
+        return super().SELF_WRITEABLE_FIELDS + VOIP_USER_CONFIGURATION_FIELDS
 
     @api.model
     def reset_last_seen_phone_call(self):
@@ -58,3 +50,22 @@ class ResUsers(models.Model):
         ]
         last_call = self.env['voip.phonecall'].search(domain, order='call_date desc', limit=1)
         self.env.user.last_seen_phone_call = last_call.id
+
+    def _reflect_change_in_res_users_settings(self):
+        """
+        Updates the values of the VoIP User Configuration Fields in `res_users_settings_ids` to have the same values as
+        their related fields in `res.users`. If there is no `res.users.settings` record for the user, then the record is
+        created.
+
+        This method is intended to be used as an inverse for VoIP Configuration Fields.
+        """
+        for user in self:
+            res_users_settings_record = self.env['res.users.settings']._find_or_create_for_user(user)
+            res_users_settings_record.update({
+                'external_device_number': user.external_device_number,
+                'how_to_call_on_mobile': user.how_to_call_on_mobile,
+                'should_auto_reject_incoming_calls': user.should_auto_reject_incoming_calls,
+                'should_call_from_another_device': user.should_call_from_another_device,
+                'voip_secret': user.voip_secret,
+                'voip_username': user.voip_username,
+            })

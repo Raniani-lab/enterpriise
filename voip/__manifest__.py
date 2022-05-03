@@ -24,6 +24,7 @@ Allows to make call from next activities or with click-to-dial.
         'views/res_config_settings_views.xml',
         'views/res_partner_views.xml',
         'views/res_users_views.xml',
+        'views/res_users_settings_views.xml',
         'views/voip_phonecall_views.xml',
     ],
     'application': True,

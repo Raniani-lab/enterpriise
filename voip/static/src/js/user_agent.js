@@ -132,7 +132,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             args: [],
             kwargs: {},
         });
-        return this.infoPbxConfiguration.mobile_call_method;
+        return this.infoPbxConfiguration.how_to_call_on_mobile;
     },
     /**
      * Returns PBX Configuration.
@@ -151,7 +151,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         await this._rpc({
             model: 'res.users',
             method: 'write',
-            args: [[userUID], {mobile_call_method: useVoIPChoice}],
+            args: [[userUID], {how_to_call_on_mobile: useVoIPChoice}],
         });
         await this.getMobileCallConfig();
     },
@@ -385,7 +385,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 _t("PBX or Websocket address is missing. Please check your settings."));
             return false;
         }
-        if (!(params.login && params.password)) {
+        if (!(params.voip_username && params.voip_secret)) {
             this._triggerError(
                 _t("Your credentials are not correctly set. Please contact your administrator."));
             return false;
@@ -449,8 +449,8 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _getUaConfig(params) {
         return {
-            authorizationPassword: params.password,
-            authorizationUsername: params.login,
+            authorizationPassword: params.voip_secret,
+            authorizationUsername: params.voip_username,
             delegate: {
                 onDisconnect: (error) => this._onDisconnect(error),
                 onInvite: (inviteSession) => this._onInvite(inviteSession),
@@ -464,7 +464,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 server: params.wsServer || null,
                 traceSip: params.traceSip,
             },
-            uri: window.SIP.UserAgent.makeURI(`sip:${params.login}@${params.pbx_ip}`),
+            uri: window.SIP.UserAgent.makeURI(`sip:${params.voip_username}@${params.pbx_ip}`),
         };
     },
     /**
@@ -481,10 +481,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 isConnecting: true,
                 message: _t("Connecting..."),
             });
-            this._alwaysTransfer = result.always_transfer;
-            this._ignoreIncoming = result.ignore_incoming;
-            if (result.external_phone) {
-                this._externalPhone = cleanNumber(result.external_phone);
+            this._alwaysTransfer = result.should_call_from_another_device;
+            this._ignoreIncoming = result.should_auto_reject_incoming_calls;
+            if (result.external_device_number) {
+                this._externalPhone = cleanNumber(result.external_device_number);
             }
             if (!window.RTCPeerConnection || !window.MediaStream || !navigator.mediaDevices) {
                 this._triggerError(

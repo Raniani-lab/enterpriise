@@ -578,7 +578,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _sendNotification(title, content) {
         if (
             window.Notification &&
-            window.Notification.permission === 'granted'
+            window.Notification.permission === 'granted' &&
+            // Only send notifications in master tab, so that the user doesn't
+            // get a notification for every open tab.
+            this.call('bus_service', 'isMasterTab')
         ) {
             return new window.Notification(title, {
                 body: content,

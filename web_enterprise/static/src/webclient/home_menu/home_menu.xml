@@ -4,7 +4,7 @@
 <t t-name="web_enterprise.HomeMenu" owl="1">
     <div class="o_home_menu h-100 overflow-auto" t-att-class="{ o_ios_app: state.isIosApp }">
         <div class="container">
-            <input t-ref="input" type="text" class="o_search_hidden sr-only w-auto" t-on-input="_onInputSearch" t-on-blur="_onInputBlur" t-on-compositionstart="_onCompositionStart"/>
+            <input t-ref="input" type="text" class="o_search_hidden sr-only w-auto" data-allow-hotkeys="true" t-on-input="_onInputSearch" t-on-blur="_onInputBlur" t-on-compositionstart="_onCompositionStart"/>
             <!-- When the subscription has expired, the expiration panel is show over the whole UI instead of here -->
             <ExpirationPanel t-if="subscription.warningType and !subscription.isWarningHidden and subscription.daysLeft &lt;= 30 and subscription.daysLeft > 0"/>
             <div t-if="displayedApps.length" role="listbox" class="o_apps row user-select-none mt-5">

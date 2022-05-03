@@ -90,6 +90,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                            account_move_line.date AS line_date,
                            account_move_line.credit AS line_credit,
                            account_move_line.debit AS line_debit,
+                           account_move_line.balance AS line_balance,
                            account_move_line.full_reconcile_id AS line_reconcile_id,
                            account_move_line.partner_id AS line_partner_id,
                            account_move_line.move_id AS line_move_id,
@@ -102,7 +103,10 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                            account.write_date AS account_write_date,
                            account_type.type AS account_type,
                            reconcile.name AS line_reconcile_name,
+                           currency.id AS line_currency_id,
+                           currency2.id AS line_company_currency_id,
                            currency.name AS line_currency_name,
+                           currency2.name AS line_company_currency_name,
                            partner.id AS partner_id,
                            partner.name AS partner_name,
                            partner.commercial_company_name AS partner_commercial_company_name,
@@ -133,12 +137,13 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                       JOIN account_journal journal ON account_move_line.journal_id = journal.id
                       JOIN account_account account ON account_move_line.account_id = account.id
                       JOIN account_account_type account_type ON account.user_type_id = account_type.id
-                      JOIN res_partner partner ON account_move_line.partner_id = partner.id
+                      LEFT JOIN res_partner partner ON account_move_line.partner_id = partner.id
                       LEFT JOIN account_tax tax ON account_move_line.tax_line_id = tax.id
                       LEFT JOIN account_full_reconcile reconcile ON account_move_line.full_reconcile_id = reconcile.id
                       LEFT JOIN res_currency currency ON account_move_line.currency_id = currency.id
+                      LEFT JOIN res_currency currency2 ON account_move_line.company_currency_id = currency2.id
                       LEFT JOIN res_country country ON partner.country_id = country.id
-                      LEFT JOIN res_partner_bank partner_bank ON partner.id = partner_bank.partner_id
+                      LEFT JOIN res_partner_bank partner_bank ON partner.id = partner_bank.partner_id and partner_bank.company_id = account_move_line.company_id
                       LEFT JOIN res_bank bank ON partner_bank.bank_id = bank.id
                       LEFT JOIN res_country_state state ON partner.state_id = state.id
                       LEFT JOIN ir_property credit_limit ON credit_limit.res_id = 'res.partner,' || partner.id AND credit_limit.name = 'credit_limit'
@@ -245,8 +250,8 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                         'line_reconcile_name': row['line_reconcile_name'],
                         'line_partner_id': row['line_partner_id'],
                         'line_move_name': row['move_is_invoice'] and row['line_move_name'],
-                        'line_amount_currency': round(row['line_amount_currency'], 2),
-                        'line_currency_name': row['line_currency_name'],
+                        'line_amount_currency': round(row['line_amount_currency'] if row['line_currency_id'] else row['line_balance'], 2),
+                        'line_currency_name': row['line_currency_name'] if row['line_currency_id'] else row['line_company_currency_name'],
                     }
                 )
 

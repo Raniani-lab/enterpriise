@@ -30,7 +30,7 @@
                         <custSupID t-esc="p.get('partner_id')"/>
                         <custSupName t-esc="(p.get('partner_name'))"/>
                         <contact t-if="p.get('partner_contact_name')" t-esc="p['partner_contact_name']"/>
-                        <telephone t-esc="p.get('partner_phone')"/>
+                        <telephone t-if="p.get('partner_phone')" t-esc="p['partner_phone'][:30]"/>
                         <eMail t-esc="p.get('partner_email')"/>
                         <website t-esc="p.get('partner_website')"/>
                         <taxRegistrationCountry t-if="p.get('partner_country_id')" t-esc="p.get('partner_country_code')"/>
@@ -41,10 +41,10 @@
                         <supplierLimit t-if="p.get('partner_credit_limit')" t-esc="p.get('partner_credit_limit')"/>
                         <streetAddress>
                             <streetname t-if="p.get('partner_street_name')" t-esc="p.get('partner_street_name')"/>
-                            <number t-if="p.get('partner_street_number')" t-esc="p.get('partner_street_number')"/>
+                            <number t-if="p.get('partner_street_number')" t-esc="p['partner_street_number'][:15]"/>
                             <numberExtension t-if="p.get('partner_street_number2')" t-esc="p.get('partner_street_number2')"/>
                             <city t-if="p.get('partner_city')" t-esc="p.get('partner_city')"/>
-                            <postalCode t-if="p.get('partner_zip')" t-esc="p.get('partner_zip')"/>
+                            <postalCode t-if="p.get('partner_zip')" t-esc="p.get('partner_zip')[:10]"/>
                             <region t-if="p.get('partner_state_name')" t-esc="p.get('partner_state_name')"/>
                             <country t-if="p.get('partner_country_id')" t-esc="p.get('partner_country_code')"/>
                         </streetAddress>
@@ -65,7 +65,7 @@
                         <accDesc t-esc="a.get('account_name')"/>
                         <accTp t-esc="a.get('account_type')"/>
                         <changeInfo t-if="a.get('account_write_uid')">
-                            <userID t-esc="a.get('account_write_uid')"/>
+                            <userID t-esc="a.get('account_xaf_userid')"/>
                             <changeDateTime t-esc="a.get('account_write_date')"/>
                             <changeDescription>Last write</changeDescription>
                         </changeInfo>
@@ -123,7 +123,7 @@
                                 <recRef t-if="l[1].get('line_reconcile_id')" t-esc="l[1].get('line_reconcile_name')"/>
                                 <custSupID t-if="l[1].get('line_partner_id')" t-esc="l[1].get('line_partner_id')"/>
                                 <invRef t-if="l[1].get('line_move_name')" t-esc="l[1].get('line_move_name')"/>
-                                <currency t-if="l[1].get('line_amount_currency') and l[1].get('line_amount_currency')">
+                                <currency t-if="l[1].get('line_currency_name') and l[1].get('line_amount_currency')">
                                     <curCode t-esc="l[1].get('line_currency_name')"/>
                                     <curAmnt t-esc="l[1].get('line_amount_currency')"/>
                                 </currency>

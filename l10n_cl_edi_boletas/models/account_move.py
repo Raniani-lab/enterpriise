@@ -11,7 +11,7 @@ from odoo.tools import html_escape
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    l10n_cl_daily_sales_book_id = fields.Many2one('l10n_cl.daily.sales.book')
+    l10n_cl_daily_sales_book_id = fields.Many2one('l10n_cl.daily.sales.book', copy=False)
 
     def _l10n_cl_edi_post_validation(self):
         if self.l10n_latam_document_type_id.code == '39':

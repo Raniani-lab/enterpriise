@@ -26,15 +26,15 @@
                         </t>
                     </t>
                     <td><span t-esc="tax['name']"/></td>
-                    <td>
+                    <td style="text-align: right;">
                         <span t-esc="tax['base_amount']"
                               t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"
-                              class="pull-right text-monospace"/>
+                              class="text-monospace"/>
                     </td>
-                    <td>
+                    <td style="text-align: right;">
                         <span t-esc="tax['tax_amount']"
                               t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"
-                              class="pull-right text-monospace"/>
+                              class="text-monospace"/>
                     </td>
                 </tr>
             </t>
@@ -49,12 +49,12 @@
             <t t-set="grids" t-value="get_tax_grids(data, o)"/>
         </xpath>
         <xpath expr="//table[@id='move_table']/thead/tr" position="inside">
-            <th class="text-right" t-if="grids">Tax Grid</th>
+            <th style="text-align: right;" t-if="grids">Tax Grid</th>
         </xpath>
 
         <!-- Display all tags name applied on the line in the new column -->
         <xpath expr="//table[@id='move_table']/tbody/tr[1]" position="inside">
-            <td class="text-right" t-if="grids">
+            <td style="text-align: right;" t-if="grids">
                 <span t-foreach="aml.tax_tag_ids" t-as="tax_tag_id">
                     <span t-esc="tax_tag_id.name"/>
                 </span>
@@ -85,9 +85,9 @@
                         <tr>
                             <th t-if="len(grids) > 1">Country</th>
                             <th>Grid</th>
-                            <th class="text-right">+</th>
-                            <th class="text-right">-</th>
-                            <th class="text-right">Impact On Grid</th>
+                            <th style="text-align: right;">+</th>
+                            <th style="text-align: right;">-</th>
+                            <th style="text-align: right;">Impact On Grid</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,20 +102,20 @@
                                     </t>
                                 </t>
                                 <td><span t-esc="grid_name"/></td>
-                                <td>
+                                <td style="text-align: right;">
                                     <span t-esc="grids[country_name][grid_name].get('+', 0)"
                                           t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"
-                                          class="pull-right text-monospace"/>
+                                          class="text-monospace"/>
                                 </td>
-                                <td>
+                                <td style="text-align: right;">
                                     <span t-esc="grids[country_name][grid_name].get('-', 0)"
                                           t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"
-                                          class="pull-right text-monospace"/>
+                                          class="text-monospace"/>
                                 </td>
-                                <td>
+                                <td style="text-align: right;">
                                     <span t-esc="grids[country_name][grid_name]['impact']"
                                           t-options="{'widget': 'monetary', 'display_currency': (company_id or res_company).currency_id}"
-                                          class="pull-right text-monospace"/>
+                                          class="text-monospace"/>
                                 </td>
                             </tr>
                         </t>

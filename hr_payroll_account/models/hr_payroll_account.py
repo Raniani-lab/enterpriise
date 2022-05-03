@@ -96,6 +96,7 @@ class HrPayslip(models.Model):
 
                             if not debit_line:
                                 debit_line = self._prepare_line_values(line, debit_account_id, date, debit, credit)
+                                debit_line['tax_ids'] = [(4, tax_id) for tax_id in line.salary_rule_id.account_debit.tax_ids.ids]
                                 line_ids.append(debit_line)
                             else:
                                 debit_line['debit'] += debit
@@ -109,6 +110,7 @@ class HrPayslip(models.Model):
 
                             if not credit_line:
                                 credit_line = self._prepare_line_values(line, credit_account_id, date, debit, credit)
+                                credit_line['tax_ids'] = [(4, tax_id) for tax_id in line.salary_rule_id.account_credit.tax_ids.ids]
                                 line_ids.append(credit_line)
                             else:
                                 credit_line['debit'] += debit

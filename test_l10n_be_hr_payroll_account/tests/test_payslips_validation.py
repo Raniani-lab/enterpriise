@@ -117,6 +117,34 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             ]],
         }])
 
+        cls.resource_calendar_4_5_friday_off = cls.env['resource.calendar'].create([{
+            'name': "Test Calendar: 4/5 Friday Off",
+            'company_id': cls.env.company.id,
+            'hours_per_day': 7.6,
+            'tz': "Europe/Brussels",
+            'two_weeks_calendar': False,
+            'hours_per_week': 38.0,
+            'full_time_required_hours': 38.0,
+            'attendance_ids': [(5, 0, 0)] + [(0, 0, {
+                'name': "Attendance",
+                'dayofweek': dayofweek,
+                'hour_from': hour_from,
+                'hour_to': hour_to,
+                'day_period': day_period,
+                'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
+
+            }) for dayofweek, hour_from, hour_to, day_period in [
+                ("0", 8.0, 12.0, "morning"),
+                ("0", 13.0, 16.6, "afternoon"),
+                ("1", 8.0, 12.0, "morning"),
+                ("1", 13.0, 16.6, "afternoon"),
+                ("2", 8.0, 12.0, "morning"),
+                ("2", 13.0, 16.6, "afternoon"),
+                ("3", 8.0, 12.0, "morning"),
+                ("3", 13.0, 16.6, "afternoon"),
+            ]],
+        }])
+
         cls.resource_calendar_half_time = cls.env['resource.calendar'].create([{
             'name': "Test Calendar: Half Time",
             'company_id': cls.env.company.id,
@@ -6822,3 +6850,202 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'NET': 629.72,
         }
         self._validate_payslip(holiday_pay_2020, payslip_results)
+
+    def test_double_remuneration_refunds_partial_contracts(self):
+        # 1 full time parental time off at the start of the month
+        # 1 4/5 over the rest of the month
+        # 1 refund + 1 correction
+        self.employee.write({
+            'km_home_work': 40.0,
+            'marital': 'cohabitant',
+            'spouse_fiscal_status': 'high_income',
+            'children': 0,
+        })
+
+        self.contract.write({
+            'name': "Full Time Parental Time Off",
+            'time_credit': True,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'work_time_rate': 0,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_parental_time_off').id,
+            'wage_on_signature': 2821.00,
+            'wage': 2821.00,
+            'resource_calendar_id': self.resource_calendar_0_hours_per_week.id,
+            'date_start': datetime.date(2022, 1, 3),
+            'date_end': datetime.date(2022, 4, 2),
+            'car_id': False,
+            'transport_mode_car': False,
+            'fuel_card': 0,
+            'internet': 0,
+            'representation_fees': 399.0,
+            'mobile': 0,
+            'meal_voucher_amount': 8.0,
+            'ip_wage_rate': 12.0,
+            'ip': True,
+            'commission_on_target': 1533.0,
+            'transport_mode_public': True,
+            'public_transport_employee_amount': 49.0,
+            'transport_mode_private_car': True,
+        })
+
+        partial_contract = self.env['hr.contract'].create([{
+            'name': "Partial Contract For Payslip Test",
+            'employee_id': self.employee.id,
+            'resource_calendar_id': self.resource_calendar_4_5_friday_off.id,
+            'time_credit': True,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'work_time_rate': 80,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_parental_time_off').id,
+            'company_id': self.env.company.id,
+            'date_generated_from': datetime.datetime(2022, 9, 1, 0, 0, 0),
+            'date_generated_to': datetime.datetime(2022, 9, 1, 0, 0, 0),
+            'car_id': False,
+            'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
+            'date_start': datetime.date(2022, 4, 3),
+            'date_end': datetime.date(2022, 9, 2),
+            'wage': 2851.71,
+            'wage_on_signature': 2851.71,
+            'state': "open",
+            'transport_mode_car': False,
+            'fuel_card': 0,
+            'internet': 0,
+            'representation_fees': 399.0,
+            'mobile': 0,
+            'meal_voucher_amount': 8.0,
+            'eco_checks': 250.0,
+            'ip_wage_rate': 12.0,
+            'ip': True,
+            'commission_on_target': 1433.33,
+            'transport_mode_public': True,
+            'public_transport_employee_amount': 49.0,
+            'transport_mode_private_car': True,
+        }])
+
+        (self.contract + partial_contract)._generate_work_entries(datetime.date(2022, 4, 1), datetime.date(2022, 4, 30))
+        payslip_1 = self.env['hr.payslip'].create([{
+            'name': "Test Payslip 1",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2022, 4, 1),
+            'date_to': datetime.date(2022, 4, 30),
+        }])
+        payslip_2 = self.env['hr.payslip'].create([{
+            'name': "Test Payslip 2",
+            'employee_id': self.employee.id,
+            'contract_id': partial_contract.id,
+            'company_id': self.env.company.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2022, 4, 1),
+            'date_to': datetime.date(2022, 4, 30),
+        }])
+        (payslip_1 + payslip_2).compute_sheet()
+
+        payslip_1_results = {
+            'BASIC': 0.0,
+            'SALARY': 0.0,
+            'ONSS': 0.0,
+            'ONSSTOTAL': 0.0,
+            'GROSSIP': 0.0,
+            'IP.PART': 0.0,
+            'GROSS': 0.0,
+            'P.P': 0.0,
+            'PPTOTAL': 0.0,
+            'M.ONSS': 0.0,
+            'MEAL_V_EMP': 0.0,
+            'PUB.TRANS': 0.0,
+            'CAR.PRIV': 0.0,
+            'REP.FEES': 0.0,
+            'IP': 0.0,
+            'IP.DED': 0.0,
+            'NET': 0.0,
+            'REMUNERATION': 0.0,
+            'ONSSEMPLOYER': 0.0,
+        }
+        payslip_2_results = {
+            'BASIC': 2851.71,
+            'SALARY': 2851.71,
+            'ONSS': -372.72,
+            'ONSSTOTAL': 372.72,
+            'GROSSIP': 2478.99,
+            'IP.PART': -342.21,
+            'GROSS': 2136.79,
+            'P.P': -376.06,
+            'PPTOTAL': 376.06,
+            'M.ONSS': -21.72,
+            'MEAL_V_EMP': -17.44,
+            'PUB.TRANS': 34.0,
+            'CAR.PRIV': 41.27,
+            'REP.FEES': 279.31,
+            'REP.FEES.VOLATILE': 4.59,
+            'IP': 342.21,
+            'IP.DED': -25.67,
+            'NET': 2397.28,
+            'REMUNERATION': 2509.5,
+            'ONSSEMPLOYER': 773.95,
+        }
+        self._validate_payslip(payslip_1, payslip_1_results)
+        self._validate_payslip(payslip_2, payslip_2_results)
+
+        action_refund_payslip_2 = payslip_2.refund_sheet()
+        refund_payslip = self.env['hr.payslip'].browse(action_refund_payslip_2['domain'][0][2])
+
+        refund_payslip_results = {
+            'BASIC': -2851.71,
+            'SALARY': -2851.71,
+            'ONSS': 372.72,
+            'ONSSTOTAL': -372.72,
+            'GROSSIP': -2478.99,
+            'IP.PART': 342.21,
+            'GROSS': -2136.79,
+            'P.P': 376.06,
+            'PPTOTAL': -376.06,
+            'M.ONSS': 21.72,
+            'MEAL_V_EMP': 17.44,
+            'PUB.TRANS': -34.0,
+            'CAR.PRIV': -41.27,
+            'REP.FEES': -279.31,
+            'REP.FEES.VOLATILE': -4.59,
+            'IP': -342.21,
+            'IP.DED': 25.67,
+            'NET': -2397.28,
+            'REMUNERATION': -2509.5,
+            'ONSSEMPLOYER': -773.95,
+        }
+        self._validate_payslip(refund_payslip, refund_payslip_results)
+
+        new_payslip_2 = self.env['hr.payslip'].create([{
+            'name': "New Test Payslip 2",
+            'employee_id': self.employee.id,
+            'contract_id': partial_contract.id,
+            'company_id': self.env.company.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'date_from': datetime.date(2022, 4, 1),
+            'date_to': datetime.date(2022, 4, 30),
+        }])
+        new_payslip_2.compute_sheet()
+
+        new_payslip_2_results = {
+            'BASIC': 2851.71,
+            'SALARY': 2851.71,
+            'ONSS': -372.72,
+            'ONSSTOTAL': 372.72,
+            'GROSSIP': 2478.99,
+            'IP.PART': -342.21,
+            'GROSS': 2136.79,
+            'P.P': -376.06,
+            'PPTOTAL': 376.06,
+            'M.ONSS': -21.72,
+            'MEAL_V_EMP': -17.44,
+            'PUB.TRANS': 34.0,
+            'CAR.PRIV': 41.27,
+            'REP.FEES': 279.31,
+            'REP.FEES.VOLATILE': 4.59,
+            'IP': 342.21,
+            'IP.DED': -25.67,
+            'NET': 2397.28,
+            'REMUNERATION': 2509.5,
+            'ONSSEMPLOYER': 773.95,
+        }
+        self._validate_payslip(new_payslip_2, new_payslip_2_results)

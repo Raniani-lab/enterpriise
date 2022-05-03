@@ -481,8 +481,14 @@ else:
     salary_simulation = payslip.dict.env.context.get('salary_simulation')
     if not salary_simulation:
         first_period_contract_ids = payslip.dict._get_period_contracts()
-        first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.transport_mode_public or c.transport_mode_train)[0]
-        result = result if payslip.contract_id == first_period_contract else 0 
+        first_period_contracts = contract.browse(first_period_contract_ids).filtered(
+            lambda c: (c.transport_mode_public or c.transport_mode_train) and not (c.time_credit and not c.work_time_rate)
+        )
+        if first_period_contracts:
+            first_period_contract = first_period_contracts[0]
+            result = (contract.public_transport_reimbursed_amount + contract.train_transport_reimbursed_amount) if payslip.contract_id == first_period_contract else 0
+        else:
+            result = 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
     </record>

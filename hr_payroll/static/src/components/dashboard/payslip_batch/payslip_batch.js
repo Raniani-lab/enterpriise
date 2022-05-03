@@ -23,7 +23,7 @@ export class PayrollDashboardPayslipBatch extends Component {
             'Done': 'bg-primary-light',
             'Paid': 'bg-warning-light',
         };
-        return colorMap[state] || 'badge-primary'
+        return colorMap[state] || 'bg-primary'
     }
 
     /**

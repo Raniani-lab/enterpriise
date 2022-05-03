@@ -409,7 +409,7 @@ class AmazonAccount(models.Model):
                 _logger.exception(error)
             else:
                 if amazon_status == 'Canceled' and order_found and order.state != 'cancel':
-                    order.with_context(canceled_by_amazon=True).action_cancel()
+                    order.with_context(canceled_by_amazon=True)._action_cancel()
                     _logger.info("canceled sale.order with amazon_order_ref %s for "
                                  "amazon.account with id %s" % (amazon_order_ref, self.id))
                 elif not order_found and order:  # New order created

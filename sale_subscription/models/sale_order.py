@@ -492,9 +492,9 @@ class SaleOrder(models.Model):
                 _('You cannot set to draft a canceled quotation linked to subscriptions. Please create a new quotation.'))
         return super(SaleOrder, self).action_draft()
 
-    def action_cancel(self):
+    def _action_cancel(self):
         self._set_closed_state()
-        return super(SaleOrder, self).action_cancel()
+        return super()._action_cancel()
 
     def _prepare_confirmation_values(self):
         """

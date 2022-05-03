@@ -197,22 +197,35 @@ class HrExpense(models.Model):
             currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
             bill_reference_ocr = ocr_results['bill_reference']['selected_value']['content'] if 'bill_reference' in ocr_results else ""
 
-            self.name = description_ocr
-            self.date = date_ocr or self.date
-            self.reference = bill_reference_ocr
-            self.predicted_category = description_ocr
             self.state = 'draft'
+            if not self.name or self.name == self.message_main_attachment_id.name.split('.')[0]:
+                self.name = description_ocr
+                self.predicted_category = description_ocr
+                predicted_product_id = self._predict_product(description_ocr, category=True)
+                if predicted_product_id:
+                    self.product_id = predicted_product_id if predicted_product_id else self.product_id
+                    self.total_amount = total_ocr
 
-            predicted_product_id = self._predict_product(description_ocr, category = True)
-            self.product_id = predicted_product_id if predicted_product_id else self.product_id
+            context_create_date = fields.Date.context_today(self, self.create_date)
+            if not self.date or self.date == context_create_date:
+                self.date = date_ocr
 
-            if self.user_has_groups('base.group_multi_currency'):
-                suggested_currency = self.env["res.currency"].search([
-                    '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
-                    ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
-                self.currency_id = suggested_currency or self.currency_id
+            if not self.total_amount:
+                self.total_amount = total_ocr
 
-            self.total_amount = total_ocr if self.total_amount == 0.0 else self.total_amount
+            if not self.reference:
+                self.reference = bill_reference_ocr
+
+            if self.user_has_groups('base.group_multi_currency') and (not self.currency_id or self.currency_id == self.env.company.currency_id):
+                currency = self.env["res.currency"].search([
+                    '|', '|',
+                    ('currency_unit_label', 'ilike', currency_ocr),
+                    ('name', 'ilike', currency_ocr),
+                    ('symbol', 'ilike', currency_ocr)],
+                    limit=1
+                )
+                if currency:
+                    self.currency_id = currency
 
         elif result['status_code'] == NOT_READY:
             self.extract_state = 'extract_not_ready'

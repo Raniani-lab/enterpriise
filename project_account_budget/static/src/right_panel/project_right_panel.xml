@@ -53,7 +53,7 @@
                             </td>
                             <td align="right" t-att-class="budget.allocated === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget.allocated)"/></td>
                             <td align="right" t-att-class="budget.spent === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget.spent)"/></td>
-                            <t t-set="budget_remaining" t-value="budget.allocated + budget.spent"/>
+                            <t t-set="budget_remaining" t-value="budget.allocated - budget.spent"/>
                             <td align="right" t-attf-class="text-bold {{budget_remaining &lt; 0 ? 'o_color_red' : budget_remaining === 0 ? 'text-muted' : 'o_color_green'}}">
                                 <t t-esc="formatMonetary(budget_remaining)"/>
                             </td>
@@ -64,7 +64,7 @@
                             <td>Total</td>
                             <td align="right" t-att-class="budget_total.allocated === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget_total.allocated)"/></td>
                             <td align="right" t-att-class="budget_total.spent === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget_total.spent)"/></td>
-                            <t t-set="budget_total_remaining" t-value="budget_total.allocated + budget_total.spent"/>
+                            <t t-set="budget_total_remaining" t-value="budget_total.allocated - budget_total.spent"/>
                             <td align="right" t-attf-class="text-bold {{budget_total_remaining &lt; 0 ? 'o_color_red' : budget_total_remaining === 0 ? 'text-muted' : 'o_color_green'}}">
                                 <t t-esc="formatMonetary(budget_total_remaining)" />
                             </td>

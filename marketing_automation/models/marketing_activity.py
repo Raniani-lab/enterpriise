@@ -307,6 +307,8 @@ class MarketingActivity(models.Model):
     def execute(self, domain=None):
         # auto-commit except in testing mode
         auto_commit = not getattr(threading.current_thread(), 'testing', False)
+
+        # organize traces by activity
         trace_domain = [
             ('schedule_date', '<=', Datetime.now()),
             ('state', '=', 'scheduled'),
@@ -315,16 +317,13 @@ class MarketingActivity(models.Model):
         ]
         if domain:
             trace_domain += domain
-
-        traces = self.env['marketing.trace'].search(trace_domain)
-
-        # organize traces by activity
-        trace_to_activities = dict()
-        for trace in traces:
-            if trace.activity_id not in trace_to_activities:
-                trace_to_activities[trace.activity_id] = trace
-            else:
-                trace_to_activities[trace.activity_id] |= trace
+        trace_to_activities = {
+            self.env['marketing.activity'].browse(group['activity_id'][0]):
+            self.env['marketing.trace'].browse(group['ids'])
+            for group in self.env['marketing.trace'].read_group(
+                trace_domain, fields=['ids:array_agg(id)', 'activity_id'], groupby=['activity_id']
+            )
+        }
 
         # execute activity on their traces
         BATCH_SIZE = 500  # same batch size as the MailComposer

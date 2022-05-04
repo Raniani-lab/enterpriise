@@ -298,9 +298,11 @@
                         </page>
                         <page string="Messages" name="messages">
                             <separator string="Appointment Introduction"/>
-                            <field name="message_intro" class="oe-bordered-editor"/>
+                            <field name="message_intro" class="oe-bordered-editor"
+                                   placeholder="e.g. &quot;During this meeting, we will...&quot;"/>
                             <separator string="Appointment Confirmation"/>
-                            <field name="message_confirmation" class="oe-bordered-editor"/>
+                            <field name="message_confirmation" class="oe-bordered-editor"
+                                   placeholder="e.g. &quot;Thank you for your trust, we look forward to meeting you!&quot;"/>
                         </page>
                     </notebook>
                     <div class="oe_chatter">

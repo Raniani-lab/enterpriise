@@ -467,7 +467,6 @@ class AccountCashFlowReport(models.AbstractModel):
                 'level': line['level'] + 1,
                 'parent_id': line['id'],
                 'columns': [{'no_format': 0.0, 'class': 'number'}],
-                'caret_options': 'account.account',
             })
 
             line['columns'][0]['no_format'] += amount

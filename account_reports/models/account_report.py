@@ -139,7 +139,7 @@ class AccountReport(models.AbstractModel):
                 options['journals'].append({'id': 'group', 'name': group.name, 'ids': group_journal_ids})
 
         previous_company = False
-        journals_selection = {opt['id'] for opt in journals_sel} # If empty: means everything is selected
+        journals_selection = {opt['id'] for opt in journals_sel}
         for journal in all_journals:
             if journal.company_id != previous_company:
                 options['journals'].append({'id': 'divider', 'name': journal.company_id.name})
@@ -149,7 +149,7 @@ class AccountReport(models.AbstractModel):
                 'name': journal.name,
                 'code': journal.code,
                 'type': journal.type,
-                'selected': journal.id in journals_selection or not journals_selection,
+                'selected': journal.id in journals_selection,
             })
 
         # Compute the displayed option name

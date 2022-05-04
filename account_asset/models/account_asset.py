@@ -278,7 +278,7 @@ class AccountAsset(models.Model):
                 account = move_lines.account_id
                 auto_create_multi = account.create_asset != 'no' and account.multiple_assets_per_line
                 quantity = move_lines.quantity if auto_create_multi else 1
-                record.non_deductible_tax_value = self.currency_id.round(non_deductible_tax_value / quantity)
+                record.non_deductible_tax_value = record.currency_id.round(non_deductible_tax_value / quantity)
 
     @api.onchange('prorata')
     def _onchange_prorata(self):

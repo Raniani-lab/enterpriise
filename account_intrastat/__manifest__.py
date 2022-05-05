@@ -22,6 +22,7 @@ Intrastat Reports
         'views/search_template_view.xml',
         'views/res_config_settings.xml',
         'views/report_invoice.xml',
+        'views/account_move_view.xml',
     ],
     'installable': True,
     'license': 'OEEL-1',

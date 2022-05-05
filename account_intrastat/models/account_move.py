@@ -51,3 +51,9 @@ class AccountMoveLine(models.Model):
     def _compute_origin_country(self):
         for line in self:
             line.intrastat_product_origin_country_id = line.product_id.product_tmpl_id.intrastat_origin_country_id
+
+    # EXTENDS account
+    def _get_lock_date_protected_fields(self):
+        protected_fields = super()._get_lock_date_protected_fields()
+        protected_fields['fiscal'] += ['intrastat_product_origin_country_id', 'intrastat_transaction_id']
+        return protected_fields

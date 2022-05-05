@@ -1640,19 +1640,23 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     });
 
     test("Open pivot properties properties with non-loaded field", async function (assert) {
-        assert.expect(1);
-
         const { model, env } = await createSpreadsheetFromPivot();
         const pivotPlugin = model["handlers"].find((handler) => handler instanceof PivotPlugin);
-        pivotPlugin.pivots["1"].definition.metaData.activeMeasures.push("non-existing");
+        const dataSource = Object.values(pivotPlugin.dataSources._dataSources)[0];
+        // remove all loading promises and the model to simulate the data source is not loaded
+        dataSource._loadPromise = undefined;
+        dataSource._createModelPromise = undefined;
+        dataSource._model = undefined;
         model.dispatch("SELECT_PIVOT", { pivotId: "1" });
         env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
             pivot: model.getters.getSelectedPivotId(),
         });
         await nextTick();
         const sections = target.querySelectorAll(".o_side_panel_section");
+        const fields = sections[3];
+        assert.equal(fields.children[1].innerText, "bar");
         const measures = sections[4];
-        assert.equal(measures.children[2].innerText, "non-existing");
+        assert.equal(measures.children[1].innerText, "Probability");
     });
 
     test("Trying to duplicate a filter label will trigger a toaster", async function (assert) {

@@ -1076,14 +1076,15 @@ test("Can remove a pivot with undo after editing a cell", async function (assert
     assert.equal(model.getters.getPivotIds().length, 0);
 });
 
-test("Format header correctly works with non-existing field", async function (assert) {
-    assert.expect(2);
+test("Format header displays an error for non-existing field", async function (assert) {
     const { model } = await createSpreadsheetFromPivot();
     setCellContent(model, "G10", `=PIVOT.HEADER("1", "measure", "non-existing")`);
     setCellContent(model, "G11", `=PIVOT.HEADER("1", "non-existing", "bla")`);
     await nextTick();
-    assert.equal(getCellValue(model, "G10"), "non-existing");
-    assert.equal(getCellValue(model, "G11"), "(Undefined)");
+    assert.equal(getCellValue(model, "G10"), "#ERROR");
+    assert.equal(getCellValue(model, "G11"), "#ERROR");
+    assert.equal(getCell(model, "G10").evaluated.error, "Field non-existing does not exist");
+    assert.equal(getCell(model, "G11").evaluated.error, "Field non-existing does not exist");
 });
 
 QUnit.test("Can open see records on headers col", async function (assert) {

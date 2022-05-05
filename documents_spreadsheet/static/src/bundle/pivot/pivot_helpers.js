@@ -22,11 +22,10 @@ export const PERIODS = {
 /**
  * Format a data
  *
- * @param {string} field fieldName:interval
+ * @param {string} interval aggregate interval i.e. month, week, quarter, ...
  * @param {string} value
  */
-export function formatDate(field, value) {
-  const interval = field.split(":")[1] || "month";
+export function formatDate(interval, value) {
   const output = formats[interval].display;
   const input = formats[interval].out;
   const date = moment(value, input);

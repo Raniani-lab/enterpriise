@@ -2,6 +2,7 @@
 
 import { _t } from "web.core";
 import { Domain } from "@web/core/domain";
+import { sprintf } from "@web/core/utils/strings";
 import { PivotModel } from "@web/views/pivot/pivot_model";
 import { formats } from "../o_spreadsheet/constants";
 
@@ -26,6 +27,80 @@ const { toString, toNumber, toBoolean } = spreadsheet.helpers;
  * @property {Object} domain
  * @property {Object} context
  */
+
+/**
+ * Parses the field and operator string of pivot group.
+ * e.g. "create_date:month"
+ * @param {object} allFields
+ * @param {string} groupFieldString
+ * @returns {{field: object, aggregateOperator: string}}
+ */
+function parseGroupField(allFields, groupFieldString) {
+    let [fieldName, aggregateOperator] = groupFieldString.split(":");
+    const field = allFields[fieldName];
+    if (field === undefined) {
+        throw new Error(sprintf(_t("Field %s does not exist"), fieldName));
+    }
+    if (["date", "datetime"].includes(field.type)) {
+        aggregateOperator = aggregateOperator || "month";
+    }
+    return {
+        field,
+        aggregateOperator,
+    }
+}
+
+const UNSUPPORTED_FIELD_TYPES = ["one2many", "many2many", "binary", "html"];
+
+function isNotSupported(fieldType) {
+    return UNSUPPORTED_FIELD_TYPES.includes(fieldType);
+}
+
+function throwUnsupportedFieldError(field) {
+    throw new Error(
+        sprintf(
+            _t("Field %s is not supported because of its type (%s)"),
+            field.string,
+            field.type
+        )
+    );
+}
+
+/**
+ * Parses the value defining a pivot group in a PIVOT formula
+ * e.g. given the following formula PIVOT("1", "stage_id", "42", "status", "won"),
+ * the two group values are "42" and "won".
+ * @param {object} field
+ * @param {string} groupValueString
+ * @returns {number | boolean | string}
+ */
+export function parsePivotFormulaFieldValue(field, groupValueString) {
+    if (isNotSupported(field.type)) {
+        throwUnsupportedFieldError(field);
+    }
+    // represents a field which is not set (=False server side)
+    if (groupValueString === "false") {
+        return false;
+    }
+    switch (field.type) {
+        case "datetime":
+        case "date":
+            return toString(groupValueString);
+        case "selection":
+        case "char":
+        case "text":
+            return toString(groupValueString);
+        case "boolean":
+            return toBoolean(groupValueString);
+        case "float":
+        case "integer":
+        case "monetary":
+        case "many2one":
+            return toNumber(groupValueString);
+        default:
+            throwUnsupportedFieldError(field);
+    }
+}
 
 /**
  * This class is an extension of PivotModel with some additional information
@@ -154,7 +229,7 @@ export class SpreadsheetPivotModel extends PivotModel {
      * This method is used to compute the possible values for each group bys.
      * It should be run before using templates
      */
-     async prepareForTemplateGeneration() {
+    async prepareForTemplateGeneration() {
         const colValues = [];
         const rowValues = [];
 
@@ -196,7 +271,7 @@ export class SpreadsheetPivotModel extends PivotModel {
      * search_read
      */
     async _orderValues(values, groupBy) {
-        const field = this._getFieldOfGroupBy(groupBy);
+        const field = this.parseGroupField(groupBy).field;
         const model = this.metaData.resModel;
         const context = this.searchParams.context;
         const baseDomain = this.searchParams.domain;
@@ -220,10 +295,10 @@ export class SpreadsheetPivotModel extends PivotModel {
     /**
      * @param {string} dimension COLUMN | ROW
      */
-     isGroupedOnlyByOneDate(dimension) {
+    isGroupedOnlyByOneDate(dimension) {
         const groupBys =
             dimension === "COLUMN" ? this.metaData.fullColGroupBys : this.metaData.fullRowGroupBys;
-        return groupBys.length === 1 && this._isDateField(groupBys[0].split(":")[0]);
+        return groupBys.length === 1 && this._isDateField(this.parseGroupField(groupBys[0]).field);
     }
     /**
      * @param {string} dimension COLUMN | ROW
@@ -234,7 +309,7 @@ export class SpreadsheetPivotModel extends PivotModel {
         }
         const groupBys =
             dimension === "COLUMN" ? this.metaData.fullColGroupBys : this.metaData.fullRowGroupBys;
-        return groupBys[0].split(":")[1] || "month";
+        return this.parseGroupField(groupBys[0]).aggregateOperator;
     }
 
     /**
@@ -268,33 +343,31 @@ export class SpreadsheetPivotModel extends PivotModel {
     /**
      * Get the label the given field-value
      */
-    getPivotHeaderValue(field, value) {
-        if (field === "measure") {
-            if (value === "__count") {
+    getPivotHeaderValue(groupFieldString, groupValueString) {
+        if (groupFieldString === "measure") {
+            if (groupValueString === "__count") {
                 return _t("Count");
             }
-            const fieldDesc = this._getFieldOfGroupBy(value);
-            return fieldDesc ? fieldDesc.string : value;
+            // the value is actually the measure field name
+            return this.parseGroupField(groupValueString).field.string;
         }
+        const { field, aggregateOperator } = this.parseGroupField(groupFieldString);
+        const value = parsePivotFormulaFieldValue(field, groupValueString);
         const undef = _t("(Undefined)");
-        const fieldDesc = this._getFieldOfGroupBy(field);
-        if (!fieldDesc) {
-            return undef;
+        if (this._isDateField(field)) {
+            return formatDate(aggregateOperator, value);
         }
-        if (this._isDateField(field.split(":")[0])) {
-            return formatDate(field, value);
-        }
-        if (fieldDesc.relation) {
-            if (value === "false") {
+        if (field.relation) {
+            if (value === false) {
                 return undef;
             }
-            const label = this.metadataRepository.getRecordDisplayName(fieldDesc.relation, toNumber(value));
+            const label = this.metadataRepository.getRecordDisplayName(field.relation, value);
             if (label === undefined) {
                 return undef;
             }
             return label;
         }
-        const label = this.metadataRepository.getLabel(this.metaData.resModel, field.split(":")[0], value);
+        const label = this.metadataRepository.getLabel(this.metaData.resModel, field.name, value);
         if (label === undefined) {
             return undef;
         }
@@ -334,16 +407,16 @@ export class SpreadsheetPivotModel extends PivotModel {
      * @override
      */
     async _loadData(config, prune = true) {
+        this.parseGroupField = parseGroupField.bind(null, this.metaData.fields);
         await super._loadData(config, prune);
 
         const metadataRepository = this.metadataRepository;
-        const _getFieldOfGroupBy = this._getFieldOfGroupBy.bind(this);
 
-        function registerLabels(tree, groupBys) {
+        const registerLabels = (tree, groupBys) => {
             const group = tree.root;
             if (!tree.directSubTrees.size) {
                 for (let i = 0; i < group.values.length; i++) {
-                    const field = _getFieldOfGroupBy(groupBys[i]);
+                    const { field } = this.parseGroupField(groupBys[i]);
                     if (field.relation) {
                         metadataRepository.addRecordDisplayName(field.relation, group.values[i], group.labels[i]);
                     } else {
@@ -363,21 +436,12 @@ export class SpreadsheetPivotModel extends PivotModel {
     /**
      * Determines if the given field is a date or datetime field.
      *
-     * @param {string} fieldName Technical name of the field
+     * @param {Object} field Field description
      * @private
      * @returns {boolean} True if the type of the field is date or datetime
      */
-     _isDateField(fieldName) {
-        const field = this.metaData.fields[fieldName];
-        return field && ["date", "datetime"].includes(field.type);
-    }
-
-    /**
-     * Get the field corresponding to the given group by
-     */
-    _getFieldOfGroupBy(groupBy) {
-        const fieldName = groupBy.split(":")[0];
-        return this.metaData.fields[fieldName];
+    _isDateField(field) {
+        return ["date", "datetime"].includes(field.type);
     }
 
     /**
@@ -393,11 +457,10 @@ export class SpreadsheetPivotModel extends PivotModel {
      * @override
      */
     _sanitizeValue(value, groupBy) {
-        let [fieldName, group] = groupBy.split(":");
-        group = group || "month";
-        if (this._isDateField(fieldName)) {
-            const fIn = formats[group]["in"];
-            const fOut = formats[group]["out"];
+        const { aggregateOperator, field } = this.parseGroupField(groupBy);
+        if (this._isDateField(field)) {
+            const fIn = formats[aggregateOperator]["in"];
+            const fOut = formats[aggregateOperator]["out"];
             // eslint-disable-next-line no-undef
             const date = moment(value, fIn);
             return date.isValid() ? date.format(fOut) : false;
@@ -409,16 +472,20 @@ export class SpreadsheetPivotModel extends PivotModel {
      * Check if the given field is used as col group by
      */
     _isCol(field) {
-        const fieldName = field.split(":")[0];
-        return this.metaData.fullColGroupBys.map((x) => x.split(":")[0]).includes(fieldName);
+        return this.metaData.fullColGroupBys
+            .map(this.parseGroupField)
+            .map(({ field }) => field.name)
+            .includes(field.name);
     }
 
     /**
      * Check if the given field is used as row group by
      */
     _isRow(field) {
-        const fieldName = field.split(":")[0];
-        return this.metaData.fullRowGroupBys.map((x) => x.split(":")[0]).includes(fieldName);
+        return this.metaData.fullRowGroupBys
+            .map(this.parseGroupField)
+            .map(({ field }) => field.name)
+            .includes(field.name);
     }
 
     /**
@@ -429,25 +496,10 @@ export class SpreadsheetPivotModel extends PivotModel {
         const cols = [];
         let i = 0;
         while (i < domain.length) {
-            const field = toString(domain[i]);
-            const fieldDesc = this._getFieldOfGroupBy(field);
-            let value;
-            switch (fieldDesc.type) {
-                case "date":
-                case "datetime":
-                case "char":
-                    value = toString(domain[i + 1]);
-                    break;
-                case "boolean":
-                    value = toBoolean(domain[i + 1]);
-                    break;
-                default:
-                    if (domain[i + 1] === "false") {
-                        value = false;
-                    } else {
-                        value = toNumber(domain[i + 1]);
-                    }
-            }
+            const groupFieldString = domain[i];
+            const groupValueString = domain[i + 1];
+            const { field } = this.parseGroupField(groupFieldString);
+            const value = parsePivotFormulaFieldValue(field, groupValueString)
             if (this._isCol(field)) {
                 cols.push(value);
             } else if (this._isRow(field)) {

@@ -34,7 +34,7 @@ QUnit.module("Burger Menu Enterprise", {
 });
 
 QUnit.test("Burger Menu on home menu", async (assert) => {
-    assert.expect(7);
+    assert.expect(5);
 
     await createEnterpriseWebClient({ serverData });
     assert.containsNone(document.body, ".o_burger_menu");
@@ -43,8 +43,6 @@ QUnit.test("Burger Menu on home menu", async (assert) => {
     await click(document.body, ".o_mobile_menu_toggle");
     assert.containsOnce(document.body, ".o_burger_menu");
     assert.containsOnce(document.body, ".o_user_menu_mobile");
-    assert.containsOnce(document.body, ".o_burger_menu_user");
-    assert.containsNone(document.body, ".o_burger_menu_app");
     await click(document.body, ".o_burger_menu_close");
     assert.containsNone(document.body, ".o_burger_menu");
 });
@@ -77,7 +75,7 @@ QUnit.test("Burger Menu on home menu over an App", async (assert) => {
     assert.containsOnce(document.body, ".o_burger_menu");
     assert.containsNone(
         document.body,
-        ".o_burger_menu .o_burger_menu_app .o_menu_sections .dropdown-item"
+        ".o_burger_menu nav.o_burger_menu_content li"
     );
     assert.doesNotHaveClass(
         document.body.querySelector(".o_burger_menu_content"),

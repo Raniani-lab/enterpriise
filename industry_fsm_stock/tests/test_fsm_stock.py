@@ -549,3 +549,53 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.task.with_user(self.project_user).action_fsm_validate()
         self.assertEqual(self.task.sale_order_id.delivery_count, 3)
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done', 'done'], "Pickings should be set as done")
+
+    def test_child_location_dispatching_serial_number(self):
+        """
+        1. Create a child location
+        2. Create a product and set quantity for the child location
+        3. Add to the SO-fsm, one unit of the product
+        4. Validate the task
+        5. Verify that the location_id of the move-line is the child location
+        """
+        parent_location = self.warehouse.lot_stock_id
+        child_location = self.env['stock.location'].create({
+                'name': 'Shell',
+                'location_id': parent_location.id,
+        })
+        product = self.env['product.product'].create({
+            'name': 'Cereal',
+            'type': 'product',
+            'tracking': 'serial',
+        })
+        sn1 = self.env['stock.lot'].create({
+            'name': 'SN0001',
+            'product_id': product.id,
+            'company_id': self.env.company.id,
+        })
+        task_sn = self.env['project.task'].create({
+            'name': 'Fsm task cereal',
+            'user_ids': [(4, self.project_user.id)],
+            'project_id': self.fsm_project.id,
+        })
+        self.env['stock.quant']._update_available_quantity(product, child_location, quantity=1, lot_id=sn1)
+        # create so field service
+        task_sn.write({'partner_id': self.partner_1.id})
+        task_sn.with_user(self.project_user)._fsm_ensure_sale_order()
+        task_sn.sale_order_id.action_confirm()
+        # add product
+        wizard = product.with_context({'fsm_task_id': task_sn.id}).action_assign_serial()
+        wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
+        wizard_id.write({
+            'tracking_line_ids': [
+                (0, 0, {
+                    'product_id': product.id,
+                    'lot_id': sn1.id,
+                })
+            ]
+        })
+        wizard_id.generate_lot()
+        # task: mark as done
+        task_sn.with_user(self.project_user).action_fsm_validate()
+
+        self.assertEqual(task_sn.sale_order_id.order_line.move_ids.move_line_ids.location_id, child_location)

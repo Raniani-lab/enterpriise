@@ -1,0 +1,359 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_pe_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-08 15:21+0000\n"
+"PO-Revision-Date: 2022-09-08 15:21+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_L_PA_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_PA
+msgid "Accounts payable"
+msgstr "Cuentas por pagar"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_R_AC_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_R_AC
+msgid "Accumulated Results"
+msgstr "Resultados acumulados"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_B_4_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_B_4
+msgid "Administrative expenses"
+msgstr "Gastos de administración"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_U_CY_A_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_U_CY_A
+msgid "Allocated Profit and Loss"
+msgstr "Pérdidas y ganancias asignadas"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_TOTAL_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_TOTAL
+msgid "Assets"
+msgstr "Activos"
+
+#. module: l10n_pe_reports
+#: model:account.report.column,name:l10n_pe_reports.account_financial_report_bs_column
+#: model:account.report.column,name:l10n_pe_reports.account_financial_report_pnl_column
+msgid "Balance"
+msgstr "Balance"
+
+#. module: l10n_pe_reports
+#: model:account.report,name:l10n_pe_reports.account_financial_report_bs
+msgid "Balance sheet"
+msgstr "Balance"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_NC_BIO_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_NC_BIO
+msgid "Biological assets"
+msgstr "Activos biológicos"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_CA_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_CA
+msgid "Capital"
+msgstr "Capital"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_C_CASH_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_C_CASH
+msgid "Cash and cash equivalents"
+msgstr "Efectivo y otros medios líquidos equivalentes"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_C_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_C
+msgid "Current Assets"
+msgstr "Activos circulantes"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_L_NC_DEF_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_NC_DEF
+msgid "Deferred tax on liabilities and assets"
+msgstr "Pasivos y activos por impuestos"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E
+msgid "Equity"
+msgstr "Patrimonio neto"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_EL_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_EL
+msgid "Equity and Liabilities"
+msgstr "Patrimonio y Pasivos"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_C_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_C
+msgid "Exchange difference, net"
+msgstr "Diferencia de cambio, neta"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_C_FI_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_C_FI
+msgid "Financial Investments"
+msgstr "Inversiones financieras"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_NC_FIN_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_NC_FIN
+msgid "Financial assets"
+msgstr "Activos financieros"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_B_2_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_B_2
+msgid "Financial expenses"
+msgstr "Gastos financieros"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_B_1_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_B_1
+msgid "Financial income"
+msgstr "Ingresos financieros"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_L_FI_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_FI
+msgid "Financial liabilities"
+msgstr "Pasivos financieros"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_A_4_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_A_4
+msgid "Gross profit"
+msgstr "Margen bruto"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_A_1_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_A_1
+msgid "Income from ordinary activities"
+msgstr "Ingresos ordinarios"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_D_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_D
+msgid "Income tax expense"
+msgstr "Gasto en impuesto sobre la renta"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_NC_INT_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_NC_INT
+msgid "Intangible assets"
+msgstr "Activos intangibles"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_C_INV_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_C_INV
+msgid "Inventories"
+msgstr "Inventarios"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_NC_INP_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_NC_INP
+msgid "Investment properties"
+msgstr "Propiedades de inversión"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_L_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L
+msgid "Liabilities"
+msgstr "Pasivo"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_F_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_F
+msgid "Net Profit"
+msgstr "Resultado del periodo"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_NC_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_NC
+msgid "Non-Current Assets"
+msgstr "Activos no corrientes"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_L_NC_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_NC
+msgid "Non-Current Liabilities"
+msgstr "Pasivos no corrientes"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_E_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_E
+msgid "Operating Expenses"
+msgstr "Los gastos de operación"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_A_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_A
+msgid "Operating Income"
+msgstr "Ingresos de operación"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_B_6_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_B_6
+msgid "Operating profit"
+msgstr "Beneficio operativo"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_B_5_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_B_5
+msgid "Other operating expenses"
+msgstr "Otros gastos operacionales"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_A_5_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_A_5
+msgid "Other operating income"
+msgstr "Otro ingreso operativo"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_B_7_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_B_7
+msgid "Other revenues and expenses"
+msgstr "Otros ingresos y gastos"
+
+#. module: l10n_pe_reports
+#: model:account.report,name:l10n_pe_reports.account_financial_report_pnl
+#: model:ir.actions.client,name:l10n_pe_reports.action_account_report_pe_pnl
+#: model:ir.ui.menu,name:l10n_pe_reports.account_financial_html_report_menu_5
+msgid "Profit and Loss"
+msgstr "Estado de resultados"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_U_CY_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_U_CY
+msgid "Profit and Loss for the current year"
+msgstr "Pérdidas y ganancias del año en curso"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_UE_PY_balance
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_UE_PY_balance_codes
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_UE_PY
+msgid "Profit and Loss for the previous year"
+msgstr "Pérdidas y ganancias del año anterior"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_NC_PPE_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_NC_PPE
+msgid "Property, plant and equipment"
+msgstr "Propiedades, planta y equipo"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_PROV_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_PROV
+msgid "Provisions"
+msgstr "Provisiones"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_L_PROV_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_PROV
+msgid "Provisions for liabilities"
+msgstr "Provisiones para pasivos"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_L_NC_PROV_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_NC_PROV
+msgid "Provisions for non-current liabilities"
+msgstr "Provisiones para pasivos no corrientes"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_L_RPA_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_RPA
+msgid "Remuneration payable"
+msgstr "Remuneración a pagar"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_C_2_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_C_2
+msgid "Result before taxes"
+msgstr "Resultado antes de impuestos"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_UE_RNR_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_UE_RNR
+msgid "Results registered but not yet realized"
+msgstr "Resultados registrados pero aún no realizados"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_R_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_R
+msgid "Retained Earnings"
+msgstr "Ganancias retenidas"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_R_REF_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_R_REF
+msgid "Revaluation funds"
+msgstr "Fondos de revalorización"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_B_3_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_B_3
+msgid "Sales and distribution expenses"
+msgstr "Gastos de distribución"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_A_3_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_A_3
+msgid "Sales costs"
+msgstr "Costo de las ventas"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_R_SCA_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_R_SCA
+msgid "Share Capital"
+msgstr "Capital social"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_R_SPF_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_R_SPF
+msgid "Share premium funds"
+msgstr "Fondos de primas de acciones"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_pnl_A_2_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_A_2
+msgid "Sublease income and other"
+msgstr "Ingresos por subarrendamiento y otros"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_L_TAX_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_TAX
+msgid "Taxes and contributions payable"
+msgstr "Impuestos y contribuciones a pagar"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_A_C_RE_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_C_RE
+msgid "Trade and other receivables"
+msgstr "Deudores comerciales y otras cuentas a cobrar"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_U_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_U
+msgid "Unallocated Earnings"
+msgstr "Ganancias no asignadas"
+
+#. module: l10n_pe_reports
+#: model:account.report.expression,report_line_name:l10n_pe_reports.account_financial_report_bs_E_U_CY_U_balance
+#: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_U_CY_U
+msgid "Unallocated Profit and Loss"
+msgstr "Pérdidas y ganancias no asignadas"

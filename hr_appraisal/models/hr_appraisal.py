@@ -70,7 +70,7 @@ class HrAppraisal(models.Model):
     is_appraisal_manager = fields.Boolean(compute='_compute_user_manager_rights')
     employee_autocomplete_ids = fields.Many2many('hr.employee', compute='_compute_user_manager_rights')
     waiting_feedback = fields.Boolean(
-        string="Waiting Feedback from Employee/Managers", compute='_compute_waiting_feedback', tracking=True)
+        string="Waiting Feedback from Employee/Managers", compute='_compute_waiting_feedback')
     employee_feedback = fields.Html(compute='_compute_employee_feedback', store=True, readonly=False)
     show_employee_feedback_full = fields.Boolean(compute='_compute_show_employee_feedback_full')
     manager_feedback = fields.Html(compute='_compute_manager_feedback', store=True, readonly=False)
@@ -83,6 +83,7 @@ class HrAppraisal(models.Model):
     note = fields.Html(string="Private Note", help="The content of this note is not visible by the Employee.")
     appraisal_plan_posted = fields.Boolean()
 
+    @api.depends_context('uid')
     @api.depends('employee_id', 'manager_ids')
     def _compute_buttons_display(self):
         new_appraisals = self.filtered(lambda a: a.state == 'new')
@@ -279,12 +280,16 @@ class HrAppraisal(models.Model):
         if {'manager_feedback', 'manager_feedback_published'} & fields:
             if not all(a.can_see_manager_publish for a in self):
                 raise UserError(_('The manager feedback cannot be changed by an employee.'))
-        if {'employee_feedback', 'employee_feedback_published'} & fields:
+        if {'employee_feedback'} & fields:
             if not all(a.can_see_employee_publish for a in self):
                 raise UserError(_('The employee feedback cannot be changed by managers.'))
 
     def write(self, vals):
         self._check_access(vals.keys())
+        force_published = self.env['hr.appraisal']
+        if vals.get('employee_feedback_published'):
+            user_employees = self.env.user.employee_ids
+            force_published = self.filtered(lambda a: (a.is_implicit_manager or a.is_appraisal_manager) and not (a.employee_feedback_published or a.employee_id in user_employees))
         if 'state' in vals and vals['state'] == 'pending':
             self.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
             self.send_appraisal()
@@ -308,6 +313,10 @@ class HrAppraisal(models.Model):
         if 'manager_ids' in vals:
             previous_managers = {x: y for x, y in self.mapped(lambda a: (a.id, a.manager_ids))}
         result = super(HrAppraisal, self).write(vals)
+        if force_published:
+            for appraisal in force_published:
+                role = _('Manager') if self.env.user.employee_id in appraisal.manager_ids else _('Appraisal Officer')
+                appraisal.message_post(body=_('%(user)s decided, as %(role)s, to publish the employee\'s feedback', user=self.env.user.name, role=role))
         if 'employee_id' in vals or 'date_close' in vals:
             self.sudo()._update_previous_appraisal()
         if 'manager_ids' in vals:

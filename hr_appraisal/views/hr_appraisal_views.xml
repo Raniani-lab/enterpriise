@@ -82,82 +82,27 @@
                 </group>
                 <notebook>
                     <page string="Appraisal" name="appraisal">
-                        <div attrs="{'invisible': [('show_employee_feedback_full', '=', False)]}">
-                            <div class="o_appraisal_feedback row">
-                                <div class="o_appraisal_feedback_title col-12 d-flex justify-content-between">
-                                    <h3>Employee's Feedback</h3>
-                                    <div>
-                                        <span class="text-right" attrs="{'invisible': ['|', ('employee_feedback_published', '=', True), ('can_see_employee_publish', '=', False)]}">Not Visible to Manager</span>
-                                        <span class="text-right" attrs="{'invisible': ['|', ('employee_feedback_published', '=', False), ('can_see_employee_publish', '=', False)]}">Visible to Manager</span>
-                                        <field name="employee_feedback_published" nolabel="1"  class="ml-2 mr-0"  widget="boolean_toggle" attrs="{'invisible': [('can_see_employee_publish', '=', False)]}"/>
-                                    </div>
-                                </div>
-                                <div class="o_appraisal_input col-12">
-                                    <field name="employee_feedback" class="o_appraisal_template" nolabel="1" attrs="{
-                                        'invisible': [
-                                            '&amp;',
-                                            ('employee_feedback_published', '=', False),
-                                            ('can_see_employee_publish', '=', False)
-                                        ],
-                                        'readonly': [
-                                            '|',
-                                            ('state', 'not in', ['new', 'pending']),
-                                            ('can_see_employee_publish', '=', False)]}"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div attrs="{'invisible': [('show_manager_feedback_full', '=', False)]}">
-                            <div class="o_appraisal_feedback row">
-                                <div class="o_appraisal_feedback_title col-12 d-flex justify-content-between">
-                                    <h3>Manager's Feedback</h3>
-                                    <div>
-                                        <span class="text-right" attrs="{'invisible': ['|', '|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', False), ('state', '=', 'done')]}">Not Visible to Employee</span>
-                                        <span class="text-right" attrs="{'invisible': ['|', '|', ('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False), ('state', '=', 'done')]}">Visible to Employee</span>
-                                        <field name="manager_feedback_published" nolabel="1" widget="boolean_toggle" class="ml-2 mr-0" attrs="{'invisible': ['|', ('can_see_manager_publish', '=', False), ('state', '=', 'done')]}"/>
-                                    </div>
-                                </div>
-                                <div class="o_appraisal_input col-12">
-                                    <field name="manager_feedback" class="o_appraisal_template" nolabel="1" attrs="{
-                                        'invisible': [
-                                            '&amp;',
-                                            ('manager_feedback_published', '=', False),
-                                            ('can_see_manager_publish', '=', False)
-                                        ],
-                                        'readonly': [
-                                            '|',
-                                            ('can_see_manager_publish', '=', False),
-                                            ('state', 'not in', ['new', 'pending'])]}"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="o_appraisal_both_feedback d-flex flex-column flex-md-row flex-wrap align-items-stretch" 
-                                attrs="{'invisible':['|', ('show_employee_feedback_full', '=', True), ('show_manager_feedback_full', '=', True)]}">
+                        <div class="o_appraisal_both_feedback d-flex flex-column flex-md-row flex-wrap align-items-stretch" >
                             <div class="o_appraisal_feedback col-12 col-md-6">
                                 <div class="row">
                                     <div class="o_appraisal_feedback_title col-12 d-flex justify-content-between">
                                         <h3>Employee's Feedback</h3>
-                                        <div class="h-100">
-                                            <span class="text-right" attrs="{'invisible': ['|', '|', ('employee_feedback_published', '=', True), ('can_see_employee_publish', '=', False), ('state', '=', 'done')]}">Not Visible to Manager</span>
-                                            <span class="text-right" attrs="{'invisible': ['|', '|', ('employee_feedback_published', '=', False), ('can_see_employee_publish', '=', False), ('state', '=', 'done')]}">Visible to Manager</span>
-                                            <field name="employee_feedback_published" nolabel="1" widget="boolean_toggle" class="ml-2 mr-0" attrs="{'invisible': ['|', ('can_see_employee_publish', '=', False), ('state', '=', 'done')]}"/>
+                                        <div class="h-100" attrs="{'invisible': [('state', '=', 'done')]}">
+                                            <span class="text-right" attrs="{'invisible': [('employee_feedback_published', '=', True)]}">Not Visible to Manager</span>
+                                            <span class="text-right" attrs="{'invisible': [('employee_feedback_published', '=', False)]}">Visible to Manager</span>
+                                            <field name="employee_feedback_published" nolabel="1" widget="boolean_toggle_confirm" class="ml-2 mr-0"/>
                                         </div>
                                     </div>
                                     <div class="col-12 o_appraisal_input">
-                                        <span class="o_appraisal_overlay o_highlight" attrs="{'invisible': ['|', ('employee_feedback_published', '=', True), ('employee_feedback_template', '=', False)]}">
+                                        <span class="o_appraisal_overlay o_highlight" attrs="{'invisible': ['|', '|', ('can_see_employee_publish', '=', True), ('employee_feedback_published', '=', True), ('employee_feedback_template', '=', False)]}">
                                             <div>Self Assessment will show here</div>
                                             <div>once published</div>
                                         </span>
-                                        <field name="employee_feedback" nolabel="1" class="o_appraisal_template" attrs="{
-                                            'invisible': [('employee_feedback_published', '=', False)],
-                                            'readonly': [
-                                            '|',
-                                            ('can_see_employee_publish', '=', False),
-                                            ('state', 'not in', ['new', 'pending'])]}"/>
-                                        <field name="employee_feedback_template" attrs="{
-                                            'invisible': [('employee_feedback_published', '=', True)]}"
-                                            class="o_appraisal_blur"/>
+                                        <field name="employee_feedback" class="o_appraisal_template" nolabel="1" attrs="{
+                                            'invisible': [('employee_feedback_published', '=', False), ('can_see_employee_publish', '=', False)],
+                                            'readonly': ['|', ('state', 'not in', ['new', 'pending']), ('can_see_employee_publish', '=', False)]}"/>
+                                        <field name="employee_feedback_template" class="o_appraisal_blur"
+                                            attrs="{'invisible': ['|', ('employee_feedback_published', '=', True), ('can_see_employee_publish', '=', True)]}"/>
                                     </div>
                                 </div>
                             </div>
@@ -165,26 +110,22 @@
                                 <div class="row">
                                     <div class="o_appraisal_feedback_title col-12 d-flex justify-content-between">
                                         <h3>Manager's Feedback</h3>
-                                        <div class="h-100">
-                                            <span class="text-right" attrs="{'invisible': ['|', '|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', False), ('state', '=', 'done')]}">Not Visible to Employee</span>
-                                            <span class="text-right" attrs="{'invisible': ['|', '|', ('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False), ('state', '=', 'done')]}">Visible to Employee</span>
-                                            <field name="manager_feedback_published" nolabel="1" widget="boolean_toggle" class="ml-2 mr-0" attrs="{'invisible': ['|', ('can_see_manager_publish', '=', False), ('state', '=', 'done')]}"/>
+                                        <div class="h-100" attrs="{'invisible': [('state', '=', 'done')]}">
+                                            <span class="text-right" attrs="{'invisible': ['|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', False)]}">Not Visible to Employee</span>
+                                            <span class="text-right" attrs="{'invisible': ['|', ('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False)]}">Visible to Employee</span>
+                                            <field name="manager_feedback_published" nolabel="1" widget="boolean_toggle" class="ml-2 mr-0" attrs="{'invisible': [('can_see_manager_publish', '=', False)]}"/>
                                         </div>
                                     </div>
                                     <div class="col-12 o_appraisal_input">
-                                        <span class="o_appraisal_overlay" attrs="{'invisible': ['|', ('manager_feedback_published', '=', True), ('manager_feedback_template', '=', False)]}">
+                                        <span class="o_appraisal_overlay" attrs="{'invisible': ['|', '|', ('can_see_manager_publish', '=', True), ('manager_feedback_published', '=', True), ('manager_feedback_template', '=', False)]}">
                                             <div>Manager Assessment will show here</div>
                                             <div>once published</div>
                                         </span>
-                                        <field name="manager_feedback" nolabel="1" class="o_appraisal_template" attrs="{
-                                            'invisible': [('manager_feedback_published', '=', False)],
-                                            'readonly': [
-                                            '|',
-                                            ('can_see_manager_publish', '=', False),
-                                            ('state', 'not in', ['new', 'pending'])]}"/>
-                                        <field name="manager_feedback_template" attrs="{
-                                            'invisible': [('manager_feedback_published', '=', True)]}"
-                                            class="o_appraisal_blur"/>
+                                        <field name="manager_feedback" class="o_appraisal_template" nolabel="1"
+                                            attrs="{'invisible': [('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False)],
+                                                    'readonly': ['|', ('can_see_manager_publish', '=', False), ('state', 'not in', ['new', 'pending'])]}"/>
+                                        <field name="manager_feedback_template" class="o_appraisal_blur"
+                                            attrs="{'invisible': ['|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', True)]}"/>
                                     </div>
                                 </div>
                             </div>

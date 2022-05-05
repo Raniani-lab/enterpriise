@@ -11,6 +11,11 @@ QUnit.module('documents', {}, function () {
     QUnit.test('activity menu widget: documents request button', async function (assert) {
         assert.expect(6);
 
+        const actionServiceInterceptor = ev => {
+                const { action } = ev.data;
+                assert.strictEqual(action, 'documents.action_request_form',
+                    "should open the document request form");
+        };
         const { widget } = await start({
             async mockRPC(route, args) {
                 if (args.method === 'systray_get_activities') {
@@ -19,10 +24,7 @@ QUnit.module('documents', {}, function () {
                 return this._super.apply(this, arguments);
             },
             intercepts: {
-                do_action: function (ev) {
-                    assert.strictEqual(ev.data.action, 'documents.action_request_form',
-                        "should open the document request form");
-                },
+                do_action: actionServiceInterceptor,
             },
             session: {
                 async user_has_group(group) {

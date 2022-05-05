@@ -2103,22 +2103,22 @@ QUnit.module('documents_kanban_tests.js', {
         assert.expect(3);
 
         const bus = new Bus();
-        bus.on('do-action', null, payload => {
-            assert.deepEqual(payload.action, {
-                context: {
-                    default_res_id: 1,
-                    default_res_model: 'documents.document'
-                },
-                name: "Schedule Activity",
-                res_id: false,
-                res_model: 'mail.activity',
-                target: 'new',
-                type: 'ir.actions.act_window',
-                view_mode: 'form',
-                views: [[false, 'form']]
-                },
-                "the activity button should trigger do_action with the correct args"
-            );
+        bus.on('do-action', null, ({ action }) => {
+                assert.deepEqual(action, {
+                    context: {
+                        default_res_id: 1,
+                        default_res_model: 'documents.document'
+                    },
+                    name: "Schedule Activity",
+                    res_id: false,
+                    res_model: 'mail.activity',
+                    target: 'new',
+                    type: 'ir.actions.act_window',
+                    view_mode: 'form',
+                    views: [[false, 'form']]
+                    },
+                    "the activity button should trigger do_action with the correct args"
+                );
         });
 
         var kanban = await createDocumentsView({

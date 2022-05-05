@@ -109,7 +109,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         "can perform actions by swiping to the right [REQUIRE TOUCHEVENT]",
         async (assert) => {
             assert.expect(5);
-            const execRegisteredTimeouts = mockTimeout();
+            const { execRegisteredTimeouts } = mockTimeout();
             class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
@@ -210,7 +210,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         "can perform actions by swiping in both directions [REQUIRE TOUCHEVENT]",
         async (assert) => {
             assert.expect(7);
-            const execRegisteredTimeouts = mockTimeout();
+            const { execRegisteredTimeouts } = mockTimeout();
             class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
@@ -347,7 +347,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         "invert the direction of swipes when language is rtl [REQUIRE TOUCHEVENT]",
         async (assert) => {
             assert.expect(7);
-            const execRegisteredTimeouts = mockTimeout();
+            const { execRegisteredTimeouts } = mockTimeout();
             class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
@@ -486,7 +486,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         "swiping when the swiper contains scrollable areas [REQUIRE TOUCHEVENT]",
         async (assert) => {
             assert.expect(9);
-            const execRegisteredTimeouts = mockTimeout();
+            const { execRegisteredTimeouts } = mockTimeout();
             class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");
@@ -687,7 +687,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
         "preventing swipe on scrollable areas when language is rtl [REQUIRE TOUCHEVENT]",
         async (assert) => {
             assert.expect(8);
-            const execRegisteredTimeouts = mockTimeout();
+            const { execRegisteredTimeouts } = mockTimeout();
             class Parent extends Component {
                 onRightSwipe() {
                     assert.step("onRightSwipe");

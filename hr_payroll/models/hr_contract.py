@@ -39,9 +39,9 @@ class HrContract(models.Model):
     @api.depends('time_credit', 'resource_calendar_id.hours_per_week', 'standard_calendar_id.hours_per_week')
     def _compute_work_time_rate(self):
         for contract in self:
-            if contract.time_credit:
+            if contract.time_credit and contract.structure_type_id.default_resource_calendar_id:
                 hours_per_week = contract.resource_calendar_id.hours_per_week
-                hours_per_week_ref = contract.standard_calendar_id.hours_per_week
+                hours_per_week_ref = contract.structure_type_id.default_resource_calendar_id.hours_per_week
             else:
                 hours_per_week = contract.resource_calendar_id.hours_per_week
                 hours_per_week_ref = contract.company_id.resource_calendar_id.hours_per_week

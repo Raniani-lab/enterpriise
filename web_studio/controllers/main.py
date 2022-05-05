@@ -150,7 +150,7 @@ class WebStudioController(http.Controller):
 
     def _get_studio_action_translations(self, model, **kwargs):
         """ Open a view for translating the field(s) of the record (model, id). """
-        domain = ['|', ('name', '=', model.model), ('name', 'ilike', model.model + ',')]
+        domains = [['|', ('name', '=', model.model), ('name', 'ilike', model.model + ',')]]
         view_domains = [[('model', '=', model.model)]]
 
         # search report views related to model
@@ -165,7 +165,7 @@ class WebStudioController(http.Controller):
 
         # search view + its inheritancies + report views
         views = request.env['ir.ui.view'].search(expression.OR(view_domains))
-        domain = ['|', '&', ('name', '=', 'ir.ui.view,arch_db'), ('res_id', 'in', views.ids)] + domain
+        domains.append(['&', ('name', '=', 'ir.ui.view,arch_db'), ('res_id', 'in', views.ids)])
 
         def make_domain(fld, rec):
             name = "%s,%s" % (fld.model_name, fld.name)
@@ -181,7 +181,7 @@ class WebStudioController(http.Controller):
                     while fld.related:
                         rec, fld = fld.traverse_related(rec)
                     if rec:
-                        return ['|'] + domain + make_domain(fld, rec)
+                        return make_domain(fld, rec)
                 except AccessError:
                     return []
 
@@ -192,13 +192,14 @@ class WebStudioController(http.Controller):
         # insert missing translations of views
         for view in views:
             for name, fld in view._fields.items():
-                domain += insert_missing(fld, view)
+                domains.append(insert_missing(fld, view))
 
         # insert missing translations of model, and extend domain for related fields
         record = request.env[model.model].search([], limit=1)
         if record:
             for name, fld in record._fields.items():
-                domain += insert_missing(fld, record)
+                domains.append(insert_missing(fld, record))
+        domain = expression.OR(domains)
 
         action = {
             'name': _('Translate view'),

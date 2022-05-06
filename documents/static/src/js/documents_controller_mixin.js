@@ -5,6 +5,8 @@ const DocumentsInspector = require('documents.DocumentsInspector');
 const DocumentViewer = require('documents.DocumentViewer');
 const { computeMultiSelection } = require('documents.utils');
 
+// ensure the component is registered beforehand.
+require('@mail/components/chatter_container/chatter_container');
 const { getMessagingComponent } = require('@mail/utils/messaging_component');
 
 const { _t, qweb } = require('web.core');

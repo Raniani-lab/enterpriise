@@ -258,10 +258,10 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
                     )
 
         # Set a closing date on the current contract
-        if self.date_start == self.contract_id.date_start:
-            self.contract_id.date_end = self.date_start
-        else:
-            self.contract_id.date_end = self.date_start + timedelta(days=-1)
+        contract_date_end = self.date_start
+        if self.date_start != self.contract_id.date_start:
+            contract_date_end -= timedelta(days=1)
+        self.with_context(close_contract=False).contract_id.date_end = contract_date_end
 
         # When changing the schedule from the contract history we can just reload the view instead of going on to a separate view
         if self.env.context.get('from_history', False):

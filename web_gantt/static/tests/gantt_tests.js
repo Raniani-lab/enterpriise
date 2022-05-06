@@ -4034,6 +4034,27 @@ document.createElement("a").classList.contains
         gantt.destroy();
     });
 
+    QUnit.test('permanent_group_by attribute', async function (assert) {
+        assert.expect(2);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt string="Tasks" date_start="start" date_stop="stop" permanent_group_by="user_id" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.containsN(gantt, '.o_gantt_row', 2,
+            "there should be 2 rows");
+        assert.strictEqual(gantt.$('.o_gantt_row:last .o_gantt_row_title').text().trim(), 'User 2',
+            'should be grouped by user');
+
+        gantt.destroy();
+    });
+
     QUnit.test('default_group_by attribute with 2 fields', async function (assert) {
         assert.expect(2);
 

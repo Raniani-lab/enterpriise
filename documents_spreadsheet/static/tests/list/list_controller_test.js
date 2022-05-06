@@ -578,6 +578,16 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         assert.ok(root.isVisible(env));
     });
 
+    QUnit.test("See records is not visible if the formula is in error", async function (assert) {
+        const { env, model } = await createSpreadsheetFromList();
+        selectCell(model, "B2");
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
+        assert.ok(root.isVisible(env));
+        setCellContent(model, "B2", getCellFormula(model, "B2").replace( `LIST("1`, `LIST("5)`)); //Invalid id
+        assert.ok(getCell(model, "B2").evaluated.error);
+        assert.notOk(root.isVisible(env));
+    });
+
     QUnit.test("Update the list title from the side panel", async function (assert) {
         assert.expect(1);
 

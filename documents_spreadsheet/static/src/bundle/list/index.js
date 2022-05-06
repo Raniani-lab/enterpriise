@@ -70,6 +70,7 @@ cellMenuRegistry
             return (
                 cell &&
                 cell.evaluated.value !== "" &&
+                !cell.evaluated.error &&
                 getNumberOfListFormulas(cell.content) === 1
             );
         },

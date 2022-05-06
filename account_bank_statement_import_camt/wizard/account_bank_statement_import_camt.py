@@ -651,7 +651,8 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
 
     entry_details = nodes[0]
     entry = nodes[1] if len(nodes) > 1 else nodes[0]
-    entry_amount = get_value_and_currency_name(entry, _amount_charges_getters, target_currency=journal_currency.name)[0]
+    journal_currency_name = journal_currency.name if journal_currency else None
+    entry_amount = get_value_and_currency_name(entry, _amount_charges_getters, target_currency=journal_currency_name)[0]
 
     charges = get_charges(entry_details, entry)
     getters = _amount_charges_getters if charges else _amount_getters
@@ -660,22 +661,22 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
     if not amount:
         amount, amount_currency_name = get_value_and_currency_name(entry, getters)
 
-    if not journal_currency or amount_currency_name == journal_currency.name:
+    if not journal_currency or amount_currency_name == journal_currency_name:
         rate = 1.0
     else:
-        rate = get_rate(entry_details, entry, target_currency=journal_currency.name)
+        rate = get_rate(entry_details, entry, target_currency=journal_currency_name)
         if not rate:
-            amount, amount_currency_name = get_value_and_currency_name(entry_details, _amount_getters, target_currency=journal_currency.name)
+            amount, amount_currency_name = get_value_and_currency_name(entry_details, _amount_getters, target_currency=journal_currency_name)
             if not amount:
-                amount, amount_currency_name = get_value_and_currency_name(entry, _amount_getters, target_currency=journal_currency.name)
-            if amount_currency_name == journal_currency.name:
+                amount, amount_currency_name = get_value_and_currency_name(entry, _amount_getters, target_currency=journal_currency_name)
+            if amount_currency_name == journal_currency_name:
                 rate = 1.0
         if not rate:
             raise ValidationError(_("No exchange rate was found to convert an amount into the currency of the journal"))
 
     sign = 1 if _get_credit_debit_indicator(*nodes, namespaces=namespaces) == "CRDT" else -1
     total_amount, total_amount_currency = get_value_and_currency_name(entry, _total_amount_getters)
-    if total_amount and total_amount_currency == journal_currency.name:
+    if total_amount and (not journal_currency or total_amount_currency == journal_currency_name):
         if total_amount == entry_amount:
             return sign * amount * rate
     else:

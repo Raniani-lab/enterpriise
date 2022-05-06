@@ -365,6 +365,8 @@ class AccountEdiFormat(models.Model):
 
             # == Chatter ==
             invoice.with_context(no_new_invoice=True).message_post(body=response['message'], attachments=response['attachments'])
+        elif response.get('blocking_level') == 'error':
+            invoice.l10n_co_edi_transaction = False
 
         return response
 

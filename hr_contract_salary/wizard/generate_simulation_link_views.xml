@@ -25,7 +25,13 @@
                 </group>
                 <group>
                     <field name="email_to" invisible="True"/>
-                    <field name="url" widget="CopyClipboardURL"/>
+                    <field name="url" widget="CopyClipboardURL"
+                            attrs="{'invisible':[('contract_id', '=', False)]}"/>
+                    <span  class="alert alert-warning"
+                            role="alert" colspan="2"
+                            attrs="{'invisible':[('contract_id', '!=', False)]}">
+                            Before accessing the simulation link, you first need to set up an offer template.
+                    </span>
                 </group>
                 <footer>
                     <button name="send_offer" type="object" string="Send" class="oe_highlight" data-hotkey="q"/>

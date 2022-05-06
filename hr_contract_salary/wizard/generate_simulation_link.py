@@ -41,10 +41,6 @@ class GenerateSimulationLink(models.TransientModel):
             if applicant.job_id:
                 result['employee_job_id'] = applicant.job_id
                 result['job_title'] = applicant.job_id.name
-        if not result.get('applicant_id') and not contract.contract_update_template_id or result.get('applicant_id') and not contract.sign_template_id:
-            raise ValidationError(_('No signature template defined on the contract.'))
-        if not contract.hr_responsible_id:
-            raise ValidationError(_('No HR responsible defined on the contract.'))
         return result
 
     def get_contract_domain(self):

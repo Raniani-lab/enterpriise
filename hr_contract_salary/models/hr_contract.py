@@ -23,8 +23,10 @@ class HrContract(models.Model):
     hash_token = fields.Char('Created From Token', copy=False)
     applicant_id = fields.Many2one('hr.applicant', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     contract_reviews_count = fields.Integer(compute="_compute_contract_reviews_count", string="Proposed Contracts Count")
-    default_contract_id = fields.Many2one('hr.contract', string="Contract Template",
-        domain="[('company_id', '=', company_id)]",
+    default_contract_id = fields.Many2one(
+        'hr.contract', string="Contract Template",
+        compute="_compute_default_contract", store=True, readonly=False,
+        domain="[('company_id', '=', company_id), ('employee_id', '=', False)]",
         help="Default contract used when making an offer to an applicant.")
     sign_template_id = fields.Many2one('sign.template', string="New Contract Document Template",
         help="Default document that the applicant will have to sign to accept a contract offer.")
@@ -72,6 +74,13 @@ class HrContract(models.Model):
     def _compute_is_origin_contract_template(self):
         for contract in self:
             contract.is_origin_contract_template = contract.origin_contract_id and not contract.origin_contract_id.employee_id
+
+    @api.depends('job_id')
+    def _compute_default_contract(self):
+        for contract in self:
+            if not contract.job_id or not contract.job_id.default_contract_id:
+                continue
+            contract.default_contract_id = contract.job_id.default_contract_id
 
     def _get_yearly_cost_sacrifice_ratio(self):
         return 1.0 - self.holidays / 231.0

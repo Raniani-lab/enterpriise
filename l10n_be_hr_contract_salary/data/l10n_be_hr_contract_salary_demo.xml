@@ -6,7 +6,7 @@
     </record>
 
     <record id="job_developer_belgium" model="hr.job">
-        <field name="name">Experienced Developer BE</field>
+        <field name="name">Junior Developer BE</field>
         <field name="department_id" ref="hr_department_rdbe"/>
         <field name="no_of_recruitment">5</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>

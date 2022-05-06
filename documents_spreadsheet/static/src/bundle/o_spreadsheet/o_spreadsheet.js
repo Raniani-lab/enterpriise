@@ -401,6 +401,18 @@
         const [integerDigits, decimalDigits] = formatter.format(value).split(".");
         return { integerDigits, decimalDigits };
     }
+    /**
+     * Check if the given format is a time, date or date time format.
+     */
+    function isDateTimeFormat(format) {
+        try {
+            applyDateTimeFormat(1, format);
+            return true;
+        }
+        catch (error) {
+            return false;
+        }
+    }
     function applyDateTimeFormat(value, format) {
         // TODO: unify the format functions for date and datetime
         // This requires some code to 'parse' or 'tokenize' the format, keep it in a
@@ -830,6 +842,8 @@
         "DUPLICATE_SHEET",
         "MOVE_SHEET",
         "RENAME_SHEET",
+        /** RANGES MANIPULATION */
+        "MOVE_RANGES",
         /** CONDITIONAL FORMAT */
         "ADD_CONDITIONAL_FORMAT",
         "REMOVE_CONDITIONAL_FORMAT",
@@ -902,44 +916,47 @@
         CommandResult[CommandResult["InvalidAnchorZone"] = 14] = "InvalidAnchorZone";
         CommandResult[CommandResult["SelectionOutOfBound"] = 15] = "SelectionOutOfBound";
         CommandResult[CommandResult["TargetOutOfSheet"] = 16] = "TargetOutOfSheet";
-        CommandResult[CommandResult["WrongPasteSelection"] = 17] = "WrongPasteSelection";
-        CommandResult[CommandResult["EmptyClipboard"] = 18] = "EmptyClipboard";
-        CommandResult[CommandResult["EmptyRange"] = 19] = "EmptyRange";
-        CommandResult[CommandResult["InvalidRange"] = 20] = "InvalidRange";
-        CommandResult[CommandResult["InvalidSheetId"] = 21] = "InvalidSheetId";
-        CommandResult[CommandResult["InputAlreadyFocused"] = 22] = "InputAlreadyFocused";
-        CommandResult[CommandResult["MaximumRangesReached"] = 23] = "MaximumRangesReached";
-        CommandResult[CommandResult["InvalidChartDefinition"] = 24] = "InvalidChartDefinition";
-        CommandResult[CommandResult["EmptyDataSet"] = 25] = "EmptyDataSet";
-        CommandResult[CommandResult["InvalidDataSet"] = 26] = "InvalidDataSet";
-        CommandResult[CommandResult["InvalidLabelRange"] = 27] = "InvalidLabelRange";
-        CommandResult[CommandResult["InvalidAutofillSelection"] = 28] = "InvalidAutofillSelection";
-        CommandResult[CommandResult["WrongComposerSelection"] = 29] = "WrongComposerSelection";
-        CommandResult[CommandResult["MinBiggerThanMax"] = 30] = "MinBiggerThanMax";
-        CommandResult[CommandResult["LowerBiggerThanUpper"] = 31] = "LowerBiggerThanUpper";
-        CommandResult[CommandResult["MidBiggerThanMax"] = 32] = "MidBiggerThanMax";
-        CommandResult[CommandResult["MinBiggerThanMid"] = 33] = "MinBiggerThanMid";
-        CommandResult[CommandResult["FirstArgMissing"] = 34] = "FirstArgMissing";
-        CommandResult[CommandResult["SecondArgMissing"] = 35] = "SecondArgMissing";
-        CommandResult[CommandResult["MinNaN"] = 36] = "MinNaN";
-        CommandResult[CommandResult["MidNaN"] = 37] = "MidNaN";
-        CommandResult[CommandResult["MaxNaN"] = 38] = "MaxNaN";
-        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 39] = "ValueUpperInflectionNaN";
-        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 40] = "ValueLowerInflectionNaN";
-        CommandResult[CommandResult["MinInvalidFormula"] = 41] = "MinInvalidFormula";
-        CommandResult[CommandResult["MidInvalidFormula"] = 42] = "MidInvalidFormula";
-        CommandResult[CommandResult["MaxInvalidFormula"] = 43] = "MaxInvalidFormula";
-        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 44] = "ValueUpperInvalidFormula";
-        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 45] = "ValueLowerInvalidFormula";
-        CommandResult[CommandResult["InvalidSortZone"] = 46] = "InvalidSortZone";
-        CommandResult[CommandResult["WaitingSessionConfirmation"] = 47] = "WaitingSessionConfirmation";
-        CommandResult[CommandResult["MergeOverlap"] = 48] = "MergeOverlap";
-        CommandResult[CommandResult["TooManyHiddenElements"] = 49] = "TooManyHiddenElements";
-        CommandResult[CommandResult["Readonly"] = 50] = "Readonly";
-        CommandResult[CommandResult["InvalidOffset"] = 51] = "InvalidOffset";
-        CommandResult[CommandResult["InvalidViewportSize"] = 52] = "InvalidViewportSize";
-        CommandResult[CommandResult["FigureDoesNotExist"] = 53] = "FigureDoesNotExist";
-        CommandResult[CommandResult["InvalidConditionalFormatId"] = 54] = "InvalidConditionalFormatId";
+        CommandResult[CommandResult["WrongCutSelection"] = 17] = "WrongCutSelection";
+        CommandResult[CommandResult["WrongPasteSelection"] = 18] = "WrongPasteSelection";
+        CommandResult[CommandResult["WrongPasteOption"] = 19] = "WrongPasteOption";
+        CommandResult[CommandResult["EmptyClipboard"] = 20] = "EmptyClipboard";
+        CommandResult[CommandResult["EmptyRange"] = 21] = "EmptyRange";
+        CommandResult[CommandResult["InvalidRange"] = 22] = "InvalidRange";
+        CommandResult[CommandResult["InvalidZones"] = 23] = "InvalidZones";
+        CommandResult[CommandResult["InvalidSheetId"] = 24] = "InvalidSheetId";
+        CommandResult[CommandResult["InputAlreadyFocused"] = 25] = "InputAlreadyFocused";
+        CommandResult[CommandResult["MaximumRangesReached"] = 26] = "MaximumRangesReached";
+        CommandResult[CommandResult["InvalidChartDefinition"] = 27] = "InvalidChartDefinition";
+        CommandResult[CommandResult["EmptyDataSet"] = 28] = "EmptyDataSet";
+        CommandResult[CommandResult["InvalidDataSet"] = 29] = "InvalidDataSet";
+        CommandResult[CommandResult["InvalidLabelRange"] = 30] = "InvalidLabelRange";
+        CommandResult[CommandResult["InvalidAutofillSelection"] = 31] = "InvalidAutofillSelection";
+        CommandResult[CommandResult["WrongComposerSelection"] = 32] = "WrongComposerSelection";
+        CommandResult[CommandResult["MinBiggerThanMax"] = 33] = "MinBiggerThanMax";
+        CommandResult[CommandResult["LowerBiggerThanUpper"] = 34] = "LowerBiggerThanUpper";
+        CommandResult[CommandResult["MidBiggerThanMax"] = 35] = "MidBiggerThanMax";
+        CommandResult[CommandResult["MinBiggerThanMid"] = 36] = "MinBiggerThanMid";
+        CommandResult[CommandResult["FirstArgMissing"] = 37] = "FirstArgMissing";
+        CommandResult[CommandResult["SecondArgMissing"] = 38] = "SecondArgMissing";
+        CommandResult[CommandResult["MinNaN"] = 39] = "MinNaN";
+        CommandResult[CommandResult["MidNaN"] = 40] = "MidNaN";
+        CommandResult[CommandResult["MaxNaN"] = 41] = "MaxNaN";
+        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 42] = "ValueUpperInflectionNaN";
+        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 43] = "ValueLowerInflectionNaN";
+        CommandResult[CommandResult["MinInvalidFormula"] = 44] = "MinInvalidFormula";
+        CommandResult[CommandResult["MidInvalidFormula"] = 45] = "MidInvalidFormula";
+        CommandResult[CommandResult["MaxInvalidFormula"] = 46] = "MaxInvalidFormula";
+        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 47] = "ValueUpperInvalidFormula";
+        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 48] = "ValueLowerInvalidFormula";
+        CommandResult[CommandResult["InvalidSortZone"] = 49] = "InvalidSortZone";
+        CommandResult[CommandResult["WaitingSessionConfirmation"] = 50] = "WaitingSessionConfirmation";
+        CommandResult[CommandResult["MergeOverlap"] = 51] = "MergeOverlap";
+        CommandResult[CommandResult["TooManyHiddenElements"] = 52] = "TooManyHiddenElements";
+        CommandResult[CommandResult["Readonly"] = 53] = "Readonly";
+        CommandResult[CommandResult["InvalidOffset"] = 54] = "InvalidOffset";
+        CommandResult[CommandResult["InvalidViewportSize"] = 55] = "InvalidViewportSize";
+        CommandResult[CommandResult["FigureDoesNotExist"] = 56] = "FigureDoesNotExist";
+        CommandResult[CommandResult["InvalidConditionalFormatId"] = 57] = "InvalidConditionalFormatId";
     })(exports.CommandResult || (exports.CommandResult = {}));
 
     var ReturnFormatType;
@@ -1890,15 +1907,14 @@
         return { ...zone, [start]: newStart, [end]: newEnd };
     }
     /**
-     * Compute the union of two zones. It is the smallest zone which contains the
-     * two arguments.
+     * Compute the union of multiple zones.
      */
-    function union(z1, z2) {
+    function union(...zones) {
         return {
-            top: Math.min(z1.top, z2.top),
-            left: Math.min(z1.left, z2.left),
-            bottom: Math.max(z1.bottom, z2.bottom),
-            right: Math.max(z1.right, z2.right),
+            top: Math.min(...zones.map((zone) => zone.top)),
+            left: Math.min(...zones.map((zone) => zone.left)),
+            bottom: Math.max(...zones.map((zone) => zone.bottom)),
+            right: Math.max(...zones.map((zone) => zone.right)),
         };
     }
     /**
@@ -2111,14 +2127,29 @@
         }
         return positions;
     }
+    /**
+     * This function returns a zone with coordinates modified according to the change
+     * applied to the zone. It may be possible to change the zone by resizing or moving
+     * it according to different dimensions.
+     *
+     * @param zone the zone to modify
+     * @param dimension the direction to change the zone among "columns", "rows" and
+     * "both"
+     * @param operation how to change the zone, modify its size "RESIZE" or modify
+     * its location "MOVE"
+     * @param by a number of how many units the change should be made. This parameter
+     * takes the form of a two-number array when the dimension is "both"
+     */
     function createAdaptedZone(zone, dimension, operation, by) {
-        const start = dimension === "columns" ? "left" : "top";
-        const end = dimension === "columns" ? "right" : "bottom";
+        const offsetX = dimension === "both" ? by[0] : dimension === "columns" ? by : 0;
+        const offsetY = dimension === "both" ? by[1] : dimension === "rows" ? by : 0;
         const newZone = { ...zone };
         if (operation === "MOVE") {
-            newZone[start] += by;
+            newZone["left"] += offsetX;
+            newZone["top"] += offsetY;
         }
-        newZone[end] += by;
+        newZone["right"] += offsetX;
+        newZone["bottom"] += offsetY;
         return newZone;
     }
     /**
@@ -2459,16 +2490,25 @@
                 });
             }
         }
-        if (result.isCancelledBecause(46 /* InvalidSortZone */)) {
+        if (result.isCancelledBecause(49 /* InvalidSortZone */)) {
             const { col, row } = anchor;
             env.model.selection.selectZone({ cell: { col, row }, zone });
             env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
         }
     }
 
+    function interactiveCut(env, target) {
+        const result = env.model.dispatch("CUT", { target });
+        if (!result.isSuccessful) {
+            if (result.isCancelledBecause(17 /* WrongCutSelection */)) {
+                env.notifyUser(_lt("This operation is not allowed with multiple selections."));
+            }
+        }
+    }
+
     function handlePasteResult(env, result) {
         if (!result.isSuccessful) {
-            if (result.reasons.includes(17 /* WrongPasteSelection */)) {
+            if (result.reasons.includes(18 /* WrongPasteSelection */)) {
                 env.notifyUser(_lt("This operation is not allowed with multiple selections."));
             }
             if (result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
@@ -2528,7 +2568,7 @@
         await env.clipboard.writeText(env.model.getters.getClipboardContent());
     };
     const CUT_ACTION = async (env) => {
-        env.model.dispatch("CUT", { target: env.model.getters.getSelectedZones() });
+        interactiveCut(env, env.model.getters.getSelectedZones());
         await env.clipboard.writeText(env.model.getters.getClipboardContent());
     };
     const PASTE_ACTION = async (env) => {
@@ -2572,6 +2612,9 @@
             sheetId,
             areGridLinesVisible: !env.model.getters.getGridLinesVisibility(sheetId),
         });
+    };
+    const IS_NOT_CUT_OPERATION = (env) => {
+        return !env.model.getters.isCutOperation();
     };
     //------------------------------------------------------------------------------
     // Grid manipulations
@@ -3079,13 +3122,12 @@
         shortCut: "Ctrl+V",
         sequence: 30,
         action: PASTE_ACTION,
-        isVisible: IS_ONLY_ONE_RANGE,
     })
         .add("paste_special", {
         name: _lt("Paste special"),
         sequence: 40,
         separator: true,
-        isVisible: IS_ONLY_ONE_RANGE,
+        isVisible: IS_NOT_CUT_OPERATION,
     })
         .addChild("paste_value_only", ["paste_special"], {
         name: _lt("Paste values only"),
@@ -3216,6 +3258,7 @@
         name: _lt("Paste special"),
         sequence: 40,
         separator: true,
+        isVisible: IS_NOT_CUT_OPERATION,
     })
         .addChild("paste_value_only", ["paste_special"], {
         name: _lt("Paste value only"),
@@ -3344,6 +3387,7 @@
         name: _lt("Paste special"),
         sequence: 40,
         separator: true,
+        isVisible: IS_NOT_CUT_OPERATION,
     })
         .addChild("paste_value_only", ["paste_special"], {
         name: _lt("Paste value only"),
@@ -3490,24 +3534,24 @@
 
     const CfTerms = {
         Errors: {
-            [20 /* InvalidRange */]: _lt("The range is invalid"),
-            [34 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
-            [35 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
-            [36 /* MinNaN */]: _lt("The minpoint must be a number"),
-            [37 /* MidNaN */]: _lt("The midpoint must be a number"),
-            [38 /* MaxNaN */]: _lt("The maxpoint must be a number"),
-            [39 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
-            [40 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
-            [30 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [33 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [32 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [31 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
-            [41 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [43 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [42 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [44 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
-            [45 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
-            [19 /* EmptyRange */]: _lt("A range needs to be defined"),
+            [22 /* InvalidRange */]: _lt("The range is invalid"),
+            [37 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
+            [38 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
+            [39 /* MinNaN */]: _lt("The minpoint must be a number"),
+            [40 /* MidNaN */]: _lt("The midpoint must be a number"),
+            [41 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [42 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
+            [43 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
+            [33 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
+            [36 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [35 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [34 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
+            [44 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [46 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [45 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [47 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
+            [48 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
+            [21 /* EmptyRange */]: _lt("A range needs to be defined"),
             Unexpected: _lt("The rule is invalid for an unknown reason"),
         },
         ColorScale: _lt("Color scale"),
@@ -3532,9 +3576,9 @@
     const ChartTerms = {
         Series: _lt("Series"),
         Errors: {
-            [25 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
-            [26 /* InvalidDataSet */]: _lt("The dataset is invalid"),
-            [27 /* InvalidLabelRange */]: _lt("Labels are invalid"),
+            [28 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
+            [29 /* InvalidDataSet */]: _lt("The dataset is invalid"),
+            [30 /* InvalidLabelRange */]: _lt("Labels are invalid"),
             Unexpected: _lt("The chart definition is invalid for an unknown reason"),
         },
     };
@@ -3605,6 +3649,7 @@
         name: _lt("Paste special"),
         sequence: 60,
         separator: true,
+        isVisible: IS_NOT_CUT_OPERATION,
     })
         .addChild("paste_special_value", ["edit", "paste_special"], {
         name: _lt("Paste value only"),
@@ -4340,12 +4385,12 @@
         }
         get isDatasetInvalid() {
             var _a, _b;
-            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(25 /* EmptyDataSet */)) ||
-                ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(26 /* InvalidDataSet */)));
+            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(28 /* EmptyDataSet */)) ||
+                ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(29 /* InvalidDataSet */)));
         }
         get isLabelInvalid() {
             var _a;
-            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(27 /* InvalidLabelRange */));
+            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(30 /* InvalidLabelRange */));
         }
         onSeriesChanged(ranges) {
             this.state.chart.dataSets = ranges;
@@ -4915,7 +4960,7 @@
             return this.env.model.getters.getConditionalFormats(this.env.model.getters.getActiveSheetId());
         }
         get isRangeValid() {
-            return this.state.errors.includes(19 /* EmptyRange */);
+            return this.state.errors.includes(21 /* EmptyRange */);
         }
         errorMessage(error) {
             return CfTerms.Errors[error] || CfTerms.Errors.Unexpected;
@@ -4970,7 +5015,7 @@
             if (this.state.currentCF) {
                 const invalidRanges = this.state.currentCF.ranges.some((xc) => !xc.match(rangeReference));
                 if (invalidRanges) {
-                    this.state.errors = [20 /* InvalidRange */];
+                    this.state.errors = [22 /* InvalidRange */];
                     return;
                 }
                 const result = this.env.model.dispatch("ADD_CONDITIONAL_FORMAT", {
@@ -5125,11 +5170,11 @@
          ****************************************************************************/
         get isValue1Invalid() {
             var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(34 /* FirstArgMissing */));
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(37 /* FirstArgMissing */));
         }
         get isValue2Invalid() {
             var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(35 /* SecondArgMissing */));
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(38 /* SecondArgMissing */));
         }
         toggleStyle(tool) {
             const style = this.state.rules.cellIs.style;
@@ -5146,17 +5191,17 @@
         isValueInvalid(threshold) {
             switch (threshold) {
                 case "minimum":
-                    return (this.state.errors.includes(41 /* MinInvalidFormula */) ||
-                        this.state.errors.includes(33 /* MinBiggerThanMid */) ||
-                        this.state.errors.includes(30 /* MinBiggerThanMax */) ||
-                        this.state.errors.includes(36 /* MinNaN */));
+                    return (this.state.errors.includes(44 /* MinInvalidFormula */) ||
+                        this.state.errors.includes(36 /* MinBiggerThanMid */) ||
+                        this.state.errors.includes(33 /* MinBiggerThanMax */) ||
+                        this.state.errors.includes(39 /* MinNaN */));
                 case "midpoint":
-                    return (this.state.errors.includes(42 /* MidInvalidFormula */) ||
-                        this.state.errors.includes(37 /* MidNaN */) ||
-                        this.state.errors.includes(32 /* MidBiggerThanMax */));
+                    return (this.state.errors.includes(45 /* MidInvalidFormula */) ||
+                        this.state.errors.includes(40 /* MidNaN */) ||
+                        this.state.errors.includes(35 /* MidBiggerThanMax */));
                 case "maximum":
-                    return (this.state.errors.includes(43 /* MaxInvalidFormula */) ||
-                        this.state.errors.includes(38 /* MaxNaN */));
+                    return (this.state.errors.includes(46 /* MaxInvalidFormula */) ||
+                        this.state.errors.includes(41 /* MaxNaN */));
                 default:
                     return false;
             }
@@ -5205,13 +5250,13 @@
         isInflectionPointInvalid(inflectionPoint) {
             switch (inflectionPoint) {
                 case "lowerInflectionPoint":
-                    return (this.state.errors.includes(40 /* ValueLowerInflectionNaN */) ||
-                        this.state.errors.includes(45 /* ValueLowerInvalidFormula */) ||
-                        this.state.errors.includes(31 /* LowerBiggerThanUpper */));
+                    return (this.state.errors.includes(43 /* ValueLowerInflectionNaN */) ||
+                        this.state.errors.includes(48 /* ValueLowerInvalidFormula */) ||
+                        this.state.errors.includes(34 /* LowerBiggerThanUpper */));
                 case "upperInflectionPoint":
-                    return (this.state.errors.includes(39 /* ValueUpperInflectionNaN */) ||
-                        this.state.errors.includes(44 /* ValueUpperInvalidFormula */) ||
-                        this.state.errors.includes(31 /* LowerBiggerThanUpper */));
+                    return (this.state.errors.includes(42 /* ValueUpperInflectionNaN */) ||
+                        this.state.errors.includes(47 /* ValueUpperInvalidFormula */) ||
+                        this.state.errors.includes(34 /* LowerBiggerThanUpper */));
                 default:
                     return true;
             }
@@ -12493,6 +12538,14 @@
         match: (content) => content === "",
         createCell: (id, content, properties) => new EmptyCell(id, properties),
     })
+        .add("NumberWithDateTimeFormat", {
+        sequence: 25,
+        match: (content, format) => !!format && isNumber(content) && isDateTimeFormat(format),
+        createCell: (id, content, properties) => {
+            const format = properties.format;
+            return new DateTimeCell(id, parseNumber(content), { ...properties, format });
+        },
+    })
         .add("Number", {
         sequence: 30,
         match: (content) => isNumber(content),
@@ -12553,7 +12606,7 @@
     function cellFactory(getters) {
         const builders = cellRegistry.getAll().sort((a, b) => a.sequence - b.sequence);
         return function createCell(id, content, properties, sheetId) {
-            const builder = builders.find((factory) => factory.match(content));
+            const builder = builders.find((factory) => factory.match(content, properties.format));
             if (!builder) {
                 return new TextCell(id, content, properties);
             }
@@ -14029,7 +14082,7 @@
         checkCellOutOfSheet(sheetId, col, row) {
             const sheet = this.getters.tryGetSheet(sheetId);
             if (!sheet)
-                return 21 /* InvalidSheetId */;
+                return 24 /* InvalidSheetId */;
             const sheetZone = {
                 top: 0,
                 left: 0,
@@ -14434,7 +14487,7 @@
         }
         checkEmptyDataset(cmd) {
             return cmd.definition.dataSets && cmd.definition.dataSets.length === 0
-                ? 25 /* EmptyDataSet */
+                ? 28 /* EmptyDataSet */
                 : 0 /* Success */;
         }
         checkDataset(cmd) {
@@ -14442,14 +14495,14 @@
                 return 0 /* Success */;
             }
             const invalidRanges = cmd.definition.dataSets.find((range) => !rangeReference.test(range)) !== undefined;
-            return invalidRanges ? 26 /* InvalidDataSet */ : 0 /* Success */;
+            return invalidRanges ? 29 /* InvalidDataSet */ : 0 /* Success */;
         }
         checkLabelRange(cmd) {
             if (!cmd.definition.labelRange) {
                 return 0 /* Success */;
             }
             const invalidLabels = !rangeReference.test(cmd.definition.labelRange || "");
-            return invalidLabels ? 27 /* InvalidLabelRange */ : 0 /* Success */;
+            return invalidLabels ? 30 /* InvalidLabelRange */ : 0 /* Success */;
         }
     }
     ChartPlugin.getters = ["getChartDefinition", "getChartDefinitionUI", "getChartsIdBySheet"];
@@ -14640,18 +14693,18 @@
         }
         checkValidReordering(cfId, direction, sheetId) {
             if (!this.cfRules[sheetId])
-                return 21 /* InvalidSheetId */;
+                return 24 /* InvalidSheetId */;
             const ruleIndex = this.cfRules[sheetId].findIndex((cf) => cf.id === cfId);
             if (ruleIndex === -1)
-                return 54 /* InvalidConditionalFormatId */;
+                return 57 /* InvalidConditionalFormatId */;
             const cfIndex2 = direction === "up" ? ruleIndex - 1 : ruleIndex + 1;
             if (cfIndex2 < 0 || cfIndex2 >= this.cfRules[sheetId].length) {
-                return 54 /* InvalidConditionalFormatId */;
+                return 57 /* InvalidConditionalFormatId */;
             }
             return 0 /* Success */;
         }
         checkEmptyRange(cmd) {
-            return cmd.target.length ? 0 /* Success */ : 19 /* EmptyRange */;
+            return cmd.target.length ? 0 /* Success */ : 21 /* EmptyRange */;
         }
         checkCFRule(cmd) {
             const rule = cmd.cf.rule;
@@ -14687,10 +14740,10 @@
                     const errors = [];
                     const isEmpty = (value) => value === undefined || value === "";
                     if (expectedNumber >= 1 && isEmpty(rule.values[0])) {
-                        errors.push(34 /* FirstArgMissing */);
+                        errors.push(37 /* FirstArgMissing */);
                     }
                     if (expectedNumber >= 2 && isEmpty(rule.values[1])) {
-                        errors.push(35 /* SecondArgMissing */);
+                        errors.push(38 /* SecondArgMissing */);
                     }
                     return errors.length ? errors : 0 /* Success */;
                 }
@@ -14702,15 +14755,15 @@
                 (threshold.value === "" || isNaN(threshold.value))) {
                 switch (thresholdName) {
                     case "min":
-                        return 36 /* MinNaN */;
+                        return 39 /* MinNaN */;
                     case "max":
-                        return 38 /* MaxNaN */;
+                        return 41 /* MaxNaN */;
                     case "mid":
-                        return 37 /* MidNaN */;
+                        return 40 /* MidNaN */;
                     case "upperInflectionPoint":
-                        return 39 /* ValueUpperInflectionNaN */;
+                        return 42 /* ValueUpperInflectionNaN */;
                     case "lowerInflectionPoint":
-                        return 40 /* ValueLowerInflectionNaN */;
+                        return 43 /* ValueLowerInflectionNaN */;
                 }
             }
             return 0 /* Success */;
@@ -14724,15 +14777,15 @@
             catch (error) {
                 switch (thresholdName) {
                     case "min":
-                        return 41 /* MinInvalidFormula */;
+                        return 44 /* MinInvalidFormula */;
                     case "max":
-                        return 43 /* MaxInvalidFormula */;
+                        return 46 /* MaxInvalidFormula */;
                     case "mid":
-                        return 42 /* MidInvalidFormula */;
+                        return 45 /* MidInvalidFormula */;
                     case "upperInflectionPoint":
-                        return 44 /* ValueUpperInvalidFormula */;
+                        return 47 /* ValueUpperInvalidFormula */;
                     case "lowerInflectionPoint":
-                        return 45 /* ValueLowerInvalidFormula */;
+                        return 48 /* ValueLowerInvalidFormula */;
                 }
             }
             return 0 /* Success */;
@@ -14749,7 +14802,7 @@
             if (["number", "percentage", "percentile"].includes(rule.lowerInflectionPoint.type) &&
                 rule.lowerInflectionPoint.type === rule.upperInflectionPoint.type &&
                 Number(minValue) > Number(maxValue)) {
-                return 31 /* LowerBiggerThanUpper */;
+                return 34 /* LowerBiggerThanUpper */;
             }
             return 0 /* Success */;
         }
@@ -14759,7 +14812,7 @@
             if (["number", "percentage", "percentile"].includes(rule.minimum.type) &&
                 rule.minimum.type === rule.maximum.type &&
                 stringToNumber(minValue) >= stringToNumber(maxValue)) {
-                return 30 /* MinBiggerThanMax */;
+                return 33 /* MinBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -14771,7 +14824,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.midpoint.type === rule.maximum.type &&
                 stringToNumber(midValue) >= stringToNumber(maxValue)) {
-                return 32 /* MidBiggerThanMax */;
+                return 35 /* MidBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -14783,7 +14836,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.minimum.type === rule.midpoint.type &&
                 stringToNumber(minValue) >= stringToNumber(midValue)) {
-                return 33 /* MinBiggerThanMid */;
+                return 36 /* MinBiggerThanMid */;
             }
             return 0 /* Success */;
         }
@@ -14882,7 +14935,7 @@
         checkFigureExists(sheetId, figureId) {
             var _a;
             if (((_a = this.figures[sheetId]) === null || _a === void 0 ? void 0 : _a[figureId]) === undefined) {
-                return 53 /* FigureDoesNotExist */;
+                return 56 /* FigureDoesNotExist */;
             }
             return 0 /* Success */;
         }
@@ -15143,7 +15196,7 @@
             for (const zone of target) {
                 for (const zone2 of target) {
                     if (zone !== zone2 && overlap(zone, zone2)) {
-                        return 48 /* MergeOverlap */;
+                        return 51 /* MergeOverlap */;
                     }
                 }
             }
@@ -15369,7 +15422,7 @@
                     const elements = cmd.dimension === "COL" ? sheet.cols : sheet.rows;
                     return (hiddenGroup || []).flat().concat(cmd.elements).length < elements.length
                         ? 0 /* Success */
-                        : 49 /* TooManyHiddenElements */;
+                        : 52 /* TooManyHiddenElements */;
                 }
                 default:
                     return 0 /* Success */;
@@ -16186,7 +16239,7 @@
          */
         checkSheetExists(cmd) {
             if (cmd.type !== "CREATE_SHEET" && "sheetId" in cmd && this.sheets[cmd.sheetId] === undefined) {
-                return 21 /* InvalidSheetId */;
+                return 24 /* InvalidSheetId */;
             }
             return 0 /* Success */;
         }
@@ -16203,7 +16256,7 @@
                 zones.push(...cmd.target);
             }
             if (!zones.every(isZoneValid)) {
-                return 20 /* InvalidRange */;
+                return 22 /* InvalidRange */;
             }
             else if (zones.length && "sheetId" in cmd) {
                 const sheet = this.getSheet(cmd.sheetId);
@@ -16342,7 +16395,7 @@
                     if (this.lastCellSelected.col !== undefined && this.lastCellSelected.row !== undefined) {
                         return 0 /* Success */;
                     }
-                    return 28 /* InvalidAutofillSelection */;
+                    return 31 /* InvalidAutofillSelection */;
                 case "AUTOFILL_AUTO":
                     const zone = this.getters.getSelectedZone();
                     return zone.top === zone.bottom
@@ -16943,17 +16996,20 @@
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
             switch (cmd.type) {
+                case "CUT":
+                    return this.isCutAllowed(cmd.target);
                 case "PASTE":
-                    return this.isPasteAllowed(this.state, cmd.target, !!cmd.force);
+                    const pasteOption = cmd.pasteOption || (this._isPaintingFormat ? "onlyFormat" : undefined);
+                    return this.isPasteAllowed(this.state, cmd.target, pasteOption, !!cmd.force);
                 case "INSERT_CELL": {
                     const { cut, paste } = this.getInsertCellsTargets(cmd.zone, cmd.shiftDimension);
                     const state = this.getClipboardState(cut, "CUT");
-                    return this.isPasteAllowed(state, paste, false);
+                    return this.isPasteAllowed(state, paste);
                 }
                 case "DELETE_CELL": {
                     const { cut, paste } = this.getDeleteCellsTargets(cmd.zone, cmd.shiftDimension);
                     const state = this.getClipboardState(cut, "CUT");
-                    return this.isPasteAllowed(state, paste, false);
+                    return this.isPasteAllowed(state, paste);
                 }
             }
             return 0 /* Success */;
@@ -16973,8 +17029,9 @@
                     this._isPaintingFormat = false;
                     const height = this.state.cells.length;
                     const width = this.state.cells[0].length;
+                    const isCutOperation = this.state.operation === "CUT";
                     this.paste(this.state, cmd.target, pasteOption);
-                    this.selectPastedZone(width, height, cmd.target);
+                    this.selectPastedZone(width, height, isCutOperation, cmd.target);
                     this.status = "invisible";
                     break;
                 case "DELETE_CELL": {
@@ -17037,6 +17094,9 @@
                     .join("\t");
             })
                 .join("\n") || "\t");
+        }
+        isCutOperation() {
+            return this.state ? this.state.operation === "CUT" : false;
         }
         isPaintingFormat() {
             return this._isPaintingFormat;
@@ -17226,19 +17286,29 @@
             };
             this.selection.selectZone({ cell: { col: activeCol, row: activeRow }, zone });
         }
-        isPasteAllowed(state, target, force) {
+        isCutAllowed(target) {
+            if (target.length !== 1) {
+                return 17 /* WrongCutSelection */;
+            }
+            return 0 /* Success */;
+        }
+        isPasteAllowed(state, target, pasteOption = undefined, ignoreMerges = false) {
             const sheetId = this.getters.getActiveSheetId();
             if (!state) {
-                return 18 /* EmptyClipboard */;
+                return 20 /* EmptyClipboard */;
+            }
+            // cannot paste only format or only value if the previous operation is a CUT
+            if (state.operation === "CUT" && pasteOption !== undefined) {
+                return 19 /* WrongPasteOption */;
             }
             if (target.length > 1) {
                 // cannot paste if we have a clipped zone larger than a cell and multiple
                 // zones selected
                 if (state.cells.length > 1 || state.cells[0].length > 1) {
-                    return 17 /* WrongPasteSelection */;
+                    return 18 /* WrongPasteSelection */;
                 }
             }
-            if (!force) {
+            if (!ignoreMerges) {
                 for (let zone of this.getPasteZones(target, state.cells)) {
                     if (this.getters.doesIntersectMerge(sheetId, zone)) {
                         return 2 /* WillRemoveExistingMerge */;
@@ -17251,10 +17321,29 @@
          * Paste the clipboard content in the given target
          */
         paste(state, target, options) {
-            if (state.operation === "CUT") {
-                this.clearClippedZones(state);
+            if (state.operation === "COPY") {
+                this.pasteFromCopy(state, target, options);
             }
-            if (target.length > 1) {
+            else {
+                this.pasteFromCut(state, target);
+            }
+        }
+        pasteFromCopy(state, target, options) {
+            if (target.length === 1) {
+                // in this specific case, due to the isPasteAllowed function:
+                // state.cells can contains several cells.
+                // So if the target zone is larger than the copied zone,
+                // we duplicate each cells as many times as possible to fill the zone.
+                const height = state.cells.length;
+                const width = state.cells[0].length;
+                const pasteZones = this.pastedZones(target, width, height);
+                for (const zone of pasteZones) {
+                    this.pasteZone(state, zone.left, zone.top, options);
+                }
+            }
+            else {
+                // in this case, due to the isPasteAllowed function: state.cells contains
+                // only one cell
                 for (const zone of target) {
                     for (let col = zone.left; col <= zone.right; col++) {
                         for (let row = zone.top; row <= zone.bottom; row++) {
@@ -17263,39 +17352,54 @@
                     }
                 }
             }
-            else {
-                const height = state.cells.length;
-                const width = state.cells[0].length;
-                const selection = target[0];
-                const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
-                const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
-                for (let x = 0; x < repX; x++) {
-                    for (let y = 0; y < repY; y++) {
-                        this.pasteZone(state, selection.left + x * width, selection.top + y * height, options);
-                    }
+        }
+        pasteFromCut(state, target) {
+            this.clearClippedZones(state);
+            const selection = target[0];
+            this.pasteZone(state, selection.left, selection.top);
+            this.dispatch("MOVE_RANGES", {
+                target: state.zones,
+                sheetId: state.sheetId,
+                targetSheetId: this.getters.getActiveSheetId(),
+                col: selection.left,
+                row: selection.top,
+            });
+            this.dispatch("REMOVE_MERGE", { sheetId: state.sheetId, target: state.merges });
+            this.state = undefined;
+        }
+        /**
+         * The clipped zone is copied as many times as it fits in the target.
+         * This returns the list of zones where the clipped zone is copy-pasted.
+         */
+        pastedZones(target, originWidth, originHeight) {
+            const selection = target[0];
+            const repeatHorizontally = Math.max(1, Math.floor((selection.right + 1 - selection.left) / originWidth));
+            const repeatVertically = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / originHeight));
+            const zones = [];
+            for (let x = 0; x < repeatHorizontally; x++) {
+                for (let y = 0; y < repeatVertically; y++) {
+                    const top = selection.top + y * originHeight;
+                    const left = selection.left + x * originWidth;
+                    zones.push({
+                        left,
+                        top,
+                        bottom: top + originHeight - 1,
+                        right: left + originWidth - 1,
+                    });
                 }
             }
-            if (state.operation === "CUT") {
-                this.dispatch("REMOVE_MERGE", { sheetId: state.sheetId, target: state.merges });
-                this.state = undefined;
-            }
+            return zones;
         }
         /**
          * Update the selection with the newly pasted zone
          */
-        selectPastedZone(width, height, target) {
+        selectPastedZone(width, height, isCutOperation, target) {
             const selection = target[0];
             const col = selection.left;
             const row = selection.top;
-            const repX = Math.max(1, Math.floor((selection.right + 1 - selection.left) / width));
-            const repY = Math.max(1, Math.floor((selection.bottom + 1 - selection.top) / height));
-            if (height > 1 || width > 1) {
-                const newZone = {
-                    left: col,
-                    top: row,
-                    right: col + repX * width - 1,
-                    bottom: row + repY * height - 1,
-                };
+            if (height > 1 || width > 1 || isCutOperation) {
+                const zones = this.pastedZones(target, width, height);
+                const newZone = isCutOperation ? zones[0] : union(...zones);
                 this.selection.selectZone({ cell: { col, row }, zone: newZone });
             }
         }
@@ -17333,7 +17437,7 @@
                     const position = { col: col + c, row: row + r, sheetId: sheet.id };
                     this.removeMergeIfTopLeft(position);
                     this.pasteMergeIfExist(origin.position, position);
-                    this.pasteCell(origin, position, state.operation, state.zones, pasteOption);
+                    this.pasteCell(origin, position, state.operation, pasteOption);
                     if (shouldPasteCF) {
                         this.dispatch("PASTE_CONDITIONAL_FORMAT", {
                             origin: origin.position,
@@ -17374,7 +17478,7 @@
         /**
          * Paste the cell at the given position to the target position
          */
-        pasteCell(origin, target, operation, zones, pasteOption) {
+        pasteCell(origin, target, operation, pasteOption) {
             const { sheetId, col, row } = target;
             const targetCell = this.getters.getCell(sheetId, col, row);
             if (pasteOption !== "onlyValue") {
@@ -17403,10 +17507,10 @@
                     return;
                 }
                 let content = origin.cell.content;
-                if (origin.cell.isFormula()) {
+                if (origin.cell.isFormula() && operation === "COPY") {
                     const offsetX = col - origin.position.col;
                     const offsetY = row - origin.position.row;
-                    content = this.getUpdatedContent(sheetId, origin.cell, offsetX, offsetY, zones, operation);
+                    content = this.getUpdatedContent(sheetId, origin.cell, offsetX, offsetY, operation);
                 }
                 this.dispatch("UPDATE_CELL", {
                     ...target,
@@ -17430,19 +17534,7 @@
         /**
          * Get the newly updated formula, after applying offsets
          */
-        getUpdatedContent(sheetId, cell, offsetX, offsetY, zones, operation) {
-            if (operation === "CUT") {
-                const ranges = [];
-                for (const range of cell.dependencies) {
-                    if (this.isZoneOverlapClippedZone(zones, range.zone)) {
-                        ranges.push(...this.getters.createAdaptedRanges([range], offsetX, offsetY, sheetId));
-                    }
-                    else {
-                        ranges.push(range);
-                    }
-                }
-                return this.getters.buildFormulaContent(sheetId, cell, ranges);
-            }
+        getUpdatedContent(sheetId, cell, offsetX, offsetY, operation) {
             const ranges = this.getters.createAdaptedRanges(cell.dependencies, offsetX, offsetY, sheetId);
             return this.getters.buildFormulaContent(sheetId, cell, ranges);
         }
@@ -17501,7 +17593,7 @@
         }
     }
     ClipboardPlugin.layers = [2 /* Clipboard */];
-    ClipboardPlugin.getters = ["getClipboardContent", "isPaintingFormat"];
+    ClipboardPlugin.getters = ["getClipboardContent", "isCutOperation", "isPaintingFormat"];
 
     /**
      * Change the reference types inside the given token, if the token represent a range or a cell
@@ -17814,7 +17906,7 @@
         validateSelection(length, start, end) {
             return start >= 0 && start <= length && end >= 0 && end <= length
                 ? 0 /* Success */
-                : 29 /* WrongComposerSelection */;
+                : 32 /* WrongComposerSelection */;
         }
         onColumnsRemoved(cmd) {
             if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
@@ -19427,10 +19519,16 @@
                 x.zone.left >= 0 &&
                 x.zone.bottom < this.getters.getSheet(x.sheetId).rows.length &&
                 x.zone.right < this.getters.getSheet(x.sheetId).cols.length)
-                .map((highlight) => ({
-                ...highlight,
-                zone: this.getters.expandZone(highlight.sheetId, highlight.zone),
-            }));
+                .map((highlight) => {
+                const { height, width } = zoneToDimension(highlight.zone);
+                const zone = height * width === 1
+                    ? this.getters.expandZone(highlight.sheetId, highlight.zone)
+                    : highlight.zone;
+                return {
+                    ...highlight,
+                    zone,
+                };
+            });
         }
         // ---------------------------------------------------------------------------
         // Grid rendering
@@ -20085,7 +20183,7 @@
                         break;
                     }
                     catch (error) {
-                        return 21 /* InvalidSheetId */;
+                        return 24 /* InvalidSheetId */;
                     }
                 case "MOVE_COLUMNS_ROWS":
                     return this.isMoveElementAllowed(cmd);
@@ -20684,7 +20782,7 @@
             switch (cmd.type) {
                 case "ADD_EMPTY_RANGE":
                     if (this.inputHasSingleRange && this.ranges.length === 1) {
-                        return 23 /* MaximumRangesReached */;
+                        return 26 /* MaximumRangesReached */;
                     }
                     break;
             }
@@ -20893,7 +20991,7 @@
                 case "FOCUS_RANGE":
                     const index = (_a = this.currentInput) === null || _a === void 0 ? void 0 : _a.getIndex(cmd.rangeId);
                     if (this.focusedInputId === cmd.id && ((_b = this.currentInput) === null || _b === void 0 ? void 0 : _b.focusedRangeIndex) === index) {
-                        return 22 /* InputAlreadyFocused */;
+                        return 25 /* InputAlreadyFocused */;
                     }
                     break;
             }
@@ -21531,7 +21629,7 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 46 /* InvalidSortZone */;
+                        return 49 /* InvalidSortZone */;
                     }
                 }
             }
@@ -21552,7 +21650,7 @@
                 ];
                 return widthCurrent === widthFirst && heightCurrent === heightFirst;
             })) {
-                return 46 /* InvalidSortZone */;
+                return 49 /* InvalidSortZone */;
             }
             return 0 /* Success */;
         }
@@ -21839,7 +21937,7 @@
                         break;
                     }
                     catch (error) {
-                        return 21 /* InvalidSheetId */;
+                        return 24 /* InvalidSheetId */;
                     }
             }
             return 0 /* Success */;
@@ -21957,7 +22055,7 @@
                     return this.checkOffsetValidity(cmd.offsetX, cmd.offsetY);
                 case "RESIZE_VIEWPORT":
                     if (cmd.width < 0 || cmd.height < 0) {
-                        return 52 /* InvalidViewportSize */;
+                        return 55 /* InvalidViewportSize */;
                     }
                     return 0 /* Success */;
                 default:
@@ -22095,7 +22193,7 @@
             const sheet = this.getters.getActiveSheet();
             const { maxOffsetX, maxOffsetY } = this.getMaximumViewportOffset(sheet);
             if (offsetX < 0 || offsetY < 0 || offsetY > maxOffsetY || offsetX > maxOffsetX) {
-                return 51 /* InvalidOffset */;
+                return 54 /* InvalidOffset */;
             }
             return 0 /* Success */;
         }
@@ -23470,8 +23568,14 @@
             const refSheet = sheetName
                 ? this.env.model.getters.getSheetIdByName(sheetName)
                 : this.env.model.getters.getEditionSheet();
-            const highlight = highlights.find((highlight) => highlight.sheetId === refSheet &&
-                isEqual(this.env.model.getters.expandZone(refSheet, toZone(xc)), highlight.zone));
+            const highlight = highlights.find((highlight) => {
+                if (highlight.sheetId !== refSheet)
+                    return false;
+                let zone = toZone(xc);
+                const { height, width } = zoneToDimension(zone);
+                zone = height * width === 1 ? this.env.model.getters.expandZone(refSheet, zone) : zone;
+                return isEqual(zone, highlight.zone);
+            });
             return highlight && highlight.color ? highlight.color : undefined;
         }
         /**
@@ -25656,9 +25760,13 @@
             if (this.env.model.getters.getEditionMode() !== "inactive") {
                 return;
             }
-            const type = cut ? "CUT" : "COPY";
             const target = this.env.model.getters.getSelectedZones();
-            this.env.model.dispatch(type, { target });
+            if (cut) {
+                interactiveCut(this.env, target);
+            }
+            else {
+                this.env.model.dispatch("COPY", { target });
+            }
             const content = this.env.model.getters.getClipboardContent();
             this.clipBoardString = content;
             ev.clipboardData.setData("text/plain", content);
@@ -26480,9 +26588,17 @@
      */
     otRegistry.addTransformation("ADD_COLUMNS_ROWS", ["CREATE_CHART", "UPDATE_CHART"], updateChartRangesTransformation);
     otRegistry.addTransformation("REMOVE_COLUMNS_ROWS", ["CREATE_CHART", "UPDATE_CHART"], updateChartRangesTransformation);
+    otRegistry.addTransformation("DELETE_SHEET", ["MOVE_RANGES"], transformTargetSheetId);
     otRegistry.addTransformation("DELETE_FIGURE", ["UPDATE_FIGURE", "UPDATE_CHART"], updateChartFigure);
     otRegistry.addTransformation("CREATE_SHEET", ["CREATE_SHEET"], createSheetTransformation);
     otRegistry.addTransformation("ADD_MERGE", ["ADD_MERGE", "REMOVE_MERGE"], mergeTransformation);
+    function transformTargetSheetId(cmd, executed) {
+        const deletedSheetId = executed.sheetId;
+        if (cmd.targetSheetId === deletedSheetId || cmd.sheetId === deletedSheetId) {
+            return undefined;
+        }
+        return cmd;
+    }
     function updateChartFigure(toTransform, executed) {
         if (toTransform.id === executed.id) {
             return undefined;
@@ -27535,7 +27651,7 @@
         }
         allowDispatch(cmd) {
             if (this.isWaitingForUndoRedo) {
-                return 47 /* WaitingSessionConfirmation */;
+                return 50 /* WaitingSessionConfirmation */;
             }
             switch (cmd.type) {
                 case "REQUEST_UNDO":
@@ -27614,7 +27730,10 @@
         // ---------------------------------------------------------------------------
         // Command Handling
         // ---------------------------------------------------------------------------
-        allowDispatch(command) {
+        allowDispatch(cmd) {
+            if (cmd.type === "MOVE_RANGES") {
+                return cmd.target.length === 1 ? 0 /* Success */ : 23 /* InvalidZones */;
+            }
             return 0 /* Success */;
         }
         beforeHandle(command) { }
@@ -27729,6 +27848,24 @@
                             return { changeType: "CHANGE", range: newRange };
                         }
                         return { changeType: "NONE" };
+                    });
+                    break;
+                }
+                case "MOVE_RANGES": {
+                    const originZone = cmd.target[0];
+                    this.executeOnAllRanges((range) => {
+                        if (range.sheetId !== cmd.sheetId || !isZoneInside(range.zone, originZone)) {
+                            return { changeType: "NONE" };
+                        }
+                        const targetSheetId = cmd.targetSheetId;
+                        const offsetX = cmd.col - originZone.left;
+                        const offsetY = cmd.row - originZone.top;
+                        const adaptedRange = this.createAdaptedRange(range, "both", "MOVE", [offsetX, offsetY]);
+                        const prefixSheet = cmd.sheetId === targetSheetId ? adaptedRange.prefixSheet : true;
+                        return {
+                            changeType: "MOVE",
+                            range: { ...adaptedRange, sheetId: targetSheetId, prefixSheet },
+                        };
                     });
                     break;
                 }
@@ -30314,7 +30451,7 @@
                 const command = { type, ...payload };
                 let status = this.status;
                 if (this.getters.isReadonly() && !canExecuteInReadonly(command)) {
-                    return new DispatchResult(50 /* Readonly */);
+                    return new DispatchResult(53 /* Readonly */);
                 }
                 switch (status) {
                     case 0 /* Ready */:
@@ -30684,8 +30821,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-05-02T10:55:11.923Z';
-    exports.__info__.hash = 'd2bf35a';
+    exports.__info__.date = '2022-05-06T07:28:53.341Z';
+    exports.__info__.hash = 'dab9a1c';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

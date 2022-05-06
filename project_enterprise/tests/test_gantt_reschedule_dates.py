@@ -7,7 +7,7 @@ from freezegun import freeze_time
 
 from .gantt_reschedule_dates_common import ProjectEnterpriseGanttRescheduleCommon, fake_now
 from odoo.fields import Command
-from odoo.tests.common import warmup
+from odoo.tests.common import users, warmup
 
 
 @freeze_time(fake_now)
@@ -81,6 +81,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
         failed_message = "The auto shift date feature should move backward a task the moved task depends on."
         self.assertTrue(self.task_3.planned_date_begin >= self.task_1.planned_date_end, failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_on_dependent_task_with_planned_hours(self):
         """ This test purpose is to ensure that the task planned_date_fields (begin/end) are calculated accordingly to
@@ -93,7 +94,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_begin': self.task_3_planned_date_begin,
             'planned_date_end': self.task_3_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
-        with self.assertQueryCount(19):
+        with self.assertQueryCount(20):
             self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the planned_hours into account and update the" \
@@ -103,6 +104,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             failed_message
         )
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_on_task_depending_on_with_planned_hours(self):
         """ This test purpose is to ensure that the task planned_date_fields (begin/end) are calculated accordingly to
@@ -116,7 +118,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
-        with self.assertQueryCount(37):
+        with self.assertQueryCount(38):
             self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the planned_hours into account and update the" \
@@ -124,6 +126,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
         self.assertEqual(self.task_1.planned_date_begin,
                          self.task_1_planned_date_begin + relativedelta(days=-1, hour=16), failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_on_dependent_task_without_planned_hours(self):
         """ This test purpose is to ensure that the interval made by the task planned_date_fields (begin/end) is
@@ -137,7 +140,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': self.task_3_planned_date_begin + (
                         self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
-        with self.assertQueryCount(37):
+        with self.assertQueryCount(38):
             self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "When planned_hours=0, the auto shift date feature should preserve the time interval between" \
@@ -145,6 +148,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
         self.assertEqual(self.task_3.planned_date_end - self.task_3.planned_date_begin,
                          self.task_3_planned_date_end - self.task_3_planned_date_begin, failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_on_task_depending_on_without_planned_hours(self):
         """ This test purpose is to ensure that the interval made by the task planned_date_fields (begin/end) is
@@ -158,7 +162,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
-        with self.assertQueryCount(19):
+        with self.assertQueryCount(20):
             self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the planned_hours into account and update the" \
@@ -166,6 +170,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
         self.assertEqual(self.task_1.planned_date_end - self.task_1.planned_date_begin,
                          self.task_1_planned_date_end - self.task_1_planned_date_begin, failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_next_work_time_with_planned_hours(self):
         """ This test purpose is to ensure that computed dates are in accordance with the user resource_calendar
@@ -177,13 +182,14 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': new_task_1_planned_date_begin + (
                         self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
-        with self.assertQueryCount(19):
+        with self.assertQueryCount(20):
             self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_3.planned_date_begin,
                          self.task_3_planned_date_begin + relativedelta(days=1, hour=8), failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_previous_work_time_with_planned_hours(self):
         """ This test purpose is to ensure that computed dates are in accordance with the user resource_calendar
@@ -194,13 +200,14 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
-        with self.assertQueryCount(37):
+        with self.assertQueryCount(38):
             self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_1.planned_date_end,
                          self.task_1_planned_date_end + relativedelta(days=-1, hour=17), failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_next_work_time_without_planned_hours(self):
         """ This test purpose is to ensure that computed dates are in accordance with the user resource_calendar
@@ -214,13 +221,14 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_begin': new_task_1_planned_date_begin,
             'planned_date_end': new_task_1_planned_date_begin + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
-        with self.assertQueryCount(19):
+        with self.assertQueryCount(20):
             self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_3.planned_date_begin,
                          self.task_3_planned_date_begin + relativedelta(days=1, hour=8), failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_previous_work_time_without_planned_hours(self):
         """ This test purpose is to ensure that computed dates are in accordance with the user resource_calendar
@@ -234,13 +242,14 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
-        with self.assertQueryCount(37):
+        with self.assertQueryCount(38):
             self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_1, self.task_3)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account."
         self.assertEqual(self.task_1.planned_date_end,
                          self.task_1_planned_date_end + relativedelta(days=-1, hour=17), failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_next_work_time_long_leaves(self):
         """ This test purpose is to ensure that computed dates are in accordance with the user resource_calendar
@@ -253,7 +262,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_begin': self.task_4_planned_date_begin,
             'planned_date_end': self.task_4_planned_date_begin + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
-        with self.assertQueryCount(36):
+        with self.assertQueryCount(37):
             self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_3, self.task_4)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account and" \
@@ -261,6 +270,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
         self.assertEqual(self.task_4.planned_date_begin,
                          self.task_4_planned_date_begin + relativedelta(month=8, day=2, hour=8), failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_previous_work_time_long_leaves(self):
         """ This test purpose is to ensure that computed dates are in accordance with the user resource_calendar
@@ -274,7 +284,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': self.task_5_planned_date_begin + (
                         self.task_6_planned_date_end - self.task_6_planned_date_begin),
         })
-        with self.assertQueryCount(38):
+        with self.assertQueryCount(31):
             self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_5, self.task_6)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account and" \
@@ -282,6 +292,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
         self.assertEqual(self.task_5.planned_date_end,
                          self.task_5_planned_date_end + relativedelta(month=6, day=30, hour=17), failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_cascading_forward(self):
         """ This test purpose is to ensure that the cascade is well supported on dependent tasks
@@ -292,7 +303,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_begin': new_task_3_planned_date_begin,
             'planned_date_end': new_task_3_planned_date_begin + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
-        with self.assertQueryCount(42):
+        with self.assertQueryCount(43):
             self.env.invalidate_all()
             self.gantt_reschedule_forward(self.task_3, self.task_4)
         failed_message = "The auto shift date feature should handle correctly dependencies cascades."
@@ -305,6 +316,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
         self.assertEqual(self.task_5.planned_date_end,
                          self.task_5_planned_date_end + relativedelta(days=1, hour=9), failed_message)
 
+    @users('admin')
     @warmup
     def test_gantt_reschedule_cascading_backward(self):
         """ This test purpose is to ensure that the cascade is well supported on tasks that the current task depends on

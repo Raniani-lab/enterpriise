@@ -168,6 +168,11 @@ class ProjectEnterpriseGanttRescheduleCommon(TestProjectCommon):
             'resource_calendar_id': cls.calendar_40h.id,
         })
 
+    def setUp(self):
+        super().setUp()
+        self.env.user.has_group('.')
+        self.env.user.has_group('base.group_system')
+
     @classmethod
     def gantt_reschedule_forward(cls, master_record, slave_record):
         return cls.ProjectTask.web_gantt_reschedule(

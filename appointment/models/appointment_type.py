@@ -544,7 +544,7 @@ class AppointmentType(models.Model):
 
         if not staff_user or staff_user in self.staff_user_ids:
             self._slots_available(slots, first_day.astimezone(pytz.UTC), last_day.astimezone(pytz.UTC), staff_user)
-        total_nb_slots = len(slots)
+        total_nb_slots = sum('staff_user_id' in slot for slot in slots)
         nb_slots_previous_months = 0
 
         # Compute calendar rendering and inject available slots
@@ -554,7 +554,7 @@ class AppointmentType(models.Model):
         month_dates_calendar = cal.Calendar(locale.first_week_day).monthdatescalendar
         months = []
         while (start.year, start.month) <= (last_day.year, last_day.month):
-            nb_slots_next_months = len(slots)
+            nb_slots_next_months = sum('staff_user_id' in slot for slot in slots)
             has_availabilities = False
             dates = month_dates_calendar(start.year, start.month)
             for week_index, week in enumerate(dates):
@@ -597,8 +597,8 @@ class AppointmentType(models.Model):
                                     'duration': slot_duration,
                                 })
                                 today_slots.append(slot)
+                                nb_slots_next_months -= 1
                             slots.pop(0)
-                            nb_slots_next_months -= 1
                     today_slots = sorted(today_slots, key=lambda d: d['datetime'])
                     dates[week_index][day_index] = {
                         'day': day,

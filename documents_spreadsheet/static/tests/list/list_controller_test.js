@@ -568,6 +568,16 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         }
     );
 
+    QUnit.test("See records is visible even if the formula is lowercase", async function (assert) {
+        const { env, model } = await createSpreadsheetFromList();
+        selectCell(model, "B2");
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
+        assert.ok(root.isVisible(env));
+        setCellContent(model, "B2", getCellFormula(model, "B2").replace("LIST", "list"));
+        console.log(getCellFormula(model, "B2"));
+        assert.ok(root.isVisible(env));
+    });
+
     QUnit.test("Update the list title from the side panel", async function (assert) {
         assert.expect(1);
 

@@ -47,7 +47,7 @@ function _getOdooFunctionsFromAST(ast, matcher) {
             return _getOdooFunctionsFromAST(ast.left, matcher).concat(_getOdooFunctionsFromAST(ast.right, matcher));
         }
         case "FUNCALL": {
-            const functionName = ast.value;
+            const functionName = ast.value.toUpperCase();
 
             if (matcher(functionName)) {
                 return [{ functionName, args: ast.args, isMatched: true }];

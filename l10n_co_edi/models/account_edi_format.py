@@ -413,8 +413,8 @@ class AccountEdiFormat(models.Model):
         if not company.l10n_co_edi_username or not company.l10n_co_edi_password or not company.l10n_co_edi_company or \
            not company.l10n_co_edi_account:
             edi_result.append(_("Carvajal credentials are not set on the company, please go to Accounting Settings and set the credentials."))
-        if not journal.l10n_co_edi_dian_authorization_number or not journal.l10n_co_edi_dian_authorization_date or \
-           not journal.l10n_co_edi_dian_authorization_end_date:
+        if (move.move_type != 'out_refund' and not move.debit_origin_id) and \
+           (not journal.l10n_co_edi_dian_authorization_number or not journal.l10n_co_edi_dian_authorization_date or not journal.l10n_co_edi_dian_authorization_end_date):
             edi_result.append(_("'Resolución DIAN' fields must be set on the journal %s", journal.display_name))
         if not move.partner_id.vat:
             edi_result.append(_("You can not validate an invoice that has a partner without VAT number."))

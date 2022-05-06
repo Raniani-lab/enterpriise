@@ -655,11 +655,13 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
     entry_amount = get_value_and_currency_name(entry, _amount_charges_getters, target_currency=journal_currency_name)[0]
 
     charges = get_charges(entry_details, entry)
-    getters = _amount_charges_getters if charges else _amount_getters
+    if charges:
+        amount, amount_currency_name = get_value_and_currency_name(entry, _amount_charges_getters)
+    else:
+        amount, amount_currency_name = get_value_and_currency_name(entry_details, _amount_getters)
 
-    amount, amount_currency_name = get_value_and_currency_name(entry_details, getters)
     if not amount:
-        amount, amount_currency_name = get_value_and_currency_name(entry, getters)
+        amount, amount_currency_name = get_value_and_currency_name(entry, _amount_getters)
 
     if not journal_currency or amount_currency_name == journal_currency_name:
         rate = 1.0

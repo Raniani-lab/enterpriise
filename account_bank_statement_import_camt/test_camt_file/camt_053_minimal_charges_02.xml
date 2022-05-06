@@ -51,7 +51,7 @@
         </BkTxCd>
         <NtryDtls>
           <TxDtls>
-            <Amt Ccy="USD">500</Amt>
+            <Amt Ccy="USD">496</Amt>
             <CdtDbtInd>CRDT</CdtDbtInd>
             <AmtDtls>
               <InstdAmt>

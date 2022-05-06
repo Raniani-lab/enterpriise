@@ -34,7 +34,7 @@ import { createSpreadsheetFromPivot, spawnPivotViewForSpreadsheet } from "../uti
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 
 import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet_extended";
-import { createModelWithDataSource, waitForEvaluation } from "../spreadsheet_test_utils";
+import { createModelWithDataSource, waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
 import CommandResult from "@documents_spreadsheet/bundle/o_spreadsheet/cancelled_reason";
 
 
@@ -1165,7 +1165,7 @@ test("Pivot name can be changed from the dialog", async (assert) => {
     document.body.querySelector(".o_spreadsheet_name").value = "New name";
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     const model = getSpreadsheetActionModel(spreadsheetAction);
-    await waitForEvaluation(model);
+    await waitForDataSourcesLoaded(model);
     assert.equal(model.getters.getPivotName("1"), "New name");
     assert.equal(model.getters.getPivotDisplayName("1"), "(#1) New name");
 });
@@ -1186,7 +1186,7 @@ test("Pivot name is not changed if the name is empty", async (assert) => {
     document.body.querySelector(".o_spreadsheet_name").value = "";
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     const model = getSpreadsheetActionModel(spreadsheetAction);
-    await waitForEvaluation(model);
+    await waitForDataSourcesLoaded(model);
     assert.equal(model.getters.getPivotName("1"), "Partners");
 });
 

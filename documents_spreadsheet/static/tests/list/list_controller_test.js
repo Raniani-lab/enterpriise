@@ -17,7 +17,7 @@ import { selectCell, setCellContent } from "../utils/commands_helpers";
 import { createSpreadsheetFromList } from "../utils/list_helpers";
 import { nextTick, getFixture, patchWithCleanup, click } from "@web/../tests/helpers/utils";
 import { session } from "@web/session";
-import { createModelWithDataSource, waitForEvaluation } from "../spreadsheet_test_utils";
+import { createModelWithDataSource, waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
 import CommandResult from "@documents_spreadsheet/bundle/o_spreadsheet/cancelled_reason";
 
 const { toZone } = spreadsheet.helpers;
@@ -115,7 +115,8 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         const { model } = await createSpreadsheetFromList();
         setCellContent(model, "A1", `=LIST("1","1","active")`);
         assert.strictEqual(getCellValue(model, "A1"), undefined);
-        await waitForEvaluation(model);
+        await nextTick(); // Await for batching collection of missing fields
+        await waitForDataSourcesLoaded(model);
         assert.strictEqual(getCellValue(model, "A1"), true);
     });
 
@@ -203,7 +204,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         const { model } = await createSpreadsheetFromList();
         assert.strictEqual(getCell(model, "A2").format, "#,##0.00");
         assert.strictEqual(getCell(model, "B2").format, undefined);
-        await waitForEvaluation(model);
+        await waitForDataSourcesLoaded(model);
         const listModel = await model.getters.getAsyncSpreadsheetListModel("1");
         const list = model.getters.getListDefinition("1");
         const columns = list.columns.map((name) => ({ name, type: listModel.getField(name).type }));

@@ -16,7 +16,7 @@ import {
     getSpreadsheetActionTransportService,
     prepareWebClientForSpreadsheet,
 } from "./webclient_helpers";
-import { waitForEvaluation } from "../spreadsheet_test_utils";
+import { waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
 
 /**
  * Get a webclient with a pivot view.
@@ -111,7 +111,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
     await def;
     await nextTick();
     const model = getSpreadsheetActionModel(spreadsheetAction);
-    await waitForEvaluation(model);
+    await waitForDataSourcesLoaded(model);
     return {
         webClient,
         env: getSpreadsheetActionEnv(spreadsheetAction),

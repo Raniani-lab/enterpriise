@@ -11,7 +11,6 @@ import {
     setGlobalFilterValue,
 } from "../utils/commands_helpers";
 import { setupCollaborativeEnv } from "../utils/collaborative_helpers";
-import { waitForEvaluation } from "../spreadsheet_test_utils";
 import PivotDataSource from "@documents_spreadsheet/bundle/pivot/pivot_data_source";
 
 let dataSourceId = 0;
@@ -298,14 +297,10 @@ QUnit.test("Add a filter with a default value", async (assert) => {
         modelName: undefined,
         rangeType: undefined,
     };
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "D4"), 10);
     await addGlobalFilter(alice, { filter });
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => user.getters.getGlobalFilterValue(filter.id),
@@ -329,9 +324,7 @@ QUnit.test("Setting a filter value is only applied locally", async (assert) => {
         id: filter.id,
         value: [1],
     });
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
     assert.equal(alice.getters.getActiveFilterCount(), 0);
     assert.equal(bob.getters.getActiveFilterCount(), 1);
     assert.equal(charlie.getters.getActiveFilterCount(), 0);
@@ -350,22 +343,16 @@ QUnit.test("Edit a filter", async (assert) => {
         modelName: undefined,
         rangeType: undefined,
     };
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     await addGlobalFilter(alice, { filter });
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     await editGlobalFilter(alice, {
         id: "41",
         filter: { ...filter, defaultValue: [37] },
     });
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), "");
 });
 
@@ -382,9 +369,7 @@ QUnit.test("Edit a filter and remove it concurrently", async (assert) => {
         rangeType: undefined,
     };
     await addGlobalFilter(alice, { filter });
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
     await network.concurrent(() => {
         charlie.dispatch("EDIT_GLOBAL_FILTER", {
             id: "41",
@@ -412,9 +397,7 @@ QUnit.test("Remove a filter and edit it concurrently", async (assert) => {
         rangeType: undefined,
     };
     await addGlobalFilter(alice, { filter });
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
     await network.concurrent(() => {
         bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
         charlie.dispatch("EDIT_GLOBAL_FILTER", {
@@ -453,9 +436,7 @@ QUnit.test("Remove a filter and edit another concurrently", async (assert) => {
     };
     await addGlobalFilter(alice, { filter: filter1 });
     await addGlobalFilter(alice, { filter: filter2 });
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
     await network.concurrent(() => {
         bob.dispatch("REMOVE_GLOBAL_FILTER", { id: "41" });
         charlie.dispatch("EDIT_GLOBAL_FILTER", {
@@ -510,9 +491,7 @@ QUnit.test("Add two lists concurrently", async (assert) => {
         (user) => getCellFormula(user, "A26"),
         `=LIST.HEADER("2","foo")`
     );
-    await waitForEvaluation(alice);
-    await waitForEvaluation(bob);
-    await waitForEvaluation(charlie);
+    await nextTick();
 
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "A4"), 17);
     assert.spreadsheetIsSynchronized(

@@ -10,7 +10,7 @@ import {
     prepareWebClientForSpreadsheet,
 } from "./webclient_helpers";
 import { SpreadsheetAction } from "../../src/bundle/actions/spreadsheet_action";
-import { waitForEvaluation } from "../spreadsheet_test_utils";
+import { waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
 
 /**
  * Get a webclient with a list view.
@@ -77,7 +77,7 @@ export async function createSpreadsheetFromList(params = {}) {
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     await def;
     const model = getSpreadsheetActionModel(spreadsheetAction);
-    await waitForEvaluation(model);
+    await waitForDataSourcesLoaded(model);
     return {
         webClient,
         model,

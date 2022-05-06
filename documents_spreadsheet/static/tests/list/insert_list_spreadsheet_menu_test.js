@@ -8,7 +8,7 @@ import { click, nextTick, getFixture, patchWithCleanup } from "@web/../tests/hel
 import { spawnListViewForSpreadsheet } from "../utils/list_helpers";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { getSpreadsheetActionModel } from "../utils/webclient_helpers";
-import { waitForEvaluation } from "../spreadsheet_test_utils";
+import { waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
 
 const createView = testUtils.createView;
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
@@ -116,7 +116,7 @@ QUnit.module(
             document.body.querySelector(".o_spreadsheet_name").value = "New name";
             await modal.clickButton("Confirm");
             const model = getSpreadsheetActionModel(spreadsheetAction);
-            await waitForEvaluation(model);
+            await waitForDataSourcesLoaded(model);
             assert.equal(model.getters.getListName("1"), "New name");
             assert.equal(model.getters.getListDisplayName("1"), "(#1) New name");
         });
@@ -136,7 +136,7 @@ QUnit.module(
             document.body.querySelector(".o_spreadsheet_name").value = "";
             await modal.clickButton("Confirm");
             const model = getSpreadsheetActionModel(spreadsheetAction);
-            await waitForEvaluation(model);
+            await waitForDataSourcesLoaded(model);
             assert.equal(model.getters.getListName("1"), "Partners");
         });
     }

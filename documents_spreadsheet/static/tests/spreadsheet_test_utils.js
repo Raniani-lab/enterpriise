@@ -174,20 +174,13 @@ export async function createSpreadsheetWithPivotAndList() {
 
     const env = getSpreadsheetActionEnv(spreadsheetAction);
     const model = getSpreadsheetActionModel(spreadsheetAction);
-    await waitForEvaluation(model);
+    await waitForDataSourcesLoaded(model);
 
     return { env, model };
 }
 
-export async function waitForEvaluation(model) {
-    /**
-     * Here, we need to wait for two nextTick:
-     * The first one to resolve the name_get that could be triggered by the evaluation
-     * The second one to resolve the debounce method of the evaluation
-     */
+export async function waitForDataSourcesLoaded(model) {
     await model.config.dataSources.waitForAllLoaded();
-    await nextTick();
-    await nextTick();
 }
 
 export function setupDataSourceEvaluation(model) {

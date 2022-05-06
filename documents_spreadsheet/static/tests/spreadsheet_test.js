@@ -12,7 +12,7 @@ import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadshe
 import { click, getFixture, mockDownload } from "@web/../tests/helpers/utils";
 import * as AbstractStorageService from "web.AbstractStorageService";
 import { fields, nextTick, dom } from "web.test_utils";
-import { createSpreadsheet, waitForEvaluation } from "./spreadsheet_test_utils";
+import { createSpreadsheet } from "./spreadsheet_test_utils";
 import MockSpreadsheetCollaborativeChannel from "./utils/mock_spreadsheet_collaborative_channel";
 import { getBasicData, getBasicServerData } from "./utils/spreadsheet_test_data";
 import { getCell, getCellFormula, getCellValue } from "./utils/getters_helpers";
@@ -489,8 +489,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
             content: `=PIVOT.HEADER("1", "product_id", "1111111")`,
             sheetId,
         });
-
-        await waitForEvaluation(model);
+        await nextTick();
         assert.equal(
             getCell(model, "E10").evaluated.error,
             "Unable to fetch the label of 1111111 of model product"
@@ -516,7 +515,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         });
         setCellContent(model, "F10", `=PIVOT.HEADER("1", "product_id", A25)`);
         assert.equal(getCell(model, "A25"), null, "the cell should be empty");
-        await waitForEvaluation(model);
+        await nextTick();
         assert.equal(getCellValue(model, "F10"), "(Undefined)");
     });
 
@@ -1801,7 +1800,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         // opening from a pivot cell
         const sheetId = model.getters.getActiveSheetId();
         const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
-        await waitForEvaluation(model);
         model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
         env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
             pivot: pivotA3,

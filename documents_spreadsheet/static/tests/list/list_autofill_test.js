@@ -3,7 +3,8 @@
 import { getCellFormula, getCellValue, getListAutofillValue } from "../utils/getters_helpers";
 import { autofill } from "../utils/commands_helpers";
 import { createSpreadsheetFromList } from "../utils/list_helpers";
-import { waitForEvaluation } from "../spreadsheet_test_utils";
+import { waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
+import { nextTick } from "@web/../tests/helpers/utils";
 
 QUnit.module("documents_spreadsheet > list_autofill", {}, () => {
     QUnit.test("Autofill list values", async function (assert) {
@@ -111,7 +112,8 @@ QUnit.module("documents_spreadsheet > list_autofill", {}, () => {
         const { model } = await createSpreadsheetFromList({ linesNumber: 1 });
         autofill(model, "A2", "A3");
         assert.strictEqual(getCellValue(model, "A3"), "Loading...");
-        await waitForEvaluation(model);
+        await nextTick(); // Await for the batch collection of missing ids
+        await waitForDataSourcesLoaded(model);
         assert.strictEqual(getCellValue(model, "A3"), 1);
     });
 

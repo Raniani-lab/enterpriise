@@ -4,7 +4,6 @@ import { getBasicData } from "../utils/spreadsheet_test_data";
 import { selectCell, setCellContent } from "../utils/commands_helpers";
 import { getCellFormula, getPivotAutofillValue } from "../utils/getters_helpers";
 import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
-import { waitForEvaluation } from "../spreadsheet_test_utils";
 
 const { module, test } = QUnit;
 
@@ -330,7 +329,6 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                 },
             },
         });
-        await waitForEvaluation(model);
         assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "A3")), [
             { value: "2016" },
         ]);
@@ -376,7 +374,6 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                 },
             },
         });
-        await waitForEvaluation(model);
         assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "A3")), [
             { value: "2016" },
         ]);
@@ -407,7 +404,6 @@ module("documents_spreadsheet > pivot_autofill", {}, () => {
                 },
             },
         });
-        await waitForEvaluation(model);
         selectCell(model, "A3");
         model.dispatch("AUTOFILL_SELECT", { col: 10, row: 10 });
         assert.equal(model.getters.getAutofillTooltip(), undefined);

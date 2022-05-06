@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet_extended";
-import { waitForEvaluation } from "../spreadsheet_test_utils";
+import { waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
 
 const { toCartesian, toZone } = spreadsheet.helpers;
 
@@ -18,7 +18,7 @@ export function selectCell(model, xc) {
  */
 export async function addGlobalFilter(model, filter) {
     const result = model.dispatch("ADD_GLOBAL_FILTER", filter);
-    await waitForEvaluation(model);
+    await waitForDataSourcesLoaded(model);
     return result;
 }
 
@@ -27,7 +27,7 @@ export async function addGlobalFilter(model, filter) {
  */
 export async function removeGlobalFilter(model, id) {
     const result = model.dispatch("REMOVE_GLOBAL_FILTER", { id });
-    await waitForEvaluation(model);
+    await waitForDataSourcesLoaded(model);
     return result;
 }
 
@@ -36,7 +36,7 @@ export async function removeGlobalFilter(model, id) {
  */
 export async function editGlobalFilter(model, filter) {
     const result = model.dispatch("EDIT_GLOBAL_FILTER", filter);
-    await waitForEvaluation(model);
+    await waitForDataSourcesLoaded(model);
     return result;
 }
 
@@ -46,7 +46,7 @@ export async function editGlobalFilter(model, filter) {
  */
 export async function setGlobalFilterValue(model, payload) {
     const result = model.dispatch("SET_GLOBAL_FILTER_VALUE", payload);
-    await waitForEvaluation(model);
+    await waitForDataSourcesLoaded(model);
     return result;
 }
 

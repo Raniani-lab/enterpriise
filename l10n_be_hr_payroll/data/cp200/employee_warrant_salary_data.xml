@@ -24,6 +24,7 @@
         <field name="amount_percentage_base">GROSS</field>
         <field name="amount_percentage">53.5</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_structure_warrant"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_inverse_atn_warrant" model="hr.salary.rule">

@@ -432,6 +432,7 @@ result = result_rules['ONSSEMPLOYERBASIC']['total'] + result_rules['ONSSEMPLOYER
         <field name="partner_id" ref="res_partner_onss"/>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_termination_fees"/>
         <field name="appears_on_payslip" eval="False"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_termination_fees_termination_unreasonable_dismissal" model="hr.salary.rule">
@@ -474,6 +475,7 @@ result = TOTALFEES + ONSSEMPLOYER + OUTPLACEMENT + UNREASONABLE_DISMISSAL + NON_
         </field>
         <field name="appears_on_payslip" eval="False"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_termination_fees_basic" model="hr.salary.rule">
@@ -558,6 +560,7 @@ result = result_rules['BASIC']['total'] - result_rules['ONSSTOTAL']['total']
 result = -categories.PP
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_termination_fees_remuneration" model="hr.salary.rule">
@@ -585,6 +588,7 @@ result = result_rules['BASIC']['total']</field>
 result = result_rules['GROSS']['total'] - result_rules['PPTOTAL']['total']
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
 </odoo>

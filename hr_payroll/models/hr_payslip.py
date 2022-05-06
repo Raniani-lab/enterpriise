@@ -777,7 +777,7 @@ class HrPayslip(models.Model):
         if set(vals_list) - valid_values:
             raise UserError(_('The following values are not valid:\n%s', '\n'.join(list(set(vals_list) - valid_values))))
         result = defaultdict(lambda: defaultdict(lambda: dict.fromkeys(vals_list, 0)))
-        if not self:
+        if not self or not code_list:
             return result
         self.flush()
         selected_fields = ','.join('SUM(%s) AS %s' % (vals, vals) for vals in vals_list)
@@ -1198,7 +1198,6 @@ class HrPayslip(models.Model):
             new_employees['action']['views'][0] = [self.env.ref('hr_payroll.payroll_hr_employee_view_tree_employee_trends').id, 'list']
             result.append(new_employees)
 
-
         gone_employees = self.env['hr.employee'].with_context(active_test=False).search([
             ('departure_date', '>=', today + relativedelta(months=-1, day=1)),
             ('company_id', 'in', self.env.companies.ids),
@@ -1214,19 +1213,15 @@ class HrPayslip(models.Model):
         return result
 
     @api.model
-    def _get_other_expenses_cost_codes(self):
-        other_expenses = self.env['hr.salary.rule'].search_read([
+    def _get_dashboard_stat_employer_cost_codes(self):
+        costs = self.env['hr.salary.rule'].search_read([
             ('appears_on_employee_cost_dashboard', '=', True)],
             fields=['code', 'name'])
-        other_expenses_cost_codes = {}
+        cost_codes = {}
 
-        for other_expense in other_expenses:
-            other_expenses_cost_codes[other_expense['code']] = other_expense['name']
-        return other_expenses_cost_codes
-
-    @api.model
-    def _get_dashboard_stat_employer_cost_codes(self):
-        return {'NET': _('Net Salary'), **self._get_other_expenses_cost_codes()}
+        for cost in costs:
+            cost_codes[cost['code']] = cost['name']
+        return cost_codes
 
     @api.model
     def _get_dashboard_stats_employer_cost(self):

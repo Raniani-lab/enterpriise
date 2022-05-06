@@ -95,12 +95,13 @@ result = max(0, result / 0.92 * 0.85)
 result = -categories.PP
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <function model="hr.salary.rule" name="write">
         <value model="hr.salary.rule" search="[
             ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
             ('code', '=', 'NET')]"/>
-        <value eval="{'amount_python_compute': &quot;result = max(0, BASIC + categories.ALW + categories.DED + result_rules['EU.LEAVE.DEDUC']['total'] + result_rules['DOUBLERECOVERY']['total'])&quot;, 'sequence': '201'}"/>
+        <value eval="{'amount_python_compute': &quot;result = max(0, BASIC + categories.ALW + categories.DED + result_rules['EU.LEAVE.DEDUC']['total'] + result_rules['DOUBLERECOVERY']['total'])&quot;, 'sequence': '201', 'appears_on_employee_cost_dashboard': True}"/>
     </function>
 </odoo>

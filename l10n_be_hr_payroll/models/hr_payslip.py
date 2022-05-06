@@ -660,17 +660,6 @@ class Payslip(models.Model):
 
         return res
 
-    @api.model
-    def _get_dashboard_stat_employer_cost_codes(self):
-        res = super()._get_dashboard_stat_employer_cost_codes()
-        if "BE" in self.env.companies.country_id.mapped('code'):
-            res.update({
-                'PPTOTAL': _('Withholding Taxes'),
-                'ONSSEMPLOYER': _('ONSS: Employee Part'),
-                'IP.DED': _('Intellectual Property Income Deduction'),
-            })
-        return res
-
     def _get_ffe_contribution_rate(self, worker_count):
         # Fond de fermeture d'entreprise
         # https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/basiccontributions_closingcompanyfunds.html

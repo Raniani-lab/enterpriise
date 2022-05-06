@@ -60,5 +60,6 @@ else:
         <field name="partner_id" ref="res_partner_onss"/>
         <field name="struct_id" ref="hr_payroll_structure_student_regular_pay"/>
         <field name="appears_on_payslip" eval="False"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 </odoo>

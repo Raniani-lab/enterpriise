@@ -353,6 +353,7 @@ if not salary_simulation:
 result = -(categories.PP + (result_rules['P.P.DED']['total'] if bool(categories.EmpBonus) else 0))
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_company_car_2" model="hr.salary.rule">
@@ -593,6 +594,7 @@ result = min(4, amount_per_km * contract.employee_id.km_home_work * 2)
         <field name="amount_python_compute">result = compute_ip_deduction(payslip, categories, worked_days, inputs)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_canteen" model="hr.salary.rule">
@@ -733,7 +735,7 @@ result = inputs.EXPENSES.amount if inputs.EXPENSES else 0
         <value model="hr.salary.rule" search="[
             ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary')),
             ('code', '=', 'NET')]"/>
-        <value eval="{'amount_python_compute': &quot;result = categories.BASIC + categories.ALW + categories.DED + result_rules['DOUBLE.DECEMBER.NET']['total']&quot;}"/>
+        <value eval="{'amount_python_compute': &quot;result = categories.BASIC + categories.ALW + categories.DED + result_rules['DOUBLE.DECEMBER.NET']['total']&quot;, 'appears_on_employee_cost_dashboard': True}"/>
     </function>
 
     <record id="cp200_employees_salary_remuneration" model="hr.salary.rule">
@@ -854,6 +856,7 @@ result = result_rules['ONSSEMPLOYERBASIC']['total'] + result_rules['ONSSEMPLOYER
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payslip" eval="False"/>
         <field name="appears_on_payroll_report" eval="True"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_group_insurance" model="hr.salary.rule">

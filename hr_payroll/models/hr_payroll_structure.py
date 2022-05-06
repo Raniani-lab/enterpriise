@@ -96,6 +96,7 @@ result_name = inputs.REIMBURSEMENT.name""",
                 'condition_select': 'none',
                 'amount_select': 'code',
                 'amount_python_compute': 'result = categories.BASIC + categories.ALW + categories.DED',
+                'appears_on_employee_cost_dashboard': True,
             })
         ]
 

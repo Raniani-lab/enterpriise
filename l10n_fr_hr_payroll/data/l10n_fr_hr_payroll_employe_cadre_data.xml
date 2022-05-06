@@ -911,6 +911,7 @@
             'sequence': 100000,
             'category_id': ref('hr_payroll.NET'),
             'amount_python_compute': 'result = BRUT - categories.RETENUES',
+            'appears_on_employee_cost_dashboard': True,
             }"/>
     </function>
 

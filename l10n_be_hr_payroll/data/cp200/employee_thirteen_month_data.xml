@@ -52,6 +52,7 @@ result = categories.BASIC
 result = -categories.PP
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_thirteen_month"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_thirteen_month_mis_ex_onss" model="hr.salary.rule">

@@ -172,6 +172,7 @@ result_rate = - compute_termination_withholding_rate(payslip, categories, worked
 result = -result_rules['PROF_TAX']['total']
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_termination_n_attachment_salary" model="hr.salary.rule">
@@ -264,6 +265,7 @@ assignment_amount = sum(
 result = GROSS + result_rules['PROF_TAX']['total'] + assignment_amount
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays"/>
+        <field name="appears_on_employee_cost_dashboard" eval="True"/>
     </record>
 
     <record id="cp200_employees_termination_n_pay_onss_employer_basic" model="hr.salary.rule">

@@ -2,6 +2,23 @@
 <odoo>
 
     <data noupdate="1">
+        <record id="fsm_project" model="project.project">
+            <field name="type_ids" eval="[Command.link(ref('project.project_stage_0')), Command.link(ref('planning_project_stage_1')), Command.link(ref('project.project_stage_1')), Command.link(ref('project.project_stage_2')), Command.link(ref('project.project_stage_3'))]"/>
+        </record>
+
+        <function model="project.task.type" name="unlink">
+            <value model="project.task.type" eval="ref('planning_project_stage_0')"/>
+        </function>
+        <function model="project.task.type" name="unlink">
+            <value model="project.task.type" eval="ref('planning_project_stage_2')"/>
+        </function>
+        <function model="project.task.type" name="unlink">
+            <value model="project.task.type" eval="ref('planning_project_stage_3')"/>
+        </function>
+        <function model="project.task.type" name="unlink">
+            <value model="project.task.type" eval="ref('planning_project_stage_4')"/>
+        </function>
+
         <record id="planning_task_0" model="project.task">
             <field name="sequence">1</field>
             <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>

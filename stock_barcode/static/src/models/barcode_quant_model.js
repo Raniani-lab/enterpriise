@@ -252,7 +252,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
 
     _convertDataToFieldsParams(args) {
         const params = {
-            inventory_quantity: args.qty,
+            inventory_quantity: args.quantity,
             lot_id: args.lot,
             lot_name: args.lotName,
             owner_id: args.owner,
@@ -416,7 +416,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
             const currentLine = this._findLine(searchLineParams);
             if (currentLine) { // Updates an existing line.
                 const fieldsParams = this._convertDataToFieldsParams({
-                    qty: quant.quantity,
+                    quantity: quant.quantity,
                     lotName: barcodeData.lotName,
                     lot: barcodeData.lot,
                     package: recPackage,
@@ -426,7 +426,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
             } else { // Creates a new line.
                 const fieldsParams = this._convertDataToFieldsParams({
                     product,
-                    qty: quant.quantity,
+                    quantity: quant.quantity,
                     lot: quant.lot_id,
                     package: quant.package_id,
                     resultPackage: quant.package_id,

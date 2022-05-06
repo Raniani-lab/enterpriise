@@ -330,7 +330,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         const params = {
             lot_name: args.lotName,
             product_id: args.product,
-            qty_done: args.qty,
+            qty_done: args.quantity,
         };
         if (args.lot) {
             params.lot_id = args.lot;
@@ -597,7 +597,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             const currentLine = this._findLine(searchLineParams);
             if (currentLine) { // Updates an existing line.
                 const fieldsParams = this._convertDataToFieldsParams({
-                    qty: quant.quantity,
+                    quantity: quant.quantity,
                     lotName: barcodeData.lotName,
                     lot: barcodeData.lot,
                     package: recPackage,
@@ -607,7 +607,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             } else { // Creates a new line.
                 const fieldsParams = this._convertDataToFieldsParams({
                     product,
-                    qty: quant.quantity,
+                    quantity: quant.quantity,
                     lot: quant.lot_id,
                     package: quant.package_id,
                     resultPackage: quant.package_id,
@@ -729,5 +729,15 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     _updateLotName(line, lotName) {
         line.lot_name = lotName;
+    }
+
+    async _processGs1Data(data) {
+        const result = await super._processGs1Data(...arguments);
+        const { rule } = data;
+        if (result.location && (rule.type === 'location_dest' || this.messageType === 'scan_product_or_dest')) {
+            result.destLocation = result.location;
+            result.location = undefined;
+        }
+        return result;
     }
 }

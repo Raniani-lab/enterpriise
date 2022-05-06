@@ -946,68 +946,8 @@ export default class BarcodeModel extends EventBus {
             const parsedBarcode = this.parser.parse_barcode(barcode);
             if (parsedBarcode.length) { // With the GS1 nomenclature, the parsed result is a list.
                 for (const data of parsedBarcode) {
-                    const { rule, value } = data;
-                    if (['location', 'location_dest'].includes(rule.type)) {
-                        const location = await this.cache.getRecordByBarcode(value, 'stock.location');
-                        if (!location) {
-                            continue;
-                        }
-                        // TODO: should be overrided, as location dest make sense only for pickings.
-                        if (rule.type === 'location_dest' || this.messageType === 'scan_product_or_dest') {
-                            result.destLocation = location;
-                        } else {
-                            result.location = location;
-                        }
-                        result.match = true;
-                    } else if (rule.type === 'lot') {
-                        if (this.useExistingLots) {
-                            result.lot = await this.cache.getRecordByBarcode(value, 'stock.lot');
-                        }
-                        if (!result.lot) { // No existing lot found, set a lot name.
-                            result.lotName = value;
-                        }
-                        if (result.lot || result.lotName) {
-                            result.match = true;
-                        }
-                    } else if (rule.type === 'package') {
-                        const stockPackage = await this.cache.getRecordByBarcode(value, 'stock.quant.package');
-                        if (stockPackage) {
-                            result.package = stockPackage;
-                        } else {
-                            // Will be used to force package's name when put in pack.
-                            result.packageName = value;
-                        }
-                        result.match = true;
-                    } else if (rule.type === 'package_type') {
-                        const packageType = await this.cache.getRecordByBarcode(value, 'stock.package.type');
-                        if (packageType) {
-                            result.packageType = packageType;
-                            result.match = true;
-                        } else {
-                            const message = _t("An unexisting package type was scanned. This part of the barcode can't be processed.");
-                            this.notification.add(message, { type: 'warning' });
-                        }
-                    } else if (rule.type === 'product') {
-                        const product = await this.cache.getRecordByBarcode(value, 'product.product');
-                        if (product) {
-                            result.product = product;
-                            result.match = true;
-                        } else if (this.groups.group_stock_packaging) {
-                            const packaging = await this.cache.getRecordByBarcode(value, 'product.packaging');
-                            if (packaging) {
-                                result.packaging = packaging
-                                result.match = true;
-                            }
-                        }
-                    } else if (rule.type === 'quantity') {
-                        result.quantity = value;
-                        // The quantity is usually associated to an UoM, but we
-                        // ignore this info if the UoM setting is disabled.
-                        if (this.groups.group_uom) {
-                            result.uom = await this.cache.getRecord('uom.uom', rule.associated_uom_id);
-                        }
-                        result.match = result.quantity ? true : false;
-                    }
+                    const parsedData = await this._processGs1Data(data);
+                    Object.assign(result, parsedData);
                 }
                 if(result.match) {
                     return result;
@@ -1088,6 +1028,69 @@ export default class BarcodeModel extends EventBus {
                     break;
                 }
             }
+        }
+        return result;
+    }
+
+    async _processGs1Data(data) {
+        const result = {};
+        const { rule, value } = data;
+        if (['location', 'location_dest'].includes(rule.type)) {
+            const location = await this.cache.getRecordByBarcode(value, 'stock.location');
+            if (!location) {
+                return;
+            } else {
+                result.location = location;
+                result.match = true;
+            }
+        } else if (rule.type === 'lot') {
+            if (this.useExistingLots) {
+                result.lot = await this.cache.getRecordByBarcode(value, 'stock.lot');
+            }
+            if (!result.lot) { // No existing lot found, set a lot name.
+                result.lotName = value;
+            }
+            if (result.lot || result.lotName) {
+                result.match = true;
+            }
+        } else if (rule.type === 'package') {
+            const stockPackage = await this.cache.getRecordByBarcode(value, 'stock.quant.package');
+            if (stockPackage) {
+                result.package = stockPackage;
+            } else {
+                // Will be used to force package's name when put in pack.
+                result.packageName = value;
+            }
+            result.match = true;
+        } else if (rule.type === 'package_type') {
+            const packageType = await this.cache.getRecordByBarcode(value, 'stock.package.type');
+            if (packageType) {
+                result.packageType = packageType;
+                result.match = true;
+            } else {
+                const message = _t("An unexisting package type was scanned. This part of the barcode can't be processed.");
+                this.notification.add(message, { type: 'warning' });
+            }
+        } else if (rule.type === 'product') {
+            const product = await this.cache.getRecordByBarcode(value, 'product.product');
+            if (product) {
+                result.product = product;
+                result.match = true;
+            } else if (this.groups.group_stock_packaging) {
+                const packaging = await this.cache.getRecordByBarcode(value, 'product.packaging');
+                if (packaging) {
+                    result.packaging = packaging;
+                    result.match = true;
+                }
+            }
+        } else if (rule.type === 'quantity') {
+            result.quantity = value;
+            // The quantity is usually associated to an UoM, but we
+            // ignore this info if the UoM setting is disabled.
+            if (this.groups.group_uom) {
+                result.uom = await this.cache.getRecord('uom.uom', rule.associated_uom_id);
+            }
+            result.match = result.quantity ? true : false;
         }
         return result;
     }
@@ -1264,27 +1267,15 @@ export default class BarcodeModel extends EventBus {
                 }
             }
             if (barcodeData.quantity > 0) {
-                const fieldsParams = this._convertDataToFieldsParams({
-                    qty: barcodeData.quantity,
-                    lotName: barcodeData.lotName,
-                    lot: barcodeData.lot,
-                    package: barcodeData.package,
-                    owner: barcodeData.owner,
-                });
+                const fieldsParams = this._convertDataToFieldsParams(barcodeData);
                 if (barcodeData.uom) {
                     fieldsParams.uom = barcodeData.uom;
                 }
                 await this.updateLine(currentLine, fieldsParams);
             }
             if (exceedingQuantity) { // Creates a new line for the excess quantity.
-                const fieldsParams = this._convertDataToFieldsParams({
-                    product,
-                    qty: exceedingQuantity,
-                    lotName: barcodeData.lotName,
-                    lot: barcodeData.lot,
-                    package: barcodeData.package,
-                    owner: barcodeData.owner,
-                });
+                barcodeData.quantity = exceedingQuantity;
+                const fieldsParams = this._convertDataToFieldsParams(barcodeData);
                 if (barcodeData.uom) {
                     fieldsParams.uom = barcodeData.uom;
                 }
@@ -1294,14 +1285,7 @@ export default class BarcodeModel extends EventBus {
                 });
             }
         } else if (this.canCreateNewLine) { // No line found. If it's possible, creates a new line.
-            const fieldsParams = this._convertDataToFieldsParams({
-                product,
-                qty: barcodeData.quantity,
-                lotName: barcodeData.lotName,
-                lot: barcodeData.lot,
-                package: barcodeData.package,
-                owner: barcodeData.owner,
-            });
+            const fieldsParams = this._convertDataToFieldsParams(barcodeData);
             if (barcodeData.uom) {
                 fieldsParams.uom = barcodeData.uom;
             }

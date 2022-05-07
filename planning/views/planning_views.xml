@@ -220,13 +220,13 @@
                 </group>
             </xpath>
             <xpath expr="//sheet" position="after">
-                <footer>
+                <footer class="d-flex flex-wrap">
                     <field name="publication_warning" invisible="1"/>
                     <field name="is_past" invisible="1"/>
                     <field name="confirm_delete" invisible="1"/>
                     <field name="is_unassign_deadline_passed" invisible="1"/>
-                    <button string="Save" special="save" data-hotkey="v" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', True)]}"/>
-                    <button string="Save" special="save" data-hotkey="v" class="btn btn-primary" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
+                    <button string="Save" special="save" data-hotkey="v" class="btn btn-primary ml-1" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', True)]}"/>
+                    <button string="Save" special="save" data-hotkey="v" class="btn btn-primary ml-1" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1"
                         attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"

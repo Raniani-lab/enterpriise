@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, _
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
 
@@ -30,6 +30,7 @@ class HrSalaryRule(models.Model):
         help="Used to display the salary rule on payslip.")
     appears_on_employee_cost_dashboard = fields.Boolean(string='View on Employer Cost Dashboard', default=False,
         help="Used to display the value in the employer cost dashboard.")
+    appears_on_payroll_report = fields.Boolean(string="View on Payroll Reporting", default=False)
     condition_select = fields.Selection([
         ('none', 'Always True'),
         ('range', 'Range'),
@@ -143,3 +144,54 @@ result = rules.NET > categories.NET * 0.10''',
                 return localdict.get('result', False)
             except Exception as e:
                 self._raise_error(localdict, _("Wrong python condition defined for:"), e)
+
+    def _get_report_field_name(self):
+        self.ensure_one()
+        return 'x_l10n_%s_%s' % (
+            self.struct_id.country_id.code.lower() if self.struct_id.country_id.code else 'xx',
+            self.code.lower().replace('.', '_'),
+        )
+
+    def _generate_payroll_report_fields(self):
+        fields_vals_list = []
+        for rule in self:
+            field_name = rule._get_report_field_name()
+            model = self.env.ref('hr_payroll.model_hr_payroll_report')
+            if rule.appears_on_payroll_report and field_name not in self.env['hr.payroll.report']:
+                fields_vals_list.append({
+                    'name': field_name,
+                    'model': model.name,
+                    'model_id': model.id,
+                    'field_description': rule.name,
+                    'ttype': 'float',
+                })
+        if fields_vals_list:
+            self.env['ir.model.fields'].sudo().create(fields_vals_list)
+            self.env['hr.payroll.report'].init()
+
+    def _remove_payroll_report_fields(self):
+        field_names = [rule._get_report_field_name() for rule in self]
+        model = self.env.ref('hr_payroll.model_hr_payroll_report')
+        fields_to_unlink = self.env['ir.model.fields'].search([
+            ('name', 'in', field_names),
+            ('model_id', '=', model.id),
+            ('ttype', '=', 'float'),
+        ])
+        if fields_to_unlink:
+            fields_to_unlink.sudo().unlink()
+            self.env['hr.payroll.report'].init()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        rules = super().create(vals_list)
+        rules._generate_payroll_report_fields()
+        return rules
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'appears_on_payroll_report' in vals:
+            if vals['appears_on_payroll_report']:
+                self._generate_payroll_report_fields()
+            else:
+                self._remove_payroll_report_fields()
+        return res

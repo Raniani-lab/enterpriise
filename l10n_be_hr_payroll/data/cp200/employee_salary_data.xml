@@ -57,6 +57,7 @@ result = inputs.COMMISSION.amount
 result_name = inputs.COMMISSION.name
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_hiring_bonus" model="hr.salary.rule">
@@ -134,6 +135,7 @@ if not salary_simulation:
     result = result if payslip.contract_id == first_period_contract else 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_atn_mobile" model="hr.salary.rule">
@@ -156,6 +158,7 @@ if not salary_simulation:
     result = result if payslip.contract_id == first_period_contract else 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_atn_laptop" model="hr.salary.rule">
@@ -172,6 +175,7 @@ first_period_contract = contract.browse(first_period_contract_ids).filtered(lamb
 result = 7.0 if payslip.contract_id == first_period_contract else 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_gross_salary" model="hr.salary.rule">
@@ -283,6 +287,7 @@ if not salary_simulation:
     result = result if payslip.contract_id == first_period_contract else 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_gross_with_ip" model="hr.salary.rule">
@@ -421,6 +426,7 @@ result = -result_rules['ATN.LAP']['amount']
         <field name="appears_on_payslip" eval="True"/>
         <field name="partner_id" ref="res_partner_meal_vouchers"/>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_atn_mobile_2" model="hr.salary.rule">
@@ -491,6 +497,7 @@ else:
             result = 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_private_car" model="hr.salary.rule">
@@ -517,6 +524,7 @@ else:
         result = 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_representation_fees" model="hr.salary.rule">
@@ -529,6 +537,7 @@ else:
         <field name="condition_python">result = bool(contract.representation_fees)</field>
         <field name="amount_python_compute">result = compute_serious_representation_fees(payslip, categories, worked_days, inputs)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_representation_fees_volatile" model="hr.salary.rule">
@@ -541,6 +550,7 @@ else:
         <field name="condition_python">result = contract.representation_fees and compute_representation_fees(payslip, categories, worked_days, inputs) &gt; 279.31</field>
         <field name="amount_python_compute">result = compute_volatile_representation_fees(payslip, categories, worked_days, inputs)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_ip" model="hr.salary.rule">
@@ -553,6 +563,7 @@ else:
         <field name="condition_python">result = bool(contract.ip)</field>
         <field name="amount_python_compute">result = compute_ip(payslip, categories, worked_days, inputs)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_ip_deduction" model="hr.salary.rule">
@@ -565,6 +576,7 @@ else:
         <field name="condition_python">result = bool(contract.ip)</field>
         <field name="amount_python_compute">result = compute_ip_deduction(payslip, categories, worked_days, inputs)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_canteen" model="hr.salary.rule">
@@ -719,6 +731,7 @@ result = inputs.EXPENSES.amount if inputs.EXPENSES else 0
 result = categories.BASIC + categories.COMMISSION + result_rules['HIRINGBONUS']['total'] + result_rules['ADDITIONALGROSS']['total'] +  categories.AFTERPUB + result_rules['SIMPLE.DECEMBER']['total'] - abs(result_rules['IP']['total'] if contract.ip else 0)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payslip" eval="False"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_onss_employer" model="hr.salary.rule">
@@ -732,6 +745,7 @@ result = categories.BASIC + categories.COMMISSION + result_rules['HIRINGBONUS'][
         <field name="partner_id" ref="res_partner_onss"/>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payslip" eval="False"/>
+        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="cp200_employees_salary_group_insurance" model="hr.salary.rule">

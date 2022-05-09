@@ -17,29 +17,30 @@ class TestFsmFlow(TransactionCase):
             'allow_timesheets': True,
         })
 
-    def test_stop_timers_on_mark_as_done(self):
-        self.user_employee_timer_timesheet = new_test_user(self.env, login='marcel', groups='industry_fsm.group_fsm_user')
-        self.user_employee_timer_task = new_test_user(self.env, login='henri', groups='industry_fsm.group_fsm_user')
-        self.user_employee_mark_as_done = new_test_user(self.env, login='george', groups='industry_fsm.group_fsm_user')
-        self.employee_timer_timesheet = self.env['hr.employee'].create({
+        cls.user_employee_timer_timesheet = new_test_user(cls.env, login='marcel', groups='industry_fsm.group_fsm_user')
+        cls.user_employee_timer_task = new_test_user(cls.env, login='henri', groups='industry_fsm.group_fsm_user')
+        cls.user_employee_mark_as_done = new_test_user(cls.env, login='george', groups='industry_fsm.group_fsm_user')
+        cls.employee_timer_timesheet = cls.env['hr.employee'].create({
             'name': 'Employee Timesheet Timer',
-            'user_id': self.user_employee_timer_timesheet.id
+            'user_id': cls.user_employee_timer_timesheet.id,
         })
-        self.employee_timer_task = self.env['hr.employee'].create({
+        cls.employee_timer_task = cls.env['hr.employee'].create({
             'name': 'Employee Task Timer',
-            'user_id': self.user_employee_timer_task.id
+            'user_id': cls.user_employee_timer_task.id,
         })
-        self.employee_mark_as_done = self.env['hr.employee'].create({
+        cls.employee_mark_as_done = cls.env['hr.employee'].create({
             'name': 'Employee Mark As Done',
-            'user_id': self.user_employee_mark_as_done.id
+            'user_id': cls.user_employee_mark_as_done.id,
         })
-        self.partner_1 = self.env['res.partner'].create({'name': 'A Test Partner 1'})
-        self.task = self.env['project.task'].with_context({'mail_create_nolog': True}).create({
+        cls.partner_1 = cls.env['res.partner'].create({'name': 'A Test Partner 1'})
+        cls.task = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Fsm task',
-            'user_ids': [Command.set([self.user_employee_mark_as_done.id])],
-            'project_id': self.fsm_project.id,
-            'partner_id': self.partner_1.id,
+            'user_ids': [Command.set([cls.user_employee_mark_as_done.id])],
+            'project_id': cls.fsm_project.id,
+            'partner_id': cls.partner_1.id,
         })
+
+    def test_stop_timers_on_mark_as_done(self):
         self.assertEqual(len(self.task.sudo().timesheet_ids), 0, 'There is no timesheet associated to the task')
         timesheet = self.env['account.analytic.line'].with_user(self.user_employee_timer_timesheet).create({'name': '', 'project_id': self.fsm_project.id})
         timesheet.action_add_time_to_timer(3)

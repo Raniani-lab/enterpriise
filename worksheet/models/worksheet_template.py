@@ -114,16 +114,15 @@ class WorksheetTemplate(models.Model):
         model = self.env['ir.model'].sudo().create({
             'name': self.name,
             'model': name,
-            'field_id': self._prepare_default_fields_values()
+            'field_id': self._prepare_default_fields_values() + [
+                (0, 0, {
+                    'name': 'x_name',
+                    'field_description': 'Name',
+                    'ttype': 'char',
+                    'related': 'x_%s_id.name' % res_model,
+                }),
+            ]
         })
-        model.write({'field_id': [
-            (0, 0, {
-                'name': 'x_name',
-                'field_description': 'Name',
-                'ttype': 'char',
-                'related': 'x_%s_id.name' % res_model,
-            }),
-        ]})
 
         # create access rights and rules
         if not hasattr(self, '_get_%s_manager_group' % res_model):
@@ -133,7 +132,7 @@ class WorksheetTemplate(models.Model):
         if not hasattr(self, '_get_%s_access_all_groups' % res_model):
             raise NotImplementedError('Method _get_%s_access_all_groups not implemented on %s' % (res_model, res_model))
 
-        self.env['ir.model.access'].sudo().create({
+        self.env['ir.model.access'].sudo().create([{
             'name': name + '_access',
             'model_id': model.id,
             'group_id': getattr(self, '_get_%s_manager_group' % res_model)().id,
@@ -141,8 +140,7 @@ class WorksheetTemplate(models.Model):
             'perm_write': True,
             'perm_read': True,
             'perm_unlink': True,
-        })
-        self.env['ir.model.access'].sudo().create({
+        }, {
             'name': name + '_access',
             'model_id': model.id,
             'group_id': getattr(self, '_get_%s_user_group' % res_model)().id,
@@ -150,34 +148,32 @@ class WorksheetTemplate(models.Model):
             'perm_write': True,
             'perm_read': True,
             'perm_unlink': True,
-        })
-        self.env['ir.rule'].sudo().create({
+        }])
+
+        self.env['ir.rule'].sudo().create([{
             'name': name + '_own',
             'model_id': model.id,
             'domain_force': "[('create_uid', '=', user.id)]",
             'groups': [(6, 0, [getattr(self, '_get_%s_user_group' % res_model)().id])]
-        })
-        self.env['ir.rule'].sudo().create({
+        }, {
             'name': name + '_all',
             'model_id': model.id,
             'domain_force': [(1, '=', 1)],
             'groups': [(6, 0, getattr(self, '_get_%s_access_all_groups' % res_model)().ids)],
-        })
+        }])
 
         # create the view to extend by 'studio' and add the user custom fields
         form_view_values = self._prepare_default_form_view_values(model)
-        form_view = self.env['ir.ui.view'].sudo().create(form_view_values)
         tree_view_values = self._prepare_default_tree_view_values(model)
-        tree_view = self.env['ir.ui.view'].sudo().create(tree_view_values)
         search_view_values = self._prepare_default_search_view_values(model)
-        search_view = self.env['ir.ui.view'].sudo().create(search_view_values)
+        new_views = self.env['ir.ui.view'].sudo().create([form_view_values, tree_view_values, search_view_values])
         action = self.env['ir.actions.act_window'].sudo().create({
             'name': 'Worksheets',
             'res_model': model.model,
             'view_mode': 'tree,form',
-            'views': [(tree_view.id, 'tree'), (form_view.id, 'form')],
+            'views': [(new_views[0].id, 'tree'), (new_views[1].id, 'form')],
             'target': 'current',
-            'search_view_id': search_view.id,
+            'search_view_id': new_views[2].id,
             'context': {
                 'edit': False,
                 'create': False,
@@ -209,7 +205,7 @@ class WorksheetTemplate(models.Model):
             'name': 'form_view_custom_' + "_".join(model.model.split('.')),
             'model': 'ir.ui.view',
             'module': module_name,
-            'res_id': form_view.id,
+            'res_id': new_views[0].id,
             'noupdate': True,
         }
         self.env['ir.model.data'].sudo().create([action_xmlid_values, model_xmlid_values, view_xmlid_values])

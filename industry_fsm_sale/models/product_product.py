@@ -92,9 +92,9 @@ class ProductProduct(models.Model):
                     if product.service_type == 'manual':
                         vals['qty_delivered'] = diff_qty
 
-                    sol = SaleOrderLine_sudo.create(vals)
+                    sol_sudo = SaleOrderLine_sudo.create(vals)
                     if task.sale_order_id.pricelist_id.discount_policy != 'without_discount':
-                        sol.discount = 0.0
+                        sol_sudo.discount = 0.0
 
     @api.model
     def _search_fsm_quantity(self, operator, value):

@@ -2,57 +2,35 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
 from odoo import Command
-from odoo.tests import new_test_user, tagged, TransactionCase
+from odoo.exceptions import AccessError
+from odoo.tests import tagged
+from odoo.tests.common import users
 
+from .common import TestIndustryFsmCommon
 
 @tagged('post_install', '-at_install')
-class TestFsmFlow(TransactionCase):
-
+class TestFsmFlow(TestIndustryFsmCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.fsm_project = cls.env['project.project'].create({
-            'name': 'Field Service',
-            'is_fsm': True,
-            'allow_timesheets': True,
-        })
-
-        cls.user_employee_timer_timesheet = new_test_user(cls.env, login='marcel', groups='industry_fsm.group_fsm_user')
-        cls.user_employee_timer_task = new_test_user(cls.env, login='henri', groups='industry_fsm.group_fsm_user')
-        cls.user_employee_mark_as_done = new_test_user(cls.env, login='george', groups='industry_fsm.group_fsm_user')
-        cls.employee_timer_timesheet = cls.env['hr.employee'].create({
-            'name': 'Employee Timesheet Timer',
-            'user_id': cls.user_employee_timer_timesheet.id,
-        })
-        cls.employee_timer_task = cls.env['hr.employee'].create({
-            'name': 'Employee Task Timer',
-            'user_id': cls.user_employee_timer_task.id,
-        })
-        cls.employee_mark_as_done = cls.env['hr.employee'].create({
-            'name': 'Employee Mark As Done',
-            'user_id': cls.user_employee_mark_as_done.id,
-        })
-        cls.partner_1 = cls.env['res.partner'].create({'name': 'A Test Partner 1'})
-        cls.task = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
-            'name': 'Fsm task',
-            'user_ids': [Command.set([cls.user_employee_mark_as_done.id])],
-            'project_id': cls.fsm_project.id,
-            'partner_id': cls.partner_1.id,
+        cls.project = cls.env['project.project'].create({
+            'name': 'project 2',
+            'privacy_visibility': 'followers',
         })
 
     def test_stop_timers_on_mark_as_done(self):
         self.assertEqual(len(self.task.sudo().timesheet_ids), 0, 'There is no timesheet associated to the task')
-        timesheet = self.env['account.analytic.line'].with_user(self.user_employee_timer_timesheet).create({'name': '', 'project_id': self.fsm_project.id})
+        timesheet = self.env['account.analytic.line'].with_user(self.marcel_user).create({'name': '', 'project_id': self.fsm_project.id})
         timesheet.action_add_time_to_timer(3)
         timesheet.action_change_project_task(self.fsm_project.id, self.task.id)
         self.assertTrue(timesheet.user_timer_id, 'A timer is linked to the timesheet')
         self.assertTrue(timesheet.user_timer_id.is_timer_running, 'The timer linked to the timesheet is running')
-        task_with_user_employee_timer_task = self.task.with_user(self.user_employee_timer_task)
-        task_with_user_employee_timer_task.action_timer_start()
-        self.assertTrue(task_with_user_employee_timer_task.user_timer_id, 'A timer is linked to the task')
-        self.assertTrue(task_with_user_employee_timer_task.user_timer_id.is_timer_running, 'The timer linked to the task is running')
-        task_with_user_employee_mark_as_done = self.task.with_user(self.user_employee_mark_as_done)
-        result = task_with_user_employee_mark_as_done.action_fsm_validate()
+        task_with_henri_user = self.task.with_user(self.henri_user)
+        task_with_henri_user.action_timer_start()
+        self.assertTrue(task_with_henri_user.user_timer_id, 'A timer is linked to the task')
+        self.assertTrue(task_with_henri_user.user_timer_id.is_timer_running, 'The timer linked to the task is running')
+        task_with_george_user = self.task.with_user(self.george_user)
+        result = task_with_george_user.action_fsm_validate()
         self.assertEqual(result['type'], 'ir.actions.act_window', 'As there are still timers to stop, an action is returned')
         Timer = self.env['timer.timer']
         tasks_running_timer_ids = Timer.search([('res_model', '=', 'project.task'), ('res_id', '=', self.task.id)])
@@ -68,3 +46,42 @@ class TestFsmFlow(TransactionCase):
         self.task.invalidate_model(['timesheet_ids'])
         self.assertFalse(tasks_running_timer_ids, 'There is no more timer linked to the task')
         self.assertEqual(len(self.task.sudo().timesheet_ids), 2, 'There are two timesheets')
+
+    def test_mark_task_done_stage_assignment(self):
+        self.assertFalse(self.fsm_project.type_ids)
+        fold = [False, True, True, True]
+        sequences = [5, 10, 40, 50]
+        stage_1, stage_2, stage_3, stage_4 = self.env['project.task.type'].create([{
+            'name': f'stage {i+1}',
+            'fold': fold[i],
+            'sequence': sequences[i],
+            'project_ids': self.fsm_project.ids,
+        } for i in range(len(fold))])
+        self.assertTrue(self.fsm_project.type_ids)
+
+        (self.task + self.second_task).write({
+            'stage_id': stage_1.id,
+        })
+        self.task.action_fsm_validate()
+        self.assertEqual(self.task.stage_id, stage_2, 'task is in stage 2 which is fold and with the lowest sequence of fold stages')
+
+        (stage_2 + stage_3 + stage_4).fold = False
+
+        second_task = self.env['project.task'].create({
+            'name': 'Fsm task 2',
+            'project_id': self.fsm_project.id,
+            'partner_id': self.partner.id,
+            'stage_id': stage_1.id,
+        })
+
+        second_task.action_fsm_validate()
+        self.assertEqual(second_task.stage_id, stage_4, "second_task is in stage 4 as there isn't any fold stages in second_task's project stages and as stage_4 has the highest sequence number.")
+
+    @users('Project user', 'Project admin', 'Base user')
+    def test_base_user_no_create_stop_timers_wizard(self):
+        with self.assertRaises(AccessError):
+            self.env['project.task.stop.timers.wizard'].with_user(self.env.user).create({'line_ids': [Command.create({'task_id': self.task.id})]})
+
+    @users('Fsm user')
+    def test_fsm_user_can_create_stop_timers_wizard(self):
+        self.env['project.task.stop.timers.wizard'].with_user(self.env.user).create({'line_ids': [Command.create({'task_id': self.task.id})]})

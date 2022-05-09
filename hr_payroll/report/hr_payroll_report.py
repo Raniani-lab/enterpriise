@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from ast import literal_eval
 from psycopg2 import sql
 
-from odoo import fields, models, tools
+from odoo import api, fields, models, tools
 
 
 class HrPayrollReport(models.Model):
@@ -118,3 +119,12 @@ class HrPayrollReport(models.Model):
             sql.SQL("CREATE or REPLACE VIEW {} as ({})").format(
                 sql.Identifier(self._table),
                 sql.SQL(query)))
+
+    @api.model
+    def _get_action(self):
+        # We have to make a method as literal_eval is forbidden in the server action safe_eval context
+        action = self.env['ir.actions.act_window']._for_xml_id('hr_payroll.payroll_report_action')
+        context = literal_eval(action.get('context', '{}'))
+        context.update({'country_code': self.env.company.country_id.code.lower()})
+        action['context'] = context
+        return action

@@ -159,7 +159,6 @@ class TestPayrollCreditTime(TestPayrollCommon):
         leave.action_validate()
 
         # Credit time
-        # import pdb; pdb.set_trace()
         wizard = self.env['l10n_be.hr.payroll.schedule.change.wizard'].with_context(allowed_company_ids=self.belgian_company.ids, active_id=a_current_contract.id).new({
             'date_start': date(today.year, 6, 1),
             'date_end': date(today.year, 8, 31),

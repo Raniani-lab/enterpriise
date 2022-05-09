@@ -91,7 +91,7 @@
     <!-- **** Reporting **** -->
     <menuitem id="menu_report_payroll"
         name="Payroll"
-        action="payroll_report_action"
+        action="ir_actions_server_action_open_reporting"
         sequence="10"
         parent="menu_hr_payroll_report"/>
 

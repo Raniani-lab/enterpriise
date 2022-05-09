@@ -44,7 +44,7 @@
             <field name="name">payroll.report.pivot</field>
             <field name="model">hr.payroll.report</field>
             <field name="arch" type="xml">
-                <pivot string="Payroll Analysis" sample="1">
+                <pivot string="Payroll Analysis" sample="1" js_class="hr_payroll_report_pivot">
                     <field name="master_department_id" type="row"/>
                     <field name="department_id" type="row"/>
                     <field name="count" type="measure"/>

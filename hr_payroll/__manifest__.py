@@ -38,6 +38,7 @@
         'data/mail_data.xml',
         'data/mail_template_data.xml',
         'data/ir_cron_data.xml',
+        'data/ir_actions_server_data.xml',
         'data/note_data.xml',
         'views/res_config_settings_views.xml',
         'views/report_contributionregister_templates.xml',

@@ -23,17 +23,21 @@ class AccountMove(models.Model):
 
         return posted
 
+    def _send_to_avatax(self):
+        self.ensure_one()
+        return self.fiscal_position_id.is_avatax and self.move_type in ("out_invoice", "out_refund")
+
     def button_draft(self):
         super().button_draft()
-        for record in self.filtered(lambda m: m.fiscal_position_id.is_avatax):
+        for record in self.filtered(lambda m: m._send_to_avatax()):
             record._uncommit_avatax_transaction()
 
     def button_update_avatax(self, commit=False):
-        for record in self.filtered(lambda m: m.fiscal_position_id.is_avatax):
+        for record in self.filtered(lambda m: m._send_to_avatax()):
             record._compute_avalara_taxes(commit)
 
     def unlink(self):
-        for record in self.filtered(lambda m: m.fiscal_position_id.is_avatax):
+        for record in self.filtered(lambda m: m._send_to_avatax()):
             record._void_avatax_transaction()
         super().unlink()
 

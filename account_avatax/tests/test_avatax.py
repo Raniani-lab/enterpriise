@@ -122,6 +122,15 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
 
         self.assertEqual(capture.val['json']['code'], 'DocVoided', 'Should have tried to void without raising on EntityNotFoundError.')
 
+    def test_journal_entry(self):
+        entry, _ = self._create_invoice_01_and_expected_response()
+        entry.move_type = 'entry'
+
+        with self._capture_request(return_value={'lines': [], 'summary': []}) as capture:
+            entry.action_post()
+
+        self.assertIsNone(capture.val, "Journal entries should not be sent to Avatax.")
+
 
 @tagged("-at_install", "post_install")
 class TestAccountAvalaraSalesTaxAdministration(TestAccountAvataxCommon):

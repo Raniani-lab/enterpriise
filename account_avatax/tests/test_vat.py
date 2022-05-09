@@ -28,10 +28,10 @@ class TestAccountAvalaraVAT(TestAccountAvataxCommon):
                 'partner_shipping_id': cls.shipping_partner.id,
                 'fiscal_position_id': cls.fp_avatax.id,
                 'invoice_date': '2021-01-01',
+                'move_type': 'out_invoice',
                 'invoice_line_ids': [
                     (0, 0, {
                         'product_id': cls.product.id,
-                        'tax_id': None,
                         'price_unit': cls.product.list_price,
                     }),
                 ]

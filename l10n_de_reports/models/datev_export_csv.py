@@ -410,6 +410,9 @@ class DatevExportCSV(models.AbstractModel):
 
                 if aml.price_total != 0:
                     line_amount = aml.price_total
+                    # convert line_amount in company currency
+                    if aml.currency_id != aml.company_id.currency_id:
+                        line_amount = line_amount / (aml.amount_currency / aml.balance)
                 else:
                     line_amount = aml.balance
 
@@ -463,6 +466,8 @@ class DatevExportCSV(models.AbstractModel):
                 currency = aml.company_id.currency_id
                 line_values[match_key] = {
                     'waehrung': currency.name,
+                    'line_base_amount': float_repr(aml.price_total, aml.currency_id.decimal_places).replace('.', ','),
+                    'line_base_currency': aml.currency_id.name,
                     'sollhaben': letter,
                     'buschluessel': code_correction,
                     'gegenkonto': to_account_code,
@@ -470,7 +475,7 @@ class DatevExportCSV(models.AbstractModel):
                     'belegfeld2': receipt2,
                     'datum': datetime.strftime(aml.move_id.date, '%-d%m'),
                     'konto': account_code or '',
-                    'kurs': str(currency.rate).replace('.', ','),
+                    'kurs': str(aml.currency_id.rate).replace('.', ','),
                     'buchungstext': receipt1,
                     'line_amount': line_amount
                 }
@@ -491,6 +496,10 @@ class DatevExportCSV(models.AbstractModel):
                 array[0] = float_repr(line_value['line_amount'], aml.company_id.currency_id.decimal_places).replace('.', ',')
                 array[1] = line_value.get('sollhaben')
                 array[2] = line_value.get('waehrung')
+                if line_value.get('line_base_currency') != line_value.get('waehrung'):
+                    array[3] = line_value.get('kurs')
+                    array[4] = line_value.get('line_base_amount')
+                    array[5] = line_value.get('line_base_currency')
                 array[6] = line_value.get('konto')
                 array[7] = line_value.get('gegenkonto')
                 array[8] = line_value.get('buschluessel')

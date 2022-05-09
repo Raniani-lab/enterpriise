@@ -11,7 +11,7 @@ class SignRequest extends LegacyComponent {
      */
      setup() {
         super.setup();
-        useComponentToModel({ fieldName: 'component', modelName: 'SignRequestView' });
+        useComponentToModel({ fieldName: 'component' });
     }
 
     //--------------------------------------------------------------------------
@@ -22,13 +22,13 @@ class SignRequest extends LegacyComponent {
      * @returns {SignRequestView}
      */
     get signRequestView() {
-        return this.messaging && this.messaging.models['SignRequestView'].get(this.props.localId);
+        return this.props.record;
     }
 
 }
 
 Object.assign(SignRequest, {
-    props: { localId: String },
+    props: { record: Object },
     template: 'sign.SignRequest',
 });
 

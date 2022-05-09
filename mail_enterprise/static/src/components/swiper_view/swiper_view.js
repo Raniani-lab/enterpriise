@@ -23,13 +23,13 @@ export class SwiperView extends Component {
      * @returns {SwiperView}
      */
     get swiperView() {
-        return this.messaging && this.messaging.models['SwiperView'].get(this.props.localId);
+        return this.props.record;
     }
 }
 
 Object.assign(SwiperView, {
     components: { ActionSwiper },
-    props: { localId: String },
+    props: { record: Object },
     template: 'mail_enterprise.SwiperView',
 });
 

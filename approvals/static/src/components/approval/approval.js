@@ -11,7 +11,7 @@ class Approval extends LegacyComponent {
      */
      setup() {
         super.setup();
-        useComponentToModel({ fieldName: 'component', modelName: 'ApprovalView' });
+        useComponentToModel({ fieldName: 'component' });
     }
 
     //--------------------------------------------------------------------------
@@ -22,13 +22,13 @@ class Approval extends LegacyComponent {
      * @returns {ApprovalView}
      */
     get approvalView() {
-        return this.messaging && this.messaging.models['ApprovalView'].get(this.props.localId);
+        return this.props.record;
     }
 
 }
 
 Object.assign(Approval, {
-    props: { localId: String },
+    props: { record: Object },
     template: 'approvals.Approval',
 });
 

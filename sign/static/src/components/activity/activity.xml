@@ -4,7 +4,7 @@
     <t t-inherit="mail.Activity" t-inherit-mode="extension">
         <xpath expr="//*[hasclass('o_Activity_markDoneButton')]" position="replace">
             <t t-if="activityView.signRequestView">
-                <SignRequest localId="activityView.signRequestView.localId"/>
+                <SignRequest record="activityView.signRequestView"/>
             </t>
             <t t-else="">$0</t>
         </xpath>

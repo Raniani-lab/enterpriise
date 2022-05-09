@@ -11,7 +11,7 @@
                         <t
                             t-component="constructor.components[swiperView.componentName]"
                             className="'o_SwiperView_component'"
-                            t-props="{ localId: swiperView.record.localId }"
+                            t-props="{ record: swiperView.record }"
                         />
                     </t>
                 </ActionSwiper>

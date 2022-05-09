@@ -118,6 +118,11 @@
         <field name="code">OWEDREMUNERATION</field>
     </record>
 
+    <record id="hr_salary_rule_category_onss_employer_detail" model="hr.salary.rule.category">
+        <field name="name">ONSS Detail (Employer)</field>
+        <field name="code">ONSSEMPLOYERDETAIL</field>
+    </record>
+
     <record id="hr_salary_rule_category_onss_employer" model="hr.salary.rule.category">
         <field name="name">ONSS (Employer)</field>
         <field name="code">ONSSEMPLOYER</field>

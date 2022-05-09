@@ -5,7 +5,6 @@ import ast
 
 from odoo import api, fields, models
 
-EMPLOYER_ONSS = 0.2714
 
 class HrContract(models.Model):
     _inherit = 'hr.contract'

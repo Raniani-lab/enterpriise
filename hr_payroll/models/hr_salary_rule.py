@@ -170,7 +170,13 @@ result = rules.NET > categories.NET * 0.10''',
             self.env['hr.payroll.report'].init()
 
     def _remove_payroll_report_fields(self):
+        # Note: should be called after the value is changed, aka after the
+        # super call of the write method
+        remaining_rules = self.env['hr.salary.rule'].search([('appears_on_payroll_report', '=', True)])
+        all_remaining_field_names = [rule._get_report_field_name() for rule in remaining_rules]
         field_names = [rule._get_report_field_name() for rule in self]
+        # Avoid to unlink a field if another rule request it (example: ONSSEMPLOYER)
+        field_names = [field_name for field_name in field_names if field_name not in all_remaining_field_names]
         model = self.env.ref('hr_payroll.model_hr_payroll_report')
         fields_to_unlink = self.env['ir.model.fields'].search([
             ('name', 'in', field_names),
@@ -195,3 +201,7 @@ result = rules.NET > categories.NET * 0.10''',
             else:
                 self._remove_payroll_report_fields()
         return res
+
+    def unlink(self):
+        self.write({'appears_on_payroll_report': False})
+        return super().unlink()

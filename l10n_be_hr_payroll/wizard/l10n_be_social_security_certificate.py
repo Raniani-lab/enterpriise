@@ -85,7 +85,9 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
                 'PAY DOUBLE COMPLEMENTARY', 'SALARY', 'SALARY', 'ONSSTOTAL', 'ONSSEMPLOYER', 'ONSS1',
                 'ONSS2', 'ONSS', 'ONSS', 'ONSS', 'REP.FEES', 'REP.FEES.VOLATILE', 'CAR.PRIV', 'P.P', 'M.ONSS',
                 'ATTACH_SALARY', 'ATN.CAR.2', 'ATN.MOB.2', 'ATN.INT.2', 'ATN.LAP.2', 'MEAL_V_EMP',
-                'IMPULSION25', 'IMPULSION12', 'ASSIG_SALARY', 'ADVANCE', 'NET', 'P.P.DED']
+                'IMPULSION25', 'IMPULSION12', 'ASSIG_SALARY', 'ADVANCE', 'NET', 'P.P.DED',
+                'ONSSEMPLOYERBASIC', 'ONSSEMPLOYERFFE', 'ONSSEMPLOYERMFFE', 'ONSSEMPLOYERCPAE',
+                'ONSSEMPLOYERRESTREINT', 'ONSSEMPLOYERUNEMP']
             all_values = aggregate_payslips._get_line_values(code_list, vals_list=['total', 'quantity'])
 
             gross_before_onss = _get_total(monthly_slips, all_values, ['BASIC', 'COMMISSION'])
@@ -124,17 +126,12 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             net = _get_total(aggregate_payslips, all_values, ['NET'])
             total_net = net + salary_advance
 
-            basis_termination = _get_total(termination_slips, all_values, ['BASIC'])
-            basis = _get_total(monthly_slips + thirteen_slips, all_values, ['SALARY']) \
-                  + _get_total(holiday_slips, all_values, ['PAY_SIMPLE']) \
-
-            ffe_rate = self.company_id._get_ffe_contribution_rate(worker_count) + 0.0014
             # Cotisation patronnale de base =
-            # FFE + Special FFE + CPAE + Modération Salariale + Chomage temporaire
-            global_rate = 0.3810 + 0.0023 + (0.0169 if worker_count >= 10 else 0) + 0.0010 - 0.1307
-            emp_onss = basis * global_rate
-            emp_termination_onss = basis_termination * global_rate
-            closure_fund = (basis + basis_termination) * ffe_rate
+            # Global Rate (without employee part) + FFE + Special FFE + CPAE + Modération Salariale + Chomage temporaire
+            # global_rate = 0.3810 + 0.0023 + (0.0169 if worker_count >= 10 else 0) + 0.0010 - 0.1307
+            emp_onss = _get_total(monthly_slips + thirteen_slips + holiday_slips, all_values, ['ONSSEMPLOYER'])
+            emp_termination_onss = _get_total(termination_slips, all_values, ['ONSSEMPLOYER'])
+            closure_fund = _get_total(termination_slips + monthly_slips + thirteen_slips + holiday_slips, all_values, ['ONSSEMPLOYERFFE', 'ONSSEMPLOYERMFFE'])
             charges_redistribution = 0
 
             if 'vehicle_id' in self.env['hr.payslip']:

@@ -512,7 +512,7 @@ class DMFAWorkerContributionFFE(DMFANode):
         self.calculation_basis = format_amount(basis)
         self.worker_count = worker_count
         # Cotisations de base FFE
-        rate = payslips[0].company_id._get_ffe_contribution_rate(worker_count)
+        rate = payslips[0]._get_ffe_contribution_rate(worker_count)
         self.amount = format_amount(round(basis * rate, 2))
         self.first_hiring_date = -1
 

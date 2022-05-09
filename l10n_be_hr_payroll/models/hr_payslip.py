@@ -9,7 +9,6 @@ from datetime import date, timedelta
 from odoo import api, models, fields, _
 from odoo.tools import float_round, date_utils, ormcache
 from odoo.exceptions import UserError
-from odoo.addons.l10n_be_hr_payroll.models.hr_contract import EMPLOYER_ONSS
 
 
 class Payslip(models.Model):
@@ -373,7 +372,6 @@ class Payslip(models.Model):
             'compute_holiday_pay_recovery_n': compute_holiday_pay_recovery_n,
             'compute_holiday_pay_recovery_n1': compute_holiday_pay_recovery_n1,
             'compute_termination_n_basic_double': compute_termination_n_basic_double,
-            'EMPLOYER_ONSS': EMPLOYER_ONSS,
         })
         return res
 
@@ -672,6 +670,19 @@ class Payslip(models.Model):
                 'IP.DED': _('Intellectual Property Income Deduction'),
             })
         return res
+
+    def _get_ffe_contribution_rate(self, worker_count):
+        # Fond de fermeture d'entreprise
+        # https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/basiccontributions_closingcompanyfunds.html
+        self.ensure_one()
+        if self.company_id.l10n_be_ffe_employer_type == 'commercial':
+            if worker_count < 20:
+                rate = self.env['hr.rule.parameter']._get_parameter_from_code('l10n_be_ffe_commercial_rate_low', self.date_to)
+            else:
+                rate = self.env['hr.rule.parameter']._get_parameter_from_code('l10n_be_ffe_commercial_rate_high', self.date_to)
+        else:
+            rate = self.env['hr.rule.parameter']._get_parameter_from_code('l10n_be_ffe_noncommercial_rate', self.date_to)
+        return rate
 
 def compute_termination_withholding_rate(payslip, categories, worked_days, inputs):
     # See: https://www.securex.eu/lex-go.nsf/vwReferencesByCategory_fr/52DA120D5DCDAE78C12584E000721081?OpenDocument

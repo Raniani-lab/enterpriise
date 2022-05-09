@@ -985,5 +985,109 @@
             <field name="date_from" eval="datetime(2022, 4, 1).date()"/>
         </record>
 
+        <!-- https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/specialcontribution_closingcompanyfunds.html -->
+        <record id="rule_parameter_cp200_global_rate" model="hr.rule.parameter">
+            <field name="name">CP200: Global ONSS Employer Rate</field>
+            <field name="code">l10n_be_global_rate</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_global_rate_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">38.09</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_global_rate"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_cp200_global_rate_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">38.10</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_global_rate"/>
+            <field name="date_from" eval="datetime(2022, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_cp200_special_ffe_rate" model="hr.rule.parameter">
+            <field name="name">CP200: Special FFE Rate</field>
+            <field name="code">l10n_be_special_ffe_rate</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_special_ffe_rate_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">0.10</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_special_ffe_rate"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_cp200_cpae_rate" model="hr.rule.parameter">
+            <field name="name">CP200: CPAE Rate</field>
+            <field name="code">l10n_be_cpae_rate</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_cpae_rate_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">0.23</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_cpae_rate"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_cp200_wage_restreint" model="hr.rule.parameter">
+            <field name="name">CP200: Wage Restreint Rate</field>
+            <field name="code">l10n_be_wage_restreint</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_wage_restreint_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">1.69</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_wage_restreint"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_cp200_temporary_unemployment" model="hr.rule.parameter">
+            <field name="name">CP200: Temporary Unemployment Rate</field>
+            <field name="code">l10n_be_temporary_unemployment_rate</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_temporary_unemployment_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">0.10</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_temporary_unemployment"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_cp200_ffe_commercial_rate_low" model="hr.rule.parameter">
+            <field name="name">CP200: FFE commercial rate (low)</field>
+            <field name="code">l10n_be_ffe_commercial_rate_low</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_ffe_commercial_rate_low_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">0.13</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_ffe_commercial_rate_low"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_cp200_ffe_commercial_rate_low_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">0.07</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_ffe_commercial_rate_low"/>
+            <field name="date_from" eval="datetime(2022, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_cp200_ffe_commercial_rate_high" model="hr.rule.parameter">
+            <field name="name">CP200: FFE commercial rate (high)</field>
+            <field name="code">l10n_be_ffe_commercial_rate_high</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_ffe_commercial_rate_high_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">0.18</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_ffe_commercial_rate_high"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_cp200_ffe_commercial_rate_high_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">0.13</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_ffe_commercial_rate_high"/>
+            <field name="date_from" eval="datetime(2022, 1, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_cp200_ffe_noncommercial_rate" model="hr.rule.parameter">
+            <field name="name">CP200: FFE non-commercial rate</field>
+            <field name="code">l10n_be_ffe_noncommercial_rate</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_cp200_ffe_noncommercial_rate_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">0.02</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_ffe_noncommercial_rate"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+
     </data>
 </odoo>

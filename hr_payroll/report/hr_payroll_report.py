@@ -74,8 +74,12 @@ class HrPayrollReport(models.Model):
                 CASE WHEN wet.is_leave IS NOT TRUE THEN '1' WHEN wd.amount = 0 THEN '3' ELSE '2' END as work_type,
                 wd.number_of_days as number_of_days,
                 wd.number_of_hours as number_of_hours,"""
+        handled_fields = []
         for rule in additional_rules:
             field_name = rule._get_report_field_name()
+            if field_name in handled_fields:
+                continue
+            handled_fields.append(field_name)
             select_str += """
                 CASE WHEN wd.id = min_id.min_line THEN %s.total ELSE 0 END as %s,""" % (field_name, field_name)
         select_str += """
@@ -97,8 +101,12 @@ class HrPayrollReport(models.Model):
                 left join hr_payslip_line plg on (plg.slip_id = p.id and plg.code = 'GROSS')
                 left join hr_contract c on (p.contract_id = c.id)
                 left join hr_department d on (e.department_id = d.id)"""
+        handled_fields = []
         for rule in additional_rules:
             field_name = rule._get_report_field_name()
+            if field_name in handled_fields:
+                continue
+            handled_fields.append(field_name)
             from_str += """
                 left join hr_payslip_line %s on (%s.slip_id = p.id and %s.code = '%s')""" % (
                     field_name, field_name, field_name, rule.code)
@@ -107,8 +115,12 @@ class HrPayrollReport(models.Model):
     def _group_by(self, additional_rules):
         group_by_str = """
             GROUP BY """
+        handled_fields = []
         for rule in additional_rules:
             field_name = rule._get_report_field_name()
+            if field_name in handled_fields:
+                continue
+            handled_fields.append(field_name)
             group_by_str += """
                 %s.total,""" % (field_name)
         group_by_str += """

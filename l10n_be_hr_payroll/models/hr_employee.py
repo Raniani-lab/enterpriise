@@ -7,8 +7,6 @@ from functools import reduce
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, AccessError
 
-EMPLOYER_ONSS = 0.2714
-
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'

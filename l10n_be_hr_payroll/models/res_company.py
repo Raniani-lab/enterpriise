@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
+from odoo.tools import ormcache
 from odoo.exceptions import ValidationError
 
 
@@ -19,6 +20,13 @@ class ResCompany(models.Model):
         ('non_commercial', 'Employers without industrial or commercial purposes'),
     ], default='commercial')
     sdworx_code = fields.Char("SDWorx code", groups="hr.group_hr_user")
+
+    @ormcache('self.id')
+    def _get_workers_count(self):
+        self.ensure_one()
+        return len(self.env['hr.contract'].search([
+            ('state', '=', 'open'),
+            ('company_id', '=', self.id)]).employee_id)
 
     @api.constrains('sdworx_code')
     def _check_sdworx_code(self):
@@ -57,16 +65,3 @@ class ResCompany(models.Model):
                 ],
             })
         return vals
-
-    def _get_ffe_contribution_rate(self, worker_count):
-        # Fond de fermeture d'entreprise
-        # https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/basiccontributions_closingcompanyfunds.html
-        self.ensure_one()
-        if self.l10n_be_ffe_employer_type == 'commercial':
-            if worker_count < 20:
-                rate = 0.0007
-            else:
-                rate = 0.0013
-        else:
-            rate = 0.0002
-        return rate

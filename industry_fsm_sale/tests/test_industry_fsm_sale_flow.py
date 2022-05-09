@@ -206,3 +206,56 @@ class TestFsmFlowSale(TestFsmFlowCommon):
         self.assertEqual(order_line.product_uom_qty, expected_product_count)
         self.assertEqual(order_line.price_subtotal, order_line.untaxed_amount_to_invoice)
         self.assertEqual(self.task.material_line_product_count, expected_product_count)
+
+    def test_invoicing_flow(self):
+        self.service_product_ordered.write({
+            'detailed_type': 'service',
+            'service_policy': 'ordered_prepaid',
+        })
+        self.service_product_delivered.write({
+            'detailed_type': 'service',
+            'service_policy': 'delivered_timesheet',
+        })
+
+        self.fsm_project.write({
+            'timesheet_product_id': self.service_product_delivered.id,
+        })
+
+        self.task.write({
+            'partner_id': self.partner_1,
+        })
+
+        self.assertFalse(self.task.sale_order_id)
+        self.assertFalse(self.task.sale_line_id)
+        self.assertFalse(self.task.task_to_invoice)
+        self.service_product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).set_fsm_quantity(9)
+        self.assertEqual(self.task.sale_order_id.state, 'draft')
+        self.assertEqual(len(self.task.sale_order_id.order_line), 1)
+
+        first_order_line = self.task.sale_order_id.order_line
+        self.assertEqual(first_order_line.product_uom_qty, 9)
+        self.assertFalse(self.task.task_to_invoice)
+        self.assertFalse(self.task.display_create_invoice_primary)
+        self.assertFalse(self.task.sale_line_id)
+
+        self.task.action_fsm_validate()
+        self.assertEqual(self.task.sale_line_id.product_id, self.service_product_delivered)
+        self.assertEqual(self.task.sale_order_id.state, 'sale')
+        self.assertEqual(len(self.task.sale_order_id.order_line), 2)
+        second_order_line = self.task.sale_line_id
+        self.assertEqual(second_order_line.project_id, self.fsm_project)
+        self.assertEqual(second_order_line.task_id, self.task)
+        self.assertTrue(second_order_line.is_service)
+        self.assertEqual(second_order_line.qty_delivered_method, 'timesheet')
+
+        self.assertTrue(self.task.task_to_invoice)
+        self.assertTrue(self.task.display_create_invoice_primary)
+        self.task.sale_order_id._create_invoices()
+        self.assertEqual(self.task.invoice_count, 1)
+        self.assertFalse(self.task.display_create_invoice_primary)
+
+        self.service_product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
+        self.assertTrue(self.task.display_create_invoice_primary)
+        self.task.sale_order_id._create_invoices()
+        self.assertEqual(self.task.invoice_count, 2)
+        self.assertFalse(self.task.display_create_invoice_primary)

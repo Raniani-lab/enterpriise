@@ -43,7 +43,7 @@ class TestFsmFlowCommon(TransactionCase):
             'user_ids': cls.project_user,
             'project_id': cls.fsm_project.id})
 
-        cls.product_ordered = cls.env['product.product'].create({
+        cls.service_product_ordered = cls.env['product.product'].create({
             'name': 'Individual Workplace',
             'list_price': 885.0,
             'type': 'service',
@@ -51,12 +51,26 @@ class TestFsmFlowCommon(TransactionCase):
             'taxes_id': False,
         })
 
-        cls.product_delivered = cls.env['product.product'].create({
+        cls.service_product_delivered = cls.env['product.product'].create({
             'name': 'Acoustic Bloc Screens',
             'list_price': 2950.0,
             'type': 'service',
             'invoice_policy': 'delivery',
             'taxes_id': False,
+        })
+
+        cls.consu_product_delivered = cls.env['product.product'].create({
+            'name': 'Consommable product delivery',
+            'list_price': 40,
+            'type': 'consu',
+            'invoice_policy': 'delivery',
+        })
+
+        cls.consu_product_ordered = cls.env['product.product'].create({
+            'name': 'Consommable product ordered',
+            'list_price': 50.5,
+            'type': 'consu',
+            'invoice_policy': 'order',
         })
 
 

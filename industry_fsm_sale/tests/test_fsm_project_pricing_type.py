@@ -47,7 +47,7 @@ class TestFsmProjectPricingType(TestFsmFlowSaleCommon):
             'sale_line_employee_ids': [
                 Command.create({
                     'employee_id': self.employee_user.id,
-                    'timesheet_product_id': self.product_ordered.id,
+                    'timesheet_product_id': self.service_product_ordered.id,
                 }),
             ]
         })

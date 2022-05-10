@@ -48,7 +48,16 @@ class ReportPartnerLedger(models.AbstractModel):
         exch_code = self.env['res.company'].browse(self.env.context.get('company_ids')).mapped('currency_exchange_journal_id')
         if exch_code:
             domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id', 'in', exch_code.ids)]
+
+        domain += self._get_filter_partners_domain(options)
+
         return domain
+
+    def _get_filter_partners_domain(self, options):
+        if options.get('filter_accounts'):
+            return [('partner_id', 'ilike', options['filter_accounts'])]
+
+        return []
 
     @api.model
     def _get_options_sum_balance(self, options):

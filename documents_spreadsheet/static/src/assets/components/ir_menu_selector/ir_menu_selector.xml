@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <t t-name="documents_spreadsheet.IrMenuSelector" owl="1">
+  <t t-name="documents_spreadsheet.IrMenuSelector" owl="1">
+      <MenuSelectorWidgetAdapter
+        class="'o-ir-menu-selector'"
+        Component="StandaloneMany2OneField"
+        menuId="props.menuId"
+        userGroups="userGroups"
+        onValueChanged="props.onValueChanged"
+        autoFocus="props.autoFocus"
+      />
+  </t>
+
+    <t t-name="documents_spreadsheet.IrMenuSelectorDialog" owl="1">
       <Dialog title="this.constructor.title" size="'sm'">
-        <MenuSelectorWidgetAdapter
-          class="'o-ir-menu-selector'"
-          Component="StandaloneMany2OneField"
+        <IrMenuSelector
           menuId="props.menuId"
-          userGroups="userGroups"
           onValueChanged.bind="_onValueChanged"
+          autoFocus="true"
         />
         <t t-set-slot="footer">
           <button class="btn btn-primary o-confirm" t-on-click.stop="_onConfirm" t-att-disabled="!selectedMenu.id">

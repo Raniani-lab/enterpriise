@@ -3,9 +3,9 @@
 import spreadsheet, { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
 import { _lt } from "@web/core/l10n/translation";
 
-import { IrMenuSelector } from "@documents_spreadsheet/assets/components/ir_menu_selector/ir_menu_selector";
+import { IrMenuSelectorDialog } from "@documents_spreadsheet/assets/components/ir_menu_selector/ir_menu_selector";
 
-import ir_ui_menu_plugin from "./ir_ui_menu_plugin"
+import IrMenuPlugin from "./ir_ui_menu_plugin"
 import {
     isMarkdownIrMenuIdLink,
     isMarkdownIrMenuXmlLink,
@@ -24,7 +24,7 @@ import {
 const { uiPluginRegistry, cellRegistry, linkMenuRegistry } = spreadsheet.registries;
 const { parseMarkdownLink, markdownLink } = spreadsheet.helpers;
 
-uiPluginRegistry.add("ir_ui_menu_plugin", ir_ui_menu_plugin);
+uiPluginRegistry.add("ir_ui_menu_plugin", IrMenuPlugin);
 
 cellRegistry.add("OdooMenuIdLink", {
     sequence: 65,
@@ -60,7 +60,7 @@ linkMenuRegistry.add("odooMenu", {
     sequence: 20,
     action: async (env) => {
         return new Promise((resolve) => {
-            const closeDialog = env.services.dialog.add(IrMenuSelector, {
+            const closeDialog = env.services.dialog.add(IrMenuSelectorDialog, {
                 onMenuSelected: (menuId) => {
                     closeDialog();
                     const menu = env.services.menu.getMenu(menuId);

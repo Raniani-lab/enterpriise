@@ -22,6 +22,13 @@ const StandaloneMany2OneField = Widget.extend(StandaloneFieldManagerMixin, {
         this.domain = domain;
         this.attrs = attrs;
     },
+    updateWidgetValue: async function (value) {
+        this.value = value;
+        await this._createM2OWidget();
+        const $content = $(qweb.render("documents_spreadsheet.StandaloneMany2OneField", {}));
+        this.$el.empty().append($content);
+        this.widget.appendTo($content);
+    },
     /**
      * @override
      */

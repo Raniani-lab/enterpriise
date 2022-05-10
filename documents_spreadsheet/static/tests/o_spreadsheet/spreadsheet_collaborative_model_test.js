@@ -9,6 +9,7 @@ import {
     editGlobalFilter,
     setCellContent,
     setGlobalFilterValue,
+    createBasicChart
 } from "../utils/commands_helpers";
 import { setupCollaborativeEnv } from "../utils/collaborative_helpers";
 import PivotDataSource from "@documents_spreadsheet/bundle/pivot/pivot_data_source";
@@ -598,5 +599,28 @@ QUnit.test("Re-insert and remove a list concurrently", async (assert) => {
         [alice, bob, charlie],
         (user) => user.getters.getPivotIds().length,
         0
+    );
+});
+
+QUnit.test("Chart link to odoo menu collaborative", async (assert) => {
+    const chartId = "1";
+    const sheetId = alice.getters.getActiveSheetId();
+    createBasicChart(alice, chartId);
+    await network.concurrent(() => {
+        alice.dispatch("DELETE_FIGURE", { id: chartId, sheetId });
+        bob.dispatch("LINK_ODOO_MENU_TO_CHART", {
+            chartId,
+            odooMenuId: "odooTestMenu",
+        });
+    });
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.getters.getFigures(sheetId),
+        []
+    );
+    assert.spreadsheetIsSynchronized(
+        [alice, bob, charlie],
+        (user) => user.getters.getChartOdooMenu(chartId),
+        undefined
     );
 });

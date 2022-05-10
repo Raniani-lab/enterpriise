@@ -6,16 +6,20 @@ import { _lt } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { StandaloneMany2OneField } from "../../widgets/standalone_many2one_field";
 
-const { Component, onMounted, onWillStart, useState, useExternalListener } = owl;
+const { Component, onMounted, onWillStart, useState, useExternalListener, useEffect } = owl;
 
 export class MenuSelectorWidgetAdapter extends ComponentAdapter {
     setup() {
         super.setup();
         this.env = Component.env;
         onMounted(() => {
-            this.widget.getFocusableElement().focus();
             this.widget.$el.addClass(this.props.class);
         });
+        useEffect(() => {
+            if(this.props.autoFocus){
+                this.widget.getFocusableElement().focus();
+            }
+        }, () => [this.props.autofocus, this.widget.getFocusableElement()]);
     }
 
     _trigger_up(ev) {
@@ -25,6 +29,17 @@ export class MenuSelectorWidgetAdapter extends ComponentAdapter {
         }
         super._trigger_up(ev);
     }
+
+    /**
+     * @override
+     */
+    async updateWidget(nextProps) {
+        if(nextProps.menuId !== this.props.menuId){
+            this.widget.updateWidgetValue(nextProps.menuId);
+        }
+    }
+
+    renderWidget() {}
 
     /**
      * @override
@@ -49,6 +64,18 @@ export class IrMenuSelector extends Component {
         this.StandaloneMany2OneField = StandaloneMany2OneField;
         this.user = useService("user");
         this.orm = useService("orm");
+        onWillStart(this.onWillStart);
+    }
+    async onWillStart() {
+        const [{ groups_id }] = await this.orm.read("res.users", [this.user.userId], ["groups_id"]);
+        this.userGroups = groups_id;
+    }
+}
+IrMenuSelector.components = { MenuSelectorWidgetAdapter };
+IrMenuSelector.template = "documents_spreadsheet.IrMenuSelector";
+
+export class IrMenuSelectorDialog extends Component {
+    setup() {
         this.selectedMenu = useState({
             id: undefined,
         });
@@ -59,12 +86,7 @@ export class IrMenuSelector extends Component {
         // However, the autocomplete dropdown of the Many2OneField widget is *not*
         // a child of this component. It's actually a direct child of "body" ¯\_(ツ)_/¯
         // The following external listener handles this.
-        useExternalListener(document.body, "click", (ev) => ev.stopPropagation())
-        onWillStart(this.onWillStart);
-    }
-    async onWillStart() {
-        const [{groups_id}] = await this.orm.read("res.users", [this.user.userId], ["groups_id"]);
-        this.userGroups = groups_id;
+        useExternalListener(document.body, "click", (ev) => ev.stopPropagation());
     }
     _onConfirm() {
         this.props.onMenuSelected(this.selectedMenu.id);
@@ -73,6 +95,6 @@ export class IrMenuSelector extends Component {
         this.selectedMenu.id = value;
     }
 }
-IrMenuSelector.components = { Dialog, MenuSelectorWidgetAdapter };
-IrMenuSelector.title = _lt("Select an Odoo menu to link in your spreadsheet");
-IrMenuSelector.template = "documents_spreadsheet.IrMenuSelector";
+IrMenuSelectorDialog.components = { Dialog, IrMenuSelector };
+IrMenuSelectorDialog.title = _lt("Select an Odoo menu to link in your spreadsheet");
+IrMenuSelectorDialog.template = "documents_spreadsheet.IrMenuSelectorDialog";

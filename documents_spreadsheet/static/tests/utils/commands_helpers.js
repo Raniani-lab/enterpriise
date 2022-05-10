@@ -73,3 +73,25 @@ export function autofill(model, from, to) {
 export function setCellContent(model, xc, content, sheetId = model.getters.getActiveSheetId()) {
     model.dispatch("UPDATE_CELL", { ...toCartesian(xc), sheetId, content });
 }
+
+/** Create a test chart in the active sheet*/
+export function createBasicChart(
+    model,
+    chartId,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    model.dispatch("CREATE_CHART", {
+        id: chartId,
+        position: { x: 0, y: 0 },
+        sheetId: sheetId,
+        definition: {
+            title: "test",
+            dataSets: ["A1"],
+            type: "bar",
+            background: "#fff",
+            verticalAxisPosition: "left",
+            legendPosition: "top",
+            stackedBar: false,
+        },
+    });
+}

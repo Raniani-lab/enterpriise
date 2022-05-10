@@ -9,6 +9,19 @@ export default class IrMenuPlugin extends UIPlugin {
         this.env = config.evalContext.env;
     }
 
+    /**
+     * Get an ir menu from an id or an xml id
+     * @param {number | string} menuId
+     * @returns {object | undefined}
+     */
+    getIrMenu(menuId) {
+        let menu = this.env.services.menu.getMenu(menuId);
+        if(!menu){
+            menu = this.env.services.menu.getAll().find((menu) => menu.xmlid === menuId);
+        }
+        return menu;
+    }
+
     getIrMenuNameById(menuId) {
         return this.env.services.menu.getMenu(menuId).name;
     }
@@ -29,4 +42,4 @@ export default class IrMenuPlugin extends UIPlugin {
         return menu;
     }
 }
-IrMenuPlugin.getters = ["getIrMenuNameByXmlId", "getIrMenuNameById", "getIrMenuIdByXmlId"];
+IrMenuPlugin.getters = ["getIrMenuNameByXmlId", "getIrMenuNameById", "getIrMenuIdByXmlId", "getIrMenu"];

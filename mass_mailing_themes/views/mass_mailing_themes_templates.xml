@@ -144,54 +144,36 @@
     <template id="theme_tech_template">
         <style id="design-element">
             h1 {
-                font-size: 35px;
+                font-weight: bolder;
                 color: #36a6d2;
-                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+                font-family: Courier New, Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
             }
             h2 {
-                font-size: 28px;
-                color: #212529;
-                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+                font-weight: bolder;
+                font-family: Courier New, Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
             }
             h3 {
                 font-size: 18px;
+                font-weight: bolder;
                 color: #36a6d2;
-                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+                font-family: Courier New, Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
             }
             p, p > *, li, li > * {
-                font-size: 14px;
                 color: #adadad;
-                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
             }
             a:not(.btn), a.btn-link {
-                text-decoration-line: none;
                 color: #36a6d2;
             }
             a.btn-primary, a.btn-outline-primary, a.btn-fill-primary {
-                font-size: 14px;
-                color: #FFFFFF;
                 background-color: #36a6d2;
                 border-color: #36a6d2;
-                border-style: solid;
-                border-width: 1px;
-            }
-            a.btn-secondary, a.btn-outline-secondary, a.btn-fill-secondary {
-                font-size: 14px;
-                color: #FFFFFF;
-                background-color: #685563;
-                border-color: #685563;
-                border-style: solid;
-                border-width: 1px;
             }
             hr {
                 border-top-color: #e9ecef;
-                border-top-style: solid;
-                border-top-width: 1px;
-                width: 100%;
             }
         </style>
         <t t-set="now" t-value="datetime.datetime.now()"/>
-        <div class="o_mail_snippet_general o_mail_block_header_social s_header_social" data-snippet="s_mail_block_header_social" data-name="Header Social">
+        <div class="s_header_social o_mail_block_header_social o_mail_snippet_general" data-snippet="s_mail_block_header_social" data-name="Header Social">
             <div class="o_mail_table_styles container">
                 <div class="row">
                     <div class="col-8 o_mail_logo_container pt40 pb32">
@@ -228,13 +210,13 @@
         <div class="s_text_image o_mail_snippet_general" data-snippet="s_text_image" data-name="Text - Image">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="pt16 pb16 col-lg-7">
+                    <div class="col-lg-7 pt16 pb16">
                         <h1>Breaking IT news
                             <br/>and Analysis</h1>
                         <p>Our roundup of the most popular and latest tech related videos from last week.<br/></p>
                         <div style="text-align:left;"><a class="btn btn-primary rounded-circle" href="#">VISIT OUR WEBSITE</a></div>
                     </div>
-                    <div class="px-0 col-lg-5">
+                    <div class="col-lg-5 px-0">
                         <img src="/mass_mailing_themes/static/src/img/theme_tech/tech_banner_image.jpg" class="img w-100"/>
                     </div>
                 </div>
@@ -243,12 +225,12 @@
         <div class="s_hr o_mail_snippet_general pt0 pb16" data-snippet="s_hr" data-name="Separator">
             <hr class="s_hr_1px s_hr_solid"/>
         </div>
-        <div class="s_media_list o_cc o_cc2 o_mail_snippet_general pb0 pt0 bg-white" data-vcss="001" data-snippet="s_media_list"  data-name="Media List">
+        <div class="s_media_list o_mail_snippet_general o_cc o_cc2 pb0 pt0 bg-white" data-snippet="s_media_list" data-vcss="001" data-name="Media List">
             <div class="container">
                 <div class="row s_nb_column_fixed s_col_no_bgcolor">
                     <div class="col-lg-12 s_media_list_item pb0 pt0" data-name="Media item">
                         <div class="row s_col_no_resize s_col_no_bgcolor no-gutters align-items-center o_cc o_cc1">
-                            <div class="col-lg-4 align-self-stretch s_media_list_img_wrapper">
+                            <div class="col-lg-4 s_media_list_img_wrapper align-self-stretch">
                                 <img src="/mass_mailing_themes/static/src/img/theme_tech/tech_media_list_image_1.jpg" class="s_media_list_img h-100 w-100"/>
                             </div>
                             <div class="col-lg-8 s_media_list_body">
@@ -256,7 +238,7 @@
                                 <p>Modern smartphones have all the built-in tech equal to a majority of the current professional cameras.</p>
                                 <a class="btn btn-primary rounded-circle" href="http://"><span class="fa fa-play" />&amp;nbsp;&amp;nbsp;WATCH VIDEO</a>
                                 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-                                <a class="btn btn-link" href="#"><font style="color: rgb(54, 166, 210);">READ MORE</font></a>
+                                <a class="btn btn-link" href="#">READ MORE</a>
                             </div>
                         </div>
                     </div>
@@ -271,7 +253,7 @@
                     </div>
                     <div class="col-lg-12 s_media_list_item pb0 pt0" data-name="Media item">
                         <div class="row s_col_no_resize s_col_no_bgcolor no-gutters align-items-center o_cc o_cc1">
-                            <div class="col-lg-4 align-self-stretch s_media_list_img_wrapper">
+                            <div class="col-lg-4 s_media_list_img_wrapper align-self-stretch">
                                 <img src="/mass_mailing_themes/static/src/img/theme_tech/tech_media_list_image_2.jpg" class="s_media_list_img h-100 w-100"/>
                             </div>
                             <div class="col-lg-8 s_media_list_body pt16 pb16">
@@ -283,7 +265,7 @@
                     </div>
                     <div class="col-lg-12 s_media_list_item pt0 pb0" data-name="Media item">
                         <div class="row s_col_no_resize s_col_no_bgcolor no-gutters align-items-center o_cc o_cc1">
-                            <div class="align-self-stretch s_media_list_img_wrapper col-lg-12">
+                            <div class="col-lg-12 s_media_list_img_wrapper align-self-stretch">
                                 <div class="s_hr o_mail_snippet_general pt16 pb16" data-snippet="s_hr" data-name="Separator">
                                     <hr class="s_hr_1px s_hr_solid"/>
                                 </div>
@@ -292,7 +274,7 @@
                     </div>
                     <div class="col-lg-12 s_media_list_item pt0 pb0" data-name="Media item">
                         <div class="row s_col_no_resize s_col_no_bgcolor no-gutters align-items-center o_cc o_cc1">
-                            <div class="col-lg-4 align-self-stretch s_media_list_img_wrapper">
+                            <div class="col-lg-4 s_media_list_img_wrapper align-self-stretch">
                                 <img src="/mass_mailing_themes/static/src/img/theme_tech/tech_media_list_image_3.jpg" class="s_media_list_img h-100 w-100"/>
                             </div>
                             <div class="col-lg-8 s_media_list_body">
@@ -309,17 +291,16 @@
             <hr class="s_hr_1px s_hr_solid"/>
         </div>
         <div class="s_footer_social o_mail_block_footer_social o_mail_footer_social_center o_mail_snippet_general" data-snippet="s_mail_block_footer_social" data-name="Footer Social Center">
-            <div cellspacing="0" cellpadding="0" class="container o_mail_table_styles">
+            <div class="container o_mail_table_styles">
                 <div class="row">
-                    <div class="col-lg o_mail_footer_links">
-                        <a href="/unsubscribe_from_list" class="btn btn-link"><font style="color: rgb(173, 173, 173);">Unsubscribe</font></a>
+                    <div class="col-lg-12 o_mail_footer_links">
+                        <a href="/unsubscribe_from_list" class="btn btn-link"><font style="color: rgb(147, 146, 146);">Unsubscribe</font></a>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg">
-                        <p class="o_mail_no_margin o_mail_footer_copy">
-                            <span title="Copyright" class="fa fa-copyright">​©</span>
-                            <t t-out="now.strftime('%Y')" /> All Rights Reserved
+                    <div class="col-lg-12">
+                        <p class="o_mail_footer_copy">
+                            © <t t-out="now.strftime('%Y')" /> All Rights Reserved
                         </p>
                     </div>
                 </div>

@@ -113,20 +113,23 @@ class ResPartner(models.Model):
         values = {
             read['partner_id'][0]: read['line_ids']
             for read in self.env['account.move.line'].read_group(
-                domain=[
-                    ('reconciled', '=', False),
-                    ('account_id.deprecated', '=', False),
-                    ('account_id.internal_type', '=', 'receivable'),
-                    ('move_id.state', '=', 'posted'),
-                    ('partner_id', 'in', self.ids),
-                    ('company_id', '=', self.env.company.id),
-                ],
+                domain=self._get_unreconciled_aml_domain(),
                 fields=['line_ids:array_agg(id)'],
                 groupby=['partner_id']
             )
         }
         for partner in self:
             partner.unreconciled_aml_ids = values.get(partner.id, False)
+
+    def _get_unreconciled_aml_domain(self):
+        return [
+            ('reconciled', '=', False),
+            ('account_id.deprecated', '=', False),
+            ('account_id.internal_type', '=', 'receivable'),
+            ('move_id.state', '=', 'posted'),
+            ('partner_id', 'in', self.ids),
+            ('company_id', '=', self.env.company.id),
+        ]
 
     def get_next_action(self, followup_line):
         """

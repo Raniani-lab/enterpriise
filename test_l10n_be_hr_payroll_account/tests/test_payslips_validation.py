@@ -831,7 +831,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 27)
+        self.assertEqual(len(payslip.line_ids), 28)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1800.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 22.0, places=2)
@@ -865,6 +865,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 30.57,
             'ONSSEMPLOYERUNEMP': 1.81,
             'ONSSEMPLOYER': 493.31,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -887,7 +888,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 26)
+        self.assertEqual(len(payslip.line_ids), 27)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('PHC1'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1671.54, places=2)
@@ -928,6 +929,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 30.47,
             'ONSSEMPLOYERUNEMP': 1.8,
             'ONSSEMPLOYER': 491.64,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -948,7 +950,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 30)
+        self.assertEqual(len(payslip.line_ids), 31)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1141.54, places=2)
@@ -993,6 +995,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 19.44,
             'ONSSEMPLOYERUNEMP': 1.15,
             'ONSSEMPLOYER': 313.75,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1020,7 +1023,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 1)
-        self.assertEqual(len(payslip.line_ids), 31)
+        self.assertEqual(len(payslip.line_ids), 32)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('OUT'), 0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1304.62, places=2)
@@ -1063,6 +1066,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 23.22,
             'ONSSEMPLOYERUNEMP': 1.37,
             'ONSSEMPLOYER': 374.64,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1144,7 +1148,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 26)
+        self.assertEqual(len(payslip.line_ids), 27)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('OUT'), 0.0, places=2)
@@ -1182,6 +1186,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 2.22,
             'ONSSEMPLOYERUNEMP': 0.13,
             'ONSSEMPLOYER': 35.81,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1201,7 +1206,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 25)
+        self.assertEqual(len(payslip.line_ids), 26)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -1238,6 +1243,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1262,7 +1268,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 25)
+        self.assertEqual(len(payslip.line_ids), 26)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('PHC1'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -1299,6 +1305,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1327,7 +1334,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip.worked_days_line_ids[0].amount, 57.94, places=2)
         self.assertAlmostEqual(payslip.worked_days_line_ids[1].amount, 64.37, places=2)
@@ -1374,6 +1381,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1393,7 +1401,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 31)
+        self.assertEqual(len(payslip.line_ids), 32)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2120.0, places=2)
@@ -1436,6 +1444,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 35.98,
             'ONSSEMPLOYERUNEMP': 2.13,
             'ONSSEMPLOYER': 580.58,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1476,7 +1485,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 31)
+        self.assertEqual(len(payslip.line_ids), 32)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE120'), 489.23, places=2)
@@ -1522,6 +1531,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 35.98,
             'ONSSEMPLOYERUNEMP': 2.13,
             'ONSSEMPLOYER': 580.58,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1553,7 +1563,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 31)
+        self.assertEqual(len(payslip.line_ids), 32)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE90'), 0.0, places=2)
@@ -1599,6 +1609,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 31.85,
             'ONSSEMPLOYERUNEMP': 1.88,
             'ONSSEMPLOYER': 513.87,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1630,7 +1641,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 31)
+        self.assertEqual(len(payslip.line_ids), 32)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE110'), 244.62, places=2)
@@ -1676,6 +1687,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 35.98,
             'ONSSEMPLOYERUNEMP': 2.13,
             'ONSSEMPLOYER': 580.58,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1697,7 +1709,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 25)
+        self.assertEqual(len(payslip.line_ids), 26)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
 
@@ -1731,6 +1743,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 0.15,
             'ONSSEMPLOYERUNEMP': 0.01,
             'ONSSEMPLOYER': 2.45,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1747,7 +1760,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 27)
+        self.assertEqual(len(payslip.line_ids), 28)
 
         self.assertAlmostEqual(payslip.worked_days_line_ids[0].amount, 224.23, places=2)
         self.assertAlmostEqual(payslip.worked_days_line_ids[1].amount, 1100.77, places=2)
@@ -1786,6 +1799,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 22.54,
             'ONSSEMPLOYERUNEMP': 1.33,
             'ONSSEMPLOYER': 363.78,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1812,7 +1826,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 27)
+        self.assertEqual(len(payslip.line_ids), 28)
 
         # 0 LEAVE120, 1-2 WORK100
         self.assertAlmostEqual(payslip.worked_days_line_ids[0].amount, 122.31, places=2)
@@ -1855,6 +1869,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 22.54,
             'ONSSEMPLOYERUNEMP': 1.33,
             'ONSSEMPLOYER': 363.78,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1890,7 +1905,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 27)
+        self.assertEqual(len(payslip.line_ids), 28)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE120'), 61.15, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE90'), 0.0, places=2)
@@ -1935,6 +1950,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 20.48,
             'ONSSEMPLOYERUNEMP': 1.21,
             'ONSSEMPLOYER': 330.43,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -1967,7 +1983,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 31)
+        self.assertEqual(len(september_payslip.line_ids), 32)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 815.38, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
@@ -2010,6 +2026,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 13.93,
             'ONSSEMPLOYERUNEMP': 0.82,
             'ONSSEMPLOYER': 224.81,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -2017,7 +2034,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 30)
+        self.assertEqual(len(october_payslip.line_ids), 31)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
@@ -2059,6 +2076,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 2.22,
             'ONSSEMPLOYERUNEMP': 0.13,
             'ONSSEMPLOYER': 35.81,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2066,7 +2084,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(november_payslip.worked_days_line_ids), 1)
         self.assertEqual(len(november_payslip.input_line_ids), 0)
-        self.assertEqual(len(november_payslip.line_ids), 29)
+        self.assertEqual(len(november_payslip.line_ids), 30)
 
         self.assertAlmostEqual(november_payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
 
@@ -2103,6 +2121,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 0.15,
             'ONSSEMPLOYERUNEMP': 0.01,
             'ONSSEMPLOYER': 2.45,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(november_payslip, payslip_results)
 
@@ -2123,7 +2142,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 25)
+        self.assertEqual(len(payslip.line_ids), 26)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE120'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -2160,6 +2179,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2179,7 +2199,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 30)
+        self.assertEqual(len(payslip.line_ids), 31)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE90'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2405.38, places=2)
@@ -2221,6 +2241,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 40.8,
             'ONSSEMPLOYERUNEMP': 2.41,
             'ONSSEMPLOYER': 658.4,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2249,7 +2270,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 30)
+        self.assertEqual(len(payslip.line_ids), 31)
 
         self.assertAlmostEqual(payslip.worked_days_line_ids[0].amount, 57.94, places=2)
         self.assertAlmostEqual(payslip.worked_days_line_ids[1].amount, 0.0, places=2)
@@ -2297,6 +2318,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 39.72,
             'ONSSEMPLOYERUNEMP': 2.35,
             'ONSSEMPLOYER': 640.85,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2316,7 +2338,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 30)
+        self.assertEqual(len(payslip.line_ids), 31)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE250'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -2358,6 +2380,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 42.87,
             'ONSSEMPLOYERUNEMP': 2.54,
             'ONSSEMPLOYER': 691.76,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2446,7 +2469,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 25)
+        self.assertEqual(len(payslip.line_ids), 26)
 
         payslip_results = {
             'BASIC': 2650.0,
@@ -2474,6 +2497,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2533,6 +2557,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.97,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.65,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -2633,7 +2658,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 29)
+        self.assertEqual(len(september_payslip.line_ids), 30)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 570.77, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 2079.23, places=2)
@@ -2674,6 +2699,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -2681,7 +2707,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 30)
+        self.assertEqual(len(october_payslip.line_ids), 31)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('WORK100'), 1549.23, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE110'), 611.54, places=2)
@@ -2726,6 +2752,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 36.67,
             'ONSSEMPLOYERUNEMP': 2.17,
             'ONSSEMPLOYER': 591.7,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2825,7 +2852,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 29)
+        self.assertEqual(len(september_payslip.line_ids), 30)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 1223.08, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 1426.92, places=2)
@@ -2866,6 +2893,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -2873,7 +2901,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 29)
+        self.assertEqual(len(october_payslip.line_ids), 30)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE110'), 611.54, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('WORK100'), 2038.46, places=2)
@@ -2914,6 +2942,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -2997,7 +3026,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 1)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 29)
+        self.assertEqual(len(september_payslip.line_ids), 30)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 2650.0, places=2)
 
@@ -3035,6 +3064,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -3042,7 +3072,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 30)
+        self.assertEqual(len(october_payslip.line_ids), 31)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('WORK100'), 1304.62, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE214'), 0.0, places=2)
@@ -3084,6 +3114,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 22.2,
             'ONSSEMPLOYERUNEMP': 1.31,
             'ONSSEMPLOYER': 358.22,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -3193,7 +3224,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 31)
+        self.assertEqual(len(september_payslip.line_ids), 32)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 530.0, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 1590.0, places=2)
@@ -3239,6 +3270,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 35.98,
             'ONSSEMPLOYERUNEMP': 2.13,
             'ONSSEMPLOYER': 580.58,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -3246,7 +3278,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 4)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 31)
+        self.assertEqual(len(october_payslip.line_ids), 32)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE110'), 489.23, places=2)
@@ -3295,6 +3327,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 27.71,
             'ONSSEMPLOYERUNEMP': 1.64,
             'ONSSEMPLOYER': 447.17,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -3407,7 +3440,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 31)
+        self.assertEqual(len(september_payslip.line_ids), 32)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('WORK100'), 1263.85, places=2)
@@ -3453,6 +3486,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 35.98,
             'ONSSEMPLOYERUNEMP': 2.13,
             'ONSSEMPLOYER': 580.58,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -3460,7 +3494,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 31)
+        self.assertEqual(len(october_payslip.line_ids), 32)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE110'), 489.23, places=2)
@@ -3506,6 +3540,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 35.98,
             'ONSSEMPLOYERUNEMP': 2.13,
             'ONSSEMPLOYER': 580.58,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -3602,7 +3637,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(september_payslip.worked_days_line_ids), 2)
         self.assertEqual(len(september_payslip.input_line_ids), 0)
-        self.assertEqual(len(september_payslip.line_ids), 31)
+        self.assertEqual(len(september_payslip.line_ids), 32)
 
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(september_payslip._get_worked_days_line_amount('LEAVE110'), 2120.0, places=2)
@@ -3645,6 +3680,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 35.98,
             'ONSSEMPLOYERUNEMP': 2.13,
             'ONSSEMPLOYER': 580.58,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(september_payslip, payslip_results)
 
@@ -3652,7 +3688,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(october_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(october_payslip.input_line_ids), 0)
-        self.assertEqual(len(october_payslip.line_ids), 31)
+        self.assertEqual(len(october_payslip.line_ids), 32)
 
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(october_payslip._get_worked_days_line_amount('LEAVE214'), 0.0, places=2)
@@ -3698,6 +3734,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 17.38,
             'ONSSEMPLOYERUNEMP': 1.03,
             'ONSSEMPLOYER': 280.4,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(october_payslip, payslip_results)
 
@@ -3717,7 +3754,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE205'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -3758,6 +3795,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -3786,7 +3824,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE205'), 856.15, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 1793.85, places=2)
@@ -3827,6 +3865,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -3846,7 +3885,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
 
@@ -3884,6 +3923,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 0.15,
             'ONSSEMPLOYERUNEMP': 0.01,
             'ONSSEMPLOYER': 2.45,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -3956,7 +3996,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 27)
+        self.assertEqual(len(payslip.line_ids), 28)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 416.38, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2984.08, places=2)
@@ -4001,6 +4041,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 59.84,
             'ONSSEMPLOYERUNEMP': 3.54,
             'ONSSEMPLOYER': 965.52,
+            'CO2FEE': 30.73,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -4073,7 +4114,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 27)
+        self.assertEqual(len(payslip.line_ids), 28)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE260'), 152.88, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 305.77, places=2)
@@ -4118,6 +4159,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.87,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 724.02,
+            'CO2FEE': 30.73,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -4156,7 +4198,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(commission_payslip.worked_days_line_ids), 1)
         self.assertEqual(len(commission_payslip.input_line_ids), 1)
-        self.assertEqual(len(commission_payslip.line_ids), 30)
+        self.assertEqual(len(commission_payslip.line_ids), 31)
 
         payslip_results = {
             'BASIC': 2650.0,
@@ -4189,6 +4231,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 188.32,
             'ONSSEMPLOYERUNEMP': 11.14,
             'ONSSEMPLOYER': 3038.7,
+            'CO2FEE': 20.92,
         }
 
         self._validate_payslip(commission_payslip, payslip_results)
@@ -4197,7 +4240,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(classic_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(classic_payslip.input_line_ids), 0)
-        self.assertEqual(len(classic_payslip.line_ids), 29)
+        self.assertEqual(len(classic_payslip.line_ids), 30)
 
         self.assertAlmostEqual(classic_payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
         self.assertAlmostEqual(classic_payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -4547,7 +4590,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE280'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE280'), 22.0, places=2)
@@ -4583,6 +4626,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 0.15,
             'ONSSEMPLOYERUNEMP': 0.01,
             'ONSSEMPLOYER': 2.45,
+            'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -4605,7 +4649,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 1)
-        self.assertEqual(len(payslip.line_ids), 26)
+        self.assertEqual(len(payslip.line_ids), 27)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2300.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 21.0, places=2)
@@ -4638,6 +4682,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 89.72,
             'ONSSEMPLOYERUNEMP': 5.31,
             'ONSSEMPLOYER': 1447.76,
+            'CO2FEE': 21.16,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -4787,7 +4832,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -4815,7 +4860,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE213'), 122.31, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2527.69, places=2)
@@ -4848,7 +4893,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2650, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0, places=2)
@@ -4877,7 +4922,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 30)
+        self.assertEqual(len(payslip.line_ids), 31)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2650, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0, places=2)
@@ -4900,7 +4945,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2650.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 17.0, places=2)
@@ -4918,7 +4963,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 30)
+        self.assertEqual(len(payslip.line_ids), 31)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 2650.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 17.0, places=2)
@@ -4948,7 +4993,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 31)
+        self.assertEqual(len(payslip.line_ids), 32)
 
         self.assertAlmostEqual(payslip.worked_days_line_ids[0].amount, 54.66, places=2)  # WORK100
         self.assertAlmostEqual(payslip.worked_days_line_ids[1].amount, 60.73, places=2) # LEAVE110
@@ -4994,6 +5039,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 42.4,
             'ONSSEMPLOYERUNEMP': 2.51,
             'ONSSEMPLOYER': 684.21,
+            'CO2FEE': 21.16,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -5317,7 +5363,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 30)
+        self.assertEqual(len(payslip.line_ids), 31)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 245.67, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE281'), 0.0, places=2)
@@ -5362,6 +5408,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 4.3,
             'ONSSEMPLOYERUNEMP': 0.25,
             'ONSSEMPLOYER': 69.45,
+            'CO2FEE': 21.16,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -5413,7 +5460,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 4)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 29)
+        self.assertEqual(len(payslip.line_ids), 30)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE281'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 791.61, places=2)
@@ -5460,6 +5507,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 14.76,
             'ONSSEMPLOYERUNEMP': 0.87,
             'ONSSEMPLOYER': 238.21,
+            'CO2FEE': 21.16,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -6479,7 +6527,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 25)
+        self.assertEqual(len(payslip.line_ids), 26)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE6665'), 2446.15, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 203.85, places=2)
@@ -6516,6 +6564,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 44.94,
             'ONSSEMPLOYERUNEMP': 2.66,
             'ONSSEMPLOYER': 725.11,
+            'CO2FEE': 21.16,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -6573,7 +6622,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 26)
+        self.assertEqual(len(payslip.line_ids), 27)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE500'), 122.31, places=2)
@@ -6611,6 +6660,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 2.22,
             'ONSSEMPLOYERUNEMP': 0.13,
             'ONSSEMPLOYER': 35.81,
+            'CO2FEE': 21.16,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -6667,7 +6717,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 25)
+        self.assertEqual(len(payslip.line_ids), 26)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
 
@@ -6728,7 +6778,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 2)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 25)
+        self.assertEqual(len(payslip.line_ids), 26)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
@@ -6810,7 +6860,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 3)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 27)
+        self.assertEqual(len(payslip.line_ids), 28)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE300'), 0.0, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE210'), 0.0, places=2)
@@ -7010,6 +7060,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 26.33,
             'ONSSEMPLOYERUNEMP': 1.56,
             'ONSSEMPLOYER': 424.15,
+            'CO2FEE': 28.17,
         }
         payslip_2_results = {
             'BASIC': 1304.62,
@@ -7044,6 +7095,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 22.05,
             'ONSSEMPLOYERUNEMP': 1.3,
             'ONSSEMPLOYER': 355.12,
+            'CO2FEE': 0.0,
         }
         self._validate_payslip(payslip_1, payslip_1_results)
         self._validate_payslip(payslip_2, payslip_2_results)
@@ -7160,6 +7212,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERRESTREINT': 22.2,
             'ONSSEMPLOYERUNEMP': 1.31,
             'ONSSEMPLOYER': 357.57,
+            'CO2FEE': 28.17,
         }
         self._validate_payslip(payslip_1, payslip_1_results)
         self._validate_payslip(payslip_2, payslip_2_results)
@@ -7382,6 +7435,12 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'IP.DED': 0.0,
             'NET': 0.0,
             'REMUNERATION': 0.0,
+            'ONSSEMPLOYERBASIC': 0.0,
+            'ONSSEMPLOYERFFE': 0.0,
+            'ONSSEMPLOYERMFFE': 0.0,
+            'ONSSEMPLOYERCPAE': 0.0,
+            'ONSSEMPLOYERRESTREINT': 0.0,
+            'ONSSEMPLOYERUNEMP': 0.0,
             'ONSSEMPLOYER': 0.0,
         }
         payslip_2_results = {
@@ -7404,7 +7463,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'IP.DED': -25.67,
             'NET': 2397.28,
             'REMUNERATION': 2509.5,
-            'ONSSEMPLOYER': 773.95,
+            'ONSSEMPLOYERBASIC': 713.78,
+            'ONSSEMPLOYERFFE': 2.0,
+            'ONSSEMPLOYERMFFE': 2.85,
+            'ONSSEMPLOYERCPAE': 6.56,
+            'ONSSEMPLOYERRESTREINT': 48.19,
+            'ONSSEMPLOYERUNEMP': 2.85,
+            'ONSSEMPLOYER': 776.24,
         }
         self._validate_payslip(payslip_1, payslip_1_results)
         self._validate_payslip(payslip_2, payslip_2_results)
@@ -7432,7 +7497,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'IP.DED': 25.67,
             'NET': -2397.28,
             'REMUNERATION': -2509.5,
-            'ONSSEMPLOYER': -773.95,
+            'ONSSEMPLOYERBASIC': -713.78,
+            'ONSSEMPLOYERFFE': -2.0,
+            'ONSSEMPLOYERMFFE': -2.85,
+            'ONSSEMPLOYERCPAE': -6.56,
+            'ONSSEMPLOYERRESTREINT': -48.19,
+            'ONSSEMPLOYERUNEMP': -2.85,
+            'ONSSEMPLOYER': -776.24,
         }
         self._validate_payslip(refund_payslip, refund_payslip_results)
 
@@ -7467,7 +7538,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'IP.DED': -25.67,
             'NET': 2397.28,
             'REMUNERATION': 2509.5,
-            'ONSSEMPLOYER': 773.95,
+            'ONSSEMPLOYERBASIC': 713.78,
+            'ONSSEMPLOYERFFE': 2.0,
+            'ONSSEMPLOYERMFFE': 2.85,
+            'ONSSEMPLOYERCPAE': 6.56,
+            'ONSSEMPLOYERRESTREINT': 48.19,
+            'ONSSEMPLOYERUNEMP': 2.85,
+            'ONSSEMPLOYER': 776.24,
         }
         self._validate_payslip(new_payslip_2, new_payslip_2_results)
 
@@ -7476,7 +7553,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
-        self.assertEqual(len(payslip.line_ids), 25)
+        self.assertEqual(len(payslip.line_ids), 32)
 
         payslip_results = {
             'BASIC': 2650.0,
@@ -7503,6 +7580,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'IP.DED': -49.69,
             'NET': 2194.87,
             'REMUNERATION': 1987.5,
-            'ONSSEMPLOYER': 721.65,
+            'ONSSEMPLOYERBASIC': 665.55,
+            'ONSSEMPLOYERFFE': 1.86,
+            'ONSSEMPLOYERMFFE': 2.66,
+            'ONSSEMPLOYERCPAE': 6.12,
+            'ONSSEMPLOYERRESTREINT': 44.94,
+            'ONSSEMPLOYERUNEMP': 2.66,
+            'ONSSEMPLOYER': 723.78,
+            'CO2FEE': 28.17,
         }
         self._validate_payslip(payslip, payslip_results)

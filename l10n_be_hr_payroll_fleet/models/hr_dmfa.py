@@ -57,7 +57,8 @@ class HrDMFAReport(models.Model):
             ('struct_id', '=', regular_payslip.id),
             ('company_id', '=', self.company_id.id),
         ])
-        return round(sum(p.vehicle_id.co2_fee for p in payslips_sudo), 2)
+        co2_fees = payslips_sudo._get_line_values(['CO2FEE'], compute_sum=True)['CO2FEE']['sum']['total']
+        return round(co2_fees, 2)
 
     def _get_global_contribution(self, employees_infos, double_onss):
         # En DMFA et en DMFAPPL, la cotisation de solidarité sur l’usage personnel d’un véhicule de

@@ -1057,6 +1057,17 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.ok(root.isVisible(env));
     });
 
+    test("See records is not visible if the formula is in error", async function (assert) {
+        const { env, model } = await createSpreadsheetFromPivot();
+        selectCell(model, "B4");
+        await nextTick();
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+        assert.ok(root.isVisible(env));
+        setCellContent(model, "B4", getCellFormula(model, "B4").replace( `PIVOT("1`, `PIVOT("5)`)); //Invalid id
+        assert.ok(getCell(model, "B4").evaluated.error);
+        assert.notOk(root.isVisible(env));
+    });
+
     module("Global filters panel");
 
     test("Simple display", async function (assert) {

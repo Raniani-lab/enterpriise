@@ -105,6 +105,7 @@ cellMenuRegistry
             return (
                 cell &&
                 cell.evaluated.value !== "" &&
+                !cell.evaluated.error &&
                 getNumberOfPivotFormulas(cell.content) === 1
             );
         },

@@ -1,0 +1,37 @@
+/** @odoo-module */
+
+import DateFilterValue from "@spreadsheet_edition/assets/components/filter_date_value";
+import { X2ManyTagSelector } from "@spreadsheet_edition/assets/widgets/tag_selector_widget";
+
+const { Component } = owl;
+
+export class FilterValue extends Component {
+    setup() {
+        this.getters = this.props.model.getters;
+    }
+    onDateInput(id, value) {
+        this.props.model.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
+    }
+
+    onTextInput(id, value) {
+        this.props.model.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });
+    }
+
+    onTagSelected(id, values) {
+        this.props.model.dispatch("SET_GLOBAL_FILTER_VALUE", {
+            id,
+            value: values.map((record) => record.id),
+            displayNames: values.map((record) => record.display_name),
+        });
+    }
+
+    onClear(id) {
+        this.props.model.dispatch("CLEAR_GLOBAL_FILTER_VALUE", { id });
+    }
+}
+FilterValue.template = "spreadsheet_edition.FilterValue";
+FilterValue.components = { X2ManyTagSelector, DateFilterValue };
+FilterValue.props = {
+    filter: Object,
+    model: Object,
+};

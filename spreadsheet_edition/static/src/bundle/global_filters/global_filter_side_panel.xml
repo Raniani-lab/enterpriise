@@ -19,31 +19,7 @@
                     <span class="o_side_panel_filter_label" t-esc="filter.label"/>
                 </div>
                 <div class="pivot_filter_input">
-                    <t t-set="filterValue" t-value="getters.getGlobalFilterValue(filter.id)"/>
-                    <input t-if="filter.type === 'text'"
-                        type="text"
-                        class="o_input"
-                        t-att-value="filterValue"
-                        t-on-change="(e) => this.onTextInput(filter.id, e.target.value)"/>
-                    <span t-if="filter.type === 'relation'" t-on-click.stop="">
-                        <X2ManyTagSelector
-                            relatedModel="filter.modelName"
-                            selectedValues="filterValue"
-                            t-key="filter.id + filter.modelName"
-                            onValueChanged="(value) => this.onTagSelected(filter.id, value)"
-                        />
-                    </span>
-                    <DateFilterValue
-                        t-if="filter.type === 'date'"
-                        period="filterValue &amp;&amp; filterValue.period"
-                        yearOffset="filterValue &amp;&amp; filterValue.yearOffset"
-                        type="filter.rangeType"
-                        onTimeRangeChanged="(value) => this.onDateInput(filter.id, value)"
-                    />
-                    <i  t-if="getters.isFilterActive(filter.id)"
-                        class="fa fa-times btn btn-link text-muted o_side_panel_filter_icon"
-                        title="Clear"
-                        t-on-click="() => this.onClear(filter.id)"/>
+                    <FilterValue filter="filter" model="env.model"/>
                     <i t-if="!isReadonly"
                         class="fa fa-cog btn btn-link text-muted o_side_panel_filter_icon"
                         title="Edit"

@@ -25,8 +25,7 @@
                         t-att-value="filterValue"
                         t-on-change="(e) => this.onTextInput(filter.id, e.target.value)"/>
                     <span t-if="filter.type === 'relation'" t-on-click.stop="">
-                        <TagSelectorWidgetAdapter
-                            Component="TagSelectorWidget"
+                        <X2ManyTagSelector
                             relatedModel="filter.modelName"
                             selectedValues="filterValue"
                             t-key="filter.id + filter.modelName"
@@ -109,9 +108,8 @@
             <input t-if="state.type === 'text'"
                 class="o_input o_global_filter_default_value"
                 t-model="state.text.defaultValue"/>
-            <TagSelectorWidgetAdapter
+            <X2ManyTagSelector
                 t-if="state.type === 'relation' and state.relation.relatedModelName"
-                Component="TagSelectorWidget"
                 relatedModel="state.relation.relatedModelName"
                 selectedValues="state.relation.defaultValue"
                 t-key="state.relation.relatedModelName"

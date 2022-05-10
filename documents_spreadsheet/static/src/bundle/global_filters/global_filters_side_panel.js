@@ -3,8 +3,7 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
 
     const DateFilterValue = require("documents_spreadsheet.DateFilterValue");
     const {
-        TagSelectorWidget,
-        TagSelectorWidgetAdapter,
+        X2ManyTagSelector
     } = require("@documents_spreadsheet/assets/widgets/tag_selector_widget");
     const { getPeriodOptions } = require("web.searchUtils");
     const { LegacyComponent } = require("@web/legacy/legacy_component");
@@ -15,7 +14,6 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
      */
     class GlobalFiltersSidePanel extends LegacyComponent {
         setup() {
-            this.TagSelectorWidget = TagSelectorWidget;
             this.periodOptions = getPeriodOptions(moment());
             this.getters = this.env.model.getters;
         }
@@ -68,7 +66,7 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
         }
     }
     GlobalFiltersSidePanel.template = "documents_spreadsheet.GlobalFiltersSidePanel";
-    GlobalFiltersSidePanel.components = { TagSelectorWidgetAdapter, DateFilterValue };
+    GlobalFiltersSidePanel.components = { X2ManyTagSelector, DateFilterValue };
 
     return GlobalFiltersSidePanel;
 });

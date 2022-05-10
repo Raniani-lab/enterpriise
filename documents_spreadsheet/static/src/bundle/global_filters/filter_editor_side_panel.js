@@ -15,8 +15,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     } = require("documents_spreadsheet.model_selector_widget");
     const { StandaloneMany2OneField } = require("@documents_spreadsheet/assets/widgets/standalone_many2one_field");
     const {
-        TagSelectorWidget,
-        TagSelectorWidgetAdapter,
+        X2ManyTagSelector
     } = require("@documents_spreadsheet/assets/widgets/tag_selector_widget");
     const { useService } = require("@web/core/utils/hooks");
     const { LegacyComponent } = require("@web/legacy/legacy_component");
@@ -66,7 +65,6 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             // Widgets
             this.FieldSelectorWidget = FieldSelectorWidget;
             this.StandaloneMany2OneField = StandaloneMany2OneField;
-            this.TagSelectorWidget = TagSelectorWidget;
             this.orm = useService("orm");
             this.notification = useService("notification");
 
@@ -310,7 +308,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     FilterEditorSidePanel.components = {
         FieldSelectorAdapter,
         ModelSelectorWidgetAdapter,
-        TagSelectorWidgetAdapter,
+        X2ManyTagSelector,
         DateFilterValue,
     };
 

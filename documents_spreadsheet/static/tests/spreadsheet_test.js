@@ -1688,6 +1688,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
                 id: "42",
                 type: "relation",
                 label: uniqueFilterName,
+                modelName: "product",
                 pivotFields: {
                     1: {
                         field: "product",

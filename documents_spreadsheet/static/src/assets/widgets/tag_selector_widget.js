@@ -7,7 +7,7 @@ import { FieldMany2ManyTags } from "web.relational_fields";
 import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
 import Widget from "web.Widget";
 
-const { Component } = owl;
+const { Component, xml } = owl;
 const QWeb = core.qweb;
 
 /**
@@ -15,7 +15,7 @@ const QWeb = core.qweb;
  * relation filter
  * It uses a FieldMany2ManyTags widget.
  */
-export const TagSelectorWidget = Widget.extend(StandaloneFieldManagerMixin, {
+const TagSelectorWidget = Widget.extend(StandaloneFieldManagerMixin, {
     /**
      * @constructor
      *
@@ -100,7 +100,7 @@ export const TagSelectorWidget = Widget.extend(StandaloneFieldManagerMixin, {
     },
 });
 
-export class TagSelectorWidgetAdapter extends ComponentAdapter {
+class TagSelectorWidgetAdapter extends ComponentAdapter {
     setup() {
         super.setup();
         this.env = Component.env;
@@ -120,4 +120,29 @@ export class TagSelectorWidgetAdapter extends ComponentAdapter {
     get widgetArgs() {
         return [this.props.relatedModel, this.props.selectedValues];
     }
+}
+
+export class X2ManyTagSelector extends Component {
+    setup() {
+        this.TagSelectorWidget = TagSelectorWidget;
+    }
+}
+X2ManyTagSelector.components = { TagSelectorWidgetAdapter };
+X2ManyTagSelector.template = xml/*xml*/ `
+    <TagSelectorWidgetAdapter
+        Component="TagSelectorWidget"
+        relatedModel="props.relatedModel"
+        selectedValues="props.selectedValues"
+        onValueChanged="props.onValueChanged"
+    />`;
+X2ManyTagSelector.props = {
+    onValueChanged: Function,
+    relatedModel: String,
+    selectedValues: {
+        optional: true,
+        type: Array,
+    },
+}
+X2ManyTagSelector.defaultProps = {
+    selectedValues: [],
 }

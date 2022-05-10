@@ -17,7 +17,7 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     const {
         TagSelectorWidget,
         TagSelectorWidgetAdapter,
-    } = require("documents_spreadsheet.tag_selector_widget");
+    } = require("@documents_spreadsheet/assets/widgets/tag_selector_widget");
     const { useService } = require("@web/core/utils/hooks");
     const { LegacyComponent } = require("@web/legacy/legacy_component");
     const _t = core._t;

@@ -5,7 +5,7 @@ odoo.define("documents_spreadsheet.global_filters_side_panel", function (require
     const {
         TagSelectorWidget,
         TagSelectorWidgetAdapter,
-    } = require("documents_spreadsheet.tag_selector_widget");
+    } = require("@documents_spreadsheet/assets/widgets/tag_selector_widget");
     const { getPeriodOptions } = require("web.searchUtils");
     const { LegacyComponent } = require("@web/legacy/legacy_component");
 

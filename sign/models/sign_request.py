@@ -584,7 +584,7 @@ class SignRequest(models.Model):
         if not public_user:
             # public user was deleted, fallback to avoid crash (info may leak)
             public_user = self.env.user
-        pdf_content, __ = report_action.with_user(public_user).sudo()._render_qweb_pdf(self.id)
+        pdf_content, __ = report_action.with_user(public_user).sudo()._render_qweb_pdf(self.ids)
         attachment_log = self.env['ir.attachment'].create({
             'name': "Certificate of completion - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
             'raw': pdf_content,

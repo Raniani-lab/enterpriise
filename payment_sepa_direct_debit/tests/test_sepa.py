@@ -8,12 +8,12 @@ from .common import SepaDirectDebitCommon
 class TestSepaDirectDebit(SepaDirectDebitCommon):
 
     def test_sepa_direct_debit_s2s_process(self):
-        token = self.create_token(
+        token = self._create_token(
             sdd_mandate_id=self.mandate.id,
             acquirer_ref=self.mandate.name,
         )
 
-        tx = self.create_transaction(
+        tx = self._create_transaction(
             flow='direct',
             amount=10.0,
             token_id=token.id,

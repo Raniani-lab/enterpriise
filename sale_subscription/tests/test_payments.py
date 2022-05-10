@@ -245,7 +245,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
             'odoo.addons.payment.models.payment_transaction.PaymentTransaction'
             '._send_payment_request'
         ) as patched:
-            self.subscription._do_payment(self.create_token(), self.invoice)
+            self.subscription._do_payment(self._create_token(), self.invoice)
             patched.assert_called_once()
 
     def test_compute_show_tokenize_input_on_sale_order_with_subscription(self):

@@ -23,7 +23,7 @@
                             </group>
                         </group>
                         <group col="1">
-                            <widget name="pie_chart" title="Medium" attrs="{'groupby': 'medium_id', 'measure': 'count'}"/>
+                            <widget name="pie_chart" title="Source" attrs="{'groupby': 'source_id', 'measure': 'count'}"/>
                         </group>
                     </group>
                     <view type="pivot" ref="hr_recruitment.recruitment_report_view_pivot"/>
@@ -38,7 +38,7 @@
                 <dashboard sample="1">
                     <view type="graph" ref="hr_recruitment_reports.recruitment_report_source_view_graph"/>
                     <group>
-                        <group>
+                        <group col="4">
                             <group>
                                 <aggregate name="count" string="Hired People" field="count" invisible="1"/>
                                 <aggregate name="refused" string="# Payslips" field="refused" invisible="1"/>
@@ -49,6 +49,9 @@
                                 <aggregate name="process_duration" string="Process Duration in Days" field="process_duration" invisible="1"/>
                                 <formula name="process_duration_week" string="Process Duration" help="From creation till hire" value="record.process_duration / 7" value_label="weeks"/>
                             </group>
+                        </group>
+                        <group col="1">
+                            <widget name="pie_chart" title="Medium" attrs="{'groupby': 'medium_id', 'measure': 'count'}"/>
                         </group>
                     </group>
                     <view type="pivot" ref="hr_recruitment.recruitment_report_source_view_pivot"/>
@@ -62,7 +65,7 @@
             <field name="mode">primary</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <pivot string="Recruitment Analysis" sample="1">
+                <pivot string="Recruitment Analysis" sample="1" js_class="recruitment_report_pivot">
                     <field name="job_id" type="row"/>
                     <field name="count" type="measure"/>
                     <field name="hired" type="measure"/>
@@ -76,8 +79,8 @@
             <field name="mode">primary</field>
             <field name="priority">10</field>
             <field name="arch" type="xml">
-                <pivot string="Source Analysis" sample="1">
-                    <field name="medium_id" type="row"/>
+                <pivot string="Source Analysis" sample="1" js_class="recruitment_report_pivot">
+                    <field name="source_id" type="row"/>
                     <field name="count" type="measure"/>
                     <field name="hired" type="measure"/>
                     <field name="refused" type="measure"/>
@@ -104,7 +107,7 @@
             <field name="priority">10</field>
             <field name="arch" type="xml">
                 <graph string="Source Analysis" sample="1">
-                    <field name="medium_id"/>
+                    <field name="source_id"/>
                     <field name="state"/>
                     <field name="count" type="measure"/>
                 </graph>
@@ -142,9 +145,11 @@
                     <separator/>
                     <filter name="filter_create_date" date="create_date"/>
                     <group expand="1" string="Group By">
-                        <filter string="Medium" name="groupby_medium" context="{'group_by': 'medium_id'}"/>
                         <filter string="State" name="groupby_state" context="{'group_by': 'state'}"/>
                         <filter string="Job Position" name="groupby_job" context="{'group_by':'job_id'}"/>
+                        <filter string="Applicant Name" name="groupby_name" context="{'group_by':'name'}"/>
+                        <filter string="Source" name="groupby_source" context="{'group_by': 'source_id'}"/>
+                        <filter string="Medium" name="groupby_medium" context="{'group_by': 'medium_id'}"/>
                         <filter string="Company" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
                     </group>
                 </search>

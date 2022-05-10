@@ -12,6 +12,7 @@ class HrRecruitmentStageReport(models.Model):
     _auto = False
 
     applicant_id = fields.Many2one('hr.applicant', readonly=True)
+    name = fields.Char('Applicant Name', readonly=True)
     stage_id = fields.Many2one('hr.recruitment.stage', readonly=True)
     job_id = fields.Many2one('hr.job', readonly=True)
     days_in_stage = fields.Float(readonly=True, group_operator='avg')
@@ -32,6 +33,7 @@ class HrRecruitmentStageReport(models.Model):
 SELECT
     ROW_NUMBER() OVER () AS ID,
     ha.id AS applicant_id,
+    ha.partner_name AS name,
     ha.job_id AS job_id,
     ha.company_id AS company_id,
     CASE
@@ -66,6 +68,7 @@ UNION ALL
 SELECT
     ROW_NUMBER() OVER () AS id,
     ha.id AS applicant_id,
+    ha.partner_name AS name,
     ha.job_id AS job_id,
     ha.company_id AS company_id,
     CASE

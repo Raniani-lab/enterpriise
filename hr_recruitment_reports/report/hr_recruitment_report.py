@@ -29,6 +29,7 @@ class HrRecruitmentReport(models.Model):
     name = fields.Char('Applicant Name', readonly=True)
     job_id = fields.Many2one('hr.job', readonly=True)
     medium_id = fields.Many2one('utm.medium', readonly=True)
+    source_id = fields.Many2one('utm.source', readonly=True)
     process_duration = fields.Integer('Process Duration', group_operator="avg", readonly=True)
     refuse_reason_id = fields.Many2one('hr.applicant.refuse.reason', string='Refuse Reason', readonly=True)
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
@@ -44,6 +45,7 @@ class HrRecruitmentReport(models.Model):
                 a.job_id,
                 a.refuse_reason_id,
                 a.medium_id,
+                a.source_id,
                 CASE
                     WHEN a.active IS FALSE THEN 'refused'
                     WHEN a.date_closed IS NOT NULL THEN 'hired'

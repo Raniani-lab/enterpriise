@@ -49,6 +49,8 @@
                     <filter string="State" name="groupby_state" context="{'group_by': 'state'}"/>
                     <filter string="Job Position" name="groupby_job" context="{'group_by':'job_id'}"/>
                     <filter string="Stage" name="groupby_stage" context="{'group_by':'stage_id'}"/>
+                    <separator/>
+                    <filter string="Applicant Name" name="groupby_name" context="{'group_by':'name'}"/>
                     <filter string="Company" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
                 </group>
             </search>
@@ -87,7 +89,7 @@
                     <a name="%(hr_recruitment_reports.recruitment_report_job_action)d" type="action">Analysis</a>
                 </div>
                 <div role="menuitem">
-                    <a name="%(hr_recruitment_reports.recruitment_report_source_job_action)d" type="action">Medium</a>
+                    <a name="%(hr_recruitment_reports.recruitment_report_source_job_action)d" type="action">Source</a>
                 </div>
                 <div role="menuitem">
                     <a name="%(hr_recruitment_reports.recruitment_stage_report_job_action)d" type="action">Time By Stages</a>

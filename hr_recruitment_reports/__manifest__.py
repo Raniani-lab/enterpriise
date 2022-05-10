@@ -19,6 +19,11 @@ Add a dynamic report about recruitment.
     'demo': [
         'data/hr_recruitment_reports_demo.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'hr_recruitment_reports/static/**/*',
+        ],
+    },
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

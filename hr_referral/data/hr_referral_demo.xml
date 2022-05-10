@@ -21,13 +21,11 @@
         </record>
 
         <record id="hr_recruitment.hr_case_marketingjob0" model="hr.applicant">
-            <field name="ref_user_id" ref="base.user_admin"/>
-            <field name="medium_id" ref="utm.utm_medium_facebook"/>
+            <field name="source_id" ref="utm.utm_source_facebook"/>
         </record>
 
         <record id="hr_recruitment.hr_case_salesman0" model="hr.applicant">
-            <field name="ref_user_id" ref="base.user_admin"/>
-            <field name="medium_id" ref="utm.utm_medium_linkedin"/>
+            <field name="source_id" ref="utm.utm_source_linkedin"/>
         </record>
 
         <record id="hr_referral_point_1" model="hr.referral.points">

@@ -875,12 +875,13 @@ class SaleOrder(models.Model):
         today = fields.Date.today()
         res = res.filtered(lambda l: l.temporal_type != 'subscription')
         automatic_invoice = self.env.context.get('recurring_automatic')
+
         def filter_sub_lines(line):
             time_condition = line.next_invoice_date and line.next_invoice_date.date() <= today
             if line.display_type or (not line.start_date or line.start_date.date() > today):
                 # Avoid invoicing section/notes or lines starting in the future or not starting at all
                 return False
-            elif time_condition and line.product_id.invoice_policy == 'order':
+            elif time_condition and line.product_id.invoice_policy == 'order' and line.order_id.state == 'sale':
                 # Invoice due lines
                 return True
             elif not line.invoice_lines and line.qty_to_invoice:

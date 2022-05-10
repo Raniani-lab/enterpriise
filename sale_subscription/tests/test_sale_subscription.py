@@ -240,8 +240,11 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(line_values[1], (0, self.pricing_year.id, datetime.datetime(2022, 11, 18), datetime.datetime(2023, 11, 18), self.product.uom_id.id), 'Second line is kept')
             self.assertEqual(line_values[2], (0, pricing_3_year.id, datetime.datetime(2024, 11, 18), datetime.datetime(2027, 11, 18), uom_dozen), 'Third line is kept')
 
+        with freeze_time("2024-11-17"):
+            invoice = self.subscription._create_recurring_invoice(automatic=True)
+            self.assertFalse(invoice, "Locked contract should not generate invoices")
         with freeze_time("2024-11-19"):
-            self.env['sale.order'].cron_subscription_expiration()
+            self.subscription._create_recurring_invoice(automatic=True)
             renew_close_reason_id = self.env.ref('sale_subscription.close_reason_renew').id
             self.assertEqual(self.subscription.stage_category, 'closed')
             self.assertEqual(self.subscription.close_reason_id.id, renew_close_reason_id)
@@ -967,6 +970,7 @@ class TestSubscription(TestSubscriptionCommon):
 
         with freeze_time("2021-05-15"):
             self.env['sale.order']._cron_recurring_create_invoice()
+            sub.order_line._compute_recurring_monthly()
             self.flush_tracking()
 
         with freeze_time("2021-06-01"):
@@ -1030,7 +1034,9 @@ class TestSubscription(TestSubscriptionCommon):
 
         order_log_ids = sub.order_log_ids.sorted('event_date')
         sub_data = [(log.event_type, log.event_date, log.category, log.amount_signed, log.recurring_monthly) for log in order_log_ids]
-        self.assertEqual(sub_data, [('0_creation', datetime.date(2021, 1, 1), 'progress', 40.0, 40.0), ('3_transfer', datetime.date(2021, 5, 15), 'progress', -30.0, 10.0), ('3_transfer', datetime.date(2022, 1, 7), 'closed', 0.0, -10.0)])
+        self.assertEqual(sub_data, [('0_creation', datetime.date(2021, 1, 1), 'progress', 40.0, 40.0),
+                                    ('3_transfer', datetime.date(2021, 5, 15), 'progress', -30.0, 10.0),
+                                    ('3_transfer', datetime.date(2022, 1, 7), 'closed', 0.0, -10.0)])
         renew_logs = renewal_so.order_log_ids.sorted('event_date')
         renew_data = [(log.event_type, log.event_date, log.category, log.amount_signed, log.recurring_monthly) for log in renew_logs]
         self.assertEqual(renew_data, [('1_change', datetime.date(2021, 5, 1), 'progress', 30.0, 60.0),

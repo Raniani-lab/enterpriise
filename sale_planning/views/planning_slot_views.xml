@@ -150,7 +150,7 @@
             <xpath expr="//span[@name='tags']" position="before">
                 <div><field name="sale_line_id"/></div>
             </xpath>
-            <xpath expr="//div[hasclass('o_kanban_record_title')]" position="attributes">
+            <xpath expr="//div[hasclass('o_kanban_record_top')]" position="attributes">
                 <attribute name="attrs">{'invisible': [('start_datetime', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="inside">

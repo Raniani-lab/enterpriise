@@ -247,7 +247,9 @@ class AnalyticLine(models.Model):
                             add_record(grid['__label'], key, {'values': record, 'domain': [('id', '=', -1)]})
                 else:
                     if is_record_candidate(result, record):
-                        add_record(False, key, {'values': record, 'domain': [('id', '=', -1)]})
+                        domain = expression.normalize_domain(
+                            [(field, '=', value[0]) for field, value in list(zip(row_fields, key)) if value and value[0]])
+                        add_record(False, key, {'values': record, 'domain': domain})
 
         if 'task_id' in domain_project_task:
             task_ids = self.env['project.task'].search(domain_project_task['task_id'])
@@ -263,7 +265,9 @@ class AnalyticLine(models.Model):
                             add_record(grid['__label'], key, {'values': record, 'domain': [('id', '=', -1)]})
                 else:
                     if is_record_candidate(result, record):
-                        add_record(False, key, {'values': record, 'domain': [('id', '=', -1)]})
+                        domain = expression.normalize_domain(
+                            [(field, '=', value[0]) for field, value in list(zip(row_fields, key)) if value[0]])
+                        add_record(False, key, {'values': record, 'domain': domain})
 
         if rows_dict:
             if timesheet_section_field:
@@ -524,6 +528,15 @@ class AnalyticLine(models.Model):
                 node.set('string', _('%s Spent') % (re.sub(r'[\(\)]', '', encoding_uom.name or '')))
         return doc
 
+    def _get_project_task_from_domain(self, domain):
+        project_id = task_id = False
+        for subdomain in domain:
+            if subdomain[0] == 'project_id' and subdomain[1] == '=':
+                project_id = subdomain[2]
+            elif subdomain[0] == 'task_id' and subdomain[1] == '=':
+                task_id = subdomain[2]
+        return project_id, task_id
+
     def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
         if column_field != 'date' or cell_field != 'unit_amount':
             raise ValueError(
@@ -534,7 +547,14 @@ class AnalyticLine(models.Model):
                 ))
 
         additionnal_domain = self._get_adjust_grid_domain(column_value)
-        domain = expression.AND([row_domain, additionnal_domain])
+        # Remove date from the domain
+        new_row_domain = []
+        for leaf in row_domain:
+            if leaf[0] == 'date':
+                new_row_domain += ['|', expression.TRUE_LEAF, leaf]
+            else:
+                new_row_domain.append(leaf)
+        domain = expression.AND([new_row_domain, additionnal_domain])
         line = self.search(domain)
 
         day = column_value.split('/')[0]
@@ -549,11 +569,27 @@ class AnalyticLine(models.Model):
                 cell_field: line[cell_field] + change
             })
         else:  # create new one
-            self.search(row_domain, limit=1).copy({
-                'name': '/',
-                column_field: day,
-                cell_field: change,
-            })
+            line_in_domain = self.search(row_domain, limit=1)
+            if line_in_domain:
+                line_in_domain.copy({
+                    'name': '/',
+                    column_field: day,
+                    cell_field: change,
+                })
+            else:
+                project, task = self._get_project_task_from_domain(domain)
+
+                if task and not project:
+                    project = self.env['project.task'].browse([task]).project_id.id
+
+                if project:
+                    self.create([{
+                        'project_id': project,
+                        'task_id': task,
+                        column_field: day,
+                        cell_field: change,
+                    }])
+
         return False
 
     def _get_adjust_grid_domain(self, column_value):

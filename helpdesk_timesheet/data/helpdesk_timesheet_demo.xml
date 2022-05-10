@@ -21,7 +21,7 @@
     </record>
     <record id="helpdesk_timesheet_2" model="account.analytic.line">
         <field name="name">Changed Drawer Handle</field>
-        <field name="date" eval="(DateTime.now() + relativedelta(days=+1)).strftime('%Y-%m-%d')"/>
+        <field name="date" eval="(DateTime.now() + relativedelta(days=-1)).strftime('%Y-%m-%d')"/>
         <field name="employee_id" ref="hr.employee_admin"/>
         <field name="unit_amount">0.5</field>
         <field name="helpdesk_ticket_id" ref="helpdesk.helpdesk_ticket_16"/>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="FieldSlaMany2ManyTagIcon" t-extend="FieldMany2ManyTag">
+        <t t-jquery=".o_badge_text" t-operation='before'>
+            <i t-attf-class="{{el.status == 'failed' ? 'fa fa-times-circle mr-2' : el.status == 'reached' ? 'fa fa-check-circle mr-2' : ''}}" style="padding-top: 0.3px;"/>
+        </t>
+    </t>
+
+</templates>

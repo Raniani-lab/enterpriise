@@ -755,7 +755,7 @@ class HelpdeskTicket(models.Model):
         for key, tickets in tickets_map.items():  # only one search per ticket group
             domain = sla_domain_map[key]
             slas = self.env['helpdesk.sla'].search(domain)
-            result[tickets] = slas.filtered(lambda s: s.tag_ids <= tickets.tag_ids)  # SLA to apply on ticket subset
+            result[tickets] = slas.filtered(lambda s: not s.tag_ids or (tickets.tag_ids & s.tag_ids))  # SLA to apply on ticket subset
         return result
 
     def _sla_generate_status_values(self, slas, keep_reached=False):

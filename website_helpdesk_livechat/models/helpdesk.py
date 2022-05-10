@@ -50,8 +50,8 @@ class MailChannel(models.Model):
                             mentions=", ".join(html_escape("@%s" % p.name) for p in channel_partners)
                            )
                 msg += _("""<br><br>
-                    You can create a new ticket by typing <b>/helpdesk "ticket title"</b>.<br>
-                    You can search ticket by typing <b>/helpdesk_search "Keywords1 Keywords2 etc"</b><br>
+                    You can create a new ticket by typing <b>/helpdesk <i>ticket title</i></b>.<br>
+                    You can search tickets by typing <b>/helpdesk_search <i>keyword</i></b> or <b><i>ticket number</i></b><br>
                     """)
             else:
                 customer = channel_partners[:1]
@@ -70,7 +70,7 @@ class MailChannel(models.Model):
                     'partner_id': customer.id if customer else False,
                     'team_id': team_id,
                 })
-                msg = _("Created a new ticket and request: %s", helpdesk_ticket._get_html_link())
+                msg = _("Created a new ticket: %s", helpdesk_ticket._get_html_link())
         return self._send_transient_message(self.env.user.partner_id, msg)
 
     def execute_command_helpdesk_search(self, **kwargs):
@@ -79,7 +79,7 @@ class MailChannel(models.Model):
         msg = _('Something is missing or wrong in command')
         if key[0].lower() == '/helpdesk_search':
             if len(key) == 1:
-                msg = _('You can search ticket by typing <b>/helpdesk_search "Keywords1 Keywords2 etc"</b><br>')
+                msg = _('You can search tickets by typing <b>/helpdesk_search <i>keyword</i></b> or <i><b>ticket number</b></i><br>')
             else:
                 list_value = key[1:]
                 Keywords = re.findall('\w+', ' '.join(list_value))
@@ -96,5 +96,5 @@ class MailChannel(models.Model):
                     link_tickets = [f'<br/>{ticket._get_html_link()}' for ticket in tickets]
                     msg = _('We found some matched ticket(s) related to the search query: %s', ''.join(link_tickets))
                 else:
-                    msg = _('No tickets found related to the search query. <br> make sure to use the right format: (/helpdesk_search Keyword1 Keyword2 etc...)')
+                    msg = _('No tickets found related to the search query. <br> make sure to use the right format: (<b>/helpdesk_search <i>keyword</i></b> or <i><b>ticket number</b></i>)')
         return self._send_transient_message(partner, msg)

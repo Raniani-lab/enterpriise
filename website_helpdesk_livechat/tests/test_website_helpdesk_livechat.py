@@ -38,7 +38,7 @@ class TestWebsiteHelpdeskLivechat(HelpdeskCommon):
         bus = self.env['bus.bus'].search([('channel', 'like', f"\"res.partner\",{self.helpdesk_manager.partner_id.id}")], order='id desc', limit=1)
         message = json.loads(bus.message)
         ticket = self.env['helpdesk.ticket'].search([('team_id', '=', self.test_team.id)])
-        expected_message = f"<span class='o_mail_notification'>Created a new ticket and request: <a href=# data-oe-model='helpdesk.ticket' data-oe-id='{ticket.id}'>{ticket_name} (#{ticket.id})</a></span>"
+        expected_message = f"<span class='o_mail_notification'>Created a new ticket: <a href=# data-oe-model='helpdesk.ticket' data-oe-id='{ticket.id}'>{ticket_name} (#{ticket.id})</a></span>"
 
         self.assertTrue(ticket, f"Ticket {ticket_name} should have been created.")
         self.assertEqual(message['payload']['body'], expected_message, 'A message should be posted with a link to the created ticket.')

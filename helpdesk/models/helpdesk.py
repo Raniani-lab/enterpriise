@@ -83,7 +83,7 @@ class HelpdeskTeam(models.Model):
     allow_portal_ticket_closing = fields.Boolean('Closure by Customers', help="Allow customers to close their tickets")
     use_website_helpdesk_form = fields.Boolean('Website Form')
     use_website_helpdesk_livechat = fields.Boolean('Live Chat',
-        help="In Channel: You can create a new ticket by typing /helpdesk [ticket title]. You can search ticket by typing /helpdesk_search [Keyword1],[Keyword2],.")
+        help="In Channel: You can create a new ticket by typing /helpdesk [ticket title]. You can search ticket by typing /helpdesk_search [keyword],[ticket number],.")
     use_website_helpdesk_forum = fields.Boolean('Community Forum')
     use_website_helpdesk_slides = fields.Boolean('Enable eLearning')
     use_helpdesk_timesheet = fields.Boolean(

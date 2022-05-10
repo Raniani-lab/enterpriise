@@ -542,7 +542,7 @@
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
-                <field name="sla_status_ids" widget="many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color'}" string="SLAs" optional="hide" readonly="1"/>
+                <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color'}" string="SLAs" optional="hide" readonly="1"/>
                 <field name="sla_deadline" attrs="{'invisible': [('use_sla', '=', False)]}" optional="show" widget="remaining_days"/>
                 <field name="create_date" optional="hide" readonly="1" string="Creation Date"/>
                 <field name="write_date" optional="hide" readonly="1"/>
@@ -570,7 +570,7 @@
                     <field name="legend_normal" invisible="1"/>
                     <field name="legend_blocked" invisible="1"/>
                     <field name="legend_done" invisible="1"/>
-                    <field name="name" placeholder="e.g. Problem with my order"/>
+                    <field name="name" placeholder="e.g. Product arrived damaged"/>
                     <field name="domain_user_ids" invisible="1"/>
                     <field name="team_id" required="1" invisible="context.get('default_team_id')"  options="{'no_open': True}"/>
                     <field name="user_id" domain="[('id', 'in', domain_user_ids)]" options="{'no_open': True}"/>
@@ -698,8 +698,8 @@
                     <field name="kanban_state" widget="state_selection"/>
                     <field name="use_sla" invisible="1"/>
                     <div class="oe_title">
-                        <h1><field name="name" class="field_name" placeholder="e.g. Problem with my order"/></h1>
-                        <field name="sla_status_ids" widget="many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" readonly="1" groups="helpdesk.group_use_sla"/>
+                        <h1><field name="name" class="field_name" placeholder="e.g. Product arrived damaged"/></h1>
+                        <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" readonly="1" groups="helpdesk.group_use_sla"/>
                         <span attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla" class="mx-2 text-muted">
                             <i class="fa fa-lg fa-clock-o mr-2" aria-label="Sla Deadline" title="Sla Deadline"/>
                             <field name="sla_deadline" widget="remaining_days"/>

@@ -168,7 +168,7 @@ class HelpdeskSLA(TransactionCase):
     def test_sla_multiple_tags(self):
         self.sla.tag_ids = [(6, False, (self.tag_urgent | self.tag_vip).ids)]
         ticket = self.create_ticket(tag_ids=self.tag_urgent)
-        self.assertFalse(ticket.sla_status_ids, "SLA should not have been applied yet")
+        self.assertEqual(ticket.sla_status_ids.sla_id, self.sla, "SLA should have been applied when atleast one tag set on ticket from sla policy")
         ticket.tag_ids = [(4, self.tag_vip.id)]
         self.assertEqual(ticket.sla_status_ids.sla_id, self.sla, "SLA should have been applied")
 

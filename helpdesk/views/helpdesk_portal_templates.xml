@@ -27,7 +27,7 @@
         </xpath>
     </template>
 
-    <template id="portal_helpdesk_ticket" name="Helpdesk Ticket">
+    <template id="portal_helpdesk_ticket" name="My Tickets">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
@@ -227,13 +227,13 @@
     <!-- Page : Rating of a particular team -->
     <template id="team_rating_progress_data" name="Ticket Rating Page">
         <div class="progress">
-            <div class="progress-bar bg-success" t-attf-style="width: #{stats[duration][5]}%;" title="Happy" role="img" aria-label="Happy">
+            <div class="progress-bar bg-success" t-attf-style="width: #{stats[duration][5]}%;" title="Satisfied" role="img" aria-label="Happy">
                 <t t-out="int(stats[duration][5])"/>%
             </div>
-            <div class="progress-bar bg-warning" t-attf-style="width: #{stats[duration][3]}%;" title="Average" role="img" aria-label="Average">
+            <div class="progress-bar bg-warning" t-attf-style="width: #{stats[duration][3]}%;" title="Okay" role="img" aria-label="Average">
                 <t t-out="int(stats[duration][3])"/>%
             </div>
-            <div class="progress-bar bg-danger" t-attf-style="width: #{stats[duration][1]}%;" title="Bad" role="img" aria-label="Bad">
+            <div class="progress-bar bg-danger" t-attf-style="width: #{stats[duration][1]}%;" title="Dissatisfied" role="img" aria-label="Bad">
                 <t t-out="int(stats[duration][1])"/>%
             </div>
         </div>
@@ -261,13 +261,13 @@
             </div>
 
         </div>
-        <h5 class="o_page_header">Latest Feedbacks</h5>
+        <h5 class="o_page_header mt-4">Latest Ratings</h5>
         <t t-foreach="ratings" t-as="rating">
-            <img t-attf-src='/rating/static/src/img/rating_#{int(rating.rating)}.png' t-att-alt="rating.res_name" t-att-title="rating.res_name"/>
+            <img t-attf-src='/rating/static/src/img/rating_#{int(rating.rating)}.png' t-att-alt="rating.res_name" t-attf-title="{{rating.res_name if t['is_helpdesk_user'] else ''}}"/>
         </t>
     </template>
 
-    <template id="team_rating_page" name="Helpdesk Ticket Rating Page">
+    <template id="team_rating_page" name="Customer Satisfaction">
         <t t-set="no_breadcrumbs" t-value="True"/>
         <t t-call="portal.portal_layout">
             <h1 class="o_page_header p-4">Our Customer Satisfaction</h1>
@@ -279,7 +279,7 @@
                         <t t-set="stats" t-value="t['stats']"/>
                         <div class="oe_structure" id="oe_structure_helpdesk_team_rating_1"/>
                         <div class="container oe_website_rating_team">
-                            <h2 t-out="team.name" class="text-muted" />
+                            <h2 t-if="len(teams) >= 1" t-out="team.name" class="text-muted"/>
                             <div class="row mb32">
                                 <div class="col-lg-8">
                                     <t t-if="ratings" t-call="helpdesk.team_rating_data"/>

@@ -66,6 +66,7 @@ Features:
         'web.assets_backend': [
             'helpdesk/static/src/scss/helpdesk.scss',
             'helpdesk/static/src/css/portal_helpdesk.css',
+            'helpdesk/static/src/js/helpdesk_relational_fields.js',
             'helpdesk/static/src/js/helpdesk_kanban_record.js',
             'helpdesk/static/src/js/helpdesk_kanban_controller.js',
             'helpdesk/static/src/js/helpdesk_kanban_renderer.js',

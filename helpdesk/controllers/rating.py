@@ -46,6 +46,7 @@ class WebsiteHelpdesk(http.Controller):
                 'team': team,
                 'ratings': ratings if any_rating else False,
                 'stats': stats,
+                'is_helpdesk_user': user.has_group('helpdesk.group_helpdesk_user')
             }
             team_values.append(values)
         return request.render('helpdesk.team_rating_page', {'page_name': 'rating', 'teams': team_values})

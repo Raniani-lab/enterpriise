@@ -14,7 +14,7 @@ var _t = core._t;
  */
 var ManualModel = BasicModel.extend({
     avoidCreate: false,
-    quickCreateFields: ['account_id', 'journal_id', 'amount', 'analytic_account_id', 'name', 'tax_ids', 'force_tax_included', 'analytic_tag_ids', 'date', 'to_check'],
+    quickCreateFields: ['account_id', 'journal_id', 'amount', 'analytic_distribution', 'name', 'tax_ids', 'force_tax_included', 'date', 'to_check'],
 
     modes: ['create', 'match'],
 
@@ -237,58 +237,12 @@ var ManualModel = BasicModel.extend({
     getLine: function (handle) {
         return this.lines[handle];
     },
-    _readAnalyticTags: function (params) {
-        var self = this;
-        this.analyticTags = {};
-        if (!params || !params.res_ids || !params.res_ids.length) {
-            return $.when();
-        }
-        var fields = (params && params.fields || []).concat(['id', 'display_name']);
-        return this._rpc({
-                model: 'account.analytic.tag',
-                method: 'read',
-                args: [
-                    params.res_ids,
-                    fields,
-                ],
-            }).then(function (tags) {
-                for (var i=0; i<tags.length; i++) {
-                    var tag = tags[i];
-                    self.analyticTags[tag.id] = tag;
-                }
-            });
-    },
     _loadReconciliationModel: function (company_ids) {
-        var self = this;
         return this._rpc({
                 model: 'account.reconciliation.widget',
                 method: 'get_reconcile_modelds_for_manual_reconciliation',
                 args: [company_ids],
             })
-            .then(function (reconcileModels) {
-               var analyticTagIds = [];
-                for (var i=0; i<reconcileModels.length; i++) {
-                    var modelTags = reconcileModels[i].analytic_tag_ids || [];
-                    for (var j=0; j<modelTags.length; j++) {
-                        if (analyticTagIds.indexOf(modelTags[j]) === -1) {
-                            analyticTagIds.push(modelTags[j]);
-                        }
-                    }
-                }
-                return self._readAnalyticTags({res_ids: analyticTagIds}).then(function () {
-                    for (var i=0; i<reconcileModels.length; i++) {
-                        var recModel = reconcileModels[i];
-                        var analyticTagData = [];
-                        var modelTags = reconcileModels[i].analytic_tag_ids || [];
-                        for (var j=0; j<modelTags.length; j++) {
-                            var tagId = modelTags[j];
-                            analyticTagData.push([tagId, self.analyticTags[tagId].display_name])
-                        }
-                        recModel.analytic_tag_ids = analyticTagData;
-                    }
-                    self.reconcileModels = reconcileModels;
-                });
-            });
     },
     _loadTaxes: function(){
         var self = this;
@@ -485,27 +439,7 @@ var ManualModel = BasicModel.extend({
             line.reconciliation_proposition.push(prop);
         }
         _.each(values, function (value, fieldName) {
-            if (fieldName === 'analytic_tag_ids') {
-                switch (value.operation) {
-                    case "ADD_M2M":
-                        // handle analytic_tag selection via drop down (single dict) and
-                        // full widget (array of dict)
-                        var vids = _.isArray(value.ids) ? value.ids : [value.ids];
-                        _.each(vids, function (val) {
-                            if (!_.findWhere(prop.analytic_tag_ids, {id: val.id})) {
-                                prop.analytic_tag_ids.push(val);
-                            }
-                        });
-                        break;
-                    case "FORGET":
-                        var id = self.localData[value.ids[0]].ref;
-                        prop.analytic_tag_ids = _.filter(prop.analytic_tag_ids, function (val) {
-                            return val.id !== id;
-                        });
-                        break;
-                }
-            }
-            else if (fieldName === 'tax_ids') {
+            if (fieldName === 'tax_ids') {
                 switch(value.operation) {
                     case "ADD_M2M":
                         prop.__tax_to_recompute = true;
@@ -1179,8 +1113,7 @@ var ManualModel = BasicModel.extend({
 
         var result = {
             name : prop.name,
-            balance : amount,
-            analytic_tag_ids: [[6, null, _.pluck(prop.analytic_tag_ids, 'id')]]
+            balance : amount
         };
         if (!isNaN(prop.id)) {
             result.id = prop.id;
@@ -1190,7 +1123,7 @@ var ManualModel = BasicModel.extend({
                 result.journal_id = prop.journal_id.id;
             }
         }
-        if (prop.analytic_account_id) result.analytic_account_id = prop.analytic_account_id.id;
+        if (prop.analytic_distribution) result.analytic_distribution = prop.analytic_distribution;
         if (prop.tax_ids && prop.tax_ids.length) result.tax_ids = [[6, null, _.pluck(prop.tax_ids, 'id')]];
         if (prop.tax_tag_ids && prop.tax_tag_ids.length) result.tax_tag_ids = [[6, null, _.pluck(prop.tax_tag_ids, 'id')]];
         if (prop.tax_repartition_line_id) result.tax_repartition_line_id = prop.tax_repartition_line_id;
@@ -1290,8 +1223,7 @@ var ManualModel = BasicModel.extend({
             'name': values.name || line.st_line.name,
             'account_id': account,
             'account_code': account ? this.accounts[account.id] : '',
-            'analytic_account_id': this._formatNameGet(values.analytic_account_id),
-            'analytic_tag_ids': this._formatMany2ManyTags(values.analytic_tag_ids || []),
+            'analytic_distribution': values.analytic_distribution,
             'journal_id': this._formatNameGet(values.journal_id),
             'tax_ids': this._formatMany2ManyTagsTax(values.tax_ids || []),
             'tax_tag_ids': this._formatMany2ManyTagsTax(values.tax_tag_ids || []),

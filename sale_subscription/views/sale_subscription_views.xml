@@ -489,9 +489,6 @@
                     <group string="Action" name="action_wrapper">
                         <group name="action_content">
                             <field name="action"/>
-                            <field name="tag_id"
-                                   attrs="{'invisible': [('action', '!=', 'set_tag')],
-                                           'required': [('action', '=', 'set_tag')]}"/>
                             <field name="stage_id"
                                    attrs="{'invisible': [('action', '!=', 'set_stage')],
                                            'required': [('action', '=', 'set_stage')]}"/>
@@ -731,8 +728,6 @@
                            groups="account.group_account_manager"/>
                     <!-- company_id invisible to be available in domains -->
                     <field name="company_id" invisible="1"/>
-                    <field name="tag_ids" string="Account Tags" widget="many2many_tags"
-                           attrs="{'invisible': [('recurrence_id','=', False)]}" options="{'color_field': 'color'}"/>
                 </group>
             </group>
             <xpath expr="//page[@name='terms_and_conditions']" position="after">

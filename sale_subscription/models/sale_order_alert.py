@@ -26,7 +26,7 @@ class SaleOrderAlert(models.Model):
 
     automation_id = fields.Many2one('base.automation', 'Automated Action', required=True, ondelete='restrict')
     action = fields.Selection([
-        ('next_activity', 'Create next activity'), ('set_tag', 'Set a tag on the subscription'),
+        ('next_activity', 'Create next activity'),
         ('set_stage', 'Set a stage on the subscription'), ('set_to_renew', 'Mark as To Renew'), ('email', 'Send an email to the customer'),
         ('sms', 'Send an SMS Text Message to the customer')], string='Action', required=True, default=None)
     trigger_condition = fields.Selection([
@@ -49,7 +49,6 @@ class SaleOrderAlert(models.Model):
     rating_operator = fields.Selection([('>', 'greater than'), ('<', 'less than')], string='Rating Operator', default='>')
     stage_from_id = fields.Many2one('sale.order.stage', help="Trigger on changes of stage. Trigger over all stages if not set")
     stage_to_id = fields.Many2one('sale.order.stage')
-    tag_id = fields.Many2one('account.analytic.tag', string='Tag')
     stage_id = fields.Many2one('sale.order.stage', string='Stage')
     activity_user = fields.Selection([
         ('contract', 'Subscription Salesperson'),
@@ -110,15 +109,12 @@ class SaleOrderAlert(models.Model):
     def _configure_alert_from_action(self, vals_list):
         # Unlink the children server actions if not needed anymore
         self.filtered(lambda alert: alert.action != 'next_activity' and alert.child_ids).unlink()
-        field_names = ['account_tag_ids', 'stage_id', 'to_renew']
+        field_names = ['stage_id', 'to_renew']
         tag_fields = self.env['ir.model.fields'].search([('model', 'in', self.mapped('model_name')), ('name', 'in', field_names)])
         for alert, vals in zip(self, vals_list):
             field_name = None
             action_value = None
-            if alert.action == 'set_tag' and alert.tag_id:
-                field_name = 'account_tag_ids'
-                action_value = [(4, alert.tag_id.id, False)]
-            elif alert.action == 'set_stage' and alert.stage_id:
+            if alert.action == 'set_stage' and alert.stage_id:
                 field_name = 'stage_id'
                 action_value = alert.stage_id.id
             elif alert.action == 'set_to_renew':

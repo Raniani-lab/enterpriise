@@ -102,7 +102,8 @@ class HrPayslip(models.Model):
             'date': date,
             'debit': debit,
             'credit': credit,
-            'analytic_account_id': line.salary_rule_id.analytic_account_id.id or line.slip_id.contract_id.analytic_account_id.id,
+            'analytic_distribution': (line.salary_rule_id.analytic_account_id and {line.salary_rule_id.analytic_account_id.id: 100}) or
+                                     (line.slip_id.contract_id.analytic_account_id.id and {line.slip_id.contract_id.analytic_account_id.id: 100})
         }
 
     def _prepare_slip_lines(self, date, line_ids):
@@ -181,8 +182,18 @@ class HrPayslip(models.Model):
             line_id for line_id in line_ids if
             line_id['name'] == line.name
             and line_id['account_id'] == account_id
-            and line_id['analytic_account_id'] == (line.salary_rule_id.analytic_account_id.id or line.slip_id.contract_id.analytic_account_id.id)
-            and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0)))
+            and ((line_id['debit'] > 0 and credit <= 0) or (line_id['credit'] > 0 and debit <= 0))
+            and (
+                    (
+                        not line_id['analytic_distribution'] and
+                        not line.salary_rule_id.analytic_account_id.id and
+                        not line.slip_id.contract_id.analytic_account_id.id
+                    )
+                    or line.salary_rule_id.analytic_account_id.id in line_id['analytic_distribution']
+                    or line.slip_id.contract_id.analytic_account_id.id in line_id['analytic_distribution']
+
+                )
+        )
         return next(existing_lines, False)
 
     def _create_account_move(self, values):

@@ -135,8 +135,7 @@ class AccountMove(models.Model):
                         'name': move_line.name,
                         'company_id': move_line.company_id.id,
                         'currency_id': move_line.company_currency_id.id,
-                        'account_analytic_id': move_line.analytic_account_id.id,
-                        'analytic_tag_ids': [(6, False, move_line.analytic_tag_ids.ids)],
+                        'analytic_distribution': move_line.analytic_distribution,
                         'original_move_line_ids': [(6, False, move_line.ids)],
                         'state': 'draft',
                     }
@@ -174,8 +173,7 @@ class AccountMove(models.Model):
         if missing_fields:
             raise UserError(_('Some fields are missing {}').format(', '.join(missing_fields)))
         asset = vals['asset_id']
-        account_analytic_id = asset.account_analytic_id
-        analytic_tag_ids = asset.analytic_tag_ids
+        analytic_distribution = asset.analytic_distribution
         depreciation_date = vals.get('date', fields.Date.context_today(self))
         company_currency = asset.company_id.currency_id
         current_currency = asset.currency_id
@@ -194,8 +192,7 @@ class AccountMove(models.Model):
             'account_id': asset.account_depreciation_id.id,
             'debit': 0.0 if float_compare(amount, 0.0, precision_digits=prec) > 0 else -amount,
             'credit': amount if float_compare(amount, 0.0, precision_digits=prec) > 0 else 0.0,
-            'analytic_account_id': account_analytic_id.id if asset.asset_type == 'sale' else False,
-            'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type == 'sale' else False,
+            'analytic_distribution': analytic_distribution if asset.asset_type == 'sale' else {},
             'currency_id': current_currency.id,
             'amount_currency': -amount_currency,
         }
@@ -205,8 +202,7 @@ class AccountMove(models.Model):
             'account_id': asset.account_depreciation_expense_id.id,
             'credit': 0.0 if float_compare(amount, 0.0, precision_digits=prec) > 0 else -amount,
             'debit': amount if float_compare(amount, 0.0, precision_digits=prec) > 0 else 0.0,
-            'analytic_account_id': account_analytic_id.id if asset.asset_type in ('purchase', 'expense') else False,
-            'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type in ('purchase', 'expense') else False,
+            'analytic_distribution': analytic_distribution if asset.asset_type in ('purchase', 'expense') else {},
             'currency_id': current_currency.id,
             'amount_currency': amount_currency,
         }

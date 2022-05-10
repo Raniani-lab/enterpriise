@@ -248,10 +248,9 @@ class TransferModel(models.Model):
         """
         self.ensure_one()
         domain = self._get_move_lines_base_domain(start_date, end_date)
-        domain = expression.AND([domain, [
-            ('analytic_account_id', 'not in', self.line_ids.analytic_account_ids.ids),
-            ('partner_id', 'not in', self.line_ids.partner_ids.ids),
-        ]])
+        for account in self.line_ids.analytic_account_ids:
+            domain.append(('analytic_distribution_stored_char', 'not ilike', f'%"{account.id}":%'))
+        domain = expression.AND([domain, [('partner_id', 'not in', self.line_ids.partner_ids.ids), ]])
         total_balance_by_accounts = self.env['account.move.line']._read_group(domain, ['balance', 'account_id'],
                                                                              ['account_id'])
 
@@ -391,8 +390,12 @@ class TransferModelLine(models.Model):
         move_lines_domain = self.transfer_model_id._get_move_lines_base_domain(start_date, end_date)
         if avoid_move_line_ids:
             move_lines_domain.append(('id', 'not in', avoid_move_line_ids))
-        if self.analytic_account_ids:
-            move_lines_domain.append(('analytic_account_id', 'in', self.analytic_account_ids.ids))
+        domain_account = []
+        for account in self.analytic_account_ids:
+            domain_account.append([('analytic_distribution_stored_char', '=ilike', f'%"{account.id}":%')])
+        domain_account = expression.OR(domain_account) if domain_account else []
+        for domain in domain_account:
+            move_lines_domain.append(domain)
         if self.partner_ids:
             move_lines_domain.append(('partner_id', 'in', self.partner_ids.ids))
         return move_lines_domain

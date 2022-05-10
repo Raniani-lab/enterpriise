@@ -25,11 +25,6 @@ class SaleOrderTemplate(models.Model):
         domain="[('type', '=', 'sale')]", company_dependent=True, check_company=True,
         help="If set, subscriptions with this template will invoice in this journal; "
              "otherwise the sales journal with the lowest sequence is used.")
-
-    tag_ids = fields.Many2many(
-        'account.analytic.tag', 'sale_order_template_tag_rel',
-        'template_id', 'tag_id', string='Tags', help="Use these tags to filter your subscription reporting",
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     color = fields.Integer()
     auto_close_limit = fields.Integer(
         string="Automatic Closing", default=15,

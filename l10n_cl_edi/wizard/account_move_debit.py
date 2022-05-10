@@ -78,8 +78,7 @@ class AccountDebitNote(models.TransientModel):
                 default_values['line_ids'].append([0, 0, {
                     'product_id': line.product_id.id,
                     'account_id': line.account_id.id,
-                    'analytic_account_id': line.analytic_account_id.id,
-                    'analytic_tag_ids': [[6, 0, line.analytic_tag_ids.ids]],
+                    'analytic_distribution': line.analytic_distribution,
                     'name': line.name,
                     'quantity': line.quantity,
                     'price_unit': line.price_unit,

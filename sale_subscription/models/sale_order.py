@@ -41,15 +41,6 @@ class SaleOrder(models.Model):
     is_subscription = fields.Boolean("Recurring", compute='_compute_is_subscription', store=True, index=True)
     stage_id = fields.Many2one('sale.order.stage', string='Stage', index=True, default=lambda s: s._get_default_stage_id(),
                                copy=False, group_expand='_read_group_stage_ids', tracking=True)
-    account_tag_ids = fields.Many2many(
-        comodel_name='account.analytic.tag',
-        column1='sale_order_id',
-        column2='account_analytic_tag_id',
-        relation='account_analytic_tag_sale_order_rel',
-        string='Account Tags',
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
-        check_company=True,
-    )
     end_date = fields.Date(string='End Date', tracking=True,
                            help="If set in advance, the subscription will be set to renew 1 month before the date and will be closed on the date set in this field.")
     archived_product_ids = fields.Many2many('product.product', string='Archived Products', compute='_compute_archived')
@@ -94,6 +85,8 @@ class SaleOrder(models.Model):
     to_renew = fields.Boolean(string='To Renew', default=False, copy=False)
     recurrence_id = fields.Many2one('sale.temporal.recurrence', compute='_compute_recurrence_id',
                                                string='Recurrence', ondelete='restrict', readonly=False, store=True)
+    is_batch = fields.Boolean(string='Is a Batch', default=False, copy=False)
+    is_invoice_cron = fields.Boolean(string='Is a Subscription invoiced in cron', default=False, copy=False)
     subscription_id = fields.Many2one('sale.order', string='Parent Contract', ondelete='restrict', copy=False)
     origin_order_id = fields.Many2one('sale.order', string='First contract', ondelete='restrict', copy=False, store=True, compute='_compute_origin_order_id')
     subscription_child_ids = fields.One2many('sale.order', 'subscription_id')
@@ -342,14 +335,6 @@ class SaleOrder(models.Model):
                 order.renew_state = "renewed"
             elif order.id in renewed_with_quotation:
                 order.renew_state = "renewing"
-
-    @api.onchange('sale_order_template_id')
-    def _onchange_sale_order_template_id(self):
-        # Override to propagate the account tags on the subscription and update the prices according to periodicity
-        super()._onchange_sale_order_template_id()
-        template = self.sale_order_template_id
-        if template.tag_ids.ids:
-            self.account_tag_ids = [Command.link(tag_id) for tag_id in template.tag_ids.ids]
 
     def _create_mrr_log(self, template_value, initial_values):
         alive_renewals = self.filtered(lambda sub: sub.subscription_id and sub.subscription_management == 'renew' and sub.stage_category == 'progress')
@@ -996,10 +981,7 @@ class SaleOrder(models.Model):
                 msg_body = 'Automatic payment failed. Contract set to "To Renew". Email sent to customer. Error: %s' % (
                         transaction and transaction.state_message or 'No Payment Method')
             self.message_post(body=msg_body)
-            batch_tag = self.env.ref('sale_subscription.invoice_batch', raise_if_not_found=False)
-            subscription_values = {'to_renew': True, 'payment_exception': False}
-            if batch_tag:
-                subscription_values.update({'account_tag_ids':  [Command.link(batch_tag.id)]})
+            subscription_values = {'to_renew': True, 'payment_exception': False, 'is_batch': True}
         subscription_values.update(self._update_subscription_payment_failure_values())
         self.write(subscription_values)
 
@@ -1011,9 +993,8 @@ class SaleOrder(models.Model):
         if not extra_domain:
             extra_domain = []
         current_date = fields.Date.today()
-        batch_tag = self.env.ref('sale_subscription.invoice_batch', raise_if_not_found=False)
-        invoiced_cron_tag = self.env.ref('sale_subscription.invoiced_cron_tag', raise_if_not_found=False)
-        search_domain = [('account_tag_ids', 'not in', batch_tag.ids + invoiced_cron_tag.ids),
+        search_domain = [('is_batch', '=', False),
+                         ('is_invoice_cron', '=', False),
                          ('is_subscription', '=', True),
                          ('subscription_management', '!=', 'upsell'),
                          ('state', 'not in', ['draft', 'sent']),
@@ -1045,10 +1026,8 @@ class SaleOrder(models.Model):
         all_invoiceable_lines = all_subscriptions.with_context(recurring_automatic=automatic)._get_invoiceable_lines(final=False)
 
         auto_close_subscription._subscription_auto_close_and_renew()
-        batch_tag = self.env.ref('sale_subscription.invoice_batch', raise_if_not_found=False)
-        invoiced_cron_tag = self.env.ref('sale_subscription.invoiced_cron_tag', raise_if_not_found=False)
-        if automatic and invoiced_cron_tag:
-            all_subscriptions.write({'account_tag_ids': [Command.link(invoiced_cron_tag.id)]})
+        if automatic:
+            all_subscriptions.write({'is_invoice_cron': True})
         lines_to_reset_qty = self.env['sale.order.line'] # qty_delivered is set to 0 after invoicing for some categories of products (timesheets etc)
         account_moves = self.env['account.move']
         # Set quantity to invoice before the invoice creation. If something goes wrong, the line will appear as "to invoice"
@@ -1115,13 +1094,13 @@ class SaleOrder(models.Model):
             else:
                 self.env.ref('sale_subscription.account_analytic_cron_for_invoice')._trigger()
 
-        if automatic and not need_cron_trigger and invoiced_cron_tag:
-            cron_subs = self.search([('account_tag_ids', 'in', invoiced_cron_tag.ids)])
-            cron_subs.write({'account_tag_ids': [Command.unlink(invoiced_cron_tag.id)]})
+        if automatic and not need_cron_trigger:
+            cron_subs = self.search([('is_invoice_cron', '=', True)])
+            cron_subs.write({'is_invoice_cron': False})
 
-        if not need_cron_trigger and batch_tag:
-            failing_subscriptions = self.search([('account_tag_ids', 'in', batch_tag.ids)])
-            failing_subscriptions.write({'account_tag_ids': [Command.unlink(batch_tag.id)]})
+        if not need_cron_trigger:
+            failing_subscriptions = self.search([('is_batch', '=', True)])
+            failing_subscriptions.write({'is_batch': False})
 
         return account_moves
 

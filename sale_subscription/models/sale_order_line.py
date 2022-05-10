@@ -222,10 +222,6 @@ class SaleOrderLine(models.Model):
             subscription_end_date = next_invoice_date
             res['quantity'] = qty_to_invoice.get(self.id, 0.0)
 
-            batch_tag_id = self.env["ir.model.data"]._xmlid_to_res_id("sale_subscription.recurring_trigger_tag", raise_if_not_found=False)
-            useful_tag_ids = self.order_id.account_tag_ids.ids
-            if useful_tag_ids and useful_tag_ids != [batch_tag_id]:
-                res.update({'analytic_tag_ids': [Command.link(t_id) for t_id in useful_tag_ids if t_id != batch_tag_id]})
             res.update({
                 'name': description,
                 'subscription_start_date': new_period_start,

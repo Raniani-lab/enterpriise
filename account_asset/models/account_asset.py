@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import json
 import calendar
 from dateutil.relativedelta import relativedelta
 from math import copysign
@@ -13,7 +14,7 @@ from odoo.tools import float_compare, float_is_zero, float_round, formatLang
 class AccountAsset(models.Model):
     _name = 'account.asset'
     _description = 'Asset/Revenue Recognition'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'analytic.mixin']
 
     depreciation_entries_count = fields.Integer(compute='_entry_count', string='# Posted Depreciation Entries')
     gross_increase_count = fields.Integer(compute='_entry_count', string='# Gross Increases', help="Number of assets made to increase the value of the asset")
@@ -80,21 +81,6 @@ class AccountAsset(models.Model):
     # Links with entries
     depreciation_move_ids = fields.One2many('account.move', 'asset_id', string='Depreciation Lines', readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)], 'paused': [('readonly', False)]})
     original_move_line_ids = fields.Many2many('account.move.line', 'asset_move_line_rel', 'asset_id', 'line_id', string='Journal Items', readonly=True, states={'draft': [('readonly', False)]}, copy=False)
-
-    # Analytic
-    account_analytic_id = fields.Many2one(
-        comodel_name='account.analytic.account',
-        string='Analytic Account',
-        index=True,
-        readonly=True,
-        states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    analytic_tag_ids = fields.Many2many(
-        comodel_name='account.analytic.tag',
-        string='Analytic Tag',
-        readonly=True,
-        states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     # Dates
     first_depreciation_date = fields.Date(
@@ -178,6 +164,20 @@ class AccountAsset(models.Model):
                 # Only set a default value, do not erase user inputs
                 record._onchange_account_depreciation_id()
                 record._onchange_account_depreciation_expense_id()
+
+    @api.depends('original_move_line_ids')
+    def _compute_analytic_distribution_stored_char(self):
+        for asset in self:
+            distribution_asset = {}
+            amount_total = sum(asset.original_move_line_ids.mapped("balance"))
+            if not float_is_zero(amount_total, precision_rounding=self.currency_id.rounding):
+                for line in asset.original_move_line_ids._origin:
+                    if line.analytic_distribution:
+                        for account, distribution in line.analytic_distribution.items():
+                            distribution_asset[account] = distribution_asset.get(account, 0) + distribution * line.balance
+                for account, distribution_amount in distribution_asset.items():
+                    distribution_asset[account] = distribution_amount/amount_total
+            asset.analytic_distribution_stored_char = json.dumps(distribution_asset) if distribution_asset else asset.analytic_distribution_stored_char
 
     @api.onchange('original_value')
     def _display_original_value_warning(self):
@@ -325,8 +325,7 @@ class AccountAsset(models.Model):
             self.method_progress_factor = model.method_progress_factor
             self.prorata = model.prorata
             self.prorata_date = fields.Date.today()
-            self.account_analytic_id = model.account_analytic_id.id
-            self.analytic_tag_ids = [(6, 0, model.analytic_tag_ids.ids)]
+            self.analytic_distribution = model.analytic_distribution or self.analytic_distribution
             self.account_depreciation_id = model.account_depreciation_id
             self.account_depreciation_expense_id = model.account_depreciation_expense_id
             self.journal_id = model.journal_id
@@ -536,7 +535,7 @@ class AccountAsset(models.Model):
                 'default_method_progress_factor': self.method_progress_factor,
                 'default_prorata': self.prorata,
                 'default_prorata_date': self.prorata_date,
-                'default_analytic_tag_ids': [(6, 0, self.analytic_tag_ids.ids)],
+                'default_analytic_distribution': self.analytic_distribution,
                 'original_asset': self.id,
             }
         }
@@ -639,8 +638,7 @@ class AccountAsset(models.Model):
                 'name': asset.name,
                 'account_id': account.id,
                 'balance': -amount,
-                'analytic_account_id': account_analytic_id.id if asset.asset_type == 'sale' else False,
-                'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type == 'sale' else False,
+                'analytic_distribution': analytic_distribution if asset.asset_type == 'sale' else {},
                 'currency_id': asset.currency_id.id,
                 'amount_currency': -asset.company_id.currency_id._convert(
                     from_amount=amount,
@@ -662,8 +660,7 @@ class AccountAsset(models.Model):
                     raise UserError('There are depreciation posted after the invoice date (%s).\nPlease revert them or change the date of the invoice.' % disposal_date)
                 else:
                     raise UserError('There are depreciation posted in the future, please revert them.')
-            account_analytic_id = asset.account_analytic_id
-            analytic_tag_ids = asset.analytic_tag_ids
+            analytic_distribution = asset.analytic_distribution
             unposted_depreciation_move_ids = asset.depreciation_move_ids.filtered(lambda x: x.state == 'draft')
 
             old_values = {

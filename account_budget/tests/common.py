@@ -11,32 +11,32 @@ class TestAccountBudgetCommon(AccountTestInvoicingCommon):
 
         # ==== Analytic accounts ====
 
-        cls.analytic_group_projects = cls.env['account.analytic.group'].create({'name': 'Projects'})
-        cls.analytic_group_departments = cls.env['account.analytic.group'].create({'name': 'Departments'})
+        cls.analytic_plan_projects = cls.env['account.analytic.plan'].create({'name': 'Projects', 'company_id': False})
+        cls.analytic_plan_departments = cls.env['account.analytic.plan'].create({'name': 'Departments', 'company_id': False})
 
         cls.analytic_account_partner_a_1 = cls.env['account.analytic.account'].create({
             'name': 'analytic_account_partner_a_1',
             'partner_id': cls.partner_a.id,
-            'group_id': cls.analytic_group_projects.id,
+            'plan_id': cls.analytic_plan_projects.id,
         })
         cls.analytic_account_partner_a_2 = cls.env['account.analytic.account'].create({
             'name': 'analytic_account_partner_a_2',
             'partner_id': cls.partner_a.id,
-            'group_id': cls.analytic_group_projects.id,
+            'plan_id': cls.analytic_plan_projects.id,
         })
         cls.analytic_account_partner_a_3 = cls.env['account.analytic.account'].create({
             'name': 'analytic_account_partner_a_3',
             'partner_id': cls.partner_a.id,
-            'group_id': cls.analytic_group_projects.id,
+            'plan_id': cls.analytic_plan_projects.id,
         })
         cls.analytic_account_partner_b = cls.env['account.analytic.account'].create({
             'name': 'analytic_account_partner_b',
             'partner_id': cls.partner_b.id,
-            'group_id': cls.analytic_group_projects.id,
+            'plan_id': cls.analytic_plan_projects.id,
         })
         cls.analytic_account_administratif = cls.env['account.analytic.account'].create({
             'name': 'analytic_account_administratif',
-            'group_id': cls.analytic_group_departments.id,
+            'plan_id': cls.analytic_plan_departments.id,
         })
 
         # ==== Crossovered Budget ====

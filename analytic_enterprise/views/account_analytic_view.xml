@@ -30,10 +30,13 @@
                    (0, 0, {'view_mode': 'graph', 'view_id': ref('analytic.view_account_analytic_line_graph')}),
                    (0, 0, {'view_mode': 'pivot', 'view_id': ref('analytic.view_account_analytic_line_pivot')}),
                    (0, 0, {'view_mode': 'grid', 'view_id': ref('analytic_enterprise.account_analytic_line_report_view_grid')})]"/>
+            <field name="search_view_id" ref="analytic.view_account_analytic_line_filter"/>
 
             <field name="context">{
                 'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'), 
-                'grid_range': 'year'
+                'grid_range': 'year',
+                'search_default_group_by_analytic_plan': 1,
+                'search_default_group_by_analytic_account': 2,
             }</field>
         </record>
 	</data>

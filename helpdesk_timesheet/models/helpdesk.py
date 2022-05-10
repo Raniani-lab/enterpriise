@@ -127,8 +127,6 @@ class HelpdeskTicket(models.Model):
     analytic_account_id = fields.Many2one('account.analytic.account',
         compute='_compute_analytic_account_id', store=True, readonly=False,
         string='Analytic Account', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags',
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     def _compute_encode_uom_in_days(self):
         self.encode_uom_in_days = self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day')

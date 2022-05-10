@@ -14,6 +14,7 @@ from odoo.tools.misc import formatLang
 
 class BankRecWidget(models.Model):
     _name = "bank.rec.widget"
+    _inherit = "analytic.mixin"
     _description = "Bank reconciliation widget for a single statement line"
 
     # This model is never saved inside the database.
@@ -122,15 +123,6 @@ class BankRecWidget(models.Model):
     )
     form_currency_id = fields.Many2one(
         comodel_name='res.currency',
-    )
-    form_analytic_account_id = fields.Many2one(
-        comodel_name='account.analytic.account',
-        groups="analytic.group_analytic_accounting",
-        domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]",
-    )
-    form_analytic_tag_ids = fields.Many2many(
-        comodel_name='account.analytic.tag',
-        groups="analytic.group_analytic_tags",
     )
     form_tax_ids = fields.Many2many(comodel_name='account.tax')
     form_amount_currency = fields.Monetary(currency_field='form_currency_id')
@@ -333,8 +325,7 @@ class BankRecWidget(models.Model):
         'line_ids.currency_id',
         'line_ids.amount_currency',
         'line_ids.balance',
-        'line_ids.analytic_account_id',
-        'line_ids.analytic_tag_ids',
+        'line_ids.analytic_distribution',
         'line_ids.tax_repartition_line_id',
         'line_ids.tax_ids',
         'line_ids.tax_tag_ids',
@@ -398,14 +389,18 @@ class BankRecWidget(models.Model):
             if narration:
                 extra_notes.append(narration)
 
+            bool_analytic_distribution = False
+            for line in wizard.line_ids:
+                if line.analytic_distribution:
+                    bool_analytic_distribution = True
+                    break
+
             wizard.lines_widget = {
                 'lines': line_vals_list,
 
                 'display_multi_currency_column': wizard.line_ids.currency_id != wizard.company_currency_id,
                 'display_taxes_column': bool(wizard.line_ids.tax_ids),
-                'display_analytic_account_column': bool(wizard.line_ids.analytic_account_id),
-                'display_analytic_tags_column': bool(wizard.line_ids.analytic_tag_ids),
-
+                'display_analytic_distribution_column': bool_analytic_distribution,
                 'form_index': wizard.form_index,
                 'state': wizard.state,
                 'partner_name': wizard.st_line_id.partner_name,
@@ -750,29 +745,14 @@ class BankRecWidget(models.Model):
 
         self._onchange_form_amount_currency()
 
-    @api.onchange('form_analytic_account_id')
-    def _onchange_form_analytic_account_id(self):
+    @api.onchange('analytic_distribution')
+    def _onchange_analytic_distribution(self):
         line = self._lines_widget_get_line_in_edit_form()
         if not line:
             return
 
         self._lines_widget_form_turn_auto_balance_into_manual_line(line)
-        line.analytic_account_id = self.form_analytic_account_id
-
-        # Recompute taxes.
-        if line.flag not in ('tax_line', 'early_payment') and any(x.analytic for x in line.tax_ids):
-            self._lines_widget_recompute_taxes()
-            self._lines_widget_add_auto_balance_line()
-            self._action_mount_line_in_edit(line.index)
-
-    @api.onchange('form_analytic_tag_ids')
-    def _onchange_form_analytic_tag_ids(self):
-        line = self._lines_widget_get_line_in_edit_form()
-        if not line:
-            return
-
-        self._lines_widget_form_turn_auto_balance_into_manual_line(line)
-        line.analytic_tag_ids = [Command.set(self.form_analytic_tag_ids.ids)]
+        line.analytic_distribution = self.analytic_distribution
 
         # Recompute taxes.
         if line.flag not in ('tax_line', 'early_payment') and any(x.analytic for x in line.tax_ids):
@@ -1153,9 +1133,7 @@ class BankRecWidget(models.Model):
                         'currency_id': vals['currency_id'],
                         'amount_currency': vals['amount_currency'],
                         'balance': vals['balance'],
-
-                        'analytic_account_id': vals.get('analytic_account_id'),
-                        'analytic_tag_ids': vals.get('analytic_tag_ids', []),
+                        'analytic_distribution': vals.get('analytic_distribution'),
                         'tax_ids': vals.get('tax_ids', []),
                         'tax_tag_ids': vals.get('tax_tag_ids', []),
                         'tax_repartition_line_id': vals.get('tax_repartition_line_id'),
@@ -1229,8 +1207,7 @@ class BankRecWidget(models.Model):
             price_unit=line.tax_base_amount_currency,
             quantity=1.0,
             account=line.account_id,
-            analytic_account=line.analytic_account_id,
-            analytic_tags=line.analytic_tag_ids,
+            analytic_distribution=line.analytic_distribution,
             price_subtotal=line.tax_base_amount_currency,
             is_refund=is_refund,
             handle_price_include=handle_price_include,
@@ -1253,8 +1230,7 @@ class BankRecWidget(models.Model):
             tax_repartition_line=line.tax_repartition_line_id,
             group_tax=line.group_tax_id,
             account=line.account_id,
-            analytic_account=line.analytic_account_id,
-            analytic_tags=line.analytic_tag_ids,
+            analytic_distribution=line.analytic_distribution,
             tax_amount=line.amount_currency,
         )
 
@@ -1281,8 +1257,7 @@ class BankRecWidget(models.Model):
             'amount_currency': amount_currency,
             'balance': balance,
 
-            'analytic_account_id': tax_line_vals['analytic_account_id'],
-            'analytic_tag_ids': tax_line_vals['analytic_tag_ids'],
+            'analytic_distribution': tax_line_vals['analytic_distribution'],
             'tax_repartition_line_id': tax_rep.id,
             'tax_ids': tax_line_vals['tax_ids'],
             'tax_tag_ids': tax_line_vals['tax_tag_ids'],
@@ -1359,8 +1334,7 @@ class BankRecWidget(models.Model):
             'tax_base_amount_currency': write_off_vals['amount_currency'],
 
             'reconcile_model_id': reco_model.id,
-            'analytic_account_id': write_off_vals['analytic_account_id'],
-            'analytic_tag_ids': write_off_vals['analytic_tag_ids'],
+            'analytic_distribution': write_off_vals['analytic_distribution'],
             'tax_ids': write_off_vals['tax_ids'],
         }
 
@@ -1416,8 +1390,7 @@ class BankRecWidget(models.Model):
         self.form_account_id = line.account_id
         self.form_partner_id = line.partner_id
         self.form_currency_id = line.currency_id
-        self.form_analytic_account_id = line.analytic_account_id
-        self.form_analytic_tag_ids = [Command.set(line.analytic_tag_ids.ids)]
+        self.analytic_distribution = line.analytic_distribution
         self.form_tax_ids = [Command.set(line.tax_ids.ids)]
         self.form_amount_currency = balance_sign * line.amount_currency
         self.form_balance = balance_sign * line.balance
@@ -1510,8 +1483,7 @@ class BankRecWidget(models.Model):
                 'amount_currency': line.amount_currency,
                 'balance': line.debit - line.credit,
                 'reconcile_model_id': line.reconcile_model_id.id,
-                'analytic_account_id': line.analytic_account_id.id,
-                'analytic_tag_ids': [Command.set(line.analytic_tag_ids.ids)],
+                'analytic_distribution': line.analytic_distribution,
                 'tax_repartition_line_id': line.tax_repartition_line_id.id,
                 'tax_ids': [Command.set(line.tax_ids.ids)],
                 'tax_tag_ids': [Command.set(line.tax_tag_ids.ids)],
@@ -1663,7 +1635,7 @@ class BankRecWidget(models.Model):
 
         # Refresh analytic lines.
         move.line_ids.analytic_line_ids.unlink()
-        move.line_ids.create_analytic_lines()
+        move.line_ids._create_analytic_lines()
 
     def collect_global_info_data(self, journal_id):
         domain = [

@@ -61,14 +61,6 @@ def _build_sql_query(fields, tables, conditions, query_args, filters, groupby=No
         conditions.append("crm_team.id IN %(team_ids)s")
         query_args['team_ids'] = tuple(filters.get('sale_team_ids'))
 
-    if filters.get('tag_ids'):
-        tables.append("sale_order")
-        tables.append("account_analytic_tag_sale_order_rel")
-        conditions.append("account_move_line.subscription_id = sale_order.id")
-        conditions.append("sale_order.id = account_analytic_tag_sale_order_rel.sale_order_id")
-        conditions.append("account_analytic_tag_sale_order_rel.account_analytic_tag_id IN %(tag_ids)s")
-        query_args['tag_ids'] = tuple(filters.get('tag_ids'))
-
     if filters.get('company_ids'):
         conditions.append("account_move.company_id IN %(company_ids)s")
         conditions.append("account_move_line.company_id IN %(company_ids)s")
@@ -323,11 +315,6 @@ def compute_mrr_growth_values(start_date, end_date, filters):
         conditions.append("sale_order_log.team_id IN %(team_ids)s")
         conditions.append("sale_order.team_id IN %(team_ids)s")
         query_args['team_ids'] = tuple(filters.get('sale_team_ids'))
-
-    if filters.get('tag_ids'):
-        tables.append("account_analytic_tag")
-        conditions.append("account_analytic_tag.id IN %(tag_ids)s")
-        query_args['tag_ids'] = tuple(filters.get('tag_ids'))
 
     if filters.get('company_ids'):
         conditions.append("sale_order_log.company_id IN %(company_ids)s")

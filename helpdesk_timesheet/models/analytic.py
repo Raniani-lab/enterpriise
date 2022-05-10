@@ -48,7 +48,6 @@ class AccountAnalyticLine(models.Model):
                 vals['project_id'] = ticket.project_id.id
             vals.update({
                 'account_id': ticket.analytic_account_id.id,
-                'tag_ids': [Command.link(tag_id.id) for tag_id in ticket.analytic_tag_ids],
             })
         vals = super(AccountAnalyticLine, self)._timesheet_preprocess(vals)
         return vals

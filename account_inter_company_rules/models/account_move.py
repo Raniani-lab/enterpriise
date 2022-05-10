@@ -106,6 +106,10 @@ class AccountMoveLine(models.Model):
         '''
         self.ensure_one()
 
+        account_ids = self.env['account.analytic.account'].browse(
+            list(self.analytic_distribution.keys()) if self.analytic_distribution else None)
+        analytic_distribution = {self.analytic_distribution[account_id] for account_id in account_ids.filtered(lambda r: not r.company_id).ids}
+
         vals = {
             'display_type': self.display_type,
             'sequence': self.sequence,
@@ -115,13 +119,7 @@ class AccountMoveLine(models.Model):
             'quantity': self.quantity,
             'discount': self.discount,
             'price_unit': self.price_unit,
-            'analytic_account_id': not self.analytic_account_id.company_id and self.analytic_account_id.id,
-            'analytic_tag_ids': [(6, 0, self.analytic_tag_ids.filtered(lambda r: not r.company_id).ids)],
+            'analytic_distribution': analytic_distribution,
         }
 
-        # Set company of analytic account to false to avoid inconsistencies in company record rules
-        company = self.env['res.company']._find_company_from_partner(self.move_id.partner_id.id)
-        analytic_company = self.analytic_account_id.company_id
-        if company and analytic_company and company.rule_type == 'invoice_and_refund' and company != analytic_company:
-            self.analytic_account_id.company_id = False
         return vals

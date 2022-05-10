@@ -139,16 +139,30 @@ var accountReportsWidget = AbstractAction.extend({
              return self.reload().then(function () {
                  self.$searchview_buttons.find('.account_partner_filter').click();
              });
-         },
+        },
 
-         'analytic_filter_changed': function(ev) {
-              var self = this;
-              self.report_options.analytic_accounts = ev.data.analytic_accounts;
-              self.report_options.analytic_tags = ev.data.analytic_tags;
-              return self.reload().then(function () {
-                  self.$searchview_buttons.find('.account_analytic_filter').click();
-              });
-          },
+        'analytic_filter_changed': function(ev) {
+            var self = this;
+            self.report_options.analytic_accounts = ev.data.analytic_accounts;
+            return self.reload().then(function () {
+                self.$searchview_buttons.find('.account_analytic_filter').click();
+            });
+        },
+
+        'analytic_groupby_filter_changed': function (ev) {
+            var self = this;
+            self.report_options.analytic_accounts_groupby = ev.data.analytic_accounts_groupby;
+            return self.reload().then(function () {
+                self.$searchview_buttons.find('.account_analytic_groupby_filter').click();
+            });
+        },
+        'analytic_plans_groupby_filter_changed': function (ev) {
+            var self = this;
+            self.report_options.analytic_plans_groupby = ev.data.analytic_plans_groupby;
+            return self.reload().then(function () {
+                self.$searchview_buttons.find('.account_analytic_plans_groupby_filter').click();
+            });
+        },
     },
 
     init: function(parent, action) {
@@ -749,19 +763,48 @@ var accountReportsWidget = AbstractAction.extend({
                         value: this.report_options.analytic_accounts.map(Number),
                     };
                 }
-                if (this.report_options.analytic_tags) {
-                    fields['analytic_tags'] = {
-                        label: _t('Tags'),
-                        modelName: 'account.analytic.tag',
-                        value: this.report_options.analytic_tags.map(Number),
-                    };
-                }
                 if (!_.isEmpty(fields)) {
                     this.analytic_m2m_filter = new M2MFilters(this, fields, 'analytic_filter_changed');
                     this.analytic_m2m_filter.appendTo(this.$searchview_buttons.find('.js_account_analytic_m2m'));
                 }
             } else {
                 this.$searchview_buttons.find('.js_account_analytic_m2m').append(this.analytic_m2m_filter.$el);
+            }
+        }
+        if (this.report_options.analytic_groupby) {
+            if (!this.analytic_groupby_m2m_filter) {
+                var fields = {};
+                if (this.report_options.analytic_accounts_groupby) {
+                    fields['analytic_accounts_groupby'] = {
+                        label: _t('Accounts'),
+                        modelName: 'account.analytic.account',
+                        value: this.report_options.analytic_accounts_groupby.map(Number),
+                    };
+                }
+                if (!_.isEmpty(fields)) {
+                    this.analytic_groupby_m2m_filter = new M2MFilters(this, fields, 'analytic_groupby_filter_changed');
+                    this.analytic_groupby_m2m_filter.appendTo(this.$searchview_buttons.find('.js_account_analytic_groupby_m2m'));
+                }
+            } else {
+                this.$searchview_buttons.find('.js_account_analytic_groupby_m2m').append(this.analytic_groupby_m2m_filter.$el);
+            }
+        }
+        if (this.report_options.analytic_plan_groupby) {
+            if (!this.analytic_plan_groupby_m2m_filter) {
+                var fields = {};
+                if (this.report_options.analytic_plans_groupby) {
+                    fields['analytic_plans_groupby'] = {
+                        label: _t('Plans'),
+                        modelName: 'account.analytic.plan',
+                        value: this.report_options.analytic_plans_groupby.map(Number),
+                    };
+                }
+                if (!_.isEmpty(fields)) {
+                    this.analytic_plan_groupby_m2m_filter = new M2MFilters(this, fields, 'analytic_plans_groupby_filter_changed');
+                    this.analytic_plan_groupby_m2m_filter.appendTo(this.$searchview_buttons.find('.js_account_analytic_plans_groupby_m2m'));
+                }
+            } else {
+                this.$searchview_buttons.find('.js_account_analytic_plans_groupby_m2m').append(this.analytic_plan_groupby_m2m_filter.$el);
             }
         }
     },

@@ -264,13 +264,10 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
             'toggle': 'popover'
         });
         var def2 = this._super.apply(this, arguments);
-        var def3 = session.user_has_group('analytic.group_analytic_tags').then(function(has_group) {
-                self.group_tags = has_group;
-            });
-        var def4 = session.user_has_group('analytic.group_analytic_accounting').then(function(has_group) {
+        var def3 = session.user_has_group('analytic.group_analytic_accounting').then(function(has_group) {
                 self.group_acc = has_group;
             });
-        return Promise.all([def1, def2, def3, def4]).then(function () {
+        return Promise.all([def1, def2, def3]).then(function () {
             return self.model.makeRecord('account.move.line', [{
                 relation: 'account.account',
                 type: 'many2one',
@@ -384,17 +381,6 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
             Promise.resolve(createPromise).then(function(){
                 var data = self.model.get(self.handleCreateRecord).data;
                 return self.model.notifyChanges(self.handleCreateRecord, state.createForm)
-                    .then(function () {
-                    // FIXME can't it directly written REPLACE_WITH ids=state.createForm.analytic_tag_ids
-                        return self.model.notifyChanges(self.handleCreateRecord, {analytic_tag_ids: {operation: 'REPLACE_WITH', ids: []}})
-                    })
-                    .then(function (){
-                        var defs = [];
-                        _.each(state.createForm.analytic_tag_ids, function (tag) {
-                            defs.push(self.model.notifyChanges(self.handleCreateRecord, {analytic_tag_ids: {operation: 'ADD_M2M', ids: tag}}));
-                        });
-                        return Promise.all(defs);
-                    })
                     .then(function () {
                         return self.model.notifyChanges(self.handleCreateRecord, {tax_ids: {operation: 'REPLACE_WITH', ids: []}})
                     })
@@ -774,7 +760,7 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
     },
 
     /**
-     * create account_id, tax_ids, analytic_account_id, analytic_tag_ids, name and amount fields
+     * create account_id, tax_ids, analytic_distribution, name and amount fields
      *
      * @private
      * @param {object} state - statement line
@@ -798,15 +784,8 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
             name: 'tax_ids',
             domain: [['company_id', '=', state.st_line.company_id]],
         }, {
-            relation: 'account.analytic.account',
-            type: 'many2one',
-            name: 'analytic_account_id',
-            domain: ["|", ['company_id', '=', state.st_line.company_id], ['company_id', '=', false]],
-        }, {
-            relation: 'account.analytic.tag',
-            type: 'many2many',
-            name: 'analytic_tag_ids',
-            domain: ["|", ['company_id', '=', state.st_line.company_id], ['company_id', '=', false]],
+            type: 'char',
+            name: 'analytic_distribution',
         }, {
             type: 'boolean',
             name: 'force_tax_included',
@@ -841,11 +820,8 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
             self.fields.tax_ids = new relational_fields.FieldMany2ManyTags(self,
                 'tax_ids', record, {mode: 'edit', additionalContext: {append_type_to_tax_name: true}});
 
-            self.fields.analytic_account_id = new relational_fields.FieldMany2One(self,
-                'analytic_account_id', record, {mode: 'edit'});
-
-            self.fields.analytic_tag_ids = new relational_fields.FieldMany2ManyTags(self,
-                'analytic_tag_ids', record, {mode: 'edit'});
+            self.fields.analytic_distribution = new basic_fields.FieldChar(self,
+                'analytic_distribution', record, {mode: 'edit'});
 
             self.fields.force_tax_included = new basic_fields.FieldBoolean(self,
                 'force_tax_included', record, {mode: 'edit'});
@@ -862,13 +838,12 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
             self.fields.to_check = new basic_fields.FieldBoolean(self,
                 'to_check', record, {mode: 'edit'});
 
-            var $create = $(qweb.render("reconciliation.line.create", {'state': state, 'group_tags': self.group_tags, 'group_acc': self.group_acc}));
+            var $create = $(qweb.render("reconciliation.line.create", {'state': state, 'group_acc': self.group_acc}));
             self.fields.account_id.appendTo($create.find('.create_account_id .o_td_field'))
                 .then(addRequiredStyle.bind(self, self.fields.account_id));
             self.fields.journal_id.appendTo($create.find('.create_journal_id .o_td_field'));
             self.fields.tax_ids.appendTo($create.find('.create_tax_id .o_td_field'));
-            self.fields.analytic_account_id.appendTo($create.find('.create_analytic_account_id .o_td_field'));
-            self.fields.analytic_tag_ids.appendTo($create.find('.create_analytic_tag_ids .o_td_field'));
+            self.fields.analytic_distribution.appendTo($create.find('.create_analytic_distribution .o_td_field'));
             self.fields.force_tax_included.appendTo($create.find('.create_force_tax_included .o_td_field'));
             self.fields.name.appendTo($create.find('.create_label .o_td_field'))
                 .then(addRequiredStyle.bind(self, self.fields.name));

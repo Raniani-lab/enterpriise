@@ -3,7 +3,7 @@
     <record id="account_financial_report_profitandloss_lt" model="account.report">
         <field name="name">Profit and Loss</field>
         <field name="root_report_id" ref="account_reports.profit_and_loss"/>
-        <field name="filter_analytic" eval="True"/>
+        <field name="filter_analytic_groupby" eval="True"/>
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_journals" eval="True"/>
         <field name="country_id" ref="base.lt"/>
@@ -232,7 +232,7 @@
     <record id="account_financial_report_balancesheet_lt" model="account.report">
         <field name="name">Balance Sheet</field>
         <field name="root_report_id" ref="account_reports.balance_sheet"/>
-        <field name="filter_analytic" eval="True"/>
+        <field name="filter_analytic_groupby" eval="True"/>
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_date_range" eval="False"/>
         <field name="country_id" ref="base.lt"/>

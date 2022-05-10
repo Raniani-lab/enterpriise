@@ -5,6 +5,7 @@
         <field name="root_report_id" ref="account_reports.balance_sheet"/>
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_date_range" eval="False"/>
+        <field name="filter_analytic_groupby" eval="True"/>
         <field name="filter_journals" eval="True"/>
         <field name="country_id" ref="base.be"/>
         <field name="filter_multi_company">selector</field>
@@ -531,6 +532,7 @@
         <field name="root_report_id" ref="account_reports.profit_and_loss"/>
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_journals" eval="True"/>
+        <field name="filter_analytic_groupby" eval="True"/>
         <field name="country_id" ref="base.be"/>
         <field name="filter_multi_company">selector</field>
         <field name="column_ids">

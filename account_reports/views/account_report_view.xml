@@ -109,6 +109,7 @@
                                         <field name="default_opening_date_filter" required="True"/>
                                         <field name="horizontal_group_ids" widget="many2many_tags"/>
                                         <field name="filter_analytic" groups="analytic.group_analytic_accounting"/>
+                                        <field name="filter_analytic_groupby" groups="analytic.group_analytic_accounting"/>
                                     </group>
                                     <group string="Advanced" class="oe_edit_only">
                                         <field name="filter_date_range"/>

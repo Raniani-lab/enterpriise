@@ -83,7 +83,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             'mv_line_ids': [move_payment_lines[1].id, move_product_lines[1].id],
             'new_mv_line_dicts': [{
                 'account_id': liquidity_account.id,
-                'analytic_tag_ids': [(6, None, [])],
+                'analytic_distribution': False,
                 'credit': 0,
                 'date': time.strftime('%Y') + '-01-01',
                 'debit': 15.0,
@@ -283,7 +283,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             'new_mv_line_dicts': [{
                 'name': 'SuperLabel',
                 'balance': -bank_fees.line_ids.amount,
-                'analytic_tag_ids': [[6, None, []]],
+                'analytic_distribution': False,
                 'account_id': bank_fees.line_ids.account_id.id,
                 'journal_id': bank_fees.line_ids.journal_id.id,
                 'reconcile_model_id': bank_fees.id}

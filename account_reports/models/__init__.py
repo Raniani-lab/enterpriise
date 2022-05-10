@@ -5,6 +5,7 @@ from . import res_partner
 from . import res_company
 from . import account
 from . import account_report
+from . import account_analytic_report
 from . import account_bank_reconciliation_report
 from . import account_general_ledger
 from . import account_generic_tax_report

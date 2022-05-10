@@ -75,7 +75,7 @@ class Project(models.Model):
     def _get_profitability_aal_domain(self):
         return expression.AND([
             super()._get_profitability_aal_domain(),
-            ['|', ('move_id', '=', False), ('move_id.subscription_id', '=', False)],
+            ['|', ('move_line_id', '=', False), ('move_line_id.subscription_id', '=', False)],
         ])
 
     def _get_profitability_items(self, with_action=True):
@@ -119,7 +119,7 @@ class Project(models.Model):
             amount_to_invoice += recurring_monthly * nb_period
 
         aal_read_group = self.env['account.analytic.line'].sudo()._read_group(
-            [('move_id.subscription_id', 'in', all_subscription_ids), ('account_id', 'in', self.analytic_account_id.ids)],
+            [('move_line_id.subscription_id', 'in', all_subscription_ids), ('account_id', 'in', self.analytic_account_id.ids)],
             ['amount'],
             [],
         )

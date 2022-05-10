@@ -4,11 +4,14 @@
         <record id="account_assembly_hours" model="account.analytic.account">
             <field name="code">ASML - HOUR</field>
             <field name="name">Costing Account For Hours of Assembly.</field>
+            <field name="plan_id" ref="analytic.analytic_plan_internal"/>
+
         </record>
 
         <record id="account_assembly_cycle" model="account.analytic.account">
             <field name="code">ASML - Cycle</field>
             <field name="name">Costing Account For Cycle of Assembly.</field>
+            <field name="plan_id" ref="analytic.analytic_plan_internal"/>
         </record>
 
         <!-- Resource: mrp.workcenter -->

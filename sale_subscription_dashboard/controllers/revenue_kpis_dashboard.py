@@ -39,7 +39,6 @@ class RevenueKPIsDashboard(http.Controller):
             },
             'currency_id': request.env.company.currency_id.id,
             'contract_templates': request.env['sale.order.template'].search_read([('recurrence_id', '!=', False)], fields=['name']),
-            'tags': request.env['account.analytic.tag'].search_read([], fields=['name']),
             'companies': request.env['res.company'].search_read([], fields=['name']),
             'has_template': bool(request.env['sale.order.template'].search_count([])),
             'has_mrr': bool(request.env['account.move.line'].search_count([('subscription_start_date', '!=', False)])),

@@ -7,6 +7,7 @@ import uuid
 
 class BankRecWidgetLine(models.Model):
     _name = "bank.rec.widget.line"
+    _inherit = "analytic.mixin"
     _description = "Line of the lines_widget"
 
     # This model is never saved inside the database.
@@ -98,18 +99,6 @@ class BankRecWidgetLine(models.Model):
     )
     source_aml_move_name = fields.Char(
         compute='_compute_source_aml_fields',
-        store=True,
-        readonly=False,
-    )
-    analytic_account_id = fields.Many2one(
-        comodel_name='account.analytic.account',
-        compute='_compute_analytic_account_id',
-        store=True,
-        readonly=False,
-    )
-    analytic_tag_ids = fields.Many2one(
-        comodel_name='account.analytic.tag',
-        compute='_compute_analytic_tag_ids',
         store=True,
         readonly=False,
     )
@@ -217,16 +206,11 @@ class BankRecWidgetLine(models.Model):
             line.source_credit = -line.source_balance if line.source_balance < 0.0 else 0.0
 
     @api.depends('source_aml_id')
-    def _compute_analytic_account_id(self):
+    def _compute_analytic_distribution_stored_char(self):
         for line in self:
             if line.flag in ('aml', 'new_aml'):
-                line.analytic_account_id = line.source_aml_id.analytic_account_id
-
-    @api.depends('source_aml_id')
-    def _compute_analytic_tag_ids(self):
-        for line in self:
-            if line.flag in ('aml', 'new_aml'):
-                line.analytic_tag_ids = [Command.set(line.source_aml_id.analytic_tag_ids.ids)]
+                line.analytic_distribution_stored_char = line.source_aml_id.analytic_distribution_stored_char
+                line._compute_analytic_distribution()
 
     @api.depends('source_aml_id')
     def _compute_tax_repartition_line_id(self):

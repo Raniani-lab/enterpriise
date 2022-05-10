@@ -13,9 +13,15 @@ class TestProject(TestProjectCommon):
     def setUpClass(cls):
         super().setUpClass()
 
+        cls.analytic_plan = cls.env['account.analytic.plan'].create({
+            'name': 'Plan',
+            'company_id': False,
+        })
+
         cls.analytic_account = cls.env['account.analytic.account'].create({
             'name': 'Project - AA',
             'code': 'AA-1234',
+            'plan_id': cls.analytic_plan.id,
         })
         cls.project_goats.write({'analytic_account_id': cls.analytic_account.id})
 

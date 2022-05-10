@@ -249,14 +249,8 @@
                                            options="{'no_open': True, 'no_create': True}"
                                            context="{'append_type_to_tax_name': True}"
                                            attrs="{'invisible': ['|', ('form_flag', 'in', ('liquidity', 'new_aml', 'tax_line')), ('form_index', '=', False)]}"/>
-                                    <field name="form_analytic_account_id"
-                                           string="Analytic Account"
-                                           options="{'no_open': True, 'no_create': True}"
-                                           attrs="{'invisible': ['|', ('form_flag', '=', 'liquidity'), ('form_index', '=', False)]}"/>
-                                    <field name="form_analytic_tag_ids"
-                                           string="Analytic Tags"
-                                           widget="many2many_tags"
-                                           options="{'no_open': True, 'no_create': True}"
+                                    <field name="analytic_distribution_stored_char" invisible="1"/>
+                                    <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting"
                                            attrs="{'invisible': ['|', ('form_flag', '=', 'liquidity'), ('form_index', '=', False)]}"/>
                                 </group>
                                 <group>
@@ -371,13 +365,10 @@
                     <field name="date_maturity" optional="hidden"/>
                     <field name="ref"
                            optional="hidden"/>
-                    <field name="analytic_account_id"
-                           groups="account.group_account_readonly"
+                    <field name="analytic_distribution_stored_char" invisible="1"/>
+                    <field name="analytic_distribution" widget="analytic_distribution"
+                           groups="analytic.group_analytic_accounting"
                            optional="hidden"/>
-                    <field name="analytic_tag_ids"
-                           optional="hidden"
-                           widget="many2many_tags"
-                           groups="analytic.group_analytic_tags"/>
                     <field name="amount_residual_currency"
                            groups="base.group_multi_currency"
                            string="Open Amount (in Currency)"/>

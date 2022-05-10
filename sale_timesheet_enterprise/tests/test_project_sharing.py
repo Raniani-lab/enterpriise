@@ -12,8 +12,14 @@ class TestProjectSharing(TestProjectSharingCommon):
     def setUpClass(cls):
         super().setUpClass()
 
+        cls.analytic_plan = cls.env['account.analytic.plan'].create({
+            'name': 'Plan',
+            'company_id': False,
+        })
+
         cls.analytic_account = cls.env['account.analytic.account'].create({
             'name': 'Analytic Account for Project Shared',
+            'plan_id': cls.analytic_plan.id,
             'code': 'TEST'
         })
         cls.project_portal.write({'analytic_account_id': cls.analytic_account.id})

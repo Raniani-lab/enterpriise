@@ -66,7 +66,6 @@
                 <field name="use_helpdesk_timesheet" invisible="1"/>
                 <field name="project_id" invisible="1"/>
                 <field name="analytic_account_id" groups="analytic.group_analytic_accounting" attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}"/>
-                <field name="analytic_tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags" attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='description']" position="replace">
                 <notebook>
@@ -82,7 +81,6 @@
                                 <field name="user_id" invisible="1"/>
                                 <field name="employee_id" required="1" widget="many2one_avatar_employee"/>
                                 <field name="name" required="0"/>
-                                <field name="tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags" optional="hide"/>
                                 <field name="unit_amount" widget="timesheet_uom" decoration-danger="unit_amount &gt; 24"/>
                                 <field name="project_id" invisible="1"/>
                                 <field name="task_id" invisible="1"/>
@@ -162,11 +160,9 @@
             </filter>
             <field name="rating_last_text" position="after">
                 <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
-                <field name="analytic_tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags"/>
             </field>
             <filter name="company" position="after">
                 <filter name="analytic_account" context="{'group_by': 'analytic_account_id'}" groups="analytic.group_analytic_accounting"/>
-                <filter name="analytic_account_tag" context="{'group_by': 'analytic_tag_ids'}" groups="analytic.group_analytic_tags"/>
             </filter>
         </field>
     </record>
@@ -180,7 +176,6 @@
             <field name='partner_id' position="after">
                 <field name="total_hours_spent" widget="timesheet_uom" optional="hide" attrs="{'invisible': [('total_hours_spent', '=', 0)]}"/>
                 <field name="analytic_account_id" groups="analytic.group_analytic_accounting" optional="hide"/>
-                <field name="analytic_tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags" optional="hide"/>
             </field>
         </field>
     </record>

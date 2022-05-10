@@ -658,18 +658,15 @@ class AccountReport(models.Model):
         return date_from, date_to, allow_include_initial_balance
 
     ####################################################
-    # OPTIONS: analytic
+    # OPTIONS: analytic filter
     ####################################################
 
     def _init_options_analytic(self, options, previous_options=None):
         if not self.filter_analytic:
             return
 
-        options['analytic'] = True # Used in js, so we can't only rely on self.filter_analytic
-
         enable_analytic_accounts = self.user_has_groups('analytic.group_analytic_accounting')
-        enable_analytic_tags = self.user_has_groups('analytic.group_analytic_tags')
-        if not enable_analytic_accounts and not enable_analytic_tags:
+        if not enable_analytic_accounts:
             return
 
         if enable_analytic_accounts:
@@ -679,22 +676,13 @@ class AccountReport(models.Model):
             options['analytic_accounts'] = selected_analytic_accounts.ids
             options['selected_analytic_account_names'] = selected_analytic_accounts.mapped('name')
 
-        if enable_analytic_tags:
-            previous_analytic_tags = (previous_options or {}).get('analytic_tags', [])
-            analytic_tag_ids = [int(x) for x in previous_analytic_tags]
-            selected_analytic_tags = self.env['account.analytic.tag'].search([('id', 'in', analytic_tag_ids)])
-            options['analytic_tags'] = selected_analytic_tags.ids
-            options['selected_analytic_tag_names'] = selected_analytic_tags.mapped('name')
-
     @api.model
     def _get_options_analytic_domain(self, options):
         domain = []
         if options.get('analytic_accounts'):
             analytic_account_ids = [int(acc) for acc in options['analytic_accounts']]
-            domain.append(('analytic_account_id', 'in', analytic_account_ids))
-        if options.get('analytic_tags'):
-            analytic_tag_ids = [int(tag) for tag in options['analytic_tags']]
-            domain.append(('analytic_tag_ids', 'in', analytic_tag_ids))
+            domain = osv.expression.OR([('analytic_distribution_stored_char', 'ilike', f'%"{analytic_account_id}":%')
+                                        for analytic_account_id in analytic_account_ids])
         return domain
 
     ####################################################
@@ -2105,7 +2093,7 @@ class AccountReport(models.Model):
         return {
             **options,
             **column_group['forced_options'],
-            'forced_domain': options.get('forced_domain', []) + column_group['forced_domain'],
+            'forced_domain': options.get('forced_domain', []) + column_group['forced_domain'] + column_group['forced_options'].get('forced_domain', []),
             'owner_column_group': group_key,
         }
 

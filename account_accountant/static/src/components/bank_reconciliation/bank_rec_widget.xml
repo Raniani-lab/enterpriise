@@ -177,11 +177,11 @@
                                             </td>
                                         </t>
                                     </t>
-                                    <t t-if="column[0] === 'analytic_account'">
-                                        <td class="o_data_cell o_field_cell o_list_many2one"
-                                            field="analytic_account_id"
-                                            t-att-title="line.analytic_account_id.display"
-                                            t-esc="line.analytic_account_id.display"/>
+                                    <t t-if="column[0] === 'analytic_distribution'">
+                                        <td class="o_data_cell o_field_cell o_many2many_tags_cell"
+                                            field="analytic_distribution"
+                                            t-att-title="line.analytic_distribution.display"
+                                            t-esc="line.analytic_distribution.display"/>
                                     </t>
                                     <t t-if="column[0] === 'amount_currency'">
                                         <t t-if="line.display_stroked_amount_currency.value">

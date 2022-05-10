@@ -13,12 +13,11 @@ class Project(models.Model):
         if not self.analytic_account_id:
             self.assets_count = 0
             return
-        assets_data = self.env['account.asset'].read_group([
-            ('account_analytic_id', 'in', self.analytic_account_id.ids)
-        ], ['account_analytic_id'], ['account_analytic_id'])
-        mapped_data = {data['account_analytic_id'][0]: data['account_analytic_id_count'] for data in assets_data}
         for project in self:
-            project.assets_count = mapped_data.get(project.analytic_account_id.id, 0)
+            assets = self.env['account.asset'].search([
+                ('analytic_distribution_stored_char', '=ilike', f'%"{project.analytic_account_id.id}":%')
+            ])
+            project.assets_count = len(assets)
 
     # -------------------------------------
     # Actions
@@ -26,13 +25,12 @@ class Project(models.Model):
 
     def action_open_project_assets(self):
         assets = self.env['account.asset'].search([
-            ('account_analytic_id', '!=', False),
-            ('account_analytic_id', 'in', self.analytic_account_id.ids)
-        ])
+                ('analytic_distribution_stored_char', '=ilike', f'%"{self.analytic_account_id.id}":%')
+            ])
         action = self.env["ir.actions.actions"]._for_xml_id("account_asset.action_account_asset_form")
         action.update({
             'views': [[False, 'tree'], [False, 'form'], [False, 'kanban']],
-            'context': {'default_account_analytic_id': self.analytic_account_id.id},
+            'context': {'default_analytic_distribution': {self.analytic_account_id.id: 100}},
             'domain': [('id', 'in', assets.ids)]
         })
         if(len(assets) == 1):

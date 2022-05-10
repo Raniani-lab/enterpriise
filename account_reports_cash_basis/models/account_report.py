@@ -27,6 +27,8 @@ class AccountReport(models.Model):
         self.env.cr.execute("SELECT 1 FROM information_schema.tables WHERE table_name='cash_basis_temp_account_move_line'")
         if self.env.cr.fetchone():
             return
+
+        # TODO gawa Analytic + CABA, check the shadowing
         self.env.cr.execute("SELECT column_name FROM information_schema.columns WHERE table_name='account_move_line'")
         changed_fields = ['date', 'amount_currency', 'amount_residual', 'balance', 'debit', 'credit']
         unchanged_fields = list(set(f[0] for f in self.env.cr.fetchall()) - set(changed_fields))
@@ -67,7 +69,7 @@ class AccountReport(models.Model):
                     AND aml.id != aml2.id
                 JOIN (
                     SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
-                    FROM ONLY account_move_line
+                    FROM ONLY account_move_line account_move_line
                     GROUP BY move_id, account_id
                 ) sub_aml ON (aml.account_id = sub_aml.account_id AND aml.move_id=sub_aml.move_id)
                 JOIN account_account account ON aml.account_id = account.id
@@ -82,7 +84,7 @@ class AccountReport(models.Model):
                 ref.matched_percentage * "account_move_line".debit,
                 ref.matched_percentage * "account_move_line".credit
             FROM payment_table ref
-            JOIN ONLY account_move_line ON "account_move_line".move_id = ref.move_id
+            JOIN ONLY account_move_line account_move_line ON "account_move_line".move_id = ref.move_id
             WHERE NOT (
                 "account_move_line".journal_id IN (SELECT id FROM account_journal WHERE type in ('cash', 'bank'))
                 OR "account_move_line".move_id NOT IN (

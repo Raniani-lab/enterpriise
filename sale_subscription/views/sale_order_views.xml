@@ -162,7 +162,6 @@
             </group>
             <group name="sale_info" position='inside'>
                 <field name="commercial_partner_id" invisible="1"/>
-                <field name="account_tag_ids" widget="many2many_tags"/>
                 <field name="payment_token_id" groups="base.group_no_one"/>
                 <field name="payment_exception" groups="base.group_no_one"/>
             </group>

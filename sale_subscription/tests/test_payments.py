@@ -67,7 +67,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
 
         failing_subs |= subscription_mail_fail
         for dummy in range(5):
-            failing_subs |= subscription_mail_fail.copy({'to_renew': True, 'stage_id': self.subscription.stage_id.id})
+            failing_subs |= subscription_mail_fail.copy({'to_renew': True, 'stage_id': self.subscription.stage_id.id, 'is_batch': True})
         failing_subs.action_confirm()
         # issue: two problems:
         # 1) payment failed, we want to avoid trigger it twice: (double cost) --> payment_exception
@@ -77,8 +77,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         self.assertFalse(self.mock_send_success_count)
         failing_result = [not res for res in failing_subs.mapped('payment_exception')]
         self.assertTrue(all(failing_result), "The subscription are not flagged anymore")
-        invoice_batch_tag = self.env.ref('sale_subscription.invoice_batch')
-        failing_result = [invoice_batch_tag.id not in res.ids for res in failing_subs.mapped('account_tag_ids')]
+        failing_result = [not res for res in failing_subs.mapped('is_batch')]
         self.assertTrue(all(failing_result), "The subscription are not flagged anymore")
         failing_subs.payment_token_id = self.payment_method.id
         # Trigger the invoicing manually after fixing it

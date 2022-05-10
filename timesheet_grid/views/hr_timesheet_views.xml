@@ -186,7 +186,6 @@
                                 <field name="timer_start" invisible="1"/>
                                 <field name="project_id" required="1" options="{'no_create_edit': True}" class="o_timesheet_tour_project_name" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
                                 <field name="task_id" options="{'no_create_edit': True}" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="task_with_hours"/>
-                                <field name="tag_ids" groups="analytic.group_analytic_tags" widget="many2many_tags"/>
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
                             </group>
                             <group>

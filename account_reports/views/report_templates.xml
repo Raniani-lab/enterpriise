@@ -72,14 +72,25 @@
                     </t>
                 </div>
                 <div class="col-12">
-                    <t t-if="options.get('analytic_tags') != None">
-                        Analytic Tags:
-                        <t t-set="analytic_tag_value">All</t>
-                        <t t-foreach="options['selected_analytic_tag_names']" t-as="analytic_tag_name">
-                            <t t-set="analytic_tag_value" t-value="''"/>
-                            <t t-out="analytic_tag_name"/>
+                    <t t-if="options.get('analytic_accounts_groupby') != None">
+                        Analytic Accounts:
+                        <t t-set="analytic_account_groupby_value">All</t>
+                        <t t-foreach="options['selected_analytic_account_groupby_names']" t-as="analytic_account_groupby_name">
+                            <t t-set="analytic_account_groupby_value" t-value="''"/>
+                            <t t-out="analytic_account_groupby_name"/>
                         </t>
-                        <t t-out="analytic_tag_value"/>
+                        <t t-out="analytic_account_groupby_value"/>
+                    </t>
+                </div>
+                <div class="col-12">
+                    <t t-if="options.get('analytic_plan_groupby') != None">
+                        Analytic Plans:
+                        <t t-set="analytic_plan_groupby_value">All</t>
+                        <t t-foreach="options['selected_analytic_plan_groupby_names']" t-as="analytic_plan_groupby_name">
+                            <t t-set="analytic_plan_groupby_value" t-value="''"/>
+                            <t t-out="analytic_plan_groupby_name"/>
+                        </t>
+                        <t t-out="analytic_plan_groupby_value"/>
                     </t>
                 </div>
                 <div class="col-12">
@@ -603,10 +614,17 @@
     </template>
 
     <template id="search_template_analytic">
-        <button t-if="report.filter_analytic" type="button" class="o-no-caret btn btn-secondary dropdown-toggle account_analytic_filter" data-bs-toggle="dropdown" groups="analytic.group_analytic_accounting">
+        <button t-if="report.filter_analytic_groupby" type="button" class="o-no-caret btn btn-secondary dropdown-toggle analytic_groupby_filter_changed" data-bs-toggle="dropdown" groups="analytic.group_analytic_accounting">
             <span class="fa fa-folder-open"/> Analytic
         </button>
-        <ul class="dropdown-menu o_filter_menu" role="menu">
+        <ul t-if="report.filter_analytic_groupby" class="dropdown-menu o_filter_menu" role="menu">
+            <li class="o_account_report_search js_account_analytic_groupby_m2m"/>
+            <li class="o_account_report_search js_account_analytic_plans_groupby_m2m"/>
+        </ul>
+        <button t-if="report.filter_analytic" type="button" class="o-no-caret btn btn-secondary dropdown-toggle analytic_filter_changed" data-bs-toggle="dropdown" groups="analytic.group_analytic_accounting">
+            <span class="fa fa-folder-open"/> Analytic
+        </button>
+        <ul t-if="report.filter_analytic" class="dropdown-menu o_filter_menu" role="menu">
             <li class="o_account_report_search js_account_analytic_m2m"/>
         </ul>
     </template>
@@ -730,6 +748,9 @@
             <t t-call="account_reports.search_template_account_type"/>
         </div>
         <div class="btn-group dropdown o_account_reports_filter_analytic" t-if="report.filter_analytic">
+            <t t-call="account_reports.search_template_analytic"/>
+        </div>
+        <div class="btn-group dropdown o_account_reports_filter_analytic_groupby" t-if="report.filter_analytic_groupby">
             <t t-call="account_reports.search_template_analytic"/>
         </div>
         <div class="btn-group dropdown o_account_reports_filter_ir_filters" t-if="options['available_horizontal_groups']">

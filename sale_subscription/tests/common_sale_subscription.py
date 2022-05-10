@@ -15,6 +15,7 @@ class TestSubscriptionCommon(TestSaleCommon):
 
         # disable most emails for speed
         context_no_mail = {'no_reset_password': True, 'mail_create_nosubscribe': True, 'mail_create_nolog': True}
+        AnalyticPlan = cls.env['account.analytic.plan'].with_context(context_no_mail)
         Analytic = cls.env['account.analytic.account'].with_context(context_no_mail)
         SaleOrder = cls.env['sale.order'].with_context(context_no_mail)
         Tax = cls.env['account.tax'].with_context(context_no_mail)
@@ -169,13 +170,19 @@ class TestSubscriptionCommon(TestSaleCommon):
         })
 
         # Test analytic account
+        cls.plan_1 = AnalyticPlan.create({
+            'name': 'Test Plan 1',
+            'company_id': False,
+        })
         cls.account_1 = Analytic.create({
             'partner_id': cls.user_portal.partner_id.id,
             'name': 'Test Account 1',
+            'plan_id': cls.plan_1.id,
         })
         cls.account_2 = Analytic.create({
             'partner_id': cls.user_portal.partner_id.id,
             'name': 'Test Account 2',
+            'plan_id': cls.plan_1.id,
         })
 
         # Test Subscription

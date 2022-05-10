@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta, datetime, time
+from datetime import timedelta, datetime
 import pytz
 
 from odoo import Command, fields, models, api, _
@@ -19,6 +19,7 @@ class Project(models.Model):
     allow_worksheets = fields.Boolean(
         "Worksheets", compute="_compute_allow_worksheets", store=True, readonly=False,
         help="Enables customizable worksheets on tasks.")
+    allow_milestones = fields.Boolean(compute='_compute_allow_milestones', store=True, readonly=False)
 
     def name_get(self):
         res = super().name_get()
@@ -48,6 +49,12 @@ class Project(models.Model):
             if not project._origin:
                 project.allow_worksheets = project.is_fsm
 
+    @api.depends('is_fsm')
+    def _compute_allow_milestones(self):
+        has_group = self.user_has_groups('project.group_project_milestone')
+        for project in self:
+            project.allow_milestones = has_group and not project.is_fsm
+
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
@@ -55,6 +62,8 @@ class Project(models.Model):
             defaults['allow_subtasks'] = defaults.get('allow_subtasks', False) and not defaults.get('is_fsm')
         if 'allow_task_dependencies' in fields_list:
             defaults['allow_task_dependencies'] = defaults.get('allow_task_dependencies', False) and not defaults.get('is_fsm')
+        if 'allow_milestones' in fields_list:
+            defaults['allow_milestones'] = defaults.get('allow_milestones', False) and not defaults.get('is_fsm')
         return defaults
 
 

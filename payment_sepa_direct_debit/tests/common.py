@@ -23,7 +23,7 @@ class SepaDirectDebitCommon(AccountPaymentCommon):
 
         assert cls.sepa_bank_account.acc_type == 'iban'
 
-        cls.sepa = cls._prepare_acquirer('sepa_direct_debit', update_values={
+        cls.sepa = cls._prepare_provider('sepa_direct_debit', update_values={
             'sdd_sms_verification_required': True, # Needed for test ???
         })
         cls.sepa_journal = cls.sepa.journal_id
@@ -46,5 +46,5 @@ class SepaDirectDebitCommon(AccountPaymentCommon):
             'state': 'active',
         })
 
-        cls.acquirer = cls.sepa
+        cls.provider = cls.sepa
         cls.currency = cls.currency_euro

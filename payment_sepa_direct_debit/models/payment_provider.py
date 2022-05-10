@@ -10,10 +10,10 @@ from odoo.addons.payment import utils as payment_utils
 _logger = logging.getLogger(__name__)
 
 
-class PaymentAcquirer(models.Model):
-    _inherit = 'payment.acquirer'
+class PaymentProvider(models.Model):
+    _inherit = 'payment.provider'
 
-    provider = fields.Selection(
+    code = fields.Selection(
         selection_add=[('sepa_direct_debit', "SEPA Direct Debit")],
         ondelete={'sepa_direct_debit': 'set default'})
     sdd_signature_required = fields.Boolean(
@@ -26,14 +26,14 @@ class PaymentAcquirer(models.Model):
 
     #=== COMPUTE METHODS ===#
 
-    @api.depends('provider')
+    @api.depends('code')
     def _compute_view_configuration_fields(self):
         """ Override of payment to hide the credentials page.
 
         :return: None
         """
         super()._compute_view_configuration_fields()
-        self.filtered(lambda acq: acq.provider == 'sepa_direct_debit').update({
+        self.filtered(lambda p: p.code == 'sepa_direct_debit').update({
             'show_credentials_page': False,
             'show_allow_tokenization': False,
             'show_payment_icon_ids': False,
@@ -44,34 +44,34 @@ class PaymentAcquirer(models.Model):
     def _compute_feature_support_fields(self):
         """ Override of `payment` to enable additional features. """
         super()._compute_feature_support_fields()
-        self.filtered(lambda acq: acq.provider == 'sepa_direct_debit').update({
+        self.filtered(lambda p: p.code == 'sepa_direct_debit').update({
             'support_tokenization': True,
         })
 
-    @api.depends('provider')
+    @api.depends('code')
     def _compute_sdd_sms_credits(self):
         sms_credits = self.env['iap.account'].get_credits('sms')
-        self.filtered(lambda a: a.provider == 'sepa_direct_debit').sdd_sms_credits = sms_credits
-        self.filtered(lambda a: a.provider != 'sepa_direct_debit').sdd_sms_credits = 0
+        self.filtered(lambda p: p.code == 'sepa_direct_debit').sdd_sms_credits = sms_credits
+        self.filtered(lambda p: p.code != 'sepa_direct_debit').sdd_sms_credits = 0
 
     #=== CONSTRAINT METHODS ===#
 
     @api.constrains('state', 'journal_id')
     def _check_journal_iban_is_valid(self):
         """ Check that the bank account of the payment journal is a valid IBAN. """
-        for acquirer in self.filtered(
-            lambda acq: acq.provider == 'sepa_direct_debit' and acq.state == 'enabled'
+        for provider in self.filtered(
+            lambda p: p.code == 'sepa_direct_debit' and p.state == 'enabled'
         ):
-            if acquirer.journal_id.bank_account_id.acc_type != 'iban':
+            if provider.journal_id.bank_account_id.acc_type != 'iban':
                 raise ValidationError(_("The bank account of the journal is not a valid IBAN."))
 
     @api.constrains('state', 'company_id')
     def _check_has_creditor_identifier(self):
         """ Check that the company has a creditor identifier. """
-        for acquirer in self.filtered(
-            lambda acq: acq.provider == 'sepa_direct_debit' and acq.state == 'enabled'
+        for provider in self.filtered(
+            lambda p: p.code == 'sepa_direct_debit' and p.state == 'enabled'
         ):
-            if not acquirer.company_id.sdd_creditor_identifier:
+            if not provider.company_id.sdd_creditor_identifier:
                 raise ValidationError(_(
                     "Your company must have a creditor identifier in order to issue a SEPA Direct "
                     "Debit payment request. It can be set in Accounting settings."
@@ -81,8 +81,8 @@ class PaymentAcquirer(models.Model):
     def _check_country_in_sepa_zone(self):
         """ Check that all selected countries are in the SEPA zone. """
         sepa_countries = self.env.ref('base.sepa_zone').country_ids
-        for acquirer in self.filtered(lambda a: a.provider == 'sepa_direct_debit'):
-            non_sepa_countries = acquirer.available_country_ids - sepa_countries
+        for provider in self.filtered(lambda p: p.code == 'sepa_direct_debit'):
+            non_sepa_countries = provider.available_country_ids - sepa_countries
             if non_sepa_countries:
                 raise ValidationError(_(
                     "Restricted to countries in the SEPA zone. Forbidden countries: %s",
@@ -106,7 +106,7 @@ class PaymentAcquirer(models.Model):
         :rtype: bool
         """
         res = super()._is_tokenization_required(**kwargs)
-        if len(self) != 1 or self.provider != 'sepa_direct_debit':
+        if len(self) != 1 or self.code != 'sepa_direct_debit':
             return res
 
         return True
@@ -195,10 +195,10 @@ class PaymentAcquirer(models.Model):
             raise AccessError("SEPA: " + _("The mandate owner and customer do not match."))
 
         token = self.env['payment.token'].create({
-            'acquirer_id': self.id,
+            'provider_id': self.id,
             'payment_details': iban,
             'partner_id': partner_id,
-            'acquirer_ref': mandate.name,
+            'provider_ref': mandate.name,
             'verified': True,
             'sdd_mandate_id': mandate.id,
         })

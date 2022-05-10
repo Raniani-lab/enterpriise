@@ -116,26 +116,26 @@ class CustomerPortal(portal.CustomerPortal):
             order_sudo.partner_id, order_sudo.company_id
         )
 
-        acquirers_sudo = request.env['payment.acquirer'].sudo()._get_compatible_acquirers(
+        providers_sudo = request.env['payment.provider'].sudo()._get_compatible_providers(
             order_sudo.company_id.id,
             order_sudo.partner_id.id,
             order_sudo.amount_total,
             currency_id=order_sudo.currency_id.id,
             is_validation=not order_sudo.to_renew,
-        )  # In sudo mode to read the fields of acquirers and partner (if not logged in)
+        )  # In sudo mode to read the fields of providers and partner (if not logged in)
         # The tokens are filtered based on the partner hierarchy to allow managing tokens of any
         # sibling partners. As a result, a partner can manage any token belonging to partners of its
         # own company from a subscription.
         tokens = request.env['payment.token'].search([
-            ('acquirer_id', 'in', acquirers_sudo.ids),
+            ('provider_id', 'in', providers_sudo.ids),
             ('partner_id', 'child_of', order_sudo.partner_id.commercial_partner_id.id),
         ]) if logged_in else request.env['payment.token']
-        fees_by_acquirer = {
-            acquirer: acquirer._compute_fees(
+        fees_by_provider = {
+            provider: provider._compute_fees(
                 order_sudo.amount_total,
                 order_sudo.currency_id,
                 order_sudo.partner_id.country_id
-            ) for acquirer in acquirers_sudo.filtered('fees_active')
+            ) for provider in providers_sudo.filtered('fees_active')
         }
         active_plan_sudo = order_sudo.sale_order_template_id.sudo()
         display_close = active_plan_sudo.user_closable and order_sudo.stage_category == 'progress'
@@ -164,12 +164,12 @@ class CustomerPortal(portal.CustomerPortal):
             'renew_url': f'/my/subscription/{order_sudo.id}/renew?access_token={order_sudo.access_token}',
         }
         payment_values = {
-            'acquirers': acquirers_sudo,
+            'providers': providers_sudo,
             'tokens': tokens,
             'default_token_id': order_sudo.payment_token_id.id,
-            'fees_by_acquirer': fees_by_acquirer,
+            'fees_by_provider': fees_by_provider,
             'show_tokenize_input': self._compute_show_tokenize_input_mapping(
-                acquirers_sudo, logged_in=logged_in, sale_order_id=order_sudo.id
+                providers_sudo, logged_in=logged_in, sale_order_id=order_sudo.id
             ),
             'amount': None,  # Determined by the generated invoice
             'currency': order_sudo.pricelist_id.currency_id,

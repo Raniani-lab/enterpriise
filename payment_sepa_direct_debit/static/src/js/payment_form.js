@@ -15,13 +15,13 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
          *
          * @override method from payment.payment_form_mixin
          * @private
-         * @param {string} provider - The provider of the selected payment option's acquirer
+         * @param {string} code - The code of the selected payment option's provider
          * @param {number} paymentOptionId - The id of the selected payment option
          * @param {string} flow - The online payment flow of the selected payment option
          * @return {Promise}
          */
-        _prepareInlineForm: function (provider, paymentOptionId, flow) {
-            if (provider !== 'sepa_direct_debit') {
+        _prepareInlineForm: function (code, paymentOptionId, flow) {
+            if (code !== 'sepa_direct_debit') {
                 return this._super(...arguments);
             }
 
@@ -38,7 +38,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
             return this._rpc({
                 route: '/payment/sepa_direct_debit/form_configuration',
                 params: {
-                    'acquirer_id': paymentOptionId,
+                    'provider_id': paymentOptionId,
                     'partner_id': parseInt(this.txContext.partnerId),
                 },
             }).then(formConfiguration => {
@@ -49,7 +49,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                     document.getElementById(`o_sdd_partner_email_${paymentOptionId}`)
                         .innerText = formConfiguration.partner_email;
                 }
-                // Show the phone number input if enabled on the acquirer
+                // Show the phone number input if enabled on the provider
                 if (formConfiguration.sms_verification_required) {
                     this.sdd_sms_verification_required = true;
                     this._setupInputContainer(
@@ -66,7 +66,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                         }
                     );
                 }
-                // Show the signature form if required on the acquirer
+                // Show the signature form if required on the provider
                 if (formConfiguration.signature_required) {
                     this.sdd_signature_required = true;
                     this._setupSignatureForm(paymentOptionId);
@@ -79,13 +79,13 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
          *
          * @override method from payment.payment_form_mixin
          * @private
-         * @param {string} provider - The provider of the payment option's acquirer
+         * @param {string} code - The code of the payment option provider
          * @param {number} paymentOptionId - The id of the payment option handling the transaction
          * @param {string} flow - The online payment flow of the transaction
          * @return {Promise}
          */
-        _processPayment: function (provider, paymentOptionId, flow) {
-            if (provider !== 'sepa_direct_debit' || flow === 'token') {
+        _processPayment: function (code, paymentOptionId, flow) {
+            if (code !== 'sepa_direct_debit' || flow === 'token') {
                 return this._super(...arguments); // Tokens are handled by the generic flow
             }
 
@@ -121,7 +121,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
             return this._rpc({
                 route: '/payment/sepa_direct_debit/create_token',
                 params: {
-                    'acquirer_id': paymentOptionId,
+                    'provider_id': paymentOptionId,
                     'partner_id': parseInt(this.txContext.partnerId),
                     'iban': ibanInput.value,
                     'mandate_id': this.mandate_id,
@@ -135,7 +135,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                 },
             }).then(tokenId => {
                 // Now that the token is created, use it as a payment option in the generic flow
-                return this._processPayment(provider, tokenId, 'token');
+                return this._processPayment(code, tokenId, 'token');
             }).guardedCatch((error) => {
                 error.event.preventDefault();
                 this._displayError(
@@ -163,17 +163,17 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
          * Send a verification code by SMS to the provider phone number
          *
          * @private
-         * @param {number} acquirerId - The id of the selected payment acquirer
+         * @param {number} providerId - The id of the selected payment provider
          * @param {number} partnerId - The id of the partner
          * @return {Promise}
          */
-        _sendVerificationSms: function (acquirerId, partnerId) {
+        _sendVerificationSms: function (providerId, partnerId) {
             this._hideError(); // Remove any previous error
 
             // Retrieve and store inputs
-            const ibanInput = document.getElementById(`o_sdd_iban_${acquirerId}`);
-            const phoneInput = document.getElementById(`o_sdd_phone_${acquirerId}`);
-            const codeInput = document.getElementById(`o_sdd_verification_code_${acquirerId}`);
+            const ibanInput = document.getElementById(`o_sdd_iban_${providerId}`);
+            const phoneInput = document.getElementById(`o_sdd_phone_${providerId}`);
+            const codeInput = document.getElementById(`o_sdd_verification_code_${providerId}`);
 
             // Check that all required inputs are filled at this step
             if (!ibanInput.reportValidity() || !phoneInput.reportValidity()) {
@@ -181,14 +181,14 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
             }
 
             // Disable the button to avoid spamming
-            const sendSmsButton = document.getElementById(`o_sdd_sms_button_${acquirerId}`);
+            const sendSmsButton = document.getElementById(`o_sdd_sms_button_${providerId}`);
             sendSmsButton.setAttribute('disabled', true);
 
             // Fetch the mandate to verify. It is needed as it stores the verification code.
             return this._rpc({
                 route: '/payment/sepa_direct_debit/get_mandate',
                 params: {
-                    'acquirer_id': acquirerId,
+                    'provider_id': providerId,
                     'partner_id': partnerId,
                     'iban': ibanInput.value,
                     'phone': phoneInput.value,
@@ -199,7 +199,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                 return this._rpc({
                     route: '/payment/sepa_direct_debit/send_verification_sms',
                     params: {
-                        acquirer_id: acquirerId,
+                        provider_id: providerId,
                         mandate_id: mandateId,
                         phone: phoneInput.value,
                     }
@@ -250,13 +250,13 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
          * Show the signature form and attach the signature widget
          *
          * @private
-         * @param {number} acquirerId - The id of the selected payment acquirer
+         * @param {number} providerId - The id of the selected payment provider
          * @return {undefined}
          */
-        _setupSignatureForm: function (acquirerId) {
-            const signatureForm = document.getElementById(`o_sdd_signature_form_${acquirerId}`);
+        _setupSignatureForm: function (providerId) {
+            const signatureForm = document.getElementById(`o_sdd_signature_form_${providerId}`);
             this._setupInputContainer(signatureForm);
-            const signatureConfig = document.getElementById(`o_sdd_signature_config_${acquirerId}`);
+            const signatureConfig = document.getElementById(`o_sdd_signature_config_${providerId}`);
             this.signatureWidget = new sepaSignatureForm(this, {
                 mode: 'draw',
                 nameAndSignatureOptions: signatureConfig.dataset

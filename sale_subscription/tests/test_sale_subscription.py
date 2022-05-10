@@ -69,7 +69,7 @@ class TestSubscription(TestSubscriptionCommon):
         })
         self.company = self.env.company
 
-        self.acquirer = self.env['payment.acquirer'].create(
+        self.provider = self.env['payment.provider'].create(
             {'name': 'The Wire',
              'company_id': self.company.id,
              'state': 'test',
@@ -1190,12 +1190,12 @@ class TestSubscription(TestSubscriptionCommon):
         invoice = self.env['account.move'].create({
             'move_type': 'out_invoice',
         })
-        acquirer = self.env['payment.acquirer'].create({
+        provider = self.env['payment.provider'].create({
             'name': 'Test',
         })
         tx = self.env['payment.transaction'].create({
             'amount': 100,
-            'acquirer_id': acquirer.id,
+            'provider_id': provider.id,
             'currency_id': self.env.company.currency_id.id,
             'partner_id': portal_partner.id,
         })

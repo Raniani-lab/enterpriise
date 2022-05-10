@@ -26,6 +26,6 @@ class ResCompany(models.Model):
     def get_website_sale_dashboard_onboarding_steps_states_names(self):
         return [
             'base_onboarding_company_state',
-            'payment_acquirer_onboarding_state',
+            'payment_provider_onboarding_state',
             'account_onboarding_sale_tax_state',
         ]

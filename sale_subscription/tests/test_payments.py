@@ -211,8 +211,8 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         test_payment_token = self.env['payment.token'].create({
             'payment_details': 'Test',
             'partner_id': portal_partner.id,
-            'acquirer_id': self.dummy_acquirer.id,
-            'acquirer_ref': 'test'
+            'provider_id': self.dummy_provider.id,
+            'provider_ref': 'test'
         })
         payment_with_token = self.env['account.payment'].create({
             'payment_type': 'inbound',

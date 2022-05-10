@@ -9,7 +9,7 @@ This module allows ecommerce users to enter their UPS account number and deliver
     """,
     'depends': ['delivery_ups', 'website_sale_delivery', 'payment_custom'],
     'data': [
-        'data/payment_acquirer_data.xml',
+        'data/payment_provider_data.xml',
         'views/delivery_ups_templates.xml',
         'views/res_config_settings_views.xml',
     ],

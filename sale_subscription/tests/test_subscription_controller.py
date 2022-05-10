@@ -119,13 +119,13 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         stolen_payment_method = self.env['payment.token'].create(
             {'payment_details': 'Jimmy McNulty',
              'partner_id': self.malicious_user.partner_id.id,
-             'acquirer_id': self.dummy_acquirer.id,
-             'acquirer_ref': 'Omar Little'})
+             'provider_id': self.dummy_provider.id,
+             'provider_ref': 'Omar Little'})
         legit_payment_method = self.env['payment.token'].create(
             {'payment_details': 'Jimmy McNulty',
              'partner_id': self.legit_user.partner_id.id,
-             'acquirer_id': self.dummy_acquirer.id,
-             'acquirer_ref': 'Legit ref'})
+             'provider_id': self.dummy_provider.id,
+             'provider_ref': 'Legit ref'})
         legit_user_subscription._portal_ensure_token()
         malicious_user_subscription._portal_ensure_token()
         # Payment Token exists/does not exists
@@ -196,11 +196,11 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'flow': 'direct',
                 'tokenization_requested': True,
                 'landing_route': subscription.get_portal_url(),
-                'payment_option_id': self.dummy_acquirer.id,
+                'payment_option_id': self.dummy_provider.id,
                 'partner_id': subscription.partner_id.id}
         url = self._build_url("/my/orders/%s/transaction" % subscription.id)
         self._make_json_rpc_request(url, data)
-        subscription.transaction_ids.acquirer_id.support_manual_capture = True
+        subscription.transaction_ids.provider_id.support_manual_capture = True
         subscription.transaction_ids._set_authorized()
         subscription.transaction_ids.token_id = self.payment_method.id
         subscription.transaction_ids._reconcile_after_done()  # Create the payment

@@ -220,7 +220,7 @@ class TestSubscriptionCommon(TestSaleCommon):
              'property_account_receivable_id': cls.account_receivable.id,
              'property_account_payable_id': cls.account_receivable.id,
              'company_id': cls.company.id})
-        cls.acquirer = cls.env['payment.acquirer'].create(
+        cls.provider = cls.env['payment.provider'].create(
             {'name': 'The Wire',
              'company_id': cls.company.id,
              'state': 'test',
@@ -228,8 +228,8 @@ class TestSubscriptionCommon(TestSaleCommon):
         cls.payment_method = cls.env['payment.token'].create(
             {'payment_details': 'Jimmy McNulty',
              'partner_id': cls.partner.id,
-             'acquirer_id': cls.acquirer.id,
-             'acquirer_ref': 'Omar Little'})
+             'provider_id': cls.provider.id,
+             'provider_ref': 'Omar Little'})
         Partner = cls.env['res.partner']
         cls.partner_a_invoice = Partner.create({
             'parent_id': cls.partner_a.id,
@@ -247,7 +247,7 @@ class TestSubscriptionCommon(TestSaleCommon):
         reference = "CONTRACT-%s-%s" % (self.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S%f'))
         values = {
             'amount': invoice.amount_total,
-            'acquirer_id': self.acquirer.id,
+            'provider_id': self.provider.id,
             'operation': 'offline',
             'currency_id': invoice.currency_id.id,
             'reference': reference,

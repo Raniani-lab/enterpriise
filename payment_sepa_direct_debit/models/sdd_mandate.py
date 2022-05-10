@@ -102,7 +102,7 @@ class SDDMandate(models.Model):
         token_sudo = self.env['payment.token'].sudo().search(
             [('sdd_mandate_id', '=', self.id)], limit=1
         )
-        if token_sudo.acquirer_id.sdd_sms_verification_required:
+        if token_sudo.provider_id.sdd_sms_verification_required:
             if not (code and phone):
                 raise ValidationError(
                     "SEPA: " + _("Both the phone number and the verification code are required.")

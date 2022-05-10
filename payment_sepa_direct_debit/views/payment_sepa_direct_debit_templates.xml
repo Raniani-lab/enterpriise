@@ -3,37 +3,37 @@
 
     <template id="inline_form">
         <div class="px-4 pb-4">
-            <input type="hidden" name="acquirer_id" t-attf-value="{{acquirer_id}}"/>
+            <input type="hidden" name="provider_id" t-attf-value="{{provider_id}}"/>
             <input type="hidden" name="mandate_id"/>
 
             <!-- === IBAN === -->
-            <label t-attf-for="o_sdd_iban_{{acquirer_id}}" class="form-label">
+            <label t-attf-for="o_sdd_iban_{{provider_id}}" class="form-label">
                 IBAN
             </label>
             <div class="input-group">
                 <div class="input-group-text">
                     <i class="fa fa-fw fa-bank"/>
                 </div>
-                <input t-attf-id="o_sdd_iban_{{acquirer_id}}"
+                <input t-attf-id="o_sdd_iban_{{provider_id}}"
                        type="text"
                        class="form-control"
                        required=""/>
             </div>
             <!-- === Phone number === -->
-            <div t-attf-id="o_sdd_phone_div_{{acquirer_id}}" class="d-none">
-                <label t-attf-for="o_sdd_phone_{{acquirer_id}}" class="form-label">
+            <div t-attf-id="o_sdd_phone_div_{{provider_id}}" class="d-none">
+                <label t-attf-for="o_sdd_phone_{{provider_id}}" class="form-label">
                     Phone Number
                 </label>
                 <div class="input-group">
                     <div class="input-group-text">
                         <i class="fa fa-fw fa-mobile"/>
                     </div>
-                    <input t-attf-id="o_sdd_phone_{{acquirer_id}}"
+                    <input t-attf-id="o_sdd_phone_{{provider_id}}"
                            type="tel"
                            placeholder="+32123456789"
                            class="form-control"
                            required=""/>
-                    <button t-attf-id="o_sdd_sms_button_{{acquirer_id}}"
+                    <button t-attf-id="o_sdd_sms_button_{{provider_id}}"
                             class="btn btn-primary"
                             type="button">
                         Send SMS
@@ -41,8 +41,8 @@
                 </div>
             </div>
             <!-- === Verification code === -->
-            <div t-attf-id="o_sdd_verification_code_div_{{acquirer_id}}" class="d-none">
-                <label t-attf-for="o_sdd_verification_code_{{acquirer_id}}"
+            <div t-attf-id="o_sdd_verification_code_div_{{provider_id}}" class="d-none">
+                <label t-attf-for="o_sdd_verification_code_{{provider_id}}"
                        class="form-label">
                     Verification Code
                 </label>
@@ -50,29 +50,29 @@
                     <div class="input-group-text">
                         <i class="fa fa-fw fa-unlock-alt"/>
                     </div>
-                    <input t-attf-id="o_sdd_verification_code_{{acquirer_id}}"
+                    <input t-attf-id="o_sdd_verification_code_{{provider_id}}"
                            type="number"
                            class="form-control"
                            disabled=""/>
                 </div>
             </div>
             <!-- === Signature form === -->
-            <div t-attf-id="o_sdd_signature_form_{{acquirer_id}}" class="d-none">
-                <label t-attf-for="o_sdd_signature_{{acquirer_id}}" class="form-label">
+            <div t-attf-id="o_sdd_signature_form_{{provider_id}}" class="d-none">
+                <label t-attf-for="o_sdd_signature_{{provider_id}}" class="form-label">
                     Signature
                 </label>
-                <div t-attf-id="o_sdd_signature_config_{{acquirer_id}}"
+                <div t-attf-id="o_sdd_signature_config_{{provider_id}}"
                      t-att-data-call-url="undefined"
                      t-att-data-default-name="not request.env.user._is_public() and request.env.user.name"
                      data-mode="draw"
                      data-signature-type="signature"/>
-                <input t-attf-id="o_sdd_signature_{{acquirer_id}}"
-                       t-attf-aria-describedby="o_sdd_signature_help_{{acquirer_id}}"
+                <input t-attf-id="o_sdd_signature_{{provider_id}}"
+                       t-attf-aria-describedby="o_sdd_signature_help_{{provider_id}}"
                        type="hidden"
                        required=""/>
-                <div t-attf-id="o_sdd_signature_help_{{acquirer_id}}" class="form-text">
+                <div t-attf-id="o_sdd_signature_help_{{provider_id}}" class="form-text">
                     A copy of the mandate will be sent by email to
-                    <span t-attf-id="o_sdd_partner_email_{{acquirer_id}}"/>
+                    <span t-attf-id="o_sdd_partner_email_{{provider_id}}"/>
                     upon validation.
                 </div>
             </div>

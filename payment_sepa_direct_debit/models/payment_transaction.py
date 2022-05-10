@@ -25,7 +25,7 @@ class PaymentTransaction(models.Model):
         :raise: UserError if the transaction is not linked to a valid mandate
         """
         super()._send_payment_request()
-        if self.provider != 'sepa_direct_debit':
+        if self.provider_code != 'sepa_direct_debit':
             return
 
         if not self.token_id:
@@ -43,21 +43,21 @@ class PaymentTransaction(models.Model):
         # to let the payment engine call the generic processing methods.
         self._handle_notification_data('sepa_direct_debit', {'reference': self.reference})
 
-    def _get_tx_from_notification_data(self, provider, notification_data):
+    def _get_tx_from_notification_data(self, provider_code, notification_data):
         """ Override of `payment` to find the transaction based on dummy data.
 
-        :param str provider: The provider of the acquirer that handled the transaction.
+        :param str provider_code: The provider_code of the provider that handled the transaction.
         :param dict notification_data: The dummy notification data.
         :return: The transaction if found.
         :rtype: recordset of `payment.transaction`
         :raise ValidationError: If the data match no transaction.
         """
-        tx = super()._get_tx_from_notification_data(provider, notification_data)
-        if provider != 'sepa_direct_debit' or len(tx) == 1:
+        tx = super()._get_tx_from_notification_data(provider_code, notification_data)
+        if provider_code != 'sepa_direct_debit' or len(tx) == 1:
             return tx
 
         reference = notification_data.get('reference')
-        tx = self.search([('reference', '=', reference), ('provider', '=', 'sepa_direct_debit')])
+        tx = self.search([('reference', '=', reference), ('provider_code', '=', 'sepa_direct_debit')])
         if not tx:
             raise ValidationError(
                 "SEPA: " + _("No transaction found matching reference %s.", reference)
@@ -74,7 +74,7 @@ class PaymentTransaction(models.Model):
         :raise ValidationError: If inconsistent data were received.
         """
         super()._process_notification_data(notification_data)
-        if self.provider != 'sepa_direct_debit':
+        if self.provider_code != 'sepa_direct_debit':
             return
 
         self._set_done()  # SEPA transactions are confirmed as soon as the mandate is valid.
@@ -117,7 +117,7 @@ class PaymentTransaction(models.Model):
         :return: The created payment.
         :rtype: recordset of `account.payment`
         """
-        if self.provider != 'sepa_direct_debit':
+        if self.provider_code != 'sepa_direct_debit':
             return super()._create_payment(**extra_create_values)
 
         mandate = self.token_id.sdd_mandate_id

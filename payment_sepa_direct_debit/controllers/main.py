@@ -19,58 +19,58 @@ _logger = logging.getLogger(__name__)
 class SepaDirectDebitController(http.Controller):
 
     @http.route('/payment/sepa_direct_debit/form_configuration', type='json', auth='public')
-    def sdd_form_configuration(self, acquirer_id, partner_id):
+    def sdd_form_configuration(self, provider_id, partner_id):
         """ Get the configuration for the SEPA Direct Debit form.
 
-        :param int acquirer_id: The acquirer handling the transaction, as a `payment.acquirer` id
+        :param int provider_id: The provider handling the transaction, as a `payment.provider` id
         :param int partner_id: The partner making the transaction, as a `res.partner` id
         :return: The configuration of the form
         :rtype: dict
         """
-        acquirer_sudo = request.env['payment.acquirer'].sudo().browse(acquirer_id).exists()
+        provider_sudo = request.env['payment.provider'].sudo().browse(provider_id).exists()
         partner_sudo = request.env['res.partner'].sudo().browse(partner_id).exists()
         logged_in = not request.env.user._is_public() \
                     and partner_id == request.env.user.partner_id.id
         return {
             'partner_name': logged_in and partner_sudo.name,
             'partner_email': logged_in and partner_sudo.email,
-            'signature_required': acquirer_sudo.sdd_signature_required,
-            'sms_verification_required': acquirer_sudo.sdd_sms_verification_required,
+            'signature_required': provider_sudo.sdd_signature_required,
+            'sms_verification_required': provider_sudo.sdd_sms_verification_required,
         }
 
     @http.route('/payment/sepa_direct_debit/get_mandate', type='json', auth='public')
-    def sdd_get_mandate(self, acquirer_id, partner_id, iban, phone):
+    def sdd_get_mandate(self, provider_id, partner_id, iban, phone):
         """ Return the SDD mandate linked to the partner and iban.
 
         The phone is only used to create a new mandate if it was not found.
 
-        :param int acquirer_id: The acquirer handling the transaction, as a `payment.acquirer` id
+        :param int provider_id: The provider handling the transaction, as a `payment.provider` id
         :param int partner_id: The partner making the transaction, as a `res.partner` id
         :param str iban: The IBAN number of the partner's bank account
         :param str phone: The phone number used to verify the mandate
         :return: The mandate id
         :rtype: int
         """
-        acquirer_sudo = request.env['payment.acquirer'].sudo().browse(acquirer_id).exists()
+        provider_sudo = request.env['payment.provider'].sudo().browse(provider_id).exists()
         iban = self._sdd_validate_and_format_iban(iban)
         phone = self._sdd_validate_and_format_phone(phone)
-        mandate = acquirer_sudo._sdd_find_or_create_mandate(partner_id, iban, phone)
+        mandate = provider_sudo._sdd_find_or_create_mandate(partner_id, iban, phone)
         return mandate.id
 
     @http.route('/payment/sepa_direct_debit/send_verification_sms', type='json', auth='public')
-    def sdd_send_verification_sms(self, acquirer_id, mandate_id, phone):
+    def sdd_send_verification_sms(self, provider_id, mandate_id, phone):
         """ Send a verification code from the mandate to the given phone.
 
-        :param int acquirer_id: The acquirer handling the transaction, as a `payment.acquirer` id
+        :param int provider_id: The provider handling the transaction, as a `payment.provider` id
         :param int mandate_id: The mandate whose phone number to verify, as an `sdd.mandate` id
         :param str phone: The phone number of the partner
         :return: None
-        :raise: UserError if SMS verification is disabled on the acquirer
+        :raise: UserError if SMS verification is disabled on the provider
         :raise: UserError in case of insufficient IAP credits
         :raise: ValidationError if the mandate ID is incorrect
         """
-        acquirer_sudo = request.env['payment.acquirer'].sudo().browse(acquirer_id).exists()
-        if not acquirer_sudo.sdd_sms_verification_required:
+        provider_sudo = request.env['payment.provider'].sudo().browse(provider_id).exists()
+        if not provider_sudo.sdd_sms_verification_required:
             raise UserError("SEPA: " + _("SMS verification is disabled."))
 
         mandate_sudo = request.env['sdd.mandate'].sudo().browse(mandate_id).exists()
@@ -85,7 +85,7 @@ class SepaDirectDebitController(http.Controller):
 
     @http.route('/payment/sepa_direct_debit/create_token', type='json', auth='public')
     def sdd_create_token(
-        self, acquirer_id, partner_id, iban, mandate_id=None, phone=None, verification_code=None,
+        self, provider_id, partner_id, iban, mandate_id=None, phone=None, verification_code=None,
         signer=None, signature=None
     ):
         """ Create a token linked to the mandate and return it.
@@ -93,7 +93,7 @@ class SepaDirectDebitController(http.Controller):
         If the mandate is not provided (i.e. if it was not previously used to send the SMS code), it
         is fetched or created based on the partner and IBAN.
 
-        :param int acquirer_id: The acquirer handling the transaction, as a `payment.acquirer` id
+        :param int provider_id: The provider handling the transaction, as a `payment.provider` id
         :param int partner_id: The partner making the transaction, as a `res.partner` id
         :param str iban: The IBAN number of the partner's bank account
         :param int mandate_id: The mandate to link to the token, as an `sdd.mandate` id
@@ -106,16 +106,16 @@ class SepaDirectDebitController(http.Controller):
         :raise: ValidationError if a configuration-specific required parameter is not provided
         :raise: ValidationError if the mandate ID is incorrect
         """
-        acquirer_sudo = request.env['payment.acquirer'].sudo().browse(acquirer_id).exists()
+        provider_sudo = request.env['payment.provider'].sudo().browse(provider_id).exists()
 
         # Verify that all configuration-specific required parameters are provided.
         iban = self._sdd_validate_and_format_iban(iban)
-        if acquirer_sudo.sdd_sms_verification_required:
+        if provider_sudo.sdd_sms_verification_required:
             if not phone or not verification_code:
                 raise ValidationError("SEPA: " + _("The phone number must be provided and verified."))
             else:
                 phone = self._sdd_validate_and_format_phone(phone)
-        if acquirer_sudo.sdd_signature_required and (not signer or not signature):
+        if provider_sudo.sdd_signature_required and (not signer or not signature):
             raise ValidationError("SEPA: " + _("The name and signature must be provided."))
 
         # Get the mandate from its id if provided, from the IBAN otherwise
@@ -124,10 +124,10 @@ class SepaDirectDebitController(http.Controller):
             if not mandate_sudo:
                 raise ValidationError("SEPA: " + _("Unknown mandate ID."))
         else:
-            mandate_sudo = acquirer_sudo._sdd_find_or_create_mandate(partner_id, iban, phone)
+            mandate_sudo = provider_sudo._sdd_find_or_create_mandate(partner_id, iban, phone)
 
         # Create the token and return its id
-        token_sudo = acquirer_sudo._sdd_create_token_for_mandate(
+        token_sudo = provider_sudo._sdd_create_token_for_mandate(
             partner_id, iban, mandate_sudo, phone=phone, verification_code=verification_code,
             signer=signer, signature=signature
         )

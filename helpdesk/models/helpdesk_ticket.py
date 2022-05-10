@@ -273,6 +273,7 @@ class HelpdeskTicket(models.Model):
     sla_reached_late = fields.Boolean("Has SLA reached late", compute='_compute_sla_reached_late', compute_sudo=True, store=True)
     sla_reached = fields.Boolean("Has SLA reached", compute='_compute_sla_reached', compute_sudo=True, store=True)
     sla_deadline = fields.Datetime("SLA Deadline", compute='_compute_sla_deadline', compute_sudo=True, store=True, help="The closest deadline of all SLA applied on this ticket")
+    sla_deadline_hours = fields.Float("Hours to SLA Deadline", compute='_compute_sla_deadline', compute_sudo=True, store=True, help="Hours to the closest deadline of all SLA applied on this ticket")
     sla_fail = fields.Boolean("Failed SLA Policy", compute='_compute_sla_fail', search='_search_sla_fail')
     sla_success = fields.Boolean("Success SLA Policy", compute='_compute_sla_success', search='_search_sla_success')
 
@@ -286,6 +287,12 @@ class HelpdeskTicket(models.Model):
     is_partner_phone_update = fields.Boolean('Partner Phone will Update', compute='_compute_is_partner_phone_update')
     # customer portal: include comment and incoming emails in communication history
     website_message_ids = fields.One2many(domain=lambda self: [('model', '=', self._name), ('message_type', 'in', ['email', 'comment'])])
+
+    first_response_hours = fields.Float("Hours to First Response")
+    avg_response_hours = fields.Float("Average Hours to Respond")
+    oldest_unanswered_customer_message_date = fields.Datetime("Oldest Unanswered Customer Message Date")
+    answered_customer_message_count = fields.Integer('# Exchanges')
+    total_response_hours = fields.Float("Total Exchange Time in Hours")
 
     @api.depends('stage_id', 'kanban_state')
     def _compute_kanban_state_label(self):
@@ -344,10 +351,20 @@ class HelpdeskTicket(models.Model):
         """ Keep the deadline for the last stage (closed one), so a closed ticket can have a status failed.
             Note: a ticket in a closed stage will probably have no deadline
         """
+        now = fields.Datetime.now()
         for ticket in self:
-            deadline = False
-            status_not_reached = ticket.sla_status_ids.filtered(lambda status: not status.reached_datetime and status.deadline)
-            ticket.sla_deadline = min(status_not_reached.mapped('deadline')) if status_not_reached else deadline
+            min_deadline = False
+            for status in ticket.sla_status_ids:
+                if status.reached_datetime or not status.deadline:
+                    continue
+                if not min_deadline or status.deadline < min_deadline:
+                    min_deadline = status.deadline
+
+            ticket.write({
+                'sla_deadline': min_deadline,
+                'sla_deadline_hours': ticket.team_id.resource_calendar_id.get_work_duration_data\
+                    (now, min_deadline, compute_leaves=True)['hours'] if min_deadline else 0.0,
+            })
 
     @api.depends('sla_deadline', 'sla_reached_late')
     def _compute_sla_fail(self):
@@ -606,6 +623,7 @@ class HelpdeskTicket(models.Model):
 
             if vals.get('stage_id'):
                 vals['date_last_stage_update'] = now
+            vals['oldest_unanswered_customer_message_date'] = now
 
         # context: no_log, because subtype already handle this
         tickets = super(HelpdeskTicket, self).create(list_value)
@@ -650,6 +668,7 @@ class HelpdeskTicket(models.Model):
         }))
         res &= super(HelpdeskTicket, closed_tickets - assigned_tickets).write(dict(vals, **{
             'close_date': now,
+            'oldest_unanswered_customer_message_date': False,
         }))
         res &= super(HelpdeskTicket, assigned_tickets & closed_tickets).write(dict(vals, **{
             'assign_date': now,

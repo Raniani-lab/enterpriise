@@ -20,6 +20,7 @@ class HelpdeskTicketReport(models.Model):
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Ticket Type", readonly=True)
     ticket_stage_id = fields.Many2one('helpdesk.stage', string="Ticket Stage", readonly=True)
     ticket_deadline = fields.Datetime("Ticket Deadline", readonly=True)
+    ticket_deadline_hours = fields.Float("Hours to SLA Deadline", group_operator="avg", readonly=True)
     ticket_close_hours = fields.Float("Hours to Close", group_operator="avg", readonly=True)
     ticket_open_hours = fields.Float("Hours Open", group_operator="avg", readonly=True)
     ticket_assignation_hours = fields.Float("Hours to Assign", group_operator="avg", readonly=True)
@@ -33,6 +34,8 @@ class HelpdeskTicketReport(models.Model):
         ('normal', 'Grey'),
         ('done', 'Green'),
         ('blocked', 'Red')], string='Kanban State', readonly=True)
+    first_response_hours = fields.Float("Hours to First Response", group_operator="avg", readonly=True)
+    avg_response_hours = fields.Float("Average Hours to Respond", group_operator="avg", readonly=True)
 
     def _select(self):
         select_str = """
@@ -45,6 +48,7 @@ class HelpdeskTicketReport(models.Model):
                    T.ticket_type_id AS ticket_type_id,
                    T.stage_id AS ticket_stage_id,
                    T.sla_deadline AS ticket_deadline,
+                   NULLIF(T.sla_deadline_hours, 0) AS ticket_deadline_hours,
                    NULLIF(T.close_hours, 0) AS ticket_close_hours,
                    EXTRACT(HOUR FROM (COALESCE(T.assign_date, NOW()) - T.create_date)) AS ticket_open_hours,
                    NULLIF(T.assign_hours, 0) AS ticket_assignation_hours,
@@ -54,7 +58,9 @@ class HelpdeskTicketReport(models.Model):
                    T.active AS active,
                    T.team_id AS team_id,
                    T.company_id AS company_id,
-                   T.kanban_state AS kanban_state
+                   T.kanban_state AS kanban_state,
+                   NULLIF(T.first_response_hours, 0) AS first_response_hours,
+                   NULLIF(T.avg_response_hours, 0) AS avg_response_hours
         """
         return select_str
 

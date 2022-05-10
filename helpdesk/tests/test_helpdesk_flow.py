@@ -372,3 +372,41 @@ Content-Transfer-Encoding: quoted-printable
 
         # Tickets under the threshold should not be moved (5 < 7)
         self.assertEqual(ticket_7.stage_id, self.stage_progress)
+
+    def test_create_from_email(self):
+        with freeze_time('2018-12-27 00:00:00'):
+            helpdesk_ticket = self.env['helpdesk.ticket'].create({'name': 'Hi! How was your day?'})
+
+        customer_partner = self.env['res.partner'].create({'name': 'Luc Mélanchetout'})
+        helpdesk_partner = self.helpdesk_user.partner_id
+
+        # hours utc to fit in 08:00 - 17:00 belgian calendar
+        hours_and_authors = [
+            ('08', customer_partner),
+            ('09', helpdesk_partner),   #   2h since creation (= first_response_hours)
+            ('10', helpdesk_partner),
+            ('11', customer_partner),
+            ('12', customer_partner),
+            ('14', helpdesk_partner),   # + 2h since last customer's message (3h - 1h break)
+            ('15', customer_partner),
+            ('16', helpdesk_partner),   # + 1h since last customer's message
+        ]                               # -----
+                                        # = 5h /3responses = 1.67h /response (= avg_response_hours)
+        comment_subtype = self.env.ref('mail.mt_comment')
+        email_vals = {
+            'model': 'helpdesk.ticket',
+            'res_id': helpdesk_ticket.id,
+            'body': 'Good, you?',
+            'subtype_id': comment_subtype.id,
+        }
+        email_vals_list = []
+        for hour, author in hours_and_authors:
+            temp_email_vals = email_vals.copy()
+            temp_email_vals.update({
+                'author_id': author.id,
+                'date': '2018-12-27 %s:00:00' % hour,
+            })
+            email_vals_list.append(temp_email_vals)
+        helpdesk_ticket.website_message_ids = self.env['mail.message'].create(email_vals_list)
+        self.assertEqual(helpdesk_ticket.first_response_hours, 2.0)
+        self.assertEqual(helpdesk_ticket.avg_response_hours, 5 / 3)

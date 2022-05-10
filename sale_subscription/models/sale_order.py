@@ -320,11 +320,6 @@ class SaleOrder(models.Model):
             return self.env.ref('sale_subscription.subtype_stage_change')
         return super()._track_subtype(init_values)
 
-    def _compute_option_data_for_template_change(self, option):
-        values = super()._compute_option_data_for_template_change(option)
-        values['option_pricing_id'] = option.option_pricing_id.id
-        return values
-
     @api.onchange('sale_order_template_id')
     def _onchange_sale_order_template_id(self):
         # Override to propagate the account tags on the subscription and update the prices according to periodicity
@@ -724,11 +719,6 @@ class SaleOrder(models.Model):
                 values.append(line._prepare_subscription_line_data()[0])
         values += [(1, sub_id, {'quantity': dict_changes[sub_id]}) for sub_id in dict_changes]
         return values
-
-    def _compute_line_data_for_template_change(self, line):
-        data = super()._compute_line_data_for_template_change(line)
-        data.update({'pricing_id': line.pricing_id.id})
-        return data
 
     def _set_closed_state(self):
         stages_closed = self.env['sale.order.stage'].search([('category', '=', 'closed')])

@@ -105,6 +105,13 @@ class SaleOrderTemplateLine(models.Model):
                 product_pricing_ids |= pricing_ids._get_pricing_samples()
             line.product_pricing_ids = product_pricing_ids
 
+    #=== BUSINESS METHODS ===#
+
+    def _prepare_order_line_values(self):
+        res = super()._prepare_order_line_values()
+        res['pricing_id'] = self.pricing_id.id
+        return res
+
 
 class SaleOrderTemplateOption(models.Model):
     _name = "sale.order.template.option"
@@ -127,3 +134,10 @@ class SaleOrderTemplateOption(models.Model):
                 # We keep only one periodicity to avoid duplicate pricing for each pricelist
                 product_pricing_ids |= pricing_ids._get_pricing_samples()
             line.product_pricing_ids = product_pricing_ids
+
+    #=== BUSINESS METHODS ===#
+
+    def _prepare_option_line_values(self):
+        res = super()._prepare_option_line_values()
+        res['option_pricing_id'] = self.option_pricing_id.id
+        return res

@@ -44,7 +44,7 @@ Allow clients to Schedule Appointments through your Website
         'web.assets_qweb': [
             'website_appointment/static/src/xml/**/*',
         ],
-        'web.assets_backend': [
+        'website.assets_editor': [
             'website_appointment/static/src/js/systray_items/*.js',
         ],
     }

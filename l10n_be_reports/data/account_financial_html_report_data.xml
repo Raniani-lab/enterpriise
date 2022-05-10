@@ -1035,9 +1035,7 @@
             <record id="account_financial_report_be_produits_financiers0" model="account.financial.html.report.line">
                 <field name="name">75 - Produits financiers</field>
                 <field name="code">BE_75</field>
-                <field name="domain" eval="[('account_id.code', '=like', '75%')]"/>
-                <field name="formulas">-sum</field>
-                <field name="groupby">account_id</field>
+                <field name="formulas">BE_750 + BE_751 + BE_752_9</field>
                 <field name="sequence" eval="5"/>
                 <field name="level" eval="1"/>
                 <field name="children_ids">
@@ -1073,9 +1071,7 @@
             <record id="account_financial_report_be_charges_financieres0" model="account.financial.html.report.line">
                 <field name="name">65 - Charges financières</field>
                 <field name="code">BE_65</field>
-                <field name="domain" eval="[('account_id.code', '=like', '65%')]"/>
-                <field name="formulas">sum</field>
-                <field name="groupby">account_id</field>
+                <field name="formulas">BE_650 + BE_651 + BE_652_9</field>
                 <field name="sequence" eval="6"/>
                 <field name="level" eval="1"/>
                 <field name="children_ids">
@@ -1125,9 +1121,7 @@
             <record id="account_financial_report_be_produits_exceptionnels0" model="account.financial.html.report.line">
                 <field name="name">76 - Produits exceptionnels</field>
                 <field name="code">BE_76</field>
-                <field name="domain" eval="[('account_id.code', '=like', '76%')]"/>
-                <field name="formulas">-sum</field>
-                <field name="groupby">account_id</field>
+                <field name="formulas">BE_760 + BE_761 + BE_762 + +BE_763 + BE_764_9</field>
                 <field name="sequence" eval="9"/>
                 <field name="level" eval="1"/>
                 <field name="children_ids">
@@ -1181,9 +1175,7 @@
             <record id="account_financial_report_be_charges_exceptionnelles0" model="account.financial.html.report.line">
                 <field name="name">66 - Charges exceptionnelles</field>
                 <field name="code">BE_66</field>
-                <field name="domain" eval="[('account_id.code', '=like', '66%')]"/>
-                <field name="formulas">sum</field>
-                <field name="groupby">account_id</field>
+                <field name="formulas">BE_660 + BE_661 + BE_662 + BE_663 + BE_664_8 + BE_669</field>
                 <field name="sequence" eval="10"/>
                 <field name="level" eval="1"/>
                 <field name="children_ids">

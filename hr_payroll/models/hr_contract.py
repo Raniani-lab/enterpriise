@@ -172,6 +172,12 @@ class HrContract(models.Model):
                     ('date_stop', '>', date_to)]])
         return domain
 
+    def _preprocess_work_hours_data(self, work_data, date_from, date_to):
+        """
+        Method is meant to be overriden, see hr_payroll_attendance
+        """
+        return
+
     def _get_work_hours(self, date_from, date_to, domain=None):
         """
         Returns the amount (expressed in hours) of work
@@ -193,6 +199,7 @@ class HrContract(models.Model):
             ['work_entry_type_id']
         )
         work_data.update({data['work_entry_type_id'][0] if data['work_entry_type_id'] else False: data['hours'] for data in work_entries})
+        self._preprocess_work_hours_data(work_data, date_from, date_to)
 
         # Second, find work entry that exceeds interval and compute right duration.
         work_entries = self.env['hr.work.entry'].search(self._get_work_hours_domain(date_from, date_to, domain=domain, inside=False))
@@ -210,8 +217,7 @@ class HrContract(models.Model):
 
                 work_data[work_entry.work_entry_type_id.id] += contract_data.get('hours', 0)
             else:
-                dt = date_stop - date_start
-                work_data[work_entry.work_entry_type_id.id] += dt.days * 24 + dt.seconds / 3600  # Number of hours
+                work_data[work_entry.work_entry_type_id.id] += work_entry._get_work_duration(date_start, date_stop)  # Number of hours
         return work_data
 
     def _get_default_work_entry_type(self):

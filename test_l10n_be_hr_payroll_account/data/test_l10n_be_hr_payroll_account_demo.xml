@@ -2976,7 +2976,7 @@
     </function>
 
     <function model="hr.employee" name="generate_work_entries">
-        <value model="hr.employee" eval="obj().search([]).ids"/>
+        <value model="hr.employee" eval="obj().search([('company_id', '=', ref('l10n_be_hr_payroll.res_company_be'))]).ids"/>
         <value eval="(DateTime.today() + relativedelta(day=1, months=-1))"/> 
         <value eval="(DateTime.today() + relativedelta(day=31))"/>
     </function>

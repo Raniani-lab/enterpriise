@@ -22,6 +22,12 @@ class HrWorkEntryReport(models.Model):
         ('conflict', 'Conflict'),
         ('cancelled', 'Cancelled')
     ], readonly=True)
+    # Some of those might not be enabled (requiring respective work_entry modules) but adding them separately would require
+    # a module just for that
+    work_entry_source = fields.Selection([
+        ('calendar', 'Working Schedule'),
+        ('attendance', 'Attendances'),
+        ('planning', 'Planning')], readonly=True)
 
     def init(self):
         query = """
@@ -33,7 +39,8 @@ class HrWorkEntryReport(models.Model):
             we.department_id,
             we.company_id,
             we.state,
-            we.duration / work_schedule.hours_per_day AS number_of_days
+            we.duration / work_schedule.hours_per_day AS number_of_days,
+            work_schedule.work_entry_source as work_entry_source
         FROM (
             SELECT
                 id,
@@ -57,7 +64,8 @@ class HrWorkEntryReport(models.Model):
             SELECT
                 contract.id AS contract_id,
                 resource_calendar_id,
-                hours_per_day
+                hours_per_day,
+                work_entry_source
             FROM
                 hr_contract contract
             LEFT JOIN (

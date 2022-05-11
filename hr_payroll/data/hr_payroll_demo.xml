@@ -26,21 +26,6 @@
             <field name="name">Meal Voucher Register</field>
         </record>
 
-        <!-- Salary Rules for Worker Pay-->
-
-        <record id="hr_salary_rule_worker_basic" model="hr.salary.rule">
-            <field name="amount_select">percentage</field>
-            <field name="amount_percentage_base">contract.hourly_wage</field>
-            <field name="quantity">worked_days.WORK100 and worked_days.WORK100.number_of_hours</field>
-            <field name="amount_percentage">100.0</field>
-            <field name="code">BASIC</field>
-            <field name="category_id" ref="hr_payroll.BASIC"/>
-            <field name="partner_id" ref="hr_houserent_register"/>
-            <field name="name">Basic</field>
-            <field name="sequence" eval="1"/>
-            <field name="struct_id" ref="structure_worker_001"/>
-        </record>
-
         <!-- Salary Rules for Regular Pay-->
 
         <record id="structure_003" model="hr.payroll.structure">

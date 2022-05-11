@@ -118,19 +118,6 @@
         <field name="kanban_state">normal</field>
     </record>
 
-    <record id="hr_contract_ngh" model="hr.contract">
-        <field name="name">Jeffrey Kelly Contract</field>
-        <field name="date_start" eval="time.strftime('%Y')+'-1-1'"/>
-        <field name="employee_id" ref="hr.employee_ngh"/>
-        <field name="job_id" model="hr.job"
-            eval="obj().env.ref('hr.employee_ngh').job_id.id"/>
-        <field name="department_id" model="hr.department"
-            eval="obj().env.ref('hr.employee_ngh').department_id.id"/>
-        <field eval="3750.0" name="wage"/>
-        <field name="state">open</field>
-        <field name="kanban_state">normal</field>
-    </record>
-
     <record id="hr_contract_jep" model="hr.contract">
         <field name="name">Doris Cole Contract</field>
         <field name="date_start" eval="time.strftime('%Y')+'-1-1'"/>
@@ -196,16 +183,4 @@
         <field name="kanban_state">normal</field>
     </record>
 
-    <record id="hr_contract_hne" model="hr.contract">
-        <field name="name">Abigail Peterson Contract</field>
-        <field name="date_start" eval="time.strftime('%Y')+'-1-1'"/>
-        <field name="employee_id" ref="hr.employee_hne"/>
-        <field name="job_id" model="hr.job"
-            eval="obj().env.ref('hr.employee_hne').job_id.id"/>
-        <field name="department_id" model="hr.department"
-            eval="obj().env.ref('hr.employee_hne').department_id.id"/>
-        <field eval="4350.0" name="wage"/>
-        <field name="state">open</field>
-        <field name="kanban_state">normal</field>
-    </record>
 </odoo>

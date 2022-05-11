@@ -135,10 +135,10 @@ class AccountMove(models.Model):
             # generation of customer invoices
             if ((move.move_type in ['out_invoice', 'out_refund'] and move.journal_id.type == 'sale')
                     or (move.move_type in ['in_invoice', 'in_refund'] and move.l10n_latam_document_type_id._is_doc_type_vendor())):
-                move._l10n_cl_edi_post_validation()
                 if move.journal_id.l10n_cl_point_of_sale_type != 'online' and not move.l10n_latam_document_type_id._is_doc_type_vendor():
                     move.l10n_cl_dte_status = 'manual'
                     continue
+                move._l10n_cl_edi_post_validation()
                 move._l10n_cl_create_dte()
                 move.l10n_cl_dte_status = 'not_sent'
                 dte_signed, file_name = move._l10n_cl_create_dte_envelope()

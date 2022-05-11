@@ -98,7 +98,7 @@ class TestSubscription(TestSubscriptionCommon):
             inv = sub.invoice_ids.sorted('date')[-1]
             inv_line = inv.invoice_line_ids.sorted('id')[0]
             invoice_periods = inv_line.name.split('\n')[1]
-            self.assertEqual(invoice_periods, "01/03/2021 to 02/03/2021")
+            self.assertEqual(invoice_periods, "01/03/2021 to 02/02/2021")
             self.assertEqual(inv_line.date, datetime.date(2021, 1, 3))
 
         with freeze_time("2021-02-03"):
@@ -110,7 +110,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual([datetime.datetime(2021, 3, 3), datetime.datetime(2022, 1, 3)], lines.mapped('next_invoice_date'))
             inv = sub.invoice_ids.sorted('date')[-1]
             invoice_periods = inv.invoice_line_ids.name.split('\n')[1]
-            self.assertEqual(invoice_periods, "02/03/2021 to 03/03/2021")
+            self.assertEqual(invoice_periods, "02/03/2021 to 03/02/2021")
             self.assertEqual(inv.invoice_line_ids.date, datetime.date(2021, 2, 3))
 
         with freeze_time("2021-03-03"):
@@ -119,7 +119,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual([datetime.datetime(2021, 4, 3), datetime.datetime(2022, 1, 3)], lines.mapped('next_invoice_date'))
             inv = sub.invoice_ids.sorted('date')[-1]
             invoice_periods = inv.invoice_line_ids.name.split('\n')[1]
-            self.assertEqual(invoice_periods, "03/03/2021 to 04/03/2021")
+            self.assertEqual(invoice_periods, "03/03/2021 to 04/02/2021")
             self.assertEqual(inv.invoice_line_ids.date, datetime.date(2021, 3, 3))
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.models')
@@ -164,7 +164,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual("2021-02-03", sub.order_line.next_invoice_date.strftime("%Y-%m-%d"))
 
             invoice_periods = sub.invoice_ids.invoice_line_ids.name.split('\n')[1]
-            self.assertEqual(invoice_periods, "01/03/2021 to 02/03/2021")
+            self.assertEqual(invoice_periods, "01/03/2021 to 02/02/2021")
             self.assertEqual(sub.invoice_ids.invoice_line_ids.date, datetime.date(2021, 1, 3))
         with freeze_time("2021-02-03"):
             # February
@@ -173,7 +173,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual("2021-03-03", sub.order_line.next_invoice_date.strftime("%Y-%m-%d"))
             inv = sub.invoice_ids.sorted('date')[-1]
             invoice_periods = inv.invoice_line_ids.name.split('\n')[1]
-            self.assertEqual(invoice_periods, "02/03/2021 to 03/03/2021")
+            self.assertEqual(invoice_periods, "02/03/2021 to 03/02/2021")
             self.assertEqual(inv.invoice_line_ids.date, datetime.date(2021, 2, 3))
         with freeze_time("2021-03-03"):
             # March
@@ -182,7 +182,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual("2021-04-03", sub.order_line.next_invoice_date.strftime("%Y-%m-%d"))
             inv = sub.invoice_ids.sorted('date')[-1]
             invoice_periods = inv.invoice_line_ids.name.split('\n')[1]
-            self.assertEqual(invoice_periods, "03/03/2021 to 04/03/2021")
+            self.assertEqual(invoice_periods, "03/03/2021 to 04/02/2021")
             self.assertEqual(inv.invoice_line_ids.date, datetime.date(2021, 3, 3))
 
     def test_auto_close(self):
@@ -341,9 +341,9 @@ class TestSubscription(TestSubscriptionCommon):
             inv = self.subscription.invoice_ids.sorted('date')[-1]
             invoice_periods = inv.invoice_line_ids.sorted('id').mapped('name')
             first_period = invoice_periods[0].split('\n')[1]
-            self.assertEqual(first_period, "06/01/2021 to 07/01/2021")
+            self.assertEqual(first_period, "06/01/2021 to 06/30/2021")
             second_period = invoice_periods[1].split('\n')[1]
-            self.assertEqual(second_period, "06/01/2021 to 12/01/2021")
+            self.assertEqual(second_period, "06/01/2021 to 11/30/2021")
 
         self.assertEqual(len(self.subscription.order_line), 4)
 
@@ -1309,7 +1309,7 @@ class TestSubscription(TestSubscriptionCommon):
             line_names = inv.invoice_line_ids.mapped('name')
             periods = [n.split('\n')[1] for n in line_names]
             for p in periods:
-                self.assertEqual(p, '01/01/2022 to 01/01/2023', 'the first year should be invoiced')
+                self.assertEqual(p, '01/01/2022 to 12/31/2022', 'the first year should be invoiced')
 
         with freeze_time("2022-06-20"):
             action = sub.prepare_upsell_order()

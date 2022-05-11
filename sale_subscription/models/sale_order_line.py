@@ -329,14 +329,16 @@ class SaleOrderLine(models.Model):
             format_start = format_date(self.env, new_period_start, lang_code=lang_code)
             default_next_invoice_date = new_period_start + get_timedelta(self.pricing_id.duration, self.pricing_id.unit)
             if self.order_id.subscription_management == 'upsell':
-                next_invoice_date = self.next_invoice_date
+                # remove 1 day as normal people thinks in terms of inclusive ranges.
+                next_invoice_date = self.next_invoice_date - relativedelta(days=1)
             else:
-                next_invoice_date = default_next_invoice_date
+                # remove 1 day as normal people thinks in terms of inclusive ranges.
+                next_invoice_date = default_next_invoice_date - relativedelta(days=1)
                 format_invoice = format_date(self.env, next_invoice_date, lang_code=lang_code)
                 description += _("\n%s to %s", format_start, format_invoice)
             qty_to_invoice = self._get_subscription_qty_to_invoice(last_invoice_date=new_period_start,
                                                                    next_invoice_date=next_invoice_date)
-            subscription_end_date = next_invoice_date - relativedelta(days=1) # remove 1 day as normal people thinks in terms of inclusive ranges.
+            subscription_end_date = next_invoice_date
             res['quantity'] = qty_to_invoice.get(self.id, 0.0)
 
             batch_tag_id = self.env["ir.model.data"]._xmlid_to_res_id("sale_subscription.recurring_trigger_tag", raise_if_not_found=False)

@@ -554,8 +554,6 @@ class SaleOrder(models.Model):
             for line in sub.order_line:
                 if not line.start_date and line.temporal_type == 'subscription':
                     line.start_date = today
-            # arj todo: inefficient: we loop over the lines two times but _reset_qty_to_invoice is needed in invoice creation
-
             sub.order_line._reset_subscription_qty_to_invoice()
 
     def _confirm_upsell(self):
@@ -1021,11 +1019,6 @@ class SaleOrder(models.Model):
                     continue
                 try:
                     invoice = subscription.with_context(recurring_automatic=automatic)._create_invoices()
-                    # Only update the invoice date if there is already one invoice for the lines and when the so is not done
-                    # done contract are finished or renewed
-                    if invoiceable_lines.order_id.state == 'sale':
-                        invoiceable_lines._update_next_invoice_date()
-                        invoiceable_lines._reset_subscription_qty_to_invoice(to_invoice=False)
                     lines_to_reset_qty |= invoiceable_lines
                 except TransactionRollbackError:
                     raise
@@ -1071,6 +1064,21 @@ class SaleOrder(models.Model):
             failing_subscriptions.write({'account_tag_ids': [Command.unlink(batch_tag.id)]})
 
         return account_moves
+
+    def _create_invoices(self, grouped=False, final=False, date=None):
+        """ Override to increment periods when needed """
+        # Only update the invoice date if there is already one invoice for the lines and when the so is not done
+        # done contract are finished or renewed
+        invoiceable_line_ids = self._get_invoiceable_lines(final=False)
+        invoices = super()._create_invoices(grouped=grouped, final=final, date=date)
+        line_to_update_ids = self.env['sale.order.line']
+        for line in invoiceable_line_ids:
+            if line.order_id.is_subscription and line.order_id.state == 'sale':
+                line_to_update_ids |= line
+        line_to_update_ids._update_next_invoice_date()
+        line_to_update_ids._reset_subscription_qty_to_invoice(to_invoice=False)
+        return invoices
+
 
     def _subscription_auto_close_and_renew(self, all_invoiceable_lines):
         """ Handle contracts that need to be automatically closed/set to renews.
@@ -1359,7 +1367,6 @@ class SaleOrder(models.Model):
             # avoid to create an invoice when one is already linked
             if not tx.invoice_ids:
                 # Create the invoice that was either deleted in a controller or failed to be created by the _create_recurring_invoice method
-                invoiceable_lines = self._get_invoiceable_lines()
                 invoice = self.with_context(recurring_automatic=True)._create_invoices()
                 invoice.write({'ref': tx.reference, 'payment_reference': tx.reference})
                 # Only update the invoice date if there is already one invoice for the lines and when the so is not done
@@ -1370,21 +1377,6 @@ class SaleOrder(models.Model):
                     subtype_id=self.env.ref('mail.mt_note').id
                 )
                 tx.invoice_ids = invoice.id,
-                update_next_invoice_date = True
-            else:
-                self.env.cr.execute(
-                    """
-                    SELECT  order_line_id
-                      FROM sale_order_line_invoice_rel
-                     WHERE invoice_line_id IN %s
-                    """, (tuple(tx.invoice_ids.invoice_line_ids.ids), ))
-                line_ids = [line['order_line_id'] for line in self.env.cr.dictfetchall()]
-                invoiceable_lines = self.order_line.filtered(lambda l: l.id in line_ids)
-                update_next_invoice_date = False # the next invoice date was updated in
-
-            # Renew the subscription
-            if self.state == 'sale' and update_next_invoice_date:
-                invoiceable_lines._update_next_invoice_date()
             self.set_open()
             return True
         return False

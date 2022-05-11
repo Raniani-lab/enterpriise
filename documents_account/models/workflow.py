@@ -35,6 +35,9 @@ class WorkflowActionRuleAccount(models.Model):
                     invoice_ids.append(document.res_id)
                 else:
                     with Form(self.env['account.move'].with_context(create_values)) as invoice_form:
+                        # ignore view required fields (it will fail on create for really required field)
+                        for modifiers in invoice_form._view['modifiers'].values():
+                            modifiers.pop("required", None)
                         new_obj = invoice_form.save()
 
                     body = "<p>created from Documents app</p>"

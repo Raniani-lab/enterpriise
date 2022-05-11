@@ -13,7 +13,7 @@ import testUtils from 'web.test_utils';
  * and to define if mode debug is set
  *
  * @param {Object} params
- * @return {Promise<Object>} resolve with object: { dialingPanel, parent }
+ * @return {Promise<DialingPanel>} resolve with dialingPanel
  */
 async function createDialingPanel(params) {
     const { widget: parent } = await start(params);
@@ -23,10 +23,7 @@ async function createDialingPanel(params) {
     dialingPanel._onToggleDisplay(); // show panel
     await dialingPanel._refreshPhoneCallsStatus();
     await testUtils.nextTick();
-    return {
-        dialingPanel,
-        parent
-    };
+    return dialingPanel;
 }
 
 QUnit.module('voip', {}, function () {
@@ -89,10 +86,7 @@ QUnit.test('autocall flow', async function (assert) {
     const self = this;
     let counterNextActivities = 0;
 
-    const {
-        dialingPanel,
-        parent,
-    } = await createDialingPanel({
+    const dialingPanel = await createDialingPanel({
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -325,8 +319,6 @@ QUnit.test('autocall flow', async function (assert) {
         'incoming_call',
         'rejected_call'
     ]);
-
-    parent.destroy();
 });
 
 QUnit.test('Call from Recent tab + keypad', async function (assert) {
@@ -334,10 +326,7 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
 
     const self = this;
 
-    const {
-        dialingPanel,
-        parent,
-    } = await createDialingPanel({
+    const dialingPanel = await createDialingPanel({
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -445,8 +434,6 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
         'create_from_recent',
         'hangup_call',
     ]);
-
-    parent.destroy();
 });
 
 QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
@@ -454,10 +441,7 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
 
     const self = this;
 
-    const {
-        dialingPanel,
-        parent,
-    } = await createDialingPanel({
+    const dialingPanel = await createDialingPanel({
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -542,8 +526,6 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
     await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
     assert.notOk(dialingPanel._isInCall, 'should no longer be in call after hangup');
     assert.verifySteps(['hangup_call']);
-
-    parent.destroy();
 });
 
 QUnit.test('DialingPanel is closable with the BackButton in the mobile app', async function (assert) {
@@ -555,7 +537,7 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
         },
     });
 
-    const { dialingPanel, parent } = await createDialingPanel({
+    const dialingPanel = await createDialingPanel({
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -602,7 +584,6 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
         'overrideBackButton: false',
     ], "should be disabled when closed");
 
-    parent.destroy();
     testUtils.mock.unpatch(mobile.methods);
 });
 

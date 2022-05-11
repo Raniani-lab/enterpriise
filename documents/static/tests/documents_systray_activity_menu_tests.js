@@ -48,7 +48,5 @@ QUnit.module('documents', {}, function () {
         await testUtils.dom.click(activityMenu.$('.o_sys_documents_request'));
         assert.doesNotHaveClass(activityMenu.$('.dropdown-menu'), 'show',
             "dropdown should be collapsed");
-
-        widget.destroy();
     });
 });

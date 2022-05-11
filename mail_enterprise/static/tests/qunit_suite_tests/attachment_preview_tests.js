@@ -74,7 +74,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         );
         assert.containsNone(form, '.o_attachment_preview_container');
         assert.verifySteps([], "The page should never render a PDF while it is uploading, as the uploading is blocked in this test we should never render a PDF preview");
-        form.destroy();
     });
 
     QUnit.test('Attachment on side', async function (assert) {
@@ -176,7 +175,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         await testUtils.dom.click(form.$('.o_move_previous'), {allowInvisible:true});
         assert.containsOnce(form, '.o_attachment_preview_container > iframe',
             "Display preview attachment");
-        form.destroy();
     });
 
     QUnit.test('Attachment on side on new record', async function (assert) {
@@ -216,8 +214,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             "the preview should be empty");
         assert.containsOnce(form, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
-
-        form.destroy();
     });
 
     QUnit.test('Attachment on side not displayed on smaller screens', async function (assert) {
@@ -267,8 +263,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             "there should be nothing previewed");
         assert.containsOnce(form, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
-
-        form.destroy();
     });
 
     QUnit.test('Attachment triggers list resize', async function (assert) {
@@ -337,8 +331,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         assert.containsOnce(form, 'img#attachment_img');
         assert.notEqual(form.el.querySelector('table th').style.width, '0px',
             "List should have been resized after the attachment has been appended.");
-
-        form.destroy();
     });
 });
 });

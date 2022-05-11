@@ -180,8 +180,6 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             "box with ID 5 should be OCR chosen");
         assert.hasClass(form.$('.o_invoice_extract_box[data-id=5]'),'selected',
             "box with ID 5 should be selected");
-
-        form.destroy();
     });
 
     QUnit.test('no box and button in readonly mode', async function (assert) {
@@ -296,8 +294,6 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             "should no longer display box layer in readonly mode");
         assert.strictEqual($('.o_invoice_extract_box').length, 0,
             "should no longer display boxes in readonly mode");
-
-        form.destroy();
     });
 
     QUnit.test('change active field', async function (assert) {
@@ -401,8 +397,6 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             "box with ID 4 should become visible");
         assert.notOk(form.$('.o_invoice_extract_box[data-id=5]').hasClass('o_hidden'),
             "box with ID 5 should become visible");
-
-        form.destroy();
     });
 
     QUnit.test('always keep one box layer per page on enabling OCR boxes visualisation', async function (assert) {
@@ -495,7 +489,6 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             "should contain only one box layer on attachment");
         // Need to wait a little while so that the attachmentPreview finished its rendering
         await testUtils.nextTick();
-        form.destroy();
     });
 });
 });

@@ -149,8 +149,6 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
         await dom.click(kanban.$('.o_documents_close_inspector'));
         assert.containsOnce(kanban, '.o_kanban_record.o_record_selected:not(.o_kanban_ghost)',
             "should still have 1 record selected after closing inspector");
-
-        kanban.destroy();
     });
     });
 
@@ -279,8 +277,6 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
         await dom.click(list.$('.o_documents_close_inspector'));
         assert.containsOnce(list, '.o_document_list_record .o_list_record_selector input:checked',
             "should still have 1 record selected after closing inspector");
-
-        list.destroy();
     });
     });
 

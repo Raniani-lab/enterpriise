@@ -2004,8 +2004,6 @@ QUnit.module('documents_kanban_tests.js', {
         await testUtils.dom.click(kanban.$('.o_ChatterTopbar_buttonClose'));
         assert.containsNone(kanban, '.o_document_chatter_container .o_Chatter',
             "should no longer display the chatter");
-
-        kanban.destroy();
     });
 
     QUnit.test('document chatter: fetch and display chatter messages', async function (assert) {
@@ -2039,8 +2037,6 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the chatter");
         assert.containsN(kanban, '.o_document_chatter_container .o_Chatter .o_Message', 2,
             "should display two messages in the chatter");
-
-        kanban.destroy();
     });
 
     QUnit.test('document chatter: fetch and display followers', async function (assert) {
@@ -2095,8 +2091,6 @@ QUnit.module('documents_kanban_tests.js', {
             "2",
             "should have two followers"
         );
-
-        kanban.destroy();
     });
 
     QUnit.test('document chatter: render the activity button', async function (assert) {
@@ -2146,8 +2140,6 @@ QUnit.module('documents_kanban_tests.js', {
         assert.strictEqual($activityButton.length, 1,
             "should display the activity button");
         await testUtils.dom.click($activityButton);
-
-        kanban.destroy();
     });
 
     QUnit.test('document chatter: render the activity button 2', async function (assert) {
@@ -2204,8 +2196,6 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the chatter");
         assert.containsNone(kanban, '.o_Activity',
             "should not display an activity");
-
-        kanban.destroy();
     });
 
     QUnit.test('document chatter: can write messages in the chatter', async function (assert) {
@@ -2267,7 +2257,6 @@ QUnit.module('documents_kanban_tests.js', {
             "Some message",
             "the created message should have the right body"
         );
-        kanban.destroy();
     });
 
     QUnit.test('document chatter: keep chatter open when switching between records', async function (assert) {
@@ -2315,8 +2304,6 @@ QUnit.module('documents_kanban_tests.js', {
             "should display one message in the chatter");
         assert.strictEqual(kanban.$('.o_Message .o_Message_content').text().trim(),
             "Message on 'blip'", "should display the correct message");
-
-        kanban.destroy();
     });
 
     QUnit.test('document chatter: keep chatter open after a reload', async function (assert) {
@@ -2358,8 +2345,6 @@ QUnit.module('documents_kanban_tests.js', {
             "record should still be selected");
         assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
             "should still display the chatter");
-
-        kanban.destroy();
     });
 
     QUnit.test('document chatter: close chatter when more than one record selected', async function (assert) {
@@ -2396,8 +2381,6 @@ QUnit.module('documents_kanban_tests.js', {
 
         assert.containsNone(kanban, '.o_document_chatter_container .o_Chatter',
             "should have closed the chatter");
-
-        kanban.destroy();
     });
 
     QUnit.test('document chatter: close chatter when no more selected record', async function (assert) {
@@ -2438,8 +2421,6 @@ QUnit.module('documents_kanban_tests.js', {
             "no more record should be selected");
         assert.containsNone(kanban, '.o_document_chatter_container .o_Chatter',
             "should have closed the chatter");
-
-        kanban.destroy();
     });
 
     QUnit.module('DocumentsSelector');

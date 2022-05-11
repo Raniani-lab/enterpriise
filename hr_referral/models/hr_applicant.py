@@ -38,9 +38,9 @@ class Applicant(models.Model):
             applicant.source_id = applicant.ref_user_id.utm_source_id
 
     def _check_referral_fields_access(self, fields):
-        referral_fields = {'name', 'partner_name', 'job_id', 'referral_points_ids', 'earned_points', 'max_points',
-                           'shared_item_infos', 'referral_state', 'user_id', 'friend_id', '__last_update'}
-        if not (self.user_has_groups('hr_recruitment.group_hr_recruitment_interviewer') or self.user_has_groups('hr_recruitment.group_hr_recruitment_user')):
+        referral_fields = {'name', 'partner_name', 'job_id', 'referral_points_ids', 'earned_points', 'max_points', 'active', 'response_id',
+                           'shared_item_infos', 'referral_state', 'user_id', 'friend_id', '__last_update', 'ref_user_id', 'id'}
+        if not (self.env.is_admin() or self.user_has_groups('hr_recruitment.group_hr_recruitment_interviewer') or self.user_has_groups('hr_recruitment.group_hr_recruitment_user')):
             if set(fields or []) - referral_fields:
                 raise AccessError(_('You are not allowed to access applicant records.'))
 
@@ -57,6 +57,23 @@ class Applicant(models.Model):
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
         self._check_referral_fields_access(fields)
         return super().read_group(domain, fields, groupby, offset, limit, orderby, lazy)
+
+    @api.model
+    def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
+        fields = {term[0] for term in args if isinstance(term, (tuple, list))}
+        self._check_referral_fields_access(fields)
+        return super()._search(args, offset, limit, order, count, access_rights_uid)
+
+    def mapped(self, func):
+        if func and isinstance(func, str):
+            fields = func.split('.')
+            self._check_referral_fields_access(fields)
+        return super().mapped(func)
+
+    def filtered_domain(self, domain):
+        fields = [term[0] for term in domain if isinstance(term, (tuple, list))]
+        self._check_referral_fields_access(fields)
+        return super().filtered_domain(domain)
 
     @api.depends('referral_points_ids')
     def _compute_shared_item_infos(self):

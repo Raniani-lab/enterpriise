@@ -311,7 +311,7 @@
                             <header class="modal-header">
                                 <h4 class="modal-title">Close Subscription</h4>
                             </header>
-                            <form method="post" t-attf-action="/my/subscription/#{order.id}/close/?access_token=#{order._portal_ensure_token()">
+                            <form method="post" t-attf-action="/my/subscription/#{order.id}/close?access_token=#{order.access_token}">
                                 <input class="d-none" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <main class="modal-body">
                                     <p>If you confirm, your subscription will be closed right away. Your current invoicing period is valid until <span t-field="order.next_invoice_date"/>.</p>

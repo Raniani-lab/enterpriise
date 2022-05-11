@@ -6,6 +6,7 @@ from freezegun import freeze_time
 
 from odoo.tests.common import HttpCase, new_test_user, tagged
 from odoo import Command
+from odoo import http
 
 
 @tagged("post_install", "-at_install")
@@ -96,3 +97,19 @@ class TestSubscriptionController(HttpCase):
             'order_id': so.id
         })
         so.action_confirm()
+
+    def test_close_contract(self):
+        """ Test subscription close """
+        with freeze_time("2021-11-18"):
+            self.authenticate(None, None)
+            self.subscription.sale_order_template_id.user_closable = True
+            self.subscription.action_confirm()
+            close_reason_id = self.env.ref('sale_subscription.close_reason_1')
+            data = {'access_token': self.subscription.access_token, 'csrf_token': http.Request.csrf_token(self),
+                    'close_reason_id': close_reason_id.id, 'closing_text': "I am broke"}
+            url = "/my/subscription/%s/close" % self.subscription.id
+            res = self.url_open(url, allow_redirects=False, data=data)
+            self.assertEqual(res.status_code, 303)
+            self.subscription.invalidate_cache()
+            self.assertEqual(self.subscription.stage_category, 'closed', 'The subscription should be closed.')
+            self.assertEqual(self.subscription.end_date, date(2021, 11, 18), 'The end date of the subscription should be updated.')

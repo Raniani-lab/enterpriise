@@ -21,7 +21,6 @@ class HrEmployee(models.Model):
     ongoing_appraisal_count = fields.Integer(compute='_compute_ongoing_appraisal_count', store=True, groups="hr.group_hr_user")
     appraisal_count = fields.Integer(compute='_compute_appraisal_count', store=True, groups="hr.group_hr_user")
     uncomplete_goals_count = fields.Integer(compute='_compute_uncomplete_goals_count')
-    appraisal_child_ids = fields.Many2many('hr.employee', compute='_compute_appraisal_child_ids')
     appraisal_ids = fields.One2many('hr.appraisal', 'employee_id')
 
     def _compute_related_partner(self):
@@ -47,10 +46,6 @@ class HrEmployee(models.Model):
         result = dict((data['employee_id'][0], data['employee_id_count']) for data in read_group_result)
         for employee in self:
             employee.uncomplete_goals_count = result.get(employee.id, 0)
-
-    def _compute_appraisal_child_ids(self):
-        for employee in self:
-            employee.appraisal_child_ids = self.env['hr.appraisal'].search([('manager_ids', '=', employee.id)]).employee_id
 
     @api.depends('ongoing_appraisal_count')
     def _compute_next_appraisal_date(self):

@@ -38,8 +38,7 @@ class HrAppraisalGoal(models.Model):
                 goal.employee_autocomplete_ids = self.env['hr.employee'].search([])
             else:
                 child_ids = self.env.user.employee_id.child_ids
-                appraisal_child_ids = self.env.user.employee_id.appraisal_child_ids
-                goal.employee_autocomplete_ids = child_ids + appraisal_child_ids + self.env.user.employee_id
+                goal.employee_autocomplete_ids = child_ids + self.env.user.employee_id
                 goal.is_implicit_manager = len(goal.employee_autocomplete_ids) > 1
 
     @api.depends('employee_id')

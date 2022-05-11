@@ -225,5 +225,60 @@
         <menuitem id="hr_recruitment.hr_applicant_report_source_menu"
             parent="hr_recruitment.report_hr_recruitment"
             action="recruitment_report_source_action" sequence="2"/>
+
+        <record id="hr_recruitment_report_team_view_dashboard" model="ir.ui.view">
+            <field name="model">hr.recruitment.report</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <dashboard js_class="team_ranking_dashboard">
+                    <view type="graph" ref="hr_recruitment_reports.recruitment_report_team_view_graph"/>
+                    <group>
+                        <group col="1">
+                            <widget name="pie_chart" title="Total applicants" attrs="{'groupby': 'user_id', 'measure': 'count'}"/>
+                        </group>
+                        <group col="1">
+                            <widget name="pie_chart" title="Total meetings" attrs="{'groupby': 'user_id', 'measure': 'meetings_amount'}"/>
+                        </group>
+                        <group col="1">
+                            <widget name="pie_chart" title="Total hired" attrs="{'groupby': 'user_id', 'measure': 'hired'}"/>
+                        </group>
+                        <group col="1">
+                            <widget name="pie_chart" title="Hiring ratio (%)" attrs="{'groupby': 'user_id', 'measure': 'hiring_ratio'}"/>
+                        </group>
+                    </group>
+                </dashboard>
+            </field>
+        </record>
+
+        <record id="recruitment_report_team_view_graph" model="ir.ui.view">
+            <field name="model">hr.recruitment.report</field>
+            <field name="mode">primary</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <graph string="Source Analysis" stacked="0" sample="1">
+                    <field name="user_id"/>
+                    <field name="state"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="recruitment_report_team_action" model="ir.actions.act_window">
+            <field name="name">Team Performance</field>
+            <field name="res_model">hr.recruitment.report</field>
+            <field name="view_mode">dashboard,pivot,graph</field>
+            <field name="search_view_id" ref="recruitment_report_view_search"/>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'dashboard', 'view_id': ref('hr_recruitment_report_team_view_dashboard')}),
+                (0, 0, {'view_mode': 'graph', 'view_id': ref('recruitment_report_team_view_graph')}),
+            ]"/>
+            <field name="context">{
+                'search_default_year': True,
+            }</field>
+            <field name="help">This report performs analysis on your teams' performance.</field>
+        </record>
+
+        <menuitem id="hr_recruitment.hr_applicant_report_team_menu"
+            parent="hr_recruitment.report_hr_recruitment"
+            action="recruitment_report_team_action" sequence="4"/>
     </data>
 </odoo>

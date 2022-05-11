@@ -18,8 +18,8 @@ class HrRecruitmentStageReport(models.Model):
     days_in_stage = fields.Float(readonly=True, group_operator='avg')
 
     state = fields.Selection([
-        ('hired', 'Hired'),
-        ('progress', 'In Progress'),
+        ('is_hired', 'Hired'),
+        ('in_progress', 'In Progress'),
         ('refused', 'Refused'),
     ], readonly=True)
 
@@ -38,8 +38,8 @@ SELECT
     ha.company_id AS company_id,
     CASE
         WHEN ha.active IS FALSE THEN 'refused'
-        WHEN ha.date_closed IS NOT NULL THEN 'hired'
-        ELSE 'progress'
+        WHEN ha.date_closed IS NOT NULL THEN 'is_hired'
+        ELSE 'in_progress'
     END AS state,
     COALESCE(LAG(mm.date) OVER (PARTITION BY mm.res_id ORDER BY mm.id), ha.create_date) AS date_begin,
     mm.date AS date_end,
@@ -73,8 +73,8 @@ SELECT
     ha.company_id AS company_id,
     CASE
         WHEN ha.active IS FALSE THEN 'refused'
-        WHEN ha.date_closed IS NOT NULL THEN 'hired'
-        ELSE 'progress'
+        WHEN ha.date_closed IS NOT NULL THEN 'is_hired'
+        ELSE 'in_progress'
     END AS state,
     COALESCE(md.date, ha.create_date) AS date_begin,
     NOW() AT TIME ZONE 'utc' AS date_end,

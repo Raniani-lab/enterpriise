@@ -27,4 +27,13 @@ Add a dynamic report about recruitment.
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'hr_recruitment_reports/static/src/components/*',
+            'hr_recruitment_reports/static/src/js/*',
+        ],
+        'web.assets_qweb': [
+            'hr_recruitment_reports/static/src/components/*',
+        ],
+    },
 }

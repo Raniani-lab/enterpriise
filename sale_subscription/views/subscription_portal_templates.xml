@@ -34,7 +34,7 @@
                                 <t t-if="not order.to_renew and order.stage_category == 'progress'">
                                     <!-- User is logged in under the partner set on the subscription -->
                                     <t t-if="user.partner_id == order.partner_id">
-                                        <a t-if="acquirers or tokens" role="button" class="btn btn-secondary btn-block mb8" data-toggle="modal" data-target="#payment_managing" href="#">
+                                        <a t-if="acquirers or tokens" role="button" class="btn btn-secondary btn-block mb-2 w-100" data-toggle="modal" data-target="#payment_managing" href="#">
                                             <t t-if="order.payment_token_id">Manage Payment Method</t>
                                             <t t-else="">Set Payment Method</t>
                                         </a>
@@ -45,7 +45,7 @@
                                             href="#"
                                             disabled="true"
                                             role="button"
-                                            class="mt8 btn btn-secondary">
+                                            class="mt-2 btn btn-secondary w-100">
                                         Manage Payment Methods
                                     </button>
                                     <!-- User is logged out -->
@@ -53,7 +53,7 @@
                                        title="You must be logged in to manage your payment methods."
                                        t-attf-href="/web/login?redirect={{order.get_portal_url()}}"
                                        role="button"
-                                       class="mt-8 btn btn-secondary">
+                                       class="mt-2 btn btn-secondary w-100">
                                         Manage Payment Methods
                                     </a>
                                 </t>
@@ -62,7 +62,7 @@
                                     <i class="fa fa-refresh"/> Renew
                                 </a>
                                 <!-- Download -->
-                                <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                                <div class="o_download_pdf btn-toolbar flex-sm-nowrap mt-2">
                                     <div class="btn-group flex-grow-1 mr-1 mb-1">
                                         <a class="btn btn-secondary btn-block o_download_btn" t-att-href="order.get_portal_url(report_type='pdf', download=True)" title="Download"><i class="fa fa-download"/> Download</a>
                                     </div>

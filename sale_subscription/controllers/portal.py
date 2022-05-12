@@ -114,7 +114,7 @@ class CustomerPortal(portal.CustomerPortal):
             return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
 
         # Make sure that the partner's company matches the subscription's company.
-        payment_portal.PaymentPortal.ensure_matching_companies(
+        payment_portal.PaymentPortal._ensure_matching_companies(
             order_sudo.partner_id, order_sudo.company_id
         )
 

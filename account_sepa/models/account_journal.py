@@ -121,15 +121,16 @@ class AccountJournal(models.Model):
         CtrlSum.text = self._get_CtrlSum(payments)
         GrpHdr.append(self._get_InitgPty(pain_version, sct_generic))
 
-        # Create one PmtInf XML block per execution date
+        # Create one PmtInf XML block per execution date, per currency
         payments_date_instr_wise = defaultdict(lambda: [])
         today = fields.Date.today()
         for payment in payments:
             local_instrument = self._get_local_instrument(payment)
             required_payment_date = payment['payment_date'] if payment['payment_date'] > today else today
-            payments_date_instr_wise[(required_payment_date, local_instrument)].append(payment)
+            currency = payment['currency_id'] or self.company_id.currency_id.id
+            payments_date_instr_wise[(required_payment_date, local_instrument, currency)].append(payment)
         count = 0
-        for (payment_date, local_instrument), payments_list in payments_date_instr_wise.items():
+        for (payment_date, local_instrument, currency), payments_list in payments_date_instr_wise.items():
             count += 1
             PmtInf = etree.SubElement(CstmrCdtTrfInitn, "PmtInf")
             PmtInfId = etree.SubElement(PmtInf, "PmtInfId")

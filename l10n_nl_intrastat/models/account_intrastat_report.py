@@ -50,6 +50,7 @@ class IntrastatReport(models.AbstractModel):
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
+        query_res = self._fill_supplementary_units(query_res)
         query_res = self._fill_missing_values(query_res)
         line_map = dict((l.id, l) for l in self.env['account.move.line'].browse(res['id'] for res in query_res))
 
@@ -125,6 +126,7 @@ class IntrastatReport(models.AbstractModel):
             mass = line.product_id and line.quantity * (line.product_id.weight or line.product_id.product_tmpl_id.weight) or 0
             if mass:
                 mass = copysign(round(mass) or 1.0, mass)
+            supp_unit = str(round(res['supplementary_units'])).zfill(10) if res['supplementary_units'] else '0000000000'
 
             # In the case of the value:
             # If the invoice value does not reconcile with the actual value of the goods, deviating
@@ -150,8 +152,8 @@ class IntrastatReport(models.AbstractModel):
                 mass >= 0 and '+' or '-',                                       # Mass sign             length=1
                 str(int(abs(mass))).zfill(10),                                  # Mass                  length=10
                 '+',                                                            # Supplementary sign    length=1
-                '0000000000',                                                   # Supplementary unit    length=10
                 inv.move_type in ['in_invoice', 'out_invoice'] and '+' or '-',  # Invoice sign          length=1
+                supp_unit,                                                      # Supplementary unit    length=10
                 str(int(value)).zfill(10),                                      # Invoice value         length=10
                 '+',                                                            # Statistical sign      length=1
                 '0000000000',                                                   # Statistical value     length=10

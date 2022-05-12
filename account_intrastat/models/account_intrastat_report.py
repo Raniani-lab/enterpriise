@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, api, _, _lt
+from .supplementary_unit_codes import SUPPLEMENTARY_UNITS_TO_COMMODITY_CODES as SUPP_TO_COMMODITY
 
 _merchandise_export_code = {
     'BE': '29',
@@ -52,7 +53,7 @@ class IntrastatReport(models.AbstractModel):
             ]
         columns += [
             {'name': _('Weight')},
-            {'name': _('Quantity')},
+            {'name': _('Supplementary Units')},
             {'name': _('Value'), 'class': 'number'},
         ]
         return columns
@@ -71,7 +72,7 @@ class IntrastatReport(models.AbstractModel):
             ]]
 
         columns += [{'name': c} for c in [
-            vals['weight'], vals['quantity'], self.format_value(vals['value'])
+            vals['weight'], vals['supplementary_units'], self.format_value(vals['value'])
         ]]
 
         return {
@@ -122,6 +123,8 @@ class IntrastatReport(models.AbstractModel):
                 inv_line.id AS id,
                 prodt.id AS template_id,
                 prodt.categ_id AS category_id,
+                inv_line.product_uom_id AS uom_id,
+                inv_line_uom.category_id AS uom_category_id,
                 inv.id AS invoice_id,
                 inv.currency_id AS invoice_currency_id,
                 inv.name AS invoice_number,
@@ -147,6 +150,7 @@ class IntrastatReport(models.AbstractModel):
                     CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                     THEN inv_line_uom.factor ELSE 1 END
                 ) AS quantity,
+                inv_line.quantity AS line_quantity,
                 CASE WHEN inv_line.price_subtotal = 0 THEN inv_line.price_unit * inv_line.quantity ELSE inv_line.price_subtotal END AS value,
                 CASE WHEN inv_line.intrastat_product_origin_country_id IS NULL
                      THEN \'QU\'  -- If you don't know the country of origin of the goods, as an exception you may replace the country code by "QU".
@@ -267,6 +271,7 @@ class IntrastatReport(models.AbstractModel):
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
+        query_res = self._fill_supplementary_units(query_res)
 
         # Create lines
         lines = []
@@ -295,3 +300,54 @@ class IntrastatReport(models.AbstractModel):
 
     def _get_report_country_code(self, options):
         return self.env.company.account_fiscal_country_id.code or None
+
+    def _fill_supplementary_units(self, query_results):
+        """ Although the default measurement provided is the weight in kg, some commodities require a supplementary unit
+        in the report.
+
+            e.g. Livestock are measured p/st, which is to say per animal.
+                 Bags of plastic artificial teeth (code 90212110) are measured 100 p/st, which is
+                 per hundred teeth.
+                 Code 29372200 Halogenated derivatives of corticosteroidal hormones are measured in grams... obviously.
+
+        Since there is not always 1-to-1 mapping between these supplementary units, this function tries to occupy the field
+        with the most accurate / relevant value, based on the available odoo units of measure. When the customer does not have
+        inventory installed, or has left the UoM otherwise undefined, the default 'unit' UoM is used. In this case the quantity
+        is used as the supplementary unit.
+        """
+
+        supp_unit_dict = {
+            'p/st': {'uom_id': self.env.ref('uom.product_uom_unit'), 'factor': 1},
+            'pa': {'uom_id': self.env.ref('uom.product_uom_unit'), 'factor': 2},
+            '100 p/st': {'uom_id': self.env.ref('uom.product_uom_unit'), 'factor': 100},
+            '1000 p/st': {'uom_id': self.env.ref('uom.product_uom_unit'), 'factor': 1000},
+            'g': {'uom_id': self.env.ref('uom.product_uom_gram'), 'factor': 1},
+            'm': {'uom_id': self.env.ref('uom.product_uom_meter'), 'factor': 1},
+            'l': {'uom_id': self.env.ref('uom.product_uom_litre'), 'factor': 1},
+        }
+
+        # Transform the dictionary to the form Commodity code -> Supplementary unit name
+        commodity_to_supp_code = {}
+        for key in SUPP_TO_COMMODITY:
+            commodity_to_supp_code.update({v: key for v in SUPP_TO_COMMODITY[key]})
+
+        for vals in query_results:
+            commodity_code = vals['commodity_code']
+            supp_code = commodity_to_supp_code.get(commodity_code)
+            supp_unit = supp_unit_dict.get(supp_code)
+            if not supp_code or not supp_unit:
+                vals['supplementary_units'] = None
+                continue
+
+            # If the supplementary unit is undefined here, the best we can do is
+            uom_id, uom_category_id = vals['uom_id'], vals['uom_category_id']
+
+            if uom_id == supp_unit['uom_id'].id:
+                vals['supplementary_units'] = vals['line_quantity'] / supp_unit['factor']
+            else:
+                if uom_category_id == supp_unit['uom_id'].category_id.id:
+                    vals['supplementary_units'] = self.env['uom.uom'].browse(uom_id)._compute_quantity(vals['line_quantity'], supp_unit['uom_id']) / supp_unit['factor']
+                else:
+                    vals['supplementary_units'] = None
+
+        return query_results

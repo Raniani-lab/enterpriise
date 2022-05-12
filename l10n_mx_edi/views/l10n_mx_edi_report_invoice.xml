@@ -15,9 +15,24 @@
             </t>
         </xpath>
 
-        <div t-field="o.partner_id" position="after">
-            <span t-if="is_cfdi_signed and o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc"><span>XML VAT: </span><span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"></span></span>
-        </div>
+        <xpath expr="//div[hasclass('row')]//div[@name='address_not_same_as_shipping']//t[@t-set='address']" position="after">
+            <span t-if="is_cfdi_signed and o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc">
+                <span>XML VAT: </span>
+                <span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"/>
+            </span>
+        </xpath>
+        <xpath expr="//div[hasclass('row')]//div[@name='address_same_as_shipping']//t[@t-set='address']" position="after">
+            <span t-if="is_cfdi_signed and o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc">
+                <span>XML VAT: </span>
+                <span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"/>
+            </span>
+        </xpath>
+        <xpath expr="//div[hasclass('row')]//div[@name='no_shipping']//t[@t-set='address']" position="after">
+            <span t-if="is_cfdi_signed and o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc">
+                <span>XML VAT: </span>
+                <span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"/>
+            </span>
+        </xpath>
 
         <xpath expr="//div[@name='customer_code']" position="after">
             <t t-if="is_cfdi_signed">

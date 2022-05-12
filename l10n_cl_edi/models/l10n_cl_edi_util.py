@@ -9,10 +9,10 @@ import textwrap
 import urllib3
 
 from functools import wraps
-from html import unescape
 
 import zeep
 from lxml import etree
+from markupsafe import Markup
 from OpenSSL import crypto
 from urllib3.exceptions import NewConnectionError
 from requests.exceptions import ConnectionError, HTTPError
@@ -243,8 +243,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             'digest_value': base64.b64encode(
                 self._get_sha1_digest(etree.tostring(etree.fromstring(digest_value_tree), method='c14n'))).decode(),
         })
-        signed_info_c14n = etree.tostring(etree.fromstring(signed_info), method='c14n', exclusive=False,
-                                          with_comments=False, inclusive_ns_prefixes=None).decode()
+        signed_info_c14n = Markup(etree.tostring(etree.fromstring(signed_info), method='c14n', exclusive=False,
+                                          with_comments=False, inclusive_ns_prefixes=None).decode())
         signature = self.env['ir.qweb']._render('l10n_cl_edi.signature_template', {
             'signed_info': signed_info_c14n,
             'signature_value': self._sign_message(
@@ -253,8 +253,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             'exponent': digital_signature._get_private_key_exponent(),
             'certificate': '\n' + textwrap.fill(digital_signature.certificate, 64),
         })
-        # We use etree tostring and fromstring to replace the line break by \n in the certificate
-        signature = etree.tostring(etree.fromstring(unescape(signature)), encoding='unicode')
+        signature = etree.tostring(etree.fromstring(signature), encoding='unicode')
         # The validation of the signature document
         self._xml_validator(signature, 'sig')
         full_doc = self._l10n_cl_append_sig(xml_type, signature, digest_value)

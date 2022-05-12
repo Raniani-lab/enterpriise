@@ -5,13 +5,13 @@ import logging
 import re
 
 from datetime import datetime
-from html import unescape
 from io import BytesIO
+from markupsafe import Markup
 from psycopg2 import OperationalError
 
 from lxml import etree
 
-from odoo import fields, models, api
+from odoo import fields, models
 from odoo.addons.l10n_cl_edi.models.l10n_cl_edi_util import UnexpectedXMLResponse, InvalidToken
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
@@ -199,7 +199,6 @@ class AccountMove(models.Model):
             'code_rejected': '-1' if status_type == 'claimed' else None,
             '__keep_empty_lines': True,
         })
-        response = unescape(response)
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         signed_response = self._sign_full_xml(
             response, digital_signature, '', 'env_resp', self.l10n_latam_document_type_id._is_doc_type_voucher())
@@ -482,7 +481,6 @@ class AccountMove(models.Model):
             'dte': dte_barcode_xml['ted'],
             '__keep_empty_lines': True,
         })
-        dte = unescape(dte).replace(r'&', '&amp;')
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         signed_dte = self._sign_full_xml(
             dte, digital_signature, doc_id_number, 'doc', self.l10n_latam_document_type_id._is_doc_type_voucher())
@@ -514,6 +512,8 @@ class AccountMove(models.Model):
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         template = self.l10n_latam_document_type_id._is_doc_type_voucher() and self.env.ref(
             'l10n_cl_edi.envio_boleta') or self.env.ref('l10n_cl_edi.envio_dte')
+        dte = self.l10n_cl_dte_file.raw.decode('ISO-8859-1')
+        dte = Markup(dte.replace('<?xml version="1.0" encoding="ISO-8859-1" ?>', ''))
         dte_rendered = self.env['ir.qweb']._render(template.id, {
             'move': self,
             'RutEmisor': self._l10n_cl_format_vat(self.company_id.vat),
@@ -522,10 +522,10 @@ class AccountMove(models.Model):
             'FchResol': self.company_id.l10n_cl_dte_resolution_date,
             'NroResol': self.company_id.l10n_cl_dte_resolution_number,
             'TmstFirmaEnv': self._get_cl_current_strftime(),
-            'dte': base64.b64decode(self.l10n_cl_dte_file.datas).decode('ISO-8859-1'),
+            'dte': dte,
             '__keep_empty_lines': True,
         })
-        dte_rendered = unescape(dte_rendered).replace('<?xml version="1.0" encoding="ISO-8859-1" ?>', '')
+        dte_rendered = dte_rendered.replace('<?xml version="1.0" encoding="ISO-8859-1" ?>', '')
         dte_signed = self._sign_full_xml(
             dte_rendered, digital_signature, 'SetDoc',
             self.l10n_latam_document_type_id._is_doc_type_voucher() and 'bol' or 'env',
@@ -706,7 +706,6 @@ class AccountMove(models.Model):
             'caf': self.l10n_latam_document_type_id._get_caf_file(self.company_id.id, int(self.l10n_latam_document_number)),
             '__keep_empty_lines': True,
         })
-        dd = str(dd).replace(r'&amp;', '&')
         caf_file = self.l10n_latam_document_type_id._get_caf_file(self.company_id.id, int(self.l10n_latam_document_number))
         ted = self.env['ir.qweb']._render('l10n_cl_edi.ted_template', {
             'dd': dd,
@@ -714,11 +713,10 @@ class AccountMove(models.Model):
             'stamp': self._get_cl_current_strftime(),
             '__keep_empty_lines': True,
         })
-        ted = unescape(ted)
         return {
-            'ted': re.sub(r'\n\s*$', '', ted, flags=re.MULTILINE),
+            'ted': Markup(re.sub(r'\n\s*$', '', ted, flags=re.MULTILINE)),
             'barcode': etree.tostring(etree.fromstring(re.sub(
-                r'<TmstFirma>.*</TmstFirma>', '', ted.replace('&', '&amp;')), parser=etree.XMLParser(remove_blank_text=True)))
+                r'<TmstFirma>.*</TmstFirma>', '', ted), parser=etree.XMLParser(remove_blank_text=True)))
         }
 
     def _l10n_cl_get_reverse_doc_type(self):

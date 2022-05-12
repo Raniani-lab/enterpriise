@@ -552,7 +552,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         const quants = res.records['stock.quant'];
         if (!quants.length) { // Empty package => Assigns it to the last scanned line.
             const currentLine = this.selectedLine || this.lastScannedLine;
-            if (currentLine && !currentLine.package_id && !currentLine.result_package_id) {
+            if (currentLine && !currentLine.result_package_id) {
                 await this._assignEmptyPackage(currentLine, recPackage);
                 barcodeData.stopped = true;
                 this.selectedLineVirtualId = false;

@@ -4219,4 +4219,21 @@ tour.register('test_show_entire_package', {test: true}, [
     },
 ]);
 
+tour.register('test_define_the_destination_package', {test: true}, [
+    {
+        trigger: '.o_line_button.o_add_quantity',
+    },
+    {
+        trigger: '.o_barcode_line .qty-done:contains("1")',
+        run: 'scan PACK02',
+    },
+    {
+        extra_trigger: '.o_barcode_line:contains("PACK02")',
+        trigger: '.btn.o_validate_page',
+    },
+    {
+        trigger: '.o_notification.border-success',
+    },
+]);
+
 });

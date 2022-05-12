@@ -1672,6 +1672,36 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_show_entire_package', login='admin', timeout=180)
         self.assertTrue(delivery_with_package_level.package_level_ids.is_done)
 
+    def test_define_the_destination_package(self):
+        """
+        Suppose a picking that moves a product from a package to another one
+        This test ensures that the user can scans the destination package
+        """
+        clean_access_rights(self.env)
+        group_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, group_pack.id, 0)]})
+
+        pack01, pack02 = self.env['stock.quant.package'].create([{
+            'name': name,
+        } for name in ('PACK01', 'PACK02')])
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 2, package_id=pack01)
+
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_out
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 1
+        delivery = picking_form.save()
+        delivery.action_confirm()
+
+        url = self._get_client_action_url(delivery.id)
+        self.start_tour(url, 'test_define_the_destination_package', login='admin', timeout=180)
+
+        self.assertRecordValues(delivery.move_line_ids, [
+            {'product_id': self.product1.id, 'qty_done': 1, 'result_package_id': pack02.id, 'state': 'done'},
+        ])
+
     def test_gs1_reserved_delivery(self):
         """ Process a delivery by scanning multiple quantity multiple times.
         """

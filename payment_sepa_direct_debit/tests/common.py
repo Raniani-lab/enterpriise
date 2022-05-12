@@ -48,28 +48,3 @@ class SepaDirectDebitCommon(PaymentCommon):
 
         cls.acquirer = cls.sepa
         cls.currency = cls.currency_euro
-
-    def reconcile(self, payment):
-        bank_journal = payment.journal_id
-        move_line = payment.line_ids.filtered(lambda aml: aml.account_id == bank_journal.company_id.account_journal_payment_debit_account_id)
-
-        bank_stmt = self.env['account.bank.statement'].create({
-            'journal_id': bank_journal.id,
-            'date': payment.date,
-            'name': payment.name,
-            'line_ids': [(0, 0, {
-                'partner_id': self.partner.id,
-                'foreign_currency_id': move_line.currency_id.id,
-                'amount_currency': abs(move_line.amount_currency),
-                'amount': abs(move_line.balance),
-                'date': payment.date,
-                'payment_ref': payment.name,
-            })],
-        })
-        bank_stmt.button_post()
-
-        edit_wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=bank_stmt.line_ids.id).new({})
-        edit_wizard._action_add_new_amls(move_line, allow_partial=False)
-        edit_wizard.button_validate(async_action=False)
-
-        self.assertTrue(payment.is_matched, 'payment should be reconciled')

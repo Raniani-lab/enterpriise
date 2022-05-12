@@ -914,6 +914,8 @@ class SaleOrder(models.Model):
             'Automatic payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer.',
             ref=transaction._get_html_link(title=transaction.reference), amount=transaction.amount, inv=self.next_invoice_date)
         self.message_post(body=msg_body)
+        if invoice.state != 'posted':
+            invoice._post()
         self.send_success_mail(transaction, invoice)
 
     def _get_subscription_mail_payment_context(self, mail_ctx=None):

@@ -327,3 +327,25 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         act_window_action = self.task1.action_timer_stop()
         wizard = self.env[act_window_action['res_model']].with_context(act_window_action['context']).new()
         self.assertEqual(wizard.time_spent, 0.5)
+
+    def test_adjust_grid(self):
+        today_date = fields.Date.today()
+        company = self.env['res.company'].create({'name': 'My_Company'})
+        employee = self.env['hr.employee'].with_company(company).create({
+            'name': 'coucou',
+            'timesheet_manager_id': self.user_manager.id,
+        })
+
+        Timesheet = self.env['account.analytic.line']
+        timesheet = Timesheet.with_user(self.user_manager).create({
+            'employee_id': employee.id,
+            'project_id': self.project_customer.id,
+            'date': today_date,
+            'unit_amount': 2,
+        })
+        timesheet.with_user(self.user_manager).action_validate_timesheet()
+
+        column_date = f'{today_date}/{today_date + timedelta(days=1)}'
+        Timesheet.adjust_grid([('id', '=', timesheet.id)], 'date', column_date, 'unit_amount', 3.0)
+
+        self.assertEqual(Timesheet.search_count([('employee_id', '=', employee.id)]), 2, "Should create new timesheet instead of updating validated timesheet in cell")

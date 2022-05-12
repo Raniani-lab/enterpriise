@@ -558,7 +558,7 @@ class AnalyticLine(models.Model):
         line = self.search(domain)
 
         day = column_value.split('/')[0]
-        if len(line) > 1:  # copy the last line as adjustment
+        if len(line) > 1 or len(line) == 1 and line.validated:  # copy the last line as adjustment
             line[0].copy({
                 'name': '/',
                 column_field: day,

@@ -92,17 +92,6 @@
         </field>
     </record>
 
-    <record id="project_task_view_list_fsm_inherit" model="ir.ui.view">
-        <field name="name">project.task.tree.fsm.inherit</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="industry_fsm.project_task_view_list_fsm"/>
-        <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="worksheet_template_id" optional="show"/>
-            </field>
-        </field>
-    </record>
-
     <record id="action_fsm_worksheets" model="ir.actions.act_window">
         <field name="name">Worksheet Templates</field>
         <field name="res_model">worksheet.template</field>
@@ -157,54 +146,17 @@
         </field>
     </record>
 
-    <record id="project_project_view_tree" model="ir.ui.view">
-        <field name="name">project.project.tree2.fsm.report</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.view_project"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_id']" position="before">
-                <field name="worksheet_template_id" string="Worksheet Template" optional="hide"/>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="project_view_tree_primary" model="ir.ui.view">
-        <field name="name">project.view.tree.primary</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="industry_fsm.project_view_tree_primary"/>
-        <field name="arch" type="xml">
-            <field name="worksheet_template_id" position="attributes">
-                <attribute name="optional">show</attribute>
-            </field>
-        </field>
-    </record>
-
-    <record id="view_project_project_filter_inherit_industry_fsm_report" model="ir.ui.view">
-        <field name="name">view.project.project.filter.inherit.industry.fsm.report</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="industry_fsm.view_project_project_filter_inherit_industry_fsm"/>
-        <field name="mode">primary</field>
-        <field name="arch" type="xml">
-            <field name="partner_id" position="after">
-                <field name="worksheet_template_id"/>
-            </field>
-            <filter name="Manager" position="after">
-                <filter string="Worksheet Template" name="groupby_worksheet_template" context="{'group_by':'worksheet_template_id'}"/>
-            </filter>
-        </field>
-    </record>
-
     <record id="project_task_view_search_fsm_report" model="ir.ui.view">
         <field name="name">project.task.search.fsm</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="industry_fsm.project_task_view_search_fsm"/>
+        <field name="inherit_id" ref="project.view_task_search_form_project_fsm_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//group/filter[@name='groupby_project']" position="after">
-                <filter string="Worksheet Template" name="groupby_worksheet_template" context="{'group_by':'worksheet_template_id'}"/>
-            </xpath>
-            <xpath expr="//field[@name='project_id']" position="after">
+            <field name="display_project_id" position="after">
                 <field name="worksheet_template_id"/>
-            </xpath>
+            </field>
+            <filter name="milestone" position="before">
+                <filter string="Worksheet Template" name="groupby_worksheet_template" context="{'group_by':'worksheet_template_id'}"/>
+            </filter>
         </field>
     </record>
 
@@ -336,7 +288,7 @@
             'default_allow_worksheets': True,
             }
         </field>
-        <field name="search_view_id" ref="industry_fsm_report.view_project_project_filter_inherit_industry_fsm_report"/>
+        <field name="search_view_id" ref="project.view_project_project_filter"/>
     </record>
 
     <!-- action planning by worksheet -->
@@ -455,10 +407,21 @@
     <record model="ir.ui.view" id="view_task_tree2_inherited">
         <field name="name">project.task.tree.inherited</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="inherit_id" ref="project.project_task_view_tree_base"/>
         <field name="arch" type="xml">
             <field name="project_id" position="after">
                 <field name="worksheet_template_id" optional="hide" context="{'default_res_model': 'project.task'}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="project_task_view_list_fsm_inherit" model="ir.ui.view">
+        <field name="name">project.task.tree.fsm.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_list_fsm"/>
+        <field name="arch" type="xml">
+            <field name="worksheet_template_id" position="attributes">
+                <attribute name="optional">show</attribute>
             </field>
         </field>
     </record>

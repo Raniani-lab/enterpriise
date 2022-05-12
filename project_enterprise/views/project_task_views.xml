@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="project_task_view_tree" model="ir.ui.view">
+        <field name="name">project.task.view.form.inherit.project.enterprise"</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_task_view_tree_base"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id' and not(@invisible='1')]" position="after">
+                <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" optional="hide" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
+                <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" optional="hide" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_task_view_form" model="ir.ui.view">
         <field name="name">project.task.view.form.inherit.project.enterprise</field>
         <field name="model">project.task</field>
@@ -115,18 +127,6 @@
             <xpath expr="//gantt" position="attributes">
                 <attribute name="dependency_field">depend_on_ids</attribute>
                 <attribute name="dependency_inverted_field">dependent_ids</attribute>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="view_task_search_form_inherit_enterprise" model="ir.ui.view">
-        <field name="name">project.task.search.inherit.enterprise</field>
-        <field name="model">project.task</field>
-        <field name="priority">10</field>
-        <field name="inherit_id" ref="project.view_task_search_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//filter[@name='tasks_due_today']" position="after">
-                <filter name="conflict_task" string="Tasks in Conflict" domain="[('planning_overlap', '=', True)]"/>
             </xpath>
         </field>
     </record>

@@ -12,6 +12,10 @@ from odoo.tools import topological_sort
 
 from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
 
+PROJECT_TASK_READABLE_FIELDS = {
+    'allocated_hours',
+}
+
 PROJECT_TASK_WRITABLE_FIELDS = {
     'planned_date_begin',
     'planned_date_end',
@@ -51,6 +55,10 @@ class Task(models.Model):
     # action_gantt_reschedule utils
     _WEB_GANTT_RESCHEDULE_WORK_INTERVALS_CACHE_KEY = 'work_intervals'
     _WEB_GANTT_RESCHEDULE_RESOURCE_VALIDITY_CACHE_KEY = 'resource_validity'
+
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS | PROJECT_TASK_READABLE_FIELDS
 
     @property
     def SELF_WRITABLE_FIELDS(self):

@@ -54,4 +54,18 @@
         </field>
     </record>
 
+    <record id="project_sharing_project_task_view_search_inherit" model="ir.ui.view">
+        <field name="name">project.sharing.task.search.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_sharing_project_task_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="date_deadline" position="attributes">
+                <attribute name="invisible">context.get('fsm_mode', False)</attribute>
+            </filter>
+            <filter name="deadline" position="attributes">
+                <attribute name="invisible">context.get('fsm_mode', False)</attribute>
+            </filter>
+        </field>
+    </record>
+
 </odoo>

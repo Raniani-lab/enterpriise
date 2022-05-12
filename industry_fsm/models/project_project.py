@@ -68,3 +68,10 @@ class Project(models.Model):
             ('parent_res_id', 'in', self.env['project.project'].search([('is_fsm', '=', True)]).ids)
         ]
         return action
+
+    def action_project_sharing(self):
+        action = super().action_project_sharing()
+        action['context'].update({
+            'fsm_mode': self.is_fsm,
+        })
+        return action

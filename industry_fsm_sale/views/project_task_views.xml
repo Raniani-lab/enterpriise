@@ -13,12 +13,6 @@
                             invisible="not context.get('search_default_to_invoice',0)"/>
                 </header>
             </xpath>
-            <field name="remaining_hours" position="after">
-                <field name="remaining_hours_so" widget="timesheet_uom" optional="hide"/>
-            </field>
-            <field name="partner_id" position="after">
-                <field name="sale_line_id" optional="hide" options="{'no_create': True}" readonly="1"/>
-            </field>
         </field>
     </record>
 
@@ -48,19 +42,10 @@
         <field name="inherit_id" ref="industry_fsm.project_task_view_search_fsm"/>
         <field name="arch" type="xml">
             <field name="partner_id" position="after">
-                <field name="sale_order_id"/>
-                <field name="sale_line_id"/>
-                <field name="invoice_status"/>
+                <field name="sale_order_id" filter_domain="['|', ('sale_order_id', 'ilike', self), ('sale_line_id', 'ilike', self)]"/>
             </field>
-            <xpath expr="//filter[@name='in_progress']" position='after'>
-                <filter string="To Invoice" domain="[('invoice_status', '=', 'to invoice')]" name="to_invoice"/>
-            </xpath>
-            <xpath expr="//filter[@name='late']" position="after">
-                <filter string="Tasks in Overtime" name="overtime" domain="['|', ('remaining_hours', '&lt;', 0), ('remaining_hours_so', '&lt;', 0)]"/>
-            </xpath>
-            <filter name="groupby_customer" position="after">
-                <filter name="group_sale_order" context="{'group_by':'sale_order_id'}"/>
-                <filter name="sale_line_id" context="{'group_by':'sale_line_id'}"/>
+            <filter name="schedule" position="after">
+                <filter string="To Invoice" domain="[('invoice_status', '=', 'to invoice')]" name="to_invoice" groups="base.group_no_one"/>
             </filter>
         </field>
     </record>

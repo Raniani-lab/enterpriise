@@ -101,11 +101,11 @@
     <record id="project_sharing_inherit_project_task_view_tree" model="ir.ui.view">
         <field name="name">sale_timesheet_enterprise.project.task.view.tree.inherit</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="sale_timesheet.project_sharing_inherit_project_task_view_tree_sale_timesheet"/>
+        <field name="inherit_id" ref="project.project_sharing_project_task_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='effective_hours']" position="attributes">
                 <attribute name="name">portal_effective_hours</attribute>
-                <attribute name="string">Effective Hours</attribute>
+                <attribute name="string">Hours Spent</attribute>
             </xpath>
             <xpath expr="//field[@name='remaining_hours']" position="attributes">
                 <attribute name="name">portal_remaining_hours</attribute>
@@ -115,7 +115,7 @@
             </xpath>
             <xpath expr="//field[@name='subtask_effective_hours']" position="attributes">
                 <attribute name="name">portal_subtask_effective_hours</attribute>
-                <attribute name="string">Sub-tasks Hours Spent</attribute>
+                <attribute name="string">Hours Spent on Sub-Tasks</attribute>
             </xpath>
             <xpath expr="//field[@name='total_hours_spent']" position="attributes">
                 <attribute name="name">portal_total_hours_spent</attribute>

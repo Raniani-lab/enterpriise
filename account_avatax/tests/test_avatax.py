@@ -131,6 +131,18 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
 
         self.assertIsNone(capture.val, "Journal entries should not be sent to Avatax.")
 
+    def test_invoice_multi_company(self):
+        invoice, response = self._create_invoice_01_and_expected_response()
+
+        company_2 = self.company_data_2['company']
+        company_2.account_fiscal_country_id = self.env.ref('base.be')
+        self.env.user.company_id = company_2
+        with self._capture_request(return_value=response):
+            # ensure this doesn't raise:
+            # odoo.exceptions.ValidationError
+            # This entry contains some tax from an unallowed country. Please check its fiscal position and your tax configuration.
+            invoice.button_update_avatax()
+
 
 @tagged("-at_install", "post_install")
 class TestAccountAvalaraSalesTaxAdministration(TestAccountAvataxCommon):

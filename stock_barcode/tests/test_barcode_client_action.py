@@ -836,6 +836,46 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(lines[0].qty_done, 2)
         self.assertEqual(lines[1].qty_done, 2)
 
+    def test_delivery_from_scratch_with_common_lots_name(self):
+        """
+        Suppose:
+            - two tracked-by-lot products
+            - these products share one lot name
+            - an extra product tracked by serial number
+        This test ensures that a user can scan the tracked products in a picking
+        that does not expect them and updates/creates the right line depending
+        of the scanned lot
+        """
+        clean_access_rights(self.env)
+        group_lot = self.env.ref('stock.group_production_lot')
+        self.env.user.write({'groups_id': [(4, group_lot.id, 0)]})
+
+        (self.product1 + self.product2).tracking = 'lot'
+
+        lot01, lot02, sn = self.env['stock.lot'].create([{
+            'name': lot_name,
+            'product_id': product.id,
+            'company_id': self.env.company.id,
+        } for (lot_name, product) in [("LOT01", self.product1), ("LOT01", self.product2), ("SUPERSN", self.productserial1)]])
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 2, lot_id=lot01)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 3, lot_id=lot02)
+        self.env['stock.quant']._update_available_quantity(self.productserial1, self.stock_location, 1, lot_id=sn)
+
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_out
+        delivery = picking_form.save()
+
+        url = self._get_client_action_url(delivery.id)
+        self.start_tour(url, 'test_delivery_from_scratch_with_common_lots_name', login='admin', timeout=180)
+
+        self.assertRecordValues(delivery.move_line_ids, [
+            # pylint: disable=C0326
+            {'product_id': self.product1.id,        'lot_id': lot01.id,     'qty_done': 2},
+            {'product_id': self.product2.id,        'lot_id': lot02.id,     'qty_done': 3},
+            {'product_id': self.productserial1.id,  'lot_id': sn.id,        'qty_done': 1},
+        ])
+
     def test_delivery_reserved_lots_1(self):
         clean_access_rights(self.env)
         grp_lot = self.env.ref('stock.group_production_lot')

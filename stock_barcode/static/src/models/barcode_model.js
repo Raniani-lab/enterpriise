@@ -1112,6 +1112,15 @@ export default class BarcodeModel extends EventBus {
         }
         try {
             barcodeData = await this._parseBarcode(barcode, filters);
+            if (!barcodeData.match && filters['stock.lot'] &&
+                !this.canCreateNewLot && this.useExistingLots) {
+                // Retry to parse the barcode without filters in case it matches an existing
+                // record that can't be found because of the filters
+                const lot = await this.cache.getRecordByBarcode(barcode, 'stock.lot');
+                if (lot) {
+                    Object.assign(barcodeData, { lot, match: true });
+                }
+            }
         } catch (parseErrorMessage) {
             barcodeData.error = parseErrorMessage;
         }

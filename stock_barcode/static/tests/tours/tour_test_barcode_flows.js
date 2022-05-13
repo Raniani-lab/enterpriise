@@ -2220,6 +2220,45 @@ tour.register('test_delivery_from_scratch_with_lots_1', {test: true}, [
 
 ]);
 
+tour.register('test_delivery_from_scratch_with_common_lots_name', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_barcode_line',
+        run: 'scan LOT01',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOT01',
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="product1"] .qty-done:contains("2")',
+        run: 'scan product2',
+    },
+    {
+        trigger: '.o_barcode_line:contains("product2")',
+        run: 'scan LOT01',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOT01',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOT01',
+    },
+    {
+        trigger: '.qty-done:contains("3")',
+        run: 'scan SUPERSN',
+    },
+    { trigger: '.o_barcode_line:contains("productserial1")' },
+    // Open the form view to trigger a save
+    { trigger: '.o_barcode_line:first-child .o_edit' },
+    { trigger: '.o_discard' },
+]);
+
 tour.register('test_receipt_from_scratch_with_sn_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',

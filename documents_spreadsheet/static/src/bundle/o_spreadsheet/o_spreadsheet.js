@@ -3067,6 +3067,12 @@
     const FORMAT_ITALIC_ACTION = (env) => setStyle(env, { italic: !env.model.getters.getCurrentStyle().italic });
     const FORMAT_STRIKETHROUGH_ACTION = (env) => setStyle(env, { strikethrough: !env.model.getters.getCurrentStyle().strikethrough });
     const FORMAT_UNDERLINE_ACTION = (env) => setStyle(env, { underline: !env.model.getters.getCurrentStyle().underline });
+    const FORMAT_CLEARFORMAT_ACTION = (env) => {
+        env.model.dispatch("CLEAR_FORMATTING", {
+            sheetId: env.model.getters.getActiveSheetId(),
+            target: env.model.getters.getSelectedZones(),
+        });
+    };
     //------------------------------------------------------------------------------
     // Side panel
     //------------------------------------------------------------------------------
@@ -3882,6 +3888,12 @@
         name: _lt("Conditional formatting"),
         sequence: 70,
         action: OPEN_CF_SIDEPANEL_ACTION,
+        separator: true,
+    })
+        .addChild("format_clearFormat", ["format"], {
+        name: _lt("Clear formatting"),
+        sequence: 80,
+        action: FORMAT_CLEARFORMAT_ACTION,
         separator: true,
     });
     // Font-sizes
@@ -30777,6 +30789,7 @@
         toNumber,
         toString,
         toXC,
+        toJsDate,
         toZone,
         toCartesian,
         numberToLetters,
@@ -30821,8 +30834,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-05-06T07:28:53.341Z';
-    exports.__info__.hash = 'dab9a1c';
+    exports.__info__.date = '2022-05-13T07:54:40.449Z';
+    exports.__info__.hash = 'dcca995';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

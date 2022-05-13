@@ -4236,4 +4236,24 @@ tour.register('test_define_the_destination_package', {test: true}, [
     },
 ]);
 
+tour.register('test_avoid_useless_line_creation', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOT01',
+    },
+    {
+        trigger: '.o_barcode_line',
+        run: 'scan LOREM',
+    },
+    {
+        trigger: '.o_notification.border-danger',
+        run: function () {
+            helper.assertErrorMessage('You are expected to scan one or more products.');
+        },
+    },
+    // Open the form view to trigger a save
+    { trigger: '.o_barcode_line:first-child .o_edit' },
+    { trigger: '.o_discard' },
+]);
+
 });

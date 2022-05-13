@@ -1702,6 +1702,37 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             {'product_id': self.product1.id, 'qty_done': 1, 'result_package_id': pack02.id, 'state': 'done'},
         ])
 
+    def test_avoid_useless_line_creation(self):
+        """
+        Suppose
+            - the option "Create New Lots/Serial Numbers" disabled
+            - a tracked product P with an available lot L
+        On a delivery, a user scans L (it should add a line)
+        Then, the user scans a non-existing lot LX (it should not create any line)
+        """
+        clean_access_rights(self.env)
+        group_lot = self.env.ref('stock.group_production_lot')
+        self.env.user.write({'groups_id': [(4, group_lot.id, 0)]})
+
+        lot01 = self.env['stock.lot'].create({
+            'name': "LOT01",
+            'product_id': self.productlot1.id,
+            'company_id': self.env.company.id,
+        })
+
+        self.env['stock.quant']._update_available_quantity(self.productlot1, self.stock_location, 1, lot_id=lot01)
+
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_out
+        delivery = picking_form.save()
+
+        url = self._get_client_action_url(delivery.id)
+        self.start_tour(url, 'test_avoid_useless_line_creation', login='admin', timeout=180)
+
+        self.assertRecordValues(delivery.move_ids, [
+            {'product_id': self.productlot1.id, 'lot_ids': lot01.ids, 'quantity_done': 1},
+        ])
+
     def test_gs1_reserved_delivery(self):
         """ Process a delivery by scanning multiple quantity multiple times.
         """

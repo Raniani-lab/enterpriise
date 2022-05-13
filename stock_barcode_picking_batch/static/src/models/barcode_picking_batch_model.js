@@ -123,6 +123,10 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
         }
     }
 
+    get canCreateNewLot() {
+        return this.picking.use_create_lots;
+    }
+
     groupKey(line) {
         return `${line.picking_id.id}_${line.product_id.id}`;
     }

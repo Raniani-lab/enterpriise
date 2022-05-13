@@ -1127,7 +1127,7 @@ export default class BarcodeModel extends EventBus {
             barcodeData.uom = this.cache.getRecord('uom.uom', barcodeData.product.uom_id);
         }
 
-        if (barcodeData.lot && !barcode.product) {
+        if (barcodeData.lot && !barcodeData.product) {
             barcodeData.product = this.cache.getRecord('product.product', barcodeData.lot.product_id);
         }
 
@@ -1157,11 +1157,11 @@ export default class BarcodeModel extends EventBus {
                 // If the current product is tracked and the barcode doesn't fit
                 // anything else, we assume it's a new lot/serial number.
                 if (previousProduct.tracking !== 'none' &&
-                    !barcodeData.match && this.canCreateNewLine) {
+                    !barcodeData.match && this.canCreateNewLot) {
                     barcodeData.lotName = barcode;
+                    barcodeData.product = previousProduct;
                 }
-                if (currentLine.lot_id || currentLine.lot_name ||
-                    barcodeData.lot || barcodeData.lotName ||
+                if (barcodeData.lot || barcodeData.lotName ||
                     barcodeData.quantity) {
                     barcodeData.product = previousProduct;
                 }

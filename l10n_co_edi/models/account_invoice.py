@@ -16,7 +16,8 @@ DESCRIPTION_CREDIT_CODE = [
 DESCRIPTION_DEBIT_CODE = [
     ('1', 'Intereses'),
     ('2', 'Gastos por cobrar'),
-    ('3', 'Cambio del valor')
+    ('3', 'Cambio del valor'),
+    ('4', 'Otros'),
 ]
 
 

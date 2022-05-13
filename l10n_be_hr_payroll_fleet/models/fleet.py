@@ -165,7 +165,7 @@ class FleetVehicle(models.Model):
             if fuel_type in ['electric', 'hydrogen']:
                 atn = car_value * 0.04 * magic_coeff
             else:
-                if fuel_type in ['diesel', 'hybrid', 'plug_in_hybrid_diesel']:
+                if fuel_type in ['diesel', 'full_hybrid', 'plug_in_hybrid_diesel']:
                     reference = self.env['hr.rule.parameter']._get_parameter_from_code('co2_reference_diesel', date)
                 else:
                     reference = self.env['hr.rule.parameter']._get_parameter_from_code('co2_reference_petrol_lpg', date)

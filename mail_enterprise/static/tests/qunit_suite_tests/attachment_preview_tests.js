@@ -31,9 +31,8 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 '</form>',
         };
         patchUiSize({ size: SIZES.XXL });
-        let env;
         await afterNextRender(async () => { // because of chatter container
-            const { env: environment, openView } = await start({
+            const { openView } = await start({
                 async mockRPC(route, args) {
                     if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
                         assert.step("pdf viewer");
@@ -44,7 +43,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 },
                 serverData: { views },
             });
-            env = environment;
             await openView({
                 res_id: resPartnerId1,
                 res_model: 'res.partner',
@@ -54,15 +52,13 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         });
 
         await afterNextRender(() =>
-            document.querySelector('.o_ChatterTopbar_buttonAttachments').click()
+            dragenterFiles(document.querySelector('.o_Chatter'))
         );
         const files = [
             await createFile({ name: 'invoice.pdf', contentType: 'application/pdf' }),
         ];
-        const messaging = await env.services.messaging.get();
-        const chatter = messaging.models['Chatter'].all()[0];
         await afterNextRender(() =>
-            inputFiles(chatter.attachmentBoxView.fileUploader.fileInput, files)
+            dropFiles(document.querySelector('.o_Chatter_dropZone'), files)
         );
         assert.containsNone(document.body, '.o_attachment_preview_container');
         assert.verifySteps([], "The page should never render a PDF while it is uploading, as the uploading is blocked in this test we should never render a PDF preview");
@@ -359,7 +355,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 </tree>`,
         };
         patchUiSize({ size: SIZES.XXL });
-        const { click, openView } = await start({
+        const { openView } = await start({
             async mockRPC(route, { method }) {
                 switch (method) {
                     case 'register_as_main_attachment':
@@ -379,9 +375,8 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
 
         assert.containsNone(document.body, 'img#attachment_img');
 
-        await click('.o_ChatterTopbar_buttonAttachments');
         await afterNextRender(() =>
-            dragenterFiles(document.querySelector('.o_AttachmentBox'))
+            dragenterFiles(document.querySelector('.o_Chatter'))
         );
         const files = [
             await createFile({
@@ -391,7 +386,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             }),
         ];
         await afterNextRender(() =>
-            dropFiles(document.querySelector('.o_AttachmentBox_dropZone'), files)
+            dropFiles(document.querySelector('.o_Chatter_dropZone'), files)
         );
         assert.containsOnce(document.body, 'img#attachment_img');
         assert.notEqual(document.querySelector('table th').style.width, '0px',

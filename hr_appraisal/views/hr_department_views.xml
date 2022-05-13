@@ -13,13 +13,10 @@
 
                 <xpath expr="//div[hasclass('o_kanban_primary_right')]" position="inside">
                     <div t-if="record.appraisals_to_process_count.raw_value > 0" class="row ml16">
-                        <div class="col-9">
+                        <div class="col">
                             <a name="%(hr_appraisal_action_from_department)d" type="action">
-                                Appraisals
+                                <t t-esc="record.appraisals_to_process_count.raw_value"/> Appraisals
                             </a>
-                        </div>
-                        <div class="col-3 text-right">
-                            <t t-esc="record.appraisals_to_process_count.raw_value"/>
                         </div>
                     </div>
                 </xpath>

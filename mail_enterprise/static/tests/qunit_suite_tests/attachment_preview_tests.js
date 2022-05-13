@@ -93,7 +93,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         });
         let form, env;
         await afterNextRender(async () => { // because of chatter container
-            const { env: environment, widget } = await start({
+            const { env: environment, target } = await start({
                 hasView: true,
                 View: FormView,
                 model: 'res.partner',
@@ -128,7 +128,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 },
             });
             env = environment;
-            form = widget;
+            form = target;
         });
 
         assert.containsOnce(form, '.o_attachment_preview_img > img',
@@ -169,10 +169,10 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             "Preview image should be removed");
         assert.containsOnce(form, '.o_attachment_preview_container > iframe',
             "There should be iframe for pdf viewer");
-        await testUtils.dom.click(form.$('.o_move_next'), {allowInvisible:true});
+        await testUtils.dom.click(form.querySelector('.o_move_next'), { allowInvisible: true });
         assert.containsOnce(form, '.o_attachment_preview_img > img',
             "Display next attachment");
-        await testUtils.dom.click(form.$('.o_move_previous'), {allowInvisible:true});
+        await testUtils.dom.click(form.querySelector('.o_move_previous'), { allowInvisible: true });
         assert.containsOnce(form, '.o_attachment_preview_container > iframe',
             "Display preview attachment");
     });
@@ -280,7 +280,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
 
         let form;
         await afterNextRender(async () => { // because of chatter container
-            const { widget } = await start({
+            const { target } = await start({
                 hasView: true,
                 View: FormView,
                 model: 'res.partner',
@@ -303,12 +303,12 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     },
                 },
             });
-            form = widget;
+            form = target;
         });
 
         assert.containsOnce(form, '.o_form_sheet_bg .o_attachment_preview',
             "the preview should not be displayed");
-        assert.strictEqual(form.$('.o_form_sheet_bg .o_attachment_preview').children().length, 0,
+        assert.strictEqual(form.querySelector('.o_form_sheet_bg .o_attachment_preview').children.length, 0,
             "the preview should be empty");
         assert.containsOnce(form, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
@@ -331,7 +331,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         });
         let form;
         await afterNextRender(async () => { // because of chatter container
-            const { widget } = await start({
+            const { target } = await start({
                 hasView: true,
                 View: FormView,
                 model: 'res.partner',
@@ -355,9 +355,9 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     },
                 },
             });
-            form = widget;
+            form = target;
         });
-        assert.strictEqual(form.$('.o_attachment_preview').children().length, 0,
+        assert.strictEqual(form.querySelector('.o_attachment_preview').children.length, 0,
             "there should be nothing previewed");
         assert.containsOnce(form, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
@@ -371,7 +371,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             name: new Array(100).fill().map(_ => 'name').join(),
         });
         const resPartnerId1 = pyEnv['res.partner'].create({ channel_ids: [mailChannelId1] });
-        const { click, widget: form } = await start({
+        const { click, target: form } = await start({
             hasView: true,
             arch: `
                 <form string="Whatever">
@@ -408,7 +408,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         });
 
         // Sets an arbitrary width to check if it is correctly overriden.
-        form.el.querySelector('table th').style.width = '0px';
+        form.querySelector('table th').style.width = '0px';
 
         assert.containsNone(form, 'img#attachment_img');
 
@@ -427,7 +427,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             dropFiles( document.querySelector('.o_AttachmentBox_dropZone'), files)
         );
         assert.containsOnce(form, 'img#attachment_img');
-        assert.notEqual(form.el.querySelector('table th').style.width, '0px',
+        assert.notEqual(form.querySelector('table th').style.width, '0px',
             "List should have been resized after the attachment has been appended.");
     });
 });

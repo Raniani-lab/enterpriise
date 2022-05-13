@@ -89,7 +89,7 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
             { folder_id: documentsFolderId1 },
             { folder_id: documentsFolderId1 },
         ]);
-        const kanban = await createDocumentsView({
+        const target = await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: `
@@ -105,48 +105,49 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
                 </kanban>
             `,
         });
+        const kanban = target.$el[0];
 
-        assert.isNotVisible(kanban.$('.o_documents_mobile_inspector'),
+        assert.isNotVisible(kanban.querySelector('.o_documents_mobile_inspector'),
             "inspector should be hidden when selection is empty");
         assert.containsN(kanban, '.o_kanban_record:not(.o_kanban_ghost)', 2,
             "should have 2 records in the renderer");
 
         // select a first record
-        await dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
+        await dom.click(kanban.querySelector('.o_kanban_record .o_record_selector'));
         await nextTick();
         assert.containsOnce(kanban, '.o_kanban_record.o_record_selected:not(.o_kanban_ghost)',
             "should have 1 record selected");
         const toggleInspectorSelector = '.o_documents_mobile_inspector > .o_documents_toggle_inspector';
-        assert.isVisible(kanban.$(toggleInspectorSelector),
+        assert.isVisible(kanban.querySelector(toggleInspectorSelector),
             "toggle inspector's button should be displayed when selection is not empty");
-        assert.strictEqual(kanban.$(toggleInspectorSelector).text().replace(/\s+/g, " ").trim(), '1 document selected');
+        assert.strictEqual(kanban.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '1 DOCUMENT SELECTED');
 
-        await dom.click(kanban.$(toggleInspectorSelector));
-        assert.isVisible(kanban.$('.o_documents_mobile_inspector'),
+        await dom.click(kanban.querySelector(toggleInspectorSelector));
+        assert.isVisible(kanban.querySelector('.o_documents_mobile_inspector'),
             "inspector should be opened");
 
-        await dom.click(kanban.$('.o_documents_close_inspector'));
-        assert.isNotVisible(kanban.$('.o_documents_mobile_inspector'),
+        await dom.click(kanban.querySelector('.o_documents_close_inspector'));
+        assert.isNotVisible(kanban.querySelector('.o_documents_mobile_inspector'),
             "inspector should be closed");
 
         // select a second record
-        await dom.click(kanban.$('.o_kanban_record:eq(1) .o_record_selector'));
+        await dom.click(kanban.querySelectorAll('.o_kanban_record .o_record_selector')[1]);
         await nextTick();
         assert.containsN(kanban, '.o_kanban_record.o_record_selected:not(.o_kanban_ghost)', 2,
             "should have 2 records selected");
-        assert.strictEqual(kanban.$(toggleInspectorSelector).text().replace(/\s+/g, " ").trim(), '2 documents selected');
+        assert.strictEqual(kanban.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '2 DOCUMENTS SELECTED');
 
         // click on the record
-        await dom.click(kanban.$('.o_kanban_record:first'));
+        await dom.click(kanban.querySelector('.o_kanban_record'));
         await nextTick();
         assert.containsOnce(kanban, '.o_kanban_record.o_record_selected:not(.o_kanban_ghost)',
             "should have 1 record selected");
-        assert.strictEqual(kanban.$(toggleInspectorSelector).text().replace(/\s+/g, " ").trim(), '1 document selected');
-        assert.isVisible(kanban.$('.o_documents_mobile_inspector'),
+        assert.strictEqual(kanban.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '1 DOCUMENT SELECTED');
+        assert.isVisible(kanban.querySelector('.o_documents_mobile_inspector'),
             "inspector should be opened");
 
         // close inspector
-        await dom.click(kanban.$('.o_documents_close_inspector'));
+        await dom.click(kanban.querySelector('.o_documents_close_inspector'));
         assert.containsOnce(kanban, '.o_kanban_record.o_record_selected:not(.o_kanban_ghost)',
             "should still have 1 record selected after closing inspector");
     });
@@ -224,7 +225,7 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
             { folder_id: documentsFolderId1 },
             { folder_id: documentsFolderId1 },
         ]);
-        const list = await createDocumentsView({
+        const target = await createDocumentsView({
             View: DocumentsListView,
             model: 'documents.document',
             arch: `
@@ -233,48 +234,49 @@ QUnit.module('documents_kanban_mobile_tests.js', {}, function () {
                 </tree>
             `,
         });
+        const list = target.$el[0];
 
-        assert.isNotVisible(list.$('.o_documents_mobile_inspector'),
+        assert.isNotVisible(list.querySelector('.o_documents_mobile_inspector'),
             "inspector should be hidden when selection is empty");
         assert.containsN(list, '.o_document_list_record', 2,
             "should have 2 records in the renderer");
 
         // select a first record
-        await dom.click(list.$('.o_document_list_record:first .o_list_record_selector input'));
+        await dom.click(list.querySelector('.o_document_list_record .o_list_record_selector input'));
         await nextTick();
         assert.containsOnce(list, '.o_document_list_record .o_list_record_selector input:checked',
         "should have 1 record selected");
         const toggleInspectorSelector = '.o_documents_mobile_inspector > .o_documents_toggle_inspector';
-        assert.isVisible(list.$(toggleInspectorSelector),
+        assert.isVisible(list.querySelector(toggleInspectorSelector),
         "toggle inspector's button should be displayed when selection is not empty");
-        assert.strictEqual(list.$(toggleInspectorSelector).text().replace(/\s+/g, " ").trim(), '1 document selected');
+        assert.strictEqual(list.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '1 DOCUMENT SELECTED');
 
-        await dom.click(list.$(toggleInspectorSelector));
-        assert.isVisible(list.$('.o_documents_mobile_inspector'),
+        await dom.click(list.querySelector(toggleInspectorSelector));
+        assert.isVisible(list.querySelector('.o_documents_mobile_inspector'),
             "inspector should be opened");
 
-        await dom.click(list.$('.o_documents_close_inspector'));
-        assert.isNotVisible(list.$('.o_documents_mobile_inspector'),
+        await dom.click(list.querySelector('.o_documents_close_inspector'));
+        assert.isNotVisible(list.querySelector('.o_documents_mobile_inspector'),
             "inspector should be closed");
 
         // select a second record
-        await dom.click(list.$('.o_document_list_record:eq(1) .o_list_record_selector input'));
+        await dom.click(list.querySelectorAll('.o_document_list_record .o_list_record_selector input')[1]);
         await nextTick();
         assert.containsN(list, '.o_document_list_record .o_list_record_selector input:checked', 2,
             "should have 2 records selected");
-        assert.strictEqual(list.$(toggleInspectorSelector).text().replace(/\s+/g, " ").trim(), '2 documents selected');
+        assert.strictEqual(list.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '2 DOCUMENTS SELECTED');
 
         // click on the record
-        await dom.click(list.$('.o_document_list_record:first'));
+        await dom.click(list.querySelector('.o_document_list_record'));
         await nextTick();
         assert.containsOnce(list, '.o_document_list_record .o_list_record_selector input:checked',
             "should have 1 record selected");
-        assert.strictEqual(list.$(toggleInspectorSelector).text().replace(/\s+/g, " ").trim(), '1 document selected');
-        assert.isVisible(list.$('.o_documents_mobile_inspector'),
+        assert.strictEqual(list.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '1 DOCUMENT SELECTED');
+        assert.isVisible(list.querySelector('.o_documents_mobile_inspector'),
             "inspector should be opened");
 
         // close inspector
-        await dom.click(list.$('.o_documents_close_inspector'));
+        await dom.click(list.querySelector('.o_documents_close_inspector'));
         assert.containsOnce(list, '.o_document_list_record .o_list_record_selector input:checked',
             "should still have 1 record selected after closing inspector");
     });

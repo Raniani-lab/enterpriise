@@ -58,7 +58,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             model: 'account.move',
             res_id: accountMoveId1,
         });
-        const { widget: form } = await start({
+        const { target: form } = await start({
             hasView: true,
             View: FormView,
             model: 'account.move',
@@ -105,12 +105,12 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         // 'o_success_ocr' is not loaded.
         await afterNextRender(() => testUtils.dom.click($('.o_form_button_edit')));
 
-        let $attachmentPreview = form.$('.o_attachment_preview_img');
+        let attachmentPreview = form.querySelectorAll('.o_attachment_preview_img');
 
         // check presence of attachment, buttons, box layer, boxes
-        assert.strictEqual($attachmentPreview.length, 1,
+        assert.strictEqual(attachmentPreview.length, 1,
             "should display attachment preview");
-        assert.containsOnce($attachmentPreview, '.o_invoice_extract_buttons',
+        assert.containsOnce(attachmentPreview[0], '.o_invoice_extract_buttons',
             "should display the field extract buttons on attachment preview");
         assert.strictEqual($('.o_invoice_extract_button').length, 5,
             "should display 5 invoice extract buttons");
@@ -119,25 +119,25 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         assert.strictEqual($('.o_invoice_extract_button.active').data('field-name'),
             'VAT_Number',
             "should have 'VAT_Number' as the active field");
-        assert.strictEqual($attachmentPreview.find('.boxLayer').length, 1,
+        assert.strictEqual(attachmentPreview[0].querySelectorAll('.boxLayer').length, 1,
             "should contain a box layer on attachment");
-        assert.containsN($attachmentPreview, '.o_invoice_extract_box', 5,
+        assert.containsN(attachmentPreview[0], '.o_invoice_extract_box', 5,
             "should contain all boxes");
 
         // check field name of boxes
-        assert.strictEqual(form.$('.o_invoice_extract_box[data-id=1]').data('field-name'),
+        assert.strictEqual(form.querySelector('.o_invoice_extract_box[data-id="1"]').getAttribute('data-field-name'),
             'VAT_Number',
             "box with ID 1 should be related to field 'VAT_Number'");
-        assert.strictEqual(form.$('.o_invoice_extract_box[data-id=2]').data('field-name'),
+        assert.strictEqual(form.querySelector('.o_invoice_extract_box[data-id="2"]').getAttribute('data-field-name'),
             'VAT_Number',
             "box with ID 2 should be related to field 'VAT_Number'");
-        assert.strictEqual(form.$('.o_invoice_extract_box[data-id=3]').data('field-name'),
+        assert.strictEqual(form.querySelector('.o_invoice_extract_box[data-id="3"]').getAttribute('data-field-name'),
             'VAT_Number',
             "box with ID 3 should be related to field 'VAT_Number'");
-        assert.strictEqual(form.$('.o_invoice_extract_box[data-id=4]').data('field-name'),
+        assert.strictEqual(form.querySelector('.o_invoice_extract_box[data-id="4"]').getAttribute('data-field-name'),
             'invoice_id',
             "box with ID 4 should be related to field 'invoice_id'");
-        assert.strictEqual(form.$('.o_invoice_extract_box[data-id=5]').data('field-name'),
+        assert.strictEqual(form.querySelector('.o_invoice_extract_box[data-id="5"]').getAttribute('data-field-name'),
             'invoice_id',
             "box with ID 5 should be related to field 'invoice_id'");
 
@@ -148,37 +148,37 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         // boxes are actually not visible ; for that reason, we don't use the
         // is(Not)Visible helpers, but directly check the presence/absence of
         // class o_hidden
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
+        assert.notOk(form.querySelector('.o_invoice_extract_box[data-id="1"]').classList.contains('o_hidden'),
             "box with ID 1 should be visible");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=2]').hasClass('o_hidden'),
+        assert.notOk(form.querySelector('.o_invoice_extract_box[data-id="2"]').classList.contains('o_hidden'),
             "box with ID 2 should be visible");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=3]').hasClass('o_hidden'),
+        assert.notOk(form.querySelector('.o_invoice_extract_box[data-id="3"]').classList.contains('o_hidden'),
             "box with ID 3 should be visible");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=4]').hasClass('o_hidden'),
+        assert.ok(form.querySelector('.o_invoice_extract_box[data-id="4"]').classList.contains('o_hidden'),
             "box with ID 4 should be invisible");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=5]').hasClass('o_hidden'),
+        assert.ok(form.querySelector('.o_invoice_extract_box[data-id="5"]').classList.contains('o_hidden'),
             "box with ID 5 should be invisible");
 
         // check selection of boxes
-        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=1]'), 'ocr_chosen',
+        assert.doesNotHaveClass(form.querySelector('.o_invoice_extract_box[data-id="1"]'), 'ocr_chosen',
             "box with ID 1 should not be OCR chosen");
-        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=1]'), 'selected',
+        assert.doesNotHaveClass(form.querySelector('.o_invoice_extract_box[data-id="1"]'), 'selected',
             "box with ID 1 should not be selected");
-        assert.hasClass(form.$('.o_invoice_extract_box[data-id=2]'),'ocr_chosen',
+        assert.hasClass(form.querySelector('.o_invoice_extract_box[data-id="2"]'),'ocr_chosen',
             "box with ID 2 should be OCR chosen");
-        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=2]'), 'selected',
+        assert.doesNotHaveClass(form.querySelector('.o_invoice_extract_box[data-id="2"]'), 'selected',
             "box with ID 2 should not be selected");
-        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=3]'), 'ocr_chosen',
+        assert.doesNotHaveClass(form.querySelector('.o_invoice_extract_box[data-id="3"]'), 'ocr_chosen',
             "box with ID 3 should not be OCR chosen");
-        assert.hasClass(form.$('.o_invoice_extract_box[data-id=3]'),'selected',
+        assert.hasClass(form.querySelector('.o_invoice_extract_box[data-id="3"]'),'selected',
             "box with ID 3 should be selected");
-        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=4]'), 'ocr_chosen',
+        assert.doesNotHaveClass(form.querySelector('.o_invoice_extract_box[data-id="4"]'), 'ocr_chosen',
             "box with ID 4 should not be OCR chosen");
-        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=4]'), 'selected',
+        assert.doesNotHaveClass(form.querySelector('.o_invoice_extract_box[data-id="4"]'), 'selected',
             "box with ID 4 should not be selected");
-        assert.hasClass(form.$('.o_invoice_extract_box[data-id=5]'),'ocr_chosen',
+        assert.hasClass(form.querySelector('.o_invoice_extract_box[data-id="5"]'),'ocr_chosen',
             "box with ID 5 should be OCR chosen");
-        assert.hasClass(form.$('.o_invoice_extract_box[data-id=5]'),'selected',
+        assert.hasClass(form.querySelector('.o_invoice_extract_box[data-id="5"]'),'selected',
             "box with ID 5 should be selected");
     });
 
@@ -205,7 +205,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             model: 'account.move',
             res_id: accountMoveId1,
         });
-        const { widget: form } = await start({
+        const { target: form } = await start({
             hasView: true,
             View: FormView,
             model: 'account.move',
@@ -249,10 +249,10 @@ QUnit.module('invoice_extract_form_view_tests.js', {
 
         await nextAnimationFrame();
 
-        let $attachmentPreview = form.$('.o_attachment_preview_img');
-        assert.strictEqual($attachmentPreview.length, 1,
+        let attachmentPreview = form.querySelectorAll('.o_attachment_preview_img');
+        assert.strictEqual(attachmentPreview.length, 1,
             "should display attachment preview");
-        assert.strictEqual($attachmentPreview.find('.o_invoice_extract_buttons').length, 0,
+        assert.strictEqual(attachmentPreview[0].querySelectorAll('.o_invoice_extract_buttons').length, 0,
             "should not display any field extract buttons on attachment preview in readonly mode");
         assert.strictEqual($('.o_invoice_extract_button').length, 0,
             "should not display any invoice extract buttons in readonly mode");
@@ -267,10 +267,10 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             testUtils.dom.click($('.o_form_button_edit'));
         });
 
-        $attachmentPreview = form.$('.o_attachment_preview_img');
-        assert.strictEqual($attachmentPreview.length, 1,
+        attachmentPreview = form.querySelectorAll('.o_attachment_preview_img');
+        assert.strictEqual(attachmentPreview.length, 1,
             "should still display an attachment preview in edit mode");
-        assert.strictEqual($attachmentPreview.find('.o_invoice_extract_buttons').length, 1,
+        assert.strictEqual(attachmentPreview[0].querySelectorAll('.o_invoice_extract_buttons').length, 1,
             "should now display field extract buttons on attachment preview in edit mode");
         assert.strictEqual($('.o_invoice_extract_button').length, 5,
             "should now display 5 invoice extract buttons in edit mode");
@@ -283,10 +283,10 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             testUtils.dom.click($('.o_form_button_save'));
         });
 
-        $attachmentPreview = form.$('.o_attachment_preview_img');
-        assert.strictEqual($attachmentPreview.length, 1,
+        attachmentPreview = form.querySelectorAll('.o_attachment_preview_img');
+        assert.strictEqual(attachmentPreview.length, 1,
             "should still display attachment preview in readonly mode");
-        assert.strictEqual($attachmentPreview.find('.o_invoice_extract_buttons').length, 0,
+        assert.strictEqual(attachmentPreview[0].querySelectorAll('.o_invoice_extract_buttons').length, 0,
             "should no longer display field extract buttons on attachment preview in readonly mode");
         assert.strictEqual($('.o_invoice_extract_button').length, 0,
             "should no longer display invoice extract buttons in readonly mode");
@@ -319,7 +319,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             model: 'account.move',
             res_id: accountMoveId1,
         });
-        const { widget: form } = await start({
+        const { click, target: form } = await start({
             hasView: true,
             View: FormView,
             model: 'account.move',
@@ -363,7 +363,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        await afterNextRender(() => testUtils.form.clickEdit(form));
+        await click('.o_form_button_edit');
 
         assert.strictEqual($('.o_invoice_extract_button.active').data('field-name'),
             'VAT_Number', "should have 'VAT_Number' as the active field");
@@ -373,29 +373,29 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         // executed on a 1366x768 screen, so the rule doesn't apply and the
         // boxes are actually not visible ; for that reason, we don't use the
         // click and is(Not)Visible helpers
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
+        assert.notOk(form.querySelector('.o_invoice_extract_box[data-id="1"]').classList.contains('o_hidden'),
             "box with ID 1 should be visible");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=2]').hasClass('o_hidden'),
+        assert.notOk(form.querySelector('.o_invoice_extract_box[data-id="2"]').classList.contains('o_hidden'),
             "box with ID 2 should be visible");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=3]').hasClass('o_hidden'),
+        assert.notOk(form.querySelector('.o_invoice_extract_box[data-id="3"]').classList.contains('o_hidden'),
             "box with ID 3 should be visible");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=4]').hasClass('o_hidden'),
+        assert.ok(form.querySelector('.o_invoice_extract_box[data-id="4"]').classList.contains('o_hidden'),
             "box with ID 4 should be invisible");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=5]').hasClass('o_hidden'),
+        assert.ok(form.querySelector('.o_invoice_extract_box[data-id="5"]').classList.contains('o_hidden'),
             "box with ID 5 should be invisible");
 
         assert.containsOnce($('body'), '.o_invoice_extract_button[data-field-name="invoice_id"]');
         await testUtils.dom.click($('.o_invoice_extract_button[data-field-name="invoice_id"]'), {'allowInvisible': true});
 
-        assert.ok(form.$('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
+        assert.ok(form.querySelector('.o_invoice_extract_box[data-id="1"]').classList.contains('o_hidden'),
             "box with ID 1 should become invisible");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=2]').hasClass('o_hidden'),
+        assert.ok(form.querySelector('.o_invoice_extract_box[data-id="2"]').classList.contains('o_hidden'),
             "box with ID 2 should become invisible");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=3]').hasClass('o_hidden'),
+        assert.ok(form.querySelector('.o_invoice_extract_box[data-id="3"]').classList.contains('o_hidden'),
             "box with ID 3 should become invisible");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=4]').hasClass('o_hidden'),
+        assert.notOk(form.querySelector('.o_invoice_extract_box[data-id="4"]').classList.contains('o_hidden'),
             "box with ID 4 should become visible");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=5]').hasClass('o_hidden'),
+        assert.notOk(form.querySelector('.o_invoice_extract_box[data-id="5"]').classList.contains('o_hidden'),
             "box with ID 5 should become visible");
     });
 
@@ -422,7 +422,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             model: 'account.move',
             res_id: accountMoveId1,
         });
-        const { widget: form } = await start({
+        const { target: form } = await start({
             hasView: true,
             View: FormView,
             model: 'account.move',
@@ -469,23 +469,23 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         await afterNextRender(() => {
             testUtils.dom.click($('.o_form_button_edit'));
         });
-        let $attachmentPreview = form.$('.o_attachment_preview_img');
+        let attachmentPreview = form.querySelectorAll('.o_attachment_preview_img');
         // check presence of attachment, buttons, box layer, boxes
-        assert.strictEqual($attachmentPreview.length, 1,
+        assert.strictEqual(attachmentPreview.length, 1,
             "should display attachment preview");
-        assert.strictEqual($attachmentPreview.find('.boxLayer').length, 1,
+        assert.strictEqual(attachmentPreview[0].querySelectorAll('.boxLayer').length, 1,
             "should contain a box layer on attachment");
 
         // Send a new message to trigger a rerender (which will trigger a new boxlayer creation)
         await afterNextRender(() => {
             testUtils.dom.click($('.o_ChatterTopbar_buttonLogNote'));
         });
-        form.$('.o_ComposerTextInput_textarea:first()').val("Blah");
+        form.querySelector('.o_ComposerTextInput_textarea').value = "Blah";
         await testUtils.dom.click($('.o_Composer_buttonSend'));
 
-        $attachmentPreview = form.$('.o_attachment_preview_img');
+        attachmentPreview = form.querySelectorAll('.o_attachment_preview_img');
         // check presence of attachment, buttons, box layer, boxes
-        assert.strictEqual($attachmentPreview.find('.boxLayer').length, 1,
+        assert.strictEqual(attachmentPreview[0].querySelectorAll('.boxLayer').length, 1,
             "should contain only one box layer on attachment");
         // Need to wait a little while so that the attachmentPreview finished its rendering
         await testUtils.nextTick();

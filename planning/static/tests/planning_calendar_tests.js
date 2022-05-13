@@ -61,13 +61,14 @@ QUnit.module("Planning.planning_calendar_tests", () => {
                 fields: {
                     id: { string: "ID", type: "integer" },
                     name: { string: "Name", type: "char" },
+                    color: { string: "Color", type: "integer" },
                 },
                 records: [
-                    { 'id': 1, 'name': 'JavaScript Developer' },
-                    { 'id': 2, 'name': 'Functional Consultant' },
+                    { 'id': 1, 'name': 'JavaScript Developer', color: 1 },
+                    { 'id': 2, 'name': 'Functional Consultant', color: 2 },
                 ],
             },
-        }
+        };
 
         const calendar = await createCalendarView({
             View: PlanningCalendarView,

@@ -1,9 +1,10 @@
 /** @odoo-module **/
 
+import { bus } from 'web.core';
 import LineTitleComponent from '@stock_barcode/components/line_title';
-import { LegacyComponent } from "@web/legacy/legacy_component";
+const { Component } = owl;
 
-export default class LineComponent extends LegacyComponent {
+export default class LineComponent extends Component {
     get displayResultPackage() {
         return this.env.model.displayResultPackage;
     }
@@ -73,7 +74,7 @@ export default class LineComponent extends LegacyComponent {
     }
 
     edit() {
-        this.trigger('edit-line', { line: this.line });
+        bus.trigger('edit-line', { line: this.line });
     }
 
     addQuantity(quantity, ev) {

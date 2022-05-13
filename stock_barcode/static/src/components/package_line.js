@@ -1,8 +1,9 @@
 /** @odoo-module **/
 
-import { LegacyComponent } from "@web/legacy/legacy_component";
+import { bus } from 'web.core';
+const { Component } = owl;
 
-export default class PackageLineComponent extends LegacyComponent {
+export default class PackageLineComponent extends Component {
     get isSelected() {
         return this.line.package_id.id === this.env.model.lastScannedPackage;
     }
@@ -21,7 +22,7 @@ export default class PackageLineComponent extends LegacyComponent {
     }
 
     openPackage() {
-        this.trigger('open-package', { packageId: this.line.package_id.id });
+        bus.trigger('open-package', this.line.package_id.id);
     }
 
     select(ev) {

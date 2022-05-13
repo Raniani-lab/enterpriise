@@ -18,7 +18,7 @@ export default class GroupedLineComponent extends LineComponent {
         this.env.model.toggleSublines(this.line);
     }
 }
-GroupedLineComponent.components = { 
+GroupedLineComponent.components = {
     LineComponent,
     LineTitleComponent,
  };

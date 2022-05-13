@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { bus } from 'web.core';
 import FormView from 'web.FormView';
 import KanbanView from 'web.KanbanView';
 import Widget from 'web.Widget';
@@ -104,7 +105,7 @@ const ViewsWidget = Widget.extend({
             reload: false,
         });
         const record = this.controller.model.get(this.controller.handle);
-        this.trigger_up('refresh', { recordId: record.res_id });
+        bus.trigger('refresh', record.res_id);
     },
 
     /**
@@ -115,7 +116,7 @@ const ViewsWidget = Widget.extend({
      */
     _onClickDiscard: function (ev) {
         ev.stopPropagation();
-        this.trigger_up('exit');
+        bus.trigger('exit');
     },
 
     /**
@@ -124,12 +125,11 @@ const ViewsWidget = Widget.extend({
      * @private
      * @param {MouseEvent} ev
      */
-    _onClickDelete: function (ev) {
+    _onClickDelete: async function (ev) {
         ev.stopPropagation();
         const record = this.controller.model.get(this.controller.handle);
-        this.controller.model.deleteRecords([record.id], this.controller.modelName).then(() => {
-            this.trigger_up('refresh');
-        });
+        await this.controller.model.deleteRecords([record.id], this.controller.modelName);
+        bus.trigger('refresh');
     },
 
     /**

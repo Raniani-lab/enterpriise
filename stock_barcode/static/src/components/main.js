@@ -4,8 +4,8 @@ import { ChatterContainer } from '@mail/components/chatter_container/chatter_con
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
+import { bus } from 'web.core';
 import config from 'web.config';
-import core from 'web.core';
 import GroupedLineComponent from '@stock_barcode/components/grouped_line';
 import LineComponent from '@stock_barcode/components/line';
 import LocationButton from '@stock_barcode/components/location_button';
@@ -15,10 +15,9 @@ import { useService } from "@web/core/utils/hooks";
 import ViewsWidget from '@stock_barcode/widgets/views_widget';
 import ViewsWidgetAdapter from '@stock_barcode/components/views_widget_adapter';
 import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
-import { LegacyComponent } from "@web/legacy/legacy_component";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
-const { onMounted, onPatched, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
+const { Component, onMounted, onPatched, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
 
 /**
  * Main Component
@@ -26,7 +25,7 @@ const { onMounted, onPatched, onWillStart, onWillUnmount, reactive, useSubEnv } 
  * Manage the scan and save process.
  */
 
-class MainComponent extends LegacyComponent {
+class MainComponent extends Component {
     //--------------------------------------------------------------------------
     // Lifecycle
     //--------------------------------------------------------------------------
@@ -65,21 +64,21 @@ class MainComponent extends LegacyComponent {
             this.env.model.on('notification', this, this._onNotification);
             this.env.model.on('refresh', this, this._onRefreshState);
             this.env.model.on('update', this, () => this.render(true));
-            this.env.model.on('do-action', this, args => this.trigger('do-action', args));
+            this.env.model.on('do-action', this, args => bus.trigger('do-action', args));
             this.env.model.on('history-back', this, () => this.env.config.historyBack());
         });
 
         onMounted(() => {
-            core.bus.on('barcode_scanned', this, this._onBarcodeScanned);
-            this.el.addEventListener('edit-line', this._onEditLine.bind(this));
-            this.el.addEventListener('exit', this.exit.bind(this));
-            this.el.addEventListener('open-package', this._onOpenPackage.bind(this));
-            this.el.addEventListener('refresh', this._onRefreshState.bind(this));
-            this.el.addEventListener('warning', this._onWarning.bind(this));
+            bus.on('barcode_scanned', this, this._onBarcodeScanned);
+            bus.on('edit-line', this, this._onEditLine);
+            bus.on('exit', this, this.exit);
+            bus.on('open-package', this, this._onOpenPackage);
+            bus.on('refresh', this, this._onRefreshState);
+            bus.on('warning', this, this._onWarning);
         });
 
         onWillUnmount(() => {
-            core.bus.off('barcode_scanned', this, this._onBarcodeScanned);
+            bus.off('barcode_scanned', this, this._onBarcodeScanned);
         });
 
         onPatched(() => {
@@ -259,7 +258,7 @@ class MainComponent extends LegacyComponent {
                 this.env.config.historyBack();
             }
         };
-        this.trigger('do-action', {
+        bus.trigger('do-action', {
             action,
             options: {
                 on_close: onClose.bind(this),
@@ -328,7 +327,7 @@ class MainComponent extends LegacyComponent {
                 [[this.props.id]]
             );
         }
-        this.trigger('do-action', { action, options });
+        bus.trigger('do-action', { action, options });
     }
 
     putInPack(ev) {
@@ -431,7 +430,7 @@ class MainComponent extends LegacyComponent {
     }
 
     async _onDoAction(ev) {
-        this.trigger('do-action', {
+        bus.trigger('do-action', {
             action: ev,
             options: {
                 on_close: this._onRefreshState.bind(this),
@@ -440,7 +439,7 @@ class MainComponent extends LegacyComponent {
     }
 
     async _onEditLine(ev) {
-        let line = ev.detail.line;
+        let { line } = ev;
         const virtualId = line.virtual_id;
         await this.env.model.save();
         // Updates the line id if it's missing, in order to open the line form view.
@@ -457,14 +456,12 @@ class MainComponent extends LegacyComponent {
         this.env.services.notification.add(message, notifParams);
     }
 
-    _onOpenPackage(ev) {
-        ev.stopPropagation();
-        this._inspectedPackageId = ev.detail.packageId;
+    _onOpenPackage(packageId) {
+        this._inspectedPackageId = packageId;
         this.env.model.displayPackagePage();
     }
 
-    async _onRefreshState(ev) {
-        const { recordId } = (ev && ev.detail) || {};
+    async _onRefreshState(recordId) {
         const { route, params } = this.env.model.getActionRefresh(recordId);
         const result = await this.rpc(route, params);
         await this.env.model.refreshCache(result.data.records);

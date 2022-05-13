@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { bus } from 'web.core';
 import MainComponent from '@stock_barcode/components/main';
 import { patch } from 'web.utils';
 
@@ -17,16 +18,15 @@ patch(MainComponent.prototype, 'stock_barcode_quality_control', {
             [[this.props.id]]
         );
         if (typeof res === 'object' && res !== null) {
-            return this.trigger('do-action', {
+            return bus.trigger('do-action', {
                 action: res,
                 options: {
-                    on_close: this._onRefreshState.bind(this, {detail : {recordId: this.props.id}}),
+                    on_close: this._onRefreshState.bind(this, this.props.id),
                 },
             });
         } else {
-            this._onNotification({
-                message: this.env._t("All the quality checks have been done"),
-            });
+            const message = this.env._t("All the quality checks have been done");
+            this._onNotification({ message });
         }
     },
 });

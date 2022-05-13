@@ -37,7 +37,7 @@ class SocialLivePostFacebook(models.Model):
 
             result_posts = result.json().get('data')
             if not result_posts:
-                account.sudo().write({'is_media_disconnected': True})
+                account._action_disconnect_accounts(result.json())
                 return
 
             facebook_post_ids = [post.get('id') for post in result_posts]

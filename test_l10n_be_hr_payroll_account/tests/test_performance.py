@@ -41,6 +41,9 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'documents_payroll_folder_id': cls.env.ref('documents_hr_payroll.documents_payroll_folder').id,
         })
 
+        admin = cls.env['res.users'].search([('login', '=', 'admin')])
+        admin.company_ids |= cls.company
+
         cls.env.user.tz = 'Europe/Brussels'
 
         cls.date_from = date(2020, 9, 1)
@@ -199,8 +202,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
     @users('admin')
     @warmup
     def test_performance_l10n_be_payroll_whole_flow(self):
-        self.env.user.company_ids |= self.company
-
         # Work entry generation
         with self.assertQueryCount(admin=3269):
             # Note 4408 requests are related to the db insertions

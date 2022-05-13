@@ -10,7 +10,7 @@ class WebsiteVisitorPushSubscription(models.Model):
     browser.
     This token is used by the firebase service to send notifications to that browser.
 
-    A visitor can have multiple push subscriptions if he uses several devices / browsers.
+    A visitor can have multiple push subscriptions if they use several devices / browsers.
     (push_subscriptions are 'merged' onto the main visitor, see website.visitor#_link_to_visitor for
     more information.) """
 
@@ -40,7 +40,7 @@ class WebsiteVisitorPushSubscription(models.Model):
 
     def unlink(self):
         """ When unlinking, check if it's the last subscription for the related visitor and mark
-        him as not having subscriptions if it's the case. """
+        them as not having subscriptions if it's the case. """
 
         website_visitor_ids = self.website_visitor_id
         result = super().unlink()

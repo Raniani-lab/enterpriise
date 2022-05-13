@@ -96,8 +96,8 @@ class SocialMediaTwitter(models.Model):
 
     def _extract_error_message(self, response):
         """ This method tries to extract the error code of the response.
-        Code '415' simply means that the user has not correctly configured his Twitter account
-        so we help him by displaying a nice error message with what he needs to do.
+        Code '415' simply means that the user has not correctly configured their Twitter account
+        so we help them by displaying a nice error message with what they need to do.
 
         If we can't parse the document or if the code is different, we return the raw response text value. """
 

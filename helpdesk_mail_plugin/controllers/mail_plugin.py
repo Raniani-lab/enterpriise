@@ -10,7 +10,7 @@ class MailPluginController(mail_plugin.MailPluginController):
 
     def _get_contact_data(self, partner):
         """
-        Return the tickets key only if the current user can create tickets. So, if he can not
+        Return the tickets key only if the current user can create tickets. So, if they can not
         create tickets, the section won't be visible on the addin side (like if the Helpdesk
         module was not installed on the database).
         """

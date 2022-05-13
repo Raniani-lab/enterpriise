@@ -10,13 +10,13 @@ class SocialPostConvert2Lead(models.TransientModel):
     a lead.
 
     This wizard is typically used from the "Feed" social view, when the end user can interact with
-    its community through his posts or view other people's posts.
+    its community through their posts or view other people's posts.
     For more information about the 2 'sources' of conversion ('comment' and 'stream_post'), see
     #action_convert_to_lead.
 
     Please note that for obvious privacy reasons, the social media platforms will not provide us
     with people's email, phone or address information, we only have the author name and the content
-    of his post/comment.
+    of their post/comment.
     For that reason, end users will probably often only convert to leads based on existing clients,
     since otherwise they will not have any mean to contact the created lead. """
 

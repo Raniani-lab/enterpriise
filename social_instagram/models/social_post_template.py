@@ -59,7 +59,7 @@ class SocialPostTemplate(models.Model):
         See: https://developers.facebook.com/docs/instagram-api/reference/ig-user/media
 
         We want to avoid any kind of dynamic resizing / format change to make sure what the user
-        uploads and sees in the preview is as close as possible to what he will get as a result on
+        uploads and sees in the preview is as close as possible to what they will get as a result on
         Instagram. """
 
         self.ensure_one()

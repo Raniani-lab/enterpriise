@@ -144,7 +144,7 @@ class SocialStreamPostTwitter(models.Model):
         We accumulate up to 1000 tweets matching that rule, 100 at a time (API limit).
 
         Then, it gets even more complicated, because the first result batch does not include tweets
-        made by our use (twitter_screen_name) as replies to his own root tweet.
+        made by our use (twitter_screen_name) as replies to their own root tweet.
         That's why we have to do a second request to get the tweets FROM out user, after the root tweet.
         We also accumulate up to 1000 tweets.
 

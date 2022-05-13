@@ -115,7 +115,7 @@ class AppointmentShare(models.Model):
         Two possible params can be generated with the link:
             - filter_staff_user_ids: which allows the user to select an user between the ones selected
             - filter_appointment_type_ids: which display a selection of appointment types to user from which
-            he can choose
+            they can choose
         """
         for invite in self:
             if len(invite.appointment_type_ids) == 1:

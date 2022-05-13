@@ -52,7 +52,7 @@ class HelpdeskTicketConvert2Lead(models.TransientModel):
     @api.depends('ticket_id.user_id', 'user_id')
     def _compute_team_id(self):
         """ First, team id is chosen, then, user. If user from ticket have a
-        team_id, use this user and his team."""
+        team_id, use this user and their team."""
         for convert in self:
             user = convert.user_id or convert.ticket_id.user_id
             if not user or (convert.team_id and user in convert.team_id.member_ids | convert.team_id.user_id):

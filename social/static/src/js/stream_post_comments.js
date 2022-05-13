@@ -425,7 +425,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
      *
      * It will both:
      * - send the rpc request to reflect that change on the related social media
-     * - visually update the view so that the user sees his action
+     * - visually update the view so that the user sees their action
      *
      * The rpc endpoint will return the added comment (or the new version of the edited one)
      * so that it can be added (or replace the edited one) in the view as a new element

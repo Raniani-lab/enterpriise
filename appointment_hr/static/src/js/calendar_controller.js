@@ -9,7 +9,7 @@ CalendarController.include({
     }),
     /**
      * Search/create the work hours appointment type of the user when
-     * he clicks on the button "Work Hours".
+     * they click on the button "Work Hours".
      * @param {Event} ev
      */
     async _onSearchCreateWorkHoursAppointment(ev) {

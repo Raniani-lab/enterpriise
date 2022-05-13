@@ -216,9 +216,9 @@ AttendeeCalendarRenderer.include({
     },
     /**
      * Used when clicking on an appointment link in the dropdown.
-     * We display an info box to the user to let him know that the url was copied
-     * and that it allows him to recopy it until he closes the box
-     * @param {Event} ev 
+     * We display an info box to the user to let them know that the url was copied
+     * and that it allows them to recopy it until they close the box
+     * @param {Event} ev
      */
      _onClickAppointmentLink(ev) {
         ev.stopPropagation();
@@ -227,9 +227,9 @@ AttendeeCalendarRenderer.include({
     },
     /**
      * Used when creating a custom appointment type.
-     * Switch the calendar mode and display an info box to the user to let him know 
-     * that the url was copied and that it allows him to recopy it until he closes the box
-     * @param {Event} ev 
+     * Switch the calendar mode and display an info box to the user to let them know
+     * that the url was copied and that it allows them to recopy it until they close the box
+     * @param {Event} ev
      */
     _onCreateCustomAppointment(ev) {
         if (!$(ev.currentTarget).hasClass("disabled")) {

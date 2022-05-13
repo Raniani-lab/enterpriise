@@ -49,8 +49,8 @@ var StreamPostInstagramComments = StreamPostComments.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * We can only compute the author picture if it comes from the user himself
-     * (using his facebook ID).
+     * We can only compute the author picture if it comes from the user themselves.
+     * (using their facebook ID).
      *
      * Instagram does not provide an endpoint to fetch an author's profile image.
      *

@@ -155,7 +155,7 @@ class TestAccess(common.SocialCase):
         # Can post
         new_post.action_post()
 
-        # Read: allowed. he can read all posts
+        # Read: allowed. They can read all posts
         new_post.with_user(self.env.user).read(['message'])
         self.social_post.with_user(self.env.user).read(['message'])
 
@@ -193,7 +193,7 @@ class TestAccess(common.SocialCase):
         with self.assertRaises(AccessError):
             self.social_stream_post_image.with_user(self.env.user).write({'stream_post_id': self.social_stream_post.id})
 
-        # Unlink: not allowed except for his own posts/streams/live posts
+        # Unlink: not allowed except for their own posts/streams/live posts
         new_post.with_user(self.env.user).unlink()
         new_stream.with_user(self.env.user).unlink()
         new_live_post.with_user(self.env.user).unlink()

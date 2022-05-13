@@ -17,8 +17,8 @@ AttendeeCalendarRenderer.include({
     },
     /**
      * Used when clicking on the Work Hours appointment type in the dropdown.
-     * We display an info box to the user to let him know that the url was copied
-     * and that it allows him to recopy it until he closes the box
+     * We display an info box to the user to let them know that the url was copied
+     * and that it allows them to recopy it until they close the box
      * @param {Event} ev
      */
      _onSearchCreateWorkHoursAppointment(ev) {

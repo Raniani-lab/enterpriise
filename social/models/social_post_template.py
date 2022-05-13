@@ -14,7 +14,7 @@ class SocialPostTemplate(models.Model):
     It can generate multiple 'social.post' records to be sent on social medias
 
     This model contains all information related to the post content (message, images) but
-    also some common methods. He can be used to prepare a social post without creating
+    also some common methods. They can be used to prepare a social post without creating
     one (that can be useful in other application, like `social_event` e.g.).
 
     'social.post.template' is therefore a template model used to generate `social.post`.

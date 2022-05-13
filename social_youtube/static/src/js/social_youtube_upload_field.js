@@ -13,11 +13,11 @@ var Dialog = require('web.Dialog');
 /**
  * Override of the FieldChar that will handle the YouTube video upload process.
  *
- * We want to handle the upload from the client browser directly to his YouTube account and avoid
+ * We want to handle the upload from the client browser directly to their YouTube account and avoid
  * that the video file goes through our Odoo server to save time and bandwidth.
  *
  * User selects a file "c:/temp/my_video.mp4", which triggers the upload process directly on the
- * YouTube account he selected on the form view.
+ * YouTube account they selected on the form view.
  * When the upload is finished, we save the 'youtube_video_id' value in a separate field and keep
  * a "dumb" string as the value of the 'youtube_video' field that will simply contain 'my_video.mp4'.
  *
@@ -53,7 +53,7 @@ var YoutubeUploadField = basicFields.FieldChar.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * When the file upload is complete, Youtube triggers his own video "processing"
+     * When the file upload is complete, Youtube triggers its own video "processing"
      * that can take up to a few minutes and during which we can't alter the video
      * in any way nor embed it in the YouTube preview.
      *
@@ -321,8 +321,8 @@ var YoutubeUploadField = basicFields.FieldChar.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * Clear the value and ask the user if he also wants to delete the actual
-     * video from his YouTube channel.
+     * Clear the value and ask the user if they also want to delete the actual
+     * video from their YouTube channel.
      *
      * @private
      */

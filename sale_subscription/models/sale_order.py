@@ -937,7 +937,7 @@ class SaleOrder(models.Model):
         auto_close_days = self.sale_order_template_id.auto_close_limit or 15
         date_close = self.next_invoice_date + relativedelta(days=auto_close_days)
         close_contract = current_date >= date_close
-        _logger.info('Failed to create recurring invoice for contract %s', self.client_order_ref)
+        _logger.info('Failed to create recurring invoice for contract %s', self.client_order_ref or self.name)
         if close_contract:
             close_mail_template.with_context(email_context).send_mail(self.id)
             _logger.debug("Sending Contract Closure Mail to %s for contract %s and closing contract",
@@ -1050,7 +1050,7 @@ class SaleOrder(models.Model):
                 account_moves |= existing_invoices
                 subscription.with_context(mail_notrack=True).write({'payment_exception': False})
             except Exception as error:
-                _logger.exception("Error during renewal of contract %s", subscription.client_order_ref)
+                _logger.exception("Error during renewal of contract %s", subscription.client_order_ref or subscription.name)
                 if auto_commit:
                     self.env.cr.rollback()
                 if not automatic:
@@ -1170,10 +1170,10 @@ class SaleOrder(models.Model):
                         # prevent rollback during tests
                         self.env.cr.rollback()
                     # we suppose that the payment is run only once a day
-                    last_transaction = self.env['payment.transaction'].search([('reference', 'like', self.client_order_ref)], limit=1)
+                    last_transaction = self.env['payment.transaction'].search([('reference', 'like', self.client_order_ref or self.name)], limit=1)
                     error_message = "Error during renewal of contract %s (%s)" \
-                                    % (order.client_order_ref, 'Payment recorded: %s' % last_transaction.reference \
-                                    if last_transaction and last_transaction.state == 'done' else 'Payment not recorded')
+                                    % (order.client_order_ref or order.name, 'Payment recorded: %s' % last_transaction.reference
+                                       if last_transaction and last_transaction.state == 'done' else 'Payment not recorded')
                     _logger.exception(error_message)
                     mail = Mail.create({'body_html': '%s\n<pre>%s</pre>' % (error_message), 'subject': error_message,
                                         'email_to': email_context.get('responsible_email'), 'auto_delete': True})
@@ -1229,7 +1229,7 @@ class SaleOrder(models.Model):
         values = []
         for subscription in self:
             reference = tx_obj._compute_reference(
-                payment_token.acquirer_id.provider, prefix=subscription.client_order_ref
+                payment_token.acquirer_id.provider, prefix=subscription.client_order_ref or subscription.name
             )
             # There is no sub_id field to rely on
             values.append({
@@ -1267,6 +1267,7 @@ class SaleOrder(models.Model):
                             'previous_date': self.next_invoice_date,
                             'email_to': self.partner_id.email,
                             'code': self.client_order_ref,
+                            'subscription_name': self.name,
                             'currency': self.pricelist_id.currency_id.name,
                             'date_end': self.end_date}}
         _logger.debug("Sending Payment Confirmation Mail to %s for subscription %s", self.partner_id.email, self.id)
@@ -1305,7 +1306,7 @@ class SaleOrder(models.Model):
         email_context = {**self.env.context.copy(), **{
             'total_amount': invoice.amount_total,
             'email_to': self.partner_id.email,
-            'code': self.client_order_ref,
+            'code': self.client_order_ref or self.name,
             'currency': self.pricelist_id.currency_id.name,
             'date_end': self.end_date,
             'mail_notify_force_send': False,

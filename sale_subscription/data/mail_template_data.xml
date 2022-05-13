@@ -4,7 +4,7 @@
     <record id="email_payment_close" model="mail.template">
         <field name="name">Subscription: Payment Failure</field>
         <field name="model_id" ref="sale_subscription.model_sale_order"/>
-        <field name="subject">Termination of subscription {{ object.client_order_ref }}</field>
+        <field name="subject">Termination of subscription {{ object.client_order_ref or object.name }}</field>
         <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email or user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
         <field name="body_html" type="html">
@@ -102,7 +102,7 @@
     <record id="email_payment_reminder" model="mail.template">
         <field name="name">Subscription: Payment Reminder</field>
         <field name="model_id" ref="sale_subscription.model_sale_order"/>
-        <field name="subject">Payment reminder for subscription {{ object.client_order_ref }}</field>
+        <field name="subject">Payment reminder for subscription {{ object.client_order_ref or object.name }}</field>
         <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email or user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
         <field name="body_html" type="html">
@@ -204,7 +204,7 @@
     <record id="email_payment_success" model="mail.template">
         <field name="name">Subscription: Payment Success</field>
         <field name="model_id" ref="account.model_account_move"/>
-        <field name="subject">Invoice for subscription {{ ctx.get('code') }}</field>
+        <field name="subject">Invoice for subscription {{ ctx.get('code', ctx.get('subscription_name')) }}</field>
         <field name="email_from">{{ (object.invoice_user_id.email_formatted or object.company_id.email or user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
         <field name="body_html" type="html">
@@ -218,7 +218,7 @@
                 <tr><td valign="middle">
                     <t t-set="company" t-value="object.company_id or object.invoice_user_id.company_id or user.company_id"/>
                     <span style="font-size: 10px;">Your Subscription</span><br/>
-                    <span style="font-size: 20px; font-weight: bold;" t-out="ctx.get('code') or 'Document'">Document</span>
+                    <span style="font-size: 20px; font-weight: bold;" t-out="ctx.get('code', ctx.get('subscription_name')) or 'Document'">Document</span>
                 </td></tr>
                 <tr><td valign="middle" align="right">
                     <img t-attf-src="/logo.png?company={{ company.id }}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="company.name"/>
@@ -235,7 +235,10 @@
             <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
                 <tr><td valign="top" style="font-size: 13px;">
                     Dear <t t-out="object.partner_id.name or ''">Brandon Freeman</t>,<br/><br/>
-                    Your Subscription (<t t-out="ctx.get('code') or ''">CODE</t>) has just been renewed
+                    Your Subscription (<t t-out="ctx.get('subscription_name') or ''">CODE</t>
+                    <t t-if="ctx.get('code')">
+                    , Reference: <t t-out="ctx.get('code')"/>
+                    </t>) has just been renewed
                     <t t-if="ctx.get('total_amount') and ctx.get('payment_token')">
                         via a payment of <t t-out="ctx.get('total_amount') or ''">100</t> <t t-out="ctx.get('currency_name') or ''">$</t> charged on <t t-out="ctx.get('payment_token') or ''">PAYMENT_TOKEN</t>.
                     </t>
@@ -294,7 +297,7 @@
 </table>
         </field>
         <field name="report_template" ref="account.account_invoices" />
-        <field name="report_name">Invoice_{{ ctx.get('code') }}_{{ format_date(ctx.get('previous_date')) }}</field>
+        <field name="report_name">Invoice_{{ ctx.get('code', ctx.get('subscription_name')) }}_{{ format_date(ctx.get('previous_date')) }}</field>
         <field name="lang">{{ object.partner_id.lang }}</field>
         <field name="auto_delete" eval="True"/>
     </record>

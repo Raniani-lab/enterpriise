@@ -27,7 +27,7 @@
 
     <t t-name="planning.calendar.button">
         <t t-if="activeActions &amp;&amp; activeActions.edit">
-            <button t-if="activeScale === 'week'" class="btn btn-primary o_button_copy_previous_week" title="Copy previous week">
+            <button t-if="activeActions.create &amp;&amp; activeScale === 'week'" class="btn btn-primary o_button_copy_previous_week" title="Copy previous week">
                 Copy previous
             </button>
             <button t-if="activeScale !== 'year'" class="btn btn-primary o_button_send_all" title="Send schedule">

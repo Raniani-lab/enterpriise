@@ -1,17 +1,17 @@
-odoo.define('planning.tour', function (require) {
-    "use strict";
+/** @odoo-module **/
 
-    var core = require('web.core');
-    var tour = require('web_tour.tour');
+import { _t } from "web.core";
+import tour from "web_tour.tour";
 
-    var _t = core._t;
+const { markup } = owl;
 
-    tour.register('planning_tour', {
-        sequence: 120,
-        'skip_enabled': false,
-	url: '/web',
-        rainbowManMessage: _t("<b>Congratulations!</b>, You are now a master of planning."),
-    }, [{
+tour.register('planning_tour', {
+    sequence: 120,
+    'skip_enabled': false,
+    url: '/web',
+    rainbowManMessage: markup(_t("<b>Congratulations!</b></br> You are now a master of planning.")),
+}, [
+    {
         trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
         content: _t("Let's start managing your employees' schedule!"),
         position: 'bottom',
@@ -39,10 +39,18 @@ odoo.define('planning.tour', function (require) {
         trigger: ".o_gantt_button_send_all",
         content: _t("If you are happy with your planning, you can now <b>send</b> it to your employees."),
         position: "bottom",
-    },{
+    }, {
         trigger: "button[name='action_send']",
         content: _t("<b>Publish & send</b> your employee's planning."),
         position: "bottom",
+    }, {
+        trigger: "button.o_gantt_button_next",
+        extra_trigger: "body:not(.modal-open)",
+        content: _t("Now that this week is ready, let's get started on <b>next week's schedule</b>."),
+        position: "bottom",
+    }, {
+        trigger: "button.o_gantt_button_copy_previous_week",
+        content: _t("Plan all of your shifts in one click by <b>copying the previous week's schedule</b>."),
+        position: "bottom",
     },
-    ]);
-});
+]);

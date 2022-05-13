@@ -23,6 +23,7 @@
         'views/planning_templates.xml',
         'views/product_views.xml',
         'views/sale_order_views.xml',
+        'views/planned_orders.xml',
         'report/planning_report_templates.xml',
     ],
     'demo': [

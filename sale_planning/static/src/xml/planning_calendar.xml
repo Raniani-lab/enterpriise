@@ -3,7 +3,7 @@
 <templates xml:space="preserve">
     <t t-extend="planning.calendar.button">
         <t t-jquery="t[t-if='activeActions &amp;&amp; activeActions.edit']" t-operation="append">
-            <button class="btn btn-secondary o_button_sale_plan_so" title="Plan Orders">
+            <button t-if="activeActions.create" class="btn btn-secondary o_button_sale_plan_so" title="Plan Orders">
                 Plan Orders
             </button>
         </t>

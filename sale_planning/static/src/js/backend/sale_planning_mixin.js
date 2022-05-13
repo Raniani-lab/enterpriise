@@ -23,10 +23,29 @@ export const SalePlanningControllerMixin = {
             ],
             context: this.addViewContextValues(this.context),
         });
-        if (result) {
+        if (result.length) {
+            const scale = this.viewType == 'gantt' ? this.model.ganttData.scale : this.model.data.scale;
+            const anchor = (
+                this.viewType == 'gantt' ? this.model.ganttData.focusDate : this.model.data.highlight_date
+            ).format('YYYY-MM-DD');
+
             this.displayNotification({
                 type: 'success',
                 message: _t("The sales orders have successfully been assigned."),
+                buttons: [{
+                    'text': 'View Shifts',
+                    'icon': 'fa-arrow-right',
+                    'click': () => this.do_action('sale_planning.planning_action_orders_planned', {
+                        view_type: this.viewType,
+                        additional_context: {
+                            active_ids: result,
+                            default_scale: scale,
+                            default_mode: scale,
+                            initialDate: anchor,
+                            initial_date: anchor,
+                        },
+                    }),
+                }],
             });
         } else {
             this.displayNotification({

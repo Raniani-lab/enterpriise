@@ -131,9 +131,14 @@ class PlanningSlot(models.Model):
         return res
 
     def write(self, vals):
+        self.assign_slot(vals)
+        return True
+
+    def assign_slot(self, vals):
         sale_order_slots_to_plan = []
-        slots_to_write = self.env['planning.slot']
-        slots_written = False
+        PlanningShift = self.env['planning.slot']
+        slots_to_write = PlanningShift
+        slots_written = PlanningShift
         if vals.get('start_datetime'):
             # if the previous start_datetime was False, it means the slot has been selected from the
             # unscheduled slots. In this case, slots must be generated automatically to fill the gantt period
@@ -147,7 +152,7 @@ class PlanningSlot(models.Model):
                     if new_vals:
                         # Call the write method of the parent
                         super(PlanningSlot, slot).write(new_vals[0])
-                        slots_written = True
+                        slots_written += slot
                         sale_order_slots_to_plan += tmp_sale_order_slots_to_plan
                         if resource:
                             slot_vals_list_per_employee[resource] += new_vals + tmp_sale_order_slots_to_plan
@@ -155,17 +160,21 @@ class PlanningSlot(models.Model):
                     slots_to_write |= slot
         else:
             slots_to_write |= self
+
         super(PlanningSlot, slots_to_write).write(vals)
+        slots_written += slots_to_write
+
         if sale_order_slots_to_plan:
-            self.create(sale_order_slots_to_plan)
-        slots_to_unlink = self.env['planning.slot']
+            slots_written += self.create(sale_order_slots_to_plan)
+
+        slots_to_unlink = PlanningShift
         for slot in self:
             if slot.sale_line_id and not slot.start_datetime and float_utils.float_compare(slot.allocated_hours, 0.0, precision_digits=2) < 1:
                 slots_to_unlink |= slot
         if (self - slots_to_unlink).sale_line_id:
             (self - slots_to_unlink).sale_line_id.sudo()._post_process_planning_sale_line(ids_to_exclude=self.ids)
         slots_to_unlink.unlink()
-        return bool(slots_to_write) or slots_written
+        return slots_written - slots_to_unlink
 
     # -----------------------------------------------------------------
     # Actions
@@ -518,10 +527,11 @@ class PlanningSlot(models.Model):
         slots_to_assign = self._get_ordered_slots_to_assign(domain)
         start_datetime = max(datetime.strptime(self.env.context.get('start_date'), DEFAULT_SERVER_DATETIME_FORMAT), fields.Datetime.now().replace(hour=0, minute=0, second=0))
         employee_per_sol = self._get_employee_per_sol_within_period(slots_to_assign, start_datetime, self.env.context.get('stop_date'))
-        slots_assigned = False
+        PlanningShift = self.env['planning.slot']
+        slots_assigned = PlanningShift
         employee_ids_to_exclude = []
         for slot in slots_to_assign:
-            slot_assigned = False
+            slot_assigned = PlanningShift
             previous_priority = None
             cache = {}
             while not slot_assigned:
@@ -538,12 +548,12 @@ class PlanningSlot(models.Model):
                     'resource_id': employee.resource_id.id
                 }
                 # With the context keys, the maximal date to assign the slot will be self.env.context.get('stop_date')
-                slot_assigned = slot.write(vals)
+                slot_assigned = slot.assign_slot(vals)
                 if not slot_assigned:
                     # if no slot was generated (it uses the write method), then the employee_id is excluded from the employees assignable on this slot.
                     employee_ids_to_exclude.append(employee_id)
-            slots_assigned |= slot_assigned
-        return slots_assigned
+            slots_assigned += slot_assigned
+        return slots_assigned.ids
 
     # -------------------------------------------
     # Copy slots

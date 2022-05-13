@@ -589,7 +589,7 @@ class SaleOrder(models.Model):
 
     def _confirm_renew(self):
         """
-        When confirming an upsell order, the recurring product lines must be updated
+        When confirming an renew order, the recurring product lines must be updated
         """
         today = fields.Date.today()
         self.subscription_id.write({'to_renew': False})
@@ -833,6 +833,7 @@ class SaleOrder(models.Model):
             'company_id': subscription.company_id.id,
             'sale_order_template_id': self.sale_order_template_id.id,
             'sale_order_option_ids': option_lines_data,
+            'payment_token_id': subscription_management == 'renew' and self.payment_token_id.id,
         }
 
     def _compute_kpi(self):

@@ -8,6 +8,7 @@ class ReportProjectTaskUser(models.Model):
     _name = 'report.project.task.user.fsm'
     _inherit = 'report.project.task.user'
     _description = "FSM Tasks Analysis"
+    _auto = False
 
     fsm_done = fields.Boolean('Task Done', readonly=True)
 

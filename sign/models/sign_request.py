@@ -574,7 +574,6 @@ class SignRequest(models.Model):
             'res_id': self.id,
         })
 
-        report_action = self.env.ref('sign.action_sign_request_print_logs')
         # print the report with the public user in a sudoed env
         # public user because we don't want groups to pollute the result
         # (e.g. if the current user has the group Sign Manager,
@@ -584,7 +583,7 @@ class SignRequest(models.Model):
         if not public_user:
             # public user was deleted, fallback to avoid crash (info may leak)
             public_user = self.env.user
-        pdf_content, __ = report_action.with_user(public_user).sudo()._render_qweb_pdf(self.ids)
+        pdf_content, __ = self.env["ir.actions.report"].with_user(public_user).sudo()._render_qweb_pdf('sign.action_sign_request_print_logs', self.ids)
         attachment_log = self.env['ir.attachment'].create({
             'name': "Certificate of completion - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
             'raw': pdf_content,

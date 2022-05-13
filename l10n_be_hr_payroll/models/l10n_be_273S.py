@@ -179,7 +179,9 @@ class L10nBe273S(models.Model):
 
     def action_generate_pdf(self):
         self.ensure_one()
-        export_273S_pdf, dummy = self.env.ref('l10n_be_hr_payroll.action_report_ip_273S').sudo()._render_qweb_pdf(res_ids=self.ids, data=self._get_rendering_data())
+        export_273S_pdf, dummy = self.env["ir.actions.report"].sudo()._render_qweb_pdf(
+            self.env.ref('l10n_be_hr_payroll.action_report_ip_273S'),
+            res_ids=self.ids, data=self._get_rendering_data())
         self.pdf_filename = '%s-273S_report.pdf' % (self.period.strftime('%B%Y'))
         self.pdf_file = base64.encodebytes(export_273S_pdf)
 

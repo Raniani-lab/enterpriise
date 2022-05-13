@@ -211,7 +211,8 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             report_data.append((aggregate_name, aggregate_data))
 
         filename = 'SocialBalance-%s-%s.pdf' % (self.date_from.strftime("%d%B%Y"), self.date_to.strftime("%d%B%Y"))
-        export_274_sheet_pdf, dummy = self.env.ref('l10n_be_hr_payroll.action_report_social_security_certificate').sudo()._render_qweb_pdf(
+        export_274_sheet_pdf, dummy = self.env["ir.actions.report"].sudo()._render_qweb_pdf(
+            self.env.ref('l10n_be_hr_payroll.action_report_social_security_certificate').id,
             res_ids=self.ids, data={'report_data': report_data})
 
         self.social_security_filename = filename

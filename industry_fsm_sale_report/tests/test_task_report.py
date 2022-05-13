@@ -44,8 +44,8 @@ class TestTaskReport(TestFsmFlowSaleCommon):
         self.assertEqual(self.task.material_line_product_count, expected_product_count, f"{expected_product_count} product should be linked to the task")
         self.assertEqual(total_price, self.task.material_line_total_price, "Total price should not change")
 
-        report = self.env['ir.actions.report'].search([('report_name', '=', 'industry_fsm.worksheet_custom')], limit=1)
-        html_content = report._render_qweb_html([self.task.id])[0].decode('utf-8').split('\n')
+        html_content = self.env['ir.actions.report']._render_qweb_pdf(
+            'industry_fsm.worksheet_custom', [self.task.id])[0].decode('utf-8').split('\n')
 
         product_lines_to_find_in_file = {
             "<td><span>Acoustic Bloc Screens</span></td>",

@@ -366,7 +366,7 @@ class HrPayslip(models.Model):
         template = self.env.ref('hr_payroll.mail_template_new_payslip', raise_if_not_found=False)
         for report, payslips in mapped_reports.items():
             for payslip in payslips:
-                pdf_content, dummy = report.sudo()._render_qweb_pdf(payslip.id)
+                pdf_content, dummy = self.env['ir.actions.report'].sudo()._render_qweb_pdf(report, payslip.id)
                 if report.print_report_name:
                     pdf_name = safe_eval(report.print_report_name, {'object': payslip})
                 else:

@@ -286,7 +286,7 @@ class Form28150(models.Model):
             :return: A PDF file
         """
         self.ensure_one()
-        pdf_file, dummy = self.env.ref('l10n_be_reports.action_report_partner_281_50_pdf')._render_qweb_pdf(res_ids=self)
+        pdf_file, dummy = self.env['ir.actions.report']._render_qweb_pdf("l10n_be_reports.action_report_partner_281_50_pdf", res_ids=self)
         return pdf_file
 
     def action_download_281_50_individual_pdf(self):

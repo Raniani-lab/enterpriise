@@ -124,8 +124,8 @@ class Sign(http.Controller):
 
         document = None
         if download_type == "log":
-            report_action = http.request.env.ref('sign.action_sign_request_print_logs').sudo()
-            pdf_content, __ = report_action._render_qweb_pdf(sign_request.id)
+            report_action = http.request.env['ir.actions.report'].sudo()
+            pdf_content, __ = report_action._render_qweb_pdf('sign.action_sign_request_print_logs', sign_request.id)
             pdfhttpheaders = [
                 ('Content-Type', 'application/pdf'),
                 ('Content-Length', len(pdf_content)),

@@ -1055,7 +1055,8 @@ class HrDMFAReport(models.Model):
         self.dmfa_go = base64.b64encode('go')
 
     def generate_dmfa_pdf_report(self):
-        dmfa_pdf, dummy = self.env.ref('l10n_be_hr_payroll.action_report_dmfa').sudo()._render_qweb_pdf(
+        dmfa_pdf, dummy = self.env["ir.actions.report"].sudo()._render_qweb_pdf(
+            'l10n_be_hr_payroll.action_report_dmfa',
             res_ids=self.ids, data=self._get_rendering_data())
         self.dmfa_pdf = base64.encodebytes(dmfa_pdf)
 

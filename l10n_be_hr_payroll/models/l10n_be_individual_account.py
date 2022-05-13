@@ -148,10 +148,12 @@ class L10nBeIndividualAccountLine(models.Model):
     pdf_to_generate = fields.Boolean()
 
     def _generate_pdf(self):
+        report_sudo = self.env["ir.actions.report"].sudo()
+        report_id = self.env.ref('l10n_be_hr_payroll.action_report_individual_account').id
+
         for sheet in self.sheet_id:
             lines = self.filtered(lambda l: l.sheet_id == sheet)
             rendering_data = sheet._get_rendering_data(lines.employee_id)
-            template_sudo = self.env.ref('l10n_be_hr_payroll.action_report_individual_account').sudo()
 
             pdf_files = []
             sheet_count = len(rendering_data)
@@ -161,7 +163,8 @@ class L10nBeIndividualAccountLine(models.Model):
                 counter += 1
                 employee_lang = employee.sudo().address_home_id.lang
                 sheet_filename = _('%s-individual-account-%s', employee.name, sheet.year)
-                sheet_file, dummy = template_sudo.with_context(lang=employee_lang)._render_qweb_pdf(
+                sheet_file, dummy = report_sudo.with_context(lang=employee_lang)._render_qweb_pdf(
+                    report_id,
                     [employee.id], data={
                         'year': int(sheet.year),
                         'employee_data': {employee: employee_data}})

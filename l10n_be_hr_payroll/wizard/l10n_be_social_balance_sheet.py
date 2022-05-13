@@ -352,7 +352,9 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
             report_data[code] = 0
 
         filename = 'SocialBalance-%s-%s.pdf' % (self.date_from.strftime("%d%B%Y"), self.date_to.strftime("%d%B%Y"))
-        export_274_sheet_pdf, dummy = self.env.ref('l10n_be_hr_payroll.action_report_social_balance').sudo()._render_qweb_pdf(res_ids=self.ids, data=report_data)
+        export_274_sheet_pdf, dummy = self.env["ir.actions.report"].sudo()._render_qweb_pdf(
+            self.env.ref('l10n_be_hr_payroll.action_report_social_balance').id,
+            res_ids=self.ids, data=report_data)
 
         self.social_balance_filename = filename
         self.social_balance_sheet = base64.encodebytes(export_274_sheet_pdf)

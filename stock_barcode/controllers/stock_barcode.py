@@ -149,18 +149,17 @@ class StockBarcodeController(http.Controller):
 
         # get picking types barcodes
         picking_type_ids = request.env['stock.picking.type'].search(domain)
-        picking_report = request.env.ref('stock.action_report_picking_type_label', raise_if_not_found=True)
+        Report = request.env['ir.actions.report']
         for picking_type_batch in split_every(100, picking_type_ids.ids):
-            picking_types_pdf, _ = picking_report._render_qweb_pdf(picking_type_batch)
+            picking_types_pdf, _ = Report._render_qweb_pdf('stock.action_report_picking_type_label', picking_type_batch)
             if picking_types_pdf:
                 barcode_pdfs.append(picking_types_pdf)
 
         # get locations barcodes
         if request.env.user.has_group('stock.group_stock_multi_locations'):
             locations_ids = request.env['stock.location'].search(domain)
-            locations_report = request.env.ref('stock.action_report_location_barcode', raise_if_not_found=True)
             for location_ids_batch in split_every(100, locations_ids.ids):
-                locations_pdf, _ = locations_report._render_qweb_pdf(location_ids_batch)
+                locations_pdf, _ = Report._render_qweb_pdf('stock.action_report_location_barcode', location_ids_batch)
                 if locations_pdf:
                     barcode_pdfs.append(locations_pdf)
 

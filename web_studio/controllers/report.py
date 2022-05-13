@@ -293,9 +293,8 @@ class WebStudioReportController(main.WebStudioController):
 
     def _test_report(self, report_name, record_id):
         # render the report to catch a rendering error
-        report = request.env['ir.actions.report']._get_report_from_name(report_name)
         try:
-            return report._render_qweb_html([record_id], {
+            return request.env['ir.actions.report']._render_qweb_html(report_name, [record_id], {
                 'full_branding': True,
                 'studio': True,
             })

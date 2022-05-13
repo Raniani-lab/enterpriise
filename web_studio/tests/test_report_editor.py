@@ -130,7 +130,7 @@ class TestReportEditor(TransactionCase):
         report = self.env['ir.actions.report'].search([('report_name', '=', 'base.report_irmodulereference')])
         report.copy_report_and_template()
         copy = self.env['ir.actions.report'].search([('report_name', '=', 'base.report_irmodulereference_copy_1')])
-        report_model = copy._get_rendering_context_model()
+        report_model = self.env['ir.actions.report']._get_rendering_context_model(copy)
         self.assertIsNotNone(report_model)
 
     def test_duplicate_keep_translations(self):

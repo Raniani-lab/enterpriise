@@ -12,8 +12,8 @@ class TestSendMXDeliveryGuide(TestMXDeliveryGuideCommon):
         self.assertEqual(self.picking.l10n_mx_edi_status, 'sent')
 
         # Test a portion of the PDF content here since the report is only available once the XML is sent
-        delivery_report = self.env['ir.actions.report'].search([('report_name', '=', 'stock.report_deliveryslip')], limit=1)
-        pdf_content = self.get_xml_tree_from_string(delivery_report._render_qweb_pdf(self.picking.id)[0])
+        delivery_report = self.env['ir.actions.report']._render_qweb_pdf('stock.report_deliveryslip', self.picking.id)[0]
+        pdf_content = self.get_xml_tree_from_string(delivery_report)
         expected_table_in_pdf = '''
             <table class="table table-sm mt48" name="stock_move_line_table">
                 <thead>

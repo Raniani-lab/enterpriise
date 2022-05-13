@@ -528,7 +528,7 @@ class Form325(models.Model):
 
     def action_generate_325_form_pdf(self):
         self.ensure_one()
-        pdf_file, dummy = self.env.ref('l10n_be_reports.action_report_325_form_pdf')._render_qweb_pdf(self, data=self._get_325_form_values())
+        pdf_file, dummy = self.env['ir.actions.report']._render_qweb_pdf("l10n_be_reports.action_report_325_form_pdf", self, data=self._get_325_form_values())
         self.env['ir.attachment'].create({
             'name': f"{self.reference_year}_325_form.pdf",
             'datas': base64.b64encode(pdf_file),
@@ -543,7 +543,7 @@ class Form325(models.Model):
         self._validate_form()
         form_values = self.get_dict_values()
         formated_form_values = format_325_form_values(form_values)
-        xml, dummy = self.env.ref('l10n_be_reports.action_report_partner_281_50_xml')._render_qweb_text(self, formated_form_values)
+        xml, dummy = self.env["ir.actions.report"]._render_qweb_text('l10n_be_reports.action_report_partner_281_50_xml', self, formated_form_values)
         xml_element = etree.fromstring(xml)
         return etree.tostring(xml_element, xml_declaration=True, encoding='utf-8')  # Well format the xml and add the xml_declaration
 

@@ -353,6 +353,8 @@ class L10nBe28145Line(models.Model):
     pdf_to_generate = fields.Boolean()
 
     def _generate_pdf(self):
+        report_sudo = self.env["ir.actions.report"].sudo()
+        report = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45')
         for sheet in self.sheet_id:
             lines = self.filtered(lambda l: l.sheet_id == sheet)
             rendering_data = sheet.with_context(no_round_281_45=True)._get_rendering_data(lines.employee_id)
@@ -360,7 +362,6 @@ class L10nBe28145Line(models.Model):
                 for key, value in sheet_values.items():
                     if not value:
                         sheet_values[key] = _('None')
-            template_sudo = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_45').sudo()
 
             pdf_files = []
             sheet_count = len(rendering_data['employees_data'])
@@ -370,7 +371,8 @@ class L10nBe28145Line(models.Model):
                 counter += 1
                 sheet_filename = '%s-%s-281_45' % (sheet_data['f2002_inkomstenjaar'], sheet_data['f2013_naam'])
                 employee_lang = sheet_data['employee'].sudo().address_home_id.lang
-                sheet_file, dummy = template_sudo.with_context(lang=employee_lang)._render_qweb_pdf(
+                sheet_file, dummy = report_sudo.with_context(lang=employee_lang)._render_qweb_pdf(
+                    report,
                     [sheet_data['employee_id']], data={**sheet_data, **rendering_data['data']})
                 pdf_files.append((sheet_data['employee'], sheet_filename, sheet_file))
 

@@ -127,7 +127,7 @@ class Picking(models.Model):
             'name': 'SII_{}'.format(file_name),
             'res_id': self.id,
             'res_model': self._name,
-            'datas': base64.b64encode(dte_signed.encode('ISO-8859-1')),
+            'datas': base64.b64encode(dte_signed.encode('ISO-8859-1', 'replace')),
             'type': 'binary',
         })
         self.l10n_cl_sii_send_file = attachment.id
@@ -162,7 +162,7 @@ class Picking(models.Model):
             'res_model': self._name,
             'res_id': self.id,
             'type': 'binary',
-            'datas': base64.b64encode(signed_dte.encode('ISO-8859-1'))
+            'datas': base64.b64encode(signed_dte.encode('ISO-8859-1', 'replace'))
         })
         self.l10n_cl_dte_file = dte_attachment.id
 
@@ -405,7 +405,7 @@ class Picking(models.Model):
         dd = self.env['ir.qweb']._render('l10n_cl_edi_stock.dd_template', self._l10n_cl_edi_prepare_values())
         ted = self.env['ir.qweb']._render('l10n_cl_edi.ted_template', {
             'dd': dd,
-            'frmt': self._sign_message(dd.encode('ISO-8859-1'), caf_file.findtext('RSASK')),
+            'frmt': self._sign_message(dd.encode('ISO-8859-1', 'replace'), caf_file.findtext('RSASK')),
             'stamp': self._get_cl_current_strftime()
         })
         return {
@@ -475,7 +475,7 @@ class Picking(models.Model):
             'res_model': self._name,
             'res_id': self.id,
             'type': 'binary',
-            'datas': base64.b64encode(dte_signed.encode('ISO-8859-1'))
+            'datas': base64.b64encode(dte_signed.encode('ISO-8859-1', 'replace'))
         })
         self.with_context(no_new_invoice=True).message_post(
             body=_('Partner DTE has been generated'),

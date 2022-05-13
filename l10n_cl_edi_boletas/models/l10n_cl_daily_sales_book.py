@@ -190,7 +190,7 @@ class L10nClDailySalesBook(models.Model):
             'name': '%s.xml' % doc_id,
             'res_id': self.id,
             'res_model': self._name,
-            'raw': dte.encode('ISO-8859-1'),
+            'raw': dte.encode('ISO-8859-1', 'replace'),
             'type': 'binary',
         })
         self.write({'l10n_cl_dte_status': 'not_sent', 'l10n_cl_sii_send_file': attachment.id})

@@ -752,7 +752,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const [pivotName, pivotModel, domain, dimensions, measures] = sections;
 
         assert.equal(pivotName.children[0].innerText, "Pivot name");
-        assert.equal(pivotName.children[1].innerText, "(#1) Partner");
+        assert.equal(pivotName.children[1].innerText, "(#1) Partner by Foo");
 
         assert.equal(pivotModel.children[0].innerText, "Model");
         assert.equal(pivotModel.children[1].innerText, "Partner (partner)");
@@ -811,8 +811,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const root = topbarMenuRegistry.getAll().find((item) => item.id === "data");
         const children = topbarMenuRegistry.getChildren(root, env);
         assert.equal(children.length, 6, "There should be 6 children in the menu");
-        assert.equal(children[0].name, "(#1) Partners");
-        assert.equal(children[1].name, "(#2) Partners");
+        assert.equal(children[0].name, "(#1) Partners by Foo");
+        assert.equal(children[1].name, "(#2) Partners by Foo");
         // bottom children
         assert.equal(children[2].name, "Refresh all data");
         assert.equal(children[3].name, "Re-insert pivot");

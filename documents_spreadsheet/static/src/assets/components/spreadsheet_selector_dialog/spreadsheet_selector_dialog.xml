@@ -18,7 +18,7 @@
             <t t-else="">
                 Name of the link:
             </t>
-            <input id="name" type="text" class="o_input o_spreadsheet_name" t-att-value="widget.name"/>
+            <input id="name" type="text" class="o_input o_spreadsheet_name" t-att-value="widget.name" t-attf-style='width:{{widget.name?widget.name.length:0}}ch;' oninput='this.style.width = this.value.length + "ch";'/>
         </div>
         <div t-if="widget.threshold !== undefined and widget.type === 'LIST'">
             Insert the first <input id="threshold" t-att-max="widget.maxThreshold" type="number" class="o_input o_spreadsheet_threshold" t-att-value="widget.threshold"/> records of the list.

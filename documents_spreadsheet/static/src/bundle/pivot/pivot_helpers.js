@@ -7,14 +7,6 @@ import { getOdooFunctions } from "../o_spreadsheet/odoo_functions_helpers";
 
 export const pivotFormulaRegex = /^=.*PIVOT/;
 
-export const PERIODS = {
-  day: _t("Day"),
-  week: _t("Week"),
-  month: _t("Month"),
-  quarter: _t("Quarter"),
-  year: _t("Year"),
-};
-
 //--------------------------------------------------------------------------
 // Public
 //--------------------------------------------------------------------------

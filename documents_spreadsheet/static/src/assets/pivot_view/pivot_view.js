@@ -8,6 +8,15 @@ import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
 import { removeContextUserInfo } from "../helpers";
 
+import { _t } from "@web/core/l10n/translation";
+const PERIODS = {
+    day: _t("Day"),
+    week: _t("Week"),
+    month: _t("Month"),
+    quarter: _t("Quarter"),
+    year: _t("Year"),
+};
+
 const { onWillStart } = owl;
 
 patch(PivotController.prototype, "pivot_spreadsheet", {
@@ -29,11 +38,19 @@ patch(PivotController.prototype, "pivot_spreadsheet", {
             [],
             []
         );
+
+        let name = this.model.metaData.title;
+        const groupBy = this.model.metaData.fullColGroupBys[0] || this.model.metaData.fullRowGroupBys[0];
+        if (groupBy) {
+            let [field, period] = groupBy.split(":");
+            period = PERIODS[period];
+            name += ` ${_t("by")} ` + this.model.metaData.fields[field].string + (period ? ` (${period})` : "");
+        }
         const params = {
             spreadsheets,
             title: this.env._t("Select a spreadsheet to insert your pivot"),
             type: "PIVOT",
-            name: this.model.metaData.title,
+            name,
         };
         const dialog = new SpreadsheetSelectorDialog(this, params).open();
         dialog.on("confirm", this, this.insertInSpreadsheet);

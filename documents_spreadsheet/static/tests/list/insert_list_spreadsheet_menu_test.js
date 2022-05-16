@@ -121,6 +121,26 @@ QUnit.module(
             assert.equal(model.getters.getListDisplayName("1"), "(#1) New name");
         });
 
+        QUnit.test("Unsorted List name doesn't contains sorting info", async function (assert) {
+            assert.expect(1);
+            await spawnListViewForSpreadsheet();
+
+            await click(target.querySelector(".o_favorite_menu button"));
+            await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
+            assert.equal(document.body.querySelector(".o_spreadsheet_name").value, "Partners");
+        });
+
+        QUnit.test("Sorted List name contains sorting info", async function (assert) {
+            assert.expect(1);
+            await spawnListViewForSpreadsheet({
+                orderBy: [{name:'bar', asc: true}],
+            });
+
+            await click(target.querySelector(".o_favorite_menu button"));
+            await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
+            assert.equal(document.body.querySelector(".o_spreadsheet_name").value, "Partners by Bar");
+        });
+
         QUnit.test("List name is not changed if the name is empty", async (assert) => {
             await spawnListViewForSpreadsheet();
 

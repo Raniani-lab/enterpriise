@@ -142,7 +142,7 @@ test("groupby date field without interval defaults to month", async (assert) => 
         measures: ["probability"],
         model: "partner",
         rowGroupBys: ["date"],
-        name: "Partners",
+        name: "Partners by Foo",
     });
     assert.equal(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","date","04/2016")');
     assert.equal(getCellFormula(model, "A4"), '=PIVOT.HEADER("1","date","10/2016")');
@@ -156,6 +156,34 @@ test("groupby date field without interval defaults to month", async (assert) => 
     assert.equal(getCellValue(model, "B3"), "");
     assert.equal(getCellValue(model, "B4"), "11");
     assert.equal(getCellValue(model, "B5"), "");
+});
+
+test("groupby date field on row gives correct name", async (assert) => {
+    const { model } = await createSpreadsheetFromPivot({
+        serverData: {
+            models: getBasicData(),
+            views: {
+                "partner,false,pivot": /* xml */ `
+                    <pivot string="Partners">
+                        <!-- no interval specified -->
+                        <field name="date" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+                "partner,false,search": /* xml */ `<search/>`,
+            },
+        },
+    });
+    const pivot = model.getters.getPivotDefinition("1");
+    assert.deepEqual(pivot, {
+        colGroupBys: [],
+        context: {},
+        domain: [],
+        id: "1",
+        measures: ["probability"],
+        model: "partner",
+        rowGroupBys: ["date"],
+        name: "Partners by Date",
+    });
 });
 
 test("pivot with one level of group bys", async (assert) => {
@@ -1187,7 +1215,7 @@ test("Pivot name is not changed if the name is empty", async (assert) => {
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     const model = getSpreadsheetActionModel(spreadsheetAction);
     await waitForDataSourcesLoaded(model);
-    assert.equal(model.getters.getPivotName("1"), "Partners");
+    assert.equal(model.getters.getPivotName("1"), "Partners by Foo");
 });
 
 test("rename pivot with empty name is refused", async (assert) => {
@@ -1211,11 +1239,11 @@ test("rename pivot with incorrect id is refused", async (assert) => {
 test("Undo/Redo for RENAME_ODOO_PIVOT", async function (assert) {
     assert.expect(4);
     const { model } = await createSpreadsheetFromPivot();
-    assert.equal(model.getters.getPivotName("1"), "Partners");
+    assert.equal(model.getters.getPivotName("1"), "Partners by Foo");
     model.dispatch("RENAME_ODOO_PIVOT", { pivotId: "1", name: "test" });
     assert.equal(model.getters.getPivotName("1"), "test");
     model.dispatch("REQUEST_UNDO");
-    assert.equal(model.getters.getPivotName("1"), "Partners");
+    assert.equal(model.getters.getPivotName("1"), "Partners by Foo");
     model.dispatch("REQUEST_REDO");
     assert.equal(model.getters.getPivotName("1"), "test");
 });

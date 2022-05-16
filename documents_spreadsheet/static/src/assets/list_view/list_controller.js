@@ -27,13 +27,20 @@ ListController.include({
         // result in the localStorage, we have to ensure that the payload is less
         // than 5mb
         const maxThreshold = Math.floor(MAXIMUM_CELLS_TO_INSERT / columns.length);
+
+        let name = this._title;
+        const sortBy = model.orderedBy[0];
+        if (sortBy) {
+            name += ` ${_t("by")} ` + model.fields[sortBy.name].string;
+        }
+
         const params = {
             spreadsheets,
             title: _t("Select a spreadsheet to insert your list"),
             threshold,
             maxThreshold,
             type: "LIST",
-            name: this._title,
+            name,
         };
         const dialog = new SpreadsheetSelectorDialog(this, params).open();
         dialog.on("confirm", this, this._insertInSpreadsheet);

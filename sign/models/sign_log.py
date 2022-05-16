@@ -146,8 +146,8 @@ class SignLog(models.Model):
         latitude = 0.0
         longitude = 0.0
         if request:
-            latitude = request.geoip.get('latitude', 0.0) if request_item.state != 'sent' else request_item.latitude
-            longitude = request.geoip.get('longitude', 0.0) if request_item.state != 'sent' else request_item.longitude
+            latitude = (request.geoip.location.latitude or 0.0) if request_item.state != 'sent' else request_item.latitude
+            longitude = (request.geoip.location.longitude or 0.0) if request_item.state != 'sent' else request_item.longitude
         return dict(
             sign_request_item_id=request_item.id,
             sign_request_id=sign_request.id,
@@ -162,7 +162,7 @@ class SignLog(models.Model):
         return dict(
             sign_request_id=sign_request.id,
             request_state=sign_request.state,
-            latitude=request.geoip.get('latitude', 0.0) if request else 0.0,
-            longitude=request.geoip.get('latitude', 0.0) if request else 0.0,
+            latitude=(request.geoip.location.latitude or 0.0) if request else 0.0,
+            longitude=(request.geoip.location.latitude or 0.0) if request else 0.0,
             partner_id=self.env.user.partner_id.id if not self.env.user._is_public() else None,
         )

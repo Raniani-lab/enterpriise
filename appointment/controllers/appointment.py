@@ -530,10 +530,9 @@ class AppointmentController(http.Controller):
         """
             Find the country from the geoip lib or fallback on the user or the visitor
         """
-        country_code = request.geoip.get('country_code')
         country = request.env['res.country']
-        if country_code:
-            country = country.search([('code', '=', country_code)])
+        if request.geoip.country_code:
+            country = country.search([('code', '=', request.geoip.country_code)])
         if not country:
             country = request.env.user.country_id if not request.env.user._is_public() else country
         return country

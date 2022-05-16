@@ -59,8 +59,8 @@ class Sign(http.Controller):
                 on the signer localisation.
                 """
                 current_request_item.write({
-                    'latitude': request.geoip.get('latitude', 0.0),
-                    'longitude': request.geoip.get('longitude', 0.0),
+                    'latitude': request.geoip.location.latitude or 0.0,
+                    'longitude': request.geoip.location.longitude or 0.0,
                 })
 
         item_values = {}

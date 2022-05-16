@@ -36,7 +36,7 @@ odoo.define('documents_spreadsheet_account.spreadsheet_template_sales_commission
             run: `text ${TEMPLATE_NAME}`,
         },
         {
-            trigger: '.o_menu_item.o_selection_focus',
+            trigger: '.o_menu_item.focus',
             content: 'Validate search',
             run: 'click',
         },

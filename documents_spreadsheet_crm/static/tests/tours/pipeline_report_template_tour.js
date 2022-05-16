@@ -36,7 +36,7 @@ tour.register('spreadsheet_template_pipeline_report', {
         run: `text ${TEMPLATE_NAME}`,
     },
     {
-        trigger: '.o_menu_item.o_selection_focus',
+        trigger: '.o_menu_item.focus',
         content: 'Validate search',
         run: 'click',
     },

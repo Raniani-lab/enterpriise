@@ -281,7 +281,7 @@ class XmlPolizasExportWizard(models.TransientModel):
         elif len(xml_records) == 1:
             record = xml_records[0]
             self.write({
-                'report_data': base64.b64encode(record['content']),
+                'report_data': base64.b64encode(record['content'].encode()),
                 'report_filename': record['filename'],
                 'mimetype': 'application/xml',
             })

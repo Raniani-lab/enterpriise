@@ -20,7 +20,6 @@ class HelpdeskSLAReport(models.Model):
     ticket_stage_id = fields.Many2one('helpdesk.stage', string="Ticket Stage", readonly=True)
     ticket_deadline = fields.Datetime("Ticket Deadline", readonly=True)
     ticket_closed = fields.Boolean("Ticket Closed", readonly=True)
-    ticket_status = fields.Char(readonly=True)
     ticket_close_hours = fields.Integer("Working Hours to Close", group_operator="avg", readonly=True)
     ticket_assignation_hours = fields.Integer("Working Hours to Assign", group_operator="avg", readonly=True)
     close_date = fields.Datetime("Close date", readonly=True)

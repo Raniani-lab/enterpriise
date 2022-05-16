@@ -79,7 +79,7 @@ const SignItemCustomPopover = Widget.extend({
         this.$currentTarget.data("required")
       );
 
-      this.$("#o_sign_name").val(this.$currentTarget.data("name") || "");
+      this.$("#o_sign_name").val(this.$currentTarget.data("name") || this.$currentTarget.prop('field-placeholder'));
       this.title = this.$currentTarget.prop("field-name");
       if (fieldType !== "selection") {
         this.$(".o_sign_options_group").hide();
@@ -129,7 +129,7 @@ const SignItemCustomPopover = Widget.extend({
     let name = this.$("#o_sign_name").val();
     this.getParent().currentRole = resp;
     if (!name) {
-      name = this.$currentTarget.prop("field-name");
+      name = false;
     }
     if (this.$currentTarget.prop("field-type") != "checkbox") {
       this.$currentTarget.find(".o_placeholder").text(name);

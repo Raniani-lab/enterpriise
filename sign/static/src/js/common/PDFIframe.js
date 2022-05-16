@@ -475,7 +475,7 @@ export const PDFIframe = Widget.extend(
           type: type.item_type,
           value: value || "",
           options: selected_options,
-          placeholder: name ? name : type.placeholder,
+          placeholder: name,
           isSignItemEditable: isSignItemEditable,
         })
       );

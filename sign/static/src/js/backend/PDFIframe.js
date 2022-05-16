@@ -160,7 +160,7 @@ PDFIframe.include({
               type.default_height || type.defaultHeight,
               "",
               [],
-              "",
+              type.placeholder,
               "",
               "",
               this.isSignItemEditable,
@@ -264,6 +264,10 @@ PDFIframe.include({
   },
 
   enableCustom: function ($signatureItem) {
+    $signatureItem.prop(
+      "field-placeholder",
+      this.types[$signatureItem.data('type')].placeholder
+    );
     $signatureItem.prop(
       "field-type",
       this.types[$signatureItem.data("type")].item_type

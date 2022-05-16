@@ -7049,3 +7049,39 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYER': 773.95,
         }
         self._validate_payslip(new_payslip_2, new_payslip_2_results)
+
+    def test_company_car_pp_exemption_2021(self):
+        payslip = self._generate_payslip(datetime.date(2022, 5, 1), datetime.date(2022, 5, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 1)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 25)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'EmpBonus.1': 43.75,
+            'ONSSTOTAL': 303.78,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2517.64,
+            'IP.PART': -662.5,
+            'GROSS': 1855.14,
+            'P.P': -226.79,
+            'P.P.DED': 14.5,
+            'PPTOTAL': 212.29,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -23.98,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2194.87,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYER': 721.65,
+        }
+        self._validate_payslip(payslip, payslip_results)

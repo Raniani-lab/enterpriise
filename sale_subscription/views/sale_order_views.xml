@@ -132,7 +132,7 @@
             <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position='attributes'>
                 <attribute name="decoration-info">temporal_type == 'subscription'</attribute>
             </xpath>
-            <xpath expr="//field[@name='order_line']/tree/field[@name='price_total']" position="attributes">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_total']" position='attributes'>
                 <attribute name="decoration-info">temporal_type == 'subscription'</attribute>
             </xpath>
             <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position='after'>

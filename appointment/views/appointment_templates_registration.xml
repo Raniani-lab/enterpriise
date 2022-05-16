@@ -9,7 +9,7 @@
                 </t>
                 <div class="oe_structure container o_appointment mb64">
                     <ul class="wizard mt32 float-right d-none d-md-block">
-                        <li class="text-success">Time<span class="chevron"></span></li>
+                        <li class="text-muted">Time<span class="chevron"></span></li>
                         <li class="text-primary">Confirmation<span class="chevron"></span></li>
                     </ul>
                     <h2 class="o_page_header mt32">Confirm your details</h2>

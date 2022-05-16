@@ -11,7 +11,7 @@ class VoipConfigurator(models.Model):
 
     @api.model
     def get_pbx_config(self):
-        if not self.env.user.has_group('base.group_user'):
+        if not self.env.user._is_internal():
             raise AccessDenied()
         get_param = self.env['ir.config_parameter'].sudo().get_param
         return {'pbx_ip': get_param('voip.pbx_ip', default='localhost'),

@@ -32,7 +32,7 @@ class IrModel(models.Model):
     def _check_documents_access(self):
         # Make sure to reject portal users
         return self.env["documents.document"].check_access_rights("read", raise_exception=False)\
-            and self.env.user.has_group('base.group_user')
+            and self.env.user._is_internal()
 
     @api.model
     def _check_comodel_access(self, models):

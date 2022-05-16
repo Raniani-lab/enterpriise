@@ -33,7 +33,7 @@ class AppointmentCalendarController(CalendarController):
             return request.render("appointment.appointment_invalid", {})
 
         # If user is internal and logged, redirect to form view of event
-        if request.env.user.has_group('base.group_user'):
+        if request.env.user._is_internal():
             url_params = url_encode({
                 'id': id,
                 'view_type': 'form',

@@ -28,7 +28,7 @@
         <t t-call="o-spreadsheet.Icon.LIST"/>
       </div>
       <div class="o-all-sheets">
-        <t t-foreach="getOrderedSheets()" t-as="sheet" t-key="sheet.id">
+        <t t-foreach="getVisibleSheets()" t-as="sheet" t-key="sheet.id">
           <div
             class="o-sheet-item o-sheet"
             t-on-click="(ev) => this.activateSheet(sheet.id, ev)"
@@ -1152,7 +1152,8 @@
             t-on-click="() => this.onClickMenu(menuItem, menuItem_index)"
             t-on-mouseover="() => this.onMouseOver(menuItem, menuItem_index)"
             class="o-menu-item"
-            t-att-class="{ 'o-menu-root': isMenuRoot, 'disabled': !isMenuEnabled}">
+            t-att-class="{ 'o-menu-root': isMenuRoot, 'disabled': !isMenuEnabled}"
+            t-att-style="getColor(menuItem)">
             <t t-esc="getName(menuItem)"/>
             <span class="o-menu-item-shortcut" t-esc="getShortCut(menuItem)"/>
             <t t-if="isMenuRoot">

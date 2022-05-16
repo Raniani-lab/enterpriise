@@ -842,6 +842,8 @@
         "DUPLICATE_SHEET",
         "MOVE_SHEET",
         "RENAME_SHEET",
+        "HIDE_SHEET",
+        "SHOW_SHEET",
         /** RANGES MANIPULATION */
         "MOVE_RANGES",
         /** CONDITIONAL FORMAT */
@@ -2188,7 +2190,7 @@
      * This function will compare the modifications of selection to determine
      * a cell that is part of the new zone and not the previous one.
      */
-    function findCellInNewZone(oldZone, currentZone, viewport) {
+    function findCellInNewZone(oldZone, currentZone) {
         let col, row;
         const { left: oldLeft, right: oldRight, top: oldTop, bottom: oldBottom } = oldZone;
         const { left, right, top, bottom } = currentZone;
@@ -2199,7 +2201,7 @@
             col = right;
         }
         else {
-            col = viewport.left;
+            col = left;
         }
         if (top != oldTop) {
             row = top;
@@ -2208,7 +2210,7 @@
             row = bottom;
         }
         else {
-            row = viewport.top;
+            row = top;
         }
         return { col, row };
     }
@@ -3517,7 +3519,7 @@
         sequence: 40,
         isVisible: (env) => {
             const sheetId = env.model.getters.getActiveSheetId();
-            const sheetIds = env.model.getters.getSheetIds();
+            const sheetIds = env.model.getters.getVisibleSheetIds();
             return sheetIds.indexOf(sheetId) !== sheetIds.length - 1;
         },
         action: (env) => env.model.dispatch("MOVE_SHEET", {
@@ -3530,12 +3532,18 @@
         sequence: 50,
         isVisible: (env) => {
             const sheetId = env.model.getters.getActiveSheetId();
-            return env.model.getters.getSheetIds()[0] !== sheetId;
+            return env.model.getters.getVisibleSheetIds()[0] !== sheetId;
         },
         action: (env) => env.model.dispatch("MOVE_SHEET", {
             sheetId: env.model.getters.getActiveSheetId(),
             direction: "left",
         }),
+    })
+        .add("hide_sheet", {
+        name: _lt("Hide sheet"),
+        sequence: 60,
+        isVisible: (env) => env.model.getters.getVisibleSheetIds().length !== 1,
+        action: (env) => env.model.dispatch("HIDE_SHEET", { sheetId: env.model.getters.getActiveSheetId() }),
     });
 
     const CfTerms = {
@@ -5795,6 +5803,9 @@
                 flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
                 flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
             };
+        }
+        getColor(menu) {
+            return menu.textColor ? `color: ${menu.textColor}` : undefined;
         }
         async activateMenu(menu) {
             var _a, _b;
@@ -12699,7 +12710,7 @@
      * a breaking change is made in the way the state is handled, and an upgrade
      * function should be defined
      */
-    const CURRENT_VERSION = 11;
+    const CURRENT_VERSION = 12;
     const INITIAL_SHEET_ID = "Sheet1";
     /**
      * This function tries to load anything that could look like a valid
@@ -12951,6 +12962,17 @@
                 return data;
             },
         },
+        {
+            description: "Add isVisible to sheets",
+            from: 11,
+            to: 12,
+            applyMigration(data) {
+                for (let sheet of data.sheets || []) {
+                    sheet.isVisible = true;
+                }
+                return data;
+            },
+        },
     ];
     /**
      * The goal of this function is to repair corrupted/wrong initial messages caused by
@@ -13028,6 +13050,7 @@
             merges: [],
             conditionalFormats: [],
             figures: [],
+            isVisible: true,
         };
     }
     function createEmptyWorkbookData(sheetName = "Sheet1") {
@@ -13695,9 +13718,6 @@
                         this.setFormatter(cmd.sheetId, cmd.target, cmd.format);
                     }
                     break;
-                case "SET_DECIMAL":
-                    this.setDecimal(cmd.sheetId, cmd.target, cmd.step);
-                    break;
                 case "CLEAR_FORMATTING":
                     this.clearStyles(cmd.sheetId, cmd.target);
                     break;
@@ -13740,49 +13760,6 @@
                     }
                 }
             }
-        }
-        /**
-         * This function allows to adjust the quantity of decimal places after a decimal
-         * point on cells containing number value. It does this by changing the cells
-         * format. Values aren't modified.
-         *
-         * The change of the decimal quantity is done one by one, the sign of the step
-         * variable indicates whether we are increasing or decreasing.
-         *
-         * If several cells are in the zone, the format resulting from the change of the
-         * first cell (with number type) will be applied to the whole zone.
-         */
-        setDecimal(sheetId, zones, step) {
-            // Find the first cell with a number value and get the format
-            const numberFormat = this.searchNumberFormat(sheetId, zones);
-            if (numberFormat !== undefined) {
-                // Depending on the step sign, increase or decrease the decimal representation
-                // of the format
-                const newFormat = changeDecimalPlaces(numberFormat, step);
-                // Apply the new format on the whole zone
-                this.setFormatter(sheetId, zones, newFormat);
-            }
-        }
-        /**
-         * Take a range of cells and return the format of the first cell containing a
-         * number value. Returns a default format if the cell hasn't format. Returns
-         * undefined if no number value in the range.
-         */
-        searchNumberFormat(sheetId, zones) {
-            var _a;
-            for (let zone of zones) {
-                for (let row = zone.top; row <= zone.bottom; row++) {
-                    for (let col = zone.left; col <= zone.right; col++) {
-                        const cell = this.getters.getCell(sheetId, col, row);
-                        if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number &&
-                            !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT)) // reject dates
-                        ) {
-                            return cell.format || createDefaultFormat(cell.evaluated.value);
-                        }
-                    }
-                }
-            }
-            return undefined;
         }
         /**
          * Clear the styles of zones
@@ -15256,7 +15233,7 @@
                             col,
                             row,
                             style: topLeft ? topLeft.style : undefined,
-                            content: undefined,
+                            content: "",
                         });
                     }
                     const merge = this.getMerge(sheet.id, col, row);
@@ -15407,15 +15384,33 @@
                 return genericChecks;
             }
             switch (cmd.type) {
+                case "HIDE_SHEET": {
+                    if (this.getVisibleSheetIds().length === 1) {
+                        return 8 /* NotEnoughSheets */;
+                    }
+                    return 0 /* Success */;
+                }
                 case "CREATE_SHEET": {
                     return this.checkValidations(cmd, this.checkSheetName, this.checkSheetPosition);
                 }
                 case "MOVE_SHEET":
                     const currentIndex = this.orderedSheetIds.indexOf(cmd.sheetId);
-                    return (cmd.direction === "left" && currentIndex === 0) ||
-                        (cmd.direction === "right" && currentIndex === this.orderedSheetIds.length - 1)
-                        ? 12 /* WrongSheetMove */
-                        : 0 /* Success */;
+                    if (cmd.direction === "left") {
+                        const leftSheets = this.orderedSheetIds
+                            .slice(0, currentIndex)
+                            .map((id) => !this.isSheetVisible(id));
+                        return leftSheets.every((isHidden) => isHidden)
+                            ? 12 /* WrongSheetMove */
+                            : 0 /* Success */;
+                    }
+                    else {
+                        const rightSheets = this.orderedSheetIds
+                            .slice(currentIndex + 1)
+                            .map((id) => !this.isSheetVisible(id));
+                        return rightSheets.every((isHidden) => isHidden)
+                            ? 12 /* WrongSheetMove */
+                            : 0 /* Success */;
+                    }
                 case "RENAME_SHEET":
                     return this.isRenameAllowed(cmd);
                 case "DELETE_SHEET":
@@ -15463,6 +15458,12 @@
                     break;
                 case "RENAME_SHEET":
                     this.renameSheet(this.sheets[cmd.sheetId], cmd.name);
+                    break;
+                case "HIDE_SHEET":
+                    this.hideSheet(cmd.sheetId);
+                    break;
+                case "SHOW_SHEET":
+                    this.showSheet(cmd.sheetId);
                     break;
                 case "DUPLICATE_SHEET":
                     this.duplicateSheet(cmd.sheetId, cmd.sheetIdTo);
@@ -15530,6 +15531,7 @@
                     hiddenColsGroups: [],
                     hiddenRowsGroups: [],
                     areGridLinesVisible: sheetData.areGridLinesVisible === undefined ? true : sheetData.areGridLinesVisible,
+                    isVisible: sheetData.isVisible,
                 };
                 this.orderedSheetIds.push(sheet.id);
                 this.sheets[sheet.id] = sheet;
@@ -15552,6 +15554,7 @@
                     conditionalFormats: [],
                     figures: [],
                     areGridLinesVisible: sheet.areGridLinesVisible === undefined ? true : sheet.areGridLinesVisible,
+                    isVisible: sheet.isVisible,
                 };
             });
         }
@@ -15576,6 +15579,9 @@
                 throw new Error(`Sheet ${sheetId} not found.`);
             }
             return sheet;
+        }
+        isSheetVisible(sheetId) {
+            return this.getSheet(sheetId).isVisible;
         }
         /**
          * Return the sheet name. Throw if the sheet is not found.
@@ -15606,6 +15612,9 @@
         }
         getSheetIds() {
             return this.orderedSheetIds;
+        }
+        getVisibleSheetIds() {
+            return this.orderedSheetIds.filter(this.isSheetVisible.bind(this));
         }
         getEvaluationSheets() {
             return this.sheets;
@@ -15790,6 +15799,7 @@
                 hiddenColsGroups: [],
                 hiddenRowsGroups: [],
                 areGridLinesVisible: true,
+                isVisible: true,
             };
             const orderedSheetIds = this.orderedSheetIds.slice();
             orderedSheetIds.splice(position, 0, sheet.id);
@@ -15802,8 +15812,33 @@
             const orderedSheetIds = this.orderedSheetIds.slice();
             const currentIndex = orderedSheetIds.findIndex((id) => id === sheetId);
             const sheet = orderedSheetIds.splice(currentIndex, 1);
-            orderedSheetIds.splice(currentIndex + (direction === "left" ? -1 : 1), 0, sheet[0]);
+            let index = direction === "left"
+                ? this.findIndexOfPreviousVisibleSheet(currentIndex - 1, orderedSheetIds)
+                : this.findIndexOfNextVisibleSheet(currentIndex + 1, orderedSheetIds);
+            if (index === undefined) {
+                index = orderedSheetIds.length;
+            }
+            orderedSheetIds.splice(index, 0, sheet[0]);
             this.history.update("orderedSheetIds", orderedSheetIds);
+        }
+        findIndexOfPreviousVisibleSheet(current, orderedSheetIds) {
+            while (current >= 0 && !this.isSheetVisible(orderedSheetIds[current])) {
+                current--;
+            }
+            if (current === -1) {
+                throw new Error("There is no previous visible sheet");
+            }
+            return current;
+        }
+        findIndexOfNextVisibleSheet(current, orderedSheetIds) {
+            while (current < orderedSheetIds.length && !this.isSheetVisible(orderedSheetIds[current])) {
+                current++;
+            }
+            if (current === orderedSheetIds.length - 1 &&
+                !this.isSheetVisible(orderedSheetIds[current - 1])) {
+                return undefined;
+            }
+            return current;
         }
         checkSheetName(cmd) {
             const { orderedSheetIds, sheets } = this;
@@ -15837,6 +15872,12 @@
             sheetIdsMapName[name] = sheet.id;
             delete sheetIdsMapName[oldName];
             this.history.update("sheetIdsMapName", sheetIdsMapName);
+        }
+        hideSheet(sheetId) {
+            this.history.update("sheets", sheetId, "isVisible", false);
+        }
+        showSheet(sheetId) {
+            this.history.update("sheets", sheetId, "isVisible", true);
         }
         duplicateSheet(fromId, toId) {
             const sheet = this.getSheet(fromId);
@@ -16292,6 +16333,8 @@
         "tryGetSheet",
         "getSheetIdByName",
         "getSheetIds",
+        "getVisibleSheetIds",
+        "isSheetVisible",
         "getEvaluationSheets",
         "tryGetCol",
         "getCol",
@@ -19512,6 +19555,67 @@
     FindAndReplacePlugin.layers = [3 /* Search */];
     FindAndReplacePlugin.getters = ["getSearchMatches", "getCurrentSelectedMatchIndex"];
 
+    class FormatPlugin extends UIPlugin {
+        // ---------------------------------------------------------------------------
+        // Command Handling
+        // ---------------------------------------------------------------------------
+        handle(cmd) {
+            switch (cmd.type) {
+                case "SET_DECIMAL":
+                    this.setDecimal(cmd.sheetId, cmd.target, cmd.step);
+                    break;
+            }
+        }
+        /**
+         * This function allows to adjust the quantity of decimal places after a decimal
+         * point on cells containing number value. It does this by changing the cells
+         * format. Values aren't modified.
+         *
+         * The change of the decimal quantity is done one by one, the sign of the step
+         * variable indicates whether we are increasing or decreasing.
+         *
+         * If several cells are in the zone, the format resulting from the change of the
+         * first cell (with number type) will be applied to the whole zone.
+         */
+        setDecimal(sheetId, zones, step) {
+            // Find the first cell with a number value and get the format
+            const numberFormat = this.searchNumberFormat(sheetId, zones);
+            if (numberFormat !== undefined) {
+                // Depending on the step sign, increase or decrease the decimal representation
+                // of the format
+                const newFormat = changeDecimalPlaces(numberFormat, step);
+                // Apply the new format on the whole zone
+                this.dispatch("SET_FORMATTING", {
+                    sheetId,
+                    target: zones,
+                    format: newFormat,
+                });
+            }
+        }
+        /**
+         * Take a range of cells and return the format of the first cell containing a
+         * number value. Returns a default format if the cell hasn't format. Returns
+         * undefined if no number value in the range.
+         */
+        searchNumberFormat(sheetId, zones) {
+            var _a;
+            for (let zone of zones) {
+                for (let row = zone.top; row <= zone.bottom; row++) {
+                    for (let col = zone.left; col <= zone.right; col++) {
+                        const cell = this.getters.getCell(sheetId, col, row);
+                        if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number &&
+                            !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT)) // reject dates
+                        ) {
+                            return cell.format || createDefaultFormat(cell.evaluated.value);
+                        }
+                    }
+                }
+            }
+            return undefined;
+        }
+    }
+    FormatPlugin.modes = ["normal"];
+
     /**
      * HighlightPlugin
      */
@@ -19627,13 +19731,16 @@
             const adjustedY = y + rows[top].start + 1;
             return searchIndex(rows, adjustedY);
         }
+        /**
+         * Computes the coordinates and size to draw the zone on the canvas
+         */
         getRect(zone, viewport) {
             const { left, top, right, bottom } = zone;
             const { offsetX, offsetY } = this.getShiftedViewport(viewport);
             const { cols, rows } = this.getters.getActiveSheet();
-            const x = Math.max(cols[left].start - offsetX, HEADER_WIDTH);
+            const x = cols[left].start - offsetX;
             const width = cols[right].end - offsetX - x;
-            const y = Math.max(rows[top].start - offsetY, HEADER_HEIGHT);
+            const y = rows[top].start - offsetY;
             const height = rows[bottom].end - offsetY - y;
             return [x, y, width, height];
         }
@@ -19981,28 +20088,29 @@
             }
             return align || cell.defaultAlign;
         }
-        createBoxFromPosition(sheetId, colNumber, rowNumber, viewport, width, height) {
-            const { right, left, offsetX, offsetY } = this.getShiftedViewport(viewport);
-            const col = this.getters.getCol(sheetId, colNumber);
-            const row = this.getters.getRow(sheetId, rowNumber);
-            const cell = this.getters.getCell(sheetId, colNumber, rowNumber);
+        createZoneBox(sheetId, zone, viewport) {
+            const { right, left } = viewport;
+            const col = zone.left;
+            const row = zone.top;
+            const cell = this.getters.getCell(sheetId, col, row);
             const showFormula = this.getters.shouldShowFormulas();
+            const [x, y, width, height] = this.getRect(zone, viewport);
             const box = {
-                x: col.start - offsetX,
-                y: row.start - offsetY,
+                x,
+                y,
                 width,
                 height,
-                border: this.getters.getCellBorder(sheetId, colNumber, rowNumber) || undefined,
+                border: this.getters.getCellBorder(sheetId, col, row) || undefined,
                 style: {
                     ...this.getters.getCellStyle(cell),
-                    ...this.getters.getConditionalStyle(colNumber, rowNumber),
+                    ...this.getters.getConditionalStyle(col, row),
                 },
             };
             if (!cell) {
                 return box;
             }
             /** Icon CF */
-            const cfIcon = this.getters.getConditionalIcon(colNumber, rowNumber);
+            const cfIcon = this.getters.getConditionalIcon(col, row);
             const fontSize = box.style.fontSize || DEFAULT_FONT_SIZE;
             const fontSizePX = fontSizeMap[fontSize];
             const iconBoxWidth = cfIcon ? 2 * MIN_CF_ICON_MARGIN + fontSizePX : 0;
@@ -20035,42 +20143,45 @@
             }
             else if (isOverflowing) {
                 let nextColIndex, previousColIndex;
-                const isCellInMerge = this.getters.isInMerge(sheetId, colNumber, rowNumber);
+                const isCellInMerge = this.getters.isInMerge(sheetId, col, row);
                 if (isCellInMerge) {
                     // Always clip merges
-                    nextColIndex = this.getters.getMerge(sheetId, colNumber, rowNumber).right;
-                    previousColIndex = colNumber;
+                    nextColIndex = this.getters.getMerge(sheetId, col, row).right;
+                    previousColIndex = col;
                 }
                 else {
-                    nextColIndex = this.findNextEmptyCol(colNumber, right, rowNumber);
-                    previousColIndex = this.findPreviousEmptyCol(colNumber, left, rowNumber);
+                    nextColIndex = this.findNextEmptyCol(col, right, row);
+                    previousColIndex = this.findPreviousEmptyCol(col, left, row);
                 }
                 switch (align) {
                     case "left": {
-                        const nextCol = this.getters.getCol(sheetId, nextColIndex);
-                        const clipWidth = nextCol.end - col.start;
-                        if (clipWidth < textWidth || fontSizePX > row.size) {
-                            box.clipRect = [col.start - offsetX, row.start - offsetY, clipWidth, height];
+                        const emptyZoneOnTheLeft = positionToZone({ col: nextColIndex, row });
+                        const [x, y, width, height] = this.getRect(union(zone, emptyZoneOnTheLeft), viewport);
+                        if (width < textWidth || fontSizePX > height) {
+                            box.clipRect = [x, y, width, height];
                         }
                         break;
                     }
                     case "right": {
-                        const previousCol = this.getters.getCol(sheetId, previousColIndex);
-                        const clipWidth = col.end + width - col.size - previousCol.start;
-                        if (clipWidth < textWidth || fontSizePX > row.size) {
-                            box.clipRect = [previousCol.start - offsetX, row.start - offsetY, clipWidth, height];
+                        const emptyZoneOnTheRight = positionToZone({ col: previousColIndex, row });
+                        const [x, y, width, height] = this.getRect(union(zone, emptyZoneOnTheRight), viewport);
+                        if (width < textWidth || fontSizePX > height) {
+                            box.clipRect = [x, y, width, height];
                         }
                         break;
                     }
                     case "center": {
-                        const previousCol = this.getters.getCol(sheetId, previousColIndex);
-                        const nextCol = this.getters.getCol(sheetId, nextColIndex);
-                        const clipWidth = nextCol.end - previousCol.start;
-                        if (clipWidth < textWidth ||
-                            previousColIndex === colNumber ||
-                            nextColIndex === colNumber ||
-                            fontSizePX > row.size) {
-                            box.clipRect = [previousCol.start - offsetX, row.start - offsetY, clipWidth, height];
+                        const emptyZone = {
+                            ...zone,
+                            right: nextColIndex,
+                            left: previousColIndex,
+                        };
+                        const [x, y, width, height] = this.getRect(emptyZone, viewport);
+                        if (width < textWidth ||
+                            previousColIndex === col ||
+                            nextColIndex === col ||
+                            fontSizePX > height) {
+                            box.clipRect = [x, y, width, height];
                         }
                         break;
                     }
@@ -20096,7 +20207,7 @@
                     if (this.getters.isInMerge(sheetId, colNumber, rowNumber)) {
                         continue;
                     }
-                    boxes.push(this.createBoxFromPosition(sheetId, colNumber, rowNumber, viewport, col.size, row.size));
+                    boxes.push(this.createZoneBox(sheetId, positionToZone({ col: colNumber, row: rowNumber }), viewport));
                 }
             }
             for (const merge of this.getters.getMerges(sheetId)) {
@@ -20104,11 +20215,7 @@
                     continue;
                 }
                 if (overlap(merge, viewport)) {
-                    const width = this.getters.getCol(sheetId, merge.right).end -
-                        this.getters.getCol(sheetId, merge.left).start;
-                    const height = this.getters.getRow(sheetId, merge.bottom).end -
-                        this.getters.getRow(sheetId, merge.top).start;
-                    const box = this.createBoxFromPosition(sheetId, merge.left, merge.top, viewport, width, height);
+                    const box = this.createZoneBox(sheetId, merge, viewport);
                     const borderBottomRight = this.getters.getCellBorder(sheetId, merge.right, merge.bottom);
                     box.border = {
                         ...box.border,
@@ -20251,7 +20358,7 @@
             }
             switch (cmd.type) {
                 case "START":
-                    const firstSheetId = this.getters.getSheetIds()[0];
+                    const firstSheetId = this.getters.getVisibleSheetIds()[0];
                     this.selection.registerAsDefault(this, this.gridSelection.anchor, {
                         handleEvent: this.handleEvent.bind(this),
                     });
@@ -20265,6 +20372,9 @@
                     this.moveClient({ sheetId: firstSheetId, col: 0, row: 0 });
                     break;
                 case "ACTIVATE_SHEET": {
+                    if (!this.getters.isSheetVisible(cmd.sheetIdTo)) {
+                        this.dispatch("SHOW_SHEET", { sheetId: cmd.sheetIdTo });
+                    }
                     this.setActiveSheet(cmd.sheetIdTo);
                     const { col, row } = this.gridSelection.anchor.cell;
                     this.sheetsData[cmd.sheetIdFrom] = {
@@ -20322,11 +20432,19 @@
                 case "ACTIVATE_PREVIOUS_SHEET":
                     this.activateNextSheet("left");
                     break;
+                case "HIDE_SHEET":
+                    if (cmd.sheetId === this.getActiveSheetId()) {
+                        this.dispatch("ACTIVATE_SHEET", {
+                            sheetIdFrom: cmd.sheetId,
+                            sheetIdTo: this.getters.getVisibleSheetIds()[0],
+                        });
+                    }
+                    break;
                 case "UNDO":
                 case "REDO":
                 case "DELETE_SHEET":
                     if (!this.getters.tryGetSheet(this.getters.getActiveSheetId())) {
-                        const currentSheets = this.getters.getSheetIds();
+                        const currentSheets = this.getters.getVisibleSheetIds();
                         this.activeSheet = this.getters.getSheet(currentSheets[0]);
                         this.selectCell(0, 0);
                         this.moveClient({
@@ -22080,14 +22198,12 @@
                 case "AlterZoneCorner":
                     break;
                 case "ZonesSelected":
-                    if (event.mode === "updateAnchor") {
-                        // altering a zone should not move the viewport
-                        const cellPosition = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone, this.getActiveSnappedViewport());
-                        this.refreshViewport(this.getters.getActiveSheetId(), cellPosition);
-                    }
-                    else {
-                        this.refreshViewport(this.getters.getActiveSheetId());
-                    }
+                    // altering a zone should not move the viewport
+                    const sheet = this.getters.getActiveSheet();
+                    let { col, row } = findCellInNewZone(event.previousAnchor.zone, event.anchor.zone);
+                    col = Math.min(col, sheet.cols.length - 1);
+                    row = Math.min(row, sheet.rows.length - 1);
+                    this.refreshViewport(this.getters.getActiveSheetId(), { col, row });
                     break;
             }
         }
@@ -22458,6 +22574,7 @@
         .add("find_and_replace", FindAndReplacePlugin)
         .add("sort", SortPlugin)
         .add("automatic_sum", AutomaticSumPlugin)
+        .add("format", FormatPlugin)
         .add("selection_multiuser", SelectionMultiUserPlugin);
 
     // -----------------------------------------------------------------------------
@@ -22578,22 +22695,25 @@
             this.env.model.dispatch("CREATE_SHEET", { sheetId, position, name });
             this.env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: activeSheetId, sheetIdTo: sheetId });
         }
-        getOrderedSheets() {
+        getVisibleSheets() {
             return this.env.model.getters
-                .getSheetIds()
+                .getVisibleSheetIds()
                 .map((sheetId) => this.env.model.getters.getSheet(sheetId));
         }
         listSheets(ev) {
             const registry = new MenuItemRegistry();
             const from = this.env.model.getters.getActiveSheetId();
             let i = 0;
-            for (const sheetID of this.env.model.getters.getSheetIds()) {
-                const sheet = this.env.model.getters.getSheet(sheetID);
-                registry.add(sheetID, {
+            for (const sheetId of this.env.model.getters.getSheetIds()) {
+                const sheet = this.env.model.getters.getSheet(sheetId);
+                registry.add(sheetId, {
                     name: sheet.name,
                     sequence: i,
                     isReadonlyAllowed: true,
-                    action: (env) => env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: from, sheetIdTo: sheetID }),
+                    textColor: sheet.isVisible ? undefined : "grey",
+                    action: (env) => {
+                        env.model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: from, sheetIdTo: sheetId });
+                    },
                 });
                 i++;
             }
@@ -25671,7 +25791,9 @@
                 const newZone = this.env.model.getters.getSelectedZone();
                 const viewport = this.env.model.getters.getActiveSnappedViewport();
                 const sheet = this.env.model.getters.getActiveSheet();
-                const { col, row } = findCellInNewZone(oldZone, newZone, viewport);
+                let { col, row } = findCellInNewZone(oldZone, newZone);
+                col = Math.min(col, sheet.cols.length - 1);
+                row = Math.min(row, sheet.rows.length - 1);
                 const { left, right, top, bottom, offsetX, offsetY } = viewport;
                 const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
                 const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
@@ -30258,6 +30380,7 @@
         const sheetNodes = [];
         for (const [index, sheet] of Object.entries(data.sheets)) {
             const attributes = [
+                ["state", sheet.isVisible ? "visible" : "hidden"],
                 ["name", sheet.name],
                 ["sheetId", parseInt(index) + 1],
                 ["r:id", `rId${parseInt(index) + 1}`],
@@ -30666,6 +30789,7 @@
          * It will call `beforeHandle` and `handle`
          */
         dispatchToHandlers(handlers, command) {
+            command = JSON.parse(JSON.stringify(command));
             for (const handler of handlers) {
                 handler.beforeHandle(command);
             }
@@ -30834,8 +30958,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-05-13T07:54:40.449Z';
-    exports.__info__.hash = 'dcca995';
+    exports.__info__.date = '2022-05-16T11:18:28.564Z';
+    exports.__info__.hash = 'cc70b23';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

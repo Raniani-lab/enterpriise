@@ -258,6 +258,25 @@ class L10nBe28110(models.Model):
             if len(first_name) > 30:
                 raise UserError(_("The employee first name shouldn't exceed 30 characters for employee %s", employee.name))
 
+            # 2021: Only private car
+            # from 2022: private car / company car (from May)
+            max_other_transport_exemption = payslip.env['hr.rule.parameter']._get_parameter_from_code(
+                'pricate_car_taxable_threshold',
+                date=date(int(self.reference_year), 1, 1))
+            start = employee.first_contract_date
+            end = date(int(self.reference_year), 12, 31)
+            number_of_month = (end.year - start.year) * 12 + (end.month - start.month) + 1
+            number_of_month = min(12, number_of_month)
+            other_transport_exemption = 0
+            has_company_car = bool(round(mapped_total['ATN.CAR'], 2))
+            has_private_car = bool(round(mapped_total['CAR.PRIV'], 2)) and not has_company_car
+            if self.reference_year == '2021':
+                if round(mapped_total['CAR.PRIV'], 2):
+                    other_transport_exemption = max_other_transport_exemption * number_of_month / 12.0
+            if self.reference_year != '2021':
+                if round(mapped_total['CAR.PRIV'], 2) + round(mapped_total['ATN.CAR'], 2):
+                    other_transport_exemption = max_other_transport_exemption * number_of_month / 12.0
+
             sheet_values = {
                 'employee': employee,
                 'employee_id': employee.id,
@@ -311,7 +330,10 @@ class L10nBe28110(models.Model):
                 'f10_2073_tipamount': 0,
                 'f10_2074_bedrijfsvoorheffing': _to_eurocent(round(mapped_total['PPTOTAL'], 2)),  # 2.074 = 2.131 + 2.133. YTI Is it ok to include PROF_TAX / should include Double holidays?
                 'f10_2075_bijzonderbijdrage': _to_eurocent(round(-mapped_total['M.ONSS'], 2)),
-                'f10_2076_voordelenaardbedrag': _to_eurocent(round(sum(mapped_total[code] for code in ['ATN.INT', 'ATN.MOB', 'ATN.LAP', 'ATN.CAR']), 2)),
+                'f10_2076_voordelenaardbedrag': _to_eurocent(
+                    max(
+                        0,
+                        round(sum(mapped_total[code] for code in ['ATN.INT', 'ATN.MOB', 'ATN.LAP', 'ATN.CAR']) - other_transport_exemption, 2) if has_company_car else round(sum(mapped_total[code] for code in ['ATN.INT', 'ATN.MOB', 'ATN.LAP', 'ATN.CAR']), 2))),
                 # f10_2077_totaal
                 # YTI From 2023, should be distinguished from REP.FEES
                 # 'f10_2078_compensationamountwithoutstandards': round(mapped_total['REP.FEES.VOLATILE'], 2),
@@ -324,7 +346,8 @@ class L10nBe28110(models.Model):
                 'f10_2085_forfbezoldiging': 0,
                 'f10_2086_openbaargemeenschap': _to_eurocent(round(mapped_total['PUB.TRANS'], 2)),
                 'f10_2087_bedrag': 0,
-                'f10_2088_andervervoermiddel': _to_eurocent(round(mapped_total['CAR.PRIV'], 2)),
+                'f10_2088_andervervoermiddel': _to_eurocent(
+                        round(mapped_total['CAR.PRIV'] - other_transport_exemption, 2) if has_private_car else round(other_transport_exemption, 2)),
                 'f10_2090_outborderdays': 0,
                 'f10_2092_othercode1': 0,
                 'f10_2094_othercode2': 0,

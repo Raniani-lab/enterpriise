@@ -102,3 +102,17 @@ class TestSaleForecast(TestSalePlanning):
         slot2.write({'task_id': line1_task.id})
         #changing task of slot should not change to new task's sol if sol of slot is already set
         self.assertEqual(slot2.sale_line_id, line2_task.sale_line_id, 'Sale order item of Planning should not change to new task\'s sol if it\'s already set')
+
+    def test_ensure_project_id_follows_task_id_project_id(self):
+        """ This test purpose is to ensure that, when a sol generates a task within a project, when the task is moved
+            into another project, the project of the slot should get the project of the task and not the one stored
+            in the sol.
+        """
+        project = self.env['project.project'].create({'name': 'Project'})
+        self.sale_order_line1.task_id.project_id = project
+        slot1 = self.env['planning.slot'].create({
+            'sale_line_id': self.sale_order_line1.id,
+        })
+        self.assertEqual(slot1.project_id, slot1.task_id.project_id, "Slot's project_id should be the one of the task linked to the SOL.")
+        self.assertEqual(slot1.project_id, project, "Slot's project_id is the one of the task and not the one stored in the SOL linked.")
+        self.assertNotEqual(slot1.project_id, self.sale_order_line1.project_id, 'The project stored on the SOL should not be the one set in the slot.')

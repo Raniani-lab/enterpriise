@@ -55,6 +55,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
                     <ns2:Year>2019</ns2:Year>
                 </ns2:Period>
                 <ns2:Data>
+                    <ns2:Amount GridNumber="00">0.00</ns2:Amount>
                     <ns2:Amount GridNumber="71">0.00</ns2:Amount>
                 </ns2:Data>
                 <ns2:ClientListingNihil>NO</ns2:ClientListingNihil>
@@ -122,6 +123,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
                         <ns2:Year>2019</ns2:Year>
                     </ns2:Period>
                     <ns2:Data>
+                        <ns2:Amount GridNumber="00">0.00</ns2:Amount>
                         <ns2:Amount GridNumber="71">0.00</ns2:Amount>
                     </ns2:Data>
                     <ns2:ClientListingNihil>NO</ns2:ClientListingNihil>
@@ -190,6 +192,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
                     <ns2:Year>2019</ns2:Year>
                 </ns2:Period>
                 <ns2:Data>
+                    <ns2:Amount GridNumber="00">0.00</ns2:Amount>
                     <ns2:Amount GridNumber="56">10.50</ns2:Amount>
                     <ns2:Amount GridNumber="59">31.50</ns2:Amount>
                     <ns2:Amount GridNumber="72">21.00</ns2:Amount>

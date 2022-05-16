@@ -138,6 +138,10 @@ class AccountGenericTaxReport(models.AbstractModel):
         if len([item for item in grids_list if item[0] == '71' or item[0] == '72']) == 0:
             grids_list.append(('71', 0, False, None))
 
+        # Government expects a value also in grid '00'
+        if len([item for item in grids_list if item[0] == '00']) == 0:
+            grids_list.append(('00', 0, False, None))
+
         grids_list = sorted(grids_list, key=lambda a: a[0])
         for code, amount, carryover_bounds, tax_line in grids_list:
             if carryover_bounds:

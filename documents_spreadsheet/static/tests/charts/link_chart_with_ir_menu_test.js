@@ -10,7 +10,7 @@ import {
 import { session } from "@web/session";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { getBasicData } from "../utils/spreadsheet_test_data";
-import { createBasicChart } from "../utils/commands_helpers";
+import { createBasicChart, createGaugeChart, createScorecardChart} from "../utils/commands_helpers";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { registry } from "@web/core/registry";
 import { menuService } from "@web/webclient/menus/menu_service";
@@ -137,12 +137,74 @@ QUnit.module(
 
     () => {
         QUnit.test(
-            "can link an odoo menu to the chart in the side panel",
+            "can link an odoo menu to a basic chart chart in the side panel",
             async function (assert) {
                 const { model } = await createSpreadsheet({
                     serverData: this.serverData,
                 });
                 createBasicChart(model, chartId);
+                await nextTick();
+                await openChartSidePanel(model);
+                let odooMenu = model.getters.getChartOdooMenu(chartId);
+                assert.equal(
+                    odooMenu,
+                    undefined,
+                    "No menu linked with chart at start"
+                );
+
+                const irMenuField = target.querySelector(
+                    ".o_field_many2one input"
+                );
+                assert.ok(
+                    irMenuField,
+                    "A menu to link charts to odoo menus was added to the side panel"
+                );
+                await click(irMenuField);
+                await nextTick();
+                await click(document.querySelectorAll(".ui-menu-item")[0]);
+                odooMenu = model.getters.getChartOdooMenu(chartId);
+                assert.equal(odooMenu.xmlid, "documents_spreadsheet.test.menu", "Odoo menu is linked to chart");
+            }
+        );
+
+        QUnit.test(
+            "can link an odoo menu to a scorecard chart chart in the side panel",
+            async function (assert) {
+                const { model } = await createSpreadsheet({
+                    serverData: this.serverData,
+                });
+                createScorecardChart(model, chartId);
+                await nextTick();
+                await openChartSidePanel(model);
+                let odooMenu = model.getters.getChartOdooMenu(chartId);
+                assert.equal(
+                    odooMenu,
+                    undefined,
+                    "No menu linked with chart at start"
+                );
+
+                const irMenuField = target.querySelector(
+                    ".o_field_many2one input"
+                );
+                assert.ok(
+                    irMenuField,
+                    "A menu to link charts to odoo menus was added to the side panel"
+                );
+                await click(irMenuField);
+                await nextTick();
+                await click(document.querySelectorAll(".ui-menu-item")[0]);
+                odooMenu = model.getters.getChartOdooMenu(chartId);
+                assert.equal(odooMenu.xmlid, "documents_spreadsheet.test.menu", "Odoo menu is linked to chart");
+            }
+        );
+
+        QUnit.test(
+            "can link an odoo menu to a gauge chart chart in the side panel",
+            async function (assert) {
+                const { model } = await createSpreadsheet({
+                    serverData: this.serverData,
+                });
+                createGaugeChart(model, chartId);
                 await nextTick();
                 await openChartSidePanel(model);
                 let odooMenu = model.getters.getChartOdooMenu(chartId);

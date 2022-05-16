@@ -1,16 +1,57 @@
 <odoo>
-    <div t-name="documents_spreadsheet.ChartConfigurationPanel"
-        t-inherit="o-spreadsheet.ChartConfigurationPanel"
+
+    <t t-name="documents_spreadsheet.OdooMenuChartPanelSection" owl="1">
+        <div class="o-section">
+            <div class="o-section-title">Link to Odoo Menu</div>
+            <IrMenuSelector
+                menuId="odooMenuId"
+                onValueChanged.bind="updateOdooLink"/>
+        </div>
+    </t>
+
+    <t t-name="documents_spreadsheet.LineBarPieConfigPanel"
+        t-inherit="o-spreadsheet.LineBarPieConfigPanel"
         t-inherit-mode="extension"
         owl="1">
-        <xpath expr="//div[hasclass('o-sidepanel-error')]"
-            position="before">
-            <div class="o-section">
-                <div class="o-section-title">Link to Odoo Menu</div>
-                <IrMenuSelector
-                    menuId="odooMenuId"
-                    onValueChanged.bind="updateOdooLink"/>
-            </div>
+        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+            <t t-call="documents_spreadsheet.OdooMenuChartPanelSection"/>
         </xpath>
-    </div>
+    </t>
+
+    <t t-name="documents_spreadsheet.BarConfigPanel"
+        t-inherit="o-spreadsheet.BarConfigPanel"
+        t-inherit-mode="extension"
+        owl="1">
+        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+            <t t-call="documents_spreadsheet.OdooMenuChartPanelSection"/>
+        </xpath>
+    </t>
+
+    <t t-name="documents_spreadsheet.LineConfigPanel"
+        t-inherit="o-spreadsheet.LineConfigPanel"
+        t-inherit-mode="extension"
+        owl="1">
+        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+            <t t-call="documents_spreadsheet.OdooMenuChartPanelSection"/>
+        </xpath>
+    </t>
+
+    <t t-name="documents_spreadsheet.ScorecardChartConfigPanel"
+        t-inherit="o-spreadsheet.ScorecardChartConfigPanel"
+        t-inherit-mode="extension"
+        owl="1">
+        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+            <t t-call="documents_spreadsheet.OdooMenuChartPanelSection"/>
+        </xpath>
+    </t>
+
+    <t t-name="documents_spreadsheet.GaugeChartConfigPanel"
+        t-inherit="o-spreadsheet.GaugeChartConfigPanel"
+        t-inherit-mode="extension"
+        owl="1">
+        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+            <t t-call="documents_spreadsheet.OdooMenuChartPanelSection"/>
+        </xpath>
+    </t>
+
 </odoo>

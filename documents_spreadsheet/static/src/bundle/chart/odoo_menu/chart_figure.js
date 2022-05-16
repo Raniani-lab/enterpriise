@@ -15,7 +15,7 @@ patch(
         },
         async navigateToOdooMenu() {
             const menu = this.env.model.getters.getChartOdooMenu(
-                this.props.figure.id
+                this.props.figureId
             );
             if (!menu) {
                 throw new Error(`Cannot find any menu associated with the chart`);
@@ -25,7 +25,7 @@ patch(
         get hasOdooMenu() {
             return (
                 this.env.model.getters.getChartOdooMenu(
-                    this.props.figure.id
+                    this.props.figureId
                 ) !== undefined
             );
         },

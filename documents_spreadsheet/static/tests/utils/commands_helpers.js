@@ -95,3 +95,61 @@ export function createBasicChart(
         },
     });
 }
+
+/** Create a test scorecard chart in the active sheet*/
+export function createScorecardChart(
+    model,
+    chartId,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    model.dispatch("CREATE_CHART", {
+        id: chartId,
+        position: { x: 0, y: 0 },
+        sheetId: sheetId,
+        definition: {
+            title: "test",
+            keyValue: "A1",
+            type: "scorecard",
+            background: "#fff",
+            baselineColorDown: "#DC6965",
+            baselineColorUp: "#00A04A",
+            baselineMode: "absolute"
+        },
+    });
+}
+
+/** Create a test scorecard chart in the active sheet*/
+export function createGaugeChart(
+    model,
+    chartId,
+    sheetId = model.getters.getActiveSheetId()
+) {
+    model.dispatch("CREATE_CHART", {
+        id: chartId,
+        position: { x: 0, y: 0 },
+        sheetId: sheetId,
+        definition: {
+            title: "test",
+            type: "gauge",
+            background: "#fff",
+            dataRange: "A1",
+            sectionRule: {
+                rangeMin: "0",
+                rangeMax: "100",
+                colors: {
+                    lowerColor: "#112233",
+                    middleColor: "#445566",
+                    upperColor: "#778899",
+                },
+                lowerInflectionPoint: {
+                    type: "number",
+                    value: "25",
+                },
+                upperInflectionPoint: {
+                    type: "number",
+                    value: "85",
+                },
+            }
+        },
+    });
+}

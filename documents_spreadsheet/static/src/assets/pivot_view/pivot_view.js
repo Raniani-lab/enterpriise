@@ -6,16 +6,10 @@ import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelector
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
-import { removeContextUserInfo } from "../helpers";
+import { removeContextUserInfo, PERIODS } from "../helpers";
 
 import { _t } from "@web/core/l10n/translation";
-const PERIODS = {
-    day: _t("Day"),
-    week: _t("Week"),
-    month: _t("Month"),
-    quarter: _t("Quarter"),
-    year: _t("Year"),
-};
+
 
 const { onWillStart } = owl;
 

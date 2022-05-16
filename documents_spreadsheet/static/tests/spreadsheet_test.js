@@ -805,8 +805,8 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.equal(measures.children[2].innerText, "Probability");
 
         assert.equal(dimensions.children[0].innerText, "Dimensions");
-        assert.equal(dimensions.children[1].innerText, "bar");
-        assert.equal(dimensions.children[2].innerText, "foo");
+        assert.equal(dimensions.children[1].innerText, "Bar");
+        assert.equal(dimensions.children[2].innerText, "Foo");
 
         // opening from a non pivot cell
         const pivotA1 = model.getters.getPivotIdFromPosition(sheetId, 0, 0);
@@ -1714,7 +1714,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await nextTick();
         const sections = target.querySelectorAll(".o_side_panel_section");
         const fields = sections[3];
-        assert.equal(fields.children[1].innerText, "bar");
+        assert.equal(fields.children[1].innerText, "Bar");
         const measures = sections[4];
         assert.equal(measures.children[1].innerText, "Probability");
     });

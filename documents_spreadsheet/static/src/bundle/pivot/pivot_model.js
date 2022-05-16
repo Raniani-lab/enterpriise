@@ -8,6 +8,7 @@ import { formats } from "../o_spreadsheet/constants";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import { formatDate } from "./pivot_helpers";
+import { PERIODS } from "@documents_spreadsheet/assets/helpers";
 import { SpreadsheetPivotTable } from "./pivot_table";
 
 const { toString, toNumber, toBoolean } = spreadsheet.helpers;
@@ -202,6 +203,16 @@ export class SpreadsheetPivotModel extends PivotModel {
      */
     getField(field) {
         return this.metaData.fields[field];
+    }
+
+    /**
+     * Get the display name of a group by
+     * @param {string} fieldName
+     * @returns {string}
+     */
+    getFormattedGroupBy(fieldName) {
+        const { field, aggregateOperator} = this.parseGroupField(fieldName);
+        return field.string + (aggregateOperator ? ` (${PERIODS[aggregateOperator]})` : "");
     }
 
     //--------------------------------------------------------------------------

@@ -23,7 +23,12 @@ export default class PivotDetailsSidePanel extends Component {
                 model: definition.model,
                 modelDisplayName: this.spreadsheetModel.getModelLabel(),
                 domain: definition.domain,
-                dimensions: [...definition.rowGroupBys, ...definition.colGroupBys],
+                dimensions: [
+                    ...definition.rowGroupBys,
+                    ...definition.colGroupBys
+                ].map((fieldName) =>
+                    this.spreadsheetModel.getFormattedGroupBy(fieldName)
+                ),
                 measures: definition.measures.map((measure) =>
                     this.spreadsheetModel.getGroupByDisplayLabel("measure", measure)
                 ),

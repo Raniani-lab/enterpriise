@@ -540,36 +540,29 @@ class AccountMove(models.Model):
     def find_partner_id_with_name(self, partner_name):
         if not partner_name:
             return 0
-        partners_matched = self.env["res.partner"].search([("name", "ilike", partner_name)])
-        if partners_matched:
-            partner = min(partners_matched, key=lambda rec: len(rec.name))
-            if partner != self.company_id.partner_id:
-                return partner.id
 
-        # clean the partner name of non discriminating words
-        words_to_remove = {"Europe", "Euro", "Asia", "America", "Africa", "Service", "Services", "SAS", "SARL", "SPRL", "SRL", "SA", "SCS", "GCV", "BV", "BVBA",
-                           "NV", "GMBH", "Inc", "Incorporation", "Pty", "Ltd", "Pte", "Limited", "Company", "Solution", "Solutions", "Business", "Lease", "Leasing"}
-        partner_name = partner_name.replace('-', ' ')
-        partner_name = partner_name.translate(str.maketrans('', '', string.punctuation))
-        for word_to_remove in words_to_remove:
-            partner_name = re.sub(r'\b' + word_to_remove + r' ?\b', '', partner_name, flags=re.IGNORECASE)
-        partner_name = partner_name.strip()
+        partner = self.env["res.partner"].search([("name", "=", partner_name)], limit=1)
+        if partner:
+            return partner.id if partner.id != self.company_id.partner_id.id else 0
 
-        partners_matched = self.env["res.partner"].search([("name", "ilike", partner_name)])
-        if partners_matched:
-            partner = min(partners_matched, key=lambda rec: len(rec.name))
-            if partner != self.company_id.partner_id:
-                return partner.id
+        self.env.cr.execute("SELECT id, name FROM res_partner WHERE active = true AND supplier_rank > 0")
+
+        partners_dict = {name.lower().replace('-', ' '): partner_id for partner_id, name in self.env.cr.fetchall()}
+        partner_name = partner_name.lower().strip()
 
         partners = {}
-        for single_word in [word for word in re.findall(r"[\w]+", partner_name) if len(word) >= 4]:
-            partners_matched = self.env["res.partner"].search([("name", "ilike", single_word)], limit=30)
-            for partner in partners_matched:
-                partners[partner.id] = partners[partner.id] + 1 if partner.id in partners else 1
+        for single_word in [word for word in re.findall(r"\w+", partner_name) if len(word) >= 3]:
+            partners_matched = [partner for partner in partners_dict if single_word in partner.split()]
+            if len(partners_matched) == 1:
+                partner = partners_matched[0]
+                partners[partner] = partners[partner] + 1 if partner in partners else 1
+
         if partners:
-            partner_id = max(partners.keys(), key=(lambda k: partners[k]))
-            if partner_id != self.company_id.partner_id.id:
-                return partner_id
+            sorted_partners = sorted(partners, key=partners.get, reverse=True)
+            if len(sorted_partners) == 1 or partners[sorted_partners[0]] != partners[sorted_partners[1]]:
+                partner = sorted_partners[0]
+                if partners_dict[partner] != self.company_id.partner_id.id:
+                    return partners_dict[partner]
         return 0
 
     def _get_taxes_record(self, taxes_ocr, taxes_type_ocr):

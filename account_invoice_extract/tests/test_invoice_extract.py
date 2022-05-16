@@ -243,7 +243,8 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
     def test_partner_selection_from_name(self):
         # test that if a partner with a similar name already exists in database it is selected
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
-        existing_partner = self.env['res.partner'].create({'name': 'Test S.A.'})
+        existing_partner = self.env['res.partner'].create({'name': 'Test'})
+
         self.env['res.partner'].create({'name': 'Partner'})
         self.env['res.partner'].create({'name': 'Another supplier'})
         extract_response = self.get_default_extract_response()
@@ -267,10 +268,9 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
         # test that if the multi currency is disabled, the currency isn't changed
         self.env['res.currency'].search([('name', '!=', 'USD')]).active = False
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
-        test_user = self.env['res.users'].create({
-            'login': "test_user",
-            'name': "Test User",
-        })
+        test_user = self.env.ref('base.user_root')
+        test_user.groups_id = [(3, self.env.ref('base.group_multi_currency').id)]
+
         usd_currency = self.env['res.currency'].search([('name', '=', 'USD')])
         eur_currency = self.env['res.currency'].with_context({'active_test': False}).search([('name', '=', 'EUR')])
         invoice.currency_id = usd_currency.id

@@ -898,7 +898,7 @@ class AnalyticLine(models.Model):
             1. Approver: in this access right, the user can't validate all timesheets,
             he can validate the timesheets where he is the manager or timesheet responsible of the
             employee who is assigned to this timesheets or the user is the owner of the project.
-            Furthermore, the user can validate his own timesheets.
+            The user cannot validate his own timesheets.
 
             2. Manager (Administrator): with this access right, the user can validate all timesheets.
         """
@@ -907,8 +907,7 @@ class AnalyticLine(models.Model):
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
             return expression.AND([domain, ['|', ('employee_id.timesheet_manager_id', '=', self.env.user.id),
                       '|', ('employee_id', 'in', self.env.user.employee_id.subordinate_ids.ids),
-                      '|', ('employee_id.parent_id.user_id', '=', self.env.user.id),
-                      '|', ('project_id.user_id', '=', self.env.user.id), ('user_id', '=', self.env.user.id)]])
+                      '|', ('employee_id.parent_id.user_id', '=', self.env.user.id), ('project_id.user_id', '=', self.env.user.id)]])
         return domain
 
     def _get_timesheets_to_merge(self):

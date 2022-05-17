@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { patchUiSize, SIZES } from '@mail/../tests/helpers/patch_ui_size';
 import {
     afterNextRender,
     dragenterFiles,
@@ -9,7 +10,6 @@ import {
 } from '@mail/../tests/helpers/test_utils';
 
 import testUtils, { file } from 'web.test_utils';
-import config from 'web.config';
 import FormView from 'web.FormView';
 const { createFile, inputFiles } = file;
 
@@ -21,6 +21,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
 
         const pyEnv = await startServer();
         const resPartnerId1 = pyEnv['res.partner'].create({});
+        patchUiSize({ size: SIZES.XXL });
         let form, env;
         await afterNextRender(async () => { // because of chatter container
             const { env: environment, widget } = await start({
@@ -36,11 +37,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 // FIXME could be removed once task-2248306 is done
                 archs: {
                     'mail.message,false,list': '<tree/>',
-                },
-                config: {
-                    device: {
-                        size_class: config.device.SIZES.XXL,
-                    },
                 },
                 res_id: resPartnerId1,
                 async mockRPC(route, args) {
@@ -91,6 +87,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             model: 'res.partner',
             res_id: resPartnerId1,
         });
+        patchUiSize({ size: SIZES.XXL });
         let form, env;
         await afterNextRender(async () => { // because of chatter container
             const { env: environment, target } = await start({
@@ -111,11 +108,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     'mail.message,false,list': '<tree/>',
                 },
                 res_id: resPartnerId1,
-                config: {
-                    device: {
-                        size_class: config.device.SIZES.XXL,
-                    },
-                },
                 async mockRPC(route, args) {
                     if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
                         var canvas = document.createElement('canvas');
@@ -215,6 +207,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 message_attachment_count: 0
             });
 
+            patchUiSize({ size: SIZES.XXL });
             const { click, widget: form } = await start({
                 hasView: true,
                 View: FormView,
@@ -239,11 +232,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 viewOptions: {
                     ids: [resPartnerId1, resPartnerId2],
                     index: 0,
-                },
-                config: {
-                    device: {
-                        size_class: config.device.SIZES.XXL,
-                    },
                 },
                 async mockRPC(route, args) {
                     if (route.includes('/web/static/lib/pdfjs/web/viewer.html')) {
@@ -278,6 +266,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
     QUnit.test('Attachment on side on new record', async function (assert) {
         assert.expect(3);
 
+        patchUiSize({ size: SIZES.XXL });
         let form;
         await afterNextRender(async () => { // because of chatter container
             const { target } = await start({
@@ -296,11 +285,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 // FIXME could be removed once task-2248306 is done
                 archs: {
                     'mail.message,false,list': '<tree/>',
-                },
-                config: {
-                    device: {
-                        size_class: config.device.SIZES.XXL,
-                    },
                 },
             });
             form = target;
@@ -329,6 +313,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             model: 'res.partner',
             res_id: resPartnerId1,
         });
+        patchUiSize({ size: SIZES.XL });
         let form;
         await afterNextRender(async () => { // because of chatter container
             const { target } = await start({
@@ -349,11 +334,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     'mail.message,false,list': '<tree/>',
                 },
                 res_id: resPartnerId1,
-                config: {
-                    device: {
-                        size_class: config.device.SIZES.XL,
-                    },
-                },
             });
             form = target;
         });
@@ -371,6 +351,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             name: new Array(100).fill().map(_ => 'name').join(),
         });
         const resPartnerId1 = pyEnv['res.partner'].create({ channel_ids: [mailChannelId1] });
+        patchUiSize({ size: SIZES.XXL });
         const { click, target: form } = await start({
             hasView: true,
             arch: `
@@ -398,9 +379,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                         return true;
                 }
                 return _super();
-            },
-            config: {
-                device: { size_class: config.device.SIZES.XXL },
             },
             model: 'res.partner',
             res_id: resPartnerId1,

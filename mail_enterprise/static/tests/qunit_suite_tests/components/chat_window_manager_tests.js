@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { patchUiSize, SIZES } from '@mail/../tests/helpers/patch_ui_size';
 import {
     afterNextRender,
     start,
@@ -56,13 +57,8 @@ QUnit.test('[technical] chat window should properly override the back button', a
 
     const pyEnv = await startServer();
     pyEnv['mail.channel'].create();
-    const { createMessagingMenuComponent } = await start({
-        env: {
-            device: {
-                isMobile: true,
-            },
-        },
-    });
+    patchUiSize({ size: SIZES.SM });
+    const { createMessagingMenuComponent } = await start();
     await createMessagingMenuComponent();
     await afterNextRender(() => document.querySelector(`.o_MessagingMenu_toggler`).click());
     await afterNextRender(() =>

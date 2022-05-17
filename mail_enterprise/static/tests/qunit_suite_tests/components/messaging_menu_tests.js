@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { patchUiSize, SIZES } from '@mail/../tests/helpers/patch_ui_size';
 import {
     afterNextRender,
     start,
@@ -47,13 +48,8 @@ QUnit.test('[technical] messaging menu should properly override the back button'
             assert.step(`overrideBackButton: ${enabled}`);
         },
     });
-    const { createMessagingMenuComponent } = await start({
-        env: {
-            device: {
-                isMobile: true,
-            },
-        },
-    });
+    patchUiSize({ size: SIZES.SM });
+    const { createMessagingMenuComponent } = await start();
     await createMessagingMenuComponent();
 
     await afterNextRender(() =>

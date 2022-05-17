@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { link, replace } from '@mail/model/model_field_command';
-
+import { patchUiSize, SIZES } from '@mail/../tests/helpers/patch_ui_size';
 import {
     afterNextRender,
     start,
@@ -24,13 +24,9 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
         overrideBackButton({ enabled }) {},
     });
 
-    const { createMessageComponent, messaging } = await start({
-        env: {
-            device: {
-                isMobile: true,
-            },
-        },
-    });
+    patchUiSize({ size: SIZES.SM });
+    const { createMessageComponent, messaging } = await start();
+
     const attachment = messaging.models['Attachment'].create({
         filename: "test.png",
         id: 750,
@@ -69,13 +65,9 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
         },
     });
 
-    const { createMessageComponent, messaging } = await start({
-        env: {
-            device: {
-                isMobile: true,
-            },
-        },
-    });
+    patchUiSize({ size: SIZES.SM });
+    const { createMessageComponent, messaging } = await start();
+
     const attachment = messaging.models['Attachment'].create({
         filename: "test.png",
         id: 750,

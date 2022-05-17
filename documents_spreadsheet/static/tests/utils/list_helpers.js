@@ -36,6 +36,16 @@ export async function spawnListViewForSpreadsheet(params = {}) {
         type: "ir.actions.act_window",
         views: [[false, "list"]],
     });
+
+    /** sort the view by field */
+    const target = getFixture();
+    for (let order of params.orderBy || []) {
+        const selector = `thead th.o_column_sortable[data-name='${order.name}']`
+        await click(target.querySelector(selector));
+        if (order.asc === false) {
+            await click(target.querySelector(selector));
+        }
+    }
     return webClient;
 }
 
@@ -66,6 +76,7 @@ export async function createSpreadsheetFromList(params = {}) {
         model: params.model,
         serverData: params.serverData,
         mockRPC: params.mockRPC,
+        orderBy: params.orderBy,
     });
     const target = getFixture();
     /** Put the current list in a new spreadsheet */

@@ -4,7 +4,7 @@
 import ListView from "web.ListView";
 import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet_extended";
 import { createView, dom } from "web.test_utils";
-import { getBasicData, getBasicListArch } from "../utils/spreadsheet_test_data";
+import { getBasicData, getBasicServerData, getBasicListArch } from "../utils/spreadsheet_test_data";
 import { insertList } from "../../src/bundle/list/list_init_callback";
 import {
     getCell,
@@ -663,5 +663,31 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         B4 = getCell(model, "B4");
         assert.equal(B4.evaluated.error, `There is no list with id "1"`);
         assert.equal(B4.evaluated.value, `#ERROR`);
+    });
+
+    QUnit.test("Inserting a list preserves the ascending sorting from the list", async function (assert) {
+        const serverData = getBasicServerData();
+        serverData.models.partner.fields.foo.sortable = true;
+        const { model } = await createSpreadsheetFromList({
+            serverData,
+            orderBy: [{name:'foo', asc: true}],
+            linesNumber: 4
+        });
+        assert.ok(getCell(model, 'A2').evaluated.value <= getCell(model, 'A3').evaluated.value);
+        assert.ok(getCell(model, 'A3').evaluated.value <=  getCell(model, 'A4').evaluated.value);
+        assert.ok(getCell(model, 'A4').evaluated.value <= getCell(model, 'A5').evaluated.value);
+    });
+
+    QUnit.test("Inserting a list preserves the descending sorting from the list", async function (assert) {
+        const serverData = getBasicServerData();
+        serverData.models.partner.fields.foo.sortable = true; 
+        const { model } = await createSpreadsheetFromList({
+            serverData,
+            orderBy: [{name:'foo', asc: false}],
+            linesNumber: 4
+        });
+        assert.ok(getCell(model, 'A2').evaluated.value >= getCell(model, 'A3').evaluated.value);
+        assert.ok(getCell(model, 'A3').evaluated.value >=  getCell(model, 'A4').evaluated.value);
+        assert.ok(getCell(model, 'A4').evaluated.value >= getCell(model, 'A5').evaluated.value);
     });
 });

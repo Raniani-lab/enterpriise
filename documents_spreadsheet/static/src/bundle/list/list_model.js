@@ -1,6 +1,8 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
+import { orderByToString } from '../helpers';
+
 const { EventBus } = owl;
 
 /**
@@ -43,7 +45,7 @@ export class SpreadsheetListModel extends EventBus {
             searchParams.domain,
             this.metaData.columns.filter(f => this.getField(f)),
             {
-                orderBy: searchParams.orderBy,
+                order: orderByToString(searchParams.orderBy),
                 limit: this.limit,
             },
             searchParams.context

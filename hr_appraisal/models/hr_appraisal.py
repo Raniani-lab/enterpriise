@@ -383,10 +383,10 @@ class HrAppraisal(models.Model):
         return super().mapped(func)
 
     @api.model
-    def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
-        fields_list = {term[0] for term in args if isinstance(term, (tuple, list))}
+    def _search(self, domain, offset=0, limit=None, order=None, access_rights_uid=None):
+        fields_list = {term[0] for term in domain if isinstance(term, (tuple, list))}
         self._check_access(fields_list)
-        return super()._search(args, offset, limit, order, count, access_rights_uid)
+        return super()._search(domain, offset, limit, order, access_rights_uid)
 
     def filtered_domain(self, domain):
         fields_list = {term[0] for term in domain if isinstance(term, (tuple, list))}

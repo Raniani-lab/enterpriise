@@ -59,10 +59,10 @@ class Applicant(models.Model):
         return super().read_group(domain, fields, groupby, offset, limit, orderby, lazy)
 
     @api.model
-    def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
-        fields = {term[0] for term in args if isinstance(term, (tuple, list))}
+    def _search(self, domain, offset=0, limit=None, order=None, access_rights_uid=None):
+        fields = {term[0] for term in domain if isinstance(term, (tuple, list))}
         self._check_referral_fields_access(fields)
-        return super()._search(args, offset, limit, order, count, access_rights_uid)
+        return super()._search(domain, offset, limit, order, access_rights_uid)
 
     def mapped(self, func):
         if func and isinstance(func, str):

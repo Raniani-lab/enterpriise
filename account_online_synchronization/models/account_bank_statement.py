@@ -66,7 +66,7 @@ class AccountBankStatementLine(models.Model):
             total = sum([t['amount'] for t in sorted_transactions])
 
             # For first synchronization, an opening line is created to fill the missing bank statement data
-            any_st_line = self.search([('journal_id', '=', journal.id)], limit=1, count=True)
+            any_st_line = self.search_count([('journal_id', '=', journal.id)], limit=1)
             journal_currency = journal.currency_id or journal.company_id.currency_id
             # If there are neither statement and the ending balance != 0, we create an opening bank statement
             if not any_st_line and not journal_currency.is_zero(online_account.balance - total):

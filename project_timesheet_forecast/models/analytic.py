@@ -105,10 +105,10 @@ class AccountAnalyticLine(models.Model):
         if not employee:
             return res
 
-        slot_id = self.env['planning.slot']._search(
+        slot_count = self.env['planning.slot'].search_count(
             self._get_planning_domain(employee.id), limit=1
         )
-        if slot_id:
+        if slot_count:
             res |= employee
         return res
 

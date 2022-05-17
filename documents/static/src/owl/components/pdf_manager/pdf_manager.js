@@ -33,6 +33,8 @@ class PdfManager extends LegacyComponent {
              *  object pages[pageId] = { pageId, groupId, isSelected, fileId, localPageNumber }
              */
             pages: {},
+            // object pageCanvases[pageId] = { canvas, pageObject }
+            pageCanvases: {},
             // The page that is open as large preview.
             viewedPage: undefined,
             // whether to archive the original documents.
@@ -48,8 +50,6 @@ class PdfManager extends LegacyComponent {
          * object _newFiles[fileId] = { type, file, documentId, pageIds, activePageIds }
          */
         this._newFiles = {};
-        // object _pageCanvas[pageId] = pageObject from PDFJS
-        this._pageCanvas = {};
         this._onGlobalKeydown = this._onGlobalKeydown.bind(this);
         this._onGlobalCaptureKeyup = this._onGlobalCaptureKeyup.bind(this);
 
@@ -264,7 +264,7 @@ class PdfManager extends LegacyComponent {
                 isSelected: true,
             };
             newPages[pageNumber] = pageId;
-            this._pageCanvas[pageId] = {};
+            this.state.pageCanvases[pageId] = {};
             this.state.groupData[groupId].pageIds.push(pageId);
             pageIds.push(pageId);
         }
@@ -325,7 +325,7 @@ class PdfManager extends LegacyComponent {
                 width: 160,
                 height: 230,
             });
-            this._pageCanvas[pageId] = { page, canvas };
+            this.state.pageCanvases[pageId] = { page, canvas };
         }
     }
     /**
@@ -387,7 +387,7 @@ class PdfManager extends LegacyComponent {
      */
     _removeFile(fileId) {
         for (const pageId of this._newFiles[fileId].pageIds) {
-            delete this._pageCanvas[pageId];
+            delete this.state.pageCanvases[pageId];
             delete this.state.pages[pageId];
         }
         delete this._newFiles[fileId];
@@ -583,7 +583,7 @@ class PdfManager extends LegacyComponent {
     async _onClickPage(ev) {
         ev.stopPropagation();
         const pageId = ev.detail;
-        const page = this._pageCanvas[pageId].page;
+        const page = this.state.pageCanvases[pageId].page;
         if (!page) {
             return;
         }

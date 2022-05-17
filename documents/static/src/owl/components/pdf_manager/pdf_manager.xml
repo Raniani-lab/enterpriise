@@ -44,7 +44,7 @@
                     <t t-foreach="state.groupData[groupId].pageIds" t-as="pageId" t-key="pageId">
                         <div class="o_documents_pdf_page_frame" t-key="'div_' + pageId">
                             <PdfPage
-                                canvas="_pageCanvas[pageId].canvas"
+                                canvas="state.pageCanvases[pageId].canvas"
                                 isPreview="false"
                                 isSelected="state.pages[pageId].isSelected"
                                 pageId="pageId"

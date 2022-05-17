@@ -12,6 +12,7 @@ const Dialog = require('web.Dialog');
 const dom = require('web.dom');
 const mobile = require('web_mobile.core');
 const realSession = require('web.session');
+const { sprintf } = require('@web/core/utils/strings');
 const Widget = require('web.Widget');
 
 const { _t, _lt } = core;
@@ -50,8 +51,6 @@ const DialingPanel = Widget.extend({
     init() {
         this._super(...arguments);
 
-        this.title = _t("VOIP");
-
         this._isFolded = false;
         this._isFoldedBeforeCall = false;
         this._isInCall = false;
@@ -77,6 +76,7 @@ const DialingPanel = Widget.extend({
         this._onSipErrorResolved = this._onSipErrorResolved.bind(this);
         this._onSipIncomingCall = this._onSipIncomingCall.bind(this);
         this._onSipRejected = this._onSipRejected.bind(this);
+        this.title = this._getTitle();
     },
     async willStart() {
         this._messaging = await owl.Component.env.services.messaging.get();
@@ -269,6 +269,25 @@ const DialingPanel = Widget.extend({
         }
     },
     /**
+     * @private
+     * @returns {string}
+     */
+    _getTitle() {
+        switch (this._missedCounter) {
+            case 0:
+                return _t("VoIP");
+            case 1:
+                return _t("1 missed call");
+            case 2:
+                return _t("2 missed calls");
+            default:
+                return sprintf(
+                    _t("%(number of missed calls)s missed calls"),
+                    { 'number of missed calls': this._missedCounter }
+                );
+        }
+    },
+    /**
      * Hides the search input and the tabs.
      *
      * @private
@@ -355,11 +374,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _refreshMissedCalls() {
-        if (this._missedCounter === 0) {
-            this.title = _t("VOIP");
-        } else {
-            this.title = this._missedCounter + " " + _t("missed call(s)");
-        }
+        this.title = this._getTitle();
         $('.o_dial_text').text(this.title);
     },
     /**

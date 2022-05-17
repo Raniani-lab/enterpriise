@@ -389,7 +389,7 @@ class AccountAsset(models.Model):
                 amount = residual_amount * self.method_progress_factor
             if self.method in ('linear', 'degressive_then_linear'):
                 nb_depreciation = max_depreciation_nb - starting_sequence
-                if self.prorata:
+                if self.prorata and not self.env.context.get("ignore_prorata"):
                     nb_depreciation -= 1
                 linear_amount = min(total_amount_to_depr / nb_depreciation, residual_amount)
                 if self.method == 'degressive_then_linear':
@@ -404,7 +404,7 @@ class AccountAsset(models.Model):
         posted_depreciation_move_ids = self.depreciation_move_ids.filtered(lambda x: x.state == 'posted' and not x.asset_value_change and not x.reversal_move_id).sorted(key=lambda l: l.date)
         already_depreciated_amount = sum([m.amount_total for m in posted_depreciation_move_ids])
         depreciation_number = self.method_number
-        if self.prorata:
+        if self.prorata and not self.env.context.get("ignore_prorata"):
             depreciation_number += 1
         starting_sequence = 0
         amount_to_depreciate = self.value_residual + sum([m.amount_total for m in amount_change_ids])

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import json
+from freezegun import freeze_time
 
 from odoo import fields
 from odoo.addons.mail.tests.common import mail_new_test_user
@@ -131,3 +132,69 @@ class TestSubscriptionDashboard(HttpCase):
         self.assertEqual(res.status_code, 200, "Should OK")
         res_data = res.json()["result"]
         self.assertEqual(res_data["stats"]["value_2"], nrr_before, "NRR should not change after adding a subscription")
+
+    def test_mrr(self):
+        with freeze_time("2021-01-03"):
+            self._test_mrr()
+
+    def _test_mrr(self):
+        start_date = fields.Date.to_string(fields.Date.start_of(datetime.date.today(), "month"))
+        end_date = fields.Date.to_string(fields.Date.end_of(datetime.date.today(), "month"))
+
+        self.subscription.write(
+            {
+                "partner_id": self.partner_id.id,
+                "sale_order_template_id": self.subscription_tmpl.id,
+                "order_line": [
+                    (
+                        0,
+                        0,
+                        {
+                            "product_id": self.product.id,
+                            "name": "TestRecurringLine",
+                            "price_unit": 50,
+                            "product_uom": self.product.uom_id.id,
+                            "pricing_id": self.pricing_month.id
+                        },
+                    )
+                ],
+            }
+        )
+        self.subscription.action_confirm()
+        self.subscription._create_recurring_invoice()
+        invoice = self.subscription.invoice_ids
+        invoice._post()
+
+        self._check_mrr(start_date, end_date, 50)
+
+        # make refund
+        move_reversal = self.env['account.move.reversal'].with_context(active_model="account.move", active_ids=invoice.ids).create({
+            'date': datetime.date.today(),
+            'reason': 'no reason',
+            'refund_method': 'refund',
+            'journal_id': invoice.journal_id.id,
+        })
+        reversal = move_reversal.reverse_moves()
+        reverse_move = self.env['account.move'].browse(reversal['res_id'])
+        reverse_move._post()
+
+        self._check_mrr(start_date, end_date, 0)
+
+    def _check_mrr(self, start_date, end_date, value):
+        self.authenticate("test_user_1", "P@ssw0rd!")
+        url = '/sale_subscription_dashboard/compute_stat'
+        res = self.url_open(
+            url,
+            data=json.dumps(
+                {
+                    "params": {
+                        "stat_type": "mrr",
+                        "start_date": start_date,
+                        "end_date": end_date,
+                        "filters": {},
+                    },
+                }
+            ),
+            headers={"Content-Type": "application/json"},
+        )
+        self.assertEqual(res.json()['result'], value)

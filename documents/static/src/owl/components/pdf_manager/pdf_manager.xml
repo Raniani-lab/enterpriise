@@ -32,7 +32,7 @@
                     </button>
                 </span>
             </div>
-            <div class="o_documents_pdf_page_preview" t-if="previewCanvas">
+            <div class="o_documents_pdf_page_preview" t-if="state.viewedPage">
                 <PdfPage pageId="state.viewedPage"
                     canvas="previewCanvas"
                     isPreview="true"

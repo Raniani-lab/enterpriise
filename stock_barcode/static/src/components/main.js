@@ -17,7 +17,7 @@ import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scann
 import { LegacyComponent } from "@web/legacy/legacy_component";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
-const { onMounted, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
+const { onMounted, onPatched, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
 
 /**
  * Main Component
@@ -79,6 +79,10 @@ class MainComponent extends LegacyComponent {
 
         onWillUnmount(() => {
             core.bus.off('barcode_scanned', this, this._onBarcodeScanned);
+        });
+
+        onPatched(() => {
+            this._scrollToSelectedLine();
         });
     }
 
@@ -195,45 +199,6 @@ class MainComponent extends LegacyComponent {
 
     get numberOfPages() {
         return this.env.model.pages.length;
-    }
-
-    async render() {
-        await super.render(...arguments);
-        if (!this.displayBarcodeLines) {
-            this._scrollBehavior = 'auto';
-            return;
-        }
-        let selectedLine = document.querySelector('.o_sublines .o_barcode_line.o_highlight');
-        if (!selectedLine) {
-            selectedLine = document.querySelector('.o_barcode_line.o_highlight');
-        }
-        if (selectedLine) {
-            // If a line is selected, checks if this line is entirely visible
-            // and if it's not, scrolls until the line is.
-            const footer = document.querySelector('.fixed-bottom');
-            const header = document.querySelector('.o_barcode_header');
-            const lineRect = selectedLine.getBoundingClientRect();
-            const navbar = document.querySelector('.o_main_navbar');
-            // On mobile, overflow is on the html.
-            const page = document.querySelector(this.isMobile ? 'html' : '.o_barcode_lines');
-            // Computes the real header's height (the navbar is present if the page was refreshed).
-            const headerHeight = navbar ? navbar.offsetHeight + header.offsetHeight : header.offsetHeight;
-            let scrollCoordY = false;
-            if (lineRect.top < headerHeight) {
-                scrollCoordY = lineRect.top - headerHeight + page.scrollTop;
-            } else if (lineRect.bottom > window.innerHeight - footer.offsetHeight) {
-                const pageRect = page.getBoundingClientRect();
-                scrollCoordY = page.scrollTop - (pageRect.bottom - lineRect.bottom);
-                if (this.isMobile) {
-                    // The footer can hide the line on mobile, we increase the scroll coord to avoid that.
-                    scrollCoordY += footer.offsetHeight;
-                }
-            }
-            if (scrollCoordY !== false) { // Scrolls to the line only if it's not entirely visible.
-                page.scroll({ left: 0, top: scrollCoordY, behavior: this._scrollBehavior });
-                this._scrollBehavior = 'smooth';
-            }
-        }
     }
 
     get packageLines() {
@@ -423,6 +388,44 @@ class MainComponent extends LegacyComponent {
     _onBarcodeScanned(barcode) {
         if (this.displayBarcodeApplication) {
             this.env.model.processBarcode(barcode);
+        }
+    }
+
+    _scrollToSelectedLine() {
+        if (!this.displayBarcodeLines) {
+            this._scrollBehavior = 'auto';
+            return;
+        }
+        let selectedLine = document.querySelector('.o_sublines .o_barcode_line.o_highlight');
+        if (!selectedLine) {
+            selectedLine = document.querySelector('.o_barcode_line.o_highlight');
+        }
+        if (selectedLine) {
+            // If a line is selected, checks if this line is entirely visible
+            // and if it's not, scrolls until the line is.
+            const footer = document.querySelector('.fixed-bottom');
+            const header = document.querySelector('.o_barcode_header');
+            const lineRect = selectedLine.getBoundingClientRect();
+            const navbar = document.querySelector('.o_main_navbar');
+            // On mobile, overflow is on the html.
+            const page = document.querySelector(this.isMobile ? 'html' : '.o_barcode_lines');
+            // Computes the real header's height (the navbar is present if the page was refreshed).
+            const headerHeight = navbar ? navbar.offsetHeight + header.offsetHeight : header.offsetHeight;
+            let scrollCoordY = false;
+            if (lineRect.top < headerHeight) {
+                scrollCoordY = lineRect.top - headerHeight + page.scrollTop;
+            } else if (lineRect.bottom > window.innerHeight - footer.offsetHeight) {
+                const pageRect = page.getBoundingClientRect();
+                scrollCoordY = page.scrollTop - (pageRect.bottom - lineRect.bottom);
+                if (this.isMobile) {
+                    // The footer can hide the line on mobile, we increase the scroll coord to avoid that.
+                    scrollCoordY += footer.offsetHeight;
+                }
+            }
+            if (scrollCoordY !== false) { // Scrolls to the line only if it's not entirely visible.
+                page.scroll({ left: 0, top: scrollCoordY, behavior: this._scrollBehavior });
+                this._scrollBehavior = 'smooth';
+            }
         }
     }
 

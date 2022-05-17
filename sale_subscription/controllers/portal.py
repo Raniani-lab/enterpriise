@@ -291,7 +291,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
         """
         order = request.env['sale.order'].browse(order_id)
         new_token = request.env['payment.token'].browse(int(token_id))
-        order.sudo().payment_token_id = new_token
+        order.payment_token_id = new_token
 
 
 class SalePortal(sale_portal.CustomerPortal):

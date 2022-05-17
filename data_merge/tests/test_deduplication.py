@@ -146,3 +146,28 @@ class TestDeduplication(test_common.TestCommon):
         record._compute_active()
         self.assertFalse(record.active, "Record should be inactive")
         self.assertTrue(record.is_deleted, "The record should be deleted")
+
+    def test_multi_model(self):
+        self._create_rule('x_name', 'exact', model_name='x_dm_test_model')
+        self._create_rule('x_name', 'exact', model_name='x_dm_test_model2')
+
+        self._create_record('x_dm_test_model', x_name='abc')
+        self._create_record('x_dm_test_model', x_name='abc')
+
+        self._create_record('x_dm_test_model2', x_name='abc')
+        self._create_record('x_dm_test_model2', x_name='abc')
+        self._create_record('x_dm_test_model2', x_name='abc')
+
+        self.MyModel.find_duplicates()
+        self.MyModel2.find_duplicates()
+
+        records_wrong_company = self.env['data_merge.record'].search([('model_id', '=', self.MyModel.id), ('company_id', '=', 1)])
+        self.assertEqual(len(records_wrong_company), 0, "Should have found 0 records")
+
+        records_model1 = self.env['data_merge.record'].search([('model_id', '=', self.MyModel.id)])
+        records_model2 = self.env['data_merge.record'].search([('model_id', '=', self.MyModel2.id)])
+        self.assertEqual(len(records_model1), 2, "Should have found 2 records")
+        self.assertEqual(len(records_model2), 3, "Should have found 3 records")
+
+        self.assertEqual(records_model1[0].name, 'abc', "Should have read name abc")
+        self.assertEqual(records_model2[0].name, 'abc', "Should have read name abc")

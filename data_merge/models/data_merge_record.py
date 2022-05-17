@@ -10,6 +10,7 @@ from odoo.tools.misc import format_datetime, format_date
 
 from datetime import datetime, date
 import psycopg2
+import itertools
 import ast
 import logging
 _logger = logging.getLogger(__name__)
@@ -87,7 +88,6 @@ class DataMergeRecord(models.Model):
 
         record_data = record.read(to_read)[0]
         return {str(field_description(key)):str(format_value(value, self.env)) for key, value in record_data.items() if value and not hidden_field(key)}
-
 
     @api.depends('res_id')
     def _compute_field_values(self):
@@ -179,20 +179,25 @@ class DataMergeRecord(models.Model):
         else:
             self.used_in = ''
 
-    @api.depends('res_id')
+    @api.depends('res_model_name', 'res_id')
     def _compute_fields(self):
-        existing_records = {r.id:r for r in self._original_records().exists()}
-        for record in self:
-            original_record = existing_records.get(record.res_id) or self.env[record.res_model_name]
-            name = original_record.display_name
+        groups = itertools.groupby(self, key=lambda r: r.res_model_name)
+        for _, group_records in groups:
+            group_records_ids = [r.id for r in group_records]
+            records = self.browse(group_records_ids)
+            existing_records = {r.id:r for r in records._original_records()}
 
-            record.is_deleted = record.res_id not in existing_records.keys()
-            record.name = name if name else '*Record Deleted*'
-            record.company_id = original_record._fields.get('company_id') and original_record.company_id
-            record.record_create_date = original_record.create_date
-            record.record_create_uid = original_record.create_uid.name or '*Deleted*'
-            record.record_write_date = original_record.write_date
-            record.record_write_uid = original_record.write_uid.name or '*Deleted*'
+            for record in records:
+                original_record = existing_records.get(record.res_id) or self.env[record.res_model_name]
+                name = original_record.display_name
+                record.is_deleted = record.res_id not in existing_records.keys()
+                record.name = name if name else '*Record Deleted*'
+                record.company_id = original_record._fields.get('company_id') and original_record.company_id
+                record.record_create_date = original_record.create_date
+                record.record_create_uid = original_record.create_uid.name or '*Deleted*'
+                record.record_write_date = original_record.write_date
+                record.record_write_uid = original_record.write_uid.name or '*Deleted*'
+
 
     @api.depends('is_deleted', 'is_discarded')
     def _compute_active(self):

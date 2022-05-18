@@ -18,17 +18,17 @@ class ResourceCalendarLeaves(models.Model):
             :returns: domain to get all slots in the leaves period.
         """
         if not self:
-            expression.FALSE_DOMAIN
-        global_leave_start_date = leave_start_date = datetime.combine(date.today(), time.min)
-        global_leave_end_date = leave_end_date = datetime.combine(date(2070, 1, 1), time.max)
-        resource_ids = []
+            return expression.FALSE_DOMAIN
+        global_leave_start_date = leave_start_date = datetime.combine(date.today(), time.max)
+        global_leave_end_date = leave_end_date = datetime.combine(date(1970, 1, 1), time.min)
+        resource_ids = set()
         for leave in self:
             if leave.resource_id:
                 if leave_start_date > leave.date_from:
                     leave_start_date = leave.date_from
                 if leave_end_date < leave.date_to:
                     leave_end_date = leave.date_to
-                resource_ids.append(leave.resource_id.id)
+                resource_ids.add(leave.resource_id.id)
                 continue
             if global_leave_start_date > leave.date_from:
                 global_leave_start_date = leave.date_from
@@ -44,7 +44,7 @@ class ResourceCalendarLeaves(models.Model):
                 [
                     ('start_datetime', '<=', leave_end_date),
                     ('end_datetime', '>=', leave_start_date),
-                    ('resource_id', 'in', resource_ids),
+                    ('resource_id', 'in', list(resource_ids)),
                 ],
                 domain,
             ])
@@ -55,6 +55,8 @@ class ResourceCalendarLeaves(models.Model):
 
             :param domain: domain to fetch the shifts to recompute.
         """
+        if domain is None and not self:  # then no shifts to recompute can be found
+            return
         if domain is None:
             domain = self._process_shifts_domain()
         shifts = self.env['planning.slot'].search(domain)
@@ -64,7 +66,7 @@ class ResourceCalendarLeaves(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
-        self._recompute_shifts_in_leave_periods()
+        records._recompute_shifts_in_leave_periods()
         return records
 
     def write(self, vals):

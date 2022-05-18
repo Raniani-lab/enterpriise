@@ -128,11 +128,11 @@ module("documents_spreadsheet > global_filters",
 
         // pivot
         $($(target).find(".o_field_selector_value")[0]).focusin();
-        await click(target.querySelector(".o_field_selector_select_button"));
+        await click(target.querySelector(".o_field_selector_select_button[data-name='date']"));
 
         //list
         $($(target).find(".o_field_selector_value")[1]).focusin();
-        await click(target.querySelector(".o_field_selector_popover:not(.d-none) .o_field_selector_select_button"));
+        await click(target.querySelector(".o_field_selector_popover:not(.d-none) .o_field_selector_select_button[data-name='date']"));
 
         await click(
             target.querySelector(".o_spreadsheet_filter_editor_side_panel .o_global_filter_save")
@@ -198,7 +198,7 @@ module("documents_spreadsheet > global_filters",
         // intentionally skip the year input
 
         $($(target).find(".o_field_selector_value")[0]).focusin();
-        await testUtils.dom.click($(target).find(".o_field_selector_select_button")[0]);
+        await testUtils.dom.click($(target).find(".o_field_selector_select_button[data-name='date']")[0]);
 
         const save = $(target).find(
             ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"

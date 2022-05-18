@@ -2,6 +2,9 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { orderByToString } from '../helpers';
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+
+const { toNumber } = spreadsheet.helpers;
 
 const { EventBus } = owl;
 
@@ -97,6 +100,9 @@ export class SpreadsheetListModel extends EventBus {
                 return value ? value[1] : "";
             case "boolean":
                 return record[fieldName] ? "TRUE" : "FALSE";
+            case "date":
+            case "datetime":
+                return record[fieldName] ? toNumber(record[fieldName]) : "";
             default:
                 return record[fieldName] || "";
         }

@@ -206,6 +206,7 @@ test("pivot with one level of group bys", async (assert) => {
 
 test("pivot with two levels of group bys in rows", async (assert) => {
     assert.expect(9);
+    const productModelName = 'Product';
     const { model } = await createSpreadsheetFromPivot({
         serverData: {
             models: getBasicData(),
@@ -220,7 +221,9 @@ test("pivot with two levels of group bys in rows", async (assert) => {
         },
         actions: async (target) => {
             await click(target.querySelector("tbody .o_pivot_header_cell_closed"));
-            await click(target.querySelectorAll(".dropdown-item")[2]);
+            const models = target.querySelectorAll(`.dropdown-item`);
+            const productElement = [...models].filter(el => el.innerText === productModelName)[0];
+            await click(productElement);
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 16);
@@ -308,7 +311,7 @@ test("undefined date is inserted in pivot", async (assert) => {
 
 test("pivot with two levels of group bys in cols", async (assert) => {
     assert.expect(12);
-
+    const productModelName = 'Product';
     const { model } = await createSpreadsheetFromPivot({
         serverData: {
             models: getBasicData(),
@@ -323,7 +326,9 @@ test("pivot with two levels of group bys in cols", async (assert) => {
         },
         actions: async (target) => {
             await click(target.querySelector("thead .o_pivot_header_cell_closed"));
-            await click(target.querySelectorAll(".dropdown-item")[2]);
+            const models = target.querySelectorAll(`.dropdown-item`);
+            const productElement = [...models].filter(el => el.innerText === productModelName)[0];
+            await click(productElement);
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 20);
@@ -399,7 +404,7 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
             probability: i,
         });
     }
-
+    const productModelName = 'Product';
     const { model } = await createSpreadsheetFromPivot({
         serverData: {
             models: data,
@@ -415,7 +420,9 @@ test("pivot with two levels of group bys in cols with not enough cols", async (a
         },
         actions: async (target) => {
             await click(target.querySelector("thead .o_pivot_header_cell_closed"));
-            await click(target.querySelectorAll(".dropdown-item")[2]);
+            const models = target.querySelectorAll(`.dropdown-item`);
+            const productElement = [...models].filter(el => el.innerText === productModelName)[0];
+            await click(productElement);
         },
     });
     // 72 products * 1 groups + 1 row header + 1 total col
@@ -1325,10 +1332,13 @@ QUnit.test("Can have positional args in pivot headers formula", async function(a
 });
 
 QUnit.test("pivot positional with two levels of group bys in rows", async (assert) => {
+    const productModelName = 'Product';
     const { model } = await createSpreadsheetFromPivot({
         actions: async (target) => {
             await click(target.querySelector("tbody .o_pivot_header_cell_closed"));
-            await click(target.querySelectorAll(".dropdown-item")[2]);
+            const models = target.querySelectorAll(`.dropdown-item`);
+            const productElement = [...models].filter(el => el.innerText === productModelName)[0];
+            await click(productElement);
         },
     });
     // Rows Headers
@@ -1351,10 +1361,13 @@ QUnit.test("pivot positional with two levels of group bys in rows", async (asser
 });
 
 QUnit.test("Positional argument without a number should crash", async (assert) => {
+    const productModelName = 'Product';
     const { model } = await createSpreadsheetFromPivot({
         actions: async (target) => {
             await click(target.querySelector("tbody .o_pivot_header_cell_closed"));
-            await click(target.querySelectorAll(".dropdown-item")[2]);
+            const models = target.querySelectorAll(`.dropdown-item`);
+            const productElement = [...models].filter(el => el.innerText === productModelName)[0];
+            await click(productElement);
         },
     });
     // Rows Headers

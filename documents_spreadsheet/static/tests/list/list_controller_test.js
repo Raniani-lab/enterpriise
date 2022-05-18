@@ -200,10 +200,27 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
     });
 
     QUnit.test("List is correctly formatted", async function (assert) {
-        assert.expect(4);
-        const { model } = await createSpreadsheetFromList();
+        assert.expect(8);
+        const { model } = await createSpreadsheetFromList({
+            serverData: {
+                models: getBasicData(),
+                views: {
+                    "partner,false,list": `
+                        <tree string="Partners">
+                            <field name="foo"/>
+                            <field name="bar"/>
+                            <field name="date"/>
+                            <field name="create_date"/>
+                            <field name="product_id"/>
+                        </tree>`,
+                    "partner,false,search": "<search/>",
+                },
+            },
+        });
         assert.strictEqual(getCell(model, "A2").format, "#,##0.00");
         assert.strictEqual(getCell(model, "B2").format, undefined);
+        assert.strictEqual(getCell(model, "C2").format, "m/d/yyyy");
+        assert.strictEqual(getCell(model, "D2").format, "m/d/yyyy hh:mm:ss");
         await waitForDataSourcesLoaded(model);
         const listModel = await model.getters.getAsyncSpreadsheetListModel("1");
         const list = model.getters.getListDefinition("1");
@@ -218,6 +235,8 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         });
         assert.strictEqual(getCell(model, "A12").format, "#,##0.00");
         assert.strictEqual(getCell(model, "B12").format, undefined);
+        assert.strictEqual(getCell(model, "C12").format, "m/d/yyyy");
+        assert.strictEqual(getCell(model, "D12").format, "m/d/yyyy hh:mm:ss");
     });
 
     QUnit.test("can select a List from cell formula", async function (assert) {

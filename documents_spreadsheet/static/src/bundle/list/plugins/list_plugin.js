@@ -283,10 +283,24 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
         }
         col = anchor[0];
         for (const column of columns) {
-            if (["integer", "float", "monetary"].includes(column.type)) {
+            let format;
+            switch(column.type) {
+                case "integer":
+                case "float":
+                case "monetary":
+                    format = "#,##0.00";
+                    break;
+                case "date":
+                    format = "m/d/yyyy";
+                    break;
+                case "datetime":
+                    format = "m/d/yyyy hh:mm:ss";
+                    break;
+            }
+            if (format) {
                 this.dispatch("SET_FORMATTING", {
                     sheetId,
-                    format: "#,##0.00",
+                    format,
                     target: [
                         {
                             top: anchor[1],

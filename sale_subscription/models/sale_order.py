@@ -112,6 +112,16 @@ class SaleOrder(models.Model):
                 continue
             order.partner_invoice_id = order.subscription_id.partner_invoice_id
 
+    def _compute_type_name(self):
+        other_orders = self.env['sale.order']
+        for order in self:
+            if not (order.is_subscription and order.state in ('sale', 'done')):
+                other_orders |= order
+                continue
+            order.type_name = _('Subscription')
+
+        super(SaleOrder, other_orders)._compute_type_name()
+
     @api.depends('subscription_management', 'subscription_id')
     def _compute_partner_shipping_id(self):
         super()._compute_partner_shipping_id()

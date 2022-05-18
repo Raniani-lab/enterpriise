@@ -91,7 +91,7 @@ class CustomerPortal(portal.CustomerPortal):
         request.session['my_subscriptions_history'] = orders.ids[:100]
 
         values.update({
-            'orders': orders,
+            'subscriptions': orders,
             'page_name': 'subscription',
             'pager': pager,
             'default_url': '/my/subscription',
@@ -151,7 +151,8 @@ class CustomerPortal(portal.CustomerPortal):
             missing_periods = getattr(rel_period, periods[next_invoiced_line[0].pricing_id.unit]) + 1
         action = request.env.ref('sale_subscription.sale_subscription_action')
         values = {
-            'order': order_sudo,
+            'page_name': 'subscription',
+            'subscription': order_sudo,
             'template': order_sudo.sale_order_template_id.sudo(),
             'display_close': display_close,
             'is_follower': is_follower,
@@ -253,7 +254,6 @@ class PaymentPortal(payment_portal.PaymentPortal):
         }
         if not is_validation:  # Renewal transaction
             kwargs.update({
-                'reference_prefix': order_sudo.name,  # There is no sub_id field to rely on
                 'amount': order_sudo.amount_total,
                 'currency_id': order_sudo.currency_id.id,
                 'tokenization_requested': True,  # Renewal transactions are always tokenized

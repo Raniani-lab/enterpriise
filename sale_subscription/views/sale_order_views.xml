@@ -70,9 +70,9 @@
                 <button attrs="{'invisible': [('history_count', '&lt;', 2)]}"
                     name="open_subscription_history"
                     class="oe_stat_button"
-                    icon="fa-pencil-square-o"
+                    icon="fa-dollar"
                     type="object">
-                    <field name="history_count" widget="statinfo" string="Orders"/>
+                    <field name="history_count" widget="statinfo" string="Sales"/>
                 </button>
                 <button attrs="{'invisible': [('history_count', '&lt;', 2)]}"
                     name="action_sale_order_lines"
@@ -116,8 +116,8 @@
                 <div name="upsell_pill" class="badge-pill badge-success float-right"
                      attrs="{'invisible': [('subscription_management', '!=', 'upsell')]}">Upsell
                 </div>
-                <div name="upsell_pill" class="badge-pill badge-dark float-right"
-                     attrs="{'invisible': [('subscription_management', '!=', 'renew')]}">Renew
+                <div name="upsell_pill" class="badge-pill badge-default float-right border border-primary"
+                     attrs="{'invisible': [('subscription_management', '!=', 'renew')]}">Renewal
                 </div>
             </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position='after'>
@@ -157,7 +157,7 @@
                 </group>
             </xpath>
             <group name="sales_person" position='inside'>
-                <field name="to_renew"/>
+                <field name="to_renew" attrs="{'invisible': [('is_subscription', '=', False)]}"/>
             </group>
             <group name="sale_info" position='inside'>
                 <field name="commercial_partner_id" invisible="1"/>

@@ -10,6 +10,7 @@ from . import account_bank_reconciliation_report
 from . import account_financial_report
 from . import account_general_ledger
 from . import account_generic_tax_report
+from . import account_journal_audit_report
 from . import account_analytic_report
 from . import account_consolidated_journals
 from . import account_cash_flow_report
@@ -28,4 +29,3 @@ from . import account_sales_report
 from . import account_sales_report_generic
 from . import account_move
 from . import account_tax
-from . import account_report_journal

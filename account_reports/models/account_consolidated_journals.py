@@ -2,6 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, api, _, fields
+from odoo.tools import date_utils
+import datetime
 
 
 class report_account_consolidated_journal(models.AbstractModel):
@@ -163,8 +165,11 @@ class report_account_consolidated_journal(models.AbstractModel):
                 vals = {
                     'id': 'month_%s__%s_%s_%s' % (values['journal_id'], values['account_id'], values['month'], values['yyyy']),
                     'name': convert_date('%s-%s-01' % (values['yyyy'], values['month']), {'format': 'MMM yyyy'}),
-                    'caret_options': True,
+                    'caret_options': 'account.journal',
                     'level': 4,
+                    'journal_id': values['journal_id'],
+                    'month': values['month'],
+                    'year': values['yyyy'],
                     'parent_id': "account_%s_%s" % (values['account_id'], values['journal_id']),
                     'columns': [{'name': self.format_value(n), 'no_format': n} for n in [values['debit'], values['credit'], values['balance']]],
                 }
@@ -174,3 +179,25 @@ class report_account_consolidated_journal(models.AbstractModel):
         if not line_id:
             lines.extend(self._get_line_total_per_month(options, values['company_id'], results))
         return lines
+
+    def open_journal_audit(self, options, params):
+        if params.get('id'):
+            journal_id = self._get_caret_option_target_id(params.get('id', 0))
+            options = dict(options)
+            options['unfolded_lines'] = [self._get_generic_line_id('account.journal', journal_id)]
+            for journal in options.get('journals'):
+                if journal['id'] == journal_id:
+                    journal['selected'] = True
+        if params.get('month') and params.get('year'):
+            date = datetime.date(int(params.get('year')), int(params.get('month')), 1)
+            options['date'] = {
+                'mode': 'range',
+                'date_from': date_utils.start_of(date, 'month'),
+                'date_to': date_utils.end_of(date, 'month'),
+            }
+        action_vals = self.env['ir.actions.actions']._for_xml_id('account_reports.action_account_report_ja')
+        action_vals['params'] = {
+            'options': options,
+            'ignore_session': 'read',
+        }
+        return action_vals

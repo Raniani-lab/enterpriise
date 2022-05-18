@@ -27,6 +27,11 @@
             <field name="tag">account_report</field>
             <field name="context" eval="{'model': 'account.consolidated.journal'}" />
         </record>
+        <record id="action_account_report_ja" model="ir.actions.client">
+            <field name="name">Journal Report</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.journal.audit'}" />
+        </record>
         <record id="action_account_report_bank_reconciliation" model="ir.actions.client">
             <field name="name">Bank Reconciliation</field>
             <field name="tag">account_report</field>

@@ -17,3 +17,4 @@ from . import test_multicurrencies_revaluation_report
 from . import test_tour_account_reports
 from . import test_tax_report_carryover
 from . import test_balance_sheet_report
+from . import test_journal_report

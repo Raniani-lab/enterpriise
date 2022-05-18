@@ -114,6 +114,17 @@
             }
         }
     }
+    .o_account_reports_subtable {
+        .table-striped {
+            tbody tr:nth-of-type(odd) {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+        }
+        & td {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+    }
     .account_report_line_name a {
         color:#008784;
     }
@@ -183,6 +194,9 @@
     }
     .color-red {
         color: #d23f3a !important;
+    }
+    .color-blue {
+        color: #2693d5 !important;
     }
     .color-green {
         color: green !important;
@@ -367,6 +381,9 @@
         &.color-green {
             color: green !important;
         }
+        &.color-blue {
+            color: #2693d5 !important;
+        }
     }
     .o_account_reports_totals_below_sections.o_js_account_report_parent_row_unfolded {
         .o_account_report_column_value {
@@ -485,6 +502,18 @@
         .o_account_reports_level1, .o_account_reports_level2 {
             font-weight: normal;
         }
+    }
+
+    .o_account_reports_ja_journal_line td {
+        padding-top: 3rem !important;
+    }
+
+    .o_account_reports_ja_name_muted td:first-of-type {
+        @extend .text-muted;
+    }
+
+    .o_account_reports_ja_header_line {
+        background-color: #F6F6F6;
     }
 }
 

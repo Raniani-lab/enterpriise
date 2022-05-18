@@ -13,7 +13,7 @@
 
 <template id="line_caret_options">
     <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line.get('account_id') or line['id']" action="open_general_ledger" class="dropdown-item">General Ledger</a></li>
-    <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line.get('account_id') or line['id']" t-att-data-financial_group_line_id="line.get('model') == 'account.financial.html.report' and line.get('parent_id')" action="open_journal_items" class="dropdown-item">Journal Items</a></li>
+    <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line.get('account_id') or line['id']" t-att-data-name="line.get('name')" t-att-data-financial_group_line_id="line.get('model') == 'account.financial.html.report' and line.get('parent_id')" action="open_journal_items" class="dropdown-item">Journal Items</a></li>
     <li t-if="line['caret_options'] == 'account.move'">
       <a role="menuitem" tabindex="-1" t-att-data-id="line.get('line_id') or line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.move" action="open_document" class="dropdown-item">View Journal Entry</a>
     </li>
@@ -42,6 +42,7 @@
         <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_analytic_entries" class="dropdown-item">Analytic Entries</a>
     </li>
     <li t-if="line['caret_options'] == 'res.partner'" role="presentation" id="res.partner.carret"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'res.partner')" data-object="res.partner" action="open_document" class="dropdown-item">View Partner</a></li>
+    <li t-if="line['caret_options'] == 'account.journal'"><a role="menuitem" tabindex="-1" t-att-data-month="line.get('month')" t-att-data-year="line.get('year')" t-att-data-id="line.get('journal_id') or line['id']" t-att-data-name="line.get('name')" action="open_journal_audit" class="dropdown-item">Audit</a></li>
 </template>
 
 <template id="filter_info_template">
@@ -62,7 +63,7 @@
             </t>
         </div>
         <div class="col-4">
-            <div class="col-12">
+            <div class="col-12" name="filter_info_template_journals">
                 <t t-if="options.get('journals')">
                     Journals:
                     <t t-set="journal_value">All</t>
@@ -238,7 +239,7 @@
                 <t t-set="hierarchies_enabled" t-value="len(lines.get('columns_header', [])) > 1"/>
                 <t t-set="cell_classes" t-value="(cell.get('class', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or ''))"/>
                 <td t-att-class="'o_account_report_line ' + cell_classes + ('' if hierarchies_enabled else ' o_account_report_line_indent')"
-                    t-att-style="cell.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
+                    t-att-style="cell.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))" t-att-colspan="cell.get('colspan', '')">
                     <t t-if="cell.get('carryover_popup_data')">
                         <t t-call="{{cell.get('template', 'account_reports.cell_template_popup_carryover')}}"/>
                     </t>
@@ -417,6 +418,8 @@
  <template id="line_template_aged_receivable_report" inherit_id="account_reports.template_aged_partner_balance_line_report" primary="True">
      <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
         &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports"  groups="account.group_account_user">Reconcile</a>
+         &amp;nbsp;<a t-if="line.get('partner_id') and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_open_partner" class="no_print oe_link_reports">Open</a>
+         &amp;nbsp;<a t-if="line.get('partner_id') and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" t-att-data-name="line.get('name')" action="view_all_journal_items" class="no_print oe_link_reports"> ⇒ journal items</a>
      </xpath>
  </template>
 
@@ -424,6 +427,8 @@
  <template id="line_template_aged_payable_report" inherit_id="account_reports.template_aged_partner_balance_line_report" primary="True">
      <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
         &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports" groups="account.group_account_user">Reconcile</a>
+         &amp;nbsp;<a t-if="line.get('partner_id') and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_open_partner" class="no_print oe_link_reports">Open</a>
+         &amp;nbsp;<a t-if="line.get('partner_id') and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" t-att-data-name="line.get('name')" action="view_all_journal_items" class="no_print oe_link_reports"> ⇒ journal items</a>
      </xpath>
  </template>
 
@@ -445,11 +450,13 @@
     </xpath>
     <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
        &amp;nbsp;<a t-if="line.get('partner_id') and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
+        &amp;nbsp;<a t-if="line.get('partner_id') and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_open_partner" class="no_print oe_link_reports">Open</a>
+        &amp;nbsp;<a t-if="line.get('partner_id') and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" t-att-data-name="line.get('name')" action="view_all_journal_items" class="no_print oe_link_reports"> ⇒ journal items</a>
     </xpath>
 </template>
 <template id="line_template_general_ledger_report" inherit_id="account_reports.line_template" primary="True">
     <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
-        &amp;nbsp;<a t-if="'hierarchy' not in str(line.get('id')) and line.get('unfolded')" t-att-data-id="line.get('id')" action="view_all_journal_items" class="no_print oe_link_reports"> ⇒ journal items</a>
+        &amp;nbsp;<a t-if="'hierarchy' not in str(line.get('id')) and line.get('unfolded')" t-att-data-id="line.get('id')" t-att-data-name="line.get('name')" action="view_all_journal_items" class="no_print oe_link_reports"> ⇒ journal items</a>
     </xpath>
 </template>
 

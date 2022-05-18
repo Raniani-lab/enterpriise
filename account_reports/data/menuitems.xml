@@ -9,9 +9,9 @@
         <menuitem id="menu_action_account_report_general_ledger" name="General Ledger" action="action_account_report_general_ledger" groups="account.group_account_readonly"/>
         <menuitem id="menu_action_account_report_coa" name="Trial Balance" action="action_account_report_coa" groups="account.group_account_readonly"/>
         <menuitem id="menu_action_account_report_cj" name="Consolidated Journals" action="action_account_report_cj" groups="account.group_account_readonly"/>
+        <menuitem id="menu_action_account_report_ja" name="Journal Report" action="action_account_report_ja" groups="account.group_account_readonly"/>
         <menuitem id="menu_action_account_report_gt" name="Tax Report" action="action_account_report_gt"/>
         <menuitem id="menu_action_account_report_sales" action="action_account_report_sales" groups="account.group_account_readonly" active="False"/>
-        <menuitem id="menu_print_journal" name="Journals Audit" action="action_account_print_journal_menu" sequence="20"/>
     </menuitem>
 
     <menuitem id="menu_action_report_account_analytic" name="Analytic Report" action="action_account_report_analytic" parent="account.account_reports_management_menu" groups="analytic.group_analytic_accounting"/>

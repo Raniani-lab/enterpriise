@@ -1304,46 +1304,101 @@ class AccountReport(models.AbstractModel):
             'context': ctx,
         }
 
-    def open_journal_items(self, options, params):
-        action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_line_select")
-        action = clean_action(action, env=self.env)
-        ctx = self.env.context.copy()
+    def action_open_partner(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'res.partner',
+            'res_id': params.get('partner_id'),
+            'views': [[False, 'form']],
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
+    def open_journal_items(self, options, params, view_id=None):
+        ctx = {
+            'search_default_group_by_move': 1,
+            'search_default_posted': 0 if options.get('all_entries') else 1,
+            'search_default_date_between': 1,
+            'search_default_report_journal': 1,
+            'date_from': options.get('date').get('date_from'),
+            'date_to': options.get('date').get('date_to'),
+            'search_default_journal_id': params.get('journal_id'),
+            'name_groupby': 1,
+            'expand': 1,
+        }
+
+        journal_type = params.get('journal_type')
+        if journal_type:
+            type_to_view_param = {
+                'bank': {
+                    'filter': 'search_default_bank',
+                    'view_id': self.env.ref('account.view_move_line_tree_grouped_bank_cash').id
+                },
+                'cash': {
+                    'filter': 'search_default_cash',
+                    'view_id': self.env.ref('account.view_move_line_tree_grouped_bank_cash').id
+                },
+                'general': {
+                    'filter': 'search_default_misc_filter',
+                    'view_id': self.env.ref('account.view_move_line_tree_grouped_misc').id
+                },
+                'sale': {
+                    'filter': 'search_default_sales',
+                    'view_id': self.env.ref('account.view_move_line_tree_grouped_sales_purchases').id
+                },
+                'purchase': {
+                    'filter': 'search_default_purchases',
+                    'view_id': self.env.ref('account.view_move_line_tree_grouped_sales_purchases').id
+                },
+            }
+            ctx.update({
+                type_to_view_param[journal_type]['filter']: 1,
+            })
+            view_id = type_to_view_param[journal_type]['view_id']
+
         if params and 'id' in params:
             active_id = self._get_caret_option_target_id(params['id'])
             ctx.update({
-                    'active_id': active_id,
-                    'search_default_account_id': [active_id],
+                'active_id': active_id,
+                'search_default_account_id': [active_id],
+            })
+        if params and 'partner_id' in params:
+            ctx.update({
+                'active_id': params['partner_id'],
+                'search_default_partner_id': [params['partner_id']],
+            })
+        if params and 'journal_id' in params:
+            ctx.update({
+                'search_default_journal_id': [params['journal_id']],
             })
 
         if options:
-            domain = expression.normalize_domain(ast.literal_eval(action.get('domain') or '[]'))
-            if options.get('journals'):
+            for account_type in options.get('account_type', []):
+                ctx.update({
+                    f"search_default_{account_type['id']}": account_type['selected'] and 1 or 0,
+                })
+
+            if options.get('journals') and 'search_default_journal_id' not in ctx:
                 selected_journals = [journal['id'] for journal in options['journals'] if journal.get('selected')]
                 if len(selected_journals) == 1:
                     ctx['search_default_journal_id'] = selected_journals
-                elif selected_journals:  # Otherwise, nothing is selected, so we want to display everything
-                    domain = expression.AND([domain, [('journal_id', 'in', selected_journals)]])
 
             if options.get('analytic_accounts'):
                 analytic_ids = [int(r) for r in options['analytic_accounts']]
-                domain = expression.AND([domain, [('analytic_account_id', 'in', analytic_ids)]])
-            if options.get('date'):
-                opt_date = options['date']
-                domain = expression.AND([domain, self._get_options_date_domain(options)])
-            # In case the line has been generated for a "group by" financial line, append the parent line's domain to the one we created
-            if params.get('financial_group_line_id'):
-                # In case the hierarchy is enabled, 'financial_group_line_id' might be a string such
-                # as 'hierarchy_xxx'. This will obviously cause a crash at domain evaluation.
-                if not (isinstance(params['financial_group_line_id'], str) and 'hierarchy_' in params['financial_group_line_id']):
-                    parent_financial_report_line = self.env['account.financial.html.report.line'].browse(params['financial_group_line_id'])
-                    domain = expression.AND([domain, ast.literal_eval(parent_financial_report_line.domain)])
+                ctx.update({
+                    'search_default_analytic_accounts': 1,
+                    'analytic_ids': analytic_ids,
+                })
 
-            if not options.get('all_entries'):
-                ctx['search_default_posted'] = True
-
-            action['domain'] = domain
-        action['context'] = ctx
-        return action
+        return {
+            'name': params.get('name'),
+            'view_mode': 'tree,pivot,graph,kanban',
+            'res_model': 'account.move.line',
+            'views': [(view_id, 'list')],
+            'type': 'ir.actions.act_window',
+            'domain': [('display_type', 'not in', ('line_section', 'line_note'))],
+            'context': ctx,
+        }
 
     def reverse(self, values):
         """Utility method used to reverse a list, this method is used during template generation in order to reverse periods for example"""

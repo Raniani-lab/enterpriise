@@ -349,7 +349,7 @@ class MxReportAccountTrial(models.AbstractModel):
             date_report.year,
             str(date_report.month).zfill(2))
 
-    def open_journal_items(self, options, params):
+    def open_journal_items(self, options, params, view_id=None):
         new_params = params.copy()
         new_params.pop('financial_group_line_id', False)
         return super(MxReportAccountTrial, self).open_journal_items(

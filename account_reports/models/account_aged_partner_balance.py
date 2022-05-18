@@ -255,6 +255,11 @@ class ReportAccountAgedReceivable(models.Model):
         templates['line_template'] = 'account_reports.line_template_aged_receivable_report'
         return templates
 
+    def view_all_journal_items(self, options, params):
+        if params.get('id'):
+            params['id'] = int(params.get('id').split('_')[1])
+        return self.env['account.report'].open_journal_items(options, params, view_id=self.env.ref('account.view_move_line_tree_grouped_partner').id)
+
 
 class ReportAccountAgedPayable(models.Model):
     _name = "account.aged.payable"
@@ -282,3 +287,8 @@ class ReportAccountAgedPayable(models.Model):
         templates = super(ReportAccountAgedPayable, self)._get_templates()
         templates['line_template'] = 'account_reports.line_template_aged_payable_report'
         return templates
+
+    def view_all_journal_items(self, options, params):
+        if params.get('id'):
+            params['id'] = int(params.get('id').split('_')[1])
+        return self.env['account.report'].open_journal_items(options, params, view_id=self.env.ref('account.view_move_line_tree_grouped_partner').id)

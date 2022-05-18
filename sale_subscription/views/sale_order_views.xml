@@ -54,8 +54,12 @@
                 </button>
             <button name="action_cancel" position="attributes">
                 <attribute name="attrs">
-                    {'invisible': ['|', '|',('state', 'not in', ['draft', 'sent','sale']), ('id', '=', False),
-                    ('is_subscription','=',True)]}
+                    {'invisible': [ '|',
+                                    ('id', '=', False),
+                                    '|',
+                                    '&amp;', ('is_subscription','=',True), ('state', 'not in', ['draft', 'sent']),
+                                    '&amp;', ('is_subscription','=',False), ('state', 'not in', ['draft', 'sent', 'sale'])]
+                    }
                 </attribute>
             </button>
             <!--  Change the label of cancel button for subscription -->

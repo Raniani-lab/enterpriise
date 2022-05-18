@@ -496,9 +496,9 @@ class SaleOrder(models.Model):
         return action
 
     def action_draft(self):
-        if any(order.state == 'cancel' and order.is_subscription for order in self):
+        if any(order.state == 'cancel' and order.is_subscription and order.invoice_ids for order in self):
             raise UserError(
-                _('You cannot set to draft a canceled quotation linked to subscriptions. Please create a new quotation.'))
+                _('You cannot set to draft a canceled quotation linked to invoiced subscriptions. Please create a new quotation.'))
         return super(SaleOrder, self).action_draft()
 
     def _action_cancel(self):

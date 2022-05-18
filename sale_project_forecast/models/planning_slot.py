@@ -36,8 +36,7 @@ class PlanningSlot(models.Model):
 
     @api.depends('task_id')
     def _compute_resource_id(self):
-        slot_not_sold = self.filtered_domain([('sale_line_id', '=', False)])
-        super(PlanningSlot, slot_not_sold)._compute_resource_id()
+        super(PlanningSlot, self.filtered('start_datetime'))._compute_resource_id()
 
     # -----------------------------------------------------------------
     # ORM Override

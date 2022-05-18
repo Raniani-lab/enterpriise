@@ -423,13 +423,14 @@ class SaleOrderLine(models.Model):
         for line in self.filtered(lambda l: l.temporal_type == 'subscription'):
             partner_lang = line.order_id.partner_id.lang
             line = line.with_context(lang=partner_lang) if partner_lang else line
-            quantity = 0
             product = line.product_id
             if subscription_management == 'upsell':
+                quantity = 0
                 next_invoice_date = line.next_invoice_date
                 line_start = today
             else:
                 line_start = line.next_invoice_date
+                quantity = line.product_uom_qty
                 next_invoice_date = line_start + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
 
             order_lines.append((0, 0, {

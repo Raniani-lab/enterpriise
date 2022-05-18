@@ -32,7 +32,7 @@ class CustomerPortal(portal.CustomerPortal):
         if 'subscription_count' in counters:
             if request.env['sale.order'].check_access_rights('read', raise_exception=False):
                 partner = request.env.user.partner_id
-                values['subscription_count'] = request.env['sale.order'].sudo().search_count(self._get_subscription_domain(partner))
+                values['subscription_count'] = request.env['sale.order'].search_count(self._get_subscription_domain(partner))
             else:
                 values['subscription_count'] = 0
         return values
@@ -79,7 +79,7 @@ class CustomerPortal(portal.CustomerPortal):
         domain += searchbar_filters[filterby]['domain']
 
         # pager
-        order_count = Order.sudo().search_count(domain)
+        order_count = Order.search_count(domain)
         pager = portal_pager(
             url="/my/subscription",
             url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'filterby': filterby},
@@ -87,7 +87,7 @@ class CustomerPortal(portal.CustomerPortal):
             page=page,
             step=self._items_per_page
         )
-        orders = Order.sudo().search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
+        orders = Order.search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
         request.session['my_subscriptions_history'] = orders.ids[:100]
 
         values.update({

@@ -7,6 +7,7 @@ from freezegun import freeze_time
 
 from odoo import fields, Command
 from odoo.osv import expression
+from odoo.tools.float_utils import float_compare
 
 from odoo.addons.mail.tests.common import MockEmail
 from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
@@ -305,3 +306,22 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
             self.env['res.company']._cron_timesheet_reminder_employee()
             self.assertEqual(len(self._new_mails.filtered(lambda x: x.res_id == self.empl_employee.id)), 1, "An email sent to the 'User Empl Employee'")
             self.assertEqual(len(self._new_mails.filtered(lambda x: x.res_id == self.empl_employee2.id)), 1, "An email sent to the 'User Empl Employee 2'")
+
+    def test_task_timer_min_duration_and_rounding(self):
+        self.env["res.config.settings"].create({
+            "timesheet_min_duration": 23,
+            "timesheet_rounding": 0,
+        }).execute()
+
+        self.task1.action_timer_start()
+        act_window_action = self.task1.action_timer_stop()
+        wizard = self.env[act_window_action['res_model']].with_context(act_window_action['context']).new()
+        self.assertEqual(float_compare(wizard.time_spent, 0.38, 0), 0)
+        self.env["res.config.settings"].create({
+            "timesheet_rounding": 30,
+        }).execute()
+
+        self.task1.action_timer_start()
+        act_window_action = self.task1.action_timer_stop()
+        wizard = self.env[act_window_action['res_model']].with_context(act_window_action['context']).new()
+        self.assertEqual(wizard.time_spent, 0.5)

@@ -592,7 +592,7 @@ class WinbooksImportWizard(models.TransientModel):
 
         data_list = []
         code_list = []
-        for rec in dbf_records:
+        for rec in sorted(dbf_records, key=lambda rec: len(rec.get('TREELEVEL'))):
             treelib[rec.get('TREELEVEL')] = rec.get('TREELIB1')
             if not rec.get('USRCODE1'):
                 continue

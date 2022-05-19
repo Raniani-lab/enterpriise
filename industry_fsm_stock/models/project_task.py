@@ -93,7 +93,7 @@ class Task(models.Model):
         if 'user_ids' in vals:
             for task in self:
                 user = task.user_ids[:1]
-                sale_order = task.sale_order_id
+                sale_order = task.sale_order_id.sudo()
                 if sale_order.state in ['draft', 'sent'] and user != sale_order.user_id:
                     sale_order.write({'user_id': user.id})
         return result

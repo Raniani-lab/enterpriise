@@ -86,7 +86,7 @@ class SaleOrder(models.Model):
     subscription_child_ids = fields.One2many('sale.order', 'subscription_id')
     history_count = fields.Integer(compute='_compute_history_count')
     recurring_pricing_details = fields.Html(compute='_compute_recurring_pricing_details')
-    payment_exception = fields.Boolean("Contract in exception", tracking=True,
+    payment_exception = fields.Boolean("Contract in exception",
                                        help="Automatic payment with token failed. The payment acquirer configuration and token should be checked")
 
     _sql_constraints = [

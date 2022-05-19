@@ -558,7 +558,7 @@ class SaleOrder(models.Model):
             sub._portal_ensure_token()
             end_date = sub.end_date
             if sub.sale_order_template_id.recurring_rule_boundary == 'limited' and not sub.end_date:
-                end_date = today + get_timedelta(sub.sale_order_template_id.recurring_rule_count, sub.sale_order_template_id.recurring_rule_type) - relativedelta(days=1)
+                end_date = sub.start_date + get_timedelta(sub.sale_order_template_id.recurring_rule_count, sub.sale_order_template_id.recurring_rule_type) - relativedelta(days=1)
             sub.write({'end_date': end_date})
             # We set the start date and invoice date at the date of confirmation and qty_to_invoice
             for line in sub.order_line:

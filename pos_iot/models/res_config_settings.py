@@ -22,8 +22,8 @@ class ResConfigSettings(models.TransientModel):
     pos_iface_scanner_ids = fields.Many2many(related='pos_config_id.iface_scanner_ids', readonly=False)
 
     def set_values(self):
-        super(ResConfigSettings, self).set_values()
-        payment_methods = self.env['pos.payment.method']
+        super().set_values()
+        payment_methods = self.env['pos.payment.method'].sudo()
         IrConfigParameter = self.env['ir.config_parameter'].sudo()
         if not IrConfigParameter.get_param('pos_iot.ingenico_payment_terminal'):
             payment_methods |= payment_methods.search([('use_payment_terminal', '=', 'ingenico')])

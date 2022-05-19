@@ -10,7 +10,7 @@
             <div name="button_box" position="inside">
                 <button class="oe_stat_button" type="object" name="subscriptions_action"
                     icon="fa-book" attrs="{'invisible': [('subscription_count', '=', 0)]}">
-                    <field string="Subscriptions" name="subscription_count" widget="statinfo"/>
+                    <field string="Sales" name="subscription_count" widget="statinfo"/>
                 </button>
             </div>
         </field>

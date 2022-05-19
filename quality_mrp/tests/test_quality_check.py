@@ -63,7 +63,7 @@ class TestQualityCheck(TestQualityMrpCommon):
         self.assertEqual(len(self.mrp_production_qc_test1.procurement_group_id.mrp_production_ids[-1].check_ids), 1)
 
     def test_01_production_quality_check_product(self):
-        """ Test quality check on production order with type product for tracked and non-tracked manufactured product
+        """ Test quality check on production order with type move_line for tracked and non-tracked manufactured product
         """
 
         product_without_tracking = self.env['product.product'].create({
@@ -76,7 +76,7 @@ class TestQualityCheck(TestQualityMrpCommon):
         self.env['quality.point'].create({
             'product_ids': [self.product_id],
             'picking_type_ids': [self.picking_type_id],
-            'measure_on': 'product',
+            'measure_on': 'move_line',
             'is_lot_tested_fractionally': True,
             'testing_percentage_within_lot': 50,
         })
@@ -84,13 +84,13 @@ class TestQualityCheck(TestQualityMrpCommon):
         self.env['quality.point'].create({
             'product_ids': [self.product.bom_ids.bom_line_ids[0].product_id.id],
             'picking_type_ids': [self.picking_type_id],
-            'measure_on': 'product',
+            'measure_on': 'move_line',
         })
         # Create Quality Point for all products with Manufacturing Operation Type.
         # This should apply for all products but not to the components of a MO
         self.env['quality.point'].create({
             'picking_type_ids': [self.picking_type_id],
-            'measure_on': 'product',
+            'measure_on': 'move_line',
         })
 
         # Create Production Order of Drawer to produce 5.0 Unit.
@@ -148,3 +148,41 @@ class TestQualityCheck(TestQualityMrpCommon):
         })
         scrap.do_scrap()
         self.assertEqual(len(self.env['quality.check'].search([('product_id', '=', product.id), ('point_id', '=', qp.id)])), 0, "Quality checks should not be created for scrap moves")
+
+    def test_03_quality_check_on_operations(self):
+        """ Test Quality Check creation of 'operation' type, meaning only one QC will be created per MO.
+        """
+        quality_point_operation_type = self.env['quality.point'].create({
+            'picking_type_ids': [(4, self.picking_type_id)],
+            'measure_on': 'operation',
+            'test_type_id': self.env.ref('quality_control.test_type_passfail').id
+        })
+
+        production_form = Form(self.env['mrp.production'])
+        production_form.product_id = self.env['product.product'].browse(self.product_id)
+        production_form.product_qty = 5.0
+        production = production_form.save()
+        production.action_confirm()
+
+        self.assertEqual(len(production.check_ids), 1)
+        self.assertEqual(production.check_ids.point_id, quality_point_operation_type)
+        self.assertEqual(production.check_ids.production_id, production)
+
+        # Do the quality checks and create backorder
+        production.check_ids.do_pass()
+        production.qty_producing = 3.0
+        production.lot_producing_id = self.lot_product_27_0
+        details_operation_form = Form(production.move_raw_ids[1], view=self.env.ref('stock.view_stock_move_operations'))
+        with details_operation_form.move_line_ids.new() as ml:
+            ml.qty_done = 3.0
+            ml.lot_id = self.lot_component_2
+        details_operation_form.save()
+        action = production.button_mark_done()
+        consumption_warning = Form(self.env['mrp.consumption.warning'].with_context(**action['context']))
+        action = consumption_warning.save().action_confirm()
+        backorder = Form(self.env['mrp.production.backorder'].with_context(**action['context']))
+        backorder.save().action_backorder()
+        production_backorder = production.procurement_group_id.mrp_production_ids[-1]
+        self.assertEqual(len(production_backorder.check_ids), 1)
+        self.assertEqual(production_backorder.check_ids.point_id, quality_point_operation_type)
+        self.assertEqual(production_backorder.check_ids.production_id, production_backorder)

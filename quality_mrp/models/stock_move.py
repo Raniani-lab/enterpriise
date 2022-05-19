@@ -22,8 +22,10 @@ class StockMove(models.Model):
         for move in self:
             if move.production_id and not move.scrapped:
                 mo_moves[move.production_id] |= move
+
+        # QC of product type
         for production, moves in mo_moves.items():
-            quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, production.picking_type_id, measure_on='operation')
+            quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, production.picking_type_id, measure_on='product')
             quality_points_domain = self.env['quality.point']._get_domain_for_production(quality_points_domain)
             quality_points = self.env['quality.point'].sudo().search(quality_points_domain)
 
@@ -35,4 +37,20 @@ class StockMove(models.Model):
                     'production_id': production.id,
                 })
             check_vals_list += mo_check_vals_list
+
+        # QC of operation type
+        for production, moves in mo_moves.items():
+            domain_operation_type = self.env['quality.point']._get_domain(self.env['product.product'], production.picking_type_id, measure_on='operation')
+            domain_operation_type = self.env['quality.point']._get_domain_for_production(domain_operation_type)
+            quality_points_operation = self.env['quality.point'].sudo().search(domain_operation_type)
+
+            for point in quality_points_operation:
+                if point.check_execute_now():
+                    check_vals_list.append({
+                        'point_id': point.id,
+                        'team_id': point.team_id.id,
+                        'measure_on': 'operation',
+                        'production_id': production.id,
+                    })
+
         self.env['quality.check'].sudo().create(check_vals_list)

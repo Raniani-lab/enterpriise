@@ -156,7 +156,7 @@ class TestQualityCheck(TestQualityCommon):
             'test_type_id': self.env.ref('quality_control.test_type_measure').id,
             'is_lot_tested_fractionally': True,
             'testing_percentage_within_lot': 10.02,
-            'measure_on': 'product',
+            'measure_on': 'move_line',
             'norm': 5.,
             'tolerance_min': 4.,
             'tolerance_max': 6.,
@@ -166,7 +166,7 @@ class TestQualityCheck(TestQualityCommon):
         self.quality_point_test2 = self.env['quality.point'].create({
             'picking_type_ids': [self.picking_type_id],
             'test_type_id': self.env.ref('quality_control.test_type_measure').id,
-            'measure_on': 'product',
+            'measure_on': 'move_line',
         })
 
         # Create Quality Point for product without tracking
@@ -174,7 +174,7 @@ class TestQualityCheck(TestQualityCommon):
             'product_ids': [product.id],
             'picking_type_ids': [self.picking_type_id],
             'test_type_id': self.env.ref('quality_control.test_type_measure').id,
-            'measure_on': 'product',
+            'measure_on': 'move_line',
         })
 
         # Check that the quality points are created
@@ -475,7 +475,7 @@ class TestQualityCheck(TestQualityCommon):
             'product_ids': [(4, self.product_2.id), (4, self.product_4.id)],
             'product_category_ids': [(4, self.product_category_base.id)],
             'picking_type_ids': [(4, self.picking_type_id)],
-            'measure_on': 'product',
+            'measure_on': 'move_line',
             'test_type_id': self.env.ref('quality_control.test_type_passfail').id
         })
         # Create incoming shipment.
@@ -535,6 +535,37 @@ class TestQualityCheck(TestQualityCommon):
         self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_2.id)), 1)
         self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_3.id)), 0)
         self.assertEqual(len(self.picking_in.check_ids.filtered(lambda c: c.product_id.id == self.product_4.id)), 1)
+
+    def test_09_quality_check_on_operations(self):
+
+        """ Test Quality Check creation of 'operation' type, meaning only one QC will be created per picking.
+        """
+        # Create Quality Point for incoming shipment with only a product_category set.
+        quality_point_operation_type = self.env['quality.point'].create({
+            'picking_type_ids': [(4, self.picking_type_id)],
+            'measure_on': 'operation',
+            'test_type_id': self.env.ref('quality_control.test_type_passfail').id
+        })
+        receipt = self.env['stock.picking'].create({
+            'picking_type_id': self.picking_type_id,
+            'partner_id': self.partner_id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id,
+        })
+        self.env['stock.move'].create([{
+            'name': product.name,
+            'product_id': product.id,
+            'product_uom_qty': 1,
+            'product_uom': product.uom_id.id,
+            'picking_id': receipt.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id,
+        } for product in (self.product, self.product_2)])
+        receipt.action_confirm()
+
+        self.assertEqual(len(receipt.check_ids), 1)
+        self.assertEqual(receipt.check_ids.point_id, quality_point_operation_type)
+        self.assertEqual(receipt.check_ids.picking_id, receipt)
 
     def test_checks_removal_on_SM_cancellation(self):
         """

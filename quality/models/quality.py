@@ -122,7 +122,7 @@ class QualityPoint(models.Model):
         return point_values
 
     @api.model
-    def _get_domain(self, product_ids, picking_type_id, measure_on='operation'):
+    def _get_domain(self, product_ids, picking_type_id, measure_on='product'):
         """ Helper that returns a domain for quality.point based on the products and picking type
         pass as arguments. It will search for quality point having:
         - No product_ids and no product_category_id
@@ -238,7 +238,7 @@ class QualityCheck(models.Model):
         default='none', copy=False)
     control_date = fields.Datetime('Control Date', tracking=True)
     product_id = fields.Many2one(
-        'product.product', 'Product', check_company=True, required=True,
+        'product.product', 'Product', check_company=True,
         domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     picking_id = fields.Many2one('stock.picking', 'Picking', check_company=True)
     partner_id = fields.Many2one(

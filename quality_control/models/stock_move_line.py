@@ -52,7 +52,7 @@ class StockMoveLine(models.Model):
     def _create_check(self):
         check_values_list = []
         quality_points_domain = self.env['quality.point']._get_domain(
-            self.product_id, self.move_id.picking_type_id, measure_on='product')
+            self.product_id, self.move_id.picking_type_id, measure_on='move_line')
         quality_points = self.env['quality.point'].sudo().search(quality_points_domain)
         quality_points_by_product_picking_type = {}
         for quality_point in quality_points:

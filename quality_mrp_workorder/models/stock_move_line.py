@@ -9,4 +9,4 @@ class StockMoveLine(models.Model):
 
     def _without_quality_checks(self):
         self.ensure_one()
-        return super()._without_quality_checks() or not self.quality_check_ids.filtered(lambda qc: qc.measure_on != 'product')
+        return super()._without_quality_checks() or not self.quality_check_ids.filtered(lambda qc: qc.measure_on != 'move_line')

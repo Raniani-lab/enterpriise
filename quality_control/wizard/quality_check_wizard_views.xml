@@ -18,8 +18,10 @@
 
                 <h2 class="o_row d-flex justify-content-between">
                     <span>
-                        <field name="product_id" readonly="1" options="{'no_open': True}"/>
-                        :
+                        <span attrs="{'invisible': [('product_id', '=', False)]}">
+                            <field name="product_id" readonly="1" options="{'no_open': True}"/>
+                            :
+                        </span>
                         <field name="name" readonly="1"/>
                         <field class="ml8" name="title" readonly="1"/>
                     </span>
@@ -29,7 +31,7 @@
                     </span>
                 </h2>
                 <field name="note" readonly="1"/>
-                <group attrs="{'invisible': [('measure_on', '!=', 'product')]}">
+                <group attrs="{'invisible': [('measure_on', '!=', 'move_line')]}">
                     <group>
                         <field name="lot_name" string="Lot/SN" attrs="{'invisible': ['|', ('show_lot_text', '!=', True), ('product_tracking', '=', 'none')]}"/>
                         <field name="lot_line_id" string="Lot/SN" attrs="{'invisible': ['|', ('show_lot_text', '=', True), ('product_tracking', '=', 'none')]}"/>

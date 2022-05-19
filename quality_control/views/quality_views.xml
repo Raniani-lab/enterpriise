@@ -233,25 +233,26 @@
                     </div>
                     <group>
                         <group>
-                            <field name="product_id"/>
+                            <field name="product_id" attrs="{'invisible' : [('measure_on', '=', 'operation')]}"/>
                             <field name="measure_on" attrs="{'readonly': [('point_id', '!=', False)]}"/>
                             <field name="show_lot_text" invisible="1"/>
                             <field name="move_line_id" invisible="1"/>
                             <field name="product_tracking" invisible="1"/>
-                            <field name="lot_name" attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), '|', ('show_lot_text', '=', False), '|', ('measure_on', '!=', 'product'), ('move_line_id', '=', False)]}"/>
-                            <field name="lot_id" attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), '|', ('show_lot_text', '=', True), ('measure_on', '!=', 'product')]}"/>
+                            <field name="is_lot_tested_fractionally" invisible="1"/>
+                            <field name="lot_name" attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), '|', ('show_lot_text', '=', False), '|', ('measure_on', '!=', 'move_line'), ('move_line_id', '=', False)]}"/>
+                            <field name="lot_id" attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), '|', ('show_lot_text', '=', True), ('measure_on', '!=', 'move_line')]}"/>
                             <label for="qty_line" attrs="{'invisible': [('move_line_id', '=', False)]}"/>
                             <div class="o_row" attrs="{'invisible': [('move_line_id', '=', False)]}">
                                 <field name="qty_line"/> 
                                 <field name="uom_id"/>
                             </div>
-                            <label for="qty_to_test" attrs="{'invisible': ['|', ('move_line_id', '=', False), ('measure_on', '!=', 'product')]}"/>
-                            <div class="o_row" attrs="{'invisible': ['|', ('move_line_id', '=', False), ('measure_on', '!=', 'product')]}">
+                            <label for="qty_to_test" attrs="{'invisible': ['|', ('move_line_id', '=', False), '|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '=', False)]}"/>
+                            <div class="o_row" attrs="{'invisible': ['|', ('move_line_id', '=', False), '|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '=', False)]}">
                                 <field name="qty_to_test"/> 
                                 <field name="uom_id"/>
                             </div>
-                            <label for="qty_tested" attrs="{'invisible': [('measure_on', '!=', 'product')]}"/>
-                            <div class="o_row" attrs="{'invisible': [('measure_on', '!=', 'product')]}">
+                            <label for="qty_tested" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '=', False)]}"/>
+                            <div class="o_row" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '=', False)]}">
                                 <field name="qty_tested" attrs="{'readonly': [('quality_state', '!=', 'none')]}"/> 
                                 <field name="uom_id"/>
                             </div>
@@ -856,14 +857,14 @@
                 <div class="o_row" attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}">
                     <span attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}">Every </span>
                     <field name="measure_frequency_value" nolabel="1" attrs="{'invisible': [('measure_frequency_type', '!=', 'random')]}"/>
-                    <label for="measure_frequency_value" string="% of Operations" attrs="{'invisible': ['|', ('measure_on', '=', 'product'), ('measure_frequency_type', '!=', 'random')]}"/>
-                    <label for="measure_frequency_value" string="% of Transfers" attrs="{'invisible': ['|', ('measure_on', '!=', 'product'), ('measure_frequency_type', '!=', 'random')]}"/>
+                    <label for="measure_frequency_value" string="% of Operations" attrs="{'invisible': ['|', ('measure_on', '=', 'move_line'), ('measure_frequency_type', '!=', 'random')]}"/>
+                    <label for="measure_frequency_value" string="% of Transfers" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('measure_frequency_type', '!=', 'random')]}"/>
                     <field name="measure_frequency_unit_value" string="Frequency" nolabel="1" attrs="{'invisible': [('measure_frequency_type', '!=', 'periodical')]}"/>
                     <field name="measure_frequency_unit" attrs="{'invisible': [('measure_frequency_type', '!=', 'periodical')]}"/>
                 </div>
-                <field name="is_lot_tested_fractionally" attrs="{'invisible': [('measure_on', '!=', 'product')]}" string="Partial Transfer Test"/>
-                <label for="testing_percentage_within_lot" attrs="{'invisible': ['|', ('measure_on', '!=', 'product'), ('is_lot_tested_fractionally', '!=', True)]}" string="Percentage"/>
-                <div class="o_row" attrs="{'invisible': ['|', ('measure_on', '!=', 'product'), ('is_lot_tested_fractionally', '!=', True)]}">
+                <field name="is_lot_tested_fractionally" attrs="{'invisible': [('measure_on', '!=', 'move_line')]}" string="Partial Transfer Test"/>
+                <label for="testing_percentage_within_lot" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '!=', True)]}" string="Percentage"/>
+                <div class="o_row" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '!=', True)]}">
                     <field name="testing_percentage_within_lot" nolabel="1"/>
                     <label for="testing_percentage_within_lot" string="%"/>
                 </div>

@@ -26,13 +26,13 @@ class TestQualityCheckWorkorder(TestMrpCommon):
         self.env['quality.point'].create({
             'product_ids': [bom.bom_line_ids[0].product_id.id],
             'picking_type_ids': [picking_type_id],
-            'measure_on': 'product',
+            'measure_on': 'move_line',
         })
         # Create Quality Point for all products (that should not apply on components)
         self.env['quality.point'].create({
             'product_ids': [],
             'picking_type_ids': [picking_type_id],
-            'measure_on': 'product',
+            'measure_on': 'move_line',
         })
 
         # Create Production of Painted Boat to produce 5.0 Unit.

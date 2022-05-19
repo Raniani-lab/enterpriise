@@ -17,7 +17,11 @@ class QualityPoint(models.Model):
     failure_message = fields.Html('Failure Message')
     measure_on = fields.Selection([
         ('operation', 'Operation'),
-        ('product', 'Product')], string="Control per", default='operation', required=True, help="Defines if the Quality Check is done at the Operation level or at a more granular Lot/SN level")
+        ('product', 'Product'),
+        ('move_line', 'Quantity')], string="Control per", default='product', required=True,
+        help="""Operation = One quality check is requested at the operation level.
+                  Product = A quality check is requested per product.
+                 Quantity = A quality check is requested for each new product quantity registered, with partial quantity checks also possible.""")
     measure_frequency_type = fields.Selection([
         ('all', 'All'),
         ('random', 'Randomly'),
@@ -134,8 +138,12 @@ class QualityCheck(models.Model):
     qty_tested = fields.Float(string="Quantity Tested", help="Quantity of product tested within the lot")
     measure_on = fields.Selection([
         ('operation', 'Operation'),
-        ('product', 'Product')], string="Control per", default='operation', required=True, help="Defines if the Quality Check is done at the Operation level or at a more granular Lot/SN level")
-    move_line_id = fields.Many2one('stock.move.line', 'Stock Move Line', check_company=True, help="In case of Quality Check by Lot/SN, Move Line on which the Quality Check applies")
+        ('product', 'Product'),
+        ('move_line', 'Quantity')], string="Control per", default='product', required=True,
+        help="""Operation = One quality check is requested at the operation level.
+                  Product = A quality check is requested per product.
+                 Quantity = A quality check is requested for each new product quantity registered, with partial quantity checks also possible.""")
+    move_line_id = fields.Many2one('stock.move.line', 'Stock Move Line', check_company=True, help="In case of Quality Check by Quantity, Move Line on which the Quality Check applies")
     lot_name = fields.Char('Lot/Serial Number Name')
     lot_line_id = fields.Many2one('stock.lot', store=True, compute='_compute_lot_line_id')
     qty_line = fields.Float(compute='_compute_qty_line', string="Quantity")
@@ -354,7 +362,13 @@ class ProductTemplate(models.Model):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_main")
         action['context'] = dict(self.env.context, default_product_id=self.product_variant_id.id, create=False)
-        action['domain'] = [('product_id', 'in', self.product_variant_ids.ids)]
+        action['domain'] = [
+            '|',
+                ('product_id', 'in', self.product_variant_ids.ids),
+                '&',
+                    ('measure_on', '=', 'operation'),
+                    ('picking_id.move_ids.product_tmpl_id', 'in', self.ids),
+        ]
         return action
 
 
@@ -373,11 +387,16 @@ class ProductProduct(models.Model):
     def _count_quality_checks(self):
         quality_fail_qty = 0
         quality_pass_qty = 0
-        quality_checks_by_state = self.env['quality.check']._read_group(
-            [('product_id', 'in', self.ids), ('company_id', '=', self.env.company.id), ('quality_state', '!=', 'none')],
-            ['product_id'],
-            ['quality_state']
-        )
+        domain = [
+            '|',
+                ('product_id', '=', self.id),
+                '&',
+                    ('measure_on', '=', 'operation'),
+                    ('picking_id.move_ids.product_id', 'in', self.ids),
+            ('company_id', '=', self.env.company.id),
+            ('quality_state', '!=', 'none')
+        ]
+        quality_checks_by_state = self.env['quality.check']._read_group(domain, ['product_id'], ['quality_state'])
         for checks_data in quality_checks_by_state:
             if checks_data['quality_state'] == 'fail':
                 quality_fail_qty = checks_data['quality_state_count']
@@ -435,7 +454,13 @@ class ProductProduct(models.Model):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.quality_check_action_main")
         action['context'] = dict(self.env.context, default_product_id=self.id, create=False)
-        action['domain'] = [('product_id', '=', self.id)]
+        action['domain'] = [
+            '|',
+                ('product_id', '=', self.id),
+                '&',
+                    ('measure_on', '=', 'operation'),
+                    ('picking_id.move_ids.product_id', 'in', self.ids),
+        ]
         return action
 
     def _additional_quality_point_where_clause(self):

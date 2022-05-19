@@ -17,12 +17,13 @@ class StockMove(models.Model):
     def _create_quality_checks(self):
         # Groupby move by picking. Use it in order to generate missing quality checks.
         pick_moves = defaultdict(lambda: self.env['stock.move'])
-        check_vals_list = []
         for move in self:
             if move.picking_id:
                 pick_moves[move.picking_id] |= move
+        check_vals_list = self._create_operation_quality_checks(pick_moves)
         for picking, moves in pick_moves.items():
-            quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, picking.picking_type_id, measure_on='operation')
+            # Quality checks by product
+            quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, picking.picking_type_id, measure_on='product')
             quality_points = self.env['quality.point'].sudo().search(quality_points_domain)
 
             if not quality_points:
@@ -34,6 +35,21 @@ class StockMove(models.Model):
                 })
             check_vals_list += picking_check_vals_list
         self.env['quality.check'].sudo().create(check_vals_list)
+
+    def _create_operation_quality_checks(self, pick_moves):
+        check_vals_list = []
+        for picking, moves in pick_moves.items():
+            quality_points_domain = self.env['quality.point']._get_domain(moves.product_id, picking.picking_type_id, measure_on='operation')
+            quality_points = self.env['quality.point'].sudo().search(quality_points_domain)
+            for point in quality_points:
+                if point.check_execute_now():
+                    check_vals_list.append({
+                        'point_id': point.id,
+                        'team_id': point.team_id.id,
+                        'measure_on': 'operation',
+                        'picking_id': picking.id,
+                    })
+        return check_vals_list
 
     def _action_cancel(self):
         res = super()._action_cancel()

@@ -575,7 +575,6 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
         assert.ok(root.isVisible(env));
         setCellContent(model, "B2", getCellFormula(model, "B2").replace("LIST", "list"));
-        console.log(getCellFormula(model, "B2"));
         assert.ok(root.isVisible(env));
     });
 

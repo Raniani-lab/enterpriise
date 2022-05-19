@@ -35,6 +35,7 @@ export default class PivotDataSource extends OdooViewsDataSource {
     }
 
     async copyModelWithOriginalDomain() {
+        await this._fetchMetadata();
         const model = new SpreadsheetPivotModel(
             { _t },
             {

@@ -615,6 +615,46 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.equal(getCellValue(model, "D4"), 77 + 88, "The value should have been updated");
     });
 
+    test("Reinsert a pivot which has no formula on the sheet (meaning the data is not loaded)", async function (assert) {
+        const spreadsheetData = {
+            sheets: [{
+                id: "sheet1",
+            }],
+            pivots: {
+                1: {
+                    id: 1,
+                    colGroupBys: ["foo"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "avg" }],
+                    model: "partner",
+                    rowGroupBys: ["bar"],
+                    context: {},
+                },
+            },
+        };
+        const serverData = getBasicServerData();
+        serverData.models["documents.document"].records.push({
+            id: 45,
+            raw: JSON.stringify(spreadsheetData),
+            name: "Spreadsheet",
+            handler: "spreadsheet",
+        });
+        const { model, env } = await createSpreadsheet({
+            serverData,
+            spreadsheetId: 45,
+        });
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
+        const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+        await reinsertPivot1.action(env);
+        assert.equal(getCellFormula(model, "C1"), `=PIVOT.HEADER("1","foo","2")`);
+        assert.equal(getCellFormula(model, "C2"), `=PIVOT.HEADER("1","foo","2","measure","probability")`);
+        assert.equal(getCellFormula(model, "C3"), `=PIVOT("1","probability","bar","false","foo","2")`);
+        await nextTick();
+        assert.equal(getCellValue(model, "C1"), 2);
+        assert.equal(getCellValue(model, "C2"), "Probability");
+        assert.equal(getCellValue(model, "C3"), 15);
+    });
+
     test("Keep applying filter when pivot is re-inserted", async function (assert) {
         assert.expect(4);
         const { model, env } = await createSpreadsheetFromPivot({

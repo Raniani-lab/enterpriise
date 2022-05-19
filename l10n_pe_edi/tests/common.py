@@ -125,6 +125,12 @@ class TestPeEdiCommon(AccountEdiTestCommon):
         # execution.
         cls.time_name = datetime.now().strftime('%H%M%S')
 
+        # Initialize the cancellation request filename sequence, to avoid collisions between different people running
+        # the UTs on the same day
+        seq = cls.env.ref('l10n_pe_edi.l10n_pe_edi_summary_sequence')
+        if seq.number_next_actual < 50:
+            seq.write({'number_next': int(cls.time_name[-3:]) + 60})
+
         # ==== INVOICE ====
 
         cls.expected_invoice_xml_values = '''
@@ -515,7 +521,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
 
     def _create_invoice(self, **kwargs):
         vals = {
-            'name': 'FFFI-%s1' % self.time_name,
+            'name': 'F FFI-%s1' % self.time_name,
             'move_type': 'out_invoice',
             'partner_id': self.partner_a.id,
             'invoice_date': '2017-01-01',
@@ -535,9 +541,9 @@ class TestPeEdiCommon(AccountEdiTestCommon):
         return self.env['account.move'].create(vals)
 
     def _create_refund(self, **kwargs):
-        invoice = self._create_invoice(name='FFFI-%s2' % self.time_name, **kwargs)
+        invoice = self._create_invoice(name='F FFI-%s2' % self.time_name, **kwargs)
         vals = {
-            'name': 'FCNE-%s1' % self.time_name,
+            'name': 'F CNE-%s1' % self.time_name,
             'move_type': 'out_refund',
             'ref': 'abc',
             'partner_id': self.partner_a.id,
@@ -560,9 +566,9 @@ class TestPeEdiCommon(AccountEdiTestCommon):
         return self.env['account.move'].create(vals)
 
     def _create_debit_note(self, **kwargs):
-        invoice = self._create_invoice(name='FFFI-%s3' % self.time_name, **kwargs)
+        invoice = self._create_invoice(name='F FFI-%s3' % self.time_name, **kwargs)
         vals = {
-            'name': 'FNDI-%s1' % self.time_name,
+            'name': 'F NDI-%s1' % self.time_name,
             'move_type': 'out_invoice',
             'ref': 'abc',
             'partner_id': self.partner_a.id,

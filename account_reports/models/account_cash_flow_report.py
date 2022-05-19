@@ -157,7 +157,7 @@ class AccountCashFlowReport(models.AbstractModel):
         :param currency_table_query:    The floating query to handle a multi-company/multi-currency environment.
         :param payment_move_ids:        A tuple containing all account.move's ids being the liquidity moves.
         :param payment_account_ids:     A tuple containing all account.account's ids being used in a liquidity journal.
-        :return:                        A list of tuple (account_id, account_code, account_name, account_internal_type, amount).
+        :return:                        A list of tuple (account_id, account_code, account_name, account_type, amount).
         '''
         if not payment_move_ids:
             return []
@@ -171,7 +171,7 @@ class AccountCashFlowReport(models.AbstractModel):
                 credit_line.account_id,
                 account.code,
                 COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
-                account.internal_type,
+                account.account_type,
                 SUM(ROUND(partial.amount * currency_table.rate, currency_table.precision))
             FROM account_move_line credit_line
             LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = credit_line.company_id
@@ -180,7 +180,7 @@ class AccountCashFlowReport(models.AbstractModel):
             LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
             WHERE credit_line.move_id IN %s AND credit_line.account_id NOT IN %s
             AND partial.max_date BETWEEN %s AND %s
-            GROUP BY credit_line.company_id, credit_line.account_id, account.code, account_name, account.internal_type
+            GROUP BY credit_line.company_id, credit_line.account_id, account.code, account_name, account.account_type
             
             UNION ALL
             
@@ -188,7 +188,7 @@ class AccountCashFlowReport(models.AbstractModel):
                 debit_line.account_id,
                 account.code,
                 COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
-                account.internal_type,
+                account.account_type,
                 -SUM(ROUND(partial.amount * currency_table.rate, currency_table.precision))
             FROM account_move_line debit_line
             LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = debit_line.company_id
@@ -197,7 +197,7 @@ class AccountCashFlowReport(models.AbstractModel):
             LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
             WHERE debit_line.move_id IN %s AND debit_line.account_id NOT IN %s
             AND partial.max_date BETWEEN %s AND %s
-            GROUP BY debit_line.company_id, debit_line.account_id, account.code, account_name, account.internal_type
+            GROUP BY debit_line.company_id, debit_line.account_id, account.code, account_name, account.account_type
         '''
         lang = self.env.user.lang or get_lang(self.env).code
         self._cr.execute(query, [
@@ -205,8 +205,8 @@ class AccountCashFlowReport(models.AbstractModel):
             lang, payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
         ])
 
-        for account_id, account_code, account_name, account_internal_type, reconciled_amount in self._cr.fetchall():
-            reconciled_amount_per_account.setdefault(account_id, [account_code, account_name, account_internal_type, 0.0, 0.0])
+        for account_id, account_code, account_name, account_type, reconciled_amount in self._cr.fetchall():
+            reconciled_amount_per_account.setdefault(account_id, [account_code, account_name, account_type, 0.0, 0.0])
             reconciled_amount_per_account[account_id][3] += reconciled_amount
 
         # ==== Compute total amount of each account ====
@@ -216,19 +216,19 @@ class AccountCashFlowReport(models.AbstractModel):
                 line.account_id,
                 account.code,
                 COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
-                account.internal_type,
+                account.account_type,
                 SUM(ROUND(line.balance * currency_table.rate, currency_table.precision))
             FROM account_move_line line
             LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = line.company_id
             JOIN account_account account ON account.id = line.account_id
             LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
             WHERE line.move_id IN %s AND line.account_id NOT IN %s
-            GROUP BY line.account_id, account.code, account_name, account.internal_type
+            GROUP BY line.account_id, account.code, account_name, account.account_type
         '''
         self._cr.execute(query, [lang, payment_move_ids, payment_account_ids])
 
-        for account_id, account_code, account_name, account_internal_type, balance in self._cr.fetchall():
-            reconciled_amount_per_account.setdefault(account_id, [account_code, account_name, account_internal_type, 0.0, 0.0])
+        for account_id, account_code, account_name, account_type, balance in self._cr.fetchall():
+            reconciled_amount_per_account.setdefault(account_id, [account_code, account_name, account_type, 0.0, 0.0])
             reconciled_amount_per_account[account_id][4] += balance
 
         return [(k, v[0], v[1], v[2], v[4] + v[3]) for k, v in reconciled_amount_per_account.items()]
@@ -243,7 +243,7 @@ class AccountCashFlowReport(models.AbstractModel):
         :param currency_table_query:    The floating query to handle a multi-company/multi-currency environment.
         :param payment_move_ids:        A tuple containing all account.move's ids being the liquidity moves.
         :param payment_account_ids:     A tuple containing all account.account's ids being used in a liquidity journal.
-        :return:                        A list of tuple (account_id, account_code, account_name, account_internal_type, amount).
+        :return:                        A list of tuple (account_id, account_code, account_name, account_type, amount).
         '''
         reconciled_account_ids = set()
         reconciled_percentage_per_move = {}
@@ -324,19 +324,19 @@ class AccountCashFlowReport(models.AbstractModel):
                 line.account_id,
                 account.code,
                 COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
-                account.internal_type,
+                account.account_type,
                 SUM(ROUND(line.balance * currency_table.rate, currency_table.precision))
             FROM account_move_line line
             LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = line.company_id
             JOIN account_account account ON account.id = line.account_id
             LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
             WHERE line.move_id IN %s
-            GROUP BY line.move_id, line.account_id, account.code, account_name, account.internal_type
+            GROUP BY line.move_id, line.account_id, account.code, account_name, account.account_type
         '''
         lang = self.env.user.lang or get_lang(self.env).code
         self._cr.execute(query, [lang, tuple(reconciled_percentage_per_move.keys())])
 
-        for move_id, account_id, account_code, account_name, account_internal_type, balance in self._cr.fetchall():
+        for move_id, account_id, account_code, account_name, account_type, balance in self._cr.fetchall():
             # Compute the total reconciled for the whole move.
             total_reconciled_amount = 0.0
             total_amount = 0.0
@@ -372,7 +372,7 @@ class AccountCashFlowReport(models.AbstractModel):
                 # Others lines are not considered.
                 continue
 
-            reconciled_amount_per_account.setdefault(account_id, [account_id, account_code, account_name, account_internal_type, 0.0])
+            reconciled_amount_per_account.setdefault(account_id, [account_id, account_code, account_name, account_type, 0.0])
             reconciled_amount_per_account[account_id][4] += balance
 
         return list(reconciled_amount_per_account.values())
@@ -472,12 +472,12 @@ class AccountCashFlowReport(models.AbstractModel):
             line['columns'][0]['no_format'] += amount
             line['unfolded_lines'][account_id]['columns'][0]['no_format'] += amount
 
-        def _dispatch_result(account_id, account_code, account_name, account_internal_type, amount):
+        def _dispatch_result(account_id, account_code, account_name, account_type, amount):
             ''' Dispatch the newly fetched line inside the right section. '''
-            if account_internal_type == 'receivable':
+            if account_type == 'asset_receivable':
                 # 'Advance Payments received from customers'                (index=3)
                 _insert_at_index(3, account_id, account_code, account_name, -amount)
-            elif account_internal_type == 'payable':
+            elif account_type == 'liability_payable':
                 # 'Advance Payments made to suppliers'                      (index=5)
                 _insert_at_index(5, account_id, account_code, account_name, -amount)
             elif amount < 0:
@@ -533,13 +533,13 @@ class AccountCashFlowReport(models.AbstractModel):
 
         # ==== Process liquidity moves ====
         res = self._get_liquidity_move_report_lines(options, currency_table_query, payment_move_ids, payment_account_ids)
-        for account_id, account_code, account_name, account_internal_type, amount in res:
-            _dispatch_result(account_id, account_code, account_name, account_internal_type, amount)
+        for account_id, account_code, account_name, account_type, amount in res:
+            _dispatch_result(account_id, account_code, account_name, account_type, amount)
 
         # ==== Process reconciled moves ====
         res = self._get_reconciled_move_report_lines(options, currency_table_query, payment_move_ids, payment_account_ids)
-        for account_id, account_code, account_name, account_internal_type, balance in res:
-            _dispatch_result(account_id, account_code, account_name, account_internal_type, balance)
+        for account_id, account_code, account_name, account_type, balance in res:
+            _dispatch_result(account_id, account_code, account_name, account_type, balance)
 
         # 'Cash flows from operating activities'                            (index=2)
         _add_no_format_values(lines_to_compute, 2, [3, 4, 5, 6])

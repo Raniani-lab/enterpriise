@@ -39,6 +39,7 @@ class AccountGeneralLedger(models.AbstractModel):
             closing_balance = account_balance.get('debit', 0.0) - account_balance.get('credit', 0.0)
             res['account_vals_list'].append({
                 'account': account,
+                'account_type': dict(self.env['account.account']._fields['account_type']._description_selection(self.env))[account.account_type],
                 'opening_balance': opening_balance,
                 'closing_balance': closing_balance,
             })
@@ -77,7 +78,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 journal.code                                AS journal_code,
                 journal.name                                AS journal_name,
                 journal.type                                AS journal_type,
-                account.internal_type                       AS account_internal_type,
+                account.account_type                        AS account_type,
                 currency.name                               AS currency_code,
                 product.default_code                        AS product_default_code,
                 uom.name                                    AS product_uom_name
@@ -234,7 +235,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 FROM {tables}
                 JOIN account_account account ON account.id = account_move_line.account_id
                 WHERE {where_clause}
-                AND account.internal_type IN ('receivable', 'payable')
+                AND account.account_type IN ('asset_receivable', 'liability_payable')
                 GROUP BY account_move_line.partner_id
             ''', where_params)
 

@@ -149,7 +149,6 @@ class TestAccountConsolidationAccount(AccountConsolidationTestCase):
         self.assertEqual(second_super_chart_mappeds[0].id, self.mapped_account.id)
 
     def test_filtered_consolidation_account_ids(self):
-        account_type = self.env.ref('account.data_account_type_receivable')
         mapped_account = self._create_account('001', 'RCV', company=self.default_company)
         account_not_mapped = self._create_account('002', 'RCV2', company=self.default_company)
 

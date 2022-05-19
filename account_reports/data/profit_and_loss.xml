@@ -18,7 +18,7 @@
                 <field name="name">Income</field>
                 <field name="code">INC</field>
                 <field name="formulas">OPINC + OIN</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'income')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'income')]"/>
                 <field name="parent_id" eval="False"/>
                 <field name="sequence" eval="1"/>
                 <field name="level" eval="0"/>
@@ -34,7 +34,7 @@
                                 <field name="name">Operating Income</field>
                                 <field name="code">OPINC</field>
                                 <field name="formulas">-sum</field>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_revenue'))]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'income')]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="sequence" eval="1"/>
                                 <field name="level" eval="3"/>
@@ -43,7 +43,7 @@
                                 <field name="name">Cost of Revenue</field>
                                 <field name="code">COS</field>
                                 <field name="formulas">sum</field>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_direct_costs'))]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'expense_direct_cost')]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="sequence" eval="3"/>
                                 <field name="green_on_positive" eval="False"/>
@@ -55,7 +55,7 @@
                         <field name="name">Other Income</field>
                         <field name="code">OIN</field>
                         <field name="formulas">-sum</field>
-                        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_other_income'))]"/>
+                        <field name="domain" eval="[('account_id.account_type', '=', 'income_other')]"/>
                         <field name="groupby">account_id</field>
                         <field name="sequence" eval="2"/>
                         <field name="level" eval="2"/>
@@ -67,8 +67,8 @@
                 <field name="code">LEX</field>
                 <field name="formulas">EXP + DEP</field>
                 <field name="control_domain" eval="[
-                    ('account_id.user_type_id.internal_group', '=', 'expense'),
-                    '!', ('account_id.user_type_id', '=', ref('account.data_account_type_direct_costs'))
+                    ('account_id.internal_group', '=', 'expense'),
+                    '!', ('account_id.account_type', '=', 'expense_direct_cost')
                 ]"/>
                 <field name="parent_id" eval="False"/>
                 <field name="sequence" eval="2"/>
@@ -79,7 +79,7 @@
                         <field name="name">Expenses</field>
                         <field name="code">EXP</field>
                         <field name="formulas">sum</field>
-                        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_expenses'))]"/>
+                        <field name="domain" eval="[('account_id.account_type', '=', 'expense')]"/>
                         <field name="groupby">account_id</field>
                         <field name="sequence" eval="1"/>
                         <field name="green_on_positive" eval="False"/>
@@ -89,7 +89,7 @@
                         <field name="name">Depreciation</field>
                         <field name="code">DEP</field>
                         <field name="formulas">sum</field>
-                        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_depreciation'))]"/>
+                        <field name="domain" eval="[('account_id.account_type', '=', 'expense_depreciation')]"/>
                         <field name="groupby">account_id</field>
                         <field name="sequence" eval="2"/>
                         <field name="green_on_positive" eval="False"/>

@@ -607,7 +607,7 @@ class AccountReport(models.AbstractModel):
                     domain += [
                         '|',
                         (date_field, '>=', options_date['date_from']),
-                        ('account_id.user_type_id.include_initial_balance', '=', True)
+                        ('account_id.include_initial_balance', '=', True)
                     ]
                 else:
                     domain += [(date_field, '>=', options_date['date_from'])]
@@ -762,13 +762,13 @@ class AccountReport(models.AbstractModel):
             return []
         for opt in options.get('account_type', []):
             if opt['id'] == 'trade_receivable':
-                domain = [('account_id.non_trade', '=', False), ('account_id.internal_type', '=', 'receivable')]
+                domain = [('account_id.non_trade', '=', False), ('account_id.account_type', '=', 'asset_receivable')]
             elif opt['id'] == 'trade_payable':
-                domain = [('account_id.non_trade', '=', False), ('account_id.internal_type', '=', 'payable')]
+                domain = [('account_id.non_trade', '=', False), ('account_id.account_type', '=', 'liability_payable')]
             elif opt['id'] == 'non_trade_receivable':
-                domain = [('account_id.non_trade', '=', True), ('account_id.internal_type', '=', 'receivable')]
+                domain = [('account_id.non_trade', '=', True), ('account_id.account_type', '=', 'asset_receivable')]
             elif opt['id'] == 'non_trade_payable':
-                domain = [('account_id.non_trade', '=', True), ('account_id.internal_type', '=', 'payable')]
+                domain = [('account_id.non_trade', '=', True), ('account_id.account_type', '=', 'liability_payable')]
             if opt['selected']:
                 selected_domains.append(domain)
             all_domains.append(domain)

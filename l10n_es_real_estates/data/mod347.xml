@@ -4,7 +4,7 @@
         <field name="name">Número total de inmuebles</field>
         <field name="code">aeat_mod_347_statistics_real_estates_count</field>
         <field name="parent_id" ref="l10n_es_reports.mod_347_summary_title"/>
-        <field name="domain" eval="[('move_id.l10n_es_real_estate_id','!=',None), ('account_id.user_type_id','=',ref('account.data_account_type_receivable')), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
+        <field name="domain" eval="[('move_id.l10n_es_real_estate_id','!=',None), ('account_id.account_type','=','asset_receivable'), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
         <field name="formulas">count_rows</field>
         <field name="groupby">l10n_es_real_estate_id</field>
         <field name="special_date_changer">strict_range</field>
@@ -16,7 +16,7 @@
         <field name="name">Relación de inmuebles</field>
         <field name="code">aeat_mod_347_real_estates</field>
         <field name="financial_report_id" ref="l10n_es_reports.mod_347"/>
-        <field name="domain" eval="[('move_id.l10n_es_real_estate_id','!=',None), ('account_id.user_type_id','=',ref('account.data_account_type_receivable')), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
+        <field name="domain" eval="[('move_id.l10n_es_real_estate_id','!=',None), ('account_id.account_type','=','asset_receivable'), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
         <field name="show_domain">always</field>
         <field name="formulas">sum</field>
         <field name="special_date_changer">strict_range</field>

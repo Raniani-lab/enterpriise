@@ -153,7 +153,7 @@
                                 <field name="sequence" eval="150"/>
                                 <field name="code">KE_BS_Earnings</field>
                                 <field name="formulas">-sum</field>
-                                <field name="domain" eval="['|', ('account_id.user_type_id', '=', ref('account.data_unaffected_earnings')),
+                                <field name="domain" eval="['|', ('account_id.account_type', '=', 'equity_unaffected'),
                                                             '|', ('account_id.code', '=like', '4%'),
                                                                  ('account_id.code', '=like', '5%'),]" />
                                 <field name="show_domain">never</field>

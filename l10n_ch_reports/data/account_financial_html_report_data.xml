@@ -163,7 +163,7 @@
             <record id="account_financial_report_line_ch_R" model="account.financial.html.report.line">
                 <field name="name">Annual (net) profit or loss</field>
                 <field name="code">CH_R</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', 'in', ['income', 'expense'])]"/>
                 <field name="level" eval="0"/>
                 <field name="sequence" eval="99"/>
                 <field name="domain" eval=""/>
@@ -185,7 +185,7 @@
             <record id="account_financial_report_line_ch_1" model="account.financial.html.report.line">
                 <field name="name">ASSETS</field>
                 <field name="code">CH_1</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'asset')]"/>
                 <field name="level" eval="0"/>
                 <field name="sequence" eval="1"/>
                 <field name="domain" eval=""/>
@@ -330,7 +330,7 @@
             <record id="account_financial_report_line_ch_2" model="account.financial.html.report.line">
                 <field name="name">LIABILITIES AND EQUITY</field>
                 <field name="code">CH_2</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['equity', 'liability', 'income', 'expense'])]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', 'in', ['equity', 'liability', 'income', 'expense'])]"/>
                 <field name="level" eval="0"/>
                 <field name="sequence" eval="2"/>
                 <field name="domain" eval=""/>

@@ -575,7 +575,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         account = self.env['account.account'].create({
             'name': "test_validation_using_custom_account",
             'code': "424242",
-            'user_type_id': self.env.ref('account.data_account_type_current_assets').id,
+            'account_type': "asset_current",
         })
         form = WizardForm(wizard)
         form.form_account_id = account

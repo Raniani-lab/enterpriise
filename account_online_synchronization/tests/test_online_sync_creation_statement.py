@@ -30,7 +30,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         self.account = self.env['account.account'].create({
             'name': 'toto',
             'code': 'bidule',
-            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id
+            'account_type': 'asset_fixed'
         })
 
     # This method return a list of transactions with the given dates

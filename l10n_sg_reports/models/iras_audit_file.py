@@ -219,6 +219,7 @@ class IrasAuditFile(models.AbstractModel):
                     total_credit += move_line_id.credit
                     total_debit += move_line_id.debit
                     transaction_count_total += 1
+                    account_type_dict = dict(self.env['account.account']._fields['account_type']._description_selection(self.env))
                     gldata_lines.append({
                         'TransactionDate': fields.Date.to_string(move_line_id.date),
                         'AccountID': move_line_id.account_id.code,
@@ -227,7 +228,7 @@ class IrasAuditFile(models.AbstractModel):
                         'Name': move_line_id.partner_id.name if move_line_id.partner_id else False,
                         'TransactionID': move_line_id.move_id.name,
                         'SourceDocumentID': move_line_id.move_id.invoice_origin if move_line_id.move_id else False,
-                        'SourceType': move_line_id.account_id.user_type_id.name[:20],
+                        'SourceType': account_type_dict[move_line_id.account_id.account_type][:20],
                         'Debit': float_repr(move_line_id.debit, IRAS_DIGITS),
                         'Credit': float_repr(move_line_id.credit, IRAS_DIGITS),
                         'Balance': float_repr(balance, IRAS_DIGITS)

@@ -102,7 +102,7 @@
                                 <tree>
                                     <field name="code"/>
                                     <field name="name"/>
-                                    <field name="user_type_id"/>
+                                    <field name="account_type"/>
                                 </tree>
                             </field>
                         </group>

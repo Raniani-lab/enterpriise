@@ -80,20 +80,20 @@
             <field name="account_depreciation_expense_id" position="attributes">
                 <attribute name="string">Expense Account</attribute>
                 <attribute name="help">Account used to recognize the expense</attribute>
-                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_expenses)d])]</attribute>
-                <attribute name="context">{'default_user_type_id': %(account.data_account_type_expenses)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_expenses)d])]}</attribute>
+                <attribute name="domain">[('account_type', '=', 'expense')]</attribute>
+                <attribute name="context">{'default_account_type': 'expense', 'account_type_domain': [('account_type', '=', 'expense')]}</attribute>
             </field>
             <field name="account_depreciation_id" position="attributes">
                 <attribute name="string">Deferred Expense Account</attribute>
                 <attribute name="help">Account used to record the deferred expense</attribute>
-                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_current_assets)d, %(account.data_account_type_prepayments)d])]</attribute>
-                <attribute name="context">{'default_user_type_id': %(account.data_account_type_current_assets)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_current_assets)d, %(account.data_account_type_prepayments)d])]}</attribute>
+                <attribute name="domain">[('account_type', 'in', ('asset_current', 'asset_prepayments'))]</attribute>
+                <attribute name="context">{'default_account_type': 'asset_current', 'account_type_domain': [('account_type', 'in', ('asset_current', 'asset_prepayments'))]}</attribute>
             </field>
             <field name="book_value" position="attributes">
                 <attribute name="string">Deferred Expense Amount</attribute>
             </field>
             <field name="model_id" position="attributes">
-                <attribute name="domain">[('state', '=', 'model'), ('account_asset_id.user_type_id', '=?', user_type_id), ('asset_type', '=', 'expense')]</attribute>
+                <attribute name="domain">[('state', '=', 'model'), ('account_asset_id.account_type', '=?', account_type), ('asset_type', '=', 'expense')]</attribute>
                 <attribute name="context">{'default_asset_type': 'expense'}</attribute>
             </field>
             <xpath expr="//page[@name='depreciation_board']" position="attributes">
@@ -119,7 +119,7 @@
                     ('parent_state', '=', 'posted'),
                     ('credit', '=', '0'),
                     ('company_id', '=', company_id),
-                    ('account_id.user_type_id', 'in', [%(account.data_account_type_expenses)d])
+                    ('account_type', '=', 'expense')
                 ]</attribute>
             </field>
         </field>

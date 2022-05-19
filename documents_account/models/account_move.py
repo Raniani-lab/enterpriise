@@ -41,7 +41,7 @@ class AccountMove(models.Model):
         """
         self.ensure_one()
         st_line = self.suspense_statement_line_id
-        rec_pay_lines = self.line_ids.filtered(lambda x: x.account_id.user_type_id.type in ('receivable', 'payable'))
+        rec_pay_lines = self.line_ids.filtered(lambda x: x.account_id.account_type in ('asset_receivable', 'liability_payable'))
         default_todo_command = ','.join(['add_new_amls'] + [str(x) for x in rec_pay_lines.ids])
         return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
             extra_domain=[('statement_id', '=', st_line.statement_id.id)],

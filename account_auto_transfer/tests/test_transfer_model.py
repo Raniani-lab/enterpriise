@@ -35,7 +35,7 @@ class TransferModelTestFunctionalCase(AccountAutoTransferTestCase):
         neutral_account = cls.env['account.account'].create({
             'name': 'Neutral Account',
             'code': 'NEUT',
-            'user_type_id': cls.env.ref('account.data_account_type_revenue').id,
+            'account_type': 'income',
         })
         cls.analytic_accounts = reduce(lambda x, y: x + y, (cls._create_analytic_account(cls, name) for name in ('ANA1', 'ANA2', 'ANA3')))
         cls.dates = ('2019-01-15', '2019-02-15')

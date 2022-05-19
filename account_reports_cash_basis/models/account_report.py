@@ -40,7 +40,7 @@ class AccountReport(models.AbstractModel):
                     SELECT DISTINCT aml.move_id
                     FROM ONLY account_move_line aml
                     JOIN account_account account ON aml.account_id = account.id
-                    WHERE account.internal_type IN ('receivable', 'payable')
+                    WHERE account.account_type IN ('asset_receivable', 'liability_payable')
                 )
             )
             {where_journals};
@@ -62,7 +62,7 @@ class AccountReport(models.AbstractModel):
                     GROUP BY move_id, account_id
                 ) sub_aml ON (aml.account_id = sub_aml.account_id AND aml.move_id=sub_aml.move_id)
                 JOIN account_account account ON aml.account_id = account.id
-                WHERE account.internal_type IN ('receivable', 'payable')
+                WHERE account.account_type IN ('asset_receivable', 'liability_payable')
             )
             INSERT INTO temp_account_move_line ({all_fields}) SELECT
                 {unchanged_fields},
@@ -80,7 +80,7 @@ class AccountReport(models.AbstractModel):
                     SELECT DISTINCT aml.move_id
                     FROM ONLY account_move_line aml
                     JOIN account_account account ON aml.account_id = account.id
-                    WHERE account.internal_type IN ('receivable', 'payable')
+                    WHERE account.account_type IN ('asset_receivable', 'liability_payable')
                 )
             )
             {where_journals};

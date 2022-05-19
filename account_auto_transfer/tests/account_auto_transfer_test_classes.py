@@ -29,15 +29,14 @@ class AccountAutoTransferTestCase(AccountTestInvoicingCommon):
         })
 
     def _create_accounts(self, amount_of_master_accounts=2, amount_of_slave_accounts=4):
-        account_type = self.env.ref('account.data_account_type_receivable')
-
         master_ids = self.env['account.account']
+
         for i in range(amount_of_master_accounts):
             self.master_account_index += 1
             master_ids += self.env['account.account'].create({
                 'name': 'MASTER %s' % self.master_account_index,
                 'code': 'MA00%s' % self.master_account_index,
-                'user_type_id': account_type.id,
+                'account_type': 'asset_receivable',
                 'reconcile': True
             })
 
@@ -47,7 +46,7 @@ class AccountAutoTransferTestCase(AccountTestInvoicingCommon):
             slave_ids += self.env['account.account'].create({
                 'name': 'SLAVE %s' % self.slave_account_index,
                 'code': 'SL000%s' % self.slave_account_index,
-                'user_type_id': account_type.id,
+                'account_type': 'asset_receivable',
                 'reconcile': True
             })
         return master_ids, slave_ids

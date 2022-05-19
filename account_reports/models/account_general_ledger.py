@@ -254,7 +254,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             ('date' <= options['date_to']),
             '|',
             ('date' >= fiscalyear['date_from']),
-            ('account_id.user_type_id.include_initial_balance', '=', True)
+            ('account_id.include_initial_balance', '=', True)
         ]
         :param options: The report options.
         :return:        A copy of the options.
@@ -276,7 +276,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         The resulting dates domain will be:
         [
           ('date' <= fiscalyear['date_from'] - 1),
-          ('account_id.user_type_id.include_initial_balance', '=', False),
+          ('account_id.include_initial_balance', '=', False),
         ]
         :param options: The report options.
         :return:        A copy of the options.
@@ -301,7 +301,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             ('date' <= options['date_from'] - 1),
             '|',
             ('date' >= fiscalyear['date_from']),
-            ('account_id.user_type_id.include_initial_balance', '=', True)
+            ('account_id.include_initial_balance', '=', True)
         ]
         :param options: The report options.
         :return:        A copy of the options.
@@ -356,7 +356,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             #   ('date' <= options['date_to']),
             #   '|',
             #   ('date' >= fiscalyear['date_from']),
-            #   ('account_id.user_type_id.include_initial_balance', '=', True),
+            #   ('account_id.include_initial_balance', '=', True),
             # ]
 
             new_options = self._get_options_sum_balance(options_period)
@@ -382,7 +382,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         # 2) Get sums for the unaffected earnings.
         # ============================================
 
-        domain = [('account_id.user_type_id.include_initial_balance', '=', False)]
+        domain = [('account_id.include_initial_balance', '=', False)]
         if expanded_account:
             domain.append(('company_id', '=', expanded_account.company_id.id))
 
@@ -394,7 +394,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         # The period domain is expressed as:
         # [
         #   ('date' <= fiscalyear['date_from'] - 1),
-        #   ('account_id.user_type_id.include_initial_balance', '=', False),
+        #   ('account_id.include_initial_balance', '=', False),
         # ]
 
         new_options = self._get_options_unaffected_earnings(options_period)
@@ -433,7 +433,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             #   ('date' <= options['date_from'] - 1),
             #   '|',
             #   ('date' >= fiscalyear['date_from']),
-            #   ('account_id.user_type_id.include_initial_balance', '=', True)
+            #   ('account_id.include_initial_balance', '=', True)
             # ]
 
             new_options = self._get_options_initial_balance(options_period)
@@ -632,15 +632,14 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                     groupby_accounts[res['account_id']][0].setdefault('lines', [])
                     groupby_accounts[res['account_id']][0]['lines'].append(res)
 
-        # Affect the unaffected earnings to the first fetched account of type 'account.data_unaffected_earnings'.
+        # Affect the unaffected earnings to the first fetched account of type 'equity_unaffected'.
         # There is an unaffected earnings for each company but it's less costly to fetch all candidate accounts in
         # a single search and then iterate it.
         if groupby_companies:
             options = options_list[0]
-            unaffected_earnings_type = self.env.ref('account.data_unaffected_earnings')
 
             candidates_account_ids = self.env['account.account']._name_search(options.get('filter_accounts'), [
-                ('user_type_id', '=', unaffected_earnings_type.id),
+                ('account_type', '=', 'equity_unaffected'),
                 ('company_id', 'in', list(groupby_companies)),
             ])
             for account in self.env['account.account'].browse(candidates_account_ids):

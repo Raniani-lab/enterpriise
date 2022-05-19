@@ -171,11 +171,7 @@ class AccountMoveLine(models.Model):
                        setweight(to_tsvector(%(lang)s, name), 'B') AS document
                   FROM account_account account
                  WHERE account.deprecated IS NOT TRUE
-                   AND user_type_id IN (
-                           SELECT id
-                             FROM account_account_type
-                            WHERE internal_group = 'expense'
-                       )
+                   AND account.internal_group  = 'expense'
                    AND company_id = %(company_id)s
         """]
         query = self._build_query([('account_id.deprecated', '=', False)])

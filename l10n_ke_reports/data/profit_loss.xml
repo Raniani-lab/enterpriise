@@ -138,8 +138,8 @@
                 <field name="name">Net profit/Loss for the Year</field>
                 <field name="code">KE_P_L</field>
                 <field name="control_domain" eval="[
-                        '|', ('account_id.user_type_id.internal_group', '=', 'income'),
-                             ('account_id.user_type_id.internal_group', '=', 'expense')
+                        '|', ('account_id.internal_group', '=', 'income'),
+                             ('account_id.internal_group', '=', 'expense')
                      ]" />
                 <field name="formulas">KE_P_L_B_T + KE_C_T_E</field>
                 <field name="sequence" eval="140"/>

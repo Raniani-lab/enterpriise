@@ -54,7 +54,7 @@ class ECSalesReport(models.AbstractModel):
             ('move_id.date', '>=', options['date']['date_from']),
             ('move_id.date', '<=', options['date']['date_to']),
             ('partner_id.country_id.code', 'in', tuple(self.env['account.sales.report'].get_ec_country_codes(options))),
-            ('account_id.internal_type', '=', 'receivable'),
+            ('account_id.account_type', '=', 'asset_receivable'),
             ('partner_id.country_id', '!=', self.env.company.account_fiscal_country_id.id),
             ('partner_id.vat', '!=', False),
         ]
@@ -83,7 +83,7 @@ class ECSalesReport(models.AbstractModel):
             INNER JOIN res_partner company_partner ON company_partner.id = company.partner_id
                  WHERE ''' + where_clause + '''
                    AND country.code IN %s
-                   AND account.internal_type = 'receivable'
+                   AND account.account_type = 'asset_receivable'
                    AND company_partner.country_id != country.id
                    AND partner.vat IS NOT NULL
               GROUP BY partner.id, partner.vat, partner.name, country.code

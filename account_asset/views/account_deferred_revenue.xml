@@ -86,14 +86,14 @@
             <field name="account_depreciation_id" position="attributes">
                 <attribute name="string">Revenue Account</attribute>
                 <attribute name="help">Account used to recognize the revenue</attribute>
-                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_revenue)d, %(account.data_account_type_other_income)d])]</attribute>
-                <attribute name="context">{'default_user_type_id': %(account.data_account_type_revenue)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_revenue)d, %(account.data_account_type_other_income)d])]}</attribute>
+                <attribute name="domain">[('account_type', 'in', ('income', 'income_other'))]</attribute>
+                <attribute name="context">{'default_account_type': 'income', 'account_type_domain': [('account_type', 'in', ('income', 'income_other'))]}</attribute>
             </field>
             <field name="account_depreciation_expense_id" position="attributes">
                 <attribute name="string">Deferred Revenue Account</attribute>
                 <attribute name="help">Account used to record the deferred income</attribute>
-                <attribute name="domain">[('user_type_id', 'in', [%(account.data_account_type_current_liabilities)d])]</attribute>
-                <attribute name="context">{'default_user_type_id': %(account.data_account_type_current_liabilities)d, 'account_type_domain': [('id', 'in', [%(account.data_account_type_current_liabilities)d])]}</attribute>
+                <attribute name="domain">[('account_type', '=', 'liability_current')]</attribute>
+                <attribute name="context">{'default_account_type': 'liability_current', 'account_type_domain': [('account_type', '=', 'liability_current')]}</attribute>
             </field>
             <field name="method_number" position="attributes">
                 <attribute name="string">Number of Recognitions</attribute>
@@ -108,7 +108,7 @@
                 <attribute name="string">Residual Amount to Recognize</attribute>
             </field>
             <field name="model_id" position="attributes">
-                <attribute name="domain">[('state', '=', 'model'), ('account_asset_id.user_type_id', '=?', user_type_id), ('asset_type', '=', 'sale')]</attribute>
+                <attribute name="domain">[('state', '=', 'model'), ('account_asset_id.account_type', '=?', account_type), ('asset_type', '=', 'sale')]</attribute>
                 <attribute name="context">{'default_asset_type': 'sale'}</attribute>
             </field>
             <xpath expr="//page[@name='depreciation_board']" position="attributes">
@@ -134,7 +134,7 @@
                     ('parent_state', '=', 'posted'),
                     ('debit', '=', '0'),
                     ('company_id', '=', company_id),
-                    ('account_id.user_type_id', 'in', [%(account.data_account_type_revenue)d, %(account.data_account_type_other_income)d])
+                    ('account_id.account_type', 'in', ('income', 'income_other'))
                 ]</attribute>
             </field>
         </field>

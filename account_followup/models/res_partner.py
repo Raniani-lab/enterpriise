@@ -126,7 +126,7 @@ class ResPartner(models.Model):
         return [
             ('reconciled', '=', False),
             ('account_id.deprecated', '=', False),
-            ('account_id.internal_type', '=', 'receivable'),
+            ('account_id.account_type', '=', 'asset_receivable'),
             ('move_id.state', '=', 'posted'),
             ('partner_id', 'in', self.ids),
             ('company_id', '=', self.env.company.id),
@@ -272,7 +272,7 @@ class ResPartner(models.Model):
                             AND aml.balance > 0
             ) current_followup_level ON true
            WHERE account.deprecated IS NOT TRUE
-             AND account.internal_type = 'receivable'
+             AND account.account_type = 'asset_receivable'
              AND move.state = 'posted'
              AND aml.reconciled IS NOT TRUE
              AND aml.blocked IS FALSE
@@ -289,7 +289,7 @@ class ResPartner(models.Model):
                   JOIN account_move move ON line.move_id = move.id
              LEFT JOIN account_followup_followup_line ful ON ful.id = line.followup_line_id
                  WHERE line.partner_id = partner.id
-                   AND account.internal_type = 'receivable'
+                   AND account.account_type = 'asset_receivable'
                    AND account.deprecated IS NOT TRUE
                    AND move.state = 'posted'
                    AND line.reconciled IS NOT TRUE
@@ -307,7 +307,7 @@ class ResPartner(models.Model):
                   JOIN account_account account ON line.account_id = account.id
                   JOIN account_move move ON line.move_id = move.id
                  WHERE line.partner_id = partner.id
-                   AND account.internal_type = 'receivable'
+                   AND account.account_type = 'asset_receivable'
                    AND account.deprecated IS NOT TRUE
                    AND move.state = 'posted'
                    AND line.reconciled IS NOT TRUE

@@ -39,43 +39,42 @@ class TestKeypay(TransactionCase):
         cls.config.execute()
 
         Account = cls.env['account.account']
-        acc_type = cls.env.ref('account.data_account_type_current_liabilities').id
 
         # bis account should take priority as they have a kp_account_identifier
         Account.create([{
             'name': 'Test 1',
             'code': '1234',
-            'user_type_id': acc_type,
+            'account_type': 'liability_current',
         }, {
             'name': 'Test 1 bis',
             'l10n_au_kp_account_identifier': '1234',
             'code': '9999',
-            'user_type_id': acc_type,
+            'account_type': 'liability_current',
         }, {
             'name': 'Test 2 bis',
             'l10n_au_kp_account_identifier': '5678',
             'code': '8888',
-            'user_type_id': acc_type,
+            'account_type': 'liability_current',
         }, {
             'name': 'Test 3',
             'code': 'abcd',
-            'user_type_id': acc_type,
+            'account_type': 'liability_current',
         }, {
             'name': 'Test 4',
             'code': 'efgh',
-            'user_type_id': acc_type,
+            'account_type': 'liability_current',
         }, {
             'name': 'Test 5',
             'code': 'ijkl',
-            'user_type_id': acc_type,
+            'account_type': 'liability_current',
         }, {
             'name': 'Test 6',
             'code': 'mnop',
-            'user_type_id': acc_type,
+            'account_type': 'liability_current',
         }, {
             'name': 'Test 7',
             'code': 'qrst',
-            'user_type_id': acc_type,
+            'account_type': 'liability_current',
         }])
 
         return res

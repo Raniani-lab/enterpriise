@@ -485,7 +485,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         revenue_account = self.env['account.account'].create({
             "name": "test_06_account_asset",
             "code": "test_06_account_asset",
-            "user_type_id": self.env.ref('account.data_account_type_current_liabilities').id,
+            "account_type": 'liability_current',
             "create_asset": "no",
             "asset_type": "sale",
             "multiple_assets_per_line": True,
@@ -1041,7 +1041,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         account = self.env['account.account'].create({
             "name": "test account",
             "code": "TEST",
-            "user_type_id": self.env.ref('account.data_account_type_non_current_assets').id,
+            "account_type": 'asset_non_current',
             "create_asset": "draft",
             "asset_type": "purchase",
             "multiple_assets_per_line": True,
@@ -1079,7 +1079,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         account = self.env['account.account'].create({
             "name": "test account",
             "code": "TEST",
-            "user_type_id": self.env.ref('account.data_account_type_non_current_assets').id,
+            "account_type": 'asset_non_current',
             "create_asset": "draft",
             "asset_type": "purchase",
             "multiple_assets_per_line": True,

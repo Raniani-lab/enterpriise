@@ -201,22 +201,22 @@ class WinbooksImportWizard(models.TransientModel):
         ResCurrency = self.env['res.currency']
         AccountGroup = self.env['account.group']
         account_types = [
-            {'min': 100, 'max': 160, 'id': 'account.data_account_type_equity'},
-            {'min': 160, 'max': 200, 'id': 'account.data_account_type_non_current_liabilities'},
-            {'min': 200, 'max': 280, 'id': 'account.data_account_type_non_current_assets'},
-            {'min': 280, 'max': 290, 'id': 'account.data_account_type_fixed_assets'},
-            {'min': 290, 'max': 400, 'id': 'account.data_account_type_current_assets'},
-            {'min': 400, 'max': 401, 'id': 'account.data_account_type_receivable', 'reconcile': True},
-            {'min': 401, 'max': 420, 'id': 'account.data_account_type_current_assets'},
-            {'min': 420, 'max': 440, 'id': 'account.data_account_type_current_liabilities'},
-            {'min': 440, 'max': 441, 'id': 'account.data_account_type_payable', 'reconcile': True},
-            {'min': 441, 'max': 490, 'id': 'account.data_account_type_current_liabilities'},
-            {'min': 490, 'max': 492, 'id': 'account.data_account_type_current_assets'},
-            {'min': 492, 'max': 500, 'id': 'account.data_account_type_current_liabilities'},
-            {'min': 500, 'max': 600, 'id': 'account.data_account_type_liquidity'},
-            {'min': 600, 'max': 700, 'id': 'account.data_account_type_expenses'},
-            {'min': 700, 'max': 822, 'id': 'account.data_account_type_revenue'},
-            {'min': 822, 'max': 860, 'id': 'account.data_account_type_expenses'},
+            {'min': 100, 'max': 160, 'id': 'equity'},
+            {'min': 160, 'max': 200, 'id': 'liability_non_current'},
+            {'min': 200, 'max': 280, 'id': 'asset_non_current'},
+            {'min': 280, 'max': 290, 'id': 'asset_fixed'},
+            {'min': 290, 'max': 400, 'id': 'asset_current'},
+            {'min': 400, 'max': 401, 'id': 'asset_receivable', 'reconcile': True},
+            {'min': 401, 'max': 420, 'id': 'asset_current'},
+            {'min': 420, 'max': 440, 'id': 'liability_current'},
+            {'min': 440, 'max': 441, 'id': 'liability_payable', 'reconcile': True},
+            {'min': 441, 'max': 490, 'id': 'liability_current'},
+            {'min': 490, 'max': 492, 'id': 'asset_current'},
+            {'min': 492, 'max': 500, 'id': 'liability_current'},
+            {'min': 500, 'max': 600, 'id': 'asset_cash'},
+            {'min': 600, 'max': 700, 'id': 'expense'},
+            {'min': 700, 'max': 822, 'id': 'income'},
+            {'min': 822, 'max': 860, 'id': 'expense'},
         ]
         for rec in dbf_records:
             grouped[rec.get('TYPE')].append(rec)
@@ -250,13 +250,13 @@ class WinbooksImportWizard(models.TransientModel):
                         for account_type in account_types:
                             if account_code in range(account_type['min'], account_type['max']):
                                 data.update({
-                                    'user_type_id': self.env.ref(account_type['id']).id,
+                                    'account_type': account_type['id'],
                                     'reconcile': account_type.get('reconcile', False)
                                 })
                                 break
                         # fallback for accounts not in range(100000,860000)
-                        if not data.get('user_type_id'):
-                            data['user_type_id'] = self.env.ref('account.data_account_type_other_income').id
+                        if not data.get('account_type'):
+                            data['account_type'] = 'income_other'
                         account_data_list.append(data)
                         rec_number_list.append(rec.get('NUMBER'))
                         journal_centered_list.append(rec.get('CENTRALID'))
@@ -400,14 +400,14 @@ class WinbooksImportWizard(models.TransientModel):
                     'amount_currency': rec.get('CURRAMOUNT') if currency and rec.get('CURRAMOUNT') else 0.0,
                     'amount_residual_currency': rec.get('CURRAMOUNT') if currency and rec.get('CURRAMOUNT') else 0.0,
                     'winbooks_matching_number': matching_number,
-                    'exclude_from_invoice_tab': rec.get('DOCORDER') == 'VAT' or (account_id.user_type_id.type in ('receivable', 'payable') and journal_id.type in ('sale', 'purchase')),
+                    'exclude_from_invoice_tab': rec.get('DOCORDER') == 'VAT' or (account_id.account_type in ('asset_receivable', 'liability_payable') and journal_id.type in ('sale', 'purchase')),
                 }
                 if matching_number:
                     reconcile_number_set.add(matching_number)
                 if rec.get('AMOUNTEUR'):
                     move_amount_total = round(move_amount_total, 2) + round(rec.get('AMOUNTEUR'), 2)
                 move_line_data_list.append((0, 0, line_data))
-                if account_id.user_type_id.type in ('receivable', 'payable'):
+                if account_id.account_type in ('asset_receivable', 'liability_payable'):
                     move_total_receivable_payable += rec.get('AMOUNTEUR')
 
             # Compute refund value
@@ -418,7 +418,7 @@ class WinbooksImportWizard(models.TransientModel):
 
             # Add tax information
             for line_data, rec in zip(move_line_data_list, val):
-                if self.env['account.account'].browse(account_data.get(rec.get('ACCOUNTGL'))).user_type_id.type in ('receivable', 'payable'):
+                if self.env['account.account'].browse(account_data.get(rec.get('ACCOUNTGL'))).account_type in ('asset_receivable', 'liability_payable'):
                     continue
                 tax_line = self.env['account.tax'].browse(vatcode_data.get(rec.get('VATCODE') or rec.get('VATIMPUT', [])))
                 if not tax_line and line_data[2]['account_id'] in account_central.values():

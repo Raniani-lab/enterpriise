@@ -12,7 +12,7 @@
             <record id="account_balance_report_l10n_dk_aktiver" model="account.financial.html.report.line">
                 <field name="name">Aktiver</field>
                 <field name="code">AKT</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'asset')]"/>
                 <field name="level" eval="0"/>
                 <field name="sequence" eval="1"/>
                 <field name="formulas">IMAK + ANAK + OMAK</field>
@@ -148,7 +148,7 @@
             <record id="account_balance_report_l10n_dk_passiver" model="account.financial.html.report.line">
                 <field name="name">Passiver</field>
                 <field name="code">PAS</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['equity', 'liability', 'income', 'expense'])]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', 'in', ['equity', 'liability', 'income', 'expense'])]"/>
                 <field name="level" eval="0"/>
                 <field name="sequence" eval="14"/>
                 <field name="formulas">EGEN + LANG + KORT</field>
@@ -170,12 +170,12 @@
                                     <record id="account_balance_report_l10n_dk_current_year_earnings" model="account.financial.html.report.line">
                                         <field name="name">Indeværende års indtjening</field>
                                         <field name="code">IAI</field>
-                                        <field name="domain" eval="[('account_id.user_type_id', 'in', [
-                                            ref('account.data_account_type_revenue'),
-                                            ref('account.data_account_type_other_income'),
-                                            ref('account.data_account_type_direct_costs'),
-                                            ref('account.data_account_type_expenses'),
-                                            ref('account.data_account_type_depreciation')
+                                        <field name="domain" eval="[('account_id.account_type', 'in', [
+                                            'income',
+                                            'income_other',
+                                            'expense_direct_cost',
+                                            'expense',
+                                            'expense_depreciation'
                                         ])]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="sequence" eval="10"/>
@@ -186,7 +186,7 @@
                                     <record id="account_balance_report_l10n_dk_current_year_allocated_earnings" model="account.financial.html.report.line">
                                         <field name="name">Aktuelt års allokerede indtjening</field>
                                         <field name="code">ALLOCATED_EARNINGS_CURRENT_YEAR_DK</field>
-                                        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]"/>
+                                        <field name="domain" eval="[('account_id.account_type', '=', 'equity_unaffected')]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="special_date_changer">from_fiscalyear</field>
                                         <field name="sequence" eval="2"/>
@@ -197,12 +197,12 @@
                             <record id="account_balance_report_l10n_dk_previous_year_earnings" model="account.financial.html.report.line">
                                 <field name="name">Tidligere års resultat</field>
                                 <field name="code">PREV_YEAR_EARNINGS_DK</field>
-                                <field name="domain" eval="[('account_id.user_type_id', 'in', [
-                                    ref('account.data_account_type_revenue'),
-                                    ref('account.data_account_type_other_income'),
-                                    ref('account.data_account_type_direct_costs'),
-                                    ref('account.data_account_type_expenses'),
-                                    ref('account.data_account_type_depreciation')
+                                <field name="domain" eval="[('account_id.account_type', 'in', [
+                                    'income',
+                                    'income_other',
+                                    'expense_direct_cost',
+                                    'expense',
+                                    'expense_depreciation'
                                 ])]"/>
                                 <field name="formulas">-sum + ALLOCATED_EARNINGS_DK - AFR</field>
                                 <field name="sequence" eval="2"/>
@@ -332,7 +332,7 @@
     <record id="account_balance_report_l10n_dk_allocated_earnings_test" model="account.financial.html.report.line">
         <field name="name">Allocated Earnings</field>
         <field name="code">ALLOCATED_EARNINGS_DK</field>
-        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]"/>
+        <field name="domain" eval="[('account_id.account_type', '=', 'equity_unaffected')]"/>
         <field name="formulas">-sum</field>
         <field name="sequence" eval="2"/>
         <field name="special_date_changer">from_beginning</field>

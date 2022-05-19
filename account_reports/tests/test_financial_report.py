@@ -31,27 +31,27 @@ class TestFinancialReport(TestAccountReportsCommon):
         # Cleanup existing "Current year earnings" accounts since we can only have one by company.
         cls.env['account.account'].search([
             ('company_id', 'in', (cls.company_data['company'] + cls.company_data_2['company']).ids),
-            ('user_type_id', '=', cls.env.ref('account.data_unaffected_earnings').id),
+            ('account_type', '=', 'equity_unaffected'),
         ]).unlink()
 
         account_type_data = [
-            (cls.env.ref('account.data_account_type_receivable'),           {'reconcile': True}),
-            (cls.env.ref('account.data_account_type_payable'),              {'reconcile': True}),
-            (cls.env.ref('account.data_account_type_liquidity'),            {}),
-            (cls.env.ref('account.data_account_type_current_assets'),       {}),
-            (cls.env.ref('account.data_account_type_prepayments'),          {}),
-            (cls.env.ref('account.data_account_type_fixed_assets'),         {}),
-            (cls.env.ref('account.data_account_type_non_current_assets'),   {}),
-            (cls.env.ref('account.data_account_type_equity'),               {}),
-            (cls.env.ref('account.data_unaffected_earnings'),               {}),
-            (cls.env.ref('account.data_account_type_revenue'),              {}),
+            ('asset_receivable',           {'reconcile': True}),
+            ('liability_payable',              {'reconcile': True}),
+            ('asset_cash',            {}),
+            ('asset_current',       {}),
+            ('asset_prepayments',          {}),
+            ('asset_fixed',         {}),
+            ('asset_non_current',   {}),
+            ('equity',               {}),
+            ('equity_unaffected',  {}),
+            ('income',              {}),
         ]
 
         accounts = cls.env['account.account'].create([{
             **data[1],
             'name': 'account%s' % i,
             'code': 'code%s' % i,
-            'user_type_id': data[0].id,
+            'account_type': data[0],
             'company_id': cls.company_data['company'].id,
         } for i, data in enumerate(account_type_data)])
 
@@ -59,7 +59,7 @@ class TestFinancialReport(TestAccountReportsCommon):
             **data[1],
             'name': 'account%s' % (i + 100),
             'code': 'code%s' % (i + 100),
-            'user_type_id': data[0].id,
+            'account_type': data[0],
             'company_id': cls.company_data_2['company'].id,
         } for i, data in enumerate(account_type_data)])
 
@@ -617,12 +617,12 @@ class TestFinancialReport(TestAccountReportsCommon):
         account1 = self.env['account.account'].create({
             'name': "test_financial_report_sum_if_x_groupby1",
             'code': "42241",
-            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id,
+            'account_type': 'asset_fixed',
         })
         account2 = self.env['account.account'].create({
             'name': "test_financial_report_sum_if_x_groupby2",
             'code': "42242",
-            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id,
+            'account_type': 'asset_fixed',
         })
 
         move = self.env['account.move'].create({
@@ -710,11 +710,11 @@ class TestFinancialReport(TestAccountReportsCommon):
         account1, account2 = self.env['account.account'].create([{
             'name': "test_financial_report_1",
             'code': "42241",
-            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id,
+            'account_type': "asset_fixed",
         }, {
             'name': "test_financial_report_2",
             'code': "42242",
-            'user_type_id': self.env.ref('account.data_account_type_fixed_assets').id,
+            'account_type': "asset_fixed",
         }])
 
         moves = self.env['account.move'].create([

@@ -6,7 +6,7 @@
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
             <form string="Asset" js_class="asset_form">
-                <field name="user_type_id" invisible="1"/>
+                <field name="account_type" invisible="1"/>
                 <field name="display_account_asset_id" invisible="1"/>
                 <field name="display_model_choice" invisible="1"/>
                 <field name="state" invisible="1"/>
@@ -34,7 +34,7 @@
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box text-start oe_edit_only" name="model_box" attrs="{'invisible': [('display_model_choice', '!=', True)]}">
                         <div class="o_radio_hide_bullet overflow-auto">
-                            <field name="model_id" string="Asset Model" help="Category of asset" nolabel="1" widget="radio" options="{'horizontal': true}" domain="[('state', '=', 'model'), ('user_type_id', '=?', user_type_id), ('asset_type', '=', asset_type)]"/>
+                            <field name="model_id" string="Asset Model" help="Category of asset" nolabel="1" widget="radio" options="{'horizontal': true}" domain="[('state', '=', 'model'), ('account_type', '=?', account_type), ('asset_type', '=', asset_type)]"/>
                         </div>
                     </div>
                     <div class="oe_title">
@@ -81,38 +81,38 @@
                             <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                             <field
                                 name="account_asset_id"
-                                domain="[('user_type_id', 'in', [
-                                    %(account.data_account_type_fixed_assets)d,
-                                    %(account.data_account_type_non_current_assets)d,
-                                    %(account.data_account_type_current_assets)d])]"
+                                domain="[('account_type', 'in', (
+                                    'asset_fixed',
+                                    'asset_non_current',
+                                    'asset_current'))]"
                                 context="{
-                                    'default_user_type_id': %(account.data_account_type_fixed_assets)d,
-                                    'account_type_domain': [('id', 'in', [
-                                        %(account.data_account_type_fixed_assets)d,
-                                        %(account.data_account_type_non_current_assets)d])]}"
+                                    'default_account_type': 'asset_fixed',
+                                    'account_type_domain': [('account_type', 'in', (
+                                        'asset_fixed',
+                                        'asset_non_current'))]}"
                                 attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '!=', 'purchase')], 'required': [('state', '!=', 'model')]}"/>
                             <field
                                 name="account_depreciation_id"
-                                domain="[('user_type_id', 'in', [
-                                    %(account.data_account_type_fixed_assets)d,
-                                    %(account.data_account_type_non_current_assets)d,
-                                    %(account.data_account_type_current_assets)d])]"
+                                domain="[('account_type', 'in', (
+                                    'asset_fixed',
+                                    'asset_non_current',
+                                    'asset_current'))]"
                                 context="{
-                                    'default_user_type_id': %(account.data_account_type_non_current_assets)d,
-                                    'account_type_domain': [('id', 'in', [
-                                        %(account.data_account_type_fixed_assets)d,
-                                        %(account.data_account_type_non_current_assets)d])]}"
+                                    'default_account_type': 'asset_non_current',
+                                    'account_type_domain': [('account_type', 'in', (
+                                        'asset_fixed',
+                                        'asset_non_current'))]}"
                                 required="1"/>
                             <field
                                 name="account_depreciation_expense_id"
-                                domain="[('user_type_id', 'in', [
-                                    %(account.data_account_type_depreciation)d,
-                                    %(account.data_account_type_expenses)d])]"
+                                domain="[('account_type', 'in', (
+                                    'expense_depreciation',
+                                    'expense'))]"
                                 context="{
-                                    'default_user_type_id': %(account.data_account_type_depreciation)d,
-                                    'account_type_domain': [('id', 'in', [
-                                        %(account.data_account_type_depreciation)d,
-                                        %(account.data_account_type_expenses)d])]}"
+                                    'default_account_type': 'expense_depreciation',
+                                    'account_type_domain': [('account_type', 'in', (
+                                        'expense_depreciation',
+                                        'expense'))]}"
                                 required="1"/>
                             <field name="journal_id" required="1"/>
                             <field name="account_analytic_id" groups="analytic.group_analytic_accounting" />
@@ -148,7 +148,7 @@
                                 domain="[
                                     ('parent_state', '=', 'posted'),
                                     ('company_id', '=', company_id),
-                                    ('account_id.user_type_id', 'in', [%(account.data_account_type_fixed_assets)d, %(account.data_account_type_non_current_assets)d])
+                                    ('account_id.account_type', 'in', ('asset_fixed', 'asset_non_current')),
                                 ]"
                                 class="original_move_line_ids_field">
                                 <tree create="0">

@@ -434,7 +434,7 @@ class AccountEdiFormat(models.Model):
             total_amount = abs(counterpart_vals['debit'] - counterpart_vals['credit'])
 
         # === Decode the reconciliation to extract invoice data ===
-        pay_rec_lines = move.line_ids.filtered(lambda line: line.account_internal_type in ('receivable', 'payable'))
+        pay_rec_lines = move.line_ids.filtered(lambda line: line.account_type in ('asset_receivable', 'liability_payable'))
         exchange_move_x_invoice = {}
         reconciliation_vals = defaultdict(lambda: {
             'amount_currency': 0.0,
@@ -468,7 +468,7 @@ class AccountEdiFormat(models.Model):
 
             # Compute 'number_of_payments' & add amounts from exchange difference.
             payment_ids = set()
-            inv_pay_rec_lines = invoice.line_ids.filtered(lambda line: line.account_internal_type in ('receivable', 'payable'))
+            inv_pay_rec_lines = invoice.line_ids.filtered(lambda line: line.account_type in ('asset_receivable', 'liability_payable'))
             for field in ('debit', 'credit'):
                 for partial in inv_pay_rec_lines[f'matched_{field}_ids']:
                     counterpart_move = partial[f'{field}_move_id'].move_id

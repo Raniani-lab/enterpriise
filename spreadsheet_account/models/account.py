@@ -65,7 +65,7 @@ class AccountMove(models.Model):
             [
                 base_domain,
                 [
-                    ("account_id.user_type_id.include_initial_balance", "=", True),
+                    ("account_id.include_initial_balance", "=", True),
                     ("date", "<=", end),
                 ],
             ]
@@ -74,7 +74,7 @@ class AccountMove(models.Model):
             [
                 base_domain,
                 [
-                    ("account_id.user_type_id.include_initial_balance", "=", False),
+                    ("account_id.include_initial_balance", "=", False),
                     ("date", ">=", start),
                     ("date", "<=", end),
                 ],
@@ -131,11 +131,11 @@ class AccountMove(models.Model):
         return results
 
     @api.model
-    def get_account_group(self, account_type_ids):
+    def get_account_group(self, account_types):
         data = self._read_group(
-            [("user_type_id", "in", account_type_ids)],
+            [("account_type", "in", account_types), ("company_id", "=", self.env.company.id)],
             ["code:array_agg"],
-            ["user_type_id"],
+            ["account_type"],
         )
-        mapped = {group["user_type_id"][0]: group["code"] for group in data}
-        return [mapped.get(type_id, []) for type_id in account_type_ids]
+        mapped = {group["account_type"]: group["code"] for group in data}
+        return [mapped.get(account_type, []) for account_type in account_types]

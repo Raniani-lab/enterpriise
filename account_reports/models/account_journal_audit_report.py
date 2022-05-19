@@ -127,7 +127,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
                         p.name as partner_name,
                         acc.code as account_code,
                         acc.name as account_name,
-                        acc.internal_type as account_type,
+                        acc.account_type,
                         COALESCE("account_move_line".debit, 0) as debit,
                         COALESCE("account_move_line".credit, 0) as credit,
                         COALESCE("account_move_line".balance, 0) as balance,
@@ -157,10 +157,11 @@ class ReportAccountJournalAudit(models.AbstractModel):
                     GROUP BY "account_move_line".id, am.id, p.id, acc.id, j.id, cp.id, journal_curr.id
                     ORDER BY j.id, CASE when am.name = '/' then 1 else 0 end,
                     """ + (" am.date, am.name," if sort_by_date else " am.name , am.date,") + """
-                    CASE acc.internal_type
-                      WHEN 'payable' THEN 1
-                      WHEN 'receivable' THEN 1
-                      WHEN 'liquidity' THEN 5
+                    CASE acc.account_type
+                      WHEN 'liability_payable' THEN 1
+                      WHEN 'asset_receivable' THEN 1
+                      WHEN 'asset_cash' THEN 5
+                      WHEN 'liability_credit_card' THEN 5
                       ELSE 2
                    END,
                    "account_move_line".tax_line_id NULLS FIRST
@@ -266,7 +267,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
             if move_line_count > line_amount:  # Do not render a move for which we didn't fetch all the lines.
                 break
             # Do not display moves on bank journal that does not move the liquidity account
-            is_bank_without_liquidity = move_line_vals_list[0]['journal_type'] == 'bank' and not any(line for line in move_line_vals_list if line['account_type'] == 'liquidity')
+            is_bank_without_liquidity = move_line_vals_list[0]['journal_type'] == 'bank' and not any(line for line in move_line_vals_list if line['account_type'] in ('asset_cash', 'liability_credit_card'))
             if not options.get('show_payment_lines') and is_bank_without_liquidity:
                 load_more_remaining -= line_amount
                 load_more_remaining_moves -= 1
@@ -281,14 +282,14 @@ class ReportAccountJournalAudit(models.AbstractModel):
             is_multicurrency = move_line_vals_list[0]['is_multicurrency']
 
             # Create the first line separately, as we want to give it some specific behavior and styling
-            if move_line_vals_list[0]['journal_type'] == 'bank' and move_line_vals_list[0]['account_type'] != 'liquidity':
+            if move_line_vals_list[0]['journal_type'] == 'bank' and move_line_vals_list[0]['account_type'] not in ('asset_cash', 'liability_credit_card'):
                 current_balance += -move_line_vals_list[0]['balance']
 
             display_balance = False if options.get('show_payment_lines') and is_bank_without_liquidity else current_balance
             lines.append(self._get_first_move_line(options, parent_key, move_key, move_line_vals_list[0], display_balance))
 
             for line_index, move_line_vals in enumerate(move_line_vals_list[1:]):
-                if move_line_vals['journal_type'] == 'bank' and move_line_vals['account_type'] != 'liquidity':
+                if move_line_vals['journal_type'] == 'bank' and move_line_vals['account_type'] not in ('asset_cash', 'liability_credit_card'):
                     current_balance += -move_line_vals['balance']
                 display_balance = False if options.get('show_payment_lines') and is_bank_without_liquidity else current_balance
                 lines.extend(self._get_aml_line(options, parent_key, move_line_vals, display_balance, line_index))
@@ -446,7 +447,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
         :param new_balance: The new balance of the move line, if any. Use to display the cumulated balance for bank journals.
         """
         # Helps to format the line. If a line is linked to a partner but the account isn't receivable or payable, we want to display it in blue.
-        not_receivable_with_partner = values['partner_name'] and values['account_type'] not in ('receivable', 'payable')
+        not_receivable_with_partner = values['partner_name'] and values['account_type'] not in ('asset_receivable', 'liability_payable')
         return {
             'id': line_key,
             'name': values['move_name'],
@@ -471,7 +472,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
         :param current_balance: The current balance of the move line, if any. Use to display the cumulated balance for bank journals.
         :param line_index: The index of the line in the move line list. Used to write additional information in the name, such as the move reference, or the ammount in currency.
         """
-        if values['journal_type'] == 'bank' and values['account_type'] == 'liquidity':
+        if values['journal_type'] == 'bank' and values['account_type'] in ('asset_cash', 'liability_credit_card'):
             # Do not display bank lines for bank journals
             return []
 
@@ -529,7 +530,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
                  'style': 'width: 5%;' if not self._context.get('print_mode') else ''},
                 {'name': values['tax_grids']},
             ])
-        if values['journal_type'] == 'bank' and values['account_type'] != 'liquidity' and current_balance:
+        if values['journal_type'] == 'bank' and values['account_type'] not in ('asset_cash', 'liability_credit_card') and current_balance:
             additional_col.extend([
                 {'name': self.format_value(current_balance),
                  'no_format': current_balance,
@@ -538,7 +539,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
                 {'name': ''},
             ])
         # In bank journals, we do not want to display the balance for payment line if they are shown
-        elif values['journal_type'] == 'bank' and values['account_type'] != 'liquidity' and not current_balance:
+        elif values['journal_type'] == 'bank' and values['account_type'] not in ('asset_cash', 'liability_credit_card') and not current_balance:
             additional_col.extend([
                 {'name': ''},
                 {'name': ''},

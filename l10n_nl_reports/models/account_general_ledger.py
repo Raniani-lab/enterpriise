@@ -34,10 +34,10 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                 return 'S'
             return 'O'
 
-        def acc_tp(account_type):
-            if account_type in ['income', 'expense']:
+        def acc_tp(internal_group):
+            if internal_group in ['income', 'expense']:
                 return 'P'
-            if account_type in ['asset', 'liability']:
+            if internal_group in ['asset', 'liability']:
                 return 'B'
             return 'M'
 
@@ -101,7 +101,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                            account.code AS account_code,
                            account.write_uid AS account_write_uid,
                            account.write_date AS account_write_date,
-                           account_type.type AS account_type,
+                           account.internal_group,
                            reconcile.name AS line_reconcile_name,
                            currency.id AS line_currency_id,
                            currency2.id AS line_company_currency_id,
@@ -136,7 +136,6 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                       FROM {tables}
                       JOIN account_journal journal ON account_move_line.journal_id = journal.id
                       JOIN account_account account ON account_move_line.account_id = account.id
-                      JOIN account_account_type account_type ON account.user_type_id = account_type.id
                       LEFT JOIN res_partner partner ON account_move_line.partner_id = partner.id
                       LEFT JOIN account_tax tax ON account_move_line.tax_line_id = tax.id
                       LEFT JOIN account_full_reconcile reconcile ON account_move_line.full_reconcile_id = reconcile.id
@@ -169,7 +168,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                 vals_dict['account_data'].setdefault(row['account_id'], {
                     'account_code': row['account_code'],
                     'account_name': row['account_name'],
-                    'account_type': acc_tp(row['account_type']),
+                    'account_type': acc_tp(row['internal_group']),
                     'account_write_date': change_date_time(row['account_write_date']),
                     'account_write_uid': row['account_write_uid'],
                     'account_xaf_userid': self.env['res.users'].browse(row['account_write_uid']).l10n_nl_report_xaf_userid,
@@ -298,9 +297,8 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                    SUM(account_move_line.credit) AS sum_credit
             FROM {tables}
             JOIN account_account acc ON account_move_line.account_id = acc.id
-            JOIN account_account_type acc_type ON acc_type.id = acc.user_type_id
             WHERE {where_clause}
-            AND acc_type.include_initial_balance
+            AND acc.include_initial_balance
             GROUP BY acc.id
         """, where_params)
 

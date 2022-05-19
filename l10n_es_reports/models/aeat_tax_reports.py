@@ -798,7 +798,7 @@ class AEATAccountFinancialReport(models.Model):
                                                                               ('credit_move_id.date', '>=', date_from),
                                                                               ('credit_move_id.journal_id.type', '=', 'cash'),
                                                                               ('debit_move_id.move_id.l10n_es_reports_mod347_invoice_type', '=', mod_invoice_type),
-                                                                              ('credit_move_id.account_id.user_type_id', '=', self.env.ref('account.data_account_type_receivable').id),
+                                                                              ('credit_move_id.account_id.account_type', '=', 'asset_receivable'),
                                                                             ])
             all_partners += cash_payments_aml.mapped('credit_move_id.partner_id')
 
@@ -900,9 +900,9 @@ class AEATAccountFinancialReport(models.Model):
                 current_invoice_type = domain_tuple[2]
                 break
 
-        user_type_id = operation_key == 'B' and self.env.ref('account.data_account_type_receivable').id or self.env.ref('account.data_account_type_payable').id
+        account_type = operation_key == 'B' and 'asset_receivable' or 'liability_payable'
         matching_field = operation_key == 'B' and 'debit' or 'credit'
-        cash_payments_lines_in_period = self.env['account.move.line'].search([('date','<=',year+'-12-31'), ('date','>=',year+'-01-01'), ('journal_id.type','=','cash'), ('payment_id','!=',False), ('partner_id','=',line_partner.id), ('account_id.user_type_id','=',user_type_id), ('company_id','=',current_company.id)])
+        cash_payments_lines_in_period = self.env['account.move.line'].search([('date', '<=', year + '-12-31'), ('date', '>=', year + '-01-01'), ('journal_id.type', '=', 'cash'), ('payment_id', '!=', False), ('partner_id', '=', line_partner.id), ('account_type', '=', account_type), ('company_id', '=', current_company.id)])
         metalico_amount = 0
         for cash_payment_aml in cash_payments_lines_in_period:
                 partial_reconcile_ids = getattr(cash_payment_aml, 'matched_' + matching_field + '_ids')

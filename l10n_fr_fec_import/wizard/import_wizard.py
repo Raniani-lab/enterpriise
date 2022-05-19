@@ -133,7 +133,7 @@ class FecImportWizard(models.TransientModel):
                         "code": account_code,
                         "name": account_name,
                         "reconcile": reconcile,
-                        "user_type_id": self.env.ref('account.data_account_type_current_assets').id,
+                        "account_type": 'asset_current',
                     }
 
                     yield data
@@ -221,9 +221,9 @@ class FecImportWizard(models.TransientModel):
                     # Setup account properties
                     account = account_code and cache["account.account"].get(account_code.rstrip('0'), None)
                     if account:
-                        if account.user_type_id == self.env.ref("account.data_account_type_receivable"):
+                        if account.account_type == 'asset_receivable':
                             data["property_account_receivable_id"] = account.id
-                        elif account.user_type_id == self.env.ref("account.data_account_type_payable"):
+                        elif account.account_type == 'liability_payable':
                             data["property_account_payable_id"] = account.id
 
                     yield data
@@ -460,7 +460,7 @@ class FecImportWizard(models.TransientModel):
                 "name": move_line_name,
                 "ref": piece_ref,
                 "account_id": account.id,
-                "exclude_from_invoice_tab": account.user_type_id.type in ('receivable', 'payable') and journal.type in ('sale', 'purchase'),
+                "exclude_from_invoice_tab": account.account_type in ('asset_receivable', 'liability_payable') and journal.type in ('sale', 'purchase'),
                 "fec_matching_number": matching or False,
             }
 
@@ -518,11 +518,11 @@ class FecImportWizard(models.TransientModel):
     def _gather_templates(self):
         """ Find all the templates for the considered entities.
             These templates will be used to fill out missing information coming from the records.
-            For accounts, user_type_id and reconcile flags are used.  """
+            For accounts, account_type and reconcile flags are used.  """
 
         # account.account templates
         domain = [('chart_template_id', '=', self.env.company.chart_template_id.id)]
-        account_templates = self.env["account.account.template"].search_read(domain, ['code', 'display_name', 'user_type_id', 'reconcile'])
+        account_templates = self.env["account.account.template"].search_read(domain, ['code', 'display_name', 'account_type', 'reconcile'])
 
         all_templates = {"account.account": {x['code']: x for x in account_templates}}
         return all_templates
@@ -539,7 +539,7 @@ class FecImportWizard(models.TransientModel):
                 if template:
                     for key, value in template.items():
                         if key not in ['id', 'code']:
-                            record[key] = value if key != "user_type_id" else value[0]
+                            record[key] = value
                     break
 
     # ------------------------------------
@@ -584,12 +584,11 @@ class FecImportWizard(models.TransientModel):
                 SELECT aml.journal_id as journal_id,
                        aj.name as journal_name,
                        aml.move_id,
-                       SUM(CASE aat.type WHEN 'liquidity' THEN 1 ELSE 0 END) as bank,
-                       SUM(CASE aat.type WHEN 'receivable' THEN 1 ELSE 0 END) as sale,
-                       SUM(CASE aat.type WHEN 'payable' THEN 1 ELSE 0 END) as purchase
+                       SUM(CASE WHEN aa.account_type IN ('asset_cash','liability_credit_card') THEN 1 ELSE 0 END) as bank,
+                       SUM(CASE aa.account_type WHEN 'asset_receivable' THEN 1 ELSE 0 END) as sale,
+                       SUM(CASE aa.account_type WHEN 'liability_payable' THEN 1 ELSE 0 END) as purchase
                   FROM account_move_line aml
                        JOIN account_account aa on aa.id = aml.account_id
-                       JOIN account_account_type aat on aat.id = aa.user_type_id
                        JOIN account_journal aj on aj.id = aml.journal_id
                  WHERE aj.id in %s
               GROUP BY journal_id, journal_name, move_id),
@@ -629,10 +628,9 @@ class FecImportWizard(models.TransientModel):
                    COUNT(*) as frequency
               FROM account_move_line aml
                    JOIN account_account aa on aa.id = aml.account_id
-                   JOIN account_account_type aat on aat.id = aa.user_type_id
                    JOIN account_journal aj on aj.id = aml.journal_id
               WHERE aj.id = %s
-                    and aat.type = 'liquidity'
+                    and (aa.account_type = 'asset_cash' OR aa.account_type = 'liability_credit_card')
            GROUP BY aa.id
            ORDER BY frequency DESC
         """

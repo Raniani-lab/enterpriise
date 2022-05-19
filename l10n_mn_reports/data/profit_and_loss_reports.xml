@@ -17,7 +17,7 @@
                         <field name="name">Борлуулалтын орлого (цэвэр)</field>
                         <field name="sequence" eval="1"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_revenue'))]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -28,7 +28,7 @@
                         <field name="name">Борлуулсан бүтээгдэхүүний өртөг</field>
                         <field name="sequence" eval="2"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_direct_costs'))]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','expense_direct_cost')]"/>
                         <field name="formulas">sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -47,7 +47,7 @@
                         <field name="name">Түрээсийн орлого</field>
                         <field name="sequence" eval="4"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','5102%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','5102%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -58,7 +58,7 @@
                         <field name="name">Хүүний орлого</field>
                         <field name="sequence" eval="5"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','5103%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','5103%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -69,7 +69,7 @@
                         <field name="name">Ногдол ашгийн орлого</field>
                         <field name="sequence" eval="6"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','5104%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','5104%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -80,7 +80,7 @@
                         <field name="name">Эрхийн шимтгэлийн орлого</field>
                         <field name="sequence" eval="7"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','5105%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','5105%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -91,7 +91,7 @@
                         <field name="name">Бусад орлого</field>
                         <field name="sequence" eval="8"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','52%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','52%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -102,7 +102,7 @@
                         <field name="name">Борлуулалт, маркетингийн зардал</field>
                         <field name="sequence" eval="10"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_expenses')), ('account_id.code','=like','71%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','expense'), ('account_id.code','=like','71%')]"/>
                         <field name="formulas">sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -113,7 +113,7 @@
                         <field name="name">Ерөнхий ба удирдлагын зардал</field>
                         <field name="sequence" eval="11"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_expenses')), ('account_id.code','=like','70%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','expense'), ('account_id.code','=like','70%')]"/>
                         <field name="formulas">sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -124,7 +124,7 @@
                         <field name="name">Санхүүгийн зардал</field>
                         <field name="sequence" eval="12"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_expenses')), ('account_id.code','=like','72%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','expense'), ('account_id.code','=like','72%')]"/>
                         <field name="formulas">sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -135,7 +135,7 @@
                         <field name="name">Бусад зардал</field>
                         <field name="sequence" eval="13"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_expenses')), ('account_id.code','=like','74%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','expense'), ('account_id.code','=like','74%')]"/>
                         <field name="formulas">sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -146,7 +146,7 @@
                         <field name="name">Гадаад валютын ханшийн зөрүүний олз (гарз)</field>
                         <field name="sequence" eval="15"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','53%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','53%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -157,7 +157,7 @@
                         <field name="name">Үндсэн хөрөнгө данснаас хассаны олз (гарз)</field>
                         <field name="sequence" eval="16"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','54%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','54%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -168,7 +168,7 @@
                         <field name="name">Биет бус хөрөнгө данснаас хассаны олз (гарз)</field>
                         <field name="sequence" eval="17"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','55%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','55%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -179,7 +179,7 @@
                         <field name="name">Хөрөнгө оруулалт борлуулсны олз (гарз)</field>
                         <field name="sequence" eval="18"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','56%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','56%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -190,7 +190,7 @@
                         <field name="name">Бусад ашиг (алдагдал)</field>
                         <field name="sequence" eval="19"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_other_income')), ('account_id.code','=like','57%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','income_other'), ('account_id.code','=like','57%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -209,7 +209,7 @@
                         <field name="name">Орлогын албан татвар</field>
                         <field name="sequence" eval="21"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_expenses')), ('account_id.code','=like','9101%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','expense'), ('account_id.code','=like','9101%')]"/>
                         <field name="formulas">sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -228,7 +228,7 @@
                         <field name="name">Зогсоосон үйл ажиллагааны татвар</field>
                         <field name="sequence" eval="23"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_expenses')), ('account_id.code','=like','9102%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','expense'), ('account_id.code','=like','9102%')]"/>
                         <field name="formulas">sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>
@@ -247,7 +247,7 @@
                         <field name="name">Бусад дэлгэрэнгүй орлого</field>
                         <field name="sequence" eval="25"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.user_type_id','=',ref('account.data_account_type_expenses')), ('account_id.code','=like','9103%')]"/>
+                        <field name="domain" eval="[('account_id.account_type','=','expense'), ('account_id.code','=like','9103%')]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">foldable</field>

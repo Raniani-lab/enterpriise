@@ -156,21 +156,17 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         domain = [('company_id', '=', self.company.id), ('code', 'in', account_codes)]
         accounts = self.env['account.account'].search(domain, order='code')
 
-        payable_type = self.env.ref('account.data_account_type_payable')
-        expenses_type = self.env.ref('account.data_account_type_expenses')
-        current_assets_type = self.env.ref('account.data_account_type_current_assets')
-
         expected_values = [{
             'name': 'FOURNISSEURS DIVERS',
-            'user_type_id': payable_type.id,
+            'account_type': 'liability_payable',
             'reconcile': True
         }, {
             'name': 'TVA déductible sur autres biens et services',
-            'user_type_id': current_assets_type.id,
+            'account_type': 'asset_current',
             'reconcile': False,
         }, {
             'name': 'Frais d\'actes et de contentieux',
-            'user_type_id': expenses_type.id,
+            'account_type': 'expense',
             'reconcile': False,
         }, ]
         self.assertRecordValues(accounts, expected_values)

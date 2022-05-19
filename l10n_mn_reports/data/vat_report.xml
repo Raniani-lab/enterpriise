@@ -616,7 +616,7 @@
                         <field name="name">Борлуулалтын орлогын буцаалт, хөнгөлөлтийн дүн (56)</field>
                         <field name="sequence" eval="1"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('account_id.code','=like','60%'),('account_id.user_type_id','=',ref('account.data_account_type_revenue')),('tax_ids.type_tax_use','=','sale'),('tax_ids.amount','&gt;',0)]"/>
+                        <field name="domain" eval="[('account_id.code','=like','60%'),('account_id.account_type','=','income'),('tax_ids.type_tax_use','=','sale'),('tax_ids.amount','&gt;',0)]"/>
                         <field name="formulas">sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">never</field>
@@ -635,7 +635,7 @@
                         <field name="name">Худалдан авалтын буцаалт, хөнгөлөлтийн дүн (58)</field>
                         <field name="sequence" eval="3"/>
                         <field name="level" eval="3"/>
-                        <field name="domain" eval="[('credit','&gt;',0),('account_id.code','=like','1407%'),('account_id.user_type_id','=',ref('account.data_account_type_current_assets')),('tax_ids.type_tax_use','=','purchase'),('tax_ids.amount','&gt;',0)]"/>
+                        <field name="domain" eval="[('credit','&gt;',0),('account_id.code','=like','1407%'),('account_id.account_type','=','asset_current'),('tax_ids.type_tax_use','=','purchase'),('tax_ids.amount','&gt;',0)]"/>
                         <field name="formulas">-sum</field>
                         <field name="groupby">account_id</field>
                         <field name="show_domain">never</field>

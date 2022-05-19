@@ -38,7 +38,7 @@ class AccountDebitNote(models.TransientModel):
         # the base line, since there is no repartition line for the base line.
         if line.tax_line_id:
             return [[6, 0, line.tax_line_id.get_tax_tags(False, 'tax').ids]]
-        elif line.account_id.user_type_id.type not in ['receivable', 'payable']:
+        elif line.account_id.account_type not in ['asset_receivable', 'liability_payable']:
             return [[6, 0, line.tax_ids.get_tax_tags(False, 'base').ids]]
         return [[5]]
 
@@ -83,8 +83,8 @@ class AccountDebitNote(models.TransientModel):
                     'name': line.name,
                     'quantity': line.quantity,
                     'price_unit': line.price_unit,
-                    'exclude_from_invoice_tab': line.move_id.is_invoice() and (line.account_id.user_type_id.type in [
-                        'receivable', 'payable'] or line.tax_line_id),
+                    'exclude_from_invoice_tab': line.move_id.is_invoice() and (line.account_id.account_type in [
+                        'asset_receivable', 'liability_payable'] or line.tax_line_id),
                     'tax_repartition_line_id': self._get_repartition_line(line).id,
                     'tax_ids': [[6, 0, line.tax_ids.ids]],
                     'tax_tag_ids': self._get_opposite_tax_tag(line),

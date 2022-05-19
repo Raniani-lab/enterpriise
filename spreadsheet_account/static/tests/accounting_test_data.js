@@ -19,12 +19,12 @@ export function getAccountingData() {
             "account.account": {
                 fields: {
                     code: { string: "Code", type: "string" },
-                    user_type_id: { string: "Account type", type: "integer" },
+                    account_type: { string: "Account type", type: "string" },
                 },
                 records: [
-                    { id: 1, code: "100104", user_type_id: 1 },
-                    { id: 2, code: "100105", user_type_id: 2 },
-                    { id: 3, code: "200104", user_type_id: 1 },
+                    { id: 1, code: "100104", account_type: "income" },
+                    { id: 2, code: "100105", account_type: "income_other" },
+                    { id: 3, code: "200104", account_type: "income" },
                 ],
             },
         },

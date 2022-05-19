@@ -241,7 +241,7 @@ class AccountEdiFormat(models.Model):
         spot = invoice._l10n_pe_edi_get_spot()
         invoice_date_due_vals_list = []
         first_time = True
-        for rec_line in invoice.line_ids.filtered(lambda l: l.account_internal_type == 'receivable'):
+        for rec_line in invoice.line_ids.filtered(lambda l: l.account_type == 'asset_receivable'):
             amount = rec_line.amount_currency
             if spot and first_time:
                 amount -= spot['spot_amount']

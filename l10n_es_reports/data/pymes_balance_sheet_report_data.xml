@@ -344,7 +344,7 @@
                                             '|', '|',
                                             ('account_id.code','=like','120%'),
                                             ('account_id.code','=like','121%'),
-                                            ('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])
+                                            ('account_id.internal_group', 'in', ['income', 'expense'])
                                         ]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="groupby">account_id</field>
@@ -370,7 +370,7 @@
                                         <field name="domain" eval="[
                                             '|',
                                             ('account_id.code','=like','129%'),
-                                            ('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])
+                                            ('account_id.internal_group', 'in', ['income', 'expense'])
                                         ]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="special_date_changer">from_fiscalyear</field>

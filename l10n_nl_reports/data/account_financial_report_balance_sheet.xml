@@ -16,7 +16,7 @@
                     <field name="code">NL_ASSETS</field>
                     <field name="financial_report_id" ref="account_financial_report_bs"/>
                     <field name="formulas">NL_FIXED + NL_CURRENT</field>
-                    <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
+                    <field name="control_domain" eval="[('account_id.internal_group', '=', 'asset')]"/>
                     <field name="level" eval="0"/>
                     <field name="sequence" eval="1"/>
                     <field name="children_ids">
@@ -132,12 +132,12 @@
                     <field name="formulas">NL_EQ + NL_PROVISIONS + NL_LONG_DEBT + NL_SHORT_DEBT</field>
                     <field name="control_domain" eval="[
                         '|',
-                            ('account_id.user_type_id.internal_group', '=', 'equity'),
+                            ('account_id.internal_group', '=', 'equity'),
                         '|',
-                            ('account_id.user_type_id.internal_group', '=', 'liability'),
+                            ('account_id.internal_group', '=', 'liability'),
                         '|',
-                            ('account_id.user_type_id.internal_group', '=', 'income'),
-                            ('account_id.user_type_id.internal_group', '=', 'expense')
+                            ('account_id.internal_group', '=', 'income'),
+                            ('account_id.internal_group', '=', 'expense')
                     ]"/>
                     <field name="level" eval="0"/>
                     <field name="sequence" eval="2"/>
@@ -149,10 +149,10 @@
                             <field name="formulas">NL_CAP + NL_PREMIUM + NL_REVALUATION_RES + NL_LEGAL_RES + NL_OTHER_RES + NL_UNDIST_PROFIT</field>
                             <field name="control_domain" eval="[
                                 '|',
-                                    ('account_id.user_type_id.internal_group', '=', 'equity'),
+                                    ('account_id.internal_group', '=', 'equity'),
                                 '|',
-                                    ('account_id.user_type_id.internal_group', '=', 'income'),
-                                    ('account_id.user_type_id.internal_group', '=', 'expense')
+                                    ('account_id.internal_group', '=', 'income'),
+                                    ('account_id.internal_group', '=', 'expense')
                             ]"/>
                             <field name="groupby">account_id</field>
                             <field name="level" eval="1"/>
@@ -263,7 +263,7 @@
                             <field name="name">SCHULDEN</field>
                             <field name="code">NL_L</field>
                             <field name="formulas">NL_PROVISIONS + NL_LONG_DEBT + NL_SHORT_DEBT</field>
-                            <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'liability')]"/>
+                            <field name="control_domain" eval="[('account_id.internal_group', '=', 'liability')]"/>
                             <field name="level" eval="1"/>
                             <field name="sequence" eval="2"/>
                             <field name="children_ids">

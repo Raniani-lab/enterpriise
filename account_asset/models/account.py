@@ -22,7 +22,7 @@ class AccountAccount(models.Model):
     multiple_assets_per_line = fields.Boolean(string='Multiple Assets per Line', default=False, tracking=True,
         help="Multiple asset items will be generated depending on the bill line quantity instead of 1 global asset.")
 
-    @api.depends('user_type_id')
+    @api.depends('account_type')
     def _compute_can_create_asset(self):
         for record in self:
             if record.auto_generate_asset():
@@ -49,19 +49,10 @@ class AccountAccount(models.Model):
                 record.multiple_assets_per_line = False
 
     def auto_generate_asset(self):
-        return self.user_type_id in self.get_asset_accounts_type()
+        return self.account_type in ('asset_fixed', 'asset_non_current')
 
     def auto_generate_deferred_revenue(self):
-        return self.user_type_id in self.get_deferred_revenue_accounts_type()
+        return self.account_type in ('liability_non_current', 'liability_current')
 
     def auto_generate_deferred_expense(self):
-        return self.user_type_id in self.get_deferred_expense_accounts_type()
-
-    def get_asset_accounts_type(self):
-        return self.env.ref('account.data_account_type_fixed_assets') + self.env.ref('account.data_account_type_non_current_assets')
-
-    def get_deferred_revenue_accounts_type(self):
-        return self.env.ref('account.data_account_type_current_liabilities') + self.env.ref('account.data_account_type_non_current_liabilities')
-
-    def get_deferred_expense_accounts_type(self):
-        return self.env.ref('account.data_account_type_current_assets') + self.env.ref('account.data_account_type_prepayments')
+        return self.account_type in ('asset_prepayments', 'asset_current')

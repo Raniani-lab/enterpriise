@@ -12,7 +12,7 @@
         <field name="name">Assets</field>
         <field name="financial_report_id" ref="account_financial_report_pk_balancesheet0"/>
         <field name="code">PK_AST</field>
-        <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]" />
+        <field name="control_domain" eval="[('account_id.internal_group', '=', 'asset')]" />
         <field name="level" eval="1"/>
         <field name="sequence" eval="1"/>
         <field name="formulas">PK_NCA + PK_CA</field>
@@ -21,8 +21,8 @@
         <field name="name">Non-Current Assets</field>
         <field name="parent_id" ref="account_balance_report_pk_asset"/>
         <field name="code">PK_NCA</field>
-        <field name="control_domain" eval="[('account_id.user_type_id', 'in', [ref('account.data_account_type_non_current_assets'),
-                                                                               ref('account.data_account_type_fixed_assets')])]" />
+        <field name="control_domain" eval="[('account_id.account_type', 'in', ('asset_non_current',
+                                                                               'asset_fixed'))]" />
         <field name="level" eval="2"/>
         <field name="sequence" eval="1"/>
         <field name="formulas">PK_1111 + PK_1112 + PK_1113 + PK_1114 + PK_1115 + PK_1116 + PK_1117 + PK_1118 + PK_1119</field>
@@ -121,10 +121,10 @@
         <field name="name">Current Assets</field>
         <field name="parent_id" ref="account_balance_report_pk_asset"/>
         <field name="code">PK_CA</field>
-        <field name="control_domain" eval="[('account_id.user_type_id', 'in', [ref('account.data_account_type_liquidity'),
-                                                                               ref('account.data_account_type_current_assets'),
-                                                                               ref('account.data_account_type_prepayments'),
-                                                                               ref('account.data_account_type_receivable')])]" />
+        <field name="control_domain" eval="[('account_id.account_type', 'in', ('asset_cash',
+                                                                               'asset_current',
+                                                                               'asset_prepayments',
+                                                                               'asset_receivable'))]" />
         <field name="level" eval="2"/>
         <field name="sequence" eval="2"/>
         <field name="formulas">PK_1121 + PK_1122 + PK_1123 + PK_1124 + PK_1125 + PK_1126</field>
@@ -193,7 +193,7 @@
         <field name="name">Liabilities</field>
         <field name="financial_report_id" ref="account_financial_report_pk_balancesheet0"/>
         <field name="code">PK_LIA</field>
-        <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'liability')]" />
+        <field name="control_domain" eval="[('account_id.internal_group', '=', 'liability')]" />
         <field name="level" eval="1"/>
         <field name="sequence" eval="2"/>
         <field name="formulas">PK_NCL + PK_CL</field>
@@ -201,7 +201,7 @@
     <record id="account_balance_report_pk_non_current_liabilities" model="account.financial.html.report.line">
         <field name="name">Non-Current Liabilities</field>
         <field name="parent_id" ref="account_balance_report_pk_liabilities"/>
-        <field name="control_domain" eval="[('account_id.user_type_id', 'in', [ref('account.data_account_type_non_current_liabilities')])]" />
+        <field name="control_domain" eval="[('account_id.account_type', '=', 'liability_non_current')]" />
         <field name="code">PK_NCL</field>
         <field name="level" eval="2"/>
         <field name="sequence" eval="3"/>
@@ -232,8 +232,8 @@
         <field name="parent_id" ref="account_balance_report_pk_liabilities"/>
         <field name="code">PK_CL</field>
         <field name="control_domain" eval="[
-                '|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_current_liabilities'), ref('account.data_account_type_credit_card')]),
-                     ('account_id.user_type_id.type', '=', 'payable'),
+                '|', ('account_id.account_type', 'in', ('liability_current', 'liability_credit_card')),
+                     ('account_id.account_type', '=', 'liability_payable'),
             ]" />
         <field name="level" eval="2"/>
         <field name="sequence" eval="4"/>
@@ -304,9 +304,9 @@
         <field name="financial_report_id" ref="account_financial_report_pk_balancesheet0"/>
         <field name="code">PK_EQUI</field>
         <field name="control_domain" eval="[
-                '|', ('account_id.user_type_id.internal_group', '=', 'income'),
-                '|', ('account_id.user_type_id.internal_group', '=', 'expense'),
-                     ('account_id.user_type_id.internal_group', '=', 'equity')
+                '|', ('account_id.internal_group', '=', 'income'),
+                '|', ('account_id.internal_group', '=', 'expense'),
+                     ('account_id.internal_group', '=', 'equity')
              ]" />
         <field name="level" eval="1"/>
         <field name="sequence" eval="3"/>

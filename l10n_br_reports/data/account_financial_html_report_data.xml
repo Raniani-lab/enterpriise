@@ -12,7 +12,7 @@
             <record id="account_financial_report_total_assets0" model="account.financial.html.report.line">
                 <field name="name">ATIVO</field>
                 <field name="code">BR_TA</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'asset')]"/>
                 <field name="formulas">BR_CA + BR_PNCA</field>
                 <field name="sequence" eval="10"/>
                 <field name="level" eval="0"/>
@@ -21,8 +21,7 @@
                         <field name="name">ATIVO CIRCULANTE</field>
                         <field name="code">BR_CA</field>
                         <field name="control_domain" eval="[
-                            '|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_liquidity'), ref('account.data_account_type_current_assets'), ref('account.data_account_type_prepayments')]),
-                            ('account_id.user_type_id.type', '=', 'receivable')
+                            ('account_id.account_type', 'in', ['asset_cash', 'asset_current', 'asset_prepayments', 'asset_receivable']),
                         ]"/>
                         <field name="formulas">BR_DI + BR_CRE + BR_EST + BR_DES + BR_BIO + BR_NCFS</field>
                         <field name="sequence" eval="10"/>
@@ -87,10 +86,7 @@
                     <record id="account_financial_report_non_current_assets_view0" model="account.financial.html.report.line">
                         <field name="name">ATIVO NÃO CIRCULANTE</field>
                         <field name="code">BR_PNCA</field>
-                        <field name="control_domain" eval="[
-                            '|', ('account_id.user_type_id', '=', ref('account.data_account_type_non_current_assets')),
-                            ('account_id.user_type_id', '=', ref('account.data_account_type_fixed_assets'))
-                        ]"/>
+                        <field name="control_domain" eval="[('account_id.account_type', 'in', ('asset_non_current', 'asset_fixed'))]"/>
                         <field name="groupby">account_id</field>
                         <field name="formulas">BR_RLP + BR_INV + BR_IMOB + BR_INT + BR_DIF</field>
                         <field name="sequence" eval="20"/>
@@ -150,10 +146,10 @@
                 <field name="code">BR_L</field>
                 <field name="groupby">account_id</field>
                 <field name="control_domain" eval="[
-                    '|', ('account_id.user_type_id.internal_group', '=', 'equity'),
-                    '|', ('account_id.user_type_id.internal_group', '=', 'income'),
-                    '|', ('account_id.user_type_id.internal_group', '=', 'expense'),
-                        ('account_id.user_type_id.internal_group', '=', 'liability')
+                    '|', ('account_id.internal_group', '=', 'equity'),
+                    '|', ('account_id.internal_group', '=', 'income'),
+                    '|', ('account_id.internal_group', '=', 'expense'),
+                        ('account_id.internal_group', '=', 'liability')
                 ]"/>
                 <field name="formulas">BR_CL + BR_NC + BR_EQ + BR_LUCRO</field>
                 <field name="sequence" eval="20"/>
@@ -182,9 +178,7 @@
                         <field name="name">PASSIVO CIRCULANTE</field>
                         <field name="code">BR_CL</field>
                         <field name="control_domain" eval="[
-                            '|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_current_liabilities'),
-                            ref('account.data_account_type_credit_card')]),
-                            ('account_id.user_type_id.type', '=', 'payable'),
+                            ('account_id.account_type', 'in', ['liability_current', 'liability_credit_card', 'liability_payable'])
                         ]"/>
                         <field name="formulas">BR_CL1</field>
                         <field name="sequence" eval="10"/>
@@ -206,7 +200,7 @@
                     <record id="account_financial_report_non_current_liabilities0" model="account.financial.html.report.line">
                         <field name="name">PASSIVO NÃO-CIRCULANTE</field>
                         <field name="code">BR_NC</field>
-                        <field name="control_domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_non_current_liabilities'))]"/>
+                        <field name="control_domain" eval="[('account_id.account_type', '=', 'liability_non_current')]"/>
                         <field name="groupby">account_id</field>
                         <field name="formulas">BR_LP</field>
                         <field name="sequence" eval="20"/>
@@ -228,7 +222,7 @@
                     <record id="account_financial_report_equity0" model="account.financial.html.report.line">
                         <field name="name">PATRIMÔNIO LÍQUIDO</field>
                         <field name="code">BR_EQ</field>
-                        <field name="control_domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_equity'))]"/>
+                        <field name="control_domain" eval="[('account_id.account_type', '=', 'equity')]"/>
                         <field name="formulas">BR_CAPITAL_SOCIAL + BR_RESERVAS + BR_AJ + BR_OC</field>
                         <field name="sequence" eval="30"/>
                         <field name="level" eval="1"/>
@@ -276,8 +270,8 @@
             <record id="account_financial_report_off_sheet" model="account.financial.html.report.line">
                 <field name="name">CONTAS FORA DO BALANÇO PATRIMONIAL</field>
                 <field name="code">BR_OS</field>
-                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_off_sheet'))]"/>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'off_balance')]"/>
+                <field name="domain" eval="[('account_id.account_type', '=', 'off_balance')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'off_balance')]"/>
                 <field name="groupby">account_id</field>
                 <field name="formulas">-sum</field>
                 <field name="sequence" eval="40"/>
@@ -307,8 +301,8 @@
                 <field name="code">BR_PROFIT</field>
                 <field name="formulas">BR_RLAG + BR_CSLL_IRPJ + BR_RLAR + BR_CSLL_AR</field>
                 <field name="control_domain" eval="[
-                    '|', ('account_id.user_type_id.internal_group', '=', 'income'),
-                    ('account_id.user_type_id.internal_group', '=', 'expense')
+                    '|', ('account_id.internal_group', '=', 'income'),
+                    ('account_id.internal_group', '=', 'expense')
                 ]"/>
                 <field name="sequence" eval="10"/>
                 <field name="level" eval="0"/>

@@ -71,11 +71,11 @@ export class AccountingDataSource extends DataSource {
     }
 
     /**
-     * @param {number} accountTypeId
+     * @param {string} accountType
      * @returns {string[]}
      */
-    getAccountGroupCodes(accountTypeId) {
-        return this._model && this._model.getAccountGroupCodes(accountTypeId);
+    getAccountGroupCodes(accountType) {
+        return this._model && this._model.getAccountGroupCodes(accountType);
     }
 }
 
@@ -138,11 +138,11 @@ class AccountingModel extends EventBus {
     }
 
     /**
-     * @param {number} accountTypeId
+     * @param {string} accountType
      * @returns {string[]}
      */
-    getAccountGroupCodes(accountTypeId) {
-        return this.serverData.batch.get("account.account", "get_account_group", accountTypeId);
+    getAccountGroupCodes(accountType) {
+        return this.serverData.batch.get("account.account", "get_account_group", accountType);
     }
 
     // %%%%%%%%%%%%%%%%%%

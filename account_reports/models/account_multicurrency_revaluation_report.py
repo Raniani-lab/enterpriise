@@ -143,7 +143,7 @@ class MulticurrencyRevaluationReport(models.Model):
             JOIN account_account account ON aml.account_id = account.id
             JOIN res_currency currency ON currency.id = aml.currency_id
             JOIN {custom_currency_table} ON custom_currency_table.currency_id = currency.id
-            WHERE (account.currency_id != aml.company_currency_id OR (account.internal_type IN ('receivable', 'payable') AND (aml.currency_id != aml.company_currency_id)))
+            WHERE (account.currency_id != aml.company_currency_id OR (account.account_type IN ('asset_receivable', 'liability_payable') AND (aml.currency_id != aml.company_currency_id)))
               AND (aml.amount_residual != 0 OR aml.amount_residual_currency != 0)
 
             UNION ALL
@@ -173,7 +173,7 @@ class MulticurrencyRevaluationReport(models.Model):
             JOIN account_partial_reconcile part ON aml.id = part.credit_move_id OR aml.id = part.debit_move_id
             JOIN res_currency currency ON currency.id = (CASE WHEN aml.id = part.credit_move_id THEN part.debit_currency_id ELSE part.credit_currency_id END)
             JOIN {custom_currency_table} ON custom_currency_table.currency_id = currency.id
-            WHERE (account.currency_id = aml.company_currency_id AND (account.internal_type IN ('receivable', 'payable') AND aml.currency_id = aml.company_currency_id))
+            WHERE (account.currency_id = aml.company_currency_id AND (account.account_type IN ('asset_receivable', 'liability_payable') AND aml.currency_id = aml.company_currency_id))
         """.format(
             custom_currency_table=custom_currency_table,
             move_line_fields=self._get_move_line_fields('aml'),

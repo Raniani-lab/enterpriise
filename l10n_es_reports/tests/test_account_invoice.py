@@ -7,7 +7,7 @@ class TestAccountInvoice(AccountTestInvoicingCommon):
     def setUp(self):
         super().setUp()
         self.account_revenue = self.env['account.account'].search(
-            [('user_type_id', '=', self.env.ref('account.data_account_type_revenue').id)], limit=1)
+            [('account_type', '=', 'income')], limit=1)
         self.company = self.env.user.company_id
         self.partner_es = self.env['res.partner'].create({
             'name': 'España',

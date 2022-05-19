@@ -7,7 +7,7 @@
         <record id="demo_account" model="account.account">
             <field name="name">Account Payslip Houserental</field>
             <field name="code">123456</field>
-            <field name="user_type_id" ref="account.data_account_type_payable"/>
+            <field name="account_type">liability_payable</field>
             <field name="reconcile" eval="True"/>
         </record>
 

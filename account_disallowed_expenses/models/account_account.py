@@ -9,7 +9,7 @@ class AccountAccount(models.Model):
 
     disallowed_expenses_category_id = fields.Many2one('account.disallowed.expenses.category', string='Disallowed Expenses Category', domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]")
 
-    @api.onchange('user_type_id')
-    def _onchange_user_type_id(self):
-        if self.user_type_id.internal_group not in ('income', 'expense'):
+    @api.onchange('internal_group')
+    def _onchange_internal_group(self):
+        if self.internal_group not in ('income', 'expense'):
             self.disallowed_expenses_category_id = None

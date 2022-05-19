@@ -544,7 +544,7 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         })
         tax_10_line = invoice.line_ids.filtered(lambda x: x.tax_repartition_line_id.tax_id == tax_10)
         tax_20_line = invoice.line_ids.filtered(lambda x: x.tax_repartition_line_id.tax_id == tax_20)
-        receivable_line = invoice.line_ids.filtered(lambda x: x.account_id.internal_type == 'receivable')
+        receivable_line = invoice.line_ids.filtered(lambda x: x.account_id.account_type == 'asset_receivable')
         invoice.write({'line_ids': [
             Command.update(tax_10_line.id, {'account_id': self.revenue_2.id}),
             Command.update(tax_20_line.id, {'account_id': self.revenue_2.id, 'credit': 201.0}),

@@ -14,8 +14,6 @@ class TestCashFlowReport(TestAccountReportsCommon):
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
-        current_assets_type = cls.env.ref('account.data_account_type_current_assets')
-
         cls.liquidity_journal_1 = cls.company_data['default_journal_bank']
         cls.liquidity_account = cls.liquidity_journal_1.default_account_id
         cls.receivable_account_1 = cls.company_data['default_account_receivable']
@@ -23,12 +21,12 @@ class TestCashFlowReport(TestAccountReportsCommon):
         cls.receivable_account_2.name = 'Account Receivable 2'
         cls.receivable_account_3 = cls.receivable_account_1.copy()
         cls.receivable_account_3.name = 'Account Receivable 3'
-        cls.account_no_tag = cls.receivable_account_1.copy(default={'user_type_id': current_assets_type.id, 'reconcile': True})
+        cls.account_no_tag = cls.receivable_account_1.copy(default={'account_type': 'asset_current', 'reconcile': True})
         cls.account_no_tag.name = 'account_no_tag'
-        cls.account_financing = cls.receivable_account_1.copy(default={'user_type_id': current_assets_type.id, 'reconcile': True})
+        cls.account_financing = cls.receivable_account_1.copy(default={'account_type': 'asset_current', 'reconcile': True})
         cls.account_financing.name = 'account_financing'
         cls.account_financing.tag_ids |= cls.env.ref('account.account_tag_financing')
-        cls.account_operating = cls.receivable_account_1.copy(default={'user_type_id': current_assets_type.id, 'reconcile': True})
+        cls.account_operating = cls.receivable_account_1.copy(default={'account_type': 'asset_current', 'reconcile': True})
         cls.account_operating.name = 'account_operating'
         cls.account_operating.tag_ids |= cls.env.ref('account.account_tag_operating')
 

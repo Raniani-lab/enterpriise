@@ -430,12 +430,12 @@
                             <record id="skr_bs_liabilities_a_v" model="account.financial.html.report.line">
                                 <field name="name">V. Jahresüberschuß/Jahresfehlbetrag</field>
                                 <field name="code">SKR_BS_LIABILITIES_A5</field>
-                                <field name="domain" eval="[('account_id.user_type_id', 'in', [
-             ref('account.data_account_type_revenue'),
-             ref('account.data_account_type_other_income'),
-             ref('account.data_account_type_direct_costs'),
-             ref('account.data_account_type_expenses'),
-             ref('account.data_account_type_depreciation')
+                                <field name="domain" eval="[('account_id.account_type', 'in', [
+             'income',
+             'income_other',
+             'expense_direct_cost',
+             'expense',
+             'expense_depreciation'
          ])]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
@@ -593,7 +593,7 @@
             <record id="account_financial_report_de_off_sheet" model="account.financial.html.report.line">
                 <field name="name">OFF BALANCE SHEET ACCOUNTS</field>
                 <field name="code">DE_OS</field>
-                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_off_sheet'))]"/>
+                <field name="domain" eval="[('account_id.account_type', '=', 'off_balance')]"/>
                 <field name="groupby">account_id</field>
                 <field name="formulas">-sum</field>
                 <field name="sequence" eval="3"/>

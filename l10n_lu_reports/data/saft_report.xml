@@ -110,7 +110,7 @@
         </xpath>
         <xpath expr="//StandardAccountID" position="after">
             <t t-if="company.account_fiscal_country_id.code == 'LU'">
-                <AccountType t-esc="account.user_type_id.name[:18]"/>
+                <AccountType t-esc="account_vals['account_type'][:18]"/>
             </t>
         </xpath>
     </template>

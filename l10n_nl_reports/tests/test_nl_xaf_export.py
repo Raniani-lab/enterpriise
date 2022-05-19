@@ -89,7 +89,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                         <ledgerAccount>
                             <accID>150000</accID>
                             <accDesc>Af te dragen BTW hoog tarief</accDesc>
-                            <accTp>M</accTp>
+                            <accTp>B</accTp>
                             <changeInfo>
                                 <userID>___ignore___</userID>
                                 <changeDateTime>___ignore___</changeDateTime>
@@ -98,7 +98,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                         </ledgerAccount><ledgerAccount>
                             <accID>110000</accID>
                             <accDesc>Debiteuren</accDesc>
-                            <accTp>M</accTp>
+                            <accTp>B</accTp>
                             <changeInfo>
                                 <userID>___ignore___</userID>
                                 <changeDateTime>___ignore___</changeDateTime>
@@ -107,7 +107,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                         </ledgerAccount><ledgerAccount>
                             <accID>800100</accID>
                             <accDesc>Omzet NL handelsgoederen 1</accDesc>
-                            <accTp>M</accTp>
+                            <accTp>P</accTp>
                             <changeInfo>
                                 <userID>___ignore___</userID>
                                 <changeDateTime>___ignore___</changeDateTime>
@@ -116,7 +116,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                         </ledgerAccount><ledgerAccount>
                             <accID>800100 (1)</accID>
                             <accDesc>Omzet NL handelsgoederen 1</accDesc>
-                            <accTp>M</accTp>
+                            <accTp>P</accTp>
                             <changeInfo>
                                 <userID>___ignore___</userID>
                                 <changeDateTime>___ignore___</changeDateTime>
@@ -125,7 +125,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                         </ledgerAccount><ledgerAccount>
                             <accID>152000</accID>
                             <accDesc>Voorbelasting hoog</accDesc>
-                            <accTp>M</accTp>
+                            <accTp>B</accTp>
                             <changeInfo>
                                 <userID>___ignore___</userID>
                                 <changeDateTime>___ignore___</changeDateTime>
@@ -134,7 +134,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                         </ledgerAccount><ledgerAccount>
                             <accID>130010</accID>
                             <accDesc>Crediteuren (copy)</accDesc>
-                            <accTp>M</accTp>
+                            <accTp>B</accTp>
                             <changeInfo>
                                 <userID>___ignore___</userID>
                                 <changeDateTime>___ignore___</changeDateTime>
@@ -143,7 +143,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                         </ledgerAccount><ledgerAccount>
                             <accID>400100 (1)</accID>
                             <accDesc>Bruto lonen</accDesc>
-                            <accTp>M</accTp>
+                            <accTp>P</accTp>
                             <changeInfo>
                                 <userID>___ignore___</userID>
                                 <changeDateTime>___ignore___</changeDateTime>

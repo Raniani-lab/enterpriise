@@ -13,8 +13,8 @@ class TestFsmSaleWithMaterial(TestFsmFlowCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.account_revenue = cls.env['account.account'].create([{'code': '1014040', 'name': 'A', 'user_type_id': cls.env.ref('account.data_account_type_revenue').id}])
-        cls.account_expense = cls.env['account.account'].create([{'code': '101600', 'name': 'C', 'user_type_id': cls.env.ref('account.data_account_type_expenses').id}])
+        cls.account_revenue = cls.env['account.account'].create([{'code': '1014040', 'name': 'A', 'account_type': 'income'}])
+        cls.account_expense = cls.env['account.account'].create([{'code': '101600', 'name': 'C', 'account_type': 'expense'}])
         cls.tax_sale_a = cls.env['account.tax'].create({
             'name': "tax_sale_a",
             'amount_type': 'percent',

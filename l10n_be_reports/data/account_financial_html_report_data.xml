@@ -16,7 +16,7 @@
                     <record id="account_financial_report_be_actif0" model="account.financial.html.report.line">
                         <field name="name">TOTAL DE L'ACTIF</field>
                         <field name="code">BE_ACTIF</field>
-                        <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
+                        <field name="control_domain" eval="[('account_id.internal_group', '=', 'asset')]"/>
                         <field name="formulas">BE_20_28 + BE_29_58</field>
                         <field name="sequence" eval="3"/>
                         <field name="level" eval="0"/>
@@ -272,10 +272,10 @@
                         <field name="name">TOTAL DU PASSIF</field>
                         <field name="code">BE_PASSIF</field>
                         <field name="control_domain" eval="[
-                 '|', ('account_id.user_type_id.internal_group', '=', 'equity'),
-                 '|', ('account_id.user_type_id.internal_group', '=', 'income'),
-                 '|', ('account_id.user_type_id.internal_group', '=', 'expense'),
-                      ('account_id.user_type_id.internal_group', '=', 'liability')
+                 '|', ('account_id.internal_group', '=', 'equity'),
+                 '|', ('account_id.internal_group', '=', 'income'),
+                 '|', ('account_id.internal_group', '=', 'expense'),
+                      ('account_id.internal_group', '=', 'liability')
              ]"/>
                         <field name="formulas">BE_10_15 + BE_16 + BE_17_49</field>
                         <field name="sequence" eval="4"/>
@@ -285,9 +285,9 @@
                         <field name="name">10/15 - Capitaux propres</field>
                         <field name="code">BE_10_15</field>
                         <field name="control_domain" eval="[
-                 '|', ('account_id.user_type_id.internal_group', '=', 'income'),
-                 '|', ('account_id.user_type_id.internal_group', '=', 'expense'),
-                      ('account_id.user_type_id.internal_group', '=', 'equity')
+                 '|', ('account_id.internal_group', '=', 'income'),
+                 '|', ('account_id.internal_group', '=', 'expense'),
+                      ('account_id.internal_group', '=', 'equity')
               ]"/>
                         <field name="formulas">BE_UNAFFECTED_EARNINGS + BE_10 + BE_11 + BE_12 + BE_13 + BE_14 + BE_15 + BE_19</field>
                         <field name="sequence" eval="1"/>
@@ -404,7 +404,7 @@
                             <record id="account_financial_report_be_benefice_reporte0" model="account.financial.html.report.line">
                                 <field name="name">14 - Bénéfice (Perte) reporté(e)</field>
                                 <field name="code">BE_14</field>
-                                <field name="domain" eval="[('account_id.code', '=like', '14%'), ('account_id.user_type_id', '!=', ref('account.data_unaffected_earnings'))]"/>
+                                <field name="domain" eval="[('account_id.code', '=like', '14%'), ('account_id.account_type', '!=', 'equity_unaffected')]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="formulas">-sum</field>
                                 <field name="sequence" eval="5"/>
@@ -783,7 +783,7 @@
             <record id="account_financial_report_be_off_sheet" model="account.financial.html.report.line">
                 <field name="name">COMPTES HORS BILAN</field>
                 <field name="code">BE_OS</field>
-                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_off_sheet'))]"/>
+                <field name="domain" eval="[('account_id.account_type', '=', 'off_balance')]"/>
                 <field name="groupby">account_id</field>
                 <field name="formulas">-sum</field>
                 <field name="sequence" eval="3000"/>
@@ -894,7 +894,7 @@
                 <field name="name">Ventes et prestations</field>
                 <field name="code">BE_PRODUITS</field>
                 <field name="formulas">BE_70 + BE_71 + BE_72 + BE_73 + BE_74</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'income')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'income')]"/>
                 <field name="sequence" eval="1"/>
                 <field name="level" eval="1"/>
                 <field name="children_ids">
@@ -949,7 +949,7 @@
                 <field name="name">Coûts des ventes et prestations</field>
                 <field name="code">BE_CHARGES</field>
                 <field name="formulas">BE_60_61 + BE_62 + BE_630 + BE_631_4 + BE_635_7 + BE_640_8 + BE_649</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'expense')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'expense')]"/>
                 <field name="sequence" eval="2"/>
                 <field name="level" eval="1"/>
                 <field name="children_ids">
@@ -1332,7 +1332,7 @@
                 <field name="name">9905 - Bénéfice (Perte) de l'exercice à affecter</field>
                 <field name="code">BE_9905</field>
                 <field name="formulas">BE_9904 + BE_789 - BE_689</field>
-                <field name="control_domain" eval="['|', ('account_id.user_type_id.internal_group', '=', 'income'), ('account_id.user_type_id.internal_group', '=', 'expense')]"/>
+                <field name="control_domain" eval="['|', ('account_id.internal_group', '=', 'income'), ('account_id.internal_group', '=', 'expense')]"/>
                 <field name="sequence" eval="20"/>
                 <field name="level" eval="1"/>
             </record>
@@ -1373,7 +1373,7 @@
                     <record id="account_financial_report_be_14P" model="account.financial.html.report.line">
                         <field name="name">14P - Bénéfice (Perte) reporté(e) de l'exercice précédent</field>
                         <field name="code">BE_14P</field>
-                        <field name="domain" eval="[('account_id.code', '=like', '14%'), ('account_id.user_type_id', '!=', ref('account.data_unaffected_earnings'))]"/>
+                        <field name="domain" eval="[('account_id.code', '=like', '14%'), ('account_id.account_type', '!=', 'equity_unaffected')]"/>
                         <field name="groupby">account_id</field>
                         <field name="formulas">-sum</field>
                         <field name="special_date_changer">to_beginning_of_period</field>

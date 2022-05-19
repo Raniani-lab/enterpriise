@@ -179,12 +179,12 @@ class TestUi(odoo.tests.HttpCase):
             'code': 'X1012',
             'name': 'Debtors - (test)',
             'reconcile': True,
-            'user_type_id': self.env.ref('account.data_account_type_receivable').id,
+            'account_type': 'asset_receivable',
         })
         a_pay = self.env['account.account'].create({
             'code': 'X1111',
             'name': 'Creditors - (test)',
-            'user_type_id': self.env.ref('account.data_account_type_payable').id,
+            'account_type': 'liability_payable',
             'reconcile': True,
         })
         self.env['ir.property']._set_default(

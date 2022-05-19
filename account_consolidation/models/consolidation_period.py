@@ -695,7 +695,7 @@ class ConsolidationCompanyPeriod(models.Model):
             ('date', '<=', self.date_company_end),
             '|',
             ('date', '>=', self.date_company_begin),
-            ('account_id.user_type_id.include_initial_balance', '=', True)
+            ('account_id.include_initial_balance', '=', True)
         ]
 
     def _convert(self, amount, mode):

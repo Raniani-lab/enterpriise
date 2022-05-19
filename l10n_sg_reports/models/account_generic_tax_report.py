@@ -21,13 +21,13 @@ class GenericTaxReport(models.AbstractModel):
                                   join account_move move
                                   on move.id = aml.move_id
                                   where
-                                  account.user_type_id in %(account_types)s
+                                  account.account_type in %(account_types)s
                                   and (%(show_draft)s or move.state = 'posted')
                                   and aml.date <= %(date_to)s
                                   and aml.date >= %(date_from)s
                                   and move.company_id in %(company_ids)s;"""
 
-            account_types = tuple(self.env['ir.model.data']._xmlid_to_res_id(xmlid) for xmlid in ['account.data_account_type_revenue', 'account.data_account_type_expenses', 'account.data_account_type_depreciation'])
+            account_types = ('income', 'expense', 'expense_depreciation')
             params = {
                 'account_types': account_types,
                 'show_draft': options['all_entries'],

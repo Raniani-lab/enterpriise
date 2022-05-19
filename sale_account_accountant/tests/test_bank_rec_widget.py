@@ -43,7 +43,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         so1.action_confirm()
         invoice = so1._create_invoices()
         invoice.action_post()
-        invoice_line = invoice.line_ids.filtered(lambda x: x.account_id.internal_type == 'receivable')
+        invoice_line = invoice.line_ids.filtered(lambda x: x.account_id.account_type == 'asset_receivable')
         self.assertDictEqual(
             rule._apply_rules(st_line, st_line._retrieve_partner()),
             {'amls': invoice_line, 'model': rule},

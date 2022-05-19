@@ -72,14 +72,14 @@ class AccountConsolidationTestCase(common.TransactionCase):
         return move
 
     def _create_account(self, code, name="Default account", type=False, company=False):
-        type = type or self.env.ref('account.data_account_type_receivable')
+        type = type or 'asset_receivable'
         company = company or self.default_company
         return self.env['account.account'].create({
             'name': name,
             'code': code,
-            'user_type_id': type.id,
+            'account_type': type,
             'company_id': company.id,
-            'reconcile': type.type in ('receivable', 'payable'),
+            'reconcile': type in ('asset_receivable', 'liability_payable'),
         })
 
     def _create_journal(self, name="Default journal", code="BNK67", company=False):

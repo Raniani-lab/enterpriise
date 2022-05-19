@@ -20,7 +20,7 @@
                     <record id="mod_347_statistics_operations_count" model="account.financial.html.report.line">
                         <field name="name">Número total de personas y entitades</field>
                         <field name="code">aeat_mod_347_statistics_operations_count</field>
-                        <field name="domain" eval="[('move_id.l10n_es_reports_mod347_invoice_type', '!=', None), ('account_internal_type', 'in', ('receivable', 'payable'))]"/>
+                        <field name="domain" eval="[('move_id.l10n_es_reports_mod347_invoice_type', '!=', None), ('account_type', 'in', ('asset_receivable', 'liability_payable'))]"/>
                         <field name="show_domain">never</field>
                         <field name="formulas">count_rows</field>
                         <field name="groupby">partner_id</field>
@@ -51,7 +51,7 @@
                                 <field name="domain" eval="[
                  ('move_id.l10n_es_reports_mod347_invoice_type','=','insurance'),
                  ('move_id.move_type','in',['in_invoice','in_refund']),
-                 ('account_id.user_type_id','in',[ref('account.data_account_type_payable'), ref('account.data_account_type_receivable')]),
+                 ('account_id.account_type','in',('asset_receivable', 'liability_payable')),
              ]"/>
                                 <field name="show_domain">always</field>
                                 <field name="formulas">-sum</field>
@@ -76,7 +76,7 @@
                                 <field name="domain" eval="[
                  ('move_id.l10n_es_reports_mod347_invoice_type','=','regular'),
                  ('move_id.move_type','in',['in_invoice','in_refund']),
-                 ('account_id.user_type_id','in',[ref('account.data_account_type_payable'), ref('account.data_account_type_receivable')]),
+                 ('account_id.account_type','in',('liability_payable', 'asset_receivable')),
              ]"/>
                                 <field name="show_domain">always</field>
                                 <field name="formulas">-sum</field>
@@ -93,7 +93,7 @@
                                 <field name="domain" eval="[
                  ('move_id.l10n_es_reports_mod347_invoice_type','=','regular'),
                  ('move_id.move_type','in',['out_invoice','out_refund']),
-                 ('account_id.user_type_id','in',[ref('account.data_account_type_payable'), ref('account.data_account_type_receivable')]),
+                 ('account_id.account_type','in',('liability_payable', 'asset_receivable')),
              ]"/>
                                 <field name="show_domain">always</field>
                                 <field name="formulas">sum</field>

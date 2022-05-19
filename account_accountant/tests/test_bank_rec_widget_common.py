@@ -87,7 +87,7 @@ class TestBankRecWidgetCommon(AccountTestInvoicingCommon):
         invoice = invoice_form.save()
         invoice.action_post()
         lines = invoice.line_ids
-        return lines.filtered(lambda l: l.account_id.user_type_id.type in ('receivable', 'payable'))
+        return lines.filtered(lambda l: l.account_id.account_type in ('asset_receivable', 'liability_payable'))
 
     @classmethod
     def _create_st_line(cls, amount, date='2019-01-01', payment_ref='turlututu', **kwargs):

@@ -15,12 +15,12 @@ class TestBillsPrediction(AccountTestInvoicingCommon):
 
         cls.test_partners = cls.env['res.partner'].create([{'name': 'test partner %s' % i} for i in range(7)])
 
-        expense_type = cls.env.ref('account.data_account_type_expenses')
+        expense_type = 'expense'
 
         accounts_data = [{
             'code': 'test%s' % i,
             'name': name,
-            'user_type_id': expense_type.id,
+            'account_type': expense_type,
             'company_id': cls.company_data['company'].id,
         } for i, name in enumerate((
             "Test Maintenance and Repair",

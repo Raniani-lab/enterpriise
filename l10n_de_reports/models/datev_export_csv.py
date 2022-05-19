@@ -69,10 +69,8 @@ class AccountMoveL10NDe(models.Model):
                               ON m.id = l.move_id
                             JOIN account_account a
                               ON a.id = l.account_id
-                            JOIN account_account_type t
-                              ON t.id = a.user_type_id
                            WHERE m.move_type in ('out_invoice', 'out_refund', 'in_refund', 'in_invoice', 'out_receipt', 'in_receipt')
-                             AND t.type in ('receivable', 'payable')
+                             AND a.account_type in ('asset_receivable', 'liability_payable')
                        ) r
                 WHERE id = r.mid
             """)
@@ -148,7 +146,7 @@ class AccountMoveL10NDe(models.Model):
             # If move has an invoice, return invoice's account_id
             if move.is_invoice(include_receipts=True):
                 payment_term_lines = move.line_ids.filtered(
-                    lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
+                    lambda line: line.account_id.account_type in ('asset_receivable', 'liability_payable'))
                 if payment_term_lines:
                     move.l10n_de_datev_main_account_id = payment_term_lines[0].account_id
                 continue
@@ -350,7 +348,7 @@ class DatevExportCSV(models.AbstractModel):
         param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count', "100000000")[:9]
         param_start_vendors = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count_vendors', "700000000")[:9]
         len_param = max(param_start.isdigit() and len(param_start) or 9, param_start_vendors.isdigit() and len(param_start_vendors) or 9, 5)
-        if (account.internal_type in ('receivable', 'payable') and partner):
+        if (account.account_type in ('asset_receivable', 'liability_payable') and partner):
             # Check if we have a property as receivable/payable on the partner
             # We use the property because in datev and in germany, partner can be of 2 types
             # important partner which have a specific account number or a virtual partner
@@ -358,12 +356,12 @@ class DatevExportCSV(models.AbstractModel):
             # explicitely has a receivable/payable account set, we use that account, otherwise
             # we assume it is not an important partner and his datev virtual id will be the
             # l10n_de_datev_identifier set or the id + the start count parameter.
-            account = partner.property_account_receivable_id if account.internal_type == 'receivable' else partner.property_account_payable_id
-            fname   = "property_account_receivable_id"       if account.internal_type == "receivable" else "property_account_payable_id"
+            account = partner.property_account_receivable_id if account.account_type == 'asset_receivable' else partner.property_account_payable_id
+            fname = "property_account_receivable_id"         if account.account_type == 'asset_receivable' else "property_account_payable_id"
             prop = self.env['ir.property']._get(fname, "res.partner", partner.id)
             if prop:
                 return str(account.code).ljust(len_param - 1, '0')
-            if account.internal_type == 'receivable':
+            if account.account_type == 'asset_receivable':
                 start_count = param_start.isdigit() and int(param_start) or 100000000
             else:
                 start_count = param_start_vendors.isdigit() and int(param_start_vendors) or 700000000

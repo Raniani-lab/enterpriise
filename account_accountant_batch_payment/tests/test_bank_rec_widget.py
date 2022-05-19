@@ -110,7 +110,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'selected_batch_payment_ids': []}])
 
         # Add again payment3 from the aml tab.
-        aml = payments[2].line_ids.filtered(lambda x: x.account_id.internal_type == 'other')
+        aml = payments[2].line_ids.filtered(lambda x: x.account_id.account_type not in ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card'))
         wizard._action_add_new_amls(aml)
 
         self.assertRecordValues(wizard.line_ids, [

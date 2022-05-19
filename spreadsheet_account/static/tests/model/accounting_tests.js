@@ -235,7 +235,7 @@ QUnit.module("spreadsheet_account > Accounting", { beforeEach }, () => {
                 }
             },
         });
-        setCellContent(model, "A1", `=ODOO.ACCOUNT.GROUP(1)`);
+        setCellContent(model, "A1", `=ODOO.ACCOUNT.GROUP("income")`);
         setCellContent(model, "A2", `=ODOO.BALANCE(A1, 2022)`);
         assert.equal(getCellValue(model, "A1"), "Loading...");
         assert.equal(getCellValue(model, "A2"), "Loading...");
@@ -276,7 +276,7 @@ QUnit.module("spreadsheet_account > Accounting", { beforeEach }, () => {
                 }
             },
         });
-        setCellContent(model, "A1", `=ODOO.ACCOUNT.GROUP(1)`);
+        setCellContent(model, "A1", `=ODOO.ACCOUNT.GROUP("income")`);
         setCellContent(model, "A2", `=ODOO.BALANCE(A1, 2022)`); // batched only when A1 resolves
         setCellContent(model, "A3", `=ODOO.BALANCE("100", 2022)`); // batched directly
         assert.equal(getCellValue(model, "A1"), "Loading...");

@@ -25,8 +25,7 @@ class ReportCheckRegister(models.AbstractModel):
 
         :return: The liquidity account.account records.
         '''
-        liquidity_type_id = self.env.ref('account.data_account_type_liquidity')
-        return self.env['account.account'].search([('user_type_id', '=', liquidity_type_id.id)])
+        return self.env['account.account'].search([('account_type', '=', 'asset_cash')])
 
     @api.model
     def _get_options_journals_domain(self, options):

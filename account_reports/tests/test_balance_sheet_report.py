@@ -26,15 +26,14 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
             'code_prefix_start': '1014040',
             'code_prefix_end': '1015010',
         }])
-        bank_and_cash_type = self.env.ref('account.data_account_type_liquidity')
 
         def find_account(code):
             return self.env['account.account'].search([('code', '=', code), ('company_id', '=', self.env.company.id)])
 
         account_bank = find_account('101404')
         account_cash = find_account('101501')
-        account_a = self.env['account.account'].create([{'code': '1014040', 'name': 'A', 'user_type_id': bank_and_cash_type.id}])
-        account_c = self.env['account.account'].create([{'code': '101600', 'name': 'C', 'user_type_id': bank_and_cash_type.id}])
+        account_a = self.env['account.account'].create([{'code': '1014040', 'name': 'A', 'account_type': 'asset_cash'}])
+        account_c = self.env['account.account'].create([{'code': '101600', 'name': 'C', 'account_type': 'asset_cash'}])
 
         # Create a journal lines for each account
         move = self.env['account.move'].create({

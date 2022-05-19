@@ -156,22 +156,22 @@ class CL8ColumnsReport(models.AbstractModel):
             period_type='custom',
             strict_range=True)
         tables, where_clause, where_params = self._query_get(new_options)
-        user_type_ids = [self.env.ref(xml_id).id for xml_id in (
-            'account.data_unaffected_earnings',
-            'account.data_account_type_revenue',
-            'account.data_account_type_other_income',
-            'account.data_account_type_direct_costs',
-            'account.data_account_type_expenses',
-            'account.data_account_type_depreciation'
-        )]
+        account_types = (
+            'equity_unaffected',
+            'income',
+            'income_other',
+            'expense_direct_cost',
+            'expense',
+            'expense_depreciation'
+        )
         sql_query = f"""
             SELECT -SUM(account_move_line.balance) as unaffected_earnings
             FROM account_account AS aa, {tables}
             WHERE {where_clause}
             AND aa.id = account_move_line.account_id
-            AND aa.user_type_id IN %s
+            AND aa.account_type IN %s
         """.strip('\n')
-        self.env.cr.execute(sql_query, where_params + [tuple(user_type_ids)])
+        self.env.cr.execute(sql_query, where_params + [tuple(account_types)])
         value = self.env.cr.fetchone()[0] or 0.0
         return self.env.company.currency_id.round(value)
 

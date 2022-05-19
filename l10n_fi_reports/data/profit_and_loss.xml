@@ -1950,7 +1950,7 @@
                 <field name="level" eval="2"/>
                 <field name="sequence" eval="13"/>
                 <field name="groupby">account_id</field>
-                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]"/>
+                <field name="domain" eval="[('account_id.account_type', '=', 'equity_unaffected')]"/>
                 <field name="formulas">-sum</field>
             </record>
             <record id="account_financial_report_l10n_fi_pl_line_14" model="account.financial.html.report.line">
@@ -2070,12 +2070,12 @@
                 <field name="level" eval="2"/>
                 <field name="sequence" eval="19"/>
                 <field name="groupby">account_id</field>
-                <field name="domain" eval="[('account_id.user_type_id', 'in', [
-                    ref('account.data_account_type_revenue'),
-                    ref('account.data_account_type_other_income'),
-                    ref('account.data_account_type_expenses'),
-                    ref('account.data_account_type_depreciation'),
-                    ref('account.data_account_type_direct_costs')
+                <field name="domain" eval="[('account_id.account_type', 'in', [
+                    'income',
+                    'income_other',
+                    'expense',
+                    'expense_depreciation',
+                    'expense_direct_cost'
                 ])]"/>
                 <field name="formulas">-sum</field>
             </record>

@@ -15,9 +15,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
             {
                 "company_id": cls.company_data["company"].id,
                 "name": "spreadsheet revenue Company 1",
-                "user_type_id": cls.company_data[
-                    "default_account_revenue"
-                ].user_type_id.id,
+                "account_type": "income",
                 "code": "@sp1234566",
             }
         )
@@ -26,9 +24,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
             {
                 "company_id": cls.company_data["company"].id,
                 "name": "spreadsheet expense Company 1",
-                "user_type_id": cls.company_data[
-                    "default_account_expense"
-                ].user_type_id.id,
+                "account_type": "expense",
                 "code": "@sp1234577",
             }
         )
@@ -37,9 +33,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
             {
                 "company_id": cls.company_data_2["company"].id,
                 "name": "spreadsheet revenue Company 2",
-                "user_type_id": cls.company_data_2[
-                    "default_account_revenue"
-                ].user_type_id.id,
+                "account_type": "income",
                 "code": "@sp99887755",
             }
         )
@@ -48,9 +42,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
             {
                 "company_id": cls.company_data_2["company"].id,
                 "name": "spreadsheet expense Company 2",
-                "user_type_id": cls.company_data_2[
-                    "default_account_expense"
-                ].user_type_id.id,
+                "account_type": "expense",
                 "code": "@sp99887766",
             }
         )
@@ -501,7 +493,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
 
     def test_balance_account_by_year(self):
         # On balance accounts, we sum the lines from the creation up to the last dat of date_range
-        self.account_revenue_c1.sudo().user_type_id.include_initial_balance = True
+        self.account_revenue_c1.sudo().include_initial_balance = True
         self.assertEqual(
             self.env["account.account"].spreadsheet_fetch_debit_credit(
                 [
@@ -522,7 +514,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
         )
 
     def test_balance_quarter_date_period(self):
-        self.account_revenue_c1.sudo().user_type_id.include_initial_balance = True
+        self.account_revenue_c1.sudo().include_initial_balance = True
         self.env["account.move"].create(
             {
                 "company_id": self.company_data["company"].id,
@@ -567,7 +559,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
         )
 
     def test_balance_month_date_period(self):
-        self.account_revenue_c1.sudo().user_type_id.include_initial_balance = True
+        self.account_revenue_c1.sudo().include_initial_balance = True
         self.env["account.move"].create(
             {
                 "company_id": self.company_data["company"].id,
@@ -608,7 +600,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
         )
 
     def test_balance_day_date_period(self):
-        self.account_revenue_c1.sudo().user_type_id.include_initial_balance = True
+        self.account_revenue_c1.sudo().include_initial_balance = True
         self.env["account.move"].create(
             {
                 "company_id": self.company_data["company"].id,
@@ -654,7 +646,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
         )
 
     def test_move_state_ignore_cancel(self):
-        self.account_revenue_c1.sudo().user_type_id.include_initial_balance = True
+        self.account_revenue_c1.sudo().include_initial_balance = True
         self.env["account.move"].create(
             {
                 "company_id": self.company_data["company"].id,
@@ -717,7 +709,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
         )
 
     def test_move_state_unposted(self):
-        self.account_revenue_c1.sudo().user_type_id.include_initial_balance = True
+        self.account_revenue_c1.sudo().include_initial_balance = True
         move = self.env["account.move"].create(
             {
                 "company_id": self.company_data["company"].id,

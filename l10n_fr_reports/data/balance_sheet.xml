@@ -18,7 +18,7 @@
                     <record id="account_financial_report_fr_bilan_actif_total" model="account.financial.html.report.line">
                         <field name="name">TOTAL ACTIF (I + II + III + IV + V)</field>
                         <field name="code">ACTIF_TOT</field>
-                        <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
+                        <field name="control_domain" eval="[('account_id.internal_group', '=', 'asset')]"/>
                         <field name="level" eval="0"/>
                         <field name="sequence" eval="1"/>
                         <field name="formulas">ACTIF_TOTAL_I + ACTIF_TOTAL_II + CHARGES_EXERCICES + PRIMES_EMPRUNTS + ECARTS_ACTIF</field>
@@ -1055,7 +1055,7 @@
                     <record id="account_financial_report_fr_bilan_passif_total" model="account.financial.html.report.line">
                         <field name="name">TOTAL PASSIF (I + II + III + IV + V)</field>
                         <field name="code">PASSIF_TOT</field>
-                        <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['equity', 'liability', 'income', 'expense'])]"/>
+                        <field name="control_domain" eval="[('account_id.internal_group', 'in', ['equity', 'liability', 'income', 'expense'])]"/>
                         <field name="level" eval="0"/>
                         <field name="sequence" eval="1"/>
                         <field name="formulas">PASSIF_TOTAL_I + PASSIF_TOTAL_II + PASSIF_TOTAL_III +  PASSIF_TOTAL_IV + ECARTS_PASSIF</field>
@@ -1483,7 +1483,7 @@
             <record id="account_financial_report_fr_off_sheet" model="account.financial.html.report.line">
                 <field name="name">COMPTES HORS BILAN</field>
                 <field name="code">FR_OS</field>
-                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_off_sheet'))]"/>
+                <field name="domain" eval="[('account_id.account_type', '=', 'off_balance')]"/>
                 <field name="groupby">account_id</field>
                 <field name="formulas">-sum</field>
                 <field name="sequence" eval="2"/>

@@ -65,10 +65,10 @@ class AccountMoveLine(models.Model):
         accounts, using an intermediate account.move doing the transfer.
         """
         all_accounts = self.mapped('account_id')
-        account_types = all_accounts.mapped('user_type_id.type')
+        account_types = all_accounts.mapped('account_type')
         all_partners = self.mapped('partner_id')
 
-        if len(all_accounts) == 2 and 'payable' in account_types and 'receivable' in account_types:
+        if len(all_accounts) == 2 and 'liability_payable' in account_types and 'asset_receivable' in account_types:
 
             if len(all_partners) != 1:
                 raise UserError(_("You cannot reconcile the payable and receivable accounts of multiple partners together at the same time."))

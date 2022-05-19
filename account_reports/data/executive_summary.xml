@@ -13,7 +13,7 @@
                         <field name="name">Cash received</field>
                         <field name="code">CR</field>
                         <field name="sequence" eval="1"/>
-                        <field name="domain" eval="[('account_id.user_type_id.type', '=', 'liquidity'), ('debit', '&gt;', 0.0)]"/>
+                        <field name="domain" eval="[('account_id.account_type', 'in', ('asset_cash', 'liability_credit_card')), ('debit', '&gt;', 0.0)]"/>
                         <field name="formulas">sum</field>
                         <field name="show_domain">never</field>
                         <field name="level" eval="3"/>
@@ -23,7 +23,7 @@
                         <field name="name">Cash spent</field>
                         <field name="code">CS</field>
                         <field name="sequence" eval="2"/>
-                        <field name="domain" eval="[('account_id.user_type_id.type', '=', 'liquidity'), ('credit', '&gt;', 0.0)]"/>
+                        <field name="domain" eval="[('account_id.account_type', 'in', ('asset_cash', 'liability_credit_card')), ('credit', '&gt;', 0.0)]"/>
                         <field name="formulas">sum</field>
                         <field name="show_domain">never</field>
                         <field name="green_on_positive" eval="False"/>
@@ -39,7 +39,7 @@
                     <record id="account_financial_report_executivesummary_closing_bank_balance0" model="account.financial.html.report.line">
                         <field name="name">Closing bank balance</field>
                         <field name="sequence" eval="4"/>
-                        <field name="domain" eval="[('account_id.internal_type', '=', 'liquidity')]"/>
+                        <field name="domain" eval="[('account_id.account_type', 'in', ('asset_cash', 'liability_credit_card'))]"/>
                         <field name="formulas">sum</field>
                         <field name="level" eval="3"/>
                     </record>
@@ -93,7 +93,7 @@
                         <field name="name">Receivables</field>
                         <field name="code">DEB</field>
                         <field name="sequence" eval="1"/>
-                        <field name="domain" eval="[('account_id.user_type_id.type', '=', 'receivable')]"/>
+                        <field name="domain" eval="[('account_id.account_type', '=', 'asset_receivable')]"/>
                         <field name="formulas">sum</field>
                         <field name="show_domain">never</field>
                         <field name="level" eval="3"/>
@@ -102,7 +102,7 @@
                         <field name="name">Payables</field>
                         <field name="code">CRE</field>
                         <field name="sequence" eval="2"/>
-                        <field name="domain" eval="[('account_id.user_type_id.type', '=', 'payable')]"/>
+                        <field name="domain" eval="[('account_id.account_type', '=', 'liability_payable')]"/>
                         <field name="formulas">sum</field>
                         <field name="show_domain">never</field>
                         <field name="green_on_positive" eval="False"/>

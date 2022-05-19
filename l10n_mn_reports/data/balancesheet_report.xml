@@ -28,7 +28,7 @@
                                 <field name="name">Мөнгө, түүнтэй адилтгах хөрөнгө</field>
                                 <field name="sequence" eval="1"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.internal_type','=','liquidity')]"/>
+                                <field name="domain" eval="[('account_id.account_type','in',('asset_cash', 'liability_credit_card'))]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -39,7 +39,7 @@
                                 <field name="name">Дансны авлага</field>
                                 <field name="sequence" eval="2"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id.type', '=', 'receivable'),('account_id.code','=like','1201%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_receivable'),('account_id.code','=like','1201%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -58,7 +58,7 @@
                                 <field name="name">Урьдчилж төлсөн татвар</field>
                                 <field name="sequence" eval="4"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')),('account_id.code','=like','1204%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'),('account_id.code','=like','1204%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -69,7 +69,7 @@
                                 <field name="name">Урьдчилж төлсөн даатгал</field>
                                 <field name="sequence" eval="5"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')),('account_id.code','=like','1205%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'),('account_id.code','=like','1205%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -80,7 +80,7 @@
                                 <field name="name">Бусад авлага</field>
                                 <field name="sequence" eval="6"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id.type', '=', 'receivable'),'|','|',('account_id.code','=like','1206%'),('account_id.code','=like','1202%'),('account_id.code','=like','1203%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_receivable'),'|','|',('account_id.code','=like','1206%'),('account_id.code','=like','1202%'),('account_id.code','=like','1203%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -91,7 +91,7 @@
                                 <field name="name">Бусад санхүүгийн хөрөнгө</field>
                                 <field name="sequence" eval="7"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), ('account_id.code','=like','13%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'), ('account_id.code','=like','13%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -111,7 +111,7 @@
                                 <field name="name">Бараа</field>
                                 <field name="sequence" eval="9"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), ('account_id.code','=like','1401%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'), ('account_id.code','=like','1401%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -122,7 +122,7 @@
                                 <field name="name">Түүхий эд материал</field>
                                 <field name="sequence" eval="10"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), ('account_id.code','=like','1402%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'), ('account_id.code','=like','1402%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -133,7 +133,7 @@
                                 <field name="name">Хангамжийн материал</field>
                                 <field name="sequence" eval="11"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), ('account_id.code','=like','1403%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'), ('account_id.code','=like','1403%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -144,7 +144,7 @@
                                 <field name="name">Дуусаагүй үйлдвэрлэл</field>
                                 <field name="sequence" eval="12"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), ('account_id.code','=like','1404%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'), ('account_id.code','=like','1404%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -155,7 +155,7 @@
                                 <field name="name">Агентад байгаа бараа</field>
                                 <field name="sequence" eval="13"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), ('account_id.code','=like','1405%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'), ('account_id.code','=like','1405%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -166,7 +166,7 @@
                                 <field name="name">Замд яваа бараа</field>
                                 <field name="sequence" eval="14"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), ('account_id.code','=like','1406%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'), ('account_id.code','=like','1406%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -185,7 +185,7 @@
                                 <field name="name">Урьдчилж төлсөн зардал</field>
                                 <field name="sequence" eval="16"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_prepayments')), ('account_id.code','=like','1501%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_prepayments'), ('account_id.code','=like','1501%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -196,7 +196,7 @@
                                 <field name="name">Урьдчилж төлсөн тооцоо</field>
                                 <field name="sequence" eval="17"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_prepayments')), ('account_id.code','=like','1502%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_prepayments'), ('account_id.code','=like','1502%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -207,7 +207,7 @@
                                 <field name="name">Бусад эргэлтийн хөрөнгө</field>
                                 <field name="sequence" eval="18"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), ('account_id.code','=like','16%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'), ('account_id.code','=like','16%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -218,7 +218,7 @@
                                 <field name="name">Борлуулах зорилгоор эзэмшиж буй эргэлтийн бус хөрөнгө (борлуулах бүлэг хөрөнгө)</field>
                                 <field name="sequence" eval="19"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), ('account_id.code','=like','17%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_current'), ('account_id.code','=like','17%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -239,7 +239,7 @@
                                 <field name="name">Үндсэн хөрөнгө</field>
                                 <field name="sequence" eval="1"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_fixed_assets')), ('account_id.code','=like','20%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_fixed'), ('account_id.code','=like','20%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -250,7 +250,7 @@
                                 <field name="name">Биет бус хөрөнгө</field>
                                 <field name="sequence" eval="2"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_fixed_assets')), ('account_id.code','=like','21%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_fixed'), ('account_id.code','=like','21%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -261,7 +261,7 @@
                                 <field name="name">Биологийн хөрөнгө</field>
                                 <field name="sequence" eval="3"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_fixed_assets')), ('account_id.code','=like','24%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_fixed'), ('account_id.code','=like','24%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -272,7 +272,7 @@
                                 <field name="name">Урт хугацаат хөрөнгө оруулалт</field>
                                 <field name="sequence" eval="4"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_non_current_assets')), ('account_id.code','=like','22%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_non_current'), ('account_id.code','=like','22%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -283,7 +283,7 @@
                                 <field name="name">Хайгуул ба үнэлгээний хөрөнгө</field>
                                 <field name="sequence" eval="5"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_non_current_assets')), ('account_id.code','=like','23%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_non_current'), ('account_id.code','=like','23%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -294,7 +294,7 @@
                                 <field name="name">Хойшлогдсон татварын хөрөнгө</field>
                                 <field name="sequence" eval="6"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_non_current_assets')), ('account_id.code','=like','25%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_non_current'), ('account_id.code','=like','25%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -305,7 +305,7 @@
                                 <field name="name">Бусад эргэлтийн бус хөрөнгө</field>
                                 <field name="sequence" eval="7"/>
                                 <field name="level" eval="3"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_non_current_assets')),  '|',('account_id.code','=like','26%'),('account_id.code','=like','27%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_non_current'),  '|',('account_id.code','=like','26%'),('account_id.code','=like','27%')]"/>
                                 <field name="formulas">sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -347,7 +347,7 @@
                                 <field name="name">Дансны өглөг</field>
                                 <field name="sequence" eval="2"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id.type', '=', 'payable'), ('account_id.code', '=like', '31%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'liability_payable'), ('account_id.code', '=like', '31%')]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -358,7 +358,7 @@
                                 <field name="name">Цалингийн өглөг</field>
                                 <field name="sequence" eval="3"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id.type', '=', 'payable'), ('account_id.code', '=like', '33%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'liability_payable'), ('account_id.code', '=like', '33%')]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -369,7 +369,7 @@
                                 <field name="name">Татварын өр</field>
                                 <field name="sequence" eval="4"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_liabilities')), ('account_id.code', '=like', '3401%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'liability_current'), ('account_id.code', '=like', '3401%')]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -380,7 +380,7 @@
                                 <field name="name">НДШ-ийн өглөг</field>
                                 <field name="sequence" eval="5"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_liabilities')), ('account_id.code', '=like', '3402%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'liability_current'), ('account_id.code', '=like', '3402%')]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -424,7 +424,7 @@
                                 <field name="name">Урьдчилж орсон орлого</field>
                                 <field name="sequence" eval="9"/>
                                 <field name="level" eval="4"/>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_current_liabilities')), ('account_id.code', '=like', '32%')]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'liability_current'), ('account_id.code', '=like', '32%')]"/>
                                 <field name="formulas">-sum</field>
                                 <field name="groupby">account_id</field>
                                 <field name="show_domain">foldable</field>
@@ -633,7 +633,7 @@
             <record id="account_financial_report_mn_off_sheet" model="account.financial.html.report.line">
                 <field name="name">OFF BALANCE SHEET ACCOUNTS</field>
                 <field name="code">MN_OS</field>
-                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_off_sheet'))]"/>
+                <field name="domain" eval="[('account_id.account_type', '=', 'off_balance')]"/>
                 <field name="groupby">account_id</field>
                 <field name="formulas">-sum</field>
                 <field name="sequence" eval="3"/>

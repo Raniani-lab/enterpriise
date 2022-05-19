@@ -149,7 +149,7 @@
             <record id="account_financial_html_report_line_pnl_lt_15" model="account.financial.html.report.line">
                 <field name="name">NET PROFIT (LOSS)</field>
                 <field name="code">PNL_15_</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', 'in', ['income', 'expense'])]"/>
                 <field name="formulas">PNL_13_ - PNL_14_</field>
                 <field name="level" eval="2"/>
                 <field name="sequence" eval="150"/>
@@ -576,7 +576,7 @@
                 <field name="formulas">BS_A_ + BS_B_ + BS_C_</field>
                 <field name="level" eval="0"/>
                 <field name="name">TOTAL ASSETS</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'asset')]"/>
                 <field name="sequence" eval="999"/>
                 <field name="children_ids">
                     <record id="account_financial_html_report_line_bs_lt_a" model="account.financial.html.report.line">

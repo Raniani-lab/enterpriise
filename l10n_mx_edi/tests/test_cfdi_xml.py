@@ -591,7 +591,7 @@ class TestEdiResults(TestMxEdiCommon):
             self.payment.action_post()
 
             (self.invoice.line_ids + self.payment.line_ids)\
-                .filtered(lambda line: line.account_internal_type == 'receivable')\
+                .filtered(lambda line: line.account_type == 'asset_receivable')\
                 .reconcile()
 
             # Fake the fact the invoice is signed.
@@ -650,7 +650,7 @@ class TestEdiResults(TestMxEdiCommon):
                 ._create_payments()
 
             receivable_lines = (payment.move_id + invoice).line_ids\
-                .filtered(lambda x: x.account_id.internal_type == 'receivable')
+                .filtered(lambda x: x.account_id.account_type == 'asset_receivable')
             self.assertEqual(len(receivable_lines.filtered(lambda r: r.reconciled)), 1)
             self.assertEqual(len(receivable_lines.filtered(lambda r: not r.reconciled)), 1)
 
@@ -712,7 +712,7 @@ class TestEdiResults(TestMxEdiCommon):
             self.invoice.action_post()
             self.statement.button_post()
 
-            receivable_line = self.invoice.line_ids.filtered(lambda line: line.account_internal_type == 'receivable')
+            receivable_line = self.invoice.line_ids.filtered(lambda line: line.account_type == 'asset_receivable')
             edit_wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=self.statement_line.id).new({})
             edit_wizard._action_add_new_amls(receivable_line, allow_partial=False)
             edit_wizard.button_validate(async_action=False)

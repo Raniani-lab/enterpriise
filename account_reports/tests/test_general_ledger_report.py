@@ -208,7 +208,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
         foreign_curr_account = self.env['account.account'].create({
             'name': "foreign_curr_account",
             'code': "test",
-            'user_type_id': self.env.ref('account.data_account_type_current_liabilities').id,
+            'account_type': 'liability_current',
             'currency_id': self.currency_data['currency'].id,
             'company_id': self.company_data['company'].id,
         })

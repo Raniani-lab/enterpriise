@@ -63,8 +63,8 @@ class AccountAsset(models.Model):
         string='Prorata Date',
         readonly=True, states={'draft': [('readonly', False)]})
     account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_account_asset_id', help="Account used to record the purchase of the asset at its original price.", store=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('company_id', '=', company_id), ('is_off_balance', '=', False)]")
-    account_depreciation_id = fields.Many2one('account.account', string='Depreciation Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('internal_type', '=', 'other'), ('deprecated', '=', False), ('company_id', '=', company_id), ('is_off_balance', '=', False)]", help="Account used in the depreciation entries, to decrease the asset value.")
-    account_depreciation_expense_id = fields.Many2one('account.account', string='Expense Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('internal_type', '=', 'other'), ('deprecated', '=', False), ('company_id', '=', company_id), ('is_off_balance', '=', False)]", help="Account used in the periodical entries, to record a part of the asset as expense.")
+    account_depreciation_id = fields.Many2one('account.account', string='Depreciation Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('account_type', 'not in', ('asset_receivable','liability_payable','asset_cash', 'liability_credit_card')), ('deprecated', '=', False), ('company_id', '=', company_id), ('is_off_balance', '=', False)]", help="Account used in the depreciation entries, to decrease the asset value.")
+    account_depreciation_expense_id = fields.Many2one('account.account', string='Expense Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('account_type', 'not in', ('asset_receivable','liability_payable','asset_cash', 'liability_credit_card')), ('deprecated', '=', False), ('company_id', '=', company_id), ('is_off_balance', '=', False)]", help="Account used in the periodical entries, to record a part of the asset as expense.")
 
     journal_id = fields.Many2one('account.journal', string='Journal', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('type', '=', 'general'), ('company_id', '=', company_id)]")
 
@@ -107,7 +107,7 @@ class AccountAsset(models.Model):
 
     # model-related fields
     model_id = fields.Many2one('account.asset', string='Model', change_default=True, readonly=True, states={'draft': [('readonly', False)]}, domain="[('company_id', '=', company_id)]")
-    user_type_id = fields.Many2one('account.account.type', related="account_asset_id.user_type_id", string="Type of the account")
+    account_type = fields.Selection(string="Type of the account", related='account_asset_id.account_type')
     display_model_choice = fields.Boolean(compute="_compute_display_model_choice")
     display_account_asset_id = fields.Boolean(compute="_compute_display_account_asset_id")
 
@@ -146,12 +146,12 @@ class AccountAsset(models.Model):
             if record.non_deductible_tax_value:
                 record.original_value += record.non_deductible_tax_value
 
-    @api.depends('asset_type', 'user_type_id', 'state')
+    @api.depends('asset_type', 'account_type', 'state')
     def _compute_display_model_choice(self):
         for record in self:
             domain = [('state', '=', 'model')]
-            if record.user_type_id:
-                domain += [('user_type_id', '=', record.user_type_id.id)]
+            if record.account_type:
+                domain += [('account_type', '=', record.account_type)]
             else:
                 domain += [('asset_type', '=', record.asset_type)]
             record.display_model_choice = (
@@ -309,7 +309,7 @@ class AccountAsset(models.Model):
 
     @api.onchange('account_asset_id')
     def _onchange_account_asset_id(self):
-        self.display_model_choice = self.state == 'draft' and self.env['account.asset'].search_count([('state', '=', 'model'), ('user_type_id', '=', self.user_type_id.id)])
+        self.display_model_choice = self.state == 'draft' and self.env['account.asset'].search_count([('state', '=', 'model'), ('account_type', '=', self.account_type)])
         if self.asset_type in ('purchase', 'expense'):
             self.account_depreciation_id = self.account_depreciation_id or self.account_asset_id
         else:

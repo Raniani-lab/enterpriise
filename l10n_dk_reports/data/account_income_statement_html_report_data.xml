@@ -12,7 +12,7 @@
             <record id="account_income_statement_report_l10n_dk_Årets_resultat" model="account.financial.html.report.line">
                 <field name="name">Årets resultat</field>
                 <field name="code">RES</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', 'in', ['income', 'expense'])]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', 'in', ['income', 'expense'])]"/>
                 <field name="level" eval="0"/>
                 <field name="sequence" eval="1"/>
                 <field name="formulas">RESFS</field>

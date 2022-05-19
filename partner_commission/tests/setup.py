@@ -7,16 +7,10 @@ from odoo.tests.common import Form, TransactionCase
 class TestCommissionsSetup(TransactionCase):
 
     def _setup_accounting(self):
-        self.account_type_receivable = self.env['account.account.type'].create({
-            'name': 'receivable',
-            'type': 'receivable',
-            'internal_group': 'income',
-        })
-
         self.account_receivable = self.env['account.account'].create({
             'code': '...',
             'name': '...',
-            'user_type_id': self.account_type_receivable.id,
+            'account_type': 'asset_receivable',
             'company_id': self.company.id,
             'reconcile': True,
         })
@@ -25,7 +19,7 @@ class TestCommissionsSetup(TransactionCase):
             'code': 'SAL',
             'name': 'sales',
             'reconcile': True,
-            'user_type_id': self.env.ref('account.data_account_type_revenue').id,
+            'account_type': 'income',
         })
 
         self.bank_journal = self.env['account.journal'].create({
@@ -46,7 +40,7 @@ class TestCommissionsSetup(TransactionCase):
 
         account_journal_payment_debit_account = self.env['account.account'].create({
             'name': 'Test account',
-            'user_type_id': self.account_type_receivable.id,
+            'account_type': 'asset_receivable',
             'company_id': self.company.id,
             'reconcile': True,
             'code': 'test code',

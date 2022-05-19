@@ -433,7 +433,7 @@ class Form325(models.Model):
               JOIN account_move_line aml_expense ON aml_payable.move_id = aml_expense.move_id
               JOIN account_account_account_tag account_tag_rel ON aml_expense.account_id = account_tag_rel.account_account_id
              WHERE account_tag_rel.account_account_tag_id = ANY(%(tag_ids)s)
-               AND account.internal_type IN ('payable', 'receivable')
+               AND account.account_type IN ('liability_payable', 'asset_receivable')
                AND aml_payable.parent_state = 'posted'
                AND aml_payable.company_id = %(company_id)s
                AND aml_payable.date BETWEEN %(invoice_date_from)s AND %(invoice_date_to)s

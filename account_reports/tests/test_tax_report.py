@@ -57,14 +57,14 @@ class TestTaxReport(TestAccountReportsCommon):
         cls.tax_account_1 = cls.env['account.account'].create({
             'name': 'Tax Account',
             'code': '250000',
-            'user_type_id': cls.env.ref('account.data_account_type_current_liabilities').id,
+            'account_type': 'liability_current',
             'company_id': cls.company_data['company'].id,
         })
 
         cls.tax_account_2 = cls.env['account.account'].create({
             'name': 'Tax Account',
             'code': '250001',
-            'user_type_id': cls.env.ref('account.data_account_type_current_liabilities').id,
+            'account_type': 'liability_current',
             'company_id': cls.company_data['company'].id,
         })
 
@@ -1009,12 +1009,12 @@ class TestTaxReport(TestAccountReportsCommon):
         }
 
         account_types = {
-            'sale': self.env.ref('account.data_account_type_revenue').id,
-            'purchase': self.env.ref('account.data_account_type_expenses').id,
+            'sale': 'income',
+            'purchase': 'expense',
         }
         for tax in taxes:
             invoices = self.env['account.move']
-            account = self.env['account.account'].search([('company_id', '=', company.id), ('user_type_id', '=', account_types[tax.type_tax_use])], limit=1)
+            account = self.env['account.account'].search([('company_id', '=', company.id), ('account_type', '=', account_types[tax.type_tax_use])], limit=1)
             for inv_type in invoice_types[tax.type_tax_use]:
                 invoice = (invoice_generator or default_invoice_generator)(inv_type, partner, account, today, tax)
                 invoice.action_post()
@@ -1067,7 +1067,7 @@ class TestTaxReport(TestAccountReportsCommon):
         def reconcile_opposite_types(invoices):
             """ Reconciles the created invoices with their matching refund.
             """
-            invoices.mapped('line_ids').filtered(lambda x: x.account_internal_type in ('receivable', 'payable')).reconcile()
+            invoices.mapped('line_ids').filtered(lambda x: x.account_type in ('asset_receivable', 'liability_payable')).reconcile()
 
         # 100 (base, invoice) - 100 (base, refund) + 20 (tax, invoice) - 5 (25% tax, refund) = 15
         self._run_caba_generic_test(
@@ -1091,7 +1091,7 @@ class TestTaxReport(TestAccountReportsCommon):
             the invoice with it.
             """
             # Pay the invoice with a misc operation simulating a payment, so that the cash basis entries are created
-            invoice_reconcilable_line = invoice.line_ids.filtered(lambda x: x.account_internal_type in ('payable', 'receivable'))
+            invoice_reconcilable_line = invoice.line_ids.filtered(lambda x: x.account_type in ('liability_payable', 'asset_receivable'))
             account = (invoice.line_ids - invoice_reconcilable_line).account_id
             pmt_move = self.env['account.move'].create({
                 'move_type': 'entry',
@@ -1108,7 +1108,7 @@ class TestTaxReport(TestAccountReportsCommon):
                             })],
             })
             pmt_move.action_post()
-            payment_reconcilable_line = pmt_move.line_ids.filtered(lambda x: x.account_internal_type in ('payable', 'receivable'))
+            payment_reconcilable_line = pmt_move.line_ids.filtered(lambda x: x.account_type in ('liability_payable', 'asset_receivable'))
             (invoice_reconcilable_line + payment_reconcilable_line).reconcile()
 
         # 100 (base, invoice) - 100 (base, refund) + 20 (tax, invoice) - 5 (25% tax, refund) = 15
@@ -1767,7 +1767,7 @@ class TestTaxReport(TestAccountReportsCommon):
             tax_account = self.env['account.account'].create({
                 'name': 'Tax unit test tax account',
                 'code': 'test_tax_unit',
-                'user_type_id': self.env['ir.model.data']._xmlid_to_res_id('account.data_account_type_current_assets'),
+                'account_type': 'asset_current',
                 'company_id': company.id,
             })
 
@@ -1994,11 +1994,11 @@ class TestTaxReport(TestAccountReportsCommon):
         taxes = self._create_taxes_for_report_lines(report_lines_dict, company)
 
         account_types = {
-            'sale': self.env.ref('account.data_account_type_revenue').id,
-            'purchase': self.env.ref('account.data_account_type_expenses').id,
+            'sale': 'income',
+            'purchase': 'expense',
         }
         for tax in taxes:
-            account = self.env['account.account'].search([('company_id', '=', company.id), ('user_type_id', '=', account_types[tax.type_tax_use])], limit=1)
+            account = self.env['account.account'].search([('company_id', '=', company.id), ('account_type', '=', account_types[tax.type_tax_use])], limit=1)
             # create one entry and it's reverse
             move_form = Form(self.env['account.move'].with_context(default_move_type='entry'))
             with move_form.line_ids.new() as line:

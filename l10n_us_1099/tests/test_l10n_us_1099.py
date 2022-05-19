@@ -41,11 +41,11 @@ class Test1099(AccountTestInvoicingCommon):
         })
 
         cls.liquidity_account = cls.env["account.account"].search(
-            [("user_type_id", "=", cls.env.ref("account.data_account_type_liquidity").id)],
+            [("account_type", "=", "asset_cash")],
             limit=1
         )
         cls.expense_account = cls.env["account.account"].search(
-            [("user_type_id", "=", cls.env.ref("account.data_account_type_expenses").id)],
+            [("account_type", "=", "expense")],
             limit=1
         )
 

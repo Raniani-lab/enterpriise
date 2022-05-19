@@ -83,13 +83,13 @@ export default class AccountingPlugin extends spreadsheet.UIPlugin {
     }
 
     /**
-     * @param {number} accountTypeId
+     * @param {string} accountType
      * @returns {string[]}
      */
-    getAccountGroupCodes(accountTypeId) {
+    getAccountGroupCodes(accountType) {
         return (
             this.dataSources &&
-            this.dataSources.get(DATA_SOURCE_ID).getAccountGroupCodes(accountTypeId)
+            this.dataSources.get(DATA_SOURCE_ID).getAccountGroupCodes(accountType)
         );
     }
 }

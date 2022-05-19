@@ -516,7 +516,7 @@ class BankRecWidget(models.Model):
                 'domain': [
                     '|',
                     '&',
-                    ('account_id.internal_type', '=', 'receivable'),
+                    ('account_id.account_type', '=', 'asset_receivable'),
                     ('payment_id', '=', False),
                     '&',
                     '&',
@@ -532,7 +532,7 @@ class BankRecWidget(models.Model):
                 'domain': [
                     '|',
                     '&',
-                    ('account_id.internal_type', '=', 'payable'),
+                    ('account_id.account_type', '=', 'liability_payable'),
                     ('payment_id', '=', False),
                     '&',
                     '&',

@@ -54,7 +54,7 @@ class AccountGeneralLedger(models.AbstractModel):
                         'rate': line_vals['rate'],
                     })
                     move_vals['total_invoice_tax_balance'] -= line_vals['balance']
-                elif not line_vals['account_internal_type'] in ('receivable', 'payable') and not line_vals['exclude_from_invoice_tab']:
+                elif not line_vals['account_type'] in ('asset_receivable', 'liability_payable') and not line_vals['exclude_from_invoice_tab']:
                     move_vals['total_invoice_untaxed_balance'] -= line_vals['balance']
                     if line_vals['balance'] > 0.0:
                         res['total_invoices_debit'] += line_vals['balance']

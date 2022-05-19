@@ -107,7 +107,7 @@ class TestEdiFlows(TestMxEdiCommon):
             # Invoice is using a 'PUE' payment policy. Sending the payment to the government is not mandatory by
             # default.
             (self.invoice + self.payment.move_id).line_ids\
-                .filtered(lambda line: line.account_internal_type == 'receivable')\
+                .filtered(lambda line: line.account_type == 'asset_receivable')\
                 .reconcile()
 
             self.assertRecordValues(move, [{'edi_state': False}])
@@ -154,7 +154,7 @@ class TestEdiFlows(TestMxEdiCommon):
             # Invoice is using a 'PPD' payment policy. Sending the payment to the government is mandatory.
             self.invoice.invoice_date_due = '2018-01-01'
             (self.invoice + self.payment.move_id).line_ids\
-                .filtered(lambda line: line.account_internal_type == 'receivable')\
+                .filtered(lambda line: line.account_type == 'asset_receivable')\
                 .reconcile()
 
             document = self.payment.edi_document_ids.filtered(lambda d: d.edi_format_id == self.env.ref('l10n_mx_edi.edi_cfdi_3_3'))
@@ -187,7 +187,7 @@ class TestEdiFlows(TestMxEdiCommon):
             self.invoice.action_post()
 
             (self.invoice + self.payment.move_id).line_ids\
-                .filtered(lambda line: line.account_internal_type == 'receivable')\
+                .filtered(lambda line: line.account_type == 'asset_receivable')\
                 .reconcile()
 
             move = self.payment.move_id
@@ -246,7 +246,7 @@ class TestEdiFlows(TestMxEdiCommon):
             self.invoice.action_post()
 
             (self.invoice + self.payment.move_id).line_ids\
-                .filtered(lambda line: line.account_internal_type == 'receivable')\
+                .filtered(lambda line: line.account_type == 'asset_receivable')\
                 .reconcile()
 
             move = self.payment.move_id
@@ -316,7 +316,7 @@ class TestEdiFlows(TestMxEdiCommon):
 
             # Invoice is using a 'PUE' payment policy. Sending the payment to the government is not mandatory by
             # default.
-            receivable_line = self.invoice.line_ids.filtered(lambda line: line.account_internal_type == 'receivable')
+            receivable_line = self.invoice.line_ids.filtered(lambda line: line.account_type == 'asset_receivable')
             edit_wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=self.statement_line.id).new({})
             edit_wizard._action_add_new_amls(receivable_line, allow_partial=False)
             edit_wizard.button_validate(async_action=False)

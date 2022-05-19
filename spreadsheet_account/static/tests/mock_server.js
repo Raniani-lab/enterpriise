@@ -8,10 +8,10 @@ registry
         return new Array(args.args[0].length).fill({ credit: 0, debit: 0 });
     })
     .add("account.account/get_account_group", function (route, args, performRPC) {
-        const accountTypeIds = args.args[0];
-        const data = accountTypeIds.map((typeId) => {
+        const accountTypes = args.args[0];
+        const data = accountTypes.map((accountType) => {
             const records = this.mockSearchRead("account.account", [
-                [["user_type_id", "=", typeId]],
+                [["account_type", "=", accountType]],
                 ["code"],
             ], {});
             return records.map((record) => record.code);

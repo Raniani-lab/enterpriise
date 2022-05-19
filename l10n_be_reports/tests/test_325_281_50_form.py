@@ -110,8 +110,8 @@ class TestResPartner(AccountTestInvoicingCommon):
             'partner_type': 'supplier',
         })
         payment.action_post()
-        bill_payable_move_lines = bill.line_ids.filtered(lambda x: x.account_internal_type == 'payable')
-        bill_payable_move_lines += payment.line_ids.filtered(lambda x: x.account_internal_type == 'payable')
+        bill_payable_move_lines = bill.line_ids.filtered(lambda x: x.account_type == 'liability_payable')
+        bill_payable_move_lines += payment.line_ids.filtered(lambda x: x.account_type == 'liability_payable')
         bill_payable_move_lines.reconcile()
 
     def create_325_form(self, ref_year=2000, state='generated'):
@@ -171,7 +171,7 @@ class TestResPartner(AccountTestInvoicingCommon):
             self.env['account.account'].with_company(self.company_data['company']).create({
                 'name': f"Test account {index}",
                 'code': f"6000{index}",
-                'user_type_id': self.env.ref('account.data_account_type_expenses').id,
+                'account_type': 'expense',
                 'tag_ids': [Command.link(tag.id)],
             })
             for index, tag in enumerate((self.tag_281_50_commissions, self.tag_281_50_atn, self.tag_281_50_fees,
@@ -918,8 +918,8 @@ class TestResPartner(AccountTestInvoicingCommon):
             })
 
         payments.action_post()
-        bill_payable_move_lines = bill.line_ids.filtered(lambda x: x.account_internal_type == 'payable')
-        bill_payable_move_lines += payments.line_ids.filtered(lambda x: x.account_internal_type == 'payable')
+        bill_payable_move_lines = bill.line_ids.filtered(lambda x: x.account_type == 'liability_payable')
+        bill_payable_move_lines += payments.line_ids.filtered(lambda x: x.account_type == 'liability_payable')
         bill_payable_move_lines.reconcile()
 
         form_325 = self.create_325_form(ref_year=2000)

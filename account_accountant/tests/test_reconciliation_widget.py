@@ -30,7 +30,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
                 'name': 'line product',
                 'move_id': move_product.id,
                 'account_id': self.env['account.account'].search([
-                    ('user_type_id', '=', self.env.ref('account.data_account_type_revenue').id),
+                    ('account_type', '=', 'income'),
                     ('company_id', '=', self.company.id)
                 ], limit=1).id,
                 'debit': 20,
@@ -50,7 +50,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             'ref': 'move payment',
         })
         liquidity_account = self.env['account.account'].search([
-            ('user_type_id', '=', self.env.ref('account.data_account_type_liquidity').id),
+            ('account_type', '=', 'asset_cash'),
             ('company_id', '=', self.company.id)], limit=1)
         move_payment_lines = self.env['account.move.line'].create([
             {
@@ -203,7 +203,7 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
 
             # Create a write-off for the residual amount.
             account = invoice.line_ids\
-                .filtered(lambda line: line.account_id.internal_type in ('receivable', 'payable')).account_id
+                .filtered(lambda line: line.account_id.account_type in ('asset_receivable', 'liability_payable')).account_id
             lines = (invoice + payment.move_id).line_ids.filtered(lambda line: line.account_id == account)
             write_off_vals = self.env['account.reconciliation.widget']._prepare_writeoff_moves(lines, {
                 'journal_id': self.company_data['default_journal_misc'].id,
@@ -260,14 +260,14 @@ class TestReconciliationWidget(TestAccountReconciliationCommon):
             })],
         })
         invoice.action_post()
-        inv_receivable = invoice.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
+        inv_receivable = invoice.line_ids.filtered(lambda l: l.account_id.account_type == 'asset_receivable')
 
         payment = self.env['account.payment'].create({
             'partner_id': customer.id,
             'amount': 600,
         })
         payment.action_post()
-        payment_receivable = payment.line_ids.filtered(lambda l: l.account_id.internal_type == 'receivable')
+        payment_receivable = payment.line_ids.filtered(lambda l: l.account_id.account_type == 'asset_receivable')
 
         self.env['account.reconciliation.widget'].process_move_lines([{
             'id': None,

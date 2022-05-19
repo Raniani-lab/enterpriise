@@ -422,7 +422,7 @@ class TestHrPayrollAccount(TestHrPayrollAccountCommon):
         self.hra_account = self.env['account.account'].create({
             'name': 'House Rental',
             'code': '654321',
-            'user_type_id': self.env.ref('account.data_account_type_revenue').id,
+            'account_type': 'income',
             'tax_ids': [(4, hra_tax.id)]
         })
 

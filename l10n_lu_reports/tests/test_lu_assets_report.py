@@ -74,7 +74,7 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
         account = self.env['account.account'].create({
             'name': 'multiple_assets_per_line_test_account',
             'code': '000001',
-            'user_type_id': self.env.ref('account.data_account_type_non_current_assets').id,
+            'account_type': 'asset_non_current',
             'asset_type': 'purchase',
             'multiple_assets_per_line': True,
             'create_asset': "validate",

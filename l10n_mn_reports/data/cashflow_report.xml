@@ -495,7 +495,7 @@
                 <field name="name">Мөнгө, түүнтэй адилтгах хөрөнгийн эхний үлдэгдэл</field>
                 <field name="sequence" eval="2"/>
                 <field name="level" eval="0"/>
-                <field name="domain" eval="[('account_id.internal_type', '=', 'liquidity')]"/>
+                <field name="domain" eval="[('account_id.account_type', 'in', ('asset_cash', 'liability_credit_card'))]"/>
                 <field name="formulas">sum</field>
                 <field name="show_domain">foldable</field>
                 <field name="groupby">account_id</field>
@@ -506,7 +506,7 @@
                 <field name="name">Мөнгө, түүнтэй адилтгах хөрөнгийн эцсийн үлдэгдэл</field>
                 <field name="sequence" eval="3"/>
                 <field name="level" eval="0"/>
-                <field name="domain" eval="[('account_id.internal_type', '=', 'liquidity')]"/>
+                <field name="domain" eval="[('account_id.account_type', 'in', ('asset_cash', 'liability_credit_card'))]"/>
                 <field name="formulas">sum</field>
                 <field name="show_domain">foldable</field>
                 <field name="groupby">account_id</field>

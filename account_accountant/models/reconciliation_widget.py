@@ -82,8 +82,8 @@ class AccountReconciliation(models.AbstractModel):
         if not partner_ids:
             accounts_data = self.get_data_for_manual_reconciliation('account', account_ids)
         return {
-            'customers': self.get_data_for_manual_reconciliation('partner', partner_ids, 'receivable'),
-            'suppliers': self.get_data_for_manual_reconciliation('partner', partner_ids, 'payable'),
+            'customers': self.get_data_for_manual_reconciliation('partner', partner_ids, 'asset_receivable'),
+            'suppliers': self.get_data_for_manual_reconciliation('partner', partner_ids, 'liability_payable'),
             'accounts': accounts_data,
         }
 
@@ -95,7 +95,7 @@ class AccountReconciliation(models.AbstractModel):
             :param res_type: either 'partner' or 'account'
             :param res_ids: ids of the partners/accounts to reconcile, use None to fetch data indiscriminately
                 of the id, use [] to prevent from fetching any data at all.
-            :param account_type: if a partner is both customer and vendor, you can use 'payable' to reconcile
+            :param account_type: if a partner is both customer and vendor, you can use 'liability_payable' to reconcile
                 the vendor-related journal entries and 'receivable' for the customer-related entries.
         """
 
@@ -109,7 +109,7 @@ class AccountReconciliation(models.AbstractModel):
         res_ids = res_ids and tuple(res_ids)
 
         assert res_type in ('partner', 'account')
-        assert account_type in ('payable', 'receivable', None)
+        assert account_type in ('liability_payable', 'asset_receivable', None)
         is_partner = res_type == 'partner'
         res_alias = is_partner and 'p' or 'a'
         aml_ids = self._context.get('active_ids') and self._context.get('active_model') == 'account.move.line' and tuple(self._context.get('active_ids'))
@@ -159,7 +159,6 @@ class AccountReconciliation(models.AbstractModel):
                     FROM
                         account_move_line l
                         RIGHT JOIN account_account a ON (a.id = l.account_id)
-                        RIGHT JOIN account_account_type at ON (at.id = a.user_type_id)
                         {inner_from}
                     WHERE
                         a.reconcile IS TRUE
@@ -178,8 +177,8 @@ class AccountReconciliation(models.AbstractModel):
                 select=is_partner and "partner_id, partner_name, to_char(last_time_entries_checked, 'YYYY-MM-DD') AS last_time_entries_checked," or ' ',
                 inner_select=is_partner and 'p.id AS partner_id, p.name AS partner_name, p.last_time_entries_checked AS last_time_entries_checked,' or ' ',
                 inner_from=is_partner and 'RIGHT JOIN res_partner p ON (l.partner_id = p.id)' or ' ',
-                where1=is_partner and ' ' or "AND ((at.type <> 'payable' AND at.type <> 'receivable') OR l.partner_id IS NULL)",
-                where2=account_type and "AND at.type = %(account_type)s" or '',
+                where1=is_partner and ' ' or "AND ((a.account_type <> 'liability_payable' AND a.account_type <> 'asset_receivable') OR l.partner_id IS NULL)",
+                where2=account_type and "AND a.account_type = %(account_type)s" or '',
                 where3=res_ids and 'AND ' + res_alias + '.id in %(res_ids)s' or '',
                 company_id=self.env.company.id,
                 where4=aml_ids and 'AND l.id IN %(aml_ids)s' or ' ',
@@ -207,7 +206,7 @@ class AccountReconciliation(models.AbstractModel):
         if res_type == 'account':
             mode = 'accounts'
         else:
-            mode = 'customers' if account_type == 'receivable' else 'suppliers'
+            mode = 'customers' if account_type == 'asset_receivable' else 'suppliers'
 
         # Fetch other data
         for row in rows:
@@ -288,7 +287,7 @@ class AccountReconciliation(models.AbstractModel):
                     '|', ('amount_residual_currency', '=', amount),
                     '|', ('amount_residual', '=', -amount),
                     '|', ('amount_residual_currency', '=', -amount),
-                    '&', ('account_id.internal_type', '=', 'liquidity'),
+                    '&', ('account_id.account_type', 'in', ('asset_cash', 'liability_credit_card')),
                     '|', '|', '|', ('debit', '=', amount), ('credit', '=', amount), ('amount_currency', '=', amount), ('amount_currency', '=', -amount),
                 ]
                 str_domain = expression.OR([str_domain, amount_domain])
@@ -335,10 +334,10 @@ class AccountReconciliation(models.AbstractModel):
                 # For reconciliation between statement transactions and already registered payments (eg. checks)
                 # NB : we don't use the 'reconciled' field because the line we're selecting is not the one that gets reconciled
                 'account_id': [line.account_id.id, line.account_id.display_name],
-                'is_liquidity_line': line.account_id.internal_type == 'liquidity',
+                'is_liquidity_line': line.account_id.account_type in ('asset_cash', 'liability_credit_card'),
                 'account_code': line.account_id.code,
                 'account_name': line.account_id.name,
-                'account_type': line.account_id.internal_type,
+                'account_type': line.account_id.account_type,
                 'date_maturity': format_date(self.env, line.date_maturity),
                 'date': format_date(self.env, line.date),
                 'journal_id': [line.journal_id.id, line.journal_id.display_name],
@@ -353,7 +352,7 @@ class AccountReconciliation(models.AbstractModel):
             amount_currency = line.amount_residual_currency
 
             # For already reconciled lines, don't use amount_residual(_currency)
-            if line.account_id.internal_type == 'liquidity':
+            if line.account_id.account_type in ('asset_cash', 'liability_credit_card'):
                 amount = debit - credit
                 amount_currency = line.amount_currency
 

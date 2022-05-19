@@ -11,7 +11,7 @@
             <record id="account_financial_report_total_assets0" model="account.financial.html.report.line">
                 <field name="name">ASSETS</field>
                 <field name="code">TA</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'asset')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'asset')]"/>
                 <field name="formulas">CA + FA + PNCA</field>
                 <field name="sequence" eval="1"/>
                 <field name="level" eval="0"/>
@@ -20,8 +20,8 @@
                         <field name="name">Current Assets</field>
                         <field name="code">CA</field>
                         <field name="control_domain" eval="[
-             '|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_liquidity'), ref('account.data_account_type_current_assets'), ref('account.data_account_type_prepayments')]),
-                  ('account_id.user_type_id.type', '=', 'receivable')
+             '|', ('account_id.account_type', 'in', ['asset_cash', 'asset_current', 'asset_prepayments']),
+                  ('account_id.account_type', '=', 'asset_receivable')
          ]"/>
                         <field name="formulas">BA + REC + CAS + PRE</field>
                         <field name="sequence" eval="1"/>
@@ -30,7 +30,7 @@
                             <record id="account_financial_report_bank_view0" model="account.financial.html.report.line">
                                 <field name="name">Bank and Cash Accounts</field>
                                 <field name="code">BA</field>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_liquidity'))]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_cash')]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="formulas">sum</field>
                                 <field name="sequence" eval="1"/>
@@ -39,7 +39,7 @@
                             <record id="account_financial_report_receivable0" model="account.financial.html.report.line">
                                 <field name="name">Receivables</field>
                                 <field name="code">REC</field>
-                                <field name="domain" eval="[('account_id.user_type_id.type', '=', 'receivable'), ('account_id.non_trade', '=', False)]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_receivable'), ('account_id.non_trade', '=', False)]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="formulas">sum</field>
                                 <field name="sequence" eval="2"/>
@@ -48,7 +48,7 @@
                             <record id="account_financial_report_current_assets0" model="account.financial.html.report.line">
                                 <field name="name">Current Assets</field>
                                 <field name="code">CAS</field>
-                                <field name="domain" eval="['|', ('account_id.user_type_id', '=', ref('account.data_account_type_current_assets')), '&amp;', ('account_id.user_type_id.type', '=', 'receivable'), ('account_id.non_trade', '=', True)]"/>
+                                <field name="domain" eval="['|', ('account_id.account_type', '=', 'asset_current'), '&amp;', ('account_id.account_type', '=', 'asset_receivable'), ('account_id.non_trade', '=', True)]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="formulas">sum</field>
                                 <field name="sequence" eval="3"/>
@@ -57,7 +57,7 @@
                             <record id="account_financial_report_prepayements0" model="account.financial.html.report.line">
                                 <field name="name">Prepayments</field>
                                 <field name="code">PRE</field>
-                                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_prepayments'))]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'asset_prepayments')]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="formulas">sum</field>
                                 <field name="sequence" eval="4"/>
@@ -68,7 +68,7 @@
                     <record id="account_financial_report_fixed_assets_view0" model="account.financial.html.report.line">
                         <field name="name">Plus Fixed Assets</field>
                         <field name="code">FA</field>
-                        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_fixed_assets'))]"/>
+                        <field name="domain" eval="[('account_id.account_type', '=', 'asset_fixed')]"/>
                         <field name="groupby">account_id</field>
                         <field name="formulas">sum</field>
                         <field name="sequence" eval="3"/>
@@ -77,7 +77,7 @@
                     <record id="account_financial_report_non_current_assets_view0" model="account.financial.html.report.line">
                         <field name="name">Plus Non-current Assets</field>
                         <field name="code">PNCA</field>
-                        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_non_current_assets'))]"/>
+                        <field name="domain" eval="[('account_id.account_type', '=', 'asset_non_current')]"/>
                         <field name="groupby">account_id</field>
                         <field name="formulas">sum</field>
                         <field name="sequence" eval="4"/>
@@ -89,7 +89,7 @@
                 <field name="name">LIABILITIES</field>
                 <field name="code">L</field>
                 <field name="groupby">account_id</field>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'liability')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'liability')]"/>
                 <field name="formulas">CL + NL</field>
                 <field name="sequence" eval="2"/>
                 <field name="green_on_positive" eval="False"/>
@@ -99,8 +99,8 @@
                         <field name="name">Current Liabilities</field>
                         <field name="code">CL</field>
                         <field name="control_domain" eval="[
-             '|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_current_liabilities'), ref('account.data_account_type_credit_card')]),
-                  ('account_id.user_type_id.type', '=', 'payable'),
+             '|', ('account_id.account_type', 'in', ('liability_current', 'liability_credit_card')),
+                  ('account_id.account_type', '=', 'liability_payable'),
          ]"/>
                         <field name="formulas">CL1 + CL2</field>
                         <field name="sequence" eval="1"/>
@@ -110,7 +110,7 @@
                             <record id="account_financial_report_current_liabilities1" model="account.financial.html.report.line">
                                 <field name="name">Current Liabilities</field>
                                 <field name="code">CL1</field>
-                                <field name="domain" eval="['|', ('account_id.user_type_id', 'in', [ref('account.data_account_type_current_liabilities'), ref('account.data_account_type_credit_card')]), '&amp;', ('account_id.user_type_id.type', '=', 'payable'), ('account_id.non_trade', '=', True)]"/>
+                                <field name="domain" eval="['|', ('account_id.account_type', 'in', ('liability_current', 'liability_credit_card')), '&amp;', ('account_id.account_type', '=', 'liability_payable'), ('account_id.non_trade', '=', True)]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="formulas">-sum</field>
                                 <field name="sequence" eval="1"/>
@@ -120,7 +120,7 @@
                             <record id="account_financial_report_current_liabilities_payable" model="account.financial.html.report.line">
                                 <field name="name">Payables</field>
                                 <field name="code">CL2</field>
-                                <field name="domain" eval="[('account_id.user_type_id.type', '=', 'payable'), ('account_id.non_trade', '=', False)]"/>
+                                <field name="domain" eval="[('account_id.account_type', '=', 'liability_payable'), ('account_id.non_trade', '=', False)]"/>
                                 <field name="groupby">account_id</field>
                                 <field name="formulas">-sum</field>
                                 <field name="sequence" eval="2"/>
@@ -132,7 +132,7 @@
                     <record id="account_financial_report_non_current_liabilities0" model="account.financial.html.report.line">
                         <field name="name">Plus Non-current Liabilities</field>
                         <field name="code">NL</field>
-                        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_non_current_liabilities'))]"/>
+                        <field name="domain" eval="[('account_id.account_type', '=', 'liability_non_current')]"/>
                         <field name="groupby">account_id</field>
                         <field name="formulas">-sum</field>
                         <field name="sequence" eval="2"/>
@@ -175,7 +175,7 @@
                                     <record id="account_financial_current_year_earnings_line_2" model="account.financial.html.report.line">
                                         <field name="name">Current Year Allocated Earnings</field>
                                         <field name="code">CURR_YEAR_EARNINGS_ALLOC</field>
-                                        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]"/>
+                                        <field name="domain" eval="[('account_id.account_type', '=', 'equity_unaffected')]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="sequence" eval="2"/>
                                         <field name="special_date_changer">from_fiscalyear</field>
@@ -186,13 +186,13 @@
                             <record id="account_financial_previous_year_earnings0" model="account.financial.html.report.line">
                                 <field name="name">Previous Years Unallocated Earnings</field>
                                 <field name="code">PREV_YEAR_EARNINGS</field>
-                                <field name="domain" eval="[('account_id.user_type_id', 'in', [
-             ref('account.data_account_type_revenue'),
-             ref('account.data_account_type_other_income'),
-             ref('account.data_account_type_direct_costs'),
-             ref('account.data_account_type_expenses'),
-             ref('account.data_account_type_depreciation')
-         ])]"/>
+                                <field name="domain" eval="[('account_id.account_type', 'in', (
+             'income',
+             'income_other',
+             'expense_direct_cost',
+             'expense',
+             'expense_depreciation'
+         ))]"/>
                                 <field name="formulas">-sum + ALLOCATED_EARNINGS - CURR_YEAR_EARNINGS</field>
                                 <field name="sequence" eval="2"/>
                                 <field name="special_date_changer">from_beginning</field>
@@ -203,7 +203,7 @@
                     <record id="account_financial_retained_earnings0" model="account.financial.html.report.line">
                         <field name="name">Retained Earnings</field>
                         <field name="code">RETAINED_EARNINGS</field>
-                        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_type_equity'))]"/>
+                        <field name="domain" eval="[('account_id.account_type', '=', 'equity')]"/>
                         <field name="groupby">account_id</field>
                         <field name="formulas">-sum</field>
                         <field name="sequence" eval="2"/>
@@ -223,8 +223,8 @@
             <record id="account_financial_report_off_sheet" model="account.financial.html.report.line">
                 <field name="name">OFF BALANCE SHEET ACCOUNTS</field>
                 <field name="code">OS</field>
-                <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_account_off_sheet'))]"/>
-                <field name="control_domain" eval="[('account_id.user_type_id.internal_group', '=', 'off_balance')]"/>
+                <field name="domain" eval="[('account_id.account_type', '=', 'off_balance')]"/>
+                <field name="control_domain" eval="[('account_id.internal_group', '=', 'off_balance')]"/>
                 <field name="groupby">account_id</field>
                 <field name="formulas">-sum</field>
                 <field name="sequence" eval="5"/>
@@ -243,7 +243,7 @@
     <record id="account_financial_allocated_earnings" model="account.financial.html.report.line">
         <field name="name">Allocated Earnings</field>
         <field name="code">ALLOCATED_EARNINGS</field>
-        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]"/>
+        <field name="domain" eval="[('account_id.account_type', '=', 'equity_unaffected')]"/>
         <field name="formulas">-sum</field>
         <field name="sequence" eval="2"/>
         <field name="special_date_changer">from_beginning</field>

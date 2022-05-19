@@ -192,26 +192,16 @@ class TestSubscriptionCommon(TestSaleCommon):
         cls.subscription.end_date = False # reset the end_date too
         cls.company = cls.env.company
         cls.company.country_id = cls.env.ref('base.us')
-        cls.account_type_receivable = cls.env['account.account.type'].sudo().create({
-            'name': 'receivable',
-            'type': 'receivable',
-            'internal_group': 'asset',
-        })
         cls.account_receivable = cls.env['account.account'].create(
             {'name': 'Ian Anderson',
              'code': 'IA',
-             'user_type_id': cls.account_type_receivable.id,
+             'account_type': 'asset_receivable',
              'company_id': cls.company.id,
              'reconcile': True})
-        cls.account_type_sale = cls.env['account.account.type'].sudo().create({
-            'name': 'income',
-            'type': 'other',
-            'internal_group': 'income',
-        })
         cls.account_sale = cls.env['account.account'].create(
             {'name': 'Product Sales ',
              'code': 'S200000',
-             'user_type_id': cls.account_type_sale.id,
+             'account_type': 'income',
              'company_id': cls.company.id,
              'reconcile': False})
 

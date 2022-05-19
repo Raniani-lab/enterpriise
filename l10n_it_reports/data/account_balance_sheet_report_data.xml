@@ -983,8 +983,8 @@
                         <field name="level" eval="1"/>
                         <field name="control_domain" eval="['|','|',
                             ('account_id.tag_ids', 'in', ref('l10n_it.account_tag_A_PASS')),
-                            ('account_id.user_type_id.internal_group', '=like', 'income'),
-                            ('account_id.user_type_id.internal_group', '=like', 'expense')]"/>
+                            ('account_id.internal_group', '=like', 'income'),
+                            ('account_id.internal_group', '=like', 'expense')]"/>
                         <field name="formulas">IT_PASS_A_I + IT_PASS_A_II + IT_PASS_A_III + IT_PASS_A_IV + IT_PASS_A_V + IT_PASS_A_VI + IT_PASS_A_VII + IT_PASS_A_VIII + IT_PASS_A_IX + IT_PASS_A_X</field>
                         <field name="children_ids">
                             <record id="account_financial_report_line_it_sp_PASS_A_I" model="account.financial.html.report.line">
@@ -1650,8 +1650,8 @@
                     ('account_id.tag_ids', 'in', ref('l10n_it.account_tag_C_PASS')),
                     ('account_id.tag_ids', 'in', ref('l10n_it.account_tag_D_PASS')),
                     ('account_id.tag_ids', 'in', ref('l10n_it.account_tag_E_PASS')),
-                    ('account_id.user_type_id.internal_group', '=like', 'income'),
-                    ('account_id.user_type_id.internal_group', '=like', 'expense')]"/>
+                    ('account_id.internal_group', '=like', 'income'),
+                    ('account_id.internal_group', '=like', 'expense')]"/>
             </record>
             <record id="account_financial_report_line_it_sp_CONTI_ORDINE" model="account.financial.html.report.line">
                 <field name="name">CONTI D'ORDINE</field>

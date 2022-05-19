@@ -212,14 +212,14 @@ functionRegistry.add("ODOO.FISCALYEAR.END", {
 });
 
 functionRegistry.add("ODOO.ACCOUNT.GROUP", {
-    description: _t("Returns the account ids of a given group (id)."),
+    description: _t("Returns the account ids of a given group."),
     args: args(`
-        type_id (number) ${_t("Account type.")}
+        type (string) ${_t("Account type.")}
     `),
     returns: ["NUMBER"],
     returnFormat: { specificFormat: "m/d/yyyy" },
-    compute: function (accountTypeId) {
-        const accountIds = this.getters.getAccountGroupCodes(toNumber(accountTypeId));
-        return accountIds.join(",");
+    compute: function (accountType) {
+        const accountTypes = this.getters.getAccountGroupCodes(toString(accountType));
+        return accountTypes.join(",");
     },
 });

@@ -791,6 +791,7 @@ class AccountEdiFormat(models.Model):
     def _l10n_pe_edi_cancel_invoice_edi_step_1(self, invoices):
         self.ensure_one()
         certificate_date = self.env['l10n_pe_edi.certificate']._get_pe_current_datetime().date()
+        reference_date = invoices[0].invoice_date
         company = invoices[0].company_id # documents are always batched by company in account_edi.
         provider = company.l10n_pe_edi_provider
 
@@ -798,6 +799,7 @@ class AccountEdiFormat(models.Model):
         void_number = self.env['ir.sequence'].next_by_code('l10n_pe_edi.summary.sequence')
         void_values = {
             'certificate_date': certificate_date,
+            'reference_date': reference_date,
             'void_number': void_number,
             'company': company,
             'records': invoices,

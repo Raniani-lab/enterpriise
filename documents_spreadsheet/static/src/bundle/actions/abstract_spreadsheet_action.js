@@ -44,15 +44,18 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         onMounted(() => this.onMounted());
     }
 
-    async onWillStart() {
-        const chartLibPromise = loadJS("/web/static/lib/Chart/Chart.js");
+    async loadChartLibs () {
+        await loadJS("/web/static/lib/Chart/Chart.js");
+        await loadJS("/documents_spreadsheet/static/lib/chartjs-gauge/chartjs-gauge.js");
+    }
 
+    async onWillStart() {
         // if we are returning to the spreadsheet via the breadcrumb, we don't want
         // to do all the "creation" options of the actions
         if (!this.props.state) {
-            [this.resId, ] = await Promise.all([this._createAddSpreadsheetData(), chartLibPromise]);
+            [this.resId, ] = await Promise.all([this._createAddSpreadsheetData(), this.loadChartLibs()]);
         }
-        const [record, ] = await Promise.all([this._fetchData(), chartLibPromise]);
+        const [record, ] = await Promise.all([this._fetchData(), this.loadChartLibs()]);
         this._initializeWith(record);
     }
 

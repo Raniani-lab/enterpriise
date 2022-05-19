@@ -191,10 +191,6 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 throw odooError || fiskalyError;
             }
         }
-        // @Override
-        htmlToImgLetterRendering() {
-            return this.isCountryGermanyAndFiskaly() || super.htmlToImgLetterRendering(...arguments);
-        }
     }
     Registries.Model.extend(PosGlobalState, L10nDePosGlobalState);
 

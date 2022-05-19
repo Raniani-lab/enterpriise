@@ -71,6 +71,7 @@ class ResPartner(models.Model):
             if d['followup_level'] in level_ids
         ])]
 
+    @api.depends_context('company', 'allowed_company_ids')
     def _compute_for_followup(self):
         """
         Compute the fields 'total_due', 'total_overdue','followup_level' and 'followup_status'

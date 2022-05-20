@@ -675,6 +675,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         clean_access_rights(self.env)
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        self.picking_type_out.restrict_scan_source_location = 'mandatory'
         delivery_picking = self.env['stock.picking'].create({
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
@@ -1289,7 +1290,9 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         all these products and then hitting put in pack should move them all in the new pack.
         """
         clean_access_rights(self.env)
-        # self.env['stock.picking.type'].search([('active', '=', False)]).write({'active': True})
+        # Adapts the setting to scan only the source location.
+        self.picking_type_internal.restrict_scan_dest_location = 'no'
+        self.picking_type_internal.restrict_scan_source_location = 'mandatory'
         grp_pack = self.env.ref('stock.group_tracking_lot')
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
@@ -1386,6 +1389,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        # For the purpose of this test, disable the source scan (mandatory for a deliery otherwise).
+        self.picking_type_out.restrict_scan_source_location = 'no'
 
         lot1 = self.env['stock.lot'].create({'name': 'lot1', 'product_id': self.productlot1.id, 'company_id': self.env.company.id})
         lot2 = self.env['stock.lot'].create({'name': 'serial1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
@@ -1555,6 +1560,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         delivery = delivery_form.save()
         delivery.action_confirm()
         delivery.action_assign()
+        self.picking_type_out.restrict_scan_source_location = 'no'
 
         url = self._get_client_action_url(delivery.id)
         self.start_tour(url, 'test_put_in_pack_scan_package', login='admin', timeout=180)

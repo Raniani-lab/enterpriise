@@ -197,7 +197,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
     {
         trigger: '.o_barcode_line.o_highlight[data-barcode="productserial1"]:contains("SN-LHOOQ")',
         run: function() {
-            currentViewState.scanMessage = 'scan_product_or_dest';
+            currentViewState.scanMessage = 'scan_serial';
             checkState(currentViewState);
             const sublines = document.querySelectorAll('.o_sublines [data-barcode=productserial1]');
             helper.assert(sublines.length, 2, "Expect 2 lines for productserial1");
@@ -220,6 +220,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
     {
         trigger: '.o_barcode_line.o_highlight[data-barcode="productserial1"]:contains("SN-OQPAPT")',
         run: function() {
+            currentViewState.scanMessage = 'scan_product_or_dest';
             checkState(currentViewState);
             const sublines = document.querySelectorAll('.o_sublines [data-barcode=productserial1]');
             helper.assert(sublines.length, 2, "Expect 2 lines for productserial1");
@@ -363,6 +364,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
     {
         trigger: '.o_barcode_line.o_highlight:contains("lot0002"):contains("picking_receipt_3") .qty-done:contains("4")',
         run: function() {
+            currentViewState.validate.isHighlighted = true;
             currentViewState.scanMessage = 'scan_product_or_dest';
             checkState(currentViewState);
             const lines =  document.querySelectorAll('.o_barcode_lines > [data-barcode=productlot1]');
@@ -413,7 +415,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
                     isEnabled: true,
                     isVisible: true
                 },
-                scanMessage: 'scan_src',
+                scanMessage: 'scan_product',
             });
             checkState(currentViewState);
             const $lineFromPicking1 = helper.getLines({index: 1});
@@ -449,7 +451,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
         trigger: '.o_next_page.btn-primary',
         run: function () {
             currentViewState.next.isHighlighted = true;
-            currentViewState.scanMessage = 'scan_product_or_src';
+            currentViewState.scanMessage = 'scan_next_or_validate';
             checkState(currentViewState);
             const $linesFromPickingSN = helper.getLines({index: 4});
             helper.assert($linesFromPickingSN.find('.o_line_lot_name').text(), 'sn2');
@@ -467,7 +469,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
             currentViewState.linesCount = 1;
             currentViewState.next.isHighlighted = false;
             currentViewState.pager = '2/5';
-            currentViewState.scanMessage = 'scan_src';
+            currentViewState.scanMessage = 'scan_product';
             checkState(currentViewState);
         },
     },
@@ -489,7 +491,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
             helper.assert($('.o_barcode_line:nth-child(1) .o_picking_label').text(), 'picking_delivery_1');
             helper.assert($('.o_barcode_line:nth-child(2) .o_picking_label').text(), 'picking_delivery_1');
             currentViewState.next.isHighlighted = true;
-            currentViewState.scanMessage = 'scan_product_or_src';
+            currentViewState.scanMessage = 'scan_next_or_validate';
             checkState(currentViewState);
         },
     },
@@ -505,7 +507,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
             currentViewState.linesCount = 2;
             currentViewState.next.isHighlighted = false;
             currentViewState.pager = '3/5';
-            currentViewState.scanMessage = 'scan_src';
+            currentViewState.scanMessage = 'scan_product';
             checkState(currentViewState);
         },
     },
@@ -528,7 +530,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
         trigger: '.o_next_page.btn-primary',
         run: function () {
             currentViewState.next.isHighlighted = true;
-            currentViewState.scanMessage = 'scan_product_or_src';
+            currentViewState.scanMessage = 'scan_next_or_validate';
             checkState(currentViewState);
         },
     },
@@ -544,7 +546,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
             currentViewState.linesCount = 1;
             currentViewState.next.isHighlighted = false;
             currentViewState.pager = '4/5';
-            currentViewState.scanMessage = 'scan_src';
+            currentViewState.scanMessage = 'scan_product';
             checkState(currentViewState);
         },
     },
@@ -558,7 +560,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
         trigger: '.o_next_page.btn-primary',
         run: function () {
             currentViewState.next.isHighlighted = true;
-            currentViewState.scanMessage = 'scan_product_or_src';
+            currentViewState.scanMessage = 'scan_next_or_validate';
             checkState(currentViewState);
         },
     },
@@ -578,7 +580,7 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
             currentViewState.validate.isEnabled = true;
             currentViewState.validate.isVisible = true;
             currentViewState.pager = '5/5';
-            currentViewState.scanMessage = 'scan_src';
+            currentViewState.scanMessage = 'scan_product';
             checkState(currentViewState);
         },
     },
@@ -677,7 +679,7 @@ tour.register('test_batch_create', {test: true}, [
                     isEnabled: true,
                     isVisible: true
                 },
-                scanMessage: 'scan_src',
+                scanMessage: 'scan_product',
             });
             checkState(currentViewState);
             const $lineFromPicking1 = helper.getLines({index: 1});
@@ -704,7 +706,7 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
                     isEnabled: true,
                     isVisible: true
                 },
-                scanMessage: 'scan_src',
+                scanMessage: 'scan_product',
             });
             checkState(currentViewState);
             const $linesFromPicking1 = helper.getLines({index: [1, 3]});

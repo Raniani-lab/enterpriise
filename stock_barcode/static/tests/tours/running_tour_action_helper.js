@@ -14,6 +14,12 @@ RunningTourActionHelper.include({
 
 const StepUtils = require('web_tour.TourStepUtils');
 StepUtils.include({
+    closeModal() {
+        return {
+            trigger: '.btn.btn-primary',
+            in_modal: true,
+        };
+    },
     validateBarcodeForm() {
         return [{
             trigger: '.o_barcode_client_action',

@@ -97,7 +97,8 @@ export default class BarcodeModel extends EventBus {
     }
 
     get barcodeInfo() {
-        let line = this.selectedLine;
+        // Takes the parent line if the current line is part of a group.
+        let line = this._getParentLine(this.selectedLine) || this.selectedLine;
         if (!line && this.lastScannedPackage) {
             const lines = this._moveEntirePackage() ? this.packageLines : this.pageLines;
             line = lines.find(l => l.package_id && l.package_id.id === this.lastScannedPackage);
@@ -173,8 +174,16 @@ export default class BarcodeModel extends EventBus {
         return true;
     }
 
+    /**
+     * The operation can be validated if there is at least one line.
+     * @returns {boolean}
+     */
     get canBeValidate() {
         return this.pages[this.pageIndex].lines.length;
+    }
+
+    get canSelectLocation() {
+        return true;
     }
 
     get displayApplyButton() {
@@ -349,6 +358,7 @@ export default class BarcodeModel extends EventBus {
             groupedLines[key][0].reservedPackage = reservedPackage;
             const packageLine = Object.assign({}, groupedLines[key][0], {
                 lines: groupedLines[key],
+                isPackageLine: true,
             });
             packageLines.push(packageLine);
         }
@@ -363,7 +373,10 @@ export default class BarcodeModel extends EventBus {
                 continue;
             }
             alreadyDone.push(virtualId);
-            lines.push(this.currentState.lines.find(l => l.virtual_id === virtualId));
+            const foundLine = this.currentState.lines.find(l => l.virtual_id === virtualId);
+            if (foundLine) {
+                lines.push(foundLine);
+            }
         }
         if (this.lastScannedPackage) {
             lines.push(...this.currentState.lines.filter(l => l.package_id.id === this.lastScannedPackage));
@@ -556,19 +569,17 @@ export default class BarcodeModel extends EventBus {
 
     async save() {
         const { route, params } = this._getSaveCommand();
+        this.linesToSave = [];
         if (route) {
             const res = await this.rpc(route, params);
             await this.refreshCache(res.records);
         }
-        this.linesToSave = [];
     }
 
     selectLine(line) {
-        const virtualId = line.virtual_id;
-        if (this.selectedLineVirtualId === virtualId) {
-            return;
+        if (this.lineCanBeSelected(line)) {
+            this._selectLine(line);
         }
-        this._selectLine(line);
     }
 
     selectPackageLine(packageId) {
@@ -682,6 +693,10 @@ export default class BarcodeModel extends EventBus {
         await this.save();
     }
 
+    _checkBarcode(barcodeData) {
+        return true;
+    }
+
     async _closeValidate(ev) {
         if (ev === undefined) {
             // If all is OK, displays a notification and goes back to the previous page.
@@ -762,7 +777,11 @@ export default class BarcodeModel extends EventBus {
                 this.trigger('update');
             },
             'O-CMD.MAIN-MENU': this._goToMainMenu.bind(this),
-            'O-BTN.validate': this.validate.bind(this),
+            'O-BTN.validate': () => {
+                if (this.canBeValidate) {
+                    this.validate();
+                }
+            },
         };
     }
 
@@ -796,6 +815,10 @@ export default class BarcodeModel extends EventBus {
 
     _getNewLineDefaultContext() {
         throw new Error('Not Implemented');
+    }
+
+    _getParentLine(line) {
+        return this.groupedLines.find(gl => (gl.virtual_ids || []).includes(line.virtual_id));
     }
 
     _getFieldToWrite() {
@@ -1144,6 +1167,11 @@ export default class BarcodeModel extends EventBus {
         if (barcodeData.action) { // As action is always a single data, call it and do nothing else.
             return await barcodeData.action();
         }
+        // Depending of the configuration, the user can be forced to scan a specific barcode type.
+        const check = this._checkBarcode(barcodeData);
+        if (check.error) {
+            return this.notification.add(check.message, { title: check.title, type: 'danger'});
+        }
 
         if (barcodeData.packaging) {
             barcodeData.product = this.cache.getRecord('product.product', barcodeData.packaging.product_id);
@@ -1305,7 +1333,7 @@ export default class BarcodeModel extends EventBus {
 
         // And finally, if the scanned barcode modified a line, selects this line.
         if (currentLine) {
-            this.selectLine(currentLine);
+            this._selectLine(currentLine);
         }
         this.trigger('update');
     }
@@ -1328,8 +1356,19 @@ export default class BarcodeModel extends EventBus {
         throw new Error('Not Implemented');
     }
 
+    lineCanBeSelected() {
+        return true;
+    }
+
+    lineCanBeEdited() {
+        return this;
+    }
+
     _selectLine(line) {
         const virtualId = line.virtual_id;
+        if (this.selectedLineVirtualId === virtualId) {
+            return; // Don't select the line if it's already selected.
+        }
         this.selectedLineVirtualId = virtualId;
         this.scannedLinesVirtualId.push(virtualId);
         // Unfolds the group where the line is, folds other lines' group.
@@ -1447,8 +1486,7 @@ export default class BarcodeModel extends EventBus {
             return true;
         }
         // If the line is a part of a group, we check if the group is fulfilled.
-        const groupLines = this.groupedLines.filter(gl => gl.lines);
-        const parentLine = groupLines.find(gl => gl.virtual_ids.indexOf(line.virtual_id) !== -1);
+        const parentLine = this._getParentLine(line);
         if (parentLine) {
             return this.getQtyDone(parentLine) >= this.getQtyDemand(parentLine);
         }

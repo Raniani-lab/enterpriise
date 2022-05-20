@@ -15,7 +15,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(0);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_product');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('1/1');
@@ -38,15 +38,12 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
         trigger: '.o_close',
     },
 
-    {
-        trigger: '.o_barcode_summary_location_dest:contains("Stock")',
-    },
-
     /* We'll create a movement for 2 product1 from shelf1 to shelf2. The flow for this to happen is
      * to scan shelf1, product1, shelf2.
      */
     {
         trigger: '.o_barcode_client_action',
+        extra_trigger: '.o_barcode_summary_location_dest:contains("Stock")',
         run: 'scan LOC-01-01-00'
     },
 
@@ -143,7 +140,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertLocationHighlight(true);
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('1/1');
@@ -164,7 +161,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.o_scan_message_scan_product',
+        trigger: '.o_barcode_summary_location_dest:not(.o_strong)',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
             helper.assertPreviousVisible(true);
@@ -173,7 +170,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertLocationHighlight(true);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('1/1');
@@ -229,7 +226,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertLocationHighlight(true);
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('2/2');
@@ -251,7 +248,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.o_scan_message_scan_product',
+        trigger: '.o_barcode_summary_location_dest:not(.o_strong)',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 3');
             helper.assertPreviousVisible(true);
@@ -260,7 +257,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertLocationHighlight(true);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('2/2');
@@ -316,7 +313,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
             helper.assertNextEnabled(true);
             helper.assertNextIsHighlighted(true);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertLocationHighlight(true);
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('1/2');
@@ -555,7 +552,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertNextEnabled(true);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_product');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('1/2');
@@ -624,7 +621,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_client_action', // First WRITE call
         run: 'scan LOC-01-02-00'
     },
 
@@ -638,7 +635,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertNextEnabled(true);
             helper.assertNextIsHighlighted(true);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertLocationHighlight(true);
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('2/3');
@@ -667,7 +664,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertNextEnabled(true);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_product');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('1/3');
@@ -689,7 +686,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_scan_message_scan_product',
+        trigger: '.o_barcode_summary_location_src.o_strong',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
             helper.assertPreviousVisible(true);
@@ -776,7 +773,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_scan_message_scan_src',
+        trigger: '.o_scan_message_scan_next_or_validate',
         run: function() {
             helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
             helper.assertPreviousVisible(true);
@@ -785,7 +782,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertNextEnabled(true);
             helper.assertNextIsHighlighted(true);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertLocationHighlight(true);
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('1/3');
@@ -809,7 +806,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     The write should happen.
      */
     {
-        'trigger': '.o_next_page',
+        'trigger': '.o_next_page', // Second WRITE call
     },
     {
         'trigger': '.o_next_page',
@@ -825,7 +822,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_product');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('3/3');
@@ -852,7 +849,7 @@ tour.register('test_internal_change_location', {test: true}, [
             helper.assertNextEnabled(true);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_product');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('1/2');
@@ -905,7 +902,7 @@ tour.register('test_internal_change_location', {test: true}, [
             helper.assertNextEnabled(true);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_product');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('1/2');
@@ -958,7 +955,7 @@ tour.register('test_internal_change_location', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_product');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('2/2');
@@ -1026,7 +1023,7 @@ tour.register('test_internal_change_location', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('1/1');
@@ -1190,7 +1187,7 @@ tour.register('test_receipt_reserved_1', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('1/1');
             helper.assertValidateVisible(true);
@@ -1263,7 +1260,7 @@ tour.register('test_receipt_reserved_2', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('2/2');
             helper.assertValidateVisible(true);
@@ -1322,7 +1319,7 @@ tour.register('test_receipt_reserved_2', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('3/3');
             helper.assertValidateVisible(true);
@@ -1381,7 +1378,7 @@ tour.register('test_receipt_reserved_2', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('4/4');
             helper.assertValidateVisible(true);
@@ -1440,7 +1437,7 @@ tour.register('test_receipt_reserved_2', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertDestinationLocationHighlight(true);
             helper.assertPager('5/5');
             helper.assertValidateVisible(true);
@@ -1502,7 +1499,7 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
         run: function() {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(4);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             const $line1 = helper.getSubline(':eq(0)');
             const $line2 = helper.getSubline(':eq(1)');
             const $line3 = helper.getSubline(':eq(2)');
@@ -1706,7 +1703,7 @@ tour.register('test_delivery_reserved_2', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(3);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
@@ -1733,7 +1730,7 @@ tour.register('test_delivery_reserved_2', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(4);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
@@ -1772,7 +1769,7 @@ tour.register('test_delivery_reserved_3', {test: true}, [
             helper.assertNextEnabled(false);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
@@ -2631,7 +2628,7 @@ tour.register('test_bypass_source_scan', {test: true}, [
             helper.assertNextEnabled(true);
             helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_src');
+            helper.assertScanMessage('scan_product');
             helper.assertLocationHighlight(false);
             helper.assertDestinationLocationHighlight(false);
             helper.assertPager('1/2');
@@ -2714,6 +2711,705 @@ tour.register('test_bypass_source_scan', {test: true}, [
         run: 'scan serial1',
     },
     ...tour.stepUtils.validateBarcodeForm(),
+]);
+
+tour.register('test_picking_type_mandatory_scan_settings_pick_int_1', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            helper.assertLinesCount(2);
+            helper.assertScanMessage('scan_product');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(false); // Can't validate until product with barcode was scanned.
+            const [ lineProductNoBarcode, lineProduct1 ] = document.querySelectorAll('.o_barcode_line');
+            helper.assert(
+                lineProduct1.querySelector('.btn.o_edit').disabled, true,
+                "Edit button should be disabled until the product was scanned");
+            helper.assert(
+                Boolean(lineProduct1.querySelector('.btn.o_add_quantity')), false,
+                "No button to automatically add the quantity if the product scan is mandatory");
+            helper.assert(
+                lineProductNoBarcode.querySelector('.btn.o_edit').disabled, false,
+                "Edit button is always enabled if the product has no barcode (it can't be scanned')");
+            helper.assert(
+                Boolean(lineProductNoBarcode.querySelector('.btn.o_add_quantity')), true,
+                "Add quantity button is always displayed if the product has no barcode");
+        }
+    },
+    // Scans the source location, it should display an error.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+    {
+        trigger: '.modal-content',
+        in_modal: true,
+        run: function() {
+            helper.assert(document.querySelector('.modal-body').innerText, "You must scan a product");
+        },
+    },
+    tour.stepUtils.closeModal(),
+    // Scans product1, its buttons should be displayed/enabled.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_barcode_line.o_selected',
+        run: function() {
+            const lineProduct1 = document.querySelector('.o_barcode_line[data-barcode="product1"]');
+            helper.assert(
+                lineProduct1.querySelector('.btn.o_edit').disabled, false,
+                "product1 was scanned, the edit button should now be enabled");
+            helper.assert(
+                Boolean(lineProduct1.querySelector('.btn.o_add_quantity')), true,
+                "product1 was scanned, the add quantity button should be visible");
+            helper.assertValidateIsHighlighted(false);
+            // Since the only product with a barcode was scanned, the validate button is enabled.
+            helper.assertValidateEnabled(true);
+        }
+    },
+    // Uses buttons to complete the lines.
+    { trigger: '.o_barcode_line.o_selected .btn.o_add_quantity' },
+    { trigger: '.o_barcode_line .btn.o_add_quantity' },
+    // Lines are completed, the message should ask to validate the operation and that's what we do.
+    {
+        trigger: '.btn.o_validate_page.btn-success',
+        extra_trigger: 'div[name="barcode_messages"] .fa-check-square',
+    },
+    { trigger: '.o_notification.border-success' },
+]);
+
+tour.register('test_picking_type_mandatory_scan_settings_pick_int_2', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            helper.assertLinesCount(2);
+            helper.assertScanMessage('scan_src');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(false); // Can't validate until product with barcode was scanned.
+            const [ lineProductNoBarcode, lineProduct1 ] = document.querySelectorAll('.o_barcode_line');
+            helper.assert(
+                lineProduct1.querySelector('.btn.o_edit').disabled, true,
+                "Edit button should be disabled until the product was scanned");
+            helper.assert(
+                Boolean(lineProduct1.querySelector('.btn.o_add_quantity')), false,
+                "No button to automatically add the quantity if the product scan is mandatory");
+            helper.assert(
+                lineProductNoBarcode.querySelector('.btn.o_edit').disabled, true,
+                "All lines' buttons are disabled until a source location was scanned");
+            helper.assert(
+                lineProductNoBarcode.querySelector('.btn.o_add_quantity').disabled, true,
+                "All lines' buttons are disabled until a source location was scanned");
+        }
+    },
+    // Scans a product, it should display an error.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.modal-content',
+        in_modal: true,
+        run: function() {
+            helper.assert(
+                document.querySelector('.modal-body').innerText,
+                "You are supposed to scan WH/Stock/Section 1 or another source location");
+        },
+    },
+    tour.stepUtils.closeModal(),
+
+    // Scans the source location, the for the product without barcode should be enabled.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+    {
+        trigger: '.o_scan_message_scan_product',
+        run: function () {
+            const [ lineProductNoBarcode, lineProduct1 ] = document.querySelectorAll('.o_barcode_line');
+            helper.assert(
+                lineProduct1.querySelector('.btn.o_edit').disabled, true,
+                "Edit button should be disabled until the product was scanned");
+            helper.assert(
+                Boolean(lineProduct1.querySelector('.btn.o_add_quantity')), false,
+                "No button to automatically add the quantity if the product scan is mandatory");
+            helper.assert(
+                lineProductNoBarcode.querySelector('.btn.o_edit').disabled, false,
+                "Since the source of this line was scanned and it has no barcode, its buttons should be enabled");
+            helper.assert(
+                lineProductNoBarcode.querySelector('.btn.o_add_quantity').disabled, false,
+                "Since the source of this line was scanned and it has no barcode, its buttons should be enabled");
+        }
+    },
+    // Scans the destination, it should raise an error as it expects a product now.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-00-00',
+    },
+    {
+        trigger: '.modal-content',
+        in_modal: true,
+        run: function() {
+            helper.assert(document.querySelector('.modal-body').innerText, "You must scan a product");
+        },
+    },
+    tour.stepUtils.closeModal(),
+
+    // Scans product1.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_barcode_line.o_selected',
+        run: function() {
+            const lineProduct1 = document.querySelector('.o_barcode_line[data-barcode="product1"]');
+            helper.assert(
+                lineProduct1.querySelector('.btn.o_edit').disabled, false,
+                "product1 was scanned, the edit button should now be enabled");
+            helper.assert(
+                Boolean(lineProduct1.querySelector('.btn.o_add_quantity')), true,
+                "product1 was scanned, the add quantity button should be visible");
+            helper.assertValidateIsHighlighted(false);
+            // Since the only product with a barcode was scanned, the validate button is enabled.
+            helper.assertValidateEnabled(true);
+        }
+    },
+    // Scans another product: it should raise an error as the destination should be scanned between each product.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+    {
+        trigger: '.modal-content',
+        in_modal: true,
+        run: function() {
+            helper.assert(
+                document.querySelector('.modal-body').innerText,
+                "Please scan destination location for product1 before scanning other product");
+        },
+    },
+    tour.stepUtils.closeModal(),
+
+    // Uses button to complete the line, then scan the destination.
+    { trigger: '.o_barcode_line.o_selected .btn.o_add_quantity' },
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        run: 'scan LOC-01-00-00',
+    },
+    // Scans again product1: should raise an error as it expects the source (should be scanned after each product).
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.modal-content',
+        in_modal: true,
+        run: function() {
+            helper.assert(
+                document.querySelector('.modal-body').innerText,
+                "You are supposed to scan WH/Stock/Section 1 or another source location");
+        },
+    },
+    tour.stepUtils.closeModal(),
+
+    // Scans the source and updates the remaining product qty with its button (because no barcode).
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+    {
+        trigger: '.o_barcode_line .btn.o_add_quantity',
+        extra_trigger: '.o_scan_message_scan_product',
+    },
+    // Tries to validate without scanning the destination: display a warning.
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        run: 'scan O-BTN.validate',
+    },
+    { trigger: '.o_notification.border-danger .o_notification_close.btn' },
+
+    // Scans the destination location than validate the operation.
+    {
+        trigger: 'div[name="barcode_messages"] .fa-sign-in', // "Scan dest. loc." message's icon.
+        run: 'scan LOC-01-00-00',
+    },
+    {
+        trigger: '.btn.o_validate_page.btn-success',
+        extra_trigger: 'div[name="barcode_messages"] .fa-check-square',
+    },
+    { trigger: '.o_notification.border-success' },
+]);
+
+tour.register('test_picking_type_mandatory_scan_complete_flux_receipt', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertLinesCount(5);
+            helper.assertScanMessage('scan_product');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(false); // Can't validate until product with barcode was scanned.
+        }
+    },
+    // Scans product1 two times to complete the lines.
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        run: function() {
+            helper.assertScanMessage('scan_product_or_dest');
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(true); // Can't validate until product with barcode was scanned.
+        }
+    },
+    // Process product2 and product with no barcode with the button.
+    { trigger: '.o_barcode_line[data-barcode="product2"] .btn.o_add_quantity' },
+    {
+        trigger: '.o_barcode_line:not([data-barcode]) .btn.o_add_quantity',
+        extra_trigger: '.o_barcode_line[data-barcode="product2"].o_line_completed',
+    },
+    // Before to scan remaining product, scans a first time the destination.
+    {
+        trigger: '.o_barcode_line:not([data-barcode]).o_line_completed',
+        run: 'scan WH-INPUT'
+    },
+    // The message should ask to scan a product, so scans product tracked by lots.
+    {
+        trigger: '.o_scan_message.o_scan_message_scan_product',
+        run: 'scan productlot1'
+    },
+    // Scans lot-001 x2, lot-002 x2 and lot-003 x2.
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
+        run: 'scan lot-001'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
+        run: 'scan lot-001'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
+        run: 'scan lot-002'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
+        run: 'scan lot-002'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
+        run: 'scan lot-003'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
+        run: 'scan lot-003'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected.o_line_completed',
+        run: function() {
+            helper.assertScanMessage('scan_product_or_dest');
+        }
+    },
+    // Scans the product tracked by serial numbers and scans three serials.
+    {
+        trigger: '.o_scan_message.o_scan_message_scan_product_or_dest',
+        run: 'scan productserial1'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productserial1"].o_selected',
+        run: 'scan sn-001'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productserial1"].o_selected',
+        run: 'scan sn-002'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productserial1"].o_selected',
+        run: 'scan sn-003'
+    },
+    // It should ask to scan the destination, so scans it.
+    {
+        trigger: 'div[name="barcode_messages"] .o_scan_message_scan_product_or_dest',
+        extra_trigger: 'div[name="barcode_messages"] .fa-sign-in',
+        run: 'scan WH-INPUT',
+    },
+    // Now the destination was scanned, it should say the operation can be validate.
+    {
+        extra_trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press validate" message icon.
+        trigger: '.o_validate_page.btn-success',
+    },
+    { trigger: '.o_notification.border-success' },
+]);
+
+tour.register('test_picking_type_mandatory_scan_complete_flux_internal', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertLinesCount(5);
+            helper.assertScanMessage('scan_product');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(false); // Can't validate until product with barcode was scanned.
+        }
+    },
+    // Scans one product1 to move in Section 1, but scans another product between.
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
+    { trigger: '.o_barcode_line.o_selected', run: 'scan product2' }, // Should raise an error.
+    {
+        trigger: '.modal-content',
+        in_modal: true,
+        run: function() {
+            helper.assert(
+                document.querySelector('.modal-body').innerText,
+                "Please scan destination location for product1 before scanning other product");
+        },
+    },
+    tour.stepUtils.closeModal(),
+
+    { // Scans the destination (Section 1) then returns to previous page.
+        trigger: '.o_barcode_line.o_selected',
+        run: 'scan LOC-01-01-00'
+    },
+    {
+        trigger: '.btn.o_previous_page',
+        extra_trigger: '.o_barcode_move_number:contains(2/2)',
+    },
+
+    // Scans product1 again and move it to Section 3.
+    {
+        trigger: '.o_scan_message.o_scan_message_scan_product',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.o_barcode_line.o_selected',
+        run: 'scan shelf3'
+    },
+    { // Returns on the first page.
+        trigger: '.o_barcode_move_number:contains(3/3)',
+        run: 'scan O-CMD.PAGER-FIRST'
+    },
+
+    // Scans product2 and moves it into Section 2.
+    {
+        trigger: '.o_scan_message.o_scan_message_scan_product',
+        run: 'scan product2'
+    },
+    {
+        trigger: '.o_barcode_line.o_selected',
+        run: 'scan LOC-01-02-00'
+    },
+    { // Returns on the first page.
+        trigger: '.o_barcode_move_number:contains(3/4)',
+        run: 'scan O-CMD.PAGER-FIRST'
+    },
+
+    // Process quantities for the product with no barcode and move it to Section 1.
+    {
+        trigger: '.o_barcode_line:not([data-barcode]) .btn.o_add_quantity',
+        extra_trigger: '.o_scan_message.o_scan_message_scan_product',
+    },
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        run: 'scan LOC-01-01-00'
+    },
+    { // Returns on the first page.
+        trigger: '.btn.o_previous_page',
+        extra_trigger: '.o_barcode_move_number:contains(2/4)',
+    },
+
+    // The message should ask to scan a product, so scans product tracked by lots.
+    {
+        trigger: '.o_scan_message.o_scan_message_scan_product',
+        run: 'scan productlot1'
+    },
+    // Scans lot-001 x2, lot-002 x2 and moves them in Section 3.
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
+        run: 'scan lot-001'
+    },
+    {
+        trigger: '.o_sublines .o_barcode_line.o_selected',
+        run: 'scan lot-001'
+    },
+    {
+        trigger: '.o_sublines .o_barcode_line.o_selected.o_line_completed',
+        run: 'scan lot-002'
+    },
+    {
+        trigger: '.o_sublines .o_barcode_line.o_selected:not(.o_line_completed)',
+        run: 'scan lot-002'
+    },
+    {
+        trigger: '.o_sublines .o_barcode_line.o_selected.o_line_completed',
+        run: 'scan shelf3'
+    },
+    { // Returns on the first page.
+        trigger: '.o_barcode_move_number:contains(4/4)',
+        run: 'scan O-CMD.PAGER-FIRST'
+    },
+
+    // Scans lot-003 x2 and moves them in Section 4.
+    {
+        trigger: '.o_barcode_move_number:contains(1/4)',
+        extra_trigger: '.o_scan_message.o_scan_message_scan_product',
+        run: 'scan lot-003'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
+        run: 'scan lot-003'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
+        run: 'scan shelf4'
+    },
+    { // Returns on the first page.
+        trigger: '.o_barcode_move_number:contains(5/5)',
+        run: 'scan O-CMD.PAGER-FIRST'
+    },
+
+    // Scans the product tracked by serial numbers and scans three serials.
+    {
+        trigger: '.o_scan_message.o_scan_message_scan_product',
+        run: 'scan productserial1'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productserial1"].o_selected',
+        run: 'scan sn-001'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productserial1"].o_selected',
+        run: 'scan sn-002'
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="productserial1"].o_selected',
+        run: 'scan sn-003'
+    },
+    { // Moves it to Section 4.
+        trigger: '.o_barcode_line[data-barcode="productserial1"].o_selected.o_line_completed',
+        run: 'scan shelf4'
+    },
+    // It should say the operation can be validate.
+    {
+        extra_trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press validate" message icon.
+        trigger: '.o_validate_page.btn-success',
+    },
+    { trigger: '.o_notification.border-success' },
+]);
+
+tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertLinesCount(2);
+            helper.assertPager('1/4');
+            helper.assertScanMessage('scan_src');
+            helper.assertValidateVisible(false);
+            const [ lineProductNoBarcode, lineProduct1 ] = document.querySelectorAll('.o_barcode_line');
+            helper.assert(
+                lineProduct1.querySelector('.btn.o_edit').disabled, true,
+                "All lines' buttons are disabled until a source location was scanned");
+            helper.assert(
+                lineProduct1.querySelector('.btn.o_add_quantity').disabled, true,
+                "All lines' buttons are disabled until a source location was scanned");
+            helper.assert(
+                lineProductNoBarcode.querySelector('.btn.o_edit').disabled, true,
+                "All lines' buttons are disabled until a source location was scanned");
+            helper.assert(
+                lineProductNoBarcode.querySelector('.btn.o_add_quantity').disabled, true,
+                "All lines' buttons are disabled until a source location was scanned");
+        }
+    },
+    // Scans product1 -> raise an error because it expects the source location.
+    {
+        trigger: '.o_scan_message.o_scan_message_scan_src',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.modal-content',
+        in_modal: true,
+        run: function() {
+            helper.assert(
+                document.querySelector('.modal-body').innerText,
+                "You are supposed to scan WH/Stock/Section 1 or another source location");
+        },
+    },
+    tour.stepUtils.closeModal(),
+
+    // Scan another location (Section 2 for the instance).
+    {
+        trigger: '.o_scan_message.o_scan_message_scan_src',
+        run: 'scan LOC-01-02-00'
+    },
+    {
+        trigger: '.o_barcode_move_number:contains(2/4)',
+        run: function() {
+            helper.assertLinesCount(1);
+            helper.assertPager('2/4');
+            helper.assertScanMessage('scan_product');
+            const lineProduct2 = document.querySelector('.o_barcode_line');
+            helper.assert(
+                lineProduct2.querySelector('.btn.o_edit').disabled, false,
+                "Since the source location was scanned, its buttons should be enabled");
+            helper.assert(
+                lineProduct2.querySelector('.btn.o_add_quantity').disabled, false,
+                "Since the source location was scanned, its buttons should be enabled");
+        }
+    },
+    // Scans product2 then scans another source location (Section 3).
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+    {
+        trigger: '.o_barcode_line.o_line_completed',
+        run: 'scan shelf3',
+    },
+    {
+        trigger: '.o_barcode_move_number:contains(3/4)',
+        run: function() {
+            helper.assertLinesCount(2);
+            helper.assertPager('3/4');
+            helper.assertScanMessage('scan_product');
+        }
+    },
+    // Scans product1, lot-001 and lot-002.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    // Checks we can't edit a line for a tracked product until the tracking number was scan.
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        run: 'scan productlot1'
+    },
+    {
+        trigger: '.o_barcode_line.o_selected:not(.o_line_completed)',
+        run: function() {
+            const [ lot001Line, lot002Line ] = document.querySelectorAll('.o_sublines .o_barcode_line');
+            helper.assert(lot001Line.querySelector('.btn.o_add_quantity').disabled, true,
+                "Lot number not scanned yet, so line's buttons are disabled.");
+            helper.assert(lot002Line.querySelector('.btn.o_add_quantity').disabled, true,
+                "Lot number not scanned yet, so line's buttons are disabled.");
+        }
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot-001',
+    },
+    {
+        trigger: '.o_barcode_line.o_selected .qty-done:contains(1)',
+        run: function() {
+            const [ lot001Line, lot002Line ] = document.querySelectorAll('.o_sublines .o_barcode_line');
+            helper.assert(lot001Line.querySelector('.btn.o_add_quantity').disabled, false,
+                "lot-001 was scanned, its line's buttons should be enable");
+            helper.assert(lot002Line.querySelector('.btn.o_add_quantity').disabled, true,
+                "Lot number not scanned yet, so line's buttons are disabled.");
+        }
+    },
+    {
+        trigger: '.o_barcode_line.o_selected:not(.o_line_completed)',
+        run: 'scan lot-001',
+    },
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        run: function() {
+            const lot001Line = document.querySelector('.o_sublines .o_barcode_line.o_line_completed');
+            const lot002Line = document.querySelector('.o_sublines .o_barcode_line:not(.o_line_completed)');
+            helper.assert(Boolean(lot001Line.querySelector('.btn.o_add_quantity')), false,
+                "The two lot-001 were scanned, the button to add the quantity should be hidden.");
+            helper.assert(lot002Line.querySelector('.btn.o_add_quantity').disabled, true);
+        }
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot-002',
+    },
+    {
+        trigger: '.o_barcode_line.o_selected .qty-done:contains(1)',
+        run: function() {
+            const lot002Line = document.querySelector('.o_sublines .o_barcode_line.o_selected:not(.o_line_completed)');
+            helper.assert(lot002Line.querySelector('.btn.o_add_quantity').disabled, false,
+                "lot-002 was scanned, the button to add quantity should be enabled.");
+        }
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot-002',
+    },
+
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        run: function() {
+            const lot002Line = document.querySelector('.o_sublines .o_barcode_line.o_selected.o_line_completed');
+            helper.assert(Boolean(lot002Line.querySelector('.btn.o_add_quantity')), false,
+                "Demand quantity was scanned, the button shouldn't be visible.");
+        }
+    },
+
+    // Returns to Section 1 to process the remaining products.
+    {
+        trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press next/validate" message icon.
+        run: 'scan LOC-01-01-00'
+    },
+    {
+        trigger: '.o_barcode_move_number:contains(1/4)',
+        run: 'scan product1'
+    },
+    {
+        trigger: '.o_barcode_line:not([data-barcode]) .btn.o_add_quantity',
+        extra_trigger: '.o_barcode_line.o_selected.o_line_completed',
+    },
+
+    // Scans the next source location.
+    {
+        trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press next/validate" message icon.
+        run: 'scan shelf4'
+    },
+    {
+        trigger: '.o_barcode_move_number:contains(4/4)',
+        run: function() {
+            helper.assertLinesCount(2);
+            helper.assertPager('4/4');
+            helper.assertScanMessage('scan_product');
+        }
+    },
+    { // Scans the remaining lot and the serial numbers.
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot-003',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn-001',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn-003',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn-002',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot-003',
+    },
+    // It should say the operation can be validate.
+    {
+        extra_trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press validate" message icon.
+        trigger: '.o_validate_page.btn-success',
+    },
+    { trigger: '.o_notification.border-success' },
+]);
+
+tour.register('test_picking_type_mandatory_scan_complete_flux_pack', {test: true}, [
+    // TODO
+]);
+
+tour.register('test_picking_type_mandatory_scan_complete_flux_delivery', {test: true}, [
+    // TODO
 ]);
 
 tour.register('test_inventory_adjustment', {test: true}, [
@@ -3475,7 +4171,7 @@ tour.register('test_highlight_packs', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_product_or_package');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
@@ -3498,11 +4194,11 @@ tour.register('test_highlight_packs', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_product_or_package');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            var $line = $('.o_barcode_line').eq(0);
+            var $line = $('.o_barcode_line[data-package="PACK002"]');
             helper.assertLineIsHighlighted($line, true);
         },
     },
@@ -3553,16 +4249,12 @@ tour.register('test_put_in_pack_from_different_location', {test: true}, [
     },
     // Scans source location.
     {
-        trigger: '.o_scan_message_scan_src',
+        trigger: '.o_scan_message_scan_next_or_validate',
         run: 'scan LOC-01-01-00',
     },
 
     {
         trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Section 1")',
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock');
             helper.assertPreviousVisible(true);
@@ -4081,7 +4773,7 @@ tour.register('test_show_entire_package', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_product_or_package');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
@@ -4109,9 +4801,9 @@ tour.register('test_show_entire_package', {test: true}, [
         trigger: '.o_barcode_line:contains("1/ 1")',
         run: function () {
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_next_or_validate');
             helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
             const $line = $('.o_barcode_line');
             helper.assertLineIsHighlighted($line, false);
@@ -4131,7 +4823,7 @@ tour.register('test_show_entire_package', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_product_or_package');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);

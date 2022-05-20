@@ -100,22 +100,27 @@ class StockPickingBatch(models.Model):
         return picking_batch.action_confirm()
 
     def _get_stock_barcode_data(self):
-        picking_data = self.picking_ids._get_stock_barcode_data()
+        picking_data = {}
+        if not self.picking_ids:  # Add some data for new batch.
+            allowed_picking_ids = self.allowed_picking_ids.filtered(lambda p: p.state == 'assigned')
+            user_ids = allowed_picking_ids.user_id
+            picking_data['allowed_pickings'] = allowed_picking_ids.read(['name', 'picking_type_id', 'state', 'user_id'], False)
+            picking_data['nomenclature_id'] = [self.env.company.nomenclature_id.id]
+            picking_data['records'] = {'res.users': user_ids.read(['name'], False)}
+            picking_data['source_location_ids'] = []
+            picking_data['destination_locations_ids'] = []
+            if not self.picking_type_id:
+                picking_types = allowed_picking_ids.picking_type_id
+                picking_data['picking_types'] = picking_types.read(['name'], False)
+        else:  # Get data from batch's pickings.
+            picking_data = self.picking_ids._get_stock_barcode_data()
         picking_data['records'].update({
             self._name: self.read(self._get_fields_stock_barcode(), load=False)
         })
         # Add picking_id sorted by name to be consistent with the older version.
         for batch in picking_data['records'][self._name]:
             batch['picking_ids'] = self.browse(batch['id']).picking_ids.sorted(key=lambda p: (p.name, p.id)).ids
-        # Add some data for new batch.
-        if not self.picking_ids:
-            allowed_picking_ids = self.allowed_picking_ids.filtered(lambda p: p.state == 'assigned')
-            user_ids = allowed_picking_ids.user_id
-            picking_data['allowed_pickings'] = allowed_picking_ids.read(['name', 'picking_type_id', 'state', 'user_id'], False)
-            picking_data['records']['res.users'] = user_ids.read(['name'], False)
-            if not self.picking_type_id:
-                picking_types = allowed_picking_ids.picking_type_id
-                picking_data['picking_types'] = picking_types.read(['name'], False)
+
         picking_data['line_view_id'] = self.env.ref('stock_barcode_picking_batch.stock_move_line_product_selector_inherit').id
         picking_data['form_view_id'] = self.env.ref('stock_barcode_picking_batch.stock_barcode_batch_picking_view_info').id
         return picking_data

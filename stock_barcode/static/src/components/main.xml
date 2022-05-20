@@ -34,48 +34,52 @@
                 </div>
                 <div class="o_barcode_lines_header row bg-800 alert m-0 px-1 "
                     t-attf-class="{{displayHeaderInfoAsColumn ? 'flex-column justify-content-center align-items-center' : 'justify-content-between'}}">
-                    <div t-if="displayLocations" class="col-12 col-md-8">
-                        <div class="o_barcode_locations">
-                            <span class="o_barcode_move_number me-1 fw-bold"
-                                t-esc="currentPageIndex + '/' + numberOfPages"/>
-                            <t t-if="displaySourceLocation">
-                                <span t-if="isTransfer" class="o_barcode_location_label">From </span>
-                                <span t-if="sourceLocations" t-on-click="toggleSourceSelection"
-                                    class="o_barcode_summary_location_src o_clickable o_barcode_summary_location_highlight"
-                                    t-attf-class="{{highlightSourceLocation ? 'o_strong' : ''}}">
-                                    <span class="o_current_location" t-esc="currentSourceLocation"/>
-                                    <ul t-if="state.displaySourceSelection" class="o_barcode_list_locations o_source_locations">
-                                        <t t-foreach="sourceLocations" t-as="location" t-key="location.id">
-                                            <LocationButton t-key="location.id" location="location" source="true"/>
-                                        </t>
-                                    </ul>
-                                </span>
-                            </t>
-                            <br t-if="displaySourceLocation &amp;&amp; displayDestinationLocation" class="d-md-none"/>
-                            <span t-if="displayDestinationLocation" class="text-truncate mb-2">
-                                <span class="o_barcode_location_label"> To </span>
-                                <span t-if="destinationLocations" t-on-click="toggleDestinationSelection"
-                                    class="o_barcode_summary_location_dest o_clickable o_barcode_summary_location_highlight"
-                                    t-attf-class="{{highlightDestinationLocation ? 'o_strong' : ''}}">
-                                    <span class="o_current_dest_location" t-esc="currentDestinationLocation"/>
-                                    <ul t-if="state.displayDestinationSelection" class="o_barcode_list_locations o_destination_locations">
-                                        <t t-foreach="destinationLocations" t-as="location" t-key="location.id">
-                                            <LocationButton t-key="location.id" location="location" source="false"/>
-                                        </t>
-                                    </ul>
-                                </span>
-                            </span>
-                        </div>
-                    </div>
                     <div t-if="info.warning" class="o_barcode_pic position-relative text-center mt-2 mb-1">
                         <i class="fa fa-5x fa-exclamation-triangle"/>
                     </div>
-                    <div name="barcode_messages" class="col-12 text-start text-md-end" t-attf-class="{{displayLocations? 'col-md-4' : ''}}">
+                    <div name="barcode_messages" class="d-flex align-items-center justify-content-center w-100">
+                        <span t-if="info.icon" class="fa fa-3x me-3" t-attf-class="fa-{{info.icon}}"/>
                         <span class="o_scan_message" t-attf-class="o_scan_message_{{info.class}}">
                             <span t-if="info.warning" name="warning" class="fa fa-exclamation-triangle me-1"/>
-                            <t t-esc="info.message"/>
+                            <span t-out="info.message"/>
                         </span>
                     </div>
+                </div>
+                <div t-if="displayLocations" class="d-flex justify-content-between align-items-center p-2 px-md-3">
+                    <div class="o_barcode_locations">
+                        <t t-if="displaySourceLocation">
+                            <span t-if="isTransfer" class="o_barcode_location_label">From </span>
+                            <span t-if="sourceLocations" t-on-click="toggleSourceSelection"
+                                class="o_barcode_summary_location_src o_barcode_summary_location_highlight"
+                                t-attf-class="
+                                    {{highlightSourceLocation ? 'o_strong' : ''}}
+                                    {{env.model.canSelectLocation ? 'o_clickable' : ''}}">
+                                <span class="o_current_location" t-esc="currentSourceLocation"/>
+                                <ul t-if="state.displaySourceSelection &amp;&amp; env.model.canSelectLocation" class="o_barcode_list_locations o_source_locations">
+                                    <t t-foreach="sourceLocations" t-as="location" t-key="location.id">
+                                        <LocationButton t-key="location.id" location="location" source="true"/>
+                                    </t>
+                                </ul>
+                            </span>
+                        </t>
+                        <br t-if="displaySourceLocation &amp;&amp; displayDestinationLocation" class="d-md-none"/>
+                        <span t-if="displayDestinationLocation" class="text-truncate">
+                            <span class="o_barcode_location_label"> To </span>
+                            <span t-if="destinationLocations" t-on-click="toggleDestinationSelection"
+                                class="o_barcode_summary_location_dest o_barcode_summary_location_highlight"
+                                t-attf-class="
+                                    {{highlightDestinationLocation ? 'o_strong' : ''}}
+                                    {{env.model.canSelectLocation ? 'o_clickable' : ''}}">
+                                <span class="o_current_dest_location" t-esc="currentDestinationLocation"/>
+                                <ul t-if="state.displayDestinationSelection &amp;&amp; env.model.canSelectLocation" class="o_barcode_list_locations o_destination_locations">
+                                    <t t-foreach="destinationLocations" t-as="location" t-key="location.id">
+                                        <LocationButton t-key="location.id" location="location" source="false"/>
+                                    </t>
+                                </ul>
+                            </span>
+                        </span>
+                    </div>
+                    <span class="o_barcode_move_number fw-bold" t-esc="currentPageIndex + '/' + numberOfPages"/>
                 </div>
             </t>
         </div>
@@ -132,7 +136,9 @@
                 <button class="o_add_line btn btn-secondary text-uppercase" t-on-click="openProductPage">
                     <i class="fa fa-plus me-1"/> Add Product
                 </button>
-                <button t-if="env.model.displayPutInPackButton" t-on-click="putInPack" class="o_put_in_pack btn btn-secondary text-uppercase">
+                <button t-if="env.model.displayPutInPackButton" t-on-click="putInPack"
+                        t-att-disabled="!env.model.canPutInPack"
+                        class="o_put_in_pack btn btn-secondary text-uppercase">
                     <i class="fa fa-cube me-1"/> Put In Pack
                 </button>
             </div>

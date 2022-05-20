@@ -333,6 +333,9 @@ class MainComponent extends Component {
 
     toggleDestinationSelection(ev) {
         ev.stopPropagation();
+        if (!this.env.model.canSelectLocation) {
+            return;
+        }
         this.state.displayDestinationSelection = !this.state.displayDestinationSelection;
         this.state.displaySourceSelection = false;
         document.addEventListener('click', () => {
@@ -342,6 +345,9 @@ class MainComponent extends Component {
 
     toggleSourceSelection(ev) {
         ev.stopPropagation();
+        if (!this.env.model.canSelectLocation) {
+            return;
+        }
         this.state.displaySourceSelection = !this.state.displaySourceSelection;
         this.state.displayDestinationSelection = false;
         document.addEventListener('click', () => {

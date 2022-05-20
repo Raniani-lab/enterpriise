@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, api, _
+from odoo import fields, models, api, _
 from odoo.tools import html2plaintext, is_html_empty
+from odoo.exceptions import UserError
 
 
 class StockPicking(models.Model):
@@ -102,7 +103,7 @@ class StockPicking(models.Model):
             "records": {
                 "stock.picking": self.read(self._get_fields_stock_barcode(), load=False),
                 "stock.move.line": move_lines.read(move_lines._get_fields_stock_barcode(), load=False),
-                 # `self` can be a record set (e.g.: a picking batch), set only the first partner in the context.
+                # `self` can be a record set (e.g.: a picking batch), set only the first partner in the context.
                 "product.product": products.with_context(partner_id=self[:1].partner_id.id).read(products._get_fields_stock_barcode(), load=False),
                 "product.packaging": packagings.read(packagings._get_fields_stock_barcode(), load=False),
                 "res.partner": owners.read(owners._get_fields_stock_barcode(), load=False),
@@ -119,6 +120,8 @@ class StockPicking(models.Model):
         # Extracts pickings' note if it's empty HTML.
         for picking in data['records']['stock.picking']:
             picking['note'] = False if is_html_empty(picking['note']) else html2plaintext(picking['note'])
+
+        data['config'] = self.picking_type_id._get_barcode_config()
         data['line_view_id'] = self.env.ref('stock_barcode.stock_move_line_product_selector').id
         data['form_view_id'] = self.env.ref('stock_barcode.stock_picking_barcode').id
         data['package_view_id'] = self.env.ref('stock_barcode.stock_quant_barcode_kanban').id
@@ -235,8 +238,85 @@ class StockPicking(models.Model):
 
 
 class StockPickingType(models.Model):
-
     _inherit = 'stock.picking.type'
+
+    barcode_validation_after_dest_location = fields.Boolean("Force a destination on all products")
+    barcode_validation_all_product_packed = fields.Boolean("Force all products to be packed")
+    barcode_validation_full = fields.Boolean(
+        "Allow full picking validation", default=True,
+        help="Allow to validate a picking even if nothing was scanned yet (and so, do an immediate transfert)")
+    restrict_scan_product = fields.Boolean(
+        "Force Product scan?", help="Line's product must be scanned before the line can be edited")
+    restrict_put_in_pack = fields.Selection(
+        [
+            ('mandatory', "After each product"),
+            ('optional', "After group of Products"),
+            ('no', "No"),
+        ], "Force put in pack?",
+        help="Does the picker have to put in a package the scanned products? If yes, at which rate?",
+        default="optional", required=True)
+    restrict_scan_tracking_number = fields.Selection(
+        [
+            ('mandatory', "Mandatory Scan"),
+            ('optional', "Optional Scan"),
+        ], "Force Lot/Serial scan?", default='optional', required=True)
+    restrict_scan_source_location = fields.Selection(
+        [
+            ('no', "No Scan"),
+            ('mandatory', "Mandatory Scan"),
+        ], "Force Source Location scan?", default='no', required=True)
+    restrict_scan_dest_location = fields.Selection(
+        [
+            ('mandatory', "After each product"),
+            ('optional', "After group of Products"),
+            ('no', "No"),
+        ], "Force Destination Location scan?",
+        help="Does the picker have to scan the destination? If yes, at which rate?",
+        default='optional', required=True)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        picking_types = super().create(vals_list)
+        picking_types._check_picking_type_config()
+        return picking_types
+
+    def write(self, vals):
+        super().write(vals)
+        self._check_picking_type_config()
 
     def get_action_picking_tree_ready_kanban(self):
         return self._get_action('stock_barcode.stock_picking_action_kanban')
+
+    def _check_picking_type_config(self):
+        for picking_type in self:
+            if picking_type.code == 'internal' and\
+               picking_type.restrict_scan_dest_location == 'optional' and\
+               picking_type.restrict_scan_source_location == 'mandatory':
+                raise UserError(_("If the source location must be scanned for each product, the destination location must be either scanned after each line too, either not scanned at all."))
+
+    def _get_barcode_config(self):
+        self.ensure_one()
+        # Defines if all lines need to be packed to be able to validate a transfer.
+        locations_enable = self.env.user.has_group('stock.group_stock_multi_locations')
+        lines_need_to_be_packed = self.env.user.has_group('stock.group_tracking_lot') and (
+            self.restrict_put_in_pack == 'mandatory' or (
+                self.restrict_put_in_pack == 'optional'
+                and self.barcode_validation_all_product_packed
+            )
+        )
+        config = {
+            # Boolean fields.
+            'barcode_validation_after_dest_location': self.barcode_validation_after_dest_location,
+            'barcode_validation_all_product_packed': self.barcode_validation_all_product_packed,
+            'barcode_validation_full': not self.restrict_scan_product and self.barcode_validation_full,  # Forced to be False when scanning a product is mandatory.
+            'restrict_scan_product': self.restrict_scan_product,
+            # Selection fields converted into boolean.
+            'restrict_scan_tracking_number': self.restrict_scan_tracking_number == 'mandatory',
+            'restrict_scan_source_location': locations_enable and self.restrict_scan_source_location == 'mandatory',
+            # Selection fields.
+            'restrict_put_in_pack': self.restrict_put_in_pack,
+            'restrict_scan_dest_location': self.restrict_scan_dest_location if locations_enable else 'no',
+            # Additional parameters.
+            'lines_need_to_be_packed': lines_need_to_be_packed,
+        }
+        return config

@@ -52,10 +52,16 @@
         &:empty {
             display: none;
         }
+    }
+
+    // Locations
+    // =====================================
+    .o_barcode_locations {
         .o_barcode_location_label {
             padding: 1px 0 0;
             line-height: 19px;
         }
+
         .o_barcode_summary_location_src, .o_barcode_summary_location_dest {
             position: relative;
             padding: 1px 4px 0 2px;
@@ -66,14 +72,12 @@
                 position: initial;
             }
 
-            .o_current_location, .o_current_dest_location {
-                border-bottom: 1px solid white;
-            }
             &.o_strong {
                 background-color: transparent;
             }
             &.o_clickable {
                 cursor: pointer;
+                border-bottom: 1px solid white;
 
                 &:hover {
                     background-color: white;

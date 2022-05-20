@@ -10,4 +10,10 @@
         <field name="tag">stock_barcode_client_action</field>
         <field name="res_model">stock.quant</field>
     </record>
+
+    <!-- Set `restrict_scan_source_location` on True for outgoing picking types. -->
+    <function model="stock.picking.type" name="write">
+        <value model="stock.picking.type" search="[('code', '=', 'outgoing')]"/>
+        <value eval="{'restrict_scan_source_location': 'mandatory'}"/>
+    </function>
 </odoo>

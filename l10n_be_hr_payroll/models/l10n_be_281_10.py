@@ -222,10 +222,10 @@ class L10nBe28110(models.Model):
             employee_payslips[payslip.employee_id] |= payslip
 
         line_codes = [
-            'NET', 'PAY_SIMPLE', 'PPTOTAL', 'M.ONSS', 'ATN.INT', 'ATN.MOB', 'ATN.LAP',
+            'NET', 'PAY_SIMPLE', 'PPTOTAL', 'M.ONSS', 'ATN.INT', 'ATN.MOB', 'ATN.LAP', 'CYCLE',
             'ATN.CAR', 'REP.FEES', 'REP.FEES.VOLATILE', 'PUB.TRANS', 'CAR.PRIV', 'EmpBonus.1', 'GROSS'
         ]
-        all_line_values = all_payslips._get_line_values(line_codes)
+        all_line_values = all_payslips._get_line_values(line_codes, vals_list=['total', 'quantity'])
 
         belgium = self.env.ref('base.be')
         sequence = 0
@@ -277,6 +277,9 @@ class L10nBe28110(models.Model):
                 if round(mapped_total['CAR.PRIV'], 2) + round(mapped_total['ATN.CAR'], 2):
                     other_transport_exemption = max_other_transport_exemption * number_of_month / 12.0
 
+            cycle_days_count = sum(all_line_values['CYCLE'][p.id]['quantity'] for p in payslips)
+            cycle_days_amount = sum(all_line_values['CYCLE'][p.id]['total'] for p in payslips)
+
             sheet_values = {
                 'employee': employee,
                 'employee_id': employee.id,
@@ -312,7 +315,7 @@ class L10nBe28110(models.Model):
                 # 'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d/%m/%Y') if employee.first_contract_date.year == self.reference_year else '',
                 'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d-%m-%Y') if employee.first_contract_date else '',
                 'f10_2056_datumvanvertrek': employee.end_notice_period.strftime('%d-%m-%Y') if employee.end_notice_period else '',
-                'f10_2058_km': employee.has_bicycle and employee.km_home_work or 0,
+                'f10_2058_km': cycle_days_count * employee.km_home_work,
                 # f10_2059_totaalcontrole
                 'f10_2060_gewonebezoldiginge': _to_eurocent(round(common_gross, 2)),
                 'f10_2061_bedragoveruren300horeca': 0,
@@ -325,7 +328,7 @@ class L10nBe28110(models.Model):
                 'f10_2068_rechtvermindering57_75': 0,
                 'f10_2069_fidelitystamps': 0,
                 'f10_2070_decemberremuneration': 0,
-                'f10_2071_totalevergoeding': 0,
+                'f10_2071_totalevergoeding': cycle_days_amount,
                 'f10_2072_pensioentoezetting':  0,
                 'f10_2073_tipamount': 0,
                 'f10_2074_bedrijfsvoorheffing': _to_eurocent(round(mapped_total['PPTOTAL'], 2)),  # 2.074 = 2.131 + 2.133. YTI Is it ok to include PROF_TAX / should include Double holidays?

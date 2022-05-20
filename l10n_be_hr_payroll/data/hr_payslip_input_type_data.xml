@@ -22,6 +22,13 @@
         <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'))]"/>
     </record>
 
+    <record id="cp200_input_cycle_transportation" model="hr.payslip.input.type">
+        <field name="name">Cycle Transportation</field>
+        <field name="code">CYCLE</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'))]"/>
+    </record>
+
     <!-- December Pay -->
     <record id="input_simple_december_pay" model="hr.payslip.input.type">
         <field name="name">Simple December Pay</field>

@@ -4006,6 +4006,64 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, ".o_view_nocontent .abc");
     });
 
+    QUnit.test("empty dashboard view with sub views and sample data (2)", async function (assert) {
+        serverData.models.test_report.records = [];
+        serverData.views = {
+            "test_report,false,graph": `
+                <graph>
+                    <field name="categ_id"/>
+                </graph>
+            `,
+            "test_report,false,pivot": `
+                <pivot>
+                    <field name="categ_id" type="row"/>
+                </pivot>
+            `,
+        };
+
+        const searchViewArch = `
+            <search>
+                <filter name="noId" domain="[('id', '&lt;', 0)]" />
+            </search>
+        `;
+
+        await makeView({
+            type: "dashboard",
+            resModel: "test_report",
+            serverData,
+            searchViewArch,
+            arch: `
+                <dashboard sample="1">
+                    <view type="graph"/>
+                    <view type="pivot"/>
+                </dashboard>
+            `,
+            context: { search_default_noId: 1 },
+        });
+
+        assert.hasClass(target.querySelector(".o_dashboard_view .o_content"), "o_view_sample_data");
+        assert.hasClass(target.querySelector(".o_graph_view .o_content"), "o_view_sample_data");
+        assert.hasClass(target.querySelector(".o_pivot_view .o_content"), "o_view_sample_data");
+        assert.containsOnce(target, ".o_subview[type=graph] canvas");
+        assert.containsOnce(target, ".o_subview[type=pivot] table");
+
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "noId");
+
+        assert.doesNotHaveClass(
+            target.querySelector(".o_dashboard_view .o_content"),
+            "o_view_sample_data"
+        );
+        assert.doesNotHaveClass(
+            target.querySelector(".o_graph_view .o_content"),
+            "o_view_sample_data"
+        );
+        assert.doesNotHaveClass(
+            target.querySelector(".o_pivot_view .o_content"),
+            "o_view_sample_data"
+        );
+    });
+
     QUnit.test("non empty dashboard view with sub views and sample data", async function (assert) {
         assert.expect(9);
 

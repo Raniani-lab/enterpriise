@@ -203,9 +203,13 @@ export class DashboardController extends Component {
         for (const [viewType, subView] of Object.entries(this.subViews)) {
             const callbacks = subView.callbackRecorders[name]._callbacks;
             if (callbacks.length) {
-                result[viewType] = callbacks.reduce((res, c) => {
+                const res = callbacks.reduce((res, c) => {
                     return { ...res, ...c.callback() };
                 }, {});
+                if (name === "__getGlobalState__") {
+                    delete res.useSampleModel;
+                }
+                result[viewType] = res;
             }
         }
         return result;

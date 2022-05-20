@@ -239,12 +239,11 @@ export class DashboardController extends Component {
      */
     getViewProps(viewType) {
         const subView = this.subViews[viewType];
-        return Object.assign(
+        const viewProps = Object.assign(
             {
                 domain: this.props.domain,
                 comparison: this.props.comparison,
                 resModel: this.props.resModel,
-                context: Object.assign({}, this.props.context),
                 searchViewArch: this.props.info.searchViewArch,
                 searchViewFields: this.props.info.searchViewFields,
                 type: viewType,
@@ -258,6 +257,18 @@ export class DashboardController extends Component {
                 state: subView.state,
             }
         );
+
+        // LEGACY CODE: with legacy code removed, we will be sure search defaults cannot be found
+        // here (the WithSearch component remove search defaults keys from the view globalContext)
+        for (const key in viewProps.context) {
+            const searchDefaultMatch = /^search_default_(.*)$/.exec(key);
+            if (searchDefaultMatch) {
+                delete viewProps.context[key];
+                continue;
+            }
+        }
+
+        return viewProps;
     }
 
     /**

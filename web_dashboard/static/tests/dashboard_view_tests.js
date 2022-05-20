@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import AbstractView from "web.AbstractView";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import {
@@ -15,9 +16,11 @@ import {
     getFacetTexts,
     isItemSelected,
     isOptionSelected,
+    removeFacet,
     saveFavorite,
     setupControlPanelFavoriteMenuRegistry,
     setupControlPanelServiceRegistry,
+    switchView,
     toggleAddCustomFilter,
     toggleComparisonMenu,
     toggleFavoriteMenu,
@@ -41,6 +44,7 @@ import { companyService } from "@web/webclient/company_service";
 import { DashboardModel } from "@web_dashboard/dashboard_model";
 import { FieldFloat } from "web.basic_fields";
 import legacyFieldRegistry from "web.field_registry";
+import legacyViewRegistry from "web.view_registry";
 import PieChart from "web.PieChart";
 import Widget from "web.Widget";
 import widgetRegistry from "web.widget_registry";
@@ -4380,5 +4384,64 @@ QUnit.module("Views", (hooks) => {
             target.querySelector(".o_aggregate .o_comparison").textContent,
             "The value is 16 vs The value is 4"
         );
+    });
+
+    QUnit.test("sub views do not use dashboard search_defaults", async function (assert) {
+        serverData.views = {
+            "test_report,false,legacy_toy": `<legacy_toy/>`,
+            "test_report,false,dashboard": `
+                <dashboard>
+                    <view type="pivot"/>
+                </dashboard>
+            `,
+            "test_report,false,pivot": `
+                <pivot/>
+            `,
+            "test_report,false,search": `
+                <search>
+                    <filter name="noId" string="Filter" domain="[('0', '=', 1)]" />
+                </search>
+            `,
+        };
+
+        const LegacyToyView = AbstractView.extend({
+            display_name: "Legacy toy view",
+            icon: "fa fa-bars",
+            multiRecord: true,
+            viewType: "legacy_toy",
+            searchMenuTypes: [],
+        });
+
+        legacyViewRegistry.add("legacy_toy", LegacyToyView);
+
+        const target = getFixture();
+
+        const webClient = await createWebClient({ serverData });
+
+        await doAction(webClient, {
+            name: "Dashboard",
+            res_model: "test_report",
+            type: "ir.actions.act_window",
+            views: [
+                [false, "legacy_toy"],
+                [false, "dashboard"],
+                [false, "search"],
+            ],
+            context: { search_default_noId: 1 },
+        });
+
+        assert.deepEqual(getFacetTexts(target), ["Filter"]);
+
+        await switchView(target, "dashboard");
+
+        assert.deepEqual(getFacetTexts(target), ["Filter"]);
+        assert.containsOnce(target, ".o_pivot_view .o_nocontent_help");
+        assert.containsNone(target, ".o_pivot_view table");
+
+        await removeFacet(target);
+
+        assert.deepEqual(getFacetTexts(target), []);
+        assert.containsNone(target, ".o_pivot_view .o_nocontent_help");
+        assert.containsOnce(target, ".o_pivot_view table");
     });
 });

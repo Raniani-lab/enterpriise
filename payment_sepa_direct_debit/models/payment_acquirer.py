@@ -32,12 +32,19 @@ class PaymentAcquirer(models.Model):
         :return: None
         """
         super()._compute_view_configuration_fields()
-        self.filtered(lambda acq: acq.provider == 'sepa_direct_debit').write({
+        self.filtered(lambda acq: acq.provider == 'sepa_direct_debit').update({
             'show_credentials_page': False,
             'show_allow_tokenization': False,
             'show_payment_icon_ids': False,
             'show_done_msg': False,
             'show_cancel_msg': False,
+        })
+
+    def _compute_feature_support_fields(self):
+        """ Override of `payment` to enable additional features. """
+        super()._compute_feature_support_fields()
+        self.filtered(lambda acq: acq.provider == 'sepa_direct_debit').update({
+            'support_tokenization': True,
         })
 
     @api.depends('provider')

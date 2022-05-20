@@ -161,7 +161,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
             assert.containsN(grid, '.o_standalone_avatar_employee', 4,
                 'should have 4 employee avatars');
 
-                 assert.containsN(grid, '.o_grid_section_subtext', 4,
+            assert.containsN(grid, '.o_grid_section_subtext', 4,
                 'should have 4 timesheet employee avatars');
 
             grid.destroy();
@@ -227,6 +227,34 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
 
             assert.containsN(grid, '.o_grid_section > tr > th > .o_standalone_avatar_employee', 4,
                 'should have 4 employee avatars');
+
+            assert.containsN(grid, '.o_grid_section_subtext', 4,
+                'should have 4 timesheet employee avatars');
+
+            grid.destroy();
+        });
+
+        QUnit.test('timesheet with employee section - groupby employee', async function (assert) {
+            // When there is a section field and only one groupby field (the same),
+            // sections should not be rendered. Instead, we use simple groupbys.
+            assert.expect(2);
+
+            this.arch = this.arch.replace(
+                '<field name="employee_id" type="row"/>',
+                '<field name="employee_id" type="row" section="1"/>'
+            );
+
+            const grid = await createView({
+                View: TimesheetGridView,
+                model: 'analytic.line',
+                data: this.data,
+                arch: this.arch,
+                currentDate: "2017-01-25",
+                groupBy: ['employee_id'],
+            });
+
+            assert.containsN(grid, '.o_grid_section', 0,
+                'should have no grid section');
 
             assert.containsN(grid, '.o_grid_section_subtext', 4,
                 'should have 4 timesheet employee avatars');

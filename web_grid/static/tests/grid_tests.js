@@ -2042,7 +2042,7 @@ QUnit.module('LegacyViews', {
     });
 
     QUnit.test('update context to get the current date when the current date is in the range.', async function (assert) {
-        assert.expect(5);
+        assert.expect(8);
 
         const grid = await createView({
             View: GridView,
@@ -2059,18 +2059,22 @@ QUnit.module('LegacyViews', {
                     <field name="unit_amount" type="measure" widget="float_toggle" options="{'factor': 0.125, 'range': [0.0, 0.5, 1.0]}"/>
                 </grid>`,
             currentDate: "2017-01-31",
+            context: {grid_range: 'week'},
         });
 
         const $weekRangeButton = grid.$buttons.find('button.grid_arrow_range[data-name="week"]');
         const $monthRangeButton = grid.$buttons.find('button.grid_arrow_range[data-name="month"]');
         assert.hasClass($weekRangeButton,'active', 'current range is shown as active');
         assert.strictEqual(grid.model.getContext().grid_anchor, '2017-01-31', 'the grid anchor should be the current date.');
+        assert.strictEqual(grid.model.getContext().grid_range, 'week', 'the grid range should be "week".');
         await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
         assert.strictEqual(grid.model.getContext().grid_anchor, '2017-01-24', 'the grid anchor should move 7 days before the current one since we are in week range.');
+        assert.strictEqual(grid.model.getContext().grid_range, 'week', 'the grid range should be "week".');
         await testUtils.dom.click($monthRangeButton);
         assert.hasClass($monthRangeButton,'active', 'current range should be month one.');
         assert.strictEqual(grid.model.getContext().grid_anchor, '2017-01-31',
             'Since with the month range, the current day is in the range, the grid anchor should be the current date and not 7 days before the current one.');
+        assert.strictEqual(grid.model.getContext().grid_range, 'month', 'the grid range should be "month".');
         grid.destroy();
     });
 

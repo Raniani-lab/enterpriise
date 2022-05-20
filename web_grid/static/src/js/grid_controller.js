@@ -358,6 +358,7 @@ var GridController = AbstractController.extend({
         }
         this.currentRange = $target.attr('data-name');
 
+        this.context.grid_range = this.currentRange;
         this.update({range: this.currentRange});
     },
 });

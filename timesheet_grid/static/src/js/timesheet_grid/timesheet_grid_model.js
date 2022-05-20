@@ -7,6 +7,22 @@ odoo.define('timesheet_grid.GridModel', function (require) {
     const TimesheetGridModel = GridModel.extend(GroupByNoDateMixin).extend({
 
         /**
+         * @private
+         * @override
+         */
+        _fetch(groupBy) {
+            if (!this.currentRange) {
+                return Promise.resolve();
+            }
+
+            if (this.sectionField && groupBy.length > 1 && this.sectionField === groupBy[0]) {
+                return this._fetchGroupedData(groupBy);
+            } else {
+                return this._fetchUngroupedData(groupBy);
+            }
+        },
+
+        /**
          * @override
          */
         async __load(params) {

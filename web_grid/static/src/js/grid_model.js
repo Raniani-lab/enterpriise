@@ -154,6 +154,7 @@ const GridModel = AbstractModel.extend({
             _.extend(this.context, params.pagination);
         }
         if ('range' in params) {
+            this.context.grid_range = params.range || this.context.grid_range;
             this.currentRange = _.findWhere(this.ranges, {name: params.range});
         }
         if ('groupBy' in params) {

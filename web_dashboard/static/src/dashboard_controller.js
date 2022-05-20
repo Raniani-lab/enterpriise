@@ -167,18 +167,18 @@ export class DashboardController extends Component {
     }
 
     async onWillUpdateProps(nextProps) {
-        if (this.currentMeasure) {
-            const states = this.callRecordedCallbacks("__getLocalState__");
-            Object.entries(this.subViews).forEach(([viewType, subView]) => {
-                subView.state = states[viewType];
-                subView.state.metaData = Object.assign({}, subView.state.metaData);
+        const states = this.callRecordedCallbacks("__getLocalState__");
+        Object.entries(this.subViews).forEach(([viewType, subView]) => {
+            subView.state = states[viewType];
+            subView.state.metaData = Object.assign({}, subView.state.metaData);
+            if (this.currentMeasure) {
                 if (viewType === "graph" || viewType === "cohort") {
                     subView.state.metaData.measure = this.currentMeasure;
                 } else if (viewType === "pivot") {
                     subView.state.metaData.activeMeasures = [this.currentMeasure];
                 }
-            });
-        }
+            }
+        });
 
         const { comparison, domain } = nextProps;
         for (const [type, subView] of Object.entries(this.subViews)) {

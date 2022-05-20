@@ -4471,4 +4471,51 @@ QUnit.module("Views", (hooks) => {
             assert.doesNotHaveClass(groupByMenuButton, "btn-light");
         }
     );
+
+    QUnit.test("keep states of sub views after update of props", async function (assert) {
+        serverData.views = {
+            "test_report,false,pivot": `
+                <pivot>
+                    <field name="categ_id" type="row"/>
+                    <field name="sold" type="measure"/>
+                </pivot>
+            `,
+        };
+
+        await makeView({
+            serverData,
+            type: "dashboard",
+            resModel: "test_report",
+            arch: `
+                <dashboard>
+                    <view type="pivot"/>
+                </dashboard>
+            `,
+            searchViewArch: `
+                <search>
+                    <filter name="noId" string="Filter" domain="[(1, '=', 1)]" />
+                </search>
+            `,
+        });
+
+        assert.deepEqual(
+            [...target.querySelectorAll(".o_pivot_cell_value div")].map((el) => el.innerText),
+            ["8.00", "5.00", "3.00"]
+        );
+
+        await click(target, ".o_pivot_flip_button");
+
+        assert.deepEqual(
+            [...target.querySelectorAll(".o_pivot_cell_value div")].map((el) => el.innerText),
+            ["5.00", "3.00", "8.00"]
+        );
+
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "Filter");
+
+        assert.deepEqual(
+            [...target.querySelectorAll(".o_pivot_cell_value div")].map((el) => el.innerText),
+            ["5.00", "3.00", "8.00"]
+        );
+    });
 });

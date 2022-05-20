@@ -1,6 +1,7 @@
 /** @odoo-module alias=documents_spreadsheet.SpreadsheetComponent */
 
-import { _t } from "web.core";
+import { _t } from "@web/core/l10n/translation";
+import { sprintf } from "@web/core/utils/strings";
 import Dialog from "web.OwlDialog";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { useService } from "@web/core/utils/hooks";
@@ -315,7 +316,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
             action: "documents_spreadsheet.save_spreadsheet_template_action",
             options: {
                 additional_context: {
-                    default_template_name: `${name} - Template`,
+                    default_template_name: sprintf(_t("%s - Template"), name),
                     default_data: jsonToBase64(data),
                     default_thumbnail: this.getThumbnail(),
                 },

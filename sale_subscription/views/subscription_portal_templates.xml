@@ -3,7 +3,7 @@
 
     <!-- ====== Specific Subscription Page ====== -->
     <template id="subscription" name="Subscription">
-        <t t-set="o_portal_fullwidth_alert" groups="sale_subscription.group_sale_subscription_view">
+        <t t-set="o_portal_fullwidth_alert" groups="sales_team.group_sale_salesman">
             <t t-call="portal.portal_back_in_edit_mode">
                 <t t-set="backend_url" t-value="'/web#model=%s&amp;id=%s&amp;action=%s&amp;view_type=form' % (subscription._name, subscription.id, action.id)" t-ignore="true"/>
             </t>

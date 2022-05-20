@@ -229,8 +229,8 @@ class TestCommissionsSetup(TransactionCase):
             self.ref('account.group_account_invoice'),
             # Sales: User: All Documents
             self.ref('sales_team.group_sale_salesman_all_leads'),
-            # Subscription: See Subscriptions
-            self.ref('sale_subscription.group_sale_subscription_view'),
+            # Sales: See SO
+            self.ref('sales_team.group_sale_salesman'),
             # Show Full Accounting Features
             self.ref('account.group_account_user'),
             # Billing Administrator

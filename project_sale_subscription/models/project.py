@@ -10,7 +10,7 @@ from odoo.osv import expression
 class Project(models.Model):
     _inherit = 'project.project'
 
-    subscriptions_count = fields.Integer('# Subscriptions', compute='_compute_subscriptions_count', groups='sale_subscription.group_sale_subscription_view')
+    subscriptions_count = fields.Integer('# Subscriptions', compute='_compute_subscriptions_count', groups='sales_team.group_sale_salesman')
 
     @api.depends('analytic_account_id')
     def _compute_subscriptions_count(self):
@@ -132,7 +132,7 @@ class Project(models.Model):
             'invoiced': amount_invoiced,
             'to_invoice': amount_to_invoice,
         }
-        if with_action and all_subscription_ids and self.user_has_groups('sale_subscription.group_sale_subscription_view'):
+        if with_action and all_subscription_ids and self.user_has_groups('sales_team.group_sale_salesman'):
             action = {'name': 'action_profitability_items', 'type': 'object', 'section': section_id, 'domain': json.dumps([('id', 'in', all_subscription_ids)])}
             if len(all_subscription_ids) == 1:
                 action['res_id'] = all_subscription_ids[0]

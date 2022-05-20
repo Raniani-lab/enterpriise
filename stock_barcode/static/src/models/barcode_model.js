@@ -157,10 +157,6 @@ export default class BarcodeModel extends EventBus {
         return barcodeInformations;
     }
 
-    get canCreateNewLine() {
-        return true;
-    }
-
     get canCreateNewLot() {
         return true;
     }
@@ -1263,16 +1259,14 @@ export default class BarcodeModel extends EventBus {
                 barcodeData.quantity = (barcodeData.quantity / barcodeData.uom.factor) * currentLine.product_uom_id.factor;
                 barcodeData.uom = currentLine.product_uom_id;
             }
-            if (this.canCreateNewLine) {
-                // Checks the quantity doesn't exceed the line's remaining quantity.
-                if (currentLine.reserved_uom_qty && product.tracking === 'none') {
-                    const remainingQty = currentLine.reserved_uom_qty - currentLine.qty_done;
-                    if (barcodeData.quantity > remainingQty) {
-                        // In this case, lowers the increment quantity and keeps
-                        // the excess quantity to create a new line.
-                        exceedingQuantity = barcodeData.quantity - remainingQty;
-                        barcodeData.quantity = remainingQty;
-                    }
+            // Checks the quantity doesn't exceed the line's remaining quantity.
+            if (currentLine.reserved_uom_qty && product.tracking === 'none') {
+                const remainingQty = currentLine.reserved_uom_qty - currentLine.qty_done;
+                if (barcodeData.quantity > remainingQty) {
+                    // In this case, lowers the increment quantity and keeps
+                    // the excess quantity to create a new line.
+                    exceedingQuantity = barcodeData.quantity - remainingQty;
+                    barcodeData.quantity = remainingQty;
                 }
             }
             if (barcodeData.quantity > 0) {
@@ -1293,7 +1287,7 @@ export default class BarcodeModel extends EventBus {
                     fieldsParams,
                 });
             }
-        } else if (this.canCreateNewLine) { // No line found. If it's possible, creates a new line.
+        } else { // No line found, so creates a new one.
             const fieldsParams = this._convertDataToFieldsParams(barcodeData);
             if (barcodeData.uom) {
                 fieldsParams.uom = barcodeData.uom;

@@ -979,13 +979,32 @@ class HrPayslip(models.Model):
 
         # Employees section
         employees_default_title = _('Employees')
-        employees_without_contracts = self.env['hr.employee'].search_read(
-            [('contract_id', '=', False)], fields=['id'])
+        # Retrieve employees:
+        # - with no open contract, and date_end in the past
+        # - with no contract, and not green draft contract
+        employees_without_contracts = self.env['hr.employee']
+        all_employees = self.env['hr.employee'].search([
+            ('employee_type', '=', 'employee'),
+            ('company_id', 'in', self.env.companies.ids),
+        ])
+        today = fields.Date.today()
+        for employee in all_employees:
+            if employee.contract_id and employee.contract_id.date_end and employee.contract_id.date_end < today:
+                employees_without_contracts += employee
+            elif not employee.contract_id:
+                existing_draft_contract = self.env['hr.contract'].search([
+                    ('employee_id', '=', employee.id),
+                    ('company_id', '=', employee.company_id.id),
+                    ('state', '=', 'draft'),
+                    ('kanban_state', '=', 'done'),
+                ])
+                if not existing_draft_contract:
+                    employees_without_contracts += employee
         if employees_without_contracts:
             result.append({
                 'string': _('Employees Without Running Contracts'),
                 'count': len(employees_without_contracts),
-                'action': self._dashboard_default_action(employees_default_title, 'hr.employee', [e['id'] for e in employees_without_contracts]),
+                'action': self._dashboard_default_action(employees_default_title, 'hr.employee', employees_without_contracts.ids),
             })
 
         # Retrieves last batches (this month, or last month)
@@ -1008,6 +1027,8 @@ class HrPayslip(models.Model):
         employee_calendar_contracts = defaultdict(lambda: defaultdict(lambda: self.env['hr.contract']))
         employee_payslip_contracts = defaultdict(lambda: self.env['hr.contract'])
         for slip in last_batches.slip_ids:
+            if slip.state == 'cancel':
+                continue
             employee = slip.employee_id
             contract = slip.contract_id
             calendar = contract.resource_calendar_id
@@ -1053,7 +1074,13 @@ class HrPayslip(models.Model):
             })
 
         # Retrieve employees with both draft and running contracts
-        ambiguous_domain = [('company_id', 'in', self.env.companies.ids), ('state', 'in', ('draft', 'open'))]
+        ambiguous_domain = [
+            ('company_id', 'in', self.env.companies.ids),
+            '|',
+                '&',
+                    ('state', '=', 'draft'),
+                    ('kanban_state', '!=', 'done'),
+                ('state', '=', 'open')]
         employee_contract_groups = self.env['hr.contract']._read_group(
             ambiguous_domain,
             fields=['state:count_distinct'], groupby=['employee_id'])
@@ -1124,6 +1151,7 @@ class HrPayslip(models.Model):
         # new contracts warning
         new_contracts = self.env['hr.contract'].search([
             ('state', '=', 'draft'),
+            ('employee_id', '!=', False),
             ('kanban_state', '=', 'normal')])
         if new_contracts:
             new_contracts_str = _('New Contracts')
@@ -1149,6 +1177,7 @@ class HrPayslip(models.Model):
             for c in HRContract._read_group([
                 ('employee_id', 'in', new_contracts.employee_id.ids),
                 ('date_end', '<', today),
+                ('state', 'in', ['open', 'close']),
                 ('id', 'not in', new_contracts.ids)
             ], groupby=['employee_id'], fields=['employee_id'])
         }
@@ -1172,6 +1201,7 @@ class HrPayslip(models.Model):
 
         gone_employees = self.env['hr.employee'].with_context(active_test=False).search([
             ('departure_date', '>=', today + relativedelta(months=-1, day=1)),
+            ('company_id', 'in', self.env.companies.ids),
         ])
         if gone_employees:
             gone_employees_str = _('Last Departures')

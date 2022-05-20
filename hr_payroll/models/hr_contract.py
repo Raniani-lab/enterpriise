@@ -228,9 +228,11 @@ class HrContract(models.Model):
         return [self._get_contract_wage]
 
     def _get_nearly_expired_contracts(self, outdated_days):
+        today = fields.Date.today()
         nearly_expired_contracts = self.search([
             ('company_id', '=', self.env.company.id),
             ('state', '=', 'open'),
+            ('date_end', '>=', today),
             ('date_end', '<', outdated_days)])
 
         # Check if no new contracts starting after the end of the expiring one

@@ -189,4 +189,29 @@ QUnit.module("Owl view", ({ beforeEach }) => {
         assert.strictEqual($(".o_form_view .o_field_char[name=foo]").text(), "sam");
         assert.verifySteps(["read"]);
     });
+
+    QUnit.test("Given prop 'pushState' is correctly called", async (assert) => {
+        assert.expect(3);
+
+        class Parent extends Component {
+            pushState() {
+                assert.step("pushState");
+            }
+        }
+
+        Parent.components = { View };
+        Parent.template = xml/* xml */ `
+            <div class="parent">
+                <View type="'form'" resModel="'hobbit'" resId="1" withControlPanel="false" onPushState.bind="pushState" />
+            </div>
+        `;
+
+        const env = await prepareEnv();
+
+        assert.verifySteps([]);
+
+        await mount(Parent, target, { env });
+
+        assert.verifySteps(["pushState"]);
+    });
 });

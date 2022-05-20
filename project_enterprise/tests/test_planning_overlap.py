@@ -2,7 +2,10 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+from markupsafe import Markup
+
 from odoo.addons.project.tests.test_project_base import TestProjectCommon
+from odoo.fields import Command
 
 
 class TestPlanningOverlap(TestProjectCommon):
@@ -22,12 +25,10 @@ class TestPlanningOverlap(TestProjectCommon):
             'planned_date_end': self.tomorrow + relativedelta(days=+1, hour=10),
         })
 
-        tasks = self.task_1 + self.task_2
-        overlaps = tasks._get_planning_overlap_per_task()
-        self.assertFalse(overlaps.get(self.task_1.id))
-        self.assertFalse(overlaps.get(self.task_2.id))
+        self.assertFalse(self.task_1.planning_overlap)
+        self.assertFalse(self.task_2.planning_overlap)
 
-        search_result = self.env['project.task'].search([('planning_overlap', '=', 0)])
+        search_result = self.env['project.task'].search([('planning_overlap', '=', False)])
         self.assertIn(self.task_1, search_result)
         self.assertIn(self.task_2, search_result)
 
@@ -37,14 +38,22 @@ class TestPlanningOverlap(TestProjectCommon):
             'planned_date_end': self.tomorrow + relativedelta(hour=11),
         })
 
-        tasks = self.task_1 + self.task_2
-        overlaps = tasks._get_planning_overlap_per_task()
-        self.assertFalse(overlaps.get(self.task_1.id))
-        self.assertFalse(overlaps.get(self.task_2.id))
+        self.assertFalse(self.task_1.planning_overlap)
+        self.assertFalse(self.task_2.planning_overlap)
 
-        search_result = self.env['project.task'].search([('planning_overlap', '=', 0)])
+        search_result = self.env['project.task'].search([('planning_overlap', '=', False)])
         self.assertIn(self.task_1, search_result)
         self.assertIn(self.task_2, search_result)
+
+        (self.task_1 + self.task_2).write({
+            'user_ids': [
+                Command.link(self.user_projectuser.id),
+                Command.link(self.user_projectmanager.id),
+            ],
+        })
+
+        self.assertEqual(self.task_1.planning_overlap, Markup('<p>Armande ProjectUser has 1 tasks at the same time. Bastien ProjectManager has 1 tasks at the same time.</p>'))
+        self.assertEqual(self.task_2.planning_overlap, Markup('<p>Armande ProjectUser has 1 tasks at the same time. Bastien ProjectManager has 1 tasks at the same time.</p>'))
 
     def test_same_user_overlap(self):
         self.task_2.write({
@@ -53,12 +62,10 @@ class TestPlanningOverlap(TestProjectCommon):
             'planned_date_end': self.tomorrow + relativedelta(hour=11),
         })
 
-        tasks = self.task_1 + self.task_2
-        overlaps = tasks._get_planning_overlap_per_task()
-        self.assertIn(self.task_1.id, overlaps)
-        self.assertIn(self.task_2.id, overlaps)
+        self.assertEqual(self.task_1.planning_overlap, Markup('<p>Armande ProjectUser has 1 tasks at the same time.</p>'))
+        self.assertEqual(self.task_2.planning_overlap, Markup('<p>Armande ProjectUser has 1 tasks at the same time.</p>'))
 
-        search_result = self.env['project.task'].search([('planning_overlap', '>', 0)])
+        search_result = self.env['project.task'].search([('planning_overlap', '=', True)])
         self.assertIn(self.task_1, search_result)
         self.assertIn(self.task_2, search_result)
 
@@ -70,11 +77,10 @@ class TestPlanningOverlap(TestProjectCommon):
             'planned_date_end': self.tomorrow + relativedelta(days=-5, hour=11),
         })
 
-        overlaps = tasks._get_planning_overlap_per_task()
-        self.assertFalse(overlaps.get(self.task_1.id))
-        self.assertFalse(overlaps.get(self.task_2.id))
+        self.assertFalse(self.task_1.planning_overlap)
+        self.assertFalse(self.task_2.planning_overlap)
 
-        search_result = self.env['project.task'].search([('planning_overlap', '=', 0)])
+        search_result = self.env['project.task'].search([('planning_overlap', '=', False)])
         self.assertIn(self.task_1, search_result)
         self.assertIn(self.task_2, search_result)
 
@@ -91,11 +97,9 @@ class TestPlanningOverlap(TestProjectCommon):
             'stage_id': stage_done.id,
         })
 
-        tasks = self.task_1 + self.task_2
-        overlaps = tasks._get_planning_overlap_per_task()
-        self.assertFalse(overlaps.get(self.task_1.id))
-        self.assertFalse(overlaps.get(self.task_2.id))
+        self.assertFalse(self.task_1.planning_overlap)
+        self.assertFalse(self.task_2.planning_overlap)
 
-        search_result = self.env['project.task'].search([('planning_overlap', '=', 0)])
+        search_result = self.env['project.task'].search([('planning_overlap', '=', False)])
         self.assertIn(self.task_1, search_result)
         self.assertIn(self.task_2, search_result)

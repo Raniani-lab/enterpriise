@@ -3,6 +3,7 @@
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from markupsafe import Markup
 
 from odoo.tests import common
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -82,8 +83,8 @@ class TestTaskFlow(common.TransactionCase):
             'planned_date_begin': datetime.now() + relativedelta(hours=8),
             'planned_date_end': datetime.now() + relativedelta(hours=9)
         })
-        self.assertEqual(task_A.planning_overlap, 1, "One task should be overlapping with task_A")
-        self.assertEqual(task_B.planning_overlap, 2, "Two tasks should be overlapping with task_B")
+        self.assertEqual(task_A.planning_overlap, Markup('<p>Armande Project_user has 1 tasks at the same time.</p>'))
+        self.assertEqual(task_B.planning_overlap, Markup('<p>Armande Project_user has 2 tasks at the same time.</p>'))
         self.assertFalse(task_D.planning_overlap, "No task should be overlapping with task_D")
 
     def test_gantt_progress_bar(self):

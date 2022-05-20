@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import fieldUtils from 'web.field_utils';
+import utils from 'web.utils';
 import GanttRow from 'web_gantt.GanttRow';
 import { getDateFormatForScale } from "./task_gantt_utils";
 import StandaloneM2OAvatarUser from "./standalone_m2o_avatar_user";
@@ -82,6 +83,7 @@ export default GanttRow.extend({
     _getPopoverContext: function () {
         const data = this._super.apply(this, arguments);
         data.allocatedHoursFormatted = fieldUtils.format.float_time(data.allocated_hours);
+        data.planningOverlapHtml = utils.Markup(data.planning_overlap)
         return data;
     },
 });

@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="project.view_task_project_user_search"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='late']" position="after">
-                <filter name="conflict_task" string="Tasks in Conflict" domain="[('planning_overlap', '&gt;', 0)]"/>
+                <filter name="conflict_task" string="Tasks in Conflict" domain="[('planning_overlap', '=', True)]"/>
             </xpath>
         </field>
     </record>

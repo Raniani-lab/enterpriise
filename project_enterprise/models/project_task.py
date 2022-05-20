@@ -30,8 +30,7 @@ class Task(models.Model):
 
     # Task Dependencies fields
     display_warning_dependency_in_gantt = fields.Boolean(compute="_compute_display_warning_dependency_in_gantt")
-    planning_overlap = fields.Integer(compute='_compute_planning_overlap', search='_search_planning_overlap')
-    overlap_warning = fields.Char(compute='_compute_planning_overlap')
+    planning_overlap = fields.Html(compute='_compute_planning_overlap', search='_search_planning_overlap')
 
     # User names in popovers
     user_names = fields.Char(compute='_compute_user_names')
@@ -77,12 +76,24 @@ class Task(models.Model):
         for task in self:
             task.display_warning_dependency_in_gantt = not task.is_closed
 
-    def _get_planning_overlap_per_task(self):
+    def _get_planning_overlap_per_task(self, group_by_user=False):
         if not self.ids:
             return {}
         self.flush_model(['active', 'planned_date_begin', 'planned_date_end', 'user_ids', 'project_id', 'is_closed'])
+
+        additional_select_fields = additional_join_fields = additional_join_str = ""
+
+        if group_by_user:
+            additional_select_fields = ", P.name, P.id AS res_partner_id"
+            additional_join_fields = ", P.name, P.id"
+            additional_join_str = """
+                INNER JOIN res_users U3 ON U3.id = U1.user_id
+                INNER JOIN res_partner P ON P.id = U3.partner_id
+            """
+
         query = """
             SELECT T.id, COUNT(T2.id)
+            %s
               FROM project_task T
         INNER JOIN project_task_user_rel U1 ON T.id = U1.task_id
         INNER JOIN project_task T2 ON T.id != T2.id
@@ -96,6 +107,7 @@ class Task(models.Model):
           OVERLAPS (T2.planned_date_begin::TIMESTAMP, T2.planned_date_end::TIMESTAMP)
         INNER JOIN project_task_user_rel U2 ON T2.id = U2.task_id
                AND U2.user_id = U1.user_id
+        %s
              WHERE T.id IN %s
                AND T.active = 't'
                And T.is_closed IS FALSE
@@ -104,27 +116,39 @@ class Task(models.Model):
                AND T.planned_date_end > NOW()
                AND T.project_id IS NOT NULL
           GROUP BY T.id
-        """
+          %s
+        """ % (additional_select_fields, additional_join_str, '%s', additional_join_fields)
         self.env.cr.execute(query, (tuple(self.ids),))
         raw_data = self.env.cr.dictfetchall()
+        if group_by_user:
+            res = {}
+            for row in raw_data:
+                if row['id'] not in res:
+                    res[row['id']] = []
+                res[row['id']].append((row['name'], row['count']))
+            return res
+
         return dict(map(lambda d: d.values(), raw_data))
 
     @api.depends('planned_date_begin', 'planned_date_end', 'user_ids')
     def _compute_planning_overlap(self):
-        overlap_mapping = self._get_planning_overlap_per_task()
+        overlap_mapping = self._get_planning_overlap_per_task(group_by_user=True)
         if overlap_mapping:
             for task in self:
-                overlaps = overlap_mapping.get(task.id, 0)
-                task.planning_overlap = overlaps
-                task.overlap_warning = _("%s other task(s) for the same employee at the same time.") % overlaps if overlaps else False
+                if not task.id in overlap_mapping:
+                    task.planning_overlap = ''
+                else:
+                    task.planning_overlap = ' '.join([
+                        _('%s has %s tasks at the same time.', task_mapping[0], task_mapping[1])
+                            for task_mapping in overlap_mapping[task.id]
+                    ])
         else:
-            self.planning_overlap = 0
-            self.overlap_warning = False
+            self.planning_overlap = ''
 
     @api.model
     def _search_planning_overlap(self, operator, value):
-        if operator not in ['=', '>'] or not isinstance(value, int) or value != 0:
-            raise NotImplementedError(_('Operation not supported, you should always compare planning_overlap to 0 value with = or > operator.'))
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise NotImplementedError(_('Operation not supported, you should always compare planning_overlap to True or False.'))
 
         query = """
             SELECT T1.id
@@ -149,7 +173,7 @@ class Task(models.Model):
                 AND T2.active = 't'
                 AND T2.is_closed IS FALSE
         """
-        operator_new = (operator == ">") and "inselect" or "not inselect"
+        operator_new = "inselect" if ((operator == "=" and value) or (operator == "!=" and not value)) else "not inselect"
         return [('id', operator_new, (query, ()))]
 
     def _compute_user_names(self):

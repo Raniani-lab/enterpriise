@@ -361,7 +361,7 @@ class ShareRoute(http.Controller):
                 'datas': base64.b64encode(data),
                 **documents_values,
             }
-            documents |= documents.with_context(binary_field_real_user=http.request.env.user).create(document_dict)
+            documents |= documents.create(document_dict)
         return documents
 
     # Upload file(s) route.
@@ -420,7 +420,7 @@ class ShareRoute(http.Controller):
             except Exception:
                 logger.exception("Failed to read uploaded file")
             else:
-                available_documents.with_context(binary_field_real_user=http.request.env.user).write(write_vals)
+                available_documents.write(write_vals)
                 available_documents.message_post(body=chatter_message)
         elif not document_id and available_documents is not False:
             try:

@@ -46,17 +46,17 @@
     </template>
 
     <template id="product_product" inherit_id="website_sale_comparison.product_product">
-        <xpath expr="//div/h6/span" position="after">
+        <xpath expr="//div/h6/div/span" position="after">
             <t t-if="combination_info['is_rental']">
                 <span>per</span>
                 <span t-if="combination_info['rental_duration'] > 1" t-esc="combination_info['rental_duration']"/>
                 <span t-esc="combination_info['rental_unit']" style="text-transform:lowercase;"/>
             </t>
         </xpath>
-        <xpath expr="//div/h6/del" position="before">
+        <xpath expr="//div/h6/div/del" position="before">
             <span t-if="combination_info['is_rental']">from</span>
         </xpath>
-        <xpath expr="//div/h6/del" position="attributes">
+        <xpath expr="//div/h6/div/del" position="attributes">
             <attribute name="t-if">not combination_info['is_rental']</attribute>
         </xpath>
     </template>

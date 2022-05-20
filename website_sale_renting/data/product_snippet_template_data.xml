@@ -3,7 +3,7 @@
 
     <template id="price_dynamic_filter_template_product_product"
                 inherit_id="website_sale.price_dynamic_filter_template_product_product">
-        <xpath expr="//span[@t-esc='record._get_contextual_price()']" position="before">
+        <xpath expr="//span[@t-esc='record_price']" position="before">
             <span t-if="record.rent_ok" class="fw-bold">From</span>
         </xpath>
         <xpath expr="//del" position="attributes">

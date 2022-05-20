@@ -1394,6 +1394,22 @@
         lazyValue.map = (callback) => lazy(() => callback(lazyValue()));
         return lazyValue;
     }
+    /**
+     * Find the next defined value after the given index in an array of strings. If there is no defined value
+     * after the index, return the closest defined value before the index. Return an empty string if no
+     * defined value was found.
+     *
+     */
+    function findNextDefinedValue(arr, index) {
+        let value = arr.slice(index).find((val) => val);
+        if (!value) {
+            value = arr
+                .slice(0, index)
+                .reverse()
+                .find((val) => val);
+        }
+        return value || "";
+    }
 
     const colors$1 = [
         "#eb6d00",
@@ -3048,6 +3064,7 @@
                 background: BACKGROUND_CHART_COLOR,
                 verticalAxisPosition: "left",
                 legendPosition: "top",
+                labelsAsText: false,
             },
         });
         const figure = env.model.getters.getFigure(sheetId, id);
@@ -4424,6 +4441,9 @@
         updateStacked() {
             this.updateChart({ stackedBar: this.state.chart.stackedBar });
         }
+        updateLabelsAsText() {
+            this.updateChart({ labelsAsText: this.state.chart.labelsAsText });
+        }
         updateTitle() {
             this.updateChart({ title: this.state.chart.title });
         }
@@ -4459,6 +4479,9 @@
         }
         activate(panel) {
             this.state.panel = panel;
+        }
+        canTreatLabelsAsText() {
+            return this.env.model.getters.canChartParseLabels(this.props.figure.id);
         }
         initialState(figure) {
             return {
@@ -5945,11 +5968,11 @@
             this.chartContainerRef = owl.useRef("chartContainer");
             this.menuButtonRef = owl.useRef("menuButton");
             this.menuButtonPosition = useAbsolutePosition(this.menuButtonRef);
-            this.state = { background: BACKGROUND_CHART_COLOR };
             this.position = useAbsolutePosition(this.chartContainerRef);
         }
         get canvasStyle() {
-            return `background-color: ${this.state.background}`;
+            const chart = this.env.model.getters.getChartDefinition(this.props.figure.id);
+            return `background-color: ${chart ? chart.background : BACKGROUND_CHART_COLOR}`;
         }
         setup() {
             owl.onMounted(() => {
@@ -5988,20 +6011,12 @@
                 else {
                     this.chart && this.chart.destroy();
                 }
-                const def = this.env.model.getters.getChartDefinition(figure.id);
-                if (def) {
-                    this.state.background = def.background;
-                }
             });
         }
         createChart(chartData) {
             const canvas = this.canvas.el;
             const ctx = canvas.getContext("2d");
             this.chart = new window.Chart(ctx, chartData);
-            const def = this.env.model.getters.getChartDefinition(this.props.figure.id);
-            if (def) {
-                this.state.background = def.background;
-            }
         }
         getMenuItemRegistry() {
             const registry = new MenuItemRegistry();
@@ -14265,6 +14280,7 @@
                 verticalAxisPosition: data.verticalAxisPosition,
                 legendPosition: data.legendPosition,
                 stackedBar: data.stackedBar,
+                labelsAsText: data.labelsAsText,
             };
         }
         getChartDefinitionExcel(sheetId, figureId) {
@@ -14399,6 +14415,9 @@
             }
             if (definition.stackedBar !== undefined) {
                 this.history.update("chartFigures", id, "stackedBar", definition.stackedBar);
+            }
+            if (definition.labelsAsText !== undefined) {
+                this.history.update("chartFigures", id, "labelsAsText", definition.labelsAsText);
             }
         }
         createDataSets(dataSetsString, sheetId, dataSetsHaveTitle) {
@@ -17867,6 +17886,11 @@
                     this.selectionStart = this.currentContent.length;
                     this.selectionEnd = this.currentContent.length;
                     break;
+                case "ACTIVATE_SHEET":
+                    const { col, row } = getNextVisibleCellPosition(this.getters.getSheet(cmd.sheetIdTo), 0, 0);
+                    const zone = this.getters.expandZone(cmd.sheetIdTo, positionToZone({ col, row }));
+                    this.selection.resetAnchor(this, { cell: { col, row }, zone });
+                    break;
                 case "DELETE_SHEET":
                 case "UNDO":
                 case "REDO":
@@ -17998,8 +18022,10 @@
          * Enable the selecting mode
          */
         startComposerRangeSelection() {
-            const zone = positionToZone({ col: this.col, row: this.row });
-            this.selection.resetAnchor(this, { cell: { col: this.col, row: this.row }, zone });
+            if (this.sheetId === this.getters.getActiveSheetId()) {
+                const zone = positionToZone({ col: this.col, row: this.row });
+                this.selection.resetAnchor(this, { cell: { col: this.col, row: this.row }, zone });
+            }
             this.mode = "selecting";
             this.selectionInitialStart = this.selectionStart;
         }
@@ -18562,6 +18588,130 @@
         }
     }
 
+    const UNIT_LENGTH = {
+        second: 1000,
+        minute: 1000 * 60,
+        hour: 1000 * 3600,
+        day: 1000 * 3600 * 24,
+        month: 1000 * 3600 * 24 * 30,
+        year: 1000 * 3600 * 24 * 365,
+    };
+    const Milliseconds = {
+        inSeconds: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.second);
+        },
+        inMinutes: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.minute);
+        },
+        inHours: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.hour);
+        },
+        inDays: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.day);
+        },
+        inMonths: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.month);
+        },
+        inYears: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.year);
+        },
+    };
+    /**
+     * Regex to test if a format string is a date format that can be translated into a moment time format
+     */
+    const timeFormatMomentCompatible = /^((d|dd|m|mm|yyyy|yy|hh|h|ss|a)(-|:|\s|\/))*(d|dd|m|mm|yyyy|yy|hh|h|ss|a)$/i;
+    /** Get the time options for the XAxis of ChartJS */
+    function getChartTimeOptions(labels, labelFormat) {
+        const momentFormat = convertDateFormatForMoment(labelFormat);
+        const timeUnit = getBestTimeUnitForScale(labels, momentFormat);
+        const displayFormats = {};
+        if (timeUnit) {
+            displayFormats[timeUnit] = momentFormat;
+        }
+        return {
+            parser: momentFormat,
+            displayFormats,
+            unit: timeUnit,
+        };
+    }
+    /**
+     * Convert the given date format into a format that moment.js understands.
+     *
+     * https://momentjs.com/docs/#/parsing/string-format/
+     */
+    function convertDateFormatForMoment(format) {
+        format = format.replace(/y/g, "Y");
+        format = format.replace(/d/g, "D");
+        // "m" before "h" == month, "m" after "h" == minute
+        const indexH = format.indexOf("h");
+        if (indexH >= 0) {
+            format = format.slice(0, indexH).replace(/m/g, "M") + format.slice(indexH);
+        }
+        else {
+            format = format.replace(/m/g, "M");
+        }
+        // If we have an "a", we should display hours as AM/PM (h), otherwise display 24 hours format (H)
+        if (!format.includes("a")) {
+            format = format.replace(/h/g, "H");
+        }
+        return format;
+    }
+    /** Get the minimum time unit that the format is able to display */
+    function getFormatMinDisplayUnit(format) {
+        if (format.includes("s")) {
+            return "second";
+        }
+        else if (format.includes("m")) {
+            return "minute";
+        }
+        else if (format.includes("h") || format.includes("H")) {
+            return "hour";
+        }
+        else if (format.includes("D")) {
+            return "day";
+        }
+        else if (format.includes("M")) {
+            return "month";
+        }
+        return "year";
+    }
+    /**
+     * Returns the best time unit that should be used for the X axis of a chart in order to display all
+     * the labels correctly.
+     *
+     * There is two conditions :
+     *  - the format of the labels should be able to display the unit. For example if the format is "DD/MM/YYYY"
+     *    it makes no sense to try to use minutes in the X axis
+     *  - we want the "best fit" unit. For example if the labels span a period of several days, we want to use days
+     *    as a unit, but if they span 200 days, we'd like to use months instead
+     *
+     */
+    function getBestTimeUnitForScale(labels, format) {
+        const labelDates = labels.map((label) => { var _a; return (_a = parseDateTime(label)) === null || _a === void 0 ? void 0 : _a.jsDate; });
+        if (labelDates.some((date) => date === undefined) || labels.length < 2) {
+            return undefined;
+        }
+        const labelsTimestamps = labelDates.map((date) => date.getTime());
+        const period = Math.max(...labelsTimestamps) - Math.min(...labelsTimestamps);
+        const minUnit = getFormatMinDisplayUnit(format);
+        if (UNIT_LENGTH.second >= UNIT_LENGTH[minUnit] && Milliseconds.inSeconds(period) < 180) {
+            return "second";
+        }
+        else if (UNIT_LENGTH.minute >= UNIT_LENGTH[minUnit] && Milliseconds.inMinutes(period) < 180) {
+            return "minute";
+        }
+        else if (UNIT_LENGTH.hour >= UNIT_LENGTH[minUnit] && Milliseconds.inHours(period) < 96) {
+            return "hour";
+        }
+        else if (UNIT_LENGTH.day >= UNIT_LENGTH[minUnit] && Milliseconds.inDays(period) < 90) {
+            return "day";
+        }
+        else if (UNIT_LENGTH.month >= UNIT_LENGTH[minUnit] && Milliseconds.inMonths(period) < 36) {
+            return "month";
+        }
+        return "year";
+    }
+
     class EvaluationChartPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
@@ -18665,6 +18815,16 @@
             }
             return this.chartRuntime[figureId];
         }
+        /**
+         * Check if the labels of the chart can be parsed to not be interpreted as text, ie. if the chart
+         * can be a date chart or a linear chart
+         */
+        canChartParseLabels(figureId) {
+            const definition = this.getters.getChartDefinition(figureId);
+            if (definition === undefined)
+                return false;
+            return this.canBeLinearChart(definition) || this.canBeDateChart(definition);
+        }
         truncateLabel(label) {
             if (!label) {
                 return "";
@@ -18723,6 +18883,7 @@
                 config.options.scales = {
                     xAxes: [
                         {
+                            offset: true,
                             ticks: {
                                 // x axis configuration
                                 maxRotation: 60,
@@ -18817,33 +18978,90 @@
                 this.dispatch("EVALUATE_CELLS", { sheetId });
             }
         }
+        /** Get the format of the first cell in the label range of the chart, if any */
+        getLabelFormat(definition) {
+            if (!definition.labelRange)
+                return undefined;
+            const firstLabelCell = this.getters.getCell(definition.labelRange.sheetId, definition.labelRange.zone.left, definition.labelRange.zone.top);
+            return firstLabelCell === null || firstLabelCell === void 0 ? void 0 : firstLabelCell.format;
+        }
+        getChartAxisType(definition) {
+            if (this.isDateChart(definition)) {
+                return "time";
+            }
+            if (this.isLinearChart(definition)) {
+                return "linear";
+            }
+            return "category";
+        }
         mapDefinitionToRuntime(definition) {
-            let labels = [];
+            const axisType = this.getChartAxisType(definition);
+            const labelValues = this.getChartLabelValues(definition);
+            let labels = axisType === "linear" ? labelValues.values : labelValues.formattedValues;
+            let dataSetsValues = this.getChartDatasetValues(definition);
+            ({ labels, dataSetsValues } = this.filterEmptyDataPoints(labels, dataSetsValues));
+            if (axisType === "time") {
+                ({ labels, dataSetsValues } = this.fixEmptyLabelsForDateCharts(labels, dataSetsValues));
+            }
+            const runtime = this.getDefaultConfiguration(definition, labels);
+            const labelFormat = this.getLabelFormat(definition);
+            if (axisType === "time") {
+                runtime.options.scales.xAxes[0].type = "time";
+                runtime.options.scales.xAxes[0].time = getChartTimeOptions(labels, labelFormat);
+                runtime.options.scales.xAxes[0].ticks.maxTicksLimit = 15;
+            }
+            else if (axisType === "linear") {
+                runtime.options.scales.xAxes[0].type = "linear";
+                runtime.options.scales.xAxes[0].ticks.callback = (value) => formatValue(value, labelFormat);
+            }
+            const colors = new ChartColors();
+            for (let { label, data } of dataSetsValues) {
+                if (["linear", "time"].includes(axisType)) {
+                    // Replace empty string labels by undefined to make sure chartJS doesn't decide that "" is the same as 0
+                    data = data.map((y, index) => ({ x: labels[index] || undefined, y }));
+                }
+                const color = definition.type !== "pie" ? colors.next() : "#FFFFFF"; // white border for pie chart
+                const backgroundColor = definition.type === "pie" ? this.getPieColors(colors, dataSetsValues) : color;
+                const dataset = {
+                    label,
+                    data,
+                    lineTension: 0,
+                    borderColor: color,
+                    backgroundColor,
+                };
+                runtime.data.datasets.push(dataset);
+            }
+            return runtime;
+        }
+        /** Return the current cell values of the labels */
+        getChartLabelValues(definition) {
+            const labels = { values: [], formattedValues: [] };
             if (definition.labelRange) {
                 if (!definition.labelRange.invalidXc && !definition.labelRange.invalidSheetName) {
-                    labels = this.getters.getRangeFormattedValues(definition.labelRange);
+                    labels.formattedValues = this.getters.getRangeFormattedValues(definition.labelRange);
+                    labels.values = this.getters
+                        .getRangeValues(definition.labelRange)
+                        .map((val) => (val ? String(val) : ""));
                 }
             }
             else if (definition.dataSets.length === 1) {
                 for (let i = 0; i < this.getData(definition.dataSets[0], definition.sheetId).length; i++) {
-                    labels.push("");
+                    labels.formattedValues.push("");
+                    labels.values.push("");
                 }
             }
             else {
                 if (definition.dataSets[0]) {
                     const ranges = this.getData(definition.dataSets[0], definition.sheetId);
-                    labels = range(0, ranges.length).map((r) => r.toString());
+                    labels.formattedValues = range(0, ranges.length).map((r) => r.toString());
+                    labels.values = labels.formattedValues;
                 }
             }
-            const runtime = this.getDefaultConfiguration(definition, labels);
-            const colors = new ChartColors();
-            const pieColors = [];
-            if (definition.type === "pie") {
-                const maxLength = Math.max(...definition.dataSets.map((ds) => this.getData(ds, definition.sheetId).length));
-                for (let i = 0; i <= maxLength; i++) {
-                    pieColors.push(colors.next());
-                }
-            }
+            return labels;
+        }
+        /** Return the current cell values of the datasets */
+        getChartDatasetValues(definition) {
+            const datasetValues = [];
             for (const [dsIndex, ds] of Object.entries(definition.dataSets)) {
                 let label;
                 if (ds.labelCell) {
@@ -18859,25 +19077,45 @@
                 else {
                     label = label = `${ChartTerms.Series} ${parseInt(dsIndex) + 1}`;
                 }
-                const color = definition.type !== "pie" ? colors.next() : "#FFFFFF"; // white border for pie chart
-                const dataset = {
-                    label,
-                    data: ds.dataRange ? this.getData(ds, definition.sheetId) : [],
-                    lineTension: 0,
-                    borderColor: color,
-                    backgroundColor: color,
-                };
-                if (definition.type === "pie") {
-                    // In case of pie graph, dataset.backgroundColor is an array of string
-                    dataset.backgroundColor = pieColors;
-                }
-                runtime.data.datasets.push(dataset);
+                let data = ds.dataRange ? this.getData(ds, definition.sheetId) : [];
+                datasetValues.push({ data, label });
             }
-            return { ...runtime, data: this.filterEmptyDataPoints(runtime.data) };
+            return datasetValues;
         }
-        filterEmptyDataPoints(chartData) {
-            const labels = chartData.labels;
-            const datasets = chartData.datasets;
+        /** Get array of colors of a pie chart */
+        getPieColors(colors, dataSetsValues) {
+            const pieColors = [];
+            const maxLength = Math.max(...dataSetsValues.map((ds) => ds.data.length));
+            for (let i = 0; i <= maxLength; i++) {
+                pieColors.push(colors.next());
+            }
+            return pieColors;
+        }
+        /**
+         * Replace the empty labels by the closest label, and set the values corresponding to this label in
+         * the dataset to undefined.
+         *
+         * Replacing labels with empty value is needed for date charts, because otherwise chartJS will consider them
+         * to have a value of 01/01/1970, messing up the scale. Setting their corresponding value to undefined
+         * will have the effect of breaking the line of the chart at this point.
+         */
+        fixEmptyLabelsForDateCharts(labels, dataSetsValues) {
+            if (labels.length === 0 || labels.every((label) => !label)) {
+                return { labels, dataSetsValues };
+            }
+            const newLabels = [...labels];
+            const newDatasets = deepCopy(dataSetsValues);
+            for (let i = 0; i < newLabels.length; i++) {
+                if (!newLabels[i]) {
+                    newLabels[i] = findNextDefinedValue(newLabels, i);
+                    for (let ds of newDatasets) {
+                        ds.data[i] = undefined;
+                    }
+                }
+            }
+            return { labels: newLabels, dataSetsValues: newDatasets };
+        }
+        filterEmptyDataPoints(labels, datasets) {
             const numberOfDataPoints = Math.max(labels.length, ...datasets.map((dataset) => { var _a; return ((_a = dataset.data) === null || _a === void 0 ? void 0 : _a.length) || 0; }));
             const dataPointsIndexes = range(0, numberOfDataPoints).filter((dataPointIndex) => {
                 const label = labels[dataPointIndex];
@@ -18885,9 +19123,8 @@
                 return label || values.some((value) => value === 0 || Boolean(value));
             });
             return {
-                ...chartData,
                 labels: dataPointsIndexes.map((i) => labels[i] || ""),
-                datasets: datasets.map((dataset) => ({
+                dataSetsValues: datasets.map((dataset) => ({
                     ...dataset,
                     data: dataPointsIndexes.map((i) => dataset.data[i]),
                 })),
@@ -18906,8 +19143,37 @@
             }
             return [];
         }
+        canBeDateChart(definition) {
+            if (!definition.labelRange || !definition.dataSets || definition.type !== "line") {
+                return false;
+            }
+            if (!this.canBeLinearChart(definition)) {
+                return false;
+            }
+            const labelFormat = this.getLabelFormat(definition);
+            return Boolean(labelFormat && timeFormatMomentCompatible.test(labelFormat));
+        }
+        isDateChart(definition) {
+            return !definition.labelsAsText && this.canBeDateChart(definition);
+        }
+        canBeLinearChart(definition) {
+            if (!definition.labelRange || !definition.dataSets || definition.type !== "line") {
+                return false;
+            }
+            const labels = this.getters.getRangeValues(definition.labelRange);
+            if (labels.some((label) => isNaN(Number(label)) && label)) {
+                return false;
+            }
+            if (labels.every((label) => !label)) {
+                return false;
+            }
+            return true;
+        }
+        isLinearChart(definition) {
+            return !definition.labelsAsText && this.canBeLinearChart(definition);
+        }
     }
-    EvaluationChartPlugin.getters = ["getChartRuntime"];
+    EvaluationChartPlugin.getters = ["getChartRuntime", "canChartParseLabels"];
 
     // -----------------------------------------------------------------------------
     // Constants
@@ -20359,12 +20625,12 @@
             switch (cmd.type) {
                 case "START":
                     const firstSheetId = this.getters.getVisibleSheetIds()[0];
-                    this.selection.registerAsDefault(this, this.gridSelection.anchor, {
-                        handleEvent: this.handleEvent.bind(this),
-                    });
                     this.dispatch("ACTIVATE_SHEET", {
                         sheetIdTo: firstSheetId,
                         sheetIdFrom: firstSheetId,
+                    });
+                    this.selection.registerAsDefault(this, this.gridSelection.anchor, {
+                        handleEvent: this.handleEvent.bind(this),
                     });
                     const firstSheet = this.getters.getSheet(firstSheetId);
                     const { col, row } = getNextVisibleCellPosition(firstSheet, 0, 0);
@@ -20387,9 +20653,8 @@
                         this.selection.resetDefaultAnchor(this, this.gridSelection.anchor);
                     }
                     else {
-                        const firstSheetId = this.getters.getSheetIds()[0];
-                        const firstSheet = this.getters.getSheet(firstSheetId);
-                        const { col, row } = getNextVisibleCellPosition(firstSheet, 0, 0);
+                        const newSheet = this.getters.getSheet(cmd.sheetIdTo);
+                        const { col, row } = getNextVisibleCellPosition(newSheet, 0, 0);
                         this.selectCell(col, row);
                     }
                     break;
@@ -22864,7 +23129,7 @@
                 timeOutId = setTimeout(() => {
                     timeOutId = null;
                     onMouseMove(currentEv);
-                }, Math.round(edgeScrollInfoX.delay));
+                }, Math.round(edgeScrollInfoY.delay));
             }
         };
         const onMouseUp = () => {
@@ -26197,7 +26462,7 @@
           }
         }
 
-        .o-border {
+        .o-border-dropdown {
           .o-line-item {
             padding: 4px;
             margin: 1px;
@@ -28304,17 +28569,20 @@
          * Register as default subscriber and capture the event stream.
          */
         registerAsDefault(owner, anchor, callbacks) {
+            this.checkAnchorZoneOrThrow(anchor);
             this.stream.registerAsDefault(owner, callbacks);
             this.defaultAnchor = anchor;
             this.capture(owner, anchor, callbacks);
         }
         resetDefaultAnchor(owner, anchor) {
+            this.checkAnchorZoneOrThrow(anchor);
             if (this.stream.isListening(owner)) {
                 this.anchor = anchor;
             }
             this.defaultAnchor = anchor;
         }
         resetAnchor(owner, anchor) {
+            this.checkAnchorZoneOrThrow(anchor);
             if (this.stream.isListening(owner)) {
                 this.anchor = anchor;
             }
@@ -28531,7 +28799,7 @@
          */
         processEvent(newAnchorEvent) {
             const event = { ...newAnchorEvent, previousAnchor: this.anchor };
-            const commandResult = this.checkAnchorZone(event);
+            const commandResult = this.checkEventAnchorZone(event);
             if (commandResult !== 0 /* Success */) {
                 return new DispatchResult(commandResult);
             }
@@ -28539,8 +28807,11 @@
             this.stream.send(event);
             return DispatchResult.Success;
         }
-        checkAnchorZone(event) {
-            const { cell, zone } = event.anchor;
+        checkEventAnchorZone(event) {
+            return this.checkAnchorZone(event.anchor);
+        }
+        checkAnchorZone(anchor) {
+            const { cell, zone } = anchor;
             if (!isInside(cell.col, cell.row, zone)) {
                 return 14 /* InvalidAnchorZone */;
             }
@@ -28552,6 +28823,12 @@
                 return 15 /* SelectionOutOfBound */;
             }
             return 0 /* Success */;
+        }
+        checkAnchorZoneOrThrow(anchor) {
+            const result = this.checkAnchorZone(anchor);
+            if (result === 14 /* InvalidAnchorZone */) {
+                throw new Error(_t("The provided anchor is invalid. The cell must be part of the zone."));
+            }
         }
         /**
          *  ---- PRIVATE ----
@@ -30958,8 +31235,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-05-16T11:18:28.564Z';
-    exports.__info__.hash = 'cc70b23';
+    exports.__info__.date = '2022-05-20T14:13:43.486Z';
+    exports.__info__.hash = '7b7dba9';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

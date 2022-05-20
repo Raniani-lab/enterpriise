@@ -148,12 +148,6 @@ class AppointmentType(models.Model):
         default['name'] = self.name + _(' (copy)')
         return super().copy(default=default)
 
-    def write(self, vals):
-        # If no text outside html tags, replace with False to get back placeholder.
-        if is_html_empty(vals.get('message_intro', '')):
-            vals['message_intro'] = False
-        return super().write(vals)
-
     def action_calendar_events_reporting(self):
         self.ensure_one()
         action = self.env["ir.actions.act_window"]._for_xml_id("appointment.calendar_event_action_reporting")

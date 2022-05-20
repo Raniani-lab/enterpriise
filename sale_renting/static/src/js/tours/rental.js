@@ -103,6 +103,14 @@ tour.register('rental_tour', {
     trigger: "button[name='apply']",
     content: _t("Confirm the returned quantities and hit Validate."),
     position: 'bottom',
+}, {
+    trigger: '.o_navbar',
+    run: function () {
+        window.location.href = window.location.origin + '/web';
+    },  // Avoid race condition at the end of the tour by returning to the home page.
+}, {
+    trigger: '.o_navbar',
+    run: function() {},  // Check the home page is loaded
 }]);
 
 // message to do : You're done with your fist rental. Congratulations !

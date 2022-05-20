@@ -4444,4 +4444,31 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, ".o_pivot_view .o_nocontent_help");
         assert.containsOnce(target, ".o_pivot_view table");
     });
+
+    QUnit.test(
+        "the group by menu button of a graph sub view should have the same style as other buttons",
+        async function (assert) {
+            serverData.views = {
+                "test_report,false,graph": `
+                  <graph/>
+                `,
+            };
+
+            await makeView({
+                serverData,
+                type: "dashboard",
+                resModel: "test_report",
+                arch: `
+                    <dashboard>
+                        <view type="graph"/>
+                    </dashboard>
+                `,
+            });
+
+            const groupByMenuButton = target.querySelector(".o_group_by_menu button");
+
+            assert.hasClass(groupByMenuButton, "btn-outline-secondary");
+            assert.doesNotHaveClass(groupByMenuButton, "btn-light");
+        }
+    );
 });

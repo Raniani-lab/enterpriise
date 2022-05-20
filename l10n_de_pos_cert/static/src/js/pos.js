@@ -397,7 +397,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
             this.tssInformation.signature_algorithm.value = data.signature.algorithm;
             this.tssInformation.signature_public_key.value = data.signature.public_key;
             this.tssInformation.client_serial_number.value = data.client_serial_number;
-            this.tssInformation.erstBestellung.value = this.get_orderlines()[0].get_product().display_name;
+            this.tssInformation.erstBestellung.value = this.get_orderlines()[0] ? this.get_orderlines()[0].get_product().display_name : undefined;
             this.transactionFinished();
         }
         async finishShortTransaction() {

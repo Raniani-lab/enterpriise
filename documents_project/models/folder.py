@@ -18,15 +18,15 @@ class DocumentFolder(models.Model):
     project_ids = fields.One2many('project.project', 'documents_folder_id')
 
     @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        domain = args
+    def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None, name_get_uid=None):
+        domain = domain or []
         if 'project_documents_template_folder' in self.env.context:
             template_folder_id = self.env.context.get('project_documents_template_folder')
             domain = expression.AND([
                 domain,
                 ['!', ('id', 'child_of', template_folder_id)]
             ])
-        return super()._name_search(name, domain, operator, limit, name_get_uid)
+        return super()._name_search(name, domain, operator, limit, order, name_get_uid)
 
     @api.ondelete(at_uninstall=False)
     def unlink_except_project_folder(self):

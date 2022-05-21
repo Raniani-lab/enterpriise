@@ -15,12 +15,12 @@ class TagsCategories(models.Model):
         return res
 
     @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        domain = args
+    def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None, name_get_uid=None):
+        domain = domain or []
         if 'documents_project_folder' in self.env.context:
             folder_id = self.env.context.get('documents_project_folder')
             domain = expression.AND([
                 domain,
                 [('folder_id', '=', folder_id)]
             ])
-        return super()._name_search(name, domain, operator, limit, name_get_uid)
+        return super()._name_search(name, domain, operator, limit, order, name_get_uid)

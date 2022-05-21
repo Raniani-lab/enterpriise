@@ -49,10 +49,11 @@ class SignTemplate(models.Model):
     is_sharing = fields.Boolean(compute='_compute_is_sharing', help='Checked if this template has created a shared document for you')
 
     @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+    def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None, name_get_uid=None):
+        if not order:
+            return super()._name_search(name, domain, operator, limit, order, name_get_uid)
         # Display favorite templates first
-        args = args or []
-        template_ids = self._search([('name', operator, name)] + args, limit=None, order=self._order, access_rights_uid=name_get_uid)
+        template_ids = super()._name_search(name, domain, operator, None, order, name_get_uid)
         templates = self.browse(template_ids)
         templates = templates.sorted(key=lambda t: self.env.user in t.favorited_ids, reverse=True)
         return templates[:limit].ids

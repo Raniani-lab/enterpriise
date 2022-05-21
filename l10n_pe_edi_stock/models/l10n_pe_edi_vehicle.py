@@ -30,11 +30,10 @@ class L10nPeEdiVehicle(models.Model):
         return [(vehicle.id, "[%s] %s" % (vehicle.license_plate, vehicle.name)) for vehicle in self]
 
     @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+    def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None, name_get_uid=None):
         # OVERRIDE
-        args = args or []
-        if operator == 'ilike' and not (name or '').strip():
-            domain = []
-        else:
-            domain = ['|', ('name', 'ilike', name), ('license_plate', 'ilike', name)]
-        return self._search(expression.AND([domain, args]), limit=limit, order=self._order, access_rights_uid=name_get_uid)
+        domain = domain or []
+        if operator != 'ilike' or (name or '').strip():
+            name_domain = ['|', ('name', 'ilike', name), ('license_plate', 'ilike', name)]
+            domain = expression.AND([name_domain, domain])
+        return self._search(domain, limit=limit, order=order, access_rights_uid=name_get_uid)

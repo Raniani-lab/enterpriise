@@ -15,7 +15,6 @@ class Project(models.Model):
             return
         query = self.env['account.asset']._search([])
         query.add_where('account_asset.analytic_distribution ?| array[%s]', [str(account_id) for account_id in self.analytic_account_id.ids])
-        query.order = None
         query_string, query_param = query.select(
             'jsonb_object_keys(analytic_distribution) as account_id',
             'COUNT(DISTINCT(id)) as asset_count',

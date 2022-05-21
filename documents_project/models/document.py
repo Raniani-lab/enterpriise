@@ -92,11 +92,11 @@ class Document(models.Model):
             return [
                 "|", "&", ("res_model", "=", "project.project"), ("res_id", operator, value),
                      "&", ("res_model", "=", "project.task"),
-                          ("res_id", "inselect", self.env["project.task"]._search([("project_id", operator, value)]).select()),
+                          ("res_id", "in", self.env["project.task"]._search([("project_id", operator, value)])),
             ]
         elif operator in ("ilike", "not ilike", "=", "!=") and isinstance(value, str):
-            query_project = self.env["project.project"]._search([(self.env["project.project"]._rec_name, operator, value)], order="id asc") # we don't care about the order
-            project_select, project_where_params = query_project.select("id")
+            query_project = self.env["project.project"]._search([(self.env["project.project"]._rec_name, operator, value)])
+            project_select, project_where_params = query_project.select()
             # We may need to flush `res_model` `res_id` if we ever get a flow that assigns + search at the same time..
             # We only apply security rules to projects as security rules on documents will be applied prior
             # to this leaf. Not applying security rules on tasks might give more result than expected but it would not allow
@@ -134,7 +134,7 @@ class Document(models.Model):
                 "&", ("res_model", "=", "project.task"), ("res_id", operator, value),
             ]
         elif operator in ("ilike", "not ilike", "=", "!=") and isinstance(value, str):
-            query_task = self.env["project.task"]._search([(self.env["project.task"]._rec_name, operator, value)], order="id asc")
+            query_task = self.env["project.task"]._search([(self.env["project.task"]._rec_name, operator, value)])
             document_task_alias = query_task.join(
                 "project_task", "id", "documents_document", "res_id", "document", "{rhs}.res_model = 'project.task'"
             )

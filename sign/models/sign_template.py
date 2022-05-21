@@ -52,7 +52,7 @@ class SignTemplate(models.Model):
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
         # Display favorite templates first
         args = args or []
-        template_ids = self._search([('name', operator, name)] + args, limit=None, access_rights_uid=name_get_uid)
+        template_ids = self._search([('name', operator, name)] + args, limit=None, order=self._order, access_rights_uid=name_get_uid)
         templates = self.browse(template_ids)
         templates = templates.sorted(key=lambda t: self.env.user in t.favorited_ids, reverse=True)
         return templates[:limit].ids

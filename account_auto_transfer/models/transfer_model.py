@@ -253,8 +253,11 @@ class TransferModel(models.Model):
         domain = self._get_move_lines_base_domain(start_date, end_date)
         domain = expression.AND([domain, [('partner_id', 'not in', self.line_ids.partner_ids.ids), ]])
         query = self.env['account.move.line']._search(domain)
-        query.order = None
-        self.line_ids.analytic_account_ids.ids and query.add_where('(NOT analytic_distribution ?| array[%s] OR analytic_distribution IS NULL)', [[str(account_id) for account_id in self.line_ids.analytic_account_ids.ids]])
+        if self.line_ids.analytic_account_ids.ids:
+            query.add_where(
+                '(NOT analytic_distribution ?| array[%s] OR analytic_distribution IS NULL)',
+                [[str(account_id) for account_id in self.line_ids.analytic_account_ids.ids]],
+            )
         query_string, query_param = query.select('SUM(balance) AS balance', 'account_id')
         query_string = f"{query_string} GROUP BY account_id"
         self._cr.execute(query_string, query_param)
@@ -370,8 +373,10 @@ class TransferModelLine(models.Model):
 
             query = self.env['account.move.line']._search(domain)
             if transfer_model_line.analytic_account_ids:
-                query.add_where('account_move_line.analytic_distribution ?| array[%s]', [[str(account_id) for account_id in transfer_model_line.analytic_account_ids.ids]])
-            query.order = None
+                query.add_where(
+                    'account_move_line.analytic_distribution ?| array[%s]',
+                    [[str(account_id) for account_id in transfer_model_line.analytic_account_ids.ids]],
+                )
             query_string, query_param = query.select('array_agg("account_move_line".id) AS ids', 'SUM(balance) AS balance', 'account_id')
             query_string = f"{query_string} GROUP BY account_id"
             self._cr.execute(query_string, query_param)

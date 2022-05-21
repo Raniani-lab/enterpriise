@@ -283,7 +283,7 @@ class ConsolidationAccount(models.Model):
             domain = ['|', ('code', '=ilike', name.split(' ')[0] + '%'), ('name', operator, name)]
             if operator in expression.NEGATIVE_TERM_OPERATORS:
                 domain = ['&', '!'] + domain[1:]
-        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
+        return self._search(expression.AND([domain, args]), limit=limit, order=self._order, access_rights_uid=name_get_uid)
 
 class ConsolidationGroup(models.Model):
     _name = "consolidation.group"

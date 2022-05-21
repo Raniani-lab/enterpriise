@@ -25,7 +25,7 @@ class VoipQueueMixin(models.AbstractModel):
         related_activities = self.env['mail.activity']._search([
             ('res_id', 'in', self.ids),
             ('res_model', '=', self._name)
-        ], order='res_id')  # In some cases, avoid PostgreSQL to sort output because of the res_id index.
+        ])
         return [
             ('activity_id', 'in', related_activities),
             ('date_deadline', '<=', fields.Date.today(self)),  # TODO check if correct

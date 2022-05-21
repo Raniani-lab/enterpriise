@@ -161,7 +161,7 @@ class AccountAnalyticLine(models.Model):
 
     @api.depends('helpdesk_ticket_id', 'helpdesk_ticket_id.use_helpdesk_sale_timesheet')
     def _compute_display_sol(self):
-        sale_project_ids = list(self.env['project.project']._search([('helpdesk_team.use_helpdesk_sale_timesheet', '=', True)]))
+        sale_project_ids = set(self.env['project.project']._search([('helpdesk_team.use_helpdesk_sale_timesheet', '=', True)]))
         for line in self:
             if line.project_id and not line.project_id.allow_billable and line.project_id.id not in sale_project_ids:
                 line.display_sol = False

@@ -940,7 +940,7 @@ class HelpdeskTeam(models.Model):
     def action_view_helpdesk_rating(self):
         action = self.env['ir.actions.act_window']._for_xml_id('helpdesk.rating_rating_action_helpdesk')
 
-        ticket_ids = list(self.env['helpdesk.ticket']._search([('team_id.company_id', 'in', self._context.get('allowed_company_ids'))]))
+        ticket_ids = self.env['helpdesk.ticket']._search([('team_id.company_id', 'in', self._context.get('allowed_company_ids'))])
         action['domain'] = expression.AND([
             ast.literal_eval(action.get('domain', '[]')),
             [('res_id', 'in', ticket_ids)],

@@ -37,4 +37,4 @@ class L10nPeEdiVehicle(models.Model):
             domain = []
         else:
             domain = ['|', ('name', 'ilike', name), ('license_plate', 'ilike', name)]
-        return self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
+        return self._search(expression.AND([domain, args]), limit=limit, order=self._order, access_rights_uid=name_get_uid)

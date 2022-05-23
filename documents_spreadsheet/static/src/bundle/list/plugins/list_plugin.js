@@ -247,7 +247,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
                 sheetId,
                 col,
                 row,
-                content: `=LIST.HEADER("${id}","${column.name}")`,
+                content: `=LIST.HEADER(${id},"${column.name}")`,
             })
             col++;
         }
@@ -275,7 +275,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
                     sheetId,
                     col,
                     row,
-                    content: `=LIST("${id}","${i}","${column.name}")`,
+                    content: `=LIST(${id},${i},"${column.name}")`,
                 });
                 col++;
             }

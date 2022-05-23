@@ -29,16 +29,16 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         const { model } = await createSpreadsheetFromList();
         const total = 4 + 10 * 4; // 4 Headers + 10 lines
         assert.strictEqual(Object.values(getCells(model)).length, total);
-        assert.strictEqual(getCellFormula(model, "A1"), `=LIST.HEADER("1","foo")`);
-        assert.strictEqual(getCellFormula(model, "B1"), `=LIST.HEADER("1","bar")`);
-        assert.strictEqual(getCellFormula(model, "C1"), `=LIST.HEADER("1","date")`);
-        assert.strictEqual(getCellFormula(model, "D1"), `=LIST.HEADER("1","product_id")`);
-        assert.strictEqual(getCellFormula(model, "A2"), `=LIST("1","1","foo")`);
-        assert.strictEqual(getCellFormula(model, "B2"), `=LIST("1","1","bar")`);
-        assert.strictEqual(getCellFormula(model, "C2"), `=LIST("1","1","date")`);
-        assert.strictEqual(getCellFormula(model, "D2"), `=LIST("1","1","product_id")`);
-        assert.strictEqual(getCellFormula(model, "A3"), `=LIST("1","2","foo")`);
-        assert.strictEqual(getCellFormula(model, "A11"), `=LIST("1","10","foo")`);
+        assert.strictEqual(getCellFormula(model, "A1"), `=LIST.HEADER(1,"foo")`);
+        assert.strictEqual(getCellFormula(model, "B1"), `=LIST.HEADER(1,"bar")`);
+        assert.strictEqual(getCellFormula(model, "C1"), `=LIST.HEADER(1,"date")`);
+        assert.strictEqual(getCellFormula(model, "D1"), `=LIST.HEADER(1,"product_id")`);
+        assert.strictEqual(getCellFormula(model, "A2"), `=LIST(1,1,"foo")`);
+        assert.strictEqual(getCellFormula(model, "B2"), `=LIST(1,1,"bar")`);
+        assert.strictEqual(getCellFormula(model, "C2"), `=LIST(1,1,"date")`);
+        assert.strictEqual(getCellFormula(model, "D2"), `=LIST(1,1,"product_id")`);
+        assert.strictEqual(getCellFormula(model, "A3"), `=LIST(1,2,"foo")`);
+        assert.strictEqual(getCellFormula(model, "A11"), `=LIST(1,10,"foo")`);
         assert.strictEqual(getCellFormula(model, "A12"), "");
     });
 
@@ -57,7 +57,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
                 },
             },
         });
-        assert.strictEqual(getCellFormula(model, "A1"), `=LIST.HEADER("1","bar")`);
+        assert.strictEqual(getCellFormula(model, "A1"), `=LIST.HEADER(1,"bar")`);
     });
 
     QUnit.test("List export with a widget handle", async (assert) => {
@@ -75,7 +75,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
                 },
             },
         });
-        assert.strictEqual(getCellFormula(model, "A1"), `=LIST.HEADER("1","bar")`);
+        assert.strictEqual(getCellFormula(model, "A1"), `=LIST.HEADER(1,"bar")`);
     });
 
     QUnit.test("Return display name of selection field", async (assert) => {
@@ -113,7 +113,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
     QUnit.test("Can display a field which is not in the columns", async function (assert) {
         assert.expect(2);
         const { model } = await createSpreadsheetFromList();
-        setCellContent(model, "A1", `=LIST("1","1","active")`);
+        setCellContent(model, "A1", `=LIST(1,1,"active")`);
         assert.strictEqual(getCellValue(model, "A1"), undefined);
         await nextTick(); // Await for batching collection of missing fields
         await waitForDataSourcesLoaded(model);
@@ -602,7 +602,7 @@ QUnit.module("documents_spreadsheet > list_controller", {}, () => {
         selectCell(model, "B2");
         const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
         assert.ok(root.isVisible(env));
-        setCellContent(model, "B2", getCellFormula(model, "B2").replace( `LIST("1`, `LIST("5)`)); //Invalid id
+        setCellContent(model, "B2", getCellFormula(model, "B2").replace( `LIST(1`, `LIST("5)`)); //Invalid id
         assert.ok(getCell(model, "B2").evaluated.error);
         assert.notOk(root.isVisible(env));
     });

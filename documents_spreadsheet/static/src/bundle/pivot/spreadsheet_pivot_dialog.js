@@ -6,6 +6,8 @@ import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
+import { makePivotFormula } from "./pivot_helpers"
+
 const { Component, useState } = owl;
 const formatValue = spreadsheet.helpers.formatValue;
 
@@ -283,7 +285,7 @@ export class PivotDialog extends Component {
                     domain.push(cell.values[i]);
                 }
                 current.push({
-                    formula: `=PIVOT.HEADER("${id}","${domain.join('","')}")`,
+                    formula: makePivotFormula("PIVOT.HEADER", [id, ...domain]),
                     value: this._getPivotHeaderValue(domain),
                     span: cell.width,
                     isMissing: !this.pivotModel.isUsedHeader(domain),
@@ -319,7 +321,7 @@ export class PivotDialog extends Component {
             }
             const cell = {
                 args: domain,
-                formula: `=PIVOT.HEADER("${id}","${domain.join('","')}")`,
+                formula: makePivotFormula("PIVOT.HEADER", [id, ...domain]),
                 value: this._getPivotHeaderValue(domain),
                 isMissing: !this.pivotModel.isUsedHeader(domain),
             };
@@ -357,7 +359,7 @@ export class PivotDialog extends Component {
                 const value = this.pivotModel.getPivotCellValue(measure, domain);
                 current.push({
                     args: {
-                        formula: `=PIVOT("${id}","${measure}","${domain.join('","')}")`,
+                        formula: makePivotFormula("PIVOT", [id, measure, ...domain]),
                         value: !value ? "" : formatValue(value),
                     },
                     isMissing: !this.pivotModel.isUsedValue(domain, measure),

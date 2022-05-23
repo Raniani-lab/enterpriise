@@ -218,7 +218,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          _pivotHeader_absoluteToRelative(ast) {
             ast = Object.assign({}, ast);
             const [pivotIdAst, ...domainAsts] = ast.args;
-            if (pivotIdAst.type !== "STRING") return ast;
+            if (pivotIdAst.type !== "STRING" && pivotIdAst.type !== "NUMBER") return ast;
             ast.args = [pivotIdAst, ...this._domainToRelative(pivotIdAst, domainAsts)];
             return ast;
         }
@@ -232,7 +232,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          _pivot_absoluteToRelative(ast) {
             ast = Object.assign({}, ast);
             const [pivotIdAst, measureAst, ...domainAsts] = ast.args;
-            if (pivotIdAst.type !== "STRING") return ast;
+            if (pivotIdAst.type !== "STRING" && pivotIdAst.type !== "NUMBER") return ast;
             ast.args = [pivotIdAst, measureAst, ...this._domainToRelative(pivotIdAst, domainAsts)];
             return ast;
         }

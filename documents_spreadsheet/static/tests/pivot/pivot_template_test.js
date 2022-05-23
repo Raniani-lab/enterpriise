@@ -750,11 +750,11 @@ module(
                                 assert.ok(context.default_thumbnail);
                                 assert.equal(
                                     cells.A3.content,
-                                    `=PIVOT.HEADER("1","product_id",PIVOT.POSITION("1","product_id",1))`
+                                    `=PIVOT.HEADER(1,"product_id",PIVOT.POSITION(1,"product_id",1))`
                                 );
                                 assert.equal(
                                     cells.B3.content,
-                                    `=PIVOT("1","probability","product_id",PIVOT.POSITION("1","product_id",1),"bar","110")`
+                                    `=PIVOT(1,"probability","product_id",PIVOT.POSITION(1,"product_id",1),"bar",110)`
                                 );
                                 assert.equal(cells.A11.content, "😃");
                                 return Promise.resolve(true);

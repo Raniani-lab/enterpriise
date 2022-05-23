@@ -50,3 +50,17 @@ export function getFirstPivotFunction(formula) {
     ["PIVOT", "PIVOT.HEADER", "PIVOT.POSITION"].includes(functionName)
   ).find((fn) => fn.isMatched);
 }
+
+/**
+ * Build a pivot formula expression
+ * 
+ * @param {string} formula formula to be used (PIVOT or PIVOT.HEADER)
+ * @param {*} args arguments of the formula
+ * 
+ * @returns {string}
+ */
+export function makePivotFormula(formula, args) {
+    return `=${formula}(${args
+      .map((arg) => (typeof arg == "number" || (typeof arg == "string" && !isNaN(arg)) ? `${arg}` : `"${arg.toString().replace(/"/g, '\\"')}"`))
+      .join(',')})`;
+}

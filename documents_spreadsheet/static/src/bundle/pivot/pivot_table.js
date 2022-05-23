@@ -128,7 +128,7 @@ export class SpreadsheetPivotTable {
     getCellFromMeasureRowWithDomain(values) {
         const vals = JSON.stringify(values).slice(0, -1); //Remove the last "]"
         return this.getMeasureHeaders().find((cell) =>
-            JSON.stringify(cell.values.map((val) => val.toString())).startsWith(vals)
+            JSON.stringify(cell.values).startsWith(vals)
         );
     }
 
@@ -141,7 +141,7 @@ export class SpreadsheetPivotTable {
     getColMeasureIndex(values) {
         const vals = JSON.stringify(values);
         return this.getMeasureHeaders().findIndex(
-            (cell) => JSON.stringify(cell.values.map((val) => val.toString())) === vals
+            (cell) => JSON.stringify(cell.values) === vals
         );
     }
 

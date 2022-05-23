@@ -529,7 +529,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await reinsertPivot1.action(env);
         assert.equal(
             getCellFormula(model, "E10"),
-            `=PIVOT("1","probability","bar","false","foo","1")`,
+            `=PIVOT(1,"probability","bar","false","foo",1)`,
             "It should contain a pivot formula"
         );
     });
@@ -552,7 +552,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.equal(model.getters.getActiveSheet().rows.length, 5);
         assert.equal(
             getCellFormula(model, "B3"),
-            `=PIVOT("1","probability","bar","false","foo","1")`,
+            `=PIVOT(1,"probability","bar","false","foo",1)`,
             "It should contain a pivot formula"
         );
     });
@@ -582,10 +582,10 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
         const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
         await reinsertPivot1.action(env);
-        assert.equal(getCellFormula(model, "I8"), `=PIVOT.HEADER("1","foo","25")`);
+        assert.equal(getCellFormula(model, "I8"), `=PIVOT.HEADER(1,"foo",25)`);
         assert.equal(
             getCellFormula(model, "I10"),
-            `=PIVOT("1","probability","bar","false","foo","25")`
+            `=PIVOT(1,"probability","bar","false","foo",25)`
         );
     });
 
@@ -646,9 +646,9 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
         const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
         await reinsertPivot1.action(env);
-        assert.equal(getCellFormula(model, "C1"), `=PIVOT.HEADER("1","foo","2")`);
-        assert.equal(getCellFormula(model, "C2"), `=PIVOT.HEADER("1","foo","2","measure","probability")`);
-        assert.equal(getCellFormula(model, "C3"), `=PIVOT("1","probability","bar","false","foo","2")`);
+        assert.equal(getCellFormula(model, "C1"), `=PIVOT.HEADER(1,"foo",2)`);
+        assert.equal(getCellFormula(model, "C2"), `=PIVOT.HEADER(1,"foo",2,"measure","probability")`);
+        assert.equal(getCellFormula(model, "C3"), `=PIVOT(1,"probability","bar","false","foo",2)`);
         await nextTick();
         assert.equal(getCellValue(model, "C1"), 2);
         assert.equal(getCellValue(model, "C2"), "Probability");
@@ -711,7 +711,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await reinsertPivot1.action(env);
         assert.equal(
             getCellFormula(model, "E10"),
-            `=PIVOT("1","probability","bar","false","foo","1")`,
+            `=PIVOT(1,"probability","bar","false","foo",1)`,
             "It should contain a pivot formula"
         );
         model.dispatch("REQUEST_UNDO");
@@ -728,7 +728,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         const sheetId = model.getters.getActiveSheetId();
         assert.equal(
             getCellFormula(model, "B2"),
-            `=PIVOT.HEADER("1","foo","1","measure","probability")`,
+            `=PIVOT.HEADER(1,"foo",1,"measure","probability")`,
             "It should contain a pivot formula"
         );
         model.dispatch("ADD_MERGE", {
@@ -743,7 +743,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await reinsertPivot1.action(env);
         assert.equal(
             getCellFormula(model, "B2"),
-            `=PIVOT.HEADER("1","foo","1","measure","probability")`,
+            `=PIVOT.HEADER(1,"foo",1,"measure","probability")`,
             "It should contain a pivot formula"
         );
     });
@@ -1102,7 +1102,7 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         await nextTick();
         const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
         assert.ok(root.isVisible(env));
-        setCellContent(model, "B4", getCellFormula(model, "B4").replace( `PIVOT("1`, `PIVOT("5)`)); //Invalid id
+        setCellContent(model, "B4", getCellFormula(model, "B4").replace( `PIVOT(1`, `PIVOT("5)`)); //Invalid id
         assert.ok(getCell(model, "B4").evaluated.error);
         assert.notOk(root.isVisible(env));
     });

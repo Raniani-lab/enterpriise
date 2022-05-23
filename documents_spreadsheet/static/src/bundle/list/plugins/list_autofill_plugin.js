@@ -98,11 +98,11 @@ export default class ListAutofillPlugin extends spreadsheet.UIPlugin {
     }
 
     _getListFunction(listId, position, field) {
-        return `=LIST("${listId}","${position}","${field}")`;
+        return `=LIST(${listId},${position},"${field}")`;
     }
 
     _getListHeaderFunction(listId, field) {
-        return `=LIST.HEADER("${listId}","${field}")`;
+        return `=LIST.HEADER(${listId},"${field}")`;
     }
 }
 

@@ -33,7 +33,7 @@ QUnit.module("documents_spreadsheet > list_autofill", {}, () => {
         );
         assert.strictEqual(
             getListAutofillValue(model, "C3", { direction: "bottom", steps: 3 }),
-            `=LIST("1","5","date")`
+            `=LIST(1,5,"date")`
         );
         assert.strictEqual(getListAutofillValue(model, "C3", { direction: "right", steps: 4 }), "");
         // From value to header
@@ -84,7 +84,7 @@ QUnit.module("documents_spreadsheet > list_autofill", {}, () => {
         );
         assert.strictEqual(
             getListAutofillValue(model, "A4", { direction: "bottom", steps: 2 }),
-            `=LIST("1","5","foo")`
+            `=LIST(1,5,"foo")`
         );
         assert.strictEqual(getListAutofillValue(model, "A4", { direction: "top", steps: 4 }), "");
         // From header to value

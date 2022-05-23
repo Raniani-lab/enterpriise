@@ -61,10 +61,10 @@ test("simple pivot export", async (assert) => {
     assert.strictEqual(Object.values(getCells(model)).length, 6);
     assert.strictEqual(getCellFormula(model, "A1"), "");
     assert.strictEqual(getCellFormula(model, "A2"), "");
-    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1")');
-    assert.strictEqual(getCellFormula(model, "B1"), '=PIVOT.HEADER("1")');
-    assert.strictEqual(getCellFormula(model, "B2"), '=PIVOT.HEADER("1","measure","foo")');
-    assert.strictEqual(getCellFormula(model, "B3"), '=PIVOT("1","foo")');
+    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER(1)');
+    assert.strictEqual(getCellFormula(model, "B1"), '=PIVOT.HEADER(1)');
+    assert.strictEqual(getCellFormula(model, "B2"), '=PIVOT.HEADER(1,"measure","foo")');
+    assert.strictEqual(getCellFormula(model, "B3"), '=PIVOT(1,"foo")');
     assert.strictEqual(getCell(model, "B3").format, "#,##0.00");
 });
 
@@ -84,13 +84,13 @@ test("simple pivot export with two measures", async (assert) => {
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 9);
-    assert.strictEqual(getCellFormula(model, "B1"), '=PIVOT.HEADER("1")');
-    assert.strictEqual(getCellFormula(model, "B2"), '=PIVOT.HEADER("1","measure","foo")');
+    assert.strictEqual(getCellFormula(model, "B1"), '=PIVOT.HEADER(1)');
+    assert.strictEqual(getCellFormula(model, "B2"), '=PIVOT.HEADER(1,"measure","foo")');
     assert.strictEqual(getCell(model, "B2").style.bold, undefined);
-    assert.strictEqual(getCellFormula(model, "C2"), '=PIVOT.HEADER("1","measure","probability")');
-    assert.strictEqual(getCellFormula(model, "B3"), '=PIVOT("1","foo")');
+    assert.strictEqual(getCellFormula(model, "C2"), '=PIVOT.HEADER(1,"measure","probability")');
+    assert.strictEqual(getCellFormula(model, "B3"), '=PIVOT(1,"foo")');
     assert.strictEqual(getCell(model, "B3").format, "#,##0.00");
-    assert.strictEqual(getCellFormula(model, "C3"), '=PIVOT("1","probability")');
+    assert.strictEqual(getCellFormula(model, "C3"), '=PIVOT(1,"probability")');
     assert.strictEqual(getCell(model, "C3").format, "#,##0.00");
     assert.deepEqual(getMerges(model), ["B1:C1"]);
 });
@@ -144,12 +144,12 @@ test("groupby date field without interval defaults to month", async (assert) => 
         rowGroupBys: ["date"],
         name: "Partners by Foo",
     });
-    assert.equal(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","date","04/2016")');
-    assert.equal(getCellFormula(model, "A4"), '=PIVOT.HEADER("1","date","10/2016")');
-    assert.equal(getCellFormula(model, "A5"), '=PIVOT.HEADER("1","date","12/2016")');
-    assert.equal(getCellFormula(model, "B3"), '=PIVOT("1","probability","date","04/2016","foo","1")');
-    assert.equal(getCellFormula(model, "B4"), '=PIVOT("1","probability","date","10/2016","foo","1")');
-    assert.equal(getCellFormula(model, "B5"), '=PIVOT("1","probability","date","12/2016","foo","1")');
+    assert.equal(getCellFormula(model, "A3"), '=PIVOT.HEADER(1,"date","04/2016")');
+    assert.equal(getCellFormula(model, "A4"), '=PIVOT.HEADER(1,"date","10/2016")');
+    assert.equal(getCellFormula(model, "A5"), '=PIVOT.HEADER(1,"date","12/2016")');
+    assert.equal(getCellFormula(model, "B3"), '=PIVOT(1,"probability","date","04/2016","foo",1)');
+    assert.equal(getCellFormula(model, "B4"), '=PIVOT(1,"probability","date","10/2016","foo",1)');
+    assert.equal(getCellFormula(model, "B5"), '=PIVOT(1,"probability","date","12/2016","foo",1)');
     assert.equal(getCellValue(model, "A3"), "April 2016");
     assert.equal(getCellValue(model, "A4"), "October 2016");
     assert.equal(getCellValue(model, "A5"), "December 2016");
@@ -190,18 +190,18 @@ test("pivot with one level of group bys", async (assert) => {
     assert.expect(7);
     const { model } = await createSpreadsheetFromPivot();
     assert.strictEqual(Object.values(getCells(model)).length, 30);
-    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","bar","false")');
-    assert.strictEqual(getCellFormula(model, "A4"), '=PIVOT.HEADER("1","bar","true")');
-    assert.strictEqual(getCellFormula(model, "A5"), '=PIVOT.HEADER("1")');
+    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER(1,"bar","false")');
+    assert.strictEqual(getCellFormula(model, "A4"), '=PIVOT.HEADER(1,"bar","true")');
+    assert.strictEqual(getCellFormula(model, "A5"), '=PIVOT.HEADER(1)');
     assert.strictEqual(
         getCellFormula(model, "B2"),
-        '=PIVOT.HEADER("1","foo","1","measure","probability")'
+        '=PIVOT.HEADER(1,"foo",1,"measure","probability")'
     );
     assert.strictEqual(
         getCellFormula(model, "C3"),
-        '=PIVOT("1","probability","bar","false","foo","2")'
+        '=PIVOT(1,"probability","bar","false","foo",2)'
     );
-    assert.strictEqual(getCellFormula(model, "F5"), '=PIVOT("1","probability")');
+    assert.strictEqual(getCellFormula(model, "F5"), '=PIVOT(1,"probability")');
 });
 
 test("pivot with two levels of group bys in rows", async (assert) => {
@@ -227,23 +227,23 @@ test("pivot with two levels of group bys in rows", async (assert) => {
         },
     });
     assert.strictEqual(Object.values(getCells(model)).length, 16);
-    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","bar","false")');
+    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER(1,"bar","false")');
     assert.deepEqual(getCell(model, "A3").style, { fillColor: "#f2f2f2", bold: true });
     assert.strictEqual(
         getCellFormula(model, "A4"),
-        '=PIVOT.HEADER("1","bar","false","product_id","41")'
+        '=PIVOT.HEADER(1,"bar","false","product_id",41)'
     );
     assert.deepEqual(getCell(model, "A4").style, { fillColor: "#f2f2f2" });
-    assert.strictEqual(getCellFormula(model, "A5"), '=PIVOT.HEADER("1","bar","true")');
+    assert.strictEqual(getCellFormula(model, "A5"), '=PIVOT.HEADER(1,"bar","true")');
     assert.strictEqual(
         getCellFormula(model, "A6"),
-        '=PIVOT.HEADER("1","bar","true","product_id","37")'
+        '=PIVOT.HEADER(1,"bar","true","product_id",37)'
     );
     assert.strictEqual(
         getCellFormula(model, "A7"),
-        '=PIVOT.HEADER("1","bar","true","product_id","41")'
+        '=PIVOT.HEADER(1,"bar","true","product_id",41)'
     );
-    assert.strictEqual(getCellFormula(model, "A8"), '=PIVOT.HEADER("1")');
+    assert.strictEqual(getCellFormula(model, "A8"), '=PIVOT.HEADER(1)');
 });
 
 test("verify that there is a record for an undefined header", async (assert) => {
@@ -275,7 +275,7 @@ test("verify that there is a record for an undefined header", async (assert) => 
             },
         },
     });
-    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","product_id","false")');
+    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER(1,"product_id","false")');
 });
 
 test("undefined date is inserted in pivot", async (assert) => {
@@ -306,7 +306,7 @@ test("undefined date is inserted in pivot", async (assert) => {
             },
         },
     });
-    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER("1","date:day","false")');
+    assert.strictEqual(getCellFormula(model, "A3"), '=PIVOT.HEADER(1,"date:day","false")');
 });
 
 test("pivot with two levels of group bys in cols", async (assert) => {
@@ -334,32 +334,32 @@ test("pivot with two levels of group bys in cols", async (assert) => {
     assert.strictEqual(Object.values(getCells(model)).length, 20);
     assert.strictEqual(getCellContent(model, "A1"), "");
     assert.deepEqual(getCell(model, "A4").style, { fillColor: "#f2f2f2", bold: true });
-    assert.strictEqual(getCellFormula(model, "B1"), '=PIVOT.HEADER("1","bar","false")');
+    assert.strictEqual(getCellFormula(model, "B1"), '=PIVOT.HEADER(1,"bar","false")');
     assert.strictEqual(
         getCellFormula(model, "B2"),
-        '=PIVOT.HEADER("1","bar","false","product_id","41")'
+        '=PIVOT.HEADER(1,"bar","false","product_id",41)'
     );
     assert.strictEqual(
         getCellFormula(model, "B3"),
-        '=PIVOT.HEADER("1","bar","false","product_id","41","measure","probability")'
+        '=PIVOT.HEADER(1,"bar","false","product_id",41,"measure","probability")'
     );
     assert.deepEqual(getCell(model, "C2").style, { fillColor: "#f2f2f2", bold: true });
-    assert.strictEqual(getCellFormula(model, "C1"), '=PIVOT.HEADER("1","bar","true")');
+    assert.strictEqual(getCellFormula(model, "C1"), '=PIVOT.HEADER(1,"bar","true")');
     assert.strictEqual(
         getCellFormula(model, "C2"),
-        '=PIVOT.HEADER("1","bar","true","product_id","37")'
+        '=PIVOT.HEADER(1,"bar","true","product_id",37)'
     );
     assert.strictEqual(
         getCellFormula(model, "C3"),
-        '=PIVOT.HEADER("1","bar","true","product_id","37","measure","probability")'
+        '=PIVOT.HEADER(1,"bar","true","product_id",37,"measure","probability")'
     );
     assert.strictEqual(
         getCellFormula(model, "D2"),
-        '=PIVOT.HEADER("1","bar","true","product_id","41")'
+        '=PIVOT.HEADER(1,"bar","true","product_id",41)'
     );
     assert.strictEqual(
         getCellFormula(model, "D3"),
-        '=PIVOT.HEADER("1","bar","true","product_id","41","measure","probability")'
+        '=PIVOT.HEADER(1,"bar","true","product_id",41,"measure","probability")'
     );
 });
 
@@ -383,8 +383,8 @@ test("pivot with count as measure", async (assert) => {
         },
     });
     assert.strictEqual(Object.keys(getCells(model)).length, 9);
-    assert.strictEqual(getCellFormula(model, "C2"), '=PIVOT.HEADER("1","measure","__count")');
-    assert.strictEqual(getCellFormula(model, "C3"), '=PIVOT("1","__count")');
+    assert.strictEqual(getCellFormula(model, "C2"), '=PIVOT.HEADER(1,"measure","__count")');
+    assert.strictEqual(getCellFormula(model, "C3"), '=PIVOT(1,"__count")');
 });
 
 test("pivot with two levels of group bys in cols with not enough cols", async (assert) => {
@@ -464,8 +464,8 @@ test("fetch metadata only once per model", async function (assert) {
         sheets: [{
             id: "sheet1",
             cells: {
-                A1: { content: `=PIVOT("1", "probability")` },
-                A2: { content: `=PIVOT("2", "probability")` },
+                A1: { content: `=PIVOT(1, "probability")` },
+                A2: { content: `=PIVOT(2, "probability")` },
             },
         }],
         pivots: {
@@ -574,7 +574,7 @@ test("user context is combined with pivot context to fetch data", async function
         sheets: [{
             id: "sheet1",
             cells: {
-                A1: { content: `=PIVOT("1", "probability")` },
+                A1: { content: `=PIVOT(1, "probability")` },
             },
         }],
         pivots: {
@@ -639,10 +639,10 @@ test("groupby week is sorted", async (assert) => {
             },
         },
     });
-    assert.strictEqual(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","date:week","15/2016")`);
-    assert.strictEqual(getCellFormula(model, "A4"), `=PIVOT.HEADER("1","date:week","43/2016")`);
-    assert.strictEqual(getCellFormula(model, "A5"), `=PIVOT.HEADER("1","date:week","49/2016")`);
-    assert.strictEqual(getCellFormula(model, "A6"), `=PIVOT.HEADER("1","date:week","50/2016")`);
+    assert.strictEqual(getCellFormula(model, "A3"), `=PIVOT.HEADER(1,"date:week","15/2016")`);
+    assert.strictEqual(getCellFormula(model, "A4"), `=PIVOT.HEADER(1,"date:week","43/2016")`);
+    assert.strictEqual(getCellFormula(model, "A5"), `=PIVOT.HEADER(1,"date:week","49/2016")`);
+    assert.strictEqual(getCellFormula(model, "A6"), `=PIVOT.HEADER(1,"date:week","50/2016")`);
 });
 
 test("Can save a pivot in a new spreadsheet", async (assert) => {
@@ -797,8 +797,8 @@ test("pivot with a domain", async (assert) => {
     });
     const domain = model.getters.getPivotDefinition("1").domain;
     assert.deepEqual(domain, [["bar", "=", true]], "It should have the correct domain");
-    assert.strictEqual(getCellFormula(model, "A3"), `=PIVOT.HEADER("1","bar","true")`);
-    assert.strictEqual(getCellFormula(model, "A4"), `=PIVOT.HEADER("1")`);
+    assert.strictEqual(getCellFormula(model, "A3"), `=PIVOT.HEADER(1,"bar","true")`);
+    assert.strictEqual(getCellFormula(model, "A4"), `=PIVOT.HEADER(1)`);
 });
 
 test("Insert in spreadsheet is disabled when no measure is specified", async (assert) => {
@@ -884,7 +884,7 @@ test("pivot with a quote in name", async function (assert) {
             },
         },
     });
-    assert.equal(getCellContent(model, "B1"), `=PIVOT.HEADER("1","display_name","name with \\"")`);
+    assert.equal(getCellContent(model, "B1"), `=PIVOT.HEADER(1,"display_name","name with \\"")`);
 });
 
 test("group by related field with archived record", async function (assert) {
@@ -904,9 +904,9 @@ test("group by related field with archived record", async function (assert) {
             },
         },
     });
-    assert.equal(getCellContent(model, "B1"), `=PIVOT.HEADER("1","product_id","37")`);
-    assert.equal(getCellContent(model, "C1"), `=PIVOT.HEADER("1","product_id","41")`);
-    assert.equal(getCellContent(model, "D1"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellContent(model, "B1"), `=PIVOT.HEADER(1,"product_id",37)`);
+    assert.equal(getCellContent(model, "C1"), `=PIVOT.HEADER(1,"product_id",41)`);
+    assert.equal(getCellContent(model, "D1"), `=PIVOT.HEADER(1)`);
 });
 
 test("group by regular field with archived record", async function (assert) {
@@ -928,10 +928,10 @@ test("group by regular field with archived record", async function (assert) {
             },
         },
     });
-    assert.equal(getCellContent(model, "A3"), `=PIVOT.HEADER("1","foo","1")`);
-    assert.equal(getCellContent(model, "A4"), `=PIVOT.HEADER("1","foo","2")`);
-    assert.equal(getCellContent(model, "A5"), `=PIVOT.HEADER("1","foo","17")`);
-    assert.equal(getCellContent(model, "A6"), `=PIVOT.HEADER("1")`);
+    assert.equal(getCellContent(model, "A3"), `=PIVOT.HEADER(1,"foo",1)`);
+    assert.equal(getCellContent(model, "A4"), `=PIVOT.HEADER(1,"foo",2)`);
+    assert.equal(getCellContent(model, "A5"), `=PIVOT.HEADER(1,"foo",17)`);
+    assert.equal(getCellContent(model, "A6"), `=PIVOT.HEADER(1)`);
 });
 
 test("can select a Pivot from cell formula", async function (assert) {

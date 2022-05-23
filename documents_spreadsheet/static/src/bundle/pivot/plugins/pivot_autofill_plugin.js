@@ -6,6 +6,7 @@ import { formats } from "../../o_spreadsheet/constants";
 import {
     getFirstPivotFunction,
     getNumberOfPivotFormulas,
+    makePivotFormula,
 } from "../pivot_helpers";
 
 const { astToFormula } = spreadsheet;
@@ -61,9 +62,9 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 return formula;
               }
               if (functionName === "PIVOT") {
-                return this._buildValueFormula(evaluatedArgs);
+                return makePivotFormula("PIVOT", evaluatedArgs);
               } else if (functionName === "PIVOT.HEADER") {
-                return this._buildHeaderFormula(evaluatedArgs);
+                return makePivotFormula("PIVOT.HEADER", evaluatedArgs);
               }
               return formula;
             }
@@ -224,7 +225,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             }
             measure = cols.pop();
         }
-        return this._buildValueFormula(this._buildArgs(pivotId, measure, rows, cols));
+        return makePivotFormula("PIVOT", this._buildArgs(pivotId, measure, rows, cols));
     }
     /**
      * Get the next value to autofill from a pivot header ("=PIVOT.HEADER()")
@@ -292,7 +293,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                     groupValues.push(currentCols.values[i]);
                 }
             }
-            return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, [], groupValues));
+            return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, [], groupValues));
         } else {
             // UP-DOWN
             const colIndex = currentElement.cols.length - 1;
@@ -309,7 +310,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 const cols = [...measureCell.values];
                 const measure = cols.pop();
                 const rows = [...table.getCellsFromRowAtIndex(rowIndex).values];
-                return this._buildValueFormula(this._buildArgs(pivotId, measure, rows, cols));
+                return makePivotFormula("PIVOT", this._buildArgs(pivotId, measure, rows, cols));
             } else {
                 // Targeting a col.header
                 const cols = [];
@@ -317,7 +318,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 for (let i = 0; i <= nextIndex;i++) {
                     cols.push(currentCols.values[i]);
                 }
-                return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, [], cols));
+                return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, [], cols));
             }
         }
     }
@@ -366,7 +367,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             const measureCell = table.getCellFromMeasureRowAtIndex(colIndex);
             const values = [...measureCell.values];
             const measure = values.pop();
-            return this._buildValueFormula(
+            return makePivotFormula("PIVOT", 
                 this._buildArgs(pivotId, measure, currentElement.rows, values)
             );
         } else {
@@ -384,7 +385,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 }
                 rows = [...table.getCellsFromRowAtIndex(nextIndex).values];
             }
-            return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, rows, []));
+            return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, rows, []));
         }
     }
     /**
@@ -414,7 +415,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         for (let i = 0; i <= index;i++) {
             cols.push(currentElement.cols[i]);
         }
-        return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, [], cols));
+        return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, [], cols));
     }
     /**
      * Create a row header from a value
@@ -431,7 +432,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         if (!rows) {
             return "";
         }
-        return this._buildHeaderFormula(this._buildArgs(pivotId, undefined, rows, []));
+        return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, rows, []));
     }
     /**
      * Parse the arguments of a pivot function to find the col values and
@@ -619,30 +620,6 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             }
         }
         return args;
-    }
-    /**
-     * Create a pivot header formula at col/row
-     *
-     * @param {Array<string>} args
-     *
-     * @private
-     * @returns {string}
-     */
-    _buildHeaderFormula(args) {
-        return `=PIVOT.HEADER("${args
-            .map((arg) => arg.toString().replace(/"/g, '\\"'))
-            .join('","')}")`;
-    }
-    /**
-     * Create a pivot formula at col/row
-     *
-     * @param {Array<string>} args
-     *
-     * @private
-     * @returns {string}
-     */
-    _buildValueFormula(args) {
-        return `=PIVOT("${args.map((arg) => arg.toString().replace(/"/g, '\\"')).join('","')}")`;
     }
 }
 

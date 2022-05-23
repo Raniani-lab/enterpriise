@@ -17,7 +17,7 @@
  * @property {PivotDefinition} definition
  */
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
-import { getFirstPivotFunction } from "../pivot_helpers";
+import { getFirstPivotFunction, makePivotFormula } from "../pivot_helpers";
 import { getMaxObjectId } from "../../o_spreadsheet/helpers";
 import { HEADER_STYLE, TOP_LEVEL_STYLE, MEASURE_STYLE } from "../../o_spreadsheet/constants";
 import PivotDataSource from "../pivot_data_source";
@@ -423,9 +423,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
             sheetId,
             col,
             row,
-            content: `=${formula}("${args
-                .map((arg) => arg.toString().replace(/"/g, '\\"'))
-                .join('","')}")`,
+            content: makePivotFormula(formula, args),
         });
     }
 

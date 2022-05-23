@@ -8,10 +8,10 @@ class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     planning_generation_interval = fields.Integer("Rate Of Shift Generation", required=True,
-        related="company_id.planning_generation_interval", readonly=False, help="Delay for the rate at which recurring shifts should be generated")
+        related="company_id.planning_generation_interval", readonly=False)
 
     planning_allow_self_unassign = fields.Boolean("Allow Unassignment", readonly=False,
-        related="company_id.planning_allow_self_unassign", help="Let your employees un-assign themselves from shifts when unavailable")
+        related="company_id.planning_allow_self_unassign")
 
     planning_self_unassign_days_before = fields.Integer(
         "Days before shift for unassignment",

@@ -55,7 +55,8 @@ class Planning(models.Model):
     manager_id = fields.Many2one(related='employee_id.parent_id', store=True)
     job_title = fields.Char(related='employee_id.job_title')
     company_id = fields.Many2one('res.company', string="Company", required=True, compute="_compute_planning_slot_company_id", store=True, readonly=False)
-    role_id = fields.Many2one('planning.role', string="Role", compute="_compute_role_id", store=True, readonly=False, copy=True, group_expand='_read_group_role_id')
+    role_id = fields.Many2one('planning.role', string="Role", compute="_compute_role_id", store=True, readonly=False, copy=True, group_expand='_read_group_role_id',
+        help="Define the roles your resources perform (e.g. Chef, Bartender, Waiter...). Create open shifts for the roles you need to complete a mission. Then, assign those open shifts to the resources that are available.")
     color = fields.Integer("Color", compute='_compute_color')
     was_copied = fields.Boolean("This Shift Was Copied From Previous Week", default=False, readonly=True)
     access_token = fields.Char("Security Token", default=lambda self: str(uuid.uuid4()), required=True, copy=False, readonly=True)
@@ -87,7 +88,6 @@ class Planning(models.Model):
     allocated_hours = fields.Float("Allocated Time", compute='_compute_allocated_hours', store=True, readonly=False)
     allocated_percentage = fields.Float("Allocated Time %", default=100,
         compute='_compute_allocated_percentage', store=True, readonly=False,
-        help="Percentage of time the employee is supposed to work during the shift.",
         group_operator="avg")
     working_days_count = fields.Float("Working Days", compute='_compute_working_days_count', store=True)
     duration = fields.Float("Duration", compute="_compute_slot_duration")
@@ -111,7 +111,9 @@ class Planning(models.Model):
 
     # Recurring (`repeat_` fields are none stored, only used for UI purpose)
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
-    repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat', copy=True)
+    repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat', copy=True,
+        help="Modifications made to a shift only impact the current shift and not the other ones that are part of the recurrence. The same goes when deleting a recurrent shift. Disable this option to stop the recurrence.\n"
+        "To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode.")
     repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat_interval', inverse='_inverse_repeat', copy=True)
     repeat_unit = fields.Selection([
         ('day', 'Days'),
@@ -121,7 +123,7 @@ class Planning(models.Model):
     ], default='week', compute='_compute_repeat_unit', inverse='_inverse_repeat', required=True)
     repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until'), ('x_times', 'Number of Repetitions')],
         string='Repeat Type', default='forever', compute='_compute_repeat_type', inverse='_inverse_repeat', copy=True)
-    repeat_until = fields.Date("Repeat Until", compute='_compute_repeat_until', inverse='_inverse_repeat', copy=True, help="If set, the recurrence stop at that date. Otherwise, the recurrence is applied indefinitely.")
+    repeat_until = fields.Date("Repeat Until", compute='_compute_repeat_until', inverse='_inverse_repeat', copy=True)
     repeat_number = fields.Integer("Repetitions", default=1, compute='_compute_repeat_number', inverse='_inverse_repeat', copy=True)
     confirm_delete = fields.Boolean('Confirm Slots Deletion', compute='_compute_confirm_delete')
 
@@ -1732,7 +1734,8 @@ class PlanningPlanning(models.Model):
     include_unassigned = fields.Boolean("Includes Open Shifts", default=True)
     access_token = fields.Char("Security Token", default=_default_access_token, required=True, copy=False, readonly=True)
     slot_ids = fields.Many2many('planning.slot')
-    company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company,
+        help="Company linked to the material resource. Leave empty for the resource to be available in every company.")
     date_start = fields.Date('Date Start', compute='_compute_dates')
     date_end = fields.Date('Date End', compute='_compute_dates')
     allow_self_unassign = fields.Boolean('Let Employee Unassign Themselves', related='company_id.planning_allow_self_unassign')

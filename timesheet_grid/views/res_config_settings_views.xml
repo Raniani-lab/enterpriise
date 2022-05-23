@@ -16,10 +16,10 @@
                         </div>
                         <div class="mt16">
                             <div class="o_row w-30">
-                                <span class="o_light_label"><label class="fw-bold" for="timesheet_min_duration"/><field name="timesheet_min_duration" class="col-lg-2 text-center"/> minutes</span>
+                                <span class="o_light_label" title="Timesheets encoded via the timer that do not meet the minimal duration will automatically be rounded up to the defined value. For instance, if you stop your timer at 00:04:36, the duration of the timesheet entry will automatically be rounded up to 00:15 (assuming you have a minimal duration of 15 min). We recommend having the same value for the minimal duration and for the round up."><label class="fw-bold" for="timesheet_min_duration"/><field name="timesheet_min_duration" class="col-lg-2 text-center"/> minutes</span>
                             </div>
                             <div class="o_row">
-                                <span class="o_light_label"><label class="fw-bold" for="timesheet_rounding"/><field name="timesheet_rounding" class="col-lg-2 text-center"/> minutes</span>
+                                <span class="o_light_label" title="The duration of timesheets encoded through the timer will automatically be rounded up to this number. For instance, if you stop your timer at 00:16:56, the duration of the timesheet entry will automatically be rounded up to 00:30 (assuming you have a round up of 15 min). We recommend having the same value for the minimal duration and for the round up."><label class="fw-bold" for="timesheet_rounding"/><field name="timesheet_rounding" class="col-lg-2 text-center"/> minutes</span>
                             </div>
                         </div>
                     </div>

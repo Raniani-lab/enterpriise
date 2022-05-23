@@ -57,11 +57,12 @@ class HelpdeskTeam(models.Model):
         help="Stages the team will use. This team's tickets will only be able to be in these stages.")
     auto_assignment = fields.Boolean("Automatic Assignment")
     assign_method = fields.Selection([
-        ('randomly', 'New tickets are evenly distributed among users (Round-robin)'),
-        ('balanced', 'New tickets are assigned to the users with the least number of open tickets (Balanced)')],
-        string='Assignment Method', default='randomly',
-        required=True)
-    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids(), default=lambda self: self.env.user, required=True)
+        ('randomly', 'Each user is assigned an equal number of tickets'),
+        ('balanced', 'Each user has an equal number of open tickets')],
+        string='Assignment Method', default='randomly', required=True,
+        help="New tickets will automatically be assigned to the team members that are available, according to their working hours and their time off.")
+    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids(),
+        default=lambda self: self.env.user, required=True)
     privacy_visibility = fields.Selection([
         ('invited_internal', 'Invited internal users'),
         ('internal', 'All internal users'),
@@ -84,28 +85,28 @@ class HelpdeskTeam(models.Model):
     has_external_mail_server = fields.Boolean(compute='_compute_has_external_mail_server')
     allow_portal_ticket_closing = fields.Boolean('Closure by Customers')
     use_website_helpdesk_form = fields.Boolean('Website Form', compute='_compute_use_website_helpdesk_form', readonly=False, store=True)
-    use_website_helpdesk_livechat = fields.Boolean('Live Chat',
-        help="In Channel: You can create a new ticket by typing /helpdesk [ticket title]. You can search ticket by typing /helpdesk_search [keyword],[ticket number],.")
+    use_website_helpdesk_livechat = fields.Boolean('Live Chat')
     use_website_helpdesk_forum = fields.Boolean('Community Forum')
     use_website_helpdesk_slides = fields.Boolean('Enable eLearning', compute='_compute_use_website_helpdesk_slides', readonly=False, store=True)
     use_website_helpdesk_knowledge = fields.Boolean('Knowledge', compute='_compute_use_website_helpdesk_knowledge', readonly=False, store=True)
     use_helpdesk_timesheet = fields.Boolean(
         'Timesheets', compute='_compute_use_helpdesk_timesheet',
-        store=True, readonly=False, help="This requires to have project module installed.")
+        store=True, readonly=False)
     show_knowledge_base = fields.Boolean(compute='_compute_show_knowledge_base')
     use_helpdesk_sale_timesheet = fields.Boolean(
         'Time Billing', compute='_compute_use_helpdesk_sale_timesheet', store=True,
-        readonly=False, help="Reinvoice the time spent on ticket through tasks.")
+        readonly=False)
     use_credit_notes = fields.Boolean('Refunds')
     use_coupons = fields.Boolean('Coupons')
-    use_fsm = fields.Boolean('Field Service', help='Convert tickets into Field Service tasks')
+    use_fsm = fields.Boolean('Field Service')
     use_product_returns = fields.Boolean('Returns')
     use_product_repairs = fields.Boolean('Repairs')
     use_twitter = fields.Boolean('Twitter')
     use_rating = fields.Boolean('Customer Ratings')
     portal_show_rating = fields.Boolean(
-        'Ratings on Website', compute='_compute_portal_show_rating', store=True,
-        readonly=False)
+        'Ratings on Website', compute='_compute_portal_show_rating', store=True, readonly=False,
+        help="If enabled, portal users will have access to your customer satisfaction statistics from the last 30 days in their portal.\n"
+             "They will only have access to the ratings themselves, and not to the written feedback if any was left. You can also manually hide ratings of your choosing.")
     use_sla = fields.Boolean('SLA Policies')
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Hours',
@@ -124,13 +125,11 @@ class HelpdeskTeam(models.Model):
         help="Period of inactivity after which tickets will be automatically closed.")
     from_stage_ids = fields.Many2many('helpdesk.stage', relation='team_stage_auto_close_from_rel',
         string='In Stages',
-        domain="[('id', 'in', stage_ids)]",
-        help="Inactive tickets in these stages will be automatically closed. Leave empty to take into account all the stages from the team.")
+        domain="[('id', 'in', stage_ids)]")
     to_stage_id = fields.Many2one('helpdesk.stage',
         string='Move to Stage',
         compute="_compute_assign_stage_id", readonly=False, store=True,
-        domain="[('id', 'in', stage_ids)]",
-        help="Stage to which inactive tickets will be automatically moved once the period of inactivity is reached.")
+        domain="[('id', 'in', stage_ids)]")
     display_alias_name = fields.Char(string='Alias email', compute='_compute_display_alias_name')
     alias_email_from = fields.Char(compute='_compute_alias_email_from')
 
@@ -962,24 +961,23 @@ class HelpdeskStage(models.Model):
     description = fields.Text(translate=True)
     sequence = fields.Integer('Sequence', default=10)
     fold = fields.Boolean(
-        'Folded in Kanban')
+        'Folded in Kanban',
+        help='Tickets in a folded stage are considered as closed.')
     team_ids = fields.Many2many(
         'helpdesk.team', relation='team_stage_rel', string='Teams',
-        default=_default_team_ids,
-        help='Specific team that uses this stage. Other teams will not be able to see or use this stage.')
+        default=_default_team_ids)
     template_id = fields.Many2one(
         'mail.template', 'Email Template',
         domain="[('model', '=', 'helpdesk.ticket')]",
-        help="Automated email sent to the ticket's customer when the ticket reaches this stage.")
+        help="Email automatically sent to the customer when the ticket reaches this stage.\n"
+             "By default, the email will be sent from the email alias of the helpdesk team.\n"
+             "Otherwise it will be sent from the company's email address, or from the catchall (as defined in the System Parameters).")
     legend_blocked = fields.Char(
-        'Red Kanban Label', default=lambda s: _('Blocked'), translate=True, required=True,
-        help='Override the default value displayed for the blocked state for kanban selection, when the task or issue is in that stage.')
+        'Red Kanban Label', default=lambda s: _('Blocked'), translate=True, required=True)
     legend_done = fields.Char(
-        'Green Kanban Label', default=lambda s: _('Ready'), translate=True, required=True,
-        help='Override the default value displayed for the done state for kanban selection, when the task or issue is in that stage.')
+        'Green Kanban Label', default=lambda s: _('Ready'), translate=True, required=True)
     legend_normal = fields.Char(
-        'Grey Kanban Label', default=lambda s: _('In Progress'), translate=True, required=True,
-        help='Override the default value displayed for the normal state for kanban selection, when the task or issue is in that stage.')
+        'Grey Kanban Label', default=lambda s: _('In Progress'), translate=True, required=True)
     ticket_count = fields.Integer(compute='_compute_ticket_count')
 
     def _compute_ticket_count(self):
@@ -1074,27 +1072,24 @@ class HelpdeskSLA(models.Model):
     active = fields.Boolean('Active', default=True)
     team_id = fields.Many2one('helpdesk.team', 'Team', required=True)
     ticket_type_ids = fields.Many2many(
-        'helpdesk.ticket.type', string='Types',
-        help="Only apply the SLA to a specific ticket type. If left empty it will apply to all types.")
+        'helpdesk.ticket.type', string='Types')
     tag_ids = fields.Many2many(
-        'helpdesk.tag', string='Tags',
-        help="Only apply the SLA to tickets with specific tags. If left empty it will apply to all tags.")
+        'helpdesk.tag', string='Tags')
     stage_id = fields.Many2one(
         'helpdesk.stage', 'Target Stage',
         help='Minimum stage a ticket needs to reach in order to satisfy this SLA.')
     exclude_stage_ids = fields.Many2many(
         'helpdesk.stage', string='Excluding Stages', copy=True,
         domain="[('id', '!=', stage_id.id)]",
-        help='The amount of time the ticket spends in this stage will not be taken into account when evaluating the status of the SLA Policy.')
+        help="The time spent in these stages won't be taken into account in the calculation of the SLA.")
     priority = fields.Selection(
         TICKET_PRIORITY, string='Priority',
-        default='1', required=True,
-        help='Tickets under this priority will not be taken into account.')
+        default='1', required=True)
     partner_ids = fields.Many2many(
-        'res.partner', string="Customers",
-        help="This SLA Policy will apply to any tickets from the selected customers. Leave empty to apply this SLA Policy to any ticket without distinction.")
+        'res.partner', string="Customers")
     company_id = fields.Many2one('res.company', 'Company', related='team_id.company_id', readonly=True, store=True)
-    time = fields.Float('In', help='Time to reach given stage based on ticket creation date', default=0, required=True)
+    time = fields.Float('In', default=0, required=True,
+        help='Maximum number of working hours a ticket should take to reach the target stage, starting from the date it was created.')
     ticket_count = fields.Integer(compute='_compute_ticket_count')
 
     def _compute_ticket_count(self):

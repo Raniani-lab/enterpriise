@@ -22,34 +22,18 @@ tour.register('sign_tour', {
     content: _t("Try out this sample contract."),
     position: "bottom",
 }, {
-    trigger: 'iframe .o_sign_field_type_toolbar .o_sign_field_type_button:contains("' + _t('Name') + '")',
-    content: Markup(_t("<b>Drag & drop “Name”</b> into the document.")),
-    position: "right",
-}, {
-    trigger: 'iframe .o_sign_field_type_toolbar .o_sign_field_type_button:contains("' + _t('Date') + '")',
-    content: Markup(_t("<b>Drag & drop “Date”</b> into the document.")),
-    position: "right",
-}, {
     trigger: 'iframe .o_sign_field_type_toolbar .o_sign_field_type_button:contains("' + _t('Signature') + '")',
     content: Markup(_t("And finally, <b>drag & drop “Signature”</b> into the bottom of the document.")),
-    position: "right",
+    position: "bottom",
+    run: "click",
 }, {
     trigger: '.o_control_panel .o_sign_template_sign_now',
     content: Markup(_t("Well done, your document is ready!<br>Let's sign it directly.")),
     position: "bottom",
 }, {
-    trigger: '.modal-dialog button[name="sign_directly_without_mail"]',
+    trigger: '.modal-dialog button[name="sign_directly"]',
     content: _t("Ok, let’s sign the document now."),
     position: "left",
-}, {
-    trigger: 'iframe .o_sign_sign_item_navigator',
-    content: _t("Go to the first area you have to fill in."),
-    position: "bottom",
-}, {
-    trigger: 'iframe .o_sign_sign_item_navigator',
-    alt_trigger: "iframe .o_sign_sign_item[placeholder='" + _t("Date") + "']",
-    content: _t("Your name has been auto-completed. Let’s continue!"),
-    position: "bottom",
 }, {
     trigger: 'iframe .o_sign_sign_item_navigator',
     content: _t("Let’s sign the document!"),
@@ -60,11 +44,17 @@ tour.register('sign_tour', {
     content: Markup(_t("Draw your most beautiful signature!<br>You can also create one automatically or load a signature from your computer.")),
     position: "bottom",
 }, {
-    trigger: '.modal-dialog button:contains("' + _t('Adopt & Sign') + '")',
-    content: _t("Confirm and continue."),
+    trigger: '.o_web_sign_auto_button',
+    content: Markup(_t("We chose to use the automatic option")),
     position: "bottom",
 }, {
+    trigger: 'footer.modal-footer button.btn-primary:enabled',
+    content: _t("Confirm and continue."),
+    position: "bottom",
+    run: "click"
+}, {
     trigger: '.o_sign_validate_banner button.o_validate_button',
+    extra_trigger: 'iframe body:not(:has(footer.modal-footer button.btn-primary))',
     content: Markup(_t("Great, the document is signed!<br>Let’s validate it.")),
     position: "top",
 }, {
@@ -108,7 +98,7 @@ tour.register('sign_tour_with_multiple_signatures', {
     content: Markup(_t("Well done, your document is ready!<br>Let's sign it directly.")),
     position: "bottom",
 }, {
-    trigger: '.modal-dialog button[name="sign_directly_without_mail"]',
+    trigger: '.modal-dialog button[name="sign_directly"]',
     content: _t("Ok, let’s sign the document now."),
     position: "left",
 }, {

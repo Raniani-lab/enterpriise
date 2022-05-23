@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 class AccountJournal(models.Model):
     _inherit = "account.journal"
@@ -28,7 +28,7 @@ class AccountJournal(models.Model):
     next_link_synchronization = fields.Datetime("Online Link Next synchronization", related='account_online_link_id.next_refresh')
     expiring_synchronization_date = fields.Date(related='account_online_link_id.expiring_synchronization_date')
     expiring_synchronization_due_day = fields.Integer(compute='_compute_expiring_synchronization_due_day')
-    account_online_account_id = fields.Many2one('account.online.account', ondelete='set null')
+    account_online_account_id = fields.Many2one('account.online.account', copy=False, ondelete='set null')
     account_online_link_id = fields.Many2one('account.online.link', related='account_online_account_id.account_online_link_id', readonly=True, store=True)
     account_online_link_state = fields.Selection(related="account_online_link_id.state", readonly=True)
     bank_statement_creation_groupby = fields.Selection(
@@ -47,6 +47,11 @@ class AccountJournal(models.Model):
                 record.expiring_synchronization_due_day = due_day_delta.days
             else:
                 record.expiring_synchronization_due_day = 0
+
+    @api.constrains('account_online_account_id')
+    def _check_account_online_account_id(self):
+        if len(self.account_online_account_id.journal_ids) > 1:
+            raise ValidationError(_('You cannot have two journals associated with the same Online Account.'))
 
     @api.model
     def _cron_fetch_online_transactions(self):

@@ -10,7 +10,7 @@ class HelpdeskTeam(models.Model):
     _inherit = 'helpdesk.team'
 
     project_id = fields.Many2one("project.project", string="Project", ondelete="restrict", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]",
-        help="Project to which the tickets (and the timesheets) will be linked by default.")
+        help="Project to which the timesheets of this helpdesk team's tickets will be linked.")
     timesheet_encode_uom_id = fields.Many2one('uom.uom', related='company_id.timesheet_encode_uom_id')
     total_timesheet_time = fields.Integer(compute="_compute_total_timesheet_time")
 
@@ -117,7 +117,9 @@ class HelpdeskTicket(models.Model):
 
     project_id = fields.Many2one(
         "project.project", related="team_id.project_id", readonly=True, store=True)
-    timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets')
+    timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets',
+        help="Time spent on this ticket. By default, your timesheets will be linked to the sales order item of your ticket.\n"
+             "Remove the sales order item to make your timesheet entries non billable.")
     use_helpdesk_timesheet = fields.Boolean('Timesheet activated on Team', related='team_id.use_helpdesk_timesheet', readonly=True)
     display_timesheet_timer = fields.Boolean("Display Timesheet Time", compute='_compute_display_timesheet_timer')
     total_hours_spent = fields.Float("Hours Spent", compute='_compute_total_hours_spent', default=0, compute_sudo=True, store=True)

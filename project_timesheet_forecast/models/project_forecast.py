@@ -13,7 +13,8 @@ class Forecast(models.Model):
     _inherit = 'planning.slot'
 
     allow_timesheets = fields.Boolean("Allow timesheets", related='project_id.allow_timesheets', help="Timesheets can be logged on this slot.", readonly=True)
-    effective_hours = fields.Float("Effective Hours", compute='_compute_effective_hours', compute_sudo=True, store=True, help="Number of hours on the employee's Timesheets for this task (and its sub-tasks) during the timeframe of the shift.")
+    effective_hours = fields.Float("Effective Hours", compute='_compute_effective_hours', compute_sudo=True, store=True,
+        help="Number of hours the employee recorded on their Timesheetes for this task (and its sub-tasks) for the period of this shift.")
     timesheet_ids = fields.Many2many('account.analytic.line', compute='_compute_effective_hours', compute_sudo=True)
     can_open_timesheets = fields.Boolean(compute='_compute_can_open_timesheet')
     percentage_hours = fields.Float("Progress", compute='_compute_percentage_hours', compute_sudo=True, store=True)

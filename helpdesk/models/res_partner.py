@@ -10,7 +10,8 @@ class ResPartner(models.Model):
     ticket_count = fields.Integer("Tickets", compute='_compute_ticket_count')
     sla_ids = fields.Many2many(
         'helpdesk.sla', 'helpdesk_sla_res_partner_rel',
-        'res_partner_id', 'helpdesk_sla_id', string='SLA Policies')
+        'res_partner_id', 'helpdesk_sla_id', string='SLA Policies',
+        help="SLA Policies that will automatically apply to the tickets submitted by this customer.")
 
     def _compute_ticket_count(self):
         # retrieve all children partners and prefetch 'parent_id' on them

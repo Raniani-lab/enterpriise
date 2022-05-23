@@ -32,7 +32,11 @@ class HelpdeskTicket(models.Model):
     sale_line_id = fields.Many2one(
         'sale.order.line', string="Sales Order Item", tracking=True,
         compute="_compute_sale_line_id", store=True, readonly=False,
-        domain="[('company_id', '=', company_id), ('is_service', '=', True), ('order_partner_id', 'child_of', commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]")
+        domain="[('company_id', '=', company_id), ('is_service', '=', True), ('order_partner_id', 'child_of', commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]",
+        help="Sales Order Item to which the time spent on this ticket will be added in order to be invoiced to your customer.\n"
+             "By default the last prepaid sales order item that has time remaining will be selected.\n"
+             "Remove the sales order item in order to make this ticket non-billable.\n"
+             "You can also change or remove the sales order item of each timesheet entry individually.")
     project_sale_order_id = fields.Many2one('sale.order', string="Project's sale order", related='project_id.sale_order_id')
     remaining_hours_available = fields.Boolean(related="sale_line_id.remaining_hours_available")
     remaining_hours_so = fields.Float('Remaining Hours on SO', compute='_compute_remaining_hours_so', search='_search_remaining_hours_so')
@@ -199,5 +203,4 @@ class HelpdeskSLA(models.Model):
 
     sale_line_ids = fields.Many2many(
         'sale.order.line', string="Sales Order Items",
-        domain="[('is_service', '=', True)]",
-        help="This SLA Policy will apply to any tickets with the selected Sales Order Item as reference. Leave empty to apply this SLA Policy to any ticket without distinction.")
+        domain="[('is_service', '=', True)]")

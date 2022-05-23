@@ -16,9 +16,14 @@ class Employee(models.Model):
         return str(uuid.uuid4())
 
     default_planning_role_id = fields.Many2one('planning.role', string="Default Planning Role",
-                                               compute='_compute_default_planning_role_id',
-                                               groups='hr.group_hr_user', store=True, readonly=False)
-    planning_role_ids = fields.Many2many(related='resource_id.role_ids', readonly=False, groups='hr.group_hr_user')
+        compute='_compute_default_planning_role_id', groups='hr.group_hr_user', store=True, readonly=False,
+        help="Role that will be selected by default when creating a shift for this employee.\n"
+             "This role will also have precedence over the other roles of the employee when planning orders.")
+    planning_role_ids = fields.Many2many(related='resource_id.role_ids', readonly=False, groups='hr.group_hr_user',
+         help="Roles that the employee can fill in. When creating a shift for this employee, only the shift templates for these roles will be displayed.\n"
+             "Similarly, only the open shifts available for these roles will be sent to the employee when the schedule is published.\n"
+             "Additionally, the employee will only be assigned orders for these roles (with the default planning role having precedence over the other ones).\n"
+             "Leave empty for the employee to be assigned shifts regardless of the role.")
     employee_token = fields.Char('Security Token', default=_default_employee_token, groups='hr.group_hr_user',
                                  copy=False, readonly=True)
     flexible_hours = fields.Boolean(related='resource_id.flexible_hours', readonly=False)

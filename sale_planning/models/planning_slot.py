@@ -17,7 +17,9 @@ class PlanningSlot(models.Model):
     start_datetime = fields.Datetime(required=False)
     end_datetime = fields.Datetime(required=False)
     sale_line_id = fields.Many2one('sale.order.line', string='Sales Order Item', domain=[('product_id.type', '=', 'service'), ('state', 'not in', ['draft', 'sent'])],
-                                   index=True, group_expand='_group_expand_sale_line_id')
+        index=True, group_expand='_group_expand_sale_line_id',
+        help="Sales order item for which this shift will be performed. When sales orders are automatically planned,"
+             " the remaining hours of the sales order item, as well as the role defined on the service, are taken into account.")
     sale_order_id = fields.Many2one('sale.order', string='Sales Order', related='sale_line_id.order_id', store=True)
     role_product_ids = fields.One2many('product.template', related='role_id.product_ids')
     sale_line_plannable = fields.Boolean(related='sale_line_id.product_id.planning_enabled')

@@ -174,6 +174,8 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
             self.assertEqual(self.subscription.end_date, datetime.date(2022, 2, 2))
             self.env['sale.order']._cron_recurring_create_invoice()
             invoice = self.subscription.invoice_ids.sorted('date')[-1]
+            tx = self.env['payment.transaction'].search([('invoice_ids', 'in', invoice.ids)])
+            self.subscription.reconcile_pending_transaction(tx)
             # Two products are invoiced the first time
             self.assertEqual(len(invoice.invoice_line_ids), 2, 'Two products are invoiced the first time')
             lines = self.subscription.order_line.sorted('id')
@@ -196,6 +198,8 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
             self.subscription.order_line.filtered(lambda l: l.pricing_id.unit == 'month').write({'next_invoice_date': datetime.datetime(2022, 1, 3)})
             self.env['sale.order']._cron_recurring_create_invoice()
             invoice = self.subscription.invoice_ids.sorted('date')[-1]
+            tx = self.env['payment.transaction'].search([('invoice_ids', 'in', invoice.ids)])
+            self.subscription.reconcile_pending_transaction(tx)
             self.assertEqual(invoice.date, datetime.date(2022, 1, 3), 'We invoiced today')
             self.assertEqual(len(invoice.invoice_line_ids), 2, 'After one year, both lines are invoiced')
 

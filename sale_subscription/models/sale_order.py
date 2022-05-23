@@ -1044,7 +1044,6 @@ class SaleOrder(models.Model):
                     continue
                 if auto_commit:
                     self.env.cr.commit()
-
                 # Handle automatic payment or invoice posting
                 existing_invoices = subscription._handle_automatic_invoices(auto_commit, invoice)
                 account_moves |= existing_invoices
@@ -1082,13 +1081,15 @@ class SaleOrder(models.Model):
         invoiceable_line_ids = self._get_invoiceable_lines(final=False)
         invoices = super()._create_invoices(grouped=grouped, final=final, date=date)
         line_to_update_ids = self.env['sale.order.line']
+        # update next_invoice_date if not payment_mode != success payment
+        # For success_payment payement_mode, the update is done in reconcile_pending_transaction
         for line in invoiceable_line_ids:
-            if line.order_id.is_subscription and line.order_id.state == 'sale':
+            if line.order_id.is_subscription and line.order_id.state == 'sale' and line.order_id.payment_mode != 'success_payment':
                 line_to_update_ids |= line
+
         line_to_update_ids._update_next_invoice_date()
         line_to_update_ids._reset_subscription_qty_to_invoice(to_invoice=False)
         return invoices
-
 
     def _subscription_auto_close_and_renew(self, all_invoiceable_lines):
         """ Handle contracts that need to be automatically closed/set to renews.
@@ -1231,7 +1232,6 @@ class SaleOrder(models.Model):
             reference = tx_obj._compute_reference(
                 payment_token.acquirer_id.provider, prefix=subscription.client_order_ref or subscription.name
             )
-            # There is no sub_id field to rely on
             values.append({
                 'acquirer_id': payment_token.acquirer_id.id,
                 'reference': reference,
@@ -1389,5 +1389,15 @@ class SaleOrder(models.Model):
                 )
                 tx.invoice_ids = invoice.id,
             self.set_open()
+            # Update the next_invoice_date of SOL when the payment_mode is 'success_payment'
+            # We have to do it here because if the payment fails because of a missing/expired token
+            # The invoice must be created again (it was unlinked). If the next_invoice_date is updated in _create_invoice
+            # The second invoice won't be created because _get_invoiceable_lines will be empty.
+            line_to_update_ids = self.env['sale.order.line']
+            for line in tx.invoice_ids.invoice_line_ids.sale_line_ids:
+                if line.temporal_type == 'subscription':
+                    line_to_update_ids |= line
+            line_to_update_ids._update_next_invoice_date()
+            line_to_update_ids._reset_subscription_qty_to_invoice(to_invoice=False)
             return True
         return False

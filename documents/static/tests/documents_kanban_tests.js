@@ -1966,7 +1966,7 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document chatter: open and close chatter', async function (assert) {
         assert.expect(7);
 
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -1975,37 +1975,36 @@ QUnit.module('documents_kanban_tests.js', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
-        const kanban = widget.$el[0];
 
-        assert.containsNone(kanban, '.o_Chatter',
+        assert.containsNone(document.body, '.o_Chatter',
             "should not display any chatter");
 
         // select a record
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        assert.containsNone(kanban, '.o_Chatter',
+        assert.containsNone(document.body, '.o_Chatter',
             "should still not display any chatter");
 
         // open the chatter
-        await testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_Chatter',
+        assert.containsOnce(document.body, '.o_Chatter',
             "should display the chatter");
-        assert.containsOnce(kanban, '.o_search_panel:visible',
+        assert.containsOnce(document.body, '.o_search_panel:visible',
             "documents selector should still be visible");
-        assert.containsOnce(kanban, '.o_kanban_view:visible',
+        assert.containsOnce(document.body, '.o_kanban_view:visible',
             "kanban view should still be visible");
-        assert.containsOnce(kanban, '.o_documents_inspector:visible',
+        assert.containsOnce(document.body, '.o_documents_inspector:visible',
             "document inspector should still be visible");
 
         // close the chatter
-        await testUtils.dom.click(kanban.querySelector('.o_ChatterTopbar_buttonClose'));
-        assert.containsNone(kanban, '.o_document_chatter_container .o_Chatter',
+        await testUtils.dom.click(document.querySelector('.o_ChatterTopbar_buttonClose'));
+        assert.containsNone(document.body, '.o_document_chatter_container .o_Chatter',
             "should no longer display the chatter");
     });
 
@@ -2018,7 +2017,7 @@ QUnit.module('documents_kanban_tests.js', {
             { body: "Message 1", model: 'documents.document', res_id: documentsDocumentId1 },
         ]);
 
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2027,20 +2026,19 @@ QUnit.module('documents_kanban_tests.js', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
-        const kanban = widget.$el[0];
 
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
         await afterNextRender(() =>
-            testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'))
+            testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'))
         );
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsN(kanban, '.o_document_chatter_container .o_Chatter .o_Message', 2,
+        assert.containsN(document.body, '.o_document_chatter_container .o_Chatter .o_Message', 2,
             "should display two messages in the chatter");
     });
 
@@ -2065,7 +2063,7 @@ QUnit.module('documents_kanban_tests.js', {
                 res_model: 'documents.document',
             },
         ]);
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2074,23 +2072,22 @@ QUnit.module('documents_kanban_tests.js', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
-        const kanban = widget.$el[0];
 
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(
-            kanban,
+            document.body,
             '.o_document_chatter_container .o_Chatter',
             "should display the chatter"
         );
-        assert.containsOnce(kanban,
+        assert.containsOnce(document.body,
             '.o_document_chatter_container .o_FollowerListMenu',
             "should display the follower widget"
         );
@@ -2123,7 +2120,7 @@ QUnit.module('documents_kanban_tests.js', {
                 );
         });
 
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             env: { bus },
             View: DocumentsKanbanView,
             model: 'documents.document',
@@ -2133,20 +2130,19 @@ QUnit.module('documents_kanban_tests.js', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
-        const kanban = widget.$el[0];
 
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
-        var activityButtons = kanban.querySelectorAll('.o_document_chatter_container .o_ChatterTopbar_buttonScheduleActivity');
+        var activityButtons = document.querySelectorAll('.o_document_chatter_container .o_ChatterTopbar_buttonScheduleActivity');
         assert.strictEqual(activityButtons.length, 1,
             "should display the activity button");
         await testUtils.dom.click(activityButtons[0]);
@@ -2166,7 +2162,7 @@ QUnit.module('documents_kanban_tests.js', {
             user_id: pyEnv.currentUserId,
         });
 
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2175,48 +2171,47 @@ QUnit.module('documents_kanban_tests.js', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
-        const kanban = widget.$el[0];
 
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
-        assert.containsOnce(kanban, '.o_ActivityBox',
+        assert.containsOnce(document.body, '.o_ActivityBox',
             "should display the activity area");
-        assert.containsOnce(kanban, '.o_Activity',
+        assert.containsOnce(document.body, '.o_Activity',
             "should display an activity");
-        assert.strictEqual(kanban.querySelectorAll('.o_Activity_markDoneButton').length, 1,
+        assert.strictEqual(document.querySelectorAll('.o_Activity_markDoneButton').length, 1,
             "should display the activity mark done button");
-        assert.containsOnce(kanban, '.o_Activity_editButton',
+        assert.containsOnce(document.body, '.o_Activity_editButton',
             "should display the activity Edit button");
-        assert.containsOnce(kanban, '.o_Activity_cancelButton',
+        assert.containsOnce(document.body, '.o_Activity_cancelButton',
             "should display the activity Cancel button");
 
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('blip').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('blip').test(element.textContent))
         );
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsNone(kanban, '.o_Activity',
+        assert.containsNone(document.body, '.o_Activity',
             "should not display an activity");
     });
 
     QUnit.test('document chatter: can write messages in the chatter', async function (assert) {
         assert.expect(7);
 
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2238,26 +2233,25 @@ QUnit.module('documents_kanban_tests.js', {
                 return this._super.apply(this, arguments);
             },
         });
-        const kanban = widget.$el[0];
 
         // select a record and open the chatter
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsNone(kanban, '.o_document_chatter_container .o_Composer',
+        assert.containsNone(document.body, '.o_document_chatter_container .o_Composer',
             "chatter composer should not be open");
 
         // open the composer
-        await testUtils.dom.click(kanban.querySelector('.o_document_chatter_container .o_ChatterTopbar_buttonSendMessage'));
+        await testUtils.dom.click(document.querySelector('.o_document_chatter_container .o_ChatterTopbar_buttonSendMessage'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Composer',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Composer',
             "chatter composer should be open");
 
         // write and send a message (need to wait the Send button to be enabled)
@@ -2265,8 +2259,8 @@ QUnit.module('documents_kanban_tests.js', {
         await afterNextRender(() => {
             document.execCommand('insertText', false, "Some message");
         });
-        await testUtils.dom.click(kanban.querySelector('.o_Composer_buttonSend'));
-        assert.containsOnce(kanban, '.o_Message',
+        await testUtils.dom.click(document.querySelector('.o_Composer_buttonSend'));
+        assert.containsOnce(document.body, '.o_Message',
             "a message should have been created"
         );
         assert.strictEqual(
@@ -2285,7 +2279,7 @@ QUnit.module('documents_kanban_tests.js', {
             { body: "Message on 'blip'", model: 'documents.document', res_id: documentsDocumentId2 }
         ]);
 
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2294,44 +2288,43 @@ QUnit.module('documents_kanban_tests.js', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
-        const kanban = widget.$el[0];
 
         // select a record and open the chatter
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
         await afterNextRender(() =>
-            testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'))
+            testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'))
         );
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Message',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Message',
             "should display one message in the chatter");
-        assert.strictEqual(kanban.querySelector('.o_Message .o_Message_content').innerText.trim(),
+        assert.strictEqual(document.querySelector('.o_Message .o_Message_content').innerText.trim(),
             "Message on 'yop'", "should display the correct message");
 
         // select another record
         await afterNextRender(() =>
             testUtils.dom.click(
-                Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('blip').test(element.textContent))
+                Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('blip').test(element.textContent))
             )
         );
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should still display the chatter");
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Message',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Message',
             "should display one message in the chatter");
-        assert.strictEqual(kanban.querySelector('.o_Message .o_Message_content').innerText.trim(),
+        assert.strictEqual(document.querySelector('.o_Message .o_Message_content').innerText.trim(),
             "Message on 'blip'", "should display the correct message");
     });
 
     QUnit.test('document chatter: keep chatter open after a reload', async function (assert) {
         assert.expect(3);
 
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2346,36 +2339,35 @@ QUnit.module('documents_kanban_tests.js', {
                     </search>`
             },
         });
-        const kanban = widget.$el[0];
 
         // select a record and open the chatter
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
         // reload with a domain
-        await toggleFilterMenu(kanban);
-        await toggleMenuItem(kanban, "OwO");
+        await toggleFilterMenu(document);
+        await toggleMenuItem(document, "OwO");
         await legacyExtraNextTick();
 
-        assert.containsOnce(kanban, '.o_record_selected',
+        assert.containsOnce(document.body, '.o_record_selected',
             "record should still be selected");
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should still display the chatter");
     });
 
     QUnit.test('document chatter: close chatter when more than one record selected', async function (assert) {
         assert.expect(2);
 
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2385,37 +2377,36 @@ QUnit.module('documents_kanban_tests.js', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
-        const kanban = widget.$el[0];
 
         // select a record and open the chatter
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
         // select another record alongside the first one
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record'))
+            Array.from(document.querySelectorAll('.o_kanban_record'))
                 .filter(element => RegExp('blip').test(element.textContent))[0].querySelector('.o_record_selector')
         );
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
         await testUtils.nextTick(); // need to wait a little longer to be sure chatter component is unmounted
 
-        assert.containsNone(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsNone(document.body, '.o_document_chatter_container .o_Chatter',
             "should have closed the chatter");
     });
 
     QUnit.test('document chatter: close chatter when no more selected record', async function (assert) {
         assert.expect(3);
 
-        var widget = await createDocumentsView({
+        await createDocumentsView({
             View: DocumentsKanbanView,
             model: 'documents.document',
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2430,28 +2421,27 @@ QUnit.module('documents_kanban_tests.js', {
                     </search>`
             },
         });
-        const kanban = widget.$el[0];
 
         // select a record and open the chatter
         await testUtils.dom.click(
-            Array.from(kanban.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
+            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
         );
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
 
-        await testUtils.dom.click(kanban.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
         // reload with a domain
-        await toggleFilterMenu(kanban);
-        await toggleMenuItem(kanban, "OwO");
+        await toggleFilterMenu(document);
+        await toggleMenuItem(document, "OwO");
 
-        assert.containsNone(kanban, '.o_record_selected',
+        assert.containsNone(document.body, '.o_record_selected',
             "no more record should be selected");
-        assert.containsNone(kanban, '.o_document_chatter_container .o_Chatter',
+        assert.containsNone(document.body, '.o_document_chatter_container .o_Chatter',
             "should have closed the chatter");
     });
 

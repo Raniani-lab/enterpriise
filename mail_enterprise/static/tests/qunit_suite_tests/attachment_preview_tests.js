@@ -88,9 +88,9 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             res_id: resPartnerId1,
         });
         patchUiSize({ size: SIZES.XXL });
-        let form, env;
+        let env;
         await afterNextRender(async () => { // because of chatter container
-            const { env: environment, target } = await start({
+            const { env: environment } = await start({
                 hasView: true,
                 View: FormView,
                 model: 'res.partner',
@@ -120,23 +120,22 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 },
             });
             env = environment;
-            form = target;
         });
 
-        assert.containsOnce(form, '.o_attachment_preview_img > img',
+        assert.containsOnce(document.body, '.o_attachment_preview_img > img',
             "There should be an image for attachment preview");
-        assert.containsOnce(form, '.o_form_sheet_bg > .o_FormRenderer_chatterContainer',
+        assert.containsOnce(document.body, '.o_form_sheet_bg > .o_FormRenderer_chatterContainer',
             "Chatter should moved inside sheet");
         assert.doesNotHaveClass(
             document.querySelector('.o_FormRenderer_chatterContainer'),
             'o-aside',
             "Chatter should not have o-aside class as it is below form view and not aside",
         );
-        assert.containsOnce(form, '.o_form_sheet_bg + .o_attachment_preview',
+        assert.containsOnce(document.body, '.o_form_sheet_bg + .o_attachment_preview',
             "Attachment preview should be next sibling to .o_form_sheet_bg");
 
         // Don't display arrow if there is no previous/next element
-        assert.containsNone(form, '.arrow',
+        assert.containsNone(document.body, '.arrow',
             "Don't display arrow if there is no previous/next attachment");
 
         // send a message with attached PDF file
@@ -155,17 +154,17 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             document.querySelector('.o_Composer_buttonSend').click()
         );
 
-        assert.containsN(form, '.arrow', 2,
+        assert.containsN(document.body, '.arrow', 2,
             "Display arrows if there multiple attachments");
-        assert.containsNone(form, '.o_attachment_preview_img > img',
+        assert.containsNone(document.body, '.o_attachment_preview_img > img',
             "Preview image should be removed");
-        assert.containsOnce(form, '.o_attachment_preview_container > iframe',
+        assert.containsOnce(document.body, '.o_attachment_preview_container > iframe',
             "There should be iframe for pdf viewer");
-        await testUtils.dom.click(form.querySelector('.o_move_next'), { allowInvisible: true });
-        assert.containsOnce(form, '.o_attachment_preview_img > img',
+        await testUtils.dom.click(document.querySelector('.o_move_next'), { allowInvisible: true });
+        assert.containsOnce(document.body, '.o_attachment_preview_img > img',
             "Display next attachment");
-        await testUtils.dom.click(form.querySelector('.o_move_previous'), { allowInvisible: true });
-        assert.containsOnce(form, '.o_attachment_preview_container > iframe',
+        await testUtils.dom.click(document.querySelector('.o_move_previous'), { allowInvisible: true });
+        assert.containsOnce(document.body, '.o_attachment_preview_container > iframe',
             "Display preview attachment");
     });
 
@@ -208,7 +207,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             });
 
             patchUiSize({ size: SIZES.XXL });
-            const { click, widget: form } = await start({
+            const { click } = await start({
                 hasView: true,
                 View: FormView,
                 model: 'res.partner',
@@ -249,27 +248,24 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
 
             await click('.o_pager_next');
             await click('.o_pager_previous');
-            assert.containsN(form, '.arrow', 2,
+            assert.containsN(document.body, '.arrow', 2,
                 'The attachment preview should contain 2 arrows to navigated between attachments');
 
-            await testUtils.dom.click(form.$('.o_attachment_preview_container .o_move_next'), {allowInvisible: true});
-            assert.containsOnce(form, '.o_attachment_preview_img img',
+            await testUtils.dom.click(document.querySelector('.o_attachment_preview_container .o_move_next'), {allowInvisible: true});
+            assert.containsOnce(document.body, '.o_attachment_preview_img img',
                 'The second attachment (of type img) should be displayed');
 
-            await testUtils.dom.click(form.$('.o_attachment_preview_container .o_move_previous'), {allowInvisible: true});
-            assert.containsOnce(form, '.o_attachment_preview_container iframe',
+            await testUtils.dom.click(document.querySelector('.o_attachment_preview_container .o_move_previous'), {allowInvisible: true});
+            assert.containsOnce(document.body, '.o_attachment_preview_container iframe',
                 'The first attachment (of type pdf) should be displayed');
-
-            form.destroy();
         });
 
     QUnit.test('Attachment on side on new record', async function (assert) {
         assert.expect(3);
 
         patchUiSize({ size: SIZES.XXL });
-        let form;
         await afterNextRender(async () => { // because of chatter container
-            const { target } = await start({
+            await start({
                 hasView: true,
                 View: FormView,
                 model: 'res.partner',
@@ -287,14 +283,13 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     'mail.message,false,list': '<tree/>',
                 },
             });
-            form = target;
         });
 
-        assert.containsOnce(form, '.o_form_sheet_bg .o_attachment_preview',
+        assert.containsOnce(document.body, '.o_form_sheet_bg .o_attachment_preview',
             "the preview should not be displayed");
-        assert.strictEqual(form.querySelector('.o_form_sheet_bg .o_attachment_preview').children.length, 0,
+        assert.strictEqual(document.querySelector('.o_form_sheet_bg .o_attachment_preview').children.length, 0,
             "the preview should be empty");
-        assert.containsOnce(form, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
+        assert.containsOnce(document.body, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
     });
 
@@ -314,9 +309,8 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             res_id: resPartnerId1,
         });
         patchUiSize({ size: SIZES.XL });
-        let form;
         await afterNextRender(async () => { // because of chatter container
-            const { target } = await start({
+            await start({
                 hasView: true,
                 View: FormView,
                 model: 'res.partner',
@@ -335,11 +329,10 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 },
                 res_id: resPartnerId1,
             });
-            form = target;
         });
-        assert.strictEqual(form.querySelector('.o_attachment_preview').children.length, 0,
+        assert.strictEqual(document.querySelector('.o_attachment_preview').children.length, 0,
             "there should be nothing previewed");
-        assert.containsOnce(form, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
+        assert.containsOnce(document.body, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
     });
 
@@ -352,7 +345,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         });
         const resPartnerId1 = pyEnv['res.partner'].create({ channel_ids: [mailChannelId1] });
         patchUiSize({ size: SIZES.XXL });
-        const { click, target: form } = await start({
+        const { click } = await start({
             hasView: true,
             arch: `
                 <form string="Whatever">
@@ -386,9 +379,9 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         });
 
         // Sets an arbitrary width to check if it is correctly overriden.
-        form.querySelector('table th').style.width = '0px';
+        document.querySelector('table th').style.width = '0px';
 
-        assert.containsNone(form, 'img#attachment_img');
+        assert.containsNone(document.body, 'img#attachment_img');
 
         await click('.o_ChatterTopbar_buttonAttachments');
         await afterNextRender(() =>
@@ -404,8 +397,8 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         await afterNextRender(() =>
             dropFiles( document.querySelector('.o_AttachmentBox_dropZone'), files)
         );
-        assert.containsOnce(form, 'img#attachment_img');
-        assert.notEqual(form.querySelector('table th').style.width, '0px',
+        assert.containsOnce(document.body, 'img#attachment_img');
+        assert.notEqual(document.querySelector('table th').style.width, '0px',
             "List should have been resized after the attachment has been appended.");
     });
 });

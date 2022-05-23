@@ -499,9 +499,9 @@ class SaleOrder(models.Model):
     ###########
 
     def action_archived_product(self):
-        archived_template_ids = self.with_context(active_test=False).archived_product_ids.product_tmpl_id
-        action = self.env["ir.actions.actions"]._for_xml_id("sale_subscription.product_action_subscription")
-        action['domain'] = [('id', 'in', archived_template_ids.ids), ('active', '=', False)]
+        archived_product_ids = self.with_context(active_test=False).archived_product_ids
+        action = self.env["ir.actions.actions"]._for_xml_id("product.product_normal_action_sell")
+        action['domain'] = [('id', 'in', archived_product_ids.ids), ('active', '=', False)]
         action['context'] = dict(literal_eval(action.get('context')), search_default_inactive=True)
         return action
 

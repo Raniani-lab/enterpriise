@@ -164,6 +164,18 @@ class SignRequestCommon(TransactionCase):
         sign_request.message_subscribe(partner_ids=cc_partners.ids)
         return sign_request
 
+    def create_sign_request_1_role(self, customer, cc_partners):
+        sign_request = self.env['sign.request'].create({
+            'template_id': self.template_1_role.id,
+            'reference': self.template_1_role.display_name,
+            'request_item_ids': [Command.create({
+                'partner_id': customer.id,
+                'role_id': self.env.ref('sign.sign_item_role_customer').id,
+            })],
+        })
+        sign_request.message_subscribe(partner_ids=cc_partners.ids)
+        return sign_request
+
     def create_sign_request_3_roles(self, customer, employee, company, cc_partners):
         sign_request = self.env['sign.request'].create({
             'template_id': self.template_3_roles.id,

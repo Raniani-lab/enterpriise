@@ -130,13 +130,14 @@ export class OdooMenuLinkCell extends LinkCell {
     }
 
     action(env) {
-        env.services.menu.selectMenu(this._irMenuId);
+        const menu = env.services.menu.getMenu(this._irMenuId);
+        env.services.action.doAction(menu.actionID);
     }
 }
 
 export class OdooViewLinkCell extends LinkCell {
     /**
-     * 
+     *
      * @param {string} id
      * @param {string} content
      * @param {ViewLinkDescription} actionDescription

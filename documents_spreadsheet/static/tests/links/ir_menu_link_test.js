@@ -5,14 +5,14 @@ import { registry } from "@web/core/registry";
 import { menuService } from "@web/webclient/menus/menu_service";
 import { session } from "@web/session";
 import { actionService } from "@web/webclient/actions/action_service";
-import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, legacyExtraNextTick, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet_extended";
 import { getBasicData } from "../utils/spreadsheet_test_data";
 import { getCell } from "../utils/getters_helpers";
-import { setCellContent } from "../utils/commands_helpers";
+import { setCellContent, setSelection } from "../utils/commands_helpers";
 
 const { registries, Model } = spreadsheet;
 const { cellMenuRegistry } = registries;
@@ -49,9 +49,22 @@ QUnit.module(
             this.serverData = {};
             this.serverData.menus = {
                 root: { id: "root", children: [1, 2], name: "root", appID: "root" },
-                1: { id: 1, children: [], name: "menu with xmlid", appID: 1, xmlid: "test_menu" },
+                1: { id: 1, children: [], name: "menu with xmlid", appID: 1, xmlid: "test_menu", actionID: "action1", },
                 2: { id: 2, children: [], name: "menu without xmlid", appID: 2 },
             };
+            this.serverData.actions = {
+                action1: {
+                    id: 99,
+                    xml_id: "action1",
+                    name: "action1",
+                    res_model: "ir.ui.menu",
+                    type: "ir.actions.act_window",
+                    views: [[false, "list"]],
+                }
+            };
+            this.serverData.views = {};
+            this.serverData.views["ir.ui.menu,false,list"] = `<tree></tree>`;
+            this.serverData.views["ir.ui.menu,false,search"] = `<search></search>`;
             this.serverData.models = {
                 ...getBasicData(),
                 "ir.ui.menu": {
@@ -240,6 +253,28 @@ QUnit.module(
             assert.containsNone(target, ".o-ir-menu-selector");
             assert.equal(labelInput().value, "", "The label should be empty");
             assert.equal(urlInput().value, "", "The url displayed should be the menu name");
+        });
+
+        QUnit.test("ir.menu link keep breadcrumb", async function (assert) {
+          const { model } = await createSpreadsheet({
+            serverData: this.serverData,
+          });
+          setCellContent(
+            model,
+            "A1",
+            "[menu with xmlid](odoo://ir_menu_xml_id/test_menu)"
+          );
+          setSelection(model, "A1");
+          await nextTick();
+          const link = document.querySelector("a.o-link");
+          await click(link);
+          await legacyExtraNextTick();
+          const items = document.querySelectorAll(".breadcrumb-item");
+          const [breadcrumb1, breadcrumb2] = Array.from(items).map(
+            (item) => item.innerText
+          );
+          assert.equal(breadcrumb1, "Untitled spreadsheet");
+          assert.equal(breadcrumb2, "action1");
         });
 
         QUnit.test("menu many2one field input is focused", async function (assert) {

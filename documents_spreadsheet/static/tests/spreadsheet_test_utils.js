@@ -59,7 +59,9 @@ async function createSpreadsheetAction(actionTag, params) {
         params: {
             spreadsheet_id: params.spreadsheetId,
         },
-    });
+    },
+    { clearBreadcrumbs: true } // Sometimes in test defining custom action, Odoo opens on the action instead of opening on root
+    );
     return {
         webClient,
         model: getSpreadsheetActionModel(spreadsheetAction),

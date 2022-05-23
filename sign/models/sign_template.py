@@ -264,8 +264,7 @@ class SignTemplate(models.Model):
             "res_model": "sign.request",
             "res_id": shared_sign_request.id,
             "target": "new",
-            "view_mode": "form",
-            "view_id": self.env.ref("sign.sign_request_share_view_form").id,
+            'views': [[self.env.ref("sign.sign_request_share_view_form").id, 'form']],
         }
 
     def stop_sharing(self):

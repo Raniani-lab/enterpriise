@@ -103,8 +103,7 @@ class AccountMove(models.Model):
             else:
                 nro_doc_rec = commercial_partner_id._get_id_number_sanitize() or False
 
-            if nro_doc_rec:
-                data.update({'nroDocRec': nro_doc_rec})
+            data.update({'nroDocRec': nro_doc_rec or 0})
             if commercial_partner_id.l10n_latam_identification_type_id:
                 data.update({'tipoDocRec': int(rec._get_partner_code_id(commercial_partner_id))})
             # For more info go to https://www.afip.gob.ar/fe/qr/especificaciones.asp

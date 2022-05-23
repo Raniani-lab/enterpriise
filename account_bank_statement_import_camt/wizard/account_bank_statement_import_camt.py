@@ -682,12 +682,13 @@ def _get_signed_amount(*nodes, namespaces, journal_currency=None):
         if total_amount == entry_amount:
             return sign * amount * rate
     else:
-        if not total_amount or total_amount * rate == entry_amount:
+        total_amount = total_amount or amount
+        if total_amount * rate == entry_amount:
             return sign * amount * rate
         elif journal_currency:
             if journal_currency.compare_amounts(total_amount / rate, entry_amount) == 0:
                 return journal_currency.round(sign * amount / rate)
-    return sign * entry_amount
+    return sign * amount
 
 def _get_counter_party(*nodes, namespaces):
     ind = _get_credit_debit_indicator(*nodes, namespaces=namespaces)

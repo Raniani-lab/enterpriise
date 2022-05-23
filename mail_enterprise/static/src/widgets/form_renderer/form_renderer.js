@@ -263,8 +263,10 @@ FormRenderer.include({
                 } else {
                     // The attachmentViewer lose its event listeners when it is reused,
                     // we just need to reregister them.
-                    this.attachmentViewer._undelegateEvents();
-                    this.attachmentViewer._delegateEvents();
+                    if (this.attachmentViewer.$el) {
+                        this.attachmentViewer._undelegateEvents();
+                        this.attachmentViewer._delegateEvents();
+                    }
                 }
                 this.trigger_up('preview_attachment_validation');
                 this._updateChatterContainerTarget();

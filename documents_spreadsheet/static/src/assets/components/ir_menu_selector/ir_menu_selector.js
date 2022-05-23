@@ -6,7 +6,7 @@ import { _lt } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { StandaloneMany2OneField } from "../../widgets/standalone_many2one_field";
 
-const { Component, onMounted, onWillStart, useState, useExternalListener, useEffect } = owl;
+const { Component, onMounted, useState, useExternalListener, useEffect } = owl;
 
 export class MenuSelectorWidgetAdapter extends ComponentAdapter {
     setup() {
@@ -47,9 +47,7 @@ export class MenuSelectorWidgetAdapter extends ComponentAdapter {
     get widgetArgs() {
         const domain = [
             ["action", "!=", false],
-            "|",
-            ["groups_id", "=", false],
-            ["groups_id", "in", this.props.userGroups],
+            ["id", "in", this.props.availableMenuIds],
         ]
         const attrs = {
             placeholder: this.env._t("Select a menu..."),
@@ -62,13 +60,13 @@ export class MenuSelectorWidgetAdapter extends ComponentAdapter {
 export class IrMenuSelector extends Component {
     setup() {
         this.StandaloneMany2OneField = StandaloneMany2OneField;
-        this.user = useService("user");
-        this.orm = useService("orm");
-        onWillStart(this.onWillStart);
+        this.menus = useService("menu");
     }
-    async onWillStart() {
-        const [{ groups_id }] = await this.orm.read("res.users", [this.user.userId], ["groups_id"]);
-        this.userGroups = groups_id;
+
+    get availableMenuIds() {
+        return this.menus.getAll()
+            .map((menu) => menu.id)
+            .filter((menuId) => menuId !== "root");
     }
 }
 IrMenuSelector.components = { MenuSelectorWidgetAdapter };

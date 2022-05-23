@@ -83,7 +83,7 @@ linkMenuRegistry.add("odooMenu", {
                 onMenuSelected: (menuId) => {
                     closeDialog();
                     const menu = env.services.menu.getMenu(menuId);
-                    const xmlId = menu.xmlid;
+                    const xmlId = menu && menu.xmlid;
                     const url = xmlId ? buildIrMenuXmlLink(xmlId) : buildIrMenuIdLink(menuId);
                     const name = menu.name;
                     const link = { url, label: name };

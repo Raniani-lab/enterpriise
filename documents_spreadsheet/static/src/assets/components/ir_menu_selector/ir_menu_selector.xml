@@ -5,7 +5,7 @@
         class="'o-ir-menu-selector'"
         Component="StandaloneMany2OneField"
         menuId="props.menuId"
-        userGroups="userGroups"
+        availableMenuIds="availableMenuIds"
         onValueChanged="props.onValueChanged"
         autoFocus="props.autoFocus"
       />

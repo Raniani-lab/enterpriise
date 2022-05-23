@@ -31,9 +31,15 @@ function urlInput() {
 /**
  * Create a spreadsheet and open the menu selector to
  * insert a menu link in A1.
+ * @param {object} serverData
+ * @param {object} params
+ * @param {function} [params.mockRPC]
  */
-async function openMenuSelector(serverData) {
-    const { webClient, env, model } = await createSpreadsheet({ serverData });
+async function openMenuSelector(serverData, params = {}) {
+    const { webClient, env, model } = await createSpreadsheet({
+        serverData,
+        mockRPC: params.mockRPC,
+    });
     const insertLinkMenu = cellMenuRegistry.getAll().find((item) => item.id === "insert_link");
     await insertLinkMenu.action(env);
     await nextTick();
@@ -255,6 +261,30 @@ QUnit.module(
                 "menu with xmlid",
                 "The link tooltip should display the menu name"
             );
+        });
+
+        QUnit.test("fetch available menus", async function (assert) {
+            const { env } = await openMenuSelector(this.serverData, {
+                mockRPC : function (route, args) {
+                    if (args.method === "name_search" && args.model === "ir.ui.menu") {
+                        assert.step("fetch_menus")
+                        assert.deepEqual(
+                            args.kwargs.args,
+                            [
+                                ["action", "!=", false],
+                                ["id", "in", [1, 2]],
+                            ],
+                            "user defined groupby should have precedence on action groupby"
+                        );
+                    }
+                },
+            });
+            assert.deepEqual(
+                env.services.menu.getAll().map((menu) => menu.id),
+                [1, 2, "root"],
+            );
+            await click(target, ".o_field_many2one input");
+            assert.verifySteps(["fetch_menus"]);
         });
 
         QUnit.test(

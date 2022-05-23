@@ -1,4 +1,6 @@
 /** @odoo-module */
+import { _t } from "@web/core/l10n/translation";
+import { sprintf } from "@web/core/utils/strings"
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 const { UIPlugin } = spreadsheet;
@@ -37,7 +39,10 @@ export default class IrMenuPlugin extends UIPlugin {
     _getIrMenuByXmlId(xmlId) {
         const menu = this.env.services.menu.getAll().find((menu) => menu.xmlid === xmlId);
         if (!menu) {
-            throw new Error(`Menu ${xmlId} not found. You may not have the required access rights.`);
+            throw new Error(sprintf(
+                _t("Menu %s not found. You may not have the required access rights."),
+                xmlId
+            ));
         }
         return menu;
     }

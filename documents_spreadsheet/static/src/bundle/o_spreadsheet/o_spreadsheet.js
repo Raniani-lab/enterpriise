@@ -1441,40 +1441,83 @@
     }
     /**
      * Converts any CSS color value to a standardized hex6 value.
-     * Accepts: hex3, hex6 and rgb (rgba is not supported)
+     * Accepts: hex3, hex6, hex8 and rgb (rgba is not supported)
      *
-     * toHex6("#ABC")
-     * >> "AABBCC"
+     * toHex("#ABC")
+     * >> "#AABBCC"
      *
-     * toHex6("#AAAFFF")
-     * >> "AAAFFF"
+     * toHex("#AAAFFF")
+     * >> "#AAAFFF"
      *
-     * toHex6("rgb(30, 80, 16)")
-     * >> "1E5010"
+     * toHex("rgb(30, 80, 16)")
+     * >> "#1E5010"
      *
-     * (note: number sign is dropped as it is not supported in xlsx format)
      */
-    function toHex6(color) {
+    function toHex(color) {
+        if (color.includes("rgba")) {
+            throw new Error(`rgba() conversion currently not supported: ${color}`);
+        }
         if (color.includes("rgb")) {
             return rgbToHex6(color);
         }
         color = color.replace("#", "").toUpperCase();
-        if (color.length === 3) {
+        if (color.length === 3 || color.length === 4) {
             color = color.split("").reduce((acc, h) => acc + h + h, "");
         }
-        return color;
+        return "#" + color;
+    }
+    /**
+     * The relative brightness of a point in the colorspace, normalized to 0 for
+     * darkest black and 1 for lightest white.
+     * https://www.w3.org/TR/WCAG20/#relativeluminancedef
+     */
+    function relativeLuminance(color) {
+        let { r, g, b } = colorToRGBA(color);
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        const toLinearValue = (c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+        const R = toLinearValue(r);
+        const G = toLinearValue(g);
+        const B = toLinearValue(b);
+        return 0.2126 * R + 0.7152 * G + 0.0722 * B;
     }
     /**
      * Convert a CSS rgb color string to a standardized hex6 color value.
      *
      * rgbToHex6("rgb(30, 80, 16)")
-     * >> "1E5010"
+     * >> "#1E5010"
      */
     function rgbToHex6(color) {
-        return concat(color
-            .slice(4, -1)
-            .split(",")
-            .map((valueString) => parseInt(valueString, 10).toString(16).padStart(2, "0"))).toUpperCase();
+        return ("#" +
+            concat(color
+                .slice(4, -1)
+                .split(",")
+                .map((valueString) => parseInt(valueString, 10).toString(16).padStart(2, "0"))).toUpperCase());
+    }
+    /**
+     * Color string to RGBA representation
+     */
+    function colorToRGBA(color) {
+        color = toHex(color);
+        let r;
+        let g;
+        let b;
+        let a;
+        if (color.length === 7) {
+            r = parseInt(color[1] + color[2], 16);
+            g = parseInt(color[3] + color[4], 16);
+            b = parseInt(color[5] + color[6], 16);
+            a = 255;
+        }
+        else {
+            r = parseInt(color[1] + color[2], 16);
+            g = parseInt(color[3] + color[4], 16);
+            b = parseInt(color[5] + color[6], 16);
+            a = parseInt(color[7] + color[8], 16);
+        }
+        a = +(a / 255).toFixed(3);
+        return { a, r, g, b };
     }
 
     /**
@@ -1626,50 +1669,51 @@
         return n;
     }
 
+    function searchHeaderIndex(headers, position, startIndex = 0) {
+        let size = 0;
+        for (let i = startIndex; i <= headers.length - 1; i++) {
+            if (headers[i].isHidden) {
+                continue;
+            }
+            size += headers[i].size;
+            if (size > position) {
+                return i;
+            }
+        }
+        return -1;
+    }
     function createDefaultCols(colNumber) {
         const cols = [];
-        let current = 0;
         for (let i = 0; i < colNumber; i++) {
             const size = DEFAULT_CELL_WIDTH;
             const col = {
-                start: current,
-                end: current + size,
                 size: size,
                 name: numberToLetters(i),
             };
             cols.push(col);
-            current = col.end;
         }
         return cols;
     }
     function createDefaultRows(rowNumber) {
         const rows = [];
-        let current = 0;
         for (let i = 0; i < rowNumber; i++) {
             const size = DEFAULT_CELL_HEIGHT;
             const row = {
-                start: current,
-                end: current + size,
                 size: size,
                 name: String(i + 1),
                 cells: {},
             };
             rows.push(row);
-            current = row.end;
         }
         return rows;
     }
     function createCols(savedCols, colNumber) {
         var _a;
         const cols = [];
-        let current = 0;
         for (let i = 0; i < colNumber; i++) {
             const size = savedCols[i] ? savedCols[i].size || DEFAULT_CELL_WIDTH : DEFAULT_CELL_WIDTH;
             const hidden = ((_a = savedCols[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
-            const end = hidden ? current : current + size;
             const col = {
-                start: current,
-                end: end,
                 size: size,
                 name: numberToLetters(i),
             };
@@ -1677,21 +1721,16 @@
                 col.isHidden = hidden;
             }
             cols.push(col);
-            current = col.end;
         }
         return cols;
     }
     function createRows(savedRows, rowNumber) {
         var _a;
         const rows = [];
-        let current = 0;
         for (let i = 0; i < rowNumber; i++) {
             const size = savedRows[i] ? savedRows[i].size || DEFAULT_CELL_HEIGHT : DEFAULT_CELL_HEIGHT;
             const hidden = ((_a = savedRows[i]) === null || _a === void 0 ? void 0 : _a.isHidden) || false;
-            const end = hidden ? current : current + size;
             const row = {
-                start: current,
-                end: end,
                 size: size,
                 name: String(i + 1),
                 cells: {},
@@ -1700,7 +1739,6 @@
                 row.isHidden = hidden;
             }
             rows.push(row);
-            current = row.end;
         }
         return rows;
     }
@@ -1779,7 +1817,7 @@
         while (lastIndex >= 0 && sheet[dimension][lastIndex].isHidden === true) {
             lastIndex--;
         }
-        return sheet[dimension][lastIndex];
+        return lastIndex;
     }
 
     /**
@@ -3021,7 +3059,6 @@
     // Charts
     //------------------------------------------------------------------------------
     const CREATE_CHART = (env) => {
-        var _a, _b;
         const zone = env.model.getters.getSelectedZone();
         let dataSetZone = zone;
         const id = env.model.uuidGenerator.uuidv4();
@@ -3032,8 +3069,8 @@
         const dataSets = [zoneToXc(dataSetZone)];
         const sheetId = env.model.getters.getActiveSheetId();
         const position = {
-            x: ((_a = env.model.getters.tryGetCol(sheetId, zone.right + 1)) === null || _a === void 0 ? void 0 : _a.start) || 0,
-            y: ((_b = env.model.getters.tryGetRow(sheetId, zone.top)) === null || _b === void 0 ? void 0 : _b.start) || 0,
+            x: env.model.getters.getColDimensions(sheetId, zone.right + 1).start,
+            y: env.model.getters.getColDimensions(sheetId, zone.top).start,
         };
         let dataSetsHaveTitle = false;
         for (let x = dataSetZone.left; x <= dataSetZone.right; x++) {
@@ -14106,6 +14143,57 @@
         "getCellById",
     ];
 
+    const GraphColors = [
+        // the same colors as those used in odoo reporting
+        "rgb(31,119,180)",
+        "rgb(255,127,14)",
+        "rgb(174,199,232)",
+        "rgb(255,187,120)",
+        "rgb(44,160,44)",
+        "rgb(152,223,138)",
+        "rgb(214,39,40)",
+        "rgb(255,152,150)",
+        "rgb(148,103,189)",
+        "rgb(197,176,213)",
+        "rgb(140,86,75)",
+        "rgb(196,156,148)",
+        "rgb(227,119,194)",
+        "rgb(247,182,210)",
+        "rgb(127,127,127)",
+        "rgb(199,199,199)",
+        "rgb(188,189,34)",
+        "rgb(219,219,141)",
+        "rgb(23,190,207)",
+        "rgb(158,218,229)",
+    ];
+    class ChartColors {
+        constructor() {
+            this.graphColorIndex = 0;
+        }
+        next() {
+            return GraphColors[this.graphColorIndex++ % GraphColors.length];
+        }
+    }
+    /**
+     * Choose a font color based on a background color.
+     * The font is white with a dark background.
+     */
+    function chartFontColor(backgroundColor) {
+        return relativeLuminance(backgroundColor) < 0.3 ? "#FFFFFF" : "#000000";
+    }
+
+    /**
+     * Convert a color string to an excel compatible hexadecimal format.
+     */
+    function toXlsxHexColor(color) {
+        color = toHex(color).replace("#", "");
+        // alpha channel goes first
+        if (color.length === 8) {
+            return color.slice(6) + color.slice(0, 6);
+        }
+        return color;
+    }
+
     class ChartPlugin extends CorePlugin {
         constructor() {
             super(...arguments);
@@ -14290,7 +14378,8 @@
                 .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
             return {
                 ...this.getChartDefinitionUI("forceSheetReference", figureId),
-                backgroundColor: data.background,
+                backgroundColor: toXlsxHexColor(data.background),
+                fontColor: toXlsxHexColor(chartFontColor(data.background)),
                 dataSets,
             };
         }
@@ -15738,21 +15827,7 @@
                 .every((cell) => !cell || cell.isEmpty());
         }
         setHeaderSize(sheet, dimension, index, size) {
-            let start, end;
-            const elements = sheet[dimension];
-            const base = elements[index];
-            const delta = size - base.size;
             this.history.update("sheets", sheet.id, dimension, index, "size", size);
-            if (!base.isHidden)
-                this.history.update("sheets", sheet.id, dimension, index, "end", base.end + delta);
-            start = base.end;
-            for (let i = index + 1; i < elements.length; i++) {
-                const element = elements[i];
-                end = element.isHidden ? start : start + element.size;
-                this.history.update("sheets", sheet.id, dimension, i, "start", start);
-                this.history.update("sheets", sheet.id, dimension, i, "end", end);
-                start = end;
-            }
         }
         updateCellPosition(cmd) {
             const { sheetId, cellId, col, row } = cmd;
@@ -16110,29 +16185,23 @@
         /**
          * Update the cols of the sheet after a deletion:
          * - Rename the cols
-         * - Update start-end
          *
          * @param sheet Sheet on which the deletion occurs
          * @param deletedColumns Indexes of the deleted columns
          */
         updateColumnsStructureOnDeletion(sheet, deletedColumns) {
             const cols = [];
-            let start = 0;
             let colSizeIndex = 0;
             for (let index in sheet.cols) {
                 if (deletedColumns.includes(parseInt(index, 10))) {
                     continue;
                 }
                 const { size, isHidden } = sheet.cols[index];
-                const end = isHidden ? start : start + size;
                 cols.push({
                     name: numberToLetters(colSizeIndex),
                     size,
-                    start,
-                    end,
                     isHidden,
                 });
-                start = end;
                 colSizeIndex++;
             }
             this.history.update("sheets", sheet.id, "cols", cols);
@@ -16141,7 +16210,6 @@
         /**
          * Update the cols of the sheet after an addition:
          * - Rename the cols
-         * - Update start-end
          *
          * @param sheet Sheet on which the deletion occurs
          * @param addedColumn Index of the added columns
@@ -16149,7 +16217,6 @@
          */
         updateColumnsStructureOnAddition(sheet, addedColumn, columnsToAdd) {
             const cols = [];
-            let start = 0;
             let colIndex = 0;
             for (let i in sheet.cols) {
                 if (parseInt(i, 10) === addedColumn) {
@@ -16158,23 +16225,16 @@
                         cols.push({
                             name: numberToLetters(colIndex),
                             size,
-                            start,
-                            end: start + size,
                         });
-                        start += size;
                         colIndex++;
                     }
                 }
                 const { size, isHidden } = sheet.cols[i];
-                const end = isHidden ? start : start + size;
                 cols.push({
                     name: numberToLetters(colIndex),
                     size,
-                    start,
-                    end,
                     isHidden,
                 });
-                start = end;
                 colIndex++;
             }
             this.history.update("sheets", sheet.id, "cols", cols);
@@ -16182,26 +16242,21 @@
         }
         updateRowsStructureOnDeletion(index, sheet) {
             const rows = [];
-            let start = 0;
             let rowIndex = 0;
             const cellsQueue = sheet.rows.map((row) => row.cells);
             for (let i in sheet.rows) {
                 const row = sheet.rows[i];
                 const { size, isHidden } = row;
-                const end = isHidden ? start : start + size;
                 if (parseInt(i, 10) === index) {
                     continue;
                 }
                 rowIndex++;
                 rows.push({
-                    start,
-                    end,
                     size,
                     cells: cellsQueue.shift(),
                     name: String(rowIndex),
                     isHidden,
                 });
-                start = end;
             }
             this.history.update("sheets", sheet.id, "rows", rows);
             this.updateHiddenElementsGroups(sheet.id, "rows");
@@ -16209,7 +16264,6 @@
         /**
          * Update the rows of the sheet after an addition:
          * - Rename the rows
-         * - Update start-end
          *
          * @param sheet Sheet on which the deletion occurs
          * @param addedRow Index of the added row
@@ -16217,26 +16271,21 @@
          */
         updateRowsStructureOnAddition(sheet, addedRow, rowsToAdd) {
             const rows = [];
-            let start = 0;
             let rowIndex = 0;
             let sizeIndex = 0;
             const cellsQueue = sheet.rows.map((row) => row.cells);
             for (let i in sheet.rows) {
                 const { size, isHidden } = sheet.rows[sizeIndex];
-                const end = isHidden ? start : start + size;
                 if (parseInt(i, 10) < addedRow || parseInt(i, 10) >= addedRow + rowsToAdd) {
                     sizeIndex++;
                 }
                 rowIndex++;
                 rows.push({
-                    start,
-                    end,
                     size,
                     cells: cellsQueue.shift(),
                     name: String(rowIndex),
                     isHidden,
                 });
-                start = end;
             }
             this.history.update("sheets", sheet.id, "rows", rows);
             this.updateHiddenElementsGroups(sheet.id, "rows");
@@ -16248,12 +16297,9 @@
          * @param quantity Number of rows to add
          */
         addEmptyRows(sheet, quantity) {
-            const lastEnd = sheet.rows[sheet.rows.length - 1].end;
             const rows = sheet.rows.slice();
             for (let i = 0; i < quantity; i++) {
                 rows.push({
-                    start: lastEnd,
-                    end: lastEnd,
                     size: 0,
                     name: (rows.length + 1).toString(),
                     cells: {},
@@ -16275,16 +16321,11 @@
         //  HIDE / SHOW
         // ----------------------------------------------------
         setElementsVisibility(sheet, elements, direction, visibility) {
-            let start = 0;
             const hide = visibility === "hide";
             for (let index = 0; index < sheet[direction].length; index++) {
-                const { size, isHidden } = sheet[direction][index];
+                const { isHidden } = sheet[direction][index];
                 const newIsHidden = elements.includes(index) ? hide : isHidden || false;
-                const end = newIsHidden ? start : start + size;
-                this.history.update("sheets", sheet.id, direction, index, "start", start);
-                this.history.update("sheets", sheet.id, direction, index, "end", end);
                 this.history.update("sheets", sheet.id, direction, index, "isHidden", newIsHidden);
-                start = end;
             }
             this.updateHiddenElementsGroups(sheet.id, direction);
         }
@@ -18556,38 +18597,6 @@
     }
     EvaluationPlugin.getters = ["evaluateFormula", "getRangeFormattedValues", "getRangeValues"];
 
-    const GraphColors = [
-        // the same colors as those used in odoo reporting
-        "rgb(31,119,180)",
-        "rgb(255,127,14)",
-        "rgb(174,199,232)",
-        "rgb(255,187,120)",
-        "rgb(44,160,44)",
-        "rgb(152,223,138)",
-        "rgb(214,39,40)",
-        "rgb(255,152,150)",
-        "rgb(148,103,189)",
-        "rgb(197,176,213)",
-        "rgb(140,86,75)",
-        "rgb(196,156,148)",
-        "rgb(227,119,194)",
-        "rgb(247,182,210)",
-        "rgb(127,127,127)",
-        "rgb(199,199,199)",
-        "rgb(188,189,34)",
-        "rgb(219,219,141)",
-        "rgb(23,190,207)",
-        "rgb(158,218,229)",
-    ];
-    class ChartColors {
-        constructor() {
-            this.graphColorIndex = 0;
-        }
-        next() {
-            return GraphColors[this.graphColorIndex++ % GraphColors.length];
-        }
-    }
-
     const UNIT_LENGTH = {
         second: 1000,
         minute: 1000 * 60,
@@ -18834,8 +18843,10 @@
             }
             return label;
         }
-        getDefaultConfiguration(definition, labels) {
-            const legend = {};
+        getDefaultConfiguration(definition, labels, fontColor) {
+            const legend = {
+                labels: { fontColor },
+            };
             if (!definition.labelRange && definition.dataSets.length === 1) {
                 legend.display = false;
             }
@@ -18872,6 +18883,7 @@
                         fontSize: 22,
                         fontStyle: "normal",
                         text: definition.title,
+                        fontColor,
                     },
                 },
                 data: {
@@ -18890,6 +18902,7 @@
                                 minRotation: 15,
                                 padding: 5,
                                 labelOffset: 2,
+                                fontColor,
                             },
                         },
                     ],
@@ -18897,6 +18910,7 @@
                         {
                             position: definition.verticalAxisPosition,
                             ticks: {
+                                fontColor,
                                 // y axis configuration
                                 beginAtZero: true, // the origin of the y axis is always zero
                             },
@@ -19003,7 +19017,8 @@
             if (axisType === "time") {
                 ({ labels, dataSetsValues } = this.fixEmptyLabelsForDateCharts(labels, dataSetsValues));
             }
-            const runtime = this.getDefaultConfiguration(definition, labels);
+            const fontColor = chartFontColor(definition.background);
+            const runtime = this.getDefaultConfiguration(definition, labels, fontColor);
             const labelFormat = this.getLabelFormat(definition);
             if (axisType === "time") {
                 runtime.options.scales.xAxes[0].type = "time";
@@ -19948,27 +19963,6 @@
     // -----------------------------------------------------------------------------
     // Constants, types, helpers, ...
     // -----------------------------------------------------------------------------
-    function searchIndex(headers, offset) {
-        let left = 0;
-        let right = headers.length - 1;
-        while (left <= right) {
-            const index = Math.floor((left + right) / 2);
-            const header = headers[index];
-            if (offset < header.start) {
-                right = index - 1;
-            }
-            else if (offset > header.end) {
-                left = index + 1;
-            }
-            else if (header.isHidden) {
-                left += 1;
-            }
-            else {
-                return index;
-            }
-        }
-        return -1;
-    }
     class RendererPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
@@ -19978,36 +19972,138 @@
         // Getters
         // ---------------------------------------------------------------------------
         /**
-         * Return the index of a column given an offset x and a visible left col index.
+         * Return the index of a column given an offset x, based on the viewport left
+         * visible cell.
          * It returns -1 if no column is found.
          */
-        getColIndex(x, left, sheet) {
+        getColIndex(x) {
             if (x < 0) {
                 return -1;
             }
-            const cols = (sheet || this.getters.getActiveSheet()).cols;
-            const adjustedX = x + cols[left].start + 1;
-            return searchIndex(cols, adjustedX);
+            const cols = this.getters.getActiveSheet().cols;
+            const viewport = this.getters.getActiveSnappedViewport();
+            return searchHeaderIndex(cols, x, viewport.left);
         }
-        getRowIndex(y, top, sheet) {
+        /**
+         * Return the index of a row given an offset y, based on the viewport top
+         * visible cell.
+         * It returns -1 if no row is found.
+         */
+        getRowIndex(y) {
             if (y < 0) {
                 return -1;
             }
-            const rows = (sheet || this.getters.getActiveSheet()).rows;
-            const adjustedY = y + rows[top].start + 1;
-            return searchIndex(rows, adjustedY);
+            const rows = this.getters.getActiveSheet().rows;
+            const viewport = this.getters.getActiveSnappedViewport();
+            return searchHeaderIndex(rows, y, viewport.top);
+        }
+        /**
+         * Returns the size, start and end coordinates of a column
+         */
+        getColDimensions(sheetId, col) {
+            const start = this.getColRowOffset("COL", 0, col, sheetId);
+            const c = this.getters.getCol(sheetId, col);
+            return {
+                start,
+                size: c.size,
+                end: start + (c.isHidden ? 0 : c.size),
+            };
+        }
+        /**
+         * Returns the size, start and end coordinates of a column relative to the left
+         * column of the current viewport
+         */
+        getColDimensionsInViewport(sheetId, col) {
+            const { left } = this.getters.getActiveSnappedViewport();
+            const start = this.getColRowOffset("COL", left, col, sheetId);
+            const c = this.getters.getCol(sheetId, col);
+            return {
+                start,
+                size: c.size,
+                end: start + (c.isHidden ? 0 : c.size),
+            };
+        }
+        /**
+         * Returns the size, start and end coordinates of a row
+         */
+        getRowDimensions(sheetId, row) {
+            const start = this.getColRowOffset("ROW", 0, row, sheetId);
+            const r = this.getters.getRow(sheetId, row);
+            return {
+                start,
+                size: r.size,
+                end: start + (r.isHidden ? 0 : r.size),
+            };
+        }
+        /**
+         * Returns the size, start and end coordinates of a row relative to the top row
+         * of the current viewport
+         */
+        getRowDimensionsInViewport(sheetId, row) {
+            const { top } = this.getters.getActiveSnappedViewport();
+            const start = this.getColRowOffset("ROW", top, row, sheetId);
+            const r = this.getters.getRow(sheetId, row);
+            return {
+                start,
+                size: r.size,
+                end: start + (r.isHidden ? 0 : r.size),
+            };
+        }
+        /**
+         * Returns the offset of a header (determined by the dimension) at the given index
+         * based on the referenceIndex given. If start === 0, this method will return
+         * the start attribute of the header.
+         */
+        getColRowOffset(dimension, referenceIndex, index, sheetId = this.getters.getActiveSheetId()) {
+            const sheet = this.getters.getSheet(sheetId);
+            const headers = dimension === "ROW" ? sheet.rows : sheet.cols;
+            if (index < referenceIndex) {
+                return -this.getColRowOffset(dimension, index, referenceIndex);
+            }
+            let offset = 0;
+            for (let i = referenceIndex; i < index; i++) {
+                if (headers[i].isHidden) {
+                    continue;
+                }
+                offset += headers[i].size;
+            }
+            return offset;
+        }
+        /**
+         * Get the offset of a header (see getColRowOffset), adjusted with the header
+         * size (HEADER_HEIGHT and HEADER_WIDTH)
+         */
+        getHeaderOffset(dimension, start, index) {
+            let size = this.getColRowOffset(dimension, start, index);
+            if (!this.getters.isDashboard()) {
+                size += dimension === "ROW" ? HEADER_HEIGHT : HEADER_WIDTH;
+            }
+            return size;
+        }
+        /**
+         * Get the actual size between two headers.
+         * The size from A to B is the distance between A.start and B.end
+         */
+        getSizeBetweenHeaders(headers, from, to) {
+            let size = 0;
+            for (let i = from; i <= to; i++) {
+                if (headers[i].isHidden) {
+                    continue;
+                }
+                size += headers[i].size;
+            }
+            return size;
         }
         /**
          * Computes the coordinates and size to draw the zone on the canvas
          */
         getRect(zone, viewport) {
-            const { left, top, right, bottom } = zone;
-            const { offsetX, offsetY } = this.getShiftedViewport(viewport);
+            const { left, top } = viewport;
             const { cols, rows } = this.getters.getActiveSheet();
-            const x = cols[left].start - offsetX;
-            const width = cols[right].end - offsetX - x;
-            const y = rows[top].start - offsetY;
-            const height = rows[bottom].end - offsetY - y;
+            const x = this.getHeaderOffset("COL", left, zone.left);
+            const width = this.getSizeBetweenHeaders(cols, zone.left, zone.right);
+            const y = this.getHeaderOffset("ROW", top, zone.top);
+            const height = this.getSizeBetweenHeaders(rows, zone.top, zone.bottom);
             return [x, y, width, height];
         }
         /**
@@ -20084,7 +20180,7 @@
             ctx.fillStyle = "white";
             ctx.fillRect(0, 0, width, height);
             // background grid
-            const { right, left, top, bottom, offsetX, offsetY } = this.getShiftedViewport(viewport);
+            const { right, left, top, bottom } = viewport;
             if (!this.getters.getGridLinesVisibility(sheetId) || this.getters.isDashboard()) {
                 return;
             }
@@ -20092,24 +20188,24 @@
             ctx.strokeStyle = CELL_BORDER_COLOR;
             ctx.beginPath();
             // vertical lines
-            const lineHeight = Math.min(height, rows[bottom].end - offsetY);
             for (let i = left; i <= right; i++) {
                 if (cols[i].isHidden) {
                     continue;
                 }
-                const x = cols[i].end - offsetX;
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, lineHeight);
+                const zone = { top, bottom, left: i, right: i };
+                const [x, , colWidth, colHeight] = this.getRect(zone, viewport);
+                ctx.moveTo(x + colWidth, 0);
+                ctx.lineTo(x + colWidth, Math.min(height, colHeight + (this.getters.isDashboard() ? 0 : HEADER_HEIGHT)));
             }
             // horizontal lines
-            const lineWidth = Math.min(width, cols[right].end - offsetX);
             for (let i = top; i <= bottom; i++) {
                 if (rows[i].isHidden) {
                     continue;
                 }
-                const y = rows[i].end - offsetY;
-                ctx.moveTo(0, y);
-                ctx.lineTo(lineWidth, y);
+                const zone = { left, right, top: i, bottom: i };
+                const [, y, rowWidth, rowHeight] = this.getRect(zone, viewport);
+                ctx.moveTo(0, y + rowHeight);
+                ctx.lineTo(Math.min(width, rowWidth + (this.getters.isDashboard() ? 0 : HEADER_WIDTH)), y + rowHeight);
             }
             ctx.stroke();
         }
@@ -20249,7 +20345,7 @@
         }
         drawHeaders(renderingContext) {
             const { ctx, thinLineWidth, viewport } = renderingContext;
-            const { right, left, top, bottom, offsetX, offsetY } = this.getShiftedViewport(viewport);
+            const { right, left, top, bottom } = viewport;
             const { width, height } = this.getters.getViewportDimensionWithHeaders();
             const selection = this.getters.getSelectedZones();
             const { cols, rows } = this.getters.getActiveSheet();
@@ -20267,18 +20363,22 @@
             // selection background
             ctx.fillStyle = BACKGROUND_HEADER_SELECTED_COLOR;
             for (let zone of selection) {
-                const x1 = Math.max(HEADER_WIDTH, cols[zone.left].start - offsetX);
-                const x2 = Math.max(HEADER_WIDTH, cols[zone.right].end - offsetX);
-                const y1 = Math.max(HEADER_HEIGHT, rows[zone.top].start - offsetY);
-                const y2 = Math.max(HEADER_HEIGHT, rows[zone.bottom].end - offsetY);
-                ctx.fillStyle = activeCols.has(zone.left)
-                    ? BACKGROUND_HEADER_ACTIVE_COLOR
-                    : BACKGROUND_HEADER_SELECTED_COLOR;
-                ctx.fillRect(x1, 0, x2 - x1, HEADER_HEIGHT);
-                ctx.fillStyle = activeRows.has(zone.top)
-                    ? BACKGROUND_HEADER_ACTIVE_COLOR
-                    : BACKGROUND_HEADER_SELECTED_COLOR;
-                ctx.fillRect(0, y1, HEADER_WIDTH, y2 - y1);
+                const colZone = intersection(zone, { ...viewport, top: 0, bottom: rows.length - 1 });
+                if (colZone) {
+                    const [x, , width] = this.getRect(colZone, viewport);
+                    ctx.fillStyle = activeCols.has(zone.left)
+                        ? BACKGROUND_HEADER_ACTIVE_COLOR
+                        : BACKGROUND_HEADER_SELECTED_COLOR;
+                    ctx.fillRect(x, 0, width, HEADER_HEIGHT);
+                }
+                const rowZone = intersection(zone, { ...viewport, left: 0, right: cols.length - 1 });
+                if (rowZone) {
+                    const [, y, , height] = this.getRect(rowZone, viewport);
+                    ctx.fillStyle = activeRows.has(zone.top)
+                        ? BACKGROUND_HEADER_ACTIVE_COLOR
+                        : BACKGROUND_HEADER_SELECTED_COLOR;
+                    ctx.fillRect(0, y, HEADER_WIDTH, height);
+                }
             }
             // 2 main lines
             ctx.beginPath();
@@ -20296,9 +20396,10 @@
                     continue;
                 }
                 ctx.fillStyle = activeCols.has(i) ? "#fff" : TEXT_HEADER_COLOR;
-                ctx.fillText(col.name, (col.start + col.end) / 2 - offsetX, HEADER_HEIGHT / 2);
-                ctx.moveTo(col.end - offsetX, 0);
-                ctx.lineTo(col.end - offsetX, HEADER_HEIGHT);
+                let colStart = this.getHeaderOffset("COL", viewport.left, i);
+                ctx.fillText(col.name, colStart + col.size / 2, HEADER_HEIGHT / 2);
+                ctx.moveTo(colStart + col.size, 0);
+                ctx.lineTo(colStart + col.size, HEADER_HEIGHT);
             }
             // row text + separator
             for (let i = top; i <= bottom; i++) {
@@ -20307,9 +20408,10 @@
                     continue;
                 }
                 ctx.fillStyle = activeRows.has(i) ? "#fff" : TEXT_HEADER_COLOR;
-                ctx.fillText(row.name, HEADER_WIDTH / 2, (row.start + row.end) / 2 - offsetY);
-                ctx.moveTo(0, row.end - offsetY);
-                ctx.lineTo(HEADER_WIDTH, row.end - offsetY);
+                let rowStart = this.getHeaderOffset("ROW", viewport.top, i);
+                ctx.fillText(row.name, HEADER_WIDTH / 2, rowStart + row.size / 2);
+                ctx.moveTo(0, rowStart + row.size);
+                ctx.lineTo(HEADER_WIDTH, rowStart + row.size);
             }
             ctx.stroke();
         }
@@ -20317,18 +20419,6 @@
             const sheetId = this.getters.getActiveSheetId();
             const cell = this.getters.getCell(sheetId, col, row);
             return (cell && !cell.isEmpty()) || this.getters.isInMerge(sheetId, col, row);
-        }
-        /**
-         * Adapt the current viewport with the headers sizes
-         */
-        getShiftedViewport(viewport) {
-            const shiftX = this.getters.isDashboard() ? 0 : HEADER_WIDTH;
-            const shiftY = this.getters.isDashboard() ? 0 : HEADER_HEIGHT;
-            return {
-                ...viewport,
-                offsetX: viewport.offsetX - shiftX,
-                offsetY: viewport.offsetY - shiftY,
-            };
         }
         findNextEmptyCol(base, max, row) {
             let col = base;
@@ -20458,8 +20548,9 @@
         getGridBoxes(renderingContext) {
             const boxes = [];
             const { viewport } = renderingContext;
-            const { right, left, top, bottom } = this.getShiftedViewport(viewport);
-            const sheetId = this.getters.getActiveSheetId();
+            const { right, left, top, bottom } = viewport;
+            const sheet = this.getters.getActiveSheet();
+            const { id: sheetId } = sheet;
             for (let rowNumber = top; rowNumber <= bottom; rowNumber++) {
                 const row = this.getters.getRow(sheetId, rowNumber);
                 if (row.isHidden) {
@@ -20499,6 +20590,10 @@
     RendererPlugin.getters = [
         "getColIndex",
         "getRowIndex",
+        "getColDimensions",
+        "getColDimensionsInViewport",
+        "getRowDimensions",
+        "getRowDimensionsInViewport",
         "getRect",
         "isVisibleInViewport",
         "getEdgeScrollCol",
@@ -22492,13 +22587,15 @@
                     this.setViewportOffset(cmd.offsetX, cmd.offsetY);
                     break;
                 case "SHIFT_VIEWPORT_DOWN":
-                    const topRow = this.getActiveTopRow();
-                    const shiftedOffsetY = this.clipOffsetY(topRow.start + this.viewportHeight);
+                    const { top } = this.getActiveSnappedViewport();
+                    const sheetId = this.getters.getActiveSheetId();
+                    const shiftedOffsetY = this.clipOffsetY(this.getters.getRowDimensions(sheetId, top).start + this.viewportHeight);
                     this.shiftVertically(shiftedOffsetY);
                     break;
                 case "SHIFT_VIEWPORT_UP": {
-                    const topRow = this.getActiveTopRow();
-                    const shiftedOffsetY = this.clipOffsetY(topRow.end - this.viewportHeight);
+                    const { top } = this.getActiveSnappedViewport();
+                    const sheetId = this.getters.getActiveSheetId();
+                    const shiftedOffsetY = this.clipOffsetY(this.getters.getRowDimensions(sheetId, top).end - this.viewportHeight);
                     this.shiftVertically(shiftedOffsetY);
                     break;
                 }
@@ -22547,10 +22644,6 @@
                 height: this.viewportHeight,
             };
         }
-        getActiveViewport() {
-            const sheetId = this.getters.getActiveSheetId();
-            return this.getViewport(sheetId);
-        }
         getActiveSnappedViewport() {
             const sheetId = this.getters.getActiveSheetId();
             return this.getSnappedViewport(sheetId);
@@ -22560,16 +22653,19 @@
          * with some bottom and right padding.
          */
         getMaxViewportSize(sheet) {
+            const sheetId = sheet.id;
             const lastCol = findLastVisibleColRow(sheet, "cols");
             const lastRow = findLastVisibleColRow(sheet, "rows");
-            const leftCol = sheet.cols.find((col) => col.end > lastCol.end - this.viewportWidth) ||
-                sheet.cols[sheet.cols.length - 1];
-            const topRow = sheet.rows.find((row) => row.end > lastRow.end - this.viewportHeight) ||
-                sheet.rows[sheet.rows.length - 1];
-            const width = lastCol.end +
-                Math.max(DEFAULT_CELL_WIDTH, Math.min(leftCol.size, this.viewportWidth - lastCol.size));
-            const height = lastRow.end +
-                Math.max(DEFAULT_CELL_HEIGHT + 5, Math.min(topRow.size, this.viewportHeight - lastRow.size));
+            const { end: lastColEnd, size: lastColSize } = this.getters.getColDimensions(sheetId, lastCol);
+            const { end: lastRowEnd, size: lastRowSize } = this.getters.getRowDimensions(sheetId, lastRow);
+            const leftColIndex = searchHeaderIndex(sheet.cols, lastColEnd - this.viewportWidth, 0);
+            const leftCol = sheet.cols[leftColIndex];
+            const leftRowIndex = searchHeaderIndex(sheet.rows, lastRowEnd - this.viewportHeight, 0);
+            const topRow = sheet.rows[leftRowIndex];
+            const width = lastColEnd +
+                Math.max(DEFAULT_CELL_WIDTH, Math.min(leftCol.size, this.viewportWidth - lastColSize));
+            const height = lastRowEnd +
+                Math.max(DEFAULT_CELL_HEIGHT + 5, Math.min(topRow.size, this.viewportHeight - lastRowSize));
             return { width, height };
         }
         getMaximumViewportOffset(sheet) {
@@ -22654,7 +22750,7 @@
         }
         setViewportOffset(offsetX, offsetY) {
             const sheetId = this.getters.getActiveSheetId();
-            this.getActiveViewport();
+            this.getViewport(sheetId);
             this.viewports[sheetId].offsetX = offsetX;
             this.viewports[sheetId].offsetY = offsetY;
             this.adjustViewportZone(sheetId, this.viewports[sheetId]);
@@ -22697,14 +22793,10 @@
         adjustViewportZoneX(sheetId, viewport) {
             const sheet = this.getters.getSheet(sheetId);
             const cols = sheet.cols;
-            viewport.left = this.getters.getColIndex(viewport.offsetX, 0, sheet);
-            const x = this.viewportWidth + viewport.offsetX;
-            viewport.right = cols.length - 1;
-            for (let i = viewport.left; i < cols.length; i++) {
-                if (x < cols[i].end) {
-                    viewport.right = i;
-                    break;
-                }
+            viewport.left = searchHeaderIndex(cols, viewport.offsetX);
+            viewport.right = searchHeaderIndex(cols, this.viewportWidth, viewport.left);
+            if (viewport.right === -1) {
+                viewport.right = cols.length - 1;
             }
             this.updateSnap = true;
         }
@@ -22712,14 +22804,10 @@
         adjustViewportZoneY(sheetId, viewport) {
             const sheet = this.getters.getSheet(sheetId);
             const rows = sheet.rows;
-            viewport.top = this.getters.getRowIndex(viewport.offsetY, 0, sheet);
-            const y = this.viewportHeight + viewport.offsetY;
-            viewport.bottom = rows.length - 1;
-            for (let i = viewport.top; i < rows.length; i++) {
-                if (y < rows[i].end) {
-                    viewport.bottom = i;
-                    break;
-                }
+            viewport.top = searchHeaderIndex(rows, viewport.offsetY);
+            viewport.bottom = searchHeaderIndex(rows, this.viewportHeight, viewport.top);
+            if (viewport.bottom === -1) {
+                viewport.bottom = rows.length - 1;
             }
             this.updateSnap = true;
         }
@@ -22739,9 +22827,10 @@
             }
             const mainCellPosition = this.getters.getMainCellPosition(sheetId, position.col, position.row);
             const { col, row } = getNextVisibleCellPosition(sheet, mainCellPosition.col, mainCellPosition.row);
-            while (cols[col].end > adjustedViewport.offsetX + this.viewportWidth &&
-                adjustedViewport.offsetX < cols[col].start) {
-                adjustedViewport.offsetX = cols[adjustedViewport.left].end;
+            const { start, end } = this.getters.getColDimensions(sheetId, col);
+            while (end > adjustedViewport.offsetX + this.viewportWidth &&
+                adjustedViewport.offsetX < start) {
+                adjustedViewport.offsetX = this.getters.getColDimensions(sheetId, adjustedViewport.left).end;
                 this.adjustViewportZoneX(sheetId, adjustedViewport);
             }
             while (col < adjustedViewport.left) {
@@ -22749,12 +22838,13 @@
                     .slice(0, adjustedViewport.left)
                     .reverse()
                     .findIndex((col) => !col.isHidden);
-                adjustedViewport.offsetX = cols[adjustedViewport.left - 1 - step].start;
+                adjustedViewport.offsetX = this.getters.getColDimensions(sheetId, adjustedViewport.left - 1 - step).start;
                 this.adjustViewportZoneX(sheetId, adjustedViewport);
             }
-            while (rows[row].end > adjustedViewport.offsetY + this.viewportHeight &&
-                adjustedViewport.offsetY < rows[row].start) {
-                adjustedViewport.offsetY = rows[adjustedViewport.top].end;
+            while (this.getters.getRowDimensions(sheetId, row).end >
+                adjustedViewport.offsetY + this.viewportHeight &&
+                adjustedViewport.offsetY < this.getters.getRowDimensions(sheetId, row).start) {
+                adjustedViewport.offsetY = this.getters.getRowDimensions(sheetId, adjustedViewport.top).end;
                 this.adjustViewportZoneY(sheetId, adjustedViewport);
             }
             while (row < adjustedViewport.top) {
@@ -22762,7 +22852,7 @@
                     .slice(0, adjustedViewport.top)
                     .reverse()
                     .findIndex((row) => !row.isHidden);
-                adjustedViewport.offsetY = rows[adjustedViewport.top - 1 - step].start;
+                adjustedViewport.offsetY = this.getters.getRowDimensions(sheetId, adjustedViewport.top - 1 - step).start;
                 this.adjustViewportZoneY(sheetId, adjustedViewport);
             }
             // cast the new snappedViewport in the standard viewport
@@ -22774,13 +22864,16 @@
         /** Will update the snapped viewport based on the "standard" viewport to ensure its
          * offsets match the start of the viewport left (resp. top) column (resp. row). */
         snapViewportToCell(sheetId) {
-            const { cols, rows } = this.getters.getSheet(sheetId);
             const viewport = this.getViewport(sheetId);
-            const adjustedViewport = Object.assign({}, viewport);
+            const adjustedViewport = {
+                ...viewport,
+                offsetScrollbarX: viewport.offsetX,
+                offsetScrollbarY: viewport.offsetY,
+            };
             this.adjustViewportOffsetX(sheetId, adjustedViewport);
             this.adjustViewportOffsetY(sheetId, adjustedViewport);
-            adjustedViewport.offsetX = cols[adjustedViewport.left].start;
-            adjustedViewport.offsetY = rows[adjustedViewport.top].start;
+            adjustedViewport.offsetX = this.getters.getColDimensions(sheetId, adjustedViewport.left).start;
+            adjustedViewport.offsetY = this.getters.getRowDimensions(sheetId, adjustedViewport.top).start;
             this.adjustViewportZone(sheetId, adjustedViewport);
             this.snappedViewports[sheetId] = adjustedViewport;
         }
@@ -22796,17 +22889,8 @@
             const deltaRow = this.getActiveSnappedViewport().top - top;
             this.selection.selectCell(anchor.cell.col, anchor.cell.row + deltaRow);
         }
-        /**
-         * Return the row at the viewport's top
-         */
-        getActiveTopRow() {
-            const { top } = this.getActiveSnappedViewport();
-            const sheet = this.getters.getActiveSheet();
-            return this.getters.getRow(sheet.id, top);
-        }
     }
     ViewportPlugin.getters = [
-        "getActiveViewport",
         "getActiveSnappedViewport",
         "getViewportDimension",
         "getViewportDimensionWithHeaders",
@@ -23101,20 +23185,20 @@
                 colIndex = edgeScrollInfoX.direction > 0 ? right : left - 1;
             }
             else {
-                colIndex = env.model.getters.getColIndex(offsetX - HEADER_WIDTH, left);
+                colIndex = env.model.getters.getColIndex(offsetX - HEADER_WIDTH);
             }
             let rowIndex;
             if (edgeScrollInfoY.canEdgeScroll) {
                 rowIndex = edgeScrollInfoY.direction > 0 ? bottom : top - 1;
             }
             else {
-                rowIndex = env.model.getters.getRowIndex(offsetY - HEADER_HEIGHT, top);
+                rowIndex = env.model.getters.getRowIndex(offsetY - HEADER_HEIGHT);
             }
             cbMouseMove(colIndex, rowIndex);
+            const sheetId = env.model.getters.getActiveSheetId();
             if (edgeScrollInfoX.canEdgeScroll) {
                 const { left, offsetY } = env.model.getters.getActiveSnappedViewport();
-                const { cols } = env.model.getters.getActiveSheet();
-                const offsetX = cols[left + edgeScrollInfoX.direction].start;
+                const offsetX = env.model.getters.getColDimensions(sheetId, left + edgeScrollInfoX.direction).start;
                 env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
                 timeOutId = setTimeout(() => {
                     timeOutId = null;
@@ -23123,8 +23207,7 @@
             }
             if (edgeScrollInfoY.canEdgeScroll) {
                 const { top, offsetX } = env.model.getters.getActiveSnappedViewport();
-                const { rows } = env.model.getters.getActiveSheet();
-                const offsetY = rows[top + edgeScrollInfoY.direction].start;
+                const offsetY = env.model.getters.getRowDimensions(sheetId, top + edgeScrollInfoY.direction).start;
                 env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
                 timeOutId = setTimeout(() => {
                     timeOutId = null;
@@ -23214,13 +23297,13 @@
             };
             const onMouseMove = (ev) => {
                 const position = this.props.getGridBoundingClientRect();
-                const { top: viewportTop, left: viewportLeft, offsetY, offsetX, } = this.env.model.getters.getActiveSnappedViewport();
+                const { offsetY, offsetX } = this.env.model.getters.getActiveSnappedViewport();
                 this.state.position = {
                     left: ev.clientX - start.left + offsetX,
                     top: ev.clientY - start.top + offsetY,
                 };
-                const col = this.env.model.getters.getColIndex(ev.clientX - position.left - HEADER_WIDTH, viewportLeft);
-                const row = this.env.model.getters.getRowIndex(ev.clientY - position.top - HEADER_HEIGHT, viewportTop);
+                const col = this.env.model.getters.getColIndex(ev.clientX - position.left - HEADER_WIDTH);
+                const row = this.env.model.getters.getRowIndex(ev.clientY - position.top - HEADER_HEIGHT);
                 if (lastCol !== col || lastRow !== row) {
                     const activeSheet = this.env.model.getters.getActiveSheet();
                     lastCol = col === -1 ? lastCol : clip(col, 0, activeSheet.cols.length);
@@ -24392,9 +24475,6 @@
     FiguresContainer.components = {};
     figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
 
-    // -----------------------------------------------------------------------------
-    // Resizer component
-    // -----------------------------------------------------------------------------
     class AbstractResizer extends owl.Component {
         constructor() {
             super(...arguments);
@@ -24422,17 +24502,15 @@
             if (elementIndex < 0) {
                 return;
             }
-            const element = this._getElement(elementIndex);
-            const offset = this._getStateOffset();
-            if (position - (element.start - offset) < this.PADDING &&
-                elementIndex !== this._getViewportOffset()) {
+            const dimensions = this._getDimensionsInViewport(elementIndex);
+            if (position - dimensions.start < this.PADDING && elementIndex !== this._getViewportOffset()) {
                 this.state.resizerIsActive = true;
-                this.state.draggerLinePosition = element.start - offset - this._getHeaderSize();
+                this.state.draggerLinePosition = dimensions.start;
                 this.state.activeElement = this._getPreviousVisibleElement(elementIndex);
             }
-            else if (element.end - offset - position < this.PADDING) {
+            else if (dimensions.end - position < this.PADDING) {
                 this.state.resizerIsActive = true;
-                this.state.draggerLinePosition = element.end - offset - this._getHeaderSize();
+                this.state.draggerLinePosition = dimensions.end;
                 this.state.activeElement = elementIndex;
             }
             else {
@@ -24472,7 +24550,7 @@
             this.state.delta = 0;
             const initialPosition = this._getClientPosition(ev);
             const styleValue = this.state.draggerLinePosition;
-            const size = this._getElement(this.state.activeElement).size;
+            const size = this._getElementSize(this.state.activeElement);
             const minSize = styleValue - size + this.MIN_ELEMENT_SIZE;
             const maxSize = this._getMaxSize();
             const onMouseUp = (ev) => {
@@ -24513,29 +24591,28 @@
         startMovement(ev) {
             this.state.waitingForMove = false;
             this.state.isMoving = true;
-            const startElement = this._getElement(this._getSelectedZoneStart());
-            const endElement = this._getElement(this._getSelectedZoneEnd());
+            const startDimensions = this._getDimensionsInViewport(this._getSelectedZoneStart());
+            const endDimensions = this._getDimensionsInViewport(this._getSelectedZoneEnd());
             const initialPosition = this._getClientPosition(ev);
-            const defaultPosition = startElement.start - this._getStateOffset() - this._getHeaderSize();
+            const defaultPosition = startDimensions.start;
             this.state.draggerLinePosition = defaultPosition;
             this.state.base = this._getSelectedZoneStart();
             this.state.draggerShadowPosition = defaultPosition;
-            this.state.draggerShadowThickness = endElement.end - startElement.start;
+            this.state.draggerShadowThickness = endDimensions.end - startDimensions.start;
             const mouseMoveMovement = (elementIndex, currentEv) => {
                 if (elementIndex >= 0) {
                     // define draggerLinePosition
-                    const element = this._getElement(elementIndex);
-                    const offset = this._getStateOffset() + this._getHeaderSize();
+                    const dimensions = this._getDimensionsInViewport(elementIndex);
                     if (elementIndex <= this._getSelectedZoneStart()) {
-                        this.state.draggerLinePosition = element.start - offset;
+                        this.state.draggerLinePosition = dimensions.start;
                         this.state.base = elementIndex;
                     }
                     else if (this._getSelectedZoneEnd() < elementIndex) {
-                        this.state.draggerLinePosition = element.end - offset;
+                        this.state.draggerLinePosition = dimensions.end;
                         this.state.base = elementIndex + 1;
                     }
                     else {
-                        this.state.draggerLinePosition = startElement.start - offset;
+                        this.state.draggerLinePosition = startDimensions.start;
                         this.state.base = this._getSelectedZoneStart();
                     }
                     // define draggerShadowPosition
@@ -24625,7 +24702,6 @@
                 this._selectElement(index, false);
             }
             const type = this._getType();
-            // todo: define props
             this.props.onOpenContextMenu(type, ev.clientX, ev.clientY);
         }
     }
@@ -24700,9 +24776,6 @@
         _getEvOffset(ev) {
             return ev.offsetX;
         }
-        _getStateOffset() {
-            return this.env.model.getters.getActiveSnappedViewport().offsetX - HEADER_WIDTH;
-        }
         _getViewportOffset() {
             return this.env.model.getters.getActiveSnappedViewport().left;
         }
@@ -24710,7 +24783,7 @@
             return ev.clientX;
         }
         _getElementIndex(index) {
-            return this.env.model.getters.getColIndex(index, this.env.model.getters.getActiveSnappedViewport().left);
+            return this.env.model.getters.getColIndex(index);
         }
         _getSelectedZoneStart() {
             return this.env.model.getters.getSelectedZone().left;
@@ -24725,21 +24798,18 @@
             const { left, right } = this.env.model.getters.getActiveSnappedViewport();
             return { first: left, last: right };
         }
-        _getElement(index) {
-            return this.env.model.getters.getCol(this.env.model.getters.getActiveSheetId(), index);
+        _getDimensionsInViewport(index) {
+            return this.env.model.getters.getColDimensionsInViewport(this.env.model.getters.getActiveSheetId(), index);
         }
-        _getBottomRightValue(element) {
-            return element.end;
-        }
-        _getHeaderSize() {
-            return HEADER_WIDTH;
+        _getElementSize(index) {
+            return this.env.model.getters.getCol(this.env.model.getters.getActiveSheetId(), index).size;
         }
         _getMaxSize() {
             return this.colResizerRef.el.clientWidth;
         }
         _updateSize() {
             const index = this.state.activeElement;
-            const size = this.state.delta + this._getElement(index).size;
+            const size = this.state.delta + this._getElementSize(index);
             const cols = this.env.model.getters.getActiveCols();
             this.env.model.dispatch("RESIZE_COLUMNS_ROWS", {
                 dimension: "COL",
@@ -24773,8 +24843,8 @@
         }
         _adjustViewport(direction) {
             const { left, offsetY } = this.env.model.getters.getActiveSnappedViewport();
-            const { cols } = this.env.model.getters.getActiveSheet();
-            const offsetX = cols[left + direction].start;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const offsetX = this.env.model.getters.getColDimensions(sheetId, left + direction).start;
             this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
         }
         _fitElementSize(index) {
@@ -24803,9 +24873,7 @@
             });
         }
         unhideStyleValue(hiddenIndex) {
-            const col = this.env.model.getters.getCol(this.env.model.getters.getActiveSheetId(), hiddenIndex);
-            const offset = this._getStateOffset();
-            return col.start - offset - this._getHeaderSize();
+            return this._getDimensionsInViewport(hiddenIndex).start;
         }
     }
     ColResizer.template = "o-spreadsheet.ColResizer";
@@ -24882,9 +24950,6 @@
         _getEvOffset(ev) {
             return ev.offsetY;
         }
-        _getStateOffset() {
-            return this.env.model.getters.getActiveSnappedViewport().offsetY - HEADER_HEIGHT;
-        }
         _getViewportOffset() {
             return this.env.model.getters.getActiveSnappedViewport().top;
         }
@@ -24892,7 +24957,7 @@
             return ev.clientY;
         }
         _getElementIndex(index) {
-            return this.env.model.getters.getRowIndex(index, this.env.model.getters.getActiveSnappedViewport().top);
+            return this.env.model.getters.getRowIndex(index);
         }
         _getSelectedZoneStart() {
             return this.env.model.getters.getSelectedZone().top;
@@ -24907,18 +24972,18 @@
             const { top, bottom } = this.env.model.getters.getActiveSnappedViewport();
             return { first: top, last: bottom };
         }
-        _getElement(index) {
-            return this.env.model.getters.getRow(this.env.model.getters.getActiveSheetId(), index);
+        _getDimensionsInViewport(index) {
+            return this.env.model.getters.getRowDimensionsInViewport(this.env.model.getters.getActiveSheetId(), index);
         }
-        _getHeaderSize() {
-            return HEADER_HEIGHT;
+        _getElementSize(index) {
+            return this.env.model.getters.getRow(this.env.model.getters.getActiveSheetId(), index).size;
         }
         _getMaxSize() {
             return this.rowResizerRef.el.clientHeight;
         }
         _updateSize() {
             const index = this.state.activeElement;
-            const size = this.state.delta + this._getElement(index).size;
+            const size = this.state.delta + this._getElementSize(index);
             const rows = this.env.model.getters.getActiveRows();
             this.env.model.dispatch("RESIZE_COLUMNS_ROWS", {
                 dimension: "ROW",
@@ -24952,8 +25017,8 @@
         }
         _adjustViewport(direction) {
             const { top, offsetX } = this.env.model.getters.getActiveSnappedViewport();
-            const { rows } = this.env.model.getters.getActiveSheet();
-            const offsetY = rows[top + direction].start;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const offsetY = this.env.model.getters.getRowDimensions(sheetId, top + direction).start;
             this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
         }
         _fitElementSize(index) {
@@ -24982,9 +25047,7 @@
             });
         }
         unhideStyleValue(hiddenIndex) {
-            const row = this.env.model.getters.getRow(this.env.model.getters.getActiveSheetId(), hiddenIndex);
-            const offset = this._getStateOffset();
-            return row.start - offset - this._getHeaderSize();
+            return this._getDimensionsInViewport(hiddenIndex).start;
         }
     }
     RowResizer.template = "o-spreadsheet.RowResizer";
@@ -25028,10 +25091,10 @@
             const s = this.env.model.getters.getActiveSheet();
             const z = this.props.zone;
             const margin = 2;
-            const left = s.cols[z.left].start + margin;
-            const right = s.cols[z.right].end - 2 * margin;
-            const top = s.rows[z.top].start + margin;
-            const bottom = s.rows[z.bottom].end - 2 * margin;
+            const left = this.env.model.getters.getColDimensions(s.id, z.left).start + margin;
+            const right = this.env.model.getters.getColDimensions(s.id, z.right).end - 2 * margin;
+            const top = this.env.model.getters.getRowDimensions(s.id, z.top).start + margin;
+            const bottom = this.env.model.getters.getRowDimensions(s.id, z.bottom).end - 2 * margin;
             const lineWidth = 4;
             const leftValue = isLeft ? left : right;
             const topValue = isTop ? top : bottom;
@@ -25084,8 +25147,12 @@
             const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
             const s = this.env.model.getters.getActiveSheet();
             const z = this.props.zone;
-            const leftValue = this.isLeft ? s.cols[z.left].start : s.cols[z.right].end;
-            const topValue = this.isTop ? s.rows[z.top].start : s.rows[z.bottom].end;
+            const leftValue = this.isLeft
+                ? this.env.model.getters.getColDimensions(s.id, z.left).start
+                : this.env.model.getters.getColDimensions(s.id, z.right).end;
+            const topValue = this.isTop
+                ? this.env.model.getters.getRowDimensions(s.id, z.top).start
+                : this.env.model.getters.getRowDimensions(s.id, z.bottom).end;
             return `
       left:${leftValue + HEADER_WIDTH - offsetX - AUTOFILL_EDGE_LENGTH / 2}px;
       top:${topValue + HEADER_HEIGHT - offsetY - AUTOFILL_EDGE_LENGTH / 2}px;
@@ -25148,9 +25215,8 @@
             const parent = this.highlightRef.el.parentElement;
             const position = parent.getBoundingClientRect();
             const activeSheet = this.env.model.getters.getActiveSheet();
-            const { top: viewportTop, left: viewportLeft } = this.env.model.getters.getActiveSnappedViewport();
-            const initCol = this.env.model.getters.getColIndex(clientX - position.left - HEADER_WIDTH, viewportLeft);
-            const initRow = this.env.model.getters.getRowIndex(clientY - position.top - HEADER_HEIGHT, viewportTop);
+            const initCol = this.env.model.getters.getColIndex(clientX - position.left - HEADER_WIDTH);
+            const initRow = this.env.model.getters.getRowIndex(clientY - position.top - HEADER_HEIGHT);
             const deltaColMin = -z.left;
             const deltaColMax = activeSheet.cols.length - z.right - 1;
             const deltaRowMin = -z.top;
@@ -25451,7 +25517,7 @@
     // but they shouldn't be preventDefault and stopped (else copy and paste events will not trigger)
     // and also should not result in typing the character C or V in the composer
     const keyDownMappingIgnore = ["CTRL+C", "CTRL+V"];
-    function useCellHovered(env, getViewPort) {
+    function useCellHovered(env) {
         const hoveredPosition = owl.useState({});
         const { Date, setInterval, clearInterval } = window;
         const gridRef = owl.useRef("gridOverlay");
@@ -25460,9 +25526,8 @@
         let lastMoved = 0;
         let interval;
         function getPosition() {
-            const viewport = getViewPort();
-            const col = env.model.getters.getColIndex(x, viewport.left);
-            const row = env.model.getters.getRowIndex(y, viewport.top);
+            const col = env.model.getters.getColIndex(x);
+            const row = env.model.getters.getRowIndex(y);
             return { col, row };
         }
         function checkTiming() {
@@ -25716,7 +25781,7 @@
             this.clickedCol = 0;
             this.clickedRow = 0;
             this.clipBoardString = "";
-            this.hoveredCell = useCellHovered(this.env, () => this.env.model.getters.getActiveSnappedViewport());
+            this.hoveredCell = useCellHovered(this.env);
             owl.useExternalListener(document.body, "cut", this.copy.bind(this, true));
             owl.useExternalListener(document.body, "copy", this.copy.bind(this, false));
             owl.useExternalListener(document.body, "paste", this.paste);
@@ -25834,8 +25899,9 @@
             }
         }
         onScroll() {
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            if (offsetX !== this.hScrollbar.scroll || offsetY !== this.vScrollbar.scroll) {
+            const { offsetScrollbarX, offsetScrollbarY } = this.env.model.getters.getActiveSnappedViewport();
+            if (offsetScrollbarX !== this.hScrollbar.scroll ||
+                offsetScrollbarY !== this.vScrollbar.scroll) {
                 const { maxOffsetX, maxOffsetY } = this.env.model.getters.getMaximumViewportOffset(this.env.model.getters.getActiveSheet());
                 this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
                     offsetX: Math.min(this.hScrollbar.scroll, maxOffsetX),
@@ -25854,16 +25920,18 @@
             const zone = this.env.model.getters.getSelectedZone();
             const sheet = this.env.model.getters.getActiveSheet();
             const { offsetX, offsetY } = this.env.model.getters.getActiveSnappedViewport();
+            const col = this.env.model.getters.getColDimensions(sheet.id, zone.right);
+            const row = this.env.model.getters.getRowDimensions(sheet.id, zone.bottom);
             return {
-                left: sheet.cols[zone.right].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
-                top: sheet.rows[zone.bottom].end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
+                left: col.end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
+                top: row.end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
             };
         }
         drawGrid() {
             //reposition scrollbar
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            this.hScrollbar.scroll = offsetX;
-            this.vScrollbar.scroll = offsetY;
+            const { offsetScrollbarX, offsetScrollbarY } = this.env.model.getters.getActiveSnappedViewport();
+            this.hScrollbar.scroll = offsetScrollbarX;
+            this.vScrollbar.scroll = offsetScrollbarY;
             // check for position changes
             this.checkSheetChanges();
             // drawing grid on canvas
@@ -25873,7 +25941,7 @@
             const thinLineWidth = 0.4 * dpr;
             const renderingContext = {
                 ctx,
-                viewport: this.env.model.getters.getActiveViewport(),
+                viewport: this.env.model.getters.getActiveSnappedViewport(),
                 dpr,
                 thinLineWidth,
             };
@@ -25927,9 +25995,8 @@
         }
         getCartesianCoordinates(ev) {
             const [x, y] = this.getCoordinates(ev);
-            const { left, top } = this.env.model.getters.getActiveSnappedViewport();
-            const colIndex = this.env.model.getters.getColIndex(x, left);
-            const rowIndex = this.env.model.getters.getRowIndex(y, top);
+            const colIndex = this.env.model.getters.getColIndex(x);
+            const rowIndex = this.env.model.getters.getRowIndex(y);
             return [colIndex, rowIndex];
         }
         onMouseDown(ev) {
@@ -25985,14 +26052,14 @@
                     col = colEdgeScroll.direction > 0 ? right : left - 1;
                 }
                 else {
-                    col = this.env.model.getters.getColIndex(x, left);
+                    col = this.env.model.getters.getColIndex(x);
                     col = col === -1 ? prevCol : col;
                 }
                 if (rowEdgeScroll.canEdgeScroll) {
                     row = rowEdgeScroll.direction > 0 ? bottom : top - 1;
                 }
                 else {
-                    row = this.env.model.getters.getRowIndex(y, top);
+                    row = this.env.model.getters.getRowIndex(y);
                     row = row === -1 ? prevRow : row;
                 }
                 isEdgeScrolling = colEdgeScroll.canEdgeScroll || rowEdgeScroll.canEdgeScroll;
@@ -26003,8 +26070,8 @@
                     this.env.model.selection.setAnchorCorner(col, row);
                 }
                 if (isEdgeScrolling) {
-                    const offsetX = sheet.cols[left + colEdgeScroll.direction].start;
-                    const offsetY = sheet.rows[top + rowEdgeScroll.direction].start;
+                    const offsetX = this.env.model.getters.getColDimensions(sheet.id, left + colEdgeScroll.direction).start;
+                    const offsetY = this.env.model.getters.getRowDimensions(sheet.id, top + rowEdgeScroll.direction).start;
                     this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
                     timeOutId = setTimeout(() => {
                         timeOutId = null;
@@ -26060,8 +26127,12 @@
                 col = Math.min(col, sheet.cols.length - 1);
                 row = Math.min(row, sheet.rows.length - 1);
                 const { left, right, top, bottom, offsetX, offsetY } = viewport;
-                const newOffsetX = col < left || col > right - 1 ? sheet.cols[left + delta[0]].start : offsetX;
-                const newOffsetY = row < top || row > bottom - 1 ? sheet.rows[top + delta[1]].start : offsetY;
+                const newOffsetX = col < left || col > right - 1
+                    ? this.env.model.getters.getColDimensions(sheet.id, left + delta[0]).start
+                    : offsetX;
+                const newOffsetY = row < top || row > bottom - 1
+                    ? this.env.model.getters.getRowDimensions(sheet.id, top + delta[1]).start
+                    : offsetY;
                 if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
                     this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
                         offsetX: newOffsetX,
@@ -29522,7 +29593,7 @@
             ["xmlns:c", DRAWING_NS_C],
         ];
         const chartShapeProperty = shapeProperty({
-            backgroundColor: toHex6(chart.data.backgroundColor),
+            backgroundColor: chart.data.backgroundColor,
             line: { color: "000000" },
         });
         // <manualLayout/> to manually position the chart in the figure container
@@ -29530,7 +29601,7 @@
         if (chart.data.title) {
             title = escapeXml /*xml*/ `
       <c:title>
-        ${insertText(chart.data.title)}
+        ${insertText(chart.data.title, chart.data.fontColor)}
         <c:overlay val="0" />
       </c:title>
     `;
@@ -29563,6 +29634,7 @@
                 position = "t";
                 break;
         }
+        const fontColor = chart.data.fontColor;
         const xml = escapeXml /*xml*/ `
     <c:chartSpace ${formatAttributes(namespaces)}>
       <c:roundedCorners val="0" />
@@ -29575,9 +29647,9 @@
           <!-- how the chart element is placed on the chart -->
           <c:layout />
           ${plot}
-          ${shapeProperty({ backgroundColor: toHex6(chart.data.backgroundColor) })}
+          ${shapeProperty({ backgroundColor: chart.data.backgroundColor })}
         </c:plotArea>
-        ${addLegend(position)}
+        ${addLegend(position, fontColor)}
       </c:chart>
     </c:chartSpace>
   `;
@@ -29611,7 +29683,7 @@
     </a:ln>
   `;
     }
-    function insertText(text, fontsize = 22) {
+    function insertText(text, fontColor = "000000", fontsize = 22) {
         return escapeXml /*xml*/ `
     <c:tx>
       <c:rich>
@@ -29620,7 +29692,7 @@
         <a:p>
           <a:pPr lvl="0">
             <a:defRPr b="0">
-              ${solidFill("000000")}
+              ${solidFill(fontColor)}
               <a:latin typeface="+mn-lt"/>
             </a:defRPr>
           </a:pPr>
@@ -29633,7 +29705,7 @@
     </c:tx>
   `;
     }
-    function insertTextProperties(fontsize = 12, bold = false, italic = false) {
+    function insertTextProperties(fontsize = 12, fontColor = "000000", bold = false, italic = false) {
         const defPropertiesAttributes = [
             ["b", bold ? "1" : "0"],
             ["i", italic ? "1" : "0"],
@@ -29646,7 +29718,7 @@
       <a:p>
         <a:pPr lvl="0">
           <a:defRPr ${formatAttributes(defPropertiesAttributes)}>
-            ${solidFill("000000")}
+            ${solidFill(fontColor)}
             <a:latin typeface="+mn-lt"/>
           </a:defRPr>
         </a:pPr>
@@ -29664,7 +29736,7 @@
         const colors = new ChartColors();
         const dataSetsNodes = [];
         for (const [dsIndex, dataset] of Object.entries(chart.dataSets)) {
-            const color = toHex6(colors.next());
+            const color = toXlsxHexColor(colors.next());
             const dataShapeProperty = shapeProperty({
                 backgroundColor: color,
                 line: { color },
@@ -29698,8 +29770,8 @@
       <c:axId val="${catAxId}" />
       <c:axId val="${valAxId}" />
     </c:barChart>
-    ${addAx("b", "c:catAx", catAxId, valAxId)}
-    ${addAx(axisPos, "c:valAx", valAxId, catAxId)}
+    ${addAx("b", "c:catAx", catAxId, valAxId, { fontColor: chart.fontColor })}
+    ${addAx(axisPos, "c:valAx", valAxId, catAxId, { fontColor: chart.fontColor })}
   `;
     }
     function addLineChart(chart) {
@@ -29710,7 +29782,7 @@
                 line: {
                     width: 2.5,
                     style: "solid",
-                    color: toHex6(colors.next()),
+                    color: toXlsxHexColor(colors.next()),
                 },
             });
             dataSetsNodes.push(escapeXml /*xml*/ `
@@ -29741,8 +29813,8 @@
       <c:axId val="${catAxId}" />
       <c:axId val="${valAxId}" />
     </c:lineChart>
-    ${addAx("b", "c:catAx", catAxId, valAxId)}
-    ${addAx(axisPos, "c:valAx", valAxId, catAxId)}
+    ${addAx("b", "c:catAx", catAxId, valAxId, { fontColor: chart.fontColor })}
+    ${addAx(axisPos, "c:valAx", valAxId, catAxId, { fontColor: chart.fontColor })}
   `;
     }
     function addDoughnutChart(chart, { holeSize } = { holeSize: 50 }) {
@@ -29752,7 +29824,7 @@
             const { height, width } = zoneToDimension(zone);
             return height * width;
         }));
-        const doughnutColors = range(0, maxLength).map(() => toHex6(colors.next()));
+        const doughnutColors = range(0, maxLength).map(() => toXlsxHexColor(colors.next()));
         const dataSetsNodes = [];
         for (const [dsIndex, dataset] of Object.entries(chart.dataSets).reverse()) {
             //dataset slice labels
@@ -29807,7 +29879,7 @@
     </dLbls>
   `;
     }
-    function addAx(position, axisName, axId, crossAxId) {
+    function addAx(position, axisName, axId, crossAxId, { fontColor }) {
         // Each Axis present inside a graph needs to be identified by an unsigned integer in order to be referenced by its crossAxis.
         // I.e. x-axis, will reference y-axis and vice-versa.
         return escapeXml /*xml*/ `
@@ -29826,17 +29898,17 @@
       <c:title>
         ${insertText("")}
       </c:title>
-      ${insertTextProperties(10)}
+      ${insertTextProperties(10, fontColor)}
     </${axisName}>
     <!-- <tickLblPos/> omitted -->
   `;
     }
-    function addLegend(position) {
+    function addLegend(position, fontColor) {
         return escapeXml /*xml*/ `
     <c:legend>
       <c:legendPos val="${position}"/>
       <c:overlay val="0"/>
-      ${insertTextProperties(10)}
+      ${insertTextProperties(10, fontColor)}
     </c:legend>
   `;
     }
@@ -30372,7 +30444,7 @@
       ${font.underline ? escapeXml /*xml*/ `<u />` : ""}
       ${font.strike ? escapeXml /*xml*/ `<strike />` : ""}
       ${font.size ? escapeXml /*xml*/ `<sz val="${font.size}" />` : ""}
-      ${font.color ? escapeXml /*xml*/ `<color rgb="${toHex6(font.color)}" />` : ""}
+      ${font.color ? escapeXml /*xml*/ `<color rgb="${toXlsxHexColor(font.color)}" />` : ""}
       ${font.name ? escapeXml /*xml*/ `<name val="${font.name}" />` : ""}
     </font>
   `;
@@ -30398,7 +30470,7 @@
                 fillNodes.push(escapeXml /*xml*/ `
         <fill>
           <patternFill patternType="solid">
-            <fgColor rgb="${toHex6(fill.fgColor)}" />
+            <fgColor rgb="${toXlsxHexColor(fill.fgColor)}" />
             <bgColor indexed="64" />
           </patternFill>
         </fill>
@@ -30436,7 +30508,7 @@
         }
         return formatAttributes([
             ["style", description[0]],
-            ["color", toHex6(description[1])],
+            ["color", toXlsxHexColor(description[1])],
         ]);
     }
     function addStyles(styles) {
@@ -30484,7 +30556,7 @@
                 fillNode = escapeXml /*xml*/ `
         <fill>
           <patternFill>
-            <bgColor rgb="${toHex6(dxf.fill.fgColor)}" />
+            <bgColor rgb="${toXlsxHexColor(dxf.fill.fgColor)}" />
           </patternFill>
         </fill>
       `;
@@ -31235,8 +31307,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-05-20T14:13:43.486Z';
-    exports.__info__.hash = '7b7dba9';
+    exports.__info__.date = '2022-05-23T15:56:21.933Z';
+    exports.__info__.hash = 'b3c8080';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

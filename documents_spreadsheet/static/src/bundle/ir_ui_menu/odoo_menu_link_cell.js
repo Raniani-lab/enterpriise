@@ -166,4 +166,3 @@ export class OdooViewLinkCell extends LinkCell {
         });
     }
 }
-

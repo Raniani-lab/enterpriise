@@ -27,6 +27,7 @@ import { InsertViewSpreadsheet } from "@documents_spreadsheet/assets/insert_acti
 import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@documents_spreadsheet/assets/insert_action_link_menu/insert_action_link_menu_legacy";
 import { browser } from "@web/core/browser/browser";
 import { makeFakeSpreadsheetService } from "../utils/webclient_helpers";
+import { spreadsheetLinkMenuCellService } from "../../src/bundle/ir_ui_menu";
 
 import { loadJS } from "@web/core/assets";
 
@@ -53,6 +54,7 @@ async function openView(viewType, options = {}) {
         { sequence: 1 }
     );
     serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
+    serviceRegistry.add('spreadsheetLinkMenuCell', spreadsheetLinkMenuCellService);
     const webClient = await createWebClient({
         serverData,
         mockRPC: options.mockRPC,

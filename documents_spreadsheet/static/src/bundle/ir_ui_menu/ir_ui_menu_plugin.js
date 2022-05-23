@@ -1,13 +1,10 @@
 /** @odoo-module */
-import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings"
-
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-const { UIPlugin } = spreadsheet;
+const { CorePlugin } = spreadsheet;
 
-export default class IrMenuPlugin extends UIPlugin {
-    constructor(getters, history, dispatch, config) {
-        super(getters, history, dispatch, config);
+export default class IrMenuPlugin extends CorePlugin {
+    constructor(getters, history, range, dispatch, config, uuidGenerator) {
+        super(getters, history, range, dispatch, config, uuidGenerator);
         this.env = config.evalContext.env;
     }
 
@@ -24,27 +21,5 @@ export default class IrMenuPlugin extends UIPlugin {
         return menu;
     }
 
-    getIrMenuNameById(menuId) {
-        return this.env.services.menu.getMenu(menuId).name;
-    }
-
-    getIrMenuNameByXmlId(xmlId) {
-        return this._getIrMenuByXmlId(xmlId).name;
-    }
-
-    getIrMenuIdByXmlId(xmlId) {
-        return this._getIrMenuByXmlId(xmlId).id;
-    }
-
-    _getIrMenuByXmlId(xmlId) {
-        const menu = this.env.services.menu.getAll().find((menu) => menu.xmlid === xmlId);
-        if (!menu) {
-            throw new Error(sprintf(
-                _t("Menu %s not found. You may not have the required access rights."),
-                xmlId
-            ));
-        }
-        return menu;
-    }
 }
-IrMenuPlugin.getters = ["getIrMenuNameByXmlId", "getIrMenuNameById", "getIrMenuIdByXmlId", "getIrMenu"];
+IrMenuPlugin.getters = ["getIrMenu"];

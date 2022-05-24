@@ -7,16 +7,20 @@ import core from "web.core";
 import { sprintf } from "@web/core/utils/strings";
 import KanbanController from "web.KanbanController";
 import KanbanColumn from "web.KanbanColumn";
+import KanbanView from "web.KanbanView";
+import KanbanRenderer from 'web.KanbanRenderer';
 import KanbanRecord from "web.KanbanRecord";
 import ListController from "web.ListController";
+import ListView from "web.ListView";
 import utils from "web.utils";
 import session from "web.session";
 import { multiFileUpload } from "@sign/js/backend/multi_file_upload";
+import viewRegistry from 'web.view_registry';
 
 const { _t } = core;
 
-KanbanController.include(makeCusto("button.o-kanban-button-new"));
-KanbanColumn.include({
+const SignKanbanController = KanbanController.extend(makeCusto("button.o-kanban-button-new"));
+const SignKanbanColumn = KanbanColumn.extend({
   /**
    * @override
    */
@@ -27,7 +31,7 @@ KanbanColumn.include({
     }
   },
 });
-KanbanRecord.include({
+const SignKanbanRecord = KanbanRecord.extend({
   //--------------------------------------------------------------------------
   // Private
   //--------------------------------------------------------------------------
@@ -83,7 +87,30 @@ KanbanRecord.include({
   },
 });
 
-ListController.include(makeCusto(".o_list_button_add"));
+const SignKanbanRenderer = KanbanRenderer.extend({
+  config: Object.assign({}, KanbanRenderer.prototype.config, {
+      KanbanColumn: SignKanbanColumn,
+      KanbanRecord: SignKanbanRecord,
+  }),
+});
+
+var SignKanbanView = KanbanView.extend({
+  config: _.extend({}, KanbanView.prototype.config, {
+      Controller: SignKanbanController,
+      Renderer: SignKanbanRenderer
+  }),
+});
+
+viewRegistry.add('sign_kanban', SignKanbanView);
+
+const SignListController = ListController.extend(makeCusto(".o_list_button_add"));
+const SignListView = ListView.extend({
+  config: _.extend({}, ListView.prototype.config, {
+      Controller: SignListController,
+  }),
+});
+
+viewRegistry.add('sign_list', SignListView);
 
 function makeCusto(selector_button) {
   return {

@@ -4,30 +4,12 @@ odoo.define('mrp_workorder.update_kanban', function (require) {
 var basic_fields = require('web.basic_fields');
 var field_registry = require('web.field_registry');
 var KanbanController = require('web.KanbanController');
-var KanbanRecord = require('web.KanbanRecord');
 var KanbanView = require('web.KanbanView');
 var view_registry = require('web.view_registry');
 var ListController = require('web.ListController');
 var ListView = require('web.ListView');
 
 var FieldInteger = basic_fields.FieldInteger;
-
-KanbanRecord.include({
-    _openRecord: function () {
-        if (this.modelName === 'mrp.workorder') {
-            var self = this;
-            this._rpc({
-                method: 'open_tablet_view',
-                model: self.modelName,
-                args: [self.id],
-            }).then(function (result) {
-                self.do_action(result);
-            });
-        } else {
-            this._super.apply(this, arguments);
-        }
-    },
-});
 
 var BackArrow = FieldInteger.extend({
     events: {

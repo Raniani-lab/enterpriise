@@ -389,6 +389,8 @@
         <field name="arch" type="xml">
             <kanban position="attributes">
                 <attribute name="js_class">tablet_kanban_view</attribute>
+                <attribute name="action">open_tablet_view</attribute>
+                <attribute name="type">object</attribute>
             </kanban>
         </field>
     </record>

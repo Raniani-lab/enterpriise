@@ -5,7 +5,7 @@
         <field name="name">sign.template.kanban</field>
         <field name="model">sign.template</field>
         <field name="arch" type="xml">
-            <kanban quick_create="false" class="o_sign_template_kanban" default_order="create_date desc" sample="1">
+            <kanban quick_create="false" class="o_sign_template_kanban" default_order="create_date desc" sample="1" js_class="sign_kanban">
                 <field name="active"/>
                 <field name="attachment_id"/>
                 <field name="color"/>
@@ -96,7 +96,7 @@
         <field name="name">sign.template.tree</field>
         <field name="model">sign.template</field>
         <field name="arch" type="xml">
-            <tree sample="1">
+            <tree sample="1" js_class="sign_list">
                 <field name="attachment_id"/>
                 <field name="create_date"/>
                 <field name="sign_item_ids"/>

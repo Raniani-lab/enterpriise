@@ -47,6 +47,7 @@
         <field name="model">stock.picking.batch</field>
         <field name="arch" type="xml">
             <kanban import="0" js_class="stock_barcode_list_kanban" sample="1"
+                action="action_client_action" type="object"
                 class="oe_background_grey o_kanban_dashboard o_emphasize_colors o_stock_barcode_kanban">
                 <field name="move_line_ids"/>
                 <templates>
@@ -59,9 +60,6 @@
                                     </span></strong>
                                      <div><t t-esc="record.move_line_ids.raw_value.length"/> Lines</div>
                                 </div>
-                                <button title="Open Batch Picking"
-                                    class="btn btn-link d-none d-sm-block fa fa-desktop pt0"
-                                    name="action_open_batch_picking" type="object"/>
                                 <field name="state" widget="label_selection"
                                     options="{'classes': {
                                         'draft': 'default',

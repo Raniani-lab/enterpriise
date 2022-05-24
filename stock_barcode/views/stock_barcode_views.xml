@@ -72,7 +72,7 @@
         <field name="mode">primary</field>
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile oe_background_grey o_emphasize_colors" create="0" sample="1">
+            <kanban class="o_kanban_mobile oe_background_grey o_emphasize_colors" create="0" sample="1" action="get_action_picking_tree_ready_kanban" type="object">
                 <field name="display_name"/>
                 <field name="color"/>
                 <field name="count_picking_ready"/>
@@ -91,7 +91,7 @@
                                 </div>
                             <div class="container o_kanban_card_content o_kanban_button">
                                 <div class="row text-muted">
-                                    <button class="btn btn-primary" name="get_action_picking_tree_ready_kanban" type="object">
+                                    <button class="btn btn-primary">
                                         <t t-esc="record.count_picking_ready.value"/> To Process
                                     </button>
                                 </div>

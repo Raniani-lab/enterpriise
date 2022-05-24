@@ -2,12 +2,16 @@ odoo.define('mrp_plm.update_kanban', function (require) {
 "use strict";
 
 
-var core = require('web.core');
+var viewRegistry = require('web.view_registry');
+var KanbanController = require('web.KanbanController');
+var KanbanView = require('web.KanbanView');
+var KanbanRenderer = require('web.KanbanRenderer');
 var KanbanRecord = require('web.KanbanRecord');
+
+const core = require('web.core');
 var QWeb = core.qweb;
 
-
-KanbanRecord.include({
+const MrpEcoKanbanRecord = KanbanRecord.extend({
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
@@ -18,7 +22,7 @@ KanbanRecord.include({
      */
     _onKanbanActionClicked: function (ev) {
         var self = this;
-        if (this.modelName === 'mrp.eco' && $(ev.currentTarget).data('type') === 'set_cover') {
+        if ($(ev.currentTarget).data('type') === 'set_cover') {
             ev.preventDefault();
             this._rpc({
                     model: 'mrp.document',
@@ -49,5 +53,20 @@ KanbanRecord.include({
         }
     },
 });
+
+var MrpEcoKanbanRenderer = KanbanRenderer.extend({
+    config: Object.assign({}, KanbanRenderer.prototype.config, {
+        KanbanRecord: MrpEcoKanbanRecord,
+    }),
+});
+
+var MrpEcoKanbanView = KanbanView.extend({
+    config: _.extend({}, KanbanView.prototype.config, {
+        Controller: KanbanController,
+        Renderer: MrpEcoKanbanRenderer
+    }),
+});
+
+viewRegistry.add('mrp_eco_kanban', MrpEcoKanbanView);
 
 });

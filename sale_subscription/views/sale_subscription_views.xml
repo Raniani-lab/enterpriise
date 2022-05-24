@@ -670,7 +670,7 @@
                                            'required': [('payment_mode', '==', 'validate_send')]}"/>
                         </group>
                             <group name="online">
-                                <group>
+                                <group colspan="2">
                                     <field name="user_closable"/>
                                     <label for="auto_close_limit" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice', 'validate_send'])]}"/>
                                     <div class="o_row" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice', 'validate_send'])]}">

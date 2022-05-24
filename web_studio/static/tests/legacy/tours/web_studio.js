@@ -691,7 +691,7 @@ tour.register('web_studio_new_report_tour', {
     // a invisible element cannot be used as a trigger so this small hack is
     // mandatory for the next step
     run: function () {
-        $('.o_kanban_record:contains(My Awesome Report) .o_dropdown_kanban').css('visibility', 'visible');
+        $('.o_kanban_record:contains(My Awesome Report) .dropdown-toggle').css('visibility', 'visible');
     },
     trigger: '.o_legacy_kanban_view',
 }, {
@@ -834,7 +834,7 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     // a invisible element cannot be used as a trigger so this small hack is
     // mandatory for the next step
     run: function () {
-        $('.o_kanban_record:contains(My Awesome basic layout Report) .o_dropdown_kanban').css('visibility', 'visible');
+        $('.o_kanban_record:contains(My Awesome basic layout Report) .dropdown-toggle').css('visibility', 'visible');
     },
     trigger: '.o_legacy_kanban_view',
 }, {

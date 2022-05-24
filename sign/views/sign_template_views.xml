@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="o_dropdown_kanban dropdown">
-                                    <a role="button" class="o_kanban_manage_toggle_button o_left o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <a role="button" class="dropdown-toggle o_kanban_manage_toggle_button o_left o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                         <span class="fa fa-ellipsis-v"/>
                                     </a>
                                     <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">

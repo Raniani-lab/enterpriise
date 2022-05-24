@@ -1974,6 +1974,7 @@ QUnit.module('ReportEditorManager', {
             assert.strictEqual($('.o_technical_modal h4:contains(Alert)').length, 1, "Should display an alert because the selected field is wrong");
 
             await testUtils.dom.click($('.o_technical_modal:contains(Alert) .btn-primary'));
+            $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
             await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="children"]'));
             await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 

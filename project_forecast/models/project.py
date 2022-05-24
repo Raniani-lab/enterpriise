@@ -12,7 +12,7 @@ from odoo.osv import expression
 class Project(models.Model):
     _inherit = 'project.project'
 
-    allow_forecast = fields.Boolean("Planning", default=True, help="Enable planning tasks on the project.")
+    allow_forecast = fields.Boolean("Planning", default=True)
     total_forecast_time = fields.Integer(compute='_compute_total_forecast_time',
                                          help="Total number of forecast hours in the project rounded to the unit.", compute_sudo=True)
 

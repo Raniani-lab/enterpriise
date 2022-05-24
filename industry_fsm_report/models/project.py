@@ -12,7 +12,6 @@ class Project(models.Model):
     worksheet_template_id = fields.Many2one(
         'worksheet.template', compute="_compute_worksheet_template_id", store=True, readonly=False,
         string="Default Worksheet",
-        help="Choose a default worksheet template for this project (you can change it individually on each task).",
         domain="[('res_model', '=', 'project.task'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
 
     @api.depends('allow_worksheets')
@@ -33,7 +32,8 @@ class Task(models.Model):
         'worksheet.template', string="Worksheet Template",
         compute='_compute_worksheet_template_id', store=True, readonly=False, tracking=True,
         domain="[('res_model', '=', 'project.task'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]",
-        group_expand='_read_group_worksheet_template_id')
+        group_expand='_read_group_worksheet_template_id',
+        help="Create templates for each type of intervention you have and customize their content with your own custom fields.")
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     worksheet_color = fields.Integer(related='worksheet_template_id.color')
 

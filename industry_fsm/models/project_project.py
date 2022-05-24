@@ -12,8 +12,7 @@ class Project(models.Model):
         compute="_compute_allow_subtasks", store=True, readonly=False)
     allow_task_dependencies = fields.Boolean(compute='_compute_allow_task_dependencies', store=True, readonly=False)
     allow_worksheets = fields.Boolean(
-        "Worksheets", compute="_compute_allow_worksheets", store=True, readonly=False,
-        help="Enables customizable worksheets on tasks.")
+        "Worksheets", compute="_compute_allow_worksheets", store=True, readonly=False)
     allow_milestones = fields.Boolean(compute='_compute_allow_milestones', store=True, readonly=False)
 
     def name_get(self):

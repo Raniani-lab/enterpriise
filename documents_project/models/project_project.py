@@ -14,8 +14,7 @@ class ProjectProject(models.Model):
     use_documents = fields.Boolean("Use Documents", default=True)
     documents_folder_id = fields.Many2one('documents.folder', string="Workspace", domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", copy=False,
         help="Workspace in which all of the documents of this project will be categorized. All of the attachments of your tasks will be automatically added as documents in this workspace as well.")
-    documents_tag_ids = fields.Many2many('documents.tag', 'project_documents_tag_rel', string="Default Tags", domain="[('folder_id', 'parent_of', documents_folder_id)]", copy=True,
-        help="Tags that will be set by default on all of the new documents of your project.")
+    documents_tag_ids = fields.Many2many('documents.tag', 'project_documents_tag_rel', string="Default Tags", domain="[('folder_id', 'parent_of', documents_folder_id)]", copy=True)
     document_count = fields.Integer(compute='_compute_attached_document_count', string="Number of documents in Project", groups='documents.group_documents_user')
     shared_document_ids = fields.One2many('documents.document', string='Shared Documents', compute='_compute_shared_document_ids')
     shared_document_count = fields.Integer("Shared Documents Count", compute='_compute_shared_document_ids')

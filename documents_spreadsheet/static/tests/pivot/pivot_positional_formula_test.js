@@ -2,7 +2,7 @@
 
 import { click } from "@web/../tests/helpers/utils";
 import { setCellContent } from "../utils/commands_helpers";
-import { getCellValue } from "../utils/getters_helpers";
+import { getCell, getCellValue } from "../utils/getters_helpers";
 import { createSpreadsheetFromPivot } from "../utils/pivot_helpers";
 
 QUnit.module("documents_spreadsheet > positional pivot formula", {}, () => {
@@ -87,31 +87,12 @@ QUnit.module("documents_spreadsheet > positional pivot formula", {}, () => {
     });
 
     QUnit.test("Positional argument without a number should crash", async (assert) => {
-        const productModelName = 'Product';
-        const { model } = await createSpreadsheetFromPivot({
-            actions: async (target) => {
-                await click(target.querySelector("tbody .o_pivot_header_cell_closed"));
-                const models = target.querySelectorAll(`.dropdown-item`);
-                const productElement = [...models].filter(el => el.innerText === productModelName)[0];
-                await click(productElement);
-            },
-        });
-        // Rows Headers
-        setCellContent(model, "H1", `=PIVOT.HEADER(1,"bar","false","#product_id",1)`);
-        setCellContent(model, "H2", `=PIVOT.HEADER(1,"bar","true","#product_id",1)`);
-        setCellContent(model, "H3", `=PIVOT.HEADER(1,"#bar",1,"#product_id",1)`);
-        setCellContent(model, "H4", `=PIVOT.HEADER(1,"#bar",2,"#product_id",1)`);
-        setCellContent(model, "H5", `=PIVOT.HEADER(1,"#bar",3,"#product_id",1)`);
-        assert.strictEqual(getCellValue(model, "H1"), "xpad");
-        assert.strictEqual(getCellValue(model, "H2"), "xphone");
-        assert.strictEqual(getCellValue(model, "H3"), "xpad");
-        assert.strictEqual(getCellValue(model, "H4"), "xphone");
-        assert.strictEqual(getCellValue(model, "H5"), "");
-
-        // Cells
-        setCellContent(model, "H1", `=PIVOT(1,"probability","#bar",1,"#product_id",1,"#foo",2)`);
-        setCellContent(model, "H2", `=PIVOT(1,"probability","#bar",1,"#product_id",2,"#foo",2)`);
-        assert.strictEqual(getCellValue(model, "H1"), 15);
-        assert.strictEqual(getCellValue(model, "H2"), "");
+        const { model } = await createSpreadsheetFromPivot();
+        setCellContent(model, "A10", `=PIVOT.HEADER(1,"#bar","this is not a number")`);
+        assert.strictEqual(getCellValue(model, "A10"), "#ERROR");
+        assert.strictEqual(
+            getCell(model, "A10").evaluated.error,
+            "The function PIVOT.HEADER expects a number value, but 'this is not a number' is a string, and cannot be coerced to a number."
+        );
     });
 });

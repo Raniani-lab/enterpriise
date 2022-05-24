@@ -589,8 +589,9 @@ export class SpreadsheetPivotModel extends PivotModel {
             }
         }
         if (tree) {
-            const record = [...tree.directSubTrees][position]
-            return record ? record[0] : NO_RECORD_AT_THIS_POSITION;
+            const treeKeys = tree.sortedKeys || [...tree.directSubTrees.keys()];
+            const sortedKey = treeKeys[position];
+            return sortedKey !== undefined ? sortedKey : NO_RECORD_AT_THIS_POSITION;
         }
         return NO_RECORD_AT_THIS_POSITION;
     }

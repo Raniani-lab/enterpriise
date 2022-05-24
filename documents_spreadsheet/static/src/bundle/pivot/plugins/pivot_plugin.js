@@ -10,6 +10,7 @@
  * @property {Object} context
  * @property {string} name
  * @property {string} id
+ * @property {Object | null} sortedColumn
  *
  * @typedef {Object} Pivot
  * @property {number} id
@@ -167,6 +168,7 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
             model: def.metaData.resModel,
             rowGroupBys: [...def.metaData.rowGroupBys],
             name: def.name,
+            sortedColumn: def.metaData.sortedColumn ? { ...def.metaData.sortedColumn } : null,
         };
     }
 
@@ -445,6 +447,11 @@ export default class PivotPlugin extends spreadsheet.CorePlugin {
                         rowGroupBys: pivot.rowGroupBys,
                         activeMeasures: pivot.measures.map((elt) => elt.field),
                         resModel: pivot.model,
+                        sortedColumn: !pivot.sortedColumn ? undefined : {
+                            groupId: pivot.sortedColumn.groupId,
+                            measure: pivot.sortedColumn.measure,
+                            order: pivot.sortedColumn.order,
+                        }
                     },
                     searchParams: {
                         groupBy: [],

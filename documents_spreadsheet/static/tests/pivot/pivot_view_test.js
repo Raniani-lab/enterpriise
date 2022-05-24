@@ -143,6 +143,7 @@ test("groupby date field without interval defaults to month", async (assert) => 
         model: "partner",
         rowGroupBys: ["date"],
         name: "Partners by Foo",
+        sortedColumn: null,
     });
     assert.equal(getCellFormula(model, "A3"), '=PIVOT.HEADER(1,"date","04/2016")');
     assert.equal(getCellFormula(model, "A4"), '=PIVOT.HEADER(1,"date","10/2016")');
@@ -183,6 +184,7 @@ test("groupby date field on row gives correct name", async (assert) => {
         model: "partner",
         rowGroupBys: ["date"],
         name: "Partners by Date",
+        sortedColumn: null,
     });
 });
 

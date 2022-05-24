@@ -22,6 +22,10 @@
                 <div t-esc="gp"/>
             </t>
         </div>
+        <div class="o_side_panel_section" t-if="def.sortedColumn">
+            <div class="o_side_panel_title">Sorting</div>
+            <div t-esc="formatSort()"/>
+        </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Measures</div>
             <t t-foreach="def.measures" t-as="measure" t-key="measure">

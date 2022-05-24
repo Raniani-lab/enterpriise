@@ -12,6 +12,7 @@ export function insertPivot(pivotData) {
             activeMeasures: [...pivotData.metaData.activeMeasures],
             resModel: pivotData.metaData.resModel,
             fields: pivotData.metaData.fields,
+            sortedColumn: pivotData.metaData.sortedColumn,
         },
         searchParams: { ...pivotData.searchParams},
         name: pivotData.name,

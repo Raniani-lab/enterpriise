@@ -759,8 +759,6 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
     });
 
     test("Open pivot properties properties", async function (assert) {
-        assert.expect(16);
-
         const { model, env } = await createSpreadsheetFromPivot({
             serverData: {
                 models: getBasicData(),
@@ -803,10 +801,13 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.equal(measures.children[0].innerText, "Measures");
         assert.equal(measures.children[1].innerText, "Count");
         assert.equal(measures.children[2].innerText, "Probability");
+        assert.ok(measures.children[3].innerText.startsWith("Last updated at"));
+        assert.equal(measures.children[4].innerText, "Refresh values");
 
         assert.equal(dimensions.children[0].innerText, "Dimensions");
         assert.equal(dimensions.children[1].innerText, "Bar");
         assert.equal(dimensions.children[2].innerText, "Foo");
+
 
         // opening from a non pivot cell
         const pivotA1 = model.getters.getPivotIdFromPosition(sheetId, 0, 0);
@@ -819,6 +820,53 @@ module("documents_spreadsheet > Spreadsheet Client Action", {
         assert.equal(title, "Pivot properties");
 
         assert.containsOnce(target, ".o_side_panel_select");
+    });
+
+    test("Pivot properties panel shows ascending sorting", async function (assert) {
+        const { model, env } = await createSpreadsheetFromPivot({
+            actions: async (target) => {
+                await click(target.querySelector("thead .o_pivot_measure_row"));
+            },
+        });
+        // opening from a pivot cell
+        const sheetId = model.getters.getActiveSheetId();
+        const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+        model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
+        env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
+            pivot: pivotA3,
+        });
+        await nextTick();
+
+        const sections = target.querySelectorAll(".o_side_panel_section");
+        assert.equal(sections.length, 6, "it should have 6 sections");
+        const pivotSorting = sections[4];
+
+        assert.equal(pivotSorting.children[0].innerText, "Sorting");
+        assert.equal(pivotSorting.children[1].innerText, "Probability (ascending)");
+    });
+
+    test("Pivot properties panel shows descending sorting", async function (assert) {
+        const { model, env } = await createSpreadsheetFromPivot({
+            actions: async (target) => {
+                await click(target.querySelector("thead .o_pivot_measure_row"));
+                await click(target.querySelector("thead .o_pivot_measure_row"));
+            },
+        });
+        // opening from a pivot cell
+        const sheetId = model.getters.getActiveSheetId();
+        const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+        model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
+        env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
+            pivot: pivotA3,
+        });
+        await nextTick();
+
+        const sections = target.querySelectorAll(".o_side_panel_section");
+        assert.equal(sections.length, 6, "it should have 6 sections");
+        const pivotSorting = sections[4];
+
+        assert.equal(pivotSorting.children[0].innerText, "Sorting");
+        assert.equal(pivotSorting.children[1].innerText, "Probability (descending)");
     });
 
     test("Verify absence of pivot properties on non-pivot cell", async function (assert) {

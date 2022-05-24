@@ -32,6 +32,7 @@ export default class PivotDetailsSidePanel extends Component {
                 measures: definition.measures.map((measure) =>
                     this.spreadsheetModel.getGroupByDisplayLabel("measure", measure)
                 ),
+                sortedColumn: definition.sortedColumn
             };
         });
     }
@@ -41,6 +42,13 @@ export default class PivotDetailsSidePanel extends Component {
             pivotId: this.props.pivotId,
             name,
         });
+    }
+
+    formatSort() {
+        const sortedColumn = this.pivotDefinition.sortedColumn;
+        const order = sortedColumn.order === "asc" ? _t("ascending") : _t("descending");
+        const measureDisplayName = this.spreadsheetModel.getGroupByDisplayLabel("measure", sortedColumn.measure);
+        return `${measureDisplayName} (${order})`;
     }
 
     /**

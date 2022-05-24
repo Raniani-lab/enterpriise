@@ -6,6 +6,7 @@ import mobile from 'web_mobile.core';
 import DialingPanel from 'voip.DialingPanel';
 import UserAgent from 'voip.UserAgent';
 
+import core from 'web.core';
 import testUtils from 'web.test_utils';
 
 /**
@@ -15,15 +16,16 @@ import testUtils from 'web.test_utils';
  * @param {Object} params
  * @return {Promise<DialingPanel>} resolve with dialingPanel
  */
-async function createDialingPanel(params) {
-    const { widget: parent } = await start(params);
+ async function createDialingPanel(params) {
+    const result = await start(params);
+    const { widget: parent } = result;
     const dialingPanel = new DialingPanel(parent);
     const container = params.debug ? $('body') : $('#qunit-fixture');
     await dialingPanel.appendTo(container);
     dialingPanel._onToggleDisplay(); // show panel
     await dialingPanel._refreshPhoneCallsStatus();
     await testUtils.nextTick();
-    return dialingPanel;
+    return result;
 }
 
 QUnit.module('voip', {}, function () {
@@ -86,7 +88,7 @@ QUnit.test('autocall flow', async function (assert) {
     const self = this;
     let counterNextActivities = 0;
 
-    const dialingPanel = await createDialingPanel({
+    const { messaging } = await createDialingPanel({
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -136,11 +138,11 @@ QUnit.test('autocall flow', async function (assert) {
 
     // make a first call
     assert.containsNone(
-        dialingPanel,
+        document.body,
         '.o_phonecall_details',
         "Details should not be visible yet");
     assert.containsN(
-        dialingPanel, `
+        document.body, `
             .o_dial_next_activities
             .o_dial_phonecalls
             .o_dial_phonecall`,
@@ -148,48 +150,47 @@ QUnit.test('autocall flow', async function (assert) {
         "Next activities tab should have 3 phonecalls at the beginning");
 
     // select first call with autocall
-    await testUtils.dom.click(dialingPanel.$('.o_dial_call_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
     assert.isVisible(
-        dialingPanel.$('.o_phonecall_details'),
+        document.querySelector('.o_phonecall_details'),
         "Details should have been shown");
     assert.strictEqual(
-        dialingPanel
-            .$(`
+        document
+            .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
                 span`)
-            .html(),
+            .innerHTML,
         'Partner 110',
         "Details should have been shown");
 
     // start call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_call_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
     assert.isVisible(
-        dialingPanel
-            .$('.o_phonecall_in_call')
-            .first(),
+        document
+            .querySelector('.o_phonecall_in_call'),
         "in call info should be displayed");
-    assert.ok(dialingPanel._isInCall);
+    assert.containsOnce(document.body, '.o_dial_hangup_button', 'Should be in call');
 
     // simulate end of setTimeout in demo mode or answer in prod
     this.onaccepted();
     // end call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
-    assert.notOk(dialingPanel._isInCall);
+    await testUtils.dom.click(document.querySelector('.o_dial_hangup_button'));
+    assert.containsNone(document.body, '.o_dial_hangup_button', 'Should not be in call');
     assert.strictEqual(
-        dialingPanel
-            .$(`
+        document
+            .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
                 span`)
-            .html(),
+            .innerHTML,
         'Partner 123',
         "Phonecall of second partner should have been displayed");
 
     // close details
-    await testUtils.dom.click(dialingPanel.$('.o_phonecall_details_close'));
+    await testUtils.dom.click(document.querySelector('.o_phonecall_details_close'));
     assert.containsN(
-        dialingPanel, `
+        document.body, `
             .o_dial_next_activities
             .o_dial_phonecall`,
         2,
@@ -197,34 +198,33 @@ QUnit.test('autocall flow', async function (assert) {
 
     // hangup before accept call
     // select first call with autocall
-    await testUtils.dom.click(dialingPanel.$('.o_dial_call_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
     assert.strictEqual(
-        dialingPanel
-            .$(`
+        document
+            .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
                 span`)
-            .html(),
+            .innerHTML,
         'Partner 123',
         "Phonecall of second partner should have been displayed");
 
     // start call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_call_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
     assert.isVisible(
-        dialingPanel
-            .$('.o_phonecall_in_call')
-            .first(),
+        document
+            .querySelector('.o_phonecall_in_call'),
         "in call info should be displayed");
 
     // hangup before accept
-    await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_hangup_button'));
     // we won't accept this call, better clean the current onaccepted
     this.onaccepted = undefined;
     // close details
-    await testUtils.dom.click(dialingPanel.$('.o_phonecall_details_close'));
+    await testUtils.dom.click(document.querySelector('.o_phonecall_details_close'));
 
     assert.containsN(
-        dialingPanel, `
+        document.body, `
             .o_dial_next_activities
             .o_dial_phonecall`,
         2,
@@ -232,41 +232,41 @@ QUnit.test('autocall flow', async function (assert) {
 
     // end list
     // select first call with autocall
-    await testUtils.dom.click(dialingPanel.$('.o_dial_call_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
     assert.strictEqual(
-        dialingPanel
-            .$(`
+        document
+            .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
                 span`)
-            .html(),
+            .innerHTML,
         'Partner 142',
         "Phonecall of third partner should have been displayed (second one has already been tried)");
 
     // start call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_call_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
     // simulate end of setTimeout in demo mode or answer in prod
     this.onaccepted();
     // end call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_hangup_button'));
     assert.strictEqual(
-        dialingPanel
-            .$(`
+        document
+            .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
                 span`)
-            .html(),
+            .innerHTML,
         'Partner 123',
         "Phonecall of second partner should have been displayed");
 
     // start call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_call_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
     // simulate end of setTimeout in demo mode or answer in prod
     this.onaccepted();
     // end call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_hangup_button'));
     assert.containsNone(
-        dialingPanel, `
+        document.body, `
             .o_dial_phonecalls
             .o_dial_phonecall`,
         "The list should be empty");
@@ -279,29 +279,28 @@ QUnit.test('autocall flow', async function (assert) {
         number: "123-456-789",
     };
     // simulate an incoming call
-    await dialingPanel._onIncomingCall({ detail: incomingCallParams });
+    messaging.messagingBus.trigger('incomingCall', { detail: incomingCallParams });
+    await testUtils.nextTick();
     // Accept call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_accept_button'));
-    assert.ok(
-        dialingPanel._isInCall,
-        "Should be in call");
+    await testUtils.dom.click(document.querySelector('.o_dial_accept_button'));
+
+    assert.containsOnce(document.body, '.o_dial_hangup_button', 'Should be in call');
 
     // Hangup call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
-    assert.notOk(
-        dialingPanel._isInCall,
-        "Call should hang up");
+    await testUtils.dom.click(document.querySelector('.o_dial_hangup_button'));
+    assert.containsNone(document.body, '.o_dial_hangup_button', 'Should not be in call');
     assert.containsOnce(
-        dialingPanel,
+        document.body,
         '.o_phonecall_details',
         "Details should be visible");
 
     // simulate an incoming call
-    await dialingPanel._onIncomingCall({ detail: incomingCallParams });
-    await testUtils.dom.click(dialingPanel.$('.o_dial_reject_button'));
-    assert.notOk(dialingPanel._isInCall);
+    messaging.messagingBus.trigger('incomingCall', { detail: incomingCallParams });
+    await testUtils.nextTick();
+    await testUtils.dom.click(document.querySelector('.o_dial_reject_button'));
+    assert.containsNone(document.body, '.o_dial_hangup_button', 'Should not be in call');
     assert.containsOnce(
-        dialingPanel,
+        document.body,
         '.o_phonecall_details',
         "Details should be visible");
     assert.verifySteps([
@@ -326,7 +325,7 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
 
     const self = this;
 
-    const dialingPanel = await createDialingPanel({
+    await createDialingPanel({
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -373,61 +372,61 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
 
     // make a first call
     assert.containsNone(
-        dialingPanel,
+        document.body,
         '.o_phonecall_details',
         "Details should not be visible yet");
     assert.containsNone(
-        dialingPanel, `
+        document.body, `
             .o_dial_recent
             .o_dial_phonecalls
             .o_dial_phonecall`,
         "Recent tab should have 0 phonecall at the beginning");
 
     // select keypad
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_icon'));
+    await testUtils.dom.click(document.querySelector('.o_dial_keypad_icon'));
     // click on 1
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[0]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[0]);
     // click on 2
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[1]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[1]);
     // click on 3
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[2]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[2]);
     // click on 4
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[3]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[3]);
     // click on 5
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[4]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[4]);
     // click on 6
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[5]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[5]);
     // click on 7
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[6]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[6]);
     // click on 8
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[7]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[7]);
     // click on 9
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[8]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[8]);
     // call number 123456789
-    await testUtils.dom.click(dialingPanel.$('.o_dial_call_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
 
     assert.strictEqual(
-        dialingPanel
-            .$(`
+        document
+            .querySelector(`
                 .o_phonecall_details
                 .o_phonecall_info_name
                 span`)
-            .html(),
+            .innerHTML,
         'Call to 123456789',
         "Details should have been shown");
-    assert.ok(dialingPanel._isInCall);
+    assert.containsOnce(document.body, '.o_dial_hangup_button', 'Should be in call');
 
     // simulate end of setTimeout in demo mode or answer in prod
     this.onaccepted();
     // end call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
-    assert.notOk(dialingPanel._isInCall);
+    await testUtils.dom.click(document.querySelector('.o_dial_hangup_button'));
+    assert.containsNone(document.body, '.o_dial_hangup_button', 'Should not be in call');
 
     // call number 123456789
-    await testUtils.dom.click(dialingPanel.$('.o_dial_call_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
     this.onaccepted();
     // end call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
+    await testUtils.dom.click(document.querySelector('.o_dial_hangup_button'));
     assert.verifySteps([
         'create_from_number',
         'hangup_call',
@@ -441,7 +440,7 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
 
     const self = this;
 
-    const dialingPanel = await createDialingPanel({
+    await createDialingPanel({
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -488,43 +487,43 @@ QUnit.test('keyboard navigation on dial keypad input', async function (assert) {
     });
 
     // make a first call
-    assert.containsNone(dialingPanel, '.o_phonecall_details', 'Details should not be visible yet');
+    assert.containsNone(document.body, '.o_phonecall_details', 'Details should not be visible yet');
 
     // select keypad
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_icon'));
+    await testUtils.dom.click(document.querySelector('.o_dial_keypad_icon'));
     // click on 9
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[8]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[8]);
     // click on 8
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[7]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[7]);
     // click on 7
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[6]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[6]);
     // click on 6
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[5]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[5]);
     // click on 5
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[4]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[4]);
     // click on 4
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[3]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[3]);
     // click on 3
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[2]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[2]);
     // click on 2
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[1]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[1]);
     // click on 1
-    await testUtils.dom.click(dialingPanel.$('.o_dial_keypad_button')[0]);
+    await testUtils.dom.click(document.querySelectorAll('.o_dial_keypad_button')[0]);
 
     // call number 987654321 (validated by pressing enter key)
-    dialingPanel.$('.o_dial_keypad_input').trigger($.Event('keyup', {keyCode: $.ui.keyCode.ENTER}));
+    $('.o_dial_keypad_input').trigger($.Event('keyup', {keyCode: $.ui.keyCode.ENTER}));
     await testUtils.nextTick();
 
     assert.verifySteps(['create_from_number']);
-    assert.strictEqual(dialingPanel.$('.o_phonecall_details .o_phonecall_info_name').text().trim(),
+    assert.strictEqual(document.querySelector('.o_phonecall_details .o_phonecall_info_name').innerText.trim(),
         'Call to 987654321', 'Details should have been shown');
-    assert.ok(dialingPanel._isInCall, 'should be in call on pressing ENTER after dialing a phone number');
+    assert.containsOnce(document.body, '.o_dial_hangup_button', 'should be in call on pressing ENTER after dialing a phone number');
 
     // simulate end of setTimeout in demo mode or answer in prod
     this.onaccepted();
     // end call
-    await testUtils.dom.click(dialingPanel.$('.o_dial_hangup_button'));
-    assert.notOk(dialingPanel._isInCall, 'should no longer be in call after hangup');
+    await testUtils.dom.click(document.querySelector('.o_dial_hangup_button'));
+    assert.containsNone(document.body, '.o_dial_hangup_button', 'should no longer be in call after hangup');
     assert.verifySteps(['hangup_call']);
 });
 
@@ -537,7 +536,7 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
         },
     });
 
-    const dialingPanel = await createDialingPanel({
+    await createDialingPanel({
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -554,32 +553,31 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
         },
     });
 
-    // ensure DialingPanel is open
-    await dialingPanel._showWidget();
-    assert.isVisible(dialingPanel, "should be visible");
+    assert.isVisible(document.querySelector('.o_dial'), "should be visible");
     assert.verifySteps([
         'overrideBackButton: true',
     ], "should be enabled when opened");
 
     // simulate 'backbutton' events triggered by the app
     await testUtils.dom.triggerEvent(document, 'backbutton');
-    assert.isNotVisible(dialingPanel, "should be closed");
+    assert.isNotVisible(document.querySelector('.o_dial'), "should be closed");
     assert.verifySteps([
         'overrideBackButton: false',
     ], "should be disabled when closed");
 
-    await dialingPanel._showWidget();
-    await testUtils.dom.click(dialingPanel.$('.o_dial_fold'));
+    core.bus.trigger('voip_onToggleDisplay');
+    await testUtils.nextTick();
+    await testUtils.dom.click(document.querySelector('.o_dial_fold'));
     assert.verifySteps([
         'overrideBackButton: true',
         'overrideBackButton: false',
     ]);
-    await testUtils.dom.click(dialingPanel.$('.o_dial_fold'));
+    await testUtils.dom.click(document.querySelector('.o_dial_fold'));
     assert.verifySteps([
         'overrideBackButton: true',
     ], "should be enabled when unfolded");
 
-    await testUtils.dom.click(dialingPanel.$('.o_dial_window_close'));
+    await testUtils.dom.click(document.querySelector('.o_dial_window_close'));
     assert.verifySteps([
         'overrideBackButton: false',
     ], "should be disabled when closed");

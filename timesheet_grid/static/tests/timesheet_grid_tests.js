@@ -367,10 +367,10 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 context: this.context,
             });
             // worked_hours - units_to_work = 0 => we add d-none class (for the employee who has not done all his hours (employee.id = 7))
-            const numberOfSpanWhereAllHoursCompleted = grid.$(`span.d-none`).length;
+            const numberOfSpanWhereAllHoursCompleted = grid.$(`small.d-none`).length;
             assert.ok(numberOfSpanWhereAllHoursCompleted > 0, 'There must be at least one element or this test is useless');
 
-            const numberOfSpanWhereAllHoursCompletedYetAreRed = grid.$(`span.o_grid_section_subtext_overtime_indication.d-none`).length;
+            const numberOfSpanWhereAllHoursCompletedYetAreRed = grid.$(`small.o_grid_section_subtext_overtime_indication.d-none`).length;
             assert.ok(numberOfSpanWhereAllHoursCompletedYetAreRed === 0, 'Completed hours should not red');
 
             grid.destroy();
@@ -389,10 +389,10 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 context: this.context,
             });
 
-            const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('+04:00')").length;
+            const numberOfSpanWhereAllHoursCompleted = grid.$("small:contains('+04:00')").length;
             assert.ok(numberOfSpanWhereAllHoursCompleted > 0, 'There must be at least one element or this test is useless');
 
-            const numberOfSpanWhereAllHoursCompletedYetAreGreen = grid.$("span.o_grid_section_subtext_overtime:contains('+04:00')").length;
+            const numberOfSpanWhereAllHoursCompletedYetAreGreen = grid.$("small.o_grid_section_subtext_overtime:contains('+04:00')").length;
             assert.strictEqual(numberOfSpanWhereAllHoursCompletedYetAreGreen, numberOfSpanWhereAllHoursCompleted, 'The employee has done too much hours, thus we have an overtime.');
 
             grid.destroy();
@@ -411,10 +411,10 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 context: this.context,
             });
 
-            const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('-1.00')").length;
+            const numberOfSpanWhereAllHoursCompleted = grid.$("small:contains('-1.00')").length;
             assert.ok(numberOfSpanWhereAllHoursCompleted > 0, 'There must be at least one element or this test is useless');
 
-            const numberOfSpanWhereAllDaysAreNotDoneYetAreRed = grid.$("span.o_grid_section_subtext_not_enough_hours:contains('-1.00')").length;
+            const numberOfSpanWhereAllDaysAreNotDoneYetAreRed = grid.$("small.o_grid_section_subtext_not_enough_hours:contains('-1.00')").length;
             assert.strictEqual(numberOfSpanWhereAllDaysAreNotDoneYetAreRed, numberOfSpanWhereAllHoursCompleted, 'The employee has not done enough days, thus we display the number of days in red.');
 
             grid.destroy();

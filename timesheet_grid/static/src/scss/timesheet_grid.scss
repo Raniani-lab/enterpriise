@@ -1,98 +1,20 @@
-table > tbody.o_grid_section > tr {
-    > .o_grid_current.o_cell_highlighted:not(.o_grid_total) {
-        background-color: rgba(0, 160, 157, 0.17);
-    }
-
-    > th {
-        width: 30rem !important;
-
-        div > div {
-            overflow: unset !important;
-        }
-
-        div > :first-child {
-            width: 20rem;
-            max-width: 100%;
-        }
-
-        @include media-breakpoint-up(md) {
-            .o-timer-play-button {
-                opacity: 0;
-            }
-        }
-    }
-
-    &:hover .o-timer-play-button {
-        opacity: 1;
-    }
-}
-
-.timesheet-timer {
-    padding-right: 16px;
-    padding-left: 16px;
-    background-color: white;
-    border-bottom: 1px solid #cccccc;
-
-    .input_timer {
-        width: 100px;
-        text-align: center;
-    }
-    .timer_m2o {
-        width: 100%;
-        .o_field_many2one {
-            width: 100%;
-        }
-    }
-    .input_description {
-        flex-grow: 2;
-    }
-    .input_m2o {
-        flex-grow: 2;
-    }
-}
-
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(sm) {
     .timesheet-timer .o_timer_discard {
         @include o-position-absolute($top: 0.5rem, $right: 2rem);
     }
 }
 
-.o_grid_view {
-    .o_standalone_avatar_employee, .o_standalone_timesheets_m2o_widget {
-        display: inline-flex;
-    }
-
-    button.btn_timer_line {
-        border: 1px solid $o-brand-primary;
-        border-radius:0.12em;
-        background-color: rgba($o-brand-primary, .05);
-        color: $o-brand-primary;
-        text-align:center;
-        width: 25px;
-        height: 23px;
-        &.primary-green {
-            border: 1px solid $o-enterprise-primary-color;
-            background-color: $o-enterprise-primary-color;
-            color: white;
-        }
-        &.primary-danger {
-            border: 1px solid $danger;
-            background-color: $danger;
-            color: white;
-        }
-    }
-    .o_grid_timer_header {
-        width: 23px !important;
-        @include media-breakpoint-up(md) {
-            width: 2% !important;
-            padding-left: 32px;
-        }
+.o_grid_timer_header {
+    width: $o-horizontal-padding * 2 !important;
+    
+    @include media-breakpoint-up(md) {
+        width: 2% !important;
     }
 }
 
 .o_kanban_timer_start {
+    min-width: 5rem;
     // The play and stop button will appear on the mouse hover
-    margin-top: 1px;
     &:hover {
         > .o_kanban_timer_toggle {
             display: inline-block;
@@ -104,65 +26,5 @@ table > tbody.o_grid_section > tr {
 
     .o_kanban_timer_toggle {
         display: none;
-
-        > button {
-            width: 33px;
-            height: 23px;
-            text-align: center;
-            &[aria-pressed="true"] {
-                background-color: $danger;
-                margin: 0 9px 0 10px;
-            }
-            &[aria-pressed="false"] {
-                background-color: $o-enterprise-primary-color;
-            }
-            > i.o-timer-play-button, > i.o-timer-stop-button , &:hover > i.o-timer-play-button, &:hover > i.o-timer-stop-button {
-                color: white !important;
-                font-size: 1.2em;
-                vertical-align: middle;
-            }
-        }
     }
-    .o_time_duration > span {
-        margin-top: 2.3px;
-    }
-}
-
-.o_grid_section_subtext {
-    font-size: 0.9rem;
-    color: $o-main-color-muted;
-    z-index: 100; /* the element needs to be hoverable to display the title attribute. */
-    &:before {
-        content: "\00a0\00a0";
-    }
-    flex: none;
-    margin-right: 0.5rem;
-}
-
-.o_grid_section_subtext_name {
-    min-width: 0;
-    overflow: hidden;
-    flex: initial;
-    text-overflow: ellipsis;
-}
-
-.o_grid_section_subtext_container {
-    width: inherit;
-    max-width: inherit;
-    display: flex;
-}
-
-.o_grid_section_subtext_not_enough_hours {
-    color: rgb(220, 100, 100) !important;
-    opacity: 0.8;
-}
-
-.o_grid_section_subtext_warning {
-    color: rgb(220, 160, 100) !important;
-    opacity: 0.8;
-}
-
-.o_grid_section_subtext_overtime {
-    color: rgb(0, 100, 0) !important;
-    opacity: 0.5;
 }

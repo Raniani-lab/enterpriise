@@ -17,7 +17,7 @@ import { qweb, _lt } from 'web.core';
 
 const TimesheetM2OWidget = Widget.extend(StandaloneFieldManagerMixin, {
     $className: '.o_grid_section_subtext',
-    className:'o_standalone_timesheets_m2o_widget',
+    className:'o_standalone_timesheets_m2o_widget d-inline-flex',
     hoursTemplate: 'timesheet_grid.Many2OneTimesheetSubfield',
     title: _lt('Difference between the time allocated and the time recorded.'),
 
@@ -134,10 +134,10 @@ const TimesheetM2OWidget = Widget.extend(StandaloneFieldManagerMixin, {
 
         let progression = this.cacheWorkedHours / this.cacheHours;
         return progression <= 0.8
-                ? 'o_grid_section_subtext_overtime'
+                ? 'o_grid_section_subtext_overtime text-success'
                 : progression <= 0.99
-                    ? 'o_grid_section_subtext_warning'
-                    : 'o_grid_section_subtext_not_enough_hours';
+                    ? 'o_grid_section_subtext_warning text-warning'
+                    : 'o_grid_section_subtext_not_enough_hours text-danger';
     },
 
     _displayOvertimeIndication() {

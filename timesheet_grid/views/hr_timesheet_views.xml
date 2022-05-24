@@ -113,8 +113,8 @@
                     <div attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '!=', False)]}">
                         <field name="unit_amount" widget="timesheet_uom" options="{'force_button': true}"/>
                     </div>
-                    <span class="mx-1 o_kanban_timer_start" attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '=', False)] }">
-                        <span class="o_time_duration">
+                    <span class="o_kanban_timer_start d-flex align-items-center justify-content-center" attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '=', False)] }">
+                        <span class="o_time_duration mt-1">
                             <field name="duration_unit_amount" widget="timesheet_uom_hours" decoration-danger="duration_unit_amount &gt; 24 or unit_amount &lt; 0"/>
                         </span>
                         <span class="o_kanban_timer_toggle">

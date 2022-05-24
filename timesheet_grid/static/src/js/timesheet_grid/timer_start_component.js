@@ -20,7 +20,7 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
         get iconClass() {
             let classNames = [];
             if (this.props.runningIndex === this.props.index) {
-                classNames = ['fa', 'fa-play', 'primary-green']
+                classNames = ['d-flex', 'align-items-center', 'justify-content-center', 'fa', 'fa-play', 'text-bg-primary']
             } else if (this.props.index >= 26 || this.env.device.isMobile) {
                 if (this.props.addTimeMode) {
                     classNames = ['fa', 'fa-plus'];
@@ -30,11 +30,11 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
             }
             if (this.props.hovered && !this.env.device.isMobile) {
                 if (this.props.runningIndex === this.props.index) {
-                    classNames = ['fa', 'fa-stop', 'primary-danger']
+                    classNames = ['d-flex', 'align-items-center', 'justify-content-center', 'fa', 'fa-stop', 'border-danger', 'text-bg-danger']
                 } else if (this.props.addTimeMode) {
-                    classNames.push('primary-green');
+                    classNames.push('text-bg-primary');
                 } else {
-                    classNames = ['fa', 'fa-play', 'primary-green']
+                    classNames = ['d-flex', 'align-items-center', 'justify-content-center', 'fa', 'fa-play', 'text-bg-primary']
                 }
             }
             return Array.from(new Set(classNames)).join(' ');

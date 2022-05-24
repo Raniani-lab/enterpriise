@@ -99,8 +99,8 @@ const FieldTimesheetTimeTimer = TimesheetUomDisplayTimer.extend({
             button.html('<i/>');
             button.find('i')
                 .addClass('fa')
-                .toggleClass('fa-stop-circle o-timer-stop-button', this.isTimerRunning)
-                .toggleClass('fa-play-circle o-timer-play-button', !this.isTimerRunning)
+                .toggleClass('fa-stop-circle o-timer-stop-button text-danger', this.isTimerRunning)
+                .toggleClass('fa-play-circle o-timer-play-button text-primary', !this.isTimerRunning)
                 .attr('title', title);
             button.on('click', this._onToggleButton.bind(this));
             this.$el.prepend(button);

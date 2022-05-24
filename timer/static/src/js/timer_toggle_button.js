@@ -27,7 +27,9 @@ const TimerToggleButton = FieldToggleBoolean.extend({
             .toggleClass('fa-play-circle o-timer-play-button', !this.value)
             .attr('title', title);
 
-        this.$el.addClass('o-timer-button');
+        this.$el.addClass('o-timer-button px-3 py-1 rounded-sm text-center');
+        this.$el.toggleClass('bg-danger text-bg-danger', this.value);
+        this.$el.toggleClass('bg-primary text-bg-primary', !this.value);
         this.$el.attr('title', title);
         this.$el.attr('name', name);
         this.$el.attr('aria-label', label);

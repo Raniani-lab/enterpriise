@@ -34,7 +34,7 @@
         </xpath>
     </t>
 
-    <div t-name="timesheet_grid.timer_header" class="d-flex mx-n4 px-5 align-items-center timesheet-timer py-2 me-0" owl="1" t-on-timer-started="props.onTimerStarted" t-on-timer-stopped="props.onTimerStopped"
+    <div t-name="timesheet_grid.timer_header" class="timesheet-timer d-flex align-items-center px-4 py-2 border-bottom bg-white " owl="1" t-on-timer-started="props.onTimerStarted" t-on-timer-stopped="props.onTimerStopped"
                 t-on-timer-unlink="props.onTimerUnlink" t-on-timer-edit-project="props.onTimerEditProject"
                 t-on-timer-edit-task="props.onTimerEditTask" t-on-new-timer-value="props.onNewTimerValue"
                 t-on-new-description="props.onNewDescription">
@@ -42,7 +42,7 @@
             <button class="my-2 me-2 btn btn-primary btn_stop_timer" t-on-click="_onClickStopTimer" t-ref="stopButton" data-hotkey="z">
                 Stop
             </button>
-            <div class="p-2 input_timer">
+            <div class="input_timer py-2 px-3 text-center">
                 <input class="o_field_float o_field_number o_field_widget o_input input_manual_time" t-att-class="{'o_field_invalid': state.errorManualTimeInput === true}" type="text" t-att-value="timeInput"
                 t-on-keydown="_onKeydown" t-on-input="_onInputTimer" t-on-focusout="_onFocusoutTimer" t-ref="manualTimerInput"
                 t-if="_manualTimeInput"/>
@@ -50,11 +50,11 @@
                     <t t-esc="_timerString"/>
                 </span>
             </div>
-            <div class="p-2 col-sm-12 col-md-5 input_description">
+            <div class="input_description col-sm-12 col-md-5 d-flex p-2">
                 <span t-if="_timerReadOnly" t-esc="props.description" class="input_description_timer"/>
                 <input t-else="" class="o_field_float o_field_number o_field_widget o_input input_description_timer" type="text" t-model="state.description" placeholder="Describe your activity..." t-on-change="_onInputDescription" t-on-keydown="_onKeydown"/>
             </div>
-            <div t-if="_timerReadOnly" class="p-2 input_m2o d-flex flex-row justify-content-around">
+            <div t-if="_timerReadOnly" class="input_m2o d-flex flex-row justify-content-around">
                 <div class="px-2">
                     <span t-esc="props.projectName"/>
                 </div>
@@ -62,7 +62,7 @@
                     <span t-esc="props.taskName"/>
                 </div>
             </div>
-            <div t-else="" class="p-md-2 px-0 input_m2o">
+            <div t-else="" class="input_m2o flex-fill p-md-2 px-0 ">
                 <TimerHeaderM2OAdapter Component="TimerHeaderM2O" widgetArgs="[props.projectId, props.taskId, props.projectWarning]"/>
             </div>
             <div class="ps-md-2 py-2 o_timer_discard">
@@ -84,22 +84,22 @@
 
     <t t-name="timesheet_grid.Table" t-inherit="web_grid.Table" t-inherit-mode="extension" owl="1">
         <xpath expr="//th" position="before">
-            <th t-if="showTimerButton" class="o_grid_timer_header "/>
+            <th t-if="showTimerButton" class="o_grid_timer_header ps-3"/>
         </xpath>
         <xpath expr="//tfoot/tr/td" position="before">
-            <td t-if="showTimerButton" class="o_grid_timer_header"/>
+            <td t-if="showTimerButton" class="o_grid_timer_header ps-3"/>
         </xpath>
     </t>
 
     <t t-name="timesheet_grid.UnGroupedGridBody" t-inherit="web_grid.GridEmptyRows" t-inherit-mode="extension" owl="1">
         <xpath expr="//th" position="before">
-            <th t-if="showTimerButton" class="o_grid_timer_header"/>
+            <th t-if="showTimerButton" class="o_grid_timer_header ps-3"/>
         </xpath>
     </t>
 
     <t t-name="timesheet_grid.GridRows" t-inherit="web_grid.GridRows" t-inherit-mode="extension" owl="1">
         <xpath expr="//th" position="before">
-            <th t-if="showTimerButton" class="o_grid_timer_header">
+            <th t-if="showTimerButton" class="o_grid_timer_header ps-3">
                 <t t-set="timesheet" t-value="grid.rows[rowlabel_index].timesheet" />
                 <t t-set="pathrow" t-value="path.concat([rowlabel_index]).join('.')"/>
                 <TimerStartComponent path="pathrow" index="rowlabel_index" runningIndex="stateTimer.indexRunning"
@@ -134,9 +134,10 @@
     </t>
 
     <span t-name="timesheet_grid.start_timer" class="d-inline-flex" owl="1" t-on-timer-started-from-line="props.onTimerStartedFromLine">
-        <button type="button" t-on-click="_onClickTimer" class="btn_timer_line" t-att-class="iconClass"
+        <button type="button" t-on-click="_onClickTimer" class="btn_timer_line position-relative my-1 border border-primary rounded-sm fa-stack small" t-att-class="iconClass"
                 t-att-data-index="props.index">
-            <span t-esc="letter" t-if="!props.hovered || props.addTimeMode"/>
+            <span class="position-absolute start-0 top-0 h-100 w-100 opacity-25 bg-primary-light"/>
+            <span class="position-absolute start-0 top-0 h-100 w-100 fs-5 text-primary" t-esc="letter" t-if="!props.hovered || props.addTimeMode"/>
         </button>
     </span>
 

@@ -169,7 +169,7 @@
                 border-color: #36a6d2;
             }
             hr {
-                border-top-color: #e9ecef;
+                border-top-color: #e9ecef !important;
             }
         </style>
         <t t-set="now" t-value="datetime.datetime.now()"/>
@@ -344,7 +344,7 @@
                 border-color: #c69678;
             }
             hr {
-                border-top-color: #c69678;
+                border-top-color: #c69678 !important;
             }
         </style>
         <t t-set="now" t-value="datetime.datetime.now()"/>
@@ -473,7 +473,7 @@
                 color: #6c757d;
             }
             hr {
-                border-top-color: #ced4da;
+                border-top-color: #ced4da !important;
             }
         </style>
         <t t-set="now" t-value="datetime.datetime.now()"/>

@@ -134,7 +134,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             'token': '</getToken>'
         }
         tag = tag_to_replace.get(xml_type, '</EnvioBOLETA>')
-        return message.replace(tag, sign + tag)
+        # With %s we make sure we return a string and not a Markup
+        return message.replace(tag, '%s%s' % (sign, tag))
 
     def _l10n_cl_format_vat(self, value, with_zero=False):
         if not value or value in ['', 0]:
@@ -253,7 +254,6 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             'exponent': digital_signature._get_private_key_exponent(),
             'certificate': '\n' + textwrap.fill(digital_signature.certificate, 64),
         })
-        signature = etree.tostring(etree.fromstring(signature), encoding='unicode')
         # The validation of the signature document
         self._xml_validator(signature, 'sig')
         full_doc = self._l10n_cl_append_sig(xml_type, signature, digest_value)

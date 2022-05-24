@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!--
+    Custom control panel template for the kanban view.
+    -->
+    <t t-name="account_accountant.BankRecWidgetKanbanControlPanel"
+       t-inherit="web.Legacy.ControlPanel"
+       t-inherit-mode="primary"
+       owl="1">
+        <xpath expr="//GroupByMenu" position="replace"/>
+        <xpath expr="//ComparisonMenu" position="replace"/>
+    </t>
+
+    <t t-name="account_accountant.BankRecWidgetKanbanControlPanelMobile"
+       t-inherit="web_enterprise._ControlPanel"
+       t-inherit-mode="primary"
+       owl="1">
+        <xpath expr="//GroupByMenu" position="replace"/>
+        <xpath expr="//ComparisonMenu" position="replace"/>
+    </t>
+
+    <!--
+    Custom control panel template for the edit form embedded views.
+    -->
+    <t t-name="account_accountant.BankRecWidgetFormInnerTabControlPanel"
+       t-inherit="web.Legacy.ControlPanel"
+       t-inherit-mode="primary"
+       owl="1">
+        <xpath expr="//div[hasclass('o_cp_top_left')]" position="inside">
+            <xpath expr="//div[hasclass('o_cp_searchview')]" position="move"/>
+        </xpath>
+        <xpath expr="//div[hasclass('o_cp_top_right')]" position="replace">
+            <div class="o_cp_bottom_right">
+                <FilterMenu class="o_filter_menu" fields="fields"/>
+                <div class="o_cp_pager" role="search" t-ref="pager">
+                    <Pager t-if="props.pager and props.pager.limit" t-props="props.pager"/>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//ol[hasclass('breadcrumb')]" position="replace"/>
+        <xpath expr="//div[hasclass('o_cp_bottom')]" position="replace"/>
+    </t>
+
+    <t t-name="account_accountant.BankRecWidgetFormInnerTabControlPanelMobile"
+       t-inherit="web_enterprise._ControlPanel"
+       t-inherit-mode="primary"
+       owl="1">
+        <xpath expr="//GroupByMenu" position="replace"/>
+        <xpath expr="//ComparisonMenu" position="replace"/>
+        <xpath expr="//FavoriteMenu" position="replace"/>
+    </t>
+
+    <t t-name="account_accountant.bank_rec_widget_global_info" owl="1">
+        <div t-if="data.balance_amount" class="text-nowrap d-flex">
+            <span class="text-900"
+                  style="font-size: 18px;">Balance: </span>
+            <span class="btn btn-secondary p-0"
+                  style="font-size: 18px;"
+                  t-on-click="_onClickBalance"
+                  t-esc="data.balance_amount"/>
+        </div>
+    </t>
+
+    <t t-name="account_accountant.bank_rec_widget_form_lines_widget_tags" owl="1">
+        <t t-set="i" t-value="0"/>
+        <t t-foreach="tag_names" t-as="tag_name" t-key="i">
+            <t t-set="i" t-value="i + 1"/>
+            <div class="badge badge-pill o_tag_color_0">
+                <span>
+                    <span class="o_badge_text" t-att-title="tag_name">
+                        <span role="img"/>
+                        <span class="o_tag_badge_text" t-esc="tag_name"/>
+                    </span>
+                </span>
+            </div>
+        </t>
+    </t>
+
+    <div t-name="account_accountant.bank_rec_widget_form_lines_widget" owl="1">
+        <t t-set="data" t-value="getRenderValues()"/>
+        <div class="o_list_view">
+            <div class="table-responsive">
+                <table class="o_list_table table table-sm table-hover table-striped o_bank_rec_lines_widget_table"
+                       style="table-layout: auto">
+                    <thead>
+                        <t t-foreach="data.columns" t-as="column" t-key="column[0]">
+                            <t t-if="['amount_currency', 'debit', 'credit'].includes(column[0])">
+                                <th class="o_list_number_th text-right" t-esc="column[1]"/>
+                            </t>
+                            <t t-elif="column[0] === '__trash'">
+                                <th class="o_list_record_remove_header"/>
+                            </t>
+                            <t t-else="">
+                                <th t-esc="column[1]"/>
+                            </t>
+                        </t>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="data.lines" t-as="line" t-key="line.index.value">
+
+                            <t t-set="add_liquidity_class"
+                               t-value="line.flag == 'liquidity' and 'o_bank_rec_liquidity_line' or ''"/>
+                            <t t-set="add_auto_balance_class"
+                               t-value="line.flag == 'auto_balance' and 'o_bank_rec_auto_balance_line' or ''"/>
+
+                            <tr class="o_data_row o_list_no_open"
+                                t-att-class="{'o_bank_rec_liquidity_line': line.flag.value == 'liquidity', 'o_bank_rec_auto_balance_line': line.flag.value == 'auto_balance', 'o_bank_rec_selected_line': line.index.value == data.form_index}"
+                                t-on-click="_onClickMountLine"
+                                t-att-index="line.index.value">
+
+                                <t t-foreach="data.columns" t-as="column" t-key="column[0]">
+                                    <t t-if="column[0] === 'account'">
+                                        <td class="o_data_cell o_field_cell o_list_many2one"
+                                            field="account_id"
+                                            t-att-title="line.account_id.display"
+                                            t-esc="line.account_id.display"/>
+                                    </t>
+                                    <t t-if="column[0] === 'partner'">
+                                        <t t-if="line.flag.value == 'liquidity' &amp;&amp; !line.partner_id.id">
+                                            <td class="o_data_cell o_field_cell o_list_many2one text-muted"
+                                                field="partner_id"
+                                                t-att-title="data.partner_name.display"
+                                                t-esc="data.partner_name.display"/>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="o_data_cell o_field_cell o_list_many2one"
+                                                field="partner_id"
+                                                t-att-title="line.partner_id.display"
+                                                t-esc="line.partner_id.display"/>
+                                        </t>
+                                    </t>
+                                    <t t-if="column[0] === 'date'">
+                                        <t t-if="['manual', 'auto_balance', 'tax_line'].includes(line.flag.value)">
+                                            <td class="o_data_cell o_field_cell" field="date">
+                                                <span class="badge badge-secondary">New</span>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="o_data_cell o_field_cell"
+                                                field="date"
+                                                t-esc="line.date.display"/>
+                                        </t>
+                                    </t>
+                                    <t t-if="column[0] === 'label'">
+                                        <t t-if="line.flag.value == 'liquidity'">
+                                            <td class="o_data_cell o_field_cell o_list_char"
+                                                field="name"
+                                                t-att-title="line.name.value"
+                                                t-on-click="_onClickExpandCollapseExtraNote">
+                                                <div class="o_bank_rec_widget_lines_widget_label">
+                                                    <span t-att-title="line.name.value"
+                                                          t-esc="line.name.value"/>
+                                                    <t t-if="data.extra_notes">
+                                                        <br/>
+                                                        <span class="text-muted"
+                                                              t-att-title="data.extra_notes"
+                                                              t-esc="data.extra_notes"/>
+                                                    </t>
+                                                </div>
+                                            </td>
+                                        </t>
+                                        <t t-elif="['new_aml', 'aml'].includes(line.flag.value)">
+                                            <td class="o_data_cell o_field_cell o_list_char"
+                                                field="name"
+                                                t-att-title="line.name.value"
+                                                t-on-click="_onClickExpandCollapseExtraNote">
+                                                <div class="o_bank_rec_widget_lines_widget_label">
+                                                    <span class="o_form_uri"
+                                                          style="cursor: pointer"
+                                                          t-att-move-id="line.source_aml_move_id.id"
+                                                          t-esc="line.source_aml_move_name.value"
+                                                          t-on-click="_onClickShowMove"/>
+                                                    <span class="mr4">:</span>
+                                                    <span t-esc="line.name.value"/>
+                                                </div>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="o_data_cell o_field_cell o_list_char"
+                                                field="name"
+                                                t-att-title="line.name.value">
+                                                <div class="o_bank_rec_widget_lines_widget_label">
+                                                    <span t-esc="line.name.value"/>
+                                                </div>
+                                            </td>
+                                        </t>
+                                    </t>
+                                    <t t-if="column[0] === 'analytic_account'">
+                                        <td class="o_data_cell o_field_cell o_list_many2one"
+                                            field="analytic_account_id"
+                                            t-att-title="line.analytic_account_id.display"
+                                            t-esc="line.analytic_account_id.display"/>
+                                    </t>
+                                    <t t-if="column[0] === 'analytic_tags'">
+                                        <td class="o_data_cell o_field_cell o_many2many_tags_cell"
+                                            field="analytic_tag_ids">
+                                            <t t-call="account_accountant.bank_rec_widget_form_lines_widget_tags">
+                                                <t t-set="tag_names" t-value="line.analytic_tag_ids.display"/>
+                                            </t>
+                                        </td>
+                                    </t>
+                                    <t t-if="column[0] === 'amount_currency'">
+                                        <t t-if="line.display_stroked_amount_currency.value">
+                                            <td class="o_data_cell o_field_cell o_list_number"
+                                                field="amount_currency"
+                                                style="justify-content: right; display: flex; flex-direction: column;">
+                                                <span t-esc="line.amount_currency.display"/>
+                                                <span class="text-muted"
+                                                      style="text-decoration: line-through;"
+                                                      t-esc="line.source_amount_currency.display"/>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="o_data_cell o_field_cell o_list_number"
+                                                field="amount_currency"
+                                                style="justify-content: right;"
+                                                t-esc="line.amount_currency.is_zero ? '' : line.amount_currency.display"/>
+                                        </t>
+                                    </t>
+                                    <t t-if="column[0] === 'currency'">
+                                        <td class="o_data_cell o_field_cell o_list_many2one"
+                                            field="currency_id"
+                                            t-att-title="line.currency_id.display"
+                                            t-esc="line.currency_id.display"/>
+                                    </t>
+                                    <t t-if="column[0] === 'taxes'">
+                                        <td class="o_data_cell o_field_cell o_many2many_tags_cell"
+                                            field="tax_ids">
+                                            <t t-call="account_accountant.bank_rec_widget_form_lines_widget_tags">
+                                                <t t-set="tag_names" t-value="line.tax_ids.display"/>
+                                            </t>
+                                        </td>
+                                    </t>
+                                    <t t-if="column[0] === 'debit'">
+                                        <t t-if="line.display_stroked_balance.value &amp;&amp; !line.debit.is_zero">
+                                            <td class="o_data_cell o_field_cell o_list_number"
+                                                field="debit"
+                                                style="justify-content: right; display: flex; flex-direction: column;">
+                                                <span t-esc="line.debit.display"/>
+                                                <span class="text-muted"
+                                                      style="text-decoration: line-through;"
+                                                      t-esc="line.source_debit.display"/>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="o_data_cell o_field_cell o_list_number"
+                                                field="debit"
+                                                style="justify-content: right;"
+                                                t-esc="line.debit.is_zero ? '' : line.debit.display"/>
+                                        </t>
+                                    </t>
+                                    <t t-if="column[0] === 'credit'">
+                                        <t t-if="line.display_stroked_balance.value &amp;&amp; !line.credit.is_zero">
+                                            <td class="o_data_cell o_field_cell o_list_number"
+                                                field="credit"
+                                                style="justify-content: right; display: flex; flex-direction: column;">
+                                                <span t-esc="line.credit.display"/>
+                                                <span class="text-muted"
+                                                      style="text-decoration: line-through;"
+                                                      t-esc="line.source_credit.display"/>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="o_data_cell o_field_cell o_list_number"
+                                                field="credit"
+                                                style="justify-content: right;"
+                                                t-esc="line.credit.is_zero ? '' : line.credit.display"/>
+                                        </t>
+                                    </t>
+                                    <t t-if="column[0] === '__trash'">
+                                        <td class="o_list_record_remove">
+                                            <button t-if="['valid', 'invalid'].includes(data.state) &amp;&amp; !['liquidity', 'auto_balance', 'tax_line'].includes(line.flag.value)"
+                                                    t-on-click="_onClickRemoveLine"
+                                                    class="fa fa-trash-o"
+                                                    t-att-index="line.index.value"/>
+                                        </td>
+                                    </t>
+                                </t>
+                            </tr>
+                        </t>
+
+                        <t t-set="nb_extra_lines" t-value="5 - data.lines.length"/>
+                        <tr t-foreach="range(nb_extra_lines)" t-as="i" t-key="i">
+                            <td t-att-colspan="data.columns.length">&#8205;</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <t t-name="account_accountant.bank_rec_widget_form_reco_models_widget" owl="1">
+        <t t-set="data" t-value="getRenderValues()"/>
+        <div class="o_bank_rec_reco_models_widget_div">
+            <t t-if="data.display_widget"
+               t-foreach="data.available_reconcile_model_ids"
+               t-as="reco_model"
+               t-key="reco_model.id">
+                <t t-set="is_selected" t-value="reco_model.id === data.selected_reconcile_model_id"/>
+                <button t-on-click="_onClickRecoModel"
+                        class="btn"
+                        t-att-class="{'btn-secondary': !is_selected, 'bg-odoo text-uppercase': is_selected}"
+                        t-esc="reco_model.display_name"
+                        t-att-selected="is_selected"
+                        t-att-key="reco_model.id"/>
+            </t>
+        </div>
+    </t>
+
+</templates>

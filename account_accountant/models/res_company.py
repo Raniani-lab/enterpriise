@@ -139,3 +139,9 @@ class ResCompany(models.Model):
             date_to = fiscalyear_to.date_from - timedelta(days=1)
 
         return {'date_from': date_from, 'date_to': date_to}
+
+    def _get_fiscalyear_lock_statement_lines_redirect_action(self, unreconciled_statement_lines):
+        # Extends 'account'
+        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            extra_domain=[('id', 'in', unreconciled_statement_lines.ids)],
+        )

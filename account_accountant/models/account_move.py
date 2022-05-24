@@ -15,21 +15,6 @@ class AccountMove(models.Model):
                                                    "(using invoicing_switch_threshold setting field). It allows keeping the former payment state, so that "\
                                                    "we can restore it if the user misconfigured the switch date and wants to change it.")
 
-    def action_open_matching_suspense_moves(self):
-        self.ensure_one()
-        domain = self._get_domain_matching_suspense_moves()
-        ids = self.env['account.move.line'].search(domain).mapped('statement_line_id').ids
-        action_context = {'show_mode_selector': False, 'company_ids': self.mapped('company_id').ids}
-        action_context.update({'suspense_moves_mode': True})
-        action_context.update({'statement_line_ids': ids})
-        action_context.update({'partner_id': self.partner_id.id})
-        action_context.update({'partner_name': self.partner_id.name})
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'bank_statement_reconciliation_view',
-            'context': action_context,
-        }
-
     @api.model
     def _get_invoice_in_payment_state(self):
         # OVERRIDE to enable the 'in_payment' state on invoices.

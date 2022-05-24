@@ -19,19 +19,27 @@ class WorkflowActionRuleAccount(models.Model):
             new_obj = None
             invoice_ids = []
             for document in documents:
+
+                if document.res_model == 'account.move' and document.res_id:
+                    move = self.env['account.move'].browse(document.res_id)
+                else:
+                    move = self.env['account.move']
+
                 create_values = {
                     'default_move_type': invoice_type,
                     'default_journal_id': journal.id,
                 }
-                if document.res_model == 'account.move.line' and document.res_id:
-                    create_values.update(default_document_request_line_id=document.res_id)
+                if invoice_type not in ['out_refund', 'out_invoice']:
+                    create_values['narration'] = False
+                if move.statement_line_id:
+                    create_values['default_suspense_statement_line_id'] = move.statement_line_id.id
 
                 if self.partner_id:
                     create_values.update(default_partner_id=self.partner_id.id)
                 elif document.partner_id:
                     create_values.update(default_partner_id=document.partner_id.id)
 
-                if document.res_model == 'account.move' and document.res_id:
+                if move.is_invoice():
                     invoice_ids.append(document.res_id)
                 else:
                     with Form(self.env['account.move'].with_context(create_values)) as invoice_form:

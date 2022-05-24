@@ -15,14 +15,15 @@ const { sprintf } = require("@web/core/utils/strings")
 const { ReconciliationRainbowManComponent } = require("@account_accountant/js/reconciliation/reconciliation_rainbowman_component")
 
 /**
- * rendering of the bank statement action contains progress bar, title and
- * auto reconciliation button
+ * rendering of the manual reconciliation action contains progress bar, title
+ * and auto reconciliation button
  */
-var StatementRenderer = Widget.extend(FieldManagerMixin, {
-    template: 'reconciliation.statement',
+var ManualRenderer = Widget.extend(FieldManagerMixin, {
+    template: "reconciliation.manual.statement",
     events: {
         'click *[rel="do_action"]': '_onDoAction',
     },
+
     /**
      * @override
      */
@@ -98,6 +99,7 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
             this._renderNotifications(state.notifications);
         }
     },
+
     _updateProgressBar: function(state) {
         this.$progress.find('.valuenow').text(state.valuenow);
         this.$progress.find('.valuemax').text(state.valuemax);
@@ -127,15 +129,6 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
     // Handlers
     //--------------------------------------------------------------------------
 
-    /**
-     * @private
-     * Click on close bank statement button, this will
-     * close and then open form view of bank statement
-     * @param {MouseEvent} event
-     */
-    _onCloseBankStatement: function (e) {
-        this.trigger_up('close_statement');
-    },
     /**
      * @private
      * @param {MouseEvent} event
@@ -170,30 +163,16 @@ var StatementRenderer = Widget.extend(FieldManagerMixin, {
             });
         }
     },
-    /**
-     * Open the list view for account.bank.statement model
-     * @private
-     * @param {MouseEvent} event
-     */
-    _onGoToBankStatement: function (journalId) {
-        this.do_action({
-            name: 'Bank Statements',
-            res_model: 'account.bank.statement',
-            views: [[false, 'list'], [false, 'form']],
-            type: 'ir.actions.act_window',
-            context: {search_default_journal_id: journalId, 'journal_type':'bank'},
-            view_mode: 'form',
-        });
-    },
+
 });
 
 
 /**
- * rendering of the bank statement line, contains line data, proposition and
- * view for 'match' and 'create' mode
+ * rendering of the manual reconciliation, contains line data, proposition and
+ * view for 'match' mode
  */
-var LineRenderer = Widget.extend(FieldManagerMixin, {
-    template: "reconciliation.line",
+var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
+    template: "reconciliation.manual.line",
     events: {
         'click .accounting_view caption .o_buttons button': '_onValidate',
         'click .accounting_view tfoot': '_onChangeTab',
@@ -220,24 +199,6 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
     _avoidFieldUpdate: {},
     MV_LINE_DEBOUNCE: 200,
 
-    _onKeydown: function (ev) {
-        switch (ev.which) {
-            case $.ui.keyCode.ENTER:
-                this.trigger_up('navigation_move', {direction: 'validate', handle: this.handle});
-                break;
-            case $.ui.keyCode.UP:
-                ev.stopPropagation();
-                ev.preventDefault();
-                this.trigger_up('navigation_move', {direction: 'up', handle: this.handle});
-                break;
-            case $.ui.keyCode.DOWN:
-                ev.stopPropagation();
-                ev.preventDefault();
-                this.trigger_up('navigation_move', {direction: 'down', handle: this.handle});
-                break;
-        }
-    },
-
     /**
      * create partner_id field in editable mode
      *
@@ -255,7 +216,22 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             this._onSelectMoveLine = this._onSelectMoveLine;
         }
     },
+
+     /**
+     * @override
+     * @param {string} handle
+     * @param {number} proposition id (move line id)
+     * @returns {Promise}
+     */
+    removeProposition: function (handle, id) {
+        if (!id) {
+            return Promise.resolve();
+        }
+        return this._super(handle, id);
+    },
     /**
+     * move the partner field
+     *
      * @override
      */
     start: function () {
@@ -274,9 +250,6 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             };
             self.fields.partner_id.insertAfter(self.$('.accounting_view caption .o_buttons'));
         });
-        $('<span class="line_info_button fa fa-info-circle"/>')
-            .appendTo(this.$('thead .cell_info_popover'))
-            .attr("data-content", qweb.render('reconciliation.line.statement_line.details', {'state': this._initialState}));
         this.$el.popover({
             'selector': '.line_info_button',
             'placement': 'left',
@@ -296,17 +269,25 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
         var def4 = session.user_has_group('analytic.group_analytic_accounting').then(function(has_group) {
                 self.group_acc = has_group;
             });
-        return Promise.all([def1, def2, def3, def4]);
+        return Promise.all([def1, def2, def3, def4]).then(function () {
+            return self.model.makeRecord('account.move.line', [{
+                relation: 'account.account',
+                type: 'many2one',
+                name: 'account_id',
+                value: [self._initialState.account_id.id, self._initialState.account_id.display_name],
+            }]).then(function (recordID) {
+                self.fields.title_account_id = new relational_fields.FieldMany2One(self,
+                    'account_id',
+                    self.model.get(recordID),
+                    {mode: 'readonly'}
+                );
+            }).then(function () {
+                return self.fields.title_account_id.appendTo(self.$('.accounting_view thead td:eq(0) span:first'));
+            });
+        });
     },
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
-
     /**
-     * update the statement line rendering
-     *
-     * @param {object} state - statement line
+     * @override
      */
     update: function (state) {
         var self = this;
@@ -453,8 +434,23 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             });
         }
         this.$('.create .add_line').toggle(!!state.balance.amount_currency);
+
+        var props = _.filter(state.reconciliation_proposition, {'display': true});
+        if (!props.length) {
+            var $line = $(qweb.render("reconciliation.line.mv_line", {'line': {}, 'state': state}));
+            this.$('.accounting_view tbody').append($line);
+        }
     },
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * update the statement line rendering
+     *
+     * @param {object} state - statement line
+     */
     updatePartialAmount: function(line_id, amount) {
         var $line = this.$('.mv_line[data-line-id='+line_id+']');
         $line.find('.edit_amount').addClass('d-none');
@@ -852,98 +848,146 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
      */
     _onValidate: function () {
         this.trigger_up('validate');
-    }
-});
+    },
 
+    _onKeydown: function (ev) {
+        switch (ev.which) {
+            case $.ui.keyCode.ENTER:
+                this.trigger_up('navigation_move', {direction: 'validate', handle: this.handle});
+                break;
+            case $.ui.keyCode.UP:
+                ev.stopPropagation();
+                ev.preventDefault();
+                this.trigger_up('navigation_move', {direction: 'up', handle: this.handle});
+                break;
+            case $.ui.keyCode.DOWN:
+                ev.stopPropagation();
+                ev.preventDefault();
+                this.trigger_up('navigation_move', {direction: 'down', handle: this.handle});
+                break;
+        }
+    },
 
-/**
- * rendering of the manual reconciliation action contains progress bar, title
- * and auto reconciliation button
- */
-var ManualRenderer = StatementRenderer.extend({
-    template: "reconciliation.manual.statement",
-
-});
-
-
-/**
- * rendering of the manual reconciliation, contains line data, proposition and
- * view for 'match' mode
- */
-var ManualLineRenderer = LineRenderer.extend({
-    template: "reconciliation.manual.line",
-     /**
-     * @override
-     * @param {string} handle
-     * @param {number} proposition id (move line id)
+    /**
+     * create account_id, tax_ids, analytic_account_id, analytic_tag_ids, name and amount fields
+     *
+     * @private
+     * @param {object} state - statement line
      * @returns {Promise}
-     */
-    removeProposition: function (handle, id) {
-        if (!id) {
-            return Promise.resolve();
-        }
-        return this._super(handle, id);
-    },
-    /**
-     * move the partner field
-     *
-     * @override
-     */
-    start: function () {
-        var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            return self.model.makeRecord('account.move.line', [{
-                relation: 'account.account',
-                type: 'many2one',
-                name: 'account_id',
-                value: [self._initialState.account_id.id, self._initialState.account_id.display_name],
-            }]).then(function (recordID) {
-                self.fields.title_account_id = new relational_fields.FieldMany2One(self,
-                    'account_id',
-                    self.model.get(recordID),
-                    {mode: 'readonly'}
-                );
-            }).then(function () {
-                return self.fields.title_account_id.appendTo(self.$('.accounting_view thead td:eq(0) span:first'));
-            });
-        });
-    },
-    /**
-     * @override
-     */
-    update: function (state) {
-        this._super(state);
-        var props = _.filter(state.reconciliation_proposition, {'display': true});
-        if (!props.length) {
-            var $line = $(qweb.render("reconciliation.line.mv_line", {'line': {}, 'state': state}));
-            this.$('.accounting_view tbody').append($line);
-        }
-    },
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-    /**
-     * display journal_id field
-     *
-     * @override
      */
     _renderCreate: function (state) {
         var self = this;
-        var parentPromise = this._super(state).then(function() {
+        return this.model.makeRecord('account.bank.statement.line', [{
+            relation: 'account.account',
+            type: 'many2one',
+            name: 'account_id',
+            domain: [['company_id', '=', state.st_line.company_id], ['deprecated', '=', false]],
+        }, {
+            relation: 'account.journal',
+            type: 'many2one',
+            name: 'journal_id',
+            domain: [['company_id', '=', state.st_line.company_id], ['type', '=', 'general']],
+        }, {
+            relation: 'account.tax',
+            type: 'many2many',
+            name: 'tax_ids',
+            domain: [['company_id', '=', state.st_line.company_id]],
+        }, {
+            relation: 'account.analytic.account',
+            type: 'many2one',
+            name: 'analytic_account_id',
+            domain: ["|", ['company_id', '=', state.st_line.company_id], ['company_id', '=', false]],
+        }, {
+            relation: 'account.analytic.tag',
+            type: 'many2many',
+            name: 'analytic_tag_ids',
+            domain: ["|", ['company_id', '=', state.st_line.company_id], ['company_id', '=', false]],
+        }, {
+            type: 'boolean',
+            name: 'force_tax_included',
+        }, {
+            type: 'char',
+            name: 'name',
+        }, {
+            type: 'float',
+            name: 'amount',
+        }, {
+            type: 'char', //TODO is it a bug or a feature when type date exists ?
+            name: 'date',
+        }, {
+            type: 'boolean',
+            name: 'to_check',
+        }], {
+            account_id: {
+                string: _t("Account"),
+            },
+            name: {string: _t("Label")},
+            amount: {string: _t("Account")},
+        }).then(function (recordID) {
+            self.handleCreateRecord = recordID;
+            var record = self.model.get(self.handleCreateRecord);
+
+            self.fields.account_id = new relational_fields.FieldMany2One(self,
+                'account_id', record, {mode: 'edit', attrs: {can_create:false}});
+
+            self.fields.journal_id = new relational_fields.FieldMany2One(self,
+                'journal_id', record, {mode: 'edit'});
+
+            self.fields.tax_ids = new relational_fields.FieldMany2ManyTags(self,
+                'tax_ids', record, {mode: 'edit', additionalContext: {append_type_to_tax_name: true}});
+
+            self.fields.analytic_account_id = new relational_fields.FieldMany2One(self,
+                'analytic_account_id', record, {mode: 'edit'});
+
+            self.fields.analytic_tag_ids = new relational_fields.FieldMany2ManyTags(self,
+                'analytic_tag_ids', record, {mode: 'edit'});
+
+            self.fields.force_tax_included = new basic_fields.FieldBoolean(self,
+                'force_tax_included', record, {mode: 'edit'});
+
+            self.fields.name = new basic_fields.FieldChar(self,
+                'name', record, {mode: 'edit'});
+
+            self.fields.amount = new basic_fields.FieldFloat(self,
+                'amount', record, {mode: 'edit'});
+
+            self.fields.date = new basic_fields.FieldDate(self,
+                'date', record, {mode: 'edit'});
+
+            self.fields.to_check = new basic_fields.FieldBoolean(self,
+                'to_check', record, {mode: 'edit'});
+
+            var $create = $(qweb.render("reconciliation.line.create", {'state': state, 'group_tags': self.group_tags, 'group_acc': self.group_acc}));
+            self.fields.account_id.appendTo($create.find('.create_account_id .o_td_field'))
+                .then(addRequiredStyle.bind(self, self.fields.account_id));
+            self.fields.journal_id.appendTo($create.find('.create_journal_id .o_td_field'));
+            self.fields.tax_ids.appendTo($create.find('.create_tax_id .o_td_field'));
+            self.fields.analytic_account_id.appendTo($create.find('.create_analytic_account_id .o_td_field'));
+            self.fields.analytic_tag_ids.appendTo($create.find('.create_analytic_tag_ids .o_td_field'));
+            self.fields.force_tax_included.appendTo($create.find('.create_force_tax_included .o_td_field'));
+            self.fields.name.appendTo($create.find('.create_label .o_td_field'))
+                .then(addRequiredStyle.bind(self, self.fields.name));
+            self.fields.amount.appendTo($create.find('.create_amount .o_td_field'))
+                .then(addRequiredStyle.bind(self, self.fields.amount));
+            self.fields.date.appendTo($create.find('.create_date .o_td_field'));
+            self.fields.to_check.appendTo($create.find('.create_to_check .o_td_field'));
+            self.$('.create').append($create);
+
+            function addRequiredStyle(widget) {
+                widget.$el.addClass('o_required_modifier');
+            }
+
             self.$('.create .create_journal_id').show();
             self.$('.create .create_date').removeClass('d-none');
             self.$('.create .create_journal_id .o_input').addClass('o_required_modifier');
         });
-        return parentPromise;
     },
 
 });
 
 
 return {
-    StatementRenderer: StatementRenderer,
     ManualRenderer: ManualRenderer,
-    LineRenderer: LineRenderer,
     ManualLineRenderer: ManualLineRenderer,
 };
 });

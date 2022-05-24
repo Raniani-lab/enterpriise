@@ -19,7 +19,7 @@ Documents app in the desired format(s).
         'security/security.xml',
         'data/data.xml',
         'views/documents_views.xml',
-        'views/account_views.xml',
+        'views/account_move_views.xml',
         'wizard/report_export_wizard.xml',
     ],
     'demo': [

@@ -1,0 +1,85 @@
+.o_bank_rec_stats_buttons{
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 5px;
+    margin-top: -$o-sheet-vpadding;
+    margin-left: -16px;
+    margin-right: -16px;
+    height: $o-statbutton-height;
+    white-space: nowrap;
+
+    .o_bank_rec_stats_buttons_aside_left{
+        flex-grow: 0;
+        display: flex !important;
+        flex-flow: row nowrap;
+        border-bottom: 1px solid $border-color;
+
+        .btn {
+            margin-right: $o-statbutton-spacing;
+        }
+    }
+
+    .o_bank_rec_stats_buttons_middle{
+        width: 100%;
+        overflow: auto;
+        overflow-y: hidden;
+
+        .o_bank_rec_reco_models_widget_div{
+            display: flex;
+            flex-flow: row nowrap;
+            height: 100%;
+            border-left: 1px solid $border-color;
+            border-bottom: 1px solid $border-color;
+        }
+    }
+
+    .o_bank_rec_stats_buttons_aside_right{
+        flex-grow: 1;
+        margin: 0px !important;
+    }
+}
+
+.o_bank_rec_liquidity_line{
+    background-color: #f0f0f0 !important;
+}
+
+.o_bank_rec_auto_balance_line{
+  @extend .text-muted;
+}
+
+.o_bank_rec_lines_widget_table{
+    th{
+        border-top: none;
+    }
+}
+
+.o_bank_rec_widget_aml{
+    td{
+        border-top: none !important;
+    }
+}
+
+.o_rec_widget_list_selected_item{
+    @extend .table-info;
+}
+
+.o_bank_rec_model_button{
+    margin: 3px;
+}
+
+.o_bank_rec_selected_line{
+    outline: thin solid mix(theme-color('primary'), gray('400'));
+    outline-offset: -1px;
+}
+
+.o_bank_rec_widget_form_suggest_button{
+    @extend .btn;
+    @extend .btn-secondary;
+    @extend .font-italic;
+    padding: 0px;
+    text-transform: none !important;
+}
+
+.o_bank_rec_widget_lines_widget_label {
+    max-width: 320px;
+}

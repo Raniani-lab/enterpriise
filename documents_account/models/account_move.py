@@ -1,45 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, _
-from odoo.osv import expression
 
 
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    document_request_line_id = fields.Many2one('account.move.line', string='Reconciliation Journal Entry Line')
-
-    def _get_request_document_actions(self):
-        actions = []
-        view_id = self.env.ref('documents.documents_request_form_view').id
-        for record in self:
-            for line in record.line_ids:
-                reconcile_model = line.reconcile_model_id
-                if reconcile_model and reconcile_model.activity_type_id:
-                    activity = reconcile_model.activity_type_id
-                    if activity and activity.category == 'upload_file':
-                        actions.append({
-                            'type': 'ir.actions.act_window',
-                            'res_model': 'documents.request_wizard',
-                            'name': _("Request Document for %s", line.name),
-                            'view_id': view_id,
-                            'views': [(view_id, 'form')],
-                            'target': 'new',
-                            'view_mode': 'form',
-                            'context': {'default_res_model': 'account.move.line',
-                                        'default_res_id': line.id,
-                                        'default_name': line.name,
-                                        'default_activity_type_id': activity.id}
-                        })
-        return actions
-
-    def _get_domain_matching_suspense_moves(self):
-        # OVERRIDE to handle the document requests in the suspense accounts domain.
-        domain = super(AccountMove, self)._get_domain_matching_suspense_moves()
-        return expression.OR([
-            domain,
-            [('id', '=', self.document_request_line_id.id)]
-        ])
+    suspense_statement_line_id = fields.Many2one(
+        comodel_name='account.bank.statement.line',
+        string="Request document from a bank statement line",
+    )
 
     def write(self, vals):
         main_attachment_id = vals.get('message_main_attachment_id')
@@ -60,6 +30,27 @@ class AccountMove(models.Model):
             if (new_document or journal_changed) and move.message_main_attachment_id:
                 move._update_or_create_document(move.message_main_attachment_id.id)
         return res
+
+    def button_reconcile_with_st_line(self):
+        """ When using the "Reconciliation Request" next activity on the statement line's chatter, the invoice is linked
+        to this statement line through the 'suspense_statement_line_id' field.
+        When checking this link on your invoice, you are able to click on a button triggering this method opening the
+        bank reconciliation widget for this specific statement line to easily match it with the current invoice.
+
+        :return: An action opening the bank reconciliation widget.
+        """
+        self.ensure_one()
+        st_line = self.suspense_statement_line_id
+        rec_pay_lines = self.line_ids.filtered(lambda x: x.account_id.user_type_id.type in ('receivable', 'payable'))
+        default_todo_command = ','.join(['add_new_amls'] + [str(x) for x in rec_pay_lines.ids])
+        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            extra_domain=[('statement_id', '=', st_line.statement_id.id)],
+            default_context={
+                'search_default_journal_id': st_line.journal_id.id,
+                'default_st_line_id': st_line.id,
+                'default_todo_command': default_todo_command,
+            },
+        )
 
     def _update_or_create_document(self, attachment_id):
         if self.company_id.documents_account_settings:
@@ -82,9 +73,3 @@ class AccountMove(models.Model):
                     # registered as attachments yet
                     values.update({'attachment_id': attachment_id})
                     doc.create(values)
-
-
-class AccountMoveLine(models.Model):
-    _inherit = "account.move.line"
-
-    reconciliation_invoice_id = fields.One2many('account.move', 'document_request_line_id')

@@ -17,11 +17,13 @@ It assigns manager and user access rights to the Administrator for the accountin
     'depends': ['account', 'mail_enterprise', 'web_tour'],
     'data': [
         'data/account_accountant_data.xml',
+        'data/ir_cron.xml',
         'data/digest_data.xml',
+
         'security/ir.model.access.csv',
         'security/account_accountant_security.xml',
+
         'views/account_account_views.xml',
-        'views/account_bank_statement_views.xml',
         'views/account_fiscal_year_view.xml',
         'views/account_journal_dashboard_views.xml',
         'views/account_move_views.xml',
@@ -30,6 +32,8 @@ It assigns manager and user access rights to the Administrator for the accountin
         'views/digest_views.xml',
         'views/res_config_settings_views.xml',
         'views/product_views.xml',
+        'views/bank_rec_widget_views.xml',
+
         'wizard/account_change_lock_date.xml',
         'wizard/reconcile_model_wizard.xml',
     ],
@@ -41,23 +45,19 @@ It assigns manager and user access rights to the Administrator for the accountin
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'account_accountant/static/src/scss/move_line_list_view.scss',
-            'account_accountant/static/src/js/move_line_list_view.js',
+            'account_accountant/static/src/js/*.js',
             'account_accountant/static/src/js/tours/account_accountant.js',
-            'account_accountant/static/src/js/reconciliation/reconciliation_action.js',
-            'account_accountant/static/src/js/reconciliation/reconciliation_model.js',
-            'account_accountant/static/src/js/reconciliation/reconciliation_renderer.js',
-            'account_accountant/static/src/js/reconciliation/reconciliation_rainbowman_component.js',
+            'account_accountant/static/src/js/reconciliation/*.js',
+            'account_accountant/static/src/scss/*.scss',
         ],
         'web.assets_tests': [
             'account_accountant/static/tests/tours/**/*',
         ],
         'web.qunit_suite_tests': [
-            'account_accountant/static/tests/reconciliation_tests.js',
-            'account_accountant/static/tests/move_line_list_tests.js',
+            'account_accountant/static/tests/*.js',
         ],
         'web.assets_qweb': [
-            'account_accountant/static/src/xml/**/*',
+            'account_accountant/static/src/**/*.xml',
         ],
     }
 }

@@ -7,15 +7,15 @@ var ReconciliationRenderer = require('account.ReconciliationRenderer');
 var core = require('web.core');
 var QWeb = core.qweb;
 
-
 /**
- * Widget used as action for 'account.bank.statement' reconciliation
+ * Widget used as action for 'account.move.line' and 'res.partner' for the
+ * manual reconciliation and mark data as reconciliate
  */
-var StatementAction = AbstractAction.extend({
+var ManualAction = AbstractAction.extend({
+    title: core._t('Journal Items to Reconcile'),
     hasControlPanel: true,
-    withSearchBar: true,
     loadControlPanel: true,
-    title: core._t('Bank Reconciliation'),
+    withSearchBar: false,
     contentTemplate: 'reconciliation',
     custom_events: {
         change_mode: '_onAction',
@@ -35,39 +35,12 @@ var StatementAction = AbstractAction.extend({
         navigation_move:'_onNavigationMove',
     },
     config: _.extend({}, AbstractAction.prototype.config, {
-        // used to instantiate the model
-        Model: ReconciliationModel.StatementModel,
-        // used to instantiate the action interface
-        ActionRenderer: ReconciliationRenderer.StatementRenderer,
-        // used to instantiate each widget line
-        LineRenderer: ReconciliationRenderer.LineRenderer,
-        // used context params
-        params: ['statement_line_ids'],
-        // number of moves lines displayed in 'match' mode
+        Model: ReconciliationModel.ManualModel,
+        ActionRenderer: ReconciliationRenderer.ManualRenderer,
+        LineRenderer: ReconciliationRenderer.ManualLineRenderer,
+        params: ['company_ids', 'mode', 'partner_ids', 'account_ids'],
         limitMoveLines: 15,
     }),
-
-    _onNavigationMove: function (ev) {
-        var non_reconciled_keys = _.keys(_.pick(this.model.lines, function(value, key, object) {return !value.reconciled}));
-        var currentIndex = _.indexOf(non_reconciled_keys, ev.data.handle);
-        var widget = false;
-        switch (ev.data.direction) {
-            case 'up':
-                ev.stopPropagation();
-                widget = this._getWidget(non_reconciled_keys[currentIndex-1]);
-                break;
-            case 'down':
-                ev.stopPropagation();
-                widget = this._getWidget(non_reconciled_keys[currentIndex+1]);
-                break;
-            case 'validate':
-                ev.stopPropagation();
-                widget = this._getWidget(non_reconciled_keys[currentIndex]);
-                widget.$('caption .o_buttons button:visible').click();
-                break;
-        }
-        if (widget) widget.$el.focus();
-    },
 
     /**
      * @override
@@ -285,6 +258,28 @@ var StatementAction = AbstractAction.extend({
     // Handlers
     //--------------------------------------------------------------------------
 
+    _onNavigationMove: function (ev) {
+        var non_reconciled_keys = _.keys(_.pick(this.model.lines, function(value, key, object) {return !value.reconciled}));
+        var currentIndex = _.indexOf(non_reconciled_keys, ev.data.handle);
+        var widget = false;
+        switch (ev.data.direction) {
+            case 'up':
+                ev.stopPropagation();
+                widget = this._getWidget(non_reconciled_keys[currentIndex-1]);
+                break;
+            case 'down':
+                ev.stopPropagation();
+                widget = this._getWidget(non_reconciled_keys[currentIndex+1]);
+                break;
+            case 'validate':
+                ev.stopPropagation();
+                widget = this._getWidget(non_reconciled_keys[currentIndex]);
+                widget.$('caption .o_buttons button:visible').click();
+                break;
+        }
+        if (widget) widget.$el.focus();
+    },
+
     /**
      * dispatch on the camelcased event name to model method then update the
      * line renderer with the new state. If the mode was switched from 'inactive'
@@ -341,81 +336,6 @@ var StatementAction = AbstractAction.extend({
     },
 
     /**
-     * call 'closeStatement' model method
-     *
-     * @private
-     * @param {OdooEvent} event
-     */
-    _onCloseStatement: function (event) {
-        var self = this;
-        return this.model.closeStatement().then(function () {
-            self.do_action({
-                name: 'Bank Statements',
-                res_model: 'account.bank.statement',
-                res_id: self.model.bank_statement_id.id,
-                views: [[false, 'form']],
-                type: 'ir.actions.act_window',
-                view_mode: 'form',
-            });
-            $('.o_reward').remove();
-        });
-    },
-    /**
-     * call 'validate' model method then destroy the
-     * validated lines and update the action renderer with the new status bar
-     * values and notifications then open the first available line
-     *
-     * @private
-     * @param {OdooEvent} event
-     */
-    _onValidate: function (event) {
-        var self = this;
-        var handle = event.target.handle;
-        this.model.validate(handle).then(function (result) {
-            self.renderer.update({
-                'valuenow': self.model.valuenow,
-                'valuemax': self.model.valuemax,
-                'bank_statement_id': self.model.bank_statement_id,
-                'title': self.title,
-                'time': Date.now()-self.time,
-                'notifications': result.notifications,
-                'context': self.model.getContext(),
-            });
-            self._forceUpdate();
-            _.each(result.handles, function (handle) {
-                var widget = self._getWidget(handle);
-                if (widget) {
-                    widget.destroy();
-                    var index = _.findIndex(self.widgets, function (widget) {return widget.handle===handle;});
-                    self.widgets.splice(index, 1);
-                }
-            });
-            self._openFirstLine(handle);
-        });
-    },
-});
-
-
-/**
- * Widget used as action for 'account.move.line' and 'res.partner' for the
- * manual reconciliation and mark data as reconciliate
- */
-var ManualAction = StatementAction.extend({
-    title: core._t('Journal Items to Reconcile'),
-    withSearchBar: false,
-    config: _.extend({}, StatementAction.prototype.config, {
-        Model: ReconciliationModel.ManualModel,
-        ActionRenderer: ReconciliationRenderer.ManualRenderer,
-        LineRenderer: ReconciliationRenderer.ManualLineRenderer,
-        params: ['company_ids', 'mode', 'partner_ids', 'account_ids'],
-        limitMoveLines: 15,
-    }),
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
      * call 'validate' model method then destroy the
      * reconcilied lines, update the not reconcilied and update the action
      * renderer with the new status bar  values and notifications then open the
@@ -450,11 +370,9 @@ var ManualAction = StatementAction.extend({
     },
 });
 
-core.action_registry.add('bank_statement_reconciliation_view', StatementAction);
 core.action_registry.add('manual_reconciliation_view', ManualAction);
 
 return {
-    StatementAction: StatementAction,
     ManualAction: ManualAction,
 };
 });

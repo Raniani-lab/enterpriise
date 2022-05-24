@@ -284,13 +284,12 @@ class TestDatevCSV(AccountTestInvoicingCommon):
                 }),
             ],
         })
-
-        receivable_line = move.line_ids.filtered(
-            lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
         statement.button_post()
-        statement.line_ids[0].reconcile([
-            {'id': receivable_line.id},
-        ])
+
+        receivable_line = move.line_ids.filtered(lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=statement.line_ids.id).new({})
+        wizard._action_add_new_amls(receivable_line, allow_partial=False)
+        wizard.button_validate(async_action=False)
 
         bank_account_code = str(self.env.company.bank_journal_ids.default_account_id.code).ljust(8, '0')
 

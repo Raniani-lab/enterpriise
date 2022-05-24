@@ -67,6 +67,9 @@ class SepaDirectDebitCommon(PaymentCommon):
             })],
         })
         bank_stmt.button_post()
-        bank_stmt.line_ids.reconcile([{'id': move_line.id}])
+
+        edit_wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=bank_stmt.line_ids.id).new({})
+        edit_wizard._action_add_new_amls(move_line, allow_partial=False)
+        edit_wizard.button_validate(async_action=False)
 
         self.assertTrue(payment.is_matched, 'payment should be reconciled')

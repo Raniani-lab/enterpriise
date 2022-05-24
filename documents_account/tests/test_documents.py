@@ -117,34 +117,6 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
             # deleting the setting to prevent duplicate settings.
             setting.unlink()
 
-    def test_reconciliation_request(self):
-        account_type_test = self.env['account.account.type'].sudo().create({'name': 'account type test', 'type': 'other', 'internal_group': 'asset'})
-        account_test = self.env['account.account'].create(
-            {'name': 'Receivable', 'code': '0000222', 'user_type_id': account_type_test.id, 'reconcile': True})
-        journal_test = self.env['account.journal'].create({'name': 'journal test', 'type': 'bank', 'code': 'BNK67'})
-        account_move_test = self.env['account.move'].create(
-            {'state': 'draft', 'journal_id': journal_test.id})
-        account_move_line_test = self.env['account.move.line'].create({
-            'name': 'account move line test',
-            'move_id': account_move_test.id,
-            'account_id': account_test.id,
-        })
-        account_move_test.action_post()
-
-        document_test = self.env['documents.document'].create({
-            'name': 'test reconciliation workflow',
-            'folder_id': self.folder_a.id,
-            'res_model': 'account.move.line',
-            'res_id': account_move_line_test.id,
-            'datas': TEXT,
-        })
-
-        action = self.workflow_rule_vendor_bill.apply_actions([document_test.id])
-        self.assertEqual(action['res_model'], 'account.move', 'a new invoice should be generated')
-        invoice = self.env['account.move'].browse(action['res_id'])
-        self.assertEqual(invoice.document_request_line_id.id, account_move_line_test.id,
-                         'the new invoice should store the ID of the move line on which its document was attached')
-
     def test_journal_entry(self):
         """
         Makes sure the settings apply their values when an ir_attachment is set as message_main_attachment_id

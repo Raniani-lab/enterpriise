@@ -191,11 +191,9 @@ class AccountOnlineLink(models.Model):
     def _show_fetched_transactions_action(self, stmt_line_ids):
         if self.env.context.get('dont_show_transactions'):
             return
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'bank_statement_reconciliation_view',
-            'context': {'statement_line_ids': stmt_line_ids.ids, 'company_ids': self.mapped('company_id').ids},
-        }
+        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            extra_domain=[('statement_id', 'in', stmt_line_ids.statement_id.ids)],
+        )
 
     #######################################################
     # Generic methods to contact server and handle errors #

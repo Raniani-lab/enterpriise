@@ -20,8 +20,27 @@ class AccountBatchPayment(models.Model):
     ], store=True, compute='_compute_state', default='draft', tracking=True)
     journal_id = fields.Many2one('account.journal', string='Bank', domain=[('type', '=', 'bank')], required=True, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
     payment_ids = fields.One2many('account.payment', 'batch_payment_id', string="Payments", required=True, readonly=True, states={'draft': [('readonly', False)]})
-    amount = fields.Monetary(compute='_compute_amount', store=True, readonly=True)
     currency_id = fields.Many2one('res.currency', compute='_compute_currency', store=True, readonly=True)
+    company_currency_id = fields.Many2one(
+        string="Company Currency",
+        related='journal_id.company_id.currency_id',
+        store=True,
+    )
+    amount_residual = fields.Monetary(
+        currency_field='company_currency_id',
+        compute='_compute_from_payment_ids',
+        store=True,
+    )
+    amount_residual_currency = fields.Monetary(
+        currency_field='currency_id',
+        compute='_compute_from_payment_ids',
+        store=True,
+    )
+    amount = fields.Monetary(
+        currency_field='currency_id',
+        compute='_compute_from_payment_ids',
+        store=True,
+    )
     batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, readonly=True, states={'draft': [('readonly', False)]}, default='inbound', tracking=True)
     payment_method_id = fields.Many2one(
         comodel_name='account.payment.method',
@@ -95,25 +114,24 @@ class AccountBatchPayment(models.Model):
     @api.depends('journal_id')
     def _compute_currency(self):
         for batch in self:
-            if batch.journal_id:
-                batch.currency_id = batch.journal_id.currency_id or batch.journal_id.company_id.currency_id
-            else:
-                batch.currency_id = False
+            batch.currency_id = batch.journal_id.currency_id or batch.company_currency_id or self.env.company.currency_id
 
-    @api.depends('date', 'currency_id', 'payment_ids.amount')
-    def _compute_amount(self):
+    @api.depends('currency_id', 'payment_ids.amount')
+    def _compute_from_payment_ids(self):
         for batch in self:
-            currency = batch.currency_id or batch.journal_id.currency_id or self.env.company.currency_id
-            date = batch.date or fields.Date.context_today(self)
-            amount = 0
+            amount_currency = 0.0
+            amount_residual = 0.0
+            amount_residual_currency = 0.0
             for payment in batch.payment_ids:
-                liquidity_lines, counterpart_lines, writeoff_lines = payment._seek_for_lines()
+                liquidity_lines, _counterpart_lines, _writeoff_lines = payment._seek_for_lines()
                 for line in liquidity_lines:
-                    if line.currency_id == currency:
-                        amount += line.amount_currency
-                    else:
-                        amount += line.company_currency_id._convert(line.balance, currency, line.company_id, date)
-            batch.amount = amount
+                    amount_currency += line.amount_currency
+                    amount_residual += line.amount_residual
+                    amount_residual_currency += line.amount_residual_currency
+
+            batch.amount_residual = amount_residual
+            batch.amount = amount_currency
+            batch.amount_residual_currency = amount_residual_currency
 
     @api.constrains('batch_type', 'journal_id', 'payment_ids')
     def _check_payments_constrains(self):

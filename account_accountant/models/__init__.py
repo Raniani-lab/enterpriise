@@ -11,3 +11,5 @@ from . import digest
 from . import res_config_settings
 from . import reconciliation_widget
 from . import res_company
+from . import bank_rec_widget
+from . import bank_rec_widget_line

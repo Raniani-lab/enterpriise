@@ -16,31 +16,17 @@
     </div>
 </t>
 
-<t t-name="reconciliation.statement">
-    <div t-if="widget._initialState.valuemax">
+<t t-name="reconciliation.manual.statement">
+    <div class="o_manual_statement" t-if="widget._initialState.valuemax">
         <div class="notification_area"/>
         <div class="o_reconciliation_lines"/>
     </div>
     <div t-else="" class="o_view_noreconciliation">
-        <p>Nothing to do!</p>
-        <p>This page displays all the bank transactions that are to be reconciled and provides with a neat interface to do so.</p>
-    </div>
-</t>
-
-<t t-name="reconciliation.manual.statement" t-extend="reconciliation.statement">
-    <t t-jquery="div:first" t-operation="attributes">
-        <attribute name="class" value="o_manual_statement" />
-    </t>
-    <t t-jquery=".o_view_noreconciliation p" t-operation="replace"></t>
-    <t t-jquery=".o_view_noreconciliation" t-operation="append">
         <p><b>Good Job!</b> There is nothing to reconcile.</p>
         <p>All invoices and payments have been matched, your accounts' balances are clean.</p>
         <p>
             From now on, you may want to:
             <ul>
-                <li>Check that you have no bank statement lines to <a href="#"
-                    rel="do_action"
-                    data-tag="bank_statement_reconciliation_view">reconcile</a></li>
                 <li>Verify <a href="#"
                     rel="do_action"
                     data-action_name="Unpaid Customer Invoices"
@@ -60,7 +46,7 @@
                     data-context="{'search_default_unreconciled': 1}">unreconciled entries</a></li>
             </ul>
         </p>
-    </t>
+    </div>
 </t>
 
 <div t-name="reconciliation.done" class="done_message" owl="1">
@@ -70,42 +56,32 @@
             <br/>That's on average <t t-esc="props.timePerTransaction"/> seconds per transaction.
         </t>
     </p>
-    <t t-if="props.context &amp;&amp; props.context.active_model">
-        <p t-if="props.context['active_model'] === 'account.journal' || props.context['active_model'] === 'account.bank.statement'" class="actions_buttons">
-            <t t-if="props.context.journal_id">
-                <button t-on-click="() => props.onButtonBackToStatementClicked(props.context.journal_id)" class="button_back_to_statement btn btn-secondary">Go to bank statement(s)</button>
-            </t>
-            <t t-if="props.bank_statement_id">
-                <button t-on-click="props.onButtonCloseStatementClicked" class="button_close_statement btn btn-primary" style="display: inline-block;">Close statement</button>
-            </t>
-        </p>
-    </t>
 </div>
 
-<t t-name="reconciliation.line">
+<t t-name="reconciliation.manual.line">
     <t t-set="state" t-value="widget._initialState"/>
     <div class="o_reconciliation_line" t-att-data-mode="state.mode" tabindex="0">
         <table class="accounting_view">
             <caption style="caption-side: top;">
                 <div class="float-right o_buttons">
-                    <button t-attf-class="o_no_valid btn btn-secondary #{state.balance.type &lt; 0 ? '' : 'd-none'}" disabled="disabled" data-toggle="tooltip" title="Select a partner or choose a counterpart" accesskey="">Validate</button>
-                    <button t-attf-class="o_validate btn btn-secondary #{!state.balance.type ? '' : 'd-none'}">Validate</button>
-                    <button t-attf-class="o_reconcile btn btn-primary #{state.balance.type &gt; 0 ? '' : 'd-none'}">Validate</button>
+                    <button t-attf-class="o_validate btn btn-secondary #{!state.balance.type ? '' : 'd-none'}">Reconcile</button>
+                    <button t-attf-class="o_reconcile btn btn-primary #{state.balance.type &gt; 0 ? '' : 'd-none'}">Reconcile</button>
+                    <button t-attf-class="o_no_valid btn btn-secondary #{state.balance.type &lt; 0 ? '' : 'd-none'}">Skip</button>
                 </div>
             </caption>
             <thead>
                 <tr>
-                    <td class="cell_account_code"><t t-out="state.st_line.account_code"/></td>
-                    <td class="cell_due_date"><t t-out="state.st_line.date"/></td>
-                    <td class="cell_label"><t t-if="state.st_line.name" t-out="state.st_line.name"/> <t t-if="state.st_line.amount_currency_str"> (<t t-esc="state.st_line.amount_currency_str"/>)</t></td>
-                    <!-- FIXME: why no currency widget in JS> -->
-                    <td class="cell_left"><t t-if="state.st_line.amount &gt; 0"><t t-out="state.st_line.amount_str"/></t></td>
-                    <td class="cell_right"><t t-if="state.st_line.amount &lt; 0"><t t-out="state.st_line.amount_str"/></t></td>
+                    <td colspan="3"><span/><span t-if="state.last_time_entries_checked">Last Reconciliation: <t t-esc="state.last_time_entries_checked"/></span></td>
+                    <td colspan="2"><t t-esc="state.st_line.account_code"/></td>
                     <td class="cell_info_popover"></td>
                 </tr>
             </thead>
             <tbody>
                 <t t-foreach="state.reconciliation_proposition" t-as="line"><t t-call="reconciliation.line.mv_line"/></t>
+                <t t-if='!_.filter(state.reconciliation_proposition, {"display": true}).length'>
+                    <t t-set="line" t-value='{}'/>
+                    <t t-call="reconciliation.line.mv_line"/>
+                </t>
             </tbody>
             <tfoot>
                 <t t-call="reconciliation.line.balance"/>
@@ -114,17 +90,11 @@
         <div class="o_notebook">
             <div class="o_notebook_headers">
                 <ul class="nav nav-tabs ml-0 mr-0">
-                    <li class="nav-item" title="Match statement with existing lines on receivable/payable accounts&lt;br&gt;* Black line: existing journal entry that should be matched&lt;br&gt;* Blue lines: existing payment that should be matched" data-toggle="tooltip"><a data-toggle="tab" disable_anchor="true" t-attf-href="#notebook_page_match_rp_#{state.st_line.id}" class="nav-link active nav-match_rp" role="tab" aria-selected="true">Customer/Vendor Matching</a></li>
                     <li class="nav-item" title="Match with entries that are not from receivable/payable accounts" data-toggle="tooltip"><a data-toggle="tab" disable_anchor="true" t-attf-href="#notebook_page_match_other_#{state.st_line.id}" class="nav-link nav-match_other" role="tab" aria-selected="false">Miscellaneous Matching</a></li>
                     <li class="nav-item" title="Create a counterpart" data-toggle="tooltip"><a data-toggle="tab" disable_anchor="true" t-attf-href="#notebook_page_create_#{state.st_line.id}" class="nav-link nav-create" role="tab" aria-selected="false">Manual Operations</a></li>
                 </ul>
             </div>
             <div class="tab-content">
-                <div class="tab-pane active" t-attf-id="notebook_page_match_rp_#{state.st_line.id}">
-                    <div class="match">
-                        <t t-call="reconciliation.line.match"/>
-                    </div>
-                </div>
                 <div class="tab-pane" t-attf-id="notebook_page_match_other_#{state.st_line.id}">
                     <div class="match">
                         <t t-call="reconciliation.line.match"/>
@@ -136,31 +106,6 @@
             </div>
         </div>
     </div>
-</t>
-
-<t t-name="reconciliation.manual.line" t-extend="reconciliation.line">
-    <t t-jquery=".o_buttons" t-operation="replace">
-        <div class="float-right o_buttons">
-            <button t-attf-class="o_validate btn btn-secondary #{!state.balance.type ? '' : 'd-none'}">Reconcile</button>
-            <button t-attf-class="o_reconcile btn btn-primary #{state.balance.type &gt; 0 ? '' : 'd-none'}">Reconcile</button>
-            <button t-attf-class="o_no_valid btn btn-secondary #{state.balance.type &lt; 0 ? '' : 'd-none'}">Skip</button>
-        </div>
-    </t>
-    <t t-jquery=".accounting_view tbody" t-operation="append">
-        <t t-if='!_.filter(state.reconciliation_proposition, {"display": true}).length'>
-            <t t-set="line" t-value='{}'/>
-            <t t-call="reconciliation.line.mv_line"/>
-        </t>
-    </t>
-    <t t-jquery=".accounting_view thead tr" t-operation="replace">
-        <tr>
-            <td colspan="3"><span/><span t-if="state.last_time_entries_checked">Last Reconciliation: <t t-esc="state.last_time_entries_checked"/></span></td>
-            <td colspan="2"><t t-esc="state.st_line.account_code"/></td>
-            <td class="cell_info_popover"></td>
-        </tr>
-    </t>
-    <t t-jquery='div[t-attf-id*="notebook_page_match_rp"]' t-operation="replace"/>
-    <t t-jquery='a[t-attf-href*="notebook_page_match_rp"]' t-operation="replace"/>
 </t>
 
 <t t-name="reconciliation.line.balance">
@@ -350,34 +295,6 @@
     </table>
 </t>
 
-
-<t t-name="reconciliation.line.statement_line.details">
-    <table class='details'>
-        <tr><td>Date</td><td><t t-esc="state.st_line.date"/></td></tr>
-        <tr t-if="state.st_line.partner_name"><td>Partner</td><td><t t-esc="state.st_line.partner_name"/></td></tr>
-        <tr t-if="state.st_line.ref"><td>Transaction</td><td><t t-esc="state.st_line.ref"/></td></tr>
-        <tr><td>Description</td><td><t t-esc="state.st_line.name"/></td></tr>
-        <tr><td>Amount</td><td><t t-out="state.st_line.amount_str"/><t t-if="state.st_line.amount_currency_str"> (<t t-esc="state.st_line.amount_currency_str"/>)</t></td></tr>
-        <tr><td>Account</td><td><t t-esc="state.st_line.account_code"/> <t t-esc="state.st_line.account_name"/></td></tr>
-        <tr t-if="state.st_line.note"><td>Note</td><td style="white-space: pre;"><t t-esc="state.st_line.note"/></td></tr>
-    </table>
-</t>
-
-
-<t t-name="reconciliation.notification.reconciled">
-    <t t-if="details !== undefined">
-        <a rel="do_action" href="#" aria-label="External link" title="External link"
-            t-att-data-action_name="details.name"
-            t-att-data-model="details.model"
-            t-att-data-ids="details.ids">
-            <t t-esc="nb_reconciled_lines"/>
-            statement lines
-        </a>
-        have been reconciled automatically.
-    </t>
-</t>
-
-
 <t t-name="reconciliation.notification.default">
     <t t-esc="message"/>
     <t t-if="details !== undefined">
@@ -388,7 +305,6 @@
         </a>
     </t>
 </t>
-
 
 <t t-name="reconciliation.notification">
     <div t-att-class="'notification alert-dismissible alert alert-' + type" role="alert">

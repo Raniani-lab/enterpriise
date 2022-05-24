@@ -8,95 +8,15 @@ var session = require('web.session');
 var core = require('web.core');
 var _t = core._t;
 
-
 /**
- * Model use to fetch, format and update 'account.reconciliation.widget',
- * datas allowing reconciliation
- *
- * The statement internal structure::
- *
- *  {
- *      valuenow: integer
- *      valuenow: valuemax
- *      [bank_statement_id]: {
- *          id: integer
- *          display_name: string
- *      }
- *      reconcileModels: [object]
- *      accounts: {id: code}
- *  }
- *
- * The internal structure of each line is::
- *
- *   {
- *      balance: {
- *          type: number - show/hide action button
- *          amount: number - real amount
- *          amount_str: string - formated amount
- *          account_code: string
- *      },
- *      st_line: {
- *          partner_id: integer
- *          partner_name: string
- *      }
- *      mode: string ('inactive', 'match_rp', 'match_other', 'create')
- *      reconciliation_proposition: {
- *          id: number|string
- *          partial_amount: number
- *          invalid: boolean - through the invalid line (without account, name...)
- *          account_code: string
- *          date: string
- *          date_maturity: string
- *          name: string
- *          amount: number - real amount
- *          amount_str: string - formated amount
- *          [is_liquidity_line]: boolean
- *          [partner_id]: integer
- *          [partner_name]: string
- *          [account_code]: string
- *          [journal_id]: {
- *              id: integer
- *              display_name: string
- *          }
- *          [ref]: string
- *          [is_partially_reconciled]: boolean
- *          [to_check]: boolean
- *          [amount_currency_str]: string|false (amount in record currency)
- *      }
- *      mv_lines_match_rp: object - idem than reconciliation_proposition
- *      mv_lines_match_other: object - idem than reconciliation_proposition
- *      limitMoveLines: integer
- *      filter: string
- *      [createForm]: {
- *          account_id: {
- *              id: integer
- *              display_name: string
- *          }
- *          tax_ids: {
- *              id: integer
- *              display_name: string
- *          }
- *          analytic_account_id: {
- *              id: integer
- *              display_name: string
- *          }
- *          analytic_tag_ids: {
- *          }
- *          name: string
- *          amount: number,
- *          [journal_id]: {
- *              id: integer
- *              display_name: string
- *          }
- *      }
- *   }
+ * Model use to fetch, format and update 'account.move.line' and 'res.partner'
+ * datas allowing manual reconciliation
  */
-var StatementModel = BasicModel.extend({
+var ManualModel = BasicModel.extend({
     avoidCreate: false,
-    quickCreateFields: ['account_id', 'amount', 'analytic_account_id', 'name', 'tax_ids', 'force_tax_included', 'analytic_tag_ids', 'to_check'],
+    quickCreateFields: ['account_id', 'journal_id', 'amount', 'analytic_account_id', 'name', 'tax_ids', 'force_tax_included', 'analytic_tag_ids', 'date', 'to_check'],
 
-    // overridden in ManualModel
-    modes: ['create', 'match_rp', 'match_other'],
+    modes: ['create', 'match'],
 
     /**
      * @override
@@ -272,18 +192,6 @@ var StatementModel = BasicModel.extend({
 
     },
     /**
-     * close the statement
-     * @returns {Promise<number>} resolves to the res_id of the closed statements
-     */
-    closeStatement: function () {
-        var self = this;
-        return this._rpc({
-                model: 'account.bank.statement',
-                method: 'button_validate',
-                args: [self.bank_statement_id.id],
-            });
-    },
-    /**
      *
      * then open the first available line
      *
@@ -329,122 +237,6 @@ var StatementModel = BasicModel.extend({
     getLine: function (handle) {
         return this.lines[handle];
     },
-    /**
-     * load data from
-     *
-     * - 'account.bank.statement' fetch the line id and bank_statement_id info
-     * - 'account.reconcile.model'  fetch all reconcile model (for quick add)
-     * - 'account.account' fetch all account code
-     * - 'account.reconciliation.widget' fetch each line data
-     *
-     * overridden in ManualModel
-     * @param {Object} context
-     * @param {number[]} context.statement_line_ids
-     * @returns {Promise}
-     */
-    __load: function (context) {
-        var self = this;
-        this.context = context;
-        this.statement_line_ids = context.statement_line_ids;
-        if (this.statement_line_ids === undefined) {
-            // This could be undefined if the user pressed F5, take everything as fallback instead of rainbowman
-            return self._rpc({
-                model: 'account.bank.statement.line',
-                method: 'search_read',
-                fields: ['id'],
-                domain: [['journal_id', '=?', context.active_id]],
-            }).then(function (result) {
-                self.statement_line_ids = result.map(r => r.id);
-                return self.reload()
-            })
-        } else {
-            return self.reload();
-        }
-
-    },
-    /**
-     * RPC method to load informations on lines
-     * overridden in ManualModel
-     *
-     * @param {Array} ids ids of bank statement line passed to rpc call
-     * @param {Array} excluded_ids list of move_line ids that needs to be excluded from search
-     * @returns {Promise}
-     */
-    loadData: function(ids) {
-        var self = this;
-        var excluded_ids = this._getExcludedIds();
-        return self._rpc({
-            model: 'account.reconciliation.widget',
-            method: 'get_bank_statement_line_data',
-            args: [ids, excluded_ids],
-            context: self.context,
-        })
-        .then(function(res){
-            return self._formatLine(res['lines']);
-        })
-    },
-    /**
-     * Reload all data
-     */
-    __reload: function() {
-        var self = this;
-        self.alreadyDisplayed = [];
-        self.lines = {};
-        var def_statement = this._rpc({
-                model: 'account.reconciliation.widget',
-                method: 'get_bank_statement_data',
-                kwargs: {"bank_statement_line_ids":self.statement_line_ids, "srch_domain":self.domain},
-                context: self.context,
-            })
-            .then(function (statement) {
-                self.statement = statement;
-                self.bank_statement_id = statement.statement_id ? {id: statement.statement_id, display_name: statement.statement_name} : false;
-                self.valuenow = self.valuenow || statement.value_min;
-                self.valuemax = self.valuemax || statement.value_max;
-                self.context.journal_id = statement.journal_id;
-                _.each(statement.lines, function (res) {
-                    var handle = _.uniqueId('rline');
-                    self.lines[handle] = {
-                        id: res.st_line.id,
-                        partner_id: res.st_line.partner_id,
-                        handle: handle,
-                        reconciled: false,
-                        mode: 'inactive',
-                        mv_lines_match_rp: [],
-                        mv_lines_match_other: [],
-                        filter_match_rp: "",
-                        filter_match_other: "",
-                        reconciliation_proposition: [],
-                        reconcileModels: [],
-                    };
-                });
-            });
-        var domainReconcile = [];
-        if (self.context && self.context.company_ids) {
-            domainReconcile.push(['company_id', 'in', self.context.company_ids]);
-        }
-        if (self.context && self.context.active_model === 'account.journal' && self.context.active_ids) {
-            domainReconcile.push('|');
-            domainReconcile.push(['match_journal_ids', '=', false]);
-            domainReconcile.push(['match_journal_ids', 'in', self.context.active_ids]);
-        }
-        var def_reconcileModel = this._loadReconciliationModel({domainReconcile: domainReconcile});
-        var def_account = this._rpc({
-                model: 'account.account',
-                method: 'search_read',
-                fields: ['code'],
-            })
-            .then(function (accounts) {
-                self.accounts = _.object(_.pluck(accounts, 'id'), _.pluck(accounts, 'code'));
-            });
-        var def_taxes = self._loadTaxes();
-        return Promise.all([def_statement, def_reconcileModel, def_account, def_taxes]).then(function () {
-            _.each(self.lines, function (line) {
-                line.reconcileModels = self.reconcileModels;
-            });
-            return self._formatLine(self.statement.lines);
-        });
-    },
     _readAnalyticTags: function (params) {
         var self = this;
         this.analyticTags = {};
@@ -466,12 +258,12 @@ var StatementModel = BasicModel.extend({
                 }
             });
     },
-    _loadReconciliationModel: function (params) {
+    _loadReconciliationModel: function (company_ids) {
         var self = this;
         return this._rpc({
-                model: 'account.reconcile.model',
-                method: 'search_read',
-                domain: params.domainReconcile || [],
+                model: 'account.reconciliation.widget',
+                method: 'get_reconcile_modelds_for_manual_reconciliation',
+                args: [company_ids],
             })
             .then(function (reconcileModels) {
                var analyticTagIds = [];
@@ -533,7 +325,7 @@ var StatementModel = BasicModel.extend({
         return this._rpc({
             model: 'account.reconciliation.widget',
             method: 'get_reconciliation_dict_from_model',
-            args: [reconcile_model_id, line.st_line.id, -line.balance.amount, line.st_line.partner_id],
+            args: [reconcile_model_id, -line.balance.amount, line.st_line.partner_id],
         }).then(function(result) {
             return self.prepare_propositions_from_server(line, result);
         })
@@ -758,698 +550,6 @@ var StatementModel = BasicModel.extend({
         }
         return this._computeLine(line);
     },
-    /**
-     * Format the value and send it to 'account.reconciliation.widget' model
-     * Update the number of validated lines
-     * overridden in ManualModel
-     *
-     * @param {(string|string[])} handle
-     * @returns {Promise<Object>} resolved with an object who contains
-     *   'handles' key
-     */
-    validate: function (handle) {
-        var self = this;
-        this.display_context = 'validate';
-        var handles = [];
-        if (handle) {
-            handles = [handle];
-        } else {
-            _.each(this.lines, function (line, handle) {
-                if (!line.reconciled && line.balance && !line.balance.amount && line.reconciliation_proposition.length) {
-                    handles.push(handle);
-                }
-            });
-        }
-        var ids = [];
-        var values = [];
-        var handlesPromises = [];
-        _.each(handles, function (handle) {
-            var line = self.getLine(handle);
-            var props = _.filter(line.reconciliation_proposition, function (prop) {return prop && !prop.invalid;});
-            var computeLinePromise;
-            if (props.length === 0) {
-                // Usability: if user has not chosen any lines and click validate, it has the same behavior
-                // as creating a write-off of the same amount.
-                props.push(self._formatQuickCreate(line, {
-                    account_id: [line.st_line.open_balance_account_id, self.accounts[line.st_line.open_balance_account_id]],
-                }));
-                // update balance of line otherwise it won't be to zero and another line will be added
-                line.reconciliation_proposition.push(props[0]);
-                computeLinePromise = self._computeLine(line);
-            }
-            ids.push(line.id);
-            handlesPromises.push(Promise.resolve(computeLinePromise).then(function() {
-                var move_line_values = _.map(_.filter(props, function (prop) {
-                    return !isNaN(prop.id) && !prop.is_liquidity_line;
-                }), self._formatToProcessReconciliation.bind(self, line));
-                move_line_values.push(..._.map(_.filter(props, function (prop) {
-                    return !isNaN(prop.id) && prop.is_liquidity_line;
-                }), self._formatToProcessReconciliation.bind(self, line)))
-                move_line_values.push(..._.map(_.filter(props, function (prop) {
-                    return isNaN(prop.id) && prop.display;
-                }), self._formatToProcessReconciliation.bind(self, line)))
-                values.push({
-                    partner_id: line.st_line.partner_id,
-                    lines_vals_list: move_line_values,
-                    to_check: line.to_check,
-                });
-                line.reconciled = true;
-                self.valuenow++;
-            }));
-
-            _.each(self.lines, function(other_line) {
-                if (other_line != line) {
-                    var filtered_prop = other_line.reconciliation_proposition.filter(p => !line.reconciliation_proposition.map(l => l.id).includes(p.id));
-                    if (filtered_prop.length != other_line.reconciliation_proposition.length) {
-                        other_line.need_update = true;
-                        other_line.reconciliation_proposition = filtered_prop;
-                    }
-                    self._computeLine(line);
-                }
-            })
-        });
-
-        return Promise.all(handlesPromises).then(function() {
-            return self._rpc({
-                    model: 'account.reconciliation.widget',
-                    method: 'process_bank_statement_line',
-                    args: [ids, values],
-                    context: self.context,
-                })
-                .then(self._validatePostProcess.bind(self))
-                .then(function () {
-                    return {handles: handles};
-                });
-        });
-    },
-
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-
-    /**
-     * add a line proposition after checking receivable and payable accounts constraint
-     *
-     * @private
-     * @param {Object} line
-     * @param {Object} prop
-     */
-    _addProposition: function (line, prop) {
-        _.each(this.modes.filter(x => x.startsWith('match')), mode => {
-            line['mv_lines_' + mode] = line['mv_lines_' + mode].filter(p => p.id != prop.id)
-        })
-        line.reconciliation_proposition.push(prop);
-    },
-    /**
-     * stop the editable proposition line and remove it if it's invalid then
-     * compute the line
-     *
-     * See :func:`_computeLine`
-     *
-     * @private
-     * @param {string} handle
-     * @returns {Promise}
-     */
-    _blurProposition: function (handle) {
-        var line = this.getLine(handle);
-        line.reconciliation_proposition = _.filter(line.reconciliation_proposition, function (l) {
-            l.__focus = false;
-            return !l.invalid;
-        });
-    },
-    /**
-     * When changing partner, read property_account_receivable and payable
-     * of that partner because the counterpart account might cahnge depending
-     * on the partner
-     *
-     * @private
-     * @param {string} handle
-     * @param {integer} partner_id
-     * @returns {Promise}
-     */
-    _changePartner: function (handle, partner_id) {
-        var self = this;
-        return this._rpc({
-                model: 'res.partner',
-                method: 'read',
-                args: [partner_id, ["property_account_receivable_id", "property_account_payable_id"]],
-            }).then(function (result) {
-                if (result.length > 0) {
-                    var line = self.getLine(handle);
-                    self.lines[handle].st_line.open_balance_account_id = line.balance.amount < 0 ? result[0]['property_account_payable_id'][0] : result[0]['property_account_receivable_id'][0];
-                }
-            });
-    },
-    /**
-     * Calculates the balance; format each proposition amount_str and mark as
-     * invalid the line with empty account_id, amount or name
-     * Check the taxes server side for each updated propositions with tax_ids
-     * extended by ManualModel
-     *
-     * @private
-     * @param {Object} line
-     * @returns {Promise}
-     */
-    _computeLine: function (line) {
-        //balance_type
-        var self = this;
-
-        // compute taxes
-        var tax_defs = [];
-        var reconciliation_proposition = [];
-        var formatOptions = {
-            currency_id: line.st_line.currency_id,
-        };
-        line.to_check = false;
-        _.each(line.reconciliation_proposition, function (prop) {
-            if (prop.to_check) {
-                // If one of the proposition is to_check, set the global to_check flag to true
-                line.to_check = true;
-            }
-            if (prop.tax_repartition_line_id) {
-                if (!_.find(line.reconciliation_proposition, {'id': prop.link}).__tax_to_recompute) {
-                    reconciliation_proposition.push(prop);
-                }
-                prop.amount_str = field_utils.format.monetary(Math.abs(prop.amount), {}, formatOptions);
-                return;
-            }
-            if (!prop.is_liquidity_line && parseInt(prop.id)) {
-                prop.is_move_line = true;
-            }
-            reconciliation_proposition.push(prop);
-
-            if (prop.tax_ids && prop.tax_ids.length && prop.__tax_to_recompute && prop.base_amount) {
-                var args = [prop.tax_ids.map(function(el){return el.id;}), prop.base_amount, formatOptions.currency_id];
-                var add_context = {'round': true};
-                if(prop.tax_ids.length === 1 && line.createForm.force_tax_included)
-                    add_context.force_price_include = true;
-                tax_defs.push(self._rpc({
-                        model: 'account.tax',
-                        method: 'json_friendly_compute_all',
-                        args: args,
-                        context: $.extend({}, self.context || {}, add_context),
-                    })
-                    .then(function (result) {
-                        _.each(result.taxes, function(tax){
-                            var tax_prop = self._formatQuickCreate(line, {
-                                'link': prop.id,
-                                'tax_ids': tax.tax_ids,
-                                'tax_repartition_line_id': tax.tax_repartition_line_id,
-                                'tax_tag_ids': tax.tag_ids,
-                                'tax_base_amount': tax.base,
-                                'amount': tax.amount,
-                                'name': prop.name ? prop.name + " " + tax.name : tax.name,
-                                'date': prop.date,
-                                'account_id': tax.account_id ? [tax.account_id, null] : prop.account_id,
-                                'analytic': tax.analytic,
-                                '__focus': false
-                            });
-
-                            prop.amount = tax.base;
-                            prop.amount_str = field_utils.format.monetary(Math.abs(prop.amount), {}, formatOptions);
-                            prop.invalid = !self._isValid(prop);
-
-                            tax_prop.amount_str = field_utils.format.monetary(Math.abs(tax_prop.amount), {}, formatOptions);
-                            tax_prop.invalid = prop.invalid;
-
-                            reconciliation_proposition.push(tax_prop);
-                        });
-
-                        prop.tax_tag_ids = self._formatMany2ManyTagsTax(result.base_tags || []);
-                    }));
-            } else {
-                prop.amount_str = field_utils.format.monetary(Math.abs(prop.amount), {}, formatOptions);
-                prop.display = self._isDisplayedProposition(prop);
-                prop.invalid = !self._isValid(prop);
-            }
-        });
-
-        return Promise.all(tax_defs).then(function () {
-            _.each(reconciliation_proposition, function (prop) {
-                prop.__tax_to_recompute = false;
-            });
-            line.reconciliation_proposition = reconciliation_proposition;
-
-            var amount_currency = 0;
-            var total = line.st_line.amount || 0;
-            var isOtherCurrencyId = _.uniq(_.pluck(_.reject(reconciliation_proposition, 'invalid'), 'currency_id'));
-            isOtherCurrencyId = isOtherCurrencyId.length === 1 && !total && isOtherCurrencyId[0] !== formatOptions.currency_id ? isOtherCurrencyId[0] : false;
-
-            _.each(reconciliation_proposition, function (prop) {
-                if (!prop.invalid) {
-                    total -= prop.partial_amount || prop.amount;
-                    if (isOtherCurrencyId) {
-                        amount_currency -= (prop.amount < 0 ? -1 : 1) * Math.abs(prop.amount_currency);
-                    }
-                }
-            });
-            var company_currency = session.get_currency(line.st_line.currency_id);
-            var company_precision = company_currency && company_currency.digits[1] || 2;
-            total = utils.round_decimals(total, company_precision) || 0;
-            if(isOtherCurrencyId){
-                var other_currency = session.get_currency(isOtherCurrencyId);
-                var other_precision = other_currency && other_currency.digits[1] || 2;
-                amount_currency = utils.round_decimals(amount_currency, other_precision);
-            }
-            line.balance = {
-                amount: total,
-                amount_str: field_utils.format.monetary(Math.abs(total), {}, formatOptions),
-                currency_id: isOtherCurrencyId,
-                amount_currency: isOtherCurrencyId ? amount_currency : total,
-                amount_currency_str: isOtherCurrencyId ? field_utils.format.monetary(Math.abs(amount_currency), {}, {
-                    currency_id: isOtherCurrencyId
-                }) : false,
-                account_code: self.accounts[line.st_line.open_balance_account_id],
-            };
-            line.balance.show_balance = line.balance.amount_currency != 0;
-            line.balance.type = line.balance.amount_currency ? (line.st_line.partner_id ? 0 : -1) : 1;
-        });
-    },
-    /**
-     * format a name_get into an object {id, display_name}, idempotent
-     *
-     * @private
-     * @param {Object|Array} [value] data or name_get
-     */
-    _formatNameGet: function (value) {
-        return value ? (value.id ? value : {'id': value[0], 'display_name': value[1]}) : false;
-    },
-    _formatMany2ManyTags: function (value) {
-        var res = [];
-        for (var i=0, len=value.length; i<len; i++) {
-            res[i] = {'id': value[i][0], 'display_name': value[i][1]};
-        }
-        return res;
-    },
-    _formatMany2ManyTagsTax: function(value) {
-        var res = [];
-        for (var i=0; i<value.length; i++) {
-            res.push({id: value[i], display_name: this.taxes[value[i]] ? this.taxes[value[i]].display_name : ''});
-        }
-        return res;
-    },
-    /**
-     * Format each propositions (amount, name, account_id)
-     * extended in ManualModel
-     *
-     * @private
-     * @param {Object} line
-     * @param {Object[]} props
-     */
-    _formatLineProposition: function (line, props) {
-        var self = this;
-        if (props.length) {
-            _.each(props, function (prop) {
-                prop.amount = prop.debit || -prop.credit;
-                prop.account_id = self._formatNameGet(prop.account_id || line.account_id);
-                prop.is_partially_reconciled = prop.amount_str !== prop.total_amount_str;
-                prop.to_check = !!prop.to_check;
-            });
-        }
-    },
-    /**
-     * Format each server lines and propositions and compute all lines
-     * overridden in ManualModel
-     *
-     * @see '_computeLine'
-     *
-     * @private
-     * @param {Object[]} lines
-     * @returns {Promise}
-     */
-    _formatLine: function (lines) {
-        var self = this;
-        var defs = [];
-        _.each(lines, function (data) {
-            var line = _.find(self.lines, function (l) {
-                return l.id === data.st_line.id;
-            });
-            line.visible = true;
-            line.limitMoveLines = self.limitMoveLines;
-            _.extend(line, data);
-
-            // Now that extend() has filled in the reconciliation propositions, we need to handle their reconciliation
-            self._refresh_partial_rec_preview(line);
-
-            self._formatLineProposition(line, line.reconciliation_proposition);
-            if (!line.reconciliation_proposition.length) {
-                delete line.reconciliation_proposition;
-            }
-
-            // No partner set on st_line and all matching amls have the same one: set it on the st_line.
-            defs.push(
-                self._computeLine(line)
-                .then(function(){
-                    if(!line.st_line.partner_id && line.reconciliation_proposition.length > 0){
-                        var hasDifferentPartners = function(prop){
-                            return !prop.partner_id || prop.partner_id != line.reconciliation_proposition[0].partner_id;
-                        };
-
-                        if(!_.any(line.reconciliation_proposition, hasDifferentPartners)){
-                            return self.changePartner(line.handle, {
-                                'id': line.reconciliation_proposition[0].partner_id,
-                                'display_name': line.reconciliation_proposition[0].partner_name,
-                            }, true);
-                        }
-                    }else if(!line.st_line.partner_id && line.partner_id && line.partner_name){
-                        return self.changePartner(line.handle, {
-                            'id': line.partner_id,
-                            'display_name': line.partner_name,
-                        }, true);
-                    }
-                    return true;
-                })
-                .then(function(){
-                    if (data.write_off_vals) {
-                        return self.prepare_propositions_from_server(line, data.write_off_vals)
-                    }
-                    return true;
-                })
-                .then(function() {
-                    // If still no partner set, take the one from context, if it exists
-                    if (!line.st_line.partner_id && self.context.partner_id && self.context.partner_name) {
-                        return self.changePartner(line.handle, {
-                            'id': self.context.partner_id,
-                            'display_name': self.context.partner_name,
-                        }, true);
-                    }
-                    return true;
-                })
-            );
-        });
-        return Promise.all(defs);
-    },
-    /**
-    * Refresh partial reconciliation data for the reconciliation propositions of
-    * the provided reconciliation widget line.
-    **/
-    _refresh_partial_rec_preview: function (line) {
-        var st_line_balance_left = line.st_line.amount;
-        _.each(line.reconciliation_proposition, proposition => {
-            var prop_amount = st_line_balance_left < 0 ? proposition.credit : proposition.debit;
-
-            // Invoice matching reconciliation models may have defined some write off rules as well
-            var write_off_balances = (line.write_off_vals || []).map(function(elem) { return elem['balance']; })
-            var write_off_amount = write_off_balances.reduce(function(prev, cur){ return prev + cur; }, 0);
-
-            var prop_impact = Math.min(Math.abs(st_line_balance_left + write_off_amount), prop_amount);
-            var signed_impact = prop_impact * (proposition.credit > 0 ? -1 : 1);
-
-            st_line_balance_left -= signed_impact;
-
-            if (prop_impact > 0 && this._amountCompare(prop_impact, prop_amount, line.st_line.currency_id) !== 0) {
-                // Then it'll be a partial reconciliation
-                proposition.partial_amount = signed_impact;
-                proposition.partial_amount_str = field_utils.format.monetary(Math.abs(proposition.partial_amount), {}, {currency_id: line.st_line.currency_id});
-            }
-            else {
-                delete proposition.partial_amount;
-                delete proposition.partial_amount_str;
-            }
-        });
-
-    },
-    /**
-     * Format the server value then compute the line
-     * overridden in ManualModel
-     *
-     * @see '_computeLine'
-     *
-     * @private
-     * @param {string} handle
-     * @param {Object[]} mv_lines
-     * @returns {Promise}
-     */
-    _formatMoveLine: function (handle, mode, mv_lines) {
-        var self = this;
-        var line = this.getLine(handle);
-        line['mv_lines_'+mode] = _.uniq([].concat(line['mv_lines_'+mode] || [], mv_lines), l => l.id);
-        if (mv_lines[0]){
-            line['remaining_'+mode] = mv_lines[0].recs_count - mv_lines.length;
-        } else if (line['mv_lines_'+mode].length == 0) {
-            line['remaining_'+mode] = 0;
-        }
-
-        this._formatLineProposition(line, mv_lines);
-
-        if (!line.balance.amount || ((line.mode == 'match_other' || line.mode == "match_rp") && line['mv_lines_'+mode] && line['mv_lines_'+mode].length == 0 && line['filter_'+mode].length == 0)) {
-            line.mode = self._getDefaultMode(handle);
-            if (line.mode !== 'match_rp' && line.mode !== 'match_other' && line.mode !== 'inactive') {
-                return this._computeLine(line).then(function () {
-                    return self.createProposition(handle);
-                });
-            }
-        }
-        return this._computeLine(line);
-    },
-    /**
-     * Compare two amounts.
-     *
-     * Some amounts may be represented differently and are therefore compared
-     * to an epsilon deviation (depending on currency). The values to be
-     * compared have already been rounded according to the currency.
-     * (eg: 956.06 digit is rounded and represented as 956.0600000000001 float
-     * with the python method `odoo.tools.float_round`)
-     *
-     * @param float value1: first value to compare
-     * @param float value2: second value to compare
-     * @param int currency_id: currency ID used for the comparison
-     *    (associated digit used to compute the epsilon)
-     * @return -1, 0 or 1: if ``value1`` is (resp.) lower than,
-     *    equal to, or greater than ``value2``, at the given currency.
-     */
-    _amountCompare: function (value1, value2, currency_id) {
-        const currency = session.get_currency(currency_id);
-        const epsilon = Math.pow(10, -currency.digits[1]);
-        const delta = value1 - value2;
-        if (Math.abs(delta) < epsilon) {
-            return 0;
-        }
-        return delta < 0 ? -1 : 1;
-    },
-    /**
-     * overridden in ManualModel
-     */
-    _getDefaultMode: function(handle) {
-        var line = this.getLine(handle);
-        if (line.balance.amount === 0
-            && (!line.st_line.mv_lines_match_rp || line.st_line.mv_lines_match_rp.length === 0)
-            && (!line.st_line.mv_lines_match_other || line.st_line.mv_lines_match_other.length === 0)) {
-            return 'inactive';
-        }
-        if (line['mv_lines_'+line.mode] && (line['mv_lines_'+line.mode].length || line['filter_'+line.mode].length)) {
-            return line.mode;
-        }
-        if (line.mv_lines_match_rp && line.mv_lines_match_rp.length) {
-            return 'match_rp';
-        }
-        if (line.mv_lines_match_other && line.mv_lines_match_other.length) {
-            return 'match_other';
-        }
-        return 'create';
-    },
-    _getAvailableModes: function(handle) {
-        var line = this.getLine(handle);
-        var modes = []
-        if (line.mv_lines_match_rp && line.mv_lines_match_rp.length) {
-            modes.push('match_rp')
-        }
-        if (line.mv_lines_match_other && line.mv_lines_match_other.length) {
-            modes.push('match_other')
-        }
-        modes.push('create')
-        return modes
-    },
-    /**
-     * Apply default values for the proposition, format datas and format the
-     * base_amount with the decimal number from the currency
-     * extended in ManualModel
-     *
-     * @private
-     * @param {Object} line
-     * @param {Object} values
-     * @returns {Object}
-     */
-    _formatQuickCreate: function (line, values) {
-        values = values || {};
-        var today = new moment().utc().format();
-        var account = this._formatNameGet(values.account_id);
-        var formatOptions = {
-            currency_id: line.st_line.currency_id,
-        };
-        var amount = values.amount !== undefined ? values.amount : line.balance.amount;
-
-        var prop = {
-            'id': _.uniqueId('createLine'),
-            'name': values.name || line.st_line.name,
-            'account_id': account,
-            'account_code': account ? this.accounts[account.id] : '',
-            'analytic_account_id': this._formatNameGet(values.analytic_account_id),
-            'analytic_tag_ids': this._formatMany2ManyTags(values.analytic_tag_ids || []),
-            'journal_id': this._formatNameGet(values.journal_id),
-            'tax_ids': this._formatMany2ManyTagsTax(values.tax_ids || []),
-            'tax_tag_ids': this._formatMany2ManyTagsTax(values.tax_tag_ids || []),
-            'tax_repartition_line_id': values.tax_repartition_line_id,
-            'tax_base_amount': values.tax_base_amount,
-            'debit': 0,
-            'credit': 0,
-            'date': values.date ? values.date : field_utils.parse.date(today, {}, {isUTC: true}),
-            'force_tax_included': values.force_tax_included || false,
-            'base_amount': amount,
-            'link': values.link,
-            'display': true,
-            'invalid': true,
-            'to_check': !!values.to_check,
-            '__tax_to_recompute': true,
-            '__focus': '__focus' in values ? values.__focus : true,
-        };
-        if (prop.base_amount) {
-            // Call to format and parse needed to round the value to the currency precision
-            var sign = prop.base_amount < 0 ? -1 : 1;
-            var amount = _.unescape(field_utils.format.monetary(Math.abs(prop.base_amount), {}, formatOptions));
-            prop.base_amount = sign * field_utils.parse.monetary(amount, {}, formatOptions);
-        }
-
-        prop.amount = prop.base_amount;
-        return prop;
-    },
-    /**
-     * Return list of account_move_line that has been selected and needs to be removed
-     * from other calls.
-     *
-     * @private
-     * @returns {Array} list of excluded ids
-     */
-    _getExcludedIds: function () {
-        var excludedIds = [];
-        _.each(this.lines, function(line) {
-            if (line.reconciliation_proposition) {
-                _.each(line.reconciliation_proposition, function(prop) {
-                    if (parseInt(prop['id'])) {
-                        excludedIds.push(prop['id']);
-                    }
-                });
-            }
-        });
-        return excludedIds;
-    },
-    /**
-     * Defined whether the line is to be displayed or not. Here, we only display
-     * the line if it comes from the server or if an account is defined when it
-     * is created
-     * extended in ManualModel
-     *
-     * @private
-     * @param {object} prop
-     * @returns {Boolean}
-     */
-    _isDisplayedProposition: function (prop) {
-        return !isNaN(prop.id) || !!prop.account_id;
-    },
-    /**
-     * extended in ManualModel
-     * @private
-     * @param {object} prop
-     * @returns {Boolean}
-     */
-    _isValid: function (prop) {
-        return !isNaN(prop.id) || prop.account_id && prop.amount && prop.name && !!prop.name.length;
-    },
-    /**
-     * Fetch 'account.reconciliation.widget' propositions.
-     * overridden in ManualModel
-     *
-     * @see '_formatMoveLine'
-     *
-     * @private
-     * @param {string} handle
-     * @returns {Promise}
-     */
-    _performMoveLine: function (handle, mode, limit) {
-        limit = limit || this.limitMoveLines;
-        var line = this.getLine(handle);
-        var excluded_ids = _.map(_.union(line.reconciliation_proposition, line.mv_lines_match_rp, line.mv_lines_match_other), function (prop) {
-            return _.isNumber(prop.id) ? prop.id : null;
-        }).filter(id => id != null);
-        var filter = line['filter_'+mode] || "";
-        return this._rpc({
-                model: 'account.reconciliation.widget',
-                method: 'get_move_lines_for_bank_statement_line',
-                kwargs: {
-                    st_line_id: line.id,
-                    partner_id: line.st_line.partner_id,
-                    excluded_ids: excluded_ids,
-                    search_str: filter,
-                    limit: limit,
-                    mode: mode === 'match_rp' ? 'rp' : 'other',
-                },
-                context: this.context,
-            })
-            .then(this._formatMoveLine.bind(this, handle, mode));
-    },
-    /**
-     * format the proposition to send information server side
-     * extended in ManualModel
-     *
-     * @private
-     * @param {object} line
-     * @param {object} prop
-     * @returns {object}
-     */
-    _formatToProcessReconciliation: function (line, prop) {
-        var amount = -prop.amount;
-        if (prop.partial_amount) {
-            amount = -prop.partial_amount;
-        }
-
-        var result = {
-            name : prop.name,
-            balance : amount,
-            analytic_tag_ids: [[6, null, _.pluck(prop.analytic_tag_ids, 'id')]]
-        };
-        if (!isNaN(prop.id)) {
-            result.id = prop.id;
-        } else {
-            result.account_id = prop.account_id.id;
-            if (prop.journal_id) {
-                result.journal_id = prop.journal_id.id;
-            }
-        }
-        if (prop.analytic_account_id) result.analytic_account_id = prop.analytic_account_id.id;
-        if (prop.tax_ids && prop.tax_ids.length) result.tax_ids = [[6, null, _.pluck(prop.tax_ids, 'id')]];
-        if (prop.tax_tag_ids && prop.tax_tag_ids.length) result.tax_tag_ids = [[6, null, _.pluck(prop.tax_tag_ids, 'id')]];
-        if (prop.tax_repartition_line_id) result.tax_repartition_line_id = prop.tax_repartition_line_id;
-        if (prop.tax_base_amount) result.tax_base_amount = prop.tax_base_amount;
-        if (prop.reconcile_model_id) result.reconcile_model_id = prop.reconcile_model_id
-        if (prop.currency_id) result.currency_id = prop.currency_id;
-        return result;
-    },
-    /**
-     * Hook to handle return values of the validate's line process.
-     *
-     * @private
-     * @param {Object} data
-     * @param {Object[]} data.moves list of processed account.move
-     * @returns {Deferred}
-     */
-    _validatePostProcess: function (data) {
-        return Promise.resolve();
-    },
-});
-
-
-/**
- * Model use to fetch, format and update 'account.move.line' and 'res.partner'
- * datas allowing manual reconciliation
- */
-var ManualModel = StatementModel.extend({
-    quickCreateFields: ['account_id', 'journal_id', 'amount', 'analytic_account_id', 'name', 'tax_ids', 'force_tax_included', 'analytic_tag_ids', 'date', 'to_check'],
-
-    modes: ['create', 'match'],
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
 
     /**
      * load data from
@@ -1483,13 +583,9 @@ var ManualModel = StatementModel.extend({
                 self.accounts = _.object(self.account_ids, _.pluck(accounts, 'code'));
             });
 
-        var domainReconcile = [];
         var session_allowed_company_ids = session.user_context.allowed_company_ids || []
         var company_ids = context && context.company_ids || session_allowed_company_ids.slice(0, 1);
-        if (company_ids) {
-            domainReconcile.push(['company_id', 'in', company_ids]);
-        }
-        var def_reconcileModel = this._loadReconciliationModel({domainReconcile: domainReconcile});
+        var def_reconcileModel = this._loadReconciliationModel(company_ids);
         var def_taxes = this._loadTaxes();
 
         return Promise.all([def_reconcileModel, def_account, def_taxes]).then(function () {
@@ -1693,15 +789,182 @@ var ManualModel = StatementModel.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * override change the balance type to display or not the reconcile button
+     * add a line proposition after checking receivable and payable accounts constraint
      *
-     * @override
+     * @private
+     * @param {Object} line
+     * @param {Object} prop
+     */
+    _addProposition: function (line, prop) {
+        _.each(this.modes.filter(x => x.startsWith('match')), mode => {
+            line['mv_lines_' + mode] = line['mv_lines_' + mode].filter(p => p.id != prop.id)
+        })
+        line.reconciliation_proposition.push(prop);
+    },
+    /**
+     * stop the editable proposition line and remove it if it's invalid then
+     * compute the line
+     *
+     * See :func:`_computeLine`
+     *
+     * @private
+     * @param {string} handle
+     * @returns {Promise}
+     */
+    _blurProposition: function (handle) {
+        var line = this.getLine(handle);
+        line.reconciliation_proposition = _.filter(line.reconciliation_proposition, function (l) {
+            l.__focus = false;
+            return !l.invalid;
+        });
+    },
+    /**
+     * When changing partner, read property_account_receivable and payable
+     * of that partner because the counterpart account might cahnge depending
+     * on the partner
+     *
+     * @private
+     * @param {string} handle
+     * @param {integer} partner_id
+     * @returns {Promise}
+     */
+    _changePartner: function (handle, partner_id) {
+        var self = this;
+        return this._rpc({
+                model: 'res.partner',
+                method: 'read',
+                args: [partner_id, ["property_account_receivable_id", "property_account_payable_id"]],
+            }).then(function (result) {
+                if (result.length > 0) {
+                    var line = self.getLine(handle);
+                    self.lines[handle].st_line.open_balance_account_id = line.balance.amount < 0 ? result[0]['property_account_payable_id'][0] : result[0]['property_account_receivable_id'][0];
+                }
+            });
+    },
+    /**
+     * Calculates the balance; format each proposition amount_str and mark as
+     * invalid the line with empty account_id, amount or name
+     * Check the taxes server side for each updated propositions with tax_ids
+     * extended by ManualModel
+     *
      * @private
      * @param {Object} line
      * @returns {Promise}
      */
     _computeLine: function (line) {
-        return this._super(line).then(function () {
+        //balance_type
+        var self = this;
+
+        // compute taxes
+        var tax_defs = [];
+        var reconciliation_proposition = [];
+        var formatOptions = {
+            currency_id: line.st_line.currency_id,
+        };
+        line.to_check = false;
+        _.each(line.reconciliation_proposition, function (prop) {
+            if (prop.to_check) {
+                // If one of the proposition is to_check, set the global to_check flag to true
+                line.to_check = true;
+            }
+            if (prop.tax_repartition_line_id) {
+                if (!_.find(line.reconciliation_proposition, {'id': prop.link}).__tax_to_recompute) {
+                    reconciliation_proposition.push(prop);
+                }
+                prop.amount_str = field_utils.format.monetary(Math.abs(prop.amount), {}, formatOptions);
+                return;
+            }
+            if (!prop.is_liquidity_line && parseInt(prop.id)) {
+                prop.is_move_line = true;
+            }
+            reconciliation_proposition.push(prop);
+
+            if (prop.tax_ids && prop.tax_ids.length && prop.__tax_to_recompute && prop.base_amount) {
+                var args = [prop.tax_ids.map(function(el){return el.id;}), prop.base_amount, formatOptions.currency_id];
+                var add_context = {'round': true};
+                if(prop.tax_ids.length === 1 && line.createForm.force_tax_included)
+                    add_context.force_price_include = true;
+                tax_defs.push(self._rpc({
+                        model: 'account.tax',
+                        method: 'json_friendly_compute_all',
+                        args: args,
+                        context: $.extend({}, self.context || {}, add_context),
+                    })
+                    .then(function (result) {
+                        _.each(result.taxes, function(tax){
+                            var tax_prop = self._formatQuickCreate(line, {
+                                'link': prop.id,
+                                'tax_ids': tax.tax_ids,
+                                'tax_repartition_line_id': tax.tax_repartition_line_id,
+                                'tax_tag_ids': tax.tag_ids,
+                                'tax_base_amount': tax.base,
+                                'amount': tax.amount,
+                                'name': prop.name ? prop.name + " " + tax.name : tax.name,
+                                'date': prop.date,
+                                'account_id': tax.account_id ? [tax.account_id, null] : prop.account_id,
+                                'analytic': tax.analytic,
+                                '__focus': false
+                            });
+
+                            prop.amount = tax.base;
+                            prop.amount_str = field_utils.format.monetary(Math.abs(prop.amount), {}, formatOptions);
+                            prop.invalid = !self._isValid(prop);
+
+                            tax_prop.amount_str = field_utils.format.monetary(Math.abs(tax_prop.amount), {}, formatOptions);
+                            tax_prop.invalid = prop.invalid;
+
+                            reconciliation_proposition.push(tax_prop);
+                        });
+
+                        prop.tax_tag_ids = self._formatMany2ManyTagsTax(result.base_tags || []);
+                    }));
+            } else {
+                prop.amount_str = field_utils.format.monetary(Math.abs(prop.amount), {}, formatOptions);
+                prop.display = self._isDisplayedProposition(prop);
+                prop.invalid = !self._isValid(prop);
+            }
+        });
+
+        return Promise.all(tax_defs).then(function () {
+            _.each(reconciliation_proposition, function (prop) {
+                prop.__tax_to_recompute = false;
+            });
+            line.reconciliation_proposition = reconciliation_proposition;
+
+            var amount_currency = 0;
+            var total = line.st_line.amount || 0;
+            var isOtherCurrencyId = _.uniq(_.pluck(_.reject(reconciliation_proposition, 'invalid'), 'currency_id'));
+            isOtherCurrencyId = isOtherCurrencyId.length === 1 && !total && isOtherCurrencyId[0] !== formatOptions.currency_id ? isOtherCurrencyId[0] : false;
+
+            _.each(reconciliation_proposition, function (prop) {
+                if (!prop.invalid) {
+                    total -= prop.partial_amount || prop.amount;
+                    if (isOtherCurrencyId) {
+                        amount_currency -= (prop.amount < 0 ? -1 : 1) * Math.abs(prop.amount_currency);
+                    }
+                }
+            });
+            var company_currency = session.get_currency(line.st_line.currency_id);
+            var company_precision = company_currency && company_currency.digits[1] || 2;
+            total = utils.round_decimals(total, company_precision) || 0;
+            if(isOtherCurrencyId){
+                var other_currency = session.get_currency(isOtherCurrencyId);
+                var other_precision = other_currency && other_currency.digits[1] || 2;
+                amount_currency = utils.round_decimals(amount_currency, other_precision);
+            }
+            line.balance = {
+                amount: total,
+                amount_str: field_utils.format.monetary(Math.abs(total), {}, formatOptions),
+                currency_id: isOtherCurrencyId,
+                amount_currency: isOtherCurrencyId ? amount_currency : total,
+                amount_currency_str: isOtherCurrencyId ? field_utils.format.monetary(Math.abs(amount_currency), {}, {
+                    currency_id: isOtherCurrencyId
+                }) : false,
+                account_code: self.accounts[line.st_line.open_balance_account_id],
+            };
+            line.balance.show_balance = line.balance.amount_currency != 0;
+            line.balance.type = line.balance.amount_currency ? (line.st_line.partner_id ? 0 : -1) : 1;
+        }).then(function () {
             var props = _.reject(line.reconciliation_proposition, 'invalid');
             _.each(line.reconciliation_proposition, function(p) {
                 delete p.is_move_line;
@@ -1715,6 +978,291 @@ var ManualModel = StatementModel.extend({
             }
         });
     },
+    /**
+     * format a name_get into an object {id, display_name}, idempotent
+     *
+     * @private
+     * @param {Object|Array} [value] data or name_get
+     */
+    _formatNameGet: function (value) {
+        return value ? (value.id ? value : {'id': value[0], 'display_name': value[1]}) : false;
+    },
+    _formatMany2ManyTags: function (value) {
+        var res = [];
+        for (var i=0, len=value.length; i<len; i++) {
+            res[i] = {'id': value[i][0], 'display_name': value[i][1]};
+        }
+        return res;
+    },
+    _formatMany2ManyTagsTax: function(value) {
+        var res = [];
+        for (var i=0; i<value.length; i++) {
+            res.push({id: value[i], display_name: this.taxes[value[i]] ? this.taxes[value[i]].display_name : ''});
+        }
+        return res;
+    },
+    /**
+     * Format each server lines and propositions and compute all lines
+     * overridden in ManualModel
+     *
+     * @see '_computeLine'
+     *
+     * @private
+     * @param {Object[]} lines
+     * @returns {Promise}
+     */
+    _formatLine: function (lines) {
+        var self = this;
+        var defs = [];
+        _.each(lines, function (data) {
+            var line = _.find(self.lines, function (l) {
+                return l.id === data.st_line.id;
+            });
+            line.visible = true;
+            line.limitMoveLines = self.limitMoveLines;
+            _.extend(line, data);
+
+            // Now that extend() has filled in the reconciliation propositions, we need to handle their reconciliation
+            self._refresh_partial_rec_preview(line);
+
+            self._formatLineProposition(line, line.reconciliation_proposition);
+            if (!line.reconciliation_proposition.length) {
+                delete line.reconciliation_proposition;
+            }
+
+            // No partner set on st_line and all matching amls have the same one: set it on the st_line.
+            defs.push(
+                self._computeLine(line)
+                .then(function(){
+                    if(!line.st_line.partner_id && line.reconciliation_proposition.length > 0){
+                        var hasDifferentPartners = function(prop){
+                            return !prop.partner_id || prop.partner_id != line.reconciliation_proposition[0].partner_id;
+                        };
+
+                        if(!_.any(line.reconciliation_proposition, hasDifferentPartners)){
+                            return self.changePartner(line.handle, {
+                                'id': line.reconciliation_proposition[0].partner_id,
+                                'display_name': line.reconciliation_proposition[0].partner_name,
+                            }, true);
+                        }
+                    }else if(!line.st_line.partner_id && line.partner_id && line.partner_name){
+                        return self.changePartner(line.handle, {
+                            'id': line.partner_id,
+                            'display_name': line.partner_name,
+                        }, true);
+                    }
+                    return true;
+                })
+                .then(function(){
+                    if (data.write_off_vals) {
+                        return self.prepare_propositions_from_server(line, data.write_off_vals)
+                    }
+                    return true;
+                })
+                .then(function() {
+                    // If still no partner set, take the one from context, if it exists
+                    if (!line.st_line.partner_id && self.context.partner_id && self.context.partner_name) {
+                        return self.changePartner(line.handle, {
+                            'id': self.context.partner_id,
+                            'display_name': self.context.partner_name,
+                        }, true);
+                    }
+                    return true;
+                })
+            );
+        });
+        return Promise.all(defs);
+    },
+    /**
+    * Refresh partial reconciliation data for the reconciliation propositions of
+    * the provided reconciliation widget line.
+    **/
+    _refresh_partial_rec_preview: function (line) {
+        var st_line_balance_left = line.st_line.amount;
+        _.each(line.reconciliation_proposition, proposition => {
+            var prop_amount = st_line_balance_left < 0 ? proposition.credit : proposition.debit;
+
+            // Invoice matching reconciliation models may have defined some write off rules as well
+            var write_off_balances = (line.write_off_vals || []).map(function(elem) { return elem['balance']; })
+            var write_off_amount = write_off_balances.reduce(function(prev, cur){ return prev + cur; }, 0);
+
+            var prop_impact = Math.min(Math.abs(st_line_balance_left + write_off_amount), prop_amount);
+            var signed_impact = prop_impact * (proposition.credit > 0 ? -1 : 1);
+
+            st_line_balance_left -= signed_impact;
+
+            if (prop_impact > 0 && this._amountCompare(prop_impact, prop_amount, line.st_line.currency_id) !== 0) {
+                // Then it'll be a partial reconciliation
+                proposition.partial_amount = signed_impact;
+                proposition.partial_amount_str = field_utils.format.monetary(Math.abs(proposition.partial_amount), {}, {currency_id: line.st_line.currency_id});
+            }
+            else {
+                delete proposition.partial_amount;
+                delete proposition.partial_amount_str;
+            }
+        });
+
+    },
+    /**
+     * Format the server value then compute the line
+     * overridden in ManualModel
+     *
+     * @see '_computeLine'
+     *
+     * @private
+     * @param {string} handle
+     * @param {Object[]} mv_lines
+     * @returns {Promise}
+     */
+    _formatMoveLine: function (handle, mode, mv_lines) {
+        var self = this;
+        var line = this.getLine(handle);
+        line['mv_lines_'+mode] = _.uniq([].concat(line['mv_lines_'+mode] || [], mv_lines), l => l.id);
+        if (mv_lines[0]){
+            line['remaining_'+mode] = mv_lines[0].recs_count - mv_lines.length;
+        } else if (line['mv_lines_'+mode].length == 0) {
+            line['remaining_'+mode] = 0;
+        }
+
+        this._formatLineProposition(line, mv_lines);
+
+        if (!line.balance.amount || ((line.mode == 'match_other' || line.mode == "match_rp") && line['mv_lines_'+mode] && line['mv_lines_'+mode].length == 0 && line['filter_'+mode].length == 0)) {
+            line.mode = self._getDefaultMode(handle);
+            if (line.mode !== 'match_rp' && line.mode !== 'match_other' && line.mode !== 'inactive') {
+                return this._computeLine(line).then(function () {
+                    return self.createProposition(handle);
+                });
+            }
+        }
+        return this._computeLine(line);
+    },
+    /**
+     * Compare two amounts.
+     *
+     * Some amounts may be represented differently and are therefore compared
+     * to an epsilon deviation (depending on currency). The values to be
+     * compared have already been rounded according to the currency.
+     * (eg: 956.06 digit is rounded and represented as 956.0600000000001 float
+     * with the python method `odoo.tools.float_round`)
+     *
+     * @param float value1: first value to compare
+     * @param float value2: second value to compare
+     * @param int currency_id: currency ID used for the comparison
+     *    (associated digit used to compute the epsilon)
+     * @return -1, 0 or 1: if ``value1`` is (resp.) lower than,
+     *    equal to, or greater than ``value2``, at the given currency.
+     */
+    _amountCompare: function (value1, value2, currency_id) {
+        const currency = session.get_currency(currency_id);
+        const epsilon = Math.pow(10, -currency.digits[1]);
+        const delta = value1 - value2;
+        if (Math.abs(delta) < epsilon) {
+            return 0;
+        }
+        return delta < 0 ? -1 : 1;
+    },
+    /**
+     * overridden in ManualModel
+     */
+    _getDefaultMode: function(handle) {
+        var line = this.getLine(handle);
+        if (line.balance.amount === 0
+            && (!line.st_line.mv_lines_match_rp || line.st_line.mv_lines_match_rp.length === 0)
+            && (!line.st_line.mv_lines_match_other || line.st_line.mv_lines_match_other.length === 0)) {
+            return 'inactive';
+        }
+        if (line['mv_lines_'+line.mode] && (line['mv_lines_'+line.mode].length || line['filter_'+line.mode].length)) {
+            return line.mode;
+        }
+        if (line.mv_lines_match_rp && line.mv_lines_match_rp.length) {
+            return 'match_rp';
+        }
+        if (line.mv_lines_match_other && line.mv_lines_match_other.length) {
+            return 'match_other';
+        }
+        return 'create';
+    },
+    _getAvailableModes: function(handle) {
+        var line = this.getLine(handle);
+        var modes = []
+        if (line.mv_lines_match_rp && line.mv_lines_match_rp.length) {
+            modes.push('match_rp')
+        }
+        if (line.mv_lines_match_other && line.mv_lines_match_other.length) {
+            modes.push('match_other')
+        }
+        modes.push('create')
+        return modes
+    },
+    /**
+     * Return list of account_move_line that has been selected and needs to be removed
+     * from other calls.
+     *
+     * @private
+     * @returns {Array} list of excluded ids
+     */
+    _getExcludedIds: function () {
+        var excludedIds = [];
+        _.each(this.lines, function(line) {
+            if (line.reconciliation_proposition) {
+                _.each(line.reconciliation_proposition, function(prop) {
+                    if (parseInt(prop['id'])) {
+                        excludedIds.push(prop['id']);
+                    }
+                });
+            }
+        });
+        return excludedIds;
+    },
+    /**
+     * format the proposition to send information server side
+     * extended in ManualModel
+     *
+     * @private
+     * @param {object} line
+     * @param {object} prop
+     * @returns {object}
+     */
+    _formatToProcessReconciliation: function (line, prop) {
+        var amount = -prop.amount;
+        if (prop.partial_amount) {
+            amount = -prop.partial_amount;
+        }
+
+        var result = {
+            name : prop.name,
+            balance : amount,
+            analytic_tag_ids: [[6, null, _.pluck(prop.analytic_tag_ids, 'id')]]
+        };
+        if (!isNaN(prop.id)) {
+            result.id = prop.id;
+        } else {
+            result.account_id = prop.account_id.id;
+            if (prop.journal_id) {
+                result.journal_id = prop.journal_id.id;
+            }
+        }
+        if (prop.analytic_account_id) result.analytic_account_id = prop.analytic_account_id.id;
+        if (prop.tax_ids && prop.tax_ids.length) result.tax_ids = [[6, null, _.pluck(prop.tax_ids, 'id')]];
+        if (prop.tax_tag_ids && prop.tax_tag_ids.length) result.tax_tag_ids = [[6, null, _.pluck(prop.tax_tag_ids, 'id')]];
+        if (prop.tax_repartition_line_id) result.tax_repartition_line_id = prop.tax_repartition_line_id;
+        if (prop.tax_base_amount) result.tax_base_amount = prop.tax_base_amount;
+        if (prop.reconcile_model_id) result.reconcile_model_id = prop.reconcile_model_id
+        if (prop.currency_id) result.currency_id = prop.currency_id;
+        return result;
+    },
+    /**
+     * Hook to handle return values of the validate's line process.
+     *
+     * @private
+     * @param {Object} data
+     * @param {Object[]} data.moves list of processed account.move
+     * @returns {Deferred}
+     */
+    _validatePostProcess: function (data) {
+        return Promise.resolve();
+    },
+
     /**
      * Format each server lines and propositions and compute all lines
      *
@@ -1744,7 +1292,7 @@ var ManualModel = StatementModel.extend({
         return this._computeLine(line);
     },
     /**
-     * override to add journal_id
+     * Format each propositions (amount, name, account_id, journal_id)
      *
      * @override
      * @private
@@ -1753,20 +1301,23 @@ var ManualModel = StatementModel.extend({
      */
     _formatLineProposition: function (line, props) {
         var self = this;
-        this._super(line, props);
         if (props.length) {
             _.each(props, function (prop) {
+                prop.account_id = self._formatNameGet(prop.account_id || line.account_id);
+                prop.is_partially_reconciled = prop.amount_str !== prop.total_amount_str;
+                prop.to_check = !!prop.to_check;
                 var tmp_value = prop.debit || prop.credit;
                 prop.credit = prop.credit !== 0 ? 0 : tmp_value;
                 prop.debit = prop.debit !== 0 ? 0 : tmp_value;
-                prop.amount = -prop.amount;
+                prop.amount = -prop.debit || prop.credit;
                 prop.journal_id = self._formatNameGet(prop.journal_id || line.journal_id);
                 prop.to_check = !!prop.to_check;
             });
         }
     },
     /**
-     * override to add journal_id on tax_created_line
+     * Apply default values for the proposition, format datas and format the
+     * base_amount with the decimal number from the currency
      *
      * @private
      * @param {Object} line
@@ -1778,23 +1329,62 @@ var ManualModel = StatementModel.extend({
         if (values && values.journal_id === undefined && line && line.createForm && line.createForm.journal_id) {
             values.journal_id = line.createForm.journal_id;
         }
-        return this._super(line, values);
+        values = values || {};
+        var today = new moment().utc().format();
+        var account = this._formatNameGet(values.account_id);
+        var formatOptions = {
+            currency_id: line.st_line.currency_id,
+        };
+        var amount = values.amount !== undefined ? values.amount : line.balance.amount;
+
+        var prop = {
+            'id': _.uniqueId('createLine'),
+            'name': values.name || line.st_line.name,
+            'account_id': account,
+            'account_code': account ? this.accounts[account.id] : '',
+            'analytic_account_id': this._formatNameGet(values.analytic_account_id),
+            'analytic_tag_ids': this._formatMany2ManyTags(values.analytic_tag_ids || []),
+            'journal_id': this._formatNameGet(values.journal_id),
+            'tax_ids': this._formatMany2ManyTagsTax(values.tax_ids || []),
+            'tax_tag_ids': this._formatMany2ManyTagsTax(values.tax_tag_ids || []),
+            'tax_repartition_line_id': values.tax_repartition_line_id,
+            'tax_base_amount': values.tax_base_amount,
+            'debit': 0,
+            'credit': 0,
+            'date': values.date ? values.date : field_utils.parse.date(today, {}, {isUTC: true}),
+            'force_tax_included': values.force_tax_included || false,
+            'base_amount': amount,
+            'link': values.link,
+            'display': true,
+            'invalid': true,
+            'to_check': !!values.to_check,
+            '__tax_to_recompute': true,
+            '__focus': '__focus' in values ? values.__focus : true,
+        };
+        if (prop.base_amount) {
+            // Call to format and parse needed to round the value to the currency precision
+            var sign = prop.base_amount < 0 ? -1 : 1;
+            var amount = _.unescape(field_utils.format.monetary(Math.abs(prop.base_amount), {}, formatOptions));
+            prop.base_amount = sign * field_utils.parse.monetary(amount, {}, formatOptions);
+        }
+
+        prop.amount = prop.base_amount;
+        return prop;
     },
     /**
-     * @override
+     * Defined whether the line is to be displayed or not. Here, we only display
+     * the line if it comes from the server or if an account is defined when it
+     * is created
+     *
+     * @private
      * @param {object} prop
      * @returns {Boolean}
      */
     _isDisplayedProposition: function (prop) {
-        return !!prop.journal_id && this._super(prop);
+        return !!prop.journal_id && !isNaN(prop.id) || !!prop.account_id;
     },
-    /**
-     * @override
-     * @param {object} prop
-     * @returns {Boolean}
-     */
     _isValid: function (prop) {
-        return prop.journal_id && this._super(prop);
+        return prop.journal_id && !isNaN(prop.id) || prop.account_id && prop.amount && prop.name && !!prop.name.length;
     },
     /**
      * Fetch 'account.move.line' propositions.
@@ -1865,7 +1455,6 @@ var ManualModel = StatementModel.extend({
 });
 
 return {
-    StatementModel: StatementModel,
     ManualModel: ManualModel,
 };
 });

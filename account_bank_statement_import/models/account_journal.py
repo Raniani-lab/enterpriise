@@ -34,7 +34,6 @@ class AccountJournal(models.Model):
     def _import_bank_statement(self, attachments):
         """ Process the file chosen in the wizard, create bank statement(s) and go to reconciliation. """
         statement_ids_all = []
-        statement_line_ids_all = []
         notifications_all = []
         # Let the appropriate implementation module parse the file and return the required data
         # The active_id is passed in context in case an implementation module requires information about the wizard state (see QIF)
@@ -52,7 +51,6 @@ class AccountJournal(models.Model):
             # Create the bank statements
             statement_ids, statement_line_ids, notifications = self._create_bank_statements(stmts_vals)
             statement_ids_all.extend(statement_ids)
-            statement_line_ids_all.extend(statement_line_ids)
             notifications_all.extend(notifications)
 
             # Now that the import worked out, set it as the bank_statements_source of the journal
@@ -79,14 +77,13 @@ class AccountJournal(models.Model):
         statements = self.env['account.bank.statement'].browse(statement_ids_all)
         # Dispatch to reconciliation interface if all statements are posted.
         if all(s.state == 'posted' for s in statements):
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'bank_statement_reconciliation_view',
-                'context': {'statement_line_ids': statement_line_ids_all,
-                            'company_ids': self.env.user.company_ids.ids,
-                            'notifications': notifications_all,
+            return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+                extra_domain=[('statement_id', 'in', statements.ids)],
+                default_context={
+                    'search_default_journal_id': journal.id,
+                    'search_default_not_matched': True,
                 },
-            }
+            )
 
         # Dispatch to the statemtent list/form view instead.
         result = self.env['ir.actions.act_window']._for_xml_id('account.action_bank_statement_tree')

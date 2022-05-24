@@ -317,7 +317,9 @@ class TestEdiFlows(TestMxEdiCommon):
             # Invoice is using a 'PUE' payment policy. Sending the payment to the government is not mandatory by
             # default.
             receivable_line = self.invoice.line_ids.filtered(lambda line: line.account_internal_type == 'receivable')
-            self.statement_line.reconcile([{'id': receivable_line.id}])
+            edit_wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=self.statement_line.id).new({})
+            edit_wizard._action_add_new_amls(receivable_line, allow_partial=False)
+            edit_wizard.button_validate(async_action=False)
 
             self.assertRecordValues(move, [{'edi_state': False}])
             self.assertFalse(move.edi_document_ids)

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.addons.account_accountant.tests.test_bank_rec_widget import WizardForm
 from odoo.tests import tagged
 from odoo import fields
 
@@ -76,13 +77,14 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
 
     def confirm_bank_statement(self, statement):
         for line in statement.line_ids:
-            liquidity_lines, suspense_lines, other_lines = line._seek_for_lines()
-            line.reconcile([{
-                'name': 'toto',
-                'account_id': self.account.id,
-                'balance': sum(suspense_lines.mapped('balance')),
-                'currency_id': False,
-            }])
+            wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=line.id).new({})
+            auto_balance_line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
+            form = WizardForm(wizard)
+            form.todo_command = f'mount_line_in_edit,{auto_balance_line.index}'
+            form.form_name = "toto"
+            form.form_account_id = self.account
+            wizard = form.save()
+            wizard.button_validate(async_action=False)
         if statement.state == 'open':
             statement.button_post()
         statement.button_validate()

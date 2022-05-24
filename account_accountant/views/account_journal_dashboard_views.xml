@@ -26,6 +26,11 @@
                     </div>
                 </t>
             </xpath>
+            <xpath expr="//div[@id='action_card_statements']" position="after">
+                <div>
+                    <a role="menuitem" type="object" name="action_open_bank_transactions">Operations</a>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -713,7 +713,9 @@ class TestEdiResults(TestMxEdiCommon):
             self.statement.button_post()
 
             receivable_line = self.invoice.line_ids.filtered(lambda line: line.account_internal_type == 'receivable')
-            self.statement_line.reconcile([{'id': receivable_line.id}])
+            edit_wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=self.statement_line.id).new({})
+            edit_wizard._action_add_new_amls(receivable_line, allow_partial=False)
+            edit_wizard.button_validate(async_action=False)
 
             # Fake the fact the invoice is signed.
             self._process_documents_web_services(self.invoice)

@@ -545,7 +545,7 @@ class AccountMove(models.Model):
         if partner:
             return partner.id if partner.id != self.company_id.partner_id.id else 0
 
-        self.env.cr.execute("SELECT id, name FROM res_partner WHERE active = true AND supplier_rank > 0")
+        self.env.cr.execute("SELECT id, name FROM res_partner WHERE active = true AND supplier_rank > 0 AND name IS NOT NULL")
 
         partners_dict = {name.lower().replace('-', ' '): partner_id for partner_id, name in self.env.cr.fetchall()}
         partner_name = partner_name.lower().strip()

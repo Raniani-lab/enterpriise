@@ -11,7 +11,6 @@ from odoo.tools.float_utils import float_repr, float_round
 from odoo.exceptions import UserError
 
 CATALOG52 = [
-    ("1000", "Monto en letras"),
     ("1002", "TRANSFERENCIA GRATUITA DE UN BIEN Y/O SERVICIO PRESTADO GRATUITAMENTE"),
     ("2000", "COMPROBANTE DE PERCEPCIÓN"),
     ("2001", "BIENES TRANSFERIDOS EN LA AMAZONÍA REGIÓN SELVAPARA SER CONSUMIDOS EN LA MISMA"),

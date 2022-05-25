@@ -546,7 +546,6 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             'currency_id': self.currency_data['currency'].id,
             'reversed_entry_id': invoice.id,
             'l10n_latam_document_type_id': self.env.ref('l10n_pe.document_type07').id,
-            'l10n_pe_edi_legend': '1000',
             'l10n_pe_edi_refund_reason': '01',
             'invoice_line_ids': [(0, 0, {
                 'product_id': self.product.id,

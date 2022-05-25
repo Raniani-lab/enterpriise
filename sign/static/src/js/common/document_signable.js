@@ -40,7 +40,12 @@ const SignNameAndSignature = NameAndSignature.extend({
     this.accessToken = accessToken;
     this.defaultSignature = options.defaultSignature || "";
     this.signatureChanged = false;
-    this.fonts = signatureFonts
+    this.fonts = signatureFonts;
+
+    // if defaultSignature exists, we don't want to have mode set to auto
+    if (this.defaultSignature) {
+      this.signMode = 'draw';
+    }
   },
   /**
    * Sets the existing signature.
@@ -1239,6 +1244,7 @@ export const SignableDocument = Document.extend({
           defaultName: this.getParent().signerName || "",
           fontColor: "DarkBlue",
           signatureType: type.item_type,
+          defaultSignature: type.auto_value,
           displaySignatureRatio:
             parseFloat($signatureItem.css("width")) /
             parseFloat($signatureItem.css("height")),

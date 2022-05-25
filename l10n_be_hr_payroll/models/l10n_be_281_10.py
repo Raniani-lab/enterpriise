@@ -263,12 +263,15 @@ class L10nBe28110(models.Model):
             if len(first_name) > 30:
                 raise UserError(_("The employee first name shouldn't exceed 30 characters for employee %s", employee.name))
 
+            first_contract_date = employee.with_context(
+                before_date=date(int(self.reference_year), 12, 31))._get_first_contract_date()
+
             # 2021: Only private car
             # from 2022: private car / company car (from May)
             max_other_transport_exemption = payslip.env['hr.rule.parameter']._get_parameter_from_code(
                 'pricate_car_taxable_threshold',
                 date=date(int(self.reference_year), 1, 1))
-            start = employee.first_contract_date
+            start = first_contract_date
             end = date(int(self.reference_year), 12, 31)
             number_of_month = (end.year - start.year) * 12 + (end.month - start.month) + 1
             number_of_month = min(12, number_of_month)
@@ -314,7 +317,7 @@ class L10nBe28110(models.Model):
                 'f10_2042_sailorcode': 0,
                 'f10_2045_code': 0,
                 # 'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d/%m/%Y') if employee.first_contract_date.year == self.reference_year else '',
-                'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d-%m-%Y') if employee.first_contract_date else '',
+                'f10_2055_datumvanindienstt': first_contract_date.strftime('%d-%m-%Y') if first_contract_date else '',
                 'f10_2056_datumvanvertrek': employee.end_notice_period.strftime('%d-%m-%Y') if employee.end_notice_period else '',
                 'f10_2058_km': cycle_days_count * employee.km_home_work,
                 # f10_2059_totaalcontrole

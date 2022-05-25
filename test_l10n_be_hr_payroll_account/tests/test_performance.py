@@ -270,7 +270,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'reference_year': str(self.date_from.year),
         })
         self.assertEqual(len(declaration_281_10.line_ids), 100)
-        with self.assertQueryCount(admin=11):
+        with self.assertQueryCount(admin=111):
             start_time = time.time()
             declaration_281_10.action_generate_xml()
             # --- 0.0810704231262207 seconds ---

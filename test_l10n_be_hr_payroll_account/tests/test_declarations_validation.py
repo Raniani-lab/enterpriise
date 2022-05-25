@@ -575,3 +575,44 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         data_281 = declaration_281.with_context(no_round_281_10=True)._get_rendering_data(self.employees)
         declared_pp = data_281['total_data']['r9014_controletotaal']
         self.assertAlmostEqual(total_declared_pp, declared_pp, places=2)
+
+    def test_281_10_comeback(self):
+        # Check that we use the old first_contract_date instead of
+        # the new one
+        self.assertEqual(self.employees[0].first_contract_date, datetime.date(2018, 12, 31))
+        self.contracts[0].write({
+            'date_end': datetime.date(2021, 12, 31),
+            'state': 'close',
+        })
+        self.env['hr.contract'].create({
+            'name': "New Contract For Payslip Test 0",
+            'employee_id': self.employees[0].id,
+            'resource_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'date_generated_from': datetime.datetime(2020, 9, 1, 0, 0, 0),
+            'date_generated_to': datetime.datetime(2020, 9, 1, 0, 0, 0),
+            'car_id': self.cars[0].id,
+            'structure_type_id': self.env.ref('hr_contract.structure_type_employee_cp200').id,
+            'date_start': datetime.date(2022, 3, 1),
+            'wage': 2650.0,
+            'wage_on_signature': 2650.0,
+            'state': "open",
+            'transport_mode_car': True,
+            'fuel_card': 150.0,
+            'internet': 38.0,
+            'representation_fees': 150.0,
+            'mobile': 30.0,
+            'meal_voucher_amount': 7.45,
+            'eco_checks': 250.0,
+            'ip_wage_rate': 25.0,
+            'ip': True,
+            'rd_percentage': 100,
+        })
+        self.assertEqual(self.employees[0].first_contract_date, datetime.date(2022, 3, 1))
+        declaration_281 = self.env['l10n_be.281_10'].create({
+            'reference_year': '2021',
+        })
+        data_281 = declaration_281.with_context(no_round_281_10=True)._get_rendering_data(self.employees)
+        for employee_data in data_281['employees_data']:
+            if employee_data['f2011_nationaalnr'] == self.employees[0].niss:
+                self.assertEqual(employee_data['f10_2055_datumvanindienstt'], '31-12-2018')

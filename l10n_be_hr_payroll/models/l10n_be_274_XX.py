@@ -145,7 +145,7 @@ class L10nBe274XX(models.Model):
         for sheet in self:
             mapped_pp = defaultdict(lambda: 0)
             mapped_taxable_amount = defaultdict(lambda: 0)
-            payslips = self._get_valid_payslips()
+            payslips = sheet._get_valid_payslips()
 
             line_values = payslips._get_line_values([
                 'GROSS', 'PPTOTAL',

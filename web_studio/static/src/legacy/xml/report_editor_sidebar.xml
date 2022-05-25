@@ -218,9 +218,10 @@
         </div>
         <div t-if="widget.displayAlignment" class="col-4 o_web_studio_sidebar_text o_web_studio_text_alignment">
             <label>Alignment</label>
-            <t t-foreach="['left', 'center', 'right']" t-as="alignment" t-key="alignment_index">
+            <t t-set="class_map" t-value="{'start': 'left', 'center': 'center', 'end': 'right'}" />
+            <t t-foreach="['start', 'center', 'end']" t-as="alignment" t-key="alignment_index">
                 <button type="button" t-att-title="alignment" t-attf-data-property="text-#{alignment}" t-attf-class="btn btn-secondary #{widget.alignment === 'text-' + alignment ? 'active' : ''}">
-                    <i t-attf-class="fa fa-align-#{alignment}"/>
+                    <i t-attf-class="fa fa-align-#{class_map[alignment]}"/>
                 </button>
             </t>
         </div>

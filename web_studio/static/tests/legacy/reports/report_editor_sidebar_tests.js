@@ -714,10 +714,10 @@ QUnit.module('Studio', {}, function () {
                     testName: "set the alignment",
                     nodeToUse: layoutChangeNode,
                     eventToTrigger: "click",
-                    sidebarOperationInputSelector: '.o_web_studio_text_alignment button[title="right"]',
+                    sidebarOperationInputSelector: '.o_web_studio_text_alignment button[title="end"]',
                     expectedRPC: {
                         inheritance: [{
-                            content: "<attribute name=\"class\" separator=\" \" add=\"text-right\"/>",
+                            content: "<attribute name=\"class\" separator=\" \" add=\"text-end\"/>",
                             position: "attributes",
                             view_id: 99,
                             xpath: "/t/t/div"

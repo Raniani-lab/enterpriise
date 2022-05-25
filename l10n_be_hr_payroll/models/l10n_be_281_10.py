@@ -270,12 +270,8 @@ class L10nBe28110(models.Model):
             other_transport_exemption = 0
             has_company_car = bool(round(mapped_total['ATN.CAR'], 2))
             has_private_car = bool(round(mapped_total['CAR.PRIV'], 2)) and not has_company_car
-            if self.reference_year == '2021':
-                if round(mapped_total['CAR.PRIV'], 2):
-                    other_transport_exemption = max_other_transport_exemption * number_of_month / 12.0
-            if self.reference_year != '2021':
-                if round(mapped_total['CAR.PRIV'], 2) + round(mapped_total['ATN.CAR'], 2):
-                    other_transport_exemption = max_other_transport_exemption * number_of_month / 12.0
+            if round(mapped_total['CAR.PRIV'], 2) + round(mapped_total['ATN.CAR'], 2):
+                other_transport_exemption = max_other_transport_exemption * number_of_month / 12.0
 
             cycle_days_count = sum(all_line_values['CYCLE'][p.id]['quantity'] for p in payslips)
             cycle_days_amount = sum(all_line_values['CYCLE'][p.id]['total'] for p in payslips)
@@ -349,8 +345,7 @@ class L10nBe28110(models.Model):
                 'f10_2085_forfbezoldiging': 0,
                 'f10_2086_openbaargemeenschap': _to_eurocent(round(mapped_total['PUB.TRANS'], 2)),
                 'f10_2087_bedrag': 0,
-                'f10_2088_andervervoermiddel': _to_eurocent(
-                        round(mapped_total['CAR.PRIV'] - other_transport_exemption, 2) if has_private_car else round(other_transport_exemption, 2)),
+                'f10_2088_andervervoermiddel': _to_eurocent(round(mapped_total['CAR.PRIV'], 2) if has_private_car else round(other_transport_exemption, 2)),
                 'f10_2090_outborderdays': 0,
                 'f10_2092_othercode1': 0,
                 'f10_2094_othercode2': 0,

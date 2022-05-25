@@ -357,6 +357,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'company_id': cls.env.company.id,
             'journal_id': cls.journal.id,
             'payslip_run_id': cls.batch.id,
+            'input_line_ids': [
+                (0, 0, {
+                    'input_type_id': cls.env.ref('l10n_be_hr_payroll.input_simple_december_pay').id,
+                    'amount': 150,
+                }), (0, 0, {
+                    'input_type_id': cls.env.ref('l10n_be_hr_payroll.input_double_december_pay').id,
+                    'amount': 100,
+                })],
         } for i in range(cls.EMPLOYEES_COUNT)])
 
         cls.thirteen_2021 = cls.env['hr.payslip'].create([{
@@ -477,6 +485,29 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'deducted_amount_33': 1866.79,
             'deducted_amount_34': 2621.07,
             'capped_amount_34': 466.7,
+        }
+        self.validate_results(declaration, declaration_results)
+
+    def test_274_declaration_december(self):
+        # Check december pay recuperation
+        declaration = self.env['l10n_be.274_xx'].create({
+            'year': 2021,
+            'month': '12',
+        })
+        declaration_results = {
+            'pp_amount': 7686.88,
+            'pp_amount_32': 0.0,
+            'pp_amount_33': 1747.78,
+            'pp_amount_34': 0.0,
+            'taxable_amount': 23095.95,
+            'taxable_amount_32': 0.0,
+            'taxable_amount_33': 10268.800000000001,
+            'taxable_amount_34': 0.0,
+            'deducted_amount': 1398.22,
+            'deducted_amount_32': 0.0,
+            'deducted_amount_33': 1398.22,
+            'deducted_amount_34': 0.0,
+            'capped_amount_34': 0.0,
         }
         self.validate_results(declaration, declaration_results)
 

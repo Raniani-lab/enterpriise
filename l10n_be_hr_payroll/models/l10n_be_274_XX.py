@@ -155,7 +155,7 @@ class L10nBe274XX(models.Model):
 
             # Total
             sheet.taxable_amount = line_values['GROSS']['sum']['total'] + line_values['DOUBLE.DECEMBER.GROSS']['sum']['total']
-            sheet.pp_amount = line_values['PPTOTAL']['sum']['total'] + line_values['DOUBLE.DECEMBER.P.P']['sum']['total']
+            sheet.pp_amount = line_values['PPTOTAL']['sum']['total'] - line_values['DOUBLE.DECEMBER.P.P']['sum']['total']
             # Valid payslips for exemption
             payslips = payslips.filtered(lambda p: p.contract_id.rd_percentage and p.struct_id == monthly_pay)
             # 32 : Civil Engineers / Doctors
@@ -338,7 +338,8 @@ class L10nBe274XX(models.Model):
             'DOUBLE.DECEMBER.GROSS', 'DOUBLE.DECEMBER.P.P'])
 
         for payslip in payslips:
-            pp_total = line_values['PPTOTAL'][payslip.id]['total'] + line_values['DOUBLE.DECEMBER.P.P'][payslip.id]['total']
+            pp_total = line_values['PPTOTAL'][payslip.id]['total'] \
+                     - line_values['DOUBLE.DECEMBER.P.P'][payslip.id]['total']
             if pp_total:
                 pp_total_eurocent = pp_total
                 taxable_eurocent = line_values['GROSS'][payslip.id]['total'] + line_values['DOUBLE.DECEMBER.GROSS'][payslip.id]['total']

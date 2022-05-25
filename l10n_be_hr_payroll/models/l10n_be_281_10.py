@@ -227,7 +227,8 @@ class L10nBe28110(models.Model):
 
         line_codes = [
             'NET', 'PAY_SIMPLE', 'PPTOTAL', 'M.ONSS', 'ATN.INT', 'ATN.MOB', 'ATN.LAP', 'CYCLE',
-            'ATN.CAR', 'REP.FEES', 'REP.FEES.VOLATILE', 'PUB.TRANS', 'CAR.PRIV', 'EmpBonus.1', 'GROSS'
+            'ATN.CAR', 'REP.FEES', 'REP.FEES.VOLATILE', 'PUB.TRANS', 'CAR.PRIV', 'EmpBonus.1', 'GROSS',
+            'DOUBLE.DECEMBER.GROSS', 'DOUBLE.DECEMBER.P.P',
         ]
         all_line_values = all_payslips._get_line_values(line_codes, vals_list=['total', 'quantity'])
 
@@ -247,7 +248,7 @@ class L10nBe28110(models.Model):
                 code: sum(all_line_values[code][p.id]['total'] for p in payslips)
                 for code in line_codes}
 
-            total_gross = mapped_total['GROSS']
+            total_gross = mapped_total['GROSS'] + mapped_total['DOUBLE.DECEMBER.GROSS']
             warrant_gross = sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id == warrant_structure)
             holiday_gross = sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id in holiday_n_structure + holiday_n1_structure)
             common_gross = total_gross - warrant_gross - holiday_gross
@@ -331,7 +332,7 @@ class L10nBe28110(models.Model):
                 'f10_2071_totalevergoeding': cycle_days_amount,
                 'f10_2072_pensioentoezetting':  0,
                 'f10_2073_tipamount': 0,
-                'f10_2074_bedrijfsvoorheffing': _to_eurocent(round(mapped_total['PPTOTAL'], 2)),  # 2.074 = 2.131 + 2.133. YTI Is it ok to include PROF_TAX / should include Double holidays?
+                'f10_2074_bedrijfsvoorheffing': _to_eurocent(round(mapped_total['PPTOTAL'] - mapped_total['DOUBLE.DECEMBER.P.P'], 2)),  # 2.074 = 2.131 + 2.133. YTI Is it ok to include PROF_TAX / should include Double holidays?
                 'f10_2075_bijzonderbijdrage': _to_eurocent(round(-mapped_total['M.ONSS'], 2)),
                 'f10_2076_voordelenaardbedrag': _to_eurocent(
                     max(
@@ -380,7 +381,7 @@ class L10nBe28110(models.Model):
                 'f10_2127_nonrecurrentadvantagesoutdated': 0,
                 'f10_2128_vrijaanvullendpensioenwerknemers': 0,
                 'f10_2130_privatepc': 0,
-                'f10_2131_bedrijfsvoorheffingvanwerkgever': _to_eurocent(round(mapped_total['PPTOTAL'], 2)),
+                'f10_2131_bedrijfsvoorheffingvanwerkgever': _to_eurocent(round(mapped_total['PPTOTAL'] - mapped_total['DOUBLE.DECEMBER.P.P'], 2)),
                 'f10_2132_amountovertime180firstsemester': 0,
                 'f10_2133_bedrijfsvoorheffingbuitenlvenverbondenwerkgever': 0,
                 'f10_2134_totaalbedragmobiliteitsbudget': 0,

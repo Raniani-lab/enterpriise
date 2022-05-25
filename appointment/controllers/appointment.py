@@ -186,7 +186,7 @@ class Appointment(http.Controller):
         selected_staff_user = suggested_staff_users[0] if suggested_staff_users and appointment_type.assign_method == 'chosen' else request.env['res.users']
         slots = appointment_type._get_appointment_slots(
             request.session['timezone'],
-            staff_user=selected_staff_user or suggested_staff_users or request.env['res.users'],
+            filter_users=selected_staff_user or suggested_staff_users or request.env['res.users'],
         )
         formated_days = _formated_weekdays(get_lang(request.env).code)
         month_first_available = next((month['id'] for month in slots if month['has_availabilities']), False)

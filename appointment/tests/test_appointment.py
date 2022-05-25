@@ -522,7 +522,7 @@ class AppointmentTest(AppointmentCommon):
 
         # Do what the controller actually does, aka sudo
         with freeze_time(self.reference_now):
-            slots = apt_type.sudo()._get_appointment_slots('Australia/West', staff_user=None)
+            slots = apt_type.sudo()._get_appointment_slots('Australia/West', filter_users=None)
 
         global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 2)  # last day of last week of March

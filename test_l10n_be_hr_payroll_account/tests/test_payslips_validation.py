@@ -59,6 +59,37 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             ]],
         }])
 
+        cls.resource_calendar_38_hours_per_week_odoo = cls.env['resource.calendar'].create([{
+            'name': "Test Calendar : 38 Hours/Week",
+            'company_id': cls.env.company.id,
+            'hours_per_day': 7.6,
+            'tz': "Europe/Brussels",
+            'two_weeks_calendar': False,
+            'hours_per_week': 38.0,
+            'full_time_required_hours': 38.0,
+            'attendance_ids': [(5, 0, 0)] + [(0, 0, {
+                'name': "Attendance",
+                'dayofweek': dayofweek,
+                'hour_from': hour_from,
+                'hour_to': hour_to,
+                'day_period': day_period,
+                'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
+
+            }) for dayofweek, hour_from, hour_to, day_period in [
+                ("0", 9.0, 12.8, "morning"),
+                ("0", 13.8, 17.6, "afternoon"),
+                ("1", 9.0, 12.8, "morning"),
+                ("1", 13.8, 17.6, "afternoon"),
+                ("2", 9.0, 12.8, "morning"),
+                ("2", 13.8, 17.6, "afternoon"),
+                ("3", 9.0, 12.8, "morning"),
+                ("3", 13.8, 17.6, "afternoon"),
+                ("4", 9.0, 12.8, "morning"),
+                ("4", 13.8, 17.6, "afternoon"),
+
+            ]],
+        }])
+
         cls.resource_calendar_4_5_wednesday_off = cls.env['resource.calendar'].create([{
             'name': "Test Calendar: 4/5 Wednesday Off",
             'company_id': cls.env.company.id,
@@ -237,6 +268,123 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                 ("3", 13.8, 17.6, "afternoon"),
                 ("4", 13.8, 17.6, "afternoon"),
             ]],
+        }])
+
+        cls.resource_calendar_9_10_monday_off = cls.env['resource.calendar'].create([{
+            'name': "Test Calendar: 9/10 Hours/Week 1 Monday over 2 Off",
+            'company_id': cls.env.company.id,
+            'hours_per_day': 7.6,
+            'tz': "Europe/Brussels",
+            'two_weeks_calendar': True,
+            'hours_per_week': 34.2,
+            'work_time_rate': 90,
+            'full_time_required_hours': 38.0,
+            'attendance_ids': [(5, 0, 0)] + [
+                (0, 0, {
+                    'name': 'First week',
+                    'dayofweek': '0',
+                    'sequence': '0',
+                    'hour_from': 0,
+                    'day_period': 'morning',
+                    'week_type': '0',
+                    'hour_to': 0,
+                    'display_type': 'line_section'
+                }), (0, 0, {
+                    'name': 'Second week',
+                    'dayofweek': '0',
+                    'sequence': '25',
+                    'hour_from': 0,
+                    'day_period': 'morning',
+                    'week_type': '1',
+                    'hour_to': 0,
+                    'display_type': 'line_section'
+                })] + [(0, 0, {
+                    'name': "Attendance",
+                    'dayofweek': dayofweek,
+                    'hour_from': hour_from,
+                    'hour_to': hour_to,
+                    'day_period': day_period,
+                    'sequence': sequence,
+                    'week_type': week_type,
+                    'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
+                }) for dayofweek, hour_from, hour_to, day_period, week_type, sequence in [
+                    ("0", 8.0, 12.0, "morning", "0", "1"),
+                    ("0", 13.0, 16.6, "afternoon", "0", "2"),
+                    ("1", 8.0, 12.0, "morning", "0", "3"),
+                    ("1", 13.0, 16.6, "afternoon", "0", "4"),
+                    ("2", 8.0, 12.0, "morning", "0", "5"),
+                    ("2", 13.0, 16.6, "afternoon", "0", "6"),
+                    ("3", 8.0, 12.0, "morning", "0", "7"),
+                    ("3", 13.0, 16.6, "afternoon", "0", "8"),
+                    ("4", 8.0, 12.0, "morning", "0", "9"),
+                    ("4", 13.0, 16.6, "afternoon", "0", "10"),
+                    ("1", 8.0, 12.0, "morning", "1", "26"),
+                    ("1", 13.0, 16.6, "afternoon", "1", "27"),
+                    ("2", 8.0, 12.0, "morning", "1", "28"),
+                    ("2", 13.0, 16.6, "afternoon", "1", "29"),
+                    ("3", 8.0, 12.0, "morning", "1", "30"),
+                    ("3", 13.0, 16.6, "afternoon", "1", "31"),
+                    ("4", 8.0, 12.0, "morning", "1", "32"),
+                    ("4", 13.0, 16.6, "afternoon", "1", "33")]],
+        }])
+
+        cls.resource_calendar_9_10_strange = cls.env['resource.calendar'].create([{
+            'name': "Test Calendar: 9/10 Hours/Week 1 hour less every day on second week + 1 wed pm off",
+            'company_id': cls.env.company.id,
+            'hours_per_day': 7.6,
+            'tz': "Europe/Brussels",
+            'two_weeks_calendar': True,
+            'hours_per_week': 34.2,
+            'work_time_rate': 90,
+            'full_time_required_hours': 38.0,
+            'attendance_ids': [(5, 0, 0)] + [
+                (0, 0, {
+                    'name': 'First week',
+                    'dayofweek': '0',
+                    'sequence': '0',
+                    'hour_from': 0,
+                    'day_period': 'morning',
+                    'week_type': '0',
+                    'hour_to': 0,
+                    'display_type': 'line_section'
+                }), (0, 0, {
+                    'name': 'Second week',
+                    'dayofweek': '0',
+                    'sequence': '25',
+                    'hour_from': 0,
+                    'day_period': 'morning',
+                    'week_type': '1',
+                    'hour_to': 0,
+                    'display_type': 'line_section'
+                })] + [(0, 0, {
+                    'name': "Attendance",
+                    'dayofweek': dayofweek,
+                    'hour_from': hour_from,
+                    'hour_to': hour_to,
+                    'day_period': day_period,
+                    'sequence': sequence,
+                    'week_type': week_type,
+                    'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
+                }) for dayofweek, hour_from, hour_to, day_period, week_type, sequence in [
+                    ("0", 9.0, 12.8, "morning", "0", "1"),
+                    ("0", 13.8, 17.6, "afternoon", "0", "2"),
+                    ("1", 9.0, 12.8, "morning", "0", "3"),
+                    ("1", 13.8, 17.6, "afternoon", "0", "4"),
+                    ("2", 9.0, 12.8, "morning", "0", "5"),
+                    ("2", 13.8, 17.6, "afternoon", "0", "6"),
+                    ("3", 9.0, 12.8, "morning", "0", "7"),
+                    ("3", 13.8, 17.6, "afternoon", "0", "8"),
+                    ("4", 9.0, 12.8, "morning", "0", "9"),
+                    ("4", 13.8, 17.6, "afternoon", "0", "10"),
+                    ("0", 9.0, 12.8, "morning", "1", "26"),
+                    ("0", 13.8, 16.6, "afternoon", "1", "27"),
+                    ("1", 9.0, 12.8, "morning", "1", "28"),
+                    ("1", 13.8, 16.6, "afternoon", "1", "29"),
+                    ("2", 9.0, 12.8, "morning", "1", "30"),
+                    ("3", 9.0, 12.8, "morning", "1", "32"),
+                    ("3", 13.8, 16.6, "afternoon", "1", "33"),
+                    ("4", 9.0, 12.8, "morning", "1", "34"),
+                    ("4", 13.8, 16.6, "afternoon", "1", "35")]],
         }])
 
         cls.employee = cls.env['hr.employee'].create([{
@@ -7680,6 +7828,157 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'IP': 662.5,
             'IP.DED': -49.69,
             'NET': 2199.87,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 665.55,
+            'ONSSEMPLOYERCPAE': 6.12,
+            'ONSSEMPLOYERFFE': 1.86,
+            'ONSSEMPLOYERMFFE': 2.66,
+            'ONSSEMPLOYERRESTREINT': 44.94,
+            'ONSSEMPLOYERUNEMP': 2.66,
+            'ONSSEMPLOYER': 723.78,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_representation_fees_two_weeks_calendar(self):
+        self.contract.resource_calendar_id = self.resource_calendar_9_10_monday_off
+        self.contract.representation_fees = 399
+        payslip = self._generate_payslip(datetime.date(2022, 5, 1), datetime.date(2022, 5, 31))
+        payslip.compute_sheet()
+        self.assertEqual(len(payslip.worked_days_line_ids), 1)
+        self.assertEqual(payslip.worked_days_line_ids.number_of_days, 20) # Instead of 22
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 33)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'EmpBonus.1': 43.75,
+            'ONSSTOTAL': 303.78,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2517.64,
+            'IP.PART': -662.5,
+            'GROSS': 1855.14,
+            'P.P': -226.79,
+            'P.P.DED': 14.5,
+            'PPTOTAL': 212.29,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -21.8,
+            'REP.FEES': 279.31,
+            'REP.FEES.VOLATILE': 107.72,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2434.08,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 665.55,
+            'ONSSEMPLOYERCPAE': 6.12,
+            'ONSSEMPLOYERFFE': 1.86,
+            'ONSSEMPLOYERMFFE': 2.66,
+            'ONSSEMPLOYERRESTREINT': 44.94,
+            'ONSSEMPLOYERUNEMP': 2.66,
+            'ONSSEMPLOYER': 723.78,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_representation_fees_two_weeks_calendar_credit_time(self):
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_9_10_monday_off.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week,
+            'time_credit': True,
+            'work_time_rate': 90,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_parental_time_off').id,
+            'representation_fees': 399,
+        })
+        payslip = self._generate_payslip(datetime.date(2022, 5, 1), datetime.date(2022, 5, 31))
+        payslip.compute_sheet()
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 33)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'EmpBonus.1': 43.75,
+            'ONSSTOTAL': 303.78,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2517.64,
+            'IP.PART': -662.5,
+            'GROSS': 1855.14,
+            'P.P': -226.79,
+            'P.P.DED': 14.5,
+            'PPTOTAL': 212.29,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -21.8,
+            'REP.FEES': 279.31,
+            'REP.FEES.VOLATILE': 107.41,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2433.78,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 665.55,
+            'ONSSEMPLOYERCPAE': 6.12,
+            'ONSSEMPLOYERFFE': 1.86,
+            'ONSSEMPLOYERMFFE': 2.66,
+            'ONSSEMPLOYERRESTREINT': 44.94,
+            'ONSSEMPLOYERUNEMP': 2.66,
+            'ONSSEMPLOYER': 723.78,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_representation_fees_strange_two_weeks_calendar_credit_time(self):
+        self.contract.write({
+            'resource_calendar_id': self.resource_calendar_9_10_strange.id,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week,
+            'time_credit': True,
+            'work_time_rate': 90,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_parental_time_off').id,
+            'representation_fees': 399,
+        })
+        payslip = self._generate_payslip(datetime.date(2022, 5, 1), datetime.date(2022, 5, 31))
+        payslip.compute_sheet()
+        self.assertEqual(len(payslip.worked_days_line_ids), 3) # Work entries are overlapping
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 33)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'EmpBonus.1': 43.75,
+            'ONSSTOTAL': 303.78,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2517.64,
+            'IP.PART': -662.5,
+            'GROSS': 1855.14,
+            'P.P': -226.79,
+            'P.P.DED': 14.5,
+            'PPTOTAL': 212.29,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -23.98,
+            'REP.FEES': 279.31,
+            'REP.FEES.VOLATILE': 107.41,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2431.59,
             'REMUNERATION': 1987.5,
             'ONSSEMPLOYERBASIC': 665.55,
             'ONSSEMPLOYERCPAE': 6.12,

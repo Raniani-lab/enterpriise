@@ -1170,7 +1170,7 @@ def compute_representation_fees(payslip, categories, worked_days, inputs):
             # +-120 € of representation expenses which is then subject to prorating.
 
             # Credit time, but with only half days (otherwise it's taken into account)
-            if contract.time_credit and work_time_rate and work_time_rate < 100 and days_per_week == 5:
+            if contract.time_credit and work_time_rate and work_time_rate < 100 and (days_per_week == 5 or not payslip.representation_fees_missing_days):
                 total_amount = threshold + (contract.representation_fees - threshold) * work_time_rate / 100
             # Contractual part time
             elif not contract.time_credit and work_time_rate < 100:

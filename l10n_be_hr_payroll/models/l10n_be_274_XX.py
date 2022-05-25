@@ -122,13 +122,11 @@ class L10nBe274XX(models.Model):
                     sheet.error_message = str(err)
 
     def _get_valid_payslips(self):
-        warrant_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
         domain = [
             ('state', 'in', ['paid', 'done']),
             ('company_id', '=', self.company_id.id),
             ('date_from', '>=', self.date_start),
             ('date_to', '<=', self.date_end),
-            ('struct_id', '!=', warrant_structure.id),
         ]
         if self.env.context.get('wizard_274xx_force_employee_ids'):
             domain += expression.AND([domain, [('employee_id', 'in', self.env.context['wizard_274xx_force_employee_ids'])]])

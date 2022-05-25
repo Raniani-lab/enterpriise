@@ -176,8 +176,12 @@ class L10nBe28110(models.Model):
         def _to_eurocent(amount):
             return amount if no_round else int(amount * 100)
 
+        if not self.company_id.vat or not self.company_id.zip:
+            raise UserError(_('The VAT or the ZIP number is not specified on your company'))
         bce_number = self.company_id.vat.replace('BE', '')
 
+        if not self.company_id.phone:
+            raise UserError(_('The phone number is not specified on your company'))
         phone = self.company_id.phone.strip().replace(' ', '')
         if len(phone) > 12:
             raise UserError(_("The company phone number shouldn't exceed 12 characters"))

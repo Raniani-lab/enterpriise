@@ -140,14 +140,10 @@ class ResCompany(models.Model):
             raise ValidationError(_("The street should not be empty"))
         if not self.zip or not self.zip.strip():
             raise ValidationError(_("The zip should not be empty"))
-        if not self.zip or not self.city.strip():
+        if not self.city or not self.city.strip():
             raise ValidationError(_("The city should not be empty"))
         if not self.vat or not self.vat.strip():
             raise ValidationError(_("The VAT should not be empty"))
-        if not self.l10n_de_stnr or not self.l10n_de_stnr.strip():
-            raise ValidationError(_("The St.-Nr should not be empty"))
-        if not self.l10n_de_widnr or not self.l10n_de_widnr.strip():
-            raise ValidationError(_("The W-IdNr should not be empty"))
 
     def _l10n_de_create_db_payload(self):
         params = {
@@ -170,8 +166,8 @@ class ResCompany(models.Model):
             'display_name': self.name,
             'address_line2': self.street2,
             'vat_id': self.vat,
-            'tax_number': self.l10n_de_stnr,
-            'economy_id': self.l10n_de_widnr
+            'tax_number': self.l10n_de_stnr if self.l10n_de_stnr else '',
+            'economy_id': self.l10n_de_widnr if self.l10n_de_widnr else '',
         }
 
         return {'data': data, **self._l10n_de_create_db_payload()}

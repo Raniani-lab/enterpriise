@@ -425,8 +425,12 @@ class MrpProductionWorkcenterLine(models.Model):
                     }
                     if point.test_type == 'register_byproducts':
                         moves = move_finished_ids.filtered(lambda m: m.product_id == point.component_id)
+                        if not moves:
+                            moves = production.move_finished_ids.filtered(lambda m: not m.operation_id and m.product_id == point.component_id)
                     elif point.test_type == 'register_consumed_materials':
                         moves = move_raw_ids.filtered(lambda m: m.product_id == point.component_id)
+                        if not moves:
+                            moves = production.move_raw_ids.filtered(lambda m: not m.operation_id and m.product_id == point.component_id)
                     else:
                         check = self.env['quality.check'].create(values)
                         previous_check.next_check_id = check

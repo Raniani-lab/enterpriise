@@ -21,3 +21,9 @@ class ResCompany(models.Model):
             if not vals['hr_referral_background']:
                 vals['hr_referral_background'] = self._get_default_referral_background()
         return super().write(vals)
+
+    def _init_default_background(self):
+        if not self:
+            return
+        self.hr_referral_background = self._get_default_referral_background()
+        self.env["ir.config_parameter"].sudo().set_param('hr_referral.show_grass', True)

@@ -1,6 +1,9 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
+import { sprintf } from "@web/core/utils/strings";
+import { ServerData } from "./data_sources/server_data";
+
 const { EventBus } = owl;
 
 /**
@@ -37,33 +40,9 @@ const { EventBus } = owl;
        */
       this._labels = {};
 
-      /**
-       * Contains the display name of many2one records. It's organized in the
-       * following way:
-       * {
-       *     "partner": {
-       *         "10": "Raoul"
-       *     },
-       * }
-       */
-      this._recordsDisplayName = {};
-
-      /**
-       * Cache for the fields_get requests, with technical name as key
-       */
-      this._fieldsGet = {};
-
-      /**
-       * Cache for the display name of the ir.models, with technical name as key
-       */
-      this._modelNameGet = {};
-
-      /**
-       * Fetching stuff, their roles is to collect the models-ids to fetch
-       * in the next clock cycle.
-       */
-      this._fetchingPromise = undefined;
-      this._pending = {};
+      this.serverData = new ServerData(this.orm, {
+          whenDataIsFetched: () => this.trigger("labels-fetched"),
+      });
   }
 
   /**
@@ -73,12 +52,8 @@ const { EventBus } = owl;
    * @returns {Promise<string>} Display name of the model
    */
     async modelDisplayName(model) {
-        if (!(model in this._modelNameGet)) {
-            this._modelNameGet[model] = this.orm
-                .searchRead("ir.model", [["model", "=", model]], ["name"])
-                .then((result) => (result && result[0] && result[0].name) || "");
-        }
-        return this._modelNameGet[model];
+        const result = await this.serverData.fetch("ir.model", "search_read", [[["model", "=", model]], ["name"]]);
+        return result[0] && result[0].name || ""
     }
 
   /**
@@ -87,12 +62,9 @@ const { EventBus } = owl;
    * @param {string} model Technical name
    * @returns {Promise<Object>} List of fields (result of fields_get)
    */
-  async fieldsGet(model) {
-      if (!(model in this._fieldsGet)) {
-          this._fieldsGet[model] = this.orm.call(model, "fields_get");
-      }
-      return this._fieldsGet[model];
-  }
+    async fieldsGet(model) {
+        return this.serverData.fetch(model, "fields_get");
+    }
 
   /**
    * Add a label to the cache
@@ -127,20 +99,6 @@ const { EventBus } = owl;
   }
 
   /**
-   * Add a display name to the cache
-   *
-   * @param {string} model
-   * @param {number} id
-   * @param {string|Error} displayName
-   */
-  addRecordDisplayName(model, id, displayName) {
-      if (!this._recordsDisplayName[model]) {
-          this._recordsDisplayName[model] = {};
-      }
-      this._recordsDisplayName[model][id] = displayName;
-  }
-
-  /**
    * Get the display name associated to the given model-id
    * If the name is not yet loaded, a rpc will be triggered in the next clock
    * cycle.
@@ -150,90 +108,11 @@ const { EventBus } = owl;
    * @returns {string}
    */
   getRecordDisplayName(model, id) {
-      if (!this._recordsDisplayName[model]) {
-          this._recordsDisplayName[model] = {};
+      try {
+          const result = this.serverData.batch.get(model, "name_get", id);
+          return result && result[1];
+      } catch (_) {
+          throw new Error(sprintf(_t("Unable to fetch the label of %s of model %s"), id, model));
       }
-      if (!(id in this._recordsDisplayName[model])) {
-          if (!(model in this._pending)) {
-              this._pending[model] = [];
-          }
-          this._pending[model].push(id);
-          this._triggerFetching();
-          return undefined;
-      }
-      const label = this._recordsDisplayName[model] && this._recordsDisplayName[model][id];
-      if (label instanceof Error) {
-          throw label;
-      }
-      return label;
-  }
-
-  /**
-   * Trigger a fetching for the next clock cycle
-   *
-   * @private
-   */
-  _triggerFetching() {
-      if (this._fetchingPromise) {
-          return;
-      }
-      this._fetchingPromise = Promise.resolve().then(
-          () =>
-              new Promise(async (resolve, reject) => {
-                  try {
-                      const promises = [];
-                      for (const [model, ids] of Object.entries(this._pending)) {
-                          if (!ids.length) {
-                              continue;
-                          }
-                          const prom = this.orm
-                              .call(model, "name_get", [Array.from(new Set(ids))])
-                              .then((result) => {
-                                  for (const value of result) {
-                                      this.addRecordDisplayName(model, value[0], value[1]);
-                                  }
-                                  return result;
-                              })
-                              .catch((e) => {
-                                  const proms = [];
-                                  for (const id of ids) {
-                                      const prom = this.orm
-                                          .call(model, "name_get", [[id]])
-                                          .then((result) => {
-                                              for (const value of result) {
-                                                  this.addRecordDisplayName(model, value[0], value[1]);
-                                              }
-                                              return result;
-                                          })
-                                          .catch(() => {
-                                              const error = new Error(
-                                                  _.str.sprintf(
-                                                      _t(
-                                                          "Unable to fetch the label of %s of model %s"
-                                                      ),
-                                                      id,
-                                                      model
-                                                  )
-                                              );
-                                              this.addRecordDisplayName(model, id, error);
-                                              return true;
-                                          });
-                                      proms.push(prom);
-                                  }
-                                  return Promise.allSettled(proms);
-                              });
-                          promises.push(prom);
-                      }
-                      this._pending = {};
-                      await Promise.allSettled(promises);
-                      this.trigger("labels-fetched");
-                      resolve();
-                  } catch (e) {
-                      reject(e);
-                  } finally {
-                      this._fetchingPromise = undefined;
-                  }
-              })
-      );
   }
 }

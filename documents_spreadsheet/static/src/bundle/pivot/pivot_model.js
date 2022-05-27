@@ -410,13 +410,13 @@ export class SpreadsheetPivotModel extends PivotModel {
         }
         if (field.relation) {
             const label = this.metadataRepository.getRecordDisplayName(field.relation, value);
-            if (label === undefined) {
+            if (!label) {
                 return undef;
             }
             return label;
         }
         const label = this.metadataRepository.getLabel(this.metaData.resModel, field.name, value);
-        if (label === undefined) {
+        if (!label) {
             return undef;
         }
         return label;
@@ -490,9 +490,7 @@ export class SpreadsheetPivotModel extends PivotModel {
             if (!tree.directSubTrees.size) {
                 for (let i = 0; i < group.values.length; i++) {
                     const { field } = this.parseGroupField(groupBys[i]);
-                    if (field.relation) {
-                        metadataRepository.addRecordDisplayName(field.relation, group.values[i], group.labels[i]);
-                    } else {
+                    if (!field.relation) {
                         metadataRepository.registerLabel(config.metaData.resModel, field.name, group.values[i], group.labels[i]);
                     }
                 }

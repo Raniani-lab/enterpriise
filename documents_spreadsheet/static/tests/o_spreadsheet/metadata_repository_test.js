@@ -36,10 +36,13 @@ module("documents_spreadsheet > Metadata Repository", {}, () => {
 
         const orm = {
             silent: {
-                searchRead: async (model, domain, fields) => {
-                    const modelName = domain[0][2];
-                    assert.step(`${modelName}-${fields[0]}`);
-                    return [{ name: modelName }];
+                call: async (model, method, args) => {
+                    if (method === "search_read" && model === "ir.model") {
+                        const [domain, fields] = args;
+                        const modelName = domain[0][2];
+                        assert.step(`${modelName}-${fields[0]}`);
+                        return [{ name: modelName }];
+                    }
                 },
             }
         };
@@ -69,7 +72,6 @@ module("documents_spreadsheet > Metadata Repository", {}, () => {
     });
 
     test("Name_get are collected and executed once by clock", async function (assert) {
-        assert.expect(12);
 
         const orm = {
             silent: {
@@ -93,7 +95,12 @@ module("documents_spreadsheet > Metadata Repository", {}, () => {
         assert.verifySteps([]);
 
         await nextTick();
-        assert.verifySteps(["name_get-A-[1,2]", "name_get-B-[1]", "labels-fetched"]);
+        assert.verifySteps([
+            "name_get-A-[1,2]",
+            "name_get-B-[1]",
+            "labels-fetched",
+            "labels-fetched",
+        ]);
 
         assert.strictEqual(metadataRepository.getRecordDisplayName("A", 1), "1");
         assert.strictEqual(metadataRepository.getRecordDisplayName("A", 2), "2");

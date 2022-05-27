@@ -37,6 +37,17 @@ class StockMove(models.Model):
 
     def _action_cancel(self):
         res = super()._action_cancel()
-        # self cannot contain moves that are done, so we can safely unlink all associated quality_check
-        self.picking_id.sudo().mapped('check_ids').filtered(lambda x: x.quality_state == 'none').unlink()
+
+        to_unlink = self.env['quality.check']
+        is_product_canceled = defaultdict(lambda: True)
+        for qc in self.picking_id.sudo().check_ids:
+            if qc.quality_state != 'none':
+                continue
+            if (qc.picking_id, qc.product_id) not in is_product_canceled:
+                for move in qc.picking_id.move_ids:
+                    is_product_canceled[(move.picking_id, move.product_id)] &= move.state == 'cancel'
+            if is_product_canceled[(qc.picking_id, qc.product_id)]:
+                to_unlink |= qc
+        to_unlink.unlink()
+
         return res

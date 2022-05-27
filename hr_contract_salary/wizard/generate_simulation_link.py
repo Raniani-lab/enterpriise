@@ -156,10 +156,9 @@ class GenerateSimulationLink(models.TransientModel):
         except ValueError:
             template_applicant_id = False
         partner_to = False
+        email_to = False
         if self.employee_id:
-            partner_to = self.employee_id.address_home_id
-            if not partner_to:
-                raise ValidationError(_("No private address defined on the employee!"))
+            email_to = self.employee_id.work_email
         elif self.applicant_id:
             partner_to = self.applicant_id.partner_id
             if not partner_to:
@@ -197,6 +196,7 @@ class GenerateSimulationLink(models.TransientModel):
             'salary_package_url': self.url,
             'default_email_layout_xmlid': "mail.mail_notification_light",
             'partner_to': partner_to and partner_to.id or False,
+            'email_to': email_to or False,
             'mail_post_autofollow': False,
         }
         return {

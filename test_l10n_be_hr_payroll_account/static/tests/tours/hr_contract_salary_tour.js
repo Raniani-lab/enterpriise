@@ -814,6 +814,11 @@ Tour.register('hr_contract_salary_tour_2', {
             run: 'text Mitchell Admin 3',
         },
         {
+            content: "Add Email Address",
+            trigger: '.o_group [name="email_from"] input',
+            run: 'text mitchell.stephen@example.com',
+        },
+        {
             content: "Confirm Applicant Creation",
             trigger: ".o_control_panel button.o_form_button_save",
             run: 'click'
@@ -839,6 +844,11 @@ Tour.register('hr_contract_salary_tour_2', {
         {
             trigger: ".ui-autocomplete > li > a:contains(Mitchell)",
             auto: true,
+        },
+        {
+            content: "Add Work Email",
+            trigger: '.o_group [name="work_email"] input',
+            run: 'text mitchel3_work@example.com',
         },
         {
             content: "Save Employee",
@@ -963,16 +973,6 @@ Tour.register('hr_contract_salary_tour_2', {
             trigger: "button[name='send_offer']",
             extra_trigger: "div.modal-content",
             run: 'click',
-        },
-        {
-            content: "Add email Address",
-            trigger: ".modal-dialog .o_group input[name=\"email\"]",
-            run: 'text mitchell.stephen@example.com',
-        },
-        {
-            content: "Confirm Partner Creation",
-            trigger: ".modal-dialog .btn-primary span:contains('Save')",
-            run: 'click'
         },
         {
             content: "Send Offer",

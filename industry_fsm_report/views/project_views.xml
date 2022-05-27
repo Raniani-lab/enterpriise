@@ -122,7 +122,7 @@
         <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@id='industry_fsm']" position="replace">
-                <div class="col-lg-6 o_setting_box" id="industry_fsm">
+                <div class="o_setting_box mt-4" id="industry_fsm">
                     <div class="o_setting_left_pane">
                         <field name="allow_worksheets"/>
                     </div>

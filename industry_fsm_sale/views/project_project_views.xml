@@ -22,9 +22,9 @@
             <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='price_unit']" position="attributes">
                 <attribute name="attrs">{'readonly': ['|', ('parent.is_fsm', '=', False), ('timesheet_product_id', '=', False)]}</attribute>
             </xpath>
-            <xpath expr="//div[@id='allow_billable_container']" position="after">
+            <xpath expr="//group[@name='group_sales_invoicing']/div" position="inside">
                 <field name="is_fsm" invisible="1"/>
-                <div class="col-lg-6 o_setting_box">
+                <div class="o_setting_box mt-4">
                     <div class="o_setting_left_pane">
                         <field name="allow_material"/>
                     </div>
@@ -36,8 +36,8 @@
                     </div>
                 </div>
             </xpath>
-            <xpath expr="//div[@id='rating_settings']" position="after">
-                <div class="col-lg-6 o_setting_box"  groups="industry_fsm.group_fsm_quotation_from_task">
+            <xpath expr="//group[@name='group_sales_invoicing']/div" position="inside">
+                <div class="o_setting_box mt-4"  groups="industry_fsm.group_fsm_quotation_from_task">
                     <div class="o_setting_left_pane">
                         <field name="allow_quotations"/>
                     </div>

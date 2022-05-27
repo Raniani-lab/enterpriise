@@ -274,7 +274,7 @@ class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
             'planned_date_end': self.task_5_planned_date_begin + (
                         self.task_6_planned_date_end - self.task_6_planned_date_begin),
         })
-        with self.assertQueryCount(30):
+        with self.assertQueryCount(38):
             self.env.invalidate_all()
             self.gantt_reschedule_backward(self.task_5, self.task_6)
         failed_message = "The auto shift date feature should take the user company resource_calendar into account and" \

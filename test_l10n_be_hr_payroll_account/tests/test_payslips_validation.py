@@ -2800,7 +2800,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
 
         for we in work_entries:
-            self.assertEqual(we.work_entry_type_id, work_entries_expected_results.get((we.date_start.day, we.date_start.month)))
+            self.assertEqual(
+                we.work_entry_type_id,
+                work_entries_expected_results[(we.date_start.day, we.date_start.month)],
+                'On %s/%s, expected work entry type %s, got %s instead' % (we.date_start.day, we.date_start.month, work_entries_expected_results[(we.date_start.day, we.date_start.month)].name, we.work_entry_type_id.name))
 
         september_payslip = self._generate_payslip(datetime.date(2020, 9, 1), datetime.date(2020, 9, 30))
 
@@ -3365,7 +3368,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
 
         for we in work_entries:
-            self.assertEqual(we.work_entry_type_id, work_entries_expected_results.get((we.date_start.day, we.date_start.month)))
+            self.assertEqual(
+                we.work_entry_type_id,
+                work_entries_expected_results[(we.date_start.day, we.date_start.month)],
+                'On %s/%s, expected work entry type %s, got %s instead' % (we.date_start.day, we.date_start.month, work_entries_expected_results[(we.date_start.day, we.date_start.month)].name, we.work_entry_type_id.name))
         work_entries.action_validate()
 
         september_payslip = self._generate_payslip(datetime.date(2020, 9, 1), datetime.date(2020, 9, 30))
@@ -3779,7 +3785,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
 
         for we in work_entries:
-            self.assertEqual(we.work_entry_type_id, work_entries_expected_results.get((we.date_start.day, we.date_start.month)))
+            self.assertEqual(
+                we.work_entry_type_id,
+                work_entries_expected_results[(we.date_start.day, we.date_start.month)],
+                'On %s/%s, expected work entry type %s, got %s instead' % (we.date_start.day, we.date_start.month, work_entries_expected_results[(we.date_start.day, we.date_start.month)].name, we.work_entry_type_id.name))
 
         september_payslip = self._generate_payslip(datetime.date(2020, 9, 1), datetime.date(2020, 9, 30))
 
@@ -7990,3 +7999,309 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CO2FEE': 28.17,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_aa_relapse_without_guaranteed_salary_split_time_off(self):
+        # Check when the employee is always sick, but with split time off
+        # Sick 3 days (27 - 29 April 2022)
+        # Sick 1 week (2 - 6 May)
+        # Sick 2 weeks (7 - 20 May)
+        # Sick 4 week (21 May - 17 June)
+
+        bank_holiday = self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday')
+        attendance = self.env.ref('hr_work_entry.work_entry_type_attendance')
+        sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
+        partial_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_part_sick')
+
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Easter Monday",
+            'calendar_id': False,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2022, 4, 18, 5, 0, 0),
+            'date_to': datetime.datetime(2022, 4, 18, 18, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': bank_holiday.id
+        }, {
+            'name': "Ascension Day",
+            'calendar_id': False,
+            'company_id': self.env.company.id,
+            'date_from': datetime.datetime(2022, 5, 26, 5, 0, 0),
+            'date_to': datetime.datetime(2022, 5, 26, 18, 0, 0),
+            'resource_id': False,
+            'time_type': "leave",
+            'work_entry_type_id': bank_holiday.id
+        }])
+
+        sick_leave_1 = self.env['hr.leave'].new({
+            'name': 'Sick Time Off 3 days',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.sick_time_off_type.id,
+            'request_date_from': datetime.date(2022, 4, 27),
+            'request_date_to': datetime.date(2022, 4, 29),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 3,
+        })
+
+        sick_leave_1._compute_date_from_to()
+        sick_leave_1 = self.env['hr.leave'].create(sick_leave_1._convert_to_write(sick_leave_1._cache))
+
+        sick_leave_2 = self.env['hr.leave'].new({
+            'name': 'Sick Time Off 1 Week',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.sick_time_off_type.id,
+            'request_date_from': datetime.date(2022, 5, 2),
+            'request_date_to': datetime.date(2022, 5, 6),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 5,
+        })
+        sick_leave_2._compute_date_from_to()
+        sick_leave_2 = self.env['hr.leave'].create(sick_leave_2._convert_to_write(sick_leave_2._cache))
+
+        sick_leave_3 = self.env['hr.leave'].new({
+            'name': 'Sick Time Off 2 Week',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.sick_time_off_type.id,
+            'request_date_from': datetime.date(2022, 5, 7),
+            'request_date_to': datetime.date(2022, 5, 20),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 10,
+        })
+        sick_leave_3._compute_date_from_to()
+        sick_leave_3 = self.env['hr.leave'].create(sick_leave_3._convert_to_write(sick_leave_3._cache))
+
+        sick_leave_4 = self.env['hr.leave'].new({
+            'name': 'Sick Time Off 4 Week',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.sick_time_off_type.id,
+            'request_date_from': datetime.date(2022, 5, 21),
+            'request_date_to': datetime.date(2022, 6, 17),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 20,
+        })
+        sick_leave_4._compute_date_from_to()
+        sick_leave_4 = self.env['hr.leave'].create(sick_leave_4._convert_to_write(sick_leave_4._cache))
+
+        (sick_leave_1 + sick_leave_2 + sick_leave_3 + sick_leave_4).action_validate()
+
+        work_entries = self.employee.contract_id._generate_work_entries(datetime.date(2022, 4, 1), datetime.date(2022, 6, 30))
+
+        work_entries_expected_results = {
+            # Attendances
+            (1, 4): attendance,
+
+            (4, 4): attendance,
+            (5, 4): attendance,
+            (6, 4): attendance,
+            (7, 4): attendance,
+            (8, 4): attendance,
+
+            (11, 4): attendance,
+            (12, 4): attendance,
+            (13, 4): attendance,
+            (14, 4): attendance,
+            (15, 4): attendance,
+
+            (18, 4): bank_holiday,
+            (19, 4): attendance,
+            (20, 4): attendance,
+            (21, 4): attendance,
+            (22, 4): attendance,
+
+            # 1rs time off
+            (25, 4): attendance,
+            (26, 4): attendance,
+            (27, 4): sick_work_entry_type,
+            (28, 4): sick_work_entry_type,
+            (29, 4): sick_work_entry_type,
+            # 2nd time off
+            (2, 5): sick_work_entry_type,
+            (3, 5): sick_work_entry_type,
+            (4, 5): sick_work_entry_type,
+            (5, 5): sick_work_entry_type,
+            (6, 5): sick_work_entry_type,
+            # 3rd time off
+            (9, 5): sick_work_entry_type,
+            (10, 5): sick_work_entry_type,
+            (11, 5): sick_work_entry_type,
+            (12, 5): sick_work_entry_type,
+            (13, 5): sick_work_entry_type,
+
+            (16, 5): sick_work_entry_type,
+            (17, 5): sick_work_entry_type,
+            (18, 5): sick_work_entry_type,
+            (19, 5): sick_work_entry_type,
+            (20, 5): sick_work_entry_type,
+            # 4th time off
+            (23, 5): sick_work_entry_type,
+            (24, 5): sick_work_entry_type,
+            (25, 5): sick_work_entry_type,
+            (26, 5): sick_work_entry_type,
+            (27, 5): partial_sick_work_entry_type,
+
+            (30, 5): partial_sick_work_entry_type,
+            (31, 5): partial_sick_work_entry_type,
+            (1, 6): partial_sick_work_entry_type,
+            (2, 6): partial_sick_work_entry_type,
+            (3, 6): partial_sick_work_entry_type,
+
+            (6, 6): partial_sick_work_entry_type,
+            (7, 6): partial_sick_work_entry_type,
+            (8, 6): partial_sick_work_entry_type,
+            (9, 6): partial_sick_work_entry_type,
+            (10, 6): partial_sick_work_entry_type,
+
+            (13, 6): partial_sick_work_entry_type,
+            (14, 6): partial_sick_work_entry_type,
+            (15, 6): partial_sick_work_entry_type,
+            (16, 6): partial_sick_work_entry_type,
+            (17, 6): partial_sick_work_entry_type,
+
+            # Come back
+            (20, 6): attendance,
+            (21, 6): attendance,
+            (22, 6): attendance,
+            (23, 6): attendance,
+            (24, 6): attendance,
+
+            (27, 6): attendance,
+            (28, 6): attendance,
+            (29, 6): attendance,
+            (30, 6): attendance,
+        }
+
+        for we in work_entries:
+            self.assertEqual(
+                we.work_entry_type_id,
+                work_entries_expected_results[(we.date_start.day, we.date_start.month)],
+                'On %s/%s, expected work entry type %s, got %s instead' % (we.date_start.day, we.date_start.month, work_entries_expected_results[(we.date_start.day, we.date_start.month)].name, we.work_entry_type_id.name))
+
+        april_payslip = self._generate_payslip(datetime.date(2022, 4, 1), datetime.date(2022, 4, 30))
+
+        self.assertEqual(len(april_payslip.worked_days_line_ids), 3)
+        self.assertEqual(len(april_payslip.input_line_ids), 0)
+        self.assertEqual(len(april_payslip.line_ids), 32)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'EmpBonus.1': 43.75,
+            'ONSSTOTAL': 303.78,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2517.64,
+            'IP.PART': -662.5,
+            'GROSS': 1855.14,
+            'P.P': -226.79,
+            'P.P.DED': 14.5,
+            'PPTOTAL': 212.29,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -18.53,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2200.32,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 665.55,
+            'ONSSEMPLOYERFFE': 1.86,
+            'ONSSEMPLOYERMFFE': 2.66,
+            'ONSSEMPLOYERCPAE': 6.12,
+            'ONSSEMPLOYERRESTREINT': 44.94,
+            'ONSSEMPLOYERUNEMP': 2.66,
+            'ONSSEMPLOYER': 723.78,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(april_payslip, payslip_results)
+
+        may_payslip = self._generate_payslip(datetime.date(2022, 5, 1), datetime.date(2022, 5, 31))
+
+        self.assertEqual(len(may_payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(may_payslip.input_line_ids), 0)
+        self.assertEqual(len(may_payslip.line_ids), 32)
+
+        payslip_results = {
+            'BASIC': 2283.08,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2292.08,
+            'ONSS': -299.57,
+            'EmpBonus.1': 38.79,
+            'ONSSTOTAL': 260.79,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2193.71,
+            'IP.PART': -570.77,
+            'GROSS': 1622.94,
+            'P.P': -124.07,
+            'P.P.DED': 12.85,
+            'PPTOTAL': 111.22,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -11.35,
+            'MEAL_V_EMP': 0.0,
+            'REP.FEES': 150.0,
+            'IP': 570.77,
+            'IP.DED': -42.81,
+            'NET': 2006.91,
+            'REMUNERATION': 1712.31,
+            'ONSSEMPLOYERBASIC': 573.71,
+            'ONSSEMPLOYERFFE': 1.6,
+            'ONSSEMPLOYERMFFE': 2.29,
+            'ONSSEMPLOYERCPAE': 5.27,
+            'ONSSEMPLOYERRESTREINT': 38.74,
+            'ONSSEMPLOYERUNEMP': 2.29,
+            'ONSSEMPLOYER': 623.9,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(may_payslip, payslip_results)
+
+        june_payslip = self._generate_payslip(datetime.date(2022, 5, 1), datetime.date(2022, 5, 31))
+
+        self.assertEqual(len(june_payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(june_payslip.input_line_ids), 0)
+        self.assertEqual(len(june_payslip.line_ids), 32)
+
+        payslip_results = {
+            'BASIC': 2283.08,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2292.08,
+            'ONSS': -299.57,
+            'EmpBonus.1': 38.79,
+            'ONSSTOTAL': 260.79,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2193.71,
+            'IP.PART': -570.77,
+            'GROSS': 1622.94,
+            'P.P': -124.07,
+            'P.P.DED': 12.85,
+            'PPTOTAL': 111.22,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -11.35,
+            'MEAL_V_EMP': 0.0,
+            'REP.FEES': 150.0,
+            'IP': 570.77,
+            'IP.DED': -42.81,
+            'NET': 2006.91,
+            'REMUNERATION': 1712.31,
+            'ONSSEMPLOYERBASIC': 573.71,
+            'ONSSEMPLOYERFFE': 1.6,
+            'ONSSEMPLOYERMFFE': 2.29,
+            'ONSSEMPLOYERCPAE': 5.27,
+            'ONSSEMPLOYERRESTREINT': 38.74,
+            'ONSSEMPLOYERUNEMP': 2.29,
+            'ONSSEMPLOYER': 623.9,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(june_payslip, payslip_results)

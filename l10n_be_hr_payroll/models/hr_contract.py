@@ -6,6 +6,7 @@ import pytz
 from collections import defaultdict
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from dateutil.rrule import rrule, DAILY
 
 from odoo import api, fields, models, _
 from odoo.tools import float_round, date_utils
@@ -685,7 +686,43 @@ class HrContract(models.Model):
             # to 13/10).
             total_sick_days = sum([(l.date_to - l.date_from).days + 1 for l in sick_less_than_30days_before])
             this_leave_current_duration = (date_from - leave.holiday_id.date_from).days + 1
-            if total_sick_days + this_leave_current_duration > 30:
+            # Include off days (eg: weekends) that are not convered by time off
+            # in case the sick time off is split and not covering the whole
+            # interval
+            min_date_from = min(sick_less_than_30days_before.mapped('date_from'))
+            max_date_to = leave.holiday_id.date_to
+            employee_contracts = employee._get_contracts(min_date_from, max_date_to, states=['open', 'close'])
+            work_hours_data_by_calendar = {
+                c.resource_calendar_id: [work_day for work_day, work_hours in employee.with_context(
+                    compute_leaves=False).list_work_time_per_day(min_date_from, max_date_to, c.resource_calendar_id)]
+                for c in employee_contracts}
+            effective_worked_days = {
+                calendar: [
+                    work_day for work_day in work_days \
+                    if all(work_day < l.date_from.date() or work_day > l.date_to.date() for l in sick_less_than_30days_before + leave.holiday_id)
+                ] for calendar, work_days in work_hours_data_by_calendar.items()
+            }
+            uncovered_off_days = 0
+            last_seen_work_day = (min_date_from + relativedelta(days=-1)).date()
+            last_seen_off_day = min_date_from.date()
+            for day in rrule(DAILY, min_date_from, until=max_date_to):
+                day = day.date()
+                if day >= date_from.date():
+                    continue
+                day_contract = employee_contracts.filtered(lambda c: c.date_start <= day and (not c.date_end or c.date_end >= day))
+                if day in effective_worked_days[day_contract.resource_calendar_id]:
+                    last_seen_work_day = day
+                    continue
+                if all(day < l.date_from.date() or day > l.date_to.date() for l in sick_less_than_30days_before + leave.holiday_id):
+                    if day not in work_hours_data_by_calendar[day_contract.resource_calendar_id]:
+                        # Backward check, only count the day if only time off before
+                        # (eg: Avoid counting Sat/Sun if worked the days before)
+                        if last_seen_work_day > last_seen_off_day:
+                            continue
+                        uncovered_off_days += 1
+                else:
+                    last_seen_off_day = day
+            if total_sick_days + this_leave_current_duration + uncovered_off_days > 30:
                 return partial_sick_work_entry_type
         return result
 

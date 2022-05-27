@@ -14,7 +14,6 @@ result = inputs.COMMISSION.amount
 result_name = inputs.COMMISSION.name
         </field>
         <field name="struct_id" ref="l10n_ke_hr_payroll.hr_payroll_structure_ken_employee_salary"/>
-        <field name="appears_on_payroll_report" eval="True"/>
     </record>
 
     <record id="l10n_ke_employees_salary_nssf" model="hr.salary.rule">

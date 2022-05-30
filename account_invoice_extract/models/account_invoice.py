@@ -6,7 +6,7 @@ from odoo import api, fields, models, tools, _, _lt
 from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import AccessError, ValidationError , UserError
 from odoo.tests.common import Form
-from odoo.tools import mute_logger
+from odoo.tools import float_compare, mute_logger
 from odoo.tools.misc import clean_context
 import logging
 import math
@@ -869,7 +869,7 @@ class AccountMove(models.Model):
                         if line.tax_repartition_line_id and total_ocr:
                             rounding_error = move_form.amount_total - total_ocr
                             threshold = len(vals_invoice_lines) * move_form.currency_id.rounding
-                            if not move_form.currency_id.is_zero(rounding_error) and abs(rounding_error) < threshold:
+                            if not move_form.currency_id.is_zero(rounding_error) and float_compare(abs(rounding_error), threshold, precision_digits=2) <= 0:
                                 if self.is_purchase_document():
                                     line.debit -= rounding_error
                                 else:

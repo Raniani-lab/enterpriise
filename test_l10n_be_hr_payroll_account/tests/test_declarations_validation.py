@@ -616,3 +616,45 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         for employee_data in data_281['employees_data']:
             if employee_data['f2011_nationaalnr'] == self.employees[0].niss:
                 self.assertEqual(employee_data['f10_2055_datumvanindienstt'], '31-12-2018')
+
+    def test_281_10_departure(self):
+        departure_notice = self.env['hr.payslip.employee.depature.notice'].create({
+            'employee_id': self.employees[0].id,
+            'leaving_type_id': self.env.ref('hr.departure_fired').id,
+            'start_notice_period': datetime.date(2021, 12, 31),
+            'end_notice_period': datetime.date(2021, 12, 31),
+            'first_contract': datetime.date(2018, 12, 31),
+            'notice_respect': 'without',
+            'departure_description': 'foo',
+        })
+
+        # Termination Fees
+        termination_payslip_id = departure_notice.compute_termination_fee()['res_id']
+        termination_fees = self.env['hr.payslip'].browse(termination_payslip_id)
+        termination_fees.compute_sheet()
+        termination_fees.action_payslip_done()
+
+        # Holiday Attests
+        holiday_attest = self.env['hr.payslip.employee.depature.holiday.attests'].with_context(
+            active_id=self.employees[0].id).create({})
+        holiday_attest.write(holiday_attest.with_context(active_id=self.employees[0].id).default_get(holiday_attest._fields))
+        holiday_pay_ids = holiday_attest.with_context(
+            default_date_from=datetime.date(2021, 12, 1),
+            default_date_to=datetime.date(2021, 12, 31),
+        ).compute_termination_holidays()['domain'][0][2]
+        holiday_pays = self.env['hr.payslip'].browse(holiday_pay_ids)
+        holiday_pays.action_payslip_done()
+
+        # 281.10 Declaration
+        declaration_281 = self.env['l10n_be.281_10'].create({
+            'reference_year': '2021',
+        })
+        data_281 = declaration_281.with_context(no_round_281_10=True)._get_rendering_data(self.employees)
+        for employee_data in data_281['employees_data']:
+            if employee_data['f2011_nationaalnr'] == self.employees[0].niss:
+                self.assertEqual(
+                    employee_data['f10_2063_vervroegdvakantieg'],
+                    holiday_pays._get_line_values(['GROSS'], compute_sum=True)['GROSS']['sum']['total'])
+                self.assertEqual(
+                    employee_data['f10_2065_opzeggingsreclasseringsverg'],
+                    termination_fees._get_line_values(['GROSS'], compute_sum=True)['GROSS']['sum']['total'])

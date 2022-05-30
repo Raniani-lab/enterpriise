@@ -238,6 +238,7 @@ class L10nBe28110(models.Model):
         warrant_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
         holiday_n_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')
         holiday_n1_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
+        termination_fees_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
 
         for employee in employee_payslips:
             is_belgium = employee.address_home_id.country_id == belgium
@@ -251,7 +252,8 @@ class L10nBe28110(models.Model):
             total_gross = mapped_total['GROSS'] + mapped_total['DOUBLE.DECEMBER.GROSS']
             warrant_gross = sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id == warrant_structure)
             holiday_gross = sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id in holiday_n_structure + holiday_n1_structure)
-            common_gross = total_gross - warrant_gross - holiday_gross
+            termination_gross = sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id == termination_fees_structure)
+            common_gross = total_gross - warrant_gross - holiday_gross - termination_gross
 
             postcode = employee.address_home_id.zip.strip() if is_belgium else '0'
             if len(postcode) > 4 or not postcode.isdecimal():
@@ -265,6 +267,8 @@ class L10nBe28110(models.Model):
 
             first_contract_date = employee.with_context(
                 before_date=date(int(self.reference_year), 12, 31))._get_first_contract_date()
+            if not first_contract_date:
+                raise UserError(_("No first contract date found for employee %s", employee.name))
 
             # 2021: Only private car
             # from 2022: private car / company car (from May)
@@ -326,7 +330,7 @@ class L10nBe28110(models.Model):
                 # f10_2062_totaal
                 'f10_2063_vervroegdvakantieg': _to_eurocent(round(holiday_gross, 2)),
                 'f10_2064_afzbelachterstall': 0,
-                'f10_2065_opzeggingsreclasseringsverg': 0,
+                'f10_2065_opzeggingsreclasseringsverg': _to_eurocent(round(termination_gross, 2)),
                 'f10_2066_impulsfund': 0,
                 'f10_2067_rechtvermindering66_81': 0,
                 'f10_2068_rechtvermindering57_75': 0,

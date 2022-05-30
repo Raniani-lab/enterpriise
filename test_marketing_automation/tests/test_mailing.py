@@ -70,7 +70,7 @@ class TestMassMailing(CronMixinCase, TestMACommon):
             'res_id': self.test_records2[0].id,
         })
         trace_test_2 = self.env['marketing.trace'].search([('participant_id', '=', test_participant_2.id)])
-        trace_test_2.flush(['is_test'])
+        trace_test_2.flush_model(['is_test'])
         with self.mock_mail_gateway(mail_unlink_sent=False):
             trace_test_2.action_execute()
         self.assertEqual(len(self._mails), 1, 'test1 should have received an email')

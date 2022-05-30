@@ -1240,12 +1240,9 @@ class SaleOrder(models.Model):
         tx_obj = self.env['payment.transaction']
         values = []
         for subscription in self:
-            reference = tx_obj._compute_reference(
-                payment_token.acquirer_id.provider, prefix=subscription.client_order_ref or subscription.name
-            )
             values.append({
                 'acquirer_id': payment_token.acquirer_id.id,
-                'reference': reference,
+                'sale_order_ids': [Command.link(subscription.id)],
                 'amount': invoice.amount_total,
                 'currency_id': invoice.currency_id.id,
                 'partner_id': subscription.partner_id.id,

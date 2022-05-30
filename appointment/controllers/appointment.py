@@ -148,7 +148,7 @@ class Appointment(http.Controller):
         """ For backward compatibility:
         appointment_type is transformed from a recordset to a string because we removed the rights for public user.
         """
-        return request.redirect('/appointment/%s?%s' % (unslug(appointment_type), keep_query('*')), code=301)
+        return request.redirect('/appointment/%s?%s' % (unslug(appointment_type)[1], keep_query('*')), code=301)
 
     @route(['/appointment/<int:appointment_type_id>'],
            type='http', auth="public", website=True, sitemap=True)

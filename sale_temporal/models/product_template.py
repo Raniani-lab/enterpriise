@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.tools import format_amount
-from odoo import fields, models, _
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -10,6 +11,26 @@ class ProductTemplate(models.Model):
     product_pricing_ids = fields.One2many('product.pricing', 'product_template_id', string="Custom Pricings", auto_join=True, copy=True)
     is_temporal = fields.Boolean(compute='_compute_is_temporal')
     display_price = fields.Char("Leasing price", help="First leasing pricing of the product", compute="_compute_display_price")
+
+    @api.model
+    def _get_incompatible_types(self):
+        return []
+
+    def _check_incompatible_types(self):
+        incomptatible_types = self._get_incompatible_types()
+        if len(incomptatible_types) < 2:
+            return
+        fields = self.env['ir.model.fields'].search_read(
+            [('model', '=', 'product.template'), ('name', 'in', incomptatible_types)],
+            ['field_description'])
+        field_descriptions = [v['field_description'] for v in fields]
+        field_list = incomptatible_types + ['name']
+        values = self.read(field_list)
+        for val in values:
+            incompatible_values = [val[f] for f in self._get_incompatible_types() if val[f]]
+            if len(incompatible_values) > 1:
+                raise ValidationError(_("The product (%s) has incompatible values: %s",
+                                        val['name'], ','.join(field_descriptions)))
 
     def _compute_is_temporal(self):
         self.is_temporal = False

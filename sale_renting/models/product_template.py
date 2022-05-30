@@ -16,6 +16,15 @@ class ProductTemplate(models.Model):
     extra_hourly = fields.Float("Extra Hour", help="Fine by hour overdue", company_dependent=True)
     extra_daily = fields.Float("Extra Day", help="Fine by day overdue", company_dependent=True)
 
+    @api.model
+    def _get_incompatible_types(self):
+        return ['rent_ok'] + super()._get_incompatible_types()
+
+    @api.constrains('rent_ok')
+    def _prevent_renting_incompability(self):
+        """ Some boolean fields are incompatibles """
+        self._check_incompatible_types()
+
     @api.depends('rent_ok')
     def _compute_is_temporal(self):
         super()._compute_is_temporal()

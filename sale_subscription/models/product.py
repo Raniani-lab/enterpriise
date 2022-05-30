@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
 
 
 class product_template(models.Model):
@@ -9,6 +8,15 @@ class product_template(models.Model):
     recurring_invoice = fields.Boolean(
         'Subscription Product',
         help='If set, confirming a sale order with this product will create a subscription')
+
+    @api.model
+    def _get_incompatible_types(self):
+        return ['recurring_invoice'] + super()._get_incompatible_types()
+
+    @api.constrains('recurring_invoice')
+    def _prevent_subscription_incompability(self):
+        """ Some boolean fields are incompatibles """
+        self._check_incompatible_types()
 
     @api.depends('recurring_invoice')
     def _compute_is_temporal(self):

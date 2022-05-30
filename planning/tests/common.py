@@ -47,6 +47,7 @@ class TestCommonPlanning(TransactionCase):
             'work_email': 'joseph@a.be',
             'tz': 'UTC',
             'employee_type': 'freelance',
+            'create_date': '2015-01-01 00:00:00',
         })
         cls.resource_joseph = cls.employee_joseph.resource_id
         cls.employee_bert = cls.env['hr.employee'].create({
@@ -54,6 +55,7 @@ class TestCommonPlanning(TransactionCase):
             'work_email': 'bert@a.be',
             'tz': 'UTC',
             'employee_type': 'freelance',
+            'create_date': '2015-01-01 00:00:00',
         })
         cls.resource_bert = cls.employee_bert.resource_id
         cls.employee_janice = cls.env['hr.employee'].create({
@@ -61,8 +63,6 @@ class TestCommonPlanning(TransactionCase):
             'work_email': 'janice@a.be',
             'tz': 'America/New_York',
             'employee_type': 'freelance',
+            'create_date': '2015-01-01 00:00:00',
         })
         cls.resource_janice = cls.employee_janice.resource_id
-
-        cls.env.cr.execute("UPDATE hr_employee SET create_date=%s WHERE id in %s",
-                           ('2015-01-01 00:00:00', (cls.employee_janice.id, cls.employee_bert.id, cls.employee_joseph.id)))

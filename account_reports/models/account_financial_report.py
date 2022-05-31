@@ -1045,7 +1045,7 @@ class AccountFinancialReportLine(models.Model):
         # are used in some balance sheet formulas. However, the balance sheet is a single-date mode report but not the
         # P&L.
         if parent_financial_report and calling_financial_report != parent_financial_report:
-            new_options = parent_financial_report._get_options(previous_options=options)
+            new_options = parent_financial_report._get_options(previous_options={**options, 'date': {**options['date'], 'filter': 'custom'}})
 
             # Propate the 'ir_filters' manually because 'applicable_filters_ids' could be different
             # in both reports. In that case, we need to propagate it whatever the configuration.

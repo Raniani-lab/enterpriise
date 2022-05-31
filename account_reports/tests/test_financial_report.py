@@ -239,6 +239,76 @@ class TestFinancialReport(TestAccountReportsCommon):
             ],
         )
 
+    @freeze_time("2016-05-05")
+    def test_balance_sheet_last_month_vs_custom_current_year_earnings(self):
+        """
+        Checks the balance sheet calls the right period of the P&L when using last_month date filter, or an equivalent custom filter
+        (this used to fail due to options regeneration made by the P&L's _get_options())"
+        """
+        to_invoice = [('15', '11'), ('15', '12'), ('16', '01'), ('16', '02'), ('16', '03'), ('16', '04')]
+        for year, month in to_invoice:
+            invoice = self.env['account.move'].create({
+                'move_type': 'out_invoice',
+                'partner_id': self.partner_a.id,
+                'invoice_date': f'20{year}-{month}-01',
+                'invoice_line_ids': [(0, 0, {'product_id': self.product_a.id, 'price_unit': 1000})]
+            })
+            invoice.action_post()
+        expected_result =[
+                ('ASSETS',                                      6000.0),
+                ('Current Assets',                              6000.0),
+                ('Bank and Cash Accounts',                      ''),
+                ('Receivables',                                 6000.0),
+                ('Current Assets',                              ''),
+                ('Prepayments',                                 ''),
+                ('Total Current Assets',                        6000.0),
+                ('Plus Fixed Assets',                           ''),
+                ('Plus Non-current Assets',                     ''),
+                ('Total ASSETS',                                6000.0),
+
+                ('LIABILITIES',                                 ''),
+                ('Current Liabilities',                         ''),
+                ('Current Liabilities',                         ''),
+                ('Payables',                                    ''),
+                ('Total Current Liabilities',                   ''),
+                ('Plus Non-current Liabilities',                ''),
+                ('Total LIABILITIES',                           ''),
+
+                ('EQUITY',                                      6000.0),
+                ('Unallocated Earnings',                        6000.0),
+                ('Current Year Unallocated Earnings',           4000.0),
+                ('Current Year Earnings',                       4000.0),
+                ('Current Year Allocated Earnings',             ''),
+                ('Total Current Year Unallocated Earnings',     4000.0),
+                ('Previous Years Unallocated Earnings',         2000.0),
+                ('Total Unallocated Earnings',                  6000.0),
+                ('Retained Earnings',                           ''),
+                ('Total EQUITY',                                6000.0),
+                ('LIABILITIES + EQUITY',                        6000.0),
+
+            ]
+        options = self._init_options(self.report, fields.Date.from_string('2016-05-05'), fields.Date.from_string('2016-05-05'))
+        options.pop('multi_company', None)
+
+        # End of Last Month
+        options['date']['filter'] = 'last_month'
+        lines = self.report._get_table(options)[1]
+        self.assertLinesValues(
+            lines,
+            #   Name                                            Balance
+            [   0,                                              1],
+            expected_result,
+        )
+        # Custom
+        options['date']['filter'] = 'custom'
+        lines = self.report._get_table(options)[1]
+        self.assertLinesValues(
+            lines,
+            #   Name                                            Balance
+            [   0,                                              1],
+            expected_result,
+        )
+
     def test_financial_report_single_company(self):
         line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')
         options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))

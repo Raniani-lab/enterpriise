@@ -47,6 +47,31 @@
         }
     }
 
+    var CellErrorType;
+    (function (CellErrorType) {
+        CellErrorType["NotAvailable"] = "#N/A";
+        CellErrorType["InvalidReference"] = "#REF";
+        CellErrorType["BadExpression"] = "#BAD_EXPR";
+        CellErrorType["CircularDependency"] = "#CYCLE";
+        CellErrorType["GenericError"] = "#ERROR";
+    })(CellErrorType || (CellErrorType = {}));
+    class EvaluationError extends Error {
+        constructor(cellErrorType, message) {
+            super(message);
+            this.errorType = cellErrorType;
+        }
+    }
+    class InvalidReferenceError extends EvaluationError {
+        constructor() {
+            super(CellErrorType.InvalidReference, _lt("Invalid reference"));
+        }
+    }
+    class NotAvailableError extends EvaluationError {
+        constructor() {
+            super(CellErrorType.NotAvailable, _lt("Data not available"));
+        }
+    }
+
     // Colors
     const BACKGROUND_GRAY_COLOR = "#f5f5f5";
     const BACKGROUND_HEADER_COLOR = "#F8F9FA";
@@ -94,7 +119,7 @@
     // DateTimeRegex
     const DATETIME_FORMAT = /[ymd:]/;
     // Ranges
-    const INCORRECT_RANGE_STRING = "#REF";
+    const INCORRECT_RANGE_STRING = CellErrorType.InvalidReference;
     // Max Number of history steps kept in memory
     const MAX_HISTORY_STEPS = 99;
     // Id of the first revision
@@ -3070,7 +3095,7 @@
         const sheetId = env.model.getters.getActiveSheetId();
         const position = {
             x: env.model.getters.getColDimensions(sheetId, zone.right + 1).start,
-            y: env.model.getters.getColDimensions(sheetId, zone.top).start,
+            y: env.model.getters.getRowDimensions(sheetId, zone.top).start,
         };
         let dataSetsHaveTitle = false;
         for (let x = dataSetZone.left; x <= dataSetZone.right; x++) {
@@ -10270,6 +10295,24 @@
     });
 
     // -----------------------------------------------------------------------------
+    // ISERR
+    // -----------------------------------------------------------------------------
+    const ISERR = {
+        description: _lt("Whether a value is an error other than #N/A."),
+        args: args(`value (any, lazy) ${_lt("The value to be verified as an error type.")}`),
+        returns: ["BOOLEAN"],
+        compute: function (value) {
+            try {
+                value();
+                return false;
+            }
+            catch (e) {
+                return (e === null || e === void 0 ? void 0 : e.errorType) != CellErrorType.NotAvailable;
+            }
+        },
+        isExported: true,
+    };
+    // -----------------------------------------------------------------------------
     // ISERROR
     // -----------------------------------------------------------------------------
     const ISERROR = {
@@ -10296,6 +10339,24 @@
         returns: ["BOOLEAN"],
         compute: function (value) {
             return typeof value === "boolean";
+        },
+        isExported: true,
+    };
+    // -----------------------------------------------------------------------------
+    // ISNA
+    // -----------------------------------------------------------------------------
+    const ISNA = {
+        description: _lt("Whether a value is the error #N/A."),
+        args: args(`value (any, lazy) ${_lt("The value to be verified as an error type.")}`),
+        returns: ["BOOLEAN"],
+        compute: function (value) {
+            try {
+                value();
+                return false;
+            }
+            catch (e) {
+                return (e === null || e === void 0 ? void 0 : e.errorType) == CellErrorType.NotAvailable;
+            }
         },
         isExported: true,
     };
@@ -10335,14 +10396,29 @@
         },
         isExported: true,
     };
+    // -----------------------------------------------------------------------------
+    // NA
+    // -----------------------------------------------------------------------------
+    const NA = {
+        description: _lt("Returns the error value #N/A."),
+        args: args(``),
+        returns: ["BOOLEAN"],
+        compute: function (value) {
+            throw new NotAvailableError();
+        },
+        isExported: true,
+    };
 
     var info = /*#__PURE__*/Object.freeze({
         __proto__: null,
+        ISERR: ISERR,
         ISERROR: ISERROR,
         ISLOGICAL: ISLOGICAL,
+        ISNA: ISNA,
         ISNONTEXT: ISNONTEXT,
         ISNUMBER: ISNUMBER,
-        ISTEXT: ISTEXT
+        ISTEXT: ISTEXT,
+        NA: NA
     });
 
     // -----------------------------------------------------------------------------
@@ -11326,12 +11402,6 @@
             addDescr.category = category;
             name = name.replace("_", ".");
             functionRegistry.add(name, { isExported: false, ...addDescr });
-        }
-    }
-
-    class InvalidReferenceError extends Error {
-        constructor() {
-            super(_lt("Invalid reference"));
         }
     }
 
@@ -12377,12 +12447,12 @@
         get defaultAlign() {
             switch (this.evaluated.type) {
                 case CellValueType.number:
+                case CellValueType.empty:
                     return "right";
                 case CellValueType.boolean:
                 case CellValueType.error:
                     return "center";
                 case CellValueType.text:
-                case CellValueType.empty:
                     return "left";
             }
         }
@@ -12589,7 +12659,7 @@
          * @param properties
          */
         constructor(id, content, error, properties) {
-            super(id, { value: "#BAD_EXPR", type: CellValueType.error, error }, properties);
+            super(id, { value: CellErrorType.BadExpression, type: CellValueType.error, error }, properties);
             this.content = content;
         }
     }
@@ -17928,9 +17998,11 @@
                     this.selectionEnd = this.currentContent.length;
                     break;
                 case "ACTIVATE_SHEET":
-                    const { col, row } = getNextVisibleCellPosition(this.getters.getSheet(cmd.sheetIdTo), 0, 0);
-                    const zone = this.getters.expandZone(cmd.sheetIdTo, positionToZone({ col, row }));
-                    this.selection.resetAnchor(this, { cell: { col, row }, zone });
+                    if (cmd.sheetIdFrom !== cmd.sheetIdTo) {
+                        const { col, row } = getNextVisibleCellPosition(this.getters.getSheet(cmd.sheetIdTo), 0, 0);
+                        const zone = this.getters.expandZone(cmd.sheetIdTo, positionToZone({ col, row }));
+                        this.selection.resetAnchor(this, { cell: { col, row }, zone });
+                    }
                     break;
                 case "DELETE_SHEET":
                 case "UNDO":
@@ -18436,7 +18508,7 @@
                     e = new Error(e);
                 }
                 if (cell.evaluated.type !== CellValueType.error) {
-                    const msg = e instanceof InvalidReferenceError ? INCORRECT_RANGE_STRING : "#ERROR";
+                    const msg = (e === null || e === void 0 ? void 0 : e.errorType) || CellErrorType.GenericError;
                     // apply function name
                     const __lastFnCalled = params[2].__lastFnCalled || "";
                     cell.assignError(msg, e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled));
@@ -18449,7 +18521,7 @@
                 const cellId = cell.id;
                 if (cellId in visited) {
                     if (visited[cellId] === null) {
-                        cell.assignError("#CYCLE", _lt("Circular reference"));
+                        cell.assignError(CellErrorType.CircularDependency, _lt("Circular reference"));
                     }
                     return;
                 }
@@ -18499,11 +18571,11 @@
             }
             function getCellValue(cell, sheetId) {
                 if (cell.isFormula() && cell.evaluated.type === CellValueType.error) {
-                    throw new Error(_lt("This formula depends on invalid values"));
+                    throw new EvaluationError(cell.evaluated.value, _lt("This formula depends on invalid values: %s", cell.evaluated.error));
                 }
                 computeValue(cell, sheetId);
                 if (cell.evaluated.type === CellValueType.error) {
-                    throw new Error(_lt("This formula depends on invalid values"));
+                    throw new EvaluationError(cell.evaluated.value, _lt("This formula depends on invalid values: %s", cell.evaluated.error));
                 }
                 return cell.evaluated.value;
             }
@@ -21323,6 +21395,13 @@
                         this.willAddNewRange = this.ranges[index].xc.trim() !== "";
                     }
                     break;
+                }
+                case "ACTIVATE_SHEET": {
+                    if (cmd.sheetIdFrom !== cmd.sheetIdTo) {
+                        const { col, row } = getNextVisibleCellPosition(this.getters.getSheet(cmd.sheetIdTo), 0, 0);
+                        const zone = this.getters.expandZone(cmd.sheetIdTo, positionToZone({ col, row }));
+                        this.selection.resetAnchor(this, { cell: { col, row }, zone });
+                    }
                 }
             }
         }
@@ -29949,7 +30028,7 @@
             const XlsxFormula = adaptFormulaToExcel(formula);
             // hack for cycles : if we don't set a value (be it 0 or #VALUE!), it will appear as invisible on excel,
             // Making it very hard for the client to find where the recursion is.
-            if (cell.value === "#CYCLE") {
+            if (cell.value === CellErrorType.CircularDependency) {
                 attrs.push(["t", "str"]);
                 cycle = escapeXml /*xml*/ `<v>${cell.value}</v>`;
             }
@@ -31307,8 +31386,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-05-23T15:56:21.933Z';
-    exports.__info__.hash = 'b3c8080';
+    exports.__info__.date = '2022-05-31T08:23:10.569Z';
+    exports.__info__.hash = '562510d';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

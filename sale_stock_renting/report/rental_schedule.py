@@ -13,12 +13,14 @@ class RentalSchedule(models.Model):
     # TODO color depending on report_line_status
 
     def _compute_is_available(self):
-        for rental in self:
-            if rental.rental_status not in ['return', 'returned', 'cancel'] and rental.return_date > fields.Datetime.now() and rental.product_id.type == 'product':
-                sol = rental.order_line_id
-                rental.is_available = sol.virtual_available_at_date - sol.product_uom_qty >= 0
-            else:
-                rental.is_available = True
+        quoted_rentals_with_product = self.filtered(
+            lambda r: r.rental_status not in ['return', 'returned', 'cancel']
+                and r.return_date > fields.Datetime.now()
+                and r.product_id.type == 'product')
+        for rental in quoted_rentals_with_product:
+            sol = rental.order_line_id
+            rental.is_available = sol.virtual_available_at_date - sol.product_uom_qty >= 0
+        (self - quoted_rentals_with_product).is_available = True
 
     def _get_product_name(self):
         lang = self.env.lang or 'en_US'

@@ -1,9 +1,7 @@
 odoo.define('web_studio.FormEditor', function (require) {
 "use strict";
 
-// ensure the component is registered beforehand.
-require('@mail/components/chatter_container/chatter_container');
-const { getMessagingComponent } = require('@mail/utils/messaging_component');
+const { ChatterContainer } = require('@mail/components/chatter_container/chatter_container');
 
 var core = require('web.core');
 var FormRenderer = require('web.FormRenderer');
@@ -309,7 +307,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
                 if (!self._chatterContainerOverview) {
                     self._chatterContainerOverview = new ChatterContainerWrapperComponent(
                         self,
-                        getMessagingComponent('ChatterContainer'),
+                        ChatterContainer,
                         {
                             threadModel: self.state.model,
                         },

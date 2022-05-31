@@ -96,7 +96,7 @@
         </div>
         <div t-if="displayInformation"> <!-- Picking Form View -->
             <ViewsWidgetAdapter Component="ViewsWidget" data="informationParams"/>
-            <ChatterContainerWithLegacyEnv threadModel="props.model" threadId="props.id"/>
+            <ChatterContainer threadModel="props.model" threadId="props.id"/>
         </div>
         <div t-if="displayBarcodeActions" class="o_barcode_settings flex-column h100 bg-700">
             <t t-foreach="env.model.printButtons" t-as="button" t-key="button.class">

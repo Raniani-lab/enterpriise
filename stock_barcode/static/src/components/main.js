@@ -1,5 +1,7 @@
 /** @odoo-module **/
 
+import { ChatterContainer } from '@mail/components/chatter_container/chatter_container';
+
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
 import config from 'web.config';
@@ -8,7 +10,6 @@ import GroupedLineComponent from '@stock_barcode/components/grouped_line';
 import LineComponent from '@stock_barcode/components/line';
 import LocationButton from '@stock_barcode/components/location_button';
 import PackageLineComponent from '@stock_barcode/components/package_line';
-import ChatterContainerWithLegacyEnv from '@stock_barcode/components/chatter_container_legacy';
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import ViewsWidget from '@stock_barcode/widgets/views_widget';
@@ -487,7 +488,7 @@ MainComponent.components = {
     LocationButton,
     PackageLineComponent,
     ViewsWidgetAdapter,
-    ChatterContainerWithLegacyEnv,
+    ChatterContainer,
 };
 
 registry.category("actions").add("stock_barcode_client_action", MainComponent);

@@ -5,9 +5,7 @@ const DocumentsInspector = require('documents.DocumentsInspector');
 const DocumentViewer = require('documents.DocumentViewer');
 const { computeMultiSelection } = require('documents.utils');
 
-// ensure the component is registered beforehand.
-require('@mail/components/chatter_container/chatter_container');
-const { getMessagingComponent } = require('@mail/utils/messaging_component');
+const { ChatterContainer } = require('@mail/components/chatter_container/chatter_container');
 
 const { _t, qweb } = require('web.core');
 const config = require('web.config');
@@ -312,7 +310,7 @@ const DocumentsControllerMixin = Object.assign({}, fileUploadMixin, {
         const props = this._makeChatterContainerProps();
         this._chatterContainerComponent = new ChatterContainerWrapperComponent(
             this,
-            getMessagingComponent('ChatterContainer'),
+            ChatterContainer,
             props
         );
         const $chatterContainer = $(qweb.render('documents.ChatterContainer'));

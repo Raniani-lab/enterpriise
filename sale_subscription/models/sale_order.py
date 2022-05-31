@@ -1018,7 +1018,7 @@ class SaleOrder(models.Model):
         # Set quantity to invoice before the invoice creation. If something goes wrong, the line will appear as "to invoice"
         # It prevent to use the _compute method and compare the today date and the next_invoice_date in the compute.
         # That would be bad for perfs
-        all_invoiceable_lines._reset_subscription_qty_to_invoice(to_invoice=True)
+        all_invoiceable_lines._reset_subscription_qty_to_invoice()
         if auto_commit:
             self.env.cr.commit()
         for subscription in all_subscriptions:
@@ -1099,7 +1099,7 @@ class SaleOrder(models.Model):
                 line_to_update_ids |= line
 
         line_to_update_ids._update_next_invoice_date()
-        line_to_update_ids._reset_subscription_qty_to_invoice(to_invoice=False)
+        line_to_update_ids._reset_subscription_qty_to_invoice()
         return invoices
 
     def _subscription_auto_close_and_renew(self, all_invoiceable_lines):
@@ -1406,6 +1406,6 @@ class SaleOrder(models.Model):
                 if line.temporal_type == 'subscription':
                     line_to_update_ids |= line
             line_to_update_ids._update_next_invoice_date()
-            line_to_update_ids._reset_subscription_qty_to_invoice(to_invoice=False)
+            line_to_update_ids._reset_subscription_qty_to_invoice()
             return True
         return False

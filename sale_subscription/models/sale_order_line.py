@@ -67,7 +67,7 @@ class SaleOrderLine(models.Model):
             if line.end_date:
                 to_invoice_check = to_invoice_check and line.order_id.end_date > today.date()
             if to_invoice_check:
-                if not line.last_invoice_date:
+                if not line.last_invoice_date and (not line.start_date or line.start_date and line.start_date <= today):
                     invoice_status = 'to invoice'
                 else:
                     invoice_status = 'no'
@@ -192,14 +192,10 @@ class SaleOrderLine(models.Model):
         At quotation confirmation, last_invoice_date is false, next_invoice is false and start_date is today.
         The next_invoice_date should be bumped up each time an invoice is created except for the first period.
         """
-        today = fields.Datetime.today()
         for line in self.filtered(lambda l: l.temporal_type == 'subscription'):
-            # don't update next_invoice date if the invoice_count is 0. First period invoiced: the next_invoice_date was set by the confirm action
-            update_needed = line.order_id.invoice_count > 1 or (line.next_invoice_date and line.next_invoice_date <= today)
-            if update_needed:
-                last_invoice_date = line.next_invoice_date or line.start_date
-                if last_invoice_date:
-                    line.next_invoice_date = last_invoice_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
+            last_invoice_date = line.next_invoice_date or line.start_date
+            if last_invoice_date:
+                line.next_invoice_date = last_invoice_date + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
 
     @api.depends('pricing_id')
     def _compute_price_unit(self):
@@ -388,12 +384,13 @@ class SaleOrderLine(models.Model):
                 result[line['id']] = {'id': line_pricing_id.id, 'display_name': line_pricing_id.name}
         return result
 
-    def _reset_subscription_qty_to_invoice(self, to_invoice=True):
+    def _reset_subscription_qty_to_invoice(self):
         """ Define the qty to invoice on subscription lines equal to product_uom_qty for recurring lines
-            It allows to avoid using the _compute_qty_to_invoice with a context_today
+            It allows avoiding using the _compute_qty_to_invoice with a context_today
         """
+        today = fields.Datetime.today()
         for line in self:
-            if not line.temporal_type == 'subscription' or line.product_id.invoice_policy == 'delivery':
+            if not line.temporal_type == 'subscription' or line.product_id.invoice_policy == 'delivery' or line.start_date and line.start_date > today:
                 continue
             line.qty_to_invoice = line.product_uom_qty
 

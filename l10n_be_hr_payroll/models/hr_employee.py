@@ -134,7 +134,7 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
     def _compute_niss(self):
         characters = dict.fromkeys([',', '.', '-', ' '], '')
         for employee in self:
-            if employee.identification_id and not employee.niss:
+            if employee.identification_id and not employee.niss and employee.company_country_code == 'BE':
                 employee.niss = reduce(lambda a, kv: a.replace(*kv), characters.items(), employee.identification_id)
 
     @api.model

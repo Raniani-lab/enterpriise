@@ -172,7 +172,7 @@ IconCreator.defaultProps = DEFAULT_ICON;
 IconCreator.props = {
     backgroundColor: { type: String, optional: 1 },
     color: { type: String, optional: 1 },
-    editable: Boolean,
+    editable: { type: Boolean, optional: 1 },
     iconClass: { type: String, optional: 1 },
     type: { validate: (t) => ["base64", "custom_icon"].includes(t) },
     uploaded_attachment_id: { type: Number, optional: 1 },

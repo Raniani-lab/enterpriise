@@ -54,6 +54,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     icon: "fa-circle",
                     bgColor: "bg-warning",
                 },
+                slots: {},
             },
         });
         assert.containsOnce(target, "div.o_actionswiper_right_swipe_area");
@@ -66,6 +67,7 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     icon: "fa-circle",
                     bgColor: "bg-warning",
                 },
+                slots: {},
             },
         });
         assert.containsOnce(target, "div.o_actionswiper_right_swipe_area");

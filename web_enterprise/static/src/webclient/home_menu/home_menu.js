@@ -284,19 +284,22 @@ HomeMenu.props = {
                 id: Number,
                 label: String,
                 parents: String,
-                webIcon: [
-                    Boolean,
-                    String,
-                    {
-                        type: Object,
-                        optional: 1,
-                        shape: {
-                            iconClass: String,
-                            color: String,
-                            backgroundColor: String,
+                webIcon: {
+                    type: [
+                        Boolean,
+                        String,
+                        {
+                            type: Object,
+                            optional: 1,
+                            shape: {
+                                iconClass: String,
+                                color: String,
+                                backgroundColor: String,
+                            },
                         },
-                    },
-                ],
+                    ],
+                    optional: true,
+                },
                 webIconData: { type: String, optional: 1 },
                 xmlid: String,
             },

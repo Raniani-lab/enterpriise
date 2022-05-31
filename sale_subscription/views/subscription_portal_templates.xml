@@ -162,7 +162,7 @@
                                         <thead class="bg-100">
                                             <tr>
                                                 <th>Product</th>
-                                                <th>Pricing</th>
+                                                <th>Recurrency</th>
                                                 <th class="text-right">Quantity</th>
                                                 <th class="text-right d-none d-sm-table-cell">Unit Price</th>
                                                 <th t-if="display_discount" class="text-right d-none d-sm-table-cell">

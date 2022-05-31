@@ -444,7 +444,7 @@ class HelpdeskTeam(models.Model):
             'use_credit_notes': 'helpdesk_account',
             'use_product_returns': 'helpdesk_stock',
             'use_product_repairs': 'helpdesk_repair',
-            'use_coupons': 'helpdesk_sale_coupon',
+            'use_coupons': 'helpdesk_sale_loyalty',
             'use_fsm': 'helpdesk_fsm',
         }
 

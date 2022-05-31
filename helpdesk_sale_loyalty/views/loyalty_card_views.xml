@@ -7,11 +7,11 @@
             <form>
                 <group>
                     <field name="code" widget="CopyClipboardChar"/>
-                    <field name="expiration_date"/>
+                    <field name="expiration_date" readonly="1"/>
                 </group>
                 <footer>
                     <button name="action_coupon_send" string="Send" type="object" class="btn btn-primary" data-hotkey="v"/>
-                    <button name="toggle_active" string="Cancel" type="object" class="btn btn-secondary" data-hotkey="w"/>
+                    <button string="Cancel" special="cancel" class="btn btn-secondary" data-hotkey="w"/>
                 </footer>
             </form>
         </field>

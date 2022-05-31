@@ -96,6 +96,7 @@
                 </div>
                 <div class="oe_structure"/>
             </div>
+            <input t-if='state == "new" and website.plausible_shared_key' type='hidden' class='js_plausible_push' data-event-name='Lead Generation' data-event-params='{"CTA": "Appointment"}' />
         </t>
     </template>
 </odoo>

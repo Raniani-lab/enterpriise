@@ -213,6 +213,16 @@ class SocialPost(models.Model):
     def create(self, vals_list):
         """Every post will have a unique corresponding utm.source for statistics computation purposes.
         This way, it will be possible to see every leads/quotations generated through a particular post."""
+
+        # if a scheduled_date / published_date is specified, it should be the one used as the calendar date
+        # this is normally handled by the `_compute_calendar_date` but in create mode,
+        # it is not called when a default value for the calendar_date field is passed
+        for vals in vals_list:
+            if vals.get('state') == 'posted' and 'published_date' in vals:
+                vals['calendar_date'] = vals['published_date']
+            elif 'scheduled_date' in vals:
+                vals['calendar_date'] = vals['scheduled_date']
+
         res = super(SocialPost, self).create(vals_list)
 
         cron = self.env.ref('social.ir_cron_post_scheduled')

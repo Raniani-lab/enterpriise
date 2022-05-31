@@ -6,6 +6,7 @@ from freezegun import freeze_time
 from unittest.mock import patch
 
 from odoo import fields
+from odoo.tests import Form
 from odoo.addons.social.tests import common
 from odoo.addons.social.tests.tools import mock_void_external_calls
 from odoo.addons.base.tests.test_ir_cron import CronMixinCase
@@ -130,6 +131,18 @@ class TestSocialBasics(common.SocialCase, CronMixinCase):
             msg='Should have truncated the message')
         self.assertEqual(post_7.name, 'Long message xxxxxxx... (Social Post created on 2022-01-02) [2]',
             msg='Should have truncated the message and added a counter at the end')
+
+    def test_social_post_create_with_default_calendar_date(self):
+        """ Make sure that when a default_calendar_date is passed and the scheduled_date is changed,
+        We take into account the new scheduled_date as calendar_date.
+        See social.post#create for more details."""
+        form = Form(self.env['social.post'].with_context(default_calendar_date='2022-05-29 05:00:00'))
+        form.message = 'this is a message'
+        self.assertEqual(form.scheduled_date, datetime(2022, 5, 29, 5, 0, 0))
+        form.scheduled_date = '2022-05-30 09:01:40'
+        post = form.save()
+        self.assertEqual(post.calendar_date, datetime(2022, 5, 30, 9, 1, 40))
+        self.assertEqual(post.scheduled_date, datetime(2022, 5, 30, 9, 1, 40))
 
     @classmethod
     def _get_social_media(cls):

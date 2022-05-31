@@ -38,4 +38,5 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
             'res_id': coupon.id,
             'view_mode': 'form',
             'view_id': view.id,
+            'target': 'new',
         }

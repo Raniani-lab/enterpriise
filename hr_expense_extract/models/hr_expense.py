@@ -303,12 +303,12 @@ class HrExpense(models.Model):
 
                     self.env['iap.account']._send_iap_bus_notification(
                         service_name='invoice_ocr',
-                        title=_("Expense is being Digitalized"))
+                        title=_("Expense is being Digitized"))
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                     self.extract_state = 'not_enough_credit'
                     self.env['iap.account']._send_iap_bus_notification(
                         service_name='invoice_ocr',
-                        title=_("Not enough credits for Bill Digitalization"),
+                        title=_("Not enough credits for Bill Digitization"),
                         error_type='credit')
                 else:
                     self.extract_state = 'error_status'

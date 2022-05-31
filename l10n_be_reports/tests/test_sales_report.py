@@ -29,9 +29,9 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
 
     @freeze_time('2019-12-31')
     def test_ec_sales_report(self):
-        l_tax = self.env['account.tax'].search([('name', '=', '0% EU M.'), ('company_id', '=', self.company_data['company'].id)])[0]
-        t_tax = self.env['account.tax'].search([('name', '=', '0% EU T.'), ('company_id', '=', self.company_data['company'].id)])[0]
-        s_tax = self.env['account.tax'].search([('name', '=', '0% EU S.'), ('company_id', '=', self.company_data['company'].id)])[0]
+        l_tax = self.env['account.tax'].search([('name', '=', '0% EU M'), ('company_id', '=', self.company_data['company'].id)])[0]
+        t_tax = self.env['account.tax'].search([('name', '=', '0% EU T'), ('company_id', '=', self.company_data['company'].id)])[0]
+        s_tax = self.env['account.tax'].search([('name', '=', '0% EU S'), ('company_id', '=', self.company_data['company'].id)])[0]
         self._create_invoices([
             (self.partner_a, l_tax, 300),
             (self.partner_a, l_tax, 300),

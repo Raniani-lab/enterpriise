@@ -1,8 +1,7 @@
 /** @odoo-module */
 
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
-import { _t } from "@web/core/l10n/translation";
-
+import { LoadingDataError } from "../../o_spreadsheet/errors";
 /**
  * @typedef {import("./list_plugin").SpreadsheetList} SpreadsheetList
  * @typedef {import("../../o_spreadsheet/basic_data_source").Field} Field
@@ -106,7 +105,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     getListHeaderValue(listId, fieldName) {
         const model = this.getters.getSpreadsheetListModel(listId);
         if (!model) {
-            return _t("Loading...");
+            throw new LoadingDataError();
         }
         return model.getListHeaderValue(fieldName);
     }
@@ -122,7 +121,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     getListCellValue(listId, position, fieldName) {
         const model = this.getters.getSpreadsheetListModel(listId);
         if (!model) {
-            return _t("Loading...");
+            throw new LoadingDataError();
         }
         return model.getListCellValue(position, fieldName);
     }

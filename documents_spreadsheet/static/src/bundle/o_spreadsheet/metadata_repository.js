@@ -110,7 +110,7 @@ const { EventBus } = owl;
   getRecordDisplayName(model, id) {
       try {
           const result = this.serverData.batch.get(model, "name_get", id);
-          return result && result[1];
+          return result[1];
       } catch (_) {
           throw new Error(sprintf(_t("Unable to fetch the label of %s of model %s"), id, model));
       }

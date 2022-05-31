@@ -2,6 +2,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { orderByToString } from '../helpers';
+import { LoadingDataError } from "../o_spreadsheet/errors";
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 
 const { toNumber } = spreadsheet.helpers;
@@ -71,7 +72,7 @@ export class SpreadsheetListModel extends EventBus {
             this.limit = position + 1;
             // A reload is needed because the asked position is not already loaded.
             this._triggerFetching();
-            return _t("Loading...");
+            throw new LoadingDataError();
         }
         const record = this.data[position];
         if (!record) {

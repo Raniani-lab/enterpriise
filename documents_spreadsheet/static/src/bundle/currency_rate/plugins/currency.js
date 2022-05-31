@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { _t } from "@web/core/l10n/translation";
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import { CurrencyDataSource } from "../currency_data_source";
 const { uiPluginRegistry } = spreadsheet.registries;
@@ -30,8 +29,7 @@ class CurrencyPlugin extends spreadsheet.UIPlugin {
      * @returns {number|string}
      */
     getCurrencyRate(from, to, date) {
-        const rate = this.dataSources && this.dataSources.get(DATA_SOURCE_ID).getCurrencyRate(from, to, date);
-        return rate ? rate : _t("Loading...");
+        return this.dataSources && this.dataSources.get(DATA_SOURCE_ID).getCurrencyRate(from, to, date);
     }
 }
 

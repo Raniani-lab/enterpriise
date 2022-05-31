@@ -88,10 +88,10 @@ module("documents_spreadsheet > Metadata Repository", {}, () => {
             assert.step("labels-fetched");
         });
 
-        assert.strictEqual(metadataRepository.getRecordDisplayName("A", 1), undefined);
-        assert.strictEqual(metadataRepository.getRecordDisplayName("A", 1), undefined);
-        assert.strictEqual(metadataRepository.getRecordDisplayName("A", 2), undefined);
-        assert.strictEqual(metadataRepository.getRecordDisplayName("B", 1), undefined);
+        assert.throws(() => metadataRepository.getRecordDisplayName("A", 1));
+        assert.throws(() => metadataRepository.getRecordDisplayName("A", 1));
+        assert.throws(() => metadataRepository.getRecordDisplayName("A", 2));
+        assert.throws(() => metadataRepository.getRecordDisplayName("B", 1));
         assert.verifySteps([]);
 
         await nextTick();
@@ -108,7 +108,6 @@ module("documents_spreadsheet > Metadata Repository", {}, () => {
     });
 
     test("Name_get to fetch are cleared after being fetched", async function (assert) {
-        assert.expect(5);
 
         const orm = {
             silent: {
@@ -122,19 +121,18 @@ module("documents_spreadsheet > Metadata Repository", {}, () => {
 
         const metadataRepository = new MetadataRepository(orm);
 
-        metadataRepository.getRecordDisplayName("A", 1);
+        assert.throws(() => metadataRepository.getRecordDisplayName("A", 1));
         assert.verifySteps([]);
 
         await nextTick();
         assert.verifySteps(["name_get-A-[1]"]);
 
-        metadataRepository.getRecordDisplayName("A", 2);
+        assert.throws(() => metadataRepository.getRecordDisplayName("A", 2));
         await nextTick();
         assert.verifySteps(["name_get-A-[2]"]);
     });
 
     test("Name_get will retry with one id by request in case of failure", async function (assert) {
-        assert.expect(9);
 
         const orm = {
             silent: {
@@ -151,9 +149,9 @@ module("documents_spreadsheet > Metadata Repository", {}, () => {
 
         const metadataRepository = new MetadataRepository(orm);
 
-        metadataRepository.getRecordDisplayName("A", 1);
-        metadataRepository.getRecordDisplayName("B", 1);
-        metadataRepository.getRecordDisplayName("B", 2);
+        assert.throws(() => metadataRepository.getRecordDisplayName("A", 1));
+        assert.throws(() => metadataRepository.getRecordDisplayName("B", 1));
+        assert.throws(() => metadataRepository.getRecordDisplayName("B", 2));
         assert.verifySteps([]);
 
         await nextTick();

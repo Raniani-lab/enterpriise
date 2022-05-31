@@ -2,6 +2,7 @@
 
 import { _t } from "web.core";
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
+import { LoadingDataError } from "../../o_spreadsheet/errors";
 
 export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     constructor() {
@@ -79,7 +80,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     getPivotHeaderValue(pivotId, domain) {
         const model = this.getters.getSpreadsheetPivotModel(pivotId);
         if (!model) {
-            return _t("Loading...");
+            throw new LoadingDataError();
         }
         model.markAsHeaderUsed(domain);
         const len = domain.length;
@@ -101,7 +102,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     getPivotCellValue(pivotId, measure, domain) {
         const model = this.getters.getSpreadsheetPivotModel(pivotId);
         if (!model) {
-            return _t("Loading...");
+            throw new LoadingDataError();
         }
         model.markAsValueUsed(domain, measure);
         return model.getPivotCellValue(measure, domain);

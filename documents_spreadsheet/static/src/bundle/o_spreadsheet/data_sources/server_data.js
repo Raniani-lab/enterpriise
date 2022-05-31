@@ -1,4 +1,5 @@
 /** @odoo-module */
+import { LoadingDataError } from "../errors";
 
 /**
  * @param {T[]} array
@@ -112,8 +113,10 @@ export class ServerData {
     _getBatchItem(resModel, method, ...args) {
         const request = new Request(resModel, method, args);
         if (!(request.key in this.cache)) {
+            const error = new LoadingDataError();
+            this.cache[request.key] = error;
             this._batch(request);
-            return undefined;
+            throw error;
         }
         return this._getOrThrowCachedResponse(request);
     }
@@ -127,13 +130,14 @@ export class ServerData {
     get(resModel, method, ...args) {
         const request = new Request(resModel, method, args);
         if (!(request.key in this.cache)) {
-            this.cache[request.key] = undefined;
+            const error = new LoadingDataError();
+            this.cache[request.key] = error;
             this.orm
                 .call(resModel, method, ...args)
                 .then((result) => (this.cache[request.key] = result))
                 .catch((error) => (this.cache[request.key] = error))
                 .finally(() => this.dataFetchedCallback());
-            return undefined;
+            throw error;
         }
         return this._getOrThrowCachedResponse(request);
     }
@@ -169,7 +173,6 @@ export class ServerData {
      */
     _batch(request) {
         const endpoint = this._getBatchEndPoint(request.resModel, request.method);
-        this.cache[request.key] = undefined;
         endpoint.call(request);
     }
 

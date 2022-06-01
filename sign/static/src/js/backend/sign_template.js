@@ -852,14 +852,9 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
     if (this.templateID === undefined) {
       return this.go_back_to_kanban();
     }
+    this.renderButtons();
+    this.controlPanelProps.cp_content = { $buttons: this.$buttons };
     return this._super()
-      .then(() => {
-        this.renderButtons();
-        const status = {
-          cp_content: { $buttons: this.$buttons },
-        };
-        return this.updateControlPanel(status);
-      })
       .then(() => {
         this.initialize_content();
         this.createTemplateTagsField();

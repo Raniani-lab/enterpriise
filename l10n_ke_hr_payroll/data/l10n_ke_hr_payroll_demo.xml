@@ -17,14 +17,8 @@
         <field name="company_ids" eval="[(4, ref('l10n_ke_hr_payroll.res_company_ke'))]"/>
     </record>
 
-    <record id="hr_department_rdke" model="hr.department">
-        <field name="name">RD KE</field>
-        <field name="company_id" ref="l10n_ke_hr_payroll.res_company_ke"/>
-    </record>
-
     <record id="job_developer_kenya" model="hr.job">
         <field name="name">Experienced Developer LU</field>
-        <field name="department_id" ref="hr_department_rdke"/>
         <field name="no_of_recruitment">5</field>
         <field name="company_id" ref="l10n_ke_hr_payroll.res_company_ke"/>
     </record>
@@ -51,8 +45,8 @@
 
     <record id="user_barack" model="res.users">
         <field name="partner_id" ref="l10n_ke_hr_payroll.res_partner_barack"/>
-        <field name="login">barack</field>
-        <field name="password">barack</field>
+        <field name="login">barackakintola</field>
+        <field name="password">barackakintola</field>
         <field name="signature" type="xml"><span>--<br/>+B. Akintola</span></field>
         <field name="company_ids" eval="[(4, ref('l10n_ke_hr_payroll.res_company_ke'))]"/>
         <field name="company_id" ref="l10n_ke_hr_payroll.res_company_ke"/>
@@ -116,7 +110,6 @@
 
     <record id="hr_contract_cdi_barack_previous" model="hr.contract">
         <field name="name">CDI - Barack Akintola - Experienced Developer</field>
-        <field name="department_id" ref="hr_department_rdke"/>
         <field name="employee_id" ref="hr_employee_barack"/>
         <field name="job_id" ref="l10n_ke_hr_payroll.job_developer_kenya"/>
         <field name="structure_type_id" ref="l10n_ke_hr_payroll.structure_type_employee_ken"/>
@@ -134,7 +127,6 @@
 
     <record id="hr_contract_cdi_barack" model="hr.contract">
         <field name="name">CDI - Barack Akintola - Experienced Developer</field>
-        <field name="department_id" ref="hr_department_rdke"/>
         <field name="employee_id" ref="hr_employee_barack"/>
         <field name="job_id" ref="l10n_ke_hr_payroll.job_developer_kenya"/>
         <field name="structure_type_id" ref="l10n_ke_hr_payroll.structure_type_employee_ken"/>

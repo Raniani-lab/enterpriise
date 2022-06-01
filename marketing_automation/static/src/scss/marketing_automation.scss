@@ -24,7 +24,7 @@ $o-ma-border-color: gray($o-ma-border-color-gray-value);
 .o_ma_hierarchy {
     margin-left: -$o-horizontal-padding;
     margin-right: -$o-horizontal-padding;
-    @include media-breakpoint-between(lg, xl, $o-extra-grid-breakpoints) {
+    @include media-breakpoint-up(lg, $o-extra-grid-breakpoints) {
         margin-left: -$o-horizontal-padding*2;
         margin-right: -$o-horizontal-padding*2;
     }

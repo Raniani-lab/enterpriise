@@ -1016,14 +1016,6 @@ class Task(models.Model):
 
         return [traverse(inject_unavailability, row) for row in rows]
 
-    def _get_recurrence_start_date(self):
-        self.ensure_one()
-        return self.planned_date_begin.date() if self.planned_date_begin else fields.Date.today()
-
-    @api.depends('planned_date_begin')
-    def _compute_recurrence_message(self):
-        return super(Task, self)._compute_recurrence_message()
-
     def action_dependent_tasks(self):
         action = super().action_dependent_tasks()
         action['view_mode'] = 'tree,form,kanban,calendar,pivot,graph,gantt,activity,map'

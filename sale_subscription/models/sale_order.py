@@ -724,12 +724,19 @@ class SaleOrder(models.Model):
             # We set the start date and invoice date at the date of confirmation
             if not sub.start_date:
                 sub.start_date = today
-            end_date = sub.end_date
-            if sub.sale_order_template_id.recurring_rule_boundary == 'limited' and not sub.end_date:
-                end_date = sub.start_date + get_timedelta(sub.sale_order_template_id.recurring_rule_count, sub.sale_order_template_id.recurring_rule_type) - relativedelta(days=1)
-            sub.write({'end_date': end_date})
+            sub._set_subscription_end_date_from_template()
             sub.order_line._reset_subscription_qty_to_invoice()
             sub._save_token_from_payment()
+
+    def _set_subscription_end_date_from_template(self):
+        self.ensure_one()
+        end_date = self.end_date
+        if self.sale_order_template_id.recurring_rule_boundary == 'limited' and not end_date:
+            end_date = self.start_date + get_timedelta(
+                self.sale_order_template_id.recurring_rule_count,
+                self.sale_order_template_id.recurring_rule_type
+            ) - relativedelta(days=1)
+        self.write({'end_date': end_date})
 
     def _confirm_upsell(self):
         """

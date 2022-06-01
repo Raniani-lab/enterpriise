@@ -99,4 +99,13 @@
         <field name="company_id" eval="False"/>
     </record>
 
+    <record id="holiday_type_strike" model="hr.leave.type">
+        <field name="name">Strike</field>
+        <field name="requires_allocation">no</field>
+        <field name="request_unit">half_day</field>
+        <field name="color_name">lavender</field>
+        <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
+        <field name="work_entry_type_id" ref="work_entry_type_strike"></field>
+        <field name="company_id" eval="False"/>
+    </record>
 </odoo>

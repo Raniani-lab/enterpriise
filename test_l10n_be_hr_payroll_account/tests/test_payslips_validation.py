@@ -8305,3 +8305,64 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CO2FEE': 28.17,
         }
         self._validate_payslip(june_payslip, payslip_results)
+
+    def test_strike_days(self):
+        strike_leave = self.env['hr.leave'].new({
+            'name': 'Strike Day',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_strike').id,
+            'request_date_from': datetime.date(2022, 5, 17),
+            'request_date_to': datetime.date(2022, 5, 17),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 1,
+        })
+        strike_leave._compute_date_from_to()
+        strike_leave = self.env['hr.leave'].create(strike_leave._convert_to_write(strike_leave._cache))
+        strike_leave.action_validate()
+
+        payslip = self._generate_payslip(datetime.date(2022, 5, 1), datetime.date(2022, 5, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        self.assertEqual(len(payslip.line_ids), 32)
+
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE251'), 0.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('LEAVE251'), 1.0, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE251'), 7.6, places=2)
+
+        payslip_results = {
+            'BASIC': 2527.69,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2536.69,
+            'ONSS': -331.55,
+            'EmpBonus.1': 42.1,
+            'ONSSTOTAL': 289.45,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2409.66,
+            'IP.PART': -631.92,
+            'GROSS': 1777.74,
+            'P.P': -194.69,
+            'P.P.DED': 13.95,
+            'PPTOTAL': 180.74,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -14.04,
+            'MEAL_V_EMP': -22.89,
+            'REP.FEES': 150.0,
+            'IP': 631.92,
+            'IP.DED': -47.39,
+            'NET': 2123.17,
+            'REMUNERATION': 1895.77,
+            'ONSSEMPLOYERBASIC': 634.93,
+            'ONSSEMPLOYERFFE': 1.78,
+            'ONSSEMPLOYERMFFE': 2.54,
+            'ONSSEMPLOYERCPAE': 5.83,
+            'ONSSEMPLOYERRESTREINT': 42.87,
+            'ONSSEMPLOYERUNEMP': 2.54,
+            'ONSSEMPLOYER': 690.49,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)

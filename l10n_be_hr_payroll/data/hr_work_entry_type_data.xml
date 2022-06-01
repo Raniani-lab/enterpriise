@@ -343,4 +343,16 @@
         <field name="dmfa_code">30</field>
         <field name="color">4</field>
     </record>
+
+    <record id="work_entry_type_strike" model="hr.work.entry.type">
+        <field name="name">Strike</field>
+        <field name="code">LEAVE251</field>
+        <field name="dmfa_code">21</field>
+        <field name="color">5</field>
+        <field name="meal_voucher" eval="False"/>
+        <field name="private_car" eval="False"/>
+        <field name="representation_fees" eval="False"/>
+        <field name="is_leave" eval="True"/>
+        <field name="leave_right" eval="True"/>
+    </record>
 </odoo>

@@ -291,20 +291,20 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'BASIC': 415.38,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
-            'ATN.LAP': 7.0,
-            'SALARY': 431.38,
-            'ONSS': -56.38,
+            'ATN.LAP': 6.0,
+            'SALARY': 430.38,
+            'ONSS': -56.25,
             'EmpBonus.1': 0.0,
             'ATN.CAR': 141.14,
-            'GROSSIP': 516.14,
+            'GROSSIP': 515.27,
             'IP.PART': -103.85,
-            'GROSS': 412.3,
+            'GROSS': 411.43,
             'P.P': 0.0,
             'P.P.DED': 0.0,
             'ATN.CAR.2': -141.14,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
-            'ATN.LAP.2': -7.0,
+            'ATN.LAP.2': -6.0,
             'M.ONSS': 0.0,
             'MEAL_V_EMP': -3.27,
             'PUB.TRANS': 24.0,
@@ -312,7 +312,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'REP.FEES': 18.46,
             'IP': 103.85,
             'IP.DED': -7.79,
-            'NET': 397.42
+            'NET': 397.55
         }
         error = []
         line_values = payslip_original_contract._get_line_values(payslip_results.keys())

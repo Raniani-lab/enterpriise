@@ -22,13 +22,13 @@ import { waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
  * Get a webclient with a pivot view.
  * The webclient is already configured to work with spreadsheet (env, registries, ...)
  *
- * @param {Object|undefined} params
- * @param {string|undefined} params.model Model name of the pivot
- * @param {Object|undefined} params.serverData Data to be injected in the mock server
- * @param {Function|undefined} params.mockRPC Mock rpc function
- * @param {Array|undefined} params.domain Domain of the pivot
- * @param {Object|undefined} params.legacyServicesRegistry
- * @returns Webclient
+ * @param {object} params
+ * @param {string} [params.model] Model name of the pivot
+ * @param {object} [params.serverData] Data to be injected in the mock server
+ * @param {function} [params.mockRPC] Mock rpc function
+ * @param {any[]} [params.domain] Domain of the pivot
+ * @param {object} [params.legacyServicesRegistry]
+ * @returns {Promise<object>} Webclient
  */
 export async function spawnPivotViewForSpreadsheet(params = {}) {
     await prepareWebClientForSpreadsheet();
@@ -51,20 +51,21 @@ export async function spawnPivotViewForSpreadsheet(params = {}) {
     return webClient;
 }
 
+
+/**
+ * @typedef {object} CreatePivotTestParams
+ * @property {Array} [domain] Domain of the pivot
+ * @property {string} [model] pivot resModel
+ * @property {number} [documentId] ID of an existing document
+ * @property {function} [actions] Actions to execute on the pivot view
+ *                                before inserting in spreadsheet
+ */
+
 /**
  * Create a spreadsheet model from a Pivot controller
  *
- * @param {Object} params
- * @param {string|undefined} params.model Model name of the pivot
- * @param {Object|undefined} params.serverData Data to be injected in the mock server
- * @param {Function|undefined} params.mockRPC Mock rpc function
- * @param {Object|undefined} params.webClient Webclient to use
- * @param {Array|undefined} params.domain Domain of the pivot
- * @param {Object|undefined} params.legacyServicesRegistry
- * @param {number|undefined} params.documentId ID of an existing document
- * @param {Function|undefined} params.actions Actions to execute on the pivot view
- *                                            before inserting in spreadsheet
- * @returns Webclient
+ * @param {CreatePivotTestParams & import("../spreadsheet_test_utils").SpreadsheetTestParams} params
+ * @returns {Promise<object>} Webclient
  */
 export async function createSpreadsheetFromPivot(params = {}) {
     let spreadsheetAction = {};

@@ -1,6 +1,12 @@
 /** @odoo-module */
 
 /**
+ * @typedef {object} ServerData
+ * @property {object} models
+ * @property {object} views
+ */
+
+/**
  * Get a basic arch for a pivot, which is compatible with the data given by
  * getBasicData().
  *
@@ -44,6 +50,9 @@ export function getBasicListArch() {
     `;
 }
 
+/**
+ * @returns {ServerData}
+ */
 export function getBasicServerData() {
     return {
         models: getBasicData(),

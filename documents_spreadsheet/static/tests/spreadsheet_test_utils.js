@@ -20,20 +20,30 @@ import { DataSources } from "@documents_spreadsheet/bundle/o_spreadsheet/data_so
 const { Model } = spreadsheet;
 
 /**
+ * @typedef {import("./utils/spreadsheet_test_data").ServerData} ServerData
+ */
+
+
+/**
+ * @typedef {object} SpreadsheetTestParams
+ * @property {object} [webClient] Webclient already configured
+ * @property {number} [spreadsheetId] Id of the spreadsheet
+ * @property {ServerData} [serverData] Data to be injected in the mock server
+ * @property {Function} [mockRPC] Mock rpc function
+ * @property {object} [legacyServicesRegistry]
+ */
+
+/**
  * Open a spreadsheet action
  *
  * @param {string} actionTag Action tag ("action_open_spreadsheet" or "action_open_template")
- * @param {Object} params
- * @param {Object|undefined} params.webClient Webclient already configured
- * @param {Object|undefined} params.serverData Data to be injected in the mock server
- * @param {number} params.spreadsheetId Id of the spreadsheet
- * @param {Function|undefined} params.mockRPC Mock rpc function
- * @param {Object|undefined} params.legacyServicesRegistry
+ * @param {SpreadsheetTestParams} params
  */
 async function createSpreadsheetAction(actionTag, params) {
     const SpreadsheetActionComponent =
         actionTag === "action_open_spreadsheet" ? SpreadsheetAction : SpreadsheetTemplateAction;
     let { webClient } = params;
+    /** @type {any} */
     let spreadsheetAction;
     patchWithCleanup(SpreadsheetActionComponent.prototype, {
         setup() {
@@ -73,12 +83,7 @@ async function createSpreadsheetAction(actionTag, params) {
 /**
  * Create an empty spreadsheet
  *
- * @param {Object} params
- * @param {Object|undefined} params.webClient Webclient already configured
- * @param {Object|undefined} params.serverData Data to be injected in the mock server
- * @param {number} params.spreadsheetId Id of the spreadsheet
- * @param {Function|undefined} params.mockRPC Mock rpc function
- * @param {Object|undefined} params.legacyServicesRegistry
+ * @param {SpreadsheetTestParams} params
  */
 export async function createSpreadsheet(params = {}) {
     if (!params.serverData) {
@@ -100,12 +105,7 @@ export async function createSpreadsheet(params = {}) {
 /**
  * Create a spreadsheet template
  *
- * @param {Object} params
- * @param {Object|undefined} params.webClient Webclient already configured
- * @param {Object|undefined} params.serverData Data to be injected in the mock server
- * @param {number} params.spreadsheetId Id of the spreadsheet
- * @param {Function|undefined} params.mockRPC Mock rpc function
- * @param {Object|undefined} params.legacyServicesRegistry
+ * @param {SpreadsheetTestParams} params
  */
 export async function createSpreadsheetTemplate(params = {}) {
     if (!params.serverData) {
@@ -195,10 +195,10 @@ export function setupDataSourceEvaluation(model) {
 /**
  * Create a spreadsheet model with a mocked server environnement
  *
- * @param {Object} params
- * @param {Object|undefined} params.spreadsheetData Spreadsheet data to import
- * @param {Object|undefined} params.serverData Data to be injected in the mock server
- * @param {Function|undefined} params.mockRPC Mock rpc function
+ * @param {object} params
+ * @param {object} [params.spreadsheetData] Spreadsheet data to import
+ * @param {ServerData} [params.serverData] Data to be injected in the mock server
+ * @param {function} [params.mockRPC] Mock rpc function
  */
 export async function createModelWithDataSource(params = {}) {
     registry.category("services").add("orm", ormService);

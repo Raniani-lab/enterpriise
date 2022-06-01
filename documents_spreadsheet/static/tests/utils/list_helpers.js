@@ -6,21 +6,23 @@ import { getBasicServerData } from "./spreadsheet_test_data";
 import {
     getSpreadsheetActionEnv,
     getSpreadsheetActionModel,
-    getSpreadsheetActionTransportService,
     prepareWebClientForSpreadsheet,
 } from "./webclient_helpers";
 import { SpreadsheetAction } from "../../src/bundle/actions/spreadsheet_action";
 import { waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
 
+/** @typedef {import("@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet").Model} Model */
+
 /**
  * Get a webclient with a list view.
  * The webclient is already configured to work with spreadsheet (env, registries, ...)
  *
- * @param {Object|undefined} params
- * @param {string|undefined} params.model Model name of the list
- * @param {Object|undefined} params.serverData Data to be injected in the mock server
- * @param {Function|undefined} params.mockRPC Mock rpc function
- * @returns Webclient
+ * @param {Object} params
+ * @param {string} [params.model] Model name of the list
+ * @param {Object} [params.serverData] Data to be injected in the mock server
+ * @param {Function} [params.mockRPC] Mock rpc function
+ * @param {object[]} [params.orderBy] orderBy argument
+ * @returns {Promise<object>} Webclient
  */
 export async function spawnListViewForSpreadsheet(params = {}) {
     const { model, serverData, mockRPC } = params;
@@ -52,13 +54,14 @@ export async function spawnListViewForSpreadsheet(params = {}) {
 /**
  * Create a spreadsheet model from a List controller
  *
- * @param {Object} params
- * @param {string|undefined} params.model Model name of the list
- * @param {Object|undefined} params.serverData Data to be injected in the mock server
- * @param {Function|undefined} params.mockRPC Mock rpc function
- * @param {number|undefined} params.linesNumber
+ * @param {object} params
+ * @param {string} [params.model] Model name of the list
+ * @param {object} [params.serverData] Data to be injected in the mock server
+ * @param {function} [params.mockRPC] Mock rpc function
+ * @param {object[]} [params.orderBy] orderBy argument
+ * @param {number} [params.linesNumber]
  *
- * @returns Webclient
+ * @returns {Promise<{model: Model, webClient: object, env: object}>}
  */
 export async function createSpreadsheetFromList(params = {}) {
     const def = makeDeferred();
@@ -93,6 +96,5 @@ export async function createSpreadsheetFromList(params = {}) {
         webClient,
         model,
         env: getSpreadsheetActionEnv(spreadsheetAction),
-        transportService: getSpreadsheetActionTransportService(spreadsheetAction),
     };
 }

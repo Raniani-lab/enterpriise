@@ -15,6 +15,8 @@ import { setupCollaborativeEnv } from "../utils/collaborative_helpers";
 import PivotDataSource from "@documents_spreadsheet/bundle/pivot/pivot_data_source";
 import ListDataSource from "@documents_spreadsheet/bundle/list/list_data_source";
 
+/** @typedef {import("@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet").Model} Model */
+
 let dataSourceId = 0;
 
 /**
@@ -50,8 +52,8 @@ async function getPivotReady(model) {
  * @param {Object} params.definition Pivot definition
  * @param {PivotDataSource} params.dataSource Pivot data source (ready)
  * @param {Object} params.pivotModel Pivot model
- * @param {string|undefined} params.dataSourceId
- * @param {[number, number]|undefined} params.anchor
+ * @param {string} [params.dataSourceId]
+ * @param {[number, number]} [params.anchor]
  */
 function insertPreloadedPivot(model, params) {
     const { definition, dataSource, pivotModel } = params;

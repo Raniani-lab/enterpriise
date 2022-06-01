@@ -8,7 +8,6 @@
     <menuitem id="account_reports_audit_reports_menu" name="Audit Reports" parent="account.menu_finance_reports" sequence="3">
         <menuitem id="menu_action_account_report_general_ledger" name="General Ledger" action="action_account_report_general_ledger" groups="account.group_account_readonly"/>
         <menuitem id="menu_action_account_report_coa" name="Trial Balance" action="action_account_report_coa" groups="account.group_account_readonly"/>
-        <menuitem id="menu_action_account_report_cj" name="Consolidated Journals" action="action_account_report_cj" groups="account.group_account_readonly"/>
         <menuitem id="menu_action_account_report_ja" name="Journal Report" action="action_account_report_ja" groups="account.group_account_readonly"/>
         <menuitem id="menu_action_account_report_gt" name="Tax Report" action="action_account_report_gt"/>
         <menuitem id="menu_action_account_report_sales" action="action_account_report_sales" groups="account.group_account_readonly" active="False"/>

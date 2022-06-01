@@ -73,6 +73,9 @@
                             <t t-if="project_id" t-esc="project_id[1]"/>
                             <t t-else=""><span class="font-italic text-muted"><i class="fa fa-lock"></i> Private</span></t>
                         </div>
+                        <div t-if="allow_milestones and milestone_id" groups="project.group_project_milestone">
+                            <strong>Milestone — </strong> <t t-out="milestone_id[1]"/>
+                        </div>
                         <div t-if="user_names"><strong>Assignees — </strong> <t t-out="user_names"/></div>
                         <div t-if="partner_id"><strong>Customer — </strong> <t t-esc="partner_id[1]"/></div>
                         <div>
@@ -87,6 +90,8 @@
                     </div>
                 </templates>
                 <field name="project_id"/>
+                <field name="allow_milestones"/>
+                <field name="milestone_id"/>
                 <field name="user_ids"/>
                 <field name="user_names"/>
                 <field name="partner_id"/>
@@ -132,6 +137,7 @@
                 <field name="partner_id" string="Customer"/>
                 <field name="partner_phone" string="Phone"/>
                 <field name="project_id" string="Project"/>
+                <field name="milestone_id" string="Milestone"/>
                 <field name="user_names" string="Assignees"/>
                 <field name="planned_date_begin" string="Date"/>
             </map>
@@ -146,6 +152,7 @@
             <map res_partner="partner_id" routing="1" js_class="project_map">
                 <field name="partner_id" string="Customer"/>
                 <field name="partner_phone" string="Phone"/>
+                <field name="milestone_id" string="Milestone"/>
                 <field name="user_names" string="Assignees"/>
             </map>
         </field>
@@ -190,4 +197,38 @@
         <field name="view_id" ref="project_task_map_view_no_title"/>
     </record>
 
+    <record id="project.action_view_task_from_milestone" model="ir.actions.act_window">
+        <field name="view_mode">kanban,tree,gantt,calendar,map,pivot,graph,activity,form</field>
+    </record>
+
+    <record id="action_view_task_from_milestone_kanban_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="0"/>
+        <field name="view_mode">kanban</field>
+        <field name="act_window_id" ref="project.action_view_task_from_milestone"/>
+    </record>
+    <record id="action_view_task_from_milestone_tree_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">tree</field>
+        <field name="act_window_id" ref="project.action_view_task_from_milestone"/>
+    </record>
+
+    <record id="action_view_task_from_milestone_gantt_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">gantt</field>
+        <field name="act_window_id" ref="project.action_view_task_from_milestone"/>
+    </record>
+
+    <record id="action_view_task_from_milestone_calendar_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="30"/>
+        <field name="view_mode">calendar</field>
+        <field name="act_window_id" ref="project.action_view_task_from_milestone"/>
+    </record>
+
+
+    <record id="project_task_from_milestone_action_map_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="40"/>
+        <field name="view_mode">map</field>
+        <field name="act_window_id" ref="project.action_view_task_from_milestone"/>
+        <field name="view_id" ref="project_task_map_view_no_title"/>
+    </record>
 </odoo>

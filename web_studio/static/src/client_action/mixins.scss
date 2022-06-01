@@ -19,15 +19,17 @@
   }
   .custom-checkbox {
     > input {
-      &:not(:checked) + label:before {
+      padding: 6px 6px;
+      margin-top: 6px;
+      &:not(:checked) {
         border: 1px solid $unchecked-border;
+        background-color: $o-white;
       }
-      &:checked + label:after {
+      &:checked {
         background-image: url("/web_studio/static/src/img/ui/checkbox_active.svg");
-        background-size: cover;
       }
     }
-    &.o_web_studio_checkbox_inactive > input + label:after {
+    &.o_web_studio_checkbox_inactive {
       background-image: url("/web_studio/static/src/img/ui/checkbox_indeterminate.svg");
     }
   }

@@ -38,7 +38,7 @@ tour.register('shop_buy_rental_product_comparison', {
         {
             content: "Open daterangepicker",
             extra_trigger: '.o_product_comparison_table',
-            trigger: '#rentingDates .input-group-append',
+            trigger: '#rentingDates [data-toggle="daterange"]',
         },
         {
             content: "Change hours",

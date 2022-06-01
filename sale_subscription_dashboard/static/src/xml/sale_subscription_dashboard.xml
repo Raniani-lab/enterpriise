@@ -73,9 +73,7 @@
                         <td>
                             <div class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="mrr" data-type="starting_value" t-att-value="values['mrr']['starting_value']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><t t-esc="get_currency()"/></span>
-                                </div>
+                                <span class="input-group-text"><t t-esc="get_currency()"/></span>
                             </div>
                         </td>
                     </tr>
@@ -84,15 +82,11 @@
                         <td>
                             <div id="linear_growth_mrr" class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="mrr" data-type="linear_growth" t-att-value="values['mrr']['linear_growth']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><t t-esc="get_currency()"/></span>
-                                </div>
+                                <span class="input-group-text"><t t-esc="get_currency()"/></span>
                             </div>
                             <div id="expon_growth_mrr" style="display: none;" class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="mrr" data-type="expon_growth" t-att-value="values['mrr']['expon_growth']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                </div>
+                                <span class="input-group-text">%</span>
                             </div>
                         </td>
                     </tr>
@@ -101,9 +95,7 @@
                         <td>
                             <div class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="mrr" data-type="churn" t-att-value="values['mrr']['churn']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                </div>
+                                <span class="input-group-text">%</span>
                             </div>
                         </td>
                     </tr>
@@ -112,9 +104,7 @@
                         <td>
                             <div class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="mrr" data-type="projection_time" t-att-value="values['mrr']['projection_time']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Months</span>
-                                </div>
+                                <span class="input-group-text">Months</span>
                             </div>
                         </td>
                     </tr>
@@ -140,9 +130,7 @@
                         <td>
                             <div class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="contracts" data-type="starting_value" t-att-value="values['contracts']['starting_value']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Subscriptions</span>
-                                </div>
+                                <span class="input-group-text">Subscriptions</span>
                             </div>
                         </td>
                     </tr>
@@ -151,15 +139,11 @@
                         <td>
                             <div id="linear_growth_contracts" class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="contracts" data-type="linear_growth" t-att-value="values['contracts']['linear_growth']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Subscriptions</span>
-                                </div>
+                                <span class="input-group-text">Subscriptions</span>
                             </div>
                             <div id="expon_growth_contracts" style="display: none;" class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="contracts" data-type="expon_growth" t-att-value="values['contracts']['expon_growth']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                </div>
+                                <span class="input-group-text">%</span>
                             </div>
                         </td>
                     </tr>
@@ -168,9 +152,7 @@
                         <td>
                             <div class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="contracts" data-type="churn" t-att-value="values['contracts']['churn']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">%</span>
-                                </div>
+                                <span class="input-group-text">%</span>
                             </div>
                         </td>
                     </tr>
@@ -179,9 +161,7 @@
                         <td>
                             <div class="input-group">
                                 <input class="form-control o_forecast_input" type="number" data-forecast="contracts" data-type="projection_time" t-att-value="values['contracts']['projection_time']"/>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Months</span>
-                                </div>
+                                <span class="input-group-text">Months</span>
                             </div>
                         </td>
                     </tr>
@@ -499,16 +479,16 @@
             <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='custom_filter_date'>Custom
             </a>
             <div class="o_foldable_menu o_closed_menu o_subscription_dashboard_search" data-filter='custom_filter_date'>
-            <label class="custom-date" for="date_from">Start Date :</label>
-            <div class="form-group custom-date">
+            <label class="form-label" for="date_from">Start Date :</label>
+            <div class="mb-3">
                 <div class='o_datepicker js_subscription_dashboard_datetimepicker'
                         t-att-data-default-value="date_from">
                     <input type='text' class="o_datepicker_input" name="date_from"/>
                     <span class="o_datepicker_button"/>
                 </div>
             </div>
-            <label class="custom-date" for="date_to">End Date :</label>
-            <div class="form-group custom-date">
+            <label class="form-label" for="date_to">End Date :</label>
+            <div class="mb-3">
                 <div class='o_datepicker js_subscription_dashboard_datetimepicker'
                  t-att-data-default-value="date_to">
                     <input type='text' class="o_datepicker_input" name="date_to"/>

@@ -66,11 +66,9 @@
                 cursor: default;
                 text-align: right;
             }
-            .input-group .form-control[disabled] + .input-group-append {
-                .input-group-text {
-                    border: none;
-                    background-color: transparent;
-                }
+            .input-group .form-control[disabled] + .input-group-text {
+                border: none;
+                background-color: transparent;
             }
         }
 

@@ -30,17 +30,17 @@
             <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='custom_filter_date'>Custom</a>
             <div class="o_foldable_menu o_closed_menu o_account_report_search" data-filter='custom_filter_date'>
                 <t t-if="options['date']['mode'] == 'range'">
-                    <label class="custom-date" for="date_from">Start Date :</label>
-                    <div class="form-group custom-date">
+                    <label class="form-label" for="date_from">Start Date :</label>
+                    <div class="mb-3">
                         <div class='o_datepicker js_account_reports_datetimepicker' t-att-data-default-value="options['date']['date_from']">
                             <input type='text' class="o_datepicker_input" name="date_from" />
                             <span class="o_datepicker_button"/>
                         </div>
                     </div>
                 </t>
-                <label class="custom-date" for="date_to" t-if="options['date']['mode'] == 'single'">End Date :</label>
-                <label class="custom-date" for="date_to" t-if="options['date']['mode'] == 'range'">Date :</label>
-                <div class="form-group custom-date">
+                <label class="form-label" for="date_to" t-if="options['date']['mode'] == 'single'">End Date :</label>
+                <label class="form-label" for="date_to" t-if="options['date']['mode'] == 'range'">Date :</label>
+                <div class="mb-3">
                     <div class='o_datepicker js_account_reports_datetimepicker' t-att-data-default-value="options['date']['date_to']">
                         <input type='text' class="o_datepicker_input" name="date_to" />
                         <span class="o_datepicker_button"/>
@@ -80,17 +80,17 @@
             <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='custom_cmp_filter'>Custom</a>
             <div class="o_foldable_menu o_closed_menu o_account_report_search" data-filter='custom_cmp_filter'>
                 <t t-if="options['date']['mode'] == 'range'">
-                    <label class="custom-date" for="date_from_cmp">Start Date :</label>
-                    <div class="form-group custom-date">
+                    <label class="form-label" for="date_from_cmp">Start Date :</label>
+                    <div class="mb-3">
                         <div class='o_datepicker js_account_reports_datetimepicker' t-att-data-default-value="options['comparison']['date_from']">
                             <input type='text' class="o_datepicker_input" name="date_from_cmp" />
                             <span class="o_datepicker_button"/>
                         </div>
                     </div>
                 </t>
-                <label class="custom-date" for="date_to_cmp" t-if="options['date']['mode'] == 'range'">End Date :</label>
-                <label class="custom-date" for="date_to_cmp" t-if="options['date']['mode'] == 'single'">Date :</label>
-                <div class="form-group custom-date">
+                <label class="form-label" for="date_to_cmp" t-if="options['date']['mode'] == 'range'">End Date :</label>
+                <label class="form-label" for="date_to_cmp" t-if="options['date']['mode'] == 'single'">Date :</label>
+                <div class="mb-3">
                     <div class='o_datepicker js_account_reports_datetimepicker' t-att-data-default-value="options['comparison']['date_to']">
                         <input type='text' class="o_datepicker_input" name="date_to_cmp" />
                         <span class="o_datepicker_button"/>

@@ -23,7 +23,7 @@ tour.register('shop_buy_rental_product', {
         },
         {
             content: "Open daterangepicker",
-            trigger: '#rentingDates .input-group-append',
+            trigger: '#rentingDates [data-toggle="daterange"]',
         },
         {
             content: "Change hours",

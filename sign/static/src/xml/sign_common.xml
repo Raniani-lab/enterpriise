@@ -60,7 +60,7 @@
             <div class="col-sm">
                 <div class="input-group">
                     <input type="text" name="phone" id="o_sign_phone_number_input" placeholder="e.g. +1 415 555 0100" class="form-control" t-att-value="widget.signerPhone"/>
-                    <button class='input-group-append btn btn-sm btn-primary o_sign_resend_sms'>Send SMS</button>
+                    <button class='btn btn-sm btn-primary o_sign_resend_sms'>Send SMS</button>
                 </div>
                 <span class="text-muted form-text">A SMS will be sent to the following phone number. Please update it if it's not relevant.</span>
             </div>

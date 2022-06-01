@@ -178,12 +178,10 @@
                                         t-att-name="advantage.field"
                                         t-att-value="initial_values[advantage.field]"
                                         applies-on="contract"/>
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <t t-if="advantage.uom == 'days'">Days</t>
-                                            <t t-if="advantage.uom == 'percent'">%</t>
-                                            <t t-if="advantage.uom == 'currency'"><t t-esc="contract.company_id.currency_id.symbol"/></t>
-                                        </div>
+                                    <div class="input-group-text">
+                                        <t t-if="advantage.uom == 'days'">Days</t>
+                                        <t t-if="advantage.uom == 'percent'">%</t>
+                                        <t t-if="advantage.uom == 'currency'"><t t-esc="contract.company_id.currency_id.symbol"/></t>
                                     </div>
                                 </div>
                                 </t>

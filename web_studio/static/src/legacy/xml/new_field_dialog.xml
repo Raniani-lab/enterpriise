@@ -22,31 +22,23 @@
     <ul class="o_web_studio_selection_editor list-unstyled mb0" t-if="widget.selection.length">
         <li t-foreach="widget.selection" t-as="selectionValue" t-key="selectionValue_index" t-att-data-value="selectionValue[0]">
             <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text fa fa-bars" role="img" aria-label="Value of list" title="Value of list"/>
-                </div>
+                <span class="input-group-text fa fa-bars" role="img" aria-label="Value of list" title="Value of list"/>
                 <input class="d-none form-control o_web_studio_selection_input"/>
                 <span class="form-control o_web_studio_selection_label">
                     <t t-esc="selectionValue[1]"/>
                 </span>
-                <span class="input-group-append">
-                    <button type="button" class="btn btn-primary fa fa-pencil-square-o o_web_studio_edit_selection_value" aria-label="Edit selection" title="Edit selection"/>
-                    <button type="button" class="btn btn-danger fa fa-trash-o o_web_studio_remove_selection_value" aria-label="Remove selection" title="Remove selection"/>
-                </span>
+                <button type="button" class="btn btn-primary fa fa-pencil-square-o o_web_studio_edit_selection_value" aria-label="Edit selection" title="Edit selection"/>
+                <button type="button" class="btn btn-danger fa fa-trash-o o_web_studio_remove_selection_value" aria-label="Remove selection" title="Remove selection"/>
             </div>
         </li>
     </ul>
     <ul class="o_web_studio_add_selection list-unstyled">
         <li>
             <div class="input-group o_web_studio_selection_new_value">
-                <div class="input-group-prepend">
-                    <span class="input-group-text fa fa-bars" role="img" aria-label="Value of list" title="Value of list"/>
-                </div>
+                <span class="input-group-text fa fa-bars" role="img" aria-label="Value of list" title="Value of list"/>
                 <input class="form-control o_web_studio_selection_input" placeholder="Add new value"/>
-                <span class="input-group-append">
-                    <button type="button" class="btn btn-primary fa fa-check o_web_studio_add_selection_value" aria-label="Add selection" title="Add selection"/>
-                    <button type="button" class="btn btn-danger fa fa-times o_web_studio_clear_selection_value" aria-label="Clear" title="Clear"/>
-                </span>
+                <button type="button" class="btn btn-primary fa fa-check o_web_studio_add_selection_value" aria-label="Add selection" title="Add selection"/>
+                <button type="button" class="btn btn-danger fa fa-times o_web_studio_clear_selection_value" aria-label="Clear" title="Clear"/>
             </div>
         </li>
     </ul>

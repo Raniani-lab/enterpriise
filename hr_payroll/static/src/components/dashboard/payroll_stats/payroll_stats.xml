@@ -9,14 +9,10 @@
                     </h2>
                     <i class="fa fa-question-circle-o" t-if="props.help"
                         data-tooltip-template="hr_payroll.Tooltip" t-att-data-tooltip-info="tooltipInfo"/>
-                    <div class="d-inline float-right" id="period_selection_toggle">
+                    <div class="d-flex float-right" id="period_selection_toggle">
                         Annually
-                        <div class="o_boolean_toggle custom-control form-check form-switch" t-on-click.stop.prevent="toggle">
+                        <div class="o_boolean_toggle ms-2 form-check form-switch" t-on-click.stop.prevent="toggle">
                             <input type="checkbox" class="form-check-input" id="test" role="switch" t-att-checked="state.monthly"/>
-                            <label class="form-check-label">
-                                &#8203;
-                                <i class="fa fa-circle"/>
-                            </label>
                         </div>
                         Monthly
                     </div>

@@ -27,7 +27,7 @@
                             t-att-class="_isSelected(null) ? 'o-template-selected': ''"
                             src="documents_spreadsheet/static/img/spreadsheet.svg"
                             t-att-title="Blank"/>
-                        <div>Blank</div>
+                        <div class="o-template-item-name">Blank spreadsheet</div>
                     </div>
                     <div
                         t-foreach="state.templates" t-as="template"
@@ -39,7 +39,7 @@
                             t-on-focus="() => this._selectTemplate(template.id)"
                             t-attf-src="/web/image?model=spreadsheet.template&amp;id={{template.id}}&amp;field=thumbnail"
                             t-att-title="template.name"/>
-                        <div t-esc="template.name"/>
+                        <div class="o-template-item-name" t-esc="template.name"/>
                     </div>
                 </div>
                 <t t-set-slot="buttons">

@@ -6,7 +6,7 @@ import { jsonToBase64 } from "@documents_spreadsheet/bundle/o_spreadsheet/helper
 import { getBasicServerData } from "./utils/spreadsheet_test_data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { patchWithCleanup, click, getFixture, nextTick } from "@web/../tests/helpers/utils";
+import { patchWithCleanup, click, getFixture, nextTick, triggerEvent } from "@web/../tests/helpers/utils";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { SpreadsheetTemplateAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_template/spreadsheet_template_action";
 import { UNTITLED_SPREADSHEET_NAME } from "@documents_spreadsheet/bundle/o_spreadsheet/constants";
@@ -167,10 +167,7 @@ export async function createSpreadsheetWithPivotAndList() {
 
     /** Put the pivot in the newly created spreadsheet */
     await click(target.querySelector(".o_pivot_add_spreadsheet"));
-    await click(document.querySelector(".modal-content select"));
-    document.body
-        .querySelector(`.modal-content option[value='${spreadsheetAction.resId}']`)
-        .setAttribute("selected", "selected");
+    await triggerEvent(target, `.o-sp-dialog-item div[data-id='${spreadsheetAction.resId}']`, "focus");
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     await nextTick();
 

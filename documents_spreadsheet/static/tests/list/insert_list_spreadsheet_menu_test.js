@@ -4,7 +4,7 @@ import ListView from "web.ListView";
 import testUtils from "web.test_utils";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
 import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/assets/components/insert_list_spreadsheet_menu";
-import { click, nextTick, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, nextTick, getFixture, patchWithCleanup, triggerEvent } from "@web/../tests/helpers/utils";
 import { spawnListViewForSpreadsheet } from "../utils/list_helpers";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { getSpreadsheetActionModel } from "../utils/webclient_helpers";
@@ -76,10 +76,13 @@ QUnit.module(
             await spawnListViewForSpreadsheet({
                 mockRPC: async function (route, args) {
                     if (args.model === "documents.document") {
-                        assert.step(args.method);
-                        switch (args.method) {
-                            case "get_spreadsheets_to_display":
-                                return [{ id: 1, name: "My Spreadsheet" }];
+                        /** These two methods are used for the PivotSelectorDialog */
+                        if (args.method !== "search_read" && args.method !== "get_views") {
+                            assert.step(args.method);
+                            switch (args.method) {
+                                case "get_spreadsheets_to_display":
+                                    return [{ id: 1, name: "My Spreadsheet" }];
+                            }
                         }
                     }
                 },
@@ -87,9 +90,7 @@ QUnit.module(
 
             await click(target.querySelector(".o_favorite_menu button"));
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
-            document.body
-                .querySelector(".modal-content option[value='1']")
-                .setAttribute("selected", "selected");
+            await triggerEvent(target, ".o-sp-dialog-item div[data-id='1']", "focus");
             await modal.clickButton("Confirm");
             await nextTick();
 
@@ -113,7 +114,10 @@ QUnit.module(
             });
             await click(document.body.querySelector(".o_favorite_menu button"));
             await click(document.body.querySelector(".o_insert_list_spreadsheet_menu"));
-            document.body.querySelector(".o_spreadsheet_name").value = "New name";
+            /** @type {HTMLInputElement} */
+            const name = document.body.querySelector(".o_spreadsheet_name")
+            name.value = "New name";
+            await triggerEvent(name, null, "input");
             await modal.clickButton("Confirm");
             const model = getSpreadsheetActionModel(spreadsheetAction);
             await waitForDataSourcesLoaded(model);

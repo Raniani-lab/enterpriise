@@ -1,74 +1,156 @@
-odoo.define("documents_spreadsheet.SpreadsheetSelectorDialog", function (require) {
-    "use strict";
+/** @odoo-module alias="documents_spreadsheet.SpreadsheetSelectorDialog" */
 
-    const core = require("web.core");
-    const Dialog = require("web.Dialog");
-    const _t = core._t;
+import { _t } from "@web/core/l10n/translation";
+import { Dialog } from "@web/core/dialog/dialog";
+import { sprintf } from "@web/core/utils/strings";
+import { useService } from "@web/core/utils/hooks";
+import { SearchBar } from "@web/search/search_bar/search_bar";
+import { Pager } from "@web/core/pager/pager";
 
-    const SpreadsheetSelectorDialog = Dialog.extend({
-        template: "documents_spreadsheet.SpreadsheetSelectorDialog",
-        /**
-         * @constructor
-         * @param {Widget} parent
-         * @param {Object} params
-         * @param {Object} params.spreadsheets
-         * @param {string} params.type PIVOT or LIST or LINK
-         * @param {string} params.title
-         * @param {string} params.name Name of the list/pivot/link
-         * @param {number|undefined} params.threshold
-         */
-        init: function (parent, params) {
-            this.type = params.type;
-            this.spreadsheets = params.spreadsheets;
-            this.threshold = params.threshold;
-            this.name = params.name;
+const { Component, onWillStart, useState } = owl;
 
-            const options = {
-                title: params.title,
-                buttons: [
-                    {
-                        text: _t("Confirm"),
-                        classes: "btn-primary",
-                        click: this._onConfirm.bind(this),
-                        close: true,
-                    },
-                    {
-                        text: _t("Cancel"),
-                        click: this._onCancel.bind(this),
-                        close: true,
-                    },
-                ],
-            };
-            this._super(parent, options);
-        },
+const LABELS = {
+    PIVOT: "pivot",
+    LIST: "list",
+    LINK: "link",
+};
 
-        //--------------------------------------------------------------------------
-        // Handlers
-        //--------------------------------------------------------------------------
+const DEFAULT_LIMIT = 9;
 
-        /**
-         * @private
-         */
-        _onConfirm: function () {
-            const id = this.el.querySelector("select[name='spreadsheet']").value;
-            let selectedSpreadsheet = false;
-            if (id !== "") {
-                selectedSpreadsheet = this.spreadsheets.find((s) => s.id === parseInt(id, 10));
-            }
-            const threshold = this.threshold
-                ? parseInt(this.el.querySelector("input[id='threshold']").value)
-                : 0;
-            const nameEl = this.el.querySelector("input[id='name']");
-            const name = (nameEl && nameEl.value) || this.name;
-            // TODO `selectedSpreadsheet` is not actually an id
-            this.trigger("confirm", { id: selectedSpreadsheet, threshold, name });
-        },
-        /**
-         * @private
-         */
-        _onCancel: function () {
-            this.trigger("cancel");
-        },
-    });
-    return SpreadsheetSelectorDialog;
-});
+/**
+ * @typedef State
+ * @property {Object} spreadsheets
+ * @property {string} panel
+ * @property {string} name
+ * @property {number|false} selectedSpreadsheetId
+ * @property {string} [threshold]
+ * @property {Object} pagerProps
+ * @property {number} pagerProps.offset
+ * @property {number} pagerProps.limit
+ * @property {number} pagerProps.total
+ */
+
+export class SpreadsheetSelectorDialog extends Component {
+    setup() {
+        /** @type {State} */
+        this.state = useState({
+            spreadsheets: {},
+            panel: "spreadsheets",
+            selectedSpreadsheetId: false,
+            threshold: this.props.threshold,
+            name: this.props.name,
+            pagerProps: {
+                offset: 0,
+                limit: DEFAULT_LIMIT,
+                total: 0,
+            },
+        });
+        this.orm = useService("orm");
+        this.currentSearch = "";
+
+        onWillStart(async () => {
+            await this._fetchSpreadsheets();
+            const ids = await this.orm.searchRead(
+                "documents.document",
+                [["handler", "=", "spreadsheet"]],
+                ["id"]
+            );
+            this.state.pagerProps.total = ids.length;
+        });
+    }
+
+    onSearchInput(ev) {
+        this.currentSearch = ev.target.value;
+        this._fetchSpreadsheets();
+    }
+
+    /**
+     * @param {Object} param0
+     * @param {number} param0.offset
+     * @param {number} param0.limit
+     */
+    onUpdatePager({ offset, limit }) {
+        this.state.pagerProps.offset = offset;
+        this.state.pagerProps.limit = limit;
+        this._fetchSpreadsheets();
+    }
+
+    /**
+     * @param {string} panel "spreadsheets" | "dashboards"
+     */
+    activatePanel(panel) {
+        this.state.panel = panel;
+    }
+
+    /**
+     * @param {string} [base64]
+     * @returns {string}
+     */
+    getUrl(base64) {
+        return base64 ? `data:image/jpeg;charset=utf-8;base64,${base64}` : "";
+    }
+
+    get nameLabel() {
+        return sprintf(_t("Name of the %s:"), LABELS[this.props.type]);
+    }
+
+    get title() {
+        return sprintf(_t("Select a spreadsheet to insert your %s."), LABELS[this.props.type]);
+    }
+
+    /**
+     * Fetch spreadsheets according to the search domain and the pager
+     * offset given as parameter.
+     * @private
+     * @returns {Promise<void>}
+     */
+    async _fetchSpreadsheets() {
+        const domain = [];
+        if (this.currentSearch !== "") {
+            domain.push(["name", "ilike", this.currentSearch]);
+        }
+        const { offset, limit } = this.state.pagerProps;
+
+        this.state.spreadsheets = await this.orm.call(
+            "documents.document",
+            "get_spreadsheets_to_display",
+            [domain],
+            { offset, limit }
+        );
+    }
+
+    /**
+     * @param {number|false} id
+     */
+    _selectItem(id) {
+        this.state.selectedSpreadsheetId = id;
+    }
+
+    _confirm() {
+        const threshold = this.state.threshold ? parseInt(this.state.threshold, 10) : 0;
+        const spreadsheet =
+            this.state.selectedSpreadsheetId &&
+            this.state.spreadsheets.find((s) => s.id === this.state.selectedSpreadsheetId);
+        this.props.confirm({
+            spreadsheet,
+            name: this.state.name,
+            threshold,
+        });
+        this.props.close();
+    }
+
+    _cancel() {
+        this.props.close();
+    }
+}
+
+SpreadsheetSelectorDialog.template = "documents_spreadsheet.SpreadsheetSelectorDialog";
+SpreadsheetSelectorDialog.components = { Dialog, SearchBar, Pager };
+SpreadsheetSelectorDialog.props = {
+    type: String,
+    threshold: { type: Number, optional: true },
+    maxThreshold: { type: Number, optional: true },
+    name: String,
+    confirm: Function,
+    close: Function,
+};

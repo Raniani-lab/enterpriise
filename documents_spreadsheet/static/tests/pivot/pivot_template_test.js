@@ -1170,13 +1170,13 @@ module(
             await dom.click(".o_documents_kanban_spreadsheet");
             const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
             assert.equal(dialog.querySelectorAll(".o-template").length, 3);
-            assert.equal(dialog.querySelector(".o-template").textContent, "Blank");
+            assert.equal(dialog.querySelector(".o-template").textContent, "Blank spreadsheet");
 
             const searchInput = dialog.querySelector(".o_searchview_input");
             await fields.editInput(searchInput, "Template 1");
             await dom.triggerEvent(searchInput, "keydown", { key: "Enter" });
             assert.equal(dialog.querySelectorAll(".o-template").length, 2);
-            assert.equal(dialog.querySelector(".o-template").textContent, "Blank");
+            assert.equal(dialog.querySelector(".o-template").textContent, "Blank spreadsheet");
             kanban.destroy();
         });
 

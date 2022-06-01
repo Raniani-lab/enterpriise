@@ -19,7 +19,7 @@ class SpreadsheetTestCommon(TransactionCase):
             cls.env, login="spreadsheetDude", groups="documents.group_documents_user"
         )
 
-    def create_spreadsheet(self, values=None, *, user=None):
+    def create_spreadsheet(self, values=None, *, user=None, name="Untitled Spreadsheet"):
         if values is None:
             values = {}
         return (
@@ -32,6 +32,7 @@ class SpreadsheetTestCommon(TransactionCase):
                         "folder_id": self.folder.id,
                         "handler": "spreadsheet",
                         "mimetype": "application/o-spreadsheet",
+                        "name": name,
                     }
                 ),
                 **values

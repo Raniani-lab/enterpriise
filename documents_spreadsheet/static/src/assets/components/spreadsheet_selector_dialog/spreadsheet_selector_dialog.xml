@@ -1,28 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <div t-name="documents_spreadsheet.SpreadsheetSelectorDialog" class="o_spreadsheet_selector_dialog">
-        <select id="spreadsheet" name="spreadsheet" class="o_input">
-            <option class="o_new" value=''>New Spreadsheet</option>
-            <option t-foreach="widget.spreadsheets" t-as="spreadsheet" t-att-value="spreadsheet.id">
-                <t t-esc="spreadsheet.name"/>
-            </option>
-        </select>
-        <div>
-            <t t-if="widget.type === 'PIVOT'">
-                Name of the pivot:
-            </t>
-            <t t-elif="widget.type === 'LIST'">
-                Name of the list:
-            </t>
-            <t t-else="">
-                Name of the link:
-            </t>
-            <input id="name" type="text" class="o_input o_spreadsheet_name" t-att-value="widget.name" t-attf-style='width:{{widget.name?widget.name.length:0}}ch;' oninput='this.style.width = this.value.length + "ch";'/>
-        </div>
-        <div t-if="widget.threshold !== undefined and widget.type === 'LIST'">
-            Insert the first <input id="threshold" type="number" class="o_input o_spreadsheet_threshold" t-att-value="widget.threshold"/> records of the list.
-        </div>
-    </div>
+    <t t-name="documents_spreadsheet.SpreadsheetSelectorDialog" owl="1">
+        <Dialog title="title">
+            <div class="o_spreadsheet_selector_dialog">
+                <div class="o-sp-dialog-meta-container">
+                    <div class="o-sp-dialog-meta-name">
+                        <div class="o-sp-dialog-meta-name-label" t-esc="nameLabel"/>
+                        <input type="text" class="o_input o_spreadsheet_name" t-model="state.name"/>
+                    </div>
+                    <div t-if="props.type === 'LIST'" class="o-sp-dialog-meta-threshold">
+                        <div class="o-sp-dialog-meta-threshold-text">Insert the first</div>
+                        <input id="threshold" type="number" class="o_input o-sp-dialog-meta-threshold-input" t-model="state.threshold"/>
+                        <div class="o-sp-dialog-meta-threshold-text">records of the list.</div>
+                    </div>
+                </div>
+                <div class="o-sp-dialog-spreadsheets">
+                    <div class="o-sp-dialog-headers">
+                        <div class="o-sp-dialog-header" t-att-class="{ active: state.panel === 'spreadsheets' }" t-on-click="() => this.activatePanel('spreadsheets')">Spreadsheets</div>
+                    </div>
+                    <div class="o-sp-dialog-content">
+                        <div class="o-sp-dialog-cp">
+                            <div class="o-sp-searchview">
+                                <input type="text" class="o-sp-searchview-input" placeholder="Search..." t-on-input="onSearchInput"/>
+                                <i class="o-sp-searchview-icon oi oi-search" role="img" aria-label="Search..." title="Search..."></i>
+                            </div>
+                            <div class="o-pager">
+                                <Pager offset="state.pagerProps.offset" limit="state.pagerProps.limit" total="state.pagerProps.total" onUpdate.bind="onUpdatePager" isEditable="false" />
+                            </div>
+                        </div>
+                        <div class="o-sp-dialog-items">
+                            <t t-if="state.panel === 'spreadsheets'">
+                                <div class="o-sp-dialog-item o-sp-dialog-item-blank">
+                                    <img tabindex="0" t-on-focus="() => this._selectItem(false)" t-att-class="{ selected: state.selectedSpreadsheet === ''}" src="documents_spreadsheet/static/img/spreadsheet.svg" t-att-title="Blank"/>
+                                    <div class="o-sp-dialog-item-label">Blank spreadsheet</div>
+                                </div>
+                                <div t-foreach="state.spreadsheets" t-as="spreadsheet" t-key="spreadsheet.id" class="o-sp-dialog-item">
+                                    <div t-if="!spreadsheet.thumbnail" class="o-sp-dialog-no-preview text-muted" tabindex="0" t-on-focus="() => this._selectItem(spreadsheet.id)" t-att-class="{ selected: state.selectedSpreadsheet === spreadsheet.id}" t-att-data-id="spreadsheet.id">No preview</div>
+                                    <img t-else="1" class="o-sp-dialog-item-img" tabindex="0" t-on-focus="() => this._selectItem(spreadsheet.id)" t-att-class="{ selected: state.selectedSpreadsheet === spreadsheet.id}" t-att-src="getUrl(spreadsheet.thumbnail)" t-att-title="spreadsheet.name" t-att-data-id="spreadsheet.id"/>
+                                    <div class="o-sp-dialog-item-label" t-esc="spreadsheet.name"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+                <t t-set-slot="footer" owl="1">
+                    <button class="btn btn-primary" t-on-click="_confirm">Confirm</button>
+                    <button class="btn btn-secondary" t-on-click="_cancel">Cancel</button>
+                </t>
+            </div>
+        </Dialog>
+    </t>
 
 </templates>

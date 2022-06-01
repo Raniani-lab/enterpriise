@@ -195,9 +195,7 @@ QUnit.module(
             await loadJS("/web/static/lib/Chart/Chart.js");
             await toggleFavoriteMenu(target);
             await click(target, ".o_insert_action_spreadsheet_menu");
-            const select = target.querySelector(".modal-content select");
-            select.value = "1";
-            await triggerEvent(select, null, "change");
+            await triggerEvent(target, ".o-sp-dialog-item div[data-id='1']", "focus");
             await click(target, ".modal-footer button.btn-primary");
             await nextTick();
             assert.verifySteps(["spreadsheet-joined"]);

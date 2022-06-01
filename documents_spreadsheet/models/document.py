@@ -10,6 +10,7 @@ from datetime import timedelta
 from typing import Dict, Any, List
 
 from odoo import fields, models, api
+from odoo.osv import expression
 from odoo.exceptions import AccessError
 from odoo.tools import image_process, mute_logger
 
@@ -298,9 +299,13 @@ class Document(models.Model):
         self.sudo().spreadsheet_revision_ids.active = False
 
     @api.model
-    def get_spreadsheets_to_display(self):
+    def get_spreadsheets_to_display(self, domain, offset=0, limit=None):
+        """
+        Get all the spreadsheets, with the spreadsheet that the user has recently
+        opened at first.
+        """
         Contrib = self.env["spreadsheet.contributor"]
-        visible_docs = self.search([("handler", "=", "spreadsheet")])
+        visible_docs = self.search(expression.AND([domain, [("handler", "=", "spreadsheet")]]))
         contribs = Contrib.search(
             [
                 ("document_id", "in", visible_docs.ids),
@@ -309,5 +314,11 @@ class Document(models.Model):
             order="last_update_date desc",
         )
         user_docs = contribs.document_id
-        # keep only visible docs, but preserve order of contribs
-        return (user_docs | visible_docs).read(["name"])
+        # Intersection is used to apply the `domain` to `user_doc`, the union is
+        # here to keep only the visible docs, but with the order of contribs.
+        docs = ((user_docs & visible_docs) | visible_docs)
+        if (limit):
+            docs = docs[offset:offset+limit]
+        else:
+            docs = docs[offset:]
+        return docs.read(["name", "thumbnail"])

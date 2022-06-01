@@ -27,6 +27,15 @@ $margin-right: 15px;
         .o-template {
             flex: 0 1 150px;
             margin: $margin-right;
+            max-width: 17%;
+
+            .o-template-item-name {
+                margin-top: 0.25rem;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                user-select: none;
+            }
 
             img {
                 height: 150px;
@@ -39,7 +48,13 @@ $margin-right: 15px;
 
                 &.o-template-selected {
                     border-color: $o-brand-primary;
-                    box-shadow: 0 0 0 1px $o-brand-primary;
+                    box-shadow: 0 0 0 2px $o-brand-primary;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    border-color: $o-brand-primary;
+                    box-shadow: 0 0 0 2px $o-brand-primary;
                 }
             }
 

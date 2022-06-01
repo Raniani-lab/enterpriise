@@ -64,6 +64,107 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         })
         self.assertEqual(document.folder_id, self.folder, "It should be in the specified folder")
 
+    def test_spreadsheet_to_display_with_domain(self):
+        self.archive_existing_spreadsheet()
+        spreadsheet1 = self.create_spreadsheet(name="My Spreadsheet")
+        spreadsheet2 = self.create_spreadsheet(name="Untitled Spreadsheet")
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([("name", "ilike", "My")])
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet1.id])
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([("name", "ilike", "Untitled")])
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet2.id])
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([("name", "ilike", "Spreadsheet")])
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet1.id, spreadsheet2.id])
+
+    def test_spreadsheet_to_display_with_offset_limit(self):
+        self.archive_existing_spreadsheet()
+        user = new_test_user(
+            self.env, login="Jean", groups="documents.group_documents_user"
+        )
+        with freeze_time("2020-02-02"):
+            spreadsheet1 = self.create_spreadsheet(user=user, name="My Spreadsheet 1")
+        with freeze_time("2020-02-03"):
+            spreadsheet2 = self.create_spreadsheet(user=user, name="My Spreadsheet 2")
+        with freeze_time("2020-02-04"):
+            spreadsheet3 = self.create_spreadsheet(name="My Spreadsheet 3")
+        with freeze_time("2020-02-05"):
+            spreadsheet4 = self.create_spreadsheet(user=user, name="SP 4")
+        with freeze_time("2020-02-06"):
+            spreadsheet5 = self.create_spreadsheet(name="SP 5")
+        with freeze_time("2020-02-07"):
+            spreadsheet6 = self.create_spreadsheet(name="SP 6")
+
+        #########
+        # ADMIN #
+        #########
+
+        # Only the last opened spreadsheet.
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([], offset=0, limit=1)
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet6.id])
+
+        # Two last opened spreadsheets.
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([], offset=0, limit=2)
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet6.id, spreadsheet5.id])
+
+        # Ordered first by last opened, and then by id.
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([], offset=2, limit=2)
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet3.id, spreadsheet4.id])
+
+        # Ordered first by last opened, and then by id without limit.
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([], offset=2)
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet3.id, spreadsheet4.id, spreadsheet2.id, spreadsheet1.id])
+
+        # Ordered first by last opened, and then by id without limit with a domain.
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([("name", "ilike", "My Spreadsheet")])
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet3.id, spreadsheet2.id, spreadsheet1.id])
+
+        # Ordered first by last opened, and then by id without limit with a domain.
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([("name", "ilike", "SP ")])
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet6.id, spreadsheet5.id, spreadsheet4.id])
+
+        ########
+        # JEAN #
+        ########
+
+        # Only the last opened spreadsheet.
+        spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display([], offset=0, limit=1)
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet4.id])
+
+        # Two last opened spreadsheets.
+        spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display([], offset=0, limit=2)
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet4.id, spreadsheet2.id])
+
+        # Ordered first by last opened, and then by id.
+        spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display([], offset=2, limit=2)
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet1.id, spreadsheet6.id])
+
+        # Ordered first by last opened, and then by id without limit.
+        spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display([], offset=2)
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet1.id, spreadsheet6.id, spreadsheet5.id, spreadsheet3.id])
+
+        # Ordered first by last opened, and then by id without limit with a domain.
+        spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display([("name", "ilike", "My Spreadsheet")])
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet2.id, spreadsheet1.id, spreadsheet3.id])
+
+        # Ordered first by last opened, and then by id without limit with a domain.
+        spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display([("name", "ilike", "SP ")])
+        spreadsheet_ids = [s["id"] for s in spreadsheets]
+        self.assertEqual(spreadsheet_ids, [spreadsheet4.id, spreadsheet6.id, spreadsheet5.id])
+
+
     def test_spreadsheet_to_display(self):
         self.archive_existing_spreadsheet()
         document = self.create_spreadsheet()
@@ -76,7 +177,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
                 "mimetype": "application/o-spreadsheet",
             }
         )
-        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display()
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([])
         spreadsheet_ids = [s["id"] for s in spreadsheets]
         self.assertTrue(
             document.id in spreadsheet_ids, "It should contain the new document"
@@ -92,7 +193,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
             spreadsheet1 = self.create_spreadsheet()
         with freeze_time("2020-02-15 18:00"):
             spreadsheet2 = self.create_spreadsheet()
-        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display()
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([])
         spreadsheet_ids = [s["id"] for s in spreadsheets]
         self.assertEqual(spreadsheet_ids, [spreadsheet2.id, spreadsheet1.id])
 
@@ -103,7 +204,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         with freeze_time("2020-02-15 18:00"):
             spreadsheet2 = self.create_spreadsheet()
         spreadsheet1.raw = "data"
-        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display()
+        spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([])
         spreadsheet_ids = [s["id"] for s in spreadsheets]
         self.assertEqual(spreadsheet_ids, [spreadsheet1.id, spreadsheet2.id])
 
@@ -117,7 +218,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         with freeze_time("2020-02-15 18:00"):
             spreadsheet2 = self.create_spreadsheet()
         spreadsheets = (
-            self.env["documents.document"].with_user(user).get_spreadsheets_to_display()
+            self.env["documents.document"].with_user(user).get_spreadsheets_to_display([])
         )
         spreadsheet_ids = [s["id"] for s in spreadsheets]
         self.assertEqual(spreadsheet_ids, [spreadsheet1.id, spreadsheet2.id])
@@ -129,7 +230,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         ):
             self.env["documents.document"].with_user(
                 portal
-            ).get_spreadsheets_to_display()
+            ).get_spreadsheets_to_display([])
 
     def test_spreadsheet_to_display_access_ir_rule(self):
         user = new_test_user(
@@ -158,7 +259,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         )
 
         spreadsheets = (
-            self.env["documents.document"].with_user(user).get_spreadsheets_to_display()
+            self.env["documents.document"].with_user(user).get_spreadsheets_to_display([])
         )
         self.assertEqual(
             [s["id"] for s in spreadsheets], [visible_doc.id], "filtering issue"
@@ -175,7 +276,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         )
 
         with self.assertRaises(AccessError, msg="field should be protected"):
-            self.env["documents.document"].with_user(user).get_spreadsheets_to_display()
+            self.env["documents.document"].with_user(user).get_spreadsheets_to_display([])
         self.env["documents.document"]._fields["name"].groups = existing_groups
 
     def test_save_template(self):

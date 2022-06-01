@@ -7,6 +7,7 @@ import {
     nextTick,
     getFixture,
     makeDeferred,
+    triggerEvent,
 } from "@web/../tests/helpers/utils";
 import { getBasicServerData } from "./spreadsheet_test_data";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
@@ -103,10 +104,7 @@ export async function createSpreadsheetFromPivot(params = {}) {
     }
     await click(target.querySelector(".o_pivot_add_spreadsheet"));
     if (params.documentId) {
-        await click(document.querySelector(".modal-content select"));
-        document.body
-            .querySelector(`.modal-content option[value='${params.documentId}']`)
-            .setAttribute("selected", "selected");
+        await triggerEvent(target, `.o-sp-dialog-item div[data-id='${params.documentId}']`, "focus");
     }
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     await def;

@@ -9,6 +9,8 @@ import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborativ
 import { loadJS } from "@web/core/assets";
 import { ormService } from "@web/core/orm_service";
 import { uiService } from "@web/core/ui/ui_service";
+import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
+import { dialogService } from "@web/core/dialog/dialog_service";
 
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 const serviceRegistry = registry.category("services");
@@ -21,6 +23,8 @@ export async function prepareWebClientForSpreadsheet() {
         makeFakeUserService(() => true),
         { force: true }
     );
+    serviceRegistry.add("hotkey", hotkeyService);
+    serviceRegistry.add("dialog", dialogService);
     serviceRegistry.add("ui", uiService);
     serviceRegistry.add("orm", ormService);
     legacyFavoriteMenuRegistry.add(

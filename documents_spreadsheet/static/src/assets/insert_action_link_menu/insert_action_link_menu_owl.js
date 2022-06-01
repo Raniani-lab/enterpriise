@@ -4,9 +4,8 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
-import { _t } from "@web/core/l10n/translation";
+import { SpreadsheetSelectorDialog } from "../components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 
-import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog"
 
 const { Component } = owl;
 const favoriteMenuRegistry = registry.category("favoriteMenu");
@@ -17,37 +16,34 @@ const favoriteMenuRegistry = registry.category("favoriteMenu");
  */
 export class InsertViewSpreadsheet extends Component {
     setup() {
-        this.orm = useService("orm");
         this.notification = useService("notification");
         this.actionService = useService("action");
+        this.dialogManager = useService("dialog");
     }
 
     //-------------------------------------------------------------------------
     // Handlers
     //-------------------------------------------------------------------------
 
-    async linkInSpreadsheet() {
-        const spreadsheets = await this.orm.call("documents.document", "get_spreadsheets_to_display");
-        const dialog = new SpreadsheetSelectorDialog(this, {
-            spreadsheets,
+    linkInSpreadsheet() {
+        this.dialogManager.add(SpreadsheetSelectorDialog, {
             type: "LINK",
-            title: _t("Select a spreadsheet to insert your link"),
-            name: this.env.config.displayName,
-        }).open();
-        dialog.on("confirm", this, this.insertInSpreadsheet);
+            name: this.env.config.getDisplayName(),
+            confirm: (args) => this.insertInSpreadsheet(args),
+        });
     }
 
     /**
      * Open a new spreadsheet or an existing one and insert a link to the action.
      */
-    async insertInSpreadsheet({ id: spreadsheet, name }) {
+    async insertInSpreadsheet({ spreadsheet, name }) {
         const actionToLink = this.getViewDescription();
         actionToLink.name = name;
         // do action with action link
         let notificationMessage;
         const actionOptions = {
             preProcessingAction: "insertLink",
-            preProcessingActionData: actionToLink
+            preProcessingActionData: actionToLink,
         };
 
         if (!spreadsheet.id) {

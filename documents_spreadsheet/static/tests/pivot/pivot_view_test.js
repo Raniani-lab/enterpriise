@@ -2,7 +2,7 @@
 
 import { getBasicData, getBasicServerData } from "../utils/spreadsheet_test_data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { click, nextTick, legacyExtraNextTick, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, nextTick, legacyExtraNextTick, getFixture, patchWithCleanup, triggerEvent } from "@web/../tests/helpers/utils";
 import { makeView } from "@web/../tests/views/helpers";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
@@ -763,11 +763,7 @@ test("Can save a pivot in existing spreadsheet", async (assert) => {
     });
     const target = getFixture();
     await click(target.querySelector(".o_pivot_add_spreadsheet"));
-    await click(document.querySelector(".modal-content select"));
-    document.body
-        .querySelector(".modal-content option[value='1']")
-        .setAttribute("selected", "selected");
-    await nextTick();
+    await triggerEvent(target, ".o-sp-dialog-item div[data-id='1']", "focus");
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     await doAction(webClient, 1); // leave the spreadsheet action
     assert.verifySteps(["join_spreadsheet_session", "write"]);
@@ -1199,7 +1195,10 @@ test("Pivot name can be changed from the dialog", async (assert) => {
         },
     });
     await click(document.body.querySelector(".o_pivot_add_spreadsheet"));
-    document.body.querySelector(".o_spreadsheet_name").value = "New name";
+    /** @type {HTMLInputElement} */
+    const name = document.body.querySelector(".o_spreadsheet_name")
+    name.value = "New name";
+    await triggerEvent(name, null, "input");
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     const model = getSpreadsheetActionModel(spreadsheetAction);
     await waitForDataSourcesLoaded(model);

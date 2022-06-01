@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { patchWithCleanup, click, getFixture, makeDeferred } from "@web/../tests/helpers/utils";
+import { patchWithCleanup, click, getFixture, makeDeferred, triggerEvent } from "@web/../tests/helpers/utils";
 import { getBasicServerData } from "./spreadsheet_test_data";
 import {
     getSpreadsheetActionEnv,
@@ -85,9 +85,10 @@ export async function createSpreadsheetFromList(params = {}) {
     /** Put the current list in a new spreadsheet */
     await click(target.querySelector(".o_favorite_menu button"));
     await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
-    target.querySelector(`.o_spreadsheet_threshold`).value = params.linesNumber
-        ? params.linesNumber
-        : 10;
+    /** @type {HTMLInputElement} */
+    const input = target.querySelector(`.o-sp-dialog-meta-threshold-input`);
+    input.value = params.linesNumber ? params.linesNumber.toString() : "10";
+    await triggerEvent(input, null, "input");
     await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     await def;
     const model = getSpreadsheetActionModel(spreadsheetAction);

@@ -1,16 +1,126 @@
 .o_spreadsheet_selector_dialog {
-    div {
-        padding-top: 10px;
+    .o-sp-dialog-meta-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .o-sp-dialog-meta-name {
+            display: flex;
+            width: 45%;
 
-        .o_input {
-            display: inline;
-            padding-left: 5px;
-            &.o_spreadsheet_threshold {
-                width: fit-content;
+            .o-sp-dialog-meta-name-label {
+                flex-shrink: 0;
+                padding-right: 5px;
+            }
+        }
+        .o-sp-dialog-meta-threshold {
+            display: flex;
+            width: 45%;
+
+            .o-sp-dialog-meta-threshold-input {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+
+            .o-sp-dialog-meta-threshold-text {
+                flex-shrink: 0;
             }
         }
     }
-    option.o_new {
-        font-style: italic;
+    .o-sp-dialog-headers {
+        padding-top: 20px;
+        display: flex;
+        padding-left: 16px;
+        border-bottom: 1px solid $o-gray-300;
+        margin-left: -16px;
+        margin-right: -16px;
+        .o-sp-dialog-header {
+            padding: 0.5rem 1rem;
+            margin-left: -1px;
+            margin-bottom: -1px;
+            border: 1px solid $o-gray-300;
+            &.active {
+                border-top-color: $o-enterprise-color;
+                border-bottom-color: white;
+                &:hover {
+                    color: $o-gray-700;
+                }
+            }
+            &:hover {
+                color: #01666b;
+                cursor: pointer;
+            }
+        }
+    }
+    .o-sp-dialog-content {
+        .o-sp-dialog-cp {
+            padding-top: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .o-sp-searchview {
+                width: 50%;
+                border-bottom: 1px solid $o-gray-300;
+                display: flex;
+                flex-direction: row;
+
+                .o-sp-searchview-input {
+                    border: none;
+                }
+
+                .o-sp-searchview-icon {
+                     padding-top: 8px;
+                }
+            }
+        }
+
+        .o-sp-dialog-items {
+            display: flex;
+            flex-flow: row wrap;
+
+            .o-sp-dialog-item {
+                flex: 0 1 150px;
+                margin: 15px;
+                max-width: 17%;
+
+                .o-sp-dialog-no-preview {
+                    text-align: center;
+                    padding-top: 1.5rem;
+                }
+
+                img, .o-sp-dialog-no-preview {
+                    height: 150px;
+                    border: 1px solid #ced4da;
+
+                    &:focus {
+                        outline: none;
+                    }
+
+                    &.selected {
+                        border-color: $o-brand-primary;
+                        box-shadow: 0 0 0 2px $o-brand-primary;
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                        border-color: $o-brand-primary;
+                        box-shadow: 0 0 0 2px $o-brand-primary;
+                    }
+                }
+
+                &.o-sp-dialog-item-blank {
+                    img {
+                        padding: 1.5rem;
+                    }
+                }
+
+                .o-sp-dialog-item-label {
+                    margin-top: 0.25rem;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    user-select: none;
+                }
+            }
+        }
     }
 }

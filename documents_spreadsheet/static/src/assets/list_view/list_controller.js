@@ -4,19 +4,14 @@ import ListController from "web.ListController";
 import { _t } from "web.core";
 import { sprintf } from "@web/core/utils/strings";
 
-import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
 import { removeContextUserInfo } from "../helpers";
+import { SpreadsheetSelectorDialog } from "../components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 
 
 
 ListController.include({
-    async _insertListSpreadsheet() {
+    _insertListSpreadsheet() {
         const model = this.model.get(this.handle);
-        const spreadsheets = await this._rpc({
-            model: "documents.document",
-            method: "get_spreadsheets_to_display",
-            args: [],
-        });
         const threshold = Math.min(model.count, model.limit);
 
         let name = this._title;
@@ -26,14 +21,12 @@ ListController.include({
         }
 
         const params = {
-            spreadsheets,
-            title: _t("Select a spreadsheet to insert your list"),
             threshold,
             type: "LIST",
             name,
+            confirm: (args) => this._insertInSpreadsheet(args),
         };
-        const dialog = new SpreadsheetSelectorDialog(this, params).open();
-        dialog.on("confirm", this, this._insertInSpreadsheet);
+        this.call("dialog", "add", SpreadsheetSelectorDialog, params);
     },
 
     /**
@@ -90,7 +83,7 @@ ListController.include({
      * @param {string} params.name Name of the list
      *
      */
-    async _insertInSpreadsheet({ id: spreadsheet, threshold, name }) {
+    async _insertInSpreadsheet({ spreadsheet, threshold, name }) {
         let notificationMessage;
         const { list, fields } = this._getListForSpreadsheet(name);
         const actionOptions = {

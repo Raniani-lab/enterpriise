@@ -6,16 +6,16 @@ import pyUtils from "web.py_utils";
 import Domain from "web.Domain";
 import { useService } from "@web/core/utils/hooks";
 import { useModel } from "web.Model";
-import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
 import { sprintf } from "@web/core/utils/strings"
-import { _t } from "@web/core/l10n/translation";
 import { LegacyComponent } from "@web/legacy/legacy_component";
+import { SpreadsheetSelectorDialog } from "../components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 
 
 export class InsertViewSpreadsheet extends LegacyComponent {
     setup() {
         this.model = useModel("searchModel");
         this.notification = useService("notification");
+        this.dialogManager = useService("dialog");
     }
 
     //---------------------------------------------------------------------
@@ -25,33 +25,26 @@ export class InsertViewSpreadsheet extends LegacyComponent {
     /**
      * @private
      */
-    async linkInSpreadsheet() {
-        const spreadsheets = await this.rpc({
-            model: "documents.document",
-            method: "get_spreadsheets_to_display",
-            args: [],
-        });
-        const dialog = new SpreadsheetSelectorDialog(this, {
-            spreadsheets,
+    linkInSpreadsheet() {
+        this.dialogManager.add(SpreadsheetSelectorDialog, {
             type: "LINK",
-            title: _t("Select a spreadsheet to insert your link"),
             name: this.env.action.name,
-        }).open();
-        dialog.on("confirm", this, this._insertInSpreadsheet);
+            confirm: (args) => this._insertInSpreadsheet(args),
+        });
     }
 
     /**
      * Open a new spreadsheet or an existing one and insert a link to the action.
      * @private
      */
-    async _insertInSpreadsheet({ id: spreadsheet, name }) {
+    async _insertInSpreadsheet({ spreadsheet, name }) {
         const actionToLink = this._getViewDescription();
         actionToLink.name = name;
         // do action with action link
         let notificationMessage;
         const actionOptions = {
             preProcessingAction: "insertLink",
-            preProcessingActionData: actionToLink
+            preProcessingActionData: actionToLink,
         };
 
         if (!spreadsheet.id) {
@@ -68,7 +61,7 @@ export class InsertViewSpreadsheet extends LegacyComponent {
         this.notification.notify({ title: "", message: notificationMessage, type: "info" });
         this.trigger("do-action", {
             action: "action_open_spreadsheet",
-            options: { additional_context: actionOptions }
+            options: { additional_context: actionOptions },
         });
     }
 

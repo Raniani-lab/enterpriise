@@ -78,7 +78,7 @@ class SaleOrder(models.Model):
         searched_fields = ['amount_signed', 'create_date', 'company_id', 'currency_id', 'event_type',
                            'event_date', 'id', 'recurring_monthly', 'order_id']
         order_log_ids = self.env['sale.order.log'].search_read(domain, fields=searched_fields, order='order_id')
-        order_ids = self.env['sale.order'].browse(map(lambda s: s['order_id'][0], order_log_ids))
+        order_ids = self.env['sale.order'].browse(set(map(lambda s: s['order_id'][0], order_log_ids)))
         for log in order_log_ids:
             order_id = self.env['sale.order'].browse(log['order_id'][0])
             date = log['event_date']

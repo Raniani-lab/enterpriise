@@ -2092,6 +2092,7 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot pause an asset with posted depreciation lines in the future."
+"without reverting them."
 msgstr ""
 
 #. module: account_asset

@@ -795,8 +795,8 @@ class AccountAsset(models.Model):
         line_before_pause = all_lines_before_pause and max(all_lines_before_pause, key=lambda x: x.date)
         following_lines = self.depreciation_move_ids.filtered(lambda x: x.date > pause_date)
         if following_lines:
-            if any(line.state == 'posted' for line in following_lines):
-                raise UserError(_("You cannot pause an asset with posted depreciation lines in the future."))
+            if any(line.state == 'posted' and not line.reversal_move_id for line in following_lines):
+                raise UserError(_("You cannot pause an asset with posted depreciation lines in the future without reverting them."))
 
             if self.prorata:
                 first_following = min(following_lines, key=lambda x: x.date)

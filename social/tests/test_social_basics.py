@@ -136,13 +136,15 @@ class TestSocialBasics(common.SocialCase, CronMixinCase):
         """ Make sure that when a default_calendar_date is passed and the scheduled_date is changed,
         We take into account the new scheduled_date as calendar_date.
         See social.post#create for more details."""
-        form = Form(self.env['social.post'].with_context(default_calendar_date='2022-05-29 05:00:00'))
+        default_calendar_date = fields.Datetime.now() + timedelta(hours=1)
+        form = Form(self.env['social.post'].with_context(default_calendar_date=default_calendar_date))
         form.message = 'this is a message'
-        self.assertEqual(form.scheduled_date, datetime(2022, 5, 29, 5, 0, 0))
-        form.scheduled_date = '2022-05-30 09:01:40'
+        self.assertEqual(form.scheduled_date, default_calendar_date)
+        new_scheduled_date = default_calendar_date + timedelta(minutes=20)
+        form.scheduled_date = new_scheduled_date
         post = form.save()
-        self.assertEqual(post.calendar_date, datetime(2022, 5, 30, 9, 1, 40))
-        self.assertEqual(post.scheduled_date, datetime(2022, 5, 30, 9, 1, 40))
+        self.assertEqual(post.calendar_date, new_scheduled_date)
+        self.assertEqual(post.scheduled_date, new_scheduled_date)
 
     @classmethod
     def _get_social_media(cls):

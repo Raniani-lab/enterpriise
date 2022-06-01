@@ -56,9 +56,11 @@ class SocialPost(models.Model):
         help="When the global post was published. The actual sub-posts published dates may be different depending on the media.")
     # stored for better calendar view performance
     calendar_date = fields.Datetime('Calendar Date', compute='_compute_calendar_date', store=True, readonly=False)
+    # technical field used by the calendar view (hatch the social post)
+    is_hatched = fields.Boolean(string="Hatched", compute='_compute_is_hatched')
     #UTM
     utm_campaign_id = fields.Many2one('utm.campaign', domain="[('is_auto_campaign', '=', False)]",
-        string="UTM Campaign", ondelete="set null")
+        string="Campaign", ondelete="set null")
     source_id = fields.Many2one(readonly=True)
     # Statistics
     stream_posts_count = fields.Integer("Feed Posts Count", compute='_compute_stream_posts_count')
@@ -77,6 +79,12 @@ class SocialPost(models.Model):
                     ','.join((post.account_ids - post.account_allowed_ids).mapped('name')),
                     post.company_id.name
                 ))
+
+    @api.constrains('state', 'scheduled_date')
+    def _check_scheduled_date(self):
+        if any(post.state in ('draft', 'scheduled') and post.scheduled_date
+               and post.scheduled_date < fields.Datetime.now() for post in self):
+            raise ValidationError(_('You cannot schedule a post in the past.'))
 
     @api.depends('live_post_ids.engagement')
     def _compute_post_engagement(self):
@@ -135,10 +143,15 @@ class SocialPost(models.Model):
         for post in self:
             post.media_ids = post.with_context(active_test=False).account_ids.mapped('media_id')
 
-    @api.depends('state', 'scheduled_date', 'published_date')
+    @api.depends('state', 'post_method', 'scheduled_date', 'published_date')
     def _compute_calendar_date(self):
         for post in self:
-            post.calendar_date = post.published_date if post.state == 'posted' else post.scheduled_date
+            if post.state == 'posted':
+                post.calendar_date = post.published_date
+            elif post.post_method == 'now':
+                post.calendar_date = False
+            else:
+                post.calendar_date = post.scheduled_date
 
     @api.depends('live_post_ids.account_id', 'live_post_ids.display_name')
     def _compute_live_posts_by_media(self):
@@ -148,6 +161,11 @@ class SocialPost(models.Model):
             for live_post in post.live_post_ids.filtered(lambda lp: lp.account_id.media_id.ids):
                 accounts_by_media[live_post.account_id.media_id.id].append(live_post.display_name)
             post.live_posts_by_media = json.dumps(accounts_by_media)
+
+    @api.depends('state')
+    def _compute_is_hatched(self):
+        for post in self:
+            post.is_hatched = post.state == 'draft'
 
     def _compute_click_count(self):
         # Filter by `medium_id` so we can compute the click count based
@@ -217,9 +235,12 @@ class SocialPost(models.Model):
         # if a scheduled_date / published_date is specified, it should be the one used as the calendar date
         # this is normally handled by the `_compute_calendar_date` but in create mode,
         # it is not called when a default value for the calendar_date field is passed
+        # if the post_method is set to 'now' unset the calendar_date to avoid displaying it in the calendar
         for vals in vals_list:
             if vals.get('state') == 'posted' and 'published_date' in vals:
                 vals['calendar_date'] = vals['published_date']
+            elif vals.get('post_method') == 'now':
+                vals['calendar_date'] = False
             elif 'scheduled_date' in vals:
                 vals['calendar_date'] = vals['scheduled_date']
 
@@ -238,8 +259,8 @@ class SocialPost(models.Model):
 
     def write(self, vals):
         if vals.get('calendar_date'):
-            if any(post.state != 'scheduled' for post in self):
-                raise UserError(_("You can only move posts that are scheduled."))
+            if any(post.state not in ('draft', 'scheduled') for post in self):
+                raise UserError(_("You cannot reschedule a post that has already been posted."))
 
             vals['scheduled_date'] = vals['calendar_date']
 

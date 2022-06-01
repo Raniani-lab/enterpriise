@@ -437,7 +437,7 @@ class AnalyticLine(models.Model):
         analytic_lines = self.filtered_domain(domain)
         if not analytic_lines:
             notification['params'].update({
-                'title': _('There are no timesheet entries to reset to draft or they have already been invoiced.'),
+                'title': _('There are no timesheets to reset to draft or they have already been invoiced.'),
                 'type': 'warning',
             })
             return notification
@@ -953,14 +953,14 @@ class AnalyticLine(models.Model):
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
-                    'message': _('There are no timesheet entries to merge.'),
+                    'message': _('There are no timesheets to merge.'),
                     'type': 'warning',
                     'sticky': False,
                 }
             }
 
         return {
-            'name': _('Merge Timesheet Entries'),
+            'name': _('Merge Timesheets'),
             'view_mode': 'form',
             'res_model': 'hr_timesheet.merge.wizard',
             'views': [(self.env.ref('timesheet_grid.timesheet_merge_wizard_view_form').id, 'form')],

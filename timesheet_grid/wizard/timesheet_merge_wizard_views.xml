@@ -5,7 +5,7 @@
             <field name="name">hr_timesheet.merge.wizard.form</field>
             <field name="model">hr_timesheet.merge.wizard</field>
             <field name="arch" type="xml">
-                <form string="Merge Timesheet Entries">
+                <form string="Merge Timesheet">
                     <field name="timesheet_ids" invisible="1" />
                     <sheet>
                         <group>

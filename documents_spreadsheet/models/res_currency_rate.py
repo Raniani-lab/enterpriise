@@ -14,7 +14,7 @@ class ResCurrencyRate(models.Model):
         if not currency_from or not currency_to:
             return False
         company = self.env.company
-        date = fields.Date.from_string(date) if date else fields.Date.today()
+        date = fields.Date.from_string(date) if date else fields.Date.context_today(self)
         return Currency._get_conversion_rate(currency_from, currency_to, company, date)
 
     @api.model

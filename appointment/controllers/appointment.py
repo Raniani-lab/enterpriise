@@ -268,7 +268,7 @@ class Appointment(http.Controller):
     # ------------------------------------------------------------
 
     @http.route(['/appointment/<int:appointment_type_id>/info'],
-                type='http', auth="public", website=True, sitemap=True)
+                type='http', auth="public", website=True, sitemap=False)
     def appointment_type_id_form(self, appointment_type_id, staff_user_id, date_time, duration, **kwargs):
         """
         Render the form to get information about the user for the appointment

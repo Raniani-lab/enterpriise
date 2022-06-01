@@ -917,6 +917,16 @@ msgid "Ask Restitution"
 msgstr ""
 
 #. module: l10n_be_reports
+#: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
+msgid "Ask payment :"
+msgstr ""
+
+#. module: l10n_be_reports
+#: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
+msgid "Ask restitution :"
+msgstr ""
+
+#. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_reports_periodic_vat_xml_export
 msgid "Belgian Periodic VAT Report Export Wizard"
 msgstr ""
@@ -958,6 +968,11 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__client_nihil
 msgid "Client Nihil"
+msgstr ""
+
+#. module: l10n_be_reports
+#: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
+msgid "Client nihil :"
 msgstr ""
 
 #. module: l10n_be_reports
@@ -1296,6 +1311,11 @@ msgid "Modification"
 msgstr ""
 
 #. module: l10n_be_reports
+#: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
+msgid "No"
+msgstr ""
+
+#. module: l10n_be_reports
 #: code:addons/l10n_be_reports/models/account_generic_tax_report.py:0
 #: code:addons/l10n_be_reports/models/partner_vat_intra.py:0
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
@@ -1536,6 +1556,10 @@ msgstr ""
 #, python-format
 msgid "XML Export Options"
 msgstr ""
+
+#. module: l10n_be_reports
+#: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
+msgid "Yes"
 
 #. module: l10n_be_reports
 #: code:addons/l10n_be_reports/wizard/l10n_be_281_50_wizard.py:0

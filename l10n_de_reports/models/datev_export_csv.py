@@ -347,6 +347,9 @@ class DatevExportCSV(models.AbstractModel):
         return output.getvalue()
 
     def _find_partner_account(self, account, partner):
+        param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count', "100000000")[:9]
+        param_start_vendors = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count_vendors', "700000000")[:9]
+        len_param = max(param_start.isdigit() and len(param_start) or 9, param_start_vendors.isdigit() and len(param_start_vendors) or 9, 5)
         if (account.internal_type in ('receivable', 'payable') and partner):
             # Check if we have a property as receivable/payable on the partner
             # We use the property because in datev and in germany, partner can be of 2 types
@@ -358,16 +361,15 @@ class DatevExportCSV(models.AbstractModel):
             account = partner.property_account_receivable_id if account.internal_type == 'receivable' else partner.property_account_payable_id
             fname   = "property_account_receivable_id"       if account.internal_type == "receivable" else "property_account_payable_id"
             prop = self.env['ir.property']._get(fname, "res.partner", partner.id)
-            if prop == account:
-                return str(account.code).ljust(8, '0')
+            if prop:
+                return str(account.code).ljust(len_param - 1, '0')
             if account.internal_type == 'receivable':
-                param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count')
-                start_count = param_start and param_start.isdigit() and int(param_start) or 100000000
+                start_count = param_start.isdigit() and int(param_start) or 100000000
             else:
-                param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count_vendors')
-                start_count = param_start and param_start.isdigit() and int(param_start) or 700000000
+                start_count = param_start_vendors.isdigit() and int(param_start_vendors) or 700000000
+            start_count = int(str(start_count).ljust(len_param, '0'))
             return partner.l10n_de_datev_identifier or start_count + partner.id
-        return str(account.code).ljust(8, '0')
+        return str(account.code).ljust(len_param - 1, '0')
 
     # Source: http://www.datev.de/dnlexom/client/app/index.html#/document/1036228/D103622800029
     def _get_csv(self, options, moves):

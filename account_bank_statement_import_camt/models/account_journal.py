@@ -56,6 +56,11 @@ class AccountJournal(models.Model):
             transactions = []
             sequence = 0
 
+            # Account Number    1..1
+            # if not IBAN value then... <Othr><Id> would have.
+            account_no = sanitize_account_number(statement.xpath('ns:Acct/ns:Id/ns:IBAN/text() | ns:Acct/ns:Id/ns:Othr/ns:Id/text()',
+                namespaces=ns)[0])
+
             # Currency 0..1
             currency = statement.xpath('ns:Acct/ns:Ccy/text() | ns:Bal/ns:Amt/@Ccy', namespaces=ns)[0]
 
@@ -136,11 +141,6 @@ class AccountJournal(models.Model):
             statement_vals['balance_start'] = CAMT._get_signed_balance(node=statement, namespaces=ns, getters=CAMT._start_balance_getters)
             statement_vals['balance_end_real'] = CAMT._get_signed_balance(node=statement, namespaces=ns, getters=CAMT._end_balance_getters)
 
-            # Account Number    1..1
-            # if not IBAN value then... <Othr><Id> would have.
-            account_no = sanitize_account_number(statement.xpath('ns:Acct/ns:Id/ns:IBAN/text() | ns:Acct/ns:Id/ns:Othr/ns:Id/text()',
-                namespaces=ns)[0])
-
             # Save statements and currency
             statements_per_iban.setdefault(account_no, []).append(statement_vals)
             currency_per_iban[account_no] = currency
@@ -156,4 +156,8 @@ class AccountJournal(models.Model):
         # Otherwise, returns those from only account_no
         statement_list = statements_per_iban.get(account_no, [])
         currency = currency_per_iban.get(account_no)
+
+        if not currency and not statement_list:
+            raise UserError(_("Please check the currency on your bank journal.\n"
+                            "No statements in currency %s were found in this CAMT file.", journal_currency.name))
         return currency, account_no, statement_list

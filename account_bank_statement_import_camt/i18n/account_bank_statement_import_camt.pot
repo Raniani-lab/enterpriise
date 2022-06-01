@@ -1461,6 +1461,14 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
 #, python-format
 msgid ""
+"Please check the currency on your bank journal.\n"
+"No statements in currency %s were found in this CAMT file."
+msgstr ""
+
+#. module: account_bank_statement_import_camt
+#: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
+#, python-format
+msgid ""
 "Please set the IBAN account on your bank journal.\n"
 "\n"
 "This CAMT file is targeting several IBAN accounts but none match the current journal."

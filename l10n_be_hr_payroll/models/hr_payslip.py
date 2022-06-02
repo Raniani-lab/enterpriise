@@ -720,33 +720,6 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 
     taxable_amount = categories.GROSS  # Base imposable
 
-    threshold = payslip.env['hr.rule.parameter']._get_parameter_from_code(
-        'pricate_car_taxable_threshold',
-        date=payslip.date_to,
-        raise_if_not_found=False) or 410
-    transport_amount = 0
-    if payslip.contract_id.transport_mode_private_car:
-        transport_amount = contract.with_context(
-            payslip_date=payslip.date_from)._get_private_car_reimbursed_amount(contract.km_home_work)
-        ratio = 1.0 / 12.0
-        # Private Car is added after PP, add the part exceeding the exempted part
-        if transport_amount and transport_amount > threshold * ratio:
-            taxable_amount += transport_amount - (threshold * ratio)
-    elif contract.transport_mode_car and not payslip.is_outside_contract:
-        if 'vehicle_id' in payslip.dict:
-            transport_amount = payslip.dict.vehicle_id._get_car_atn(date=date_from)
-        else:
-            transport_amount = contract.car_atn
-        # Introduced in May 2022
-        if date_from.year < 2022:
-            ratio = 0
-        elif date_from == 2022:
-            ratio = 1.0 / 8.0
-        else:
-            ratio = 1.0 / 12.0
-        # Car ATN is already in GROSS, only remove the exempted part
-        if transport_amount and transport_amount >= threshold * ratio:
-            taxable_amount -= threshold * ratio
     lower_bound = taxable_amount - taxable_amount % 15
 
     # yearly_gross_revenue = Revenu Annuel Brut

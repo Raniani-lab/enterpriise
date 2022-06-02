@@ -350,7 +350,7 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'GROSSIP': 1862.34,
             'IP.PART': -530.77,
             'GROSS': 1331.57,
-            'P.P': -78.02,
+            'P.P': -72.4,
             'P.P.DED': 5.55,
             'ATN.CAR.2': 0.0,
             'ATN.INT.2': 0.0,
@@ -363,9 +363,8 @@ class TestCreditTime(AccountTestInvoicingCommon):
             'REP.FEES': 98.08,
             'IP': 530.77,
             'IP.DED': -39.81,
-            'NET': 1847.01,
+            'NET': 1852.63,
         }
-
         error = []
         line_values = payslip_new_contract._get_line_values(payslip_results.keys())
         for code, value in payslip_results.items():

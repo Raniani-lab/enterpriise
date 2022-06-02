@@ -299,11 +299,6 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
 
                     @include o-gantt-hoverable-colors($gantt-color);
 
-                    .o_gantt_progress {
-                        opacity: 0.2;
-                        background-color: darken($gantt-color, 30%);
-                    }
-
                     &.decoration-info {
                         @include gantt-gradient-decorations($gantt-color);
                     }
@@ -642,6 +637,10 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
                         &.highlight {
                             background-color: $color;
                             color: color-yiq($color);
+                        }
+                        .o_gantt_progress {
+                            opacity: 0.2;
+                            background-color: darken(nth($o-colors-complete, $index), 30%);
                         }
                     }
                 }

@@ -4859,7 +4859,7 @@ QUnit.module('ViewEditorManager', {
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
             mockRPC: function(route, args) {
-                if (!['/mail/init_messaging', '/mail/load_message_failures', ...WEBCLIENT_LOAD_ROUTES].includes(route)) {
+                if (!['/mail/init_messaging', '/mail/load_message_failures', '/longpolling/im_status', ...WEBCLIENT_LOAD_ROUTES].includes(route)) {
                     assert.step(route);
                 }
                 if (route === '/web_studio/edit_view') {

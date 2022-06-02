@@ -870,8 +870,16 @@ class HrContractSalary(http.Controller):
         sign_request_sudo = SignRequestSudo.create({
             'template_id': sign_template.id,
             'request_item_ids': [
-                Command.create({'role_id': request.env.ref('sign.sign_item_role_employee').id, 'partner_id': new_contract.employee_id.address_home_id.id}),
-                Command.create({'role_id': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id, 'partner_id': new_contract.hr_responsible_id.partner_id.id}),
+                Command.create({
+                    'role_id': request.env.ref('sign.sign_item_role_employee').id,
+                    'partner_id': new_contract.employee_id.address_home_id.id,
+                    'mail_sent_order': 1
+                }),
+                Command.create({
+                    'role_id': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id,
+                    'partner_id': new_contract.hr_responsible_id.partner_id.id,
+                    'mail_sent_order': 2
+                }),
             ],
             'reference': _('Signature Request - %s', new_contract.name),
             'subject': _('Signature Request - %s', new_contract.name),

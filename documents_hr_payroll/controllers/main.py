@@ -24,7 +24,7 @@ class SignContract(Sign):
                 contract.company_id.documents_hr_settings and \
                 all(state == 'completed' for state in request_item.sign_request_id.request_item_ids.mapped('state')) and \
                 employee_role in request_item.sign_request_id.request_item_ids.role_id:
-            request_item.sign_request_id.generate_completed_document()
+            request_item.sign_request_id._generate_completed_document()
 
             employee_request_item = request_item.sign_request_id.request_item_ids.filtered(
                 lambda i: i.role_id == employee_role)

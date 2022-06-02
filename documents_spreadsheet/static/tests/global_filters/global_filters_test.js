@@ -320,7 +320,6 @@ module("documents_spreadsheet > global_filters",
     });
 
     test("Readonly user can update relation filter values", async function (assert) {
-        assert.expect(8);
         const tagSelector = ".o_field_many2manytags .badge";
         const { model } = await createSpreadsheetFromPivot({
             arch: `
@@ -372,6 +371,7 @@ module("documents_spreadsheet > global_filters",
             [...pivot.querySelectorAll(tagSelector)].map((el) => el.textContent.trim()),
             ["xpad", "xphone"]
         );
+        assert.deepEqual(model.getters.getGlobalFilterValue("42"), [41, 37])
     });
 
     test("Cannot have duplicated names", async function (assert) {

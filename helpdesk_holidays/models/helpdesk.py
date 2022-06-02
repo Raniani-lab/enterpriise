@@ -30,5 +30,6 @@ class HelpdeskTeam(models.Model):
                         pytz.utc.localize(leave.date_from),
                         pytz.utc.localize(leave.date_to),
                         leave)]),
-                    res[employee.resource_id.id] = intervals - leave_intervals[0]
+                    intervals -= leave_intervals[0]
+            res[employee.resource_id.id] = intervals
         return res

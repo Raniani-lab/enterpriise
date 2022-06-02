@@ -608,38 +608,52 @@ class AccountMove(models.Model):
                             taxes_found |= taxes_record
         return taxes_found
 
-    def _get_invoice_lines(self, invoice_lines, subtotal_ocr):
+    def _get_invoice_lines(self, ocr_results):
         """
         Get write values for invoice lines.
         """
         self.ensure_one()
+
+        invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
+        subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
+        supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
+        date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
+
         invoice_lines_to_create = []
         if self.company_id.extract_single_line_per_tax:
             merged_lines = {}
             for il in invoice_lines:
-                description = il['description']['selected_value']['content'] if 'description' in il else None
                 total = il['total']['selected_value']['content'] if 'total' in il else 0.0
                 subtotal = il['subtotal']['selected_value']['content'] if 'subtotal' in il else total
                 taxes_ocr = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
                 taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in il['taxes']['selected_values']] if 'taxes' in il else []
                 taxes_records = self._get_taxes_record(taxes_ocr, taxes_type_ocr)
 
-                taxes_ids = tuple(sorted(taxes_records.ids))
+                if not taxes_records and taxes_ocr:
+                    taxes_ids = ('not found', *sorted(taxes_ocr))
+                else:
+                    taxes_ids = ('found', *sorted(taxes_records.ids))
+
                 if taxes_ids not in merged_lines:
-                    merged_lines[taxes_ids] = {'subtotal': subtotal, 'description': [description] if description is not None else []}
+                    merged_lines[taxes_ids] = {'subtotal': subtotal}
                 else:
                     merged_lines[taxes_ids]['subtotal'] += subtotal
-                    if description is not None:
-                        merged_lines[taxes_ids]['description'].append(description)
                 merged_lines[taxes_ids]['taxes_records'] = taxes_records
 
             # if there is only one line after aggregating the lines, use the total found by the ocr as it is less error-prone
             if len(merged_lines) == 1:
                 merged_lines[list(merged_lines.keys())[0]]['subtotal'] = subtotal_ocr
 
-            for taxes_ids, il in merged_lines.items():
+            description_fields = []
+            if supplier_ocr:
+                description_fields.append(supplier_ocr)
+            if date_ocr:
+                description_fields.append(date_ocr.split()[0])
+            description = ' - '.join(description_fields)
+
+            for il in merged_lines.values():
                 vals = {
-                    'name': "\n".join(il['description']) if len(il['description']) > 0 else "/",
+                    'name': description,
                     'price_unit': il['subtotal'],
                     'quantity': 1.0,
                     'tax_ids': il['taxes_records']
@@ -749,14 +763,12 @@ class AccountMove(models.Model):
         date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
         due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
         total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
-        subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
         invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
         currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
         vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
         payment_ref_ocr = ocr_results['payment_ref']['selected_value']['content'] if 'payment_ref' in ocr_results else ""
         iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
-        invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
         patched_process_fvg, move_form = self.get_form_context_manager()
         with patched_process_fvg, move_form:
@@ -842,7 +854,7 @@ class AccountMove(models.Model):
                 # we save here as _get_invoice_lines() uses the record values in self to determine the tax records to use
                 move_form.save()
 
-                vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
+                vals_invoice_lines = self._get_invoice_lines(ocr_results)
                 self._set_invoice_lines(move_form, vals_invoice_lines)
 
                 # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches

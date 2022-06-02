@@ -177,7 +177,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             self.assertEqual(len(invoice.invoice_line_ids), 2)
 
             # line 1 and 3 should be merged as they both have a 15% tax
-            self.assertEqual(invoice.invoice_line_ids[0].name, "Test 1\nTest 3")
+            self.assertEqual(invoice.invoice_line_ids[0].name, "Test - 2019-04-12")
             self.assertEqual(invoice.invoice_line_ids[0].price_unit, 200)
             self.assertEqual(invoice.invoice_line_ids[0].quantity, 1)
             self.assertEqual(len(invoice.invoice_line_ids[0].tax_ids), 1)
@@ -187,7 +187,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             self.assertEqual(invoice.invoice_line_ids[0].price_total, 230)
 
             # line 2 has no tax
-            self.assertEqual(invoice.invoice_line_ids[1].name, "Test 2")
+            self.assertEqual(invoice.invoice_line_ids[1].name, "Test - 2019-04-12")
             self.assertEqual(invoice.invoice_line_ids[1].price_unit, 100)
             self.assertEqual(invoice.invoice_line_ids[1].quantity, 1)
             self.assertEqual(len(invoice.invoice_line_ids[1].tax_ids), 0)
@@ -342,7 +342,6 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             invoice._check_status()
 
         self.assertEqual(len(invoice.invoice_line_ids), 1)
-        self.assertEqual(invoice.invoice_line_ids[0].name, "Test 1")
         self.assertEqual(invoice.invoice_line_ids[0].price_unit, 100)
         self.assertEqual(invoice.invoice_line_ids[0].quantity, 1)
         self.assertEqual(len(invoice.invoice_line_ids[0].tax_ids), 0)

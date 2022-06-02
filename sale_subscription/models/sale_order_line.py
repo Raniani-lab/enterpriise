@@ -61,17 +61,13 @@ class SaleOrderLine(models.Model):
         super(SaleOrderLine, self)._compute_invoice_status()
         today = fields.Datetime.today()
         for line in self:
-            if not line.order_id.is_subscription and line.temporal_type == 'subscription':
+            if not line.order_id.is_subscription or line.temporal_type != 'subscription':
                 continue
             to_invoice_check = line.next_invoice_date and line.state in ('sale', 'done') and line.next_invoice_date >= today
             if line.end_date:
                 to_invoice_check = to_invoice_check and line.order_id.end_date > today.date()
-            if to_invoice_check:
-                if not line.last_invoice_date and (not line.start_date or line.start_date and line.start_date <= today):
-                    invoice_status = 'to invoice'
-                else:
-                    invoice_status = 'no'
-                line.invoice_status = invoice_status
+            if to_invoice_check and line.start_date and line.start_date > today:
+                line.invoice_status = 'no'
 
     @api.depends('order_id.is_subscription', 'temporal_type')
     def _compute_start_date(self):
@@ -299,11 +295,14 @@ class SaleOrderLine(models.Model):
     @api.depends('temporal_type', 'invoice_lines', 'invoice_lines.subscription_start_date',
                  'invoice_lines.subscription_end_date', 'next_invoice_date', 'last_invoice_date')
     def _compute_qty_invoiced(self):
-        non_subscription_lines = self.filtered(lambda l: l.temporal_type != 'subscription')
-        super(SaleOrderLine, non_subscription_lines)._compute_qty_invoiced()
+        other_lines = self.env['sale.order.line']
         subscription_qty_invoiced = self._get_subscription_qty_invoiced()
-        for line in self.filtered(lambda l: l.temporal_type == 'subscription'):
+        for line in self:
+            if line.temporal_type != 'subscription':
+                other_lines |= line
+                continue
             line.qty_invoiced = subscription_qty_invoiced.get(line.id, 0.0)
+        super(SaleOrderLine, other_lines)._compute_qty_invoiced()
 
     @api.depends('temporal_type', 'price_subtotal', 'pricing_id')
     def _compute_recurring_monthly(self):

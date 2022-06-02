@@ -1353,6 +1353,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(inv.amount_untaxed, 800, "A new invoice should be created, all the lines should be invoiced")
 
     def test_subscription_starts_in_future(self):
+        """ Start a subscription in 2 weeks. The next invoice date should be aligned with start_date """
         with freeze_time("2022-05-15"):
             self.subscription_tmpl.payment_mode = 'draft_invoice'
             subscription = self.env['sale.order'].create({
@@ -1370,9 +1371,9 @@ class TestSubscription(TestSubscriptionCommon):
                         'next_invoice_date': '2022-06-01',
                     })],
             })
-
             self.assertEqual(subscription.payment_mode, 'draft_invoice', 'The payment mode should be draft invoice')
             subscription.action_confirm()
+            self.assertEqual(subscription.order_line.invoice_status, 'no', "The line qty should be black.")
             self.assertEqual(subscription.order_line.start_date, datetime.datetime(2022, 6, 1), 'Start date should be in the future')
             self.assertEqual(subscription.order_line.next_invoice_date, datetime.datetime(2022, 6, 1), 'next_invoice_date should be in the future')
             subscription._create_recurring_invoice()
@@ -1382,7 +1383,50 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(subscription.order_line.next_invoice_date, datetime.datetime(2022, 8, 1),
                              'next_invoice_date should updated')
 
- def test_product_pricing_respects_variants(self):
+    def test_invoice_status(self):
+        with freeze_time("2022-05-15"):
+            self.subscription_tmpl.payment_mode = 'draft_invoice'
+            self.product.invoice_policy = 'delivery'
+            subscription_future = self.env['sale.order'].create({
+                'partner_id': self.partner.id,
+                'sale_order_template_id': self.subscription_tmpl.id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 1.0,
+                        'product_uom': self.product.uom_id.id,
+                        'price_unit': 12,
+                        'pricing_id': self.pricing_month.id,
+                        'start_date': '2022-06-01',
+                        'next_invoice_date': '2022-06-01',
+                    })],
+            })
+
+            subscription_now = self.env['sale.order'].create({
+                'partner_id': self.partner.id,
+                'sale_order_template_id': self.subscription_tmpl.id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 1.0,
+                        'product_uom': self.product.uom_id.id,
+                        'price_unit': 12,
+                        'pricing_id': self.pricing_month.id,
+                        'start_date': '2022-05-15',
+                        'next_invoice_date': '2022-05-15',
+                    })],
+            })
+
+            subscription_future.action_confirm()
+            subscription_now.action_confirm()
+            self.assertEqual(subscription_future.order_line.invoice_status, 'no', "The line qty should be black.")
+            self.assertEqual(subscription_now.order_line.invoice_status, 'no', "The line qty should be black.")
+            subscription_now.order_line.qty_delivered = 1
+            self.assertEqual(subscription_now.order_line.invoice_status, 'to invoice', "The line qty should be blue.")
+
+    def test_product_pricing_respects_variants(self):
         # create a product with 2 variants
         ProductTemplate = self.env['product.template']
         ProductAttributeVal = self.env['product.attribute.value']

@@ -5,6 +5,7 @@ from odoo import models, api, _, fields
 from odoo.tools import format_date, date_utils, get_lang
 from collections import defaultdict
 
+import ast
 import datetime
 
 
@@ -315,7 +316,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
             lines.extend(self._get_journal_balance_line(options, parent_key, journal_id, current_balance, is_starting_balance=False))
 
         # Get the tax summary section line
-        if needs_group_lines and group_vals_dict.get('tax_data') and group_vals_dict.get('type') in ('sale', 'purchase', 'general'):
+        if needs_group_lines and group_vals_dict.get('tax_data'):
             # This is a special line with a special template to render it.
             # It will contain two tables, which are the tax report and tax grid summary sections.
             tax_report_lines = self._get_tax_report_line_for_sections(options, group_vals_dict.get('tax_data'))
@@ -325,9 +326,12 @@ class ReportAccountJournalAudit(models.AbstractModel):
                     'id': 'total',
                     'name': '',
                     'parent_id': parent_key,
+                    'journal_id': journal_id,
                     'is_tax_section_line': True,
                     'tax_report_lines': tax_report_lines,
                     'tax_grid_summary_lines': tax_grid_summary_lines,
+                    'date_from': group_vals_dict.get('tax_data', {}).get('date_from'),
+                    'date_to': group_vals_dict.get('tax_data', {}).get('date_to'),
                     'columns': [],
                     'colspan': 7,
                     'level': 3,
@@ -692,8 +696,6 @@ class ReportAccountJournalAudit(models.AbstractModel):
             ...
         }
         """
-        if data.get('journal_type') not in ('purchase', 'sale'):
-            return False
         tax_report_options = self._get_generic_tax_report_options(options, data)
         tax_report = self.env['account.generic.tax.report']
         tax_report_lines = tax_report.with_context(tax_report._set_context(tax_report_options))._get_lines(tax_report_options)
@@ -705,6 +707,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
                 tax_values[line_id] = {
                     'base_amount': tax_report_line['columns'][0]['no_format'],
                     'tax_amount': tax_report_line['columns'][1]['no_format'],
+                    'data_args': tax_report_line['caret_options_args'],
                 }
 
         # Make the final data dict that will be used by the template, using the taxes information.
@@ -715,6 +718,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
                 'base_amount': self.format_value(tax_values[tax.id]['base_amount'], blank_if_zero=False),
                 'tax_amount': self.format_value(tax_values[tax.id]['tax_amount'], blank_if_zero=False),
                 'name': tax.name,
+                'data_args': tax_values[tax.id]['data_args'],
             })
 
         # Return the result, ordered by country name
@@ -774,9 +778,6 @@ class ReportAccountJournalAudit(models.AbstractModel):
             ...
         }
         """
-        # We may want to display tax grids for cash basis journals, which are by default of type "general"
-        if data.get('journal_type') not in ('purchase', 'sale', 'general'):
-            return False
         # Use the same option as we use to get the tax details, but this time to generate the query used to fetch the
         # grid information
         tax_report_options = self._get_generic_tax_report_options(options, data)
@@ -857,4 +858,70 @@ class ReportAccountJournalAudit(models.AbstractModel):
         """ returns an action to open a tree view of the account.move.line having the selected tax tag """
         tag_id = params.get('tag_id')
         domain = [('tax_tag_ids', 'in', [tag_id]), ('company_id', 'in', self.env.company.ids)] + self.env['account.move.line']._get_tax_exigible_domain()
-        return self.open_action(options, domain)
+        # When grouped by month, we don't use the report dates directly, but the ones of the month. So they need to replace the ones in the options.
+        new_options = options.copy()
+        new_options['date'].update({
+            'strict_range': True,
+            'date_from': params and params.get('date_from') or options.get('date', {}).get('date_from'),
+            'date_to': params and params.get('date_to') or options.get('date', {}).get('date_to'),
+        })
+        return self.open_action(new_options, domain)
+
+    def action_dropdown_audit_default_tax_report(self, options, params):
+        args = ast.literal_eval(params['args'])
+        # See above
+        new_options = options.copy()
+        new_options['date'].update({
+            'strict_range': True,
+            'date_from': params and params.get('date_from') or options.get('date', {}).get('date_from'),
+            'date_to': params and params.get('date_to') or options.get('date', {}).get('date_to'),
+        })
+        return self.env['account.generic.tax.report']._redirect_audit_default_tax_report(new_options, *args)
+
+    def action_open_tax_journal_items(self, options, params):
+        """
+        Open the journal items related to the tax on this line.
+        Take into account the given/options date and group by taxes then account.
+        :param options: the report options.
+        :param params: a dict containing the line params. (Dates, name, journal_id, tax_type)
+        :return: act_window on journal items grouped by tax or tags and accounts.
+        """
+        ctx = {
+            'search_default_posted': 0 if options.get('all_entries') else 1,
+            'search_default_date_between': 1,
+            'date_from': params and params.get('date_from') or options.get('date', {}).get('date_from'),
+            'date_to': params and params.get('date_to') or options.get('date', {}).get('date_to'),
+            'search_default_journal_id': params.get('journal_id'),
+            'name_groupby': 1,
+            'expand': 1,
+        }
+        if params and params.get('tax_type') == 'tag':
+            ctx.update({
+                'search_default_group_by_tax_tags': 1,
+                'search_default_group_by_account': 1,
+            })
+        elif params and params.get('tax_type') == 'tax':
+            ctx.update({
+                'search_default_group_by_taxes': 1,
+                'search_default_group_by_account': 1,
+            })
+
+        if params and 'journal_id' in params:
+            ctx.update({
+                'search_default_journal_id': [params['journal_id']],
+            })
+
+        if options and options.get('journals') and 'search_default_journal_id' not in ctx:
+            selected_journals = [journal['id'] for journal in options['journals'] if journal.get('selected')]
+            if len(selected_journals) == 1:
+                ctx['search_default_journal_id'] = selected_journals
+
+        return {
+            'name': params.get('name'),
+            'view_mode': 'tree,pivot,graph,kanban',
+            'res_model': 'account.move.line',
+            'views': [(self.env.ref('account.view_move_line_tree_grouped').id, 'list')],
+            'type': 'ir.actions.act_window',
+            'domain': [('display_type', 'not in', ('line_section', 'line_note'))],
+            'context': ctx,
+        }

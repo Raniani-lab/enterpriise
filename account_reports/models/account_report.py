@@ -1319,7 +1319,6 @@ class AccountReport(models.AbstractModel):
             'search_default_group_by_move': 1,
             'search_default_posted': 0 if options.get('all_entries') else 1,
             'search_default_date_between': 1,
-            'search_default_report_journal': 1,
             'date_from': options.get('date').get('date_from'),
             'date_to': options.get('date').get('date_to'),
             'search_default_journal_id': params.get('journal_id'),

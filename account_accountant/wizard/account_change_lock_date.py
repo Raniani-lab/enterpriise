@@ -12,7 +12,7 @@ class AccountChangeLockDate(models.TransientModel):
     period_lock_date = fields.Date(
         string='Journal Entries Lock Date',
         default=lambda self: self.env.company.period_lock_date,
-        help='Prevents Journal entries creation prior to the defined date. Except for Advisors users.')
+        help='Prevents Journal entries creation prior to the defined date. Except for Accountants users.')
     fiscalyear_lock_date = fields.Date(
         string='All Users Lock Date',
         default=lambda self: self.env.company.fiscalyear_lock_date,

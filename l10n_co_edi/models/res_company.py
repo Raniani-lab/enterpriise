@@ -13,7 +13,7 @@ class ResCompany(models.Model):
 
     l10n_co_edi_username = fields.Char(string='Username')
     l10n_co_edi_password = fields.Char(string='Password')
-    l10n_co_edi_company = fields.Char(string='Company ID')
+    l10n_co_edi_company = fields.Char(string='Company Registry')
     l10n_co_edi_account = fields.Char(string='Account ID')
     l10n_co_edi_test_mode = fields.Boolean(string='Test mode', default=True)
     l10n_co_edi_header_gran_contribuyente = fields.Char(string='Great contributor')

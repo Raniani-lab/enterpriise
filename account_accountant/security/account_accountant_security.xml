@@ -14,18 +14,18 @@
         </record>
 
         <record id="account.group_account_readonly" model="res.groups">
-            <field name="name">Auditor</field>
+            <field name="name">Read-only</field>
             <field name="category_id" ref="base.module_category_accounting_accounting"/>
         </record>
 
         <record id="account.group_account_user" model="res.groups">
-            <field name="name">Accountant</field>
+            <field name="name">Bookkeeper</field>
             <field name="implied_ids" eval="[(4, ref('account.group_account_invoice')), (4, ref('account.group_account_readonly'))]"/>
             <field name="category_id" ref="base.module_category_accounting_accounting"/>
         </record>
 
         <record id="account.group_account_manager" model="res.groups">
-            <field name="name">Advisor</field>
+            <field name="name">Accountant</field>
             <field name="implied_ids" eval="[(3, ref('account.group_account_invoice')), (4, ref('account.group_account_user'))]"/>
             <field name="category_id" ref="base.module_category_accounting_accounting"/>
         </record>

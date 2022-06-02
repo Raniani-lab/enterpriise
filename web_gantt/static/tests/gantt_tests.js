@@ -96,6 +96,10 @@ function getPillItemWidth($el) {
 
 QUnit.module('LegacyViews', {
     beforeEach: function () {
+        // Avoid animation to not have to wait until the tooltip is removed
+        this.initialPopoverDefaultAnimation = Popover.Default.animation;
+        Popover.Default.animation = false;
+
         this.data = {
             tasks: {
                 fields: {
@@ -167,6 +171,9 @@ QUnit.module('LegacyViews', {
                 }]
             },
         };
+    },
+    afterEach: async function() {
+        Popover.Default.animation = this.initialPopoverDefaultAnimation;
     },
 }, function () {
     QUnit.module('GanttView (legacy)');

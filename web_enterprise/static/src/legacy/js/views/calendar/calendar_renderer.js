@@ -208,7 +208,7 @@ CalendarRenderer.include({
      */
     _onPopoverShown: function ($popoverElement, calendarPopover) {
         this._super.apply(this, arguments);
-        const $popover = $($popoverElement.data('bs.popover').tip);
+        const $popover = $(Popover.getInstance($popoverElement[0]).tip);
         // Need to be executed after Bootstrap popover
         // Bootstrap set style inline and so override the scss style
         setTimeout(() => {

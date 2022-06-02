@@ -146,7 +146,7 @@ export default GanttRenderer.extend({
     async _onMilestoneMouseLeave(ev) {
         ev.stopPropagation();
         const $milestone = $(ev.currentTarget);
-        $milestone.popover('hide').popover('dispose');
+        $milestone.popover('dispose');
     },
 
 });

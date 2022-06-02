@@ -20,7 +20,6 @@ class HelpDeskPortal(HttpCase):
             'name': 'New',
             'sequence': 10,
             'team_ids': [(4, self.team_with_sla.id, 0)],
-            'is_close': False,
         })
         self.sla = self.env['helpdesk.sla'].create({
             'name': "2 days to be in progress",

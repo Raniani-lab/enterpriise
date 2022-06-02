@@ -9,7 +9,7 @@ var _t = core._t;
 
 tour.register('helpdesk_tour', {
     url: "/web",
-    rainbowManMessage: Markup(_t('<strong><b>Good job!</b> You walked through all steps of this tour.</strong>')),
+    rainbowManMessage: Markup(_t('<center><strong><b>Good job!</b> You walked through all steps of this tour.</strong></center>')),
     sequence: 220,
 }, [{
     trigger: '.o_app[data-menu-xmlid="helpdesk.menu_helpdesk_root"]',

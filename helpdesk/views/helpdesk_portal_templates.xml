@@ -99,7 +99,7 @@
 
                     <t t-set="entries">
                         <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
-                            <li t-if="ticket.team_id.allow_portal_ticket_closing and not ticket.stage_id.is_close and not ticket.closed_by_partner" class="list-group-item flex-grow-1">
+                            <li t-if="ticket.team_id.allow_portal_ticket_closing and not ticket.stage_id.fold and not ticket.closed_by_partner" class="list-group-item flex-grow-1">
                                 <div class="btn-toolbar flex-sm-nowrap">
                                     <button class="btn btn-secondary pt-1 btn-block" data-bs-target="#helpdesk_ticket_close_modal" data-bs-toggle="modal">
                                         Close Ticket
@@ -216,7 +216,7 @@
                         <h4><strong>Message and communication history</strong></h4>
                         <t t-call="portal.message_thread">
                             <t t-set="token" t-value="ticket.access_token"/>
-                            <t t-set="disable_composer" t-value="ticket.stage_id.is_close"/>
+                            <t t-set="disable_composer" t-value="ticket.stage_id.fold"/>
                         </t>
                     </div>
                 </div>

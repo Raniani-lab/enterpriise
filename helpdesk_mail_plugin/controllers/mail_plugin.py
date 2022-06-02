@@ -28,7 +28,7 @@ class MailPluginController(mail_plugin.MailPluginController):
                 {
                     ticket_id: the ticket's id,
                     name: the ticket's name,
-                    is_closed: True if the ticket has been closed, false otherwise
+                    fold: True if the ticket has been closed, false otherwise
                 }
         """
         tickets = request.env['helpdesk.ticket'].search(
@@ -37,7 +37,7 @@ class MailPluginController(mail_plugin.MailPluginController):
         return [{
             'ticket_id': ticket.id,
             'name': ticket.display_name,
-            'is_closed': ticket.stage_id.is_close
+            'fold': ticket.stage_id.fold
         } for ticket in tickets]
 
     def _mail_content_logging_models_whitelist(self):

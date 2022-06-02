@@ -249,6 +249,7 @@ class HelpdeskTicket(models.Model):
     partner_id = fields.Many2one('res.partner', string='Customer', tracking=True)
     partner_ticket_ids = fields.Many2many('helpdesk.ticket', compute='_compute_partner_ticket_count', string="Partner Tickets")
     partner_ticket_count = fields.Integer('Number of other tickets from the same partner', compute='_compute_partner_ticket_count')
+    partner_open_ticket_count = fields.Integer('Number of other open tickets from the same partner', compute='_compute_partner_ticket_count')
     # Used to submit tickets from a contact form
     partner_name = fields.Char(string='Customer Name', compute='_compute_partner_name', store=True, readonly=False)
     partner_email = fields.Char(string='Customer Email', compute='_compute_partner_email', inverse="_inverse_partner_email", store=True, readonly=False)
@@ -465,6 +466,8 @@ class HelpdeskTicket(models.Model):
                 partner_ticket = self.search(domain)
             ticket.partner_ticket_ids = partner_ticket
             ticket.partner_ticket_count = len(partner_ticket) - 1 if partner_ticket else 0
+            open_ticket = partner_ticket.filtered(lambda ticket: not ticket.stage_id.fold)
+            ticket.partner_open_ticket_count = len(open_ticket) - 1 if not ticket.stage_id.fold else len(open_ticket)
 
     @api.depends('assign_date')
     def _compute_assign_hours(self):
@@ -651,7 +654,7 @@ class HelpdeskTicket(models.Model):
             assigned_tickets = self.filtered(lambda ticket: not ticket.assign_date)
 
         if vals.get('stage_id'):
-            if self.env['helpdesk.stage'].browse(vals.get('stage_id')).is_close:
+            if self.env['helpdesk.stage'].browse(vals.get('stage_id')).fold:
                 closed_tickets = self.filtered(lambda ticket: not ticket.close_date)
             else:  # auto reset the 'closed_by_partner' flag
                 vals['closed_by_partner'] = False

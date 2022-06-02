@@ -48,25 +48,23 @@ class HelpdeskCommon(TransactionCase):
             'name': 'New',
             'sequence': 10,
             'team_ids': [(4, cls.test_team.id, 0)],
-            'is_close': False,
         })
         cls.stage_progress = stage_as_manager.create({
             'name': 'In Progress',
             'sequence': 20,
             'team_ids': [(4, cls.test_team.id, 0)],
-            'is_close': False,
         })
         cls.stage_done = stage_as_manager.create({
             'name': 'Done',
             'sequence': 30,
             'team_ids': [(4, cls.test_team.id, 0)],
-            'is_close': True,
+            'fold': True,
         })
         cls.stage_cancel = stage_as_manager.create({
             'name': 'Cancelled',
             'sequence': 40,
             'team_ids': [(4, cls.test_team.id, 0)],
-            'is_close': True,
+            'fold': True,
         })
 
         # He also creates a ticket types for Question and Issue

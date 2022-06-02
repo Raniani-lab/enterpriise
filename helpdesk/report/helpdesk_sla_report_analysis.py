@@ -59,7 +59,7 @@ class HelpdeskSLAReport(models.Model):
                             T.close_hours AS ticket_close_hours,
                             T.assign_hours AS ticket_assignation_hours,
                             T.close_date AS close_date,
-                            STAGE.is_close AS ticket_closed,
+                            STAGE.fold AS ticket_closed,
                             SLA.stage_id as sla_stage_id,
                             SLA_S.deadline AS sla_deadline,
                             SLA_S.reached_datetime AS sla_reached_datetime,

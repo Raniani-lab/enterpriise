@@ -140,7 +140,7 @@ class HelpdeskTeam(models.Model):
 
     @api.depends('auto_close_ticket', 'stage_ids')
     def _compute_assign_stage_id(self):
-        stages_dict = {stage['id']: 1 if stage['is_close'] else 2 for stage in self.env['helpdesk.stage'].search_read([('id', 'in', self.stage_ids.ids), '|', ('is_close', '=', True), ('fold', '=', True)], ['id', 'is_close'])}
+        stages_dict = {stage['id']: 1 if stage['fold'] else 2 for stage in self.env['helpdesk.stage'].search_read([('id', 'in', self.stage_ids.ids), ('fold', '=', True)], ['id', 'fold'])}
         for team in self:
             if not team.stage_ids:
                 team.to_stage_id = False
@@ -170,7 +170,6 @@ class HelpdeskTeam(models.Model):
         ticket_data = self.env['helpdesk.ticket'].read_group([
             ('user_id', '=', False),
             ('team_id', 'in', self.ids),
-            ('stage_id.is_close', '=', False),
             ('stage_id.fold', '=', False),
         ], ['team_id'], ['team_id'])
         mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
@@ -181,8 +180,6 @@ class HelpdeskTeam(models.Model):
         dt = datetime.datetime.combine(datetime.date.today() - relativedelta.relativedelta(days=6), datetime.time.min)
         ticket_data = self.env['helpdesk.ticket'].read_group([
             ('team_id', 'in', self.ids),
-            '|',
-            ('stage_id.is_close', '=', True),
             ('stage_id.fold', '=', True),
             ('close_date', '>=', dt)],
             ['team_id'], ['team_id'])
@@ -195,7 +192,6 @@ class HelpdeskTeam(models.Model):
         tickets_read = self.env['helpdesk.ticket'].search_read([
             ('team_id.use_sla', '=', True),
             '|',
-            ('stage_id.is_close', '=', True),
             ('stage_id.fold', '=', True),
             ('close_date', '>=', dt)],
             ['team_id', 'sla_deadline', 'sla_reached_late']
@@ -216,7 +212,6 @@ class HelpdeskTeam(models.Model):
     def _compute_urgent_ticket(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([
             ('team_id', 'in', self.ids),
-            ('stage_id.is_close', '=', False),
             ('stage_id.fold', "=", False),
             ('priority', '=', 3)],
             ['team_id'], ['team_id'])
@@ -227,7 +222,6 @@ class HelpdeskTeam(models.Model):
     def _compute_sla_failed(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([
             ('team_id', 'in', self.ids),
-            ('stage_id.is_close', '=', False),
             ('stage_id.fold', '=', False),
             ('sla_fail', '=', True)],
             ['team_id'], ['team_id'])
@@ -237,7 +231,7 @@ class HelpdeskTeam(models.Model):
 
     def _compute_open_ticket_count(self):
         ticket_data = self.env['helpdesk.ticket'].read_group([
-            ('team_id', 'in', self.ids), ('stage_id.is_close', '=', False)
+            ('team_id', 'in', self.ids), ('stage_id.fold', '=', False)
         ], ['team_id'], ['team_id'])
         mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
         for team in self:
@@ -515,7 +509,7 @@ class HelpdeskTeam(models.Model):
             list_fields.insert(2, 'sla_reached_late')
 
         HelpdeskTicket = self.env['helpdesk.ticket']
-        tickets = HelpdeskTicket.search_read(expression.AND([domain, [('stage_id.is_close', '=', False)]]), ['sla_deadline', 'open_hours', 'sla_reached_late', 'priority'])
+        tickets = HelpdeskTicket.search_read(expression.AND([domain, [('stage_id.fold', '=', False)]]), ['sla_deadline', 'open_hours', 'sla_reached_late', 'priority'])
 
         result = {
             'helpdesk_target_closed': self.env.user.helpdesk_target_closed,
@@ -550,14 +544,14 @@ class HelpdeskTeam(models.Model):
                 add_to(ticket, 'my_urgent')
 
         dt = fields.Date.context_today(self)
-        tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
+        tickets = HelpdeskTicket.read_group(domain + [('stage_id.fold', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
         for ticket in tickets:
             result['today']['count'] += ticket['__count']
             if not _is_sla_failed(ticket):
                 result['today']['success'] += ticket['__count']
 
         dt = fields.Datetime.to_string((datetime.date.today() - relativedelta.relativedelta(days=6)))
-        tickets = HelpdeskTicket.read_group(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
+        tickets = HelpdeskTicket.read_group(domain + [('stage_id.fold', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
         for ticket in tickets:
             result['7days']['count'] += ticket['__count']
             if not _is_sla_failed(ticket):
@@ -626,7 +620,7 @@ class HelpdeskTeam(models.Model):
             update_views[self.env.ref('helpdesk.rating_rating_view_today_graph_inherit_helpdesk').id] = 'graph'
         action['views'] = [(state, view) for state, view in action['views'] if view not in update_views.values()] + list(update_views.items())
         if only_closed_tickets:
-            domain += [('stage_id.is_close', '=', True)]
+            domain += [('stage_id.fold', '=', True)]
         if user_id:
             domain += [('user_id', '=', user_id)]
 
@@ -651,7 +645,6 @@ class HelpdeskTeam(models.Model):
         is_ticket_closed_domain_operator = '|' if is_ticket_closed else '&'
         domain = [
             is_ticket_closed_domain_operator,
-            ('stage_id.is_close', '=', is_ticket_closed),
             ('stage_id.fold', '=', is_ticket_closed),
             ('team_id', 'in', self.ids),
         ]
@@ -762,7 +755,7 @@ class HelpdeskTeam(models.Model):
         action = self.action_view_ticket()
         action.update({
             'display_name': _("Tickets"),
-            'domain': [('team_id', '=', self.id), ('stage_id.is_close', '=', False)],
+            'domain': [('team_id', '=', self.id), ('stage_id.fold', '=', False)],
         })
         return action
 
@@ -841,7 +834,7 @@ class HelpdeskTeam(models.Model):
                     index = (previous_index + 1) % len(member_ids)
                 result[team.id] = self.env['res.users'].browse(member_ids[index])
             elif team.assign_method == 'balanced':  # find the member with the least open ticket
-                ticket_count_data = self.env['helpdesk.ticket'].read_group([('stage_id.is_close', '=', False), ('user_id', 'in', member_ids), ('team_id', '=', team.id)], ['user_id'], ['user_id'])
+                ticket_count_data = self.env['helpdesk.ticket'].read_group([('stage_id.fold', '=', False), ('user_id', 'in', member_ids), ('team_id', '=', team.id)], ['user_id'], ['user_id'])
                 open_ticket_per_user_map = dict.fromkeys(member_ids, 0)  # dict: user_id -> open ticket count
                 open_ticket_per_user_map.update((item['user_id'][0], item['user_id_count']) for item in ticket_count_data)
                 result[team.id] = self.env['res.users'].browse(min(open_ticket_per_user_map, key=open_ticket_per_user_map.get))
@@ -861,7 +854,7 @@ class HelpdeskTeam(models.Model):
         """
             Return the first closing kanban stage or the last stage of the pipe if none
         """
-        closed_stage = self.stage_ids.filtered(lambda stage: stage.is_close)
+        closed_stage = self.stage_ids.filtered(lambda stage: stage.fold)
         if not closed_stage:
             closed_stage = self.stage_ids[-1]
         return closed_stage
@@ -884,7 +877,7 @@ class HelpdeskTeam(models.Model):
             # Compute the threshold_date
             team['threshold_date'] = today - relativedelta.relativedelta(days=team['auto_close_day'])
             teams_dict[team['id']] = team
-        tickets_domain = [('stage_id.is_close', '=', False), ('team_id', 'in', list(teams_dict.keys()))]
+        tickets_domain = [('stage_id.fold', '=', False), ('team_id', 'in', list(teams_dict.keys()))]
         tickets = self.env['helpdesk.ticket'].search(tickets_domain)
 
         def is_inactive_ticket(ticket):
@@ -893,7 +886,7 @@ class HelpdeskTeam(models.Model):
             if team['from_stage_ids']:
                 is_stage_ok = ticket.stage_id.id in team['from_stage_ids']
             else:
-                is_stage_ok = not ticket.stage_id.is_close
+                is_stage_ok = not ticket.stage_id.fold
             return is_write_date_ok and is_stage_ok
 
         inactive_tickets = tickets.filtered(is_inactive_ticket)
@@ -934,13 +927,8 @@ class HelpdeskStage(models.Model):
     name = fields.Char(required=True, translate=True)
     description = fields.Text(translate=True)
     sequence = fields.Integer('Sequence', default=10)
-    is_close = fields.Boolean(
-        'Closing Stage',
-        help='Tickets in this stage are considered as done. This is used notably when '
-             'computing SLAs and KPIs on tickets.')
     fold = fields.Boolean(
-        'Folded in Kanban',
-        help='This stage is folded in the kanban view when there are no records in that stage to display.')
+        'Folded in Kanban')
     team_ids = fields.Many2many(
         'helpdesk.team', relation='team_stage_rel', string='Teams',
         default=_default_team_ids,
@@ -1043,7 +1031,7 @@ class HelpdeskSLA(models.Model):
         if 'team_id' in fields_list or 'stage_id' in fields_list:
             team = self.env['helpdesk.team'].search([], limit=1)
             defaults['team_id'] = team.id
-            stages = team.stage_ids.filtered(lambda x: x.is_close or x.fold)
+            stages = team.stage_ids.filtered(lambda x: x.fold)
             defaults['stage_id'] = stages and stages.ids[0] or team.stage_ids and team.stage_ids.ids[-1]
         return defaults
 
@@ -1077,7 +1065,7 @@ class HelpdeskSLA(models.Model):
 
     def _compute_ticket_count(self):
         res = self.env['helpdesk.ticket'].read_group(
-            [('sla_ids', 'in', self.ids), ('stage_id.is_close', '=', False)],
+            [('sla_ids', 'in', self.ids), ('stage_id.fold', '=', False)],
             ['sla_ids'], ['sla_ids'])
         sla_data = {r['sla_ids']: r['sla_ids_count'] for r in res}
         for sla in self:

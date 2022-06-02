@@ -96,5 +96,5 @@ class MailChannel(models.Model):
                     link_tickets = [f'<br/>{ticket._get_html_link()}' for ticket in tickets]
                     msg = _('We found some matched ticket(s) related to the search query: %s', ''.join(link_tickets))
                 else:
-                    msg = _('No tickets found related to the search query. <br> make sure to use the right format: (<b>/helpdesk_search <i>keyword</i></b> or <i><b>ticket number</b></i>)')
+                    msg = _('No tickets found for <b>%s</b>. <br> Make sure you are using the right format:<br> <b>/helpdesk_search <i>keyword</i></b> or <b>/helpdesk_search <i>ticket number</i></b>', ''.join(list_value))
         return self._send_transient_message(partner, msg)

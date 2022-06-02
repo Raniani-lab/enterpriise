@@ -21,7 +21,7 @@ class HelpdeskTeam(models.Model):
             self.total_timesheet_time = 0.0
             return
         timesheets_read_group = self.env['account.analytic.line']._read_group(
-            [('helpdesk_ticket_id', 'in', helpdesk_timesheet_teams.ticket_ids.filtered(lambda x: not x.stage_id.is_close).ids)],
+            [('helpdesk_ticket_id', 'in', helpdesk_timesheet_teams.ticket_ids.filtered(lambda x: not x.stage_id.fold).ids)],
             ['helpdesk_ticket_id', 'unit_amount', 'product_uom_id'],
             ['helpdesk_ticket_id', 'product_uom_id'],
             lazy=False)
@@ -102,7 +102,7 @@ class HelpdeskTeam(models.Model):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("helpdesk_timesheet.act_hr_timesheet_line_helpdesk")
         action.update({
-            'domain': [('helpdesk_ticket_id', 'in', self.ticket_ids.filtered(lambda x: not x.stage_id.is_close).ids)],
+            'domain': [('helpdesk_ticket_id', 'in', self.ticket_ids.filtered(lambda x: not x.stage_id.fold).ids)],
             'context': {
                 'default_project_id': self.project_id.id,
                 'graph_groupbys': ['date:week', 'employee_id'],

@@ -30,7 +30,6 @@
         <field name="name">Done</field>
         <field name="sequence">3</field>
         <field name="template_id" ref="helpdesk.rating_ticket_request_email_template"/>
-        <field name="is_close" eval="True"/>
         <field name="fold" eval="True"/>
     </record>
     <record id="helpdesk.stage_solved" model="helpdesk.stage">

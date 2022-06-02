@@ -107,7 +107,6 @@
                 <field name="name"/>
                 <field name="team_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="show"/>
                 <field name="template_id" options="{'no_create': True}" optional="hide"/>
-                <field name="is_close" optional="hide"/>
                 <field name="fold" optional="show"/>
             </tree>
         </field>
@@ -168,7 +167,6 @@
                             <field name="sequence" groups="base.group_no_one"/>
                         </group>
                         <group>
-                            <field name="is_close"/>
                             <field name="fold"/>
                             <field name="team_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
@@ -443,9 +441,9 @@
                 <field name="ticket_type_id"/>
                 <field name="stage_id"/>
                 <field name="sla_ids" groups="helpdesk.group_use_sla"/>
-                <field name="company_id" groups="base.group_multi_company" invisible="context.get('default_team_id', False)"/>
                 <field name="priority" invisible="1"/>
                 <field name="rating_last_text"/>
+                <field name="company_id" groups="base.group_multi_company" invisible="context.get('default_team_id', False)"/>
 
                 <filter string="My Tickets" domain="[('user_id','=',uid)]" name="my_ticket"/>
                 <filter string="Followed" domain="[('message_is_follower', '=', True)]" name="my_follow_ticket"/>
@@ -462,8 +460,8 @@
                 <separator/>
                 <filter string="Unread Messages" domain="[('message_needaction','=',True)]" name="message_needaction"/>
                 <separator/>
-                <filter string="Open" domain="[('stage_id.is_close', '=', False), ('stage_id.fold', '=', False)]" name="is_open"/>
-                <filter string="Closed" domain="['|', ('stage_id.is_close', '=', True), ('stage_id.fold', '=', True)]" name="is_close"/>
+                <filter string="Open" domain="[('stage_id.fold', '=', False)]" name="is_open"/>
+                <filter string="Closed" domain="[('stage_id.fold', '=', True)]" name="is_close"/>
                 <filter string="Closed in Last 7 days" name="closed_last_7days" domain="[('close_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
                 <filter string="Closed in Last 30 days" name="closed_last_30days" domain="[('close_date', '&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>
                 <separator />
@@ -692,7 +690,16 @@
                             </div>
                         </button>
                         <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': ['|', ('partner_id', '=', False), ('partner_ticket_count', '=', 0)]}">
-                            <field name="partner_ticket_count" widget="statinfo" string="Tickets"/>
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="partner_ticket_count" nolabel="1"/>
+                                    <span class="text-secondary fw-normal"> Tickets</span>
+                                </span>
+                                <span class="o_stat_value">
+                                    <field name="partner_open_ticket_count" nolabel="1"/>
+                                    <span class="text-secondary fw-normal"> Open</span>
+                                </span>
+                            </div>
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
@@ -1048,8 +1055,8 @@
                 <filter string="My Tickets" domain="[('user_id','=',uid)]" name="my_ticket"/>
                 <filter string="Unassigned Tickets" domain="[('user_id','=',False)]" name="unassigned"/>
                 <separator/>
-                <filter string="Open Tickets" domain="[('stage_id.is_close','=',False)]" name="is_open"/>
-                <filter string="Closed Tickets" domain="[('stage_id.is_close','=',True)]" name="is_close"/>
+                <filter string="Open Tickets" domain="[('stage_id.fold', '=', False)]" name="is_open"/>
+                <filter string="Closed Tickets" domain="[('stage_id.fold', '=', True)]" name="is_close"/>
                 <separator/>
                 <filter name="filter_create_date" date="create_date"/>
                 <filter name="filter_sla_deadline" date="sla_deadline"/>
@@ -1200,7 +1207,7 @@
         <field name="res_model">helpdesk.ticket.report.analysis</field>
         <field name="view_mode">pivot,graph,cohort</field>
         <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
-        <field name="domain">[('ticket_stage_id.is_close', '=', False)]</field>
+        <field name="domain">[('ticket_stage_id.fold', '=', False)]</field>
         <field name="context">{
             'search_default_my_ticket': True,
             'search_default_is_open': True,

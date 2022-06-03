@@ -720,7 +720,7 @@ QUnit.test('Connector hovered state is triggered and color is set accordingly.',
 
     assert.notOk(connector.classList.contains(CSS.CLASS.CONNECTOR_HOVERED), "Connectors that are not hovered don't contain the o_connector_hovered class.");
     assert.equal(connector_stroke.getAttribute('stroke'), gantt.renderer._connectorsStrokeColors.stroke);
-    await testUtils.dom.triggerMouseEvent(connector_stroke, "mouseover");
+    await testUtils.dom.triggerMouseEvent(connector, "mouseover");
     await testUtils.nextTick();
     await testUtils.returnAfterNextAnimationFrame();
     connector = connectorContainer.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="1"]`);
@@ -739,10 +739,9 @@ QUnit.test('Buttons are displayed when hovering a connector.', async function (a
 
     const connectorContainer = gantt.el.querySelector(CSS.SELECTOR.CONNECTOR_CONTAINER);
     const connector = connectorContainer.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="1"]`);
-    const connector_stroke = connector.querySelector(CSS.SELECTOR.CONNECTOR_STROKE);
 
     assert.ok(connector.querySelector(CSS.SELECTOR.CONNECTOR_STROKE_BUTTON) === null, "Connectors that are not hovered don't display buttons.");
-    await testUtils.dom.triggerMouseEvent(connector_stroke, "mouseover");
+    await testUtils.dom.triggerMouseEvent(connector, "mouseover");
     await testUtils.nextTick();
     await testUtils.returnAfterNextAnimationFrame();
     assert.ok(connector.querySelector(CSS.SELECTOR.CONNECTOR_STROKE_BUTTON) !== null, "Connectors that are hovered display buttons.");
@@ -803,9 +802,8 @@ async function testConnectorButtonRPC(assert, createButtonSelector, expectedStep
 
     const connectorContainer = gantt.el.querySelector(CSS.SELECTOR.CONNECTOR_CONTAINER);
     const connector = connectorContainer.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="1"]`);
-    const connector_stroke = connector.querySelector(CSS.SELECTOR.CONNECTOR_STROKE);
 
-    await testUtils.dom.triggerMouseEvent(connector_stroke, "mouseover");
+    await testUtils.dom.triggerMouseEvent(connector, "mouseover");
     await testUtils.nextTick();
     await testUtils.returnAfterNextAnimationFrame();
 
@@ -1103,8 +1101,8 @@ QUnit.test('Hovering a task pill, all the pills of the same task, and their rela
     }
     // Check that all connectors are not in hover state.
     for (const test_key in tests) {
-        const connector_stroke = connectorContainer.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="${connectorsDict[test_key].id}"]`);
-        assert.notOk(connector_stroke.classList.contains(CSS.CLASS.CONNECTOR_HOVERED), 'Connectors should not be in hovered state by default');
+        const connector = connectorContainer.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="${connectorsDict[test_key].id}"]`);
+        assert.notOk(connector.classList.contains(CSS.CLASS.CONNECTOR_HOVERED), 'Connectors should not be in hovered state by default');
     }
 
     // Using jQuery trigger function as triggerEvent() for mouseenter does not bubble up and the event is not
@@ -1139,11 +1137,11 @@ QUnit.test('Hovering a connector should cause the connected pills to get highlig
     registerCleanup(gantt.destroy);
     await testPromise;
 
-    const connector_stroke = gantt.el.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="1"] ${CSS.SELECTOR.CONNECTOR_STROKE}`);
+    const connector = gantt.el.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="1"]`);
     let taskPills = gantt.el.querySelectorAll(`${CSS.SELECTOR.PILL}:not(.${CSS.CLASS.PILL_HIGHLIGHT})`);
     assert.equal(taskPills.length, 2, 'Pills should not be highlighted by default.');
 
-    await testUtils.dom.triggerMouseEvent(connector_stroke, "mouseover");
+    await testUtils.dom.triggerMouseEvent(connector, "mouseover");
     await testUtils.nextTick();
     await testUtils.returnAfterNextAnimationFrame();
 
@@ -1243,15 +1241,14 @@ QUnit.test('Connectors are displayed behind pills, except on hover.', async func
     const testLocationLeft = taskPillLocation.left + taskPill.offsetWidth/2;
     const testLocationTop = taskPillLocation.top + taskPill.offsetHeight/2;
     let test = document.elementFromPoint(testLocationLeft, testLocationTop);
-    assert.deepEqual(test, taskPill);
+    assert.deepEqual(test, taskPill, "taskPill position");
 
-    const connector_stroke = gantt.el.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="1"] ${CSS.SELECTOR.CONNECTOR_STROKE}`);
-    await testUtils.dom.triggerMouseEvent(connector_stroke, "mouseover");
+    const connector = gantt.el.querySelector(`${CSS.SELECTOR.CONNECTOR}[data-id="1"]`);
+    await testUtils.dom.triggerMouseEvent(connector, "mouseover");
     await testUtils.nextTick();
     await testUtils.returnAfterNextAnimationFrame();
-
-    test = document.elementFromPoint(testLocationLeft, testLocationTop);
-    assert.deepEqual(test, connector_stroke);
+    test = document.elementFromPoint(taskPillLocation.left, testLocationTop);
+    assert.deepEqual(test.closest(CSS.SELECTOR.CONNECTOR), connector, "connector position");
 
 });
 

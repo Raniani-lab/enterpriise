@@ -33,15 +33,11 @@ Product Life Management
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'mrp_plm/static/src/js/mrp_plm.js',
-            'mrp_plm/static/src/js/mrp_bom_report.js',
-            'mrp_plm/static/src/js/mrp_plm_toaster_button.js',
-            'mrp_plm/static/src/js/mrp_plm_update_qty.js',
-            'mrp_plm/static/src/scss/mrp_plm_dashboard.scss',
-            'mrp_plm/static/src/scss/mrp_document_kanban_view.scss',
+            'mrp_plm/static/src/**/*.js',
+            'mrp_plm/static/src/**/*.scss',
         ],
         'web.assets_qweb': [
-            'mrp_plm/static/src/xml/**/*',
+            'mrp_plm/static/src/**/*.xml',
         ],
     }
 }

@@ -18801,26 +18801,14 @@
             this.chartRuntime = {};
             this.outOfDate = new Set();
         }
-        beforeHandle(cmd) {
-            switch (cmd.type) {
-                case "REMOVE_COLUMNS_ROWS":
-                    const sheet = this.getters.getSheet(cmd.sheetId);
-                    const length = cmd.dimension === "ROW" ? sheet.cols.length : sheet.rows.length;
-                    const zones = cmd.elements.map((el) => ({
-                        top: cmd.dimension === "ROW" ? el : 0,
-                        bottom: cmd.dimension === "ROW" ? el : length - 1,
-                        left: cmd.dimension === "ROW" ? 0 : el,
-                        right: cmd.dimension === "ROW" ? length - 1 : el,
-                    }));
-                    for (const chartId of Object.keys(this.chartRuntime)) {
-                        if (this.areZonesUsedInChart(cmd.sheetId, zones, chartId)) {
-                            this.outOfDate.add(chartId);
-                        }
-                    }
-                    break;
-            }
-        }
         handle(cmd) {
+            if (invalidateEvaluationCommands.has(cmd.type) ||
+                cmd.type === "EVALUATE_CELLS" ||
+                (cmd.type === "UPDATE_CELL" && "content" in cmd)) {
+                for (let chartId of Object.keys(this.chartRuntime)) {
+                    this.outOfDate.add(chartId);
+                }
+            }
             switch (cmd.type) {
                 case "UPDATE_CHART":
                 case "CREATE_CHART":
@@ -18838,47 +18826,11 @@
                     const chartsIds = this.getters.getChartsIdBySheet(cmd.sheetIdTo);
                     this.evaluateUsedSheets(chartsIds);
                     break;
-                case "UPDATE_CELL":
-                    for (let chartId of Object.keys(this.chartRuntime)) {
-                        if (this.isCellUsedInChart(cmd.sheetId, chartId, cmd.col, cmd.row)) {
-                            this.outOfDate.add(chartId);
-                        }
-                    }
-                    break;
                 case "DELETE_SHEET":
                     for (let chartId of Object.keys(this.chartRuntime)) {
                         if (!this.getters.getChartDefinition(chartId)) {
                             delete this.chartRuntime[chartId];
                         }
-                    }
-                    break;
-                case "ADD_COLUMNS_ROWS":
-                    const sheet = this.getters.getSheet(cmd.sheetId);
-                    const numberOfElem = cmd.dimension === "ROW" ? sheet.cols.length : sheet.rows.length;
-                    const offset = cmd.position === "before" ? 0 : 1;
-                    const zone = {
-                        top: cmd.dimension === "ROW" ? cmd.base + offset : 0,
-                        bottom: cmd.dimension === "ROW" ? cmd.base + cmd.quantity + offset : numberOfElem - 1,
-                        left: cmd.dimension === "ROW" ? 0 : cmd.base + offset,
-                        right: cmd.dimension === "ROW" ? numberOfElem - 1 : cmd.base + cmd.quantity + offset,
-                    };
-                    for (const chartId of Object.keys(this.chartRuntime)) {
-                        if (this.areZonesUsedInChart(cmd.sheetId, [zone], chartId)) {
-                            this.outOfDate.add(chartId);
-                        }
-                    }
-                    break;
-                case "UNDO":
-                case "REDO":
-                    for (let chartId of Object.keys(this.chartRuntime)) {
-                        this.outOfDate.add(chartId);
-                    }
-                    break;
-                case "EVALUATE_CELLS":
-                    // if there was an async evaluation of cell, there is no way to know which was updated so all charts must be updated
-                    //TODO Need to check that someday
-                    for (let id in this.chartRuntime) {
-                        this.outOfDate.add(id);
                     }
                     break;
             }
@@ -19004,40 +18956,6 @@
                 };
             }
             return config;
-        }
-        areZonesUsedInChart(sheetId, zones, chartId) {
-            const chartDefinition = this.getters.getChartDefinition(chartId);
-            if (!chartDefinition || sheetId !== (chartDefinition === null || chartDefinition === void 0 ? void 0 : chartDefinition.sheetId)) {
-                return false;
-            }
-            const ranges = [
-                ...chartDefinition.dataSets.map((ds) => ds.dataRange),
-                chartDefinition.labelRange,
-            ].filter(isDefined$1);
-            for (let zone of zones) {
-                for (let range of ranges) {
-                    if (range.sheetId === sheetId && overlap(range.zone, zone)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-        isCellUsedInChart(sheetId, chartId, col, row) {
-            const chartDefinition = this.getters.getChartDefinition(chartId);
-            if (chartDefinition === undefined) {
-                return false;
-            }
-            const ranges = [
-                ...chartDefinition.dataSets.map((ds) => ds.dataRange),
-                chartDefinition.labelRange,
-            ].filter(isDefined$1);
-            for (let range of ranges) {
-                if (range.sheetId === sheetId && isInside(col, row, range.zone)) {
-                    return true;
-                }
-            }
-            return false;
         }
         getSheetIdsUsedInChart(chartDefinition) {
             const sheetIds = new Set();
@@ -31386,8 +31304,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-05-31T08:23:10.569Z';
-    exports.__info__.hash = '562510d';
+    exports.__info__.date = '2022-06-03T07:36:53.623Z';
+    exports.__info__.hash = '088698e';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

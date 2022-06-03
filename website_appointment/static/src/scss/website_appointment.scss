@@ -53,6 +53,73 @@
     }
 }
 
+.o_wappointment_navbar {
+    height: 65px;
+    .navbar-brand {
+        color: inherit;
+        &:hover  {
+            color: map-get($theme-colors, 'primary') !important;
+        }
+    }
+}
+
+.o_wappointment_progress_bar {
+    $wappointment-progress-bar-color-1: mix(map-get($theme-colors, 'primary'), $body-bg, 20%);
+    $wappointment-progress-bar-color-2: mix(map-get($theme-colors, 'primary'), $body-bg, 30%);
+    padding: 0px 32px 0px 0px;
+    height: 64px;
+    li {
+        border: 1px solid transparent;
+        border-right-width: 0;
+        padding: 0 32px 0 64px;
+        height: 64px;
+        line-height: 64px;
+        &.o_passed_stage {
+            &:hover {
+                background-color: $wappointment-progress-bar-color-2 !important;
+                .chevron, .chevron::before {
+                    border-left-color: $wappointment-progress-bar-color-2 !important;
+                }
+            }
+            .chevron:before {
+                border-left: 32px solid $body-bg;
+            }
+        }
+        &.o_current_stage {
+            background: $wappointment-progress-bar-color-1;
+            .chevron:before {
+                border-left: 32px solid $wappointment-progress-bar-color-1;
+            }
+        }
+        &.o_future_stage .chevron:before {
+            border-left: 32px solid $body-bg;
+        }
+        &:first-child {
+            padding-left: 32px;
+        }
+        &:last-child .chevron {
+            background-color: transparent;
+        }
+        .chevron {
+            top: -1px;
+            right: -32px;
+            z-index: 1;
+            border: 32px solid transparent;
+            border-right: 0;
+            border-left: 32px solid $wappointment-progress-bar-color-2;
+            &:before {
+                position: absolute;
+                top: -32px;
+                right: 1px;
+                display: block;
+                border: 32px solid transparent;
+                border-right: 0;
+                content: "";
+            }
+        }
+    }
+}
+
 .o_wappointment_select_operator {
     .card {
         header {
@@ -68,7 +135,7 @@
                 width: calc(100% - 2 * 1.25rem);
                 border: 1px solid map-get($theme-colors, 'primary');
                 &:hover {
-                    background-color:map-get($theme-colors, 'primary');
+                    background-color: map-get($theme-colors, 'primary');
                     color: white;
                     text-decoration: none;
                 }

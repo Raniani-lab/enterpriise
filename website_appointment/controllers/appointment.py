@@ -70,6 +70,7 @@ class WebsiteAppointment(Appointment):
         """
         return request.render("website_appointment.appointment_select_operator", {
             'appointment_type': appointment_type,
+            'available_appointments': page_values['available_appointments'],
             'main_object': appointment_type,
             'users_possible': page_values['users_possible'],
         })

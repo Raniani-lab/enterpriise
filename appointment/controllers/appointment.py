@@ -197,11 +197,6 @@ class Appointment(http.Controller):
 
         render_params = dict({
             'appointment_type': appointment_type,
-            'available_appointments': self._fetch_available_appointments(
-                kwargs.get('filter_appointment_type_ids'),
-                kwargs.get('filter_staff_user_ids'),
-                kwargs.get('invite_token')
-            ),
             'formated_days': formated_days,
             'main_object': appointment_type,
             'month_first_available': month_first_available,
@@ -216,6 +211,7 @@ class Appointment(http.Controller):
         """ Computes all values needed to choose between / common to all appointment_type page templates.
 
         :return: a dict containing:
+            - available_appointments: all available appointments according to current filters and invite tokens.
             - filter_appointment_type_ids, filter_staff_user_ids and invite_token parameters.
             - user_default: the first of possible staff users. It will be selected by default (in the user select dropdown)
             if no user_selected. Otherwise, the latter will be preselected instead. It is only set if there is at least one
@@ -236,6 +232,11 @@ class Appointment(http.Controller):
             user_default = users_possible[0]
 
         return {
+            'available_appointments': self._fetch_available_appointments(
+                kwargs.get('filter_appointment_type_ids'),
+                kwargs.get('filter_staff_user_ids'),
+                kwargs.get('invite_token')
+            ),
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
             'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
             'invite_token': kwargs.get('invite_token'),
@@ -376,6 +377,7 @@ class Appointment(http.Controller):
             'duration_str': duration,
             'staff_user_id': staff_user_id,
             'timezone': request.session['timezone'] or appointment_type.timezone,  # bw compatibility
+            'users_possible': self._get_possible_staff_users(appointment_type, json.loads(kwargs.get('filter_staff_user_ids') or '[]')),
         })
 
     @http.route(['/appointment/<int:appointment_type_id>/submit'],

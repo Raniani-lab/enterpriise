@@ -35,12 +35,16 @@
         </xpath>
         <xpath expr="//t[@t-set='o_portal_fullwidth_alert']" position="replace"/>
         <xpath expr="//div[hasclass('o_appointment')]" position="before">
-            <nav t-if="appointment_type.category == 'website' and len(available_appointments) != 1" class="navbar navbar-light border-top shadow-sm d-print-none">
+            <nav t-if="appointment_type.category == 'website'"
+                class="o_wappointment_navbar navbar navbar-light border-top shadow-sm d-print-none py-0">
                 <div class="container">
-                    <a t-attf-href="/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}"
-                        class="navbar-brand h4 my-0 me-auto">
-                        <i class="fa fa-long-arrow-left text-primary me-2"/>All Appointments
+                    <a t-if="len(available_appointments) != 1" class="navbar-brand h4 my-0 me-auto"
+                        t-attf-href="/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}">
+                        <i class="fa fa-long-arrow-left me-2"/>All Appointments
                     </a>
+                        <t t-call="website_appointment.appointment_progress_bar">
+                            <t t-set="step" t-value="20"/>
+                        </t>
                 </div>
             </nav>
         </xpath>
@@ -72,6 +76,17 @@
         <t t-set="no_breadcrumbs" t-value="True"/>
         <t t-call="website.layout">
             <div id="wrap" class="o_wappointment_wrap">
+                <nav t-if="appointment_type.category == 'website'" class="o_wappointment_navbar navbar navbar-light border-top shadow-sm d-print-none py-0">
+                    <div class="container">
+                        <a t-if="len(available_appointments) != 1" class="navbar-brand btn px-0 h4 my-0 me-auto"
+                            t-attf-href="/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}">
+                            <i class="fa fa-long-arrow-left me-2"/>All Appointments
+                        </a>
+                        <t t-call="website_appointment.appointment_progress_bar">
+                            <t t-set="step" t-value="10"/>
+                        </t>
+                    </div>
+                </nav>
                 <div class="container pb64 o_appointment o_wappointment_select_operator">
                     <h1 class="o_page_header mt32"> Schedule <span class="text-primary" t-out="appointment_type.name"/> Appointment</h1>
                     <div class="row px-0">
@@ -126,6 +141,36 @@
                 </div>
             </div>
         </t>
+    </template>
+
+    <template id="appointment_progress_bar">
+        <t t-set="STEP_OPERATOR_SELECT" t-value="10"/>
+        <t t-set="STEP_TIME" t-value="20"/>
+        <t t-set="STEP_FORM" t-value="30"/>
+        <t t-set="STEP_VALIDATION" t-value="40"/>
+        <t t-set="show_operator_select" t-value="step==STEP_OPERATOR_SELECT or appointment_type.avatars_display == 'show' and appointment_type.assign_method == 'chosen' and len(users_possible) > 1"/>
+        <ul class="o_wappointment_progress_bar list-unstyled my-0 ms-auto float-end d-none d-lg-block">
+            <t t-if="show_operator_select">
+                <li t-att-class="'position-relative float-start m-0 ' + (step==STEP_OPERATOR_SELECT and 'o_current_stage pe-none' or step&gt;STEP_OPERATOR_SELECT and 'o_passed_stage bg-transparent' or 'o_future_stage bg-transparent text-muted pe-none')">
+                    <a class="text-decoration-none text-reset"
+                       t-att-href="'#' if step&lt;STEP_OPERATOR_SELECT else '/appointment/%s?%s' % (appointment_type.id, keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token'))">
+                        Operator<t t-out="operator_chevron_href"/><span class="chevron position-absolute d-block"></span>
+                    </a>
+                </li>
+            </t>
+            <li t-att-class="'position-relative float-start m-0 ' + (step==STEP_TIME and 'o_current_stage pe-none' or step&gt;STEP_TIME and 'o_passed_stage bg-transparent' or 'o_future_stage bg-transparent text-muted pe-none')">
+                <a class="text-decoration-none text-reset"
+                   t-att-href="'#' if step&lt;STEP_TIME else '/appointment/%s?%s' % (appointment_type.id, keep_query('*'))">
+                    Time<span class="chevron position-absolute d-block"></span>
+                </a>
+            </li>
+            <li t-att-class="'position-relative float-start m-0 ' + (step==STEP_FORM and 'o_current_stage pe-none' or step&gt;STEP_FORM and 'o_passed_stage bg-transparent' or 'o_future_stage bg-transparent text-muted pe-none')">
+                Details<span class="chevron position-absolute d-block"></span>
+            </li>
+            <li t-att-class="'position-relative float-start m-0 ' + (step==STEP_VALIDATION and 'o_current_stage pe-none' or step&gt;STEP_VALIDATION and 'o_passed_stage bg-transparent' or 'o_future_stage bg-transparent text-muted pe-none')">
+                Booked<span class="chevron position-absolute d-block"></span>
+            </li>
+        </ul>
     </template>
 
     <!-- Enable the customize option for the 2 layouts (cards and list)-->

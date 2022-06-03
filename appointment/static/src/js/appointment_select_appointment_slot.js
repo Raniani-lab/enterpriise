@@ -116,7 +116,10 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         // url will contain the previously selected staff_user_id (-> preselected in the dropdown
         // if there is one). If one changes the staff_user in the dropdown, we do not want the
         // previous one to interfere, hence we delete it. The one linked to the slot is used.
+        // The same is true for duration and date_time used in form rendering.
         commonUrlParams.delete('staff_user_id');
+        commonUrlParams.delete('duration');
+        commonUrlParams.delete('date_time');
 
         this.$slotsList.empty().append(qweb.render('appointment.slots_list', {
             commonUrlParams: commonUrlParams,

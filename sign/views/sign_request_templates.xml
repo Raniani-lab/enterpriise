@@ -48,16 +48,13 @@
 
     <template id="sign.doc_sign" name="Document Sign">
         <t t-call="web.layout">
-            <t t-if="current_request_item and current_request_item.partner_id.lang">
-                <t t-set="html_data" t-value="{'lang': current_request_item.partner_id.lang.replace('_', '-')}"/>
-            </t>
             <t t-set="head">
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <t t-call-assets="web.assets_common" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
                 <script type="text/javascript">
-                    odoo.__session_info__ = <t t-out="json.dumps(request.env['ir.http'].get_frontend_session_info())"/>;
+                    odoo.__session_info__ = <t t-out="json.dumps(request.env['ir.http'].get_frontend_session_info_sign())"/>;
                 </script>
                 <t t-call-assets="web.assets_common" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>

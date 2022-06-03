@@ -13,7 +13,7 @@ Allow clients to Schedule Appointments through your Website
 -------------------------------------------------------------
 
 """,
-    'depends': ['appointment', 'website_enterprise'],
+    'depends': ['appointment', 'website_enterprise', 'website_partner'],
     'data': [
         'data/calendar_data.xml',
         'data/website_data.xml',
@@ -31,7 +31,7 @@ Allow clients to Schedule Appointments through your Website
         'data/appointment_demo.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['appointment', 'website_enterprise'],
     'license': 'OEEL-1',
     'assets': {
         'web.assets_tests': [

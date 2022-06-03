@@ -5,6 +5,7 @@ from odoo import http
 from odoo.http import request
 from odoo.osv import expression
 
+from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.appointment.controllers.appointment import Appointment
 from odoo.addons.website.controllers.main import QueryURL
 
@@ -34,7 +35,7 @@ class WebsiteAppointment(Appointment):
         )
         if len(available_appointment_types) == 1 and not kwargs.get('search'):
             # If there is only one appointment type available in the selection, skip the appointment type selection view
-            return request.redirect('/appointment/%s' % available_appointment_types.id)
+            return request.redirect('/appointment/%s?%s' % (available_appointment_types.id, keep_query('*')))
 
         cards_layout = request.website.viewref('website_appointment.opt_appointments_list_cards').active
 
@@ -54,6 +55,39 @@ class WebsiteAppointment(Appointment):
                     **kwargs
                 )
             )
+
+    # ----------------------------------------------------------------
+    # APPOINTMENT TYPE PAGE VIEW : WITH NEW OPERATOR SELECTION VIEW
+    # ----------------------------------------------------------------
+
+    def _get_appointment_type_operator_selection_view(self, appointment_type, page_values):
+        """
+        Renders the appointment_select_operator template. This displays a card view of available staff users to
+        select from for appointment_type, containing their picture, job description and website_description.
+
+        :param appointment_type: the appointment_type that we want to access.
+        :param page_values: dict of precomputed values in the appointment_page route.
+        """
+        return request.render("website_appointment.appointment_select_operator", {
+            'appointment_type': appointment_type,
+            'main_object': appointment_type,
+            'users_possible': page_values['users_possible'],
+        })
+
+    def _get_appointment_type_page_view(self, appointment_type, page_values, state=False, **kwargs):
+        """
+        Override: when website_appointment is installed, instead of the default appointment type page, renders the
+        operator selection template, if the condition below is met.
+        """
+        # As the operator view is mainly user cards, we only show it if avatars are 'on'. Also, it makes no sense in
+        # random appointment types since it is a selection screen. Moreover, the selection should not have already
+        # been made before in order to avoid loops. Finally, in order to choose, one needs at least 2 possible users.
+        if appointment_type.assign_method == 'chosen' and \
+                appointment_type.avatars_display == 'show' and \
+                not page_values['user_selected'] and \
+                len(page_values['users_possible']) > 1:
+            return self._get_appointment_type_operator_selection_view(appointment_type, page_values)
+        return super()._get_appointment_type_page_view(appointment_type, page_values, state, **kwargs)
 
     # Tools / Data preparation
     # ------------------------------------------------------------

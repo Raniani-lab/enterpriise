@@ -110,7 +110,13 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const appointmentTypeID = this.$("input[name='appointment_type_id']").val();
         const slotDate = this.$(ev.currentTarget.firstElementChild).attr('id');
         const slots = JSON.parse(this.$(ev.currentTarget).find('div')[0].dataset['availableSlots']);
-        const commonUrlParams = window.location.search.substring(1);
+        let commonUrlParams = new URLSearchParams(window.location.search);
+        // If for instance the chosen slot is already taken, then an error is thrown and the
+        // user is brought back to the calendar view. In order to keep the selected user, the
+        // url will contain the previously selected staff_user_id (-> preselected in the dropdown
+        // if there is one). If one changes the staff_user in the dropdown, we do not want the
+        // previous one to interfere, hence we delete it. The one linked to the slot is used.
+        commonUrlParams.delete('staff_user_id');
 
         this.$slotsList.empty().append(qweb.render('appointment.slots_list', {
             commonUrlParams: commonUrlParams,

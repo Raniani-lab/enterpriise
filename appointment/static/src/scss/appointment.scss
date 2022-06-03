@@ -182,7 +182,7 @@
     } 
 }
 
-.o_appointment, .o_appointment_choice, {
+.o_appointment, .o_appointment_choice {
     .o_appointment_avatar_background {
         background: mix(map-get($theme-colors, 'primary'), $body-bg, 20%);
     }
@@ -207,4 +207,3 @@
         color: $info;
     }
 }
-

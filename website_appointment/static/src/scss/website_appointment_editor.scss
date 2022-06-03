@@ -4,5 +4,13 @@ body.editor_enable {
         .alert.o_not_editable {
             display: none;
         }
+        // Avoid the placeholder's opacity reduction making text too bright to see.
+        .o_wappointment_card_user_fct, .o_wappointment_card_user_dsc {
+            .o_editable {
+                &::before {
+                    opacity: 1 !important;
+                }
+            }
+        }
     }
 }

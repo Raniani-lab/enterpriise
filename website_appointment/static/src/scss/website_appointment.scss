@@ -1,6 +1,6 @@
 // Make the footer only slightly (2vh) visible. 56px is the height
 // of the top header bar o_header_standard. (navbar + 1rem padding)
-.o_appointment_index {
+.o_appointment_index, .o_wappointment_wrap {
     min-height: calc(98vh - 56px);
 }
 
@@ -47,6 +47,30 @@
                 left: 1.5rem;
                 &:hover {
                     color: darken($o-brand-primary, 10%) !important;
+                }
+            }
+        }
+    }
+}
+
+.o_wappointment_select_operator {
+    .card {
+        header {
+            height: 300px;
+        }
+        .card-body {
+            padding: 1.25rem;
+            .o_wappointment_card_user_dsc {
+                color: rgba(0, 0, 0, 0.42) !important;
+            }
+            .o_wappointment_card_user_select {
+                bottom: 1rem;
+                width: calc(100% - 2 * 1.25rem);
+                border: 1px solid map-get($theme-colors, 'primary');
+                &:hover {
+                    background-color:map-get($theme-colors, 'primary');
+                    color: white;
+                    text-decoration: none;
                 }
             }
         }

@@ -100,7 +100,7 @@
                         </div>
                         <div class="col-md-4 text-end">
                             <a t-if="event.appointment_type_id" role="button" class="btn btn-danger btn-block"
-                                t-attf-href="/calendar/#{event.access_token}/cancel?partner_id=#{partner_id}&amp;#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids')}">
+                                t-attf-href="/calendar/#{event.access_token}/cancel?partner_id=#{partner_id}&amp;#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'staff_user_id')}">
                                 <i class="fa fa-fw fa-times"></i>Cancel / Reschedule
                             </a>
                         </div>

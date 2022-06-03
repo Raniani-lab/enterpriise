@@ -68,6 +68,46 @@
 
     <!-- Pages -->
 
+    <template id="appointment_select_operator" name="Online Appointment: Appointment Operators">
+        <t t-set="no_breadcrumbs" t-value="True"/>
+        <t t-call="website.layout">
+            <div id="wrap" class="o_wappointment_wrap">
+                <div class="container pb64 o_appointment o_wappointment_select_operator">
+                    <h1 class="o_page_header mt32"> Schedule <span class="text-primary" t-out="appointment_type.name"/> Appointment</h1>
+                    <div class="row px-0">
+                        <div class="col h2 py-2">Choose who you will meet</div>
+                    </div>
+                    <div class="row px-0 pt-3">
+                        <div t-foreach="users_possible" t-as="staff_user" class="col-md-6 col-lg-4 mb-4">
+                            <article class="card border-1 shadow-sm h-100" itemscope="itemscope" itemtype="http://schema.org/Employee">
+                                <a t-attf-href="/appointment/#{appointment_type.id}?staff_user_id=#{staff_user.id}&amp;#{keep_query('*')}"
+                                   class="text-reset text-decoration-none h-100">
+                                    <header class="overflow-hidden bg-secondary rounded-top">
+                                        <img t-attf-src="/appointment/#{appointment_type.id}/avatar?user_id=#{staff_user.id}"
+                                                class="w-100 h-100 o_object_fit_cover o_appointment_avatar_background"/>
+                                    </header>
+                                    <main class="card-body">
+                                        <h2 class="mb-0" t-out="staff_user.name"/>
+                                        <div class="o_wappointment_card_user_fct text-black-25 h6">
+                                            <div t-field="staff_user.partner_id.function" placeholder="Add a function here..."/>
+                                        </div>
+                                        <div class="o_wappointment_card_user_dsc mt-3 mb48">
+                                            <div t-field="staff_user.partner_id.website_description" placeholder="Add a user description here..."/>
+                                        </div>
+                                        <div class="o_wappointment_card_user_select position-absolute h6 p-2 mb-0">
+                                            <span class="d-block text-center h6 mb-0">Choose <t t-out="staff_user.name"/></span>
+                                        </div>
+                                    </main>
+                                </a>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="oe_structure"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
     <template id="appointments_cards_layout" name="Appointment Types" track="1">
         <t t-call="website.layout">
             <div id="wrap" class="o_appointment_index h-100">

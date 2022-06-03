@@ -29,7 +29,7 @@
                             </a>
                         </div>
                         <form class="mt32 appointment_submit_form"
-                            t-attf-action="/appointment/#{appointment_type.id}/submit?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}"
+                            t-attf-action="/appointment/#{appointment_type.id}/submit?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token', 'staff_user_id')}"
                             method="POST">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <input type="hidden" name="datetime_str" t-att-value="datetime_str"/>

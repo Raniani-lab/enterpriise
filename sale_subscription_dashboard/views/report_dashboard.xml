@@ -20,16 +20,16 @@
             <t t-foreach="statistics" t-as="sm">
                 <div class="salesman_name">
                     <h1>
-                        <t t-esc="sm['saleman']['name']"/>
+                        <t t-out="sm['saleman']['name']"/>
                     </h1>
                 </div>
                 <div class="box">
                     <div class="col-lg-6">
                         <h2>Monthly Recurring Revenue :
-                            <t t-esc="sm['net_mrr_str']"/>
+                            <t t-out="sm['net_mrr_str']"/>
                         </h2>
                         <h2>Non-Recurring Revenue :
-                            <t t-esc="sm['net_nrr_str']"/>
+                            <t t-out="sm['net_nrr_str']"/>
                         </h2>
                         <img t-att-src="sm['image']" alt="graphic"/>
                     </div>
@@ -54,40 +54,40 @@
                                     <th>Subscription</th>
                                     <th>Template</th>
                                     <th t-if="n_companies &gt; 1">Company</th>
-                                    <th style="white-space: nowrap">Previous MRR (<t t-esc="currency_symbol"/>)
+                                    <th style="white-space: nowrap">Previous MRR (<t t-out="currency_symbol"/>)
                                     </th>
-                                    <th style="white-space: nowrap">Current MRR (<t t-esc="currency_symbol"/>)
+                                    <th style="white-space: nowrap">Current MRR (<t t-out="currency_symbol"/>)
                                     </th>
                                     <th>Delta</th>
                                 </tr>
                                 <tr t-foreach="sm['contract_modifications']" t-as="modification" class="o_subscription_row">
                                     <td>
-                                        <i t-att-class="modification['class_type']"/>
+                                        <i t-att-class="modification['type']"/>
                                     </td>
                                     <td>
-                                        <t t-esc="modification['date'] or ''"/>
+                                        <t t-out="modification['date'] or ''"/>
                                     </td>
                                     <td class="o_subscription_ellipsis">
-                                        <t t-esc="modification['partner'] or ''"/>
+                                        <t t-out="modification['partner'] or ''"/>
                                     </td>
                                     <td class="o_subscription_ellipsis">
-                                        <t t-esc="modification['subscription'] or ''"/>
+                                        <t t-out="modification['subscription'] or ''"/>
                                     </td>
                                     <td class="o_subscription_ellipsis">
-                                        <t t-esc="modification['subscription_template'] or ''"/>
+                                        <t t-out="modification['subscription_template'] or ''"/>
                                     </td>
                                     <td t-if="n_companies &gt; 1">
-                                        <t t-esc="modification['company_name'] or ''"/>
+                                        <t t-out="modification['company_name'] or ''"/>
                                     </td>
                                     <td>
-                                        <t t-esc="round(modification['previous_mrr'], 2)"/>
+                                        <t t-out="round(modification['previous_mrr'], 2)"/>
                                     </td>
                                     <td>
-                                        <t t-esc="round(modification['current_mrr'], 2)"/>
+                                        <t t-out="round(modification['current_mrr'], 2)"/>
                                     </td>
                                     <td>
                                         <span>
-                                            <t t-esc="round(modification['diff'], 2)"/>
+                                            <t t-out="round(modification['diff'], 2)"/>
                                         </span>
                                     </td>
                                 </tr>
@@ -111,23 +111,23 @@
                                     <th>Partner</th>
                                     <th>Document</th>
                                     <th t-if="n_companies &gt; 1">Company</th>
-                                    <th>NRR (<t t-esc="currency_symbol"/>)
+                                    <th>NRR (<t t-out="currency_symbol"/>)
                                     </th>
                                 </tr>
                                 <tr t-foreach="sm['nrr_invoices']" class="o_subscription_row" t-as="invoice"
                                     t-att-data-id="invoice['move_id']" t-att-data-model="invoice['model']">
                                     <td>
-                                        <t t-esc="invoice['date'] or ''"/>
+                                        <t t-out="invoice['date'] or ''"/>
                                     </td>
                                     <td>
-                                        <t t-esc="invoice['partner'] or ''"/>
+                                        <t t-out="invoice['partner'] or ''"/>
                                     </td>
                                     <td>
-                                        <t t-esc="invoice['code'] or ''"/>
+                                        <t t-out="invoice['code'] or ''"/>
                                     </td>
-                                    <td t-if="n_companies &gt; 1" t-esc="invoice['company_name']"></td>
+                                    <td t-if="n_companies &gt; 1" t-out="invoice['company_name']"></td>
                                     <td>
-                                        <t t-esc="round(invoice['nrr'], 2)"/>
+                                        <t t-out="round(invoice['nrr'], 2)"/>
                                     </td>
                                 </tr>
                             </table>

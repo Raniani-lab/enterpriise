@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="sale_subscription_dashboard.SalespeopleSelector" owl="1">
+        <div class="o_field_widget o_field_many2many_tags_avatar">
+            <div class="o_field_tags d-inline-flex flex-wrap mw-100 o_tags_input o_input">
+                <TagsList tags="tags"/>
+                <div class="o_field_many2many_selection d-inline-flex w-100">
+                    <Many2XAutocomplete
+                        placeholder="tags.length ? '' : 'Select Salesperson'"
+                        resModel="'res.users'"
+                        fieldString="'Name'"
+                        update.bind="update"
+                        activeActions="{}"
+                        getDomain.bind="getDomain"
+                        isToMany="true"
+                    />
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary o_update_options" t-on-click="onUpdateSalespeople">Update</button>
+    </t>
+</odoo>

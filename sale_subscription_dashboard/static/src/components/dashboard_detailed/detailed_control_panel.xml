@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="sale_subscription_dashboard.detailed_control_panel" owl="1">
+        <ControlPanel display="controlPanelDisplay">
+            <t t-set-slot="control-panel-top-right">
+                <SaleSubscriptionDashboardDateFilter/>
+                <SaleSubscriptionDashboardOptionsFilter/>
+            </t>
+            <t t-set-slot="control-panel-bottom-left">
+                <t t-if="isDetailedButtonVisible">
+                    <div class="o_detailed_analysis">
+                        <button class="btn btn-primary o_detailed_analysis" t-on-click="onDetailedAnalysisClick">Detailed Analysis</button>
+                    </div>
+                </t>
+            </t>
+        </ControlPanel>
+    </t>
+</odoo>

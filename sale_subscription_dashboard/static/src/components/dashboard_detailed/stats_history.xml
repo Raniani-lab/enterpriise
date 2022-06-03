@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="sale_subscription_dashboard.stats_history" owl="1">
+        <div class="container">
+            <div class="o_description">
+                The current value is measured at the end of the selected period and historical data are relative to this last props.value.
+            </div>
+            <div id="o-stat-history-box" class="box row">
+                <div class="col-lg-3 text-center">
+                    <h4 class="text-muted o_small_caps">Current</h4>
+                    <h2><t t-out="formatNumber(props.value, state.currency_id)"/></h2>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <h4 class="text-muted o_small_caps">1 month ago</h4>
+                    <h2 t-if="Object.keys(historyState.statsHistory).length > 0">
+                        <t t-out="formatNumber(historyState.statsHistory['value_1_months_ago'], state.currency_id)"/>
+                        <small t-if="historyState.statsHistory['value_1_months_ago'] != 0" t-att-class="getColorClass(props.value - historyState.statsHistory['value_1_months_ago'], state.stat_types[selectedStat]['dir'])"> <t t-out="rate(historyState.statsHistory['value_1_months_ago'], props.value)"/>%</small>
+                    </h2>
+                </div>
+
+                <div class="col-lg-3 text-center">
+                    <h4 class="text-muted o_small_caps">3 months ago</h4>
+                    <h2 t-if="Object.keys(historyState.statsHistory).length > 0">
+                        <t t-out="formatNumber(historyState.statsHistory['value_3_months_ago'], state.currency_id)"/>
+                        <small t-if="historyState.statsHistory['value_3_months_ago'] != 0" t-att-class="getColorClass(props.value - historyState.statsHistory['value_3_months_ago'], state.stat_types[selectedStat]['dir'])"> <t t-out="rate(historyState.statsHistory['value_3_months_ago'], props.value)"/>%</small>
+                    </h2>
+                </div>
+
+                <div class="col-lg-3 text-center">
+                    <h4 class="text-muted o_small_caps">12 months ago</h4>
+                    <h2 t-if="Object.keys(historyState.statsHistory).length > 0">
+                        <t t-out="formatNumber(historyState.statsHistory['value_12_months_ago'], state.currency_id)"/>
+                        <small t-if="historyState.statsHistory['value_12_months_ago'] != 0" t-att-class="getColorClass(props.value - historyState.statsHistory['value_12_months_ago'], state.stat_types[selectedStat]['dir'])"> <t t-out="rate(historyState.statsHistory['value_12_months_ago'], props.value)"/>%</small>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </t>
+</odoo>

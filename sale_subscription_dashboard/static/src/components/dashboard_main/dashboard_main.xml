@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="sale_subscription_dashboard.SaleSubscriptionDashboardMain" owl="1">
+        <div class="o_action">
+        <SaleSubscriptionDashboardMainControlPanel/>
+            <div class="o_content">
+            <div class="container o_account_contract_dashboard">
+                <div class="o_stats_section">
+                    <t t-if="Object.keys(state.stat_types).length">
+                        <div t-foreach="Object.values(state.stat_types)" t-as="statBox" t-key="statBox.code">
+                            <a href="#" class="on_stat_box" t-on-click.prevent="(e) => this.onStatBoxClick(e, statBox.code)">
+                                <SaleSubscriptionDashboardStatBox
+                                    boxName="statBox.name"
+                                    statType="statBox.code"
+                                />
+                            </a>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <a>
+                            <div class="box o_stat_box">
+                                <div class="o_loader"><span class="fa fa-3x fa-spin fa-circle-o-notch fa-spin" role="img" aria-label="Loading..." title="Loading..."/></div>
+                            </div>
+                        </a>
+                    </t>
+                    <t t-if="Object.keys(state.forecast_stat_types).length">
+                        <div t-foreach="Object.values(state.forecast_stat_types)" t-as="forecastBox" t-key="forecastBox.code">
+                            <a href="#" class="on_forecast_box" t-on-click.prevent="onForecastBoxClick">
+                                <SaleSubscriptionDashboardForecastBox boxName="forecastBox.name" statType="forecastBox.code"/>
+                            </a>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <a>
+                            <div class="box o_forecast_box">
+                                <div class="o_loader"><span class="fa fa-3x fa-spin fa-circle-o-notch fa-spin" role="img" aria-label="Loading..." title="Loading..."/></div>
+                            </div>
+                        </a>
+                    </t>
+                </div>
+            </div>
+            </div>
+        </div>
+    </t>
+</odoo>

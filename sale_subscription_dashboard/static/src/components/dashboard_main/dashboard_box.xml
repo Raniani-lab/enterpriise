@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="sale_subscription_dashboard.box_content" owl="1">
+        <div t-attf-class="box #{boxType === 'stat' ? 'o_stat_box' : 'o_forecast_box'}" data-tooltip-template="sale_subscription_dashboard.forecast_stat_box_tooltip" t-att-data-tooltip-info="tooltipInfo">
+            <div class="o_loader" t-if="!chartState.chartValues">
+                <span class="fa fa-3x fa-spin fa-circle-o-notch fa-spin" role="img" aria-label="Loading..." title="Loading..."/>
+            </div>
+            <div class="o_stat_box_header">
+                <h2 class="o_stat_box_card_amount">
+                    <span t-if="chartState.chartValues" class="o_sale_subscription_dashboard_value">
+                        <span t-if="state.has_mrr" t-out="formatNumber(chartState.value)"/>
+                        <span t-else="" t-out="formatNumber(demoValues[statType])"/>
+                    </span>
+                </h2>
+                <div t-if="boxType === 'stat' &amp;&amp; 'percentage' in chartState &amp;&amp; chartState.chartValues" class="o_trend">
+                    <span class="o_sale_subscription_dashboard_value">
+                        <h4 t-attf-class="o_percentage #{chartState.color}"><t t-out="chartState.percentage"/>%</h4>
+                        <span class="o_legend">30 Days Ago</span>
+                    </span>
+                </div>
+            </div>
+        
+            <div class="o_graph position-relative" t-ref="chart"/>
+            <div>
+                <div class="text-center o_chart_title h4">
+                    <span t-if="tooltip" class="float-start" data-tooltip-template="sale_subscription_dashboard.forecast_stat_box_tooltip" t-att-data-tooltip-info="kpiDefinition">
+                        <i class="fa fa-question-circle"/>
+                    </span>
+                    <t t-out="boxName"/>
+                </div>
+            </div>
+            <div t-if="!state.has_mrr">
+                <span class="badge bg-warning o_demo_label">Sample data</span>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="sale_subscription_dashboard.forecast_stat_box_tooltip" owl="1">
+        <h6 t-out="boxName"/>
+        <t t-out="string"/>
+    </t>
+</odoo>

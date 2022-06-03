@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="sale_subscription_dashboard.salesperson_summary" owl="1">
+        <div class="col-lg-6">
+            <h2>
+                Monthly Recurring Revenue : 
+                <t t-out="formatMonetaryNumber(Math.round(props.mrr * 100) / 100, state.currency_id)"/>
+            </h2>
+        </div>
+
+        <div class="col-lg-6">
+            <h2>
+                Non-Recurring Revenue : 
+                <t t-out="formatMonetaryNumber(Math.round(props.nrr * 100) / 100, state.currency_id)"/>
+            </h2>
+        </div>
+    </t>
+</odoo>

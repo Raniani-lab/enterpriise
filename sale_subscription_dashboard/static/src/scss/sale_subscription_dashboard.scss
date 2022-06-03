@@ -1,40 +1,4 @@
-.o_datepickers_searchview {
-    display: flex;
-    align-items: center;
-
-    // Position relative is necessary to display the datepicker correctly when toggle
-    // Requirement from the library.
-    position: relative;
-    > .o_datepicker {
-        flex: 1 0 90px;
-        margin: 0 10px;
-        position: relative;
-
-        &:first-child {
-            margin-left: 0;
-        }
-    }
-
-    > select {
-        margin: 0 10px;
-    }
-}
-
-.o_foldable_menu {
-    &.o_closed_menu {
-        display: none;
-    }
-    .o_open_menu {
-        display: block;
-    }
-}
-
 .o_account_contract_dashboard {
-    svg {
-        padding-top: 2px;
-        float: left;
-    }
-
     div.box {
         @include clearfix;
         padding: 10px;
@@ -100,10 +64,6 @@
 
         .o_demo_label {
             @include o-position-absolute($bottom: 42px, $right: 0);
-        }
-
-        .o_kpi_definition {
-            @include o-position-absolute($bottom: 18px, $left: 10px);
         }
 
         .o_graph {
@@ -172,30 +132,18 @@
     .o_small_caps {
         font-variant: small-caps;
     }
-
-    .o_welcome_message {
-        margin: 5px;
-
-        display: flex;
-        justify-content: center;
-
-        .o_welcome_image {
-            padding: 20px;
-        }
-        .o_welcome_content > a {
-            color: white;
-            display: inline-block;
-        }
-    }
 }
 
 .o_salesmen_dashboard {
     .o_subscription_ellipsis {
         max-width:20px !important;
     }
+
+    .o_subscription_row {
+        cursor: pointer;
+    }
 }
 
-.o_subscription_dashboard_search {
-    margin-left: 10px;
-    margin-right: 10px;
+.o_field_many2many_selection .o-autocomplete--input {
+    cursor: pointer;
 }

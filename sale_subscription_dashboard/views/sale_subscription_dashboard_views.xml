@@ -46,7 +46,7 @@
 
     <record id="action_subscription_dashboard_report_salesman" model="ir.actions.client">
         <field name="name">Salesperson Dashboard</field>
-        <field name="tag">sale_subscription_dashboard_salesman</field>
+        <field name="tag">sale_subscription_dashboard_salespeople</field>
     </record>
 
     <record id="action_move_line_entries_report" model="ir.actions.act_window">

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="sale_subscription_dashboard.detailed_dashboard" owl="1">
+        <div class="o_action">
+            <DetailedControlPanel selectedStat="selectedStat"/>
+            <div class="o_content">
+                <div class="container o_account_contract_dashboard">
+                    <div class="box o_graph_detailed">
+                        <h1 class="o_metric_current o_blue">
+                            <t t-out="formatNumber(detailedDashboardState.value, state.currency_id)"/>
+                        </h1>
+                        <input type="hidden" name="stat_type" t-att-value="stat_type"/>
+                        <div t-ref="stat_chart_div" class="position-relative" id="stat_chart_div"/>
+                    </div>
+                    <StatsHistory value="detailedDashboardState.value" selectedStat="selectedStat"/>
+
+                    <div t-if="selectedStat === 'mrr'" class="box mrr_growth_chart">
+                        <h3>Monthly Recurring Revenue Growth</h3>
+                        <div t-ref="mrr_growth_chart_div" class="position-relative"/>
+                    </div>
+
+                    <div t-if="displayStatsByPlan" class="o_description">
+                        The following values are measured at the end of the selected period.
+                    </div>
+                    <div t-if="displayStatsByPlan" class="box o_stats_by_plan">
+                        <StatsByPlan selectedStat="selectedStat"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</odoo>

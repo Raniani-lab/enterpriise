@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-name="sale_subscription_dashboard.salespeople" owl="1">
+        <div class="o_action">
+            <SalespeopleControlPanel onPrintPreview.bind="onPrintPreview"/>
+            <div class="o_content">
+                <div class="container o_account_contract_dashboard o_salesmen_dashboard">
+                    <div class="alert alert-warning text-center o_subscription_dashboard_warning" role="alert" t-if="start_date &lt; migration_date">
+                        <p class="d-inline">The following report relies on a previous calculation method. Results may differ from the new method.</p>
+                    </div>
+                    <div class="box" t-if="!(state.selected_salespeople &amp;&amp; state.selected_salespeople[0] &amp;&amp; state.selected_salespeople[0]['id'])">
+                        <h2>Pick a salesman and a period</h2>
+                    </div>
+                    <t t-foreach="Object.keys(state.salespeople_statistics)" t-as="salesperson_id" t-key="salesperson_id">
+                        <t t-set="current_salesperson" t-value="state.selected_salespeople.find((salesperson) => salesperson.id === window.Number(salesperson_id))"/>
+                        <SaleSubscriptionDashboardSalesperson
+                            t-if="current_salesperson"
+                            salesperson="current_salesperson"
+                            currentCompany="currentCompany"
+                            setBarGraph.bind="setBarGraph"
+                        />
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</odoo>

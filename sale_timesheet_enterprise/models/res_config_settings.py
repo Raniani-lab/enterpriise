@@ -33,7 +33,7 @@ class ResConfigSettings(models.TransientModel):
         if old_value and self.invoiced_timesheet != old_value:
             # recompute the qty_delivered in sale.order.line for sale.order
             # where his state is set to 'sale'.
-            sale_order_lines = self.env['sale.order.line'].search([
+            sale_order_lines = self.env['sale.order.line'].sudo().search([
                 ('state', 'in', ['sale', 'done']),
                 ('invoice_status', 'in', ['no', 'to invoice']),
                 ('product_id.type', '=', 'service'),

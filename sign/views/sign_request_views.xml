@@ -55,8 +55,8 @@
                                 <field name="template_tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 <div class="o_signers container-fluid mt-2">
                                     <div t-foreach="record.request_item_infos.raw_value || []" t-as="request_item_info" t-key="request_item_info.id"
-                                         t-att-class="(request_item_info.state === 'completed') ? 'o_sign_completed text-success row' :
-                                                      (request_item_info.state === 'refused') ? 'o_sign_refused text-danger row' : 'o_sign_waiting row'">
+                                         t-att-class="(request_item_info.state === 'completed') ? 'o_sign_completed text-success d-flex' :
+                                                      (request_item_info.state === 'refused') ? 'o_sign_refused text-danger d-flex' : 'o_sign_waiting d-flex'">
                                         <div t-if="request_item_info.state === 'refused'" class="mt-1 mr-1 fa fa-times" title="Refused"/>
                                         <input t-else="" t-att-checked="(request_item_info.state === 'completed') ? 'checked' : undefined" class="mt-1 mr-1" type="checkbox" disabled="True"/>
                                         <span>

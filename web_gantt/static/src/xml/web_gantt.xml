@@ -58,22 +58,22 @@
 
     <div t-name="GanttView" class="o_gantt_view">
         <div class="o_gantt_view_container container-fluid p-0">
-            <div class="row no-gutters o_gantt_header_container position-sticky bg-white">
-                <div class="col-2 o_gantt_row_sidebar text-center" t-if="widget.state.groupedBy.length">
+            <div class="row g-0 o_gantt_header_container position-sticky bg-white">
+                <div class="col-2 position-relative o_gantt_row_sidebar text-center" t-if="widget.state.groupedBy.length">
                     <span class="font-weight-bold" t-esc="widget.string"/>
                 </div>
-                <div class="col o_gantt_header_slots">
-                    <div class="row no-gutters">
+                <div class="col position-relative o_gantt_header_slots">
+                    <div class="row g-0">
                         <div class="col text-center p-2 font-weight-bold">
                             <t t-esc="widget._getFocusDateFormat()"/>
                         </div>
                     </div>
-                    <div class="row no-gutters o_gantt_header_scale">
+                    <div class="row g-0 o_gantt_header_scale">
                         <t t-set="formats" t-value="{'week': 'dddd, Do', 'month': 'DD', 'year': isMobile ? 'MMM' : 'MMMM'}"/>
 
                         <t t-foreach="widget.viewInfo.slots" t-as="slot">
                             <t t-set="isToday" t-value="slot.isSame(new Date(), 'day') &amp;&amp; widget.state.scale !== 'day'"/>
-                            <div t-attf-class="col o_gantt_header_cell text-center p-2 #{isToday? 'o_gantt_today' : ''} ">
+                            <div t-attf-class="col position-relative o_gantt_header_cell text-center p-2 #{isToday? 'o_gantt_today' : ''} ">
                                 <t t-if="widget.state.scale in formats" t-esc="slot.format(formats[widget.state.scale])"/>
                                 <small t-else="">
                                     <b t-esc="slot.format('k')"/>
@@ -84,12 +84,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row no-gutters">
-                <div class="col o_gantt_row_container">
+            <div class="row g-0">
+                <div class="col position-relative o_gantt_row_container">
                 </div>
             </div>
-            <div class="row no-gutters o_gantt_total position-relative" t-if="widget.totalRow">
-                <div class="col o_gantt_total_row_container">
+            <div class="row g-0 o_gantt_total position-relative" t-if="widget.totalRow">
+                <div class="col position-relative o_gantt_total_row_container">
                 </div>
             </div>
         </div>
@@ -114,8 +114,8 @@
         </t>
     </t>
 
-    <div t-name="GanttView.Row" t-attf-class="row no-gutters o_gantt_row #{widget.isTotal ? 'o_gantt_row_total' : widget.isGroup ? 'o_gantt_row_group' : 'o_gantt_row_nogroup'} #{widget.isOpen ? 'open' : ''}" t-att-data-from-server="widget.fromServer" t-att-data-row-id="widget.rowId">
-        <div t-if="!widget.options.hideSidebar" t-attf-class="col-2 o_gantt_row_sidebar flex-grow-1 flex-shrink-0 position-relative #{!widget.name ? 'o_gantt_row_sidebar_empty' : '' }" t-attf-style="padding-left: #{widget.leftPadding}px;">
+    <div t-name="GanttView.Row" t-attf-class="row g-0 o_gantt_row #{widget.isTotal ? 'o_gantt_row_total' : widget.isGroup ? 'o_gantt_row_group' : 'o_gantt_row_nogroup'} #{widget.isOpen ? 'open' : ''}" t-att-data-from-server="widget.fromServer" t-att-data-row-id="widget.rowId">
+        <div t-if="!widget.options.hideSidebar" t-attf-class="col-2 o_gantt_row_sidebar position-relative #{!widget.name ? 'o_gantt_row_sidebar_empty' : '' }" t-attf-style="padding-left: #{widget.leftPadding}px;">
             <t t-if="widget.progressBar">
                 <t t-if="widget.progressBar.max_value > 0">
                     <span t-attf-class="position-absolute o_gantt_progressbar {{ widget.progressBar.ratio > 100 ? 'o_gantt_group_danger' : 'o_gantt_group_success' }}"
@@ -149,18 +149,18 @@
                 <t t-esc="widget.name"/>
             </div>
         </div>
-        <div class="o_gantt_slots_container col">
-            <div class="row no-gutters">
+        <div class="o_gantt_slots_container col position-relative">
+            <div class="row g-0">
                 <div t-foreach="widget.slots" t-as="slot"
-                    t-attf-class="col o_gantt_cell #{slot.isToday ? 'o_gantt_today' : ''} #{slot.hasButtons ? 'o_gantt_hoverable' : ''}"
+                    t-attf-class="col position-relative o_gantt_cell #{slot.isToday ? 'o_gantt_today' : ''} #{slot.hasButtons ? 'o_gantt_hoverable' : ''}"
                     t-att-data-date="slot.start.format('YYYY-MM-DD HH:mm:ss')"
                     t-attf-style="height: #{widget.cellHeight}px;#{slot.style ? ' ' + slot.style : ''}">
 
                     <!-- plan and add buttons -->
                     <div t-if="slot.hasButtons" class="o_gantt_cell_buttons justify-content-center">
                         <div class="position-absolute d-flex">
-                            <i t-if="widget.options.canCreate and widget.options.canCellCreate" title="Create" t-attf-class="o_gantt_cell_add fa fa-plus d-flex flex-grow-0 flex-shrink-1 justify-content-center #{widget.options.canPlan ? 'pr-1' : ''}"/>
-                            <i t-if="widget.options.canPlan" title="Plan existing" class="o_gantt_cell_plan fa fa-search-plus d-flex flex-grow-0 flex-shrink-1 justify-content-center"/>
+                            <i t-if="widget.options.canCreate and widget.options.canCellCreate" title="Create" t-attf-class="o_gantt_cell_add fa fa-plus d-flex justify-content-center #{widget.options.canPlan ? 'pr-1' : ''}"/>
+                            <i t-if="widget.options.canPlan" title="Plan existing" class="o_gantt_cell_plan fa fa-search-plus d-flex justify-content-center"/>
                         </div>
                     </div>
 

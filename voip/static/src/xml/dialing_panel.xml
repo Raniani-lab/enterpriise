@@ -52,6 +52,7 @@
                     role="tablist">
                     <li
                         class="
+                            col
                             col-lg-3
                             nav-item
                             o_dial_recent_tab
@@ -67,6 +68,7 @@
                     </li>
                     <li
                         class="
+                            col
                             col-lg-5
                             nav-item
                             o_dial_activities_tab
@@ -83,6 +85,7 @@
                     </li>
                     <li
                         class="
+                            col
                             col-lg-4
                             nav-item
                             text-center">

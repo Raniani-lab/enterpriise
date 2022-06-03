@@ -28,11 +28,11 @@
                     <i class="fa fa-trash"/>
                 </button>
             </span>
-            <div t-if="appointments.length !== 0" class="btn-group col px-0 o_appointment_calendar_group_buttons">
+            <div t-if="appointments.length !== 0" class="btn-group px-0 o_appointment_calendar_group_buttons w-100">
                 <button class="btn btn-primary o_appointment_select_slots" aria-label="Share Availabilities" title="Share Availabilities">
                     Share Availabilities
                 </button>
-                <button id="dropdownAppointmentLink" class="btn btn-primary col-2 dropdown-toggle" data-toggle="dropdown">
+                <button id="dropdownAppointmentLink" class="btn btn-primary col-2 dropdown-toggle flex-grow-0" data-toggle="dropdown">
                     <span class="fa fa-2x fa-angle-down"/>
                 </button>
                 <div id="dropdownMenuAppointmentLink" class="dropdown-menu dropdown-menu-right col" data-labelledby="dropdownAppointmentLink">

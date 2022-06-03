@@ -11,9 +11,9 @@
                         data-tooltip-template="hr_payroll.Tooltip" t-att-data-tooltip-info="tooltipInfo"/>
                     <div class="d-inline float-right" id="period_selection_toggle">
                         Annually
-                        <div class="o_boolean_toggle custom-control custom-checkbox" t-on-click.stop.prevent="toggle">
-                            <input type="checkbox" class="custom-control-input" id="test" t-att-checked="state.monthly"/>
-                            <label class="custom-control-label">
+                        <div class="o_boolean_toggle custom-control form-check form-switch" t-on-click.stop.prevent="toggle">
+                            <input type="checkbox" class="form-check-input" id="test" role="switch" t-att-checked="state.monthly"/>
+                            <label class="form-check-label">
                                 &#8203;
                                 <i class="fa fa-circle"/>
                             </label>

@@ -94,7 +94,7 @@
                             <div class="o_row">
                                 <field name="allocated_hours" widget="float_time" attrs="{'required': [('resource_type', '=', 'material')]}"/>
                                 <div attrs="{'invisible': [('resource_type', '=', 'material')]}">
-                                    (<field name="allocated_percentage" class="col-9 p-0" decoration-danger="allocated_percentage &gt; 100"/> %)
+                                    (<field name="allocated_percentage" class="w-75 p-0" decoration-danger="allocated_percentage &gt; 100"/> %)
                                 </div>
                             </div>
                         </group>

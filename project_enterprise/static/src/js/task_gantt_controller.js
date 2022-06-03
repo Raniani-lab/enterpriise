@@ -72,6 +72,9 @@ export default GanttController.extend({
                 delete context[mapping.many2many_field];
             }
         }
+        if ('user_ids' in context && !context['user_ids']) {
+            delete context['user_ids'];
+        }
         return context;
     },
 });

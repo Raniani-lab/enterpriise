@@ -431,7 +431,7 @@ class HrAppraisal(models.Model):
         self.ensure_one()
         return {
             'name': _('%s Goals') % self.employee_id.name,
-            'view_mode': 'kanban,tree,form',
+            'view_mode': 'kanban,tree,form,graph',
             'res_model': 'hr.appraisal.goal',
             'type': 'ir.actions.act_window',
             'target': 'current',

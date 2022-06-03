@@ -11,6 +11,7 @@
                             attrs="{'invisible': [('progression', '=', '100')]}"/>
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Done" bg_color="bg-success" attrs="{'invisible': [('progression', '!=', '100')]}"/>
                     <div class="oe_title">
                         <label for="name" string="Goal"/>
                         <h1>
@@ -87,7 +88,7 @@
                                 </div>
                                 <t t-if="record.progression.raw_value != 100">
                                     <div class="o_kanban_top_right mr-2 font-weight-bold">
-                                        <t t-esc="record.progression.raw_value"/> %
+                                        <t t-esc="record.progression.value"/>
                                     </div>
                                 </t>
                             </div>
@@ -111,6 +112,17 @@
         </field>
     </record>
 
+    <record id="hr_appraisal_goal_view_graph" model="ir.ui.view">
+        <field name="name">hr.appraisal.goal.view.kanban</field>
+        <field name="model">hr.appraisal.goal</field>
+        <field name="arch" type="xml">
+            <graph string="Goals" type="bar" stacked="0" order="asc" sample="1">
+                <field name="employee_id"/>
+                <field name="progression"/>
+            </graph>
+        </field>
+    </record>
+
     <record id="hr_appraisal_goal_view_search" model="ir.ui.view">
         <field name="name">hr.appraisal.goal.view.search</field>
         <field name="model">hr.appraisal.goal</field>
@@ -131,7 +143,12 @@
         <field name="name">Goals</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">hr.appraisal.goal</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new goals
+            </p>
+        </field>
     </record>
 
     <menuitem name="Goals"

@@ -18,14 +18,14 @@ class HrAppraisalGoal(models.Model):
     manager_id = fields.Many2one('hr.employee', string="Manager", compute="_compute_manager_id", readonly=False, store=True, required=True)
     manager_user_id = fields.Many2one('res.users', related='manager_id.user_id')
     progression = fields.Selection(selection=[
-        ('0', '0 %'),
-        ('25', '25 %'),
-        ('50', '50 %'),
-        ('75', '75 %'),
-        ('100', '100 %')
-    ], string="Progress", default="0", required=True)
+        ('000', '0%'),
+        ('025', '25%'),
+        ('050', '50%'),
+        ('075', '75%'),
+        ('100', '100%')
+    ], string="Progress", default="000", tracking=True, required=True)
     description = fields.Html()
-    deadline = fields.Date()
+    deadline = fields.Date(tracking=True)
     is_manager = fields.Boolean(compute='_compute_is_manager')
 
     @api.depends_context('uid')

@@ -150,11 +150,16 @@ class DataMergeModel(models.Model):
         if num_records:
             partner_ids = self.notify_user_ids.partner_id.ids
             menu_id = self.env.ref('data_cleaning.menu_data_cleaning_root').id
-            kwargs = {
-                'body': self.env['ir.qweb']._render('data_merge.data_merge_duplicate', dict(num_records=num_records, res_model_label=self.res_model_id.name, model_id=self.id, menu_id=menu_id)),
-                'partner_ids': partner_ids,
-            }
-            self.env['mail.thread'].with_context(mail_notify_author=True).sudo().message_notify(**kwargs)
+            self.env['mail.thread'].with_context(mail_notify_author=True).sudo().message_notify(
+                body=self.env['ir.qweb']._render(
+                    'data_merge.data_merge_duplicate',
+                    dict(num_records=num_records,
+                         res_model_label=self.res_model_id.name,
+                         model_id=self.id,
+                         menu_id=menu_id)
+                    ),
+                partner_ids=partner_ids,
+            )
 
     def _cron_find_duplicates(self):
         """

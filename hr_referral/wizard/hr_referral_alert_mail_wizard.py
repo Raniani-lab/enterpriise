@@ -29,6 +29,11 @@ class HrReferralAlertMailWizard(models.TransientModel):
 
     def action_send(self):
         self.ensure_one()
-        self.env['mail.thread'].message_notify(partner_ids=self.user_ids.partner_id.ids, model_description='Referral Alerts',
-            subject=self.subject, body=self.body, email_layout_xmlid='mail.mail_notification_light')
+        self.env['mail.thread'].message_notify(
+            partner_ids=self.user_ids.partner_id.ids,
+            model_description='Referral Alerts',
+            subject=self.subject,
+            body=self.body,
+            email_layout_xmlid='mail.mail_notification_light',
+        )
         return True

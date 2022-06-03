@@ -911,6 +911,8 @@ class HelpdeskTicket(models.Model):
         to portal and portal customers. If they are notified they should
         probably have access to the document. """
         groups = super(HelpdeskTicket, self)._notify_get_recipients_groups(msg_vals=msg_vals)
+        if not self:
+            return groups
 
         self.ensure_one()
 

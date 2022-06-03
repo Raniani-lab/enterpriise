@@ -11,10 +11,12 @@ QUnit.module("documents_spreadsheet > pivot formula", {}, () => {
             };
             assert.strictEqual(parsePivotFormulaFieldValue(field, "won"), "won");
             assert.strictEqual(parsePivotFormulaFieldValue(field, "1"), "1");
+            assert.strictEqual(parsePivotFormulaFieldValue(field, 1), "1");
             assert.strictEqual(parsePivotFormulaFieldValue(field, "11/2020"), "11/2020");
             assert.strictEqual(parsePivotFormulaFieldValue(field, "2020"), "2020");
             assert.strictEqual(parsePivotFormulaFieldValue(field, "01/11/2020"), "01/11/2020");
             assert.strictEqual(parsePivotFormulaFieldValue(field, "false"), false);
+            assert.strictEqual(parsePivotFormulaFieldValue(field, false), false);
             assert.strictEqual(parsePivotFormulaFieldValue(field, "true"), "true");
         }
     });
@@ -29,8 +31,11 @@ QUnit.module("documents_spreadsheet > pivot formula", {}, () => {
             assert.strictEqual(parsePivotFormulaFieldValue(field, "2020"), "2020");
             assert.strictEqual(parsePivotFormulaFieldValue(field, "01/11/2020"), "01/11/2020");
             assert.strictEqual(parsePivotFormulaFieldValue(field, "1"), "1");
+            assert.strictEqual(parsePivotFormulaFieldValue(field, 1), "1");
             assert.strictEqual(parsePivotFormulaFieldValue(field, "false"), false);
+            assert.strictEqual(parsePivotFormulaFieldValue(field, false), false);
             assert.strictEqual(parsePivotFormulaFieldValue(field, "true"), "true"); // this should throw because it's not a valid date
+            assert.strictEqual(parsePivotFormulaFieldValue(field, true), "true"); // this should throw because it's not a valid date
             assert.strictEqual(parsePivotFormulaFieldValue(field, "won"), "won"); // this should throw because it's not a valid date
         }
     });
@@ -41,11 +46,14 @@ QUnit.module("documents_spreadsheet > pivot formula", {}, () => {
             string: "A field",
         };
         assert.strictEqual(parsePivotFormulaFieldValue(field, "false"), false);
+        assert.strictEqual(parsePivotFormulaFieldValue(field, false), false);
         assert.strictEqual(parsePivotFormulaFieldValue(field, "true"), true);
+        assert.strictEqual(parsePivotFormulaFieldValue(field, true), true);
         assert.throws(() => parsePivotFormulaFieldValue(field, "11/2020"));
         assert.throws(() => parsePivotFormulaFieldValue(field, "2020"));
         assert.throws(() => parsePivotFormulaFieldValue(field, "01/11/2020"));
         assert.throws(() => parsePivotFormulaFieldValue(field, "1"));
+        assert.throws(() => parsePivotFormulaFieldValue(field, 1));
         assert.throws(() => parsePivotFormulaFieldValue(field, "won"));
     });
 
@@ -58,8 +66,11 @@ QUnit.module("documents_spreadsheet > pivot formula", {}, () => {
             assert.strictEqual(parsePivotFormulaFieldValue(field, "2020"), 2020);
             assert.strictEqual(parsePivotFormulaFieldValue(field, "01/11/2020"), 43841); // a date is actually a number in a spreadsheet
             assert.strictEqual(parsePivotFormulaFieldValue(field, "1"), 1);
+            assert.strictEqual(parsePivotFormulaFieldValue(field, 1), 1);
             assert.strictEqual(parsePivotFormulaFieldValue(field, "false"), false);
+            assert.strictEqual(parsePivotFormulaFieldValue(field, false), false);
             assert.throws(() => parsePivotFormulaFieldValue(field, "true"));
+            assert.throws(() => parsePivotFormulaFieldValue(field, true));
             assert.throws(() => parsePivotFormulaFieldValue(field, "won"));
             assert.throws(() => parsePivotFormulaFieldValue(field, "11/2020"));
         }
@@ -72,11 +83,14 @@ QUnit.module("documents_spreadsheet > pivot formula", {}, () => {
                 string: "A field",
             };
             assert.throws(() => parsePivotFormulaFieldValue(field, "false"));
+            assert.throws(() => parsePivotFormulaFieldValue(field, false));
             assert.throws(() => parsePivotFormulaFieldValue(field, "true"));
+            assert.throws(() => parsePivotFormulaFieldValue(field, true));
             assert.throws(() => parsePivotFormulaFieldValue(field, "11/2020"));
             assert.throws(() => parsePivotFormulaFieldValue(field, "2020"));
             assert.throws(() => parsePivotFormulaFieldValue(field, "01/11/2020"));
             assert.throws(() => parsePivotFormulaFieldValue(field, "1"));
+            assert.throws(() => parsePivotFormulaFieldValue(field, 1));
             assert.throws(() => parsePivotFormulaFieldValue(field, "won"));
         }
     });

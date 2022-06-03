@@ -76,10 +76,14 @@ function throwUnsupportedFieldError(field) {
  * e.g. given the following formula PIVOT("1", "stage_id", "42", "status", "won"),
  * the two group values are "42" and "won".
  * @param {object} field
- * @param {number | boolean | string} groupValueString
+ * @param {number | boolean | string} groupValue
  * @returns {number | boolean | string}
  */
-export function parsePivotFormulaFieldValue(field, groupValueString) {
+export function parsePivotFormulaFieldValue(field, groupValue) {
+    const groupValueString =
+    typeof groupValue === "boolean"
+      ? toString(groupValue).toLocaleLowerCase()
+      : toString(groupValue);
     if (isNotSupported(field.type)) {
         throwUnsupportedFieldError(field);
     }
@@ -604,14 +608,14 @@ export class SpreadsheetPivotModel extends PivotModel {
         let i = 0;
         while (i < domain.length) {
             const groupFieldString = domain[i];
-            const groupValueString = domain[i + 1];
+            const groupValue = domain[i + 1];
             const { field, isPositional } = this.parseGroupField(groupFieldString);
             let value;
             if (isPositional) {
-                value = this._parsePivotFormulaWithPosition(field, groupValueString, cols, rows);
+                value = this._parsePivotFormulaWithPosition(field, groupValue, cols, rows);
             }
             else {
-                value = parsePivotFormulaFieldValue(field, groupValueString)
+                value = parsePivotFormulaFieldValue(field, groupValue)
             }
             if (this._isCol(field)) {
                 cols.push(value);

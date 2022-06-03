@@ -86,12 +86,12 @@ class TestAccountAsset(TestAccountReportsCommon):
                          'Depreciation lines not created correctly')
 
         # Check that auto_post is set on the entries, in the future, and we cannot post them.
-        self.assertTrue(all(CEO_car.depreciation_move_ids.mapped('auto_post')))
+        self.assertTrue(all(CEO_car.depreciation_move_ids.mapped(lambda m: m.auto_post != 'no')))
         with self.assertRaises(UserError):
             CEO_car.depreciation_move_ids.action_post()
 
         # I Check that After creating all the moves of depreciation lines the state "Running".
-        CEO_car.depreciation_move_ids.write({'auto_post': False})
+        CEO_car.depreciation_move_ids.write({'auto_post': 'no'})
         CEO_car.depreciation_move_ids.action_post()
         self.assertEqual(CEO_car.state, 'open',
                          'State of asset should be runing')
@@ -680,7 +680,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         # I check the proper depreciation lines created.
         self.assertEqual(10, len(self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')))
         # Check if the future deprecation moves are set to be auto posted
-        self.assertTrue(all([move.auto_post for move in self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')]))
+        self.assertTrue(all([move.auto_post != 'no' for move in self.truck.depreciation_move_ids.filtered(lambda x: x.state == 'draft')]))
         # The values are unchanged
         self.assertRecordValues(self.truck, [values])
 

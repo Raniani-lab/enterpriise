@@ -319,6 +319,12 @@ msgid "The video you are trying to publish has been deleted from YouTube."
 msgstr ""
 
 #. module: social_youtube
+#: code:addons/social_youtube/controllers/main.py:0
+#, python-format
+msgid "There is no channel linked with this YouTube account."
+msgstr ""
+
+#. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
 msgid ""
 "To provide our application services, note that we store the following data "

@@ -125,6 +125,9 @@ class SocialYoutubeController(SocialController):
         if 'error' in youtube_channels:
             raise SocialValidationException(_('YouTube did not provide a valid access token or it may have expired.'))
 
+        if 'items' not in youtube_channels:
+            raise SocialValidationException(_('There is no channel linked with this YouTube account.'))
+
         accounts_to_create = []
         existing_accounts = self._youtube_get_existing_accounts(youtube_channels)
         youtube_media = request.env.ref('social_youtube.social_media_youtube')

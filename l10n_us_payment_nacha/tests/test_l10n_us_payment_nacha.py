@@ -45,8 +45,8 @@ class TestNacha(AccountTestInvoicingCommon):
             "journal_id": self.company_data["default_journal_bank"].id,
             "batch_type": "outbound",
         })
-        batch.payment_ids += create_payment(self.partner_a, 123, 'test1')
-        batch.payment_ids += create_payment(self.partner_b, 456, 'test2')
+        batch.payment_ids += create_payment(self.partner_a, 123.45, 'test1')
+        batch.payment_ids += create_payment(self.partner_b, 456.78, 'test2')
 
         expected = [
             # header
@@ -54,17 +54,17 @@ class TestNacha(AccountTestInvoicingCommon):
             # batch header for payment "test1"
             "5225company_1_data                      COMPANY_IDPPDtest1     201130201130   1ORIGINAT0000000",
             # entry detail for payment "test1"
-            "622123456789987654321        0000012300               partner_a               0ORIGINAT0000000",
+            "622123456789987654321        0000012345               partner_a               0ORIGINAT0000000",
             # batch control record for payment "test1"
-            "82250000010000000036000000012300000000000000COMPANY_ID                         ORIGINAT0000000",
+            "82250000010000000036000000012345000000000000COMPANY_ID                         ORIGINAT0000000",
             # batch header for payment "test2"
             "5225company_1_data                      COMPANY_IDPPDtest2     201130201130   1ORIGINAT0000001",
             # entry detail for payment "test2"
-            "622123456789987654321        0000045600               partner_b               0ORIGINAT0000000",
+            "622123456789987654321        0000045678               partner_b               0ORIGINAT0000000",
             # batch control record for payment "test2"
-            "82250000010000000036000000045600000000000000COMPANY_ID                         ORIGINAT0000001",
+            "82250000010000000036000000045678000000000000COMPANY_ID                         ORIGINAT0000001",
             # file control record
-            "9000002000004000000020000000072000000000579000000000000                                       ",
+            "9000002000004000000020000000072000000058023000000000000                                       ",
         ]
 
         for generated, expected in zip(batch._generate_nacha_file().splitlines(), expected):

@@ -132,7 +132,7 @@ class AccountBatchPayment(models.Model):
         hashes = (self._calculate_aba_hash(payment.partner_bank_id.aba_routing) for payment in payments)
         control.append("{:010d}".format(sum(hashes)))  # Entry Hash
 
-        control.append("{:012d}".format(sum(round(payment.amount) for payment in payments)))  # Total Debit Entry Dollar Amount in File
+        control.append("{:012d}".format(sum(round(payment.amount * 100) for payment in payments)))  # Total Debit Entry Dollar Amount in File
         control.append("{:012d}".format(0))  # Total Credit Entry Dollar Amount in File
         control.append("{:39.39}".format(""))  # Blank
 

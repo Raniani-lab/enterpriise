@@ -157,6 +157,7 @@ class SocialAccountLinkedin(models.Model):
                         'name': organization.get('organization~', {}).get('localizedName'),
                         'linkedin_account_urn': account_urn,
                         'linkedin_access_token': linkedin_access_token,
+                        'social_account_handle': organization.get('organization~', {}).get('vanityName'),
                         'image': base64.b64encode(image_data) if image_data else False,
                     })
 
@@ -187,6 +188,7 @@ class SocialAccountLinkedin(models.Model):
                 existing_accounts[account['linkedin_account_urn']].write({
                     'active': True,
                     'linkedin_access_token': account.get('linkedin_access_token'),
+                    'social_account_handle': account.get('username'),
                     'is_media_disconnected': False,
                     'image': account.get('image')
                 })

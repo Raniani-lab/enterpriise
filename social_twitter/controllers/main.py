@@ -212,7 +212,7 @@ class SocialTwitterController(SocialController):
             existing_account.write({
                 'active': True,
                 'is_media_disconnected': False,
-                'twitter_screen_name': response_values['screen_name'],
+                'social_account_handle': response_values['screen_name'],
                 'twitter_oauth_token': response_values['oauth_token'],
                 'twitter_oauth_token_secret': response_values['oauth_token_secret']
             })
@@ -228,7 +228,7 @@ class SocialTwitterController(SocialController):
                 'media_id': media.id,
                 'name': twitter_account_information['name'],
                 'twitter_user_id': response_values['user_id'],
-                'twitter_screen_name': response_values['screen_name'],
+                'social_account_handle': response_values['screen_name'],
                 'twitter_oauth_token': response_values['oauth_token'],
                 'twitter_oauth_token_secret': response_values['oauth_token_secret'],
                 'image': base64.b64encode(requests.get(twitter_account_information['profile_image_url_https'], timeout=10).content)

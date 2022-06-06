@@ -102,6 +102,7 @@ class SocialInstagramController(SocialController):
         media = request.env.ref('social_instagram.social_media_instagram')
         accounts_url = url_join(request.env['social.media']._INSTAGRAM_ENDPOINT, "/me/accounts/")
         accounts = requests.get(accounts_url, params={
+            'fields': 'access_token,name,id,instagram_business_account',
             'access_token': extended_access_token or self._instagram_get_extended_access_token(access_token, media)
         }).json()
 
@@ -117,31 +118,31 @@ class SocialInstagramController(SocialController):
         accounts_to_create = []
         has_existing_accounts = False
         for account in accounts['data']:
-            instagram_account_name = account['name']
             instagram_access_token = account['access_token']
             facebook_account_id = account['id']
+            instagram_account_id = account.get('instagram_business_account', {}).get('id')
+
+            if not instagram_account_id:
+                continue
 
             instagram_accounts_endpoint = url_join(
                 request.env['social.media']._INSTAGRAM_ENDPOINT,
-                '/v10.0/%s' % facebook_account_id)
+                f'/v10.0/{instagram_account_id}')
 
             instagram_account = requests.get(instagram_accounts_endpoint,
                 params={
-                    'fields': 'instagram_business_account',
+                    'fields': 'username',
                     'access_token': instagram_access_token
                 },
                 timeout=5
             ).json()
 
-            if 'instagram_business_account' not in instagram_account:
-                continue
-
-            instagram_account_id = instagram_account['instagram_business_account']['id']
             account_values = {
-                'name': instagram_account_name,
+                'name': account['name'],
                 'instagram_facebook_account_id': facebook_account_id,
                 'instagram_account_id': instagram_account_id,
                 'instagram_access_token': instagram_access_token,
+                'social_account_handle': instagram_account['username'],
                 'image': self._instagram_get_profile_image(facebook_account_id)
             }
 

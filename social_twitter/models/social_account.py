@@ -16,7 +16,6 @@ class SocialAccountTwitter(models.Model):
     _inherit = 'social.account'
 
     twitter_user_id = fields.Char('Twitter User ID')
-    twitter_screen_name = fields.Char('Twitter Screen ID')
     twitter_oauth_token = fields.Char('Twitter OAuth Token')
     twitter_oauth_token_secret = fields.Char('Twitter OAuth Token Secret')
 
@@ -42,7 +41,7 @@ class SocialAccountTwitter(models.Model):
         super(SocialAccountTwitter, (self - twitter_accounts))._compute_stats_link()
 
         for account in twitter_accounts:
-            account.stats_link = "https://analytics.twitter.com/user/%s" % account.twitter_screen_name
+            account.stats_link = f"https://analytics.twitter.com/user/{account.social_account_handle}"
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -100,13 +99,13 @@ class SocialAccountTwitter(models.Model):
         twitter_account_info_url = url_join(self.env['social.media']._TWITTER_ENDPOINT, "/1.1/users/show.json")
         headers = self._get_twitter_oauth_header(
             twitter_account_info_url,
-            params={'screen_name': self.twitter_screen_name},
+            params={'screen_name': self.social_account_handle},
             method='GET'
         )
 
         result = requests.get(
             twitter_account_info_url,
-            params={'screen_name': self.twitter_screen_name},
+            params={'screen_name': self.social_account_handle},
             headers=headers,
             timeout=5
         )

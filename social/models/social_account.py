@@ -41,6 +41,8 @@ class SocialAccount(models.Model):
         return self.env.company
 
     name = fields.Char('Name', required=True)
+    social_account_handle = fields.Char("Handle / Short Name",
+        help="Contains the social media handle of the person that created this account. E.g: '@odoo.official' for the 'Odoo' Twitter account")
     active = fields.Boolean("Active", default=True)
     media_id = fields.Many2one('social.media', string="Social Media", required=True, readonly=True,
         help="Related Social Media (Facebook, Twitter, ...).", ondelete='cascade')

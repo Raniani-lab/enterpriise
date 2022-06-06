@@ -26,7 +26,7 @@ class TestSocialTwitter(HttpCase):
             self.social_account = self.env['social.account'].create({
                 'media_id': self.media.id,
                 'name': 'Social Tour Account',
-                'twitter_screen_name': 'social_manager',
+                'social_account_handle': 'social_manager',
                 'twitter_oauth_token_secret': 'test_token_key',
             })
 

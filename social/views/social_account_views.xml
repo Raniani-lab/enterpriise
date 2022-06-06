@@ -25,7 +25,9 @@
         <field name="arch" type="xml">
             <tree string="Social Accounts" create="0">
                 <field name="name" />
+                <field name="social_account_handle"/>
                 <field name="media_id" />
+                <field name="create_uid" widget="many2one_avatar_user"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
@@ -48,6 +50,7 @@
                         <group name="social_account_global">
                             <field name="active" invisible="1"/>
                             <field name="name" string="Name"/>
+                            <field name="social_account_handle"/>
                             <field name="media_id" options="{'no_open': True}" />
                             <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                         </group>

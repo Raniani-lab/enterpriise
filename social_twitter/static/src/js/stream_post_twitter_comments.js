@@ -44,11 +44,11 @@ odoo.define('social.StreamPostTwitterComments', function (require) {
             var pageInfoDef = this._rpc({
                 model: 'social.account',
                 method: 'read',
-                args: [this.accountId, ['name', 'twitter_user_id', 'twitter_screen_name']],
+                args: [this.accountId, ['name', 'twitter_user_id', 'social_account_handle']],
             }).then(function (result) {
                 self.accountName = result[0].name;
                 self.twitterUserId = result[0].twitter_user_id;
-                self.twitterUserScreenName = result[0].twitter_screen_name;
+                self.twitterUserScreenName = result[0].social_account_handle;
 
                 return Promise.resolve();
             });

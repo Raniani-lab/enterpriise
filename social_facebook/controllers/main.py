@@ -124,8 +124,9 @@ class SocialFacebookController(SocialController):
         account = request.env['social.account'].browse(account_id)
 
         json_response = requests.get(
-            url_join(request.env['social.media']._FACEBOOK_ENDPOINT, '/v10.0/%s?fields=name,link' % facebook_user_id),
+            url_join(request.env['social.media']._FACEBOOK_ENDPOINT, f'/v10.0/{facebook_user_id}'),
             params={
+                'fields': 'name,link',
                 'access_token': account.facebook_access_token
             },
             timeout=5
@@ -151,6 +152,7 @@ class SocialFacebookController(SocialController):
         accounts_url = url_join(request.env['social.media']._FACEBOOK_ENDPOINT, "/me/accounts/")
         json_response = requests.get(accounts_url,
             params={
+                'fields': 'id,access_token,name,username',
                 'access_token': extended_access_token
             },
             timeout=5
@@ -167,12 +169,14 @@ class SocialFacebookController(SocialController):
         for account in json_response.get('data'):
             account_id = account['id']
             access_token = account.get('access_token')
+            social_account_handle = account.get('username')
             if existing_accounts.get(account_id):
                 # update access token
                 # TODO awa: maybe check for name/picture update?
                 existing_accounts.get(account_id).write({
                     'active': True,
                     'facebook_access_token': access_token,
+                    'social_account_handle': social_account_handle,
                     'is_media_disconnected': False
                 })
             else:
@@ -182,6 +186,7 @@ class SocialFacebookController(SocialController):
                     'has_trends': True,
                     'facebook_account_id': account_id,
                     'facebook_access_token': access_token,
+                    'social_account_handle': social_account_handle,
                     'image': self._facebook_get_profile_image(account_id)
                 })
 

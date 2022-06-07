@@ -39,6 +39,7 @@ class CustomerPortal(portal.CustomerPortal):
 
     def _get_subscription(self, access_token, order_id):
         logged_in = not request.env.user.sudo()._is_public()
+        order_sudo = request.env['sale.order']
         if access_token or not logged_in:
             try:
                 order_sudo = self._document_check_access('sale.order', order_id, access_token)

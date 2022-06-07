@@ -122,7 +122,10 @@ class RentalOrderLine(models.Model):
     def _compute_temporal_type(self):
         super()._compute_temporal_type()
         for line in self:
-            if line.product_template_id.rent_ok and line.is_rental:
+            # We only rely on the is_rental stored boolean because after migration, product could be migrated
+            # with rent_ok = False It will ensure that rental line are still considered rental even if the product change
+            # To compare with subscription where temporal type depends on recurrency and recurring_invoice
+            if line.is_rental:
                 line.temporal_type = 'rental'
 
     def _compute_start_date(self):

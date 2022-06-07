@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { MAXIMUM_CELLS_TO_INSERT } from "../o_spreadsheet/constants";
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import { getFirstListFunction } from "./list_helpers";
 
@@ -18,10 +17,6 @@ export const REINSERT_LIST_CHILDREN = (env) =>
                 const list = env.model.getters.getListDefinition(listId);
                 const columns = list.columns.map((name) => ({ name, type: model.getField(name).type}));
                 env.getLinesNumber((linesNumber) => {
-                    linesNumber = Math.min(
-                        linesNumber,
-                        Math.floor(MAXIMUM_CELLS_TO_INSERT / list.columns.length)
-                    );
                     env.model.dispatch("RE_INSERT_ODOO_LIST", {
                         sheetId: env.model.getters.getActiveSheetId(),
                         col: zone.left,

@@ -3,7 +3,6 @@
 import { _lt } from "@web/core/l10n/translation";
 
 export const DEFAULT_LINES_NUMBER = 20;
-export const MAXIMUM_CELLS_TO_INSERT = 20000;
 
 export const formats = {
     day: { in: "DD MMM YYYY", out: "DD/MM/YYYY", display: "DD MMM YYYY", interval: "d" },

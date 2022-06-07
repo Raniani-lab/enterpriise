@@ -16,13 +16,11 @@ odoo.define("documents_spreadsheet.SpreadsheetSelectorDialog", function (require
          * @param {string} params.title
          * @param {string} params.name Name of the list/pivot/link
          * @param {number|undefined} params.threshold
-         * @param {number|undefined} params.maxThreshold
          */
         init: function (parent, params) {
             this.type = params.type;
             this.spreadsheets = params.spreadsheets;
             this.threshold = params.threshold;
-            this.maxThreshold = params.maxThreshold;
             this.name = params.name;
 
             const options = {
@@ -58,7 +56,7 @@ odoo.define("documents_spreadsheet.SpreadsheetSelectorDialog", function (require
                 selectedSpreadsheet = this.spreadsheets.find((s) => s.id === parseInt(id, 10));
             }
             const threshold = this.threshold
-                ? Math.min(this.el.querySelector("input[id='threshold']").value, this.maxThreshold)
+                ? parseInt(this.el.querySelector("input[id='threshold']").value)
                 : 0;
             const nameEl = this.el.querySelector("input[id='name']");
             const name = (nameEl && nameEl.value) || this.name;

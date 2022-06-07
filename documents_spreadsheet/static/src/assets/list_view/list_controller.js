@@ -6,7 +6,6 @@ import { sprintf } from "@web/core/utils/strings";
 
 import SpreadsheetSelectorDialog from "documents_spreadsheet.SpreadsheetSelectorDialog";
 import { removeContextUserInfo } from "../helpers";
-export const MAXIMUM_CELLS_TO_INSERT = 20000;
 
 
 
@@ -19,14 +18,6 @@ ListController.include({
             args: [],
         });
         const threshold = Math.min(model.count, model.limit);
-        const columns = this._getColumnsForSpreadsheet();
-        // This maxThreshold is used to ensure that there is not more than
-        // MAXIMUM_CELLS_TO_INSERT to insert in the spreadsheet.
-        // In the multi-user, we send the commands to the server which transfer
-        // through the bus the commands. As the longpolling bus stores the
-        // result in the localStorage, we have to ensure that the payload is less
-        // than 5mb
-        const maxThreshold = Math.floor(MAXIMUM_CELLS_TO_INSERT / columns.length);
 
         let name = this._title;
         const sortBy = model.orderedBy[0];
@@ -38,7 +29,6 @@ ListController.include({
             spreadsheets,
             title: _t("Select a spreadsheet to insert your list"),
             threshold,
-            maxThreshold,
             type: "LIST",
             name,
         };

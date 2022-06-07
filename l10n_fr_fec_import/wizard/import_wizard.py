@@ -416,7 +416,7 @@ class FecImportWizard(models.TransientModel):
             move_line_name = record.get("EcritureLib", "")
             account_code = record.get("CompteNum", "")
             currency_name = record.get("Idevise", "")
-            amount_currency = self._normalize_float_value(record, "MontantDevise")
+            amount_currency = self._normalize_float_value(record, "Montantdevise")
             matching = record.get("EcritureLet", "")
 
             # Move import --------------------------------------

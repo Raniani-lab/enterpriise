@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import Command, fields, models
+from odoo import Command, fields, models, _
 
 
 class WorkflowActionRuleTask(models.Model):
@@ -11,6 +11,7 @@ class WorkflowActionRuleTask(models.Model):
         rv = super(WorkflowActionRuleTask, self).create_record(documents=documents)
         if self.create_model == 'project.task':
             new_obj = self.env[self.create_model].create({'name': "new task from Documents", 'user_ids': [Command.set(self.env.user.ids)]})
+            document_msg = _('Task created from document')
             task_action = {
                 'type': 'ir.actions.act_window',
                 'res_model': self.create_model,
@@ -20,6 +21,11 @@ class WorkflowActionRuleTask(models.Model):
                 'views': [(False, "form")],
                 'context': self._context,
             }
+            if len(documents) == 1:
+                document_msg += f' {documents._get_html_link()}'
+            else:
+                document_msg += f's <ul>{"".join(f"<li>{document._get_html_link()}</li>" for document in documents)}</ul>'
+
             for document in documents:
                 this_document = document
                 if (document.res_model or document.res_id) and document.res_model != 'documents.document':
@@ -33,5 +39,6 @@ class WorkflowActionRuleTask(models.Model):
                     'res_model': self.create_model,
                     'res_id': new_obj.id
                 })
+            new_obj.message_post(body=document_msg)
             return task_action
         return rv

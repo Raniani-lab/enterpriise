@@ -5,6 +5,9 @@
         .o_input {
             display: inline;
             padding-left: 5px;
+            &.o_spreadsheet_threshold {
+                width: fit-content;
+            }
         }
     }
     option.o_new {

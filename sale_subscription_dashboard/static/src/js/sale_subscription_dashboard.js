@@ -93,10 +93,16 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
         };
     },
 
+    willStart: function() {
+        return Promise.all(
+            [this._super.apply(this, arguments),
+            this.fetch_data()]
+        );
+    },
+
     start: async function () {
-        const [res] = await Promise.all([this._super(), this.fetch_data()]);
+        await this._super();
         this.render_dashboard();
-        return res;
     },
 
     on_reverse_breadcrumb: function() {
@@ -232,23 +238,23 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(StandaloneField
     },
 
     update_cp: function() {
+        this.updateControlPanel({
+            cp_content: this.render_controlpanel_content()
+        });
+    },
+
+    render_controlpanel_content: function() {
         const PeriodChange = this.$searchview &&
         this.dashboard_options.filter !== this.$searchview.find('.o_predefined_range.selected').data('filter');
-        let def;
         if (!this.$searchview || PeriodChange) {
             this.render_filters();
             this.$searchview.filter('.o_update_options').on('click', this.on_update_options);
-            def = this.set_up_datetimepickers({});
+            this.set_up_datetimepickers({});
         }
-        const self = this;
-        Promise.resolve(def).then(function () {
-            self.updateControlPanel({
-                cp_content: {
-                    $searchview: self.$searchview,
-                    $buttons: self.$cpButton
-                },
-            });
-        });
+        return {
+            $searchview: this.$searchview,
+            $buttons: this.$cpButton,
+        };
     },
 
     set_up_datetimepickers: function (datetimeContext) {
@@ -387,6 +393,11 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
 
         this.defs = [];
         this.unresolved_defs_vals = [];
+    },
+
+    start: async function () {
+        this.controlPanelProps.cp_content = this.render_controlpanel_content();
+        return this._super();
     },
 
     fetch_data: async function () {
@@ -1203,6 +1214,12 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         );
     },
 
+    start: async function () {
+        this.controlPanelProps.cp_content = this.render_controlpanel_content();
+        const res = await this._super(...arguments);
+        return res;
+    },
+
     fetch_salesmen: function() {
         var self = this;
         return self._rpc({
@@ -1236,7 +1253,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         var self = this;
         addLoader(this.$('#mrr_growth_salesman'));
 
-        self._rpc({
+        this._rpc({
             route: '/sale_subscription_dashboard/get_values_salesmen',
             params: {
                 start_date: dateToServer(this.start_date, 'date'),
@@ -1389,17 +1406,15 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
     },
 
     on_update_options: function () {
-        var selected_salesman_id = Number(this.$searchview.find('option[name="salesman"]:selected').val());
-        this.salesman = _.findWhere(this.salesman_ids, {id: selected_salesman_id});
         this.render_dashboard();
     },
 
-    update_cp: function() {
-        var self = this;
-        self.$searchview = $(QWeb.render("sale_subscription_dashboard.salesman_searchview"));
-        self.set_up_datetimepickers({salesman: true});
-        self.$cpButton = $(QWeb.render("sale_subscription_dashboard.export"));
-        self.$cpButton.on('click', function () {
+    render_controlpanel_content() {
+        this.$searchview = $(QWeb.render("sale_subscription_dashboard.salesman_searchview"));
+        this.set_up_datetimepickers({salesman: true});
+        this.$cpButton = $(QWeb.render("sale_subscription_dashboard.export"));
+        const self = this;
+        this.$cpButton.on('click', function () {
             ajax.rpc('/web/dataset/call_kw/sale.subscription/print_pdf', {
             model: 'sale.order',
             method: 'print_pdf',
@@ -1416,26 +1431,19 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
                 return doActionProm;
             });
         });
-
-        self.$searchview.on('click', '.o_update_options', this.on_update_options);
-        this.updateControlPanel({
-           cp_content: {
-               $searchview: this.$searchview,
-               $buttons: this.$cpButton,
-           },
-        });
+        this.$searchview.on('click', '.o_update_options', this.on_update_options);
         // We need the many2many widget to limit the available users to the ones returned by the `fetch_salesmen` RPC call.
-        var domainList = [];
+        let domainList = [];
         // The available users in the dropdown are synched with the available salesman_ids.
         // Note: self.salesman may already contains the current user (default salesman) when the dashboard is launched.
-        if (self.many2manytags) {
-            var values = [];
+        if (this.many2manytags) {
+            let values = [];
             for (let index = 0; index < self.many2manytags.value.res_ids.length; index++) {
                 values.push(self.salesman_ids.find(val => val.id === self.many2manytags.value.res_ids[index]));
             }
-           self.salesman = values;
+           this.salesman = values;
         }
-        self.salesman_ids.forEach(saleman => {
+        this.salesman_ids.forEach(saleman => {
             domainList.push(saleman.id);
         });
         // Make a dummy record to attach the salesman selector widget
@@ -1458,6 +1466,10 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
             self._registerWidget(recordID, 'model', self.many2manytags);
             self.many2manytags.appendTo(self.$searchview.find('.salesman_tags'));
         });
+        return {
+            $searchview: this.$searchview,
+            $buttons: this.$cpButton,
+        };
     },
 });
 

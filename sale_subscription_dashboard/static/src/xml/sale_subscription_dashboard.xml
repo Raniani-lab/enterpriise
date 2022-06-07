@@ -434,7 +434,7 @@
                     <th>Current MRR</th>
                     <th>Delta</th>
                 </tr>
-                <tr t-foreach="modifications" t-as="modification" class="o_subscription_row" t-att-data-model="modification['model']" t-att-data-id="modification['subscription_id']">
+                <tr t-foreach="modifications" t-as="modification" class="o_subscription_row" t-att-data-model="modification['model']" t-att-data-id="modification['order_id']">
                     <td><i t-att-class="modification['class_type']"/></td>
                     <td><t t-esc="modification['date'] or ''"/></td>
                     <td class="o_subscription_ellipsis"><t t-esc="modification['partner'] or ''"/></td>

@@ -586,7 +586,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
         :param journal_key: the key of the journal we are looking to unfold if needed.
         :param journal_index: the index of the journal line in the report.
         """
-        selected_journal_id = [j['id'] for j in options['journals'] if j['id'] != 'divider' and j['selected']]
+        selected_journal_id = [j['id'] for j in options['journals'] if j.get('selected', False)]
         # Check the model of the lines in the unfolded lines, and check if any journal lines are unfolded.
         any_unfolded_journal = any(self._parse_line_id(unfolded_line)[-1][1] == 'account.journal' for unfolded_line in options['unfolded_lines'])
         if not selected_journal_id and not any_unfolded_journal and journal_index == 0 and journal_key not in options.get('unfolded_lines'):

@@ -3,7 +3,8 @@
 from collections import defaultdict
 import json
 
-from odoo import api, fields, models, Command
+from odoo import _, api, fields, models, Command
+from odoo.addons.web.controllers.utils import clean_action
 
 
 class BankRecWidget(models.Model):
@@ -153,3 +154,27 @@ class BankRecWidget(models.Model):
                     liquidity_lines, _counterpart_lines, _writeoff_lines = payment._seek_for_lines()
                     amls |= liquidity_lines.filtered_domain(amls_domain)
         self._action_add_new_amls(amls, allow_partial=False)
+
+    def button_validate(self, async_action=True):
+        # EXTENDS account_accountant
+        # Open the 'account.batch.payment.rejection' wizard if needed.
+        super().button_validate(async_action=async_action)
+
+        payments_with_batch = self.line_ids\
+            .filtered(lambda x: x.flag == 'new_aml' and x.source_batch_payment_id)\
+            .source_aml_id.payment_id
+        if self.env['account.batch.payment.rejection']._fetch_rejected_payment_ids(payments_with_batch):
+            self.next_action_todo = clean_action(
+                {
+                    'name': _("Batch Payment"),
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'account.batch.payment.rejection',
+                    'view_mode': 'form',
+                    'target': 'current',
+                    'context': {
+                        'default_in_reconcile_payment_ids': [Command.set(payments_with_batch.ids)],
+                        'default_next_action_todo': self.next_action_todo,
+                    },
+                },
+                self.env,
+            )

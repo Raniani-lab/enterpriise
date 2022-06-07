@@ -137,3 +137,58 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'new_aml',         'balance': -400.0,  'source_batch_payment_id': batch.id},
         ])
         self.assertRecordValues(wizard, [{'selected_batch_payment_ids': batch.ids}])
+
+    def test_batch_payment_rejection_on_bank_reco_widget(self):
+        payment_method_line = self.company_data['default_journal_bank'].inbound_payment_method_line_ids\
+            .filtered(lambda l: l.code == 'batch_payment')
+
+        payments = self.env['account.payment'].create([
+            {
+                'payment_type': 'inbound',
+                'partner_type': 'customer',
+                'partner_id': self.partner_a.id,
+                'payment_method_line_id': payment_method_line.id,
+                'amount': i * 100.0,
+            }
+            for i in range(1, 4)
+        ])
+        payments.action_post()
+
+        batch = self.env['account.batch.payment'].create({
+            'journal_id': self.company_data['default_journal_bank'].id,
+            'payment_ids': [Command.set(payments.ids)],
+            'payment_method_id': payment_method_line.payment_method_id.id,
+        })
+
+        # Mount the batch inside the bank reconciliation widget.
+        st_line = self._create_st_line(300.0, partner_id=self.partner_a.id)
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_batch_payments(batch)
+
+        # Validate with the full batch should reconcile directly the statement line.
+        wizard.button_validate()
+        self.assertTrue(wizard.next_action_todo)
+        self.assertEqual(wizard.next_action_todo['type'], 'rpc')
+
+        # Remove a payment and check the wizard is well opened.
+        line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml' and x.source_aml_id.payment_id == payments[-1])
+        wizard._action_remove_line(line.index)
+        wizard.button_validate()
+        self.assertTrue(wizard.next_action_todo)
+        self.assertEqual(wizard.next_action_todo.get('res_model'), 'account.batch.payment.rejection')
+
+        # Create the rejection wizard.
+        rejection_wizard = self.env['account.batch.payment.rejection']\
+            .with_context(**wizard.next_action_todo['context'])\
+            .create({})
+        self.assertRecordValues(rejection_wizard, [{
+            'in_reconcile_payment_ids': payments[:-1].ids,
+            'rejected_payment_ids': payments[-1].ids,
+            'nb_rejected_payment_ids': 1,
+            'nb_batch_payment_ids': 1,
+        }])
+
+        # Chose to cancel the payments.
+        rejection_wizard.button_cancel_payments()
+        self.assertEqual(len(batch.payment_ids), len(payments) - 1, "The last payment has been removed from the batch")
+        self.assertRecordValues(payments[-1].line_ids, [{'reconciled': True}] * 2)

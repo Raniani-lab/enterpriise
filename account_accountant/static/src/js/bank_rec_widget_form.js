@@ -6,6 +6,7 @@ import FormView from "web.FormView";
 import FormController from "web.FormController";
 
 import { ComponentWrapper } from "web.OwlCompatibility";
+import { FormViewDialog } from "web.view_dialogs";
 import { View } from "./legacy_view_adapter";
 
 
@@ -108,11 +109,18 @@ export const BankRecWidgetFormController = FormController.extend({
         let record = this.model.get(this.handle);
         let actionData = record.data.next_action_todo;
         if(actionData){
-            this.trigger_up("perform-do-action", {actionData: actionData});
+            if(actionData.type === "ir.actions.act_window" && actionData.target === 'current'){
+                // The action is opening a wizard.
+                await this._bankRecOpenWizardDialog(actionData);
+            }else{
+                // The action is exiting the current wizard scope. Delegate the action to the kanban view (to not
+                // mess up the breadcrumb). The current wizard will be destroyed.
+                this.trigger_up("perform-do-action", {actionData: actionData});
 
-            // No need to enable back the buttons since we are moving to another view.
-            // This prevents the user to quickly click on another button before the redirection.
-            return;
+                // No need to enable back the buttons since we are moving to another view.
+                // This prevents the user to quickly click on another button before the redirection.
+                return;
+            }
         }else{
             // Refresh the kanban view but stay focused on the current statement line.
             this.trigger_up("perform-do-action", {actionData: {type: "refresh"}});
@@ -124,6 +132,25 @@ export const BankRecWidgetFormController = FormController.extend({
     // -------------------------------------------------------------------------
     // HELPERS
     // -------------------------------------------------------------------------
+
+    _bankRecOpenWizardDialog(actionData){
+        let self = this;
+        let dialog = new FormViewDialog(this, {
+            context: actionData.context,
+            res_model: actionData.res_model,
+            shouldSaveLocally: false,
+            title: actionData.name,
+        });
+        let superClose = dialog.close.bind(dialog);
+        dialog.close = function(){
+            superClose();
+            let wizardData = this.form_view.model.get(this.form_view.handle).data;
+            if(!wizardData.cancel_action_todo){
+                self.trigger_up("perform-do-action", {actionData: wizardData.next_action_todo});
+            }
+        }
+        dialog.open();
+    },
 
     /**
     Method used to retrieve a field to focus automatically on the "manual operation" tab when clicking somewhere on the

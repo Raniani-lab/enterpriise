@@ -4,6 +4,7 @@ import ast
 import markupsafe
 
 from odoo import _, api, fields, models, tools, Command
+from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.models import check_method_name
 from odoo.addons.web.controllers.utils import clean_action
@@ -331,6 +332,28 @@ class BankRecWidget(models.Model):
             wizard.form_partner_receivable_amount = partner_receivable_amount
             wizard.form_partner_payable_amount = partner_payable_amount
 
+    def _check_lines_widget_consistency(self):
+        """ Check the consistency of 'line_ids' at each onchange (manually called since the wizard is never saved).
+        For example, you can't duplicate a journal item in the wizard.
+        """
+        for wizard in self:
+            seen_amls = set()
+            nb_liquidity = 0
+            nb_auto_balance = 0
+            for line in wizard.line_ids:
+                if line.flag == 'liquidity':
+                    nb_liquidity += 1
+                elif line.flag == 'auto_balance':
+                    nb_auto_balance += 1
+                if line.source_aml_id:
+                    if line.source_aml_id in seen_amls:
+                        raise UserError(_("You can't have multiple times the same journal item in the bank reconciliation widget"))
+                    seen_amls.add(line.source_aml_id)
+            if wizard.line_ids and nb_liquidity != 1:
+                raise UserError(_("You can't have multiple liquidity journal item at the same time in the bank reconciliation widget"))
+            if nb_auto_balance > 1:
+                raise UserError(_("You can't have maximum one auto balance line at the same time in the bank reconciliation widget"))
+
     @api.depends(
         'form_index',
         'line_ids.account_id',
@@ -352,6 +375,8 @@ class BankRecWidget(models.Model):
         """ Convert the bank.rec.widget.line recordset (line_ids fields) to a dictionary to fill the 'lines_widget'
         owl widget.
         """
+        self._check_lines_widget_consistency()
+
         # Protected fields by the orm like create_date should be excluded.
         protected_fields = set(models.MAGIC_COLUMNS + [self.CONCURRENCY_CHECK_FIELD])
 

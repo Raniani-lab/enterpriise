@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo.addons.account_accountant.tests.test_bank_rec_widget_common import TestBankRecWidgetCommon, WizardForm
+from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tools import html2plaintext
 from odoo import fields, Command
@@ -901,3 +902,15 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             self.env['account.bank.statement.line']._cron_try_auto_reconcile_statement_lines(batch_size=1)
 
         self.assertRecordValues(st_line1, [{'is_reconciled': True, 'cron_last_check': fields.Datetime.from_string('2018-01-03 00:00:00')}])
+
+    def test_duplicate_amls_constraint(self):
+        st_line = self._create_st_line(1000.0)
+        inv_line = self._create_invoice_line(1000.0, self.partner_a, 'out_invoice')
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_amls(inv_line)
+        wizard._action_add_new_amls(inv_line)
+
+        # Trigger the compute
+        with self.assertRaises(UserError), self.cr.savepoint():
+            wizard.lines_widget
